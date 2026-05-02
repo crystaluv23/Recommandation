@@ -6,10 +6,13 @@ Do not read memory at session start. Use this guide only when prior project expe
 
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
+| Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 0 | Avoid coupling reusable providers to the first consumer module. |
 
 ## Experience Index
 
 No project experiences yet.
+
+- [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md): reusable provider registries should live at the capability boundary, not inside the first module that consumes them.
 
 ## Consultation Protocol
 

@@ -11,7 +11,7 @@ from urllib.error import HTTPError, URLError
 
 from stock_opportunity_agent.config import PromptConfig
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research.models import register
+from stock_opportunity_agent.llm import register
 
 
 class HttpTransport(Protocol):

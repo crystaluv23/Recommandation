@@ -1,14 +1,13 @@
 from unittest import TestCase
 
 from stock_opportunity_agent.config import PromptConfig
-from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research import (
+from stock_opportunity_agent.llm import create, registered
+from stock_opportunity_agent.llm.openai import (
     ChatMessage,
     OpenAIChatClient,
     OpenAIClientError,
-    create_model,
-    registered_models,
 )
+from stock_opportunity_agent.models import ValidationError
 
 
 class FakeTransport:
@@ -60,7 +59,7 @@ class OpenAIChatClientTests(TestCase):
     def test_from_config_reads_api_key_from_named_env_var(self) -> None:
         config = PromptConfig(openai_api_key_env_var="CUSTOM_OPENAI_KEY")
 
-        client = create_model(
+        client = create(
             "openai",
             config,
             environ={"CUSTOM_OPENAI_KEY": "sk-test"},
@@ -68,7 +67,7 @@ class OpenAIChatClientTests(TestCase):
         )
 
         self.assertEqual(client.api_key, "sk-test")
-        self.assertIn("openai", registered_models())
+        self.assertIn("openai", registered())
 
     def test_missing_api_key_is_not_silently_accepted(self) -> None:
         with self.assertRaises(OpenAIClientError):

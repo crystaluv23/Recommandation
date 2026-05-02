@@ -1,4 +1,4 @@
-"""Registry for LLM model providers used by research agents."""
+"""Registry for LLM providers used across the agent."""
 
 from __future__ import annotations
 
@@ -72,4 +72,4 @@ def _add(name: str, provider: ProviderFactory) -> None:
     _REGISTRY[name] = provider
 
 
-from stock_opportunity_agent.research.models import openai as _openai  # noqa: E402,F401
+from stock_opportunity_agent.llm import openai as _openai  # noqa: E402,F401
