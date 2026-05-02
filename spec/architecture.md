@@ -61,6 +61,73 @@ quarterly evaluation
 -> framework changes for human approval
 ```
 
+## Lifecycle Phases
+
+The system should be understood as four connected phases, not as one large monitoring loop.
+
+### Phase 1: Historical Case Learning
+
+Purpose: build the first signal library without survivorship bias or look-ahead bias.
+
+```text
+find 1-3 year winners
+-> match 3-5 same-sector, similar-size failure controls per winner
+-> construct T-180 / T-120 / T-90 / T-60 / T-30 point-in-time packets
+-> run blind as-of-date LLM analysis
+-> compare winners against controls and failures
+-> update Signal Library with definitions, counterexamples, and false-positive patterns
+```
+
+Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
+
+### Phase 2: Current Market Scan
+
+Purpose: find live candidates cheaply before spending LLM work.
+
+```text
+full listed-stock universe
+-> structured coarse screen
+-> liquidity, market cap, financial-quality, and extreme-risk filters
+-> theme-aware and anomaly-aware candidate expansion
+-> point-in-time candidate packets
+-> LLM thesis / catalyst / contrary-evidence / narrative-migration research
+-> structured Rocket Score and related component scores
+```
+
+Owned mainly by `scanner`, `themes`, `data`, `research`, `signals`, `scoring`, and `memory`.
+
+### Phase 3: Cross-sectional Comparison
+
+Purpose: turn single-name analysis into a prioritized watchlist.
+
+```text
+compare candidates within sectors and segments
+-> compare expectation gaps
+-> compare catalyst timing
+-> compare valuation room and market confirmation
+-> identify crowded, expensive, or narrative-trap candidates
+-> review gate
+-> Top 20 watchlist and research cards
+```
+
+Owned mainly by `ranking`, `scoring`, `research`, `reports`, and `memory`.
+
+### Phase 4: Continuous Monitoring and Review
+
+Purpose: keep the system current without rerunning everything from scratch.
+
+```text
+daily monitor news, filings, prices, volume, analyst revisions, and theme events
+-> update current universe state
+-> rerun LLM research only when material new information appears
+-> weekly rank refresh
+-> monthly outcome review
+-> add new winners, failures, and stale-watchlist cases
+-> calibrate signal weights and feed meta-learning
+```
+
+Owned mainly by `monitoring`, `memory`, `review`, `signals`, `cases`, `ranking`, and `meta_learning`.
+
 ## Module Map
 
 Module specs live under `spec/src/stock_opportunity_agent/` and describe active design boundaries. At the current pre-implementation stage, the active tree is intentionally one spec per module. A module may later become either a single file or a package; child specs should be introduced only after an implementation boundary becomes real enough for another module to depend on it.

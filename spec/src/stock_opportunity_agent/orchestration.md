@@ -21,6 +21,17 @@ Expected pipelines:
 
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
 
+## Lifecycle Mapping
+
+The orchestration layer maps the product lifecycle into concrete pipelines:
+
+- Phase 1 Historical Case Learning: `cold_start_case_learning`, followed later by monthly case increments from `monthly_review`.
+- Phase 2 Current Market Scan: `weekly_scan` through universe filters, structured screens, theme/anomaly expansion, packet construction, LLM research, and scoring.
+- Phase 3 Cross-sectional Comparison: `weekly_scan` plus `review_gate`, producing ranked watchlists, research cards, and decision records.
+- Phase 4 Continuous Monitoring and Review: `daily_monitor`, weekly rank refresh inside `weekly_scan`, `monthly_review`, and `quarterly_walk_forward`.
+
+Monitoring owns event detection and reanalysis triggers; it does not own the whole discovery workflow.
+
 ## Responsibilities
 
 - Execute modules in dependency order.
