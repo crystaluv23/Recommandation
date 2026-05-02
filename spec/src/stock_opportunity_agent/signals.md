@@ -22,7 +22,7 @@ Signal categories should initially include:
 - short squeeze potential,
 - management tone change,
 - supply-chain resonance,
-- and novelty.
+- and novelty/anomaly.
 
 Each signal should expose a definition, data requirements, sector applicability, measurement function, confidence, and known failure modes.
 
@@ -30,6 +30,7 @@ Each signal should expose a definition, data requirements, sector applicability,
 
 - Store and version signal definitions.
 - Compute or request measurable signal observations.
+- Capture novelty and anomaly observations such as new company keywords, new customer groups, abnormal financial changes, cross-company language shifts, or lagged supply-chain transmission.
 - Track precision, recall, false positives, and sector-specific behavior.
 - Feed scoring with transparent component evidence.
 - Accept candidate signal changes from case learning and meta-learning only through versioned updates.
@@ -45,6 +46,7 @@ Each signal should expose a definition, data requirements, sector applicability,
 - Qualitative LLM signals must include source evidence and confidence.
 - Signal performance must be evaluated by as-of date, not hindsight summaries.
 - Signal definitions cannot be silently changed without a new version.
+- Novelty signals must not be promoted on text alone; they need later validation through data, market behavior, catalyst evidence, or explicit review labels.
 
 ## Testing
 

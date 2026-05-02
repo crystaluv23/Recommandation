@@ -26,6 +26,7 @@ It should emit reanalysis triggers when meaningful events occur.
 
 - Track earnings, filings, management commentary, analyst revisions, major orders, customer news, sector moves, price/volume events, short interest, options signals when available, and peer read-throughs.
 - Decide whether an event requires data refresh, LLM research, score refresh, or only memory annotation.
+- Update current universe state with material new information and reanalysis reasons.
 - Keep watchlist state changes auditable.
 - Avoid rerunning full research when nothing material changed.
 

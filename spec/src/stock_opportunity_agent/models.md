@@ -25,6 +25,7 @@ Other modules may depend on stable model types such as:
 - `ScoreCard`
 - `WatchlistEntry`
 - `DecisionRecord`
+- `UniverseStateRecord`
 - `ReviewRecord`
 - `ExperimentRecord`
 - `VersionStamp`
@@ -39,6 +40,7 @@ Initial implementation uses standard-library dataclasses and enums in `src/stock
 - Distinguish missing, stale, estimated, and confirmed data.
 - Carry `as_of_date`, source metadata, and version fields where relevant.
 - Represent structured data availability with feature values, source metadata, retrieval time, quality state, and explicit missing reasons.
+- Represent current ticker state without confusing it with a recommendation or trade.
 - Keep recommendation states separate from trading states.
 - Provide validation for score ranges, dates, identifiers, and required evidence.
 

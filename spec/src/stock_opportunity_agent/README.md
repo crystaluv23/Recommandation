@@ -5,7 +5,7 @@ Done
 
 This directory defines the active module-level contracts for the future `stock_opportunity_agent` package.
 
-The current architecture is deliberately lean: one active spec per module. Each module name below may later become a single Python file or a package, but the spec tree does not force that choice before implementation proves the boundary.
+The current architecture is deliberately lean: active specs stay at module level unless implementation has proved a child boundary. `data/sources.md` is the current child-spec exception because provider adapters and capability-level source selection already exist in code. Other module names below may later become single Python files or packages, but the spec tree does not force that choice before implementation proves the boundary.
 
 Earlier pre-implementation child specs were archived under [`../../_archive/2026-05-02-preimplementation-submodule-specs/`](../../_archive/2026-05-02-preimplementation-submodule-specs/). They are historical notes, not active architecture.
 
@@ -61,11 +61,11 @@ The active module set reflects the system-design discussion without turning ever
 
 - Expectation-gap research, watchlist output, and recommendation/trading separation live in [`vision.md`](../../vision.md) and [`architecture.md`](../../architecture.md).
 - Point-in-time data, structured data as backbone, and document retrieval live in [`data.md`](data.md); provider adapters and capability-level source selection live in [`data/sources.md`](data/sources.md).
-- Local long-term memory for companies, theses, signals, cases, decisions, reviews, themes, segments, experiments, and preferences lives in [`memory.md`](memory.md).
+- Local long-term memory for companies, theses, signals, cases, decisions, reviews, current universe state, themes, segments, experiments, and preferences lives in [`memory.md`](memory.md).
 - Historical winners, controls, failures, and blind analysis packets live in [`cases.md`](cases.md).
 - Theme discovery, industry-chain transmission, segment stage, and timing live in [`themes.md`](themes.md).
-- Signal definitions and performance learning live in [`signals.md`](signals.md).
-- Non-LLM coarse screening before expensive research lives in [`scanner.md`](scanner.md).
+- Signal definitions, novelty/anomaly detection, and performance learning live in [`signals.md`](signals.md).
+- Non-LLM coarse screening, current-state-aware rerun selection, and anomaly-driven candidate surfacing before expensive research live in [`scanner.md`](scanner.md).
 - LLM research, skeptic passes, valuation critique, evidence-for/evidence-against, and structured thesis output live in [`research.md`](research.md).
 - Theme scores, Segment Timing, Company Rocket Score, Launch Probability, Upside Potential, and risk adjustment live in [`scoring.md`](scoring.md).
 - Segment-level and market-level comparison live in [`ranking.md`](ranking.md).

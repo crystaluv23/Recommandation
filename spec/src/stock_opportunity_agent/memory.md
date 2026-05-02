@@ -16,6 +16,7 @@ Memory collections should include:
 - Signal Memory
 - Case Memory
 - Decision Memory
+- Current Universe Store
 - Review Memory
 - Theme Memory
 - Segment Memory
@@ -27,6 +28,7 @@ The module should expose repository-style interfaces for reading, writing, query
 ## Responsibilities
 
 - Store every watchlist decision with its evidence, scores, and version stamps.
+- Store current ticker state, including last analysis date, latest score, thesis summary, changed information, and whether reanalysis is needed.
 - Store active and archived theses separately by status.
 - Track signal performance and false-positive patterns.
 - Track theme and segment stage histories.
@@ -44,6 +46,7 @@ The module should expose repository-style interfaces for reading, writing, query
 - Memory is not a chat transcript; it stores structured research history.
 - A thesis belongs to a claim and evidence set, not just a ticker.
 - Failed recommendations must remain queryable.
+- Current universe state is operational memory; it can be refreshed, but its changes must still be traceable to data updates, monitoring events, or completed runs.
 - Memory updates should be append-friendly; destructive rewrites require explicit migration or human approval.
 - Records must be traceable back to the run or review that created them.
 

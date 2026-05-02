@@ -25,6 +25,7 @@ Each pipeline should produce a run manifest with config, versions, input windows
 - Execute modules in dependency order.
 - Write run manifests and logs.
 - Make incremental reruns possible.
+- Use current universe state so daily and weekly runs prioritize changed tickers instead of reanalyzing the whole market from scratch.
 - Stop early on missing critical data or failed validation.
 - Keep long-running tasks resumable where practical.
 

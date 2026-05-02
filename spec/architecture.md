@@ -89,6 +89,7 @@ The system revolves around a few durable records:
 - `ScoreCard`: component scores and final opportunity score.
 - `WatchlistEntry`: ranked output with recommendation state and reason.
 - `DecisionRecord`: immutable record of what the system recommended and which versions produced it.
+- `UniverseStateRecord`: current ticker state with last analysis date, latest score, active thesis summary, new information markers, and reanalysis need.
 - `ReviewRecord`: outcome, error label, and lesson after time has passed.
 - `ExperimentRecord`: meta-learning proposal, test design, result, and approval state.
 
@@ -159,6 +160,7 @@ Cold-start should not begin with live recommendations. It should build a case li
 Once memory exists, reruns should be incremental:
 
 - daily jobs update data and detect changes,
+- current universe state records last analysis, latest score, new information, and whether a ticker needs fresh research,
 - changed tickers or catalysts trigger selective research,
 - weekly jobs refresh broad rankings,
 - monthly jobs review outcomes,
@@ -171,5 +173,6 @@ Once memory exists, reruns should be incremental:
 - Never let pure narrative override missing data, missing catalysts, or extreme valuation risk.
 - Always preserve evidence against the thesis.
 - Always keep failed recommendations and controls; do not curate only winners.
+- Always include novelty and anomaly checks so the system does not only rediscover historical lookalikes.
 - Always distinguish unavailable data from neutral data.
 - Always separate "worth studying" from "worth buying".
