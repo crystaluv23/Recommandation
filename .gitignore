@@ -5,3 +5,7 @@ __pycache__/
 .coverage
 htmlcov/
 .lint-feedback/
+.agent_state/
+.env
+.env.*
+!.env.example
