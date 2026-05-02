@@ -8,3 +8,4 @@
 - 2026-05-02: Expanded the spec architecture into an isomorphic package/submodule tree that mirrors the intended future `src/stock_opportunity_agent/` code layout.
 - 2026-05-02: Rechecked the architecture against the system-design discussion and pruned premature child specs into `spec/_archive/`, keeping the active tree at module-level boundaries until implementation proves finer splits.
 - 2026-05-02: Integrated transferable code quality requirements from `../Prediction/AGENTS.md` into this project's session entry point.
+- 2026-05-02: Added the initial Python package skeleton with domain records, validated config loading, registry-based OpenAI model provider, registry-based data-source providers, SEC EDGAR and Alpha Vantage adapters, and unit tests.

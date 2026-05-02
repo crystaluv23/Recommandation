@@ -1,7 +1,7 @@
 # Data
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -21,6 +21,8 @@ The module should expose services for:
 - document retrieval,
 - sector and benchmark context,
 - and point-in-time `ResearchPacket` construction.
+
+Initial implementation uses a provider registry under `src/stock_opportunity_agent/data/sources/`. Data-source modules register factories with `@register("source_name")`; core pipeline code should request providers by name/capability instead of importing a vendor directly. The first concrete providers are SEC EDGAR for filings/company facts and Alpha Vantage for compact market/fundamental/news endpoints. A catalog records other current free or free-key candidates for later adapters.
 
 ## Responsibilities
 

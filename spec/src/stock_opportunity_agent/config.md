@@ -1,7 +1,7 @@
 # Config
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -20,6 +20,8 @@ Expected configuration groups:
 - `MetaLearningPolicy`
 
 The module should expose a loader that returns validated configuration records and records the active config version for every run.
+
+Initial implementation lives in `src/stock_opportunity_agent/config.py` and supports validated defaults, JSON file loading, and environment overrides for run/storage/API-key variable names.
 
 ## Responsibilities
 

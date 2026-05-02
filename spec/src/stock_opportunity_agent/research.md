@@ -1,7 +1,7 @@
 # Research
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -26,6 +26,8 @@ Expected outputs:
 - disconfirming events,
 - old and new narrative,
 - and confidence notes.
+
+Initial implementation provides a lightweight LLM model-provider registry under `src/stock_opportunity_agent/research/models/`. Provider modules register factories with `@register("provider_name")`; the first concrete provider is an OpenAI Responses API adapter. Domain records remain in the top-level `models` module.
 
 ## Responsibilities
 

@@ -1,7 +1,7 @@
 # Models
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -29,6 +29,8 @@ Other modules may depend on stable model types such as:
 - `VersionStamp`
 
 Implementation may use dataclasses, Pydantic models, or typed dictionaries, but records crossing module boundaries must be explicit and serializable.
+
+Initial implementation uses standard-library dataclasses and enums in `src/stock_opportunity_agent/models.py`. These are domain records, not LLM provider adapters; model-provider API integrations belong under the research module.
 
 ## Responsibilities
 
