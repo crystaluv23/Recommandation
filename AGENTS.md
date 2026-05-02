@@ -80,6 +80,9 @@ Do not read memory at session start. When you encounter a situation where prior 
 **Progress hygiene:**
 For any session where code or design changes, fix spec drift, update `progress/status.md`, append a line to `progress/changelog.md`, and add memory only for non-obvious lessons likely to matter later.
 
+**Git checkpoint discipline:**
+Whenever the assistant changes project files during a conversation turn, it must create one git checkpoint before the final reply. Inspect `git status`, stage only the files changed for the current task unless the user explicitly asks otherwise, and run `git commit` with a concise message. Do not commit unrelated user changes. If verification could not be run or failed, mention that in the final reply while still keeping the committed checkpoint useful for rollback.
+
 ---
 
 ## Workflows
@@ -112,6 +115,7 @@ _Trigger: any session where code or design was changed._
 2. Update `progress/status.md`.
 3. Append one line to `progress/changelog.md`.
 4. Create or update memory only when something non-obvious was learned.
+5. Check `git status`, stage the task's changed files, and create one git commit before the final reply.
 
 ### Removing or renaming a module
 
