@@ -69,11 +69,16 @@ State assumptions explicitly. If the target or user intent is still genuinely un
 **Research-design clarification:**
 The specs intentionally leave some research choices open until the relevant module is implemented. When a detail has multiple reasonable definitions and could materially affect results, ask the user before coding it. Examples include winner labels, control-group matching criteria, point-in-time cutoffs, scoring weights, theme-stage thresholds, signal promotion rules, and meta-learning approval boundaries. After the user confirms, record the decision in the module spec before or alongside implementation.
 
+**Architecture before implementation:**
+Read the relevant module spec before working on a module; it carries the interface contract and design decisions. Read `spec/vision.md` when a decision involves trade-offs against project goals, such as coverage versus precision, auditability versus convenience, or research depth versus cost. Changes that look local can have non-local consequences in data lineage, scoring, review, and meta-learning.
+
 **Code quality norms:**
-- Write the minimum code that solves the problem. No abstractions for single-use code, no "flexibility" that was not requested.
-- Keep modules loosely coupled and shaped around explicit interfaces.
-- Names should reveal intention at the shortest length that is unambiguous in context.
+- Write the minimum code that solves the problem. No abstractions for single-use code, no "flexibility" or "configurability" that was not requested. If a solution grows far beyond its apparent job, stop and simplify before continuing.
+- Modules and public functions carry docstrings. Include a usage example when behavior is not self-evident from the signature alone.
+- Keep modules loosely coupled and shaped around explicit interfaces. A unit should do one thing, and dependencies should flow in one direction.
+- Names should reveal intention at the shortest length that is unambiguous in context. Use longer names only when the shorter one would genuinely mislead.
 - Match the repository's established style once code exists.
+- Write unit tests under `tests/` mirroring `src/` where practical. Cover deterministic model, config, parsing, scoring, and pipeline behavior with unit tests; validate LLM-heavy research quality through review/evaluation artifacts rather than brittle unit assertions.
 - Add tests in proportion to risk and blast radius.
 
 **Dependency hygiene:**
@@ -81,6 +86,15 @@ When a runtime and packaging format exist, keep dependency declarations as the s
 
 **Surgical changes:**
 Touch only what the task requires. Do not improve adjacent code, comments, or formatting. Remove dead code and redundancy that your changes created. For pre-existing unrelated issues, mention them rather than fixing them silently.
+
+**Decision scope:**
+Decide autonomously within a module's implementation on ordinary algorithms, error handling, data structures, and library choices when they honor the relevant spec. Surface to the user before acting on anything that changes a module's interface contract, introduces a new cross-module dependency not described in `spec/architecture.md`, changes canonical record schemas or scoring semantics, alters point-in-time data guarantees, or moves the project toward trading automation.
+
+**Architecture invariants - never violate in code:**
+- Keep research, scoring, memory, review, reporting, and orchestration concerns separated along the boundaries in `spec/architecture.md`.
+- Preserve point-in-time data discipline: do not let future data, revised facts, or post-outcome labels leak into candidate generation, scoring, historical cases, or evaluations unless the artifact is explicitly marked as retrospective review.
+- Do not make brokerage, order placement, leverage, or position-sizing behavior part of the system without explicit user confirmation and a top-down spec update.
+- Do not change canonical thesis, score, decision, review, experiment, or version records without updating the owning module spec and checking ancestor-spec implications.
 
 **Memory protocol:**
 Do not read memory at session start. When you encounter a situation where prior experience might apply, open `memory/GUIDE.md` and follow the consultation protocol. When starting work on a specific module after modules exist, do a quick trigger-map scan before diving in.

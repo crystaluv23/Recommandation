@@ -2,7 +2,7 @@
 
 | Area | Spec | Code | Status | Notes |
 | --- | --- | --- | --- | --- |
-| Meta mechanism | [`AGENTS.md`](../AGENTS.md), [`spec/README.md`](../spec/README.md) | [`scripts/lint_repo.sh`](../scripts/lint_repo.sh), [`.githooks/pre-push`](../.githooks/pre-push) | Done | Session entry, spec discipline, progress, memory hygiene, git checkpoint discipline, and pre-push lint feedback are active. |
+| Meta mechanism | [`AGENTS.md`](../AGENTS.md), [`spec/README.md`](../spec/README.md) | [`scripts/lint_repo.sh`](../scripts/lint_repo.sh), [`.githooks/pre-push`](../.githooks/pre-push) | Done | Session entry, spec discipline, code quality norms, progress, memory hygiene, git checkpoint discipline, and pre-push lint feedback are active. |
 | Vision | [`spec/vision.md`](../spec/vision.md) | None | Spec Done | Defines the project as a 3-6 month stock opportunity discovery agent that outputs watchlists, not trades. |
 | Architecture | [`spec/architecture.md`](../spec/architecture.md) | None | Spec Done | Defines the local-first, auditable architecture across data, memory, theme transmission, research, scoring, review, and meta-learning. |
 | Spec module map | [`spec/src/stock_opportunity_agent/README.md`](../spec/src/stock_opportunity_agent/README.md) | None | Spec Done | Establishes a lean active module-level spec tree; premature child specs are archived until implementation proves the boundary. |
