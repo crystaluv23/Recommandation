@@ -11,6 +11,7 @@ from stock_opportunity_agent.data.sources.core import (
     DataSourceError,
     FilingMetadata,
     JsonTransport,
+    SecurityListing,
     array_get,
     format_cik,
     optional_date,
@@ -27,6 +28,7 @@ class SecEdgarClient:
         user_agent: str,
         *,
         base_url: str = "https://data.sec.gov",
+        sec_base_url: str = "https://www.sec.gov",
         transport: JsonTransport | None = None,
     ) -> None:
         if not user_agent.strip():
@@ -35,6 +37,7 @@ class SecEdgarClient:
 
         self.user_agent = user_agent
         self.base_url = base_url.rstrip("/")
+        self.sec_base_url = sec_base_url.rstrip("/")
         self.transport = transport or UrllibJsonTransport()
 
     @classmethod
@@ -58,6 +61,44 @@ class SecEdgarClient:
             f"{self.base_url}/api/xbrl/companyfacts/CIK{format_cik(cik)}.json",
             {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
         )
+
+    def company_tickers_exchange(self) -> list[SecurityListing]:
+        """Return SEC company ticker and exchange mappings as universe listing rows."""
+
+        data = self.transport.get_json(
+            f"{self.sec_base_url}/files/company_tickers_exchange.json",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+        fields = data.get("fields")
+        rows = data.get("data")
+        if not isinstance(fields, list) or not isinstance(rows, list):
+            raise DataSourceError("SEC ticker exchange response missing fields or data")
+        try:
+            cik_index = fields.index("cik")
+            name_index = fields.index("name")
+            ticker_index = fields.index("ticker")
+            exchange_index = fields.index("exchange")
+        except ValueError as exc:
+            raise DataSourceError("SEC ticker exchange response missing required columns") from exc
+
+        retrieved_at = utc_now()
+        listings: list[SecurityListing] = []
+        for row in rows:
+            if not isinstance(row, list):
+                continue
+            listings.append(
+                SecurityListing(
+                    symbol=str(row[ticker_index]),
+                    name=str(row[name_index]),
+                    exchange=str(row[exchange_index]),
+                    asset_type="equity",
+                    status="active",
+                    source="sec_edgar",
+                    retrieved_at=retrieved_at,
+                    cik=format_cik(str(row[cik_index])),
+                )
+            )
+        return listings
 
     def recent_filings_as_of(self, cik: str, as_of_date: date) -> list[FilingMetadata]:
         """Return recent filings whose filing date was available by ``as_of_date``."""
@@ -94,6 +135,17 @@ class SecEdgarClient:
                 )
             )
         return filings
+
+    def filing_document_text(self, filing: FilingMetadata) -> str:
+        """Fetch a filing primary-document body as text through the SEC archive URL."""
+
+        get_text = getattr(self.transport, "get_text", None)
+        if get_text is None:
+            raise DataSourceError("transport does not support text downloads")
+        return get_text(
+            filing.source_url,
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
 
 
 @register("sec_edgar")

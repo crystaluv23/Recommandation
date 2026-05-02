@@ -1,6 +1,6 @@
 # Provider Boundary Placement
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

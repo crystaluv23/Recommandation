@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
@@ -19,15 +21,49 @@ class DataSourceError(RuntimeError):
 class JsonTransport(Protocol):
     """Transport boundary for offline tests and caching wrappers."""
 
-    def get_json(self, url: str, headers: Mapping[str, str]) -> dict[str, Any]:
+    def get_json(self, url: str, headers: Mapping[str, str]) -> dict[str, Any] | list[Any]:
         """Fetch JSON from a URL."""
 
 
-class UrllibJsonTransport:
-    """Standard-library JSON GET transport."""
+class TextTransport(Protocol):
+    """Text transport boundary for CSV and document downloads."""
 
-    def get_json(self, url: str, headers: Mapping[str, str]) -> dict[str, Any]:
+    def get_text(self, url: str, headers: Mapping[str, str]) -> str:
+        """Fetch text from a URL."""
+
+
+class PostJsonTransport(Protocol):
+    """JSON POST transport boundary for APIs such as OpenFIGI."""
+
+    def post_json(self, url: str, headers: Mapping[str, str], payload: Any) -> dict[str, Any] | list[Any]:
+        """POST a JSON payload and return decoded JSON."""
+
+
+class UrllibJsonTransport:
+    """Standard-library HTTP transport for JSON GET, text GET, and JSON POST."""
+
+    def get_json(self, url: str, headers: Mapping[str, str]) -> dict[str, Any] | list[Any]:
+        return json.loads(self.get_text(url, headers))
+
+    def get_text(self, url: str, headers: Mapping[str, str]) -> str:
         req = request.Request(url, headers=dict(headers), method="GET")
+        try:
+            with request.urlopen(req, timeout=60) as response:
+                return response.read().decode("utf-8")
+        except HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise DataSourceError(f"data source returned HTTP {exc.code}: {detail}") from exc
+        except URLError as exc:
+            raise DataSourceError(f"data source request failed: {exc.reason}") from exc
+
+    def post_json(self, url: str, headers: Mapping[str, str], payload: Any) -> dict[str, Any] | list[Any]:
+        body = json.dumps(payload).encode("utf-8")
+        req = request.Request(
+            url,
+            data=body,
+            headers={**dict(headers), "Content-Type": "application/json"},
+            method="POST",
+        )
         try:
             with request.urlopen(req, timeout=60) as response:
                 return json.loads(response.read().decode("utf-8"))
@@ -76,6 +112,29 @@ class FilingMetadata:
     retrieved_at: datetime
 
 
+@dataclass(frozen=True)
+class SecurityListing:
+    """Normalized security listing row for universe construction."""
+
+    symbol: str
+    name: str
+    exchange: str | None
+    asset_type: str | None
+    status: str
+    source: str
+    retrieved_at: datetime
+    cik: str | None = None
+    ipo_date: date | None = None
+    delisting_date: date | None = None
+
+    def __post_init__(self) -> None:
+        if not self.symbol.strip():
+            raise ValidationError("symbol must not be empty")
+        if not self.name.strip():
+            raise ValidationError("name must not be empty")
+        object.__setattr__(self, "symbol", self.symbol.upper())
+
+
 def filing_to_evidence(filing: FilingMetadata, as_of_date: date) -> EvidenceItem:
     """Convert SEC filing metadata to source-linked evidence."""
 
@@ -111,9 +170,19 @@ def array_get(data: Mapping[str, Any], key: str, index: int) -> Any:
 def optional_date(value: Any) -> date | None:
     """Parse an optional ISO date."""
 
-    if not value:
+    if not value or str(value).lower() in {"none", "null", "nan", "-"}:
         return None
     return date.fromisoformat(value)
+
+
+def parse_csv_rows(text: str) -> list[dict[str, str]]:
+    """Parse CSV text into rows with trimmed header names."""
+
+    reader = csv.DictReader(io.StringIO(text))
+    rows: list[dict[str, str]] = []
+    for row in reader:
+        rows.append({(key or "").strip(): (value or "").strip() for key, value in row.items()})
+    return rows
 
 
 def utc_now() -> datetime:
