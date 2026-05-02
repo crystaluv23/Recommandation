@@ -59,7 +59,7 @@ quarterly evaluation
 
 ## Module Map
 
-Module specs live under `spec/src/stock_opportunity_agent/` and mirror the intended future source tree. A package-level spec such as `data.md` describes the full `src/stock_opportunity_agent/data/` package; child specs under `data/` describe submodules such as `point_in_time.py`.
+Module specs live under `spec/src/stock_opportunity_agent/` and describe active design boundaries. At the current pre-implementation stage, the active tree is intentionally one spec per module. A module may later become either a single file or a package; child specs should be introduced only after an implementation boundary becomes real enough for another module to depend on it.
 
 - [`models.md`](src/stock_opportunity_agent/models.md): shared domain objects and versioned records.
 - [`config.md`](src/stock_opportunity_agent/config.md): universe, scoring, data-source, prompt, and run configuration.
@@ -99,6 +99,8 @@ Concrete field names belong in `models.md` and implementation schemas.
 ### Spec vs Implementation Detail
 
 Top-level specs define responsibilities, invariants, and module boundaries. They do not settle every research parameter. When implementation reaches a detail that has several valid choices and could change conclusions, the agent must ask the user before coding it and then update the relevant module spec with the chosen rule. Examples include control-group matching standards, winner labels, score thresholds, theme-stage boundaries, and experiment promotion criteria.
+
+The architecture should not add a new active module, child spec, score, agent role, or memory type unless it buys a clearer boundary, auditability, or testability. Related concerns should stay inside the parent module until they need separate ownership.
 
 ### Recommendation vs Trading
 

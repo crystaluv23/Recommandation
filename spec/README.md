@@ -40,7 +40,7 @@ Use one spec per module, not one spec per file. Split into `spec/src/<package>/<
 - the submodule exposes an interface another module can depend on, or
 - the module spec grows beyond about 150 lines and clearly separates into independent concerns.
 
-If neither condition holds, keep the module spec flat.
+If neither condition holds, keep the module spec flat. Do not pre-create child specs just to mirror an imagined future file tree; a possible file is not yet a design entity.
 
 ## Module Spec Template
 
@@ -73,7 +73,7 @@ How this module should be verified when code exists.
 
 ## Current Stage
 
-The product target is defined as a stock opportunity discovery agent. Top-level vision and architecture exist, and module specs under `spec/src/stock_opportunity_agent/` define the future source layout before implementation begins.
+The product target is defined as a stock opportunity discovery agent. Top-level vision and architecture exist, and module specs under `spec/src/stock_opportunity_agent/` define the active design boundaries before implementation begins. Child specs should be added only when implementation exposes a stable submodule boundary or the parent spec becomes too large to stay readable.
 
 ## Sync Rules
 

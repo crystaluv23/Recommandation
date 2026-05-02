@@ -6,3 +6,4 @@
 - 2026-05-02: Replaced target placeholders with the stock opportunity agent vision and architecture, then drafted module-level specs for the future `stock_opportunity_agent` package.
 - 2026-05-02: Added the rule that materially ambiguous research-design choices should be confirmed with the user at module implementation time and then recorded in the relevant spec.
 - 2026-05-02: Expanded the spec architecture into an isomorphic package/submodule tree that mirrors the intended future `src/stock_opportunity_agent/` code layout.
+- 2026-05-02: Rechecked the architecture against the system-design discussion and pruned premature child specs into `spec/_archive/`, keeping the active tree at module-level boundaries until implementation proves finer splits.
