@@ -19,6 +19,7 @@ Other modules may depend on stable model types such as:
 - `ThemeMap`
 - `SegmentAssessment`
 - `CompanyProfile`
+- `FeatureRecord`
 - `Thesis`
 - `SignalDefinition`
 - `ScoreCard`
@@ -30,13 +31,14 @@ Other modules may depend on stable model types such as:
 
 Implementation may use dataclasses, Pydantic models, or typed dictionaries, but records crossing module boundaries must be explicit and serializable.
 
-Initial implementation uses standard-library dataclasses and enums in `src/stock_opportunity_agent/models.py`. These are domain records, not LLM provider adapters; model-provider API integrations belong under the research module.
+Initial implementation uses standard-library dataclasses and enums in `src/stock_opportunity_agent/models.py`. `FeatureRecord` is the cross-module structured data contract used by the data layer and later scanner/scoring modules. These are domain records, not LLM provider adapters; model-provider API integrations belong under the research module.
 
 ## Responsibilities
 
 - Define canonical field names and status enums.
 - Distinguish missing, stale, estimated, and confirmed data.
 - Carry `as_of_date`, source metadata, and version fields where relevant.
+- Represent structured data availability with feature values, source metadata, retrieval time, quality state, and explicit missing reasons.
 - Keep recommendation states separate from trading states.
 - Provide validation for score ranges, dates, identifiers, and required evidence.
 
@@ -50,6 +52,7 @@ Initial implementation uses standard-library dataclasses and enums in `src/stock
 - Every research, score, decision, and review record must be tied to an `as_of_date`.
 - Every LLM-generated claim that affects a thesis must be attachable to evidence or explicitly marked as inference.
 - Score models must preserve component scores; only storing a final score is not enough.
+- `ResearchPacket` records must include structured `FeatureRecord` values as well as evidence summaries, so downstream modules can score repeatably instead of parsing prose.
 - Versioned records must include prompt, scoring, signal, model, and data-pipeline versions when those versions affect output.
 
 ## Testing

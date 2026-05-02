@@ -24,6 +24,12 @@ The module should expose services for:
 
 Initial implementation uses a provider registry under `src/stock_opportunity_agent/data/sources/`. Data-source modules register factories with `@register("source_name")`; core pipeline code should request providers by name/capability instead of importing a vendor directly. Source-specific rules live in [`data/sources.md`](data/sources.md).
 
+Post-source implementation adds active data-layer submodules:
+
+- [`data/structured.md`](data/structured.md): normalize prices, profile fields, valuation ratios, and SEC company facts into `FeatureRecord` values.
+- [`data/documents.md`](data/documents.md): archive, chunk, and retrieve source-linked documents with public-availability metadata.
+- [`data/point_in_time.md`](data/point_in_time.md): filter features and documents by availability and assemble `ResearchPacket` records.
+
 ## Data Need Rationalization
 
 The source layer keeps these non-redundant capabilities:
@@ -48,6 +54,8 @@ Do not add separate first-class source capabilities for brokerage, order routing
 
 - Ingest and cache raw vendor responses or public filings when allowed.
 - Normalize data into stable feature records.
+- Normalize high-priority source outputs into `FeatureRecord` values without embedding scoring semantics.
+- Retrieve and chunk source-linked documents for packet assembly.
 - Construct point-in-time packets for live scans and historical case learning.
 - Preserve source, timestamp, and availability metadata.
 - Separate raw archives, feature stores, and document stores.
@@ -71,4 +79,4 @@ Do not add separate first-class source capabilities for brokerage, order routing
 
 ## Testing
 
-Tests should cover point-in-time filtering, missing data semantics, packet construction, source metadata, and fixture-based feature normalization.
+Tests should cover point-in-time filtering, missing data semantics, packet construction, source metadata, document availability filtering, and fixture-based feature normalization.

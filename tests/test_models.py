@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timezone
 from unittest import TestCase
 
 from stock_opportunity_agent.models import (
@@ -12,6 +12,7 @@ from stock_opportunity_agent.models import (
     EvidenceKind,
     ExperimentRecord,
     ExperimentStatus,
+    FeatureRecord,
     RecommendationState,
     ReviewOutcome,
     ReviewRecord,
@@ -46,6 +47,18 @@ def evidence(kind: EvidenceKind = EvidenceKind.FILING) -> EvidenceItem:
         as_of_date=date(2026, 5, 1),
         source_id=None if kind is EvidenceKind.INFERENCE else "filing:10q:1",
         inference=kind is EvidenceKind.INFERENCE,
+    )
+
+
+def feature() -> FeatureRecord:
+    return FeatureRecord(
+        name="price.latest_close",
+        value=125.5,
+        as_of_date=date(2026, 5, 1),
+        source="stooq",
+        retrieved_at=datetime(2026, 5, 2, tzinfo=timezone.utc),
+        source_id="stooq:NVDA:price.latest_close:2026-05-01",
+        period_end_date=date(2026, 5, 1),
     )
 
 
@@ -105,6 +118,14 @@ class ModelSerializationTests(TestCase):
         )
 
         self.assertEqual(ThemeMap.from_dict(theme.to_dict()), theme)
+
+    def test_feature_record_round_trips_with_availability_dates(self) -> None:
+        original = feature()
+
+        restored = FeatureRecord.from_dict(original.to_dict())
+
+        self.assertEqual(restored, original)
+        self.assertEqual(restored.period_end_date, date(2026, 5, 1))
 
     def test_decision_and_review_records_preserve_versions(self) -> None:
         thesis = Thesis(
@@ -219,6 +240,7 @@ class RequiredRecordCoverageTests(TestCase):
                 market_cap_usd=1_000_000_000_000,
                 average_daily_dollar_volume=5_000_000_000,
             ),
+            features=[feature()],
             evidence=[evidence()],
             catalysts=[catalyst()],
             theme_ids=["theme-ai-infra"],

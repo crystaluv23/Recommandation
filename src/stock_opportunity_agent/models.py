@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import MISSING, dataclass, fields, is_dataclass
 from datetime import date, datetime
 from enum import Enum
+from types import UnionType
 from typing import Any, ClassVar, Literal, Mapping, TypeVar, Union, get_args, get_origin, get_type_hints
 
 
@@ -138,7 +139,7 @@ def _from_wire(value: Any, annotation: Any) -> Any:
     origin = get_origin(annotation)
     args = get_args(annotation)
 
-    if origin is Union:
+    if origin in {Union, UnionType}:
         non_none = [arg for arg in args if arg is not type(None)]
         if value is None:
             return None
@@ -295,6 +296,36 @@ class CompanyProfile(SerializableRecord):
 
 
 @dataclass(frozen=True)
+class FeatureRecord(SerializableRecord):
+    """Point-in-time structured feature with source and availability metadata."""
+
+    name: str
+    value: float | int | str | bool | None
+    as_of_date: date
+    source: str
+    retrieved_at: datetime
+    data_quality: DataQuality = DataQuality.CONFIRMED
+    source_id: str | None = None
+    source_url: str | None = None
+    period_end_date: date | None = None
+    window_days: int | None = None
+    unavailable_reason: str | None = None
+
+    def __post_init__(self) -> None:
+        _require_non_empty(self.name, "feature name")
+        _require_non_empty(self.source, "feature source")
+        if self.data_quality is DataQuality.MISSING:
+            if self.value is not None:
+                raise ValidationError("missing feature value must be None")
+            if not self.unavailable_reason or not self.unavailable_reason.strip():
+                raise ValidationError("missing feature requires unavailable_reason")
+        elif self.value is None:
+            raise ValidationError("available feature value cannot be None")
+        if self.window_days is not None and self.window_days < 1:
+            raise ValidationError("window_days must be positive when set")
+
+
+@dataclass(frozen=True)
 class SegmentAssessment(SerializableRecord):
     """Assessment of an industry-chain segment inside a theme."""
 
@@ -340,6 +371,7 @@ class ResearchPacket(SerializableRecord):
     packet_id: str
     as_of: AsOfContext
     company: CompanyProfile
+    features: list[FeatureRecord]
     evidence: list[EvidenceItem]
     catalysts: list[Catalyst]
     theme_ids: list[str]
@@ -348,6 +380,8 @@ class ResearchPacket(SerializableRecord):
 
     def __post_init__(self) -> None:
         _require_non_empty(self.packet_id, "packet_id")
+        if not self.features:
+            raise ValidationError("research packet requires structured features")
         if not self.evidence:
             raise ValidationError("research packet requires evidence")
 

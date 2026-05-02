@@ -9,25 +9,45 @@ from stock_opportunity_agent.data import (
     DataCapability,
     DataQuotaDeferred,
     DataSourceError,
+    DocumentRecord,
+    DocumentStore,
     FREE_DATA_SOURCES,
     FinnhubClient,
     FredClient,
     ManagedHttpTransport,
     OpenFigiClient,
+    PriceBar,
     RawCacheKey,
     RawDataCache,
     RequestLedger,
     RequestStatus,
     SecEdgarClient,
+    SecurityListing,
     SourceBudget,
     SourceQuota,
     StooqClient,
+    build_research_packet,
+    chunk_document_text,
+    company_profile_from_features,
     create_source,
+    documents_as_of,
     filing_to_evidence,
+    latest_features_by_name,
+    normalize_alpha_vantage_overview,
+    normalize_price_features,
+    normalize_sec_company_facts,
     registered_sources,
     select_source_for_capability,
     source_catalog_by_capability,
     source_plan_by_capability,
+)
+from stock_opportunity_agent.models import (
+    CompanyProfile,
+    DataQuality,
+    EvidenceKind,
+    FeatureRecord,
+    TickerRef,
+    VersionStamp,
 )
 
 
@@ -432,3 +452,276 @@ class SourceStateTests(TestCase):
 
             self.assertEqual(len(inner.calls), 2)
             self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.ERROR, RequestStatus.ERROR])
+
+
+def version() -> VersionStamp:
+    return VersionStamp(
+        prompt_version="prompt-v0.1",
+        scoring_version="scoring-v0.1",
+        signal_version="signals-v0.1",
+        model_version="model-v0.1",
+        data_pipeline_version="data-v0.1",
+        config_version="config-v0.1",
+    )
+
+
+def price_bar(day: date, close: float, volume: int) -> PriceBar:
+    return PriceBar(
+        symbol="NVDA",
+        as_of_date=day,
+        open=close - 1,
+        high=close + 1,
+        low=close - 2,
+        close=close,
+        volume=volume,
+        source="stooq",
+        retrieved_at=datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc),
+    )
+
+
+class StructuredFeatureTests(TestCase):
+    def test_price_features_ignore_future_bars_and_mark_short_windows_missing(self) -> None:
+        features = normalize_price_features(
+            [
+                price_bar(date(2026, 5, 1), 10.0, 100),
+                price_bar(date(2026, 5, 2), 12.0, 200),
+                price_bar(date(2026, 5, 3), 99.0, 999),
+            ],
+            date(2026, 5, 2),
+            windows=(1, 2),
+        )
+        by_name = {feature.name: feature for feature in features}
+
+        self.assertEqual(by_name["price.latest_close"].value, 12.0)
+        self.assertEqual(by_name["price.average_daily_dollar_volume_1d"].value, 2400.0)
+        self.assertAlmostEqual(by_name["price.return_1d"].value, 0.2)
+        self.assertEqual(by_name["price.return_2d"].data_quality, DataQuality.MISSING)
+
+    def test_alpha_vantage_overview_normalizes_values_and_missing_fields(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc)
+        features = normalize_alpha_vantage_overview(
+            {"Symbol": "IBM", "Sector": "Technology", "Industry": "Software", "PERatio": "None"},
+            date(2026, 5, 2),
+            retrieved_at,
+        )
+        by_name = {feature.name: feature for feature in features}
+
+        self.assertEqual(by_name["profile.sector"].value, "Technology")
+        self.assertEqual(by_name["valuation.pe_ratio"].data_quality, DataQuality.MISSING)
+        self.assertEqual(by_name["valuation.market_cap_usd"].unavailable_reason, "MarketCapitalization unavailable")
+
+    def test_sec_company_facts_use_filing_date_as_availability_cutoff(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc)
+        features = normalize_sec_company_facts(
+            {
+                "cik": "0000320193",
+                "facts": {
+                    "us-gaap": {
+                        "Revenues": {
+                            "units": {
+                                "USD": [
+                                    {
+                                        "filed": "2026-04-30",
+                                        "end": "2026-03-31",
+                                        "val": 100,
+                                        "accn": "old",
+                                    },
+                                    {
+                                        "filed": "2026-05-03",
+                                        "end": "2026-03-31",
+                                        "val": 200,
+                                        "accn": "future",
+                                    },
+                                ]
+                            }
+                        }
+                    }
+                },
+            },
+            date(2026, 5, 2),
+            retrieved_at,
+            feature_tags={"financial.revenue_usd": ("Revenues",)},
+        )
+
+        self.assertEqual(features[0].value, 100)
+        self.assertEqual(features[0].as_of_date, date(2026, 4, 30))
+        self.assertIn("old", features[0].source_id)
+
+    def test_company_profile_uses_listing_plus_normalized_features(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc)
+        listing = SecurityListing(
+            symbol="nvda",
+            name="NVIDIA Corporation",
+            exchange="NASDAQ",
+            asset_type="Stock",
+            status="active",
+            source="sec_edgar",
+            retrieved_at=retrieved_at,
+            cik="0001045810",
+        )
+        features = [
+            FeatureRecord(
+                "profile.sector",
+                "Semiconductors",
+                date(2026, 5, 2),
+                "alpha_vantage",
+                retrieved_at,
+            ),
+            FeatureRecord(
+                "profile.industry",
+                "Accelerators",
+                date(2026, 5, 2),
+                "alpha_vantage",
+                retrieved_at,
+            ),
+            FeatureRecord(
+                "valuation.market_cap_usd",
+                1_000_000_000_000,
+                date(2026, 5, 2),
+                "alpha_vantage",
+                retrieved_at,
+            ),
+            FeatureRecord(
+                "price.average_daily_dollar_volume_20d",
+                5_000_000_000,
+                date(2026, 5, 2),
+                "stooq",
+                retrieved_at,
+            ),
+        ]
+
+        profile = company_profile_from_features(listing, features, date(2026, 5, 2))
+
+        self.assertEqual(profile.ticker.symbol, "NVDA")
+        self.assertEqual(profile.sector, "Semiconductors")
+        self.assertEqual(profile.average_daily_dollar_volume, 5_000_000_000)
+
+
+class DocumentLayerTests(TestCase):
+    def test_documents_are_filtered_by_public_availability(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc)
+        old = DocumentRecord(
+            document_id="aapl-10q",
+            symbol="aapl",
+            kind=EvidenceKind.FILING,
+            title="AAPL 10-Q",
+            text="Revenue improved and services margin expanded.",
+            source_id="sec:0000320193:10q",
+            source_url="https://www.sec.gov/example",
+            published_date=date(2026, 4, 30),
+            retrieved_at=retrieved_at,
+        )
+        future = DocumentRecord(
+            document_id="aapl-8k",
+            symbol="aapl",
+            kind=EvidenceKind.FILING,
+            title="AAPL 8-K",
+            text="Future catalyst.",
+            source_id="sec:0000320193:8k",
+            source_url="https://www.sec.gov/future",
+            published_date=date(2026, 5, 3),
+            retrieved_at=retrieved_at,
+        )
+        store = DocumentStore([future, old])
+
+        docs = store.documents_as_of("AAPL", date(2026, 5, 2))
+
+        self.assertEqual([document.document_id for document in docs], ["aapl-10q"])
+        self.assertEqual(documents_as_of([old, future], "AAPL", date(2026, 5, 2)), docs)
+
+    def test_document_chunking_preserves_source_metadata(self) -> None:
+        document = DocumentRecord(
+            document_id="nvda-transcript",
+            symbol="NVDA",
+            kind=EvidenceKind.TRANSCRIPT,
+            title="NVDA earnings call",
+            text="0123456789abcdefghij",
+            source_id="av:NVDA:2026Q1",
+            source_url="https://example.com/transcript",
+            published_date=date(2026, 5, 1),
+            retrieved_at=datetime(2026, 5, 2, tzinfo=timezone.utc),
+        )
+
+        chunks = chunk_document_text(document, max_chars=10, overlap_chars=2)
+
+        self.assertEqual(len(chunks), 3)
+        self.assertEqual(chunks[0].source_id, "av:NVDA:2026Q1")
+        self.assertEqual(chunks[1].text[:2], "89")
+
+
+class PointInTimePacketTests(TestCase):
+    def test_latest_features_by_name_respects_as_of_date_and_source_priority(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, tzinfo=timezone.utc)
+        stooq = FeatureRecord("price.latest_close", 10.0, date(2026, 5, 1), "stooq", retrieved_at)
+        vendor = FeatureRecord("price.latest_close", 10.5, date(2026, 5, 1), "alpha_vantage", retrieved_at)
+        future = FeatureRecord("price.latest_close", 99.0, date(2026, 5, 3), "stooq", retrieved_at)
+
+        selected = latest_features_by_name(
+            [future, vendor, stooq],
+            date(2026, 5, 2),
+            source_priority=("stooq", "alpha_vantage"),
+        )
+
+        self.assertEqual(selected["price.latest_close"].value, 10.0)
+
+    def test_research_packet_builder_excludes_future_features_and_documents(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, tzinfo=timezone.utc)
+        profile = CompanyProfile(
+            ticker=TickerRef("AAPL", exchange="NASDAQ", company_name="Apple Inc."),
+            sector="Technology",
+            industry="Consumer Electronics",
+            market_cap_usd=1_000_000_000_000,
+            average_daily_dollar_volume=1_000_000_000,
+        )
+        current_feature = FeatureRecord(
+            "valuation.pe_ratio",
+            25.0,
+            date(2026, 5, 1),
+            "alpha_vantage",
+            retrieved_at,
+            source_id="av:AAPL:pe",
+        )
+        future_feature = FeatureRecord(
+            "valuation.pe_ratio",
+            30.0,
+            date(2026, 5, 3),
+            "alpha_vantage",
+            retrieved_at,
+            source_id="av:AAPL:pe:future",
+        )
+        current_doc = DocumentRecord(
+            document_id="aapl-10q",
+            symbol="AAPL",
+            kind=EvidenceKind.FILING,
+            title="AAPL 10-Q",
+            text="Quarterly filing.",
+            source_id="sec:0000320193:10q",
+            source_url="https://www.sec.gov/example",
+            published_date=date(2026, 4, 30),
+            retrieved_at=retrieved_at,
+        )
+        future_doc = DocumentRecord(
+            document_id="aapl-8k",
+            symbol="AAPL",
+            kind=EvidenceKind.FILING,
+            title="AAPL 8-K",
+            text="Future filing.",
+            source_id="sec:0000320193:8k",
+            source_url="https://www.sec.gov/future",
+            published_date=date(2026, 5, 3),
+            retrieved_at=retrieved_at,
+        )
+
+        packet = build_research_packet(
+            symbol="AAPL",
+            as_of_date=date(2026, 5, 2),
+            company=profile,
+            features=[future_feature, current_feature],
+            documents=[future_doc, current_doc],
+            version=version(),
+            created_at=retrieved_at,
+        )
+
+        self.assertEqual([feature.source_id for feature in packet.features], ["av:AAPL:pe"])
+        self.assertTrue(any(item.source_id == "sec:0000320193:10q" for item in packet.evidence))
+        self.assertFalse(any(item.source_id == "sec:0000320193:8k" for item in packet.evidence))

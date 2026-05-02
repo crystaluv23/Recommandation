@@ -13,3 +13,4 @@
 - 2026-05-02: Expanded the data-source layer with a capability rationalization, active `data/sources` spec, source preference plan, and SEC EDGAR, Stooq, Alpha Vantage, FRED, OpenFIGI, and Finnhub adapters.
 - 2026-05-02: Added data-source runtime state with a raw response cache, request ledger, source quota checks, and a managed transport that defers quota-exhausted free API calls without sleeping.
 - 2026-05-02: Added ignore rules for local environment and agent-state files so user-provided API keys and cached raw data remain untracked.
+- 2026-05-02: Implemented the post-source data layer with structured feature normalization, document as-of retrieval/chunking, point-in-time research packet assembly, and `FeatureRecord` packet support.
