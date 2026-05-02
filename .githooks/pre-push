@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -u
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+LOG_DIR="$ROOT/.lint-feedback"
+LAST_LOG="$LOG_DIR/pre-push-last.log"
+HISTORY_LOG="$LOG_DIR/pre-push-history.log"
+CURRENT_LOG="$LOG_DIR/pre-push-current.$$"
+
+mkdir -p "$LOG_DIR"
+
+{
+  printf 'Pre-push lint feedback\n'
+  printf 'timestamp_utc: %s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  printf 'repo: %s\n' "$ROOT"
+  printf 'command: scripts/lint_repo.sh\n'
+  printf '\n'
+  "$ROOT/scripts/lint_repo.sh"
+} >"$CURRENT_LOG" 2>&1
+
+status=$?
+
+{
+  printf 'status: %s\n\n' "$status"
+  cat "$CURRENT_LOG"
+} >"$LAST_LOG"
+
+{
+  printf '%s\n' '-----'
+  cat "$LAST_LOG"
+} >>"$HISTORY_LOG"
+
+cat "$LAST_LOG"
+rm -f "$CURRENT_LOG"
+
+if [ "$status" -ne 0 ]; then
+  printf '\nPush blocked: pre-push lint failed. Latest feedback: %s\n' "$LAST_LOG"
+  exit "$status"
+fi
+
+printf '\nPre-push lint passed. Latest feedback: %s\n' "$LAST_LOG"
+exit 0

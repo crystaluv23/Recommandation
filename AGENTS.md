@@ -39,6 +39,7 @@ memory/                     <- accumulated learning (read on demand, not by defa
 progress/                   <- live project state
   status.md                 <- module-by-module progress table
   changelog.md              <- running log of meaningful changes
+scripts/                    <- repository maintenance commands
 src/                        <- source code, once implementation begins
 tests/                      <- tests, mirroring source structure when practical
 ```
@@ -83,6 +84,9 @@ For any session where code or design changes, fix spec drift, update `progress/s
 **Git checkpoint discipline:**
 Whenever the assistant changes project files during a conversation turn, it must create one git checkpoint before the final reply. Inspect `git status`, stage only the files changed for the current task unless the user explicitly asks otherwise, and run `git commit` with a concise message. Do not commit unrelated user changes. If verification could not be run or failed, mention that in the final reply while still keeping the committed checkpoint useful for rollback.
 
+**Pre-push lint feedback:**
+The repository uses tracked git hooks from `.githooks/`; local git config should set `core.hooksPath` to `.githooks`. Before every push, `.githooks/pre-push` runs `scripts/lint_repo.sh`. The hook prints the result and writes the latest full output to `.lint-feedback/pre-push-last.log`, with history in `.lint-feedback/pre-push-history.log`. After any push attempt or manual pre-push lint run, the assistant must read or account for that latest result before reporting back, and fix current-task lint failures before pushing.
+
 ---
 
 ## Workflows
@@ -115,7 +119,8 @@ _Trigger: any session where code or design was changed._
 2. Update `progress/status.md`.
 3. Append one line to `progress/changelog.md`.
 4. Create or update memory only when something non-obvious was learned.
-5. Check `git status`, stage the task's changed files, and create one git commit before the final reply.
+5. Run `scripts/lint_repo.sh` if it exists and summarize the result.
+6. Check `git status`, stage the task's changed files, and create one git commit before the final reply.
 
 ### Removing or renaming a module
 
