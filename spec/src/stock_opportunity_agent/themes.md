@@ -18,6 +18,8 @@ Expected outputs:
 - theme-to-segment candidate lists
 - leading indicator lists
 - segment risks and crowdedness flags
+- validation state for text, data, and market evidence
+- stage history for themes and segments
 
 ## Responsibilities
 
@@ -26,6 +28,23 @@ Expected outputs:
 - Score transmission stage from early text clues through crowded consensus.
 - Detect narrative migration across companies and segments.
 - Require text, data, and market validation before promoting a segment.
+- Record why a segment is becoming more or less central in the transmission chain.
+- Preserve leading indicators for each segment, such as demand-source metrics, backlog, pricing, margin, analyst revision, customer commentary, peer read-throughs, and relative strength when applicable.
+
+## Transmission Stage Scale
+
+The first implementation should use a versioned stage scale rather than prose-only labels. A useful default is:
+
+- 0: not yet visible or not relevant.
+- 1: early text clues in company, customer, supplier, or industry language.
+- 2: cross-company resonance or leading indicators begin to align.
+- 3: financial validation starts appearing in revenue, orders, backlog, pricing, margin, or comparable metrics.
+- 4: analyst estimates, target prices, or coverage narratives begin adjusting.
+- 5: market early confirmation appears in relative strength, volume, or segment-level breadth.
+- 6: broad consensus forms and the theme is widely recognized.
+- 7: valuation exhaustion, crowding, or late-cycle risk dominates the segment.
+
+Exact thresholds for moving between stages remain an implementation-time research decision because they can materially change recommendations.
 
 ## Dependencies
 

@@ -5,7 +5,7 @@ Done
 
 This directory defines the active module-level contracts for the future `stock_opportunity_agent` package.
 
-The current architecture is deliberately lean: active specs stay at module level unless implementation has proved a child boundary. `data/sources.md` is the current child-spec exception because provider adapters and capability-level source selection already exist in code. Other module names below may later become single Python files or packages, but the spec tree does not force that choice before implementation proves the boundary.
+The current architecture is deliberately lean: active specs stay at module level unless implementation has proved a child boundary. The data layer has active child specs because provider adapters, structured feature normalization, document retrieval, and point-in-time packet assembly already exist as separate code boundaries. Other module names below may later become single Python files or packages, but the spec tree does not force that choice before implementation proves the boundary.
 
 Earlier pre-implementation child specs were archived under [`../../_archive/2026-05-02-preimplementation-submodule-specs/`](../../_archive/2026-05-02-preimplementation-submodule-specs/). They are historical notes, not active architecture.
 
@@ -17,6 +17,9 @@ src/stock_opportunity_agent/
   config
   data
     sources
+    structured
+    documents
+    point_in_time
   memory
   themes
   cases
@@ -40,6 +43,9 @@ spec/src/stock_opportunity_agent/
   config.md
   data.md
   data/sources.md
+  data/structured.md
+  data/documents.md
+  data/point_in_time.md
   memory.md
   themes.md
   cases.md
@@ -60,7 +66,7 @@ spec/src/stock_opportunity_agent/
 The active module set reflects the system-design discussion without turning every future helper into an entity:
 
 - Expectation-gap research, watchlist output, and recommendation/trading separation live in [`vision.md`](../../vision.md) and [`architecture.md`](../../architecture.md).
-- Point-in-time data, structured data as backbone, and document retrieval live in [`data.md`](data.md); provider adapters and capability-level source selection live in [`data/sources.md`](data/sources.md).
+- Point-in-time data, structured data as backbone, and document retrieval live in [`data.md`](data.md), with active child contracts for provider adapters in [`data/sources.md`](data/sources.md), feature normalization in [`data/structured.md`](data/structured.md), document retrieval in [`data/documents.md`](data/documents.md), and packet construction in [`data/point_in_time.md`](data/point_in_time.md).
 - Local long-term memory for companies, theses, signals, cases, decisions, reviews, current universe state, themes, segments, experiments, and preferences lives in [`memory.md`](memory.md).
 - Historical winners, controls, failures, and blind analysis packets live in [`cases.md`](cases.md).
 - Theme discovery, industry-chain transmission, segment stage, and timing live in [`themes.md`](themes.md).

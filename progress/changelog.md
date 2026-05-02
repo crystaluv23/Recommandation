@@ -16,4 +16,5 @@
 - 2026-05-03: Folded the earlier cold-start discussion into the active architecture by making current universe state and novelty/anomaly detection explicit within existing memory, signal, scanner, monitoring, and orchestration specs.
 - 2026-05-03: Tightened the completed design against the full chat record by adding hindsight-risk signal metadata, as-of blind-analysis wording, monthly case increments, LLM-assisted cross-sectional comparison, and a review gate before watchlist publication.
 - 2026-05-03: Added an explicit four-phase lifecycle to the architecture and mapped each phase to orchestration pipelines so historical learning, live scanning, cross-sectional comparison, and continuous monitoring stay distinct.
+- 2026-05-03: Audited the active specs against the full system-design discussion, reconciled active data child-spec references, and made memory collection semantics, theme transmission stages, and meta-learning change-risk classes explicit.
 - 2026-05-02: Implemented the post-source data layer with structured feature normalization, document as-of retrieval/chunking, point-in-time research packet assembly, and `FeatureRecord` packet support.

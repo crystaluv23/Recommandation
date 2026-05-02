@@ -25,6 +25,20 @@ Memory collections should include:
 
 The module should expose repository-style interfaces for reading, writing, querying, and versioning these records.
 
+## Collection Semantics
+
+- Company Memory stores durable company context, key drivers, known risks, and prior research summaries so future runs do not rediscover basic context from scratch.
+- Thesis Memory stores active and archived claims with evidence, catalysts, disconfirming conditions, status, and review dates. The durable object is the thesis, not merely the ticker.
+- Signal Memory stores signal definitions, applicability, historical performance, false-positive patterns, counterexamples, and hindsight-risk notes.
+- Case Memory stores historical winners, matched controls, failures, stale-watchlist cases, as-of slices, blind-analysis outputs, and postmortem lessons.
+- Decision Memory stores each ranked output with run id, rank, scores, recommendation state, reason, data snapshot, prompt version, scoring version, model version, and signal-library version.
+- Current Universe Store stores operational ticker state: last analysis date, latest score, active thesis summary, material new information, and reanalysis need.
+- Review Memory stores 1-month, 3-month, and 6-month outcomes, thesis validation, error labels, what worked, what failed, and lessons.
+- Theme Memory stores theme maps, current bottlenecks, leading indicators, and review history.
+- Segment Memory stores theme-segment stage history, candidate tickers, validation evidence, false signals, and crowdedness or valuation warnings.
+- Experiment Memory stores meta-learning hypotheses, experiment designs, results, approval states, and promoted or rejected versions.
+- User Preference Memory stores explicit user preferences about scope, cadence, risk tolerance for research output, sectors, and reporting style; it must not be inferred from unstated trading intent.
+
 ## Responsibilities
 
 - Store every watchlist decision with its evidence, scores, and version stamps.

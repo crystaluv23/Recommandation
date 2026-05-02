@@ -130,11 +130,15 @@ Owned mainly by `monitoring`, `memory`, `review`, `signals`, `cases`, `ranking`,
 
 ## Module Map
 
-Module specs live under `spec/src/stock_opportunity_agent/` and describe active design boundaries. At the current pre-implementation stage, the active tree is intentionally one spec per module. A module may later become either a single file or a package; child specs should be introduced only after an implementation boundary becomes real enough for another module to depend on it.
+Module specs live under `spec/src/stock_opportunity_agent/` and describe active design boundaries. The active tree stays at module level unless implementation has proved a child boundary. The data layer currently has child specs because source adapters, feature normalization, document retrieval, and point-in-time packet assembly are already separate implementation boundaries.
 
 - [`models.md`](src/stock_opportunity_agent/models.md): shared domain objects and versioned records.
 - [`config.md`](src/stock_opportunity_agent/config.md): universe, scoring, data-source, prompt, and run configuration.
 - [`data.md`](src/stock_opportunity_agent/data.md): structured and unstructured data access with point-in-time snapshots.
+  - [`data/sources.md`](src/stock_opportunity_agent/data/sources.md): provider adapters and capability-level source selection.
+  - [`data/structured.md`](src/stock_opportunity_agent/data/structured.md): normalized, source-linked feature records.
+  - [`data/documents.md`](src/stock_opportunity_agent/data/documents.md): source-linked document archive and retrieval.
+  - [`data/point_in_time.md`](src/stock_opportunity_agent/data/point_in_time.md): as-of-safe research packet assembly.
 - [`memory.md`](src/stock_opportunity_agent/memory.md): persistent local memory stores.
 - [`themes.md`](src/stock_opportunity_agent/themes.md): theme discovery, industry-chain maps, and segment timing.
 - [`cases.md`](src/stock_opportunity_agent/cases.md): historical winners, controls, failures, and blind analysis packets.
