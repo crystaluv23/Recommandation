@@ -31,7 +31,9 @@ spec/                       <- design layer (hierarchical, module-level)
   README.md                 <- spec conventions
   src/
     stock_opportunity_agent/
-      <module>.md           <- module spec, created before implementation
+      <module>.md           <- package/module spec, created before implementation
+      <module>/
+        <submodule>.md      <- sub-module spec when future source has a submodule
 memory/                     <- accumulated learning (read on demand, not by default)
   GUIDE.md                  <- entry point: experience index + visit_times protocol
   experiences/              <- concrete lessons: bugs, anti-patterns, decisions

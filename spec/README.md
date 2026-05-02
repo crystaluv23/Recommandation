@@ -13,7 +13,25 @@ spec/vision.md
 
 Each lower level is more concrete and must stay consistent with its ancestors.
 
-`spec/src/` mirrors `src/` at package and module granularity once source exists.
+`spec/src/` mirrors `src/` at package and module granularity once source exists or once the intended source tree is clear enough to design against. A package-level spec uses `<module>.md`; child modules use `<module>/<submodule>.md`.
+
+Example:
+
+```text
+src/
+  stock_opportunity_agent/
+    data/
+      point_in_time.py
+      structured.py
+
+spec/
+  src/
+    stock_opportunity_agent/
+      data.md
+      data/
+        point_in_time.md
+        structured.md
+```
 
 ## Granularity
 

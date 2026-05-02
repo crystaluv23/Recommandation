@@ -59,7 +59,7 @@ quarterly evaluation
 
 ## Module Map
 
-Module specs live under `spec/src/stock_opportunity_agent/`:
+Module specs live under `spec/src/stock_opportunity_agent/` and mirror the intended future source tree. A package-level spec such as `data.md` describes the full `src/stock_opportunity_agent/data/` package; child specs under `data/` describe submodules such as `point_in_time.py`.
 
 - [`models.md`](src/stock_opportunity_agent/models.md): shared domain objects and versioned records.
 - [`config.md`](src/stock_opportunity_agent/config.md): universe, scoring, data-source, prompt, and run configuration.
