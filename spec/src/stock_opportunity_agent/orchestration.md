@@ -1,7 +1,7 @@
 # Orchestration
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -21,6 +21,13 @@ Expected pipelines:
 - `review_gate`
 
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
+
+Initial `cold_start_case_learning` is implemented as an auditable local pipeline
+that runs supplied historical cases through case learning and writes
+`pre_surge_signal_logic.json`, `signal_definitions.json`,
+`case_signal_observations.json`, and `manifest.json`. It does not yet identify
+historical winners, match controls, run blind LLM analysis, or write memory
+stores.
 
 The orchestrated product loop is:
 

@@ -1,7 +1,7 @@
 # Cases
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -19,6 +19,18 @@ The module should support:
 - case comparison results,
 - lessons promoted into signal candidates,
 - and cold-start seed artifacts for signals, themes, prompts, scoring hypotheses, and memory.
+
+Initial implementation supports the lower half of that interface: it consumes
+versioned outcome labels, matched group ids, and point-in-time `ResearchPacket`
+records, then compares measurable packet signals between winners and
+non-winners. Automatic matched-control construction remains deferred until those
+research parameters are confirmed.
+
+Active child specs:
+
+- [`cases/outcomes.md`](cases/outcomes.md): versioned retrospective outcome
+  definitions such as "surge winner", neutral control candidate, failure, and
+  unlabeled.
 
 ## Responsibilities
 
@@ -48,7 +60,7 @@ The module should support:
 
 ## Open Implementation Questions
 
-Before implementing the first case-learning module, confirm:
+Before implementing automatic case selection and control matching, confirm:
 
 - exact winner definitions and return horizons,
 - whether industry matching uses GICS, custom theme segments, ETF membership, or another taxonomy,
@@ -56,6 +68,10 @@ Before implementing the first case-learning module, confirm:
 - the number of matched controls per winner,
 - whether matching is nearest-neighbor, rule-based buckets, or a hybrid,
 - and how to label failures that looked promising but did not launch.
+
+The first implementation isolates winner/failure/control labeling in
+`cases/outcomes.py`, with a conservative default definition. It still does not
+construct matched controls silently.
 
 ## Testing
 

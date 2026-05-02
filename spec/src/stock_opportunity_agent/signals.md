@@ -1,7 +1,7 @@
 # Signals
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -25,6 +25,13 @@ Signal categories should initially include:
 - and novelty/anomaly.
 
 Each signal should expose a definition, data requirements, sector applicability, positive examples, counterexamples, measurement function, confidence, historical hit and false-positive behavior, hindsight-risk notes, and known failure modes.
+
+Initial implementation provides deterministic packet-level measurements for
+structured cold-start signals: fundamental revenue acceleration, market early
+confirmation, analyst expectation gap, catalyst density, valuation room with
+growth, and liquidity expansion. These rules consume `ResearchPacket` features
+and known catalysts only; qualitative LLM-only signals stay out of the MVP until
+the research layer can attach source-backed evidence.
 
 ## Responsibilities
 

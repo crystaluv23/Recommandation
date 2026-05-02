@@ -19,3 +19,5 @@
 - 2026-05-03: Audited the active specs against the full system-design discussion, reconciled active data child-spec references, and made memory collection semantics, theme transmission stages, and meta-learning change-risk classes explicit.
 - 2026-05-02: Implemented the post-source data layer with structured feature normalization, document as-of retrieval/chunking, point-in-time research packet assembly, and `FeatureRecord` packet support.
 - 2026-05-03: Reframed the specs around a thesis-centered workflow spine from historical learning through validation contracts, daily monitoring, earnings validation, monthly review, and quarterly meta-learning.
+- 2026-05-03: Implemented the first cold-start case-learning path with packet-level signal measurement, supplied-label case comparison, JSON run artifacts, a deterministic seed run script, and unit coverage.
+- 2026-05-03: Split retrospective surge/failure/control labeling into a versioned `cases/outcomes` submodule so cold-start, monthly review, and future definition experiments can share and compare outcome rules.
