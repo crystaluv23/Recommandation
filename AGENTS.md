@@ -1,15 +1,15 @@
-# Recommandation - Session Entry Point
+# Stock Opportunity Agent - Session Entry Point
 
 > Read this file first at the start of every session. It should take under 2 minutes.
 
 ## What this project is
 
-The product target is intentionally pending. The user will define it later.
+This project is a long-running stock opportunity discovery and thesis-management agent.
 
-Until then, preserve the meta mechanism and avoid importing assumptions from the source project this setup was migrated from.
+It is designed to find US-listed stocks that may be repriced over the next 3-6 months because of expectation gaps, industry-chain transmission, catalysts, and early market confirmation. It produces watchlists, research cards, thesis records, and review artifacts. It does not produce automatic buy/sell orders.
 
--> See [`spec/vision.md`](spec/vision.md) for goals, non-goals, and design principles once the target is known.
--> See [`spec/architecture.md`](spec/architecture.md) for the top-level design once it has been drafted.
+-> See [`spec/vision.md`](spec/vision.md) for goals, non-goals, and design principles.
+-> See [`spec/architecture.md`](spec/architecture.md) for the top-level design.
 
 ## Where things stand right now
 
@@ -26,10 +26,12 @@ Accumulated experience and meta-learning live in `memory/`. When prior experienc
 ```text
 AGENTS.md                   <- you are here (session entry point)
 spec/                       <- design layer (hierarchical, module-level)
-  vision.md                 <- goals, non-goals, principles; target pending
-  architecture.md           <- top-level framework design; target pending
+  vision.md                 <- goals, non-goals, principles
+  architecture.md           <- top-level framework design
   README.md                 <- spec conventions
-  src/                      <- mirrors src/ at package/module granularity once source exists
+  src/
+    stock_opportunity_agent/
+      <module>.md           <- module spec, created before implementation
 memory/                     <- accumulated learning (read on demand, not by default)
   GUIDE.md                  <- entry point: experience index + visit_times protocol
   experiences/              <- concrete lessons: bugs, anti-patterns, decisions
@@ -47,7 +49,7 @@ tests/                      <- tests, mirroring source structure when practical
 ## Core Conventions
 
 **Target discipline:**
-Do not assume the domain, runtime, architecture, or package layout before the user defines the project target. It is fine to prepare meta files, but product specs and code should wait for the target or be clearly labeled as placeholders.
+The target is a stock opportunity discovery agent, not an automatic trading system. Keep research, scoring, memory, and review concerns separate from execution, brokerage, leverage, and position sizing. If future work crosses into trading automation, stop and ask for explicit user confirmation before designing or implementing it.
 
 **Spec hierarchy:**
 `spec/vision.md` -> `spec/architecture.md` -> module specs under `spec/src/` -> sub-module specs.
@@ -61,6 +63,9 @@ If design changes mid-session, update the spec first or simultaneously. Spec and
 
 **Before implementing:**
 State assumptions explicitly. If the target or user intent is still genuinely unclear, ask one focused question. If a simple conservative interpretation is available, use it and document the assumption.
+
+**Research-design clarification:**
+The specs intentionally leave some research choices open until the relevant module is implemented. When a detail has multiple reasonable definitions and could materially affect results, ask the user before coding it. Examples include winner labels, control-group matching criteria, point-in-time cutoffs, scoring weights, theme-stage thresholds, signal promotion rules, and meta-learning approval boundaries. After the user confirms, record the decision in the module spec before or alongside implementation.
 
 **Code quality norms:**
 - Write the minimum code that solves the problem. No abstractions for single-use code, no "flexibility" that was not requested.

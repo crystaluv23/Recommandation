@@ -55,11 +55,12 @@ How this module should be verified when code exists.
 
 ## Current Stage
 
-Only the meta mechanism has been initialized. The product target is pending, so `vision.md` and `architecture.md` are placeholders until the user defines the target.
+The product target is defined as a stock opportunity discovery agent. Top-level vision and architecture exist, and module specs under `spec/src/stock_opportunity_agent/` define the future source layout before implementation begins.
 
 ## Sync Rules
 
 - Write or expand the relevant module spec before implementation.
+- Treat open research choices as implementation-time questions. If multiple reasonable choices could materially change outputs, ask the user first, then record the confirmed decision in the relevant module spec.
 - If code behavior changes, update the spec in the same session.
 - If a module is renamed or removed, update spec paths, source annotations if present, `progress/status.md`, and any ancestor references.
 - If a proposed module design conflicts with `spec/architecture.md` or `spec/vision.md`, stop and ask for confirmation before changing ancestors.
