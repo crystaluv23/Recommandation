@@ -14,6 +14,7 @@ The scanner should expose:
 - universe selection,
 - exclusion filters,
 - coarse structured screens,
+- theme-first segment candidate pools,
 - theme-aware candidate expansion,
 - novelty and anomaly candidate surfacing,
 - and candidate reasons.
@@ -21,6 +22,7 @@ The scanner should expose:
 ## Responsibilities
 
 - Apply liquidity, market cap, price, listing, and risk exclusions.
+- Start weekly discovery from active themes and segment stages before individual ticker ranking.
 - Run non-LLM screens for relative strength, financial improvement, revision trends, catalyst windows, valuation sanity, and volume behavior.
 - Include theme-driven candidates even when they are not obvious from generic screens, as long as segment evidence exists.
 - Surface candidates when new keywords, unusual financial changes, cross-company resonance, or lagged supply-chain moves suggest a possible new opportunity class.
@@ -37,6 +39,7 @@ The scanner should expose:
 - Scanner reasons must be stored; a ticker cannot appear without an explanation.
 - Exclusions must be explicit and reviewable.
 - The scanner should not discard existing high-priority watchlist names solely because one current data source is stale.
+- The scanner should reduce the universe to a researchable candidate set; it should not ask the LLM to analyze every stock.
 - Anomaly-driven candidates must identify what changed and why that change is observable before LLM research.
 - Coarse screens must not use future returns or future labels.
 

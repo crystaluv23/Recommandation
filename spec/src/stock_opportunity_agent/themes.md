@@ -20,6 +20,7 @@ Expected outputs:
 - segment risks and crowdedness flags
 - validation state for text, data, and market evidence
 - stage history for themes and segments
+- weekly theme-change summaries with upgraded, downgraded, newly observed, and crowded segments
 
 ## Responsibilities
 
@@ -29,6 +30,7 @@ Expected outputs:
 - Detect narrative migration across companies and segments.
 - Require text, data, and market validation before promoting a segment.
 - Record why a segment is becoming more or less central in the transmission chain.
+- Mark late-stage consensus or valuation-exhausted segments so the scanner and scorer do not over-reward already crowded themes.
 - Preserve leading indicators for each segment, such as demand-source metrics, backlog, pricing, margin, analyst revision, customer commentary, peer read-throughs, and relative strength when applicable.
 
 ## Transmission Stage Scale

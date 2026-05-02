@@ -14,21 +14,33 @@ Expected pipelines:
 - `cold_start_case_learning`
 - `daily_monitor`
 - `weekly_scan`
+- `earnings_validation`
 - `monthly_review`
-- `quarterly_walk_forward`
+- `quarterly_meta_learning`
 - `manual_research`
 - `review_gate`
 
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
+
+The orchestrated product loop is:
+
+```text
+cold-start learning
+-> weekly theme-first discovery and watchlist publication
+-> daily incremental monitoring of active theses
+-> event-time validation when earnings or catalysts arrive
+-> monthly review and signal-memory updates
+-> quarterly meta-learning experiments and version decisions
+```
 
 ## Lifecycle Mapping
 
 The orchestration layer maps the product lifecycle into concrete pipelines:
 
 - Phase 1 Historical Case Learning: `cold_start_case_learning`, followed later by monthly case increments from `monthly_review`.
-- Phase 2 Current Market Scan: `weekly_scan` through universe filters, structured screens, theme/anomaly expansion, packet construction, LLM research, and scoring.
-- Phase 3 Cross-sectional Comparison: `weekly_scan` plus `review_gate`, producing ranked watchlists, research cards, and decision records.
-- Phase 4 Continuous Monitoring and Review: `daily_monitor`, weekly rank refresh inside `weekly_scan`, `monthly_review`, and `quarterly_walk_forward`.
+- Phase 2 Current Market Scan: `weekly_scan` through theme and segment scanning, universe filters, structured screens, theme/anomaly expansion, packet construction, LLM research, and scoring.
+- Phase 3 Cross-sectional Comparison: `weekly_scan` plus `review_gate`, producing ranked watchlists, research cards, validation contracts, and decision records.
+- Phase 4 Continuous Monitoring and Review: `daily_monitor`, `earnings_validation`, weekly rank refresh inside `weekly_scan`, `monthly_review`, and `quarterly_meta_learning`.
 
 Monitoring owns event detection and reanalysis triggers; it does not own the whole discovery workflow.
 
@@ -38,7 +50,9 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Write run manifests and logs.
 - Make incremental reruns possible.
 - Use current universe state so daily and weekly runs prioritize changed tickers instead of reanalyzing the whole market from scratch.
-- Keep weekly scan ordering explicit: non-LLM coarse screen, LLM deep research, non-LLM scoring, LLM-assisted cross-sectional comparison, then review gate and reporting.
+- Keep weekly scan ordering explicit: theme and segment scan, non-LLM coarse screen, LLM deep research, non-LLM scoring, LLM-assisted cross-sectional comparison, validation contract generation, then review gate and reporting.
+- Route active-thesis events to incremental reanalysis rather than full research unless the old thesis no longer frames the new evidence.
+- Run earnings validation by comparing actual releases, filings, transcripts, analyst reactions, and price reactions against the original validation contract.
 - Add new winner, failure, and stale-watchlist cases during monthly review rather than rebuilding the whole case library.
 - Stop early on missing critical data or failed validation.
 - Keep long-running tasks resumable where practical.
@@ -52,8 +66,9 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 
 - A pipeline run must record active config, data, prompt, model, scoring, signal, and ranking versions.
 - Failed pipeline steps must not leave partial decisions that look final.
-- Weekly recommendations must be persisted before reports are considered complete.
+- Weekly recommendations, active theses, and required validation contracts must be persisted before reports are considered complete.
 - Review-gate output must be stored before an entry can be labeled `action_candidate`.
+- No high-priority watchlist entry may be emitted without a validation contract.
 - Cold-start and live-scan paths must both obey point-in-time rules.
 
 ## Testing

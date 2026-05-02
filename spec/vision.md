@@ -9,6 +9,21 @@ This project is a long-running stock opportunity discovery agent. Its job is to 
 
 The system is an expectation-gap research system, not a price prediction oracle. It should help a human investor decide what deserves attention, not decide trades automatically.
 
+The product should feel less like a one-shot screener and more like a persistent research workflow:
+
+```text
+learn from historical winners and failures
+-> extract signals and theme maps
+-> scan the current market
+-> generate company theses
+-> bind each recommendation to validation metrics
+-> monitor whether reality confirms or breaks the thesis
+-> review outcomes
+-> improve signals, themes, prompts, scores, and memory
+```
+
+The durable unit of work is the investment thesis and its evidence, not the ticker by itself.
+
 ## Core Goal
 
 Produce a repeatable weekly watchlist of high-priority stock opportunities with:
@@ -18,10 +33,35 @@ Produce a repeatable weekly watchlist of high-priority stock opportunities with:
 - contrary evidence,
 - catalysts,
 - disconfirming conditions,
+- a validation contract for what must happen over the next 1, 3, and 6 months,
 - theme and segment context,
 - valuation and risk notes,
 - versioned scores,
 - and persistent memory for later review.
+
+The weekly watchlist is one moment in a larger loop. A recommendation is not complete until it has been monitored, validated or invalidated, reviewed, and fed back into memory and the signal library.
+
+## Operating Spine
+
+The system's main line is:
+
+```text
+historical learning
+-> signal library
+-> theme and industry-chain map
+-> weekly theme-first scan
+-> structured coarse screen
+-> LLM company research and skepticism
+-> hybrid scoring
+-> cross-sectional comparison
+-> watchlist and validation contract
+-> daily incremental monitoring
+-> earnings and catalyst validation
+-> monthly review
+-> quarterly meta-learning
+```
+
+Each module should make this line easier to audit. Modules are not independent research toys; they exist to move a thesis from discovery, through validation, into review-backed learning.
 
 ## MVP Scope
 
@@ -32,6 +72,8 @@ The first useful version should focus on:
 - Liquid names with enough price, filing, news, and transcript coverage to analyze.
 - Priority sectors where industry-chain transmission matters, such as semiconductors, AI infrastructure, power equipment, cooling, software, industrials, and defense.
 - Weekly Top 20 watchlist output.
+- Validation contracts for every high-priority watchlist entry.
+- Daily event monitoring for active theses without rerunning full LLM research when nothing material changed.
 - Monthly review of outcomes and false positives.
 
 These thresholds are starting defaults, not permanent beliefs.
@@ -66,9 +108,13 @@ Many major opportunities come from an industry-chain segment moving from overloo
 
 The system must persist company memory, thesis memory, signal memory, case memory, decision memory, review memory, theme memory, and segment memory. Memory exists so the agent can answer why it recommended something, whether it worked, and what it learned.
 
+### Validation Contracts
+
+Every high-priority recommendation must specify what future evidence would confirm or break the thesis. Typical validation metrics include revenue acceleration, margin improvement, backlog, management guidance, analyst revisions, customer or supplier corroboration, relative strength, valuation stretch, and peer read-throughs. A recommendation without a validation contract should stay below high-priority watchlist status.
+
 ### Watchlist Output
 
-The primary output is a watchlist and research cards. Recommendation states should include ignore, monitor, high-priority watchlist, and action candidate, but any actual trading decision remains outside this system.
+The primary output is a watchlist and research cards. Recommendation states should include ignore, monitor, thesis forming, high-priority watchlist, action candidate, thesis validated, thesis broken, and archived, but any actual trading decision remains outside this system.
 
 ### Review and Meta-learning
 
@@ -80,6 +126,7 @@ The system is useful when it can:
 
 - generate a stable weekly Top 20 watchlist,
 - explain each candidate with evidence and disconfirming conditions,
+- bind each high-priority candidate to validation metrics and review dates,
 - preserve every recommendation with data, prompt, model, and scoring versions,
 - review 1-month, 3-month, and 6-month outcomes,
 - identify false-positive patterns,

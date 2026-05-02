@@ -36,6 +36,7 @@ Expected records:
 - Track whether prompts are becoming too bullish, too theme-seeking, too tolerant of weak evidence, or too dismissive of contrary evidence.
 - Estimate which data sources or evidence families add value by sector and which mostly add cost or noise.
 - Generate testable hypotheses instead of direct code changes.
+- Convert monthly review suggestions into experiment-pool entries instead of automatically changing production behavior.
 - Run walk-forward experiments before recommending framework changes.
 - Run new versions in shadow or side-by-side mode when the blast radius is meaningful.
 - Track prompt, scoring, signal, model, data pipeline, universe, and ranking versions.

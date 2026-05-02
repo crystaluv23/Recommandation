@@ -13,6 +13,7 @@ Expected outputs:
 
 - Top watchlist,
 - high-conviction candidates,
+- action candidates,
 - wait-for-pullback candidates,
 - thesis-interesting-but-expensive candidates,
 - likely narrative traps,
@@ -25,6 +26,7 @@ Expected outputs:
 - Run an LLM-assisted cross-sectional comparison for closely ranked candidates when the candidate set has structured packets, score cards, and evidence on both sides.
 - Detect crowding, redundancy, and sector concentration.
 - Explain rank changes from prior runs.
+- Require ranked high-priority outputs to carry a thesis and validation contract reference.
 - Produce stable ordered outputs for reports and memory.
 
 ## Dependencies
@@ -38,6 +40,7 @@ Expected outputs:
 - Ranking should preserve why a candidate is above close alternatives.
 - LLM-assisted comparison may synthesize tradeoffs, but it must not invent new evidence or override stored score cards without an explicit reason.
 - Existing watchlist names should not disappear without a reason.
+- A rank upgrade should distinguish score improvement, new evidence validation, catalyst proximity, and cross-sectional relative improvement.
 - Cross-sectional comparisons must be as-of date aware.
 
 ## Testing

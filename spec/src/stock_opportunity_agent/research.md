@@ -24,6 +24,7 @@ Expected outputs:
 - evidence for and against,
 - catalysts,
 - disconfirming events,
+- validation contract draft,
 - old and new narrative,
 - and confidence notes.
 
@@ -37,6 +38,9 @@ Initial implementation provides a lightweight LLM provider registry under `src/s
 - Separate direct evidence from inference.
 - Preserve prompt and model versions.
 - Prefer monitor or ignore when evidence is weak.
+- Support full research for new candidates and delta research for already-studied companies where the task is to judge whether new evidence changes the active thesis.
+- Require a skeptic pass before a candidate can become high-priority, with explicit checks for narrative traps, missing financial validation, valuation stretch, crowded trades, and one-time items.
+- Draft validation metrics and thesis-break conditions that monitoring and review can evaluate later.
 
 ## Dependencies
 
@@ -48,8 +52,9 @@ Initial implementation provides a lightweight LLM provider registry under `src/s
 - LLM output must include evidence against the thesis.
 - The module must distinguish "interesting story" from "validated opportunity".
 - The LLM cannot directly mutate memory, scoring weights, or config.
-- A high-priority recommendation requires structured evidence, catalysts, and disconfirming conditions.
+- A high-priority recommendation requires structured evidence, catalysts, disconfirming conditions, and a validation contract.
+- Incremental research must compare new evidence to the prior thesis instead of silently generating a fresh thesis from scratch.
 
 ## Testing
 
-Tests should cover prompt assembly, schema validation, missing evidence behavior, deterministic fixtures, version stamping, and refusal to accept ungrounded high-confidence claims.
+Tests should cover prompt assembly, schema validation, missing evidence behavior, deterministic fixtures, version stamping, validation-contract presence, incremental research behavior, and refusal to accept ungrounded high-confidence claims.

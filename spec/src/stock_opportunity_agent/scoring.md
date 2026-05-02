@@ -27,6 +27,8 @@ It should return a `ScoreCard` with components, explanations, weights, and versi
 - Keep upside and launch timing separate.
 - Apply valuation and crowdedness penalties.
 - Penalize pure narrative without financial or market validation.
+- Penalize missing revenue exposure checks when a company is being credited for a hot theme.
+- Keep launch probability, upside potential, and thesis validation state separate; a validated thesis may still have poor upside if valuation is exhausted.
 - Support regime-aware scoring only after the regime design is specified and testable.
 
 ## Dependencies
@@ -40,6 +42,7 @@ It should return a `ScoreCard` with components, explanations, weights, and versi
 - Score ranges and weights must be versioned.
 - LLM score components must be traceable to research evidence.
 - Risk penalty cannot be negative evidence hidden inside a positive score.
+- Narrative migration cannot receive high contribution from keyword mentions alone; it needs exposure evidence, financial evidence, market confirmation, or a clearly stated low-confidence caveat.
 
 ## Testing
 

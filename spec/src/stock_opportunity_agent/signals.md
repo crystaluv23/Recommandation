@@ -33,8 +33,10 @@ Each signal should expose a definition, data requirements, sector applicability,
 - Capture novelty and anomaly observations such as new company keywords, new customer groups, abnormal financial changes, cross-company language shifts, or lagged supply-chain transmission.
 - Track precision, recall, false positives, and sector-specific behavior.
 - Preserve counterexamples and known hindsight traps so signals do not become polished post-hoc stories.
+- Record signal combinations that outperform single signals, such as analyst revisions plus margin improvement plus relative strength.
+- Record false-positive patterns such as narrative-only keyword mentions without revenue exposure or financial validation.
 - Feed scoring with transparent component evidence.
-- Accept candidate signal changes from case learning and meta-learning only through versioned updates.
+- Accept candidate signal changes from case learning, monthly review, and meta-learning only through versioned updates. Material weight changes should move through experiments before becoming production defaults.
 
 ## Dependencies
 

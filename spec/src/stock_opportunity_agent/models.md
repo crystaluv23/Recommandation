@@ -21,11 +21,13 @@ Other modules may depend on stable model types such as:
 - `CompanyProfile`
 - `FeatureRecord`
 - `Thesis`
+- `ValidationContract`
 - `SignalDefinition`
 - `ScoreCard`
 - `WatchlistEntry`
 - `DecisionRecord`
 - `UniverseStateRecord`
+- `EarningsValidationReport`
 - `ReviewRecord`
 - `ExperimentRecord`
 - `VersionStamp`
@@ -42,6 +44,8 @@ Initial implementation uses standard-library dataclasses and enums in `src/stock
 - Represent structured data availability with feature values, source metadata, retrieval time, quality state, and explicit missing reasons.
 - Represent current ticker state without confusing it with a recommendation or trade.
 - Keep recommendation states separate from trading states.
+- Represent validation contracts as first-class records linked to theses, watchlist entries, decisions, monitoring events, and reviews.
+- Represent event-time validation reports, especially earnings validation, without rewriting the original thesis or decision.
 - Provide validation for score ranges, dates, identifiers, and required evidence.
 
 ## Dependencies
@@ -55,6 +59,8 @@ Initial implementation uses standard-library dataclasses and enums in `src/stock
 - Every LLM-generated claim that affects a thesis must be attachable to evidence or explicitly marked as inference.
 - Score models must preserve component scores; only storing a final score is not enough.
 - `ResearchPacket` records must include structured `FeatureRecord` values as well as evidence summaries, so downstream modules can score repeatably instead of parsing prose.
+- A `WatchlistEntry` at `high_priority_watchlist` or `action_candidate` must reference a `ValidationContract`.
+- A `ValidationContract` must distinguish validation metrics, disconfirming events, expected review windows, and measurement sources.
 - Versioned records must include prompt, scoring, signal, model, and data-pipeline versions when those versions affect output.
 
 ## Testing

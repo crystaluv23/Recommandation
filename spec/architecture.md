@@ -9,7 +9,32 @@ The future source package should be `stock_opportunity_agent`. The design is a l
 
 The system should optimize for auditability and iteration before scale. Local SQLite, DuckDB, Parquet, and file-based reports are good defaults for early versions. Vendor data sources, vector stores, and model providers should sit behind adapters.
 
+## Thesis-Centered Spine
+
+The architecture is organized around a single durable loop:
+
+```text
+historical case learning
+-> signal library and theme map
+-> weekly theme-first market scan
+-> structured coarse candidate screen
+-> point-in-time research packets
+-> LLM research plus skeptic critique
+-> hybrid scoring
+-> cross-sectional ranking
+-> watchlist entry plus validation contract
+-> daily event monitoring and incremental reanalysis
+-> earnings and catalyst validation
+-> monthly review and error labeling
+-> signal, theme, company, thesis, and prompt improvements
+-> quarterly experiments and version promotion
+```
+
+The system does not merely recommend tickers. It creates theses with explicit evidence and validation contracts, then keeps those theses alive until they are validated, broken, stale, or archived.
+
 ## Layered Flow
+
+The module dependency flow is:
 
 ```text
 Configuration
@@ -28,37 +53,42 @@ Configuration
 -> Meta-learning Layer
 ```
 
-The normal production loop is:
+The operating cadences are:
 
 ```text
-daily update
--> detect changed themes, segments, tickers, and catalysts
--> rerun research only where needed
--> persist decisions and observations
+cold start
+-> identify historical winners, controls, and failures
+-> build point-in-time case packets
+-> run blind as-of-date research
+-> initialize signal library, theme map, scoring defaults, prompts, and memory
 
-weekly scan
--> coarse market screen
--> theme and segment scoring
--> company research packets
--> LLM research
--> non-LLM scoring
--> LLM-assisted cross-sectional comparison
--> system and human review gate
--> Top watchlist report
--> decision memory
+daily
+-> update prices, volume, filings, news, earnings events, analyst revisions, and theme evidence
+-> monitor active watchlist entries and archived reactivation triggers
+-> rerun LLM research only for material new information
+-> update universe state, thesis status, and memory annotations
 
-monthly review
--> outcome tracking
--> error labeling
--> signal attribution
--> add new winner, failure, and stale-watchlist cases
--> signal calibration
--> meta-learning hypotheses
+weekly
+-> scan themes and industry-chain segments before individual stocks
+-> apply structured coarse screens and theme-aware candidate expansion
+-> build research packets
+-> run LLM company research, skeptic critique, and valuation critique
+-> compute scores
+-> run cross-sectional comparison
+-> publish watchlists, research cards, validation contracts, and decision records
 
-quarterly evaluation
--> walk-forward tests
--> version comparison
--> framework changes for human approval
+monthly
+-> review 1-month, 3-month, and 6-month recommendation outcomes as they mature
+-> validate or invalidate theses against their contracts
+-> label success and failure causes
+-> update review, signal, company, thesis, case, theme, and segment memory
+-> propose small system improvements
+
+quarterly
+-> test whether the framework still fits the market
+-> run walk-forward experiments for prompt, signal, scoring, theme, universe, and data-pipeline changes
+-> compare versions
+-> promote approved versions or keep proposals in the experiment pool
 ```
 
 ## Lifecycle Phases
@@ -75,17 +105,18 @@ find 1-3 year winners
 -> construct T-180 / T-120 / T-90 / T-60 / T-30 point-in-time packets
 -> run blind as-of-date LLM analysis
 -> compare winners against controls and failures
--> update Signal Library with definitions, counterexamples, and false-positive patterns
+-> update Signal Library, Theme Memory, prompt defaults, scoring hypotheses, and case memory
 ```
 
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
 
 ### Phase 2: Current Market Scan
 
-Purpose: find live candidates cheaply before spending LLM work.
+Purpose: find live candidates cheaply before spending LLM work, starting from themes and industry-chain segments rather than isolated tickers.
 
 ```text
-full listed-stock universe
+theme and segment state
+-> full listed-stock universe
 -> structured coarse screen
 -> liquidity, market cap, financial-quality, and extreme-risk filters
 -> theme-aware and anomaly-aware candidate expansion
@@ -107,7 +138,7 @@ compare candidates within sectors and segments
 -> compare valuation room and market confirmation
 -> identify crowded, expensive, or narrative-trap candidates
 -> review gate
--> Top 20 watchlist and research cards
+-> Top 20 watchlist, research cards, validation contracts, and decision records
 ```
 
 Owned mainly by `ranking`, `scoring`, `research`, `reports`, and `memory`.
@@ -120,6 +151,7 @@ Purpose: keep the system current without rerunning everything from scratch.
 daily monitor news, filings, prices, volume, analyst revisions, and theme events
 -> update current universe state
 -> rerun LLM research only when material new information appears
+-> validate catalyst and earnings events against active validation contracts
 -> weekly rank refresh
 -> monthly outcome review
 -> add new winners, failures, and stale-watchlist cases
@@ -160,15 +192,36 @@ The system revolves around a few durable records:
 - `ResearchPacket`: point-in-time company, price, financial, valuation, news, filing, transcript, sector, theme, and memory context.
 - `ThemeMap`: a theme, its industry-chain segments, bottlenecks, leading indicators, evidence, candidates, and risks.
 - `Thesis`: a versioned claim with evidence, catalysts, disconfirming conditions, status, and review dates.
+- `ValidationContract`: forward-looking facts that would validate, weaken, or break a thesis, with expected review windows and measurement sources.
 - `SignalDefinition`: a measurable signal with applicability, positive examples, counterexamples, false-positive patterns, hindsight-risk notes, and performance.
 - `ScoreCard`: component scores and final opportunity score.
-- `WatchlistEntry`: ranked output with recommendation state and reason.
+- `WatchlistEntry`: ranked output with recommendation state, reason, active thesis, and validation contract reference when priority requires it.
 - `DecisionRecord`: immutable record of what the system recommended and which versions produced it.
 - `UniverseStateRecord`: current ticker state with last analysis date, latest score, active thesis summary, new information markers, and reanalysis need.
-- `ReviewRecord`: outcome, error label, and lesson after time has passed.
+- `EarningsValidationReport`: event-time comparison between a thesis validation contract and an earnings release, filing, transcript, price reaction, and analyst revision response.
+- `ReviewRecord`: outcome, thesis validation result, error label, and lesson after time has passed.
 - `ExperimentRecord`: meta-learning proposal, test design, result, and approval state.
 
 Concrete field names belong in `models.md` and implementation schemas.
+
+## Recommendation State Machine
+
+The canonical research states are:
+
+```text
+ignore
+monitor
+thesis_forming
+high_priority_watchlist
+action_candidate
+thesis_validated
+thesis_broken
+archived
+```
+
+State changes are research-state changes, not trades. A ticker can move from `monitor` to `thesis_forming` when evidence accumulates, from `thesis_forming` to `high_priority_watchlist` only after research, scoring, and review-gate checks, and from `high_priority_watchlist` to `action_candidate` or `thesis_validated` only when material new evidence confirms the thesis. It moves to `thesis_broken` when the validation contract fails or contrary evidence dominates. Archived names may be reactivated only by material new events such as a new CEO, major order, industry-cycle reversal, spin-off, unusually strong earnings surprise, or abnormal price and volume confirmation.
+
+No entry should reach `high_priority_watchlist` or `action_candidate` without a validation contract.
 
 ## Major Boundaries
 
@@ -182,7 +235,7 @@ The architecture should not add a new active module, child spec, score, agent ro
 
 This system can mark an opportunity as `action_candidate`, but it must not place orders, size positions, set leverage, or manage exits. A separate trading or portfolio system may consume watchlist output later.
 
-The final watchlist should pass through a review gate that checks evidence, contrary evidence, catalyst timing, valuation stretch, and thesis-break conditions. Passing that gate means "worth human attention", not "buy".
+The final watchlist should pass through a review gate that checks evidence, contrary evidence, catalyst timing, valuation stretch, and thesis-break conditions. Passing that gate means "worth human attention", not "buy". A validation contract means "we know what would prove or disprove the research claim", not "the system has permission to trade".
 
 ### Research vs Data
 

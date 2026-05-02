@@ -18,3 +18,4 @@
 - 2026-05-03: Added an explicit four-phase lifecycle to the architecture and mapped each phase to orchestration pipelines so historical learning, live scanning, cross-sectional comparison, and continuous monitoring stay distinct.
 - 2026-05-03: Audited the active specs against the full system-design discussion, reconciled active data child-spec references, and made memory collection semantics, theme transmission stages, and meta-learning change-risk classes explicit.
 - 2026-05-02: Implemented the post-source data layer with structured feature normalization, document as-of retrieval/chunking, point-in-time research packet assembly, and `FeatureRecord` packet support.
+- 2026-05-03: Reframed the specs around a thesis-centered workflow spine from historical learning through validation contracts, daily monitoring, earnings validation, monthly review, and quarterly meta-learning.
