@@ -1,16 +1,26 @@
-from datetime import date
+import tempfile
+from datetime import date, datetime, timezone
+from pathlib import Path
 from unittest import TestCase
 
 from stock_opportunity_agent.config import DataSourceConfig
 from stock_opportunity_agent.data import (
     AlphaVantageClient,
     DataCapability,
+    DataQuotaDeferred,
     DataSourceError,
     FREE_DATA_SOURCES,
     FinnhubClient,
     FredClient,
+    ManagedHttpTransport,
     OpenFigiClient,
+    RawCacheKey,
+    RawDataCache,
+    RequestLedger,
+    RequestStatus,
     SecEdgarClient,
+    SourceBudget,
+    SourceQuota,
     StooqClient,
     create_source,
     filing_to_evidence,
@@ -45,6 +55,17 @@ class FakeHttpTransport(FakeJsonTransport):
     def post_json(self, url, headers, payload):
         self.posts.append((url, headers, payload))
         return self.post_responses[url]
+
+
+class FakeClock:
+    def __init__(self, now):
+        self.now = now
+
+    def __call__(self):
+        return self.now
+
+    def set(self, now):
+        self.now = now
 
 
 class FreeDataCatalogTests(TestCase):
@@ -291,3 +312,123 @@ class OpenFigiClientTests(TestCase):
         self.assertEqual(data, [{"data": [{"ticker": "AAPL"}]}])
         self.assertEqual(transport.posts[0][1]["X-OPENFIGI-APIKEY"], "figi-key")
         self.assertEqual(transport.posts[0][2][0]["idValue"], "AAPL")
+
+
+class SourceStateTests(TestCase):
+    def test_raw_cache_key_strips_credential_query_params(self) -> None:
+        key = RawCacheKey.from_request(
+            "alpha_vantage",
+            DataCapability.NEWS,
+            "GET",
+            "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=IBM&apikey=secret",
+        )
+
+        self.assertNotIn("apikey", dict(key.params))
+        self.assertEqual(dict(key.params)["function"], "NEWS_SENTIMENT")
+
+    def test_managed_transport_caches_json_and_records_cache_hit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            url = "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=secret"
+            inner = FakeJsonTransport({url: {"Symbol": "IBM"}})
+            ledger = RequestLedger(Path(tmpdir) / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "alpha_vantage",
+                DataCapability.COMPANY_PROFILE,
+                inner,
+                RawDataCache(Path(tmpdir) / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={"alpha_vantage": SourceQuota("alpha_vantage", daily_limit=25)}),
+                clock=clock,
+            )
+
+            first = transport.get_json(url, {})
+            second = transport.get_json(url, {})
+
+            self.assertEqual(first, {"Symbol": "IBM"})
+            self.assertEqual(second, {"Symbol": "IBM"})
+            self.assertEqual(len(inner.calls), 1)
+            self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.FETCHED, RequestStatus.CACHE_HIT])
+
+    def test_managed_transport_defers_when_daily_quota_is_exhausted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            ledger = RequestLedger(Path(tmpdir) / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "alpha_vantage",
+                DataCapability.NEWS,
+                FakeJsonTransport(
+                    {
+                        "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=IBM&apikey=secret": {
+                            "feed": []
+                        },
+                        "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=MSFT&apikey=secret": {
+                            "feed": []
+                        },
+                    }
+                ),
+                RawDataCache(Path(tmpdir) / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={"alpha_vantage": SourceQuota("alpha_vantage", daily_limit=1)}),
+                clock=clock,
+            )
+
+            transport.get_json("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=IBM&apikey=secret", {})
+            with self.assertRaises(DataQuotaDeferred) as ctx:
+                transport.get_json(
+                    "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=MSFT&apikey=secret",
+                    {},
+                )
+
+            self.assertEqual(ctx.exception.next_retry_at, datetime(2026, 5, 3, tzinfo=timezone.utc))
+            self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.FETCHED, RequestStatus.QUOTA_DEFERRED])
+
+    def test_managed_transport_records_errors_that_count_against_quota(self) -> None:
+        class FailingTransport:
+            def get_json(self, url, headers):
+                raise DataSourceError("upstream failed")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            ledger = RequestLedger(Path(tmpdir) / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "finnhub",
+                DataCapability.NEWS,
+                FailingTransport(),
+                RawDataCache(Path(tmpdir) / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={"finnhub": SourceQuota("finnhub", daily_limit=1)}),
+                clock=clock,
+            )
+
+            with self.assertRaises(DataSourceError):
+                transport.get_json("https://finnhub.io/api/v1/company-news?symbol=AAPL&token=secret", {})
+            with self.assertRaises(DataQuotaDeferred):
+                transport.get_json("https://finnhub.io/api/v1/company-news?symbol=MSFT&token=secret", {})
+
+            self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.ERROR, RequestStatus.QUOTA_DEFERRED])
+
+    def test_managed_transport_does_not_cache_detected_provider_errors(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            url = "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=secret"
+            inner = FakeJsonTransport({url: {"Note": "daily API limit reached"}})
+            ledger = RequestLedger(Path(tmpdir) / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "alpha_vantage",
+                DataCapability.COMPANY_PROFILE,
+                inner,
+                RawDataCache(Path(tmpdir) / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={"alpha_vantage": SourceQuota("alpha_vantage", daily_limit=25)}),
+                clock=clock,
+                json_error_detector=lambda body: body.get("Note") if isinstance(body, dict) else None,
+            )
+
+            with self.assertRaises(DataSourceError):
+                transport.get_json(url, {})
+            with self.assertRaises(DataSourceError):
+                transport.get_json(url, {})
+
+            self.assertEqual(len(inner.calls), 2)
+            self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.ERROR, RequestStatus.ERROR])

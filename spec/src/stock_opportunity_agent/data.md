@@ -52,6 +52,7 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Preserve source, timestamp, and availability metadata.
 - Separate raw archives, feature stores, and document stores.
 - Select sources by capability using the catalog preference order before invoking a provider.
+- Track request outcomes and source quotas so free API limits produce resumable deferred work instead of hidden partial data.
 
 ## Dependencies
 
@@ -64,6 +65,8 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Historical packets must not include documents or features unavailable as of `as_of_date`.
 - Missing data must be explicit; absence cannot be silently treated as neutral evidence.
 - Source freshness and retrieval time must be recorded for data used in scoring.
+- Cache hits must be distinguishable from fresh upstream fetches.
+- Quota exhaustion must be explicit and carry a retry time when the source exposes a predictable reset window.
 - LLM web findings, if used, must be converted into source-linked evidence before affecting durable records.
 
 ## Testing

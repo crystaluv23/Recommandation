@@ -11,3 +11,4 @@
 - 2026-05-02: Added the initial Python package skeleton with domain records, validated config loading, registry-based OpenAI model provider, registry-based data-source providers, SEC EDGAR and Alpha Vantage adapters, and unit tests.
 - 2026-05-02: Moved the LLM provider registry from `research.models` to top-level `llm` so provider adapters are not coupled to the research module.
 - 2026-05-02: Expanded the data-source layer with a capability rationalization, active `data/sources` spec, source preference plan, and SEC EDGAR, Stooq, Alpha Vantage, FRED, OpenFIGI, and Finnhub adapters.
+- 2026-05-02: Added data-source runtime state with a raw response cache, request ledger, source quota checks, and a managed transport that defers quota-exhausted free API calls without sleeping.
