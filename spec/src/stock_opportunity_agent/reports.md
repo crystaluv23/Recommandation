@@ -15,6 +15,7 @@ Expected report families:
 - company research cards,
 - theme and segment maps,
 - catalyst dashboards,
+- review-gate summaries,
 - monthly review reports,
 - meta-learning reports,
 - and audit bundles for individual decisions.
@@ -24,6 +25,7 @@ Expected report families:
 - Render ranked watchlists with evidence, catalysts, risks, scores, and recommendation states.
 - Show old narrative, new narrative, core thesis, disconfirming conditions, and review date for each company.
 - Explain additions, removals, upgrades, and downgrades.
+- Show whether each high-priority candidate passed the evidence, contrary-evidence, catalyst, valuation, and thesis-break review gate.
 - Separate factual evidence, LLM interpretation, and user-facing summary.
 - Link reports to memory records and source metadata.
 
@@ -35,6 +37,7 @@ Expected report families:
 ## Invariants
 
 - Reports must not read like buy/sell instructions.
+- `action_candidate` means a handoff for separate human/trading-system review, not a system-generated trade.
 - Every high-priority candidate must include contrary evidence and thesis break conditions.
 - Reported scores must match stored score cards.
 - Reports should be reproducible from memory and data records for a given run.

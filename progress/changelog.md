@@ -14,4 +14,5 @@
 - 2026-05-02: Added data-source runtime state with a raw response cache, request ledger, source quota checks, and a managed transport that defers quota-exhausted free API calls without sleeping.
 - 2026-05-02: Added ignore rules for local environment and agent-state files so user-provided API keys and cached raw data remain untracked.
 - 2026-05-03: Folded the earlier cold-start discussion into the active architecture by making current universe state and novelty/anomaly detection explicit within existing memory, signal, scanner, monitoring, and orchestration specs.
+- 2026-05-03: Tightened the completed design against the full chat record by adding hindsight-risk signal metadata, as-of blind-analysis wording, monthly case increments, LLM-assisted cross-sectional comparison, and a review gate before watchlist publication.
 - 2026-05-02: Implemented the post-source data layer with structured feature normalization, document as-of retrieval/chunking, point-in-time research packet assembly, and `FeatureRecord` packet support.

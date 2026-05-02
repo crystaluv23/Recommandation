@@ -26,6 +26,7 @@ The module should support:
 - Match controls by sector, size, volatility, valuation, prior performance, and market environment after the user confirms the exact thresholds and matching method for the first implementation.
 - Construct time slices such as T-180, T-120, T-90, T-60, T-30, and T-0.
 - Store postmortems and matched-control lessons in memory.
+- During ongoing monthly reviews, add newly observed winners, failed high-story candidates, and stale watchlist names that did not launch.
 
 ## Dependencies
 
@@ -37,6 +38,7 @@ The module should support:
 ## Invariants
 
 - Do not reveal winner/control labels to blind analysis prompts.
+- Do not ask LLM analysis why a known future winner surged; every historical prompt must be framed as a simulated as-of-date research task.
 - Do not train only on winners.
 - Do not promote a lesson into the signal library without controls or review evidence.
 - Every case must state what future information was hidden.

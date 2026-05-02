@@ -22,6 +22,7 @@ Expected outputs:
 
 - Compare candidates inside the same segment.
 - Compare final opportunity scores across themes while preserving theme context.
+- Run an LLM-assisted cross-sectional comparison for closely ranked candidates when the candidate set has structured packets, score cards, and evidence on both sides.
 - Detect crowding, redundancy, and sector concentration.
 - Explain rank changes from prior runs.
 - Produce stable ordered outputs for reports and memory.
@@ -35,6 +36,7 @@ Expected outputs:
 
 - Ranking must not collapse all context into a single unexplained number.
 - Ranking should preserve why a candidate is above close alternatives.
+- LLM-assisted comparison may synthesize tradeoffs, but it must not invent new evidence or override stored score cards without an explicit reason.
 - Existing watchlist names should not disappear without a reason.
 - Cross-sectional comparisons must be as-of date aware.
 

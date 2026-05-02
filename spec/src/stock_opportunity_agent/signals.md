@@ -24,7 +24,7 @@ Signal categories should initially include:
 - supply-chain resonance,
 - and novelty/anomaly.
 
-Each signal should expose a definition, data requirements, sector applicability, measurement function, confidence, and known failure modes.
+Each signal should expose a definition, data requirements, sector applicability, positive examples, counterexamples, measurement function, confidence, historical hit and false-positive behavior, hindsight-risk notes, and known failure modes.
 
 ## Responsibilities
 
@@ -32,6 +32,7 @@ Each signal should expose a definition, data requirements, sector applicability,
 - Compute or request measurable signal observations.
 - Capture novelty and anomaly observations such as new company keywords, new customer groups, abnormal financial changes, cross-company language shifts, or lagged supply-chain transmission.
 - Track precision, recall, false positives, and sector-specific behavior.
+- Preserve counterexamples and known hindsight traps so signals do not become polished post-hoc stories.
 - Feed scoring with transparent component evidence.
 - Accept candidate signal changes from case learning and meta-learning only through versioned updates.
 

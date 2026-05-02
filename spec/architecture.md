@@ -41,7 +41,9 @@ weekly scan
 -> theme and segment scoring
 -> company research packets
 -> LLM research
--> scoring and ranking
+-> non-LLM scoring
+-> LLM-assisted cross-sectional comparison
+-> system and human review gate
 -> Top watchlist report
 -> decision memory
 
@@ -49,6 +51,8 @@ monthly review
 -> outcome tracking
 -> error labeling
 -> signal attribution
+-> add new winner, failure, and stale-watchlist cases
+-> signal calibration
 -> meta-learning hypotheses
 
 quarterly evaluation
@@ -85,7 +89,7 @@ The system revolves around a few durable records:
 - `ResearchPacket`: point-in-time company, price, financial, valuation, news, filing, transcript, sector, theme, and memory context.
 - `ThemeMap`: a theme, its industry-chain segments, bottlenecks, leading indicators, evidence, candidates, and risks.
 - `Thesis`: a versioned claim with evidence, catalysts, disconfirming conditions, status, and review dates.
-- `SignalDefinition`: a measurable signal with applicability, false-positive patterns, and performance.
+- `SignalDefinition`: a measurable signal with applicability, positive examples, counterexamples, false-positive patterns, hindsight-risk notes, and performance.
 - `ScoreCard`: component scores and final opportunity score.
 - `WatchlistEntry`: ranked output with recommendation state and reason.
 - `DecisionRecord`: immutable record of what the system recommended and which versions produced it.
@@ -106,6 +110,8 @@ The architecture should not add a new active module, child spec, score, agent ro
 ### Recommendation vs Trading
 
 This system can mark an opportunity as `action_candidate`, but it must not place orders, size positions, set leverage, or manage exits. A separate trading or portfolio system may consume watchlist output later.
+
+The final watchlist should pass through a review gate that checks evidence, contrary evidence, catalyst timing, valuation stretch, and thesis-break conditions. Passing that gate means "worth human attention", not "buy".
 
 ### Research vs Data
 
@@ -170,6 +176,7 @@ Once memory exists, reruns should be incremental:
 
 - Never use future information in historical packets.
 - Never store a recommendation without its evidence, versions, and as-of date.
+- Never ask historical analysis to explain why a known future winner later surged; historical prompts must be framed as as-of-date blind analysis.
 - Never let pure narrative override missing data, missing catalysts, or extreme valuation risk.
 - Always preserve evidence against the thesis.
 - Always keep failed recommendations and controls; do not curate only winners.
