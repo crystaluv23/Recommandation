@@ -73,3 +73,4 @@ def _add(name: str, provider: ProviderFactory) -> None:
 
 
 from stock_opportunity_agent.llm import openai as _openai  # noqa: E402,F401
+from stock_opportunity_agent.llm import openrouter as _openrouter  # noqa: E402,F401

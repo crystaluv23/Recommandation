@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import os
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from stock_opportunity_agent.cases import ControlMatchCriteria, HistoricalCase, OutcomeDefinition, default_outcome_definition
-from stock_opportunity_agent.config import AgentConfig
+from stock_opportunity_agent.config import AgentConfig, PromptConfig
 from stock_opportunity_agent.data import PriceBar, SecurityListing, build_research_packet, company_profile_from_features
 from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.models import (
@@ -21,6 +22,7 @@ from stock_opportunity_agent.models import (
 )
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.llm.openai import OpenAIChatClient
+from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
 from stock_opportunity_agent.research import (
     CompositeInflectionResearcher,
     FactorInflectionResearcher,
@@ -45,7 +47,8 @@ def main() -> None:
     """Execute the local seed cold-start run."""
 
     args = _parse_args()
-    config = AgentConfig()
+    _load_local_env()
+    config = _config_for_args(args)
     researcher = None
     factor_researcher = FactorInflectionResearcher(_seed_bars_by_symbol(), min_forward_return=0.50)
     inflection_researcher = factor_researcher
@@ -53,9 +56,22 @@ def main() -> None:
         client = OpenAIChatClient.from_config(config.prompts)
         researcher = OpenAIBlindCaseResearcher(client)
         inflection_researcher = CompositeInflectionResearcher((factor_researcher, OpenAIWebInflectionResearcher(client)))
+    elif args.openrouter:
+        client = OpenRouterChatClient(args.openrouter_model, _required_env("OPENROUTER_API_KEY"))
+        researcher = OpenAIBlindCaseResearcher(client)
+        inflection_researcher = CompositeInflectionResearcher((factor_researcher, OpenAIWebInflectionResearcher(client)))
     elif args.openai_inflection:
         inflection_researcher = CompositeInflectionResearcher(
             (factor_researcher, OpenAIWebInflectionResearcher(OpenAIChatClient.from_config(config.prompts)))
+        )
+    elif args.openrouter_inflection:
+        inflection_researcher = CompositeInflectionResearcher(
+            (
+                factor_researcher,
+                OpenAIWebInflectionResearcher(
+                    OpenRouterChatClient(args.openrouter_model, _required_env("OPENROUTER_API_KEY"))
+                ),
+            )
         )
     definition = default_outcome_definition()
     cases = [
@@ -189,6 +205,21 @@ def _parse_args():
         help="Use OpenAI web search for retrospective inflection discovery only.",
     )
     parser.add_argument(
+        "--openrouter",
+        action="store_true",
+        help="Use OpenRouter for both web-enabled inflection discovery and web-disabled blind analysis.",
+    )
+    parser.add_argument(
+        "--openrouter-inflection",
+        action="store_true",
+        help="Use OpenRouter web search for retrospective inflection discovery only.",
+    )
+    parser.add_argument(
+        "--openrouter-model",
+        default="openai/gpt-5.5",
+        help="OpenRouter model id used when --openrouter or --openrouter-inflection is set.",
+    )
+    parser.add_argument(
         "--output-dir",
         default="reports/cold_start/seed-2026-05-03",
         help="Directory for cold-start report artifacts.",
@@ -199,6 +230,37 @@ def _parse_args():
         help="Only print the final signal-logic path.",
     )
     return parser.parse_args()
+
+
+def _config_for_args(args) -> AgentConfig:
+    if args.openrouter or args.openrouter_inflection:
+        return AgentConfig(
+            prompts=PromptConfig(
+                model_version=args.openrouter_model,
+                openai_api_key_env_var="OPENROUTER_API_KEY",
+                openai_base_url="https://openrouter.ai/api/v1",
+            )
+        )
+    return AgentConfig()
+
+
+def _load_local_env(path: str = ".env.local") -> None:
+    env_path = Path(path)
+    if not env_path.exists():
+        return
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip())
+
+
+def _required_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"{name} is not set")
+    return value
 
 
 def _case(

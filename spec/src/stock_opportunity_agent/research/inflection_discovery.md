@@ -25,6 +25,8 @@ The submodule exposes:
 ## Invariants
 
 - Web search is permitted only in retrospective inflection discovery.
+- Composite discovery may keep factor-based candidates when a supplemental
+  web-search researcher fails, but the failure must remain visible in raw output.
 - Output is used to choose or audit historical slice anchors, not to enrich
   blind research packets.
 - The following blind analysis step must disable web search and hide

@@ -28,7 +28,13 @@ Expected outputs:
 - old and new narrative,
 - and confidence notes.
 
-Initial implementation provides a lightweight LLM provider registry under `src/stock_opportunity_agent/llm/`. Provider modules register factories with `@register("provider_name")`; the first concrete provider is an OpenAI Responses API adapter. Domain records remain in the top-level `models` module, and `research` is reserved for higher-level agents that consume prepared packets.
+Initial implementation provides a lightweight LLM provider registry under
+`src/stock_opportunity_agent/llm/`. Provider modules register factories with
+`@register("provider_name")`; concrete providers include an OpenAI Responses API
+adapter and an OpenRouter Responses API adapter. The OpenRouter adapter keeps
+provider-specific web-search compatibility separate from the OpenAI adapter.
+Domain records remain in the top-level `models` module, and `research` is
+reserved for higher-level agents that consume prepared packets.
 
 Active child specs:
 

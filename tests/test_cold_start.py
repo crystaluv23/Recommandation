@@ -31,6 +31,7 @@ from stock_opportunity_agent.models import (
 from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher
+from stock_opportunity_agent.research.inflection_discovery import CompositeInflectionResearcher, HeuristicInflectionResearcher
 from stock_opportunity_agent.signals import measure_packet_signals
 
 
@@ -55,6 +56,11 @@ class FakeOpenAITransport:
                 }
             ],
         }
+
+
+class FailingInflectionResearcher:
+    def discover(self, case):
+        raise RuntimeError("provider unavailable")
 
 
 def version() -> VersionStamp:
@@ -391,6 +397,25 @@ class ColdStartSignalTests(TestCase):
             self.assertTrue(library.read_definitions())
             self.assertTrue(any("discovering inflections" in message for message in progress_messages))
             self.assertTrue(any("complete:" in message for message in progress_messages))
+
+    def test_composite_inflection_keeps_factor_candidate_when_web_research_fails(self) -> None:
+        case = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+        )
+        researcher = CompositeInflectionResearcher((HeuristicInflectionResearcher(), FailingInflectionResearcher()))
+
+        result = researcher.discover(case)
+
+        self.assertEqual(len(result.candidates), 1)
+        self.assertIn("FailingInflectionResearcher failed: provider unavailable", result.raw_text)
 
 
 def make_case(

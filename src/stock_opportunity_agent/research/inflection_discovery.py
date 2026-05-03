@@ -109,19 +109,29 @@ class CompositeInflectionResearcher:
     def discover(self, case: HistoricalCase) -> InflectionResearchResult:
         """Return merged candidates from all configured researchers."""
 
-        results = [researcher.discover(case) for researcher in self.researchers]
+        results = []
+        failures = []
+        for researcher in self.researchers:
+            try:
+                results.append(researcher.discover(case))
+            except Exception as exc:
+                failures.append(f"{researcher.__class__.__name__} failed: {exc}")
+        if not results:
+            raise ValidationError("; ".join(failures) or "no inflection researchers returned results")
         candidates = tuple(
             sorted(
                 (candidate for result in results for candidate in result.candidates),
                 key=lambda candidate: (-candidate.score, candidate.inflection_date, candidate.method),
             )
         )
+        raw_parts = [result.raw_text for result in results]
+        raw_parts.extend(failures)
         return InflectionResearchResult(
             case_id=case.case_id,
             symbol=case.packet.company.ticker.symbol,
             candidates=candidates,
             web_enabled=any(result.web_enabled for result in results),
-            raw_text="\n\n".join(result.raw_text for result in results),
+            raw_text="\n\n".join(raw_parts),
         )
 
 

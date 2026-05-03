@@ -1,0 +1,154 @@
+{
+  "assumptions": [
+    "Winner, control, and failure labels were produced before signal learning.",
+    "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
+    "Blind analysis uses only point-in-time ResearchPacket features and known catalysts."
+  ],
+  "config": {
+    "config_version": "config-v0.1",
+    "data_sources": {
+      "alpha_vantage_api_key_env_var": "ALPHA_VANTAGE_API_KEY",
+      "credential_env_vars": [
+        "ALPHA_VANTAGE_API_KEY",
+        "FINNHUB_API_KEY",
+        "FRED_API_KEY",
+        "OPENFIGI_API_KEY"
+      ],
+      "document_source": "sec_edgar",
+      "finnhub_api_key_env_var": "FINNHUB_API_KEY",
+      "fred_api_key_env_var": "FRED_API_KEY",
+      "fundamentals_source": "sec_edgar",
+      "identifier_source": "openfigi",
+      "macro_source": "fred",
+      "news_source": "alpha_vantage",
+      "openfigi_api_key_env_var": "OPENFIGI_API_KEY",
+      "price_source": "stooq",
+      "sec_user_agent": "stock-opportunity-agent/0.1 contact@example.com",
+      "universe_source": "sec_edgar"
+    },
+    "meta_learning": {
+      "high_risk_requires_human": true,
+      "low_risk_auto_approval": false,
+      "medium_risk_requires_human": true,
+      "signal_version": "signals-v0.1"
+    },
+    "pipeline": {
+      "daily_enabled": true,
+      "data_pipeline_version": "data-pipeline-v0.1",
+      "review_windows_days": [
+        30,
+        90,
+        180
+      ],
+      "weekly_watchlist_size": 20
+    },
+    "prompts": {
+      "model_version": "openai/gpt-5.5",
+      "openai_api_key_env_var": "OPENROUTER_API_KEY",
+      "openai_base_url": "https://openrouter.ai/api/v1",
+      "prompt_version": "prompt-v0.1",
+      "research_temperature": 0.2
+    },
+    "scoring": {
+      "max_extreme_valuation_risk": 0.85,
+      "min_score_for_action_candidate": 0.75,
+      "min_score_for_watchlist": 0.55,
+      "scoring_version": "scoring-v0.1"
+    },
+    "storage": {
+      "parquet_dir": ".agent_state/parquet",
+      "reports_dir": "reports",
+      "root_dir": ".agent_state",
+      "sqlite_path": ".agent_state/agent.sqlite"
+    },
+    "universe": {
+      "country": "US",
+      "min_average_daily_dollar_volume": 25000000,
+      "min_market_cap_usd": 5000000000,
+      "priority_sectors": [
+        "Semiconductors",
+        "AI Infrastructure",
+        "Power Equipment",
+        "Cooling",
+        "Software",
+        "Industrials",
+        "Defense"
+      ],
+      "security_types": [
+        "common_stock"
+      ]
+    }
+  },
+  "created_at": "2026-05-03T00:00:00+00:00",
+  "inputs": {
+    "case_count": 4,
+    "labels": {
+      "control": 1,
+      "failure": 1,
+      "winner": 2
+    },
+    "matched_control_sets": [
+      {
+        "control_case_ids": [
+          "control-accelerator-1"
+        ],
+        "criteria_id": "control-match-v0.1",
+        "warnings": [],
+        "winner_case_id": "winner-accelerator-1"
+      },
+      {
+        "control_case_ids": [],
+        "criteria_id": "control-match-v0.1",
+        "warnings": [
+          "No matched controls found for winner-power-1."
+        ],
+        "winner_case_id": "winner-power-1"
+      }
+    ],
+    "matched_group_count": 3,
+    "outcome_definition_ids": [
+      "surge-close-return-v0.1"
+    ],
+    "packet_ids": [
+      "winner-accelerator-1:packet",
+      "winner-power-1:packet",
+      "control-accelerator-1:packet",
+      "failure-power-1:packet"
+    ]
+  },
+  "outputs": {
+    "blind_case_analyses": "reports/cold_start/openrouter-gpt55-2026-05-03/blind_case_analyses.json",
+    "case_signal_observations": "reports/cold_start/openrouter-gpt55-2026-05-03/case_signal_observations.json",
+    "inflection_analyses": "reports/cold_start/openrouter-gpt55-2026-05-03/inflection_analyses.json",
+    "pre_surge_signal_logic": "reports/cold_start/openrouter-gpt55-2026-05-03/pre_surge_signal_logic.json",
+    "signal_definitions": "reports/cold_start/openrouter-gpt55-2026-05-03/signal_definitions.json"
+  },
+  "pipeline": "cold_start_case_learning",
+  "result_summary": {
+    "blind_analysis_count": 4,
+    "inflection_analysis_count": 4,
+    "measured_signal_count": 6,
+    "promoted_signal_count": 6,
+    "promoted_signal_ids": [
+      "sig-fundamental-revenue-acceleration",
+      "sig-market-early-confirmation",
+      "sig-analyst-expectation-gap",
+      "sig-catalyst-density",
+      "sig-valuation-room-with-growth",
+      "sig-liquidity-expansion"
+    ],
+    "signal_library_dir": ".agent_state/memory/signals"
+  },
+  "run_id": "cold-start-seed-2026-05-03",
+  "versions": {
+    "config_version": "config-v0.1",
+    "data_pipeline_version": "data-pipeline-v0.1",
+    "model_version": "openai/gpt-5.5",
+    "prompt_version": "prompt-v0.1",
+    "scoring_version": "scoring-v0.1",
+    "signal_version": "signals-v0.1"
+  },
+  "warnings": [
+    "Matched group match:winner-power-1 has a winner but no control."
+  ]
+}
