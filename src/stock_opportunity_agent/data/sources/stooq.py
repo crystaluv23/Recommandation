@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import os
 from datetime import date
+from typing import Mapping
 from urllib import parse
 
 from stock_opportunity_agent.config import DataSourceConfig
@@ -12,29 +14,37 @@ from stock_opportunity_agent.models import ValidationError
 
 
 class StooqClient:
-    """No-key Stooq CSV adapter for historical daily OHLCV bars."""
+    """Stooq CSV adapter for historical daily OHLCV bars."""
 
     def __init__(
         self,
         *,
         base_url: str = "https://stooq.com/q/d/l/",
+        api_key: str | None = None,
         transport: JsonTransport | None = None,
     ) -> None:
         from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
 
         self.base_url = base_url
+        self.api_key = api_key
         self.transport = transport or UrllibJsonTransport()
 
     @classmethod
-    def from_config(cls, config: DataSourceConfig, transport: JsonTransport | None = None) -> "StooqClient":
+    def from_config(
+        cls,
+        config: DataSourceConfig,
+        environ: Mapping[str, str] | None = None,
+        transport: JsonTransport | None = None,
+    ) -> "StooqClient":
         """Create a Stooq client from data-source config.
 
-        The current config has no Stooq-specific settings; the argument keeps
-        the registry factory signature uniform.
+        Stooq CSV downloads can require an API key. When ``STOOQ_API_KEY`` is
+        present, the adapter appends it as the ``apikey`` query parameter.
         """
 
-        _ = config
-        return cls(transport=transport)
+        env = os.environ if environ is None else environ
+        api_key = env.get(config.stooq_api_key_env_var)
+        return cls(api_key=api_key, transport=transport)
 
     def daily_prices(
         self,
@@ -47,6 +57,8 @@ class StooqClient:
 
         source_symbol = self._source_symbol(symbol)
         params = {"s": source_symbol, "i": "d"}
+        if self.api_key:
+            params["apikey"] = self.api_key
         if start_date is not None:
             params["d1"] = start_date.strftime("%Y%m%d")
         if end_date is not None:
@@ -56,9 +68,13 @@ class StooqClient:
         if get_text is None:
             raise DataSourceError("transport does not support text downloads")
         text = get_text(f"{self.base_url}?{query}", {})
+        if "Get your apikey" in text or "captcha code" in text:
+            raise DataSourceError("Stooq CSV download requires STOOQ_API_KEY")
         rows = parse_csv_rows(text)
         if not rows or rows[0].get("Date") == "No data":
             raise DataSourceError(f"Stooq returned no daily prices for {symbol.upper()}")
+        if "Date" not in rows[0]:
+            raise DataSourceError(f"Stooq returned non-price CSV for {symbol.upper()}")
 
         retrieved_at = utc_now()
         bars: list[PriceBar] = []
@@ -88,7 +104,11 @@ class StooqClient:
 
 
 @register("stooq")
-def source(config: DataSourceConfig, transport: JsonTransport | None = None) -> StooqClient:
+def source(
+    config: DataSourceConfig,
+    environ: Mapping[str, str] | None = None,
+    transport: JsonTransport | None = None,
+) -> StooqClient:
     """Registered Stooq source factory."""
 
-    return StooqClient.from_config(config, transport=transport)
+    return StooqClient.from_config(config, environ=environ, transport=transport)

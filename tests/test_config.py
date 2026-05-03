@@ -35,6 +35,8 @@ class ConfigTests(TestCase):
                 environ={
                     "SOA_CONFIG_VERSION": "env-config",
                     "SOA_STORAGE_ROOT_DIR": ".state-test",
+                    "SOA_MASSIVE_API_KEY_ENV_VAR": "CUSTOM_MASSIVE_KEY",
+                    "SOA_STOOQ_API_KEY_ENV_VAR": "CUSTOM_STOOQ_KEY",
                 },
             )
 
@@ -42,6 +44,8 @@ class ConfigTests(TestCase):
         self.assertEqual(config.storage.root_dir, ".state-test")
         self.assertEqual(config.storage.reports_dir, "file-reports")
         self.assertEqual(config.pipeline.weekly_watchlist_size, 12)
+        self.assertEqual(config.data_sources.massive_api_key_env_var, "CUSTOM_MASSIVE_KEY")
+        self.assertEqual(config.data_sources.stooq_api_key_env_var, "CUSTOM_STOOQ_KEY")
 
     def test_invalid_thresholds_are_rejected(self) -> None:
         with self.assertRaises(ValidationError):
@@ -67,6 +71,7 @@ class ConfigTests(TestCase):
                 price_source="vendor",
                 fundamentals_source="vendor",
                 document_source="local",
+                massive_api_key_env_var="VENDOR_API_KEY",
                 credential_env_vars=("VENDOR_API_KEY",),
             )
         )

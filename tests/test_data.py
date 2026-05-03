@@ -15,6 +15,7 @@ from stock_opportunity_agent.data import (
     FinnhubClient,
     FredClient,
     ManagedHttpTransport,
+    MassiveClient,
     OpenFigiClient,
     PriceBar,
     RawCacheKey,
@@ -93,6 +94,7 @@ class FreeDataCatalogTests(TestCase):
         names = {source.name for source in FREE_DATA_SOURCES}
 
         self.assertIn("SEC EDGAR", names)
+        self.assertIn("Massive", names)
         self.assertIn("Alpha Vantage", names)
         self.assertIn("FRED", names)
         self.assertGreaterEqual(len(source_catalog_by_capability(DataCapability.PRICE_DAILY)), 2)
@@ -103,7 +105,7 @@ class FreeDataCatalogTests(TestCase):
     def test_capability_plan_selects_first_available_source(self) -> None:
         plan = source_plan_by_capability(DataCapability.PRICE_DAILY)
 
-        self.assertEqual(plan.preferred_sources[0], "stooq")
+        self.assertEqual(plan.preferred_sources[0], "massive")
         self.assertEqual(
             select_source_for_capability(DataCapability.PRICE_DAILY, ["alpha_vantage", "stooq"]),
             "stooq",
@@ -249,6 +251,7 @@ class AlphaVantageClientTests(TestCase):
         self.assertEqual(client.api_key, "demo")
         self.assertIn("alpha_vantage", registered_sources())
         self.assertIn("sec_edgar", registered_sources())
+        self.assertIn("massive", registered_sources())
         self.assertIn("stooq", registered_sources())
         self.assertIn("fred", registered_sources())
         self.assertIn("openfigi", registered_sources())
@@ -285,6 +288,67 @@ class StooqClientTests(TestCase):
 
         self.assertEqual([bar.as_of_date for bar in bars], [date(2026, 5, 1), date(2026, 5, 2)])
         self.assertEqual(bars[0].source, "stooq")
+
+    def test_from_config_appends_optional_csv_api_key(self) -> None:
+        url = "https://stooq.com/q/d/l/?s=ibm.us&i=d&apikey=stooq-key&d1=20260501&d2=20260502"
+        transport = FakeHttpTransport(
+            text_responses={
+                url: (
+                    "Date,Open,High,Low,Close,Volume\n"
+                    "2026-05-01,9.0,10.0,8.5,9.5,900\n"
+                )
+            }
+        )
+        client = create_source(
+            "stooq",
+            DataSourceConfig(stooq_api_key_env_var="CUSTOM_STOOQ_KEY"),
+            environ={"CUSTOM_STOOQ_KEY": "stooq-key"},
+            transport=transport,
+        )
+
+        bars = client.daily_prices("ibm", start_date=date(2026, 5, 1), end_date=date(2026, 5, 2))
+
+        self.assertEqual(len(bars), 1)
+
+
+class MassiveClientTests(TestCase):
+    def test_from_config_uses_named_key_env_var(self) -> None:
+        client = MassiveClient.from_config(
+            DataSourceConfig(massive_api_key_env_var="CUSTOM_MASSIVE_KEY"),
+            environ={"CUSTOM_MASSIVE_KEY": "massive-key"},
+            transport=FakeJsonTransport({}),
+        )
+
+        self.assertEqual(client.api_key, "massive-key")
+
+    def test_missing_massive_key_is_explicit(self) -> None:
+        with self.assertRaises(DataSourceError):
+            MassiveClient.from_config(DataSourceConfig(), environ={})
+
+    def test_daily_prices_are_loaded_from_aggregate_bars(self) -> None:
+        url = (
+            "https://api.massive.com/v2/aggs/ticker/IBM/range/1/day/2026-05-01/2026-05-02"
+            "?adjusted=true&sort=asc&limit=50000&apiKey=massive-key"
+        )
+        transport = FakeJsonTransport(
+            {
+                url: {
+                    "ticker": "IBM",
+                    "status": "OK",
+                    "results": [
+                        {"t": 1777593600000, "o": 9.0, "h": 10.0, "l": 8.5, "c": 9.5, "v": 900},
+                        {"t": 1777680000000, "o": 10.0, "h": 11.0, "l": 9.5, "c": 10.5, "v": 1000},
+                    ],
+                }
+            }
+        )
+        client = MassiveClient("massive-key", transport=transport)
+
+        bars = client.daily_prices("ibm", start_date=date(2026, 5, 1), end_date=date(2026, 5, 2))
+
+        self.assertEqual([bar.as_of_date for bar in bars], [date(2026, 5, 1), date(2026, 5, 2)])
+        self.assertEqual(bars[0].source, "massive")
+        self.assertEqual(bars[0].adjusted_close, 9.5)
 
 
 class FredClientTests(TestCase):

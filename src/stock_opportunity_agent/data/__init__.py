@@ -55,6 +55,7 @@ from stock_opportunity_agent.data.point_in_time import (
 from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
 from stock_opportunity_agent.data.sources.finnhub import FinnhubClient
 from stock_opportunity_agent.data.sources.fred import FredClient
+from stock_opportunity_agent.data.sources.massive import MassiveClient
 from stock_opportunity_agent.data.sources.openfigi import OpenFigiClient
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.data.sources.stooq import StooqClient
@@ -88,6 +89,7 @@ __all__ = [
     "FredClient",
     "JsonTransport",
     "ManagedHttpTransport",
+    "MassiveClient",
     "OpenFigiClient",
     "PostJsonTransport",
     "PriceBar",

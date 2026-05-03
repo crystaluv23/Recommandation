@@ -14,7 +14,7 @@ Use the source catalog as the canonical free/free-key capability manifest:
 | Capability | Preferred source order | Notes |
 | --- | --- | --- |
 | Universe and identifiers | SEC EDGAR -> Alpha Vantage -> OpenFIGI | SEC is authority for CIK/ticker mappings; OpenFIGI is identifier hygiene, not evidence. |
-| Daily price and volume | Stooq -> Alpha Vantage -> Finnhub -> FMP -> Marketstack | Stooq is a no-key CSV fallback for historical daily bars; licensed real-time data is out of MVP. |
+| Daily price and volume | Massive -> Stooq -> Alpha Vantage -> Finnhub -> FMP -> Marketstack | Massive is the preferred keyed REST source for U.S. daily aggregates; Stooq is a CSV fallback when its apikey is configured; licensed real-time data is out of MVP. |
 | Company profile | SEC EDGAR -> Alpha Vantage -> Finnhub -> FMP | Provider sector/industry taxonomies require later normalization. |
 | Financial statements | SEC EDGAR -> Alpha Vantage -> Finnhub -> FMP | SEC XBRL company facts are authority; vendor statements are convenience fallbacks. |
 | Valuation | Alpha Vantage -> Finnhub -> FMP | Vendor ratios are raw convenience inputs and must be cached with retrieval time. |
@@ -28,7 +28,8 @@ Use the source catalog as the canonical free/free-key capability manifest:
 ## Current Adapters
 
 - `sec_edgar`: CIK/ticker mappings, submissions, company facts, filing metadata, and filing document text.
-- `stooq`: daily historical OHLCV CSV fallback.
+- `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
+- `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, news sentiment, transcripts, ETF profile, and selected macro endpoints.
 - `fred`: macro series metadata and vintage-aware observations.
 - `openfigi`: optional-key identifier mapping.
@@ -38,7 +39,7 @@ Use the source catalog as the canonical free/free-key capability manifest:
 
 The source layer owns these runtime state primitives:
 
-- `RawDataCache`: file-backed raw JSON/text cache keyed by source, capability, endpoint, and sanitized request parameters. Credential query parameters such as `apikey`, `api_key`, `token`, and `access_key` must not be included in cache keys or records.
+- `RawDataCache`: file-backed raw JSON/text cache keyed by source, capability, endpoint, and sanitized request parameters. Credential query parameters such as `apiKey`/`apikey`, `api_key`, `token`, and `access_key` must not be included in cache keys or records.
 - `RequestLedger`: append-only JSONL ledger recording `fetched`, `cache_hit`, `error`, and `quota_deferred` outcomes with timestamps, cache keys, source keys, capabilities, and retry times when known.
 - `SourceQuota` and `SourceBudget`: source-level quota rules and checks. Network fetches and upstream errors count against quota; cache hits and quota deferrals do not.
 - `ManagedHttpTransport`: optional transport wrapper that applies cache lookup before quota checks, lets callers reject provider-level error payloads before caching, records every outcome, and raises `DataQuotaDeferred` instead of sleeping across reset windows.

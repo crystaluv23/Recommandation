@@ -45,7 +45,7 @@ class DataSourceConfig:
     """Data source adapter names and optional environment variable references."""
 
     universe_source: str = "sec_edgar"
-    price_source: str = "stooq"
+    price_source: str = "massive"
     fundamentals_source: str = "sec_edgar"
     document_source: str = "sec_edgar"
     news_source: str = "alpha_vantage"
@@ -55,12 +55,16 @@ class DataSourceConfig:
     alpha_vantage_api_key_env_var: str = "ALPHA_VANTAGE_API_KEY"
     finnhub_api_key_env_var: str = "FINNHUB_API_KEY"
     fred_api_key_env_var: str = "FRED_API_KEY"
+    massive_api_key_env_var: str = "MASSIVE_API_KEY"
     openfigi_api_key_env_var: str = "OPENFIGI_API_KEY"
+    stooq_api_key_env_var: str = "STOOQ_API_KEY"
     credential_env_vars: tuple[str, ...] = (
         "ALPHA_VANTAGE_API_KEY",
         "FINNHUB_API_KEY",
         "FRED_API_KEY",
+        "MASSIVE_API_KEY",
         "OPENFIGI_API_KEY",
+        "STOOQ_API_KEY",
     )
 
     def __post_init__(self) -> None:
@@ -76,7 +80,9 @@ class DataSourceConfig:
             "alpha_vantage_api_key_env_var",
             "finnhub_api_key_env_var",
             "fred_api_key_env_var",
+            "massive_api_key_env_var",
             "openfigi_api_key_env_var",
+            "stooq_api_key_env_var",
         ):
             _require_non_empty(getattr(self, name), name)
 
@@ -95,7 +101,9 @@ class DataSourceConfig:
             "alpha_vantage_api_key_env_var": self.alpha_vantage_api_key_env_var,
             "finnhub_api_key_env_var": self.finnhub_api_key_env_var,
             "fred_api_key_env_var": self.fred_api_key_env_var,
+            "massive_api_key_env_var": self.massive_api_key_env_var,
             "openfigi_api_key_env_var": self.openfigi_api_key_env_var,
+            "stooq_api_key_env_var": self.stooq_api_key_env_var,
             "credential_env_vars": tuple(self.credential_env_vars),
         }
 
@@ -302,8 +310,12 @@ def _env_overrides(environ: Mapping[str, str]) -> dict[str, Any]:
         data_sources["finnhub_api_key_env_var"] = environ["SOA_FINNHUB_API_KEY_ENV_VAR"]
     if "SOA_FRED_API_KEY_ENV_VAR" in environ:
         data_sources["fred_api_key_env_var"] = environ["SOA_FRED_API_KEY_ENV_VAR"]
+    if "SOA_MASSIVE_API_KEY_ENV_VAR" in environ:
+        data_sources["massive_api_key_env_var"] = environ["SOA_MASSIVE_API_KEY_ENV_VAR"]
     if "SOA_OPENFIGI_API_KEY_ENV_VAR" in environ:
         data_sources["openfigi_api_key_env_var"] = environ["SOA_OPENFIGI_API_KEY_ENV_VAR"]
+    if "SOA_STOOQ_API_KEY_ENV_VAR" in environ:
+        data_sources["stooq_api_key_env_var"] = environ["SOA_STOOQ_API_KEY_ENV_VAR"]
     if "SOA_SEC_USER_AGENT" in environ:
         data_sources["sec_user_agent"] = environ["SOA_SEC_USER_AGENT"]
     if data_sources:

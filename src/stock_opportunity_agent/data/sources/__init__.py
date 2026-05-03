@@ -75,6 +75,7 @@ def _add(name: str, source: SourceFactory) -> None:
 from stock_opportunity_agent.data.sources import alpha_vantage as _alpha_vantage  # noqa: E402,F401
 from stock_opportunity_agent.data.sources import finnhub as _finnhub  # noqa: E402,F401
 from stock_opportunity_agent.data.sources import fred as _fred  # noqa: E402,F401
+from stock_opportunity_agent.data.sources import massive as _massive  # noqa: E402,F401
 from stock_opportunity_agent.data.sources import openfigi as _openfigi  # noqa: E402,F401
 from stock_opportunity_agent.data.sources import sec_edgar as _sec_edgar  # noqa: E402,F401
 from stock_opportunity_agent.data.sources import stooq as _stooq  # noqa: E402,F401
