@@ -56,6 +56,33 @@ class OpenAIChatClientTests(TestCase):
         self.assertEqual(payload["input"][0]["role"], "developer")
         self.assertEqual(payload["text"]["format"]["type"], "json_object")
 
+    def test_client_passes_responses_api_tools_for_web_search(self) -> None:
+        transport = FakeTransport(
+            {
+                "id": "resp_1",
+                "model": "gpt-5.4-mini",
+                "output": [
+                    {
+                        "type": "message",
+                        "content": [{"type": "output_text", "text": "{\"ok\": true}"}],
+                    }
+                ],
+            }
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        client.complete(
+            [ChatMessage("user", "Find the inflection.")],
+            tools=[{"type": "web_search"}],
+            tool_choice="auto",
+            include=["web_search_call.action.sources"],
+        )
+
+        payload = transport.calls[0][2]
+        self.assertEqual(payload["tools"], [{"type": "web_search"}])
+        self.assertEqual(payload["tool_choice"], "auto")
+        self.assertEqual(payload["include"], ["web_search_call.action.sources"])
+
     def test_from_config_reads_api_key_from_named_env_var(self) -> None:
         config = PromptConfig(openai_api_key_env_var="CUSTOM_OPENAI_KEY")
 

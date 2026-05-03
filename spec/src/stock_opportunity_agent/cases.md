@@ -31,6 +31,8 @@ Active child specs:
 - [`cases/outcomes.md`](cases/outcomes.md): versioned retrospective outcome
   definitions such as "surge winner", neutral control candidate, failure, and
   unlabeled.
+- [`cases/inflections.md`](cases/inflections.md): retrospective factor-based
+  surge inflection detection.
 - [`cases/matching.md`](cases/matching.md): versioned matched-control
   construction from labeled historical cases.
 - [`cases/packets.md`](cases/packets.md): point-in-time historical case packet
@@ -41,7 +43,7 @@ Active child specs:
 - Define winners programmatically, such as strong 6-month returns or top percentile outcomes.
 - Exclude mechanical jumps such as deterministic cash acquisitions when appropriate.
 - Match controls by sector, size, volatility, valuation, prior performance, and market environment after the user confirms the exact thresholds and matching method for the first implementation.
-- Construct time slices such as T-180, T-120, T-90, T-60, T-30, and T-0.
+- Construct time slices such as T-180, T-90, and T-30 before the chosen inflection anchor.
 - Store postmortems and matched-control lessons in memory.
 - Use winner/control differences to initialize or update signal definitions, theme-map hypotheses, scoring hypotheses, and prompt requirements.
 - During ongoing monthly reviews, add newly observed winners, failed high-story candidates, and stale watchlist names that did not launch.

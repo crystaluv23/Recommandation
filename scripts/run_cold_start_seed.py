@@ -8,7 +8,7 @@ from pathlib import Path
 
 from stock_opportunity_agent.cases import ControlMatchCriteria, HistoricalCase, OutcomeDefinition, default_outcome_definition
 from stock_opportunity_agent.config import AgentConfig
-from stock_opportunity_agent.data import SecurityListing, build_research_packet, company_profile_from_features
+from stock_opportunity_agent.data import PriceBar, SecurityListing, build_research_packet, company_profile_from_features
 from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.models import (
     Catalyst,
@@ -21,7 +21,12 @@ from stock_opportunity_agent.models import (
 )
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.llm.openai import OpenAIChatClient
-from stock_opportunity_agent.research import OpenAIBlindCaseResearcher
+from stock_opportunity_agent.research import (
+    CompositeInflectionResearcher,
+    FactorInflectionResearcher,
+    OpenAIBlindCaseResearcher,
+    OpenAIWebInflectionResearcher,
+)
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -42,8 +47,16 @@ def main() -> None:
     args = _parse_args()
     config = AgentConfig()
     researcher = None
+    factor_researcher = FactorInflectionResearcher(_seed_bars_by_symbol(), min_forward_return=0.50)
+    inflection_researcher = factor_researcher
     if args.openai:
-        researcher = OpenAIBlindCaseResearcher(OpenAIChatClient.from_config(config.prompts))
+        client = OpenAIChatClient.from_config(config.prompts)
+        researcher = OpenAIBlindCaseResearcher(client)
+        inflection_researcher = CompositeInflectionResearcher((factor_researcher, OpenAIWebInflectionResearcher(client)))
+    elif args.openai_inflection:
+        inflection_researcher = CompositeInflectionResearcher(
+            (factor_researcher, OpenAIWebInflectionResearcher(OpenAIChatClient.from_config(config.prompts)))
+        )
     definition = default_outcome_definition()
     cases = [
         _case(
@@ -156,6 +169,7 @@ def main() -> None:
         signal_library=FileSignalLibrary(".agent_state/memory/signals"),
         control_match_criteria=ControlMatchCriteria(max_controls_per_winner=2),
         blind_researcher=researcher,
+        inflection_researcher=inflection_researcher,
     )
     print(output.signal_logic_path)
 
@@ -165,7 +179,12 @@ def _parse_args():
     parser.add_argument(
         "--openai",
         action="store_true",
-        help="Use the OpenAI blind researcher instead of the offline heuristic researcher.",
+        help="Use OpenAI for both web-enabled inflection discovery and web-disabled blind analysis.",
+    )
+    parser.add_argument(
+        "--openai-inflection",
+        action="store_true",
+        help="Use OpenAI web search for retrospective inflection discovery only.",
     )
     parser.add_argument(
         "--output-dir",
@@ -260,6 +279,51 @@ def _feature(symbol: str, name: str, value: float | str) -> FeatureRecord:
         source_id=f"seed:{symbol}:{name}",
         period_end_date=AS_OF,
     )
+
+
+def _seed_bars_by_symbol() -> dict[str, tuple[PriceBar, ...]]:
+    return {
+        symbol: tuple(_seed_bars(symbol, base_close=base, surge=surge))
+        for symbol, base, surge in (
+            ("AIX1", 42.0, True),
+            ("PWR1", 31.0, True),
+            ("AIC1", 50.0, False),
+            ("PWF1", 29.0, False),
+        )
+    }
+
+
+def _seed_bars(symbol: str, *, base_close: float, surge: bool) -> list[PriceBar]:
+    bars: list[PriceBar] = []
+    close = base_close
+    start = AS_OF
+    for index in range(181):
+        if surge and index == 30:
+            close *= 1.22
+            volume = 4_000_000
+        elif surge and index > 30:
+            close *= 1.010
+            volume = 2_400_000
+        elif not surge and index > 30:
+            close *= 0.999
+            volume = 900_000
+        else:
+            close *= 1.001
+            volume = 1_000_000
+        bars.append(
+            PriceBar(
+                symbol=symbol,
+                as_of_date=start + timedelta(days=index),
+                open=close,
+                high=close,
+                low=close,
+                close=close,
+                volume=volume,
+                source="seed",
+                retrieved_at=STAMP,
+            )
+        )
+    return bars
 
 
 if __name__ == "__main__":

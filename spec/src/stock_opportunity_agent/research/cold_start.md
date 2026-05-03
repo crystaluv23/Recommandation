@@ -22,6 +22,7 @@ The submodule exposes:
 ## Invariants
 
 - Prompts must include only packet data available as of the packet date.
+- Prompts should mask ticker, company name, and source URLs by default.
 - Prompts must explicitly forbid using future outcomes.
 - LLM output must include contrary evidence and confidence, not only bullish
   signal language.

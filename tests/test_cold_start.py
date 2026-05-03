@@ -5,15 +5,19 @@ from unittest import TestCase
 
 from stock_opportunity_agent.cases import (
     CaseOutcomeLabel,
+    CaseSlicePlan,
     ControlMatchCriteria,
     HistoricalCase,
+    detect_price_inflections,
     OutcomeDefinition,
     default_outcome_definition,
     learn_pre_surge_signal_logic,
+    build_historical_cases_from_packets,
     match_controls,
 )
 from stock_opportunity_agent.config import AgentConfig, StorageConfig
-from stock_opportunity_agent.data import SecurityListing, build_research_packet, company_profile_from_features
+from stock_opportunity_agent.data import PriceBar, SecurityListing, build_research_packet, company_profile_from_features
+from stock_opportunity_agent.llm.openai import OpenAIChatClient
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -26,12 +30,31 @@ from stock_opportunity_agent.models import (
 )
 from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
-from stock_opportunity_agent.research import HeuristicBlindCaseResearcher
+from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher
 from stock_opportunity_agent.signals import measure_packet_signals
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
 AS_OF = date(2026, 5, 3)
+
+
+class FakeOpenAITransport:
+    def __init__(self, text: str) -> None:
+        self.text = text
+        self.calls = []
+
+    def post_json(self, url, headers, payload):
+        self.calls.append((url, headers, payload))
+        return {
+            "id": "resp_test",
+            "model": "gpt-5.4-mini",
+            "output": [
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": self.text}],
+                }
+            ],
+        }
 
 
 def version() -> VersionStamp:
@@ -182,6 +205,96 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(matches[0].winner_case_id, "winner-1")
         self.assertEqual(matches[0].control_case_ids, ("control-1",))
 
+    def test_factor_inflection_detection_finds_breakout_before_surge(self) -> None:
+        bars = []
+        start = date(2026, 1, 1)
+        close = 50.0
+        for index in range(90):
+            if index == 30:
+                close *= 1.25
+                volume = 4_000_000
+            elif index > 30:
+                close *= 1.025
+                volume = 2_500_000
+            else:
+                close *= 1.001
+                volume = 1_000_000
+            bars.append(
+                PriceBar(
+                    symbol="BRK",
+                    as_of_date=start + timedelta(days=index),
+                    open=close,
+                    high=close,
+                    low=close,
+                    close=close,
+                    volume=volume,
+                    source="fixture",
+                    retrieved_at=STAMP,
+                )
+            )
+
+        candidates = detect_price_inflections(
+            "BRK",
+            bars,
+            window_start=start,
+            window_end=start + timedelta(days=89),
+            min_forward_return=0.30,
+        )
+
+        self.assertTrue(candidates)
+        self.assertEqual(candidates[0].method, "price_volume_factor")
+
+    def test_historical_packet_builder_uses_pre_inflection_slices(self) -> None:
+        anchor = date(2026, 7, 1)
+        start = anchor - timedelta(days=220)
+        bars = []
+        close = 50.0
+        for index in range(430):
+            current_date = start + timedelta(days=index)
+            if current_date > anchor:
+                close *= 1.006
+            bars.append(
+                PriceBar(
+                    symbol="SLI",
+                    as_of_date=current_date,
+                    open=close,
+                    high=close,
+                    low=close,
+                    close=close,
+                    volume=1_000_000,
+                    source="fixture",
+                    retrieved_at=STAMP,
+                )
+            )
+        listing = SecurityListing(
+            symbol="SLI",
+            name="Slice Corp.",
+            exchange="NASDAQ",
+            asset_type="common_stock",
+            status="active",
+            source="fixture",
+            retrieved_at=STAMP,
+        )
+        features = [
+            feature("SLI", "profile.sector", "Semiconductors"),
+            feature("SLI", "profile.industry", "Accelerators"),
+            feature("SLI", "valuation.market_cap_usd", 12_000_000_000.0),
+            feature("SLI", "price.average_daily_dollar_volume_20d", 50_000_000.0),
+        ]
+
+        cases = build_historical_cases_from_packets(
+            listings=[listing],
+            bars_by_symbol={"SLI": bars},
+            features_by_symbol={"SLI": features},
+            version=version(),
+            outcome_definition=default_outcome_definition(),
+            slice_plan=CaseSlicePlan(),
+            inflection_dates_by_symbol={"SLI": anchor},
+        )
+
+        self.assertEqual([case.packet.as_of.as_of_date for case in cases], [anchor - timedelta(days=180), anchor - timedelta(days=90), anchor - timedelta(days=30)])
+        self.assertTrue(all(case.outcome_start_date > anchor for case in cases))
+
     def test_heuristic_blind_researcher_does_not_need_future_label(self) -> None:
         case = make_case(
             "winner-1",
@@ -200,6 +313,32 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(analysis.case_id, "winner-1")
         self.assertEqual(analysis.as_of_date, AS_OF.isoformat())
         self.assertTrue(analysis.pre_surge_signals)
+
+    def test_openai_blind_researcher_masks_company_identity_and_uses_no_tools(self) -> None:
+        case = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+        )
+        transport = FakeOpenAITransport(
+            "{\"expectation_gap\":\"gap\",\"pre_surge_signals\":[\"signal\"],"
+            "\"contrary_evidence\":[\"risk\"],\"catalyst_watch\":[\"watch\"],\"confidence\":0.4}"
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        OpenAIBlindCaseResearcher(client).analyze(case)
+
+        payload = transport.calls[0][2]
+        prompt_text = payload["input"][1]["content"][0]["text"]
+        self.assertNotIn("tools", payload)
+        self.assertIn("\"symbol\": \"MASKED\"", prompt_text)
+        self.assertNotIn("WINNER", prompt_text)
 
     def test_cold_start_orchestration_writes_manifest_and_signal_logic(self) -> None:
         cases = [
@@ -242,8 +381,10 @@ class ColdStartSignalTests(TestCase):
             self.assertTrue(output.signal_logic_path.exists())
             self.assertTrue(output.signal_definitions_path.exists())
             self.assertTrue(output.blind_analysis_path.exists())
+            self.assertTrue(output.inflection_analysis_path.exists())
             self.assertTrue(library.definitions_path.exists())
             self.assertIn("sig-fundamental-revenue-acceleration", output.signal_logic_path.read_text())
+            self.assertIn("inflection_analyses", output.manifest_path.read_text())
             self.assertIn("matched_control_sets", output.manifest_path.read_text())
             self.assertTrue(library.read_definitions())
 

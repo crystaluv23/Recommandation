@@ -135,6 +135,9 @@ class OpenAIChatClient:
         *,
         max_output_tokens: int | None = None,
         response_format: Mapping[str, Any] | None = None,
+        tools: list[Mapping[str, Any]] | None = None,
+        tool_choice: str | Mapping[str, Any] | None = None,
+        include: list[str] | None = None,
     ) -> ChatResponse:
         """Send messages to the OpenAI Responses API and return assistant text."""
 
@@ -151,6 +154,12 @@ class OpenAIChatClient:
             payload["max_output_tokens"] = max_output_tokens
         if response_format is not None:
             payload["text"] = {"format": dict(response_format)}
+        if tools is not None:
+            payload["tools"] = [dict(tool) for tool in tools]
+        if tool_choice is not None:
+            payload["tool_choice"] = tool_choice
+        if include is not None:
+            payload["include"] = list(include)
 
         headers = {"Authorization": f"Bearer {self.api_key}"}
         raw = self.transport.post_json(f"{self.base_url}/responses", headers, payload)

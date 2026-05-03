@@ -1,6 +1,6 @@
 # Python Runtime for Tests
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 

@@ -34,6 +34,8 @@ Active child specs:
 
 - [`research/cold_start.md`](research/cold_start.md): blind as-of-date LLM
   analysis for historical cold-start cases.
+- [`research/inflection_discovery.md`](research/inflection_discovery.md):
+  web-enabled retrospective inflection discovery before blind analysis.
 
 ## Responsibilities
 

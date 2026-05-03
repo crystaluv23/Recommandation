@@ -7,6 +7,11 @@ from stock_opportunity_agent.cases.learning import (
     SignalCaseStats,
     learn_pre_surge_signal_logic,
 )
+from stock_opportunity_agent.cases.inflections import (
+    InflectionCandidate,
+    detect_price_inflections,
+    fallback_inflection_from_case,
+)
 from stock_opportunity_agent.cases.matching import (
     ControlMatchCriteria,
     MatchedControlSet,
@@ -29,6 +34,7 @@ __all__ = [
     "ColdStartLearningResult",
     "ControlMatchCriteria",
     "HistoricalCase",
+    "InflectionCandidate",
     "MatchedControlSet",
     "OutcomeDefinition",
     "OutcomeObservation",
@@ -37,6 +43,8 @@ __all__ = [
     "apply_matched_groups",
     "build_historical_cases_from_packets",
     "default_outcome_definition",
+    "detect_price_inflections",
+    "fallback_inflection_from_case",
     "label_price_outcome",
     "learn_pre_surge_signal_logic",
     "match_controls",

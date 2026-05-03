@@ -19,7 +19,7 @@ from stock_opportunity_agent.models import Catalyst, FeatureRecord, VersionStamp
 class CaseSlicePlan:
     """As-of offsets used before an outcome window starts."""
 
-    offsets_days: tuple[int, ...] = (180, 120, 90, 60, 30)
+    offsets_days: tuple[int, ...] = (180, 90, 30)
 
     def as_of_dates(self, outcome_start_date: date) -> tuple[date, ...]:
         """Return sorted as-of dates before the outcome start."""
@@ -35,6 +35,7 @@ def build_historical_cases_from_packets(
     version: VersionStamp,
     outcome_definition: OutcomeDefinition,
     slice_plan: CaseSlicePlan | None = None,
+    inflection_dates_by_symbol: Mapping[str, date] | None = None,
     documents_by_symbol: Mapping[str, Iterable[DocumentRecord]] | None = None,
     catalysts_by_symbol: Mapping[str, Iterable[Catalyst]] | None = None,
 ) -> tuple[HistoricalCase, ...]:
@@ -46,6 +47,7 @@ def build_historical_cases_from_packets(
     """
 
     plan = slice_plan or CaseSlicePlan()
+    inflection_dates = {symbol.upper(): value for symbol, value in (inflection_dates_by_symbol or {}).items()}
     documents = documents_by_symbol or {}
     catalysts = catalysts_by_symbol or {}
     cases: list[HistoricalCase] = []
@@ -54,12 +56,17 @@ def build_historical_cases_from_packets(
         bars = list(bars_by_symbol.get(symbol, ()))
         if not bars:
             continue
-        for as_of_date in plan.as_of_dates(min(bar.as_of_date for bar in bars) + timedelta(days=outcome_definition.horizon_days)):
-            if as_of_date >= max(bar.as_of_date for bar in bars):
-                continue
-            try:
-                label, observation = label_price_outcome(symbol, bars, as_of_date, outcome_definition)
-            except Exception:
+        anchor_date = inflection_dates.get(symbol)
+        if anchor_date is None:
+            continue
+        try:
+            label, observation = label_price_outcome(symbol, bars, anchor_date, outcome_definition)
+        except Exception:
+            continue
+        if label.value == "unlabeled":
+            continue
+        for as_of_date in plan.as_of_dates(anchor_date):
+            if as_of_date >= anchor_date:
                 continue
             if label.value == "unlabeled":
                 continue

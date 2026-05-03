@@ -1,0 +1,177 @@
+{
+  "inflection_analyses": [
+    {
+      "candidates": [
+        {
+          "evidence": [
+            "20d_return=0.2434",
+            "volume_expansion=3.0000",
+            "forward_return_from_candidate=3.4484"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-02",
+          "method": "price_volume_factor",
+          "score": 0.8223,
+          "symbol": "AIX1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3477",
+            "volume_expansion=0.4035",
+            "forward_return_from_candidate=3.0674"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-11",
+          "method": "price_volume_factor",
+          "score": 0.7769,
+          "symbol": "AIX1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3598",
+            "volume_expansion=0.3483",
+            "forward_return_from_candidate=3.0271"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-12",
+          "method": "price_volume_factor",
+          "score": 0.7697,
+          "symbol": "AIX1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3357",
+            "volume_expansion=0.4634",
+            "forward_return_from_candidate=3.1080"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-10",
+          "method": "price_volume_factor",
+          "score": 0.7688,
+          "symbol": "AIX1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3238",
+            "volume_expansion=0.5287",
+            "forward_return_from_candidate=3.1491"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-09",
+          "method": "price_volume_factor",
+          "score": 0.762,
+          "symbol": "AIX1"
+        }
+      ],
+      "case_id": "winner-accelerator-1",
+      "raw_text": "factor price-volume scan",
+      "symbol": "AIX1",
+      "web_enabled": false
+    },
+    {
+      "candidates": [
+        {
+          "evidence": [
+            "20d_return=0.2434",
+            "volume_expansion=3.0000",
+            "forward_return_from_candidate=3.4484"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-02",
+          "method": "price_volume_factor",
+          "score": 0.8223,
+          "symbol": "PWR1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3477",
+            "volume_expansion=0.4035",
+            "forward_return_from_candidate=3.0674"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-11",
+          "method": "price_volume_factor",
+          "score": 0.7769,
+          "symbol": "PWR1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3598",
+            "volume_expansion=0.3483",
+            "forward_return_from_candidate=3.0271"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-12",
+          "method": "price_volume_factor",
+          "score": 0.7697,
+          "symbol": "PWR1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3357",
+            "volume_expansion=0.4634",
+            "forward_return_from_candidate=3.1080"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-10",
+          "method": "price_volume_factor",
+          "score": 0.7688,
+          "symbol": "PWR1"
+        },
+        {
+          "evidence": [
+            "20d_return=0.3238",
+            "volume_expansion=0.5287",
+            "forward_return_from_candidate=3.1491"
+          ],
+          "explanation": "Candidate identified by 20-day price breakout, volume expansion, and subsequent 180-day forward strength.",
+          "inflection_date": "2026-06-09",
+          "method": "price_volume_factor",
+          "score": 0.762,
+          "symbol": "PWR1"
+        }
+      ],
+      "case_id": "winner-power-1",
+      "raw_text": "factor price-volume scan",
+      "symbol": "PWR1",
+      "web_enabled": false
+    },
+    {
+      "candidates": [
+        {
+          "evidence": [
+            "Price/volume scan ran but found no candidate above the threshold."
+          ],
+          "explanation": "Fallback uses the case outcome start because no qualifying price/volume inflection was found.",
+          "inflection_date": "2026-05-04",
+          "method": "case_outcome_start_fallback",
+          "score": 0.25,
+          "symbol": "AIC1"
+        }
+      ],
+      "case_id": "control-accelerator-1",
+      "raw_text": "factor price-volume scan",
+      "symbol": "AIC1",
+      "web_enabled": false
+    },
+    {
+      "candidates": [
+        {
+          "evidence": [
+            "Price/volume scan ran but found no candidate above the threshold."
+          ],
+          "explanation": "Fallback uses the case outcome start because no qualifying price/volume inflection was found.",
+          "inflection_date": "2026-05-04",
+          "method": "case_outcome_start_fallback",
+          "score": 0.25,
+          "symbol": "PWF1"
+        }
+      ],
+      "case_id": "failure-power-1",
+      "raw_text": "factor price-volume scan",
+      "symbol": "PWF1",
+      "web_enabled": false
+    }
+  ],
+  "run_id": "cold-start-seed-2026-05-03"
+}

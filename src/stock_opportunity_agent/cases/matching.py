@@ -24,6 +24,7 @@ class ControlMatchCriteria:
     same_sector_required: bool = True
     max_market_cap_log_gap: float = 1.25
     max_prior_return_gap: float = 0.35
+    max_valuation_score_gap: float = 0.50
     max_controls_per_winner: int = 3
 
     def __post_init__(self) -> None:
@@ -33,6 +34,8 @@ class ControlMatchCriteria:
             raise ValidationError("max_market_cap_log_gap cannot be negative")
         if self.max_prior_return_gap < 0:
             raise ValidationError("max_prior_return_gap cannot be negative")
+        if self.max_valuation_score_gap < 0:
+            raise ValidationError("max_valuation_score_gap cannot be negative")
         if self.max_controls_per_winner < 1:
             raise ValidationError("max_controls_per_winner must be at least 1")
 
@@ -127,6 +130,9 @@ def _eligible_control(
     prior_gap = _abs_feature_gap(winner.packet.features, control.packet.features, "price.return_120d")
     if prior_gap is not None and prior_gap > criteria.max_prior_return_gap:
         return False
+    valuation_gap = _valuation_score_gap(winner.packet.features, control.packet.features)
+    if valuation_gap is not None and valuation_gap > criteria.max_valuation_score_gap:
+        return False
     return True
 
 
@@ -138,9 +144,17 @@ def _match_distance(
     distance = 0.0
     if criteria.same_sector_required and winner.packet.company.industry != control.packet.company.industry:
         distance += 0.25
-    distance += _abs_log_gap(winner.packet.company.market_cap_usd, control.packet.company.market_cap_usd) or 0.5
-    distance += _abs_feature_gap(winner.packet.features, control.packet.features, "price.return_120d") or 0.25
-    distance += 0.5 * (_abs_feature_gap(winner.packet.features, control.packet.features, "valuation.pe_ratio") or 0.25)
+    distance += _normalized_gap(
+        _abs_log_gap(winner.packet.company.market_cap_usd, control.packet.company.market_cap_usd),
+        criteria.max_market_cap_log_gap,
+        missing=0.5,
+    )
+    distance += _normalized_gap(
+        _abs_feature_gap(winner.packet.features, control.packet.features, "price.return_120d"),
+        criteria.max_prior_return_gap,
+        missing=0.5,
+    )
+    distance += 0.5 * (_valuation_score_gap(winner.packet.features, control.packet.features) or 0.5)
     return distance
 
 
@@ -171,3 +185,41 @@ def _abs_log_gap(left: float | None, right: float | None) -> float | None:
     if left is None or right is None or left <= 0 or right <= 0:
         return None
     return abs(log(left) - log(right))
+
+
+def _valuation_score_gap(
+    left_features: list[FeatureRecord],
+    right_features: list[FeatureRecord],
+) -> float | None:
+    left = _valuation_score(left_features)
+    right = _valuation_score(right_features)
+    if left is None or right is None:
+        return None
+    return abs(left - right)
+
+
+def _valuation_score(features: list[FeatureRecord]) -> float | None:
+    pe = _feature_value(features, "valuation.pe_ratio")
+    ps = _feature_value(features, "valuation.price_to_sales_ttm")
+    scores = []
+    if pe is not None:
+        scores.append(_bounded(pe, floor=0, ceiling=80))
+    if ps is not None:
+        scores.append(_bounded(ps, floor=0, ceiling=20))
+    if not scores:
+        return None
+    return sum(scores) / len(scores)
+
+
+def _normalized_gap(value: float | None, max_value: float, *, missing: float) -> float:
+    if value is None:
+        return missing
+    if max_value <= 0:
+        return 1.0
+    return min(1.0, value / max_value)
+
+
+def _bounded(value: float, *, floor: float, ceiling: float) -> float:
+    if ceiling <= floor:
+        return 0.0
+    return max(0.0, min(1.0, (value - floor) / (ceiling - floor)))

@@ -23,3 +23,4 @@
 - 2026-05-03: Split retrospective surge/failure/control labeling into a versioned `cases/outcomes` submodule so cold-start, monthly review, and future definition experiments can share and compare outcome rules.
 - 2026-05-03: Added memory for the repeated Python runtime mismatch during tests so future validation uses the bundled Python 3.11+ runtime instead of system Python.
 - 2026-05-03: Extended cold start toward first real execution with control matching, historical packet construction, blind case research interfaces, and a file-backed signal library.
+- 2026-05-03: Added retrospective inflection discovery with factor and OpenAI web-search paths, while keeping blind case analysis masked and web-search disabled.

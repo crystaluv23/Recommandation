@@ -12,16 +12,20 @@ records and retrospective outcome labels.
 
 The submodule exposes:
 
-- `CaseSlicePlan`: pre-outcome as-of offsets such as T-180/T-120/T-90/T-60/T-30.
+- `CaseSlicePlan`: pre-inflection/as-of offsets, defaulting to T-180/T-90/T-30.
 - `build_historical_cases_from_packets`: bridge from data-layer listings,
   prices, features, documents, and catalysts into labeled `HistoricalCase`
-  records with `ResearchPacket` inputs.
+  records with `ResearchPacket` inputs, using supplied inflection dates as the
+  anchor for T-180/T-90/T-30 slices.
 
 ## Invariants
 
-- Forward outcome data can label the case but cannot enter the packet evidence.
+- Forward outcome data after the inflection anchor can label the case but cannot
+  enter the packet evidence.
 - Each packet is assembled at its own as-of date with the data-layer point-in-time
   builder.
+- Historical slices should be before the inflection anchor, not after the surge
+  is already visible.
 - Missing or insufficient future bars should skip the case rather than invent a
   label.
 

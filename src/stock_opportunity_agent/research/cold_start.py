@@ -80,8 +80,9 @@ class HeuristicBlindCaseResearcher:
 class OpenAIBlindCaseResearcher:
     """OpenAI-backed blind as-of-date researcher."""
 
-    def __init__(self, client: OpenAIChatClient) -> None:
+    def __init__(self, client: OpenAIChatClient, *, mask_identity: bool = True) -> None:
         self.client = client
+        self.mask_identity = mask_identity
 
     def analyze(self, case: HistoricalCase) -> BlindCaseAnalysis:
         """Analyze a historical case with future outcome metadata excluded."""
@@ -94,10 +95,11 @@ class OpenAIBlindCaseResearcher:
                     (
                         "You are doing blind historical stock research. Use only the supplied as-of packet. "
                         "Do not assume future outcomes, do not ask why the stock later moved, and do not use "
-                        "any data after the packet as_of_date. Return strict JSON."
+                        "any data after the packet as_of_date. Web search is disabled for this step. "
+                        "Treat any masked identity as intentional. Return strict JSON."
                     ),
                 ),
-                ChatMessage("user", _packet_prompt(packet)),
+                ChatMessage("user", _packet_prompt(packet, mask_identity=self.mask_identity)),
             ],
             max_output_tokens=1200,
             response_format={"type": "json_object"},
@@ -105,14 +107,38 @@ class OpenAIBlindCaseResearcher:
         return _analysis_from_json(case, response.output_text)
 
 
-def _packet_prompt(packet: ResearchPacket) -> str:
+def _packet_prompt(packet: ResearchPacket, *, mask_identity: bool = True) -> str:
+    company = packet.company.to_dict()
+    features = [feature.to_dict() for feature in packet.features]
+    evidence = [item.to_dict() for item in packet.evidence]
+    catalysts = [catalyst.to_dict() for catalyst in packet.catalysts]
+    if mask_identity:
+        company = {
+            **company,
+            "ticker": {
+                **company["ticker"],
+                "symbol": "MASKED",
+                "company_name": "MASKED",
+                "figi": None,
+            },
+        }
+        features = [_masked_source_fields(feature) for feature in features]
+        evidence = [_masked_source_fields(item) for item in evidence]
+        catalysts = [
+            {
+                **catalyst,
+                "evidence": [_masked_source_fields(item) for item in catalyst["evidence"]],
+            }
+            for catalyst in catalysts
+        ]
     packet_data = {
         "packet_id": packet.packet_id,
         "as_of_date": packet.as_of.as_of_date.isoformat(),
-        "company": packet.company.to_dict(),
-        "features": [feature.to_dict() for feature in packet.features],
-        "evidence": [item.to_dict() for item in packet.evidence],
-        "catalysts": [catalyst.to_dict() for catalyst in packet.catalysts],
+        "identity_masked": mask_identity,
+        "company": company,
+        "features": features,
+        "evidence": evidence,
+        "catalysts": catalysts,
         "required_json_schema": {
             "expectation_gap": "string",
             "pre_surge_signals": ["string"],
@@ -122,6 +148,15 @@ def _packet_prompt(packet: ResearchPacket) -> str:
         },
     }
     return json.dumps(packet_data, indent=2, sort_keys=True)
+
+
+def _masked_source_fields(record: dict[str, Any]) -> dict[str, Any]:
+    masked = dict(record)
+    if "source_id" in masked:
+        masked["source_id"] = "MASKED"
+    if "source_url" in masked:
+        masked["source_url"] = None
+    return masked
 
 
 def _analysis_from_json(case: HistoricalCase, text: str) -> BlindCaseAnalysis:

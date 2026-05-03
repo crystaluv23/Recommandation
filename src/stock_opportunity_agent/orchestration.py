@@ -24,6 +24,11 @@ from stock_opportunity_agent.research.cold_start import (
     BlindCaseResearcher,
     HeuristicBlindCaseResearcher,
 )
+from stock_opportunity_agent.research.inflection_discovery import (
+    HeuristicInflectionResearcher,
+    InflectionResearchResult,
+    InflectionResearcher,
+)
 
 
 @dataclass(frozen=True)
@@ -36,9 +41,11 @@ class ColdStartRunOutput:
     signal_logic_path: Path
     signal_definitions_path: Path
     observations_path: Path
+    inflection_analysis_path: Path
     blind_analysis_path: Path
     signal_library_dir: Path | None
     result: ColdStartLearningResult
+    inflection_analyses: tuple[InflectionResearchResult, ...]
     blind_analyses: tuple[BlindCaseAnalysis, ...]
 
 
@@ -51,6 +58,7 @@ def run_cold_start_case_learning(
     created_at: datetime | None = None,
     signal_version: str | None = None,
     blind_researcher: BlindCaseResearcher | None = None,
+    inflection_researcher: InflectionResearcher | None = None,
     signal_library: FileSignalLibrary | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
 ) -> ColdStartRunOutput:
@@ -64,6 +72,8 @@ def run_cold_start_case_learning(
     input_cases = list(cases)
     matched_sets = match_controls(input_cases, control_match_criteria) if control_match_criteria is not None else ()
     case_list = list(apply_matched_groups(input_cases, matched_sets)) if matched_sets else input_cases
+    active_inflection_researcher = inflection_researcher or HeuristicInflectionResearcher()
+    inflection_analyses = tuple(active_inflection_researcher.discover(case) for case in case_list)
     researcher = blind_researcher or HeuristicBlindCaseResearcher()
     blind_analyses = tuple(researcher.analyze(case) for case in case_list)
     result = learn_pre_surge_signal_logic(case_list, signal_version=active_signal_version)
@@ -73,6 +83,7 @@ def run_cold_start_case_learning(
     signal_logic_path = base_dir / "pre_surge_signal_logic.json"
     signal_definitions_path = base_dir / "signal_definitions.json"
     observations_path = base_dir / "case_signal_observations.json"
+    inflection_analysis_path = base_dir / "inflection_analyses.json"
     blind_analysis_path = base_dir / "blind_case_analyses.json"
     manifest_path = base_dir / "manifest.json"
 
@@ -104,6 +115,13 @@ def run_cold_start_case_learning(
         },
     )
     _write_json(
+        inflection_analysis_path,
+        {
+            "run_id": active_run_id,
+            "inflection_analyses": [analysis.to_dict() for analysis in inflection_analyses],
+        },
+    )
+    _write_json(
         blind_analysis_path,
         {
             "run_id": active_run_id,
@@ -129,6 +147,7 @@ def run_cold_start_case_learning(
             "pre_surge_signal_logic": signal_logic_path,
             "signal_definitions": signal_definitions_path,
             "case_signal_observations": observations_path,
+            "inflection_analyses": inflection_analysis_path,
             "blind_case_analyses": blind_analysis_path,
         },
         signal_library=signal_library,
@@ -142,9 +161,11 @@ def run_cold_start_case_learning(
         signal_logic_path=signal_logic_path,
         signal_definitions_path=signal_definitions_path,
         observations_path=observations_path,
+        inflection_analysis_path=inflection_analysis_path,
         blind_analysis_path=blind_analysis_path,
         signal_library_dir=signal_library.root_dir if signal_library is not None else None,
         result=result,
+        inflection_analyses=inflection_analyses,
         blind_analyses=blind_analyses,
     )
 
@@ -208,14 +229,15 @@ def _manifest(
             "measured_signal_count": len(result.signal_logic),
             "promoted_signal_count": len(result.signal_definitions),
             "promoted_signal_ids": [definition.signal_id for definition in result.signal_definitions],
+            "inflection_analysis_count": len(cases),
             "blind_analysis_count": len(cases),
             "signal_library_dir": str(signal_library.root_dir) if signal_library is not None else None,
         },
         "warnings": list(result.warnings),
         "assumptions": [
             "Winner, control, and failure labels were produced before signal learning.",
-            "Matched control construction is not automated in this MVP.",
-            "Only point-in-time ResearchPacket features and known catalysts are measured.",
+            "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
+            "Blind analysis uses only point-in-time ResearchPacket features and known catalysts.",
         ],
     }
 
