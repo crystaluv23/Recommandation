@@ -1,7 +1,7 @@
 # Themes
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -22,6 +22,13 @@ Expected outputs:
 - stage history for themes and segments
 - weekly theme-change summaries with upgraded, downgraded, newly observed, and crowded segments
 
+Initial implementation provides `build_cold_start_theme_maps`, which initializes
+theme and segment hypotheses from cold-start historical cases and learned signal
+observations. It emits serializable `ThemeMap` records with segment stage,
+timing/transmission scores, leading indicators, candidate symbols, validation
+state, risks, and crowdedness flags. This is a cold-start initializer, not full
+live theme discovery.
+
 ## Responsibilities
 
 - Identify current and emerging themes.
@@ -32,6 +39,9 @@ Expected outputs:
 - Record why a segment is becoming more or less central in the transmission chain.
 - Mark late-stage consensus or valuation-exhausted segments so the scanner and scorer do not over-reward already crowded themes.
 - Preserve leading indicators for each segment, such as demand-source metrics, backlog, pricing, margin, analyst revision, customer commentary, peer read-throughs, and relative strength when applicable.
+- During cold start, group historical cases by supplied `theme_ids` or sector
+  fallback, then use segment industries, catalysts, and learned signals to seed
+  early industry-chain hypotheses.
 
 ## Transmission Stage Scale
 

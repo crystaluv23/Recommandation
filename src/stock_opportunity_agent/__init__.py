@@ -22,6 +22,7 @@ from stock_opportunity_agent.models import (
     WatchlistEntry,
 )
 from stock_opportunity_agent.orchestration import ColdStartRunOutput, run_cold_start_case_learning
+from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start_theme_maps
 
 __all__ = [
     "AgentConfig",
@@ -42,9 +43,11 @@ __all__ = [
     "SignalDefinition",
     "Thesis",
     "ThemeMap",
+    "ThemeMapBuildResult",
     "TickerRef",
     "VersionStamp",
     "WatchlistEntry",
+    "build_cold_start_theme_maps",
     "load_config",
     "run_cold_start_case_learning",
 ]

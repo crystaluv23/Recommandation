@@ -28,11 +28,12 @@ from stock_opportunity_agent.models import (
     SignalDefinition,
     VersionStamp,
 )
-from stock_opportunity_agent.memory import FileSignalLibrary
+from stock_opportunity_agent.memory import FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher
 from stock_opportunity_agent.research.inflection_discovery import CompositeInflectionResearcher, HeuristicInflectionResearcher
 from stock_opportunity_agent.signals import measure_packet_signals
+from stock_opportunity_agent.themes import build_cold_start_theme_maps
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -374,6 +375,7 @@ class ColdStartSignalTests(TestCase):
         with TemporaryDirectory() as tmp:
             config = AgentConfig(storage=StorageConfig(reports_dir=tmp))
             library = FileSignalLibrary(Path(tmp) / "memory" / "signals")
+            theme_library = FileThemeLibrary(Path(tmp) / "memory" / "themes")
             progress_messages = []
             output = run_cold_start_case_learning(
                 cases,
@@ -381,6 +383,7 @@ class ColdStartSignalTests(TestCase):
                 run_id="test-cold-start",
                 created_at=STAMP,
                 signal_library=library,
+                theme_library=theme_library,
                 control_match_criteria=ControlMatchCriteria(max_controls_per_winner=1),
                 progress=progress_messages.append,
             )
@@ -390,12 +393,18 @@ class ColdStartSignalTests(TestCase):
             self.assertTrue(output.signal_definitions_path.exists())
             self.assertTrue(output.blind_analysis_path.exists())
             self.assertTrue(output.inflection_analysis_path.exists())
+            self.assertTrue(output.theme_maps_path.exists())
             self.assertTrue(library.definitions_path.exists())
+            self.assertTrue(theme_library.theme_maps_path.exists())
             self.assertIn("sig-fundamental-revenue-acceleration", output.signal_logic_path.read_text())
             self.assertIn("inflection_analyses", output.manifest_path.read_text())
+            self.assertIn("theme_maps", output.manifest_path.read_text())
             self.assertIn("matched_control_sets", output.manifest_path.read_text())
             self.assertTrue(library.read_definitions())
+            self.assertTrue(theme_library.read_theme_maps())
+            self.assertTrue(output.theme_maps.theme_maps)
             self.assertTrue(any("discovering inflections" in message for message in progress_messages))
+            self.assertTrue(any("theme maps" in message for message in progress_messages))
             self.assertTrue(any("complete:" in message for message in progress_messages))
 
     def test_composite_inflection_keeps_factor_candidate_when_web_research_fails(self) -> None:
@@ -416,6 +425,43 @@ class ColdStartSignalTests(TestCase):
 
         self.assertEqual(len(result.candidates), 1)
         self.assertIn("FailingInflectionResearcher failed: provider unavailable", result.raw_text)
+
+    def test_cold_start_theme_maps_group_cases_by_theme_and_segment(self) -> None:
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+
+        result = build_cold_start_theme_maps(cases, learning)
+
+        self.assertEqual(len(result.theme_maps), 1)
+        theme = result.theme_maps[0]
+        self.assertEqual(theme.theme_id, "semiconductors")
+        self.assertIn("WINNER", theme.candidate_symbols)
+        self.assertIn("Accelerators", [segment.segment_name for segment in theme.segments])
+        self.assertTrue(theme.validation_state["data_evidence"])
+        self.assertTrue(any(segment.transmission_stage >= 3 for segment in theme.segments))
 
 
 def make_case(

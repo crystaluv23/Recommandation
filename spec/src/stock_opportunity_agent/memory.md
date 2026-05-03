@@ -29,6 +29,8 @@ Active child specs:
 
 - [`memory/signals.md`](memory/signals.md): file-backed local signal library
   for cold-start promoted signal definitions and learned signal logic.
+- [`memory/themes.md`](memory/themes.md): file-backed local theme library for
+  cold-start industry-chain maps.
 
 ## Collection Semantics
 

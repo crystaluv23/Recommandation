@@ -7,7 +7,7 @@ drivers.
 
 from __future__ import annotations
 
-from dataclasses import MISSING, dataclass, fields, is_dataclass
+from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from datetime import date, datetime
 from enum import Enum
 from types import UnionType
@@ -334,11 +334,17 @@ class SegmentAssessment(SerializableRecord):
     transmission_score: float
     evidence: list[EvidenceItem]
     risks: list[str]
+    transmission_stage: int = 0
+    candidate_symbols: list[str] = field(default_factory=list)
+    leading_indicators: list[str] = field(default_factory=list)
+    crowdedness_flags: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         _require_non_empty(self.segment_name, "segment_name")
         _require_score(self.timing_score, "timing_score")
         _require_score(self.transmission_score, "transmission_score")
+        if not 0 <= self.transmission_stage <= 7:
+            raise ValidationError("transmission_stage must be between 0 and 7")
         if not self.evidence:
             raise ValidationError("segment assessment requires evidence")
 
@@ -354,10 +360,15 @@ class ThemeMap(SerializableRecord):
     leading_indicators: list[str]
     evidence: list[EvidenceItem]
     risks: list[str]
+    stage_scale_version: str = "theme-stage-v0.1"
+    candidate_symbols: list[str] = field(default_factory=list)
+    validation_state: dict[str, bool] = field(default_factory=dict)
+    crowdedness_flags: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         _require_non_empty(self.theme_id, "theme_id")
         _require_non_empty(self.name, "name")
+        _require_non_empty(self.stage_scale_version, "stage_scale_version")
         if not self.segments:
             raise ValidationError("theme map requires at least one segment")
         if not self.evidence:

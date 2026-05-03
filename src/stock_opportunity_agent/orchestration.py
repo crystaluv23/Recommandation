@@ -18,6 +18,7 @@ from stock_opportunity_agent.cases import (
 )
 from stock_opportunity_agent.config import AgentConfig
 from stock_opportunity_agent.memory.signals import FileSignalLibrary
+from stock_opportunity_agent.memory.themes import FileThemeLibrary
 from stock_opportunity_agent.models import VersionStamp
 from stock_opportunity_agent.research.cold_start import (
     BlindCaseAnalysis,
@@ -29,6 +30,7 @@ from stock_opportunity_agent.research.inflection_discovery import (
     InflectionResearchResult,
     InflectionResearcher,
 )
+from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start_theme_maps
 
 
 ProgressReporter = Callable[[str], None]
@@ -44,10 +46,13 @@ class ColdStartRunOutput:
     signal_logic_path: Path
     signal_definitions_path: Path
     observations_path: Path
+    theme_maps_path: Path
     inflection_analysis_path: Path
     blind_analysis_path: Path
     signal_library_dir: Path | None
+    theme_library_dir: Path | None
     result: ColdStartLearningResult
+    theme_maps: ThemeMapBuildResult
     inflection_analyses: tuple[InflectionResearchResult, ...]
     blind_analyses: tuple[BlindCaseAnalysis, ...]
 
@@ -63,6 +68,7 @@ def run_cold_start_case_learning(
     blind_researcher: BlindCaseResearcher | None = None,
     inflection_researcher: InflectionResearcher | None = None,
     signal_library: FileSignalLibrary | None = None,
+    theme_library: FileThemeLibrary | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
     progress: ProgressReporter | None = None,
 ) -> ColdStartRunOutput:
@@ -108,6 +114,10 @@ def run_cold_start_case_learning(
     result = learn_pre_surge_signal_logic(case_list, signal_version=active_signal_version)
     promoted = ", ".join(definition.signal_id for definition in result.signal_definitions) or "none"
     _report(progress, f"[cold-start] promoted {len(result.signal_definitions)} signal(s): {promoted}")
+    _report(progress, "[cold-start] building theme maps")
+    theme_maps = build_cold_start_theme_maps(case_list, result)
+    theme_summary = ", ".join(theme.theme_id for theme in theme_maps.theme_maps) or "none"
+    _report(progress, f"[cold-start] theme maps {len(theme_maps.theme_maps)}: {theme_summary}")
 
     base_dir = Path(output_dir) if output_dir is not None else Path(active_config.storage.reports_dir) / "cold_start" / active_run_id
     base_dir.mkdir(parents=True, exist_ok=True)
@@ -115,6 +125,7 @@ def run_cold_start_case_learning(
     signal_logic_path = base_dir / "pre_surge_signal_logic.json"
     signal_definitions_path = base_dir / "signal_definitions.json"
     observations_path = base_dir / "case_signal_observations.json"
+    theme_maps_path = base_dir / "theme_maps.json"
     inflection_analysis_path = base_dir / "inflection_analyses.json"
     blind_analysis_path = base_dir / "blind_case_analyses.json"
     manifest_path = base_dir / "manifest.json"
@@ -147,6 +158,13 @@ def run_cold_start_case_learning(
         },
     )
     _write_json(
+        theme_maps_path,
+        {
+            "run_id": active_run_id,
+            **theme_maps.to_dict(),
+        },
+    )
+    _write_json(
         inflection_analysis_path,
         {
             "run_id": active_run_id,
@@ -168,6 +186,13 @@ def run_cold_start_case_learning(
             created_at=created,
         )
         _report(progress, f"[cold-start] signal library updated at {signal_library.root_dir}")
+    if theme_library is not None:
+        theme_library.write_cold_start(
+            run_id=active_run_id,
+            theme_maps=theme_maps.theme_maps,
+            created_at=created,
+        )
+        _report(progress, f"[cold-start] theme library updated at {theme_library.root_dir}")
     manifest = _manifest(
         run_id=active_run_id,
         created_at=created,
@@ -180,10 +205,13 @@ def run_cold_start_case_learning(
             "pre_surge_signal_logic": signal_logic_path,
             "signal_definitions": signal_definitions_path,
             "case_signal_observations": observations_path,
+            "theme_maps": theme_maps_path,
             "inflection_analyses": inflection_analysis_path,
             "blind_case_analyses": blind_analysis_path,
         },
+        theme_maps=theme_maps,
         signal_library=signal_library,
+        theme_library=theme_library,
     )
     _write_json(manifest_path, manifest)
     _report(progress, f"[cold-start] manifest: {manifest_path}")
@@ -196,10 +224,13 @@ def run_cold_start_case_learning(
         signal_logic_path=signal_logic_path,
         signal_definitions_path=signal_definitions_path,
         observations_path=observations_path,
+        theme_maps_path=theme_maps_path,
         inflection_analysis_path=inflection_analysis_path,
         blind_analysis_path=blind_analysis_path,
         signal_library_dir=signal_library.root_dir if signal_library is not None else None,
+        theme_library_dir=theme_library.root_dir if theme_library is not None else None,
         result=result,
+        theme_maps=theme_maps,
         inflection_analyses=inflection_analyses,
         blind_analyses=blind_analyses,
     )
@@ -226,7 +257,9 @@ def _manifest(
     matched_sets: tuple[Any, ...],
     result: ColdStartLearningResult,
     output_paths: dict[str, Path],
+    theme_maps: ThemeMapBuildResult,
     signal_library: FileSignalLibrary | None,
+    theme_library: FileThemeLibrary | None,
 ) -> dict[str, Any]:
     labels: dict[str, int] = {}
     for case in cases:
@@ -264,15 +297,19 @@ def _manifest(
             "measured_signal_count": len(result.signal_logic),
             "promoted_signal_count": len(result.signal_definitions),
             "promoted_signal_ids": [definition.signal_id for definition in result.signal_definitions],
+            "theme_map_count": len(theme_maps.theme_maps),
+            "theme_ids": [theme.theme_id for theme in theme_maps.theme_maps],
             "inflection_analysis_count": len(cases),
             "blind_analysis_count": len(cases),
             "signal_library_dir": str(signal_library.root_dir) if signal_library is not None else None,
+            "theme_library_dir": str(theme_library.root_dir) if theme_library is not None else None,
         },
-        "warnings": list(result.warnings),
+        "warnings": list(result.warnings) + list(theme_maps.warnings),
         "assumptions": [
             "Winner, control, and failure labels were produced before signal learning.",
             "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
             "Blind analysis uses only point-in-time ResearchPacket features and known catalysts.",
+            "Cold-start theme maps initialize industry-chain hypotheses from supplied cases; they are not full live theme discovery.",
         ],
     }
 

@@ -36,6 +36,11 @@ Implementation may use dataclasses, Pydantic models, or typed dictionaries, but 
 
 Initial implementation uses standard-library dataclasses and enums in `src/stock_opportunity_agent/models.py`. `FeatureRecord` is the cross-module structured data contract used by the data layer and later scanner/scoring modules. These are domain records, not LLM provider adapters; model-provider API integrations belong under the research module.
 
+`ThemeMap` and `SegmentAssessment` carry the initial industry-chain map contract:
+stage scale version, segment transmission stage, timing/transmission scores,
+candidate symbols, leading indicators, validation state, risks, and crowdedness
+flags.
+
 ## Responsibilities
 
 - Define canonical field names and status enums.

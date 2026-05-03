@@ -2,7 +2,8 @@
   "assumptions": [
     "Winner, control, and failure labels were produced before signal learning.",
     "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
-    "Blind analysis uses only point-in-time ResearchPacket features and known catalysts."
+    "Blind analysis uses only point-in-time ResearchPacket features and known catalysts.",
+    "Cold-start theme maps initialize industry-chain hypotheses from supplied cases; they are not full live theme discovery."
   ],
   "config": {
     "config_version": "config-v0.1",
@@ -121,7 +122,8 @@
     "case_signal_observations": "reports/cold_start/seed-2026-05-03/case_signal_observations.json",
     "inflection_analyses": "reports/cold_start/seed-2026-05-03/inflection_analyses.json",
     "pre_surge_signal_logic": "reports/cold_start/seed-2026-05-03/pre_surge_signal_logic.json",
-    "signal_definitions": "reports/cold_start/seed-2026-05-03/signal_definitions.json"
+    "signal_definitions": "reports/cold_start/seed-2026-05-03/signal_definitions.json",
+    "theme_maps": "reports/cold_start/seed-2026-05-03/theme_maps.json"
   },
   "pipeline": "cold_start_case_learning",
   "result_summary": {
@@ -137,7 +139,13 @@
       "sig-valuation-room-with-growth",
       "sig-liquidity-expansion"
     ],
-    "signal_library_dir": ".agent_state/memory/signals"
+    "signal_library_dir": ".agent_state/memory/signals",
+    "theme_ids": [
+      "ai-accelerator-cycle",
+      "power-grid-cycle"
+    ],
+    "theme_library_dir": ".agent_state/memory/themes",
+    "theme_map_count": 2
   },
   "run_id": "cold-start-seed-2026-05-03",
   "versions": {

@@ -27,3 +27,4 @@
 - 2026-05-03: Added cold-start progress reporting so terminal runs show matching, inflection, blind-analysis, signal-promotion, and artifact-writing progress.
 - 2026-05-03: Confirmed the initial production cold-start historical winner selection window as the most recent one year rather than a 1-3 year lookback.
 - 2026-05-03: Added a dedicated OpenRouter LLM provider and cold-start CLI flags so OpenRouter web-search compatibility stays separate from the OpenAI adapter.
+- 2026-05-03: Implemented cold-start theme-map initialization so historical case learning also emits industry-chain segment hypotheses and a `theme_maps.json` artifact.

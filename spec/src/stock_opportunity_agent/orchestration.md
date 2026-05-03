@@ -26,12 +26,13 @@ show stages, intermediate summaries, warnings, and final artifact paths.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
-blind as-of analysis, and case learning, then writes
+blind as-of analysis, case learning, and initial theme-map construction, then writes
 `inflection_analyses.json`, `pre_surge_signal_logic.json`,
 `signal_definitions.json`, `case_signal_observations.json`,
-`blind_case_analyses.json`, and `manifest.json`. It can also write promoted
-definitions into the local signal library and apply versioned control-matching
-criteria when supplied. The remaining first-run blockers are the production
+`theme_maps.json`, `blind_case_analyses.json`, and `manifest.json`. It can also
+write promoted definitions into the local signal library, write cold-start theme
+maps into the local theme library, and apply versioned control-matching criteria
+when supplied. The remaining first-run blockers are the production
 outcome/matching definitions and OpenAI credentials for the non-heuristic
 researchers.
 

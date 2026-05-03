@@ -10,7 +10,7 @@ from pathlib import Path
 from stock_opportunity_agent.cases import ControlMatchCriteria, HistoricalCase, OutcomeDefinition, default_outcome_definition
 from stock_opportunity_agent.config import AgentConfig, PromptConfig
 from stock_opportunity_agent.data import PriceBar, SecurityListing, build_research_packet, company_profile_from_features
-from stock_opportunity_agent.memory import FileSignalLibrary
+from stock_opportunity_agent.memory import FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -183,6 +183,7 @@ def main() -> None:
         run_id="cold-start-seed-2026-05-03",
         created_at=STAMP,
         signal_library=FileSignalLibrary(".agent_state/memory/signals"),
+        theme_library=FileThemeLibrary(".agent_state/memory/themes"),
         control_match_criteria=ControlMatchCriteria(max_controls_per_winner=2),
         blind_researcher=researcher,
         inflection_researcher=inflection_researcher,
