@@ -21,6 +21,8 @@ Expected pipelines:
 - `review_gate`
 
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
+Longer-running pipelines should accept a progress reporter so CLI scripts can
+show stages, intermediate summaries, warnings, and final artifact paths.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
@@ -84,4 +86,5 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 
 ## Testing
 
-Tests should cover pipeline ordering, failure handling, run manifests, idempotent reruns, and correct handoff between modules.
+Tests should cover pipeline ordering, progress reporting, failure handling, run
+manifests, idempotent reruns, and correct handoff between modules.

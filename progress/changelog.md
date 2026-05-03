@@ -24,3 +24,4 @@
 - 2026-05-03: Added memory for the repeated Python runtime mismatch during tests so future validation uses the bundled Python 3.11+ runtime instead of system Python.
 - 2026-05-03: Extended cold start toward first real execution with control matching, historical packet construction, blind case research interfaces, and a file-backed signal library.
 - 2026-05-03: Added retrospective inflection discovery with factor and OpenAI web-search paths, while keeping blind case analysis masked and web-search disabled.
+- 2026-05-03: Added cold-start progress reporting so terminal runs show matching, inflection, blind-analysis, signal-promotion, and artifact-writing progress.

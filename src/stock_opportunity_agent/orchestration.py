@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 from stock_opportunity_agent.cases import (
     ColdStartLearningResult,
@@ -29,6 +29,9 @@ from stock_opportunity_agent.research.inflection_discovery import (
     InflectionResearchResult,
     InflectionResearcher,
 )
+
+
+ProgressReporter = Callable[[str], None]
 
 
 @dataclass(frozen=True)
@@ -61,25 +64,54 @@ def run_cold_start_case_learning(
     inflection_researcher: InflectionResearcher | None = None,
     signal_library: FileSignalLibrary | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
+    progress: ProgressReporter | None = None,
 ) -> ColdStartRunOutput:
     """Run cold-start case learning and persist auditable artifacts."""
 
     active_config = config or AgentConfig()
     created = created_at or datetime.now(timezone.utc)
     active_run_id = run_id or "cold-start-" + created.strftime("%Y%m%dT%H%M%SZ")
+    _report(progress, f"[cold-start] run_id={active_run_id}")
     version = _version_from_config(active_config)
     active_signal_version = signal_version or version.signal_version
     input_cases = list(cases)
+    _report(progress, f"[cold-start] loaded {len(input_cases)} case(s)")
     matched_sets = match_controls(input_cases, control_match_criteria) if control_match_criteria is not None else ()
     case_list = list(apply_matched_groups(input_cases, matched_sets)) if matched_sets else input_cases
+    if matched_sets:
+        for match in matched_sets:
+            controls = ", ".join(match.control_case_ids) if match.control_case_ids else "none"
+            warning = f" warnings={'; '.join(match.warnings)}" if match.warnings else ""
+            _report(progress, f"[cold-start] matched {match.winner_case_id} -> {controls}{warning}")
+    else:
+        _report(progress, "[cold-start] control matching skipped")
     active_inflection_researcher = inflection_researcher or HeuristicInflectionResearcher()
+    _report(progress, f"[cold-start] discovering inflections with {active_inflection_researcher.__class__.__name__}")
     inflection_analyses = tuple(active_inflection_researcher.discover(case) for case in case_list)
+    for analysis in inflection_analyses:
+        top = analysis.candidates[0] if analysis.candidates else None
+        if top is not None:
+            _report(
+                progress,
+                (
+                    f"[cold-start] inflection {analysis.case_id}: {top.inflection_date.isoformat()} "
+                    f"{top.method} score={top.score:.2f}"
+                ),
+            )
     researcher = blind_researcher or HeuristicBlindCaseResearcher()
+    _report(progress, f"[cold-start] running blind analysis with {researcher.__class__.__name__}")
     blind_analyses = tuple(researcher.analyze(case) for case in case_list)
+    for analysis in blind_analyses:
+        first_signal = analysis.pre_surge_signals[0] if analysis.pre_surge_signals else "no signal"
+        _report(progress, f"[cold-start] blind {analysis.case_id}: confidence={analysis.confidence:.2f}; {first_signal}")
+    _report(progress, "[cold-start] measuring deterministic packet signals")
     result = learn_pre_surge_signal_logic(case_list, signal_version=active_signal_version)
+    promoted = ", ".join(definition.signal_id for definition in result.signal_definitions) or "none"
+    _report(progress, f"[cold-start] promoted {len(result.signal_definitions)} signal(s): {promoted}")
 
     base_dir = Path(output_dir) if output_dir is not None else Path(active_config.storage.reports_dir) / "cold_start" / active_run_id
     base_dir.mkdir(parents=True, exist_ok=True)
+    _report(progress, f"[cold-start] writing artifacts to {base_dir}")
     signal_logic_path = base_dir / "pre_surge_signal_logic.json"
     signal_definitions_path = base_dir / "signal_definitions.json"
     observations_path = base_dir / "case_signal_observations.json"
@@ -135,6 +167,7 @@ def run_cold_start_case_learning(
             logic=result.signal_logic,
             created_at=created,
         )
+        _report(progress, f"[cold-start] signal library updated at {signal_library.root_dir}")
     manifest = _manifest(
         run_id=active_run_id,
         created_at=created,
@@ -153,6 +186,8 @@ def run_cold_start_case_learning(
         signal_library=signal_library,
     )
     _write_json(manifest_path, manifest)
+    _report(progress, f"[cold-start] manifest: {manifest_path}")
+    _report(progress, f"[cold-start] complete: {signal_logic_path}")
 
     return ColdStartRunOutput(
         run_id=active_run_id,
@@ -244,3 +279,8 @@ def _manifest(
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _report(progress: ProgressReporter | None, message: str) -> None:
+    if progress is not None:
+        progress(message)

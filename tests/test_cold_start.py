@@ -368,6 +368,7 @@ class ColdStartSignalTests(TestCase):
         with TemporaryDirectory() as tmp:
             config = AgentConfig(storage=StorageConfig(reports_dir=tmp))
             library = FileSignalLibrary(Path(tmp) / "memory" / "signals")
+            progress_messages = []
             output = run_cold_start_case_learning(
                 cases,
                 config=config,
@@ -375,6 +376,7 @@ class ColdStartSignalTests(TestCase):
                 created_at=STAMP,
                 signal_library=library,
                 control_match_criteria=ControlMatchCriteria(max_controls_per_winner=1),
+                progress=progress_messages.append,
             )
 
             self.assertTrue(output.manifest_path.exists())
@@ -387,6 +389,8 @@ class ColdStartSignalTests(TestCase):
             self.assertIn("inflection_analyses", output.manifest_path.read_text())
             self.assertIn("matched_control_sets", output.manifest_path.read_text())
             self.assertTrue(library.read_definitions())
+            self.assertTrue(any("discovering inflections" in message for message in progress_messages))
+            self.assertTrue(any("complete:" in message for message in progress_messages))
 
 
 def make_case(

@@ -170,8 +170,10 @@ def main() -> None:
         control_match_criteria=ControlMatchCriteria(max_controls_per_winner=2),
         blind_researcher=researcher,
         inflection_researcher=inflection_researcher,
+        progress=print if not args.quiet else None,
     )
-    print(output.signal_logic_path)
+    if args.quiet:
+        print(output.signal_logic_path)
 
 
 def _parse_args():
@@ -190,6 +192,11 @@ def _parse_args():
         "--output-dir",
         default="reports/cold_start/seed-2026-05-03",
         help="Directory for cold-start report artifacts.",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Only print the final signal-logic path.",
     )
     return parser.parse_args()
 
