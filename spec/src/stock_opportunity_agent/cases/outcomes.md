@@ -30,6 +30,10 @@ winner if return is at least 80%, control if return is between -10% and +20%,
 failure if return is at most -20%, and unlabeled otherwise or when too few
 trading days are available.
 
+For the initial production cold-start case selection, candidate winners should be
+drawn from the most recent one-year historical window. This selection window is
+separate from the forward outcome horizon used to label each candidate.
+
 ## Responsibilities
 
 - Keep outcome labels outside point-in-time packets and blind research inputs.

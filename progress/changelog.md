@@ -25,3 +25,4 @@
 - 2026-05-03: Extended cold start toward first real execution with control matching, historical packet construction, blind case research interfaces, and a file-backed signal library.
 - 2026-05-03: Added retrospective inflection discovery with factor and OpenAI web-search paths, while keeping blind case analysis masked and web-search disabled.
 - 2026-05-03: Added cold-start progress reporting so terminal runs show matching, inflection, blind-analysis, signal-promotion, and artifact-writing progress.
+- 2026-05-03: Confirmed the initial production cold-start historical winner selection window as the most recent one year rather than a 1-3 year lookback.

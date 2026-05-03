@@ -100,7 +100,7 @@ The system should be understood as four connected phases, not as one large monit
 Purpose: build the first signal library without survivorship bias or look-ahead bias.
 
 ```text
-find 1-3 year winners
+find winners from the most recent one-year historical window
 -> match 3-5 same-sector, similar-size failure controls per winner
 -> construct T-180 / T-120 / T-90 / T-60 / T-30 point-in-time packets
 -> run blind as-of-date LLM analysis

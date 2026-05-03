@@ -41,6 +41,8 @@ Active child specs:
 ## Responsibilities
 
 - Define winners programmatically, such as strong 6-month returns or top percentile outcomes.
+- For the initial production cold start, select retrospective winner candidates
+  from the most recent one-year historical window rather than a 1-3 year lookback.
 - Exclude mechanical jumps such as deterministic cash acquisitions when appropriate.
 - Match controls by sector, size, volatility, valuation, prior performance, and market environment after the user confirms the exact thresholds and matching method for the first implementation.
 - Construct time slices such as T-180, T-90, and T-30 before the chosen inflection anchor.
@@ -69,6 +71,8 @@ Active child specs:
 Before implementing automatic case selection and control matching, confirm:
 
 - exact winner definitions and return horizons,
+- the exact cutoff date semantics for the most recent one-year historical
+  selection window,
 - whether industry matching uses GICS, custom theme segments, ETF membership, or another taxonomy,
 - market cap, volatility, valuation, and prior-performance tolerance bands,
 - the number of matched controls per winner,
@@ -78,7 +82,9 @@ Before implementing automatic case selection and control matching, confirm:
 The first implementation isolates winner/failure/control labeling in
 `cases/outcomes.py`, with a conservative default definition, and provides an
 initial versioned matching criteria in `cases/matching.py`. The exact production
-winner and matching definitions still need confirmation before a real first run.
+winner threshold, cutoff-date semantics, and matching definitions still need
+confirmation before a real first run; the high-level lookback window is confirmed
+as the most recent one year.
 
 ## Testing
 
