@@ -1,13 +1,16 @@
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
 
 from stock_opportunity_agent.cases import (
     CaseOutcomeLabel,
+    ControlMatchCriteria,
     HistoricalCase,
     OutcomeDefinition,
     default_outcome_definition,
     learn_pre_surge_signal_logic,
+    match_controls,
 )
 from stock_opportunity_agent.config import AgentConfig, StorageConfig
 from stock_opportunity_agent.data import SecurityListing, build_research_packet, company_profile_from_features
@@ -21,7 +24,9 @@ from stock_opportunity_agent.models import (
     SignalDefinition,
     VersionStamp,
 )
+from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
+from stock_opportunity_agent.research import HeuristicBlindCaseResearcher
 from stock_opportunity_agent.signals import measure_packet_signals
 
 
@@ -128,6 +133,74 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("sig-market-early-confirmation", promoted)
         self.assertTrue(all(isinstance(definition, SignalDefinition) for definition in result.signal_definitions))
 
+    def test_control_matching_selects_same_sector_neutral_cases(self) -> None:
+        winner = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+            market_cap=12_000_000_000.0,
+            sector="Semiconductors",
+        )
+        control = make_case(
+            "control-1",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.03,
+            earnings_growth=-0.10,
+            margin=0.05,
+            return_20d=0.00,
+            return_60d=0.02,
+            target_upside=0.04,
+            catalyst_count=0,
+            market_cap=10_500_000_000.0,
+            sector="Semiconductors",
+        )
+        wrong_sector = make_case(
+            "control-2",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.03,
+            earnings_growth=-0.10,
+            margin=0.05,
+            return_20d=0.00,
+            return_60d=0.02,
+            target_upside=0.04,
+            catalyst_count=0,
+            market_cap=10_500_000_000.0,
+            sector="Retail",
+        )
+
+        matches = match_controls(
+            [winner, control, wrong_sector],
+            ControlMatchCriteria(max_controls_per_winner=2),
+        )
+
+        self.assertEqual(matches[0].winner_case_id, "winner-1")
+        self.assertEqual(matches[0].control_case_ids, ("control-1",))
+
+    def test_heuristic_blind_researcher_does_not_need_future_label(self) -> None:
+        case = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+        )
+
+        analysis = HeuristicBlindCaseResearcher().analyze(case)
+
+        self.assertEqual(analysis.case_id, "winner-1")
+        self.assertEqual(analysis.as_of_date, AS_OF.isoformat())
+        self.assertTrue(analysis.pre_surge_signals)
+
     def test_cold_start_orchestration_writes_manifest_and_signal_logic(self) -> None:
         cases = [
             make_case(
@@ -155,17 +228,24 @@ class ColdStartSignalTests(TestCase):
         ]
         with TemporaryDirectory() as tmp:
             config = AgentConfig(storage=StorageConfig(reports_dir=tmp))
+            library = FileSignalLibrary(Path(tmp) / "memory" / "signals")
             output = run_cold_start_case_learning(
                 cases,
                 config=config,
                 run_id="test-cold-start",
                 created_at=STAMP,
+                signal_library=library,
+                control_match_criteria=ControlMatchCriteria(max_controls_per_winner=1),
             )
 
             self.assertTrue(output.manifest_path.exists())
             self.assertTrue(output.signal_logic_path.exists())
             self.assertTrue(output.signal_definitions_path.exists())
+            self.assertTrue(output.blind_analysis_path.exists())
+            self.assertTrue(library.definitions_path.exists())
             self.assertIn("sig-fundamental-revenue-acceleration", output.signal_logic_path.read_text())
+            self.assertIn("matched_control_sets", output.manifest_path.read_text())
+            self.assertTrue(library.read_definitions())
 
 
 def make_case(
@@ -179,6 +259,8 @@ def make_case(
     return_60d: float,
     target_upside: float,
     catalyst_count: int,
+    market_cap: float = 15_000_000_000.0,
+    sector: str = "Semiconductors",
 ) -> HistoricalCase:
     symbol = case_id.split("-")[0].upper()
     close = 100.0
@@ -194,9 +276,9 @@ def make_case(
         feature(symbol, "price.average_daily_dollar_volume_60d", 90_000_000.0),
         feature(symbol, "valuation.pe_ratio", 25.0),
         feature(symbol, "valuation.price_to_sales_ttm", 5.0),
-        feature(symbol, "valuation.market_cap_usd", 15_000_000_000.0),
+        feature(symbol, "valuation.market_cap_usd", market_cap),
         feature(symbol, "analyst.target_price", close * (1 + target_upside)),
-        feature(symbol, "profile.sector", "Semiconductors"),
+        feature(symbol, "profile.sector", sector),
         feature(symbol, "profile.industry", "Accelerators"),
     ]
     listing = SecurityListing(

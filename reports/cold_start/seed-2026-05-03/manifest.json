@@ -87,7 +87,25 @@
       "failure": 1,
       "winner": 2
     },
-    "matched_group_count": 2,
+    "matched_control_sets": [
+      {
+        "control_case_ids": [
+          "control-accelerator-1"
+        ],
+        "criteria_id": "control-match-v0.1",
+        "warnings": [],
+        "winner_case_id": "winner-accelerator-1"
+      },
+      {
+        "control_case_ids": [],
+        "criteria_id": "control-match-v0.1",
+        "warnings": [
+          "No matched controls found for winner-power-1."
+        ],
+        "winner_case_id": "winner-power-1"
+      }
+    ],
+    "matched_group_count": 3,
     "outcome_definition_ids": [
       "surge-close-return-v0.1"
     ],
@@ -99,12 +117,14 @@
     ]
   },
   "outputs": {
+    "blind_case_analyses": "reports/cold_start/seed-2026-05-03/blind_case_analyses.json",
     "case_signal_observations": "reports/cold_start/seed-2026-05-03/case_signal_observations.json",
     "pre_surge_signal_logic": "reports/cold_start/seed-2026-05-03/pre_surge_signal_logic.json",
     "signal_definitions": "reports/cold_start/seed-2026-05-03/signal_definitions.json"
   },
   "pipeline": "cold_start_case_learning",
   "result_summary": {
+    "blind_analysis_count": 4,
     "measured_signal_count": 6,
     "promoted_signal_count": 6,
     "promoted_signal_ids": [
@@ -114,7 +134,8 @@
       "sig-catalyst-density",
       "sig-valuation-room-with-growth",
       "sig-liquidity-expansion"
-    ]
+    ],
+    "signal_library_dir": ".agent_state/memory/signals"
   },
   "run_id": "cold-start-seed-2026-05-03",
   "versions": {
@@ -126,6 +147,6 @@
     "signal_version": "signals-v0.1"
   },
   "warnings": [
-    "Matched group power-grid-cycle has a winner but no control."
+    "Matched group match:winner-power-1 has a winner but no control."
   ]
 }

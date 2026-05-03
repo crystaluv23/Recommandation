@@ -31,6 +31,10 @@ Active child specs:
 - [`cases/outcomes.md`](cases/outcomes.md): versioned retrospective outcome
   definitions such as "surge winner", neutral control candidate, failure, and
   unlabeled.
+- [`cases/matching.md`](cases/matching.md): versioned matched-control
+  construction from labeled historical cases.
+- [`cases/packets.md`](cases/packets.md): point-in-time historical case packet
+  construction from data-layer records.
 
 ## Responsibilities
 
@@ -70,8 +74,9 @@ Before implementing automatic case selection and control matching, confirm:
 - and how to label failures that looked promising but did not launch.
 
 The first implementation isolates winner/failure/control labeling in
-`cases/outcomes.py`, with a conservative default definition. It still does not
-construct matched controls silently.
+`cases/outcomes.py`, with a conservative default definition, and provides an
+initial versioned matching criteria in `cases/matching.py`. The exact production
+winner and matching definitions still need confirmation before a real first run.
 
 ## Testing
 

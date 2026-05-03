@@ -1,0 +1,76 @@
+{
+  "blind_case_analyses": [
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "winner-accelerator-1",
+      "catalyst_watch": [
+        "Capacity expansion update",
+        "Major customer product cycle"
+      ],
+      "confidence": 0.35,
+      "contrary_evidence": [
+        "No major contrary evidence detected by heuristic researcher."
+      ],
+      "expectation_gap": "Heuristic dry-run analysis; no future label was used.",
+      "packet_id": "winner-accelerator-1:packet",
+      "pre_surge_signals": [
+        "Revenue growth is already above 20% as of the packet date.",
+        "Price action shows early 60-day confirmation.",
+        "Known catalysts are visible inside the next review window."
+      ],
+      "raw_text": "heuristic"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "winner-power-1",
+      "catalyst_watch": [
+        "Backlog disclosure"
+      ],
+      "confidence": 0.35,
+      "contrary_evidence": [
+        "No major contrary evidence detected by heuristic researcher."
+      ],
+      "expectation_gap": "Heuristic dry-run analysis; no future label was used.",
+      "packet_id": "winner-power-1:packet",
+      "pre_surge_signals": [
+        "Revenue growth is already above 20% as of the packet date.",
+        "Price action shows early 60-day confirmation.",
+        "Known catalysts are visible inside the next review window."
+      ],
+      "raw_text": "heuristic"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "control-accelerator-1",
+      "catalyst_watch": [],
+      "confidence": 0.35,
+      "contrary_evidence": [
+        "No major contrary evidence detected by heuristic researcher."
+      ],
+      "expectation_gap": "Heuristic dry-run analysis; no future label was used.",
+      "packet_id": "control-accelerator-1:packet",
+      "pre_surge_signals": [
+        "No strong pre-surge signal found in structured features."
+      ],
+      "raw_text": "heuristic"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "failure-power-1",
+      "catalyst_watch": [
+        "Industry conference"
+      ],
+      "confidence": 0.35,
+      "contrary_evidence": [
+        "No major contrary evidence detected by heuristic researcher."
+      ],
+      "expectation_gap": "Heuristic dry-run analysis; no future label was used.",
+      "packet_id": "failure-power-1:packet",
+      "pre_surge_signals": [
+        "Known catalysts are visible inside the next review window."
+      ],
+      "raw_text": "heuristic"
+    }
+  ],
+  "run_id": "cold-start-seed-2026-05-03"
+}

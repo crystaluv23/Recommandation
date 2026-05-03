@@ -1,7 +1,7 @@
 # Memory
 
 ## Status
-Not started
+Started
 
 ## Purpose
 
@@ -24,6 +24,11 @@ Memory collections should include:
 - User Preference Memory
 
 The module should expose repository-style interfaces for reading, writing, querying, and versioning these records.
+
+Active child specs:
+
+- [`memory/signals.md`](memory/signals.md): file-backed local signal library
+  for cold-start promoted signal definitions and learned signal logic.
 
 ## Collection Semantics
 

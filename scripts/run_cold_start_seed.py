@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import argparse
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from stock_opportunity_agent.cases import HistoricalCase, OutcomeDefinition, default_outcome_definition
+from stock_opportunity_agent.cases import ControlMatchCriteria, HistoricalCase, OutcomeDefinition, default_outcome_definition
 from stock_opportunity_agent.config import AgentConfig
 from stock_opportunity_agent.data import SecurityListing, build_research_packet, company_profile_from_features
+from stock_opportunity_agent.memory import FileSignalLibrary
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -18,6 +20,8 @@ from stock_opportunity_agent.models import (
     VersionStamp,
 )
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
+from stock_opportunity_agent.llm.openai import OpenAIChatClient
+from stock_opportunity_agent.research import OpenAIBlindCaseResearcher
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -35,6 +39,11 @@ VERSION = VersionStamp(
 def main() -> None:
     """Execute the local seed cold-start run."""
 
+    args = _parse_args()
+    config = AgentConfig()
+    researcher = None
+    if args.openai:
+        researcher = OpenAIBlindCaseResearcher(OpenAIChatClient.from_config(config.prompts))
     definition = default_outcome_definition()
     cases = [
         _case(
@@ -140,12 +149,30 @@ def main() -> None:
     ]
     output = run_cold_start_case_learning(
         cases,
-        config=AgentConfig(),
-        output_dir=Path("reports/cold_start/seed-2026-05-03"),
+        config=config,
+        output_dir=Path(args.output_dir),
         run_id="cold-start-seed-2026-05-03",
         created_at=STAMP,
+        signal_library=FileSignalLibrary(".agent_state/memory/signals"),
+        control_match_criteria=ControlMatchCriteria(max_controls_per_winner=2),
+        blind_researcher=researcher,
     )
     print(output.signal_logic_path)
+
+
+def _parse_args():
+    parser = argparse.ArgumentParser(description="Run the deterministic cold-start seed case set.")
+    parser.add_argument(
+        "--openai",
+        action="store_true",
+        help="Use the OpenAI blind researcher instead of the offline heuristic researcher.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        default="reports/cold_start/seed-2026-05-03",
+        help="Directory for cold-start report artifacts.",
+    )
+    return parser.parse_args()
 
 
 def _case(

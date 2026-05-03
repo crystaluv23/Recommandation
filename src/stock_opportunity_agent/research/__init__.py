@@ -1,5 +1,15 @@
-"""LLM research boundaries.
+"""LLM research boundaries."""
 
-Provider adapters live in :mod:`stock_opportunity_agent.llm`; this package is
-reserved for higher-level research agents that consume prepared packets.
-"""
+from stock_opportunity_agent.research.cold_start import (
+    BlindCaseAnalysis,
+    BlindCaseResearcher,
+    HeuristicBlindCaseResearcher,
+    OpenAIBlindCaseResearcher,
+)
+
+__all__ = [
+    "BlindCaseAnalysis",
+    "BlindCaseResearcher",
+    "HeuristicBlindCaseResearcher",
+    "OpenAIBlindCaseResearcher",
+]

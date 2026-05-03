@@ -23,11 +23,13 @@ Expected pipelines:
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
-that runs supplied historical cases through case learning and writes
-`pre_surge_signal_logic.json`, `signal_definitions.json`,
-`case_signal_observations.json`, and `manifest.json`. It does not yet identify
-historical winners, match controls, run blind LLM analysis, or write memory
-stores.
+that runs supplied historical cases through blind as-of analysis and case
+learning, then writes `pre_surge_signal_logic.json`, `signal_definitions.json`,
+`case_signal_observations.json`, `blind_case_analyses.json`, and
+`manifest.json`. It can also write promoted definitions into the local signal
+library and apply versioned control-matching criteria when supplied. The
+remaining first-run blockers are the production outcome/matching definitions and
+OpenAI credentials for the non-heuristic researcher.
 
 The orchestrated product loop is:
 

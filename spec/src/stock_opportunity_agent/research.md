@@ -30,6 +30,11 @@ Expected outputs:
 
 Initial implementation provides a lightweight LLM provider registry under `src/stock_opportunity_agent/llm/`. Provider modules register factories with `@register("provider_name")`; the first concrete provider is an OpenAI Responses API adapter. Domain records remain in the top-level `models` module, and `research` is reserved for higher-level agents that consume prepared packets.
 
+Active child specs:
+
+- [`research/cold_start.md`](research/cold_start.md): blind as-of-date LLM
+  analysis for historical cold-start cases.
+
 ## Responsibilities
 
 - Consume fixed `ResearchPacket` inputs.

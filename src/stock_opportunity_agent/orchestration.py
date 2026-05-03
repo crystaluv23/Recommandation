@@ -8,9 +8,22 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
-from stock_opportunity_agent.cases import ColdStartLearningResult, HistoricalCase, learn_pre_surge_signal_logic
+from stock_opportunity_agent.cases import (
+    ColdStartLearningResult,
+    ControlMatchCriteria,
+    HistoricalCase,
+    apply_matched_groups,
+    learn_pre_surge_signal_logic,
+    match_controls,
+)
 from stock_opportunity_agent.config import AgentConfig
+from stock_opportunity_agent.memory.signals import FileSignalLibrary
 from stock_opportunity_agent.models import VersionStamp
+from stock_opportunity_agent.research.cold_start import (
+    BlindCaseAnalysis,
+    BlindCaseResearcher,
+    HeuristicBlindCaseResearcher,
+)
 
 
 @dataclass(frozen=True)
@@ -23,7 +36,10 @@ class ColdStartRunOutput:
     signal_logic_path: Path
     signal_definitions_path: Path
     observations_path: Path
+    blind_analysis_path: Path
+    signal_library_dir: Path | None
     result: ColdStartLearningResult
+    blind_analyses: tuple[BlindCaseAnalysis, ...]
 
 
 def run_cold_start_case_learning(
@@ -34,6 +50,9 @@ def run_cold_start_case_learning(
     run_id: str | None = None,
     created_at: datetime | None = None,
     signal_version: str | None = None,
+    blind_researcher: BlindCaseResearcher | None = None,
+    signal_library: FileSignalLibrary | None = None,
+    control_match_criteria: ControlMatchCriteria | None = None,
 ) -> ColdStartRunOutput:
     """Run cold-start case learning and persist auditable artifacts."""
 
@@ -42,7 +61,11 @@ def run_cold_start_case_learning(
     active_run_id = run_id or "cold-start-" + created.strftime("%Y%m%dT%H%M%SZ")
     version = _version_from_config(active_config)
     active_signal_version = signal_version or version.signal_version
-    case_list = list(cases)
+    input_cases = list(cases)
+    matched_sets = match_controls(input_cases, control_match_criteria) if control_match_criteria is not None else ()
+    case_list = list(apply_matched_groups(input_cases, matched_sets)) if matched_sets else input_cases
+    researcher = blind_researcher or HeuristicBlindCaseResearcher()
+    blind_analyses = tuple(researcher.analyze(case) for case in case_list)
     result = learn_pre_surge_signal_logic(case_list, signal_version=active_signal_version)
 
     base_dir = Path(output_dir) if output_dir is not None else Path(active_config.storage.reports_dir) / "cold_start" / active_run_id
@@ -50,6 +73,7 @@ def run_cold_start_case_learning(
     signal_logic_path = base_dir / "pre_surge_signal_logic.json"
     signal_definitions_path = base_dir / "signal_definitions.json"
     observations_path = base_dir / "case_signal_observations.json"
+    blind_analysis_path = base_dir / "blind_case_analyses.json"
     manifest_path = base_dir / "manifest.json"
 
     _write_json(
@@ -79,18 +103,35 @@ def run_cold_start_case_learning(
             "observations_by_case": result.observations_to_dict(),
         },
     )
+    _write_json(
+        blind_analysis_path,
+        {
+            "run_id": active_run_id,
+            "blind_case_analyses": [analysis.to_dict() for analysis in blind_analyses],
+        },
+    )
+    if signal_library is not None:
+        signal_library.write_cold_start(
+            run_id=active_run_id,
+            definitions=result.signal_definitions,
+            logic=result.signal_logic,
+            created_at=created,
+        )
     manifest = _manifest(
         run_id=active_run_id,
         created_at=created,
         config=active_config,
         version=version,
         cases=case_list,
+        matched_sets=matched_sets,
         result=result,
         output_paths={
             "pre_surge_signal_logic": signal_logic_path,
             "signal_definitions": signal_definitions_path,
             "case_signal_observations": observations_path,
+            "blind_case_analyses": blind_analysis_path,
         },
+        signal_library=signal_library,
     )
     _write_json(manifest_path, manifest)
 
@@ -101,7 +142,10 @@ def run_cold_start_case_learning(
         signal_logic_path=signal_logic_path,
         signal_definitions_path=signal_definitions_path,
         observations_path=observations_path,
+        blind_analysis_path=blind_analysis_path,
+        signal_library_dir=signal_library.root_dir if signal_library is not None else None,
         result=result,
+        blind_analyses=blind_analyses,
     )
 
 
@@ -123,8 +167,10 @@ def _manifest(
     config: AgentConfig,
     version: VersionStamp,
     cases: list[HistoricalCase],
+    matched_sets: tuple[Any, ...],
     result: ColdStartLearningResult,
     output_paths: dict[str, Path],
+    signal_library: FileSignalLibrary | None,
 ) -> dict[str, Any]:
     labels: dict[str, int] = {}
     for case in cases:
@@ -139,6 +185,15 @@ def _manifest(
             "case_count": len(cases),
             "labels": labels,
             "matched_group_count": len({case.matched_group_id for case in cases}),
+            "matched_control_sets": [
+                {
+                    "winner_case_id": match.winner_case_id,
+                    "control_case_ids": list(match.control_case_ids),
+                    "criteria_id": match.criteria_id,
+                    "warnings": list(match.warnings),
+                }
+                for match in matched_sets
+            ],
             "outcome_definition_ids": sorted(
                 {
                     case.outcome_definition_id
@@ -153,6 +208,8 @@ def _manifest(
             "measured_signal_count": len(result.signal_logic),
             "promoted_signal_count": len(result.signal_definitions),
             "promoted_signal_ids": [definition.signal_id for definition in result.signal_definitions],
+            "blind_analysis_count": len(cases),
+            "signal_library_dir": str(signal_library.root_dir) if signal_library is not None else None,
         },
         "warnings": list(result.warnings),
         "assumptions": [
