@@ -21,3 +21,4 @@
 - 2026-05-03: Reframed the specs around a thesis-centered workflow spine from historical learning through validation contracts, daily monitoring, earnings validation, monthly review, and quarterly meta-learning.
 - 2026-05-03: Implemented the first cold-start case-learning path with packet-level signal measurement, supplied-label case comparison, JSON run artifacts, a deterministic seed run script, and unit coverage.
 - 2026-05-03: Split retrospective surge/failure/control labeling into a versioned `cases/outcomes` submodule so cold-start, monthly review, and future definition experiments can share and compare outcome rules.
+- 2026-05-03: Added memory for the repeated Python runtime mismatch during tests so future validation uses the bundled Python 3.11+ runtime instead of system Python.
