@@ -7,7 +7,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 1 | Avoid coupling reusable providers to the first consumer module. |
-| Running Python tests, scripts, seed pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 3 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
+| Running Python tests, scripts, seed pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 4 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
 
 ## Experience Index
 
