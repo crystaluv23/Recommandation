@@ -60,20 +60,35 @@ class PriceFetchResult:
     error: str | None = None
 
 
+@dataclass(frozen=True)
+class ColdStartRunPaths:
+    """Stage directories for one formal cold-start run."""
+
+    root: Path
+    universe_dir: Path
+    prices_dir: Path
+    selection_dir: Path
+    packets_dir: Path
+    research_dir: Path
+
+
 def main() -> None:
     """Execute the formal cold-start workflow."""
 
     args = _parse_args()
     _load_local_env()
     run_date = date.fromisoformat(args.run_date) if args.run_date else date.today()
+    args.run_id = args.run_id or _default_run_id(run_date, args.openrouter_model)
     created_at = datetime.now(timezone.utc)
     config = _openrouter_config(args.openrouter_model)
     definition = default_outcome_definition()
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = _resolve_output_dir(args)
+    paths = _run_paths(output_dir)
+    _ensure_run_dirs(paths)
 
     print(f"[formal-cold-start] run_id={args.run_id}")
     print(f"[formal-cold-start] run_date={run_date.isoformat()}")
+    print(f"[formal-cold-start] run_dir={output_dir}")
     if args.selection_summary_path:
         selection = _load_selection_summary(Path(args.selection_summary_path))
         selected_symbols = [candidate.symbol for candidate in selection.selected_candidates]
@@ -85,7 +100,13 @@ def main() -> None:
             "[formal-cold-start] fetching selected-symbol prices "
             f"{price_start.isoformat()}..{run_date.isoformat()}"
         )
-        bars_by_symbol, price_warnings = _load_or_fetch_price_histories(args, selected_listings, price_start, run_date)
+        bars_by_symbol, price_warnings = _load_or_fetch_price_histories(
+            args,
+            selected_listings,
+            price_start,
+            run_date,
+            paths=paths,
+        )
         print(
             "[formal-cold-start] selected price histories "
             f"ok={len(bars_by_symbol)} skipped={len(selected_listings) - len(bars_by_symbol)}"
@@ -98,6 +119,17 @@ def main() -> None:
             print(f"[formal-cold-start] capped listings to {len(listings)} for this run")
         else:
             print(f"[formal-cold-start] loaded {len(listings)} active listing(s)")
+        universe_path = paths.universe_dir / "eligible_listings.json"
+        _write_json(
+            universe_path,
+            {
+                "run_id": args.run_id,
+                "created_at": created_at.isoformat(),
+                "listing_count": len(listings),
+                "listings": [_listing_to_dict(listing) for listing in listings],
+            },
+        )
+        print(f"[formal-cold-start] wrote universe checkpoint: {universe_path}")
 
         window_start, window_end = matured_selection_window(run_date, definition)
         price_start = window_start - timedelta(days=max(CaseSlicePlan().offsets_days) + 160)
@@ -106,7 +138,13 @@ def main() -> None:
             f"{price_start.isoformat()}..{run_date.isoformat()} "
             f"for matured candidate anchors {window_start.isoformat()}..{window_end.isoformat()}"
         )
-        bars_by_symbol, price_warnings = _load_or_fetch_price_histories(args, listings, price_start, run_date)
+        bars_by_symbol, price_warnings = _load_or_fetch_price_histories(
+            args,
+            listings,
+            price_start,
+            run_date,
+            paths=paths,
+        )
         print(
             "[formal-cold-start] price histories "
             f"ok={len(bars_by_symbol)} skipped={len(listings) - len(bars_by_symbol)}"
@@ -158,7 +196,7 @@ def main() -> None:
     if not cases:
         raise RuntimeError("formal cold start produced no historical cases after inflection-anchored packet build")
     print(f"[formal-cold-start] built {len(cases)} point-in-time case packet(s)")
-    cases_path = output_dir / "historical_cases.json"
+    cases_path = paths.packets_dir / "historical_cases.json"
     _write_json(
         cases_path,
         {
@@ -171,7 +209,7 @@ def main() -> None:
     print(f"[formal-cold-start] wrote case checkpoint: {cases_path}")
 
     if not args.selection_summary_path:
-        selection_path = output_dir / "historical_candidate_selection.json"
+        selection_path = paths.selection_dir / "historical_candidate_selection.json"
         _write_json(
             selection_path,
             {
@@ -199,7 +237,7 @@ def main() -> None:
     output = run_cold_start_case_learning(
         cases,
         config=config,
-        output_dir=output_dir,
+        output_dir=paths.research_dir,
         run_id=args.run_id,
         created_at=created_at,
         signal_library=FileSignalLibrary(".agent_state/memory/signals"),
@@ -217,8 +255,9 @@ def main() -> None:
 def _parse_args():
     parser = argparse.ArgumentParser(description="Run formal universe-scanned cold-start learning.")
     parser.add_argument("--run-date", default=None, help="Run date in YYYY-MM-DD; defaults to today.")
-    parser.add_argument("--run-id", default="cold-start-formal-openrouter-2026-05-03")
-    parser.add_argument("--output-dir", default="reports/cold_start/formal-openrouter-2026-05-03")
+    parser.add_argument("--run-id", default=None)
+    parser.add_argument("--output-root", default="runs/cold_start")
+    parser.add_argument("--output-dir", default=None)
     parser.add_argument("--openrouter-model", default="openai/gpt-5.5")
     parser.add_argument("--max-workers", type=int, default=8)
     parser.add_argument("--price-timeout", type=float, default=12.0)
@@ -246,6 +285,48 @@ def _openrouter_config(model: str) -> AgentConfig:
             openai_base_url="https://openrouter.ai/api/v1",
         )
     )
+
+
+def _default_run_id(run_date: date, model: str) -> str:
+    model_slug = _slug(model.split("/")[-1])
+    return f"cold-start-formal-{model_slug}-{run_date.isoformat()}"
+
+
+def _resolve_output_dir(args) -> Path:
+    if args.output_dir:
+        return Path(args.output_dir)
+    return Path(args.output_root) / "formal" / _slug(args.run_id)
+
+
+def _run_paths(root: Path) -> ColdStartRunPaths:
+    return ColdStartRunPaths(
+        root=root,
+        universe_dir=root / "01_universe",
+        prices_dir=root / "02_prices",
+        selection_dir=root / "03_selection",
+        packets_dir=root / "04_packets",
+        research_dir=root / "05_research",
+    )
+
+
+def _ensure_run_dirs(paths: ColdStartRunPaths) -> None:
+    for path in (
+        paths.root,
+        paths.universe_dir,
+        paths.prices_dir,
+        paths.selection_dir,
+        paths.packets_dir,
+        paths.research_dir,
+    ):
+        path.mkdir(parents=True, exist_ok=True)
+
+
+def _slug(value: str) -> str:
+    chars = [char.lower() if char.isalnum() else "-" for char in value]
+    slug = "".join(chars).strip("-")
+    while "--" in slug:
+        slug = slug.replace("--", "-")
+    return slug or "run"
 
 
 def _active_listings(config: AgentConfig) -> list[SecurityListing]:
@@ -324,8 +405,10 @@ def _load_or_fetch_price_histories(
     listings: Iterable[SecurityListing],
     start_date: date,
     end_date: date,
+    *,
+    paths: ColdStartRunPaths,
 ) -> tuple[dict[str, tuple[PriceBar, ...]], list[str]]:
-    checkpoint_path = Path(args.price_history_path) if args.price_history_path else Path(args.output_dir) / "price_histories.json"
+    checkpoint_path = Path(args.price_history_path) if args.price_history_path else paths.prices_dir / "price_histories.json"
     if checkpoint_path.exists():
         bars_by_symbol = _load_price_histories(checkpoint_path)
         print(f"[formal-cold-start] loaded price checkpoint: {checkpoint_path}")
@@ -615,6 +698,21 @@ def _price_bar_to_dict(bar: PriceBar) -> dict[str, object]:
     }
 
 
+def _listing_to_dict(listing: SecurityListing) -> dict[str, object]:
+    return {
+        "symbol": listing.symbol,
+        "name": listing.name,
+        "exchange": listing.exchange,
+        "asset_type": listing.asset_type,
+        "status": listing.status,
+        "source": listing.source,
+        "retrieved_at": listing.retrieved_at.isoformat(),
+        "cik": listing.cik,
+        "ipo_date": listing.ipo_date.isoformat() if listing.ipo_date else None,
+        "delisting_date": listing.delisting_date.isoformat() if listing.delisting_date else None,
+    }
+
+
 def _price_bar_from_dict(data: dict[str, object]) -> PriceBar:
     return PriceBar(
         symbol=str(data["symbol"]),
@@ -708,6 +806,7 @@ def _required_env(name: str) -> str:
 
 
 def _write_json(path: Path, data: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 

@@ -26,6 +26,9 @@ show stages, intermediate summaries, warnings, and final artifact paths.
 Stages that depend on external data providers or LLM calls should checkpoint
 their completed inputs and partial research outputs before proceeding to the
 next expensive stage.
+Formal cold-start runs default to `runs/cold_start/formal/<run_id>/` so
+diagnostic reports, formal checkpoints, and future recurring runs do not share a
+flat output directory.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
@@ -79,6 +82,8 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Keep long-running tasks resumable where practical.
 - Avoid repeated LLM calls for identical retrospective research keys; reserve
   per-packet LLM calls for analyses whose input genuinely differs by as-of date.
+- Keep run workspaces stage-oriented: universe, prices, selection, packets, then
+  LLM/research artifacts.
 
 ## Dependencies
 
