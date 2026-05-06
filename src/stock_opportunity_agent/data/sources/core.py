@@ -181,7 +181,15 @@ def parse_csv_rows(text: str) -> list[dict[str, str]]:
     reader = csv.DictReader(io.StringIO(text))
     rows: list[dict[str, str]] = []
     for row in reader:
-        rows.append({(key or "").strip(): (value or "").strip() for key, value in row.items()})
+        normalized = {}
+        for key, value in row.items():
+            if key is None:
+                continue
+            if isinstance(value, list):
+                normalized[key.strip()] = ",".join(str(item).strip() for item in value)
+            else:
+                normalized[key.strip()] = (value or "").strip()
+        rows.append(normalized)
     return rows
 
 

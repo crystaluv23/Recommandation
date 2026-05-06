@@ -1,0 +1,65 @@
+# Cases Selection
+
+## Status
+Started
+
+## Purpose
+
+Scan the historical listed-stock universe to select real cold-start winner,
+control, and failure candidates before LLM case learning begins.
+
+## External Interface
+
+The submodule exposes:
+
+- `HistoricalCandidate`: one symbol's selected retrospective anchor and label.
+- `HistoricalCandidateSelection`: scan window, selected candidates, counts, and
+  warnings.
+- `eligible_common_stock_listings`: conservative listing filter for US common
+  stock candidates; it excludes obvious warrants, rights, units, preferred
+  shares, and depositary receipts by listing name as well as non-common-stock
+  asset types.
+- `select_historical_candidates`: price-history scan that labels each symbol
+  using a versioned `OutcomeDefinition` over the most recent matured one-year
+  anchor window.
+
+## Initial Production Assumptions
+
+- The run date is the data cutoff date.
+- Because the default outcome horizon is 180 calendar days, the most recent
+  one-year selection window ends 180 days before the run date so every selected
+  anchor has a matured forward outcome.
+- The scanner first identifies candidate symbols and a rough matured outcome
+  anchor, then the formal case packet builder must determine a retrospective
+  inflection date for each selected symbol and construct packets at dates before
+  that inflection, such as T-180/T-120/T-90/T-60/T-30.
+- Winner/control/failure labels use `surge-close-return-v0.1` until a new
+  version is approved.
+- The scanner may find many winners, but the first LLM cold-start run processes
+  a bounded top slice of winners and enough controls/failures for comparison.
+- The formal runner must treat price-source coverage as a first-class run
+  quality metric. It should prefer the configured keyed daily-price source and
+  fall back through other available providers rather than treating one source as
+  authoritative when it is timing out or returning no data.
+
+## Invariants
+
+- Outcome labels and forward returns are retrospective metadata and must stay
+  outside blind packets.
+- Candidate selection may use future price data only for retrospective labeling,
+  never as packet evidence.
+- Point-in-time case packets must be anchored to detected inflection dates, not
+  to the later date when a matured forward return label is known.
+- Scanner summaries must record the selection window, input universe size,
+  successful price histories, skipped symbols, selected candidates, and
+  definition versions.
+- Full price histories used for candidate labeling must be checkpointed before
+  LLM research begins so a later OpenRouter interruption does not force a fresh
+  universe scan or lose the actual evidence used for selection.
+
+## Limits
+
+The initial implementation uses historical daily price bars as the reliable
+whole-universe backbone. Sector, market-cap, valuation, filing, and transcript
+enrichment remain later improvements unless point-in-time source data is
+available for the historical anchor dates.

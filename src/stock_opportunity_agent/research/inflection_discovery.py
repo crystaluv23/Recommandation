@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from threading import Lock
 from typing import Any, Protocol
 
 from stock_opportunity_agent.cases.inflections import (
@@ -135,6 +136,41 @@ class CompositeInflectionResearcher:
         )
 
 
+class CachedInflectionResearcher:
+    """Cache expensive inflection research by symbol and outcome window."""
+
+    def __init__(self, researcher: InflectionResearcher) -> None:
+        self.researcher = researcher
+        self._cache: dict[tuple[str, str, str], tuple[tuple[InflectionCandidate, ...], bool, str]] = {}
+        self._locks: dict[tuple[str, str, str], Lock] = {}
+        self._guard = Lock()
+
+    def discover(self, case: HistoricalCase) -> InflectionResearchResult:
+        """Return cached candidates while preserving the caller's case id."""
+
+        key = _case_cache_key(case)
+        with self._guard:
+            cached = self._cache.get(key)
+            lock = self._locks.setdefault(key, Lock())
+        if cached is None:
+            with lock:
+                with self._guard:
+                    cached = self._cache.get(key)
+                if cached is None:
+                    result = self.researcher.discover(case)
+                    cached = (result.candidates, result.web_enabled, result.raw_text)
+                    with self._guard:
+                        self._cache[key] = cached
+        candidates, web_enabled, raw_text = cached
+        return InflectionResearchResult(
+            case_id=case.case_id,
+            symbol=case.packet.company.ticker.symbol,
+            candidates=candidates,
+            web_enabled=web_enabled,
+            raw_text=raw_text,
+        )
+
+
 class OpenAIWebInflectionResearcher:
     """OpenAI researcher for retrospective inflection discovery with web search enabled."""
 
@@ -242,6 +278,14 @@ def _string(value: Any, name: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValidationError(f"{name} must be a non-empty string")
     return value
+
+
+def _case_cache_key(case: HistoricalCase) -> tuple[str, str, str]:
+    return (
+        case.packet.company.ticker.symbol.upper(),
+        case.outcome_start_date.isoformat(),
+        case.outcome_end_date.isoformat(),
+    )
 
 
 def _string_list(value: Any, name: str) -> list[str]:

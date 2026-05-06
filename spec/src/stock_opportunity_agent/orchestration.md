@@ -23,6 +23,9 @@ Expected pipelines:
 Each pipeline should produce a run manifest with config, versions, input windows, outputs, warnings, and artifact paths.
 Longer-running pipelines should accept a progress reporter so CLI scripts can
 show stages, intermediate summaries, warnings, and final artifact paths.
+Stages that depend on external data providers or LLM calls should checkpoint
+their completed inputs and partial research outputs before proceeding to the
+next expensive stage.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
@@ -32,9 +35,13 @@ blind as-of analysis, case learning, and initial theme-map construction, then wr
 `theme_maps.json`, `blind_case_analyses.json`, and `manifest.json`. It can also
 write promoted definitions into the local signal library, write cold-start theme
 maps into the local theme library, and apply versioned control-matching criteria
-when supplied. The remaining first-run blockers are the production
-outcome/matching definitions and OpenAI credentials for the non-heuristic
-researchers.
+when supplied. Long-running LLM research writes partial checkpoints as
+individual inflection and blind analyses finish. Retrospective web-enabled
+inflection discovery should be cached by symbol and outcome window so the same
+historical anchor is not researched separately for every T-slice packet. The
+remaining first-run blockers are the production outcome/matching definitions,
+clean provider coverage for a universe-wide historical candidate scan, and
+review of the first full-market run's data-quality warnings.
 
 The orchestrated product loop is:
 
@@ -70,6 +77,8 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Add new winner, failure, and stale-watchlist cases during monthly review rather than rebuilding the whole case library.
 - Stop early on missing critical data or failed validation.
 - Keep long-running tasks resumable where practical.
+- Avoid repeated LLM calls for identical retrospective research keys; reserve
+  per-packet LLM calls for analyses whose input genuinely differs by as-of date.
 
 ## Dependencies
 

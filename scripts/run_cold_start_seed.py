@@ -180,7 +180,7 @@ def main() -> None:
         cases,
         config=config,
         output_dir=Path(args.output_dir),
-        run_id="cold-start-seed-2026-05-03",
+        run_id=args.run_id,
         created_at=STAMP,
         signal_library=FileSignalLibrary(".agent_state/memory/signals"),
         theme_library=FileThemeLibrary(".agent_state/memory/themes"),
@@ -224,6 +224,11 @@ def _parse_args():
         "--output-dir",
         default="reports/cold_start/seed-2026-05-03",
         help="Directory for cold-start report artifacts.",
+    )
+    parser.add_argument(
+        "--run-id",
+        default="cold-start-seed-2026-05-03",
+        help="Run identifier written into manifests and artifacts.",
     )
     parser.add_argument(
         "--quiet",

@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, TypeVar
 
 from stock_opportunity_agent.cases import (
     ColdStartLearningResult,
@@ -34,6 +35,7 @@ from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start
 
 
 ProgressReporter = Callable[[str], None]
+TAnalysis = TypeVar("TAnalysis")
 
 
 @dataclass(frozen=True)
@@ -70,16 +72,29 @@ def run_cold_start_case_learning(
     signal_library: FileSignalLibrary | None = None,
     theme_library: FileThemeLibrary | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
+    research_max_workers: int = 1,
     progress: ProgressReporter | None = None,
 ) -> ColdStartRunOutput:
     """Run cold-start case learning and persist auditable artifacts."""
 
+    if research_max_workers < 1:
+        raise ValueError("research_max_workers must be at least 1")
     active_config = config or AgentConfig()
     created = created_at or datetime.now(timezone.utc)
     active_run_id = run_id or "cold-start-" + created.strftime("%Y%m%dT%H%M%SZ")
     _report(progress, f"[cold-start] run_id={active_run_id}")
     version = _version_from_config(active_config)
     active_signal_version = signal_version or version.signal_version
+    base_dir = Path(output_dir) if output_dir is not None else Path(active_config.storage.reports_dir) / "cold_start" / active_run_id
+    base_dir.mkdir(parents=True, exist_ok=True)
+    signal_logic_path = base_dir / "pre_surge_signal_logic.json"
+    signal_definitions_path = base_dir / "signal_definitions.json"
+    observations_path = base_dir / "case_signal_observations.json"
+    theme_maps_path = base_dir / "theme_maps.json"
+    inflection_analysis_path = base_dir / "inflection_analyses.json"
+    blind_analysis_path = base_dir / "blind_case_analyses.json"
+    manifest_path = base_dir / "manifest.json"
+    _report(progress, f"[cold-start] artifact dir: {base_dir}")
     input_cases = list(cases)
     _report(progress, f"[cold-start] loaded {len(input_cases)} case(s)")
     matched_sets = match_controls(input_cases, control_match_criteria) if control_match_criteria is not None else ()
@@ -93,7 +108,16 @@ def run_cold_start_case_learning(
         _report(progress, "[cold-start] control matching skipped")
     active_inflection_researcher = inflection_researcher or HeuristicInflectionResearcher()
     _report(progress, f"[cold-start] discovering inflections with {active_inflection_researcher.__class__.__name__}")
-    inflection_analyses = tuple(active_inflection_researcher.discover(case) for case in case_list)
+    inflection_analyses = _run_case_research(
+        case_list,
+        active_inflection_researcher.discover,
+        label="inflection",
+        max_workers=research_max_workers,
+        checkpoint_path=inflection_analysis_path,
+        run_id=active_run_id,
+        result_key="inflection_analyses",
+        progress=progress,
+    )
     for analysis in inflection_analyses:
         top = analysis.candidates[0] if analysis.candidates else None
         if top is not None:
@@ -106,7 +130,16 @@ def run_cold_start_case_learning(
             )
     researcher = blind_researcher or HeuristicBlindCaseResearcher()
     _report(progress, f"[cold-start] running blind analysis with {researcher.__class__.__name__}")
-    blind_analyses = tuple(researcher.analyze(case) for case in case_list)
+    blind_analyses = _run_case_research(
+        case_list,
+        researcher.analyze,
+        label="blind",
+        max_workers=research_max_workers,
+        checkpoint_path=blind_analysis_path,
+        run_id=active_run_id,
+        result_key="blind_case_analyses",
+        progress=progress,
+    )
     for analysis in blind_analyses:
         first_signal = analysis.pre_surge_signals[0] if analysis.pre_surge_signals else "no signal"
         _report(progress, f"[cold-start] blind {analysis.case_id}: confidence={analysis.confidence:.2f}; {first_signal}")
@@ -119,16 +152,7 @@ def run_cold_start_case_learning(
     theme_summary = ", ".join(theme.theme_id for theme in theme_maps.theme_maps) or "none"
     _report(progress, f"[cold-start] theme maps {len(theme_maps.theme_maps)}: {theme_summary}")
 
-    base_dir = Path(output_dir) if output_dir is not None else Path(active_config.storage.reports_dir) / "cold_start" / active_run_id
-    base_dir.mkdir(parents=True, exist_ok=True)
     _report(progress, f"[cold-start] writing artifacts to {base_dir}")
-    signal_logic_path = base_dir / "pre_surge_signal_logic.json"
-    signal_definitions_path = base_dir / "signal_definitions.json"
-    observations_path = base_dir / "case_signal_observations.json"
-    theme_maps_path = base_dir / "theme_maps.json"
-    inflection_analysis_path = base_dir / "inflection_analyses.json"
-    blind_analysis_path = base_dir / "blind_case_analyses.json"
-    manifest_path = base_dir / "manifest.json"
 
     _write_json(
         signal_logic_path,
@@ -244,6 +268,62 @@ def _version_from_config(config: AgentConfig) -> VersionStamp:
         model_version=config.prompts.model_version,
         data_pipeline_version=config.pipeline.data_pipeline_version,
         config_version=config.config_version,
+    )
+
+
+def _run_case_research(
+    cases: list[HistoricalCase],
+    research: Callable[[HistoricalCase], TAnalysis],
+    *,
+    label: str,
+    max_workers: int,
+    checkpoint_path: Path,
+    run_id: str,
+    result_key: str,
+    progress: ProgressReporter | None,
+) -> tuple[TAnalysis, ...]:
+    if max_workers == 1 or len(cases) <= 1:
+        analyses = []
+        for index, case in enumerate(cases, start=1):
+            analyses.append(research(case))
+            _report(progress, f"[cold-start] {label} progress {index}/{len(cases)}: {case.case_id}")
+            _write_research_checkpoint(checkpoint_path, run_id, result_key, analyses)
+        return tuple(analyses)
+
+    results: list[TAnalysis | None] = [None] * len(cases)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(research, case): (index, case)
+            for index, case in enumerate(cases)
+        }
+        for completed, future in enumerate(as_completed(futures), start=1):
+            index, case = futures[future]
+            results[index] = future.result()
+            _report(progress, f"[cold-start] {label} progress {completed}/{len(cases)}: {case.case_id}")
+            _write_research_checkpoint(
+                checkpoint_path,
+                run_id,
+                result_key,
+                [result for result in results if result is not None],
+            )
+    return tuple(result for result in results if result is not None)
+
+
+def _write_research_checkpoint(
+    path: Path,
+    run_id: str,
+    result_key: str,
+    analyses: Iterable[Any],
+) -> None:
+    analysis_list = list(analyses)
+    _write_json(
+        path,
+        {
+            "run_id": run_id,
+            "checkpoint": True,
+            "completed_count": len(analysis_list),
+            result_key: [analysis.to_dict() for analysis in analysis_list],
+        },
     )
 
 

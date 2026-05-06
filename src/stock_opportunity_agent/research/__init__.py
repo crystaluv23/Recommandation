@@ -7,6 +7,7 @@ from stock_opportunity_agent.research.cold_start import (
     OpenAIBlindCaseResearcher,
 )
 from stock_opportunity_agent.research.inflection_discovery import (
+    CachedInflectionResearcher,
     CompositeInflectionResearcher,
     FactorInflectionResearcher,
     HeuristicInflectionResearcher,
@@ -18,6 +19,7 @@ from stock_opportunity_agent.research.inflection_discovery import (
 __all__ = [
     "BlindCaseAnalysis",
     "BlindCaseResearcher",
+    "CachedInflectionResearcher",
     "CompositeInflectionResearcher",
     "FactorInflectionResearcher",
     "HeuristicBlindCaseResearcher",

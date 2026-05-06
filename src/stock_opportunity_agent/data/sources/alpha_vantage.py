@@ -92,10 +92,14 @@ class AlphaVantageClient:
         retrieved_at = utc_now()
         listings: list[SecurityListing] = []
         for row in rows:
+            symbol = (row.get("symbol") or "").strip()
+            name = (row.get("name") or "").strip()
+            if not symbol or not name:
+                continue
             listings.append(
                 SecurityListing(
-                    symbol=row["symbol"],
-                    name=row["name"],
+                    symbol=symbol,
+                    name=name,
                     exchange=row.get("exchange") or None,
                     asset_type=row.get("assetType") or None,
                     status=row.get("status") or state,

@@ -12,7 +12,8 @@ records and retrospective outcome labels.
 
 The submodule exposes:
 
-- `CaseSlicePlan`: pre-inflection/as-of offsets, defaulting to T-180/T-90/T-30.
+- `CaseSlicePlan`: pre-inflection/as-of offsets, defaulting to
+  T-180/T-120/T-90/T-60/T-30.
 - `build_historical_cases_from_packets`: bridge from data-layer listings,
   prices, features, documents, and catalysts into labeled `HistoricalCase`
   records with `ResearchPacket` inputs, using supplied inflection dates as the
@@ -33,4 +34,6 @@ The submodule exposes:
 
 The initial implementation expects data-layer records to be provided by the
 caller or a later storage/fetch layer. It does not yet fetch the whole universe
-by itself.
+by itself, and it does not yet own the production step that scans the historical
+US-listed universe for winner/control/failure candidates before cold-start
+learning.

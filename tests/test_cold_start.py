@@ -11,6 +11,7 @@ from stock_opportunity_agent.cases import (
     detect_price_inflections,
     OutcomeDefinition,
     default_outcome_definition,
+    eligible_common_stock_listings,
     learn_pre_surge_signal_logic,
     build_historical_cases_from_packets,
     match_controls,
@@ -31,7 +32,11 @@ from stock_opportunity_agent.models import (
 from stock_opportunity_agent.memory import FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher
-from stock_opportunity_agent.research.inflection_discovery import CompositeInflectionResearcher, HeuristicInflectionResearcher
+from stock_opportunity_agent.research.inflection_discovery import (
+    CachedInflectionResearcher,
+    CompositeInflectionResearcher,
+    HeuristicInflectionResearcher,
+)
 from stock_opportunity_agent.signals import measure_packet_signals
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
 
@@ -62,6 +67,15 @@ class FakeOpenAITransport:
 class FailingInflectionResearcher:
     def discover(self, case):
         raise RuntimeError("provider unavailable")
+
+
+class CountingInflectionResearcher:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def discover(self, case):
+        self.calls += 1
+        return HeuristicInflectionResearcher().discover(case)
 
 
 def version() -> VersionStamp:
@@ -98,6 +112,18 @@ class ColdStartSignalTests(TestCase):
 
         self.assertEqual(definition.label_return(0.55, trading_days=45), CaseOutcomeLabel.WINNER)
         self.assertEqual(definition.to_dict()["winner_min_return"], 0.50)
+
+    def test_common_stock_filter_excludes_warrants_units_and_rights(self) -> None:
+        listings = [
+            SecurityListing("ABCD", "ABCD Corp Common Stock", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDW", "ABCD Corp Warrant", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDU", "ABCD Corp Unit", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDR", "ABCD Corp Right", "NASDAQ", "Stock", "Active", "test", STAMP),
+        ]
+
+        eligible = eligible_common_stock_listings(listings)
+
+        self.assertEqual([listing.symbol for listing in eligible], ["ABCD"])
 
     def test_packet_signal_measurement_uses_structured_point_in_time_features(self) -> None:
         case = make_case(
@@ -299,7 +325,16 @@ class ColdStartSignalTests(TestCase):
             inflection_dates_by_symbol={"SLI": anchor},
         )
 
-        self.assertEqual([case.packet.as_of.as_of_date for case in cases], [anchor - timedelta(days=180), anchor - timedelta(days=90), anchor - timedelta(days=30)])
+        self.assertEqual(
+            [case.packet.as_of.as_of_date for case in cases],
+            [
+                anchor - timedelta(days=180),
+                anchor - timedelta(days=120),
+                anchor - timedelta(days=90),
+                anchor - timedelta(days=60),
+                anchor - timedelta(days=30),
+            ],
+        )
         self.assertTrue(all(case.outcome_start_date > anchor for case in cases))
 
     def test_heuristic_blind_researcher_does_not_need_future_label(self) -> None:
@@ -425,6 +460,39 @@ class ColdStartSignalTests(TestCase):
 
         self.assertEqual(len(result.candidates), 1)
         self.assertIn("FailingInflectionResearcher failed: provider unavailable", result.raw_text)
+
+    def test_cached_inflection_research_reuses_symbol_outcome_window(self) -> None:
+        first = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+        )
+        second = make_case(
+            "winner-2",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.35,
+            earnings_growth=0.60,
+            margin=0.20,
+            return_20d=0.08,
+            return_60d=0.18,
+            target_upside=0.25,
+            catalyst_count=1,
+        )
+        researcher = CountingInflectionResearcher()
+        cached = CachedInflectionResearcher(researcher)
+
+        first_result = cached.discover(first)
+        second_result = cached.discover(second)
+
+        self.assertEqual(researcher.calls, 1)
+        self.assertEqual(first_result.case_id, "winner-1")
+        self.assertEqual(second_result.case_id, "winner-2")
 
     def test_cold_start_theme_maps_group_cases_by_theme_and_segment(self) -> None:
         cases = [

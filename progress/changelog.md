@@ -28,4 +28,6 @@
 - 2026-05-03: Confirmed the initial production cold-start historical winner selection window as the most recent one year rather than a 1-3 year lookback.
 - 2026-05-03: Added a dedicated OpenRouter LLM provider and cold-start CLI flags so OpenRouter web-search compatibility stays separate from the OpenAI adapter.
 - 2026-05-03: Implemented cold-start theme-map initialization so historical case learning also emits industry-chain segment hypotheses and a `theme_maps.json` artifact.
+- 2026-05-03: Ran the OpenRouter-backed cold-start case-learning pipeline on the current supplied case set, added an explicit cold-start run-id CLI argument, and recorded that a true formal cold start still needs a universe-wide historical candidate scanner before LLM case learning.
 - 2026-05-03: Added Massive as the preferred keyed daily-price source, wired `MASSIVE_API_KEY` config support, and updated Stooq wording around its current CSV apikey requirement.
+- 2026-05-06: Hardened the formal cold-start runner after the first full-scan attempt by adding price-source fallback, price-history and case checkpoints before OpenRouter, stricter common-stock filtering, incremental LLM checkpoints, and cached web inflection research by symbol/outcome window.

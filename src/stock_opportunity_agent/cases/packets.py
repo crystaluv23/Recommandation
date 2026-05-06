@@ -9,7 +9,7 @@ from typing import Iterable, Mapping
 from stock_opportunity_agent.cases.learning import HistoricalCase
 from stock_opportunity_agent.cases.outcomes import OutcomeDefinition, label_price_outcome
 from stock_opportunity_agent.data.documents import DocumentRecord
-from stock_opportunity_agent.data.point_in_time import build_research_packet
+from stock_opportunity_agent.data.point_in_time import build_research_packet, latest_features_by_name
 from stock_opportunity_agent.data.sources.core import PriceBar, SecurityListing
 from stock_opportunity_agent.data.structured import company_profile_from_features
 from stock_opportunity_agent.models import Catalyst, FeatureRecord, VersionStamp
@@ -19,7 +19,7 @@ from stock_opportunity_agent.models import Catalyst, FeatureRecord, VersionStamp
 class CaseSlicePlan:
     """As-of offsets used before an outcome window starts."""
 
-    offsets_days: tuple[int, ...] = (180, 90, 30)
+    offsets_days: tuple[int, ...] = (180, 120, 90, 60, 30)
 
     def as_of_dates(self, outcome_start_date: date) -> tuple[date, ...]:
         """Return sorted as-of dates before the outcome start."""
@@ -70,7 +70,7 @@ def build_historical_cases_from_packets(
                 continue
             if label.value == "unlabeled":
                 continue
-            features = list(features_by_symbol.get(symbol, ()))
+            features = list(latest_features_by_name(features_by_symbol.get(symbol, ()), as_of_date).values())
             company = company_profile_from_features(listing, features, as_of_date)
             packet = build_research_packet(
                 symbol=symbol,
