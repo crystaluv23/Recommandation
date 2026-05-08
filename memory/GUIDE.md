@@ -7,11 +7,13 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 1 | Avoid coupling reusable providers to the first consumer module. |
+| Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 0 | Restate the execution contract, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
 | Running Python tests, scripts, seed pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 6 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
 
 ## Experience Index
 
 - [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md): reusable provider registries should live at the capability boundary, not inside the first module that consumes them.
+- [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md): formal cold-start work must verify the single entry point, actual packet contents, blind anonymity boundary, web-search boundary, and explicit surge-candidate judgment schema before execution.
 - [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md): test and script commands should use the bundled Python 3.11+ runtime because system Python may be 3.9.
 
 ## Consultation Protocol
