@@ -1,10 +1,10 @@
 # Python Runtime for Tests
 
-visit_times: 6
+visit_times: 7
 
 ## Trigger
 
-When running Python tests, scripts, seed pipelines, or lint-adjacent validation commands in this repository.
+When running Python tests, project scripts, formal cold-start pipelines, or lint-adjacent validation commands in this repository.
 
 ## Lesson
 
@@ -27,7 +27,7 @@ PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies
 For project scripts, use the same runtime with `PYTHONPATH=src`, for example:
 
 ```sh
-PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/run_cold_start_seed.py
+PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/run_cold_start_formal.py --context-mode off --web-inflection-mode off --max-listings 1
 ```
 
 If the bundled runtime path is unavailable, call `load_workspace_dependencies` or `install_workspace_dependencies` before falling back. Do not report system-Python import failures as product failures until the command has been retried with a Python 3.11+ runtime.

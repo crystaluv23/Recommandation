@@ -18,7 +18,7 @@ The module should support:
 - blind LLM analysis requests,
 - case comparison results,
 - lessons promoted into signal candidates,
-- and cold-start seed artifacts for signals, themes, prompts, scoring hypotheses, and memory.
+- and cold-start artifacts for signals, themes, prompts, scoring hypotheses, and memory.
 
 Initial implementation supports the lower half of that interface: it consumes
 versioned outcome labels, matched group ids, and point-in-time `ResearchPacket`

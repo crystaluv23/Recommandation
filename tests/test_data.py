@@ -43,8 +43,11 @@ from stock_opportunity_agent.data import (
     source_plan_by_capability,
 )
 from stock_opportunity_agent.models import (
+    Catalyst,
+    CatalystStatus,
     CompanyProfile,
     DataQuality,
+    EvidenceItem,
     EvidenceKind,
     FeatureRecord,
     TickerRef,
@@ -775,6 +778,34 @@ class PointInTimePacketTests(TestCase):
             published_date=date(2026, 5, 3),
             retrieved_at=retrieved_at,
         )
+        current_catalyst = Catalyst(
+            name="Known product event",
+            expected_date=date(2026, 6, 1),
+            status=CatalystStatus.EXPECTED,
+            evidence=[
+                EvidenceItem(
+                    kind=EvidenceKind.NEWS,
+                    summary="Known before packet.",
+                    as_of_date=date(2026, 5, 2),
+                    source_id="news:current",
+                    published_date=date(2026, 5, 2),
+                )
+            ],
+        )
+        future_catalyst = Catalyst(
+            name="Future order",
+            expected_date=date(2026, 6, 15),
+            status=CatalystStatus.CONFIRMED,
+            evidence=[
+                EvidenceItem(
+                    kind=EvidenceKind.NEWS,
+                    summary="Future article.",
+                    as_of_date=date(2026, 5, 3),
+                    source_id="news:future",
+                    published_date=date(2026, 5, 3),
+                )
+            ],
+        )
 
         packet = build_research_packet(
             symbol="AAPL",
@@ -782,10 +813,13 @@ class PointInTimePacketTests(TestCase):
             company=profile,
             features=[future_feature, current_feature],
             documents=[future_doc, current_doc],
+            catalysts=[future_catalyst, current_catalyst],
             version=version(),
             created_at=retrieved_at,
         )
 
         self.assertEqual([feature.source_id for feature in packet.features], ["av:AAPL:pe"])
         self.assertTrue(any(item.source_id == "sec:0000320193:10q" for item in packet.evidence))
+        self.assertTrue(any("Quarterly filing" in item.summary for item in packet.evidence))
         self.assertFalse(any(item.source_id == "sec:0000320193:8k" for item in packet.evidence))
+        self.assertEqual([catalyst.name for catalyst in packet.catalysts], ["Known product event"])

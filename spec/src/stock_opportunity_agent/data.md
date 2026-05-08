@@ -56,6 +56,11 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Normalize data into stable feature records.
 - Normalize high-priority source outputs into `FeatureRecord` values without embedding scoring semantics.
 - Retrieve and chunk source-linked documents for packet assembly.
+- For formal cold-start packets, retrieve point-in-time filing and news context
+  for selected symbols before blind LLM assessment; SEC filings, material news
+  such as orders or contracts, transcripts when available, and other
+  source-backed information should be included when it can help judge whether
+  the stock looked like a potential surge candidate.
 - Construct point-in-time packets for live scans and historical case learning.
 - Preserve source, timestamp, and availability metadata.
 - Separate raw archives, feature stores, and document stores.
@@ -70,7 +75,8 @@ Do not add separate first-class source capabilities for brokerage, order routing
 
 ## Invariants
 
-- Historical packets must not include documents or features unavailable as of `as_of_date`.
+- Historical packets must not include documents, catalysts, or features
+  unavailable as of `as_of_date`.
 - Missing data must be explicit; absence cannot be silently treated as neutral evidence.
 - Source freshness and retrieval time must be recorded for data used in scoring.
 - Cache hits must be distinguishable from fresh upstream fetches.

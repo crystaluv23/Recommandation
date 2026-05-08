@@ -17,7 +17,13 @@ from stock_opportunity_agent.cases import (
     match_controls,
 )
 from stock_opportunity_agent.config import AgentConfig, StorageConfig
-from stock_opportunity_agent.data import PriceBar, SecurityListing, build_research_packet, company_profile_from_features
+from stock_opportunity_agent.data import (
+    DocumentRecord,
+    PriceBar,
+    SecurityListing,
+    build_research_packet,
+    company_profile_from_features,
+)
 from stock_opportunity_agent.llm.openai import OpenAIChatClient
 from stock_opportunity_agent.models import (
     Catalyst,
@@ -39,6 +45,7 @@ from stock_opportunity_agent.research.inflection_discovery import (
 )
 from stock_opportunity_agent.signals import measure_packet_signals
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
+from scripts.run_cold_start_formal import _catalyst_from_news_document, _finnhub_news_document
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -369,7 +376,8 @@ class ColdStartSignalTests(TestCase):
             catalyst_count=2,
         )
         transport = FakeOpenAITransport(
-            "{\"expectation_gap\":\"gap\",\"pre_surge_signals\":[\"signal\"],"
+            "{\"surge_candidate\":\"possible\",\"surge_candidate_reason\":\"reason\","
+            "\"expectation_gap\":\"gap\",\"pre_surge_signals\":[\"signal\"],"
             "\"contrary_evidence\":[\"risk\"],\"catalyst_watch\":[\"watch\"],\"confidence\":0.4}"
         )
         client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
@@ -380,7 +388,71 @@ class ColdStartSignalTests(TestCase):
         prompt_text = payload["input"][1]["content"][0]["text"]
         self.assertNotIn("tools", payload)
         self.assertIn("\"symbol\": \"MASKED\"", prompt_text)
+        self.assertIn("\"packet_id\": \"MASKED\"", prompt_text)
+        self.assertNotIn("winner-1:packet", prompt_text)
         self.assertNotIn("WINNER", prompt_text)
+        self.assertNotIn("WINNER Corp.", prompt_text)
+
+    def test_openai_blind_researcher_masks_document_identity_text(self) -> None:
+        case = make_case(
+            "apple-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=0,
+            company_name="Apple Inc.",
+            extra_documents=[
+                DocumentRecord(
+                    document_id="aapl-10k",
+                    symbol="AAPL",
+                    kind=EvidenceKind.FILING,
+                    title="Apple Inc. 10-K",
+                    text="Apple Inc. disclosed new customer orders.",
+                    source_id="sec:Apple",
+                    source_url="https://www.sec.gov/apple",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        transport = FakeOpenAITransport(
+            "{\"surge_candidate\":\"possible\",\"surge_candidate_reason\":\"reason\","
+            "\"expectation_gap\":\"gap\",\"pre_surge_signals\":[\"signal\"],"
+            "\"contrary_evidence\":[\"risk\"],\"catalyst_watch\":[\"watch\"],\"confidence\":0.4}"
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        OpenAIBlindCaseResearcher(client).analyze(case)
+
+        prompt_text = transport.calls[0][2]["input"][1]["content"][0]["text"]
+        self.assertNotIn("AAPL", prompt_text)
+        self.assertNotIn("Apple", prompt_text)
+        self.assertNotIn("sec:Apple", prompt_text)
+
+    def test_formal_news_context_turns_order_news_into_document_and_catalyst(self) -> None:
+        document = _finnhub_news_document(
+            "ABC",
+            {
+                "id": 123,
+                "datetime": int(STAMP.timestamp()),
+                "headline": "ABC wins new customer order",
+                "summary": "The company announced a multi-year supply agreement.",
+                "url": "https://example.com/order",
+            },
+            STAMP,
+        )
+
+        self.assertIsNotNone(document)
+        assert document is not None
+        self.assertEqual(document.kind, EvidenceKind.NEWS)
+        catalyst = _catalyst_from_news_document(document)
+        self.assertIsNotNone(catalyst)
+        assert catalyst is not None
+        self.assertEqual(catalyst.status, CatalystStatus.CONFIRMED)
 
     def test_cold_start_orchestration_writes_manifest_and_signal_logic(self) -> None:
         cases = [
@@ -545,6 +617,8 @@ def make_case(
     catalyst_count: int,
     market_cap: float = 15_000_000_000.0,
     sector: str = "Semiconductors",
+    company_name: str | None = None,
+    extra_documents: list[DocumentRecord] | None = None,
 ) -> HistoricalCase:
     symbol = case_id.split("-")[0].upper()
     close = 100.0
@@ -567,7 +641,7 @@ def make_case(
     ]
     listing = SecurityListing(
         symbol=symbol,
-        name=f"{symbol} Corp.",
+        name=company_name or f"{symbol} Corp.",
         exchange="NASDAQ",
         asset_type="common_stock",
         status="active",
@@ -598,6 +672,7 @@ def make_case(
         company=company,
         features=features,
         version=version(),
+        documents=extra_documents or [],
         catalysts=catalysts,
         packet_id=f"{case_id}:packet",
         created_at=STAMP,

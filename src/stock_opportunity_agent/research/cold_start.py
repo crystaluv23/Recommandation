@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -18,6 +19,8 @@ class BlindCaseAnalysis:
     case_id: str
     packet_id: str
     as_of_date: str
+    surge_candidate: str
+    surge_candidate_reason: str
     expectation_gap: str
     pre_surge_signals: tuple[str, ...]
     contrary_evidence: tuple[str, ...]
@@ -32,6 +35,8 @@ class BlindCaseAnalysis:
             "case_id": self.case_id,
             "packet_id": self.packet_id,
             "as_of_date": self.as_of_date,
+            "surge_candidate": self.surge_candidate,
+            "surge_candidate_reason": self.surge_candidate_reason,
             "expectation_gap": self.expectation_gap,
             "pre_surge_signals": list(self.pre_surge_signals),
             "contrary_evidence": list(self.contrary_evidence),
@@ -68,6 +73,8 @@ class HeuristicBlindCaseResearcher:
             case_id=case.case_id,
             packet_id=packet.packet_id,
             as_of_date=packet.as_of.as_of_date.isoformat(),
+            surge_candidate="possible" if signals else "unlikely",
+            surge_candidate_reason="Heuristic dry-run judgment from point-in-time structured features only.",
             expectation_gap="Heuristic dry-run analysis; no future label was used.",
             pre_surge_signals=tuple(signals or ["No strong pre-surge signal found in structured features."]),
             contrary_evidence=tuple(contrary or ["No major contrary evidence detected by heuristic researcher."]),
@@ -96,7 +103,9 @@ class OpenAIBlindCaseResearcher:
                         "You are doing blind historical stock research. Use only the supplied as-of packet. "
                         "Do not assume future outcomes, do not ask why the stock later moved, and do not use "
                         "any data after the packet as_of_date. Web search is disabled for this step. "
-                        "Treat any masked identity as intentional. Return strict JSON."
+                        "Treat any masked identity as intentional. Judge whether the anonymous setup looks "
+                        "like a potential 3-6 month surge candidate, but do not infer or mention any hidden "
+                        "winner/control/failure group. Return strict JSON."
                     ),
                 ),
                 ChatMessage("user", _packet_prompt(packet, mask_identity=self.mask_identity)),
@@ -108,6 +117,7 @@ class OpenAIBlindCaseResearcher:
 
 
 def _packet_prompt(packet: ResearchPacket, *, mask_identity: bool = True) -> str:
+    identity_tokens = _identity_tokens(packet)
     company = packet.company.to_dict()
     features = [feature.to_dict() for feature in packet.features]
     evidence = [item.to_dict() for item in packet.evidence]
@@ -121,18 +131,21 @@ def _packet_prompt(packet: ResearchPacket, *, mask_identity: bool = True) -> str
                 "company_name": "MASKED",
                 "figi": None,
             },
-        }
+            }
         features = [_masked_source_fields(feature) for feature in features]
         evidence = [_masked_source_fields(item) for item in evidence]
         catalysts = [
             {
-                **catalyst,
+                **_mask_identity_in_value(catalyst, identity_tokens),
                 "evidence": [_masked_source_fields(item) for item in catalyst["evidence"]],
             }
             for catalyst in catalysts
         ]
+        features = _mask_identity_in_value(features, identity_tokens)
+        evidence = _mask_identity_in_value(evidence, identity_tokens)
+        catalysts = _mask_identity_in_value(catalysts, identity_tokens)
     packet_data = {
-        "packet_id": packet.packet_id,
+        "packet_id": "MASKED" if mask_identity else packet.packet_id,
         "as_of_date": packet.as_of.as_of_date.isoformat(),
         "identity_masked": mask_identity,
         "company": company,
@@ -140,6 +153,8 @@ def _packet_prompt(packet: ResearchPacket, *, mask_identity: bool = True) -> str
         "evidence": evidence,
         "catalysts": catalysts,
         "required_json_schema": {
+            "surge_candidate": "likely | possible | unlikely | insufficient_information",
+            "surge_candidate_reason": "string",
             "expectation_gap": "string",
             "pre_surge_signals": ["string"],
             "contrary_evidence": ["string"],
@@ -159,6 +174,31 @@ def _masked_source_fields(record: dict[str, Any]) -> dict[str, Any]:
     return masked
 
 
+def _identity_tokens(packet: ResearchPacket) -> tuple[str, ...]:
+    ticker = packet.company.ticker
+    tokens = [ticker.symbol, ticker.company_name or ""]
+    company = ticker.company_name or ""
+    for suffix in (" Incorporated", " Inc.", " Inc", " Corporation", " Corp.", " Corp", " Ltd.", " Ltd", " PLC"):
+        if company.endswith(suffix):
+            tokens.append(company[: -len(suffix)])
+    return tuple(sorted({token for token in tokens if token and token.strip()}, key=len, reverse=True))
+
+
+def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
+    if isinstance(value, str):
+        masked = value
+        for token in tokens:
+            masked = re.sub(re.escape(token), "MASKED", masked, flags=re.IGNORECASE)
+        return masked
+    if isinstance(value, list):
+        return [_mask_identity_in_value(item, tokens) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_mask_identity_in_value(item, tokens) for item in value)
+    if isinstance(value, dict):
+        return {key: _mask_identity_in_value(item, tokens) for key, item in value.items()}
+    return value
+
+
 def _analysis_from_json(case: HistoricalCase, text: str) -> BlindCaseAnalysis:
     try:
         data = json.loads(text)
@@ -168,6 +208,8 @@ def _analysis_from_json(case: HistoricalCase, text: str) -> BlindCaseAnalysis:
         case_id=case.case_id,
         packet_id=case.packet.packet_id,
         as_of_date=case.packet.as_of.as_of_date.isoformat(),
+        surge_candidate=_string(data, "surge_candidate"),
+        surge_candidate_reason=_string(data, "surge_candidate_reason"),
         expectation_gap=_string(data, "expectation_gap"),
         pre_surge_signals=tuple(_string_list(data, "pre_surge_signals")),
         contrary_evidence=tuple(_string_list(data, "contrary_evidence")),

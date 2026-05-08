@@ -85,6 +85,7 @@ def build_research_packet(
             )
         ]
     selected_documents = [document for document in documents if document.available_as_of(as_of_date)]
+    selected_catalysts = catalysts_as_of(catalysts, as_of_date)
     evidence = features_to_evidence(selected_features, as_of_date)
     evidence.extend(documents_to_evidence(selected_documents, as_of_date))
     data_cutoff = _max_retrieved_at(selected_features, selected_documents) or created
@@ -95,11 +96,36 @@ def build_research_packet(
         company=company,
         features=selected_features,
         evidence=evidence,
-        catalysts=list(catalysts),
+        catalysts=selected_catalysts,
         theme_ids=list(theme_ids),
         memory_refs=list(memory_refs),
         version=version,
     )
+
+
+def catalysts_as_of(catalysts: Iterable[Catalyst], as_of_date: date) -> list[Catalyst]:
+    """Return catalysts whose source evidence was available by ``as_of_date``."""
+
+    selected: list[Catalyst] = []
+    for catalyst in catalysts:
+        evidence = [
+            item
+            for item in catalyst.evidence
+            if item.as_of_date <= as_of_date and (item.published_date is None or item.published_date <= as_of_date)
+        ]
+        if not evidence:
+            continue
+        actual_date = catalyst.actual_date if catalyst.actual_date is not None and catalyst.actual_date <= as_of_date else None
+        selected.append(
+            Catalyst(
+                name=catalyst.name,
+                expected_date=catalyst.expected_date,
+                status=catalyst.status,
+                evidence=evidence,
+                actual_date=actual_date,
+            )
+        )
+    return selected
 
 
 def _feature_to_evidence(feature: FeatureRecord, as_of_date: date) -> EvidenceItem:

@@ -25,6 +25,10 @@ The submodule exposes:
   enter the packet evidence.
 - Each packet is assembled at its own as-of date with the data-layer point-in-time
   builder.
+- Formal cold-start callers should pass comprehensive point-in-time context when
+  available: price/volume features, financial/profile features, SEC filings
+  such as 10-K/10-Q/8-K, news, transcript-like management commentary, and known
+  catalysts.
 - Historical slices should be before the inflection anchor, not after the surge
   is already visible.
 - Missing or insufficient future bars should skip the case rather than invent a

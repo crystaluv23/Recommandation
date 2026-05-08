@@ -11,3 +11,5 @@
   Experience: `memory/experiences/python-runtime-for-tests.md`.
   Why: Reused the bundled Python 3.11+ runtime for project scripts and tests to avoid the known system-Python mismatch.
 - 2026-05-06: Trigger "running the formal cold-start script and repository validation"; read `memory/experiences/python-runtime-for-tests.md` before executing the production cold-start workflow so scripts use the bundled Python 3.11+ runtime.
+- 2026-05-09: Trigger "changing formal cold start, blind LLM prompt, and seed/formal entry points"; read `memory/experiences/formal-cold-start-blind-boundaries.md` before repairing the single entry point, context packet contents, anonymity boundary, and web-search boundary.
+- 2026-05-09: Trigger "running Python tests and lint for formal cold-start changes"; read `memory/experiences/python-runtime-for-tests.md` so validation uses the bundled Python 3.11+ runtime.

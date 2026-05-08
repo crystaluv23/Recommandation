@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+import html
+import re
 from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Iterable
 
 from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ValidationError
+
+
+MAX_EVIDENCE_EXCERPT_CHARS = 700
 
 
 @dataclass(frozen=True)
@@ -51,7 +56,7 @@ class DocumentRecord:
             raise ValidationError("document is not available as of evidence date")
         return EvidenceItem(
             kind=self.kind,
-            summary=f"{self.kind.value} document available: {self.title}",
+            summary=_document_evidence_summary(self.kind, self.title, self.text),
             as_of_date=as_of_date,
             source_id=self.source_id,
             source_url=self.source_url,
@@ -216,6 +221,21 @@ def documents_to_evidence(documents: Iterable[DocumentRecord], as_of_date: date)
     """Convert available documents into packet evidence."""
 
     return [document.to_evidence(as_of_date) for document in documents if document.available_as_of(as_of_date)]
+
+
+def _document_evidence_summary(kind: EvidenceKind, title: str, text: str) -> str:
+    excerpt = _clean_excerpt(text, max_chars=MAX_EVIDENCE_EXCERPT_CHARS)
+    if excerpt:
+        return f"{kind.value} document available: {title}. Excerpt: {excerpt}"
+    return f"{kind.value} document available: {title}"
+
+
+def _clean_excerpt(text: str, *, max_chars: int) -> str:
+    cleaned = html.unescape(re.sub(r"<[^>]+>", " ", text))
+    cleaned = " ".join(cleaned.split())
+    if len(cleaned) <= max_chars:
+        return cleaned
+    return cleaned[: max_chars - 3].rstrip() + "..."
 
 
 def _require_non_empty(value: str, name: str) -> None:

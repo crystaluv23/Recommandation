@@ -14,9 +14,11 @@ runs/cold_start/
         price_histories.json
       03_selection/
         historical_candidate_selection.json
-      04_packets/
+      04_documents/
+        documents_and_catalysts.json
+      05_packets/
         historical_cases.json
-      05_research/
+      06_research/
         inflection_analyses.json
         blind_case_analyses.json
         pre_surge_signal_logic.json
@@ -26,7 +28,7 @@ runs/cold_start/
         manifest.json
 ```
 
-`01_universe` through `04_packets` are pre-OpenRouter checkpoints. If LLM
+`01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
 research is slow or interrupted, the next run should reuse these stage outputs
 rather than repeating the full universe scan.
 

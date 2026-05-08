@@ -26,13 +26,14 @@ show stages, intermediate summaries, warnings, and final artifact paths.
 Stages that depend on external data providers or LLM calls should checkpoint
 their completed inputs and partial research outputs before proceeding to the
 next expensive stage.
-Formal cold-start runs default to `runs/cold_start/formal/<run_id>/` so
-diagnostic reports, formal checkpoints, and future recurring runs do not share a
-flat output directory.
+Formal cold-start runs have a single execution entry point:
+`scripts/run_cold_start_formal.py`. They default to
+`runs/cold_start/formal/<run_id>/` so diagnostic reports, formal checkpoints, and
+future recurring runs do not share a flat output directory.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
-blind as-of analysis, case learning, and initial theme-map construction, then writes
+    blind as-of analysis, case learning, and initial theme-map construction, then writes
 `inflection_analyses.json`, `pre_surge_signal_logic.json`,
 `signal_definitions.json`, `case_signal_observations.json`,
 `theme_maps.json`, `blind_case_analyses.json`, and `manifest.json`. It can also
@@ -42,9 +43,13 @@ when supplied. Long-running LLM research writes partial checkpoints as
 individual inflection and blind analyses finish. Retrospective web-enabled
 inflection discovery should be cached by symbol and outcome window so the same
 historical anchor is not researched separately for every T-slice packet. The
-remaining first-run blockers are the production outcome/matching definitions,
-clean provider coverage for a universe-wide historical candidate scan, and
-review of the first full-market run's data-quality warnings.
+    remaining first-run blockers are the production outcome/matching definitions,
+    clean provider coverage for a universe-wide historical candidate scan, and
+    review of the first full-market run's data-quality warnings.
+The formal runner owns the pre-LLM stage order:
+universe -> prices -> selection -> filing/news/transcript context -> packets ->
+research. The context stage is a pre-OpenRouter checkpoint and should be reused
+on reruns just like prices and candidate selection.
 
 The orchestrated product loop is:
 
@@ -82,8 +87,8 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Keep long-running tasks resumable where practical.
 - Avoid repeated LLM calls for identical retrospective research keys; reserve
   per-packet LLM calls for analyses whose input genuinely differs by as-of date.
-- Keep run workspaces stage-oriented: universe, prices, selection, packets, then
-  LLM/research artifacts.
+- Keep run workspaces stage-oriented: universe, prices, selection, unstructured
+  context, packets, then LLM/research artifacts.
 
 ## Dependencies
 

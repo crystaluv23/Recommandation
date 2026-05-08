@@ -48,6 +48,7 @@ from stock_opportunity_agent.data.documents import (
 )
 from stock_opportunity_agent.data.point_in_time import (
     build_research_packet,
+    catalysts_as_of,
     feature_records_as_of,
     features_to_evidence,
     latest_features_by_name,
@@ -109,6 +110,7 @@ __all__ = [
     "UrllibJsonTransport",
     "ALPHA_VANTAGE_OVERVIEW_FEATURES",
     "build_research_packet",
+    "catalysts_as_of",
     "chunk_document_text",
     "company_profile_from_features",
     "create_source",

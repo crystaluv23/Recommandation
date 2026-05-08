@@ -20,7 +20,9 @@ The implementation exposes:
 
 - Store document metadata, publication date, public availability date, retrieval time, source id, source URL, and text.
 - Support point-in-time filtering by ticker and evidence kind.
-- Produce source-linked evidence metadata for research packets.
+- Produce source-linked evidence metadata and short text excerpts for research
+  packets so LLM research sees the substance of filings, transcripts, and news
+  rather than only knowing that a document exists.
 - Keep document retrieval separate from scoring and from source adapters.
 
 ## Dependencies
@@ -32,7 +34,8 @@ The implementation exposes:
 ## Invariants
 
 - Documents and chunks may enter a historical packet only when their public availability date is on or before the packet `as_of_date`.
-- Document evidence must include source identifiers and source URLs.
+- Document evidence must include source identifiers, source URLs, and a bounded
+  excerpt or summary suitable for packet prompts.
 - Text chunking must preserve document ids and source metadata.
 
 ## Testing

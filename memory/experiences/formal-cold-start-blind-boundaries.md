@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
@@ -53,6 +53,15 @@ the full-market scan and OpenRouter handoff exposed three issues:
 The gap was not caused by an unclear user request. It came from not pinning the
 execution contract, acceptance checks, and role boundaries before adapting
 existing code.
+
+## 2026-05-09 Correction
+
+The corrective implementation removed the redundant seed script entry point,
+added a formal pre-packet context checkpoint for SEC filings, news, transcripts,
+and news-derived catalysts, made point-in-time catalyst filtering explicit, and
+tightened blind prompt masking across packet ids and text evidence. The lesson
+to carry forward is that a clear architecture still needs an execution-contract
+check at the boundary where old scaffolding is reused.
 
 ## How to Apply
 

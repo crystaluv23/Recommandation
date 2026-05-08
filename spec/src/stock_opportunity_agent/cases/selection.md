@@ -41,6 +41,11 @@ The submodule exposes:
   quality metric. It should prefer the configured keyed daily-price source and
   fall back through other available providers rather than treating one source as
   authoritative when it is timing out or returning no data.
+- After candidate selection and before packet construction, the formal runner
+  should enrich selected symbols with source-backed unstructured context:
+  point-in-time SEC filing documents, news, transcript-like management
+  commentary when available, and catalyst evidence such as orders, contracts,
+  backlog, approvals, or major customer events.
 
 ## Invariants
 
@@ -59,7 +64,8 @@ The submodule exposes:
 
 ## Limits
 
-The initial implementation uses historical daily price bars as the reliable
-whole-universe backbone. Sector, market-cap, valuation, filing, and transcript
-enrichment remain later improvements unless point-in-time source data is
-available for the historical anchor dates.
+The initial implementation still uses historical daily price bars as the
+whole-universe backbone, then enriches only the bounded selected candidate set
+with filing/news/transcript context before blind LLM assessment. Sector,
+market-cap, and valuation enrichment remain incomplete when historical
+point-in-time source data is not available for the anchor dates.
