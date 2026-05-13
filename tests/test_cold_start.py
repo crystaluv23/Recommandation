@@ -1,3 +1,4 @@
+import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -35,9 +36,9 @@ from stock_opportunity_agent.models import (
     SignalDefinition,
     VersionStamp,
 )
-from stock_opportunity_agent.memory import FileSignalLibrary, FileThemeLibrary
+from stock_opportunity_agent.memory import FilePlaybookLibrary, FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
-from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher
+from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher, OpenAISurgePlaybookSynthesizer
 from stock_opportunity_agent.research.inflection_discovery import (
     CachedInflectionResearcher,
     CompositeInflectionResearcher,
@@ -433,6 +434,94 @@ class ColdStartSignalTests(TestCase):
         self.assertNotIn("Apple", prompt_text)
         self.assertNotIn("sec:Apple", prompt_text)
 
+    def test_openai_playbook_synthesizer_uses_anonymized_cross_case_prompt_without_tools(self) -> None:
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        transport = FakeOpenAITransport(
+            json.dumps(
+                {
+                    "schema_version": "surge-playbook-v0.1",
+                    "playbooks": [
+                        {
+                            "playbook_id": "pb-test-v0.1",
+                            "name": "Test playbook",
+                            "purpose": "Find surge candidates with multiple confirmations.",
+                            "version": "playbook-v0.1",
+                            "applies_when": ["news", "price_volume"],
+                            "core_questions": [
+                                {
+                                    "question_id": "q-test",
+                                    "prompt": "What changed and how is it confirmed?",
+                                    "evidence_types": ["news"],
+                                    "positive_indicators": ["confirmed order"],
+                                    "negative_indicators": ["theme mention only"],
+                                    "linked_signal_ids": ["sig-market-early-confirmation"],
+                                }
+                            ],
+                            "reasoning_steps": [
+                                {
+                                    "step_id": "step-test",
+                                    "name": "Triangulate",
+                                    "question": "Do sources agree?",
+                                    "inputs": ["blind_case_analyses"],
+                                    "output": "triangulation",
+                                    "common_failure_mode": "single-source story",
+                                }
+                            ],
+                            "positive_patterns": ["winner setup had multiple confirmations"],
+                            "counter_patterns": ["control setup lacked confirmation"],
+                            "false_positive_traps": ["headline-only catalyst"],
+                            "linked_signal_ids": ["sig-market-early-confirmation"],
+                            "linked_theme_ids": ["semiconductors"],
+                            "evidence_case_refs": {"positive": ["case_001"], "counterexamples": ["case_002"]},
+                            "confidence": 0.5,
+                            "promotion_status": "candidate",
+                            "hindsight_risk_notes": ["retrospective synthesis"],
+                        }
+                    ],
+                    "warnings": [],
+                }
+            )
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        result = OpenAISurgePlaybookSynthesizer(client).synthesize(cases, blind, learning, themes)
+
+        payload = transport.calls[0][2]
+        prompt_text = payload["input"][1]["content"][0]["text"]
+        self.assertNotIn("tools", payload)
+        self.assertIn("\"label\": \"winner\"", prompt_text)
+        self.assertNotIn("winner-1", prompt_text)
+        self.assertNotIn("WINNER", prompt_text)
+        self.assertNotIn("WINNER Corp.", prompt_text)
+        self.assertEqual(result.generated_by, "OpenAISurgePlaybookSynthesizer")
+        self.assertEqual(result.playbooks[0].playbook_id, "pb-test-v0.1")
+
     def test_formal_news_context_turns_order_news_into_document_and_catalyst(self) -> None:
         document = _finnhub_news_document(
             "ABC",
@@ -483,6 +572,7 @@ class ColdStartSignalTests(TestCase):
             config = AgentConfig(storage=StorageConfig(reports_dir=tmp))
             library = FileSignalLibrary(Path(tmp) / "memory" / "signals")
             theme_library = FileThemeLibrary(Path(tmp) / "memory" / "themes")
+            playbook_library = FilePlaybookLibrary(Path(tmp) / "memory" / "playbooks")
             progress_messages = []
             output = run_cold_start_case_learning(
                 cases,
@@ -491,6 +581,7 @@ class ColdStartSignalTests(TestCase):
                 created_at=STAMP,
                 signal_library=library,
                 theme_library=theme_library,
+                playbook_library=playbook_library,
                 control_match_criteria=ControlMatchCriteria(max_controls_per_winner=1),
                 progress=progress_messages.append,
             )
@@ -501,17 +592,23 @@ class ColdStartSignalTests(TestCase):
             self.assertTrue(output.blind_analysis_path.exists())
             self.assertTrue(output.inflection_analysis_path.exists())
             self.assertTrue(output.theme_maps_path.exists())
+            self.assertTrue(output.playbooks_path.exists())
             self.assertTrue(library.definitions_path.exists())
             self.assertTrue(theme_library.theme_maps_path.exists())
+            self.assertTrue(playbook_library.playbooks_path.exists())
             self.assertIn("sig-fundamental-revenue-acceleration", output.signal_logic_path.read_text())
             self.assertIn("inflection_analyses", output.manifest_path.read_text())
             self.assertIn("theme_maps", output.manifest_path.read_text())
+            self.assertIn("surge_research_playbooks", output.manifest_path.read_text())
             self.assertIn("matched_control_sets", output.manifest_path.read_text())
             self.assertTrue(library.read_definitions())
             self.assertTrue(theme_library.read_theme_maps())
+            self.assertTrue(playbook_library.read_playbooks())
             self.assertTrue(output.theme_maps.theme_maps)
+            self.assertTrue(output.playbook_synthesis.playbooks)
             self.assertTrue(any("discovering inflections" in message for message in progress_messages))
             self.assertTrue(any("theme maps" in message for message in progress_messages))
+            self.assertTrue(any("research playbooks" in message for message in progress_messages))
             self.assertTrue(any("complete:" in message for message in progress_messages))
 
     def test_composite_inflection_keeps_factor_candidate_when_web_research_fails(self) -> None:

@@ -42,7 +42,7 @@ from stock_opportunity_agent.data import (
     normalize_price_features,
 )
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
-from stock_opportunity_agent.memory import FileSignalLibrary, FileThemeLibrary
+from stock_opportunity_agent.memory import FilePlaybookLibrary, FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -58,6 +58,7 @@ from stock_opportunity_agent.research import (
     CompositeInflectionResearcher,
     FactorInflectionResearcher,
     OpenAIBlindCaseResearcher,
+    OpenAISurgePlaybookSynthesizer,
     OpenAIWebInflectionResearcher,
 )
 
@@ -283,8 +284,10 @@ def main() -> None:
         created_at=created_at,
         signal_library=FileSignalLibrary(".agent_state/memory/signals"),
         theme_library=FileThemeLibrary(".agent_state/memory/themes"),
+        playbook_library=FilePlaybookLibrary(".agent_state/memory/playbooks"),
         control_match_criteria=ControlMatchCriteria(max_controls_per_winner=args.controls_per_winner),
         blind_researcher=OpenAIBlindCaseResearcher(client),
+        playbook_synthesizer=OpenAISurgePlaybookSynthesizer(client),
         inflection_researcher=CompositeInflectionResearcher(tuple(inflection_researchers)),
         research_max_workers=args.research_max_workers,
         progress=print if not args.quiet else None,

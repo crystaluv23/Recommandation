@@ -33,13 +33,16 @@ future recurring runs do not share a flat output directory.
 
 Initial `cold_start_case_learning` is implemented as an auditable local pipeline
 that runs supplied historical cases through retrospective inflection discovery,
-    blind as-of analysis, case learning, and initial theme-map construction, then writes
+    blind as-of analysis, case learning, initial theme-map construction, and
+    research-playbook synthesis, then writes
 `inflection_analyses.json`, `pre_surge_signal_logic.json`,
 `signal_definitions.json`, `case_signal_observations.json`,
-`theme_maps.json`, `blind_case_analyses.json`, and `manifest.json`. It can also
-write promoted definitions into the local signal library, write cold-start theme
-maps into the local theme library, and apply versioned control-matching criteria
-when supplied. Long-running LLM research writes partial checkpoints as
+`theme_maps.json`, `surge_research_playbooks.json`,
+`blind_case_analyses.json`, and `manifest.json`. It can also write promoted
+definitions into the local signal library, write cold-start theme maps into the
+local theme library, write surge-research playbooks into the local playbook
+library, and apply versioned control-matching criteria when supplied.
+Long-running LLM research writes partial checkpoints as
 individual inflection and blind analyses finish. Retrospective web-enabled
 inflection discovery should be cached by symbol and outcome window so the same
 historical anchor is not researched separately for every T-slice packet. The

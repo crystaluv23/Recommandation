@@ -18,6 +18,7 @@ from stock_opportunity_agent.cases import (
     match_controls,
 )
 from stock_opportunity_agent.config import AgentConfig
+from stock_opportunity_agent.memory.playbooks import FilePlaybookLibrary
 from stock_opportunity_agent.memory.signals import FileSignalLibrary
 from stock_opportunity_agent.memory.themes import FileThemeLibrary
 from stock_opportunity_agent.models import VersionStamp
@@ -30,6 +31,11 @@ from stock_opportunity_agent.research.inflection_discovery import (
     HeuristicInflectionResearcher,
     InflectionResearchResult,
     InflectionResearcher,
+)
+from stock_opportunity_agent.research.playbooks import (
+    HeuristicSurgePlaybookSynthesizer,
+    SurgePlaybookSynthesis,
+    SurgePlaybookSynthesizer,
 )
 from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start_theme_maps
 
@@ -49,12 +55,15 @@ class ColdStartRunOutput:
     signal_definitions_path: Path
     observations_path: Path
     theme_maps_path: Path
+    playbooks_path: Path
     inflection_analysis_path: Path
     blind_analysis_path: Path
     signal_library_dir: Path | None
     theme_library_dir: Path | None
+    playbook_library_dir: Path | None
     result: ColdStartLearningResult
     theme_maps: ThemeMapBuildResult
+    playbook_synthesis: SurgePlaybookSynthesis
     inflection_analyses: tuple[InflectionResearchResult, ...]
     blind_analyses: tuple[BlindCaseAnalysis, ...]
 
@@ -71,6 +80,8 @@ def run_cold_start_case_learning(
     inflection_researcher: InflectionResearcher | None = None,
     signal_library: FileSignalLibrary | None = None,
     theme_library: FileThemeLibrary | None = None,
+    playbook_library: FilePlaybookLibrary | None = None,
+    playbook_synthesizer: SurgePlaybookSynthesizer | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
     research_max_workers: int = 1,
     progress: ProgressReporter | None = None,
@@ -91,6 +102,7 @@ def run_cold_start_case_learning(
     signal_definitions_path = base_dir / "signal_definitions.json"
     observations_path = base_dir / "case_signal_observations.json"
     theme_maps_path = base_dir / "theme_maps.json"
+    playbooks_path = base_dir / "surge_research_playbooks.json"
     inflection_analysis_path = base_dir / "inflection_analyses.json"
     blind_analysis_path = base_dir / "blind_case_analyses.json"
     manifest_path = base_dir / "manifest.json"
@@ -151,6 +163,19 @@ def run_cold_start_case_learning(
     theme_maps = build_cold_start_theme_maps(case_list, result)
     theme_summary = ", ".join(theme.theme_id for theme in theme_maps.theme_maps) or "none"
     _report(progress, f"[cold-start] theme maps {len(theme_maps.theme_maps)}: {theme_summary}")
+    active_playbook_synthesizer = playbook_synthesizer or HeuristicSurgePlaybookSynthesizer()
+    _report(
+        progress,
+        f"[cold-start] synthesizing research playbooks with {active_playbook_synthesizer.__class__.__name__}",
+    )
+    playbook_synthesis = active_playbook_synthesizer.synthesize(
+        case_list,
+        blind_analyses,
+        result,
+        theme_maps,
+    )
+    playbook_summary = ", ".join(playbook.playbook_id for playbook in playbook_synthesis.playbooks)
+    _report(progress, f"[cold-start] research playbooks {len(playbook_synthesis.playbooks)}: {playbook_summary}")
 
     _report(progress, f"[cold-start] writing artifacts to {base_dir}")
 
@@ -189,6 +214,21 @@ def run_cold_start_case_learning(
         },
     )
     _write_json(
+        playbooks_path,
+        {
+            "run_id": active_run_id,
+            "created_at": created.isoformat(),
+            "source_artifacts": {
+                "blind_case_analyses": str(blind_analysis_path),
+                "case_signal_observations": str(observations_path),
+                "pre_surge_signal_logic": str(signal_logic_path),
+                "signal_definitions": str(signal_definitions_path),
+                "theme_maps": str(theme_maps_path),
+            },
+            **playbook_synthesis.to_dict(),
+        },
+    )
+    _write_json(
         inflection_analysis_path,
         {
             "run_id": active_run_id,
@@ -217,6 +257,13 @@ def run_cold_start_case_learning(
             created_at=created,
         )
         _report(progress, f"[cold-start] theme library updated at {theme_library.root_dir}")
+    if playbook_library is not None:
+        playbook_library.write_cold_start(
+            run_id=active_run_id,
+            synthesis=playbook_synthesis,
+            created_at=created,
+        )
+        _report(progress, f"[cold-start] playbook library updated at {playbook_library.root_dir}")
     manifest = _manifest(
         run_id=active_run_id,
         created_at=created,
@@ -230,12 +277,15 @@ def run_cold_start_case_learning(
             "signal_definitions": signal_definitions_path,
             "case_signal_observations": observations_path,
             "theme_maps": theme_maps_path,
+            "surge_research_playbooks": playbooks_path,
             "inflection_analyses": inflection_analysis_path,
             "blind_case_analyses": blind_analysis_path,
         },
         theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
         signal_library=signal_library,
         theme_library=theme_library,
+        playbook_library=playbook_library,
     )
     _write_json(manifest_path, manifest)
     _report(progress, f"[cold-start] manifest: {manifest_path}")
@@ -249,12 +299,15 @@ def run_cold_start_case_learning(
         signal_definitions_path=signal_definitions_path,
         observations_path=observations_path,
         theme_maps_path=theme_maps_path,
+        playbooks_path=playbooks_path,
         inflection_analysis_path=inflection_analysis_path,
         blind_analysis_path=blind_analysis_path,
         signal_library_dir=signal_library.root_dir if signal_library is not None else None,
         theme_library_dir=theme_library.root_dir if theme_library is not None else None,
+        playbook_library_dir=playbook_library.root_dir if playbook_library is not None else None,
         result=result,
         theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
         inflection_analyses=inflection_analyses,
         blind_analyses=blind_analyses,
     )
@@ -338,8 +391,10 @@ def _manifest(
     result: ColdStartLearningResult,
     output_paths: dict[str, Path],
     theme_maps: ThemeMapBuildResult,
+    playbook_synthesis: SurgePlaybookSynthesis,
     signal_library: FileSignalLibrary | None,
     theme_library: FileThemeLibrary | None,
+    playbook_library: FilePlaybookLibrary | None,
 ) -> dict[str, Any]:
     labels: dict[str, int] = {}
     for case in cases:
@@ -379,16 +434,20 @@ def _manifest(
             "promoted_signal_ids": [definition.signal_id for definition in result.signal_definitions],
             "theme_map_count": len(theme_maps.theme_maps),
             "theme_ids": [theme.theme_id for theme in theme_maps.theme_maps],
+            "playbook_count": len(playbook_synthesis.playbooks),
+            "playbook_ids": [playbook.playbook_id for playbook in playbook_synthesis.playbooks],
             "inflection_analysis_count": len(cases),
             "blind_analysis_count": len(cases),
             "signal_library_dir": str(signal_library.root_dir) if signal_library is not None else None,
             "theme_library_dir": str(theme_library.root_dir) if theme_library is not None else None,
+            "playbook_library_dir": str(playbook_library.root_dir) if playbook_library is not None else None,
         },
-        "warnings": list(result.warnings) + list(theme_maps.warnings),
+        "warnings": list(result.warnings) + list(theme_maps.warnings) + list(playbook_synthesis.warnings),
         "assumptions": [
             "Winner, control, and failure labels were produced before signal learning.",
             "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
             "Blind analysis uses only point-in-time ResearchPacket features and known catalysts.",
+            "Research playbook synthesis is retrospective; it may compare labels but must not treat labels as as-of evidence.",
             "Cold-start theme maps initialize industry-chain hypotheses from supplied cases; they are not full live theme discovery.",
         ],
     }

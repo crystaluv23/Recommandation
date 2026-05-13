@@ -20,6 +20,7 @@ Memory collections should include:
 - Review Memory
 - Theme Memory
 - Segment Memory
+- Research Playbook Memory
 - Experiment Memory
 - User Preference Memory
 
@@ -31,6 +32,8 @@ Active child specs:
   for cold-start promoted signal definitions and learned signal logic.
 - [`memory/themes.md`](memory/themes.md): file-backed local theme library for
   cold-start industry-chain maps.
+- [`memory/playbooks.md`](memory/playbooks.md): file-backed local playbook
+  library for cold-start surge-research thinking patterns.
 
 ## Collection Semantics
 
@@ -43,6 +46,9 @@ Active child specs:
 - Review Memory stores 1-month, 3-month, and 6-month outcomes, earnings validation reports, thesis validation, error labels, what worked, what failed, and lessons.
 - Theme Memory stores theme maps, current bottlenecks, leading indicators, and review history.
 - Segment Memory stores theme-segment stage history, candidate tickers, validation evidence, false signals, and crowdedness or valuation warnings.
+- Research Playbook Memory stores reusable research questions, reasoning steps,
+  positive/counter patterns, false-positive traps, linked signals, linked
+  themes, and hindsight-risk notes.
 - Experiment Memory stores meta-learning hypotheses, experiment designs, results, approval states, and promoted or rejected versions.
 - User Preference Memory stores explicit user preferences about scope, cadence, risk tolerance for research output, sectors, and reporting style; it must not be inferred from unstated trading intent.
 
@@ -54,6 +60,7 @@ Active child specs:
 - Store active and archived theses separately by status.
 - Track signal performance and false-positive patterns.
 - Track theme and segment stage histories.
+- Track reusable research playbooks that can later inform prompt proposals.
 - Preserve error labels and lessons from reviews.
 - Support retrieval of relevant prior memory for research packets.
 

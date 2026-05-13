@@ -15,6 +15,15 @@ from stock_opportunity_agent.research.inflection_discovery import (
     InflectionResearcher,
     OpenAIWebInflectionResearcher,
 )
+from stock_opportunity_agent.research.playbooks import (
+    HeuristicSurgePlaybookSynthesizer,
+    OpenAISurgePlaybookSynthesizer,
+    PlaybookQuestion,
+    PlaybookReasoningStep,
+    SurgePlaybookSynthesis,
+    SurgePlaybookSynthesizer,
+    SurgeResearchPlaybook,
+)
 
 __all__ = [
     "BlindCaseAnalysis",
@@ -24,8 +33,15 @@ __all__ = [
     "FactorInflectionResearcher",
     "HeuristicBlindCaseResearcher",
     "HeuristicInflectionResearcher",
+    "HeuristicSurgePlaybookSynthesizer",
     "InflectionResearchResult",
     "InflectionResearcher",
     "OpenAIBlindCaseResearcher",
+    "OpenAISurgePlaybookSynthesizer",
     "OpenAIWebInflectionResearcher",
+    "PlaybookQuestion",
+    "PlaybookReasoningStep",
+    "SurgePlaybookSynthesis",
+    "SurgePlaybookSynthesizer",
+    "SurgeResearchPlaybook",
 ]

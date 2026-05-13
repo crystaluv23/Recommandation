@@ -21,11 +21,17 @@ src/stock_opportunity_agent/
     documents
     point_in_time
   memory
+    signals
+    themes
+    playbooks
   themes
   cases
   signals
   scanner
   research
+    cold_start
+    inflection_discovery
+    playbooks
   scoring
   ranking
   monitoring
@@ -47,11 +53,17 @@ spec/src/stock_opportunity_agent/
   data/documents.md
   data/point_in_time.md
   memory.md
+  memory/signals.md
+  memory/themes.md
+  memory/playbooks.md
   themes.md
   cases.md
   signals.md
   scanner.md
   research.md
+  research/cold_start.md
+  research/inflection_discovery.md
+  research/playbooks.md
   scoring.md
   ranking.md
   monitoring.md
@@ -67,12 +79,12 @@ The active module set reflects the system-design discussion without turning ever
 
 - The thesis-centered loop, expectation-gap research, watchlist output, validation contracts, and recommendation/trading separation live in [`vision.md`](../../vision.md) and [`architecture.md`](../../architecture.md).
 - Point-in-time data, structured data as backbone, and document retrieval live in [`data.md`](data.md), with active child contracts for provider adapters in [`data/sources.md`](data/sources.md), feature normalization in [`data/structured.md`](data/structured.md), document retrieval in [`data/documents.md`](data/documents.md), and packet construction in [`data/point_in_time.md`](data/point_in_time.md).
-- Local long-term memory for companies, theses, signals, cases, decisions, reviews, current universe state, themes, segments, experiments, and preferences lives in [`memory.md`](memory.md).
+- Local long-term memory for companies, theses, signals, cases, decisions, reviews, current universe state, themes, research playbooks, segments, experiments, and preferences lives in [`memory.md`](memory.md).
 - Historical winners, controls, failures, and blind analysis packets live in [`cases.md`](cases.md).
 - Theme discovery, industry-chain transmission, segment stage, and timing live in [`themes.md`](themes.md).
 - Signal definitions, novelty/anomaly detection, and performance learning live in [`signals.md`](signals.md).
 - Non-LLM coarse screening, current-state-aware rerun selection, and anomaly-driven candidate surfacing before expensive research live in [`scanner.md`](scanner.md).
-- LLM research, skeptic passes, valuation critique, evidence-for/evidence-against, validation-contract drafting, and structured thesis output live in [`research.md`](research.md).
+- LLM research, skeptic passes, valuation critique, evidence-for/evidence-against, cold-start playbook synthesis, validation-contract drafting, and structured thesis output live in [`research.md`](research.md).
 - Theme scores, Segment Timing, Company Rocket Score, Launch Probability, Upside Potential, and risk adjustment live in [`scoring.md`](scoring.md).
 - Segment-level and market-level comparison live in [`ranking.md`](ranking.md).
 - Catalyst triggers, validation-contract checks, and watchlist state transitions live in [`monitoring.md`](monitoring.md).

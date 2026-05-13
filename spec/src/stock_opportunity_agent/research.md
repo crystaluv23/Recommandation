@@ -42,6 +42,8 @@ Active child specs:
   analysis for historical cold-start cases.
 - [`research/inflection_discovery.md`](research/inflection_discovery.md):
   web-enabled retrospective inflection discovery before blind analysis.
+- [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
+  synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
 ## Responsibilities
 
@@ -50,6 +52,8 @@ Active child specs:
 - Produce JSON-serializable, schema-validated outputs.
 - Separate direct evidence from inference.
 - Preserve prompt and model versions.
+- Synthesize candidate research playbooks from historical cases without directly
+  rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.
 - Support full research for new candidates and delta research for already-studied companies where the task is to judge whether new evidence changes the active thesis.
 - Require a skeptic pass before a candidate can become high-priority, with explicit checks for narrative traps, missing financial validation, valuation stretch, crowded trades, and one-time items.

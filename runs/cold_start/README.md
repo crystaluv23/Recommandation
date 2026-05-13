@@ -25,6 +25,7 @@ runs/cold_start/
         signal_definitions.json
         case_signal_observations.json
         theme_maps.json
+        surge_research_playbooks.json
         manifest.json
 ```
 
