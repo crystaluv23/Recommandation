@@ -39,6 +39,7 @@ from stock_opportunity_agent.data import (
     SecEdgarClient,
     SecurityListing,
     StooqClient,
+    normalize_sec_company_facts,
     normalize_price_features,
 )
 from stock_opportunity_agent.data.sources.core import decode_response_text
@@ -51,16 +52,22 @@ from stock_opportunity_agent.models import (
     EvidenceItem,
     EvidenceKind,
     FeatureRecord,
+    ValidationError,
     VersionStamp,
 )
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.research import (
     CachedInflectionResearcher,
     CompositeInflectionResearcher,
+    ContextCoverageReport,
+    EvidenceAcquisitionRequest,
+    EvidenceAcquisitionResult,
     FactorInflectionResearcher,
     OpenAIBlindCaseResearcher,
+    OpenAIWebEvidenceResearcher,
     OpenAISurgePlaybookSynthesizer,
     OpenAIWebInflectionResearcher,
+    apply_context_coverage_gate,
 )
 
 
@@ -92,6 +99,9 @@ class ContextFetchResult:
 
     documents_by_symbol: dict[str, tuple[DocumentRecord, ...]]
     catalysts_by_symbol: dict[str, tuple[Catalyst, ...]]
+    web_queries_by_symbol: dict[str, tuple[str, ...]]
+    coverage_by_case_id: dict[str, ContextCoverageReport]
+    excluded_case_ids: tuple[str, ...]
     warnings: tuple[str, ...]
 
 
@@ -216,11 +226,21 @@ def main() -> None:
         print("[formal-cold-start] selected symbols: " + ", ".join(selected_symbols))
 
         selected_listings = [listing for listing in listings if listing.symbol.upper() in set(selected_symbols)]
+    client = OpenRouterChatClient(args.openrouter_model, _required_env("OPENROUTER_API_KEY"))
+    features_by_symbol = _features_for_candidates(
+        selection.selected_candidates,
+        selected_listings,
+        bars_by_symbol,
+        config,
+        created_at,
+    )
     context = _load_or_fetch_context_documents(
         args,
         selection.selected_candidates,
         selected_listings,
+        features_by_symbol,
         config,
+        client,
         created_at,
         paths=paths,
     )
@@ -229,7 +249,6 @@ def main() -> None:
             "[formal-cold-start] context warnings "
             f"listing={len(listing_context_warnings)} documents={len(context.warnings)}"
         )
-    features_by_symbol = _features_for_candidates(selection.selected_candidates, bars_by_symbol, created_at)
     cases = build_historical_cases_from_packets(
         listings=selected_listings,
         bars_by_symbol=bars_by_symbol,
@@ -243,6 +262,24 @@ def main() -> None:
     )
     if not cases:
         raise RuntimeError("formal cold start produced no historical cases after inflection-anchored packet build")
+    coverage = apply_context_coverage_gate(cases, mode=args.coverage_gate_mode)
+    context = ContextFetchResult(
+        context.documents_by_symbol,
+        context.catalysts_by_symbol,
+        context.web_queries_by_symbol,
+        coverage.coverage_by_case_id,
+        coverage.excluded_case_ids,
+        context.warnings,
+    )
+    _write_context_documents(paths.documents_dir / "documents_and_catalysts.json", args.run_id, created_at, context)
+    if coverage.excluded_case_ids:
+        print(
+            "[formal-cold-start] context coverage "
+            f"insufficient={len(coverage.excluded_case_ids)} mode={args.coverage_gate_mode}"
+        )
+    research_cases = coverage.cases
+    if not research_cases:
+        raise RuntimeError("coverage gate excluded every historical case; inspect 04_documents coverage_by_case_id")
     print(f"[formal-cold-start] built {len(cases)} point-in-time case packet(s)")
     cases_path = paths.packets_dir / "historical_cases.json"
     _write_json(
@@ -251,6 +288,9 @@ def main() -> None:
             "run_id": args.run_id,
             "created_at": created_at.isoformat(),
             "case_count": len(cases),
+            "research_case_count": len(research_cases),
+            "coverage_gate_mode": args.coverage_gate_mode,
+            "coverage_excluded_case_ids": list(coverage.excluded_case_ids),
             "cases": [_case_to_dict(case) for case in cases],
         },
     )
@@ -269,6 +309,8 @@ def main() -> None:
                 "price_sources": list(_parse_price_sources(args)),
                 "context_warning_count": len(listing_context_warnings) + len(context.warnings),
                 "context_warnings_sample": (listing_context_warnings + list(context.warnings))[: args.warning_sample_size],
+                "coverage_gate_mode": args.coverage_gate_mode,
+                "coverage_excluded_case_count": len(coverage.excluded_case_ids),
                 "packet_anchor": "inflection_date",
                 "slice_offsets_days": list(CaseSlicePlan().offsets_days),
                 "point_in_time_note": (
@@ -279,13 +321,12 @@ def main() -> None:
         )
         print(f"[formal-cold-start] wrote selection summary: {selection_path}")
 
-    client = OpenRouterChatClient(args.openrouter_model, _required_env("OPENROUTER_API_KEY"))
     factor_researcher = FactorInflectionResearcher(bars_by_symbol, min_forward_return=definition.winner_min_return)
     inflection_researchers = [factor_researcher]
     if args.web_inflection_mode == "cached":
         inflection_researchers.append(CachedInflectionResearcher(OpenAIWebInflectionResearcher(client)))
     output = run_cold_start_case_learning(
-        cases,
+        research_cases,
         config=config,
         output_dir=paths.research_dir,
         run_id=args.run_id,
@@ -326,11 +367,15 @@ def _parse_args():
     parser.add_argument("--research-max-workers", type=int, default=1)
     parser.add_argument("--web-inflection-mode", choices=("cached", "off"), default="cached")
     parser.add_argument("--context-mode", choices=("provider", "off"), default="provider")
+    parser.add_argument("--web-context-mode", choices=("cached", "off"), default="cached")
+    parser.add_argument("--coverage-gate-mode", choices=("warn", "enforce"), default="warn")
     parser.add_argument("--filing-forms", default="10-K,10-Q,8-K")
     parser.add_argument("--filing-lookback-days", type=int, default=540)
     parser.add_argument("--max-filings-per-symbol", type=int, default=6)
     parser.add_argument("--news-lookback-days", type=int, default=365)
     parser.add_argument("--max-news-per-symbol", type=int, default=12)
+    parser.add_argument("--max-web-documents-per-symbol", type=int, default=8)
+    parser.add_argument("--max-theme-documents-per-symbol", type=int, default=4)
     parser.add_argument("--max-transcripts-per-symbol", type=int, default=2)
     parser.add_argument("--document-excerpt-chars", type=int, default=1500)
     parser.add_argument("--skip-filing-text", action="store_true")
@@ -537,14 +582,23 @@ def _load_or_fetch_context_documents(
     args,
     candidates: Iterable[HistoricalCandidate],
     listings: Iterable[SecurityListing],
+    features_by_symbol: dict[str, list[FeatureRecord]],
     config: AgentConfig,
+    client: OpenRouterChatClient,
     created_at: datetime,
     *,
     paths: ColdStartRunPaths,
 ) -> ContextFetchResult:
     checkpoint_path = paths.documents_dir / "documents_and_catalysts.json"
     if args.context_mode == "off":
-        result = ContextFetchResult({}, {}, ("context-mode=off; filings, news, transcripts, and catalysts were not fetched",))
+        result = ContextFetchResult(
+            {},
+            {},
+            {},
+            {},
+            (),
+            ("context-mode=off; filings, news, transcripts, and catalysts were not fetched",),
+        )
         _write_context_documents(checkpoint_path, args.run_id, created_at, result)
         print(f"[formal-cold-start] wrote empty context checkpoint: {checkpoint_path}")
         return result
@@ -552,7 +606,7 @@ def _load_or_fetch_context_documents(
         result = _load_context_documents(checkpoint_path)
         print(f"[formal-cold-start] loaded context checkpoint: {checkpoint_path}")
         return result
-    result = _fetch_context_documents(args, candidates, listings, config, created_at)
+    result = _fetch_context_documents(args, candidates, listings, features_by_symbol, config, client, created_at)
     _write_context_documents(checkpoint_path, args.run_id, created_at, result)
     document_count = sum(len(items) for items in result.documents_by_symbol.values())
     catalyst_count = sum(len(items) for items in result.catalysts_by_symbol.values())
@@ -567,16 +621,28 @@ def _fetch_context_documents(
     args,
     candidates: Iterable[HistoricalCandidate],
     listings: Iterable[SecurityListing],
+    features_by_symbol: dict[str, list[FeatureRecord]],
     config: AgentConfig,
+    client: OpenRouterChatClient,
     created_at: datetime,
 ) -> ContextFetchResult:
     listing_by_symbol = {listing.symbol.upper(): listing for listing in listings}
     documents_by_symbol: dict[str, tuple[DocumentRecord, ...]] = {}
     catalysts_by_symbol: dict[str, tuple[Catalyst, ...]] = {}
+    web_queries_by_symbol: dict[str, tuple[str, ...]] = {}
     warnings: list[str] = []
     sec_client = SecEdgarClient.from_config(config.data_sources)
     finnhub_client = _optional_finnhub_client(config, warnings)
     alpha_client = _optional_alpha_client(config, warnings)
+    web_researcher = (
+        OpenAIWebEvidenceResearcher(
+            client,
+            max_documents=args.max_web_documents_per_symbol,
+            max_theme_documents=args.max_theme_documents_per_symbol,
+        )
+        if args.web_context_mode == "cached"
+        else None
+    )
     filing_forms = _parse_csv_values(args.filing_forms)
     for candidate in candidates:
         symbol = candidate.symbol.upper()
@@ -623,14 +689,76 @@ def _fetch_context_documents(
                 warnings=warnings,
             )
         )
+        if web_researcher is not None:
+            web_result = _web_context_for_candidate(
+                candidate,
+                features_by_symbol.get(symbol, ()),
+                documents,
+                web_researcher,
+                config,
+                created_at,
+                warnings,
+            )
+            documents.extend(web_result.documents)
+            catalysts.extend(web_result.catalysts)
+            web_queries_by_symbol[symbol] = web_result.queries
         catalysts.extend(
             catalyst
             for catalyst in (_catalyst_from_news_document(document) for document in news_docs)
             if catalyst is not None
         )
-        documents_by_symbol[symbol] = tuple(sorted(documents, key=lambda item: (item.available_date or item.published_date, item.document_id)))
+        documents_by_symbol[symbol] = tuple(
+            sorted(
+                {document.document_id: document for document in documents}.values(),
+                key=lambda item: (item.available_date or item.published_date, item.document_id),
+            )
+        )
         catalysts_by_symbol[symbol] = tuple(sorted(catalysts, key=lambda item: (item.expected_date, item.name)))
-    return ContextFetchResult(documents_by_symbol, catalysts_by_symbol, tuple(warnings))
+    return ContextFetchResult(documents_by_symbol, catalysts_by_symbol, web_queries_by_symbol, {}, (), tuple(warnings))
+
+
+def _web_context_for_candidate(
+    candidate: HistoricalCandidate,
+    features: Iterable[FeatureRecord],
+    documents: Iterable[DocumentRecord],
+    web_researcher: OpenAIWebEvidenceResearcher,
+    config: AgentConfig,
+    created_at: datetime,
+    warnings: list[str],
+) -> EvidenceAcquisitionResult:
+    feature_list = list(features)
+    sector, industry = _sector_industry_from_features(feature_list, candidate.inflection_date)
+    request = EvidenceAcquisitionRequest(
+        symbol=candidate.symbol,
+        company_name=candidate.company_name,
+        inflection_date=candidate.inflection_date,
+        as_of_dates=CaseSlicePlan().as_of_dates(candidate.inflection_date),
+        sector=sector,
+        industry=industry,
+        priority_themes=tuple(config.universe.priority_sectors),
+        existing_document_titles=tuple(document.title for document in documents),
+        existing_feature_names=tuple(sorted({feature.name for feature in feature_list})),
+    )
+    try:
+        result = web_researcher.collect(request, created_at)
+    except (RuntimeError, OSError, ValidationError) as exc:
+        warnings.append(f"{candidate.symbol}: web context unavailable: {exc}")
+        return EvidenceAcquisitionResult((), (), (), ())
+    warnings.extend(f"{candidate.symbol}: {warning}" for warning in result.warnings)
+    return result
+
+
+def _sector_industry_from_features(features: Iterable[FeatureRecord], as_of_date: date) -> tuple[str, str]:
+    sector = "Unknown"
+    industry = "Unknown"
+    for feature in sorted(features, key=lambda item: item.as_of_date):
+        if feature.as_of_date > as_of_date or feature.data_quality is DataQuality.MISSING:
+            continue
+        if feature.name == "profile.sector" and isinstance(feature.value, str):
+            sector = feature.value
+        elif feature.name == "profile.industry" and isinstance(feature.value, str):
+            industry = feature.value
+    return sector, industry
 
 
 def _filing_documents_for_candidate(
@@ -1100,19 +1228,155 @@ def _inflection_dates_for_candidates(
 
 def _features_for_candidates(
     candidates: Iterable[HistoricalCandidate],
+    listings: Iterable[SecurityListing],
     bars_by_symbol: dict[str, tuple[PriceBar, ...]],
+    config: AgentConfig,
     created_at: datetime,
 ) -> dict[str, list[FeatureRecord]]:
     features_by_symbol: dict[str, list[FeatureRecord]] = {}
+    listing_by_symbol = {listing.symbol.upper(): listing for listing in listings}
+    sec_client = SecEdgarClient.from_config(config.data_sources)
+    alpha_client = _feature_alpha_client(config)
+    finnhub_client = _feature_finnhub_client(config)
     plan = CaseSlicePlan()
     for candidate in candidates:
         bars = bars_by_symbol.get(candidate.symbol, ())
         features: list[FeatureRecord] = []
-        for as_of_date in plan.as_of_dates(candidate.inflection_date):
+        as_of_dates = plan.as_of_dates(candidate.inflection_date)
+        for as_of_date in as_of_dates:
             features.extend(normalize_price_features(bars, as_of_date, retrieved_at=created_at))
             features.extend(_classification_proxy_features(candidate.symbol, as_of_date, created_at))
+        listing = listing_by_symbol.get(candidate.symbol.upper())
+        if listing is not None and listing.cik:
+            features.extend(
+                _sec_fundamental_features(
+                    candidate.symbol,
+                    listing.cik,
+                    as_of_dates,
+                    sec_client,
+                    created_at,
+                )
+            )
+        if alpha_client is not None:
+            features.extend(_alpha_earnings_features(candidate.symbol, as_of_dates, alpha_client, created_at))
+        if finnhub_client is not None:
+            features.extend(_finnhub_earnings_features(candidate.symbol, as_of_dates, finnhub_client, created_at))
         features_by_symbol[candidate.symbol] = features
     return features_by_symbol
+
+
+def _feature_alpha_client(config: AgentConfig) -> AlphaVantageClient | None:
+    try:
+        return AlphaVantageClient.from_config(config.data_sources)
+    except (DataSourceError, OSError):
+        return None
+
+
+def _feature_finnhub_client(config: AgentConfig) -> FinnhubClient | None:
+    try:
+        return FinnhubClient.from_config(config.data_sources)
+    except (DataSourceError, OSError):
+        return None
+
+
+def _sec_fundamental_features(
+    symbol: str,
+    cik: str,
+    as_of_dates: Iterable[date],
+    sec_client: SecEdgarClient,
+    created_at: datetime,
+) -> list[FeatureRecord]:
+    try:
+        facts = sec_client.company_facts(cik)
+    except (DataSourceError, OSError):
+        return []
+    features: list[FeatureRecord] = []
+    for as_of_date in as_of_dates:
+        features.extend(normalize_sec_company_facts(facts, as_of_date, created_at))
+    return features
+
+
+def _alpha_earnings_features(
+    symbol: str,
+    as_of_dates: Iterable[date],
+    alpha_client: AlphaVantageClient,
+    created_at: datetime,
+) -> list[FeatureRecord]:
+    try:
+        raw = alpha_client.earnings(symbol)
+    except (DataSourceError, OSError):
+        return []
+    rows = raw.get("quarterlyEarnings") if isinstance(raw, dict) else None
+    if not isinstance(rows, list):
+        return []
+    return _earnings_features_from_rows(symbol, rows, "alpha_vantage", tuple(as_of_dates), created_at)
+
+
+def _finnhub_earnings_features(
+    symbol: str,
+    as_of_dates: Iterable[date],
+    finnhub_client: FinnhubClient,
+    created_at: datetime,
+) -> list[FeatureRecord]:
+    try:
+        raw = finnhub_client.earnings_surprises(symbol)
+    except (DataSourceError, OSError):
+        return []
+    rows = raw if isinstance(raw, list) else raw.get("data") if isinstance(raw, dict) else None
+    if not isinstance(rows, list):
+        return []
+    return _earnings_features_from_rows(symbol, rows, "finnhub", tuple(as_of_dates), created_at)
+
+
+def _earnings_features_from_rows(
+    symbol: str,
+    rows: Iterable[object],
+    source: str,
+    as_of_dates: tuple[date, ...],
+    created_at: datetime,
+) -> list[FeatureRecord]:
+    if not as_of_dates:
+        return []
+    max_as_of = max(as_of_dates)
+    features: list[FeatureRecord] = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            continue
+        reported = _earnings_reported_date(row)
+        if reported is None or reported > max_as_of:
+            continue
+        period_end = _date_from_unix_or_iso(row.get("fiscalDateEnding") or row.get("period"))
+        values = (
+            ("financial.reported_eps", row.get("reportedEPS") or row.get("actual")),
+            ("analyst.estimated_eps", row.get("estimatedEPS") or row.get("estimate")),
+            ("analyst.earnings_surprise", row.get("surprise")),
+            ("analyst.earnings_surprise_pct", row.get("surprisePercentage") or row.get("surprisePercent")),
+        )
+        for name, raw_value in values:
+            value = _float_value(raw_value)
+            if value is None:
+                continue
+            features.append(
+                FeatureRecord(
+                    name=name,
+                    value=value,
+                    as_of_date=reported,
+                    source=source,
+                    retrieved_at=created_at,
+                    source_id=f"{source}:{symbol.upper()}:earnings:{index}:{name}",
+                    period_end_date=period_end,
+                    data_quality=DataQuality.CONFIRMED,
+                )
+            )
+    return features
+
+
+def _earnings_reported_date(row: dict[str, object]) -> date | None:
+    for key in ("reportedDate", "reportDate", "date", "actualDate"):
+        parsed = _date_from_unix_or_iso(row.get(key))
+        if parsed is not None:
+            return parsed
+    return None
 
 
 def _classification_proxy_features(symbol: str, as_of_date: date, retrieved_at: datetime) -> list[FeatureRecord]:
@@ -1262,6 +1526,15 @@ def _write_context_documents(
                 symbol: [catalyst.to_dict() for catalyst in catalysts]
                 for symbol, catalysts in sorted(result.catalysts_by_symbol.items())
             },
+            "web_queries_by_symbol": {
+                symbol: list(queries)
+                for symbol, queries in sorted(result.web_queries_by_symbol.items())
+            },
+            "coverage_by_case_id": {
+                case_id: report.to_dict()
+                for case_id, report in sorted(result.coverage_by_case_id.items())
+            },
+            "excluded_case_ids": list(result.excluded_case_ids),
         },
     )
 
@@ -1270,8 +1543,11 @@ def _load_context_documents(path: Path) -> ContextFetchResult:
     data = json.loads(path.read_text(encoding="utf-8"))
     raw_documents = data.get("documents_by_symbol")
     raw_catalysts = data.get("catalysts_by_symbol")
+    raw_queries = data.get("web_queries_by_symbol", {})
     if not isinstance(raw_documents, dict) or not isinstance(raw_catalysts, dict):
         raise RuntimeError("context checkpoint is missing document or catalyst maps")
+    if not isinstance(raw_queries, dict):
+        raw_queries = {}
     return ContextFetchResult(
         {
             str(symbol).upper(): tuple(_document_from_dict(item) for item in documents if isinstance(item, dict))
@@ -1283,6 +1559,13 @@ def _load_context_documents(path: Path) -> ContextFetchResult:
             for symbol, catalysts in raw_catalysts.items()
             if isinstance(catalysts, list)
         },
+        {
+            str(symbol).upper(): tuple(str(query) for query in queries if isinstance(query, str))
+            for symbol, queries in raw_queries.items()
+            if isinstance(queries, list)
+        },
+        {},
+        tuple(str(item) for item in data.get("excluded_case_ids", ()) if isinstance(item, str)),
         tuple(str(item) for item in data.get("warnings", ()) if isinstance(item, str)),
     )
 
@@ -1427,6 +1710,17 @@ def _int_value(value: object) -> int | None:
     if isinstance(value, str) and value.strip():
         try:
             return int(value)
+        except ValueError:
+            return None
+    return None
+
+
+def _float_value(value: object) -> float | None:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    if isinstance(value, str) and value.strip() and value.strip().lower() not in {"none", "nan", "null"}:
+        try:
+            return float(value)
         except ValueError:
             return None
     return None

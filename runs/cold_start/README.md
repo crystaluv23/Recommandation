@@ -36,6 +36,14 @@ existing universe checkpoint with `--universe-path` and an existing price
 checkpoint with `--price-history-path`, while still reapplying the current
 eligibility and selection logic.
 
+`04_documents/documents_and_catalysts.json` also records web-context queries,
+company/theme/research-summary documents, catalysts, per-case context coverage,
+and coverage-gate exclusions. `05_packets/historical_cases.json` remains the
+complete packet audit; when `--coverage-gate-mode enforce` is used, insufficient
+packets are excluded from blind LLM learning but still remain in this packet
+checkpoint. Use `--web-context-mode off` only when intentionally testing the
+non-web context path.
+
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation
 changes.

@@ -57,10 +57,11 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Normalize high-priority source outputs into `FeatureRecord` values without embedding scoring semantics.
 - Retrieve and chunk source-linked documents for packet assembly.
 - For formal cold-start packets, retrieve point-in-time filing and news context
-  for selected symbols before blind LLM assessment; SEC filings, material news
-  such as orders or contracts, transcripts when available, and other
-  source-backed information should be included when it can help judge whether
-  the stock looked like a potential surge candidate.
+  for selected symbols before blind LLM assessment; SEC filings and facts,
+  material news such as orders or contracts, transcripts when available, public
+  research summaries, theme context, and other source-backed information should
+  be included when it can help judge whether the stock looked like a potential
+  surge candidate.
 - Construct point-in-time packets for live scans and historical case learning.
 - Preserve source, timestamp, and availability metadata.
 - Separate raw archives, feature stores, and document stores.

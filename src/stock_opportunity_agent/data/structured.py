@@ -41,9 +41,26 @@ SEC_COMPANY_FACT_FEATURE_TAGS: dict[str, tuple[str, ...]] = {
         "Revenues",
         "SalesRevenueNet",
     ),
+    "financial.gross_profit_usd": ("GrossProfit",),
     "financial.net_income_usd": ("NetIncomeLoss",),
     "financial.operating_income_usd": ("OperatingIncomeLoss",),
+    "financial.operating_cash_flow_usd": (
+        "NetCashProvidedByUsedInOperatingActivities",
+        "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
+    ),
     "financial.capex_usd": ("PaymentsToAcquirePropertyPlantAndEquipment",),
+    "financial.cash_and_equivalents_usd": (
+        "CashAndCashEquivalentsAtCarryingValue",
+        "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    ),
+    "financial.assets_usd": ("Assets",),
+    "financial.liabilities_usd": ("Liabilities",),
+    "financial.stockholders_equity_usd": (
+        "StockholdersEquity",
+        "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+    ),
+    "financial.diluted_eps": ("EarningsPerShareDiluted",),
+    "financial.basic_eps": ("EarningsPerShareBasic",),
 }
 
 
@@ -314,26 +331,36 @@ def _select_sec_fact(
     for tag_order, tag in enumerate(tags):
         fact = us_gaap.get(tag)
         units = fact.get("units") if isinstance(fact, Mapping) else None
-        unit_rows = units.get("USD") if isinstance(units, Mapping) else None
-        if not isinstance(unit_rows, list):
+        unit_row_groups = _fact_unit_rows(units)
+        if not unit_row_groups:
             continue
-        for row_index, row in enumerate(unit_rows):
-            if not isinstance(row, Mapping):
-                continue
-            filed_date = _date_from(row.get("filed"))
-            if filed_date is None or filed_date > as_of_date:
-                continue
-            end_date = _date_from(row.get("end"))
-            if end_date is not None and end_date > as_of_date:
-                continue
-            value = row.get("val")
-            if not isinstance(value, (int, float)):
-                continue
-            candidates.append((filed_date, end_date or date.min, -tag_order, row_index, tag, row, value, end_date))
+        for unit_rows in unit_row_groups:
+            for row_index, row in enumerate(unit_rows):
+                if not isinstance(row, Mapping):
+                    continue
+                filed_date = _date_from(row.get("filed"))
+                if filed_date is None or filed_date > as_of_date:
+                    continue
+                end_date = _date_from(row.get("end"))
+                if end_date is not None and end_date > as_of_date:
+                    continue
+                value = row.get("val")
+                if not isinstance(value, (int, float)):
+                    continue
+                candidates.append((filed_date, end_date or date.min, -tag_order, row_index, tag, row, value, end_date))
     if not candidates:
         return None
     filed_date, _end_sort, _tag_rank, _row_index, tag, row, value, end_date = max(candidates)
     return tag, row, value, filed_date, end_date
+
+
+def _fact_unit_rows(units: Any) -> list[list[Any]]:
+    if not isinstance(units, Mapping):
+        return []
+    preferred = units.get("USD")
+    if isinstance(preferred, list):
+        return [preferred]
+    return [rows for rows in units.values() if isinstance(rows, list)]
 
 
 def _latest_available_features(

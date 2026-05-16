@@ -5,7 +5,10 @@ Started
 
 ## Purpose
 
-Archive and retrieve source-linked unstructured text for point-in-time research packets. Documents include filings, transcripts, news, and other source-backed material that LLM research may quote or summarize later.
+Archive and retrieve source-linked unstructured text for point-in-time research
+packets. Documents include filings, transcripts, news, public research-report
+summaries, theme-context summaries, and other source-backed material that LLM
+research may quote or summarize later.
 
 ## External Interface
 
@@ -21,15 +24,20 @@ The implementation exposes:
 - Store document metadata, publication date, public availability date, retrieval time, source id, source URL, and text.
 - Support point-in-time filtering by ticker and evidence kind.
 - Produce source-linked evidence metadata and short text excerpts for research
-  packets so LLM research sees the substance of filings, transcripts, and news
-  rather than only knowing that a document exists.
+  packets so LLM research sees the substance of filings, transcripts, news,
+  public research summaries, and theme summaries rather than only knowing that a
+  document exists.
 - Keep document retrieval separate from scoring and from source adapters.
+- Keep web-acquired public research and theme context as short summaries with
+  source URLs and dates, not as downloaded full reports or article bodies.
 
 ## Dependencies
 
 - Parent spec: [`../data.md`](../data.md).
 - Uses [`../models.md`](../models.md) for evidence kinds and evidence records.
 - Consumes source-layer filing, transcript, and news outputs when adapters provide them.
+- Consumes research evidence-acquisition summaries for public research reports
+  and theme context.
 
 ## Invariants
 

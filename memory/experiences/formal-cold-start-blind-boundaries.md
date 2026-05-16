@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 4
+visit_times: 5
 
 ## Trigger
 
@@ -87,6 +87,21 @@ the long-running workflow without another improvement pass:
   data/context and control-definition problem before moving into the permanent
   weekly/daily operating loop.
 
+## 2026-05-16 Evidence Coverage Correction
+
+The next correction was to add evidence acquisition before packet construction
+instead of asking blind LLM analysis to compensate for thin packet context.
+OpenRouter web search is allowed in this setup layer for public summaries,
+theme context, and source URLs, but its outputs must become short
+`DocumentRecord` summaries with publication/availability dates. Research-report
+and theme-context documents are packet evidence kinds; full public reports or
+article bodies should not be downloaded into durable artifacts.
+
+The important boundary is the coverage gate: keep the full historical packet
+audit, but do not treat every generated packet as learning-ready. In enforce
+mode, packets without company evidence plus enough financial, theme, catalyst,
+or risk context should be excluded before blind LLM calls and signal learning.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:
@@ -105,7 +120,10 @@ Before executing or modifying formal cold start:
 5. Keep LLM role boundaries explicit: web-enabled retrospective inflection
    discovery is allowed; web-disabled anonymous blind surge assessment is
    required.
-6. Add or run tests that assert no label leakage, no identity leakage, no
+6. Treat coverage as a first-class gate: generated packets are audit material,
+   while only context-sufficient packets should feed blind LLM learning when the
+   formal run is in quality/enforce mode.
+7. Add or run tests that assert no label leakage, no identity leakage, no
    web-search tool in blind analysis, and the expected blind output schema.
 
 ## Limits

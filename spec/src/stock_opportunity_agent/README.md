@@ -31,6 +31,7 @@ src/stock_opportunity_agent/
   research
     cold_start
     inflection_discovery
+    evidence_acquisition
     playbooks
   scoring
   ranking
@@ -63,6 +64,7 @@ spec/src/stock_opportunity_agent/
   research.md
   research/cold_start.md
   research/inflection_discovery.md
+  research/evidence_acquisition.md
   research/playbooks.md
   scoring.md
   ranking.md

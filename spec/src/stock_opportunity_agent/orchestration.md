@@ -55,12 +55,21 @@ coverage for a universe-wide historical candidate scan, OpenRouter web-search
 response handling for retrospective inflection discovery, and review of the
 first full-market run's data-quality warnings.
 The formal runner owns the pre-LLM stage order:
-universe -> prices -> selection -> filing/news/transcript context -> packets ->
-research. The context stage is a pre-OpenRouter checkpoint and should be reused
-on reruns just like universe, prices, and candidate selection. A formal rerun may
+universe -> prices -> selection -> provider/web context -> packets -> context
+coverage gate -> research. The context stage is a pre-packet checkpoint for SEC
+filings/facts, provider news and transcripts, report/theme web summaries, web
+queries, catalysts, warnings, and later coverage reports. It should be reused on
+reruns just like universe, prices, and candidate selection. A formal rerun may
 load an existing eligible-universe checkpoint when a listing provider is
 temporarily unavailable, but it must still reapply the current eligibility
 filter before selection.
+
+Formal context acquisition supports `--web-context-mode cached|off` and
+`--coverage-gate-mode warn|enforce`. `warn` mode records insufficient coverage
+without excluding packets. `enforce` mode excludes insufficient packets from
+blind LLM analysis and signal learning while preserving the full packet audit in
+`05_packets/historical_cases.json` and the coverage report in
+`04_documents/documents_and_catalysts.json`.
 
 The orchestrated product loop is:
 
@@ -100,6 +109,9 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
   per-packet LLM calls for analyses whose input genuinely differs by as-of date.
 - Keep run workspaces stage-oriented: universe, prices, selection, unstructured
   context, packets, then LLM/research artifacts.
+- Do not treat generated historical packets as learning-ready unless their
+  context coverage report says they have enough company evidence plus supporting
+  financial, theme, catalyst, or risk context.
 
 ## Dependencies
 
@@ -114,6 +126,8 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Review-gate output must be stored before an entry can be labeled `action_candidate`.
 - No high-priority watchlist entry may be emitted without a validation contract.
 - Cold-start and live-scan paths must both obey point-in-time rules.
+- Context acquisition may use identity and web search before packet assembly;
+  blind cold-start assessment must stay anonymous and web-disabled.
 
 ## Testing
 

@@ -42,13 +42,19 @@ Active child specs:
   analysis for historical cold-start cases.
 - [`research/inflection_discovery.md`](research/inflection_discovery.md):
   web-enabled retrospective inflection discovery before blind analysis.
+- [`research/evidence_acquisition.md`](research/evidence_acquisition.md):
+  pre-packet company, catalyst, theme, and public research evidence acquisition
+  plus context coverage gating for formal cold start.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
 ## Responsibilities
 
 - Consume fixed `ResearchPacket` inputs.
-- Ask for additional retrieval only when packet evidence is insufficient.
+- Collect source-linked pre-packet context when a pipeline explicitly invokes a
+  retrieval phase before building fixed `ResearchPacket` inputs.
+- Ask for additional retrieval only in identity-visible setup or live research
+  stages; blind historical assessment must consume the prepared packet as given.
 - Produce JSON-serializable, schema-validated outputs.
 - Separate direct evidence from inference.
 - Preserve prompt and model versions.
@@ -69,9 +75,14 @@ Active child specs:
 - LLM output must include evidence against the thesis.
 - The module must distinguish "interesting story" from "validated opportunity".
 - The LLM cannot directly mutate memory, scoring weights, or config.
+- Web search may enrich pre-packet context and retrospective inflection setup,
+  but blind cold-start assessment remains web-disabled and anonymous.
 - A high-priority recommendation requires structured evidence, catalysts, disconfirming conditions, and a validation contract.
 - Incremental research must compare new evidence to the prior thesis instead of silently generating a fresh thesis from scratch.
 
 ## Testing
 
-Tests should cover prompt assembly, schema validation, missing evidence behavior, deterministic fixtures, version stamping, validation-contract presence, incremental research behavior, and refusal to accept ungrounded high-confidence claims.
+Tests should cover prompt assembly, schema validation, missing evidence
+behavior, deterministic fixtures, version stamping, validation-contract
+presence, incremental research behavior, coverage-gate behavior, web/no-web role
+boundaries, and refusal to accept ungrounded high-confidence claims.

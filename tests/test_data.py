@@ -33,6 +33,7 @@ from stock_opportunity_agent.data import (
     company_profile_from_features,
     create_source,
     documents_as_of,
+    documents_to_evidence,
     filing_to_evidence,
     latest_features_by_name,
     normalize_alpha_vantage_overview,
@@ -737,6 +738,38 @@ class DocumentLayerTests(TestCase):
         self.assertEqual(len(chunks), 3)
         self.assertEqual(chunks[0].source_id, "av:NVDA:2026Q1")
         self.assertEqual(chunks[1].text[:2], "89")
+
+    def test_research_report_and_theme_context_documents_convert_to_evidence(self) -> None:
+        retrieved_at = datetime(2026, 5, 2, tzinfo=timezone.utc)
+        documents = [
+            DocumentRecord(
+                document_id="report-1",
+                symbol="AAPL",
+                kind=EvidenceKind.RESEARCH_REPORT,
+                title="Analyst research note",
+                text="The note discussed demand, estimates, and valuation risk.",
+                source_id="web:report",
+                source_url="https://example.com/report",
+                published_date=date(2026, 5, 1),
+                retrieved_at=retrieved_at,
+            ),
+            DocumentRecord(
+                document_id="theme-1",
+                symbol="AAPL",
+                kind=EvidenceKind.THEME_CONTEXT,
+                title="AI infrastructure trend",
+                text="The theme summary linked data center capex to upstream suppliers.",
+                source_id="web:theme",
+                source_url="https://example.com/theme",
+                published_date=date(2026, 5, 1),
+                retrieved_at=retrieved_at,
+            ),
+        ]
+
+        evidence = documents_to_evidence(documents, date(2026, 5, 2))
+
+        self.assertEqual([item.kind for item in evidence], [EvidenceKind.RESEARCH_REPORT, EvidenceKind.THEME_CONTEXT])
+        self.assertTrue(all(item.source_url for item in evidence))
 
 
 class PointInTimePacketTests(TestCase):

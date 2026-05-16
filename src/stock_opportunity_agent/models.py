@@ -33,6 +33,8 @@ class EvidenceKind(str, Enum):
     FILING = "filing"
     TRANSCRIPT = "transcript"
     NEWS = "news"
+    RESEARCH_REPORT = "research_report"
+    THEME_CONTEXT = "theme_context"
     PRICE_VOLUME = "price_volume"
     FINANCIAL = "financial"
     VALUATION = "valuation"

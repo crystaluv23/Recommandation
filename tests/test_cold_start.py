@@ -2,12 +2,15 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 from unittest import TestCase
+from unittest.mock import patch
 
 from stock_opportunity_agent.cases import (
     CaseOutcomeLabel,
     CaseSlicePlan,
     ControlMatchCriteria,
+    HistoricalCandidate,
     HistoricalCase,
     detect_price_inflections,
     OutcomeDefinition,
@@ -38,7 +41,16 @@ from stock_opportunity_agent.models import (
 )
 from stock_opportunity_agent.memory import FilePlaybookLibrary, FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.orchestration import run_cold_start_case_learning
-from stock_opportunity_agent.research import HeuristicBlindCaseResearcher, OpenAIBlindCaseResearcher, OpenAISurgePlaybookSynthesizer
+from stock_opportunity_agent.research import (
+    EvidenceAcquisitionRequest,
+    EvidenceAcquisitionResult,
+    HeuristicBlindCaseResearcher,
+    OpenAIBlindCaseResearcher,
+    OpenAISurgePlaybookSynthesizer,
+    OpenAIWebEvidenceResearcher,
+    apply_context_coverage_gate,
+    assess_context_coverage,
+)
 from stock_opportunity_agent.research.inflection_discovery import (
     CachedInflectionResearcher,
     CompositeInflectionResearcher,
@@ -46,7 +58,13 @@ from stock_opportunity_agent.research.inflection_discovery import (
 )
 from stock_opportunity_agent.signals import measure_packet_signals
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
-from scripts.run_cold_start_formal import _catalyst_from_news_document, _finnhub_news_document
+from scripts.run_cold_start_formal import (
+    _alpha_earnings_features,
+    _catalyst_from_news_document,
+    _fetch_context_documents,
+    _finnhub_earnings_features,
+    _finnhub_news_document,
+)
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -104,6 +122,108 @@ class CountingInflectionResearcher:
     def discover(self, case):
         self.calls += 1
         return HeuristicInflectionResearcher().discover(case)
+
+
+class FakeAlphaEarningsClient:
+    def earnings(self, symbol):
+        return {
+            "quarterlyEarnings": [
+                {
+                    "fiscalDateEnding": "2026-03-31",
+                    "reportedDate": "2026-04-20",
+                    "reportedEPS": "1.20",
+                    "estimatedEPS": "1.00",
+                    "surprise": "0.20",
+                    "surprisePercentage": "20.0",
+                },
+                {
+                    "fiscalDateEnding": "2026-06-30",
+                    "reportedDate": "2026-07-20",
+                    "reportedEPS": "2.00",
+                },
+            ]
+        }
+
+
+class FakeFinnhubEarningsClient:
+    def earnings_surprises(self, symbol):
+        return [
+            {
+                "period": "2026-03-31",
+                "date": "2026-04-21",
+                "actual": 1.1,
+                "estimate": 1.0,
+                "surprise": 0.1,
+                "surprisePercent": 10.0,
+            },
+            {
+                "period": "2026-03-31",
+                "actual": 9.9,
+            },
+        ]
+
+
+class FakeContextSecClient:
+    def recent_filings_as_of(self, cik, as_of_date):
+        return []
+
+
+class FakeContextFinnhubClient:
+    def company_news(self, symbol, from_date, to_date):
+        return [
+            {
+                "id": 7,
+                "datetime": int(datetime(2026, 4, 15, tzinfo=timezone.utc).timestamp()),
+                "headline": "ABC wins AI infrastructure contract",
+                "summary": "The company disclosed a customer order and related execution risk.",
+                "url": "https://example.com/contract",
+            }
+        ]
+
+    def transcript_list(self, symbol):
+        return []
+
+
+class FakeContextWebResearcher:
+    def __init__(self, client, *, max_documents, max_theme_documents):
+        self.max_documents = max_documents
+        self.max_theme_documents = max_theme_documents
+
+    def collect(self, request, retrieved_at):
+        return EvidenceAcquisitionResult(
+            documents=(
+                DocumentRecord(
+                    document_id="theme-doc",
+                    symbol=request.symbol,
+                    kind=EvidenceKind.THEME_CONTEXT,
+                    title="AI infrastructure trend",
+                    text="Theme context linked data center capex to supplier demand and valuation risk.",
+                    source_id="web:theme",
+                    source_url="https://example.com/theme",
+                    published_date=date(2026, 4, 1),
+                    available_date=date(2026, 4, 1),
+                    retrieved_at=retrieved_at,
+                ),
+            ),
+            catalysts=(
+                Catalyst(
+                    name="AI product launch",
+                    expected_date=date(2026, 6, 1),
+                    status=CatalystStatus.EXPECTED,
+                    evidence=[
+                        EvidenceItem(
+                            kind=EvidenceKind.NEWS,
+                            summary="Launch was reported before the inflection cutoff.",
+                            as_of_date=date(2026, 4, 2),
+                            source_id="web:catalyst",
+                            source_url="https://example.com/launch",
+                            published_date=date(2026, 4, 2),
+                        )
+                    ],
+                ),
+            ),
+            queries=("ABC query before 2026-05-01",),
+        )
 
 
 def version() -> VersionStamp:
@@ -391,6 +511,24 @@ class ColdStartSignalTests(TestCase):
         )
         self.assertTrue(all(case.outcome_start_date > anchor for case in cases))
 
+    def test_formal_earnings_features_use_report_dates_as_cutoff(self) -> None:
+        as_of_dates = (date(2026, 4, 19), date(2026, 4, 21))
+
+        alpha_features = _alpha_earnings_features("ABC", as_of_dates, FakeAlphaEarningsClient(), STAMP)
+        finnhub_features = _finnhub_earnings_features("ABC", as_of_dates, FakeFinnhubEarningsClient(), STAMP)
+
+        self.assertTrue(all(feature.as_of_date <= max(as_of_dates) for feature in alpha_features + finnhub_features))
+        self.assertEqual(
+            {feature.name for feature in alpha_features},
+            {
+                "financial.reported_eps",
+                "analyst.estimated_eps",
+                "analyst.earnings_surprise",
+                "analyst.earnings_surprise_pct",
+            },
+        )
+        self.assertNotIn(9.9, [feature.value for feature in finnhub_features])
+
     def test_heuristic_blind_researcher_does_not_need_future_label(self) -> None:
         case = make_case(
             "winner-1",
@@ -605,6 +743,173 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("fallback=HeuristicSurgePlaybookSynthesizer", result.generated_by)
         self.assertTrue(result.playbooks)
         self.assertTrue(any("LLM playbook synthesis failed" in warning for warning in result.warnings))
+
+    def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
+        transport = FakeOpenAITransport(
+            json.dumps(
+                {
+                    "documents": [
+                        {
+                            "kind": "research_report",
+                            "title": "Analyst note sees AI server demand",
+                            "summary": "Analysts discussed AI infrastructure demand before the cutoff.",
+                            "source_url": "https://example.com/research",
+                            "published_date": "2026-04-01",
+                        },
+                        {
+                            "kind": "theme_context",
+                            "title": "AI infrastructure capex trend",
+                            "summary": "Data center capex was accelerating across the supply chain.",
+                            "source_url": "https://example.com/theme",
+                            "published_date": "2026-04-02",
+                        },
+                        {
+                            "kind": "news",
+                            "title": "Future order",
+                            "summary": "This should be excluded because it is after cutoff.",
+                            "source_url": "https://example.com/future",
+                            "published_date": "2026-05-10",
+                        },
+                    ],
+                    "catalysts": [
+                        {
+                            "name": "AI product launch",
+                            "expected_date": "2026-06-15",
+                            "source_title": "Launch preview",
+                            "source_url": "https://example.com/launch",
+                            "published_date": "2026-04-03",
+                        }
+                    ],
+                    "warnings": [],
+                }
+            )
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+        request = EvidenceAcquisitionRequest(
+            symbol="AAPL",
+            company_name="Apple Inc.",
+            inflection_date=date(2026, 5, 1),
+            as_of_dates=(date(2026, 3, 1), date(2026, 4, 1)),
+            sector="AI Infrastructure",
+            industry="Devices",
+            priority_themes=("AI Infrastructure",),
+        )
+
+        result = OpenAIWebEvidenceResearcher(client).collect(request, STAMP)
+
+        payload = transport.calls[0][2]
+        prompt_text = payload["input"][1]["content"][0]["text"]
+        self.assertIn("\"cutoff_date\": \"2026-05-01\"", prompt_text)
+        self.assertIn("\"packet_as_of_dates\"", prompt_text)
+        self.assertNotIn("winner", prompt_text.lower())
+        self.assertNotIn("forward_return", prompt_text)
+        self.assertEqual(payload["tools"], [{"type": "web_search"}])
+        self.assertEqual([document.kind for document in result.documents], [EvidenceKind.RESEARCH_REPORT, EvidenceKind.THEME_CONTEXT])
+        self.assertEqual(result.catalysts[0].name, "AI product launch")
+
+    def test_context_coverage_gate_warns_or_excludes_thin_packets(self) -> None:
+        rich = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=1,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="winner-theme",
+                    symbol="WINNER",
+                    kind=EvidenceKind.THEME_CONTEXT,
+                    title="AI infrastructure trend",
+                    text="AI capex trend supports demand but dilution risk remains.",
+                    source_id="web:theme",
+                    source_url="https://example.com/theme",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        thin = make_thin_case("thin-1", CaseOutcomeLabel.CONTROL)
+
+        rich_report = assess_context_coverage(rich)
+        warn_result = apply_context_coverage_gate([rich, thin], mode="warn")
+        enforce_result = apply_context_coverage_gate([rich, thin], mode="enforce")
+
+        self.assertTrue(rich_report.sufficient_context)
+        self.assertEqual([case.case_id for case in warn_result.cases], ["winner-1", "thin-1"])
+        self.assertEqual(warn_result.excluded_case_ids, ())
+        self.assertEqual(enforce_result.excluded_case_ids, ("thin-1",))
+        self.assertEqual([case.case_id for case in enforce_result.cases], ["winner-1"])
+
+    def test_formal_context_fetch_merges_provider_and_web_evidence(self) -> None:
+        args = SimpleNamespace(
+            web_context_mode="cached",
+            max_web_documents_per_symbol=8,
+            max_theme_documents_per_symbol=4,
+            filing_forms="10-K,10-Q,8-K",
+            filing_lookback_days=540,
+            news_lookback_days=365,
+            max_filings_per_symbol=3,
+            max_news_per_symbol=4,
+            max_transcripts_per_symbol=1,
+            skip_filing_text=True,
+            document_excerpt_chars=500,
+        )
+        candidate = HistoricalCandidate(
+            symbol="ABC",
+            company_name="ABC Corp.",
+            label=CaseOutcomeLabel.WINNER,
+            outcome_anchor_date=date(2026, 5, 1),
+            inflection_date=date(2026, 5, 1),
+            inflection_method="fixture",
+            inflection_score=1.0,
+            outcome_end_date=date(2026, 8, 1),
+            forward_return=1.0,
+            max_forward_return=1.2,
+            max_drawdown_from_start=-0.1,
+            trading_days=65,
+            selection_rank=1,
+        )
+        listing = SecurityListing(
+            symbol="ABC",
+            name="ABC Corp.",
+            exchange="NASDAQ",
+            asset_type="common_stock",
+            status="active",
+            source="fixture",
+            retrieved_at=STAMP,
+            cik="0000000001",
+        )
+        features = [
+            feature("ABC", "profile.sector", "Technology"),
+            feature("ABC", "financial.revenue_usd", 100.0),
+        ]
+
+        with patch("scripts.run_cold_start_formal.SecEdgarClient.from_config", return_value=FakeContextSecClient()):
+            with patch("scripts.run_cold_start_formal._optional_finnhub_client", return_value=FakeContextFinnhubClient()):
+                with patch("scripts.run_cold_start_formal._optional_alpha_client", return_value=None):
+                    with patch("scripts.run_cold_start_formal.OpenAIWebEvidenceResearcher", FakeContextWebResearcher):
+                        result = _fetch_context_documents(
+                            args,
+                            [candidate],
+                            [listing],
+                            {"ABC": features},
+                            AgentConfig(),
+                            object(),
+                            STAMP,
+                        )
+
+        documents = result.documents_by_symbol["ABC"]
+        catalysts = result.catalysts_by_symbol["ABC"]
+
+        self.assertIn(EvidenceKind.NEWS, {document.kind for document in documents})
+        self.assertIn(EvidenceKind.THEME_CONTEXT, {document.kind for document in documents})
+        self.assertEqual(result.web_queries_by_symbol["ABC"], ("ABC query before 2026-05-01",))
+        self.assertTrue(any(catalyst.name == "AI product launch" for catalyst in catalysts))
+        self.assertTrue(any(catalyst.status is CatalystStatus.CONFIRMED for catalyst in catalysts))
 
     def test_formal_news_context_turns_order_news_into_document_and_catalyst(self) -> None:
         document = _finnhub_news_document(
@@ -866,6 +1171,44 @@ def make_case(
         outcome_end_date=AS_OF + timedelta(days=181),
         outcome_return=1.0 if label is CaseOutcomeLabel.WINNER else 0.0,
         matched_group_id="fixture-group",
+        hidden_outcome_summary="Outcome was hidden from packet construction.",
+        outcome_definition_id=default_outcome_definition().definition_id,
+    )
+
+
+def make_thin_case(case_id: str, label: CaseOutcomeLabel) -> HistoricalCase:
+    symbol = case_id.split("-")[0].upper()
+    features = [
+        feature(symbol, "price.latest_close", 10.0),
+        feature(symbol, "price.return_20d", 0.01),
+        feature(symbol, "price.average_daily_dollar_volume_20d", 1_000_000.0),
+    ]
+    listing = SecurityListing(
+        symbol=symbol,
+        name=f"{symbol} Corp.",
+        exchange="NASDAQ",
+        asset_type="common_stock",
+        status="active",
+        source="fixture",
+        retrieved_at=STAMP,
+    )
+    packet = build_research_packet(
+        symbol=symbol,
+        as_of_date=AS_OF,
+        company=company_profile_from_features(listing, features, AS_OF),
+        features=features,
+        version=version(),
+        packet_id=f"{case_id}:packet",
+        created_at=STAMP,
+    )
+    return HistoricalCase(
+        case_id=case_id,
+        label=label,
+        packet=packet,
+        outcome_start_date=AS_OF + timedelta(days=1),
+        outcome_end_date=AS_OF + timedelta(days=181),
+        outcome_return=0.0,
+        matched_group_id="fixture-thin",
         hidden_outcome_summary="Outcome was hidden from packet construction.",
         outcome_definition_id=default_outcome_definition().definition_id,
     )
