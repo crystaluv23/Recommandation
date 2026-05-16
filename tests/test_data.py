@@ -1,3 +1,4 @@
+import gzip
 import tempfile
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -42,6 +43,7 @@ from stock_opportunity_agent.data import (
     source_catalog_by_capability,
     source_plan_by_capability,
 )
+from stock_opportunity_agent.data.sources.core import decode_response_text
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -113,6 +115,18 @@ class FreeDataCatalogTests(TestCase):
             select_source_for_capability(DataCapability.PRICE_DAILY, ["alpha_vantage", "stooq"]),
             "stooq",
         )
+
+
+class HttpTransportTests(TestCase):
+    def test_decode_response_text_handles_gzip_header(self) -> None:
+        body = gzip.compress(b'{"ok": true}')
+
+        self.assertEqual(decode_response_text(body, "gzip"), '{"ok": true}')
+
+    def test_decode_response_text_detects_gzip_magic_bytes(self) -> None:
+        body = gzip.compress(b"symbol,name\nAAPL,Apple Inc.\n")
+
+        self.assertIn("AAPL", decode_response_text(body))
 
 
 class SecEdgarClientTests(TestCase):
@@ -206,6 +220,15 @@ class AlphaVantageClientTests(TestCase):
         self.assertEqual(listings[0].symbol, "IBM")
         self.assertEqual(listings[0].ipo_date, date(1915, 11, 11))
         self.assertEqual(listings[0].source, "alpha_vantage")
+
+    def test_listing_status_rejects_non_csv_provider_response(self) -> None:
+        base = "https://www.alphavantage.co/query"
+        response_url = base + "?function=LISTING_STATUS&state=active&apikey=test-key"
+        transport = FakeHttpTransport(text_responses={response_url: "{}"})
+        client = AlphaVantageClient("test-key", transport=transport)
+
+        with self.assertRaises(DataSourceError):
+            client.listing_status()
 
     def test_daily_prices_are_normalized_and_sorted(self) -> None:
         base = "https://www.alphavantage.co/query"

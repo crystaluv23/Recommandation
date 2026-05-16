@@ -36,6 +36,10 @@ The submodule exposes:
 - LLM-backed synthesis must not use web-search tools.
 - LLM-backed synthesis should avoid ticker and company identity in the prompt;
   case references should be anonymized when sent to the model.
+- LLM-backed synthesis is a late-stage summary step, not a correctness gate for
+  the whole cold-start run. Invalid provider JSON should be retried and then
+  fall back to the deterministic synthesizer with an explicit warning in the
+  playbook artifact.
 - Each playbook should link back to signal ids, theme ids, and case references
   when available so it remains auditable.
 

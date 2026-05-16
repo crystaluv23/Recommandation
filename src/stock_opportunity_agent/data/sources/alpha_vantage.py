@@ -88,7 +88,10 @@ class AlphaVantageClient:
         params = {"function": "LISTING_STATUS", "state": state}
         if listing_date is not None:
             params["date"] = listing_date.isoformat()
-        rows = parse_csv_rows(self._query_text(params))
+        text = self._query_text(params)
+        if text.lstrip().startswith("{"):
+            raise DataSourceError(f"Alpha Vantage listing status returned non-CSV response: {text[:200]}")
+        rows = parse_csv_rows(text)
         retrieved_at = utc_now()
         listings: list[SecurityListing] = []
         for row in rows:
@@ -109,6 +112,8 @@ class AlphaVantageClient:
                     delisting_date=optional_date(row.get("delistingDate")),
                 )
             )
+        if not listings:
+            raise DataSourceError("Alpha Vantage listing status returned no listing rows")
         return listings
 
     def company_overview(self, symbol: str) -> dict[str, Any]:

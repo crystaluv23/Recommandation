@@ -41,6 +41,7 @@ from stock_opportunity_agent.data import (
     StooqClient,
     normalize_price_features,
 )
+from stock_opportunity_agent.data.sources.core import decode_response_text
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
 from stock_opportunity_agent.memory import FilePlaybookLibrary, FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.models import (
@@ -130,14 +131,20 @@ def main() -> None:
             run_date,
             paths=paths,
         )
+        selected_price_ok, selected_price_skipped = _price_coverage_counts(selected_listings, bars_by_symbol)
         print(
             "[formal-cold-start] selected price histories "
-            f"ok={len(bars_by_symbol)} skipped={len(selected_listings) - len(bars_by_symbol)}"
+            f"ok={selected_price_ok} skipped={selected_price_skipped}"
         )
     else:
-        print("[formal-cold-start] loading active US listings from Alpha Vantage")
-        listings = list(eligible_common_stock_listings(_active_listings(config)))
-        listings, listing_context_warnings = _enrich_listings_with_sec_ciks(listings, config)
+        if args.universe_path:
+            print(f"[formal-cold-start] loading active US listings from universe checkpoint: {args.universe_path}")
+            raw_listings = _load_universe_listings(Path(args.universe_path))
+        else:
+            print("[formal-cold-start] loading active US listings from Alpha Vantage")
+            raw_listings = _active_listings(config)
+        enriched_listings, listing_context_warnings = _enrich_listings_with_sec_ciks(raw_listings, config)
+        listings = list(eligible_common_stock_listings(enriched_listings))
         if args.max_listings:
             listings = listings[: args.max_listings]
             print(f"[formal-cold-start] capped listings to {len(listings)} for this run")
@@ -170,9 +177,10 @@ def main() -> None:
             run_date,
             paths=paths,
         )
+        price_ok, price_skipped = _price_coverage_counts(listings, bars_by_symbol)
         print(
             "[formal-cold-start] price histories "
-            f"ok={len(bars_by_symbol)} skipped={len(listings) - len(bars_by_symbol)}"
+            f"ok={price_ok} skipped={price_skipped}"
         )
 
         rough_selection = select_historical_candidates(
@@ -308,6 +316,7 @@ def _parse_args():
     parser.add_argument("--price-source", choices=("massive", "alpaca", "stooq"), default=None)
     parser.add_argument("--price-sources", default="massive,alpaca,stooq")
     parser.add_argument("--price-history-path", default=None, help="Load an existing price-history checkpoint.")
+    parser.add_argument("--universe-path", default=None, help="Load an existing eligible-listings checkpoint.")
     parser.add_argument("--max-listings", type=int, default=0, help="Optional scan cap for debugging; 0 scans all listings.")
     parser.add_argument("--selection-summary-path", default=None, help="Resume from an existing formal selection summary.")
     parser.add_argument("--max-winners", type=int, default=12)
@@ -455,30 +464,52 @@ def _listings_from_selection(
     ]
 
 
+def _load_universe_listings(path: Path) -> list[SecurityListing]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    listings = data.get("listings")
+    if not isinstance(listings, list):
+        raise RuntimeError("universe checkpoint is missing listings")
+    return [_listing_from_dict(item) for item in listings if isinstance(item, dict)]
+
+
+def _listing_from_dict(data: dict[str, object]) -> SecurityListing:
+    return SecurityListing(
+        symbol=str(data["symbol"]),
+        name=str(data["name"]),
+        exchange=str(data["exchange"]) if data.get("exchange") is not None else None,
+        asset_type=str(data["asset_type"]) if data.get("asset_type") is not None else None,
+        status=str(data["status"]),
+        source=str(data["source"]),
+        retrieved_at=datetime.fromisoformat(str(data["retrieved_at"])),
+        cik=str(data["cik"]) if data.get("cik") is not None else None,
+        ipo_date=date.fromisoformat(str(data["ipo_date"])) if data.get("ipo_date") is not None else None,
+        delisting_date=(
+            date.fromisoformat(str(data["delisting_date"])) if data.get("delisting_date") is not None else None
+        ),
+    )
+
+
 def _enrich_listings_with_sec_ciks(
     listings: Iterable[SecurityListing],
     config: AgentConfig,
 ) -> tuple[list[SecurityListing], list[str]]:
     listing_list = list(listings)
-    missing = [listing for listing in listing_list if not listing.cik]
-    if not missing:
-        return listing_list, []
     warnings: list[str] = []
     try:
         sec_listings = SecEdgarClient.from_config(config.data_sources).company_tickers_exchange()
     except (DataSourceError, OSError) as exc:
         return listing_list, [f"sec_edgar: could not enrich CIKs for filings: {exc}"]
-    cik_by_symbol = {listing.symbol.upper(): listing.cik for listing in sec_listings if listing.cik}
+    sec_by_symbol = {listing.symbol.upper(): listing for listing in sec_listings}
     enriched = [
         SecurityListing(
             symbol=listing.symbol,
-            name=listing.name,
+            name=_sec_name_for_listing(listing, sec_by_symbol),
             exchange=listing.exchange,
             asset_type=listing.asset_type,
             status=listing.status,
             source=listing.source,
             retrieved_at=listing.retrieved_at,
-            cik=listing.cik or cik_by_symbol.get(listing.symbol.upper()),
+            cik=listing.cik or _sec_cik_for_listing(listing, sec_by_symbol),
             ipo_date=listing.ipo_date,
             delisting_date=listing.delisting_date,
         )
@@ -488,6 +519,18 @@ def _enrich_listings_with_sec_ciks(
     if unresolved:
         warnings.append(f"sec_edgar: no CIK mapping for {unresolved} selected/listed symbol(s)")
     return enriched, warnings
+
+
+def _sec_name_for_listing(listing: SecurityListing, sec_by_symbol: dict[str, SecurityListing]) -> str:
+    sec_listing = sec_by_symbol.get(listing.symbol.upper())
+    if sec_listing is None or sec_listing.name == listing.name:
+        return listing.name
+    return f"{listing.name} / {sec_listing.name}"
+
+
+def _sec_cik_for_listing(listing: SecurityListing, sec_by_symbol: dict[str, SecurityListing]) -> str | None:
+    sec_listing = sec_by_symbol.get(listing.symbol.upper())
+    return sec_listing.cik if sec_listing is not None else None
 
 
 def _load_or_fetch_context_documents(
@@ -905,6 +948,15 @@ def _fetch_prices(
     return PriceFetchResult(symbol.upper(), (), "; ".join(errors))
 
 
+def _price_coverage_counts(
+    listings: Iterable[SecurityListing],
+    bars_by_symbol: dict[str, tuple[PriceBar, ...]],
+) -> tuple[int, int]:
+    symbols = {listing.symbol.upper() for listing in listings}
+    covered = sum(1 for symbol in symbols if symbol in bars_by_symbol)
+    return covered, len(symbols) - covered
+
+
 def _price_client(price_source: str, timeout_seconds: float):
     if price_source == "massive":
         return MassiveClient.from_config(AgentConfig().data_sources, transport=TimeoutTextTransport(timeout_seconds))
@@ -1001,7 +1053,10 @@ class TimeoutTextTransport:
         req = request.Request(url, headers=dict(headers), method="GET")
         try:
             with request.urlopen(req, timeout=self.timeout_seconds) as response:
-                return response.read().decode("utf-8")
+                return decode_response_text(
+                    response.read(),
+                    response.headers.get("Content-Encoding"),
+                )
         except HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise DataSourceError(f"data source returned HTTP {exc.code}: {detail}") from exc

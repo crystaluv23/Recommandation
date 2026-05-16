@@ -42,17 +42,25 @@ that runs supplied historical cases through retrospective inflection discovery,
 definitions into the local signal library, write cold-start theme maps into the
 local theme library, write surge-research playbooks into the local playbook
 library, and apply versioned control-matching criteria when supplied.
-Long-running LLM research writes partial checkpoints as
-individual inflection and blind analyses finish. Retrospective web-enabled
-inflection discovery should be cached by symbol and outcome window so the same
-historical anchor is not researched separately for every T-slice packet. The
-    remaining first-run blockers are the production outcome/matching definitions,
-    clean provider coverage for a universe-wide historical candidate scan, and
-    review of the first full-market run's data-quality warnings.
+Long-running LLM research writes partial checkpoints as individual inflection
+and blind analyses finish, and reruns should load completed blind analyses
+instead of spending LLM budget again. Retrospective web-enabled inflection
+discovery should be cached by symbol and outcome window so the same historical
+anchor is not researched separately for every T-slice packet. Late-stage
+playbook synthesis should not invalidate an otherwise complete run when provider
+JSON is malformed; it should retry and then fall back to a deterministic
+candidate playbook with warnings. The remaining first-run blockers are deeper
+packet context coverage, production outcome/matching definitions, clean provider
+coverage for a universe-wide historical candidate scan, OpenRouter web-search
+response handling for retrospective inflection discovery, and review of the
+first full-market run's data-quality warnings.
 The formal runner owns the pre-LLM stage order:
 universe -> prices -> selection -> filing/news/transcript context -> packets ->
 research. The context stage is a pre-OpenRouter checkpoint and should be reused
-on reruns just like prices and candidate selection.
+on reruns just like universe, prices, and candidate selection. A formal rerun may
+load an existing eligible-universe checkpoint when a listing provider is
+temporarily unavailable, but it must still reapply the current eligibility
+filter before selection.
 
 The orchestrated product loop is:
 

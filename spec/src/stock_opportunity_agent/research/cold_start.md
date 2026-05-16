@@ -35,6 +35,9 @@ The submodule exposes:
 - LLM output must include `surge_candidate` and `surge_candidate_reason` so the
   cold-start artifact records the actual blind judgment, not just a list of
   signals.
+- LLM JSON output should be treated as provider-fragile: malformed or truncated
+  output may be retried, and completed case analyses must remain checkpointed so
+  a formal run can resume without redoing earlier blind assessments.
 - LLM output is analysis evidence; it cannot mutate memory or signal versions
   directly.
 

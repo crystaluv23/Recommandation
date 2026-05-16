@@ -31,7 +31,10 @@ runs/cold_start/
 
 `01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
 research is slow or interrupted, the next run should reuse these stage outputs
-rather than repeating the full universe scan.
+rather than repeating the full universe scan. The formal runner can load an
+existing universe checkpoint with `--universe-path` and an existing price
+checkpoint with `--price-history-path`, while still reapplying the current
+eligibility and selection logic.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation

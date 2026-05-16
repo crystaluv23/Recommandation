@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Protocol
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, ColdStartLearningResult, HistoricalCase, PreSurgeSignalLogic
-from stock_opportunity_agent.llm.openai import ChatMessage, OpenAIChatClient
+from stock_opportunity_agent.llm.openai import ChatMessage, OpenAIChatClient, OpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.cold_start import BlindCaseAnalysis
 from stock_opportunity_agent.themes import ThemeMapBuildResult
@@ -301,9 +301,20 @@ class HeuristicSurgePlaybookSynthesizer:
 class OpenAISurgePlaybookSynthesizer:
     """LLM-backed cross-case synthesizer for reusable surge research playbooks."""
 
-    def __init__(self, client: OpenAIChatClient, *, max_cases: int = 40) -> None:
+    def __init__(
+        self,
+        client: OpenAIChatClient,
+        *,
+        max_cases: int = 40,
+        max_attempts: int = 2,
+        fallback: SurgePlaybookSynthesizer | None = None,
+    ) -> None:
+        if max_attempts < 1:
+            raise ValidationError("max_attempts must be at least 1")
         self.client = client
         self.max_cases = max_cases
+        self.max_attempts = max_attempts
+        self.fallback = fallback or HeuristicSurgePlaybookSynthesizer()
 
     def synthesize(
         self,
@@ -314,35 +325,62 @@ class OpenAISurgePlaybookSynthesizer:
     ) -> SurgePlaybookSynthesis:
         """Ask the model to summarize cross-case thinking patterns."""
 
+        case_list = list(cases)
+        blind_list = list(blind_analyses)
         prompt = _openai_playbook_prompt(
-            list(cases)[: self.max_cases],
-            list(blind_analyses),
+            case_list[: self.max_cases],
+            blind_list,
             learning_result,
             theme_maps,
         )
-        response = self.client.complete(
-            [
-                ChatMessage(
-                    "developer",
-                    (
-                        "You are synthesizing retrospective cold-start stock-research playbooks. "
-                        "You may compare historical winner, control, and failure labels, but these "
-                        "labels are retrospective and must never be framed as as-of evidence. "
-                        "Do not use web search. Do not infer ticker or company identity. Return strict JSON."
-                    ),
-                ),
-                ChatMessage("user", prompt),
-            ],
-            max_output_tokens=2200,
-            response_format={"type": "json_object"},
+        last_error: Exception | None = None
+        for _attempt in range(self.max_attempts):
+            try:
+                response = self.client.complete(
+                    [
+                        ChatMessage(
+                            "developer",
+                            (
+                                "You are synthesizing retrospective cold-start stock-research playbooks. "
+                                "You may compare historical winner, control, and failure labels, but these "
+                                "labels are retrospective and must never be framed as as-of evidence. "
+                                "Do not use web search. Do not infer ticker or company identity. Return only "
+                                "valid compact JSON. Create at most two playbooks, at most three core questions "
+                                "per playbook, and at most four short strings in each list."
+                            ),
+                        ),
+                        ChatMessage("user", prompt),
+                    ],
+                    max_output_tokens=4000,
+                    response_format={"type": "json_object"},
+                )
+                synthesis = _synthesis_from_json(response.output_text)
+                return SurgePlaybookSynthesis(
+                    schema_version=synthesis.schema_version,
+                    generated_by=self.__class__.__name__,
+                    playbooks=synthesis.playbooks,
+                    warnings=synthesis.warnings,
+                )
+            except (OpenAIClientError, ValidationError) as exc:
+                last_error = exc
+        fallback = self.fallback.synthesize(case_list, blind_list, learning_result, theme_maps)
+        warning = (
+            f"LLM playbook synthesis failed after {self.max_attempts} attempt(s): "
+            f"{last_error or 'unknown error'}"
         )
-        synthesis = SurgePlaybookSynthesis.from_dict(json.loads(response.output_text))
         return SurgePlaybookSynthesis(
-            schema_version=synthesis.schema_version,
-            generated_by=self.__class__.__name__,
-            playbooks=synthesis.playbooks,
-            warnings=synthesis.warnings,
+            schema_version=fallback.schema_version,
+            generated_by=f"{self.__class__.__name__}(fallback={fallback.generated_by})",
+            playbooks=fallback.playbooks,
+            warnings=(*fallback.warnings, warning),
         )
+
+
+def _synthesis_from_json(text: str) -> SurgePlaybookSynthesis:
+    try:
+        return SurgePlaybookSynthesis.from_dict(json.loads(text))
+    except json.JSONDecodeError as exc:
+        raise ValidationError("surge playbook synthesis was not valid JSON") from exc
 
 
 def _general_playbook(

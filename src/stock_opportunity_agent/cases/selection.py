@@ -92,8 +92,23 @@ class HistoricalCandidateSelection:
 def eligible_common_stock_listings(listings: Iterable[SecurityListing]) -> tuple[SecurityListing, ...]:
     """Filter raw listings to likely US common-stock symbols."""
 
+    listing_list = list(listings)
+    listing_by_symbol = {listing.symbol.upper(): listing for listing in listing_list}
+    tokens_by_symbol = {
+        listing.symbol.upper(): _distinctive_issuer_tokens(listing.name.lower())
+        for listing in listing_list
+    }
+    issuer_variant_counts: dict[frozenset[str], int] = {}
+    for tokens in tokens_by_symbol.values():
+        key = frozenset(tokens)
+        if key:
+            issuer_variant_counts[key] = issuer_variant_counts.get(key, 0) + 1
+    common_by_symbol = {
+        listing.symbol.upper(): " common stock" in listing.name.lower()
+        for listing in listing_list
+    }
     eligible: list[SecurityListing] = []
-    for listing in listings:
+    for listing in listing_list:
         symbol = listing.symbol.upper()
         name = listing.name.lower()
         asset_type = (listing.asset_type or "").lower()
@@ -102,7 +117,9 @@ def eligible_common_stock_listings(listings: Iterable[SecurityListing]) -> tuple
             continue
         if asset_type and asset_type not in {"stock", "common stock", "common_stock"}:
             continue
-        if any(marker in name for marker in ("warrant", "right", "unit", "preferred", "depositary")):
+        if any(marker in name for marker in _NON_COMMON_NAME_MARKERS):
+            continue
+        if _looks_like_non_common_symbol_variant(symbol, name, tokens_by_symbol, common_by_symbol, issuer_variant_counts):
             continue
         if any(marker in symbol for marker in ("-", "/", "^", " ", "$")):
             continue
@@ -288,3 +305,106 @@ def _candidate(
 
 def _control_midpoint(definition: OutcomeDefinition) -> float:
     return (definition.control_min_return + definition.control_max_return) / 2
+
+
+def _looks_like_non_common_symbol_variant(
+    symbol: str,
+    name: str,
+    tokens_by_symbol: Mapping[str, set[str]],
+    common_by_symbol: Mapping[str, bool],
+    issuer_variant_counts: Mapping[frozenset[str], int],
+) -> bool:
+    if len(symbol) < 3 or symbol[-1] not in _NON_COMMON_SUFFIX_CODES:
+        return False
+    if " common stock" in name or " class " in name:
+        return False
+    if len(symbol) >= 5 and " class " not in name:
+        return True
+    tokens = tokens_by_symbol.get(symbol, set())
+    if not tokens:
+        return False
+    if issuer_variant_counts.get(frozenset(tokens), 0) > 1:
+        return True
+    for other_symbol, other_tokens in tokens_by_symbol.items():
+        if other_symbol == symbol:
+            continue
+        if len(other_symbol) > len(symbol):
+            continue
+        if symbol.startswith(other_symbol) and tokens & other_tokens:
+            return True
+        if common_by_symbol.get(other_symbol, False) and tokens & other_tokens:
+            return True
+    return False
+
+
+def _distinctive_issuer_tokens(name: str) -> set[str]:
+    normalized = "".join(char.lower() if char.isalnum() else " " for char in name)
+    return {
+        token
+        for token in normalized.split()
+        if len(token) >= 4 and token not in _ISSUER_TOKEN_STOP_WORDS
+    }
+
+
+_NON_COMMON_SUFFIX_CODES = frozenset("CFGHIJLMNOPQRTUVWZ")
+
+
+_ISSUER_TOKEN_STOP_WORDS = {
+    "company",
+    "corp",
+    "corporation",
+    "group",
+    "holding",
+    "holdings",
+    "inc",
+    "investment",
+    "capital",
+    "financial",
+    "infrastructure",
+    "limited",
+    "ltd",
+    "trust",
+}
+
+
+_NON_COMMON_NAME_MARKERS = (
+    " warrant",
+    " warrants",
+    " wt",
+    " wts",
+    " right",
+    " rights",
+    " unit",
+    " units",
+    " preferred",
+    " preference",
+    " depositary",
+    " depository",
+    " adr",
+    " ads",
+    " note",
+    " notes",
+    " debenture",
+    " bond",
+    " fixedincome",
+    " fixed income",
+    " structured",
+    " series",
+    " strats",
+    " trust for",
+    " etn",
+    " etf",
+    " fund",
+    " lp",
+    " l p",
+    " l.p",
+    " partnership",
+    " index",
+    " senior",
+    " subordinated",
+    " trust securities",
+    " focus trust",
+    " test stock",
+    " test symbol",
+    " funding company",
+)

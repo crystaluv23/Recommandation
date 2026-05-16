@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 2
+visit_times: 4
 
 ## Trigger
 
@@ -62,6 +62,30 @@ and news-derived catalysts, made point-in-time catalyst filtering explicit, and
 tightened blind prompt masking across packet ids and text evidence. The lesson
 to carry forward is that a clear architecture still needs an execution-contract
 check at the boundary where old scaffolding is reused.
+
+## 2026-05-13 Formal Execution Result
+
+The clean formal run `cold-start-formal-openrouter-2026-05-13-clean-universe`
+completed 300 blind analyses and wrote signal, theme, playbook, and manifest
+artifacts. The run was operationally useful but not yet strong enough to seed
+the long-running workflow without another improvement pass:
+
+- OpenRouter JSON output can be malformed or truncated in both blind analysis
+  and playbook synthesis, so completed blind analyses need checkpoint resume and
+  late-stage playbook synthesis needs retry plus deterministic fallback.
+- Filtering common stock before selection matters materially. The first
+  universe pass admitted preferreds, notes, ETNs, funds, exchange test symbols,
+  and same-issuer suffix variants; the clean rerun removed the obvious
+  instrument pollution.
+- Packet context remained too thin for signal learning. The completed run
+  produced zero promoted deterministic signals, a single `unknown` theme map,
+  and a playbook warning that most packets lacked fundamentals, sector,
+  valuation, and catalyst substance.
+- Blind LLM judgments did not separate winners from controls strongly enough:
+  winner and control packets had nearly identical `possible` rates, while
+  failure packets still produced many possible surge judgments. Treat this as a
+  data/context and control-definition problem before moving into the permanent
+  weekly/daily operating loop.
 
 ## How to Apply
 

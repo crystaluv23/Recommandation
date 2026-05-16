@@ -53,6 +53,7 @@ The data layer decides whether a request is currently allowed and whether cached
 - Preserve provider key, URL, retrieval time, source publication time when available, and raw response cache eligibility.
 - Expose capability selection through `source_plan_by_capability()` and `select_source_for_capability()`.
 - Raise explicit data-source errors for missing credentials, rate-limit messages, malformed upstream responses, and unsupported transports.
+- Decode common compressed HTTP responses before JSON/CSV parsing, and surface malformed response bodies as explicit data-source errors.
 - Keep raw cache and request ledger records source-linked and secret-safe.
 
 ## Invariants
@@ -66,4 +67,4 @@ The data layer decides whether a request is currently allowed and whether cached
 
 ## Testing
 
-Use fake transports to verify URL construction, credential lookup, source registration, source selection, rate-limit errors, point-in-time filtering, raw cache hits, request ledger entries, quota deferrals, upstream error recording, and normalization of listing, price, and filing metadata.
+Use fake transports to verify URL construction, credential lookup, source registration, source selection, rate-limit errors, compressed response decoding, point-in-time filtering, raw cache hits, request ledger entries, quota deferrals, upstream error recording, and normalization of listing, price, and filing metadata.

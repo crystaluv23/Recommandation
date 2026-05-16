@@ -17,8 +17,10 @@ The submodule exposes:
   warnings.
 - `eligible_common_stock_listings`: conservative listing filter for US common
   stock candidates; it excludes obvious warrants, rights, units, preferred
-  shares, and depositary receipts by listing name as well as non-common-stock
-  asset types.
+  shares, depositary receipts, notes, ETNs, funds, LPs, structured products, and
+  exchange test symbols by listing name, non-common-stock asset types, and
+  symbol variants that look like exchange-coded preferred/notes for an already
+  listed common issuer.
 - `select_historical_candidates`: price-history scan that labels each symbol
   using a versioned `OutcomeDefinition` over the most recent matured one-year
   anchor window.
@@ -41,6 +43,10 @@ The submodule exposes:
   quality metric. It should prefer the configured keyed daily-price source and
   fall back through other available providers rather than treating one source as
   authoritative when it is timing out or returning no data.
+- Before filtering the formal universe, the runner should enrich active listings
+  with SEC ticker mapping names when available so exchange-traded notes,
+  preferreds, and structured products are not admitted only because a vendor's
+  listing row used the issuer's common company name.
 - After candidate selection and before packet construction, the formal runner
   should enrich selected symbols with source-backed unstructured context:
   point-in-time SEC filing documents, news, transcript-like management

@@ -335,19 +335,33 @@ def _run_case_research(
     result_key: str,
     progress: ProgressReporter | None,
 ) -> tuple[TAnalysis, ...]:
+    completed_by_case = _load_research_checkpoint(checkpoint_path, result_key)
+    if completed_by_case:
+        _report(progress, f"[cold-start] {label} resume {len(completed_by_case)}/{len(cases)} from {checkpoint_path}")
     if max_workers == 1 or len(cases) <= 1:
-        analyses = []
+        analyses_by_case = dict(completed_by_case)
         for index, case in enumerate(cases, start=1):
-            analyses.append(research(case))
+            if case.case_id in analyses_by_case:
+                continue
+            analyses_by_case[case.case_id] = research(case)
             _report(progress, f"[cold-start] {label} progress {index}/{len(cases)}: {case.case_id}")
-            _write_research_checkpoint(checkpoint_path, run_id, result_key, analyses)
-        return tuple(analyses)
+            _write_research_checkpoint(
+                checkpoint_path,
+                run_id,
+                result_key,
+                [analyses_by_case[item.case_id] for item in cases if item.case_id in analyses_by_case],
+            )
+        return tuple(analyses_by_case[case.case_id] for case in cases if case.case_id in analyses_by_case)
 
     results: list[TAnalysis | None] = [None] * len(cases)
+    for index, case in enumerate(cases):
+        if case.case_id in completed_by_case:
+            results[index] = completed_by_case[case.case_id]
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {
             executor.submit(research, case): (index, case)
             for index, case in enumerate(cases)
+            if case.case_id not in completed_by_case
         }
         for completed, future in enumerate(as_completed(futures), start=1):
             index, case = futures[future]
@@ -360,6 +374,40 @@ def _run_case_research(
                 [result for result in results if result is not None],
             )
     return tuple(result for result in results if result is not None)
+
+
+def _load_research_checkpoint(path: Path, result_key: str) -> dict[str, Any]:
+    if result_key != "blind_case_analyses" or not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    raw_items = data.get(result_key)
+    if not isinstance(raw_items, list):
+        return {}
+    loaded: dict[str, BlindCaseAnalysis] = {}
+    for item in raw_items:
+        if not isinstance(item, dict):
+            continue
+        try:
+            analysis = BlindCaseAnalysis(
+                case_id=str(item["case_id"]),
+                packet_id=str(item["packet_id"]),
+                as_of_date=str(item["as_of_date"]),
+                surge_candidate=str(item["surge_candidate"]),
+                surge_candidate_reason=str(item["surge_candidate_reason"]),
+                expectation_gap=str(item["expectation_gap"]),
+                pre_surge_signals=tuple(str(value) for value in item["pre_surge_signals"]),
+                contrary_evidence=tuple(str(value) for value in item["contrary_evidence"]),
+                catalyst_watch=tuple(str(value) for value in item["catalyst_watch"]),
+                confidence=float(item["confidence"]),
+                raw_text=str(item["raw_text"]),
+            )
+        except (KeyError, TypeError, ValueError):
+            continue
+        loaded[analysis.case_id] = analysis
+    return loaded
 
 
 def _write_research_checkpoint(

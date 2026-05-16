@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import csv
+import gzip
 import io
 import json
+import zlib
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from typing import Any, Mapping, Protocol
@@ -49,7 +51,10 @@ class UrllibJsonTransport:
         req = request.Request(url, headers=dict(headers), method="GET")
         try:
             with request.urlopen(req, timeout=60) as response:
-                return response.read().decode("utf-8")
+                return decode_response_text(
+                    response.read(),
+                    response.headers.get("Content-Encoding"),
+                )
         except HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise DataSourceError(f"data source returned HTTP {exc.code}: {detail}") from exc
@@ -191,6 +196,20 @@ def parse_csv_rows(text: str) -> list[dict[str, str]]:
                 normalized[key.strip()] = (value or "").strip()
         rows.append(normalized)
     return rows
+
+
+def decode_response_text(body: bytes, content_encoding: str | None = None) -> str:
+    """Decode a provider response body, including common HTTP compression."""
+
+    encoding = (content_encoding or "").lower()
+    try:
+        if "gzip" in encoding or body.startswith(b"\x1f\x8b"):
+            body = gzip.decompress(body)
+        elif "deflate" in encoding:
+            body = zlib.decompress(body)
+        return body.decode("utf-8")
+    except (OSError, zlib.error, UnicodeDecodeError) as exc:
+        raise DataSourceError("data source response was not valid UTF-8 text") from exc
 
 
 def utc_now() -> datetime:

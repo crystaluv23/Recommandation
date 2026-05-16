@@ -72,6 +72,26 @@ class FakeOpenAITransport:
         }
 
 
+class SequencedOpenAITransport:
+    def __init__(self, texts) -> None:
+        self.texts = list(texts)
+        self.calls = []
+
+    def post_json(self, url, headers, payload):
+        self.calls.append((url, headers, payload))
+        index = min(len(self.calls) - 1, len(self.texts) - 1)
+        return {
+            "id": "resp_test",
+            "model": "gpt-5.4-mini",
+            "output": [
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": self.texts[index]}],
+                }
+            ],
+        }
+
+
 class FailingInflectionResearcher:
     def discover(self, case):
         raise RuntimeError("provider unavailable")
@@ -127,11 +147,37 @@ class ColdStartSignalTests(TestCase):
             SecurityListing("ABCDW", "ABCD Corp Warrant", "NASDAQ", "Stock", "Active", "test", STAMP),
             SecurityListing("ABCDU", "ABCD Corp Unit", "NASDAQ", "Stock", "Active", "test", STAMP),
             SecurityListing("ABCDR", "ABCD Corp Right", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDN", "ABCD Corp 6.50% Notes due 2029", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDP", "ABCD Corp Preferred Series A", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("ABCDT", "ABCD Trust Structured Securities", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("OPTXW", "Syntec Optics Holdings Inc Wt Exp", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("CHSCL", "CHS Inc", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("IFED", "ETRACS IFED Invest with the Fed TR Index ETN", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("NMAI", "Nuveen Multi-Asset Income Fund", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("ZWZZT", "NASDAQ TEST STOCK", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("FUND", "Sprott Focus Trust Inc", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("BIP", "Brookfield Infrastructure Partners L.P", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("AGNC", "AGNC Investment Corp Common Stock", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("AGNCN", "AGNC Investment Corp", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("OXSQ", "Oxford Square Capital Corp Common Stock", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("OXSQG", "Oxford Square Capital Corp", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("SAR", "Saratoga Investment Corp Common Stock", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SAJ", "Saratoga Investment Corp", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SAT", "Saratoga Investment Corp", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SACH", "Sachem Capital Corp Common Stock", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SCCC", "Sachem Capital Corp", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SO", "Southern Company Common Stock", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("SOJF", "Southern Company", "NYSE", "Stock", "Active", "test", STAMP),
+            SecurityListing("GOOG", "Alphabet Inc Class C", "NASDAQ", "Stock", "Active", "test", STAMP),
+            SecurityListing("GOOGL", "Alphabet Inc Class A", "NASDAQ", "Stock", "Active", "test", STAMP),
         ]
 
         eligible = eligible_common_stock_listings(listings)
 
-        self.assertEqual([listing.symbol for listing in eligible], ["ABCD"])
+        self.assertEqual(
+            [listing.symbol for listing in eligible],
+            ["ABCD", "AGNC", "GOOG", "GOOGL", "OXSQ", "SACH", "SAR", "SO"],
+        )
 
     def test_packet_signal_measurement_uses_structured_point_in_time_features(self) -> None:
         case = make_case(
@@ -521,6 +567,44 @@ class ColdStartSignalTests(TestCase):
         self.assertNotIn("WINNER Corp.", prompt_text)
         self.assertEqual(result.generated_by, "OpenAISurgePlaybookSynthesizer")
         self.assertEqual(result.playbooks[0].playbook_id, "pb-test-v0.1")
+
+    def test_openai_playbook_synthesizer_falls_back_after_invalid_json(self) -> None:
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        transport = SequencedOpenAITransport(["{", "{\"playbooks\": ["])
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        result = OpenAISurgePlaybookSynthesizer(client, max_attempts=2).synthesize(cases, blind, learning, themes)
+
+        self.assertEqual(len(transport.calls), 2)
+        self.assertIn("fallback=HeuristicSurgePlaybookSynthesizer", result.generated_by)
+        self.assertTrue(result.playbooks)
+        self.assertTrue(any("LLM playbook synthesis failed" in warning for warning in result.warnings))
 
     def test_formal_news_context_turns_order_news_into_document_and_catalyst(self) -> None:
         document = _finnhub_news_document(

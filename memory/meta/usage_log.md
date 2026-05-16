@@ -15,3 +15,6 @@
 - 2026-05-09: Trigger "running Python tests and lint for formal cold-start changes"; read `memory/experiences/python-runtime-for-tests.md` so validation uses the bundled Python 3.11+ runtime.
 - 2026-05-13: Trigger "changing formal cold start outputs and OpenRouter-backed playbook synthesis"; read `memory/experiences/formal-cold-start-blind-boundaries.md` before adding retrospective playbooks so blind anonymity and web-search boundaries stay separate.
 - 2026-05-13: Trigger "running Python tests and lint for playbook implementation"; read `memory/experiences/python-runtime-for-tests.md` so validation uses the bundled Python 3.11+ runtime.
+- 2026-05-13: Trigger "running the formal cold-start workflow"; read `memory/experiences/formal-cold-start-blind-boundaries.md` before execution so the run used the formal entry point and kept blind/web-search boundaries explicit.
+- 2026-05-13: Trigger "running Python tests and formal cold-start scripts"; read `memory/experiences/python-runtime-for-tests.md` so execution and validation used the bundled Python 3.11+ runtime.
+- 2026-05-13: Trigger "reviewing the completed formal cold-start run"; updated `memory/experiences/formal-cold-start-blind-boundaries.md` with the execution result, provider fragility, and quality blockers before the long-running workflow.

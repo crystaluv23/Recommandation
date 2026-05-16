@@ -87,33 +87,45 @@ class HeuristicBlindCaseResearcher:
 class OpenAIBlindCaseResearcher:
     """OpenAI-backed blind as-of-date researcher."""
 
-    def __init__(self, client: OpenAIChatClient, *, mask_identity: bool = True) -> None:
+    def __init__(self, client: OpenAIChatClient, *, mask_identity: bool = True, max_attempts: int = 2) -> None:
+        if max_attempts < 1:
+            raise ValidationError("max_attempts must be at least 1")
         self.client = client
         self.mask_identity = mask_identity
+        self.max_attempts = max_attempts
 
     def analyze(self, case: HistoricalCase) -> BlindCaseAnalysis:
         """Analyze a historical case with future outcome metadata excluded."""
 
         packet = case.packet
-        response = self.client.complete(
-            [
-                ChatMessage(
-                    "developer",
-                    (
-                        "You are doing blind historical stock research. Use only the supplied as-of packet. "
-                        "Do not assume future outcomes, do not ask why the stock later moved, and do not use "
-                        "any data after the packet as_of_date. Web search is disabled for this step. "
-                        "Treat any masked identity as intentional. Judge whether the anonymous setup looks "
-                        "like a potential 3-6 month surge candidate, but do not infer or mention any hidden "
-                        "winner/control/failure group. Return strict JSON."
+        last_error: ValidationError | None = None
+        for attempt in range(self.max_attempts):
+            response = self.client.complete(
+                [
+                    ChatMessage(
+                        "developer",
+                        (
+                            "You are doing blind historical stock research. Use only the supplied as-of packet. "
+                            "Do not assume future outcomes, do not ask why the stock later moved, and do not use "
+                            "any data after the packet as_of_date. Web search is disabled for this step. "
+                            "Treat any masked identity as intentional. Judge whether the anonymous setup looks "
+                            "like a potential 3-6 month surge candidate, but do not infer or mention any hidden "
+                            "winner/control/failure group. Return strict concise JSON. Keep each array to at most "
+                            "three short strings."
+                        ),
                     ),
-                ),
-                ChatMessage("user", _packet_prompt(packet, mask_identity=self.mask_identity)),
-            ],
-            max_output_tokens=1200,
-            response_format={"type": "json_object"},
-        )
-        return _analysis_from_json(case, response.output_text)
+                    ChatMessage("user", _packet_prompt(packet, mask_identity=self.mask_identity)),
+                ],
+                max_output_tokens=2400,
+                response_format={"type": "json_object"},
+            )
+            try:
+                return _analysis_from_json(case, response.output_text)
+            except ValidationError as exc:
+                last_error = exc
+                if attempt + 1 >= self.max_attempts:
+                    break
+        raise last_error or ValidationError("blind case analysis failed")
 
 
 def _packet_prompt(packet: ResearchPacket, *, mask_identity: bool = True) -> str:
