@@ -8,7 +8,7 @@ import os
 import json as _json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from typing import Iterable
 from urllib import parse, request
@@ -44,6 +44,7 @@ from stock_opportunity_agent.data import (
 )
 from stock_opportunity_agent.data.sources.core import decode_response_text
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
+from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.memory import FilePlaybookLibrary, FileSignalLibrary, FileThemeLibrary
 from stock_opportunity_agent.models import (
     Catalyst,
@@ -68,6 +69,7 @@ from stock_opportunity_agent.research import (
     OpenAISurgePlaybookSynthesizer,
     OpenAIWebInflectionResearcher,
     apply_context_coverage_gate,
+    build_web_context_queries,
 )
 
 
@@ -226,7 +228,14 @@ def main() -> None:
         print("[formal-cold-start] selected symbols: " + ", ".join(selected_symbols))
 
         selected_listings = [listing for listing in listings if listing.symbol.upper() in set(selected_symbols)]
-    client = OpenRouterChatClient(args.openrouter_model, _required_env("OPENROUTER_API_KEY"))
+    client = OpenRouterChatClient(
+        args.openrouter_model,
+        _required_env("OPENROUTER_API_KEY"),
+        transport=UrllibTransport(
+            timeout_seconds=args.openrouter_timeout_seconds,
+            max_attempts=args.openrouter_max_attempts,
+        ),
+    )
     features_by_symbol = _features_for_candidates(
         selection.selected_candidates,
         selected_listings,
@@ -278,8 +287,6 @@ def main() -> None:
             f"insufficient={len(coverage.excluded_case_ids)} mode={args.coverage_gate_mode}"
         )
     research_cases = coverage.cases
-    if not research_cases:
-        raise RuntimeError("coverage gate excluded every historical case; inspect 04_documents coverage_by_case_id")
     print(f"[formal-cold-start] built {len(cases)} point-in-time case packet(s)")
     cases_path = paths.packets_dir / "historical_cases.json"
     _write_json(
@@ -295,6 +302,11 @@ def main() -> None:
         },
     )
     print(f"[formal-cold-start] wrote case checkpoint: {cases_path}")
+    if not research_cases:
+        raise RuntimeError(
+            f"coverage gate excluded every historical case; inspect "
+            f"{paths.documents_dir / 'documents_and_catalysts.json'} and {cases_path}"
+        )
 
     if not args.selection_summary_path:
         selection_path = paths.selection_dir / "historical_candidate_selection.json"
@@ -352,6 +364,8 @@ def _parse_args():
     parser.add_argument("--output-root", default="runs/cold_start")
     parser.add_argument("--output-dir", default=None)
     parser.add_argument("--openrouter-model", default="openai/gpt-5.5")
+    parser.add_argument("--openrouter-timeout-seconds", type=float, default=180.0)
+    parser.add_argument("--openrouter-max-attempts", type=int, default=2)
     parser.add_argument("--max-workers", type=int, default=8)
     parser.add_argument("--price-timeout", type=float, default=12.0)
     parser.add_argument("--price-source", choices=("massive", "alpaca", "stooq"), default=None)
@@ -367,7 +381,7 @@ def _parse_args():
     parser.add_argument("--research-max-workers", type=int, default=1)
     parser.add_argument("--web-inflection-mode", choices=("cached", "off"), default="cached")
     parser.add_argument("--context-mode", choices=("provider", "off"), default="provider")
-    parser.add_argument("--web-context-mode", choices=("cached", "off"), default="cached")
+    parser.add_argument("--web-context-mode", choices=("cached", "off"), default="off")
     parser.add_argument("--coverage-gate-mode", choices=("warn", "enforce"), default="warn")
     parser.add_argument("--filing-forms", default="10-K,10-Q,8-K")
     parser.add_argument("--filing-lookback-days", type=int, default=540)
@@ -644,8 +658,11 @@ def _fetch_context_documents(
         else None
     )
     filing_forms = _parse_csv_values(args.filing_forms)
-    for candidate in candidates:
+    candidate_list = list(candidates)
+    for index, candidate in enumerate(candidate_list, start=1):
         symbol = candidate.symbol.upper()
+        if not getattr(args, "quiet", False):
+            print(f"[formal-cold-start] context {index}/{len(candidate_list)}: {symbol}")
         as_of_dates = CaseSlicePlan().as_of_dates(candidate.inflection_date)
         if not as_of_dates:
             continue
@@ -669,6 +686,14 @@ def _fetch_context_documents(
             )
         else:
             warnings.append(f"{symbol}: no SEC CIK available; filing documents skipped")
+        documents.extend(
+            _theme_context_documents_for_candidate(
+                candidate,
+                features_by_symbol.get(symbol, ()),
+                earliest_as_of=earliest_as_of,
+                created_at=created_at,
+            )
+        )
         news_docs = _news_documents_for_candidate(
             args,
             candidate,
@@ -679,6 +704,18 @@ def _fetch_context_documents(
             warnings=warnings,
         )
         documents.extend(news_docs)
+        documents.extend(
+            _provider_theme_news_documents_for_candidate(
+                args,
+                candidate,
+                features_by_symbol.get(symbol, ()),
+                context_start=context_start,
+                latest_as_of=as_of_dates[-1],
+                created_at=created_at,
+                alpha_client=alpha_client,
+                warnings=warnings,
+            )
+        )
         documents.extend(
             _transcript_documents_for_candidate(
                 args,
@@ -743,7 +780,7 @@ def _web_context_for_candidate(
         result = web_researcher.collect(request, created_at)
     except (RuntimeError, OSError, ValidationError) as exc:
         warnings.append(f"{candidate.symbol}: web context unavailable: {exc}")
-        return EvidenceAcquisitionResult((), (), (), ())
+        return EvidenceAcquisitionResult((), (), build_web_context_queries(request), ())
     warnings.extend(f"{candidate.symbol}: {warning}" for warning in result.warnings)
     return result
 
@@ -838,7 +875,12 @@ def _news_documents_for_candidate(
             warnings.append(f"{candidate.symbol}: Finnhub news unavailable: {exc}")
     if len(documents) < args.max_news_per_symbol and alpha_client is not None:
         try:
-            raw = alpha_client.news_sentiment(candidate.symbol, limit=args.max_news_per_symbol)
+            raw = alpha_client.news_sentiment(
+                candidate.symbol,
+                limit=args.max_news_per_symbol,
+                time_from=datetime.combine(news_start, time.min, tzinfo=timezone.utc),
+                time_to=datetime.combine(candidate.inflection_date, time.max, tzinfo=timezone.utc),
+            )
             feed = raw.get("feed") if isinstance(raw, dict) else None
             if isinstance(feed, list):
                 for item in feed:
@@ -854,6 +896,141 @@ def _news_documents_for_candidate(
     return sorted({document.document_id: document for document in documents}.values(), key=lambda item: item.published_date)[
         : args.max_news_per_symbol
     ]
+
+
+def _theme_context_documents_for_candidate(
+    candidate: HistoricalCandidate,
+    features: Iterable[FeatureRecord],
+    *,
+    earliest_as_of: date,
+    created_at: datetime,
+) -> list[DocumentRecord]:
+    sector = _latest_text_feature(features, "profile.sector", earliest_as_of)
+    industry = _latest_text_feature(features, "profile.industry", earliest_as_of)
+    if sector is None and industry is None:
+        return []
+    industry_text = industry or "Unknown industry"
+    sector_text = sector or "Unknown sector"
+    source_id = f"provider_profile:{candidate.symbol.upper()}:theme_context"
+    text = (
+        f"Provider profile classifies the company as sector={sector_text}; "
+        f"industry={industry_text}. This is stale industry-chain context from "
+        "known data-source APIs, not a point-in-time catalyst or valuation claim."
+    )
+    return [
+        DocumentRecord(
+            document_id=_document_id(source_id),
+            symbol=candidate.symbol,
+            kind=EvidenceKind.THEME_CONTEXT,
+            title=f"{candidate.symbol.upper()} provider industry context",
+            text=text,
+            source_id=source_id,
+            source_url=f"urn:{source_id}",
+            published_date=earliest_as_of,
+            available_date=earliest_as_of,
+            retrieved_at=created_at,
+        )
+    ]
+
+
+def _provider_theme_news_documents_for_candidate(
+    args,
+    candidate: HistoricalCandidate,
+    features: Iterable[FeatureRecord],
+    *,
+    context_start: date,
+    latest_as_of: date,
+    created_at: datetime,
+    alpha_client: AlphaVantageClient | None,
+    warnings: list[str],
+) -> list[DocumentRecord]:
+    if alpha_client is None or args.max_theme_documents_per_symbol < 1:
+        return []
+    topics = _alpha_vantage_topics_for_features(features, candidate.inflection_date)
+    if not topics:
+        return []
+    theme_start = max(context_start, candidate.inflection_date - timedelta(days=args.news_lookback_days))
+    theme_end = min(candidate.inflection_date, latest_as_of)
+    try:
+        raw = alpha_client.topic_news_sentiment(
+            topics,
+            limit=args.max_theme_documents_per_symbol,
+            time_from=datetime.combine(theme_start, time.min, tzinfo=timezone.utc),
+            time_to=datetime.combine(theme_end, time.max, tzinfo=timezone.utc),
+        )
+    except (DataSourceError, OSError) as exc:
+        warnings.append(f"{candidate.symbol}: Alpha Vantage theme news unavailable: {exc}")
+        return []
+    feed = raw.get("feed") if isinstance(raw, dict) else None
+    if not isinstance(feed, list):
+        return []
+    documents: list[DocumentRecord] = []
+    for item in feed:
+        document = _alpha_vantage_theme_document(candidate.symbol, tuple(topics), item, created_at)
+        if document is None:
+            continue
+        if theme_start <= document.published_date <= theme_end:
+            documents.append(document)
+        if len(documents) >= args.max_theme_documents_per_symbol:
+            break
+    return documents
+
+
+def _alpha_vantage_topics_for_features(features: Iterable[FeatureRecord], as_of_date: date) -> tuple[str, ...]:
+    sector = (_latest_text_feature(features, "profile.sector", as_of_date) or "").lower()
+    industry = (_latest_text_feature(features, "profile.industry", as_of_date) or "").lower()
+    text = f"{sector} {industry}"
+    topics: list[str] = []
+    if any(word in text for word in ("semiconductor", "software", "technology", "internet", "ai", "data")):
+        topics.append("technology")
+    if any(word in text for word in ("manufacturing", "semiconductor", "industrial", "machinery")):
+        topics.append("manufacturing")
+    if any(word in text for word in ("utility", "utilities", "energy", "power", "electric")):
+        topics.append("energy_transportation")
+    if any(word in text for word in ("bank", "financial", "insurance", "capital markets")):
+        topics.append("finance")
+    if any(word in text for word in ("health", "biotech", "pharma", "medical", "life science")):
+        topics.append("life_sciences")
+    return tuple(dict.fromkeys(topics))
+
+
+def _alpha_vantage_theme_document(
+    symbol: str,
+    topics: tuple[str, ...],
+    item: object,
+    retrieved_at: datetime,
+) -> DocumentRecord | None:
+    if not isinstance(item, dict):
+        return None
+    published = _date_from_alpha_vantage_time(item.get("time_published"))
+    title = _non_empty(item.get("title"))
+    if published is None or title is None:
+        return None
+    summary = _non_empty(item.get("summary")) or ""
+    topic_text = ", ".join(topics)
+    source_id = f"alpha_vantage_theme:{symbol.upper()}:{topic_text}:{item.get('url') or title[:80]}"
+    return DocumentRecord(
+        document_id=_document_id(source_id),
+        symbol=symbol,
+        kind=EvidenceKind.THEME_CONTEXT,
+        title=f"Theme context: {title}",
+        text=_excerpt(f"Provider topic context ({topic_text}): {title}. {summary}", max_chars=1500),
+        source_id=source_id,
+        source_url=str(item.get("url") or f"urn:{source_id}"),
+        published_date=published,
+        available_date=published,
+        retrieved_at=retrieved_at,
+    )
+
+
+def _latest_text_feature(features: Iterable[FeatureRecord], name: str, as_of_date: date) -> str | None:
+    latest: FeatureRecord | None = None
+    for feature in features:
+        if feature.name != name or feature.as_of_date > as_of_date or feature.data_quality is DataQuality.MISSING:
+            continue
+        if latest is None or feature.as_of_date > latest.as_of_date:
+            latest = feature
+    return _non_empty(latest.value) if latest is not None else None
 
 
 def _transcript_documents_for_candidate(
@@ -1246,6 +1423,15 @@ def _features_for_candidates(
         for as_of_date in as_of_dates:
             features.extend(normalize_price_features(bars, as_of_date, retrieved_at=created_at))
             features.extend(_classification_proxy_features(candidate.symbol, as_of_date, created_at))
+        features.extend(
+            _provider_profile_features(
+                candidate.symbol,
+                as_of_dates,
+                alpha_client,
+                finnhub_client,
+                created_at,
+            )
+        )
         listing = listing_by_symbol.get(candidate.symbol.upper())
         if listing is not None and listing.cik:
             features.extend(
@@ -1263,6 +1449,61 @@ def _features_for_candidates(
             features.extend(_finnhub_earnings_features(candidate.symbol, as_of_dates, finnhub_client, created_at))
         features_by_symbol[candidate.symbol] = features
     return features_by_symbol
+
+
+def _provider_profile_features(
+    symbol: str,
+    as_of_dates: Iterable[date],
+    alpha_client: AlphaVantageClient | None,
+    finnhub_client: FinnhubClient | None,
+    created_at: datetime,
+) -> list[FeatureRecord]:
+    """Build stale-but-useful provider profile features for industry context."""
+
+    as_of_tuple = tuple(as_of_dates)
+    if not as_of_tuple:
+        return []
+    sector: str | None = None
+    industry: str | None = None
+    source = ""
+    if alpha_client is not None:
+        try:
+            raw = alpha_client.company_overview(symbol)
+        except (DataSourceError, OSError):
+            raw = {}
+        if isinstance(raw, dict):
+            sector = _non_empty(raw.get("Sector"))
+            industry = _non_empty(raw.get("Industry"))
+            if sector or industry:
+                source = "alpha_vantage_profile"
+    if (not sector or not industry) and finnhub_client is not None:
+        try:
+            raw_profile = finnhub_client.company_profile(symbol)
+        except (DataSourceError, OSError):
+            raw_profile = {}
+        if isinstance(raw_profile, dict):
+            sector = sector or _non_empty(raw_profile.get("gsector") or raw_profile.get("sector"))
+            industry = industry or _non_empty(raw_profile.get("finnhubIndustry") or raw_profile.get("industry"))
+            if sector or industry:
+                source = source or "finnhub_profile"
+    values = (("profile.sector", sector), ("profile.industry", industry))
+    features: list[FeatureRecord] = []
+    for as_of_date in as_of_tuple:
+        for name, value in values:
+            if value is None:
+                continue
+            features.append(
+                FeatureRecord(
+                    name=name,
+                    value=value,
+                    as_of_date=as_of_date,
+                    source=source,
+                    retrieved_at=created_at,
+                    data_quality=DataQuality.STALE,
+                    source_id=f"{source}:{symbol.upper()}:{name}:{as_of_date.isoformat()}",
+                )
+            )
+    return features
 
 
 def _feature_alpha_client(config: AgentConfig) -> AlphaVantageClient | None:
@@ -1651,7 +1892,6 @@ def _catalyst_from_news_document(document: DocumentRecord) -> Catalyst | None:
     keywords = (
         "order",
         "contract",
-        "customer",
         "backlog",
         "award",
         "supply agreement",
@@ -1659,6 +1899,13 @@ def _catalyst_from_news_document(document: DocumentRecord) -> Catalyst | None:
         "launch",
         "approval",
         "guidance",
+        "rate hike",
+        "rate increase",
+        "higher electric",
+        "higher gas",
+        "leadership appointment",
+        "appointments",
+        "new ceo",
     )
     if not any(keyword in text for keyword in keywords):
         return None

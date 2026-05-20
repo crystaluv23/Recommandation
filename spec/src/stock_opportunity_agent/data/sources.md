@@ -23,14 +23,14 @@ Use the source catalog as the canonical free/free-key capability manifest:
 | Transcripts | Alpha Vantage -> Finnhub | Coverage varies by provider and plan. |
 | Analyst estimates | Alpha Vantage -> Finnhub | Missing estimates are explicit missing data, not neutral evidence. |
 | Earnings calendar and corporate actions | Alpha Vantage -> Finnhub/FMP where applicable | Dates can change; monitor runs must refresh them. |
-| Sector, benchmark, and macro context | FRED and Alpha Vantage, with Nasdaq Data Link as candidate | FRED is authority for macro series. |
+| Sector, benchmark, and macro context | FRED and Alpha Vantage, with Nasdaq Data Link as candidate | FRED is authority for macro series; Alpha Vantage topic news may provide bounded sector/theme context. |
 
 ## Current Adapters
 
 - `sec_edgar`: CIK/ticker mappings, submissions, company facts, filing metadata, and filing document text.
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
-- `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, news sentiment, transcripts, ETF profile, and selected macro endpoints.
+- `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.
 - `fred`: macro series metadata and vintage-aware observations.
 - `openfigi`: optional-key identifier mapping.
 - `finnhub`: fallback profile, news, financial metrics, filings mirror, estimates, earnings calendar, and transcripts.
@@ -52,7 +52,7 @@ The data layer decides whether a request is currently allowed and whether cached
 - Normalize only low-risk shared records at this layer, such as `SecurityListing`, `PriceBar`, and `FilingMetadata`.
 - Preserve provider key, URL, retrieval time, source publication time when available, and raw response cache eligibility.
 - Expose capability selection through `source_plan_by_capability()` and `select_source_for_capability()`.
-- Raise explicit data-source errors for missing credentials, rate-limit messages, malformed upstream responses, and unsupported transports.
+- Raise explicit, secret-redacted data-source errors for missing credentials, rate-limit messages, malformed upstream responses, and unsupported transports.
 - Decode common compressed HTTP responses before JSON/CSV parsing, and surface malformed response bodies as explicit data-source errors.
 - Keep raw cache and request ledger records source-linked and secret-safe.
 

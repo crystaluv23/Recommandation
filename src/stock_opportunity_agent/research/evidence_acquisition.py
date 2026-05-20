@@ -194,7 +194,12 @@ def assess_context_coverage(case: HistoricalCase, *, mode: str = "warn") -> Cont
     evidence = packet.evidence
     feature_names = {feature.name for feature in packet.features if feature.data_quality is not DataQuality.MISSING}
     evidence_kinds = {item.kind for item in evidence if item.data_quality is not DataQuality.MISSING}
-    summaries = " ".join(item.summary.lower() for item in evidence)
+    event_summaries = " ".join(
+        item.summary.lower()
+        for item in evidence
+        if item.kind in {EvidenceKind.FILING, EvidenceKind.TRANSCRIPT, EvidenceKind.NEWS, EvidenceKind.RESEARCH_REPORT}
+    )
+    all_summaries = " ".join(item.summary.lower() for item in evidence)
     buckets = {
         "company_evidence": bool(
             evidence_kinds
@@ -208,18 +213,35 @@ def assess_context_coverage(case: HistoricalCase, *, mode: str = "warn") -> Cont
         or bool(evidence_kinds & {EvidenceKind.FINANCIAL, EvidenceKind.VALUATION}),
         "theme_context": bool(evidence_kinds & {EvidenceKind.THEME_CONTEXT}) or bool(packet.theme_ids),
         "catalyst_event_context": bool(packet.catalysts)
-        or any(word in summaries for word in ("catalyst", "contract", "order", "approval", "earnings", "launch")),
+        or any(
+            word in event_summaries
+            for word in (
+                "catalyst",
+                "contract",
+                "order",
+                "approval",
+                "launch",
+                "partnership",
+                "guidance",
+                "award",
+                "rate hike",
+                "rate increase",
+                "leadership appointment",
+                "appointments",
+                "new ceo",
+            )
+        ),
         "contrary_risk_context": any(
-            word in summaries
+            word in all_summaries
             for word in ("risk", "dilution", "debt", "cash burn", "going concern", "lawsuit", "investigation", "delist")
         ),
     }
-    supporting = sum(
-        1
-        for name, present in buckets.items()
-        if name != "company_evidence" and present
+    sufficient = (
+        buckets["company_evidence"]
+        and buckets["financial_valuation_context"]
+        and buckets["theme_context"]
+        and (buckets["catalyst_event_context"] or buckets["contrary_risk_context"])
     )
-    sufficient = buckets["company_evidence"] and supporting >= 2
     return ContextCoverageReport(
         case_id=case.case_id,
         symbol=packet.company.ticker.symbol,

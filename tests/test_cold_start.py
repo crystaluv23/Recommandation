@@ -64,6 +64,10 @@ from scripts.run_cold_start_formal import (
     _fetch_context_documents,
     _finnhub_earnings_features,
     _finnhub_news_document,
+    _news_documents_for_candidate,
+    _provider_profile_features,
+    _provider_theme_news_documents_for_candidate,
+    _theme_context_documents_for_candidate,
 )
 
 
@@ -145,6 +149,44 @@ class FakeAlphaEarningsClient:
         }
 
 
+class FakeAlphaProfileClient:
+    def company_overview(self, symbol):
+        return {"Sector": "Technology", "Industry": "Semiconductors"}
+
+
+class FakeAlphaNewsClient:
+    def __init__(self):
+        self.calls = []
+
+    def news_sentiment(self, symbol, **kwargs):
+        self.calls.append((symbol, kwargs))
+        return {
+            "feed": [
+                {
+                    "time_published": "20251115T120000",
+                    "title": "ABC wins AI customer contract",
+                    "summary": "The customer order includes execution risk.",
+                    "url": "https://example.com/alpha-news",
+                    "source": "Example Wire",
+                }
+            ]
+        }
+
+    def topic_news_sentiment(self, topics, **kwargs):
+        self.calls.append((topics, kwargs))
+        return {
+            "feed": [
+                {
+                    "time_published": "20251120T120000",
+                    "title": "AI infrastructure demand lifts semiconductor suppliers",
+                    "summary": "Industry demand is tied to data center investment and manufacturing capacity.",
+                    "url": "https://example.com/theme-news",
+                    "source": "Example Wire",
+                }
+            ]
+        }
+
+
 class FakeFinnhubEarningsClient:
     def earnings_surprises(self, symbol):
         return [
@@ -182,6 +224,37 @@ class FakeContextFinnhubClient:
 
     def transcript_list(self, symbol):
         return []
+
+
+class FakeContextAlphaClient:
+    def __init__(self):
+        self.calls = []
+
+    def news_sentiment(self, symbol, **kwargs):
+        self.calls.append("news")
+        return {
+            "feed": [
+                {
+                    "time_published": "20260410T120000",
+                    "title": "ABC signs semiconductor supply agreement",
+                    "summary": "The company announced an order linked to AI infrastructure demand.",
+                    "url": "https://example.com/alpha-contract",
+                }
+            ]
+        }
+
+    def topic_news_sentiment(self, topics, **kwargs):
+        self.calls.append("topic")
+        return {
+            "feed": [
+                {
+                    "time_published": "20260401T120000",
+                    "title": "AI infrastructure capex supports semiconductor demand",
+                    "summary": "Provider topic news links data center buildouts to chip suppliers.",
+                    "url": "https://example.com/alpha-theme",
+                }
+            ]
+        }
 
 
 class FakeContextWebResearcher:
@@ -529,6 +602,111 @@ class ColdStartSignalTests(TestCase):
         )
         self.assertNotIn(9.9, [feature.value for feature in finnhub_features])
 
+    def test_provider_profile_features_add_industry_context_without_current_valuation(self) -> None:
+        as_of_dates = (date(2026, 1, 1), date(2026, 2, 1))
+
+        features = _provider_profile_features("abc", as_of_dates, FakeAlphaProfileClient(), None, STAMP)
+        theme_docs = _theme_context_documents_for_candidate(
+            HistoricalCandidate(
+                symbol="ABC",
+                company_name="ABC Corp.",
+                label=CaseOutcomeLabel.WINNER,
+                outcome_anchor_date=date(2026, 5, 1),
+                inflection_date=date(2026, 5, 1),
+                inflection_method="fixture",
+                inflection_score=1.0,
+                outcome_end_date=date(2026, 8, 1),
+                forward_return=1.0,
+                max_forward_return=1.2,
+                max_drawdown_from_start=-0.1,
+                trading_days=65,
+                selection_rank=1,
+            ),
+            features,
+            earliest_as_of=as_of_dates[0],
+            created_at=STAMP,
+        )
+
+        self.assertEqual({feature.name for feature in features}, {"profile.sector", "profile.industry"})
+        self.assertTrue(all(feature.data_quality is DataQuality.STALE for feature in features))
+        self.assertEqual(theme_docs[0].kind, EvidenceKind.THEME_CONTEXT)
+        self.assertIn("Semiconductors", theme_docs[0].text)
+
+    def test_alpha_news_context_uses_historical_window(self) -> None:
+        candidate = HistoricalCandidate(
+            symbol="ABC",
+            company_name="ABC Corp.",
+            label=CaseOutcomeLabel.WINNER,
+            outcome_anchor_date=date(2026, 5, 1),
+            inflection_date=date(2026, 5, 1),
+            inflection_method="fixture",
+            inflection_score=1.0,
+            outcome_end_date=date(2026, 8, 1),
+            forward_return=1.0,
+            max_forward_return=1.2,
+            max_drawdown_from_start=-0.1,
+            trading_days=65,
+            selection_rank=1,
+        )
+        client = FakeAlphaNewsClient()
+
+        documents = _news_documents_for_candidate(
+            SimpleNamespace(news_lookback_days=365, max_news_per_symbol=4),
+            candidate,
+            context_start=date(2025, 11, 1),
+            created_at=STAMP,
+            finnhub_client=None,
+            alpha_client=client,
+            warnings=[],
+        )
+
+        self.assertEqual(documents[0].kind, EvidenceKind.NEWS)
+        kwargs = client.calls[0][1]
+        self.assertEqual(kwargs["time_from"], datetime(2025, 11, 1, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(kwargs["time_to"], datetime(2026, 5, 1, 23, 59, 59, 999999, tzinfo=timezone.utc))
+
+    def test_provider_theme_news_uses_alpha_vantage_topic_api(self) -> None:
+        candidate = HistoricalCandidate(
+            symbol="ABC",
+            company_name="ABC Corp.",
+            label=CaseOutcomeLabel.WINNER,
+            outcome_anchor_date=date(2026, 5, 1),
+            inflection_date=date(2026, 5, 1),
+            inflection_method="fixture",
+            inflection_score=1.0,
+            outcome_end_date=date(2026, 8, 1),
+            forward_return=1.0,
+            max_forward_return=1.2,
+            max_drawdown_from_start=-0.1,
+            trading_days=65,
+            selection_rank=1,
+        )
+        client = FakeAlphaNewsClient()
+        features = _provider_profile_features(
+            "ABC",
+            (date(2025, 11, 1),),
+            FakeAlphaProfileClient(),
+            None,
+            STAMP,
+        )
+
+        documents = _provider_theme_news_documents_for_candidate(
+            SimpleNamespace(news_lookback_days=365, max_theme_documents_per_symbol=4),
+            candidate,
+            features,
+            context_start=date(2025, 11, 1),
+            latest_as_of=date(2026, 4, 1),
+            created_at=STAMP,
+            alpha_client=client,
+            warnings=[],
+        )
+
+        self.assertEqual(documents[0].kind, EvidenceKind.THEME_CONTEXT)
+        self.assertIn("AI infrastructure", documents[0].text)
+        topics, kwargs = client.calls[0]
+        self.assertEqual(topics, ("technology", "manufacturing"))
+        self.assertEqual(kwargs["time_to"], datetime(2026, 4, 1, 23, 59, 59, 999999, tzinfo=timezone.utc))
+
     def test_heuristic_blind_researcher_does_not_need_future_label(self) -> None:
         case = make_case(
             "winner-1",
@@ -833,12 +1011,53 @@ class ColdStartSignalTests(TestCase):
             ],
         )
         thin = make_thin_case("thin-1", CaseOutcomeLabel.CONTROL)
+        financial_only = make_case(
+            "financial-1",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.10,
+            return_20d=0.02,
+            return_60d=0.03,
+            target_upside=0.10,
+            catalyst_count=0,
+        )
+        no_event = make_case(
+            "no-event-1",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.10,
+            return_20d=0.02,
+            return_60d=0.03,
+            target_upside=0.10,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="industry-theme",
+                    symbol="WINNER",
+                    kind=EvidenceKind.THEME_CONTEXT,
+                    title="Industry context",
+                    text="Provider profile places the company in semiconductors.",
+                    source_id="provider:theme",
+                    source_url="urn:provider:theme",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
 
         rich_report = assess_context_coverage(rich)
+        financial_report = assess_context_coverage(financial_only)
+        no_event_report = assess_context_coverage(no_event)
         warn_result = apply_context_coverage_gate([rich, thin], mode="warn")
         enforce_result = apply_context_coverage_gate([rich, thin], mode="enforce")
 
         self.assertTrue(rich_report.sufficient_context)
+        self.assertFalse(financial_report.buckets["catalyst_event_context"])
+        self.assertFalse(financial_report.sufficient_context)
+        self.assertFalse(no_event_report.sufficient_context)
+        self.assertIn("catalyst_event_context", no_event_report.missing_buckets)
         self.assertEqual([case.case_id for case in warn_result.cases], ["winner-1", "thin-1"])
         self.assertEqual(warn_result.excluded_case_ids, ())
         self.assertEqual(enforce_result.excluded_case_ids, ("thin-1",))
@@ -857,6 +1076,7 @@ class ColdStartSignalTests(TestCase):
             max_transcripts_per_symbol=1,
             skip_filing_text=True,
             document_excerpt_chars=500,
+            quiet=True,
         )
         candidate = HistoricalCandidate(
             symbol="ABC",
@@ -883,14 +1103,18 @@ class ColdStartSignalTests(TestCase):
             retrieved_at=STAMP,
             cik="0000000001",
         )
-        features = [
-            feature("ABC", "profile.sector", "Technology"),
-            feature("ABC", "financial.revenue_usd", 100.0),
-        ]
+        features = _provider_profile_features(
+            "ABC",
+            (date(2026, 1, 1),),
+            FakeAlphaProfileClient(),
+            None,
+            STAMP,
+        ) + [feature("ABC", "financial.revenue_usd", 100.0)]
+        alpha_client = FakeContextAlphaClient()
 
         with patch("scripts.run_cold_start_formal.SecEdgarClient.from_config", return_value=FakeContextSecClient()):
             with patch("scripts.run_cold_start_formal._optional_finnhub_client", return_value=FakeContextFinnhubClient()):
-                with patch("scripts.run_cold_start_formal._optional_alpha_client", return_value=None):
+                with patch("scripts.run_cold_start_formal._optional_alpha_client", return_value=alpha_client):
                     with patch("scripts.run_cold_start_formal.OpenAIWebEvidenceResearcher", FakeContextWebResearcher):
                         result = _fetch_context_documents(
                             args,
@@ -907,6 +1131,7 @@ class ColdStartSignalTests(TestCase):
 
         self.assertIn(EvidenceKind.NEWS, {document.kind for document in documents})
         self.assertIn(EvidenceKind.THEME_CONTEXT, {document.kind for document in documents})
+        self.assertEqual(alpha_client.calls, ["news", "topic"])
         self.assertEqual(result.web_queries_by_symbol["ABC"], ("ABC query before 2026-05-01",))
         self.assertTrue(any(catalyst.name == "AI product launch" for catalyst in catalysts))
         self.assertTrue(any(catalyst.status is CatalystStatus.CONFIRMED for catalyst in catalysts))
@@ -931,6 +1156,19 @@ class ColdStartSignalTests(TestCase):
         self.assertIsNotNone(catalyst)
         assert catalyst is not None
         self.assertEqual(catalyst.status, CatalystStatus.CONFIRMED)
+        broad_customer_document = _finnhub_news_document(
+            "ABC",
+            {
+                "id": 124,
+                "datetime": int(STAMP.timestamp()),
+                "headline": "ABC discusses customer costs",
+                "summary": "The update mentioned customer bills and operational service quality.",
+                "url": "https://example.com/customer-costs",
+            },
+            STAMP,
+        )
+        assert broad_customer_document is not None
+        self.assertIsNone(_catalyst_from_news_document(broad_customer_document))
 
     def test_cold_start_orchestration_writes_manifest_and_signal_logic(self) -> None:
         cases = [

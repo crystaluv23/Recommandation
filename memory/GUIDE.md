@@ -7,8 +7,8 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 1 | Avoid coupling reusable providers to the first consumer module. |
-| Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 5 | Restate the execution contract, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
-| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 8 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
+| Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 6 | Restate the execution contract, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
+| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 10 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
 
 ## Experience Index
 

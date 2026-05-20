@@ -1,4 +1,6 @@
+from http.client import IncompleteRead
 from unittest import TestCase
+from unittest.mock import patch
 
 from stock_opportunity_agent.config import PromptConfig
 from stock_opportunity_agent.llm import create, registered
@@ -6,6 +8,7 @@ from stock_opportunity_agent.llm.openai import (
     ChatMessage,
     OpenAIChatClient,
     OpenAIClientError,
+    UrllibTransport,
 )
 from stock_opportunity_agent.models import ValidationError
 
@@ -18,6 +21,17 @@ class FakeTransport:
     def post_json(self, url, headers, payload):
         self.calls.append((url, headers, payload))
         return self.response
+
+
+class IncompleteReadResponse:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, traceback):
+        return False
+
+    def read(self):
+        raise IncompleteRead(b"{")
 
 
 class OpenAIChatClientTests(TestCase):
@@ -105,3 +119,10 @@ class OpenAIChatClientTests(TestCase):
 
         with self.assertRaises(ValidationError):
             client.complete([])
+
+    def test_urllib_transport_wraps_incomplete_chunked_response(self) -> None:
+        with patch("stock_opportunity_agent.llm.openai.request.urlopen", return_value=IncompleteReadResponse()):
+            with self.assertRaises(OpenAIClientError) as context:
+                UrllibTransport(max_attempts=1).post_json("https://api.example.test/responses", {}, {"ok": True})
+
+        self.assertIn("incomplete or invalid", str(context.exception))

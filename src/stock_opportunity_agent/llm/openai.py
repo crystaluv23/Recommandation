@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
+from http.client import HTTPException
 from typing import Any, Mapping, Protocol
 from urllib import request
 from urllib.error import HTTPError, URLError
@@ -24,6 +25,14 @@ class HttpTransport(Protocol):
 class UrllibTransport:
     """Standard-library HTTP transport."""
 
+    def __init__(self, *, timeout_seconds: float = 60.0, max_attempts: int = 2) -> None:
+        if timeout_seconds <= 0:
+            raise ValidationError("timeout_seconds must be positive")
+        if max_attempts < 1:
+            raise ValidationError("max_attempts must be at least 1")
+        self.timeout_seconds = timeout_seconds
+        self.max_attempts = max_attempts
+
     def post_json(self, url: str, headers: Mapping[str, str], payload: Mapping[str, Any]) -> dict[str, Any]:
         body = json.dumps(payload).encode("utf-8")
         req = request.Request(
@@ -32,14 +41,20 @@ class UrllibTransport:
             headers={**headers, "Content-Type": "application/json"},
             method="POST",
         )
-        try:
-            with request.urlopen(req, timeout=60) as response:
-                return json.loads(response.read().decode("utf-8"))
-        except HTTPError as exc:
-            detail = exc.read().decode("utf-8", errors="replace")
-            raise OpenAIClientError(f"OpenAI API returned HTTP {exc.code}: {detail}") from exc
-        except URLError as exc:
-            raise OpenAIClientError(f"OpenAI API request failed: {exc.reason}") from exc
+        for attempt in range(1, self.max_attempts + 1):
+            try:
+                with request.urlopen(req, timeout=self.timeout_seconds) as response:
+                    return json.loads(response.read().decode("utf-8"))
+            except HTTPError as exc:
+                detail = exc.read().decode("utf-8", errors="replace")
+                raise OpenAIClientError(f"OpenAI API returned HTTP {exc.code}: {detail}") from exc
+            except URLError as exc:
+                if attempt >= self.max_attempts:
+                    raise OpenAIClientError(f"OpenAI API request failed: {exc.reason}") from exc
+            except (HTTPException, json.JSONDecodeError) as exc:
+                if attempt >= self.max_attempts:
+                    raise OpenAIClientError(f"OpenAI API response was incomplete or invalid: {exc}") from exc
+        raise OpenAIClientError("OpenAI API request failed")
 
 
 class OpenAIClientError(RuntimeError):

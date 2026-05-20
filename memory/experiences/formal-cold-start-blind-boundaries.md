@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 5
+visit_times: 6
 
 ## Trigger
 
@@ -101,6 +101,29 @@ The important boundary is the coverage gate: keep the full historical packet
 audit, but do not treat every generated packet as learning-ready. In enforce
 mode, packets without company evidence plus enough financial, theme, catalyst,
 or risk context should be excluded before blind LLM calls and signal learning.
+
+## 2026-05-20 Provider-First Evidence Smoke
+
+The provider-only two-symbol smoke test showed that known APIs can materially
+improve packet substance without crawler-like code. With Alpha Vantage
+historical symbol news, SEC filings, provider profile context, and Finnhub/SEC
+fallbacks, the context checkpoint reached dozens of documents and multiple
+news-derived catalysts for the winner/control pair; the strict coverage gate
+kept only the latest as-of slice for each side and excluded thinner earlier
+slices.
+
+Two operational lessons came out of the smoke:
+
+- Free API quota is a research-quality constraint. Fetch company-specific news
+  before broad theme/topic news so scarce calls are spent first on
+  catalyst-bearing evidence.
+- Provider error strings can include credentials. Adapter-level errors must be
+  secret-redacted before warnings or artifacts are written.
+
+The blind LLM distinction test could not complete because OpenRouter returned a
+402 insufficient-credits response after packet/coverage construction. Treat
+that as an external execution blocker, not evidence that the packet layer is
+still empty.
 
 ## How to Apply
 

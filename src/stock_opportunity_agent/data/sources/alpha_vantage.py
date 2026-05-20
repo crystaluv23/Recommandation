@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import os
-from datetime import date
-from typing import Any, Mapping
+from datetime import date, datetime
+from typing import Any, Iterable, Mapping
 from urllib import parse
 
 from stock_opportunity_agent.config import DataSourceConfig
@@ -171,12 +171,50 @@ class AlphaVantageClient:
 
         return parse_csv_rows(self._query_text({"function": "IPO_CALENDAR"}))
 
-    def news_sentiment(self, symbol: str, *, limit: int = 50) -> dict[str, Any]:
+    def news_sentiment(
+        self,
+        symbol: str,
+        *,
+        limit: int = 50,
+        time_from: datetime | None = None,
+        time_to: datetime | None = None,
+        sort: str = "LATEST",
+    ) -> dict[str, Any]:
         """Fetch raw news sentiment JSON for later evidence normalization."""
 
         if not 1 <= limit <= 1000:
             raise ValidationError("limit must be between 1 and 1000")
-        return self._query({"function": "NEWS_SENTIMENT", "tickers": symbol.upper(), "limit": str(limit)})
+        if sort not in {"LATEST", "EARLIEST", "RELEVANCE"}:
+            raise ValidationError("sort must be LATEST, EARLIEST, or RELEVANCE")
+        return self._news_sentiment_query(
+            tickers=symbol.upper(),
+            limit=limit,
+            time_from=time_from,
+            time_to=time_to,
+            sort=sort,
+        )
+
+    def topic_news_sentiment(
+        self,
+        topics: Iterable[str],
+        *,
+        limit: int = 50,
+        time_from: datetime | None = None,
+        time_to: datetime | None = None,
+        sort: str = "LATEST",
+    ) -> dict[str, Any]:
+        """Fetch raw news sentiment JSON for provider topic context."""
+
+        topic_values = tuple(topic.strip() for topic in topics if topic.strip())
+        if not topic_values:
+            raise ValidationError("topics must not be empty")
+        return self._news_sentiment_query(
+            topics=",".join(topic_values),
+            limit=limit,
+            time_from=time_from,
+            time_to=time_to,
+            sort=sort,
+        )
 
     def earnings_call_transcript(self, symbol: str, quarter: str) -> dict[str, Any]:
         """Fetch raw earnings-call transcript for a quarter such as ``2024Q1``."""
@@ -201,10 +239,41 @@ class AlphaVantageClient:
         query = parse.urlencode({**params, "apikey": self.api_key})
         data = self.transport.get_json(f"{self.base_url}?{query}", {})
         if "Error Message" in data:
-            raise DataSourceError(str(data["Error Message"]))
+            raise DataSourceError(self._redact_secret(data["Error Message"]))
         if "Note" in data:
-            raise DataSourceError(str(data["Note"]))
+            raise DataSourceError(self._redact_secret(data["Note"]))
+        if "Information" in data:
+            raise DataSourceError(self._redact_secret(data["Information"]))
         return data
+
+    def _news_sentiment_query(
+        self,
+        *,
+        limit: int,
+        tickers: str | None = None,
+        topics: str | None = None,
+        time_from: datetime | None = None,
+        time_to: datetime | None = None,
+        sort: str = "LATEST",
+    ) -> dict[str, Any]:
+        if not 1 <= limit <= 1000:
+            raise ValidationError("limit must be between 1 and 1000")
+        if sort not in {"LATEST", "EARLIEST", "RELEVANCE"}:
+            raise ValidationError("sort must be LATEST, EARLIEST, or RELEVANCE")
+        if not tickers and not topics:
+            raise ValidationError("tickers or topics must be provided")
+        params = {"function": "NEWS_SENTIMENT"}
+        if tickers:
+            params["tickers"] = tickers
+        if topics:
+            params["topics"] = topics
+        params["limit"] = str(limit)
+        params["sort"] = sort
+        if time_from is not None:
+            params["time_from"] = _alpha_news_time(time_from)
+        if time_to is not None:
+            params["time_to"] = _alpha_news_time(time_to)
+        return self._query(params)
 
     def _query_text(self, params: Mapping[str, str]) -> str:
         query = parse.urlencode({**params, "apikey": self.api_key})
@@ -213,10 +282,13 @@ class AlphaVantageClient:
             raise DataSourceError("transport does not support text downloads")
         text = get_text(f"{self.base_url}?{query}", {})
         if "Error Message" in text:
-            raise DataSourceError(text)
+            raise DataSourceError(self._redact_secret(text))
         if "Thank you for using Alpha Vantage" in text:
-            raise DataSourceError(text)
+            raise DataSourceError(self._redact_secret(text))
         return text
+
+    def _redact_secret(self, value: object) -> str:
+        return str(value).replace(self.api_key, "<redacted>")
 
 
 @register("alpha_vantage")
@@ -228,3 +300,7 @@ def source(
     """Registered Alpha Vantage source factory."""
 
     return AlphaVantageClient.from_config(config, environ=environ, transport=transport)
+
+
+def _alpha_news_time(value: datetime) -> str:
+    return value.strftime("%Y%m%dT%H%M")

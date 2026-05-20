@@ -19,3 +19,5 @@
 - 2026-05-13: Trigger "running Python tests and formal cold-start scripts"; read `memory/experiences/python-runtime-for-tests.md` so execution and validation used the bundled Python 3.11+ runtime.
 - 2026-05-13: Trigger "reviewing the completed formal cold-start run"; updated `memory/experiences/formal-cold-start-blind-boundaries.md` with the execution result, provider fragility, and quality blockers before the long-running workflow.
 - 2026-05-16: Trigger "changing formal cold-start evidence acquisition and coverage gate"; read `memory/experiences/formal-cold-start-blind-boundaries.md` so web-enabled context acquisition stayed separate from anonymous blind analysis.
+- 2026-05-20: Trigger "continuing formal cold-start evidence smoke and provider-first context work"; read `memory/experiences/formal-cold-start-blind-boundaries.md` so packet substance, coverage gating, and blind/web boundaries stayed explicit.
+- 2026-05-20: Trigger "running formal cold-start smoke tests and unit validation"; read `memory/experiences/python-runtime-for-tests.md` so tests and scripts used the bundled Python 3.11+ runtime.

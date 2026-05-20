@@ -267,6 +267,46 @@ class AlphaVantageClientTests(TestCase):
         self.assertEqual(bars[0].symbol, "IBM")
         self.assertEqual(bars[1].volume, 1000)
 
+    def test_news_sentiment_accepts_historical_time_window(self) -> None:
+        base = "https://www.alphavantage.co/query"
+        response_url = (
+            base
+            + "?function=NEWS_SENTIMENT&tickers=IBM&limit=12&sort=LATEST"
+            + "&time_from=20250101T0000&time_to=20250131T2359&apikey=test-key"
+        )
+        transport = FakeJsonTransport({response_url: {"feed": []}})
+        client = AlphaVantageClient("test-key", transport=transport)
+
+        data = client.news_sentiment(
+            "ibm",
+            limit=12,
+            time_from=datetime(2025, 1, 1, 0, 0, tzinfo=timezone.utc),
+            time_to=datetime(2025, 1, 31, 23, 59, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(data, {"feed": []})
+        self.assertEqual(transport.calls[0][0], response_url)
+
+    def test_topic_news_sentiment_uses_provider_topic_filter(self) -> None:
+        base = "https://www.alphavantage.co/query"
+        response_url = (
+            base
+            + "?function=NEWS_SENTIMENT&topics=technology%2Cmanufacturing&limit=4&sort=LATEST"
+            + "&time_from=20250101T0000&time_to=20250131T2359&apikey=test-key"
+        )
+        transport = FakeJsonTransport({response_url: {"feed": []}})
+        client = AlphaVantageClient("test-key", transport=transport)
+
+        data = client.topic_news_sentiment(
+            ("technology", "manufacturing"),
+            limit=4,
+            time_from=datetime(2025, 1, 1, 0, 0, tzinfo=timezone.utc),
+            time_to=datetime(2025, 1, 31, 23, 59, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(data, {"feed": []})
+        self.assertEqual(transport.calls[0][0], response_url)
+
     def test_from_config_uses_named_key_env_var(self) -> None:
         client = create_source(
             "alpha_vantage",
@@ -287,6 +327,17 @@ class AlphaVantageClientTests(TestCase):
     def test_missing_alpha_vantage_key_is_explicit(self) -> None:
         with self.assertRaises(DataSourceError):
             AlphaVantageClient.from_config(DataSourceConfig(), environ={})
+
+    def test_alpha_vantage_information_response_is_error_and_redacts_key(self) -> None:
+        base = "https://www.alphavantage.co/query"
+        response_url = base + "?function=OVERVIEW&symbol=IBM&apikey=test-key"
+        transport = FakeJsonTransport({response_url: {"Information": "test-key rate limit reached"}})
+        client = AlphaVantageClient("test-key", transport=transport)
+
+        with self.assertRaises(DataSourceError) as ctx:
+            client.company_overview("IBM")
+        self.assertIn("<redacted>", str(ctx.exception))
+        self.assertNotIn("test-key", str(ctx.exception))
 
     def test_raw_endpoint_helpers_use_expected_alpha_vantage_functions(self) -> None:
         base = "https://www.alphavantage.co/query"
