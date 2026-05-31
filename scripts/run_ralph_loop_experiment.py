@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from datetime import date, datetime, timezone
@@ -18,7 +19,9 @@ from stock_opportunity_agent.research import (
     HeuristicRalphBlindResearcher,
     HeuristicSurgePlaybookSynthesizer,
     OpenAIRalphBlindResearcher,
+    build_blind_scheme_packet,
     run_ralph_experiment,
+    synthesize_information_scheme,
     write_ralph_experiment_artifacts,
 )
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
@@ -64,7 +67,6 @@ def main() -> None:
         learning,
         theme_maps,
     )
-    researcher = _ralph_researcher(args)
     print(f"[ralph-experiment] run_id={run_id}")
     print(f"[ralph-experiment] output_dir={output_dir}")
     print("[ralph-experiment] selected symbols: " + ", ".join(_selection_symbols(selected)))
@@ -72,7 +74,21 @@ def main() -> None:
         "[ralph-experiment] refinement_cases="
         f"{len(refinement_cases)} holdout_cases={len(holdout_cases)} mode={args.mode}"
     )
+    if args.preflight_only:
+        paths = _write_preflight_artifacts(
+            output_dir,
+            run_id=run_id,
+            created_at=created_at,
+            refinement_cases=refinement_cases,
+            holdout_cases=holdout_cases,
+            learning_result=learning,
+            theme_maps=theme_maps,
+            playbook_synthesis=playbooks,
+        )
+        print(f"[ralph-experiment] preflight_manifest={paths['preflight_manifest']}")
+        return
 
+    researcher = _ralph_researcher(args)
     result = run_ralph_experiment(
         refinement_cases,
         holdout_cases,
@@ -133,6 +149,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--control-symbol-count", type=int, default=4)
     parser.add_argument("--refinement-per-label", type=int, default=2)
     parser.add_argument("--max-iterations", type=int, default=2)
+    parser.add_argument(
+        "--preflight-only",
+        action="store_true",
+        help="Write anonymous packet export review artifacts without calling a blind LLM.",
+    )
     return parser.parse_args()
 
 
@@ -276,6 +297,178 @@ def _print_metric_summary(result) -> None:
     print(f"[ralph-experiment] final_status={result.final_status}")
     if result.final_status != "holdout_separated":
         print(f"[ralph-experiment] error={result.holdout_error_analysis.recommendation}")
+
+
+def _write_preflight_artifacts(
+    output_dir: Path,
+    *,
+    run_id: str,
+    created_at: datetime,
+    refinement_cases: tuple[HistoricalCase, ...],
+    holdout_cases: tuple[HistoricalCase, ...],
+    learning_result,
+    theme_maps,
+    playbook_synthesis,
+) -> dict[str, Path]:
+    scheme, diagnostic = synthesize_information_scheme(
+        refinement_cases,
+        learning_result=learning_result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+    )
+    refinement_packets = tuple(
+        build_blind_scheme_packet(
+            case,
+            scheme,
+            anonymous_case_id=f"case_{index:03d}",
+        )
+        for index, case in enumerate(refinement_cases, start=1)
+    )
+    holdout_packets = tuple(
+        build_blind_scheme_packet(
+            case,
+            scheme,
+            anonymous_case_id=f"holdout_{index:03d}",
+        )
+        for index, case in enumerate(holdout_cases, start=1)
+    )
+    packet_cases = list(zip(refinement_packets + holdout_packets, refinement_cases + holdout_cases, strict=True))
+    requests = [
+        _blind_llm_request(packet, phase="refinement_initial")
+        for packet in refinement_packets
+    ] + [
+        _blind_llm_request(packet, phase="holdout_preview")
+        for packet in holdout_packets
+    ]
+    leakage_report = _leakage_report(packet_cases)
+    paths = {
+        "preflight_blind_llm_requests": output_dir / "preflight_blind_llm_requests.json",
+        "preflight_leakage_report": output_dir / "preflight_leakage_report.json",
+        "preflight_scheme_diagnostic_label_aware": output_dir / "preflight_scheme_diagnostic_label_aware.json",
+        "case_selection_label_aware": output_dir / "case_selection_label_aware.json",
+        "preflight_manifest": output_dir / "preflight_manifest.json",
+    }
+    _write_json(
+        paths["preflight_blind_llm_requests"],
+        {
+            "schema_version": "ralph-blind-export-preflight-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "preflight_anonymous_blind_packet_export",
+            "external_destination": "OpenRouter only after explicit user approval",
+            "web_tools_allowed": False,
+            "requests": requests,
+        },
+    )
+    _write_json(paths["preflight_leakage_report"], leakage_report)
+    _write_json(
+        paths["preflight_scheme_diagnostic_label_aware"],
+        {
+            "schema_version": "ralph-preflight-diagnostic-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "retrospective_label_aware",
+            "scheme": scheme.to_dict(),
+            "diagnostic_summary": diagnostic.to_dict(),
+        },
+    )
+    _write_json(
+        paths["case_selection_label_aware"],
+        {
+            "schema_version": "ralph-case-selection-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "retrospective_label_aware",
+            "refinement_cases": [_case_selection_record(case) for case in refinement_cases],
+            "holdout_cases": [_case_selection_record(case) for case in holdout_cases],
+        },
+    )
+    _write_json(
+        paths["preflight_manifest"],
+        {
+            "schema_version": "ralph-preflight-manifest-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "scheme_version": scheme.version,
+            "request_count": len(requests),
+            "packet_sha256": [request["packet_sha256"] for request in requests],
+            "leakage_passed": leakage_report["passed"],
+            "external_call_performed": False,
+            "outputs": {name: str(path) for name, path in sorted(paths.items())},
+            "next_step": (
+                "Run without --preflight-only after explicit approval to send these anonymous "
+                "blind packets to the configured LLM provider."
+            ),
+        },
+    )
+    if not leakage_report["passed"]:
+        raise ValidationError("preflight leakage scan failed")
+    return paths
+
+
+def _blind_llm_request(packet, *, phase: str) -> dict[str, Any]:
+    payload = packet.to_prompt_dict()
+    return {
+        "request_id": packet.anonymous_case_id,
+        "phase": phase,
+        "scheme_version": packet.scheme_version,
+        "packet_sha256": _sha256(payload),
+        "developer_message": (
+            "Use only this anonymous point-in-time packet. Web search/tools are disabled. "
+            "Do not infer hidden outcome labels, ticker, company identity, future return, or post-as-of facts."
+        ),
+        "packet": payload,
+    }
+
+
+def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str, Any]:
+    case_reports = []
+    for packet, case in packet_cases:
+        prompt = json.dumps(packet.to_prompt_dict(), sort_keys=True)
+        findings = _leakage_findings(prompt, case)
+        case_reports.append(
+            {
+                "anonymous_case_id": packet.anonymous_case_id,
+                "packet_sha256": _sha256(packet.to_prompt_dict()),
+                "finding_count": len(findings),
+                "findings": findings,
+            }
+        )
+    return {
+        "schema_version": "ralph-preflight-leakage-report-v0.1",
+        "passed": not any(report["findings"] for report in case_reports),
+        "case_reports": case_reports,
+    }
+
+
+def _leakage_findings(prompt: str, case: HistoricalCase) -> list[dict[str, str]]:
+    findings = []
+    for kind, value in _leak_terms(case):
+        if value and value in prompt:
+            findings.append({"kind": kind, "value": value})
+    if "http://" in prompt or "https://" in prompt:
+        findings.append({"kind": "source_url", "value": "url-like text"})
+    for forbidden_key in ('"label"', '"outcome_return"', '"hidden_outcome_summary"', '"source_case_id"'):
+        if forbidden_key in prompt:
+            findings.append({"kind": "forbidden_key", "value": forbidden_key})
+    return findings
+
+
+def _leak_terms(case: HistoricalCase) -> list[tuple[str, str]]:
+    ticker = case.packet.company.ticker
+    terms = [
+        ("case_id", case.case_id),
+        ("packet_id", case.packet.packet_id),
+        ("symbol", ticker.symbol),
+        ("company_name", ticker.company_name or ""),
+        ("figi", ticker.figi or ""),
+    ]
+    return [(kind, value) for kind, value in terms if value]
+
+
+def _sha256(value: Any) -> str:
+    text = json.dumps(value, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _load_local_env(path: str = ".env.local") -> None:

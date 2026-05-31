@@ -27,6 +27,13 @@ runs/cold_start/
         theme_maps.json
         surge_research_playbooks.json
         manifest.json
+  ralph/
+    <run_id>/
+      preflight_blind_llm_requests.json
+      preflight_leakage_report.json
+      preflight_manifest.json
+      ralph_experiment_summary.json
+      holdout_blind_scheme_evaluation.json
 ```
 
 `01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
@@ -43,6 +50,11 @@ complete packet audit; when `--coverage-gate-mode enforce` is used, insufficient
 packets are excluded from blind LLM learning but still remain in this packet
 checkpoint. Use `--web-context-mode off` only when intentionally testing the
 non-web context path.
+
+`ralph/<run_id>/` stores standalone Ralph Loop refinement/holdout experiments
+and optional preflight exports. Preflight outputs are local audit artifacts for
+reviewing the anonymous no-web blind packets before an approved external LLM
+call.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation

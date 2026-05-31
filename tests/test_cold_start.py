@@ -84,6 +84,7 @@ from scripts.run_cold_start_formal import (
     _provider_theme_news_documents_for_candidate,
     _theme_context_documents_for_candidate,
 )
+from scripts.run_ralph_loop_experiment import _write_preflight_artifacts
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -1366,6 +1367,72 @@ class ColdStartSignalTests(TestCase):
             packets_text = paths["holdout_blind_packets_by_scheme"].read_text()
             self.assertNotIn("winner-holdout", packets_text)
             self.assertNotIn("control-holdout", packets_text)
+
+    def test_ralph_preflight_exports_anonymous_packet_review(self) -> None:
+        refinement_cases = (
+            make_case(
+                "winner-refine",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.10,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+                company_name="Apple Inc.",
+            ),
+        )
+        holdout_cases = (
+            make_case(
+                "control-holdout",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.02,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.02,
+                catalyst_count=0,
+                company_name="Microsoft Corporation",
+            ),
+        )
+        learning = learn_pre_surge_signal_logic(refinement_cases)
+        themes = build_cold_start_theme_maps(refinement_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in refinement_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            refinement_cases,
+            baseline,
+            learning,
+            themes,
+        )
+
+        with TemporaryDirectory() as tmp:
+            paths = _write_preflight_artifacts(
+                Path(tmp),
+                run_id="ralph-preflight-test",
+                created_at=STAMP,
+                refinement_cases=refinement_cases,
+                holdout_cases=holdout_cases,
+                learning_result=learning,
+                theme_maps=themes,
+                playbook_synthesis=playbooks,
+            )
+
+            request_text = paths["preflight_blind_llm_requests"].read_text()
+            leakage = json.loads(paths["preflight_leakage_report"].read_text())
+            self.assertTrue(leakage["passed"])
+            self.assertIn("packet_sha256", request_text)
+            for forbidden in (
+                "winner-refine",
+                "control-holdout",
+                "Apple",
+                "Microsoft",
+                "AAPL",
+                '"label"',
+                '"outcome_return"',
+            ):
+                self.assertNotIn(forbidden, request_text)
 
     def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
         transport = FakeOpenAITransport(

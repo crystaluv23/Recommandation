@@ -106,6 +106,14 @@ Standalone Ralph experiments also write:
 - `case_selection_label_aware.json`
 - `manifest.json`
 
+Before any external blind-LLM call, the standalone experiment runner can write
+preflight artifacts without contacting a provider:
+
+- `preflight_blind_llm_requests.json`
+- `preflight_leakage_report.json`
+- `preflight_scheme_diagnostic_label_aware.json`
+- `preflight_manifest.json`
+
 The run manifest records the Ralph artifact paths, active scheme version,
 iteration count, warning count, and proposal-only status. The loop may also
 append the latest proposal to local proposal memory under `.agent_state`, but it
@@ -119,6 +127,8 @@ analysis when separation remains weak.
 Experiment summaries include the final status (`holdout_separated` or
 `holdout_not_separated`), holdout confidence gap, false-positive rate,
 false-negative rate, and schema diffs between refinement proposals.
+Preflight manifests must set `external_call_performed=false`, record packet
+hashes, and pass leakage checks before an external provider run is attempted.
 
 ## Invariants
 
