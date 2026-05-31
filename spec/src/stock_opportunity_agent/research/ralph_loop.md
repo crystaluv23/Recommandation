@@ -31,6 +31,12 @@ The submodule exposes:
 - `run_ralph_loop`: bounded 1-2 iteration loop for diagnosis, scheme proposal,
   scheme-packet construction, blind validation, evaluation, error analysis, and
   next-scheme proposal.
+- `run_ralph_experiment`: artifact-backed refinement/holdout experiment. The
+  scheme is refined on a small labeled refinement set, then evaluated once on a
+  disjoint holdout set. The experiment is not considered successful unless the
+  holdout blind metrics meet the separation threshold.
+- `write_ralph_experiment_artifacts`: writes the refinement loop, holdout blind
+  packets, holdout evaluation, holdout error analysis, and experiment manifest.
 
 ## Stage Contract
 
@@ -49,6 +55,23 @@ The loop has two phases:
    looks like a 3-6 month surge candidate. It must not receive ticker, company
    name, forward return, outcome group, post-as-of facts, source URLs, symbol-
    encoded ids, or web-search tools.
+
+For small real experiments, Ralph must use a refinement/holdout split across
+symbols. The label-aware diagnosis and scheme feedback may use the refinement
+set only. The holdout set is evaluated with the final proposed scheme and known
+labels are used only after blind outputs are produced. A run ending with
+`holdout_not_separated` is a failed experiment, not a completed improvement.
+
+The default v1 success threshold is quantitative:
+
+- winner average confidence minus control average confidence is at least 0.12;
+- false-positive control rate is at most 0.25;
+- false-negative winner rate is 0.00;
+- blind packets remain anonymous, point-in-time, and no-web.
+
+If the holdout threshold is not met, Ralph must persist error analysis and a
+next proposal. It must not present the loop as solved just because the bounded
+iteration count was reached.
 
 The default section priority for `InformationScheme` is:
 
@@ -74,6 +97,15 @@ Formal cold-start runs that execute Ralph Loop v1 write:
 - `blind_scheme_evaluation.json`
 - `ralph_error_analysis.json`
 
+Standalone Ralph experiments also write:
+
+- `ralph_experiment_summary.json`
+- `holdout_blind_packets_by_scheme.json`
+- `holdout_blind_scheme_evaluation.json`
+- `holdout_error_analysis.json`
+- `case_selection_label_aware.json`
+- `manifest.json`
+
 The run manifest records the Ralph artifact paths, active scheme version,
 iteration count, warning count, and proposal-only status. The loop may also
 append the latest proposal to local proposal memory under `.agent_state`, but it
@@ -83,6 +115,10 @@ The evaluation artifact keeps baseline and Ralph scheme results side by side:
 winner/control confidence gaps, likely/possible distribution, false-positive
 controls, false-negative winners, insufficient-information reasons, and error
 analysis when separation remains weak.
+
+Experiment summaries include the final status (`holdout_separated` or
+`holdout_not_separated`), holdout confidence gap, false-positive rate,
+false-negative rate, and schema diffs between refinement proposals.
 
 ## Invariants
 
@@ -96,6 +132,9 @@ analysis when separation remains weak.
   them.
 - Old and new schemes must remain comparable in artifacts; do not overwrite the
   baseline blind analyses.
+- A bounded Ralph run may stop because it hit the iteration cap, but only a
+  passing holdout evaluation means the information scheme achieved the
+  experiment goal.
 - Ralph Loop is separate from measurable signal learning and from surge
   playbook synthesis. Signals describe what to measure; playbooks describe how
   to think; Ralph describes how to package information for blind assessment.
@@ -105,4 +144,5 @@ analysis when separation remains weak.
 Tests should cover label-aware diagnostics, scheme and packet leakage checks,
 section priority and compression, evaluation metrics, feedback proposal
 generation, one-loop integration with fake artifacts and fake blind research,
-manifest paths, and no-web blind prompt construction.
+refinement/holdout experiment artifacts, manifest paths, and no-web blind
+prompt construction.

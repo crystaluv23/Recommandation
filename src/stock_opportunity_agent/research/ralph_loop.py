@@ -106,6 +106,13 @@ class InformationScheme:
             "contrary_evidence_required": self.contrary_evidence_required,
             "sections": [section.to_dict() for section in self.sections],
             "compression_rules": list(self.compression_rules),
+            "rubrics": _scheme_rubrics(),
+            "prompt_output_schema": {
+                "surge_candidate": "likely | possible | unlikely | insufficient_information",
+                "confidence": "number between 0 and 1",
+                "reason": "cite catalyst materiality, expectation gap, theme transmission, and contrary evidence",
+                "missing_context": ["missing evidence bucket or ambiguity"],
+            },
             "boundary_notes": [
                 "Generated from retrospective diagnostics; proposal only.",
                 "Not promoted to daily, weekly, or production prompt defaults.",
@@ -233,6 +240,7 @@ class BlindSchemePacket:
                 "contrary_evidence": ["string"],
                 "catalyst_watch": ["string"],
                 "confidence": "number between 0 and 1",
+                "missing_context": ["string"],
             },
         }
 
@@ -258,6 +266,7 @@ class RalphBlindAnalysis:
     catalyst_watch: tuple[str, ...]
     confidence: float
     raw_text: str
+    missing_context: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-compatible analysis without source case identity."""
@@ -272,6 +281,7 @@ class RalphBlindAnalysis:
             "pre_surge_signals": list(self.pre_surge_signals),
             "contrary_evidence": list(self.contrary_evidence),
             "catalyst_watch": list(self.catalyst_watch),
+            "missing_context": list(self.missing_context),
             "confidence": self.confidence,
             "raw_text": self.raw_text,
         }
@@ -329,6 +339,11 @@ class HeuristicRalphBlindResearcher:
             contrary_evidence=_section_summaries(sections.get("Contrary/Risk Evidence"))
             or ("No contrary evidence supplied by the scheme packet.",),
             catalyst_watch=_section_summaries(sections.get("Catalyst/Event Ledger")),
+            missing_context=tuple(
+                f"{name} has no concrete items."
+                for name in HIGH_PRIORITY_SECTION_NAMES
+                if sections.get(name) is None or not sections[name].items
+            ),
             confidence=round(confidence, 4),
             raw_text="heuristic-ralph",
         )
@@ -357,6 +372,7 @@ class OpenAIRalphBlindResearcher:
                             "Use only the supplied anonymous as-of packet. Web search is disabled. "
                             "Do not infer or mention any hidden outcome group, ticker, company name, "
                             "future return, or post-as-of fact. Return strict concise JSON."
+                            " Include missing_context for evidence buckets that prevent a confident judgment."
                         ),
                     ),
                     ChatMessage("user", json.dumps(packet.to_prompt_dict(), indent=2, sort_keys=True)),
@@ -385,6 +401,8 @@ class SchemeEvaluation:
     judgment_distribution_by_group: dict[str, dict[str, int]]
     false_positive_controls: tuple[str, ...]
     false_negative_winners: tuple[str, ...]
+    false_positive_rate: float
+    false_negative_rate: float
     unable_to_judge_reasons: tuple[str, ...]
     separation_passed: bool
     warnings: tuple[str, ...]
@@ -404,6 +422,8 @@ class SchemeEvaluation:
             },
             "false_positive_controls": list(self.false_positive_controls),
             "false_negative_winners": list(self.false_negative_winners),
+            "false_positive_rate": self.false_positive_rate,
+            "false_negative_rate": self.false_negative_rate,
             "unable_to_judge_reasons": list(self.unable_to_judge_reasons),
             "separation_passed": self.separation_passed,
             "warnings": list(self.warnings),
@@ -571,6 +591,44 @@ class RalphLoopResult:
         }
 
 
+@dataclass(frozen=True)
+class RalphExperimentResult:
+    """Train/holdout Ralph experiment result."""
+
+    run_id: str
+    refinement_case_ids: tuple[str, ...]
+    holdout_case_ids: tuple[str, ...]
+    refinement_loop: RalphLoopResult
+    holdout_packets: tuple[BlindSchemePacket, ...]
+    holdout_analyses: tuple[RalphBlindAnalysis, ...]
+    holdout_evaluation: SchemeEvaluation
+    holdout_error_analysis: RalphErrorAnalysis
+    final_status: str
+    final_recommendation: str
+
+    def to_summary_dict(self) -> dict[str, Any]:
+        """Return a concise JSON-compatible experiment summary."""
+
+        return {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": self.run_id,
+            "refinement_case_ids": list(self.refinement_case_ids),
+            "holdout_case_ids": list(self.holdout_case_ids),
+            "final_information_scheme": self.refinement_loop.information_scheme.to_dict(),
+            "refinement_latest_evaluation": self.refinement_loop.latest_evaluation.to_dict(),
+            "holdout_evaluation": self.holdout_evaluation.to_dict(),
+            "holdout_error_analysis": self.holdout_error_analysis.to_dict(),
+            "refinement_schema_diffs": [
+                _scheme_diff(iteration.scheme, iteration.next_scheme_proposal)
+                for iteration in self.refinement_loop.iterations
+                if iteration.next_scheme_proposal is not None
+            ],
+            "final_status": self.final_status,
+            "final_recommendation": self.final_recommendation,
+            "can_enter_long_running_default": False,
+        }
+
+
 def run_ralph_loop(
     cases: Iterable[HistoricalCase],
     *,
@@ -657,6 +715,84 @@ def run_ralph_loop(
         blind_analyses_by_scheme=analyses_by_scheme,
         next_scheme_proposal=next_proposal,
         warnings=warnings,
+    )
+
+
+def run_ralph_experiment(
+    refinement_cases: Iterable[HistoricalCase],
+    holdout_cases: Iterable[HistoricalCase],
+    *,
+    baseline_refinement_blind_analyses: Iterable[BlindCaseAnalysis],
+    learning_result: ColdStartLearningResult,
+    theme_maps: ThemeMapBuildResult,
+    playbook_synthesis: SurgePlaybookSynthesis,
+    run_id: str,
+    blind_researcher: RalphBlindResearcher,
+    max_iterations: int = 2,
+    refinement_coverage_reports: Mapping[str, Any] | None = None,
+) -> RalphExperimentResult:
+    """Run Ralph on refinement cases, then evaluate the final scheme on holdout cases."""
+
+    refinement_list = list(refinement_cases)
+    holdout_list = list(holdout_cases)
+    if not refinement_list or not holdout_list:
+        raise ValidationError("Ralph experiment requires refinement and holdout cases")
+    refinement_ids = {case.case_id for case in refinement_list}
+    holdout_ids = {case.case_id for case in holdout_list}
+    if refinement_ids & holdout_ids:
+        raise ValidationError("Ralph refinement and holdout cases must not overlap")
+    refinement_loop = run_ralph_loop(
+        refinement_list,
+        baseline_blind_analyses=baseline_refinement_blind_analyses,
+        learning_result=learning_result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+        run_id=run_id,
+        blind_researcher=blind_researcher,
+        max_iterations=max_iterations,
+        coverage_reports=refinement_coverage_reports,
+    )
+    final_scheme = refinement_loop.information_scheme
+    holdout_packets = tuple(
+        build_blind_scheme_packet(
+            case,
+            final_scheme,
+            anonymous_case_id=f"holdout_{index:03d}",
+        )
+        for index, case in enumerate(holdout_list, start=1)
+    )
+    holdout_analyses = tuple(blind_researcher.analyze(packet) for packet in holdout_packets)
+    holdout_evaluation = evaluate_scheme_performance(
+        holdout_list,
+        holdout_analyses,
+        scheme_version=final_scheme.version + ":holdout",
+    )
+    _, holdout_diagnostic = synthesize_information_scheme(
+        refinement_list,
+        learning_result=learning_result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+        iteration=len(refinement_loop.iterations),
+        coverage_reports=refinement_coverage_reports,
+    )
+    holdout_error = analyze_scheme_errors(holdout_evaluation, holdout_diagnostic)
+    final_status = "holdout_separated" if holdout_evaluation.separation_passed else "holdout_not_separated"
+    recommendation = (
+        "Information scheme separated winners and controls in the small holdout experiment; keep as reviewed proposal."
+        if holdout_evaluation.separation_passed
+        else "Do not promote; inspect missing evidence and continue Ralph refinement before long-running use."
+    )
+    return RalphExperimentResult(
+        run_id=run_id,
+        refinement_case_ids=tuple(case.case_id for case in refinement_list),
+        holdout_case_ids=tuple(case.case_id for case in holdout_list),
+        refinement_loop=refinement_loop,
+        holdout_packets=holdout_packets,
+        holdout_analyses=holdout_analyses,
+        holdout_evaluation=holdout_evaluation,
+        holdout_error_analysis=holdout_error,
+        final_status=final_status,
+        final_recommendation=recommendation,
     )
 
 
@@ -748,6 +884,8 @@ def evaluate_scheme_performance(
     scheme_version: str,
     confidence_threshold: float = 0.45,
     min_confidence_gap: float = 0.12,
+    max_false_positive_rate: float = 0.25,
+    max_false_negative_rate: float = 0.0,
 ) -> SchemeEvaluation:
     """Calculate winner/control separation metrics for blind judgments."""
 
@@ -777,6 +915,8 @@ def evaluate_scheme_performance(
             false_negative_winners.append(case.case_id)
         if judgment == "insufficient_information":
             unable_to_judge.append(_analysis_reason(analysis))
+        if judgment == "insufficient_information" or _analysis_confidence(analysis) < confidence_threshold:
+            unable_to_judge.extend(_analysis_missing_context(analysis))
 
     averages = {
         group: round(_average(_analysis_confidence(item) for item in group_analyses), 4)
@@ -785,10 +925,14 @@ def evaluate_scheme_performance(
     winner_average = averages.get(CaseOutcomeLabel.WINNER.value, 0.0)
     control_average = averages.get(CaseOutcomeLabel.CONTROL.value, 0.0)
     gap = round(winner_average - control_average, 4)
+    control_count = len(by_group.get(CaseOutcomeLabel.CONTROL.value, ()))
+    winner_count = len(by_group.get(CaseOutcomeLabel.WINNER.value, ()))
+    false_positive_rate = round(_safe_ratio(len(false_positive_controls), control_count), 4)
+    false_negative_rate = round(_safe_ratio(len(false_negative_winners), winner_count), 4)
     separation_passed = (
         gap >= min_confidence_gap
-        and not false_negative_winners
-        and len(false_positive_controls) < max(1, len(by_group.get(CaseOutcomeLabel.CONTROL.value, ())))
+        and false_positive_rate <= max_false_positive_rate
+        and false_negative_rate <= max_false_negative_rate
     )
     if CaseOutcomeLabel.WINNER.value not in averages:
         warnings.append("no winner analyses available for separation metrics")
@@ -803,6 +947,8 @@ def evaluate_scheme_performance(
         judgment_distribution_by_group=distributions,
         false_positive_controls=tuple(false_positive_controls),
         false_negative_winners=tuple(false_negative_winners),
+        false_positive_rate=false_positive_rate,
+        false_negative_rate=false_negative_rate,
         unable_to_judge_reasons=tuple(unable_to_judge),
         separation_passed=separation_passed,
         warnings=tuple(warnings),
@@ -937,6 +1083,90 @@ def write_ralph_loop_artifacts(
     return paths
 
 
+def write_ralph_experiment_artifacts(
+    result: RalphExperimentResult,
+    output_dir: str | Path,
+    *,
+    created_at: datetime,
+    proposal_memory_dir: str | Path | None = None,
+    extra_output_paths: Mapping[str, str | Path] | None = None,
+) -> dict[str, Path]:
+    """Write refinement and holdout Ralph experiment artifacts."""
+
+    base_dir = Path(output_dir)
+    base_dir.mkdir(parents=True, exist_ok=True)
+    paths = write_ralph_loop_artifacts(
+        result.refinement_loop,
+        base_dir,
+        created_at=created_at,
+        proposal_memory_dir=proposal_memory_dir,
+    )
+    experiment_paths = {
+        "ralph_experiment_summary": base_dir / "ralph_experiment_summary.json",
+        "holdout_blind_packets_by_scheme": base_dir / "holdout_blind_packets_by_scheme.json",
+        "holdout_blind_scheme_evaluation": base_dir / "holdout_blind_scheme_evaluation.json",
+        "holdout_error_analysis": base_dir / "holdout_error_analysis.json",
+        "manifest": base_dir / "manifest.json",
+    }
+    paths.update(experiment_paths)
+    if extra_output_paths:
+        paths.update({name: Path(path) for name, path in extra_output_paths.items()})
+    _write_json(experiment_paths["ralph_experiment_summary"], result.to_summary_dict())
+    _write_json(
+        experiment_paths["holdout_blind_packets_by_scheme"],
+        {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": result.run_id,
+            "scheme_version": result.refinement_loop.information_scheme.version,
+            "holdout_blind_packets": [packet.to_dict() for packet in result.holdout_packets],
+            "holdout_blind_analyses": [analysis.to_dict() for analysis in result.holdout_analyses],
+        },
+    )
+    _write_json(
+        experiment_paths["holdout_blind_scheme_evaluation"],
+        {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": result.run_id,
+            "stage_boundary": "retrospective_label_aware_holdout",
+            "evaluation": result.holdout_evaluation.to_dict(),
+        },
+    )
+    _write_json(
+        experiment_paths["holdout_error_analysis"],
+        {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": result.run_id,
+            "stage_boundary": "retrospective_label_aware_holdout",
+            "error_analysis": result.holdout_error_analysis.to_dict(),
+        },
+    )
+    _write_json(
+        experiment_paths["manifest"],
+        {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": result.run_id,
+            "created_at": created_at.isoformat(),
+            "pipeline": "ralph_loop_experiment",
+            "stage_boundary": "retrospective_label_aware_refinement_then_blind_holdout",
+            "scheme_version": result.refinement_loop.information_scheme.version,
+            "iteration_count": len(result.refinement_loop.iterations),
+            "refinement_case_count": len(result.refinement_case_ids),
+            "holdout_case_count": len(result.holdout_case_ids),
+            "final_status": result.final_status,
+            "final_recommendation": result.final_recommendation,
+            "holdout_confidence_gap": result.holdout_evaluation.confidence_gap,
+            "holdout_false_positive_rate": result.holdout_evaluation.false_positive_rate,
+            "holdout_false_negative_rate": result.holdout_evaluation.false_negative_rate,
+            "promotion_status": "pending_human_review",
+            "can_enter_long_running_default": False,
+            "outputs": {name: str(path) for name, path in sorted(paths.items())},
+            "warnings": list(result.refinement_loop.warnings)
+            + list(result.holdout_evaluation.warnings),
+        },
+    )
+    return paths
+
+
 def write_information_scheme_proposal_memory(
     proposal_memory_dir: str | Path,
     result: RalphLoopResult,
@@ -1041,6 +1271,26 @@ def _default_sections() -> tuple[InformationSection, ...]:
             role="compressed",
         ),
     )
+
+
+def _scheme_rubrics() -> dict[str, list[str]]:
+    return {
+        "catalyst_materiality": [
+            "Prefer signed orders, contracts, funding awards, approvals, rate decisions, capacity openings, or management changes with dated as-of evidence.",
+            "High materiality requires plausible revenue, cash flow, regulatory, financing, or sentiment impact inside 3-6 months.",
+            "Downgrade vague calendar items, generic filings, or sector headlines with no company-level transmission.",
+        ],
+        "theme_transmission": [
+            "Name the industry-chain path from theme to company economics.",
+            "Distinguish direct beneficiaries from broad theme tourists.",
+            "Require timing evidence that the theme can affect the as-of company within the evaluation horizon.",
+        ],
+        "contrary_evidence": [
+            "Always include the strongest reason the case may be a false positive.",
+            "Flag dilution, cash burn, debt, execution delay, regulatory opposition, already-priced momentum, and valuation stretch.",
+            "If contrary evidence is missing, require the blind LLM to lower confidence or return insufficient_information.",
+        ],
+    }
 
 
 def _sections_after_feedback(
@@ -1425,6 +1675,7 @@ def _ralph_analysis_from_json(packet: BlindSchemePacket, text: str) -> RalphBlin
         catalyst_watch=tuple(_string_list(data, "catalyst_watch")),
         confidence=_confidence(data.get("confidence")),
         raw_text=text,
+        missing_context=tuple(_optional_string_list(data, "missing_context")),
     )
 
 
@@ -1442,6 +1693,56 @@ def _analysis_confidence(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> fl
 
 def _analysis_reason(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> str:
     return analysis.surge_candidate_reason
+
+
+def _analysis_missing_context(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> tuple[str, ...]:
+    if isinstance(analysis, RalphBlindAnalysis):
+        return analysis.missing_context
+    return ()
+
+
+def _scheme_diff(before: InformationScheme, after: InformationScheme | None) -> dict[str, Any]:
+    if after is None:
+        return {}
+    before_by_name = {section.name: section for section in before.sections}
+    changed_sections = []
+    for section in after.sections:
+        prior = before_by_name.get(section.name)
+        if prior is None:
+            changed_sections.append(
+                {
+                    "section": section.name,
+                    "change": "added",
+                    "token_budget_after": section.token_budget,
+                    "max_items_after": section.max_items,
+                }
+            )
+            continue
+        budget_delta = section.token_budget - prior.token_budget
+        max_items_delta = section.max_items - prior.max_items
+        rule_changed = section.compression_rule != prior.compression_rule
+        if budget_delta or max_items_delta or rule_changed:
+            changed_sections.append(
+                {
+                    "section": section.name,
+                    "token_budget_before": prior.token_budget,
+                    "token_budget_after": section.token_budget,
+                    "token_budget_delta": budget_delta,
+                    "max_items_before": prior.max_items,
+                    "max_items_after": section.max_items,
+                    "max_items_delta": max_items_delta,
+                    "compression_rule_changed": rule_changed,
+                }
+            )
+    return {
+        "from_version": before.version,
+        "to_version": after.version,
+        "changed_sections": changed_sections,
+        "compression_rules_added": [
+            rule for rule in after.compression_rules if rule not in before.compression_rules
+        ],
+        "proposal_status": after.proposal_status,
+    }
 
 
 def _first_item_summary(section: BlindPacketSection | None) -> str:
@@ -1577,6 +1878,15 @@ def _string_list(data: dict[str, Any], key: str) -> list[str]:
     value = data.get(key)
     if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
         raise ValidationError(f"Ralph blind analysis {key} must be a non-empty string list")
+    return value
+
+
+def _optional_string_list(data: dict[str, Any], key: str) -> list[str]:
+    value = data.get(key, [])
+    if value is None:
+        return []
+    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
+        raise ValidationError(f"Ralph blind analysis {key} must be a string list")
     return value
 
 

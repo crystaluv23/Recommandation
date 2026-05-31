@@ -59,9 +59,11 @@ from stock_opportunity_agent.research.ralph_loop import (
     analyze_scheme_errors,
     build_blind_scheme_packet,
     evaluate_scheme_performance,
+    run_ralph_experiment,
     propose_next_information_scheme,
     run_ralph_loop,
     synthesize_information_scheme,
+    write_ralph_experiment_artifacts,
     write_ralph_loop_artifacts,
 )
 from stock_opportunity_agent.research.inflection_discovery import (
@@ -1129,6 +1131,8 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(evaluation.confidence_gap, -0.4)
         self.assertEqual(evaluation.false_positive_controls, ("control-1",))
         self.assertEqual(evaluation.false_negative_winners, ("winner-1",))
+        self.assertEqual(evaluation.false_positive_rate, 1.0)
+        self.assertEqual(evaluation.false_negative_rate, 1.0)
         self.assertFalse(evaluation.separation_passed)
         self.assertEqual(proposal.version, "information-scheme-v0.2")
         self.assertIn("proposal_only", proposal.proposal_status)
@@ -1261,6 +1265,107 @@ class ColdStartSignalTests(TestCase):
             packets_text = paths["blind_packets_by_scheme"].read_text()
             self.assertNotIn("winner-1", packets_text)
             self.assertNotIn("control-1", packets_text)
+
+    def test_ralph_experiment_uses_holdout_and_writes_final_status(self) -> None:
+        class FakeRalphResearcher:
+            def analyze(self, packet):
+                is_winner = packet.source_case_id.startswith("winner")
+                return RalphBlindAnalysis(
+                    source_case_id=packet.source_case_id,
+                    anonymous_case_id=packet.anonymous_case_id,
+                    as_of_date=packet.as_of_date,
+                    scheme_version=packet.scheme_version,
+                    surge_candidate="likely" if is_winner else "unlikely",
+                    surge_candidate_reason="fake holdout separation",
+                    expectation_gap="fake",
+                    pre_surge_signals=("signal",),
+                    contrary_evidence=("risk",),
+                    catalyst_watch=("watch",),
+                    confidence=0.82 if is_winner else 0.22,
+                    raw_text="fake",
+                )
+
+        cases = [
+            make_case(
+                "winner-refine",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.10,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-refine",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.04,
+                earnings_growth=-0.05,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.03,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+            make_case(
+                "winner-holdout",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.32,
+                earnings_growth=0.50,
+                margin=0.20,
+                return_20d=0.08,
+                return_60d=0.20,
+                target_upside=0.28,
+                catalyst_count=1,
+            ),
+            make_case(
+                "control-holdout",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.02,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.02,
+                catalyst_count=0,
+            ),
+        ]
+        refinement_cases = tuple(cases[:2])
+        holdout_cases = tuple(cases[2:])
+        learning = learn_pre_surge_signal_logic(refinement_cases)
+        themes = build_cold_start_theme_maps(refinement_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in refinement_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            refinement_cases,
+            baseline,
+            learning,
+            themes,
+        )
+
+        with TemporaryDirectory() as tmp:
+            result = run_ralph_experiment(
+                refinement_cases,
+                holdout_cases,
+                baseline_refinement_blind_analyses=baseline,
+                learning_result=learning,
+                theme_maps=themes,
+                playbook_synthesis=playbooks,
+                run_id="ralph-experiment-test",
+                blind_researcher=FakeRalphResearcher(),
+                max_iterations=2,
+            )
+            paths = write_ralph_experiment_artifacts(result, tmp, created_at=STAMP)
+
+            self.assertEqual(result.final_status, "holdout_separated")
+            self.assertTrue(result.holdout_evaluation.separation_passed)
+            self.assertEqual(result.holdout_evaluation.false_positive_rate, 0.0)
+            self.assertTrue(paths["ralph_experiment_summary"].exists())
+            self.assertTrue(paths["holdout_blind_scheme_evaluation"].exists())
+            self.assertIn("holdout_separated", paths["manifest"].read_text())
+            packets_text = paths["holdout_blind_packets_by_scheme"].read_text()
+            self.assertNotIn("winner-holdout", packets_text)
+            self.assertNotIn("control-holdout", packets_text)
 
     def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
         transport = FakeOpenAITransport(
