@@ -45,6 +45,9 @@ Active child specs:
 - [`research/evidence_acquisition.md`](research/evidence_acquisition.md):
   pre-packet company, catalyst, theme, and public research evidence acquisition
   plus context coverage gating for formal cold start.
+- [`research/ralph_loop.md`](research/ralph_loop.md): retrospective
+  label-aware information-scheme proposal and blind scheme validation for
+  formal cold-start packets.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
@@ -58,6 +61,8 @@ Active child specs:
 - Produce JSON-serializable, schema-validated outputs.
 - Separate direct evidence from inference.
 - Preserve prompt and model versions.
+- Propose cold-start information schemes through Ralph Loop without promoting
+  them into production prompt defaults.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.
@@ -77,6 +82,9 @@ Active child specs:
 - The LLM cannot directly mutate memory, scoring weights, or config.
 - Web search may enrich pre-packet context and retrospective inflection setup,
   but blind cold-start assessment remains web-disabled and anonymous.
+- Retrospective Ralph diagnostics may read historical outcome groups only in
+  explicitly marked label-aware artifacts; scheme-built blind packets must stay
+  anonymous and point-in-time.
 - A high-priority recommendation requires structured evidence, catalysts, disconfirming conditions, and a validation contract.
 - Incremental research must compare new evidence to the prior thesis instead of silently generating a fresh thesis from scratch.
 

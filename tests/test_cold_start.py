@@ -45,11 +45,24 @@ from stock_opportunity_agent.research import (
     EvidenceAcquisitionRequest,
     EvidenceAcquisitionResult,
     HeuristicBlindCaseResearcher,
+    HeuristicRalphBlindResearcher,
+    HeuristicSurgePlaybookSynthesizer,
+    OpenAIRalphBlindResearcher,
     OpenAIBlindCaseResearcher,
     OpenAISurgePlaybookSynthesizer,
     OpenAIWebEvidenceResearcher,
+    RalphBlindAnalysis,
     apply_context_coverage_gate,
     assess_context_coverage,
+)
+from stock_opportunity_agent.research.ralph_loop import (
+    analyze_scheme_errors,
+    build_blind_scheme_packet,
+    evaluate_scheme_performance,
+    propose_next_information_scheme,
+    run_ralph_loop,
+    synthesize_information_scheme,
+    write_ralph_loop_artifacts,
 )
 from stock_opportunity_agent.research.inflection_discovery import (
     CachedInflectionResearcher,
@@ -922,6 +935,333 @@ class ColdStartSignalTests(TestCase):
         self.assertTrue(result.playbooks)
         self.assertTrue(any("LLM playbook synthesis failed" in warning for warning in result.warnings))
 
+    def test_ralph_scheme_and_packets_hide_labels_identity_and_forward_return(self) -> None:
+        cases = [
+            make_case(
+                "winner-apple",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+                company_name="Apple Inc.",
+                extra_documents=[
+                    DocumentRecord(
+                        document_id="aapl-contract",
+                        symbol="AAPL",
+                        kind=EvidenceKind.NEWS,
+                        title="Apple order",
+                        text="Apple Inc. announced a customer order and execution risk.",
+                        source_id="wire:Apple",
+                        source_url="https://example.com/apple",
+                        published_date=AS_OF,
+                        retrieved_at=STAMP,
+                    )
+                ],
+            ),
+            make_case(
+                "control-apple",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+                company_name="Apple Inc.",
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(cases, blind, learning, themes)
+
+        scheme, diagnostic = synthesize_information_scheme(
+            cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+            coverage_reports={
+                "winner-apple": {
+                    "sufficient_context": False,
+                    "missing_buckets": ["catalyst_event_context"],
+                }
+            },
+        )
+        packet = build_blind_scheme_packet(cases[0], scheme, anonymous_case_id="case_001")
+
+        self.assertEqual(diagnostic.stage_boundary, "retrospective_label_aware")
+        self.assertTrue(diagnostic.coverage_summary["provided"])
+        self.assertEqual(diagnostic.coverage_summary["missing_bucket_counts"]["catalyst_event_context"], 1)
+        scheme_text = json.dumps(scheme.to_dict())
+        packet_text = json.dumps(packet.to_dict())
+        for forbidden in ("winner", "control", "AAPL", "Apple", "winner-apple", "control-apple", "1.0"):
+            self.assertNotIn(forbidden, scheme_text)
+            self.assertNotIn(forbidden, packet_text)
+        self.assertIn("MASKED", packet_text)
+        self.assertNotIn("source_url", packet_text)
+        self.assertNotIn("source_id", packet_text)
+
+    def test_ralph_packet_prioritizes_catalyst_theme_expectation_and_compresses_tables(self) -> None:
+        case = make_case(
+            "winner-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=2,
+        )
+        learning = learn_pre_surge_signal_logic([case])
+        themes = build_cold_start_theme_maps([case], learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(case),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize([case], blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            [case],
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_001")
+
+        section_names = [section.name for section in packet.sections]
+        self.assertEqual(
+            section_names[:5],
+            [
+                "Catalyst/Event Ledger",
+                "Expectation Gap Summary",
+                "Theme/Industry Transmission",
+                "Materiality and Timing",
+                "Contrary/Risk Evidence",
+            ],
+        )
+        budget_by_section = {section.name: section.token_budget for section in scheme.sections}
+        compressed_budget = sum(
+            budget_by_section[name]
+            for name in ("Compressed Fundamentals", "Compressed Market Confirmation")
+        )
+        self.assertLessEqual(compressed_budget / scheme.total_token_budget, scheme.max_compressed_context_share)
+        fundamentals = next(section for section in packet.sections if section.name == "Compressed Fundamentals")
+        market = next(section for section in packet.sections if section.name == "Compressed Market Confirmation")
+        catalyst = next(section for section in packet.sections if section.name == "Catalyst/Event Ledger")
+        self.assertLessEqual(len(fundamentals.items), 3)
+        self.assertLessEqual(len(market.items), 3)
+        self.assertGreaterEqual(catalyst.priority, 1)
+        self.assertLess(catalyst.priority, fundamentals.priority)
+
+    def test_ralph_evaluation_metrics_and_feedback_proposal(self) -> None:
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        analyses = [
+            RalphBlindAnalysis(
+                source_case_id="winner-1",
+                anonymous_case_id="case_001",
+                as_of_date=AS_OF.isoformat(),
+                scheme_version="information-scheme-v0.1",
+                surge_candidate="possible",
+                surge_candidate_reason="thin packet",
+                expectation_gap="thin",
+                pre_surge_signals=("signal",),
+                contrary_evidence=("risk",),
+                catalyst_watch=("watch",),
+                confidence=0.30,
+                raw_text="{}",
+            ),
+            RalphBlindAnalysis(
+                source_case_id="control-1",
+                anonymous_case_id="case_002",
+                as_of_date=AS_OF.isoformat(),
+                scheme_version="information-scheme-v0.1",
+                surge_candidate="possible",
+                surge_candidate_reason="looks similar",
+                expectation_gap="thin",
+                pre_surge_signals=("signal",),
+                contrary_evidence=("risk",),
+                catalyst_watch=("watch",),
+                confidence=0.70,
+                raw_text="{}",
+            ),
+        ]
+        evaluation = evaluate_scheme_performance(cases, analyses, scheme_version="information-scheme-v0.1")
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(cases, blind, learning, themes)
+        scheme, diagnostic = synthesize_information_scheme(
+            cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        error_analysis = analyze_scheme_errors(evaluation, diagnostic)
+        proposal = propose_next_information_scheme(scheme, error_analysis)
+
+        self.assertEqual(evaluation.confidence_gap, -0.4)
+        self.assertEqual(evaluation.false_positive_controls, ("control-1",))
+        self.assertEqual(evaluation.false_negative_winners, ("winner-1",))
+        self.assertFalse(evaluation.separation_passed)
+        self.assertEqual(proposal.version, "information-scheme-v0.2")
+        self.assertIn("proposal_only", proposal.proposal_status)
+        self.assertNotEqual(proposal.to_dict()["proposal_status"], "production_default")
+
+    def test_openai_ralph_blind_researcher_uses_no_tools_and_anonymous_prompt(self) -> None:
+        case = make_case(
+            "winner-apple",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.40,
+            earnings_growth=0.70,
+            margin=0.22,
+            return_20d=0.11,
+            return_60d=0.25,
+            target_upside=0.35,
+            catalyst_count=1,
+            company_name="Apple Inc.",
+            extra_documents=[
+                DocumentRecord(
+                    document_id="aapl-risk",
+                    symbol="AAPL",
+                    kind=EvidenceKind.NEWS,
+                    title="Apple risk",
+                    text="Apple Inc. reported an order with execution risk.",
+                    source_id="wire:Apple",
+                    source_url="https://example.com/apple",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        learning = learn_pre_surge_signal_logic([case])
+        themes = build_cold_start_theme_maps([case], learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(case),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize([case], blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            [case],
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_001")
+        transport = FakeOpenAITransport(
+            "{\"surge_candidate\":\"possible\",\"surge_candidate_reason\":\"reason\","
+            "\"expectation_gap\":\"gap\",\"pre_surge_signals\":[\"signal\"],"
+            "\"contrary_evidence\":[\"risk\"],\"catalyst_watch\":[\"watch\"],\"confidence\":0.4}"
+        )
+        client = OpenAIChatClient("gpt-5.4-mini", "test-key", transport=transport)
+
+        OpenAIRalphBlindResearcher(client).analyze(packet)
+
+        payload = transport.calls[0][2]
+        prompt_text = payload["input"][1]["content"][0]["text"]
+        self.assertNotIn("tools", payload)
+        self.assertIn("\"web_tools_allowed\": false", prompt_text)
+        for forbidden in ("AAPL", "Apple", "winner-apple", "winner", "control", "https://example.com"):
+            self.assertNotIn(forbidden, prompt_text)
+
+    def test_ralph_loop_writes_artifacts_with_fake_blind_researcher(self) -> None:
+        class FakeRalphResearcher:
+            def analyze(self, packet):
+                confidence = 0.80 if packet.anonymous_case_id == "case_001" else 0.35
+                judgment = "likely" if packet.anonymous_case_id == "case_001" else "unlikely"
+                return RalphBlindAnalysis(
+                    source_case_id=packet.source_case_id,
+                    anonymous_case_id=packet.anonymous_case_id,
+                    as_of_date=packet.as_of_date,
+                    scheme_version=packet.scheme_version,
+                    surge_candidate=judgment,
+                    surge_candidate_reason="fake",
+                    expectation_gap="fake",
+                    pre_surge_signals=("signal",),
+                    contrary_evidence=("risk",),
+                    catalyst_watch=("watch",),
+                    confidence=confidence,
+                    raw_text="fake",
+                )
+
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(cases, baseline, learning, themes)
+
+        with TemporaryDirectory() as tmp:
+            result = run_ralph_loop(
+                cases,
+                baseline_blind_analyses=baseline,
+                learning_result=learning,
+                theme_maps=themes,
+                playbook_synthesis=playbooks,
+                run_id="ralph-test",
+                blind_researcher=FakeRalphResearcher(),
+            )
+            paths = write_ralph_loop_artifacts(
+                result,
+                tmp,
+                created_at=STAMP,
+                proposal_memory_dir=Path(tmp) / "memory" / "ralph",
+            )
+
+            self.assertTrue(paths["information_scheme"].exists())
+            self.assertTrue(paths["blind_scheme_evaluation"].exists())
+            self.assertTrue(paths["ralph_error_analysis"].exists())
+            self.assertTrue(paths["information_scheme_proposal_memory"].exists())
+            self.assertTrue(result.latest_evaluation.separation_passed)
+            packets_text = paths["blind_packets_by_scheme"].read_text()
+            self.assertNotIn("winner-1", packets_text)
+            self.assertNotIn("control-1", packets_text)
+
     def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
         transport = FakeOpenAITransport(
             json.dumps(
@@ -1220,6 +1560,11 @@ class ColdStartSignalTests(TestCase):
             self.assertTrue(output.inflection_analysis_path.exists())
             self.assertTrue(output.theme_maps_path.exists())
             self.assertTrue(output.playbooks_path.exists())
+            self.assertTrue(output.information_scheme_path.exists())
+            self.assertTrue(output.ralph_iterations_path.exists())
+            self.assertTrue(output.ralph_blind_packets_path.exists())
+            self.assertTrue(output.ralph_evaluation_path.exists())
+            self.assertTrue(output.ralph_error_analysis_path.exists())
             self.assertTrue(library.definitions_path.exists())
             self.assertTrue(theme_library.theme_maps_path.exists())
             self.assertTrue(playbook_library.playbooks_path.exists())
@@ -1227,15 +1572,19 @@ class ColdStartSignalTests(TestCase):
             self.assertIn("inflection_analyses", output.manifest_path.read_text())
             self.assertIn("theme_maps", output.manifest_path.read_text())
             self.assertIn("surge_research_playbooks", output.manifest_path.read_text())
+            self.assertIn("information_scheme", output.manifest_path.read_text())
+            self.assertIn("ralph_scheme_version", output.manifest_path.read_text())
             self.assertIn("matched_control_sets", output.manifest_path.read_text())
             self.assertTrue(library.read_definitions())
             self.assertTrue(theme_library.read_theme_maps())
             self.assertTrue(playbook_library.read_playbooks())
             self.assertTrue(output.theme_maps.theme_maps)
             self.assertTrue(output.playbook_synthesis.playbooks)
+            self.assertTrue(output.ralph_loop.iterations)
             self.assertTrue(any("discovering inflections" in message for message in progress_messages))
             self.assertTrue(any("theme maps" in message for message in progress_messages))
             self.assertTrue(any("research playbooks" in message for message in progress_messages))
+            self.assertTrue(any("Ralph scheme" in message for message in progress_messages))
             self.assertTrue(any("complete:" in message for message in progress_messages))
 
     def test_composite_inflection_keeps_factor_candidate_when_web_research_fails(self) -> None:

@@ -21,6 +21,7 @@ Memory collections should include:
 - Theme Memory
 - Segment Memory
 - Research Playbook Memory
+- Information Scheme Proposal Memory
 - Experiment Memory
 - User Preference Memory
 
@@ -49,6 +50,9 @@ Active child specs:
 - Research Playbook Memory stores reusable research questions, reasoning steps,
   positive/counter patterns, false-positive traps, linked signals, linked
   themes, and hindsight-risk notes.
+- Information Scheme Proposal Memory stores proposal-only Ralph Loop
+  `InformationScheme` versions, their source run ids, evaluation summaries, and
+  approval state. It must not act as the production prompt store.
 - Experiment Memory stores meta-learning hypotheses, experiment designs, results, approval states, and promoted or rejected versions.
 - User Preference Memory stores explicit user preferences about scope, cadence, risk tolerance for research output, sectors, and reporting style; it must not be inferred from unstated trading intent.
 
@@ -61,6 +65,8 @@ Active child specs:
 - Track signal performance and false-positive patterns.
 - Track theme and segment stage histories.
 - Track reusable research playbooks that can later inform prompt proposals.
+- Track Ralph Loop information-scheme proposals separately from production
+  prompt defaults.
 - Preserve error labels and lessons from reviews.
 - Support retrieval of relevant prior memory for research packets.
 

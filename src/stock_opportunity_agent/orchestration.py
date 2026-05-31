@@ -37,6 +37,13 @@ from stock_opportunity_agent.research.playbooks import (
     SurgePlaybookSynthesis,
     SurgePlaybookSynthesizer,
 )
+from stock_opportunity_agent.research.ralph_loop import (
+    HeuristicRalphBlindResearcher,
+    RalphBlindResearcher,
+    RalphLoopResult,
+    run_ralph_loop,
+    write_ralph_loop_artifacts,
+)
 from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start_theme_maps
 
 
@@ -56,6 +63,12 @@ class ColdStartRunOutput:
     observations_path: Path
     theme_maps_path: Path
     playbooks_path: Path
+    information_scheme_path: Path
+    ralph_iterations_path: Path
+    ralph_blind_packets_path: Path
+    ralph_evaluation_path: Path
+    ralph_error_analysis_path: Path
+    ralph_proposal_memory_path: Path | None
     inflection_analysis_path: Path
     blind_analysis_path: Path
     signal_library_dir: Path | None
@@ -64,6 +77,7 @@ class ColdStartRunOutput:
     result: ColdStartLearningResult
     theme_maps: ThemeMapBuildResult
     playbook_synthesis: SurgePlaybookSynthesis
+    ralph_loop: RalphLoopResult
     inflection_analyses: tuple[InflectionResearchResult, ...]
     blind_analyses: tuple[BlindCaseAnalysis, ...]
 
@@ -82,6 +96,10 @@ def run_cold_start_case_learning(
     theme_library: FileThemeLibrary | None = None,
     playbook_library: FilePlaybookLibrary | None = None,
     playbook_synthesizer: SurgePlaybookSynthesizer | None = None,
+    ralph_blind_researcher: RalphBlindResearcher | None = None,
+    ralph_iterations: int = 1,
+    ralph_proposal_dir: str | Path | None = None,
+    ralph_coverage_reports: dict[str, Any] | None = None,
     control_match_criteria: ControlMatchCriteria | None = None,
     research_max_workers: int = 1,
     progress: ProgressReporter | None = None,
@@ -176,6 +194,27 @@ def run_cold_start_case_learning(
     )
     playbook_summary = ", ".join(playbook.playbook_id for playbook in playbook_synthesis.playbooks)
     _report(progress, f"[cold-start] research playbooks {len(playbook_synthesis.playbooks)}: {playbook_summary}")
+    active_ralph_researcher = ralph_blind_researcher or HeuristicRalphBlindResearcher()
+    _report(progress, f"[cold-start] running Ralph Loop with {active_ralph_researcher.__class__.__name__}")
+    ralph_loop = run_ralph_loop(
+        case_list,
+        baseline_blind_analyses=blind_analyses,
+        learning_result=result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+        run_id=active_run_id,
+        blind_researcher=active_ralph_researcher,
+        max_iterations=ralph_iterations,
+        coverage_reports=ralph_coverage_reports,
+    )
+    _report(
+        progress,
+        (
+            f"[cold-start] Ralph scheme {ralph_loop.information_scheme.version}: "
+            f"confidence_gap={ralph_loop.latest_evaluation.confidence_gap:.2f} "
+            f"false_positive_controls={len(ralph_loop.latest_evaluation.false_positive_controls)}"
+        ),
+    )
 
     _report(progress, f"[cold-start] writing artifacts to {base_dir}")
 
@@ -228,6 +267,12 @@ def run_cold_start_case_learning(
             **playbook_synthesis.to_dict(),
         },
     )
+    ralph_artifact_paths = write_ralph_loop_artifacts(
+        ralph_loop,
+        base_dir,
+        created_at=created,
+        proposal_memory_dir=ralph_proposal_dir,
+    )
     _write_json(
         inflection_analysis_path,
         {
@@ -278,11 +323,18 @@ def run_cold_start_case_learning(
             "case_signal_observations": observations_path,
             "theme_maps": theme_maps_path,
             "surge_research_playbooks": playbooks_path,
+            **{
+                name: path
+                for name, path in ralph_artifact_paths.items()
+                if name != "information_scheme_proposal_memory"
+            },
             "inflection_analyses": inflection_analysis_path,
             "blind_case_analyses": blind_analysis_path,
         },
         theme_maps=theme_maps,
         playbook_synthesis=playbook_synthesis,
+        ralph_loop=ralph_loop,
+        ralph_artifact_paths=ralph_artifact_paths,
         signal_library=signal_library,
         theme_library=theme_library,
         playbook_library=playbook_library,
@@ -300,6 +352,12 @@ def run_cold_start_case_learning(
         observations_path=observations_path,
         theme_maps_path=theme_maps_path,
         playbooks_path=playbooks_path,
+        information_scheme_path=ralph_artifact_paths["information_scheme"],
+        ralph_iterations_path=ralph_artifact_paths["ralph_loop_iterations"],
+        ralph_blind_packets_path=ralph_artifact_paths["blind_packets_by_scheme"],
+        ralph_evaluation_path=ralph_artifact_paths["blind_scheme_evaluation"],
+        ralph_error_analysis_path=ralph_artifact_paths["ralph_error_analysis"],
+        ralph_proposal_memory_path=ralph_artifact_paths.get("information_scheme_proposal_memory"),
         inflection_analysis_path=inflection_analysis_path,
         blind_analysis_path=blind_analysis_path,
         signal_library_dir=signal_library.root_dir if signal_library is not None else None,
@@ -308,6 +366,7 @@ def run_cold_start_case_learning(
         result=result,
         theme_maps=theme_maps,
         playbook_synthesis=playbook_synthesis,
+        ralph_loop=ralph_loop,
         inflection_analyses=inflection_analyses,
         blind_analyses=blind_analyses,
     )
@@ -440,6 +499,8 @@ def _manifest(
     output_paths: dict[str, Path],
     theme_maps: ThemeMapBuildResult,
     playbook_synthesis: SurgePlaybookSynthesis,
+    ralph_loop: RalphLoopResult,
+    ralph_artifact_paths: dict[str, Path],
     signal_library: FileSignalLibrary | None,
     theme_library: FileThemeLibrary | None,
     playbook_library: FilePlaybookLibrary | None,
@@ -484,18 +545,38 @@ def _manifest(
             "theme_ids": [theme.theme_id for theme in theme_maps.theme_maps],
             "playbook_count": len(playbook_synthesis.playbooks),
             "playbook_ids": [playbook.playbook_id for playbook in playbook_synthesis.playbooks],
+            "ralph_scheme_version": ralph_loop.information_scheme.version,
+            "ralph_iteration_count": len(ralph_loop.iterations),
+            "ralph_warning_count": len(ralph_loop.warnings),
+            "ralph_confidence_gap": ralph_loop.latest_evaluation.confidence_gap,
+            "ralph_false_positive_control_count": len(
+                ralph_loop.latest_evaluation.false_positive_controls
+            ),
+            "ralph_promotion_status": "pending_human_review",
             "inflection_analysis_count": len(cases),
             "blind_analysis_count": len(cases),
             "signal_library_dir": str(signal_library.root_dir) if signal_library is not None else None,
             "theme_library_dir": str(theme_library.root_dir) if theme_library is not None else None,
             "playbook_library_dir": str(playbook_library.root_dir) if playbook_library is not None else None,
+            "information_scheme_proposal_memory": str(
+                ralph_artifact_paths["information_scheme_proposal_memory"]
+            )
+            if "information_scheme_proposal_memory" in ralph_artifact_paths
+            else None,
         },
-        "warnings": list(result.warnings) + list(theme_maps.warnings) + list(playbook_synthesis.warnings),
+        "warnings": (
+            list(result.warnings)
+            + list(theme_maps.warnings)
+            + list(playbook_synthesis.warnings)
+            + list(ralph_loop.warnings)
+        ),
         "assumptions": [
             "Winner, control, and failure labels were produced before signal learning.",
             "Retrospective inflection discovery may use future outcomes and web search, but its output is not added to blind packets.",
             "Blind analysis uses only point-in-time ResearchPacket features and known catalysts.",
             "Research playbook synthesis is retrospective; it may compare labels but must not treat labels as as-of evidence.",
+            "Ralph Loop diagnostics are retrospective and label-aware; Ralph blind packets are anonymous and no-web.",
+            "Ralph information schemes are proposal-only until a human promotes a version.",
             "Cold-start theme maps initialize industry-chain hypotheses from supplied cases; they are not full live theme discovery.",
         ],
     }

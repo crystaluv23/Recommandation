@@ -38,10 +38,12 @@ that runs supplied historical cases through retrospective inflection discovery,
 `inflection_analyses.json`, `pre_surge_signal_logic.json`,
 `signal_definitions.json`, `case_signal_observations.json`,
 `theme_maps.json`, `surge_research_playbooks.json`,
-`blind_case_analyses.json`, and `manifest.json`. It can also write promoted
+`blind_case_analyses.json`, Ralph Loop information-scheme proposal artifacts,
+and `manifest.json`. It can also write promoted
 definitions into the local signal library, write cold-start theme maps into the
 local theme library, write surge-research playbooks into the local playbook
-library, and apply versioned control-matching criteria when supplied.
+library, append Ralph information-scheme proposals to local proposal memory,
+and apply versioned control-matching criteria when supplied.
 Long-running LLM research writes partial checkpoints as individual inflection
 and blind analyses finish, and reruns should load completed blind analyses
 instead of spending LLM budget again. Retrospective web-enabled inflection
@@ -107,6 +109,9 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Keep long-running tasks resumable where practical.
 - Avoid repeated LLM calls for identical retrospective research keys; reserve
   per-packet LLM calls for analyses whose input genuinely differs by as-of date.
+- Run Ralph Loop only inside formal cold-start / historical learning; it may
+  propose a new blind information scheme but must not promote that scheme into
+  daily or weekly prompt defaults.
 - Keep run workspaces stage-oriented: universe, prices, selection, unstructured
   context, packets, then LLM/research artifacts.
 - Do not treat generated historical packets as learning-ready unless their
@@ -128,6 +133,8 @@ Monitoring owns event detection and reanalysis triggers; it does not own the who
 - Cold-start and live-scan paths must both obey point-in-time rules.
 - Context acquisition may use identity and web search before packet assembly;
   blind cold-start assessment must stay anonymous and web-disabled.
+- Ralph Loop diagnostics are retrospective and label-aware, while Ralph blind
+  scheme validation uses only anonymous point-in-time packet contents.
 
 ## Testing
 

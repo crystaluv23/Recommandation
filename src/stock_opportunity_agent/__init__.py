@@ -22,7 +22,12 @@ from stock_opportunity_agent.models import (
     WatchlistEntry,
 )
 from stock_opportunity_agent.orchestration import ColdStartRunOutput, run_cold_start_case_learning
-from stock_opportunity_agent.research import SurgePlaybookSynthesis, SurgeResearchPlaybook
+from stock_opportunity_agent.research import (
+    InformationScheme,
+    RalphLoopResult,
+    SurgePlaybookSynthesis,
+    SurgeResearchPlaybook,
+)
 from stock_opportunity_agent.themes import ThemeMapBuildResult, build_cold_start_theme_maps
 
 __all__ = [
@@ -37,6 +42,8 @@ __all__ = [
     "ExperimentRecord",
     "FeatureRecord",
     "HistoricalCase",
+    "InformationScheme",
+    "RalphLoopResult",
     "ResearchPacket",
     "ReviewRecord",
     "ScoreCard",

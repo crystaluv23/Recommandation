@@ -65,7 +65,9 @@ from stock_opportunity_agent.research import (
     EvidenceAcquisitionResult,
     FactorInflectionResearcher,
     OpenAIBlindCaseResearcher,
+    HeuristicRalphBlindResearcher,
     OpenAIWebEvidenceResearcher,
+    OpenAIRalphBlindResearcher,
     OpenAISurgePlaybookSynthesizer,
     OpenAIWebInflectionResearcher,
     apply_context_coverage_gate,
@@ -348,6 +350,14 @@ def main() -> None:
         playbook_library=FilePlaybookLibrary(".agent_state/memory/playbooks"),
         control_match_criteria=ControlMatchCriteria(max_controls_per_winner=args.controls_per_winner),
         blind_researcher=OpenAIBlindCaseResearcher(client),
+        ralph_blind_researcher=(
+            OpenAIRalphBlindResearcher(client)
+            if args.ralph_loop_mode == "llm"
+            else HeuristicRalphBlindResearcher()
+        ),
+        ralph_iterations=args.ralph_iterations,
+        ralph_proposal_dir=".agent_state/memory/ralph",
+        ralph_coverage_reports=context.coverage_by_case_id,
         playbook_synthesizer=OpenAISurgePlaybookSynthesizer(client),
         inflection_researcher=CompositeInflectionResearcher(tuple(inflection_researchers)),
         research_max_workers=args.research_max_workers,
@@ -383,6 +393,8 @@ def _parse_args():
     parser.add_argument("--context-mode", choices=("provider", "off"), default="provider")
     parser.add_argument("--web-context-mode", choices=("cached", "off"), default="off")
     parser.add_argument("--coverage-gate-mode", choices=("warn", "enforce"), default="warn")
+    parser.add_argument("--ralph-loop-mode", choices=("llm", "heuristic"), default="llm")
+    parser.add_argument("--ralph-iterations", type=int, default=1)
     parser.add_argument("--filing-forms", default="10-K,10-Q,8-K")
     parser.add_argument("--filing-lookback-days", type=int, default=540)
     parser.add_argument("--max-filings-per-symbol", type=int, default=6)
