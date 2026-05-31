@@ -19,10 +19,16 @@ from stock_opportunity_agent.research import (
     HeuristicRalphBlindResearcher,
     HeuristicSurgePlaybookSynthesizer,
     OpenAIRalphBlindResearcher,
+    RalphBlindAnalysis,
     build_blind_scheme_packet,
     run_ralph_experiment,
     synthesize_information_scheme,
     write_ralph_experiment_artifacts,
+)
+from stock_opportunity_agent.research.ralph_loop import (
+    analyze_scheme_errors,
+    evaluate_scheme_performance,
+    propose_next_information_scheme,
 )
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
 
@@ -36,6 +42,8 @@ def main() -> None:
     """Run a bounded Ralph experiment from saved cold-start artifacts."""
 
     args = _parse_args()
+    if args.preflight_only and args.responses_path:
+        raise ValidationError("--preflight-only and --responses-path cannot be used together")
     _load_local_env()
     created_at = datetime.now(timezone.utc)
     run_id = args.run_id or f"ralph-loop-experiment-{created_at.strftime('%Y%m%d-%H%M%S')}"
@@ -86,6 +94,28 @@ def main() -> None:
             playbook_synthesis=playbooks,
         )
         print(f"[ralph-experiment] preflight_manifest={paths['preflight_manifest']}")
+        return
+    if args.responses_path:
+        paths = _write_imported_response_artifacts(
+            output_dir,
+            run_id=run_id,
+            created_at=created_at,
+            refinement_cases=refinement_cases,
+            holdout_cases=holdout_cases,
+            learning_result=learning,
+            theme_maps=theme_maps,
+            playbook_synthesis=playbooks,
+            responses_path=Path(args.responses_path),
+        )
+        manifest = json.loads(paths["imported_response_manifest"].read_text(encoding="utf-8"))
+        print(
+            "[ralph-experiment] imported holdout "
+            f"gap={manifest['holdout_confidence_gap']:.4f} "
+            f"fp_rate={manifest['holdout_false_positive_rate']:.4f} "
+            f"fn_rate={manifest['holdout_false_negative_rate']:.4f} "
+            f"status={manifest['final_status']}"
+        )
+        print(f"[ralph-experiment] imported_response_manifest={paths['imported_response_manifest']}")
         return
 
     researcher = _ralph_researcher(args)
@@ -153,6 +183,10 @@ def _parse_args() -> argparse.Namespace:
         "--preflight-only",
         action="store_true",
         help="Write anonymous packet export review artifacts without calling a blind LLM.",
+    )
+    parser.add_argument(
+        "--responses-path",
+        help="Evaluate externally generated blind LLM responses for the selected preflight packets.",
     )
     return parser.parse_args()
 
@@ -406,6 +440,154 @@ def _write_preflight_artifacts(
     return paths
 
 
+def _write_imported_response_artifacts(
+    output_dir: Path,
+    *,
+    run_id: str,
+    created_at: datetime,
+    refinement_cases: tuple[HistoricalCase, ...],
+    holdout_cases: tuple[HistoricalCase, ...],
+    learning_result,
+    theme_maps,
+    playbook_synthesis,
+    responses_path: Path,
+) -> dict[str, Path]:
+    scheme, diagnostic = synthesize_information_scheme(
+        refinement_cases,
+        learning_result=learning_result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+    )
+    refinement_packets = tuple(
+        build_blind_scheme_packet(
+            case,
+            scheme,
+            anonymous_case_id=f"case_{index:03d}",
+        )
+        for index, case in enumerate(refinement_cases, start=1)
+    )
+    holdout_packets = tuple(
+        build_blind_scheme_packet(
+            case,
+            scheme,
+            anonymous_case_id=f"holdout_{index:03d}",
+        )
+        for index, case in enumerate(holdout_cases, start=1)
+    )
+    all_packets = refinement_packets + holdout_packets
+    records = _load_external_response_records(responses_path)
+    analyses_by_id, integrity_warnings = _analyses_from_response_records(all_packets, records)
+    missing = sorted(packet.anonymous_case_id for packet in all_packets if packet.anonymous_case_id not in analyses_by_id)
+    if missing:
+        raise ValidationError(f"missing external blind responses for: {missing}")
+    refinement_analyses = tuple(analyses_by_id[packet.anonymous_case_id] for packet in refinement_packets)
+    holdout_analyses = tuple(analyses_by_id[packet.anonymous_case_id] for packet in holdout_packets)
+    refinement_evaluation = evaluate_scheme_performance(
+        refinement_cases,
+        refinement_analyses,
+        scheme_version=scheme.version + ":imported_refinement",
+    )
+    holdout_evaluation = evaluate_scheme_performance(
+        holdout_cases,
+        holdout_analyses,
+        scheme_version=scheme.version + ":imported_holdout",
+    )
+    refinement_error = analyze_scheme_errors(refinement_evaluation, diagnostic)
+    holdout_error = analyze_scheme_errors(holdout_evaluation, diagnostic)
+    next_scheme_proposal = None if holdout_evaluation.separation_passed else propose_next_information_scheme(
+        scheme,
+        holdout_error,
+    )
+    final_status = "holdout_separated" if holdout_evaluation.separation_passed else "holdout_not_separated"
+    paths = {
+        "imported_blind_responses": output_dir / "imported_blind_responses.json",
+        "imported_blind_scheme_evaluation": output_dir / "imported_blind_scheme_evaluation.json",
+        "imported_error_analysis": output_dir / "imported_error_analysis.json",
+        "imported_next_scheme_proposal": output_dir / "imported_next_scheme_proposal.json",
+        "case_selection_label_aware": output_dir / "case_selection_label_aware.json",
+        "imported_response_manifest": output_dir / "imported_response_manifest.json",
+    }
+    _write_json(
+        paths["imported_blind_responses"],
+        {
+            "schema_version": "ralph-imported-blind-responses-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "external_blind_response_import",
+            "provider_call_performed_by_script": False,
+            "source_responses_path": str(responses_path),
+            "scheme": scheme.to_dict(),
+            "refinement_blind_analyses": [analysis.to_dict() for analysis in refinement_analyses],
+            "holdout_blind_analyses": [analysis.to_dict() for analysis in holdout_analyses],
+            "integrity_warnings": integrity_warnings,
+        },
+    )
+    _write_json(
+        paths["imported_blind_scheme_evaluation"],
+        {
+            "schema_version": "ralph-imported-evaluation-v0.1",
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_imported_blind_evaluation",
+            "refinement_evaluation": refinement_evaluation.to_dict(),
+            "holdout_evaluation": holdout_evaluation.to_dict(),
+        },
+    )
+    _write_json(
+        paths["imported_error_analysis"],
+        {
+            "schema_version": "ralph-imported-error-analysis-v0.1",
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_imported_blind_evaluation",
+            "refinement_error_analysis": refinement_error.to_dict(),
+            "holdout_error_analysis": holdout_error.to_dict(),
+        },
+    )
+    _write_json(
+        paths["imported_next_scheme_proposal"],
+        {
+            "schema_version": "ralph-imported-next-scheme-v0.1",
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_feedback",
+            "base_scheme": scheme.to_dict(),
+            "next_scheme_proposal": next_scheme_proposal.to_dict() if next_scheme_proposal is not None else None,
+            "promotion_status": "pending_human_review",
+            "can_enter_long_running_default": False,
+        },
+    )
+    _write_json(
+        paths["case_selection_label_aware"],
+        {
+            "schema_version": "ralph-case-selection-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "retrospective_label_aware",
+            "refinement_cases": [_case_selection_record(case) for case in refinement_cases],
+            "holdout_cases": [_case_selection_record(case) for case in holdout_cases],
+        },
+    )
+    _write_json(
+        paths["imported_response_manifest"],
+        {
+            "schema_version": "ralph-imported-response-manifest-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "scheme_version": scheme.version,
+            "response_count": len(records),
+            "provider_call_performed_by_script": False,
+            "final_status": final_status,
+            "holdout_confidence_gap": holdout_evaluation.confidence_gap,
+            "holdout_false_positive_rate": holdout_evaluation.false_positive_rate,
+            "holdout_false_negative_rate": holdout_evaluation.false_negative_rate,
+            "refinement_confidence_gap": refinement_evaluation.confidence_gap,
+            "integrity_warning_count": len(integrity_warnings),
+            "promotion_status": "pending_human_review",
+            "can_enter_long_running_default": False,
+            "outputs": {name: str(path) for name, path in sorted(paths.items())},
+        },
+    )
+    return paths
+
+
 def _blind_llm_request(packet, *, phase: str) -> dict[str, Any]:
     payload = packet.to_prompt_dict()
     return {
@@ -419,6 +601,81 @@ def _blind_llm_request(packet, *, phase: str) -> dict[str, Any]:
         ),
         "packet": payload,
     }
+
+
+def _load_external_response_records(path: Path) -> list[dict[str, Any]]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    records = data.get("responses") if isinstance(data, dict) else data
+    if not isinstance(records, list):
+        raise ValidationError("external response file must contain a responses list")
+    if not all(isinstance(record, dict) for record in records):
+        raise ValidationError("external response records must be objects")
+    return records
+
+
+def _analyses_from_response_records(
+    packets: tuple[Any, ...],
+    records: list[dict[str, Any]],
+) -> tuple[dict[str, RalphBlindAnalysis], list[str]]:
+    packets_by_id = {packet.anonymous_case_id: packet for packet in packets}
+    analyses: dict[str, RalphBlindAnalysis] = {}
+    warnings: list[str] = []
+    for record in records:
+        request_id = record.get("request_id") or record.get("anonymous_case_id")
+        if not isinstance(request_id, str) or request_id not in packets_by_id:
+            raise ValidationError(f"unknown external response request_id: {request_id!r}")
+        if request_id in analyses:
+            raise ValidationError(f"duplicate external response request_id: {request_id}")
+        packet = packets_by_id[request_id]
+        expected_hash = _sha256(packet.to_prompt_dict())
+        provided_hash = record.get("packet_sha256")
+        if provided_hash is None:
+            warnings.append(f"{request_id}: response did not include packet_sha256")
+        elif provided_hash != expected_hash:
+            warnings.append(f"{request_id}: packet_sha256 mismatch")
+        analyses[request_id] = _analysis_from_external_response(packet, record)
+    return analyses, warnings
+
+
+def _analysis_from_external_response(packet, record: dict[str, Any]) -> RalphBlindAnalysis:
+    data, raw_text = _external_response_payload(record)
+    return RalphBlindAnalysis(
+        source_case_id=packet.source_case_id,
+        anonymous_case_id=packet.anonymous_case_id,
+        as_of_date=packet.as_of_date,
+        scheme_version=packet.scheme_version,
+        surge_candidate=_string(data, "surge_candidate"),
+        surge_candidate_reason=_string_any(data, ("surge_candidate_reason", "reason")),
+        expectation_gap=_string(data, "expectation_gap"),
+        pre_surge_signals=tuple(_string_list(data, "pre_surge_signals")),
+        contrary_evidence=tuple(_string_list(data, "contrary_evidence")),
+        catalyst_watch=tuple(_string_list(data, "catalyst_watch")),
+        confidence=_confidence(data.get("confidence")),
+        raw_text=raw_text,
+        missing_context=tuple(_optional_string_list(data, "missing_context")),
+    )
+
+
+def _external_response_payload(record: dict[str, Any]) -> tuple[dict[str, Any], str]:
+    if isinstance(record.get("output"), dict):
+        output = record["output"]
+        return output, json.dumps(output, sort_keys=True)
+    if _looks_like_response_payload(record):
+        return record, json.dumps(record, sort_keys=True)
+    text = record.get("output_text") or record.get("raw_text")
+    if not isinstance(text, str) or not text.strip():
+        raise ValidationError("external response must include output, output_text, or raw_text")
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ValidationError("external response text was not valid JSON") from exc
+    if not isinstance(data, dict):
+        raise ValidationError("external response text must decode to an object")
+    return data, text
+
+
+def _looks_like_response_payload(record: dict[str, Any]) -> bool:
+    return all(key in record for key in ("surge_candidate", "expectation_gap", "confidence"))
 
 
 def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str, Any]:
@@ -507,6 +764,23 @@ def _string_list(data: dict[str, Any], key: str) -> list[str]:
     if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
         raise ValidationError(f"{key} must be a non-empty string list")
     return value
+
+
+def _optional_string_list(data: dict[str, Any], key: str) -> list[str]:
+    value = data.get(key, [])
+    if value is None:
+        return []
+    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
+        raise ValidationError(f"{key} must be a string list")
+    return value
+
+
+def _string_any(data: dict[str, Any], keys: tuple[str, ...]) -> str:
+    for key in keys:
+        value = data.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    raise ValidationError(f"missing non-empty {'/'.join(keys)}")
 
 
 def _optional_float(value: Any) -> float | None:

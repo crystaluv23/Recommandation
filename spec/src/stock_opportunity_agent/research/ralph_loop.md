@@ -114,6 +114,15 @@ preflight artifacts without contacting a provider:
 - `preflight_scheme_diagnostic_label_aware.json`
 - `preflight_manifest.json`
 
+If blind responses are produced outside the current runtime, the experiment
+runner can import them by `request_id` and write:
+
+- `imported_blind_responses.json`
+- `imported_blind_scheme_evaluation.json`
+- `imported_error_analysis.json`
+- `imported_next_scheme_proposal.json`
+- `imported_response_manifest.json`
+
 The run manifest records the Ralph artifact paths, active scheme version,
 iteration count, warning count, and proposal-only status. The loop may also
 append the latest proposal to local proposal memory under `.agent_state`, but it
@@ -129,6 +138,9 @@ Experiment summaries include the final status (`holdout_separated` or
 false-negative rate, and schema diffs between refinement proposals.
 Preflight manifests must set `external_call_performed=false`, record packet
 hashes, and pass leakage checks before an external provider run is attempted.
+Imported-response manifests must set `provider_call_performed_by_script=false`
+and compute the same holdout pass/fail metrics before any scheme is considered
+successful.
 
 ## Invariants
 

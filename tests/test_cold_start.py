@@ -84,7 +84,7 @@ from scripts.run_cold_start_formal import (
     _provider_theme_news_documents_for_candidate,
     _theme_context_documents_for_candidate,
 )
-from scripts.run_ralph_loop_experiment import _write_preflight_artifacts
+from scripts.run_ralph_loop_experiment import _write_imported_response_artifacts, _write_preflight_artifacts
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -1434,6 +1434,101 @@ class ColdStartSignalTests(TestCase):
             ):
                 self.assertNotIn(forbidden, request_text)
 
+    def test_ralph_imported_responses_score_holdout_without_provider_call(self) -> None:
+        cases = [
+            make_case(
+                "winner-refine",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.10,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-refine",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.04,
+                earnings_growth=-0.05,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.03,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+            make_case(
+                "winner-holdout",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.32,
+                earnings_growth=0.50,
+                margin=0.20,
+                return_20d=0.08,
+                return_60d=0.20,
+                target_upside=0.28,
+                catalyst_count=1,
+            ),
+            make_case(
+                "control-holdout",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.02,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.02,
+                catalyst_count=0,
+            ),
+        ]
+        refinement_cases = tuple(cases[:2])
+        holdout_cases = tuple(cases[2:])
+        learning = learn_pre_surge_signal_logic(refinement_cases)
+        themes = build_cold_start_theme_maps(refinement_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in refinement_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            refinement_cases,
+            baseline,
+            learning,
+            themes,
+        )
+
+        response_payload = {
+            "responses": [
+                _external_response("case_001", "likely", 0.82),
+                _external_response("case_002", "unlikely", 0.22),
+                _external_response("holdout_001", "likely", 0.80),
+                _external_response("holdout_002", "unlikely", 0.20),
+            ]
+        }
+        with TemporaryDirectory() as tmp:
+            response_path = Path(tmp) / "external_responses.json"
+            response_path.write_text(json.dumps(response_payload), encoding="utf-8")
+            paths = _write_imported_response_artifacts(
+                Path(tmp),
+                run_id="ralph-import-test",
+                created_at=STAMP,
+                refinement_cases=refinement_cases,
+                holdout_cases=holdout_cases,
+                learning_result=learning,
+                theme_maps=themes,
+                playbook_synthesis=playbooks,
+                responses_path=response_path,
+            )
+
+            manifest = json.loads(paths["imported_response_manifest"].read_text())
+            evaluation = json.loads(paths["imported_blind_scheme_evaluation"].read_text())
+            proposal = json.loads(paths["imported_next_scheme_proposal"].read_text())
+            responses_text = paths["imported_blind_responses"].read_text()
+            self.assertEqual(manifest["final_status"], "holdout_separated")
+            self.assertEqual(manifest["holdout_false_positive_rate"], 0.0)
+            self.assertEqual(manifest["holdout_false_negative_rate"], 0.0)
+            self.assertTrue(evaluation["holdout_evaluation"]["separation_passed"])
+            self.assertIsNone(proposal["next_scheme_proposal"])
+            self.assertFalse(proposal["can_enter_long_running_default"])
+            self.assertNotIn("winner-holdout", responses_text)
+            self.assertNotIn("control-holdout", responses_text)
+
     def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
         transport = FakeOpenAITransport(
             json.dumps(
@@ -1933,6 +2028,22 @@ def make_case(
         hidden_outcome_summary="Outcome was hidden from packet construction.",
         outcome_definition_id=default_outcome_definition().definition_id,
     )
+
+
+def _external_response(request_id: str, judgment: str, confidence: float) -> dict[str, object]:
+    return {
+        "request_id": request_id,
+        "output": {
+            "surge_candidate": judgment,
+            "surge_candidate_reason": "external blind response fixture",
+            "expectation_gap": "fixture expectation gap",
+            "pre_surge_signals": ["fixture signal"],
+            "contrary_evidence": ["fixture risk"],
+            "catalyst_watch": ["fixture catalyst"],
+            "missing_context": [],
+            "confidence": confidence,
+        },
+    }
 
 
 def make_thin_case(case_id: str, label: CaseOutcomeLabel) -> HistoricalCase:

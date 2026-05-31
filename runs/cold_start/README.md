@@ -34,6 +34,7 @@ runs/cold_start/
       preflight_manifest.json
       ralph_experiment_summary.json
       holdout_blind_scheme_evaluation.json
+      imported_response_manifest.json
 ```
 
 `01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
@@ -54,7 +55,9 @@ non-web context path.
 `ralph/<run_id>/` stores standalone Ralph Loop refinement/holdout experiments
 and optional preflight exports. Preflight outputs are local audit artifacts for
 reviewing the anonymous no-web blind packets before an approved external LLM
-call.
+call. If responses are generated outside this runtime, the runner can import
+them by request id and write imported-response evaluation artifacts in the same
+run directory.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation
