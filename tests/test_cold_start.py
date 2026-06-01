@@ -1,4 +1,5 @@
 import json
+from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -84,7 +85,11 @@ from scripts.run_cold_start_formal import (
     _provider_theme_news_documents_for_candidate,
     _theme_context_documents_for_candidate,
 )
-from scripts.run_ralph_loop_experiment import _write_imported_response_artifacts, _write_preflight_artifacts
+from scripts.run_ralph_loop_experiment import (
+    _select_cases,
+    _write_imported_response_artifacts,
+    _write_preflight_artifacts,
+)
 
 
 STAMP = datetime(2026, 5, 3, tzinfo=timezone.utc)
@@ -1059,6 +1064,76 @@ class ColdStartSignalTests(TestCase):
         self.assertGreaterEqual(catalyst.priority, 1)
         self.assertLess(catalyst.priority, fundamentals.priority)
 
+        recent_confirmed = Catalyst(
+            name="Recent financing close",
+            expected_date=AS_OF - timedelta(days=15),
+            status=CatalystStatus.CONFIRMED,
+            evidence=[
+                EvidenceItem(
+                    kind=EvidenceKind.NEWS,
+                    summary="Financing became effective before as-of.",
+                    as_of_date=AS_OF,
+                    source_id="fixture:recent-financing",
+                    published_date=AS_OF - timedelta(days=15),
+                )
+            ],
+        )
+        recent_case = replace(
+            case,
+            packet=replace(case.packet, catalysts=[recent_confirmed]),
+        )
+        recent_packet = build_blind_scheme_packet(recent_case, scheme, anonymous_case_id="case_002")
+        recent_catalyst = next(section for section in recent_packet.sections if section.name == "Catalyst/Event Ledger")
+        recent_timing = next(section for section in recent_packet.sections if section.name == "Materiality and Timing")
+        self.assertTrue(
+            any(
+                item.get("summary") == "Recent financing close"
+                and item.get("relative_timing_days") == -15
+                for item in recent_catalyst.items
+            )
+        )
+        self.assertTrue(
+            any("observed 15 days before as-of" in item.get("summary", "") for item in recent_timing.items)
+        )
+
+        event_case = make_case(
+            "winner-event",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.10,
+            margin=0.05,
+            return_20d=-0.20,
+            return_60d=-0.40,
+            target_upside=0.10,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="trading-resumption",
+                    symbol="WINNER",
+                    kind=EvidenceKind.NEWS,
+                    title="NYSE removal of trading suspension",
+                    text="The NYSE removal of trading suspension became effective after a compliance plan.",
+                    source_id="wire:trading-resumption",
+                    source_url="https://example.com/trading-resumption",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        event_packet = build_blind_scheme_packet(event_case, scheme, anonymous_case_id="case_003")
+        event_expectation = next(
+            section for section in event_packet.sections if section.name == "Expectation Gap Summary"
+        )
+        event_materiality = next(
+            section for section in event_packet.sections if section.name == "Materiality and Timing"
+        )
+        self.assertTrue(
+            any("Depressed market setup" in item.get("summary", "") for item in event_expectation.items)
+        )
+        self.assertTrue(
+            any(item.get("item_type") == "materiality_timing" for item in event_materiality.items)
+        )
+
     def test_ralph_evaluation_metrics_and_feedback_proposal(self) -> None:
         cases = [
             make_case(
@@ -1138,6 +1213,77 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(proposal.version, "information-scheme-v0.2")
         self.assertIn("proposal_only", proposal.proposal_status)
         self.assertNotEqual(proposal.to_dict()["proposal_status"], "production_default")
+
+    def test_ralph_feedback_iterations_apply_prior_proposal_cumulatively(self) -> None:
+        class AlwaysFalseNegativeResearcher:
+            def analyze(self, packet):
+                return RalphBlindAnalysis(
+                    source_case_id=packet.source_case_id,
+                    anonymous_case_id=packet.anonymous_case_id,
+                    as_of_date=packet.as_of_date,
+                    scheme_version=packet.scheme_version,
+                    surge_candidate="insufficient_information",
+                    surge_candidate_reason="still missing decisive catalyst context",
+                    expectation_gap="missing",
+                    pre_surge_signals=(),
+                    contrary_evidence=("risk",),
+                    catalyst_watch=(),
+                    missing_context=("orders/contracts", "theme transmission"),
+                    confidence=0.20,
+                    raw_text="{}",
+                )
+
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=1,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.03,
+                margin=0.03,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.02,
+                catalyst_count=0,
+            ),
+        ]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(cases, baseline, learning, themes)
+
+        result = run_ralph_loop(
+            cases,
+            baseline_blind_analyses=baseline,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+            run_id="ralph-cumulative-feedback-test",
+            blind_researcher=AlwaysFalseNegativeResearcher(),
+            max_iterations=3,
+        )
+
+        catalyst_budgets = [
+            next(
+                section.token_budget
+                for section in iteration.scheme.sections
+                if section.name == "Catalyst/Event Ledger"
+            )
+            for iteration in result.iterations
+        ]
+        self.assertEqual(catalyst_budgets, [900, 1000, 1100])
+        self.assertEqual(result.next_scheme_proposal.version, "information-scheme-v0.4")
+        self.assertNotEqual(result.next_scheme_proposal.proposal_status, "production_default")
 
     def test_openai_ralph_blind_researcher_uses_no_tools_and_anonymous_prompt(self) -> None:
         case = make_case(
@@ -1380,7 +1526,20 @@ class ColdStartSignalTests(TestCase):
                 return_60d=0.25,
                 target_upside=0.35,
                 catalyst_count=2,
-                company_name="Apple Inc.",
+                company_name="Corner Growth Acquisition Corp 2 - Class A / Tron Inc.",
+                extra_documents=[
+                    DocumentRecord(
+                        document_id="corner-growth-merger",
+                        symbol="WINNER",
+                        kind=EvidenceKind.NEWS,
+                        title="Corner Growth Acquisition Corp. extends merger deadline",
+                        text="Corner Growth Acquisition Corp. and Tron Inc. filed updated merger materials.",
+                        source_id="wire:corner-growth",
+                        source_url="https://example.com/corner-growth",
+                        published_date=AS_OF,
+                        retrieved_at=STAMP,
+                    )
+                ],
             ),
         )
         holdout_cases = (
@@ -1426,13 +1585,109 @@ class ColdStartSignalTests(TestCase):
             for forbidden in (
                 "winner-refine",
                 "control-holdout",
-                "Apple",
+                "Corner Growth",
+                "Tron",
                 "Microsoft",
                 "AAPL",
+                "https://example.com",
                 '"label"',
                 '"outcome_return"',
             ):
                 self.assertNotIn(forbidden, request_text)
+
+    def test_ralph_selection_policy_prioritizes_rich_evidence(self) -> None:
+        cases = [
+            make_case(
+                "aaa-winner-thin",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.10,
+                earnings_growth=0.10,
+                margin=0.10,
+                return_20d=0.01,
+                return_60d=0.02,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+            make_case(
+                "zzz-winner-rich",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.10,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+                extra_documents=[
+                    DocumentRecord(
+                        document_id="rich-order",
+                        symbol="ZZZ",
+                        kind=EvidenceKind.NEWS,
+                        title="Customer contract",
+                        text="A large customer order added capacity demand and execution risk.",
+                        source_id="fixture:rich-order",
+                        source_url="https://example.com/rich-order",
+                        published_date=AS_OF,
+                        retrieved_at=STAMP,
+                    )
+                ],
+            ),
+            make_case(
+                "bbb-winner-holdout",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.20,
+                earnings_growth=0.30,
+                margin=0.15,
+                return_20d=0.05,
+                return_60d=0.10,
+                target_upside=0.10,
+                catalyst_count=1,
+            ),
+            make_case(
+                "aaa-control-thin",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=0.01,
+                margin=0.03,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+            make_case(
+                "zzz-control-rich",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.12,
+                earnings_growth=0.05,
+                margin=0.08,
+                return_20d=0.03,
+                return_60d=0.05,
+                target_upside=0.02,
+                catalyst_count=2,
+            ),
+            make_case(
+                "bbb-control-holdout",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=0.02,
+                margin=0.04,
+                return_20d=0.01,
+                return_60d=0.02,
+                target_upside=0.01,
+                catalyst_count=1,
+            ),
+        ]
+
+        selected = _select_cases(
+            cases,
+            winner_symbol_count=2,
+            control_symbol_count=2,
+            refinement_per_label=1,
+            selection_policy="evidence-rich",
+        )
+
+        self.assertEqual(selected["refinement"][0].case_id, "zzz-winner-rich")
+        self.assertEqual(selected["refinement"][1].case_id, "zzz-control-rich")
 
     def test_ralph_imported_responses_score_holdout_without_provider_call(self) -> None:
         cases = [

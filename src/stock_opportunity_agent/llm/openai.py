@@ -51,6 +51,9 @@ class UrllibTransport:
             except URLError as exc:
                 if attempt >= self.max_attempts:
                     raise OpenAIClientError(f"OpenAI API request failed: {exc.reason}") from exc
+            except TimeoutError as exc:
+                if attempt >= self.max_attempts:
+                    raise OpenAIClientError(f"OpenAI API request timed out: {exc}") from exc
             except (HTTPException, json.JSONDecodeError) as exc:
                 if attempt >= self.max_attempts:
                     raise OpenAIClientError(f"OpenAI API response was incomplete or invalid: {exc}") from exc

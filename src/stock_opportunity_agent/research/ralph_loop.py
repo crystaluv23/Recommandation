@@ -643,8 +643,8 @@ def run_ralph_loop(
 ) -> RalphLoopResult:
     """Run bounded Ralph Loop diagnosis, scheme validation, and feedback."""
 
-    if max_iterations < 1 or max_iterations > 2:
-        raise ValidationError("Ralph Loop v1 supports one or two iterations")
+    if max_iterations < 1 or max_iterations > 4:
+        raise ValidationError("Ralph Loop v1 supports one to four bounded iterations")
     case_list = list(cases)
     if not case_list:
         raise ValidationError("Ralph Loop requires at least one historical case")
@@ -661,7 +661,7 @@ def run_ralph_loop(
     next_proposal: InformationScheme | None = None
 
     for iteration_number in range(1, max_iterations + 1):
-        scheme, diagnostic = synthesize_information_scheme(
+        synthesized_scheme, diagnostic = synthesize_information_scheme(
             case_list,
             learning_result=learning_result,
             theme_maps=theme_maps,
@@ -670,6 +670,7 @@ def run_ralph_loop(
             previous_error=previous_error,
             coverage_reports=coverage_reports,
         )
+        scheme = next_proposal or synthesized_scheme
         packets = tuple(
             build_blind_scheme_packet(
                 case,
@@ -1021,7 +1022,7 @@ def propose_next_information_scheme(
             max_items += 1
         if section.name in COMPRESSED_SECTION_NAMES:
             budget = max(120, budget - 60)
-            max_items = max(2, max_items - 1)
+            max_items = max(3, max_items - 1)
         if missing and any(bucket in missing for bucket in section.evidence_buckets):
             rule = rule + " Require explicit missing-evidence notes when this bucket is thin."
         sections.append(
@@ -1347,36 +1348,46 @@ def _section_items(packet: ResearchPacket, section_name: str) -> list[dict[str, 
         return _feature_items(
             packet,
             ("financial.revenue_growth_yoy", "financial.earnings_growth_yoy", "financial.operating_margin_ttm",
-             "valuation.pe_ratio", "valuation.price_to_sales_ttm"),
+             "valuation.pe_ratio", "valuation.price_to_sales_ttm", "valuation.market_cap_usd",
+             "profile.sector", "profile.industry"),
         )
     if section_name == "Compressed Market Confirmation":
         return _feature_items(
             packet,
-            ("price.return_20d", "price.return_60d", "price.return_120d",
-             "price.average_daily_dollar_volume_20d", "price.average_daily_dollar_volume_60d"),
+            ("price.return_20d", "price.return_60d", "price.latest_volume",
+             "price.average_daily_dollar_volume_20d", "price.average_daily_dollar_volume_60d",
+             "price.return_120d", "price.average_daily_dollar_volume_120d"),
         )
     return []
 
 
 def _catalyst_items(packet: ResearchPacket) -> list[dict[str, Any]]:
-    return [
-        {
-            "item_type": "catalyst",
-            "summary": catalyst.name,
-            "expected_date": catalyst.expected_date.isoformat(),
-            "status": catalyst.status.value,
-            "supporting_evidence": [
-                _evidence_summary(item)
-                for item in catalyst.evidence[:2]
-            ],
-        }
-        for catalyst in packet.catalysts
-        if catalyst.expected_date >= packet.as_of.as_of_date
-    ]
+    items = []
+    for catalyst in packet.catalysts:
+        days = (catalyst.expected_date - packet.as_of.as_of_date).days
+        if -210 <= days <= 210:
+            items.append(
+                {
+                    "item_type": "catalyst",
+                    "summary": catalyst.name,
+                    "expected_date": catalyst.expected_date.isoformat(),
+                    "relative_timing_days": days,
+                    "status": catalyst.status.value,
+                    "supporting_evidence": [
+                        _evidence_summary(item)
+                        for item in catalyst.evidence[:2]
+                    ],
+                }
+            )
+    return items
 
 
 def _expectation_items(packet: ResearchPacket) -> list[dict[str, Any]]:
-    items = _feature_items(packet, ("analyst.target_price", "price.latest_close"))
+    items = []
+    market_gap = _market_expectation_item(packet)
+    if market_gap is not None:
+        items.append(market_gap)
+    items.extend(_feature_items(packet, ("analyst.target_price", "price.latest_close")))
     features = {feature.name: feature.value for feature in packet.features}
     target = _numeric(features.get("analyst.target_price"))
     close = _numeric(features.get("price.latest_close"))
@@ -1392,6 +1403,26 @@ def _expectation_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     return items
 
 
+def _market_expectation_item(packet: ResearchPacket) -> dict[str, Any] | None:
+    features = {feature.name: feature.value for feature in packet.features}
+    return_20d = _numeric(features.get("price.return_20d"))
+    return_60d = _numeric(features.get("price.return_60d"))
+    latest_close = _numeric(features.get("price.latest_close"))
+    has_event_context = bool(packet.catalysts) or any(
+        _contains_any(item.summary, _event_keywords()) for item in packet.evidence
+    )
+    if not has_event_context or (return_20d > -0.15 and return_60d > -0.25):
+        return None
+    return {
+        "item_type": "expectation_gap",
+        "summary": (
+            "Depressed market setup before source-backed events: "
+            f"20d return {round(return_20d, 4)}, 60d return {round(return_60d, 4)}, "
+            f"latest close {round(latest_close, 4)}."
+        ),
+    }
+
+
 def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     items = [
         {
@@ -1402,26 +1433,124 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     items.extend(
         _evidence_by_kind(packet, {EvidenceKind.THEME_CONTEXT, EvidenceKind.RESEARCH_REPORT})
     )
-    items.extend(_evidence_items(packet, ("supply chain", "capacity", "customer", "demand", "industry")))
+    items.extend(
+        _evidence_items(
+            packet,
+            (
+                "supply chain",
+                "capacity",
+                "customer",
+                "demand",
+                "industry",
+                "technology",
+                "sensor",
+                "screening",
+                "clinical",
+                "media",
+                "ecommerce",
+                "business combination",
+                "merger",
+                "listing",
+            ),
+        )
+    )
     return items
 
 
 def _materiality_items(packet: ResearchPacket) -> list[dict[str, Any]]:
-    items = _evidence_items(
-        packet,
-        ("material", "large", "backlog", "capacity", "shipment", "customer", "contract", "order", "award"),
-    )
+    keywords = _materiality_keywords()
+    items: list[dict[str, Any]] = []
     for catalyst in packet.catalysts:
         days = (catalyst.expected_date - packet.as_of.as_of_date).days
-        if 0 <= days <= 210:
+        if -120 <= days <= 210:
+            timing = (
+                f"expected in {days} days"
+                if days >= 0
+                else f"observed {abs(days)} days before as-of"
+            )
             items.append(
                 {
                     "item_type": "timing",
-                    "summary": f"Known catalyst expected in {days} days.",
+                    "summary": f"Known catalyst {timing}.",
                     "expected_date": catalyst.expected_date.isoformat(),
+                    "relative_timing_days": days,
                 }
             )
+    items.extend(_timed_evidence_items(packet, keywords))
+    items.extend(_evidence_items(packet, keywords))
+    return _dedupe_items(items)
+
+
+def _materiality_keywords() -> tuple[str, ...]:
+    return (
+        "material",
+        "large",
+        "backlog",
+        "capacity",
+        "shipment",
+        "customer",
+        "contract",
+        "order",
+        "award",
+        "offering",
+        "financing",
+        "funding",
+        "merger",
+        "combination",
+        "deadline",
+        "listing",
+        "suspension",
+        "resumption",
+        "compliance",
+        "fda",
+        "clinical",
+        "screening",
+        "approval",
+        "sales",
+        "earnings",
+        "eps",
+        "8-k",
+        "form f-4",
+        "registration statement",
+    )
+
+
+def _timed_evidence_items(packet: ResearchPacket, keywords: tuple[str, ...]) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for item in packet.evidence:
+        if item.published_date is None or not _contains_any(item.summary, keywords):
+            continue
+        days = (item.published_date - packet.as_of.as_of_date).days
+        if not -180 <= days <= 30:
+            continue
+        if days == 0:
+            timing = "published on the as-of date"
+        elif days > 0:
+            timing = f"scheduled {days} days after as-of"
+        else:
+            timing = f"observed {abs(days)} days before as-of"
+        items.append(
+            {
+                "item_type": "materiality_timing",
+                "summary": f"Source event {timing}: {item.summary}",
+                "published_date": item.published_date.isoformat(),
+                "relative_timing_days": days,
+                "data_quality": item.data_quality.value,
+            }
+        )
     return items
+
+
+def _dedupe_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        key = json.dumps(item, sort_keys=True, default=str)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped
 
 
 def _risk_items(packet: ResearchPacket) -> list[dict[str, Any]]:
@@ -1783,17 +1912,43 @@ def _identity_tokens(packet: ResearchPacket) -> tuple[str, ...]:
     ticker = packet.company.ticker
     tokens = [ticker.symbol, ticker.company_name or ""]
     company = ticker.company_name or ""
-    for suffix in (" Incorporated", " Inc.", " Inc", " Corporation", " Corp.", " Corp", " Ltd.", " Ltd", " PLC"):
-        if company.endswith(suffix):
-            tokens.append(company[: -len(suffix)])
+    tokens.extend(_company_name_variants(company))
     return tuple(sorted({token for token in tokens if token and token.strip()}, key=len, reverse=True))
+
+
+def _company_name_variants(company: str) -> list[str]:
+    variants: list[str] = []
+    for raw_piece in re.split(r"\s*/\s*|\s+\|\s+", company):
+        piece = re.sub(r"\s+", " ", raw_piece).strip(" ,.;:-")
+        if not piece:
+            continue
+        variants.append(piece)
+        without_class = re.sub(r"\s+-\s+class\s+.+$", "", piece, flags=re.IGNORECASE).strip(" ,.;:-")
+        if without_class:
+            variants.append(without_class)
+        without_terminal_number = re.sub(r"\s+\d+\b.*$", "", without_class or piece).strip(" ,.;:-")
+        if without_terminal_number:
+            variants.append(without_terminal_number)
+        for candidate in (piece, without_class, without_terminal_number):
+            stripped = re.sub(
+                r"\b(incorporated|inc|corporation|corp|company|co|ltd|plc)\.?(?:\s+\d+)?$",
+                "",
+                candidate,
+                flags=re.IGNORECASE,
+            ).strip(" ,.;:-")
+            if stripped:
+                variants.append(stripped)
+                words = re.findall(r"[A-Za-z0-9]+", stripped)
+                if len(words) >= 2 and len(words[-1]) > 3:
+                    variants.append(" ".join(words[:-1] + [words[-1][:3]]))
+    return variants
 
 
 def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
     if isinstance(value, str):
         masked = value
         for token in tokens:
-            masked = re.sub(re.escape(token), "MASKED", masked, flags=re.IGNORECASE)
+            masked = re.sub(_identity_token_pattern(token), "MASKED", masked, flags=re.IGNORECASE)
         return masked
     if isinstance(value, list):
         return [_mask_identity_in_value(item, tokens) for item in value]
@@ -1802,6 +1957,13 @@ def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
     if isinstance(value, dict):
         return {key: _mask_identity_in_value(item, tokens) for key, item in value.items()}
     return value
+
+
+def _identity_token_pattern(token: str) -> str:
+    words = re.findall(r"[A-Za-z0-9]+", token)
+    if not words:
+        return re.escape(token)
+    return r"\b" + r"[\s,.\-/&']+".join(re.escape(word) for word in words) + r"\.?\b"
 
 
 def _estimated_tokens(items: tuple[dict[str, Any], ...]) -> int:
@@ -1821,6 +1983,29 @@ def _event_keywords() -> tuple[str, ...]:
         "guidance",
         "backlog",
         "customer",
+        "sales",
+        "growth",
+        "earnings",
+        "eps",
+        "offering",
+        "financing",
+        "funding",
+        "deadline",
+        "listing",
+        "compliance",
+        "suspension",
+        "resumption",
+        "merger",
+        "combination",
+        "transaction",
+        "extension",
+        "effective",
+        "8-k",
+        "registration statement",
+        "form f-4",
+        "regulatory",
+        "fda",
+        "webcast",
     )
 
 

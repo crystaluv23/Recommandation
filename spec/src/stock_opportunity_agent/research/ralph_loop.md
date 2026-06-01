@@ -28,9 +28,11 @@ The submodule exposes:
   dry runs.
 - `OpenAIRalphBlindResearcher`: LLM-backed validator that sends only the
   scheme-rendered anonymous packet and uses no web-search tool.
-- `run_ralph_loop`: bounded 1-2 iteration loop for diagnosis, scheme proposal,
+- `run_ralph_loop`: bounded 1-4 iteration loop for diagnosis, scheme proposal,
   scheme-packet construction, blind validation, evaluation, error analysis, and
-  next-scheme proposal.
+  next-scheme proposal. Each failed iteration's next proposal becomes the
+  actual scheme evaluated in the following iteration, so feedback is cumulative
+  rather than only descriptive.
 - `run_ralph_experiment`: artifact-backed refinement/holdout experiment. The
   scheme is refined on a small labeled refinement set, then evaluated once on a
   disjoint holdout set. The experiment is not considered successful unless the
@@ -54,13 +56,20 @@ The loop has two phases:
    the proposed scheme and asks a blind researcher whether each anonymous case
    looks like a 3-6 month surge candidate. It must not receive ticker, company
    name, forward return, outcome group, post-as-of facts, source URLs, symbol-
-   encoded ids, or web-search tools.
+   encoded ids, or web-search tools. Identity masking must cover common company
+   name variants from merged/slash-separated names, class suffixes, and
+   punctuation variants that can appear in document titles.
 
 For small real experiments, Ralph must use a refinement/holdout split across
 symbols. The label-aware diagnosis and scheme feedback may use the refinement
 set only. The holdout set is evaluated with the final proposed scheme and known
 labels are used only after blind outputs are produced. A run ending with
 `holdout_not_separated` is a failed experiment, not a completed improvement.
+When saved historical artifacts contain many thin packets, standalone
+experiments may use an `evidence-rich` selection policy that still keeps
+labels balanced but prioritizes latest cases with concrete catalyst, materiality,
+risk, theme, fundamental, and market-confirmation content. This is a sampling
+choice for research validation, not a production promotion rule.
 
 The default v1 success threshold is quantitative:
 
@@ -86,6 +95,13 @@ The default section priority for `InformationScheme` is:
 Raw technical indicators and basic financial tables are compressed context.
 They must not dominate the packet budget or appear before catalyst,
 expectation-gap, theme-transmission, materiality/timing, and risk evidence.
+Recent source-backed events such as offerings, compliance plans, listing
+changes, trading resumptions, merger deadlines, approvals, and earnings beats
+should be rendered into `Materiality and Timing` with as-of-relative timing
+rather than left only as raw news titles. When a price dislocation is visible
+before source-backed events, `Expectation Gap Summary` may include a compact
+market-implied expectation setup, but raw technical detail still belongs in the
+compressed market-confirmation section.
 
 ## Artifacts
 

@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -26,6 +27,8 @@ from stock_opportunity_agent.research import (
     write_ralph_experiment_artifacts,
 )
 from stock_opportunity_agent.research.ralph_loop import (
+    _identity_token_pattern,
+    _identity_tokens,
     analyze_scheme_errors,
     evaluate_scheme_performance,
     propose_next_information_scheme,
@@ -55,6 +58,7 @@ def main() -> None:
         winner_symbol_count=args.winner_symbol_count,
         control_symbol_count=args.control_symbol_count,
         refinement_per_label=args.refinement_per_label,
+        selection_policy=args.selection_policy,
     )
     refinement_cases = selected["refinement"]
     holdout_cases = selected["holdout"]
@@ -180,6 +184,12 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--refinement-per-label", type=int, default=2)
     parser.add_argument("--max-iterations", type=int, default=2)
     parser.add_argument(
+        "--selection-policy",
+        choices=("alphabetical", "evidence-rich"),
+        default="alphabetical",
+        help="Choose latest cases alphabetically or prioritize packets with richer scheme evidence.",
+    )
+    parser.add_argument(
         "--preflight-only",
         action="store_true",
         help="Write anonymous packet export review artifacts without calling a blind LLM.",
@@ -244,17 +254,20 @@ def _select_cases(
     winner_symbol_count: int,
     control_symbol_count: int,
     refinement_per_label: int,
+    selection_policy: str = "alphabetical",
 ) -> dict[str, tuple[HistoricalCase, ...]]:
     if winner_symbol_count < 2 or control_symbol_count < 2:
         raise ValidationError("select at least two winner and two control symbols")
-    winners = _latest_case_per_symbol(cases, CaseOutcomeLabel.WINNER)
-    controls = _latest_case_per_symbol(cases, CaseOutcomeLabel.CONTROL)
+    winners = _ordered_latest_cases(cases, CaseOutcomeLabel.WINNER, selection_policy=selection_policy)
+    controls = _ordered_latest_cases(cases, CaseOutcomeLabel.CONTROL, selection_policy=selection_policy)
     if len(winners) < winner_symbol_count or len(controls) < control_symbol_count:
         raise ValidationError("not enough winner/control symbols for requested Ralph experiment")
     if refinement_per_label < 1:
         raise ValidationError("refinement_per_label must be positive")
     if refinement_per_label >= min(winner_symbol_count, control_symbol_count):
         raise ValidationError("refinement_per_label must leave at least one holdout per label")
+    if selection_policy not in {"alphabetical", "evidence-rich"}:
+        raise ValidationError(f"unsupported Ralph selection policy: {selection_policy}")
     selected_winners = tuple(winners[:winner_symbol_count])
     selected_controls = tuple(controls[:control_symbol_count])
     refinement = selected_winners[:refinement_per_label] + selected_controls[:refinement_per_label]
@@ -263,6 +276,24 @@ def _select_cases(
         "refinement": refinement,
         "holdout": holdout,
     }
+
+
+def _ordered_latest_cases(
+    cases: Iterable[HistoricalCase],
+    label: CaseOutcomeLabel,
+    *,
+    selection_policy: str,
+) -> list[HistoricalCase]:
+    latest_cases = _latest_case_per_symbol(cases, label)
+    if selection_policy == "alphabetical":
+        return latest_cases
+    if selection_policy == "evidence-rich":
+        return sorted(
+            latest_cases,
+            key=lambda case: (_case_evidence_richness(case), case.packet.company.ticker.symbol),
+            reverse=True,
+        )
+    raise ValidationError(f"unsupported Ralph selection policy: {selection_policy}")
 
 
 def _latest_case_per_symbol(
@@ -280,6 +311,36 @@ def _latest_case_per_symbol(
     return [latest[symbol] for symbol in sorted(latest)]
 
 
+def _case_evidence_richness(case: HistoricalCase) -> tuple[int, int, int, int, int, int, int]:
+    packet = case.packet
+    features = {feature.name: feature for feature in packet.features}
+    text = " ".join(
+        [item.summary for item in packet.evidence]
+        + [catalyst.name for catalyst in packet.catalysts]
+        + [item.summary for catalyst in packet.catalysts for item in catalyst.evidence]
+    ).lower()
+    catalyst_count = len(packet.catalysts) + _keyword_hit_count(text, ("order", "contract", "approval", "launch", "funding", "financing"))
+    materiality_count = _keyword_hit_count(text, ("material", "large", "backlog", "capacity", "shipment", "customer", "award"))
+    risk_count = _keyword_hit_count(text, ("risk", "delay", "debt", "dilution", "cash burn", "execution", "regulatory"))
+    theme_count = int(bool(packet.theme_ids)) + _keyword_hit_count(text, ("demand", "industry", "customer", "capacity", "supply chain"))
+    fundamentals_count = sum(1 for name in features if name.startswith(("financial.", "valuation.", "profile.")))
+    market_count = sum(1 for name in features if name.startswith("price."))
+    evidence_count = len(packet.evidence)
+    return (
+        catalyst_count + materiality_count + risk_count + theme_count,
+        catalyst_count,
+        materiality_count,
+        risk_count,
+        fundamentals_count,
+        market_count,
+        evidence_count,
+    )
+
+
+def _keyword_hit_count(text: str, keywords: tuple[str, ...]) -> int:
+    return sum(1 for keyword in keywords if keyword in text)
+
+
 def _ralph_researcher(args: argparse.Namespace):
     if args.mode == "heuristic":
         return HeuristicRalphBlindResearcher()
@@ -289,7 +350,7 @@ def _ralph_researcher(args: argparse.Namespace):
     client = OpenRouterChatClient(
         args.openrouter_model,
         api_key,
-        transport=UrllibTransport(timeout_seconds=args.timeout_seconds, max_attempts=2),
+        transport=UrllibTransport(timeout_seconds=args.timeout_seconds, max_attempts=4),
     )
     return OpenAIRalphBlindResearcher(client)
 
@@ -701,7 +762,7 @@ def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str,
 def _leakage_findings(prompt: str, case: HistoricalCase) -> list[dict[str, str]]:
     findings = []
     for kind, value in _leak_terms(case):
-        if value and value in prompt:
+        if value and re.search(_identity_token_pattern(value), prompt, flags=re.IGNORECASE):
             findings.append({"kind": kind, "value": value})
     if "http://" in prompt or "https://" in prompt:
         findings.append({"kind": "source_url", "value": "url-like text"})
@@ -720,6 +781,7 @@ def _leak_terms(case: HistoricalCase) -> list[tuple[str, str]]:
         ("company_name", ticker.company_name or ""),
         ("figi", ticker.figi or ""),
     ]
+    terms.extend(("identity_token", token) for token in _identity_tokens(case.packet))
     return [(kind, value) for kind, value in terms if value]
 
 
