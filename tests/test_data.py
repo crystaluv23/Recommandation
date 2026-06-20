@@ -822,6 +822,33 @@ class DocumentLayerTests(TestCase):
         self.assertEqual([item.kind for item in evidence], [EvidenceKind.RESEARCH_REPORT, EvidenceKind.THEME_CONTEXT])
         self.assertTrue(all(item.source_url for item in evidence))
 
+    def test_filing_document_excerpt_prefers_meaningful_item_text(self) -> None:
+        document = DocumentRecord(
+            document_id="issuer-8k",
+            symbol="ABC",
+            kind=EvidenceKind.FILING,
+            title="ABC 8-K",
+            text=(
+                "<?xml version='1.0'?><html xmlns:xbrli='http://www.xbrl.org'>"
+                "<!-- Field: Set; Name: xdx; ID: xdx_06D_USDPShares -->"
+                "<head><title>Inline XBRL Viewer</title></head>"
+                "<body><p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+                "<p>The issuer signed a customer supply agreement for AI data center cooling systems.</p>"
+                "</body></html>"
+            ),
+            source_id="sec:abc:8k",
+            source_url="https://www.sec.gov/example",
+            published_date=date(2026, 5, 1),
+            retrieved_at=datetime(2026, 5, 2, tzinfo=timezone.utc),
+        )
+
+        evidence = documents_to_evidence([document], date(2026, 5, 2))
+
+        self.assertIn("Item 1.01", evidence[0].summary)
+        self.assertIn("customer supply agreement", evidence[0].summary)
+        self.assertNotIn("Field: Set", evidence[0].summary)
+        self.assertNotIn("xbrli", evidence[0].summary)
+
 
 class PointInTimePacketTests(TestCase):
     def test_latest_features_by_name_respects_as_of_date_and_source_priority(self) -> None:

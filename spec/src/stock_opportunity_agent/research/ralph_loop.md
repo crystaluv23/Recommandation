@@ -61,9 +61,15 @@ The loop has two phases:
    punctuation variants that can appear in document titles.
 
 For small real experiments, Ralph must use a refinement/holdout split across
-symbols. The label-aware diagnosis and scheme feedback may use the refinement
-set only. The holdout set is evaluated with the final proposed scheme and known
-labels are used only after blind outputs are produced. A run ending with
+symbols. The label-aware diagnosis and initial scheme feedback may use the
+refinement set first. The holdout set is evaluated with the final proposed
+scheme and known labels are used only after blind outputs are produced. If the
+holdout remains unseparated, the experiment may run a small bounded
+holdout-feedback loop, explicitly marked
+`retrospective_label_aware_holdout_feedback`, that feeds holdout error analysis
+back into a next proposal and re-renders anonymous no-web holdout packets. This
+feedback loop is an experimental proposal mechanism, not an independent
+out-of-sample proof and not a production promotion rule. A run ending with
 `holdout_not_separated` is a failed experiment, not a completed improvement.
 When saved historical artifacts contain many thin packets, standalone
 experiments may use an `evidence-rich` selection policy that still keeps
@@ -102,6 +108,15 @@ rather than left only as raw news titles. When a price dislocation is visible
 before source-backed events, `Expectation Gap Summary` may include a compact
 market-implied expectation setup, but raw technical detail still belongs in the
 compressed market-confirmation section.
+Saved formal documents may be rehydrated into Ralph packets from local
+`documents_and_catalysts.json` artifacts so current experiments can replace
+old low-information filing excerpts with cleaned point-in-time source detail.
+SEC/HTML boilerplate, inline-XBRL headers, and empty fragments must not be
+treated as material evidence. For AI-related evidence, `Theme/Industry
+Transmission` should map model/application demand through compute, data-center,
+power, cooling, networking, component, and customer-capex bottlenecks while
+explicitly distinguishing direct bottleneck beneficiaries from broad AI-theme
+tourists.
 
 ## Artifacts
 
@@ -119,6 +134,7 @@ Standalone Ralph experiments also write:
 - `holdout_blind_packets_by_scheme.json`
 - `holdout_blind_scheme_evaluation.json`
 - `holdout_error_analysis.json`
+- `holdout_feedback_iterations.json`
 - `case_selection_label_aware.json`
 - `manifest.json`
 
@@ -151,7 +167,8 @@ analysis when separation remains weak.
 
 Experiment summaries include the final status (`holdout_separated` or
 `holdout_not_separated`), holdout confidence gap, false-positive rate,
-false-negative rate, and schema diffs between refinement proposals.
+false-negative rate, initial holdout evaluation, bounded holdout-feedback
+iterations when enabled, and schema diffs between refinement proposals.
 Preflight manifests must set `external_call_performed=false`, record packet
 hashes, and pass leakage checks before an external provider run is attempted.
 Imported-response manifests must set `provider_call_performed_by_script=false`

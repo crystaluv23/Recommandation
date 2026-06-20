@@ -7,14 +7,16 @@ import hashlib
 import json
 import os
 import re
+from dataclasses import replace
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
+from stock_opportunity_agent.data.documents import DocumentRecord
 from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
-from stock_opportunity_agent.models import ResearchPacket, ValidationError
+from stock_opportunity_agent.models import EvidenceKind, ResearchPacket, ValidationError
 from stock_opportunity_agent.research import (
     BlindCaseAnalysis,
     HeuristicRalphBlindResearcher,
@@ -52,6 +54,11 @@ def main() -> None:
     run_id = args.run_id or f"ralph-loop-experiment-{created_at.strftime('%Y%m%d-%H%M%S')}"
     output_dir = Path(args.output_dir) if args.output_dir else Path("runs/cold_start/ralph") / run_id
     cases = _load_cases(Path(args.cases_path))
+    if args.documents_path:
+        cases = _enrich_cases_with_documents(
+            cases,
+            _load_documents_by_symbol(Path(args.documents_path)),
+        )
     baseline = _load_blind_analyses(Path(args.baseline_blind_path))
     selected = _select_cases(
         cases,
@@ -133,6 +140,7 @@ def main() -> None:
         run_id=run_id,
         blind_researcher=researcher,
         max_iterations=args.max_iterations,
+        holdout_feedback_iterations=args.holdout_feedback_iterations,
     )
     selection_path = output_dir / "case_selection_label_aware.json"
     _write_json(
@@ -174,6 +182,11 @@ def _parse_args() -> argparse.Namespace:
         "--baseline-blind-path",
         default=str(DEFAULT_FORMAL_RUN_DIR / "06_research/blind_case_analyses.json"),
     )
+    parser.add_argument(
+        "--documents-path",
+        default=str(DEFAULT_FORMAL_RUN_DIR / "04_documents/documents_and_catalysts.json"),
+        help="Optional formal cold-start documents artifact used to refresh source-detail excerpts.",
+    )
     parser.add_argument("--output-dir")
     parser.add_argument("--run-id")
     parser.add_argument("--mode", choices=("llm", "heuristic"), default="llm")
@@ -183,6 +196,12 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--control-symbol-count", type=int, default=4)
     parser.add_argument("--refinement-per-label", type=int, default=2)
     parser.add_argument("--max-iterations", type=int, default=2)
+    parser.add_argument(
+        "--holdout-feedback-iterations",
+        type=int,
+        default=0,
+        help="Bounded label-aware holdout feedback proposal rounds after the initial holdout evaluation.",
+    )
     parser.add_argument(
         "--selection-policy",
         choices=("alphabetical", "evidence-rich"),
@@ -207,6 +226,71 @@ def _load_cases(path: Path) -> tuple[HistoricalCase, ...]:
     if not isinstance(records, list):
         raise ValidationError(f"{path} does not contain cases")
     return tuple(_case_from_record(record) for record in records)
+
+
+def _load_documents_by_symbol(path: Path) -> dict[str, tuple[DocumentRecord, ...]]:
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    records_by_symbol = data.get("documents_by_symbol")
+    if not isinstance(records_by_symbol, dict):
+        return {}
+    documents: dict[str, tuple[DocumentRecord, ...]] = {}
+    for symbol, records in records_by_symbol.items():
+        if not isinstance(records, list):
+            continue
+        documents[str(symbol).upper()] = tuple(_document_from_record(record) for record in records)
+    return documents
+
+
+def _document_from_record(record: dict[str, Any]) -> DocumentRecord:
+    available = record.get("available_date")
+    return DocumentRecord(
+        document_id=_string(record, "document_id"),
+        symbol=_string(record, "symbol"),
+        kind=EvidenceKind(_string(record, "kind")),
+        title=_string(record, "title"),
+        text=_string(record, "text"),
+        source_id=_string(record, "source_id"),
+        source_url=_string(record, "source_url"),
+        published_date=date.fromisoformat(_string(record, "published_date")),
+        retrieved_at=datetime.fromisoformat(_string(record, "retrieved_at")),
+        available_date=date.fromisoformat(str(available)) if isinstance(available, str) else None,
+    )
+
+
+def _enrich_cases_with_documents(
+    cases: Iterable[HistoricalCase],
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+) -> tuple[HistoricalCase, ...]:
+    enriched = []
+    for case in cases:
+        symbol = case.packet.company.ticker.symbol.upper()
+        documents = documents_by_symbol.get(symbol, ())
+        if not documents:
+            enriched.append(case)
+            continue
+        as_of_date = case.packet.as_of.as_of_date
+        document_source_ids = {document.source_id for document in documents if document.available_as_of(as_of_date)}
+        refreshed_evidence = [
+            document.to_evidence(as_of_date)
+            for document in documents
+            if document.available_as_of(as_of_date)
+        ]
+        if not refreshed_evidence:
+            enriched.append(case)
+            continue
+        retained_evidence = [
+            item
+            for item in case.packet.evidence
+            if item.source_id not in document_source_ids
+        ]
+        refreshed_packet = replace(
+            case.packet,
+            evidence=retained_evidence + refreshed_evidence,
+        )
+        enriched.append(replace(case, packet=refreshed_packet))
+    return tuple(enriched)
 
 
 def _case_from_record(record: dict[str, Any]) -> HistoricalCase:
@@ -389,6 +473,11 @@ def _print_metric_summary(result) -> None:
         f"fp_rate={holdout.false_positive_rate:.4f} fn_rate={holdout.false_negative_rate:.4f} "
         f"passed={holdout.separation_passed}"
     )
+    if result.holdout_feedback_iterations:
+        print(
+            "[ralph-experiment] holdout_feedback_iterations="
+            f"{len(result.holdout_feedback_iterations)} final_scheme={result.final_information_scheme.version}"
+        )
     print(f"[ralph-experiment] final_status={result.final_status}")
     if result.final_status != "holdout_separated":
         print(f"[ralph-experiment] error={result.holdout_error_analysis.recommendation}")

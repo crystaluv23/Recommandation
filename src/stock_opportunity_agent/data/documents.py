@@ -231,11 +231,52 @@ def _document_evidence_summary(kind: EvidenceKind, title: str, text: str) -> str
 
 
 def _clean_excerpt(text: str, *, max_chars: int) -> str:
-    cleaned = html.unescape(re.sub(r"<[^>]+>", " ", text))
+    cleaned = html.unescape(text)
+    cleaned = re.sub(r"(?is)<\?xml[^>]*\?>", " ", cleaned)
+    cleaned = re.sub(r"(?is)<!--.*?-->", " ", cleaned)
+    cleaned = re.sub(
+        r"(?is)<(script|style|head|ix:header|xbrli:context|xbrli:unit)[^>]*>.*?</\1>",
+        " ",
+        cleaned,
+    )
+    cleaned = re.sub(r"(?is)<\s*br\s*/?\s*>|</\s*(p|div|tr|li|h[1-6])\s*>", ". ", cleaned)
+    cleaned = re.sub(r"(?is)<[^>]+>", " ", cleaned)
     cleaned = " ".join(cleaned.split())
+    cleaned = _meaningful_excerpt_window(cleaned)
     if len(cleaned) <= max_chars:
         return cleaned
     return cleaned[: max_chars - 3].rstrip() + "..."
+
+
+def _meaningful_excerpt_window(text: str) -> str:
+    item_match = re.search(r"\bItem\s+\d+\.\d+\b", text, flags=re.IGNORECASE)
+    if item_match:
+        return text[item_match.start():].strip()
+    fragments = re.split(r"(?<=[.!?])\s+", text)
+    useful = [
+        fragment.strip()
+        for fragment in fragments
+        if _looks_like_source_content(fragment)
+    ]
+    return " ".join(useful) if useful else text
+
+
+def _looks_like_source_content(fragment: str) -> bool:
+    lower = fragment.lower()
+    if len(re.findall(r"[A-Za-z]{3,}", fragment)) < 4:
+        return False
+    return not any(
+        marker in lower
+        for marker in (
+            "xmlns",
+            "xbrl",
+            "iso4217",
+            "schema-instance",
+            "inline xbrl",
+            "document and entity information",
+            "field: set",
+        )
+    )
 
 
 def _require_non_empty(value: str, name: str) -> None:

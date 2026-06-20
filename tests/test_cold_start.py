@@ -86,6 +86,8 @@ from scripts.run_cold_start_formal import (
     _theme_context_documents_for_candidate,
 )
 from scripts.run_ralph_loop_experiment import (
+    _enrich_cases_with_documents,
+    _load_documents_by_symbol,
     _select_cases,
     _write_imported_response_artifacts,
     _write_preflight_artifacts,
@@ -1134,6 +1136,132 @@ class ColdStartSignalTests(TestCase):
             any(item.get("item_type") == "materiality_timing" for item in event_materiality.items)
         )
 
+    def test_ralph_packet_refreshes_source_detail_and_ai_chain_transmission(self) -> None:
+        case = make_case(
+            "winner-ai",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.30,
+            earnings_growth=0.50,
+            margin=0.18,
+            return_20d=-0.18,
+            return_60d=-0.32,
+            target_upside=0.25,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="stale-filing",
+                    symbol="WINNER",
+                    kind=EvidenceKind.FILING,
+                    title="Winner Corp. 8-K",
+                    text=(
+                        "<?xml version='1.0'?><html>"
+                        "<!-- Field: Set; Name: xdx; ID: xdx_06D_USDPShares -->"
+                        "<body><p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+                        "<p>The company signed a customer order for AI data center liquid cooling systems.</p>"
+                        "</body></html>"
+                    ),
+                    source_id="sec:winner:8k",
+                    source_url="https://www.sec.gov/example",
+                    published_date=AS_OF - timedelta(days=2),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        learning = learn_pre_surge_signal_logic([case])
+        themes = build_cold_start_theme_maps([case], learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(case),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize([case], blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            [case],
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_004")
+
+        catalyst = next(section for section in packet.sections if section.name == "Catalyst/Event Ledger")
+        theme = next(section for section in packet.sections if section.name == "Theme/Industry Transmission")
+        materiality = next(section for section in packet.sections if section.name == "Materiality and Timing")
+        packet_text = json.dumps(packet.to_dict())
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_detail"
+                and "customer order" in item.get("summary", "")
+                and item.get("relative_timing_days") == -2
+                for item in catalyst.items
+            )
+        )
+        self.assertTrue(
+            any(item.get("item_type") == "ai_chain_transmission" for item in theme.items)
+        )
+        self.assertTrue(
+            any("liquid cooling" in item.get("summary", "") for item in materiality.items)
+        )
+        self.assertNotIn("Field: Set", packet_text)
+        self.assertNotIn("Winner Corp", packet_text)
+
+    def test_ralph_experiment_rehydrates_saved_documents_for_current_packets(self) -> None:
+        stale_case = make_case(
+            "abc-1",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        stale_evidence = EvidenceItem(
+            kind=EvidenceKind.FILING,
+            summary="filing document available: ABC 8-K. Excerpt: <!-- Field: Set; Name: xdx; ID: xdx_06D -->",
+            as_of_date=AS_OF,
+            source_id="sec:abc:8k",
+            source_url="https://www.sec.gov/example",
+            published_date=AS_OF - timedelta(days=1),
+        )
+        stale_case = replace(
+            stale_case,
+            packet=replace(stale_case.packet, evidence=stale_case.packet.evidence + [stale_evidence]),
+        )
+        with TemporaryDirectory() as tmp:
+            documents_path = Path(tmp) / "documents_and_catalysts.json"
+            documents_path.write_text(
+                json.dumps(
+                    {
+                        "documents_by_symbol": {
+                            "ABC": [
+                                {
+                                    "document_id": "abc-8k",
+                                    "symbol": "ABC",
+                                    "kind": "filing",
+                                    "title": "ABC 8-K",
+                                    "text": (
+                                        "<html><body><p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+                                        "<p>The issuer signed a customer order for AI power infrastructure.</p>"
+                                        "</body></html>"
+                                    ),
+                                    "source_id": "sec:abc:8k",
+                                    "source_url": "https://www.sec.gov/example",
+                                    "published_date": (AS_OF - timedelta(days=1)).isoformat(),
+                                    "retrieved_at": STAMP.isoformat(),
+                                    "available_date": (AS_OF - timedelta(days=1)).isoformat(),
+                                }
+                            ]
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            documents = _load_documents_by_symbol(documents_path)
+            enriched = _enrich_cases_with_documents((stale_case,), documents)
+
+        summaries = [item.summary for item in enriched[0].packet.evidence]
+        self.assertTrue(any("customer order for AI power infrastructure" in summary for summary in summaries))
+        self.assertFalse(any("Field: Set" in summary for summary in summaries))
+
     def test_ralph_evaluation_metrics_and_feedback_proposal(self) -> None:
         cases = [
             make_case(
@@ -1171,6 +1299,10 @@ class ColdStartSignalTests(TestCase):
                 pre_surge_signals=("signal",),
                 contrary_evidence=("risk",),
                 catalyst_watch=("watch",),
+                missing_context=(
+                    "Current status of the proposed business combination is missing.",
+                    "Latest filings, financing arrangements, float, and liquidity are missing.",
+                ),
                 confidence=0.30,
                 raw_text="{}",
             ),
@@ -1209,7 +1341,10 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(evaluation.false_negative_winners, ("winner-1",))
         self.assertEqual(evaluation.false_positive_rate, 1.0)
         self.assertEqual(evaluation.false_negative_rate, 1.0)
+        self.assertIn("business combination", " ".join(evaluation.unable_to_judge_reasons))
         self.assertFalse(evaluation.separation_passed)
+        self.assertIn("deal_status_timing", error_analysis.missing_evidence_families)
+        self.assertIn("capital_structure_liquidity", error_analysis.missing_evidence_families)
         self.assertEqual(proposal.version, "information-scheme-v0.2")
         self.assertIn("proposal_only", proposal.proposal_status)
         self.assertNotEqual(proposal.to_dict()["proposal_status"], "production_default")
@@ -1513,6 +1648,113 @@ class ColdStartSignalTests(TestCase):
             packets_text = paths["holdout_blind_packets_by_scheme"].read_text()
             self.assertNotIn("winner-holdout", packets_text)
             self.assertNotIn("control-holdout", packets_text)
+
+    def test_ralph_experiment_can_iterate_holdout_feedback_without_promotion(self) -> None:
+        class FeedbackRalphResearcher:
+            def analyze(self, packet):
+                is_winner = packet.source_case_id.startswith("winner")
+                feedback_scheme = packet.scheme_version == "information-scheme-v0.2"
+                judgment = "likely" if is_winner and feedback_scheme else "possible"
+                confidence = 0.82 if is_winner and feedback_scheme else 0.35
+                if not is_winner:
+                    judgment = "unlikely"
+                    confidence = 0.20
+                return RalphBlindAnalysis(
+                    source_case_id=packet.source_case_id,
+                    anonymous_case_id=packet.anonymous_case_id,
+                    as_of_date=packet.as_of_date,
+                    scheme_version=packet.scheme_version,
+                    surge_candidate=judgment,
+                    surge_candidate_reason="fake feedback separation",
+                    expectation_gap="fake",
+                    pre_surge_signals=("signal",),
+                    contrary_evidence=("risk",),
+                    catalyst_watch=("watch",),
+                    missing_context=("missing catalyst specificity",) if is_winner and not feedback_scheme else (),
+                    confidence=confidence,
+                    raw_text="fake",
+                )
+
+        cases = [
+            make_case(
+                "winner-refine",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.10,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-refine",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.04,
+                earnings_growth=-0.05,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.03,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+            make_case(
+                "winner-holdout",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.32,
+                earnings_growth=0.50,
+                margin=0.20,
+                return_20d=0.08,
+                return_60d=0.20,
+                target_upside=0.28,
+                catalyst_count=1,
+            ),
+            make_case(
+                "control-holdout",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.02,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.02,
+                catalyst_count=0,
+            ),
+        ]
+        refinement_cases = tuple(cases[:2])
+        holdout_cases = tuple(cases[2:])
+        learning = learn_pre_surge_signal_logic(refinement_cases)
+        themes = build_cold_start_theme_maps(refinement_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in refinement_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            refinement_cases,
+            baseline,
+            learning,
+            themes,
+        )
+
+        with TemporaryDirectory() as tmp:
+            result = run_ralph_experiment(
+                refinement_cases,
+                holdout_cases,
+                baseline_refinement_blind_analyses=baseline,
+                learning_result=learning,
+                theme_maps=themes,
+                playbook_synthesis=playbooks,
+                run_id="ralph-feedback-test",
+                blind_researcher=FeedbackRalphResearcher(),
+                max_iterations=1,
+                holdout_feedback_iterations=1,
+            )
+            paths = write_ralph_experiment_artifacts(result, tmp, created_at=STAMP)
+
+            self.assertFalse(result.initial_holdout_evaluation.separation_passed)
+            self.assertEqual(len(result.holdout_feedback_iterations), 1)
+            self.assertEqual(result.final_status, "holdout_separated")
+            self.assertEqual(result.final_information_scheme.version, "information-scheme-v0.2")
+            self.assertEqual(result.final_information_scheme.proposal_status, "proposal_only_pending_review")
+            self.assertTrue(paths["holdout_feedback_iterations"].exists())
+            self.assertIn("holdout_feedback_iteration_count", paths["manifest"].read_text())
 
     def test_ralph_preflight_exports_anonymous_packet_review(self) -> None:
         refinement_cases = (

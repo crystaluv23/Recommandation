@@ -592,6 +592,30 @@ class RalphLoopResult:
 
 
 @dataclass(frozen=True)
+class RalphHoldoutFeedbackIteration:
+    """One holdout-feedback proposal and blind re-evaluation pass."""
+
+    iteration: int
+    scheme: InformationScheme
+    packets: tuple[BlindSchemePacket, ...]
+    analyses: tuple[RalphBlindAnalysis, ...]
+    evaluation: SchemeEvaluation
+    error_analysis: RalphErrorAnalysis
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return JSON-compatible holdout feedback artifacts."""
+
+        return {
+            "iteration": self.iteration,
+            "scheme": self.scheme.to_dict(),
+            "holdout_blind_packets": [packet.to_dict() for packet in self.packets],
+            "holdout_blind_analyses": [analysis.to_dict() for analysis in self.analyses],
+            "holdout_evaluation": self.evaluation.to_dict(),
+            "holdout_error_analysis": self.error_analysis.to_dict(),
+        }
+
+
+@dataclass(frozen=True)
 class RalphExperimentResult:
     """Train/holdout Ralph experiment result."""
 
@@ -603,8 +627,19 @@ class RalphExperimentResult:
     holdout_analyses: tuple[RalphBlindAnalysis, ...]
     holdout_evaluation: SchemeEvaluation
     holdout_error_analysis: RalphErrorAnalysis
+    initial_holdout_evaluation: SchemeEvaluation
+    initial_holdout_error_analysis: RalphErrorAnalysis
+    holdout_feedback_iterations: tuple[RalphHoldoutFeedbackIteration, ...]
     final_status: str
     final_recommendation: str
+
+    @property
+    def final_information_scheme(self) -> InformationScheme:
+        """Return the final scheme evaluated on holdout."""
+
+        if self.holdout_feedback_iterations:
+            return self.holdout_feedback_iterations[-1].scheme
+        return self.refinement_loop.information_scheme
 
     def to_summary_dict(self) -> dict[str, Any]:
         """Return a concise JSON-compatible experiment summary."""
@@ -614,8 +649,19 @@ class RalphExperimentResult:
             "run_id": self.run_id,
             "refinement_case_ids": list(self.refinement_case_ids),
             "holdout_case_ids": list(self.holdout_case_ids),
-            "final_information_scheme": self.refinement_loop.information_scheme.to_dict(),
+            "final_information_scheme": self.final_information_scheme.to_dict(),
             "refinement_latest_evaluation": self.refinement_loop.latest_evaluation.to_dict(),
+            "initial_holdout_evaluation": self.initial_holdout_evaluation.to_dict(),
+            "initial_holdout_error_analysis": self.initial_holdout_error_analysis.to_dict(),
+            "holdout_feedback_iterations": [
+                {
+                    "iteration": iteration.iteration,
+                    "scheme_version": iteration.scheme.version,
+                    "holdout_evaluation": iteration.evaluation.to_dict(),
+                    "holdout_error_analysis": iteration.error_analysis.to_dict(),
+                }
+                for iteration in self.holdout_feedback_iterations
+            ],
             "holdout_evaluation": self.holdout_evaluation.to_dict(),
             "holdout_error_analysis": self.holdout_error_analysis.to_dict(),
             "refinement_schema_diffs": [
@@ -731,9 +777,12 @@ def run_ralph_experiment(
     blind_researcher: RalphBlindResearcher,
     max_iterations: int = 2,
     refinement_coverage_reports: Mapping[str, Any] | None = None,
+    holdout_feedback_iterations: int = 0,
 ) -> RalphExperimentResult:
     """Run Ralph on refinement cases, then evaluate the final scheme on holdout cases."""
 
+    if holdout_feedback_iterations < 0 or holdout_feedback_iterations > 3:
+        raise ValidationError("holdout feedback supports zero to three bounded iterations")
     refinement_list = list(refinement_cases)
     holdout_list = list(holdout_cases)
     if not refinement_list or not holdout_list:
@@ -777,6 +826,39 @@ def run_ralph_experiment(
         coverage_reports=refinement_coverage_reports,
     )
     holdout_error = analyze_scheme_errors(holdout_evaluation, holdout_diagnostic)
+    initial_holdout_evaluation = holdout_evaluation
+    initial_holdout_error = holdout_error
+    feedback_iterations: list[RalphHoldoutFeedbackIteration] = []
+    active_scheme = final_scheme
+    for feedback_number in range(1, holdout_feedback_iterations + 1):
+        if holdout_evaluation.separation_passed:
+            break
+        active_scheme = propose_next_information_scheme(active_scheme, holdout_error)
+        holdout_packets = tuple(
+            build_blind_scheme_packet(
+                case,
+                active_scheme,
+                anonymous_case_id=f"holdout_{index:03d}",
+            )
+            for index, case in enumerate(holdout_list, start=1)
+        )
+        holdout_analyses = tuple(blind_researcher.analyze(packet) for packet in holdout_packets)
+        holdout_evaluation = evaluate_scheme_performance(
+            holdout_list,
+            holdout_analyses,
+            scheme_version=active_scheme.version + ":holdout_feedback",
+        )
+        holdout_error = analyze_scheme_errors(holdout_evaluation, holdout_diagnostic)
+        feedback_iterations.append(
+            RalphHoldoutFeedbackIteration(
+                iteration=feedback_number,
+                scheme=active_scheme,
+                packets=holdout_packets,
+                analyses=holdout_analyses,
+                evaluation=holdout_evaluation,
+                error_analysis=holdout_error,
+            )
+        )
     final_status = "holdout_separated" if holdout_evaluation.separation_passed else "holdout_not_separated"
     recommendation = (
         "Information scheme separated winners and controls in the small holdout experiment; keep as reviewed proposal."
@@ -792,6 +874,9 @@ def run_ralph_experiment(
         holdout_analyses=holdout_analyses,
         holdout_evaluation=holdout_evaluation,
         holdout_error_analysis=holdout_error,
+        initial_holdout_evaluation=initial_holdout_evaluation,
+        initial_holdout_error_analysis=initial_holdout_error,
+        holdout_feedback_iterations=tuple(feedback_iterations),
         final_status=final_status,
         final_recommendation=recommendation,
     )
@@ -912,8 +997,12 @@ def evaluate_scheme_performance(
         positive = judgment in {"likely", "possible"} and _analysis_confidence(analysis) >= confidence_threshold
         if case.label is CaseOutcomeLabel.CONTROL and positive:
             false_positive_controls.append(case.case_id)
+            unable_to_judge.append(_analysis_reason(analysis))
+            unable_to_judge.extend(_analysis_missing_context(analysis))
         if case.label is CaseOutcomeLabel.WINNER and not positive:
             false_negative_winners.append(case.case_id)
+            unable_to_judge.append(_analysis_reason(analysis))
+            unable_to_judge.extend(_analysis_missing_context(analysis))
         if judgment == "insufficient_information":
             unable_to_judge.append(_analysis_reason(analysis))
         if judgment == "insufficient_information" or _analysis_confidence(analysis) < confidence_threshold:
@@ -987,6 +1076,7 @@ def analyze_scheme_errors(
         )
     if evaluation.unable_to_judge_reasons:
         structure_issues.append("Some cases remain insufficient because required evidence buckets are missing.")
+    feedback_missing = _feedback_missing_families_from_reasons(evaluation.unable_to_judge_reasons)
     recommendation = (
         "Keep scheme proposal in cold-start artifacts for human review."
         if evaluation.separation_passed
@@ -996,7 +1086,7 @@ def analyze_scheme_errors(
         stage_boundary="retrospective_label_aware",
         scheme_version=evaluation.scheme_version,
         separation_passed=evaluation.separation_passed,
-        missing_evidence_families=tuple(dict.fromkeys(weak_families + coverage_missing)),
+        missing_evidence_families=tuple(dict.fromkeys(feedback_missing + weak_families + coverage_missing)),
         structure_issues=tuple(structure_issues or ("No material separation issue detected.",)),
         false_positive_controls=evaluation.false_positive_controls,
         false_negative_winners=evaluation.false_negative_winners,
@@ -1107,6 +1197,7 @@ def write_ralph_experiment_artifacts(
         "holdout_blind_packets_by_scheme": base_dir / "holdout_blind_packets_by_scheme.json",
         "holdout_blind_scheme_evaluation": base_dir / "holdout_blind_scheme_evaluation.json",
         "holdout_error_analysis": base_dir / "holdout_error_analysis.json",
+        "holdout_feedback_iterations": base_dir / "holdout_feedback_iterations.json",
         "manifest": base_dir / "manifest.json",
     }
     paths.update(experiment_paths)
@@ -1118,9 +1209,10 @@ def write_ralph_experiment_artifacts(
         {
             "schema_version": RALPH_LOOP_SCHEMA_VERSION,
             "run_id": result.run_id,
-            "scheme_version": result.refinement_loop.information_scheme.version,
+            "scheme_version": result.final_information_scheme.version,
             "holdout_blind_packets": [packet.to_dict() for packet in result.holdout_packets],
             "holdout_blind_analyses": [analysis.to_dict() for analysis in result.holdout_analyses],
+            "initial_holdout_evaluation": result.initial_holdout_evaluation.to_dict(),
         },
     )
     _write_json(
@@ -1142,6 +1234,19 @@ def write_ralph_experiment_artifacts(
         },
     )
     _write_json(
+        experiment_paths["holdout_feedback_iterations"],
+        {
+            "schema_version": RALPH_LOOP_SCHEMA_VERSION,
+            "run_id": result.run_id,
+            "stage_boundary": "retrospective_label_aware_holdout_feedback",
+            "initial_holdout_evaluation": result.initial_holdout_evaluation.to_dict(),
+            "initial_holdout_error_analysis": result.initial_holdout_error_analysis.to_dict(),
+            "iterations": [iteration.to_dict() for iteration in result.holdout_feedback_iterations],
+            "promotion_status": "pending_human_review",
+            "can_enter_long_running_default": False,
+        },
+    )
+    _write_json(
         experiment_paths["manifest"],
         {
             "schema_version": RALPH_LOOP_SCHEMA_VERSION,
@@ -1149,8 +1254,9 @@ def write_ralph_experiment_artifacts(
             "created_at": created_at.isoformat(),
             "pipeline": "ralph_loop_experiment",
             "stage_boundary": "retrospective_label_aware_refinement_then_blind_holdout",
-            "scheme_version": result.refinement_loop.information_scheme.version,
+            "scheme_version": result.final_information_scheme.version,
             "iteration_count": len(result.refinement_loop.iterations),
+            "holdout_feedback_iteration_count": len(result.holdout_feedback_iterations),
             "refinement_case_count": len(result.refinement_case_ids),
             "holdout_case_count": len(result.holdout_case_ids),
             "final_status": result.final_status,
@@ -1217,7 +1323,14 @@ def _default_sections() -> tuple[InformationSection, ...]:
             "Catalyst/Event Ledger",
             1,
             900,
-            ("catalyst_event", "orders_contracts", "policy_regulatory", "funding_subsidy"),
+            (
+                "catalyst_event",
+                "source_detail_digest",
+                "deal_status_timing",
+                "orders_contracts",
+                "policy_regulatory",
+                "funding_subsidy",
+            ),
             "List concrete source-backed events first; prefer orders, contracts, approvals, funding, and deadlines.",
             max_items=5,
         ),
@@ -1233,15 +1346,25 @@ def _default_sections() -> tuple[InformationSection, ...]:
             "Theme/Industry Transmission",
             3,
             720,
-            ("theme_industry_transmission", "customer_capacity"),
-            "Explain how industry-chain or customer demand may transmit to this anonymous company.",
+            ("theme_industry_transmission", "customer_capacity", "ai_chain_bottleneck_transmission"),
+            (
+                "Explain how industry-chain or customer demand may transmit to this anonymous company. "
+                "For AI-related evidence, map model/application demand through compute, data-center, "
+                "power, cooling, networking, component, and customer-capex bottlenecks."
+            ),
             max_items=4,
         ),
         InformationSection(
             "Materiality and Timing",
             4,
             620,
-            ("materiality_timing", "customer_capacity", "orders_contracts"),
+            (
+                "materiality_timing",
+                "source_detail_digest",
+                "deal_status_timing",
+                "customer_capacity",
+                "orders_contracts",
+            ),
             "Prefer evidence that is large enough and close enough to matter inside a 3-6 month window.",
             max_items=4,
         ),
@@ -1249,7 +1372,7 @@ def _default_sections() -> tuple[InformationSection, ...]:
             "Contrary/Risk Evidence",
             5,
             620,
-            ("contrary_risk", "valuation_risk", "execution_risk"),
+            ("contrary_risk", "valuation_risk", "execution_risk", "capital_structure_liquidity"),
             "Name the best disconfirming facts and narrative traps before any positive conclusion.",
             max_items=4,
         ),
@@ -1285,6 +1408,11 @@ def _scheme_rubrics() -> dict[str, list[str]]:
             "Name the industry-chain path from theme to company economics.",
             "Distinguish direct beneficiaries from broad theme tourists.",
             "Require timing evidence that the theme can affect the as-of company within the evaluation horizon.",
+        ],
+        "ai_chain_bottleneck_transmission": [
+            "For AI/data-center cases, map upstream and downstream bottlenecks from demand to company economics.",
+            "Prefer direct exposure to compute, memory, networking, power, cooling, grid, construction, or customer capex over generic AI mentions.",
+            "Require source-backed orders, capacity, funding, customer pull-through, or margin leverage before treating an AI-chain narrative as high conviction.",
         ],
         "contrary_evidence": [
             "Always include the strongest reason the case may be a false positive.",
@@ -1335,7 +1463,11 @@ def _render_section(
 
 def _section_items(packet: ResearchPacket, section_name: str) -> list[dict[str, Any]]:
     if section_name == "Catalyst/Event Ledger":
-        return _catalyst_items(packet) + _evidence_items(packet, _event_keywords())
+        return _dedupe_items(
+            _catalyst_items(packet)
+            + _recent_source_detail_items(packet, _event_keywords())
+            + _evidence_items(packet, _event_keywords())
+        )
     if section_name == "Expectation Gap Summary":
         return _expectation_items(packet)
     if section_name == "Theme/Industry Transmission":
@@ -1430,6 +1562,7 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
             "summary": f"Theme exposure ids: {', '.join(packet.theme_ids[:3])}.",
         }
     ] if packet.theme_ids else []
+    items.extend(_ai_chain_transmission_items(packet))
     items.extend(
         _evidence_by_kind(packet, {EvidenceKind.THEME_CONTEXT, EvidenceKind.RESEARCH_REPORT})
     )
@@ -1457,9 +1590,34 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     return items
 
 
+def _ai_chain_transmission_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    text = _packet_evidence_text(packet)
+    if not _matches_ai_chain_keywords(text, _ai_chain_anchors()[0][1]):
+        return []
+    anchors = [
+        label
+        for label, keywords in _ai_chain_anchors()
+        if _matches_ai_chain_keywords(text, keywords)
+    ]
+    if not anchors:
+        return []
+    return [
+        {
+            "item_type": "ai_chain_transmission",
+            "summary": (
+                "AI/data-center chain exposure detected from as-of evidence: "
+                + ", ".join(anchors[:5])
+                + ". Judge whether this is a direct bottleneck beneficiary with company-level orders, "
+                "capacity, funding, or customer pull-through, not only a broad AI theme mention."
+            ),
+        }
+    ]
+
+
 def _materiality_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     keywords = _materiality_keywords()
     items: list[dict[str, Any]] = []
+    items.extend(_recent_source_detail_items(packet, keywords))
     for catalyst in packet.catalysts:
         days = (catalyst.expected_date - packet.as_of.as_of_date).days
         if -120 <= days <= 210:
@@ -1520,6 +1678,8 @@ def _timed_evidence_items(packet: ResearchPacket, keywords: tuple[str, ...]) -> 
     for item in packet.evidence:
         if item.published_date is None or not _contains_any(item.summary, keywords):
             continue
+        if _low_information_source_summary(item.summary):
+            continue
         days = (item.published_date - packet.as_of.as_of_date).days
         if not -180 <= days <= 30:
             continue
@@ -1533,6 +1693,32 @@ def _timed_evidence_items(packet: ResearchPacket, keywords: tuple[str, ...]) -> 
             {
                 "item_type": "materiality_timing",
                 "summary": f"Source event {timing}: {item.summary}",
+                "published_date": item.published_date.isoformat(),
+                "relative_timing_days": days,
+                "data_quality": item.data_quality.value,
+            }
+        )
+    return items
+
+
+def _recent_source_detail_items(packet: ResearchPacket, keywords: tuple[str, ...]) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for item in sorted(
+        packet.evidence,
+        key=lambda evidence: evidence.published_date or evidence.as_of_date,
+        reverse=True,
+    ):
+        if item.published_date is None or not _contains_any(item.summary, keywords):
+            continue
+        if _low_information_source_summary(item.summary):
+            continue
+        days = (item.published_date - packet.as_of.as_of_date).days
+        if not -180 <= days <= 30:
+            continue
+        items.append(
+            {
+                "item_type": "source_detail",
+                "summary": f"Recent source detail {_relative_timing_phrase(days)}: {_compact_summary(item.summary)}",
                 "published_date": item.published_date.isoformat(),
                 "relative_timing_days": days,
                 "data_quality": item.data_quality.value,
@@ -1591,6 +1777,7 @@ def _evidence_items(packet: ResearchPacket, keywords: tuple[str, ...]) -> list[d
         _evidence_summary(item)
         for item in packet.evidence
         if _contains_any(item.summary, keywords)
+        and not _low_information_source_summary(item.summary)
     ]
 
 
@@ -1602,6 +1789,15 @@ def _evidence_summary(item: EvidenceItem) -> dict[str, Any]:
         "published_date": item.published_date.isoformat() if item.published_date else None,
         "data_quality": item.data_quality.value,
     }
+
+
+def _packet_evidence_text(packet: ResearchPacket) -> str:
+    return " ".join(
+        [item.summary for item in packet.evidence]
+        + [catalyst.name for catalyst in packet.catalysts]
+        + [item.summary for catalyst in packet.catalysts for item in catalyst.evidence]
+        + [str(feature.value) for feature in packet.features if isinstance(feature.value, str)]
+    ).lower()
 
 
 def _evidence_family_diagnostics(cases: list[HistoricalCase]) -> tuple[EvidenceFamilyDiagnostic, ...]:
@@ -2028,6 +2224,109 @@ def _risk_keywords() -> tuple[str, ...]:
 def _contains_any(text: str, keywords: tuple[str, ...]) -> bool:
     lower = text.lower()
     return any(keyword in lower for keyword in keywords)
+
+
+def _unable_to_judge_mentions_source_detail_gap(reasons: tuple[str, ...]) -> bool:
+    text = " ".join(reasons).lower()
+    return any(
+        marker in text
+        for marker in (
+            "full text",
+            "full 8-k",
+            "8-k contents",
+            "filing contents",
+            "specific disclosed events",
+            "substance and materiality",
+            "disclosed events",
+        )
+    )
+
+
+def _feedback_missing_families_from_reasons(reasons: tuple[str, ...]) -> tuple[str, ...]:
+    text = " ".join(reasons).lower()
+    families: list[str] = []
+    if _unable_to_judge_mentions_source_detail_gap(reasons) or any(
+        marker in text
+        for marker in (
+            "current status",
+            "business combination",
+            "transaction",
+            "merger",
+            "closing",
+            "termination",
+            "shareholder vote",
+            "latest filings",
+        )
+    ):
+        families.extend(["source_detail_digest", "deal_status_timing"])
+    if any(
+        marker in text
+        for marker in (
+            "cash",
+            "trust",
+            "redemption",
+            "debt",
+            "runway",
+            "warrant",
+            "dilution",
+            "float",
+            "short interest",
+            "liquidity",
+            "borrow",
+        )
+    ):
+        families.append("capital_structure_liquidity")
+    if any(marker in text for marker in ("fda", "regulatory", "listing", "compliance")):
+        families.append("policy_regulatory")
+    if any(marker in text for marker in ("customer", "order", "contract", "backlog", "capacity")):
+        families.append("orders_contracts")
+    if any(marker in text for marker in ("ai/data-center", "ai", "data center", "bottleneck")):
+        families.append("ai_chain_bottleneck_transmission")
+    return tuple(dict.fromkeys(families))
+
+
+def _relative_timing_phrase(days: int) -> str:
+    if days == 0:
+        return "published on the as-of date"
+    if days > 0:
+        return f"scheduled {days} days after as-of"
+    return f"observed {abs(days)} days before as-of"
+
+
+def _compact_summary(summary: str, *, max_chars: int = 520) -> str:
+    compact = " ".join(summary.split())
+    if len(compact) <= max_chars:
+        return compact
+    return compact[: max_chars - 3].rstrip() + "..."
+
+
+def _low_information_source_summary(summary: str) -> bool:
+    lower = summary.lower()
+    if "field: set" in lower or "xmlns" in lower or "xbrl" in lower or "excerpt: </" in lower:
+        return True
+    words = re.findall(r"[A-Za-z]{3,}", summary)
+    return len(words) < 8
+
+
+def _matches_ai_chain_keywords(text: str, keywords: tuple[str, ...]) -> bool:
+    return any(re.search(_keyword_pattern(keyword), text, flags=re.IGNORECASE) for keyword in keywords)
+
+
+def _keyword_pattern(keyword: str) -> str:
+    if keyword == "ai":
+        return r"\bAI\b"
+    return r"\b" + r"\s+".join(re.escape(part) for part in keyword.split()) + r"\b"
+
+
+def _ai_chain_anchors() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    return (
+        ("model/application demand", ("ai", "artificial intelligence", "generative ai", "machine learning")),
+        ("compute/cloud capex", ("cloud", "hyperscaler", "data center", "datacenter", "ai factory")),
+        ("accelerators and memory", ("gpu", "accelerator", "hbm", "memory", "asic")),
+        ("networking and servers", ("networking", "ethernet", "infiniband", "server", "rack")),
+        ("power and cooling", ("power", "cooling", "liquid cooling", "thermal", "grid", "substation")),
+        ("supply/capacity bottleneck", ("capacity", "backlog", "order", "contract", "shipment", "lead time")),
+    )
 
 
 def _numeric(value: Any) -> float:
