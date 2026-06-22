@@ -28,6 +28,9 @@ The submodule exposes:
   dry runs.
 - `OpenAIRalphBlindResearcher`: LLM-backed validator that sends only the
   scheme-rendered anonymous packet and uses no web-search tool.
+- `CachedRalphBlindResearcher`: resumable wrapper that persists completed
+  anonymous blind analyses by packet hash so larger OpenRouter runs can be
+  interrupted and resumed without losing completed no-web judgments.
 - `run_ralph_loop`: bounded 1-4 iteration loop for diagnosis, scheme proposal,
   scheme-packet construction, blind validation, evaluation, error analysis, and
   next-scheme proposal. Each failed iteration's next proposal becomes the
@@ -112,11 +115,17 @@ Saved formal documents may be rehydrated into Ralph packets from local
 `documents_and_catalysts.json` artifacts so current experiments can replace
 old low-information filing excerpts with cleaned point-in-time source detail.
 SEC/HTML boilerplate, inline-XBRL headers, and empty fragments must not be
-treated as material evidence. For AI-related evidence, `Theme/Industry
-Transmission` should map model/application demand through compute, data-center,
-power, cooling, networking, component, and customer-capex bottlenecks while
-explicitly distinguishing direct bottleneck beneficiaries from broad AI-theme
-tourists.
+treated as material evidence. Standalone Ralph experiments may optionally
+refresh selected SEC filing bodies from already-saved SEC archive source URLs
+before packet rendering. This refresh is data acquisition for the label-aware
+research layer, not blind-stage web use. It must remain point-in-time by
+filtering on document availability dates, must skip refreshed text that
+introduces another selected case's identity tokens, and must pass global
+cross-case leakage scanning before any external blind provider call. For
+AI-related evidence, `Theme/Industry Transmission` should map model/application
+demand through compute, data-center, power, cooling, networking, component, and
+customer-capex bottlenecks while explicitly distinguishing direct bottleneck
+beneficiaries from broad AI-theme tourists.
 
 ## Artifacts
 
@@ -171,6 +180,9 @@ false-negative rate, initial holdout evaluation, bounded holdout-feedback
 iterations when enabled, and schema diffs between refinement proposals.
 Preflight manifests must set `external_call_performed=false`, record packet
 hashes, and pass leakage checks before an external provider run is attempted.
+Leakage checks scan every packet for the current case's identity terms and for
+all other selected cases' identity terms, because mismapped source documents can
+otherwise leak a different sampled issuer into an anonymous packet.
 Imported-response manifests must set `provider_call_performed_by_script=false`
 and compute the same holdout pass/fail metrics before any scheme is considered
 successful.

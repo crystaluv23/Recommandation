@@ -36,6 +36,7 @@ from stock_opportunity_agent.research.playbooks import (
 )
 from stock_opportunity_agent.research.ralph_loop import (
     BlindSchemePacket,
+    CachedRalphBlindResearcher,
     HeuristicRalphBlindResearcher,
     InformationScheme,
     OpenAIRalphBlindResearcher,
@@ -60,6 +61,7 @@ __all__ = [
     "BlindCaseResearcher",
     "BlindSchemePacket",
     "CachedInflectionResearcher",
+    "CachedRalphBlindResearcher",
     "CompositeInflectionResearcher",
     "ContextCoverageGateResult",
     "ContextCoverageReport",

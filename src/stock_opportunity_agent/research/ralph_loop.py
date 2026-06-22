@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import hashlib
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -292,6 +293,37 @@ class RalphBlindResearcher(Protocol):
 
     def analyze(self, packet: BlindSchemePacket) -> RalphBlindAnalysis:
         """Analyze the anonymous packet with no web tools."""
+
+
+class CachedRalphBlindResearcher:
+    """Persist blind analyses per anonymous packet so interrupted runs can resume."""
+
+    def __init__(self, inner: RalphBlindResearcher, cache_dir: str | Path) -> None:
+        self.inner = inner
+        self.cache_dir = Path(cache_dir)
+
+    def analyze(self, packet: BlindSchemePacket) -> RalphBlindAnalysis:
+        """Return a cached blind analysis or call the wrapped researcher and save it."""
+
+        packet_hash = _blind_packet_sha256(packet)
+        cache_path = self.cache_dir / f"{packet_hash}.json"
+        if cache_path.exists():
+            return _cached_ralph_analysis(packet, json.loads(cache_path.read_text(encoding="utf-8")))
+        analysis = self.inner.analyze(packet)
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        _write_json(
+            cache_path,
+            {
+                "schema_version": "ralph-blind-analysis-cache-v0.1",
+                "packet_sha256": packet_hash,
+                "anonymous_case_id": packet.anonymous_case_id,
+                "as_of_date": packet.as_of_date,
+                "scheme_version": packet.scheme_version,
+                "web_tools_allowed": False,
+                "analysis": analysis.to_dict(),
+            },
+        )
+        return analysis
 
 
 class HeuristicRalphBlindResearcher:
@@ -2002,6 +2034,34 @@ def _ralph_analysis_from_json(packet: BlindSchemePacket, text: str) -> RalphBlin
         raw_text=text,
         missing_context=tuple(_optional_string_list(data, "missing_context")),
     )
+
+
+def _cached_ralph_analysis(packet: BlindSchemePacket, data: dict[str, Any]) -> RalphBlindAnalysis:
+    if data.get("packet_sha256") != _blind_packet_sha256(packet):
+        raise ValidationError("cached Ralph blind analysis packet hash mismatch")
+    analysis = data.get("analysis")
+    if not isinstance(analysis, dict):
+        raise ValidationError("cached Ralph blind analysis missing analysis object")
+    return RalphBlindAnalysis(
+        source_case_id=packet.source_case_id,
+        anonymous_case_id=packet.anonymous_case_id,
+        as_of_date=packet.as_of_date,
+        scheme_version=packet.scheme_version,
+        surge_candidate=_string(analysis, "surge_candidate"),
+        surge_candidate_reason=_string(analysis, "surge_candidate_reason"),
+        expectation_gap=_string(analysis, "expectation_gap"),
+        pre_surge_signals=tuple(_string_list(analysis, "pre_surge_signals")),
+        contrary_evidence=tuple(_string_list(analysis, "contrary_evidence")),
+        catalyst_watch=tuple(_string_list(analysis, "catalyst_watch")),
+        confidence=_confidence(analysis.get("confidence")),
+        raw_text=_string(analysis, "raw_text"),
+        missing_context=tuple(_optional_string_list(analysis, "missing_context")),
+    )
+
+
+def _blind_packet_sha256(packet: BlindSchemePacket) -> str:
+    body = json.dumps(packet.to_prompt_dict(), sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(body.encode("utf-8")).hexdigest()
 
 
 def _analysis_case_id(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> str:

@@ -13,12 +13,15 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
+from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.documents import DocumentRecord
+from stock_opportunity_agent.data.sources.core import DataSourceError, UrllibJsonTransport
 from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
 from stock_opportunity_agent.models import EvidenceKind, ResearchPacket, ValidationError
 from stock_opportunity_agent.research import (
     BlindCaseAnalysis,
+    CachedRalphBlindResearcher,
     HeuristicRalphBlindResearcher,
     HeuristicSurgePlaybookSynthesizer,
     OpenAIRalphBlindResearcher,
@@ -54,10 +57,12 @@ def main() -> None:
     run_id = args.run_id or f"ralph-loop-experiment-{created_at.strftime('%Y%m%d-%H%M%S')}"
     output_dir = Path(args.output_dir) if args.output_dir else Path("runs/cold_start/ralph") / run_id
     cases = _load_cases(Path(args.cases_path))
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]] = {}
     if args.documents_path:
+        documents_by_symbol = _load_documents_by_symbol(Path(args.documents_path))
         cases = _enrich_cases_with_documents(
             cases,
-            _load_documents_by_symbol(Path(args.documents_path)),
+            documents_by_symbol,
         )
     baseline = _load_blind_analyses(Path(args.baseline_blind_path))
     selected = _select_cases(
@@ -67,6 +72,19 @@ def main() -> None:
         refinement_per_label=args.refinement_per_label,
         selection_policy=args.selection_policy,
     )
+    if args.refresh_sec_filing_text:
+        refreshed_documents, refresh_warnings = _refresh_sec_filing_documents_for_cases(
+            documents_by_symbol,
+            tuple(selected["refinement"] + selected["holdout"]),
+            user_agent=load_config().data_sources.sec_user_agent,
+        )
+        if refresh_warnings:
+            for warning in refresh_warnings:
+                print(f"[ralph-experiment] warning={warning}")
+        selected = {
+            "refinement": _enrich_cases_with_documents(selected["refinement"], refreshed_documents),
+            "holdout": _enrich_cases_with_documents(selected["holdout"], refreshed_documents),
+        }
     refinement_cases = selected["refinement"]
     holdout_cases = selected["holdout"]
     baseline_refinement = tuple(
@@ -129,7 +147,8 @@ def main() -> None:
         print(f"[ralph-experiment] imported_response_manifest={paths['imported_response_manifest']}")
         return
 
-    researcher = _ralph_researcher(args)
+    blind_cache_dir = Path(args.blind_cache_dir) if args.blind_cache_dir else output_dir / "blind_analysis_cache"
+    researcher = _ralph_researcher(args, cache_dir=blind_cache_dir)
     result = run_ralph_experiment(
         refinement_cases,
         holdout_cases,
@@ -165,7 +184,10 @@ def main() -> None:
         output_dir,
         created_at=created_at,
         proposal_memory_dir=Path(".agent_state/memory/ralph"),
-        extra_output_paths={"case_selection_label_aware": selection_path},
+        extra_output_paths={
+            "case_selection_label_aware": selection_path,
+            "blind_analysis_cache": blind_cache_dir,
+        },
     )
 
     _print_metric_summary(result)
@@ -216,6 +238,15 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--responses-path",
         help="Evaluate externally generated blind LLM responses for the selected preflight packets.",
+    )
+    parser.add_argument(
+        "--blind-cache-dir",
+        help="Directory for per-packet blind LLM response cache; defaults to the run output directory.",
+    )
+    parser.add_argument(
+        "--refresh-sec-filing-text",
+        action="store_true",
+        help="Refresh selected SEC filing document bodies from existing source URLs before packet rendering.",
     )
     return parser.parse_args()
 
@@ -291,6 +322,83 @@ def _enrich_cases_with_documents(
         )
         enriched.append(replace(case, packet=refreshed_packet))
     return tuple(enriched)
+
+
+def _refresh_sec_filing_documents_for_cases(
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+    cases: Iterable[HistoricalCase],
+    *,
+    user_agent: str,
+    transport: Any | None = None,
+) -> tuple[dict[str, tuple[DocumentRecord, ...]], tuple[str, ...]]:
+    selected_as_of_by_symbol: dict[str, date] = {}
+    cases_by_symbol: dict[str, HistoricalCase] = {}
+    for case in cases:
+        symbol = case.packet.company.ticker.symbol.upper()
+        cases_by_symbol.setdefault(symbol, case)
+        current = selected_as_of_by_symbol.get(symbol)
+        as_of_date = case.packet.as_of.as_of_date
+        if current is None or as_of_date > current:
+            selected_as_of_by_symbol[symbol] = as_of_date
+    if not selected_as_of_by_symbol:
+        return documents_by_symbol, ()
+
+    text_transport = transport or UrllibJsonTransport()
+    warnings: list[str] = []
+    refreshed_by_symbol: dict[str, tuple[DocumentRecord, ...]] = dict(documents_by_symbol)
+    headers = {"User-Agent": user_agent, "Accept-Encoding": "gzip, deflate"}
+    for symbol, latest_as_of in selected_as_of_by_symbol.items():
+        refreshed_documents: list[DocumentRecord] = []
+        for document in documents_by_symbol.get(symbol, ()):
+            if (
+                document.kind is not EvidenceKind.FILING
+                or not document.available_as_of(latest_as_of)
+                or not _is_sec_archive_url(document.source_url)
+            ):
+                refreshed_documents.append(document)
+                continue
+            try:
+                text = text_transport.get_text(document.source_url, headers)
+            except (DataSourceError, OSError) as exc:
+                warnings.append(f"{symbol}: SEC filing text refresh failed for {document.source_id}: {exc}")
+                refreshed_documents.append(document)
+                continue
+            contaminating_terms = _cross_case_identity_hits(text, cases_by_symbol[symbol], cases_by_symbol.values())
+            if contaminating_terms:
+                warnings.append(
+                    f"{symbol}: SEC filing text refresh skipped for {document.source_id}: "
+                    f"cross-case identity terms {contaminating_terms}"
+                )
+                refreshed_documents.append(document)
+                continue
+            refreshed_documents.append(
+                replace(
+                    document,
+                    text=text,
+                    retrieved_at=datetime.now(timezone.utc),
+                )
+            )
+        if refreshed_documents:
+            refreshed_by_symbol[symbol] = tuple(refreshed_documents)
+    return refreshed_by_symbol, tuple(warnings)
+
+
+def _is_sec_archive_url(url: str) -> bool:
+    return url.startswith("https://www.sec.gov/Archives/edgar/data/")
+
+
+def _cross_case_identity_hits(text: str, case: HistoricalCase, all_cases: Iterable[HistoricalCase]) -> list[str]:
+    own_terms = {value.lower() for _kind, value in _leak_terms(case)}
+    hits: list[str] = []
+    for other in all_cases:
+        if other.case_id == case.case_id:
+            continue
+        for _kind, value in _leak_terms(other):
+            if value.lower() in own_terms:
+                continue
+            if re.search(_identity_token_pattern(value), text, flags=re.IGNORECASE):
+                hits.append(value)
+    return sorted(set(hits), key=len, reverse=True)[:5]
 
 
 def _case_from_record(record: dict[str, Any]) -> HistoricalCase:
@@ -425,7 +533,7 @@ def _keyword_hit_count(text: str, keywords: tuple[str, ...]) -> int:
     return sum(1 for keyword in keywords if keyword in text)
 
 
-def _ralph_researcher(args: argparse.Namespace):
+def _ralph_researcher(args: argparse.Namespace, *, cache_dir: Path):
     if args.mode == "heuristic":
         return HeuristicRalphBlindResearcher()
     api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -436,7 +544,7 @@ def _ralph_researcher(args: argparse.Namespace):
         api_key,
         transport=UrllibTransport(timeout_seconds=args.timeout_seconds, max_attempts=4),
     )
-    return OpenAIRalphBlindResearcher(client)
+    return CachedRalphBlindResearcher(OpenAIRalphBlindResearcher(client), cache_dir)
 
 
 def _selection_symbols(selected: dict[str, tuple[HistoricalCase, ...]]) -> list[str]:
@@ -830,9 +938,10 @@ def _looks_like_response_payload(record: dict[str, Any]) -> bool:
 
 def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str, Any]:
     case_reports = []
+    global_terms = _global_leak_terms(case for _packet, case in packet_cases)
     for packet, case in packet_cases:
         prompt = json.dumps(packet.to_prompt_dict(), sort_keys=True)
-        findings = _leakage_findings(prompt, case)
+        findings = _leakage_findings(prompt, case, global_terms)
         case_reports.append(
             {
                 "anonymous_case_id": packet.anonymous_case_id,
@@ -848,11 +957,20 @@ def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str,
     }
 
 
-def _leakage_findings(prompt: str, case: HistoricalCase) -> list[dict[str, str]]:
+def _leakage_findings(
+    prompt: str,
+    case: HistoricalCase,
+    global_terms: list[tuple[str, str, str]] | None = None,
+) -> list[dict[str, str]]:
     findings = []
     for kind, value in _leak_terms(case):
         if value and re.search(_identity_token_pattern(value), prompt, flags=re.IGNORECASE):
             findings.append({"kind": kind, "value": value})
+    for source_case_id, kind, value in global_terms or ():
+        if source_case_id == case.case_id:
+            continue
+        if value and re.search(_identity_token_pattern(value), prompt, flags=re.IGNORECASE):
+            findings.append({"kind": f"cross_case_{kind}", "value": value})
     if "http://" in prompt or "https://" in prompt:
         findings.append({"kind": "source_url", "value": "url-like text"})
     for forbidden_key in ('"label"', '"outcome_return"', '"hidden_outcome_summary"', '"source_case_id"'):
@@ -872,6 +990,18 @@ def _leak_terms(case: HistoricalCase) -> list[tuple[str, str]]:
     ]
     terms.extend(("identity_token", token) for token in _identity_tokens(case.packet))
     return [(kind, value) for kind, value in terms if value]
+
+
+def _global_leak_terms(cases: Iterable[HistoricalCase]) -> list[tuple[str, str, str]]:
+    terms: list[tuple[str, str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for case in cases:
+        for kind, value in _leak_terms(case):
+            key = (case.case_id, kind, value)
+            if key not in seen:
+                terms.append(key)
+                seen.add(key)
+    return terms
 
 
 def _sha256(value: Any) -> str:

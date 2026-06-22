@@ -45,6 +45,7 @@ from stock_opportunity_agent.orchestration import run_cold_start_case_learning
 from stock_opportunity_agent.research import (
     EvidenceAcquisitionRequest,
     EvidenceAcquisitionResult,
+    CachedRalphBlindResearcher,
     HeuristicBlindCaseResearcher,
     HeuristicRalphBlindResearcher,
     HeuristicSurgePlaybookSynthesizer,
@@ -57,6 +58,8 @@ from stock_opportunity_agent.research import (
     assess_context_coverage,
 )
 from stock_opportunity_agent.research.ralph_loop import (
+    InformationSection,
+    InformationScheme,
     analyze_scheme_errors,
     build_blind_scheme_packet,
     evaluate_scheme_performance,
@@ -87,7 +90,9 @@ from scripts.run_cold_start_formal import (
 )
 from scripts.run_ralph_loop_experiment import (
     _enrich_cases_with_documents,
+    _leakage_report,
     _load_documents_by_symbol,
+    _refresh_sec_filing_documents_for_cases,
     _select_cases,
     _write_imported_response_artifacts,
     _write_preflight_artifacts,
@@ -1262,6 +1267,158 @@ class ColdStartSignalTests(TestCase):
         self.assertTrue(any("customer order for AI power infrastructure" in summary for summary in summaries))
         self.assertFalse(any("Field: Set" in summary for summary in summaries))
 
+    def test_ralph_experiment_refreshes_selected_sec_filing_text(self) -> None:
+        class FakeSecTextTransport:
+            def __init__(self) -> None:
+                self.urls: list[str] = []
+
+            def get_text(self, url, headers):
+                self.urls.append(url)
+                return (
+                    "<?xml version='1.0'?><html><head><title></title></head><body>"
+                    "<p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+                    "<p>The issuer secured a material financing backstop before the deadline.</p>"
+                    "</body></html>"
+                )
+
+        case = make_case(
+            "abc-filing-refresh",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        documents = {
+            "ABC": (
+                DocumentRecord(
+                    document_id="abc-sec-8k",
+                    symbol="ABC",
+                    kind=EvidenceKind.FILING,
+                    title="ABC 8-K",
+                    text="<?xml version='1.0'?><html xmlns:xbrli='xbrl'><head></head>",
+                    source_id="sec:abc:8k",
+                    source_url="https://www.sec.gov/Archives/edgar/data/1/2/form8-k.htm",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+            )
+        }
+        transport = FakeSecTextTransport()
+
+        refreshed, warnings = _refresh_sec_filing_documents_for_cases(
+            documents,
+            (case,),
+            user_agent="test-agent",
+            transport=transport,
+        )
+        enriched = _enrich_cases_with_documents((case,), refreshed)
+
+        self.assertEqual(warnings, ())
+        self.assertEqual(transport.urls, ["https://www.sec.gov/Archives/edgar/data/1/2/form8-k.htm"])
+        summaries = [item.summary for item in enriched[0].packet.evidence]
+        self.assertTrue(any("material financing backstop" in summary for summary in summaries))
+        self.assertFalse(any("xmlns:xbrli" in summary for summary in summaries))
+
+    def test_ralph_refresh_skips_cross_case_identity_contamination(self) -> None:
+        class ContaminatedSecTextTransport:
+            def get_text(self, url, headers):
+                return (
+                    "<html><body><p>Item 5.02 Departure of Directors.</p>"
+                    "<p>SRM Entertainment, Inc. granted options to its chief executive officer.</p>"
+                    "</body></html>"
+                )
+
+        target_case = make_case(
+            "abc-filing-refresh",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        other_case = make_case(
+            "srm-other",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+            company_name="SRM Entertainment Inc",
+        )
+        original_text = "8-K filed on the as-of date."
+        documents = {
+            "ABC": (
+                DocumentRecord(
+                    document_id="abc-sec-8k",
+                    symbol="ABC",
+                    kind=EvidenceKind.FILING,
+                    title="ABC 8-K",
+                    text=original_text,
+                    source_id="sec:abc:8k",
+                    source_url="https://www.sec.gov/Archives/edgar/data/1/2/form8-k.htm",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+            )
+        }
+
+        refreshed, warnings = _refresh_sec_filing_documents_for_cases(
+            documents,
+            (target_case, other_case),
+            user_agent="test-agent",
+            transport=ContaminatedSecTextTransport(),
+        )
+
+        self.assertIn("cross-case identity terms", warnings[0])
+        self.assertEqual(refreshed["ABC"][0].text, original_text)
+
+    def test_ralph_preflight_leakage_report_scans_cross_case_identities(self) -> None:
+        class FakePacket:
+            anonymous_case_id = "case_001"
+
+            def to_prompt_dict(self):
+                return {"text": "SRM Entertainment Inc appeared in a mismapped source document."}
+
+        case = make_case(
+            "abc-packet",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        other_case = make_case(
+            "srm-other",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+            company_name="SRM Entertainment Inc",
+        )
+
+        report = _leakage_report([(FakePacket(), case), (FakePacket(), other_case)])
+
+        self.assertFalse(report["passed"])
+        findings = report["case_reports"][0]["findings"]
+        self.assertTrue(any(item["kind"].startswith("cross_case_") for item in findings))
+
     def test_ralph_evaluation_metrics_and_feedback_proposal(self) -> None:
         cases = [
             make_case(
@@ -1472,6 +1629,77 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("\"web_tools_allowed\": false", prompt_text)
         for forbidden in ("AAPL", "Apple", "winner-apple", "winner", "control", "https://example.com"):
             self.assertNotIn(forbidden, prompt_text)
+
+    def test_cached_ralph_blind_researcher_resumes_without_identity_leakage(self) -> None:
+        class CountingRalphResearcher:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def analyze(self, packet):
+                self.calls += 1
+                return RalphBlindAnalysis(
+                    source_case_id=packet.source_case_id,
+                    anonymous_case_id=packet.anonymous_case_id,
+                    as_of_date=packet.as_of_date,
+                    scheme_version=packet.scheme_version,
+                    surge_candidate="possible",
+                    surge_candidate_reason="Source-backed catalyst and expectation gap are present.",
+                    expectation_gap="Expectations lag source-backed catalyst evidence.",
+                    pre_surge_signals=("Catalyst ledger has a dated event.",),
+                    contrary_evidence=("Execution risk remains.",),
+                    catalyst_watch=("Watch catalyst follow-through.",),
+                    missing_context=("Funding terms are incomplete.",),
+                    confidence=0.61,
+                    raw_text='{"surge_candidate":"possible"}',
+                )
+
+        class FailingRalphResearcher:
+            def analyze(self, packet):
+                raise AssertionError("cache miss")
+
+        case = make_case(
+            "cache-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.30,
+            earnings_growth=0.40,
+            margin=0.20,
+            return_20d=0.08,
+            return_60d=0.16,
+            target_upside=0.25,
+            catalyst_count=1,
+            company_name="Hidden Identity Inc",
+        )
+        scheme = InformationScheme(
+            scheme_id="ralph-information-scheme",
+            version="information-scheme-cache-test",
+            sections=(
+                InformationSection(
+                    "Catalyst/Event Ledger",
+                    1,
+                    500,
+                    ("catalyst_event",),
+                    "List dated catalysts.",
+                ),
+            ),
+            total_token_budget=500,
+            max_compressed_context_share=0.30,
+            contrary_evidence_required=True,
+            compression_rules=("Cache test.",),
+        )
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_001")
+
+        with TemporaryDirectory() as tmp:
+            inner = CountingRalphResearcher()
+            first = CachedRalphBlindResearcher(inner, tmp).analyze(packet)
+            second = CachedRalphBlindResearcher(FailingRalphResearcher(), tmp).analyze(packet)
+            cache_text = "\n".join(path.read_text(encoding="utf-8") for path in Path(tmp).glob("*.json"))
+
+        self.assertEqual(inner.calls, 1)
+        self.assertEqual(first.confidence, 0.61)
+        self.assertEqual(second.confidence, 0.61)
+        self.assertEqual(second.source_case_id, case.case_id)
+        self.assertNotIn(case.case_id, cache_text)
+        self.assertNotIn("Hidden Identity", cache_text)
 
     def test_ralph_loop_writes_artifacts_with_fake_blind_researcher(self) -> None:
         class FakeRalphResearcher:
