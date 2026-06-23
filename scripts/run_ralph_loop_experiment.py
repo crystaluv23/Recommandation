@@ -140,6 +140,7 @@ def main() -> None:
         print(
             "[ralph-experiment] imported holdout "
             f"gap={manifest['holdout_confidence_gap']:.4f} "
+            f"positive_gap={manifest['holdout_positive_confidence_gap']:.4f} "
             f"fp_rate={manifest['holdout_false_positive_rate']:.4f} "
             f"fn_rate={manifest['holdout_false_negative_rate']:.4f} "
             f"status={manifest['final_status']}"
@@ -572,12 +573,14 @@ def _print_metric_summary(result) -> None:
     print(
         "[ralph-experiment] refinement "
         f"scheme={refinement.scheme_version} gap={refinement.confidence_gap:.4f} "
+        f"positive_gap={refinement.positive_confidence_gap:.4f} "
         f"fp_rate={refinement.false_positive_rate:.4f} fn_rate={refinement.false_negative_rate:.4f} "
         f"passed={refinement.separation_passed}"
     )
     print(
         "[ralph-experiment] holdout "
         f"scheme={holdout.scheme_version} gap={holdout.confidence_gap:.4f} "
+        f"positive_gap={holdout.positive_confidence_gap:.4f} "
         f"fp_rate={holdout.false_positive_rate:.4f} fn_rate={holdout.false_negative_rate:.4f} "
         f"passed={holdout.separation_passed}"
     )
@@ -834,9 +837,11 @@ def _write_imported_response_artifacts(
             "provider_call_performed_by_script": False,
             "final_status": final_status,
             "holdout_confidence_gap": holdout_evaluation.confidence_gap,
+            "holdout_positive_confidence_gap": holdout_evaluation.positive_confidence_gap,
             "holdout_false_positive_rate": holdout_evaluation.false_positive_rate,
             "holdout_false_negative_rate": holdout_evaluation.false_negative_rate,
             "refinement_confidence_gap": refinement_evaluation.confidence_gap,
+            "refinement_positive_confidence_gap": refinement_evaluation.positive_confidence_gap,
             "integrity_warning_count": len(integrity_warnings),
             "promotion_status": "pending_human_review",
             "can_enter_long_running_default": False,

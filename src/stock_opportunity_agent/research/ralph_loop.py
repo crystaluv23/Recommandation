@@ -429,7 +429,9 @@ class SchemeEvaluation:
     scheme_version: str
     case_count: int
     confidence_gap: float
+    positive_confidence_gap: float
     average_confidence_by_group: dict[str, float]
+    average_positive_confidence_by_group: dict[str, float]
     judgment_distribution_by_group: dict[str, dict[str, int]]
     false_positive_controls: tuple[str, ...]
     false_negative_winners: tuple[str, ...]
@@ -447,7 +449,9 @@ class SchemeEvaluation:
             "scheme_version": self.scheme_version,
             "case_count": self.case_count,
             "confidence_gap": self.confidence_gap,
+            "positive_confidence_gap": self.positive_confidence_gap,
             "average_confidence_by_group": dict(self.average_confidence_by_group),
+            "average_positive_confidence_by_group": dict(self.average_positive_confidence_by_group),
             "judgment_distribution_by_group": {
                 group: dict(counts)
                 for group, counts in self.judgment_distribution_by_group.items()
@@ -599,6 +603,10 @@ class RalphLoopResult:
                     "ralph_scheme_version": iteration.evaluation.scheme_version,
                     "baseline_confidence_gap": self.baseline_evaluation.confidence_gap,
                     "ralph_confidence_gap": iteration.evaluation.confidence_gap,
+                    "baseline_positive_confidence_gap": (
+                        self.baseline_evaluation.positive_confidence_gap
+                    ),
+                    "ralph_positive_confidence_gap": iteration.evaluation.positive_confidence_gap,
                     "baseline_false_positive_controls": list(
                         self.baseline_evaluation.false_positive_controls
                     ),
@@ -1044,15 +1052,22 @@ def evaluate_scheme_performance(
         group: round(_average(_analysis_confidence(item) for item in group_analyses), 4)
         for group, group_analyses in sorted(by_group.items())
     }
+    positive_averages = {
+        group: round(_average(_analysis_positive_confidence(item) for item in group_analyses), 4)
+        for group, group_analyses in sorted(by_group.items())
+    }
     winner_average = averages.get(CaseOutcomeLabel.WINNER.value, 0.0)
     control_average = averages.get(CaseOutcomeLabel.CONTROL.value, 0.0)
     gap = round(winner_average - control_average, 4)
+    winner_positive_average = positive_averages.get(CaseOutcomeLabel.WINNER.value, 0.0)
+    control_positive_average = positive_averages.get(CaseOutcomeLabel.CONTROL.value, 0.0)
+    positive_gap = round(winner_positive_average - control_positive_average, 4)
     control_count = len(by_group.get(CaseOutcomeLabel.CONTROL.value, ()))
     winner_count = len(by_group.get(CaseOutcomeLabel.WINNER.value, ()))
     false_positive_rate = round(_safe_ratio(len(false_positive_controls), control_count), 4)
     false_negative_rate = round(_safe_ratio(len(false_negative_winners), winner_count), 4)
     separation_passed = (
-        gap >= min_confidence_gap
+        positive_gap >= min_confidence_gap
         and false_positive_rate <= max_false_positive_rate
         and false_negative_rate <= max_false_negative_rate
     )
@@ -1065,7 +1080,9 @@ def evaluate_scheme_performance(
         scheme_version=scheme_version,
         case_count=len(case_list),
         confidence_gap=gap,
+        positive_confidence_gap=positive_gap,
         average_confidence_by_group=averages,
+        average_positive_confidence_by_group=positive_averages,
         judgment_distribution_by_group=distributions,
         false_positive_controls=tuple(false_positive_controls),
         false_negative_winners=tuple(false_negative_winners),
@@ -1102,9 +1119,9 @@ def analyze_scheme_errors(
         structure_issues.append(
             "Winners still look weak; missing or underweighted catalyst, expectation-gap, or theme-transmission evidence."
         )
-    if evaluation.confidence_gap < 0.12:
+    if evaluation.positive_confidence_gap < 0.12:
         structure_issues.append(
-            "Winner/control confidence gap remains too small; packet weighting or evidence specificity is insufficient."
+            "Winner/control positive-confidence gap remains too small; packet weighting or evidence specificity is insufficient."
         )
     if evaluation.unable_to_judge_reasons:
         structure_issues.append("Some cases remain insufficient because required evidence buckets are missing.")
@@ -1294,6 +1311,7 @@ def write_ralph_experiment_artifacts(
             "final_status": result.final_status,
             "final_recommendation": result.final_recommendation,
             "holdout_confidence_gap": result.holdout_evaluation.confidence_gap,
+            "holdout_positive_confidence_gap": result.holdout_evaluation.positive_confidence_gap,
             "holdout_false_positive_rate": result.holdout_evaluation.false_positive_rate,
             "holdout_false_negative_rate": result.holdout_evaluation.false_negative_rate,
             "promotion_status": "pending_human_review",
@@ -1497,19 +1515,20 @@ def _section_items(packet: ResearchPacket, section_name: str) -> list[dict[str, 
     if section_name == "Catalyst/Event Ledger":
         return _dedupe_items(
             _catalyst_items(packet)
+            + _event_distillation_items(packet)
             + _recent_source_detail_items(packet, _event_keywords())
             + _evidence_items(packet, _event_keywords())
         )
     if section_name == "Expectation Gap Summary":
-        return _expectation_items(packet)
+        return _dedupe_items(_expectation_distillation_items(packet) + _expectation_items(packet))
     if section_name == "Theme/Industry Transmission":
-        return _theme_items(packet)
+        return _dedupe_items(_business_context_items(packet) + _theme_items(packet))
     if section_name == "Materiality and Timing":
-        return _materiality_items(packet)
+        return _dedupe_items(_event_materiality_items(packet) + _materiality_items(packet))
     if section_name == "Contrary/Risk Evidence":
-        return _risk_items(packet)
+        return _dedupe_items(_event_risk_items(packet) + _generic_source_caution_items(packet) + _risk_items(packet))
     if section_name == "Compressed Fundamentals":
-        return _feature_items(
+        return _business_context_items(packet) + _feature_items(
             packet,
             ("financial.revenue_growth_yoy", "financial.earnings_growth_yoy", "financial.operating_margin_ttm",
              "valuation.pe_ratio", "valuation.price_to_sales_ttm", "valuation.market_cap_usd",
@@ -1544,6 +1563,392 @@ def _catalyst_items(packet: ResearchPacket) -> list[dict[str, Any]]:
                 }
             )
     return items
+
+
+def _event_distillation_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for evidence in _event_candidate_evidence(packet):
+        distilled = _distill_event(packet, evidence)
+        if distilled is not None:
+            items.append(distilled)
+    return _dedupe_items(items)
+
+
+def _event_materiality_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for distilled in _event_distillation_items(packet):
+        if distilled.get("event_polarity") == "routine":
+            continue
+        items.append(
+            {
+                "item_type": "event_materiality",
+                "event_family": distilled.get("event_family"),
+                "event_polarity": distilled.get("event_polarity"),
+                "summary": (
+                    f"Materiality lens for {distilled.get('event_family')}: "
+                    f"{distilled.get('materiality_lens')} Timing: "
+                    f"{distilled.get('relative_timing_label')}."
+                ),
+                "published_date": distilled.get("published_date"),
+                "relative_timing_days": distilled.get("relative_timing_days"),
+                "data_quality": distilled.get("data_quality"),
+            }
+        )
+    return items
+
+
+def _event_risk_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for distilled in _event_distillation_items(packet):
+        polarity = str(distilled.get("event_polarity", ""))
+        if polarity not in {"risk", "mixed", "routine", "uncertain"}:
+            continue
+        items.append(
+            {
+                "item_type": "event_risk",
+                "event_family": distilled.get("event_family"),
+                "event_polarity": polarity,
+                "summary": (
+                    f"Contrary lens for {distilled.get('event_family')}: "
+                    f"{_contrary_lens(distilled)}"
+                ),
+                "published_date": distilled.get("published_date"),
+                "relative_timing_days": distilled.get("relative_timing_days"),
+                "data_quality": distilled.get("data_quality"),
+            }
+        )
+    return items
+
+
+def _expectation_distillation_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    events = _event_distillation_items(packet)
+    if not events:
+        if _depressed_market_setup(packet):
+            return [
+                {
+                    "item_type": "expectation_gap_caution",
+                    "summary": (
+                        "Price weakness is visible, but no source-backed positive event was distilled; "
+                        "treat the expectation gap as unproven rather than bullish by itself."
+                    ),
+                    "event_polarity_counts": {},
+                }
+            ]
+        return []
+    counts = _event_polarity_counts(events)
+    positive_events = [
+        item
+        for item in events
+        if item.get("event_polarity") == "positive"
+    ]
+    if positive_events:
+        families = ", ".join(
+            dict.fromkeys(str(item.get("event_family")) for item in positive_events)
+        )
+        return [
+            {
+                "item_type": "expectation_gap_lens",
+                "summary": (
+                    "Potential expectation gap requires the market to have underweighted "
+                    f"source-backed positive event families: {families}. Validate materiality, timing, "
+                    "and contrary risk before assigning high confidence."
+                ),
+                "event_polarity_counts": counts,
+            }
+        ]
+    return [
+        {
+            "item_type": "expectation_gap_caution",
+            "summary": (
+                "Distilled as-of events are risk-heavy, mixed, routine, or uncertain; do not treat "
+                "price weakness or generic filings as a positive expectation gap without a concrete "
+                "company-level catalyst."
+            ),
+            "event_polarity_counts": counts,
+        }
+    ]
+
+
+def _event_candidate_evidence(packet: ResearchPacket) -> list[EvidenceItem]:
+    keywords = _event_keywords() + _risk_keywords() + _ai_chain_keyword_terms()
+    candidates = []
+    for item in sorted(
+        packet.evidence,
+        key=lambda evidence: evidence.published_date or evidence.as_of_date,
+        reverse=True,
+    ):
+        if _low_information_source_summary(item.summary):
+            continue
+        if _generic_market_source_summary(item.summary):
+            continue
+        if not _contains_any(item.summary, keywords):
+            continue
+        event_date = item.published_date or item.as_of_date
+        days = (event_date - packet.as_of.as_of_date).days
+        if -210 <= days <= 30:
+            candidates.append(item)
+    return candidates
+
+
+def _distill_event(packet: ResearchPacket, item: EvidenceItem) -> dict[str, Any] | None:
+    family = _event_family(item.summary)
+    if family is None:
+        return None
+    event_date = item.published_date or item.as_of_date
+    days = (event_date - packet.as_of.as_of_date).days
+    polarity = _event_polarity(family, item.summary)
+    lens = _materiality_lens(family, polarity, item.summary)
+    return {
+        "item_type": "event_distillation",
+        "event_family": family,
+        "event_polarity": polarity,
+        "materiality_lens": lens,
+        "relative_timing_label": _relative_timing_phrase(days),
+        "summary": (
+            f"Distilled event {_relative_timing_phrase(days)}: {family} / {polarity}. "
+            f"{lens} Evidence: {_compact_summary(item.summary, max_chars=300)}"
+        ),
+        "as_of_date": item.as_of_date.isoformat(),
+        "published_date": item.published_date.isoformat() if item.published_date else None,
+        "relative_timing_days": days,
+        "source_kind": item.kind.value,
+        "data_quality": item.data_quality.value,
+    }
+
+
+def _event_family(summary: str) -> str | None:
+    text = summary.lower()
+    if _matches_ai_chain_keywords(text, _ai_chain_anchors()[0][1]) and _contains_any(
+        text,
+        (
+            "order",
+            "contract",
+            "customer",
+            "capacity",
+            "shipment",
+            "data center",
+            "datacenter",
+            "liquid cooling",
+            "power",
+            "grid",
+        ),
+    ):
+        return "ai_chain_bottleneck_transmission"
+    family_keywords = (
+        ("orders_contracts", ("purchase order", "customer order", "contract", "backlog", "award")),
+        ("financing_capital", ("financing", "funding", "credit facility", "offering", "warrant")),
+        (
+            "listing_compliance",
+            ("listing", "delist", "minimum bid", "compliance", "suspension", "resumption"),
+        ),
+        (
+            "strategic_transaction",
+            ("merger", "business combination", "acquisition", "transaction", "definitive agreement"),
+        ),
+        ("policy_regulatory", ("approval", "regulatory", "fda", "clearance", "tariff")),
+        (
+            "governance_routine",
+            ("annual meeting", "shareholder vote", "director", "officer", "compensatory"),
+        ),
+        ("earnings_results", ("earnings", "revenue", "eps", "guidance", "results of operations")),
+        ("capital_return", ("dividend", "repurchase", "buyback")),
+    )
+    for family, keywords in family_keywords:
+        if _contains_any(text, keywords):
+            return family
+    if _contains_any(text, _event_keywords()) or _contains_any(text, _risk_keywords()):
+        return "other_event"
+    return None
+
+
+def _event_polarity(family: str, summary: str) -> str:
+    text = summary.lower()
+    if family == "listing_compliance":
+        if _contains_any(
+            text,
+            ("regain compliance", "trading resumption", "removal of trading suspension"),
+        ):
+            return "positive"
+        if _contains_any(text, ("delist", "non-compliance", "minimum bid", "deficiency", "suspension")):
+            return "risk"
+    if family in {"orders_contracts", "ai_chain_bottleneck_transmission"}:
+        if _contains_any(text, ("termination", "delay", "risk", "unable to", "cancel")):
+            return "mixed"
+        return "positive"
+    if family == "financing_capital":
+        if _contains_any(text, ("offering", "warrant", "convertible", "at-the-market", "dilution")):
+            return "mixed"
+        if _contains_any(text, ("debt", "senior secured", "borrowed", "default")):
+            return "mixed"
+        return "positive"
+    if family == "strategic_transaction":
+        if _contains_any(text, ("terminate", "delay", "extension", "liquidation", "redemption")):
+            return "risk"
+        if _contains_any(text, ("closed", "closing", "definitive agreement", "consummated", "effective")):
+            return "positive"
+    if family == "policy_regulatory":
+        if _contains_any(text, ("investigation", "denial", "rejection", "clinical hold", "warning")):
+            return "risk"
+        if _contains_any(text, ("approval", "clearance", "granted", "accepted")):
+            return "positive"
+    if family == "governance_routine":
+        if _contains_any(text, ("resignation", "departure", "terminated", "dismissed")):
+            return "risk"
+        return "routine"
+    if family == "earnings_results":
+        if _contains_any(text, ("miss", "loss", "warning", "decline", "lowered")):
+            return "risk"
+        if _contains_any(text, ("record", "beat", "raise", "growth", "profit")):
+            return "positive"
+    if family == "capital_return":
+        return "positive"
+    if _contains_any(text, _high_risk_terms()):
+        return "risk"
+    if _contains_any(text, _positive_event_terms()):
+        return "positive"
+    return "uncertain"
+
+
+def _business_context_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    if packet.company.sector != "Unknown" or packet.company.industry != "Unknown":
+        items.append(
+            {
+                "item_type": "identity_safe_business_context",
+                "summary": (
+                    "Identity-safe business context: "
+                    f"sector={packet.company.sector}; industry={packet.company.industry}."
+                ),
+                "sector": packet.company.sector,
+                "industry": packet.company.industry,
+                "data_quality": packet.company.data_quality.value,
+            }
+        )
+    for clue in _sector_clues_from_evidence(packet):
+        items.append(clue)
+    return items
+
+
+def _sector_clues_from_evidence(packet: ResearchPacket) -> list[dict[str, Any]]:
+    clues: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in packet.evidence:
+        sector = _sector_clue(item.summary)
+        if sector is None or sector in seen:
+            continue
+        seen.add(sector)
+        clues.append(
+            {
+                "item_type": "identity_safe_business_context",
+                "summary": (
+                    f"Source-derived sector clue: {sector}. Treat as weaker than provider "
+                    "profile data and do not treat generic market-mover headlines as catalysts."
+                ),
+                "sector": sector,
+                "industry": "Unknown",
+                "as_of_date": item.as_of_date.isoformat(),
+                "published_date": item.published_date.isoformat() if item.published_date else None,
+                "data_quality": item.data_quality.value,
+            }
+        )
+    return clues[:2]
+
+
+def _sector_clue(summary: str) -> str | None:
+    patterns = (
+        (r"\binformation technology stocks\b", "Information Technology"),
+        (r"\btechnology stocks\b", "Technology"),
+        (r"\bhealth ?care stocks\b", "Healthcare"),
+        (r"\bbiotech stocks\b", "Biotechnology"),
+        (r"\benergy stocks\b", "Energy"),
+        (r"\boil and gas stocks\b", "Oil and Gas"),
+        (r"\bfinancial stocks\b", "Financials"),
+        (r"\bbank stocks\b", "Banks"),
+        (r"\binsurance stocks\b", "Insurance"),
+        (r"\bconsumer stocks\b", "Consumer"),
+        (r"\bindustrial stocks\b", "Industrials"),
+    )
+    for pattern, sector in patterns:
+        if re.search(pattern, summary, flags=re.IGNORECASE):
+            return sector
+    return None
+
+
+def _materiality_lens(family: str, polarity: str, summary: str) -> str:
+    if polarity == "routine":
+        return "Routine governance or calendar disclosure; should not be treated as a repricing catalyst."
+    if polarity == "risk":
+        return "Disqualifying or dampening risk may dominate unless offset by a stronger positive catalyst."
+    if polarity == "mixed":
+        return "Potentially relevant event carries dilution, leverage, timing, or execution offsets."
+    lenses = {
+        "orders_contracts": "Direct company-level demand signal; assess order size, duration, customer quality.",
+        "ai_chain_bottleneck_transmission": (
+            "AI-chain directness signal; map customer demand through compute, power, cooling, "
+            "capacity, or component bottlenecks."
+        ),
+        "financing_capital": "Capital availability can extend runway, but terms and dilution must be checked.",
+        "listing_compliance": "Exchange-status change can affect liquidity, eligibility, and forced selling.",
+        "strategic_transaction": "Deal status can reprice timing, float, capital structure, and investor attention.",
+        "policy_regulatory": "Regulatory action matters only if it changes addressable market or timing.",
+        "earnings_results": "Operating update matters if it changes near-term expectations, not just history.",
+        "capital_return": "Capital return can signal balance-sheet strength or shareholder alignment.",
+        "other_event": "Event needs explicit size, timing, and company-level economic transmission.",
+    }
+    if _contains_any(summary, ("not material", "immaterial")):
+        return "Source text itself suggests limited materiality; require stronger corroboration."
+    return lenses.get(family, lenses["other_event"])
+
+
+def _contrary_lens(distilled: Mapping[str, Any]) -> str:
+    polarity = str(distilled.get("event_polarity", ""))
+    lens = str(distilled.get("materiality_lens", ""))
+    if polarity == "routine":
+        return "routine disclosure can create false positives when treated like a catalyst."
+    if polarity == "uncertain":
+        return "source-backed event lacks clear direction, size, or timing; confidence should stay low."
+    if polarity == "mixed":
+        return "positive headline must be weighed against dilution, leverage, timing, or execution offsets."
+    return lens
+
+
+def _event_polarity_counts(events: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for event in events:
+        polarity = str(event.get("event_polarity", "uncertain"))
+        counts[polarity] = counts.get(polarity, 0) + 1
+    return counts
+
+
+def _depressed_market_setup(packet: ResearchPacket) -> bool:
+    features = {feature.name: feature.value for feature in packet.features}
+    return_20d = _numeric(features.get("price.return_20d"))
+    return_60d = _numeric(features.get("price.return_60d"))
+    return return_20d <= -0.15 or return_60d <= -0.25
+
+
+def _generic_source_caution_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for evidence in packet.evidence:
+        if not _generic_market_source_summary(evidence.summary):
+            continue
+        event_date = evidence.published_date or evidence.as_of_date
+        days = (event_date - packet.as_of.as_of_date).days
+        if not -210 <= days <= 30:
+            continue
+        items.append(
+            {
+                "item_type": "source_quality_caution",
+                "summary": (
+                    "Generic market-mover or earnings-calendar source is not a company-level "
+                    f"catalyst {_relative_timing_phrase(days)}: {_compact_summary(evidence.summary, max_chars=260)}"
+                ),
+                "published_date": evidence.published_date.isoformat() if evidence.published_date else None,
+                "relative_timing_days": days,
+                "data_quality": evidence.data_quality.value,
+            }
+        )
+    return items[:3]
 
 
 def _expectation_items(packet: ResearchPacket) -> list[dict[str, Any]]:
@@ -2076,6 +2481,13 @@ def _analysis_confidence(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> fl
     return analysis.confidence
 
 
+def _analysis_positive_confidence(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> float:
+    judgment = _analysis_judgment(analysis)
+    if judgment in {"likely", "possible"}:
+        return analysis.confidence
+    return 0.0
+
+
 def _analysis_reason(analysis: BlindCaseAnalysis | RalphBlindAnalysis) -> str:
     return analysis.surge_candidate_reason
 
@@ -2281,6 +2693,46 @@ def _risk_keywords() -> tuple[str, ...]:
     )
 
 
+def _high_risk_terms() -> tuple[str, ...]:
+    return _risk_keywords() + (
+        "non-compliance",
+        "minimum bid",
+        "deficiency",
+        "default",
+        "termination",
+        "liquidation",
+        "redemption",
+        "reverse split",
+        "clinical hold",
+        "warning letter",
+    )
+
+
+def _positive_event_terms() -> tuple[str, ...]:
+    return (
+        "customer order",
+        "purchase order",
+        "contract",
+        "award",
+        "approval",
+        "clearance",
+        "launch",
+        "backlog",
+        "record revenue",
+        "raises guidance",
+        "regain compliance",
+        "trading resumption",
+        "closed",
+        "consummated",
+    )
+
+
+def _ai_chain_keyword_terms() -> tuple[str, ...]:
+    return tuple(
+        dict.fromkeys(keyword for _label, keywords in _ai_chain_anchors() for keyword in keywords)
+    )
+
+
 def _contains_any(text: str, keywords: tuple[str, ...]) -> bool:
     lower = text.lower()
     return any(keyword in lower for keyword in keywords)
@@ -2366,6 +2818,24 @@ def _low_information_source_summary(summary: str) -> bool:
         return True
     words = re.findall(r"[A-Za-z]{3,}", summary)
     return len(words) < 8
+
+
+def _generic_market_source_summary(summary: str) -> bool:
+    lower = summary.lower()
+    return any(
+        marker in lower
+        for marker in (
+            "stocks moving in",
+            "pre-market session",
+            "intraday session",
+            "after-market session",
+            "wall street week ahead",
+            "set to report earnings",
+            "market events",
+            "earnings, ipos",
+            "economic reports",
+        )
+    )
 
 
 def _matches_ai_chain_keywords(text: str, keywords: tuple[str, ...]) -> bool:

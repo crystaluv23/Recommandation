@@ -1206,6 +1206,184 @@ class ColdStartSignalTests(TestCase):
         self.assertNotIn("Field: Set", packet_text)
         self.assertNotIn("Winner Corp", packet_text)
 
+    def test_ralph_packet_distills_event_polarity_materiality_and_risk(self) -> None:
+        ai_order_case = make_case(
+            "winner-ai-order",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.25,
+            earnings_growth=0.35,
+            margin=0.16,
+            return_20d=-0.22,
+            return_60d=-0.34,
+            target_upside=0.20,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="ai-order",
+                    symbol="WINNER",
+                    kind=EvidenceKind.FILING,
+                    title="8-K material agreement",
+                    text=(
+                        "Item 1.01 Entry into a Material Definitive Agreement. "
+                        "The company signed a customer order for AI data center liquid cooling "
+                        "systems with expected shipments and capacity expansion."
+                    ),
+                    source_id="sec:winner:8k",
+                    source_url="https://www.sec.gov/example",
+                    published_date=AS_OF - timedelta(days=3),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        delisting_case = make_case(
+            "control-listing-risk",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=-0.05,
+            earnings_growth=-0.20,
+            margin=-0.03,
+            return_20d=-0.18,
+            return_60d=-0.28,
+            target_upside=0.05,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="listing-risk",
+                    symbol="RISK",
+                    kind=EvidenceKind.FILING,
+                    title="Nasdaq listing notice",
+                    text=(
+                        "Item 3.01 Notice of Delisting or Failure to Satisfy a Continued "
+                        "Listing Rule. Nasdaq notified the company of minimum bid "
+                        "non-compliance and potential delisting risk."
+                    ),
+                    source_id="sec:risk:8k",
+                    source_url="https://www.sec.gov/example-risk",
+                    published_date=AS_OF - timedelta(days=4),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        cases = [ai_order_case, delisting_case]
+        learning = learn_pre_surge_signal_logic(cases)
+        themes = build_cold_start_theme_maps(cases, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(cases, blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        ai_packet = build_blind_scheme_packet(ai_order_case, scheme, anonymous_case_id="case_ai")
+        risk_packet = build_blind_scheme_packet(delisting_case, scheme, anonymous_case_id="case_risk")
+
+        ai_catalyst = next(section for section in ai_packet.sections if section.name == "Catalyst/Event Ledger")
+        ai_materiality = next(section for section in ai_packet.sections if section.name == "Materiality and Timing")
+        ai_expectation = next(section for section in ai_packet.sections if section.name == "Expectation Gap Summary")
+        self.assertTrue(
+            any(
+                item.get("item_type") == "event_distillation"
+                and item.get("event_family") == "ai_chain_bottleneck_transmission"
+                and item.get("event_polarity") == "positive"
+                for item in ai_catalyst.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "event_materiality"
+                and item.get("event_polarity") == "positive"
+                and "AI-chain directness" in item.get("summary", "")
+                for item in ai_materiality.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "expectation_gap_lens"
+                and item.get("event_polarity_counts", {}).get("positive") == 1
+                for item in ai_expectation.items
+            )
+        )
+
+        risk_section = next(section for section in risk_packet.sections if section.name == "Contrary/Risk Evidence")
+        risk_expectation = next(
+            section for section in risk_packet.sections if section.name == "Expectation Gap Summary"
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "event_risk"
+                and item.get("event_family") == "listing_compliance"
+                and item.get("event_polarity") == "risk"
+                for item in risk_section.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "expectation_gap_caution"
+                and "do not treat price weakness" in item.get("summary", "")
+                for item in risk_expectation.items
+            )
+        )
+
+    def test_ralph_packet_marks_generic_market_sources_as_caution_not_catalyst(self) -> None:
+        case = make_case(
+            "generic-news",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.02,
+            earnings_growth=-0.05,
+            margin=0.01,
+            return_20d=-0.12,
+            return_60d=-0.22,
+            target_upside=0.05,
+            catalyst_count=0,
+            sector="Unknown",
+            extra_documents=[
+                DocumentRecord(
+                    document_id="generic-it-movers",
+                    symbol="GEN",
+                    kind=EvidenceKind.NEWS,
+                    title="12 Information Technology Stocks Moving In Tuesday's Intraday Session",
+                    text=(
+                        "12 Information Technology Stocks Moving In Tuesday's Intraday Session. "
+                        "AMC, Cisco Set To Report Earnings As Investors Watch Out For Core CPI."
+                    ),
+                    source_id="wire:generic",
+                    source_url="https://example.com/generic",
+                    published_date=AS_OF - timedelta(days=2),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        learning = learn_pre_surge_signal_logic([case])
+        themes = build_cold_start_theme_maps([case], learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(case),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize([case], blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            [case],
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_generic")
+
+        catalyst = next(section for section in packet.sections if section.name == "Catalyst/Event Ledger")
+        theme = next(section for section in packet.sections if section.name == "Theme/Industry Transmission")
+        risk = next(section for section in packet.sections if section.name == "Contrary/Risk Evidence")
+        self.assertFalse(
+            any(item.get("item_type") == "event_distillation" for item in catalyst.items)
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "identity_safe_business_context"
+                and item.get("sector") == "Information Technology"
+                for item in theme.items
+            )
+        )
+        self.assertTrue(
+            any(item.get("item_type") == "source_quality_caution" for item in risk.items)
+        )
+
     def test_ralph_experiment_rehydrates_saved_documents_for_current_packets(self) -> None:
         stale_case = make_case(
             "abc-1",
@@ -1494,6 +1672,7 @@ class ColdStartSignalTests(TestCase):
         proposal = propose_next_information_scheme(scheme, error_analysis)
 
         self.assertEqual(evaluation.confidence_gap, -0.4)
+        self.assertEqual(evaluation.positive_confidence_gap, -0.4)
         self.assertEqual(evaluation.false_positive_controls, ("control-1",))
         self.assertEqual(evaluation.false_negative_winners, ("winner-1",))
         self.assertEqual(evaluation.false_positive_rate, 1.0)
@@ -1505,6 +1684,69 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(proposal.version, "information-scheme-v0.2")
         self.assertIn("proposal_only", proposal.proposal_status)
         self.assertNotEqual(proposal.to_dict()["proposal_status"], "production_default")
+
+    def test_ralph_positive_confidence_gap_ignores_confident_negative_judgments(self) -> None:
+        cases = [
+            make_case(
+                "winner-1",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.40,
+                earnings_growth=0.70,
+                margin=0.22,
+                return_20d=0.11,
+                return_60d=0.25,
+                target_upside=0.35,
+                catalyst_count=2,
+            ),
+            make_case(
+                "control-1",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=-0.10,
+                margin=0.05,
+                return_20d=0.00,
+                return_60d=0.02,
+                target_upside=0.04,
+                catalyst_count=0,
+            ),
+        ]
+        analyses = [
+            RalphBlindAnalysis(
+                source_case_id="winner-1",
+                anonymous_case_id="case_001",
+                as_of_date=AS_OF.isoformat(),
+                scheme_version="information-scheme-v0.1",
+                surge_candidate="unlikely",
+                surge_candidate_reason="confidently negative",
+                expectation_gap="none",
+                pre_surge_signals=(),
+                contrary_evidence=("risk",),
+                catalyst_watch=(),
+                confidence=0.90,
+                raw_text="{}",
+            ),
+            RalphBlindAnalysis(
+                source_case_id="control-1",
+                anonymous_case_id="case_002",
+                as_of_date=AS_OF.isoformat(),
+                scheme_version="information-scheme-v0.1",
+                surge_candidate="insufficient_information",
+                surge_candidate_reason="thin",
+                expectation_gap="none",
+                pre_surge_signals=(),
+                contrary_evidence=(),
+                catalyst_watch=(),
+                confidence=0.20,
+                raw_text="{}",
+            ),
+        ]
+
+        evaluation = evaluate_scheme_performance(cases, analyses, scheme_version="information-scheme-v0.1")
+
+        self.assertEqual(evaluation.confidence_gap, 0.7)
+        self.assertEqual(evaluation.positive_confidence_gap, 0.0)
+        self.assertEqual(evaluation.false_negative_rate, 1.0)
+        self.assertFalse(evaluation.separation_passed)
 
     def test_ralph_feedback_iterations_apply_prior_proposal_cumulatively(self) -> None:
         class AlwaysFalseNegativeResearcher:

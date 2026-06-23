@@ -82,10 +82,16 @@ choice for research validation, not a production promotion rule.
 
 The default v1 success threshold is quantitative:
 
-- winner average confidence minus control average confidence is at least 0.12;
+- winner average positive-confidence minus control average positive-confidence
+  is at least 0.12, where only `likely` and `possible` judgments contribute
+  positive confidence;
 - false-positive control rate is at most 0.25;
 - false-negative winner rate is 0.00;
 - blind packets remain anonymous, point-in-time, and no-web.
+Artifacts may also keep the raw confidence gap for historical comparison, but
+raw confidence is the model's confidence in its own judgment and must not be
+interpreted as bullish confidence when the judgment is `unlikely` or
+`insufficient_information`.
 
 If the holdout threshold is not met, Ralph must persist error analysis and a
 next proposal. It must not present the loop as solved just because the bounded
@@ -126,6 +132,19 @@ AI-related evidence, `Theme/Industry Transmission` should map model/application
 demand through compute, data-center, power, cooling, networking, component, and
 customer-capex bottlenecks while explicitly distinguishing direct bottleneck
 beneficiaries from broad AI-theme tourists.
+Ralph packets should also include a deterministic point-in-time event
+distillation layer before raw source excerpts dominate the context. This layer
+classifies saved as-of evidence into compact event families such as
+orders/contracts, financing/capital, listing/compliance, strategic transaction,
+policy/regulatory, governance/routine, earnings/results, capital return, and
+AI-chain bottleneck transmission. Each distilled item records whether the event
+looks positive, risk-heavy, mixed, routine, or uncertain from the as-of text, and
+states the materiality lens or disqualifying risk. The distillation is blind-safe
+because it reads only the anonymous packet evidence and is rendered into the
+same masked blind packet; it must not use outcome labels or future returns.
+Expectation-gap summaries should distinguish a depressed price plus a
+source-backed positive event from a depressed price plus only routine or
+risk-heavy filings.
 
 ## Artifacts
 
@@ -175,7 +194,8 @@ controls, false-negative winners, insufficient-information reasons, and error
 analysis when separation remains weak.
 
 Experiment summaries include the final status (`holdout_separated` or
-`holdout_not_separated`), holdout confidence gap, false-positive rate,
+`holdout_not_separated`), holdout positive-confidence gap, raw confidence gap
+for comparison, false-positive rate,
 false-negative rate, initial holdout evaluation, bounded holdout-feedback
 iterations when enabled, and schema diffs between refinement proposals.
 Preflight manifests must set `external_call_performed=false`, record packet
