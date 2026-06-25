@@ -132,6 +132,13 @@ AI-related evidence, `Theme/Industry Transmission` should map model/application
 demand through compute, data-center, power, cooling, networking, component, and
 customer-capex bottlenecks while explicitly distinguishing direct bottleneck
 beneficiaries from broad AI-theme tourists.
+The AI/theme transmission lens should render a compact stage map, including
+matched chain stages, directness level, and company-level pull-through markers
+such as orders, contracts, backlog, shipments, capacity, customer demand,
+funding, capex, or guidance. Mentions of AI without these pull-through markers
+must be shown as a theme-only caution, not promoted into a bullish catalyst.
+Negated statements such as "no orders" or "no funding" must not be counted as
+directness evidence.
 Ralph packets should also include a deterministic point-in-time event
 distillation layer before raw source excerpts dominate the context. This layer
 classifies saved as-of evidence into compact event families such as
@@ -145,6 +152,14 @@ same masked blind packet; it must not use outcome labels or future returns.
 Expectation-gap summaries should distinguish a depressed price plus a
 source-backed positive event from a depressed price plus only routine or
 risk-heavy filings.
+Standalone Ralph experiments may derive compact `source_fact_digest` evidence
+from already-saved local documents and optional refreshed SEC primary-document
+text before rendering blind packets. These digests should extract auditable
+point-in-time facts such as business/sector clues, revenue or sales, cash,
+debt, stockholders' equity, listing-compliance terms, financing commitments, and
+operating volumes without pasting raw tables. They remain source-linked,
+identity-masked at packet render time, and proposal-only; blind validation still
+receives no web tools and no labels.
 
 ## Artifacts
 

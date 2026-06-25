@@ -1524,15 +1524,35 @@ def _section_items(packet: ResearchPacket, section_name: str) -> list[dict[str, 
     if section_name == "Theme/Industry Transmission":
         return _dedupe_items(_business_context_items(packet) + _theme_items(packet))
     if section_name == "Materiality and Timing":
-        return _dedupe_items(_event_materiality_items(packet) + _materiality_items(packet))
+        return _dedupe_items(
+            _event_materiality_items(packet)
+            + _source_fact_digest_items(packet)
+            + _materiality_items(packet)
+        )
     if section_name == "Contrary/Risk Evidence":
-        return _dedupe_items(_event_risk_items(packet) + _generic_source_caution_items(packet) + _risk_items(packet))
+        return _dedupe_items(
+            _event_risk_items(packet)
+            + _source_fact_digest_items(packet)
+            + _generic_source_caution_items(packet)
+            + _risk_items(packet)
+        )
     if section_name == "Compressed Fundamentals":
-        return _business_context_items(packet) + _feature_items(
-            packet,
-            ("financial.revenue_growth_yoy", "financial.earnings_growth_yoy", "financial.operating_margin_ttm",
-             "valuation.pe_ratio", "valuation.price_to_sales_ttm", "valuation.market_cap_usd",
-             "profile.sector", "profile.industry"),
+        return _dedupe_items(
+            _business_context_items(packet)
+            + _source_fact_digest_items(packet)
+            + _feature_items(
+                packet,
+                (
+                    "financial.revenue_growth_yoy",
+                    "financial.earnings_growth_yoy",
+                    "financial.operating_margin_ttm",
+                    "valuation.pe_ratio",
+                    "valuation.price_to_sales_ttm",
+                    "valuation.market_cap_usd",
+                    "profile.sector",
+                    "profile.industry",
+                ),
+            )
         )
     if section_name == "Compressed Market Confirmation":
         return _feature_items(
@@ -1718,7 +1738,7 @@ def _distill_event(packet: ResearchPacket, item: EvidenceItem) -> dict[str, Any]
 
 def _event_family(summary: str) -> str | None:
     text = summary.lower()
-    if _matches_ai_chain_keywords(text, _ai_chain_anchors()[0][1]) and _contains_any(
+    if _matches_ai_chain_keywords(text, _ai_chain_stage_definitions()[0][1]) and _contains_any(
         text,
         (
             "order",
@@ -2029,16 +2049,45 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
 
 def _ai_chain_transmission_items(packet: ResearchPacket) -> list[dict[str, Any]]:
     text = _packet_evidence_text(packet)
-    if not _matches_ai_chain_keywords(text, _ai_chain_anchors()[0][1]):
+    if not _matches_ai_chain_keywords(text, _ai_chain_stage_definitions()[0][1]):
         return []
     anchors = [
         label
-        for label, keywords in _ai_chain_anchors()
+        for label, keywords in _ai_chain_stage_definitions()
         if _matches_ai_chain_keywords(text, keywords)
     ]
     if not anchors:
         return []
-    return [
+    direct_markers = _ai_chain_directness_markers(text)
+    directness_level = "company_level" if direct_markers else "theme_only"
+    items = [
+        {
+            "item_type": "ai_chain_stage_map",
+            "chain_focus": "AI/data-center",
+            "matched_stages": anchors[:6],
+            "directness_level": directness_level,
+            "direct_evidence_markers": direct_markers[:4],
+            "summary": (
+                "AI/data-center chain stage map from as-of evidence: "
+                + ", ".join(anchors[:6])
+                + f". Directness: {directness_level}"
+                + (f" via {', '.join(direct_markers[:4])}." if direct_markers else ".")
+                + " Prefer cases where theme demand transmits through orders, customer pull-through, "
+                "capacity, funding, or guidance inside 3-6 months; treat generic AI mentions as weak."
+            ),
+        }
+    ]
+    if directness_level == "theme_only":
+        items.append(
+            {
+                "item_type": "ai_chain_theme_caution",
+                "summary": (
+                    "AI/theme evidence is present, but no company-level order, contract, capacity, "
+                    "funding, or customer pull-through marker was detected in the as-of packet."
+                ),
+            }
+        )
+    items.append(
         {
             "item_type": "ai_chain_transmission",
             "summary": (
@@ -2048,7 +2097,8 @@ def _ai_chain_transmission_items(packet: ResearchPacket) -> list[dict[str, Any]]
                 "capacity, funding, or customer pull-through, not only a broad AI theme mention."
             ),
         }
-    ]
+    )
+    return items
 
 
 def _materiality_items(packet: ResearchPacket) -> list[dict[str, Any]]:
@@ -2188,6 +2238,23 @@ def _risk_items(packet: ResearchPacket) -> list[dict[str, Any]]:
             }
         )
     return items
+
+
+def _source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for evidence in packet.evidence:
+        if "fact digest" not in evidence.summary.lower():
+            continue
+        items.append(
+            {
+                "item_type": "source_fact_digest",
+                "summary": _compact_summary(evidence.summary, max_chars=620),
+                "as_of_date": evidence.as_of_date.isoformat(),
+                "published_date": evidence.published_date.isoformat() if evidence.published_date else None,
+                "data_quality": evidence.data_quality.value,
+            }
+        )
+    return items[:4]
 
 
 def _feature_items(packet: ResearchPacket, names: tuple[str, ...]) -> list[dict[str, Any]]:
@@ -2617,7 +2684,7 @@ def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
         masked = value
         for token in tokens:
             masked = re.sub(_identity_token_pattern(token), "MASKED", masked, flags=re.IGNORECASE)
-        return masked
+        return _scrub_url_text(masked)
     if isinstance(value, list):
         return [_mask_identity_in_value(item, tokens) for item in value]
     if isinstance(value, tuple):
@@ -2625,6 +2692,12 @@ def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
     if isinstance(value, dict):
         return {key: _mask_identity_in_value(item, tokens) for key, item in value.items()}
     return value
+
+
+def _scrub_url_text(value: str) -> str:
+    scrubbed = re.sub(r"\bhttps?://[^\s\"'<>)}\]]+", "MASKED_URL", value)
+    scrubbed = re.sub(r"\bwww\.[^\s\"'<>)}\]]+", "MASKED_URL", scrubbed, flags=re.IGNORECASE)
+    return scrubbed
 
 
 def _identity_token_pattern(token: str) -> str:
@@ -2729,7 +2802,7 @@ def _positive_event_terms() -> tuple[str, ...]:
 
 def _ai_chain_keyword_terms() -> tuple[str, ...]:
     return tuple(
-        dict.fromkeys(keyword for _label, keywords in _ai_chain_anchors() for keyword in keywords)
+        dict.fromkeys(keyword for _label, keywords in _ai_chain_stage_definitions() for keyword in keywords)
     )
 
 
@@ -2842,21 +2915,53 @@ def _matches_ai_chain_keywords(text: str, keywords: tuple[str, ...]) -> bool:
     return any(re.search(_keyword_pattern(keyword), text, flags=re.IGNORECASE) for keyword in keywords)
 
 
+def _matches_ai_chain_keyword_unnegated(text: str, keyword: str) -> bool:
+    for match in re.finditer(_keyword_pattern(keyword), text, flags=re.IGNORECASE):
+        prefix = text[max(0, match.start() - 100) : match.start()].lower()
+        if re.search(
+            r"\b(no|not|without|lacks?|lacking|absence of|did not|has not|have not|disclosed no)\b[^.]{0,100}$",
+            prefix,
+        ):
+            continue
+        return True
+    return False
+
+
 def _keyword_pattern(keyword: str) -> str:
     if keyword == "ai":
         return r"\bAI\b"
     return r"\b" + r"\s+".join(re.escape(part) for part in keyword.split()) + r"\b"
 
 
-def _ai_chain_anchors() -> tuple[tuple[str, tuple[str, ...]], ...]:
+def _ai_chain_stage_definitions() -> tuple[tuple[str, tuple[str, ...]], ...]:
     return (
-        ("model/application demand", ("ai", "artificial intelligence", "generative ai", "machine learning")),
-        ("compute/cloud capex", ("cloud", "hyperscaler", "data center", "datacenter", "ai factory")),
-        ("accelerators and memory", ("gpu", "accelerator", "hbm", "memory", "asic")),
-        ("networking and servers", ("networking", "ethernet", "infiniband", "server", "rack")),
-        ("power and cooling", ("power", "cooling", "liquid cooling", "thermal", "grid", "substation")),
-        ("supply/capacity bottleneck", ("capacity", "backlog", "order", "contract", "shipment", "lead time")),
+        ("model/application demand", ("ai", "artificial intelligence", "generative ai", "machine learning", "inference", "training")),
+        ("compute/cloud capex", ("cloud", "hyperscaler", "data center", "datacenter", "ai factory", "server farm")),
+        ("accelerators and high-bandwidth memory", ("gpu", "accelerator", "hbm", "high bandwidth memory", "memory", "asic", "chip")),
+        ("networking/server/rack integration", ("networking", "ethernet", "infiniband", "server", "rack", "switch")),
+        ("power/grid/electrical infrastructure", ("power", "grid", "substation", "transformer", "switchgear", "megawatt", "mw", "interconnection")),
+        ("cooling/thermal management", ("cooling", "liquid cooling", "thermal", "chiller", "immersion cooling", "heat exchanger", "hvac")),
+        ("construction/real estate/permitting", ("construction", "permitting", "land", "lease", "facility", "campus")),
+        ("customer capex and order pull-through", ("capacity", "backlog", "order", "contract", "shipment", "lead time", "customer", "purchase order", "supply agreement")),
     )
+
+
+def _ai_chain_directness_definitions() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    return (
+        ("order/contract/backlog", ("order", "contract", "backlog", "purchase order", "supply agreement", "award")),
+        ("shipment/deployment", ("shipment", "delivery", "deployment", "installation", "wells online")),
+        ("capacity/facility expansion", ("capacity", "facility", "campus", "megawatt", "mw", "construction")),
+        ("customer pull-through", ("customer", "hyperscaler", "cloud provider", "data center operator")),
+        ("funding/capex/guidance", ("funding", "capex", "capital expenditure", "guidance", "credit facility")),
+    )
+
+
+def _ai_chain_directness_markers(text: str) -> list[str]:
+    return [
+        label
+        for label, keywords in _ai_chain_directness_definitions()
+        if any(_matches_ai_chain_keyword_unnegated(text, keyword) for keyword in keywords)
+    ]
 
 
 def _numeric(value: Any) -> float:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import os
 import re
@@ -18,7 +19,7 @@ from stock_opportunity_agent.data.documents import DocumentRecord
 from stock_opportunity_agent.data.sources.core import DataSourceError, UrllibJsonTransport
 from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
-from stock_opportunity_agent.models import EvidenceKind, ResearchPacket, ValidationError
+from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ResearchPacket, ValidationError
 from stock_opportunity_agent.research import (
     BlindCaseAnalysis,
     CachedRalphBlindResearcher,
@@ -304,18 +305,21 @@ def _enrich_cases_with_documents(
             continue
         as_of_date = case.packet.as_of.as_of_date
         document_source_ids = {document.source_id for document in documents if document.available_as_of(as_of_date)}
+        document_digest_ids = {f"{source_id}:fact-digest" for source_id in document_source_ids}
         refreshed_evidence = [
             document.to_evidence(as_of_date)
             for document in documents
             if document.available_as_of(as_of_date)
         ]
+        refreshed_evidence.extend(_source_fact_digest_evidence(document, as_of_date) for document in documents)
+        refreshed_evidence = [item for item in refreshed_evidence if item is not None]
         if not refreshed_evidence:
             enriched.append(case)
             continue
         retained_evidence = [
             item
             for item in case.packet.evidence
-            if item.source_id not in document_source_ids
+            if item.source_id not in document_source_ids and item.source_id not in document_digest_ids
         ]
         refreshed_packet = replace(
             case.packet,
@@ -323,6 +327,142 @@ def _enrich_cases_with_documents(
         )
         enriched.append(replace(case, packet=refreshed_packet))
     return tuple(enriched)
+
+
+def _source_fact_digest_evidence(document: DocumentRecord, as_of_date: date) -> EvidenceItem | None:
+    if not document.available_as_of(as_of_date):
+        return None
+    facts = _source_fact_digest_facts(document)
+    if not facts:
+        return None
+    return EvidenceItem(
+        kind=document.kind,
+        summary=(
+            f"{document.kind.value} fact digest from {document.title}: "
+            + "; ".join(facts[:8])
+        ),
+        as_of_date=as_of_date,
+        source_id=f"{document.source_id}:fact-digest",
+        source_url=document.source_url,
+        published_date=document.published_date,
+        data_quality=DataQuality.CONFIRMED,
+    )
+
+
+def _source_fact_digest_facts(document: DocumentRecord) -> list[str]:
+    text = _normalized_source_text(f"{document.title}. {document.text}")
+    facts: list[str] = []
+    facts.extend(_business_context_facts(text))
+    facts.extend(_listing_compliance_facts(text))
+    facts.extend(_capital_liquidity_facts(text))
+    facts.extend(_operating_metric_facts(text))
+    facts.extend(_financing_transaction_facts(text))
+    return list(dict.fromkeys(fact for fact in facts if fact.strip()))
+
+
+def _normalized_source_text(text: str) -> str:
+    cleaned = html.unescape(text)
+    cleaned = re.sub(r"(?is)<\?xml[^>]*\?>", " ", cleaned)
+    cleaned = re.sub(r"(?is)<!--.*?-->", " ", cleaned)
+    cleaned = re.sub(r"(?is)<(script|style|head|ix:header|xbrli:context|xbrli:unit)[^>]*>.*?</\1>", " ", cleaned)
+    cleaned = re.sub(r"(?is)<\s*br\s*/?\s*>|</\s*(p|div|tr|li|h[1-6])\s*>", ". ", cleaned)
+    cleaned = re.sub(r"(?is)<[^>]+>", " ", cleaned)
+    cleaned = " ".join(cleaned.split())
+    return cleaned
+
+
+def _business_context_facts(text: str) -> list[str]:
+    lower = text.lower()
+    facts: list[str] = []
+    if any(marker in lower for marker in ("oil and gas", "barrels of oil equivalent", "boe/d", "crude oil")):
+        facts.append("business context: oil and gas / energy operations")
+    if any(marker in lower for marker in ("weight management", "weightwatchers", "weight watchers", "workshops")):
+        facts.append("business context: consumer weight-management / wellness services")
+    if "information technology stocks" in lower:
+        facts.append("business context clue: information technology source bucket")
+    if "energy stocks" in lower:
+        facts.append("business context clue: energy source bucket")
+    return facts
+
+
+def _listing_compliance_facts(text: str) -> list[str]:
+    lower = text.lower()
+    facts: list[str] = []
+    if "notice of delisting" in lower or "continued listing" in lower or "minimum bid" in lower:
+        facts.append("listing risk: exchange notice or continued-listing deficiency disclosed")
+    if "stockholders' equity" in lower or "stockholders equity" in lower:
+        facts.append("listing/capital requirement mentions stockholders' equity threshold")
+    if "plan to regain compliance" in lower or "acceptance of compliance plan" in lower:
+        facts.append("listing remediation: compliance plan or cure-period language disclosed")
+    if "reverse split" in lower or "reverse stock split" in lower:
+        facts.append("listing remediation may involve reverse split or share-count action")
+    return facts
+
+
+def _capital_liquidity_facts(text: str) -> list[str]:
+    facts: list[str] = []
+    for label, patterns in (
+        ("cash", (r"cash and cash equivalents(?:\s+(?:were|was|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("total debt", (r"total debt(?:\s+(?:was|of|outstanding|outstanding was|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("long-term debt", (r"long[- ]term debt(?:\s+(?:was|of|outstanding|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("stockholders' equity", (r"stockholders[’']?\s+equity(?:\s+(?:was|of|totaled|deficit of))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("net loss", (r"net loss(?:\s+(?:was|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+    ):
+        value = _first_amount(text, patterns)
+        if value is not None:
+            facts.append(f"{label}: {value}")
+    lower = text.lower()
+    if "going concern" in lower or "substantial doubt" in lower:
+        facts.append("liquidity risk: going-concern or substantial-doubt language appears")
+    if "senior secured" in lower or "credit facility" in lower or "direct financial obligation" in lower:
+        facts.append("capital structure: credit facility or direct financial obligation disclosed")
+    if "warrant" in lower or "at-the-market" in lower or "convertible" in lower:
+        facts.append("dilution risk: warrant, ATM, or convertible language appears")
+    return facts
+
+
+def _operating_metric_facts(text: str) -> list[str]:
+    facts: list[str] = []
+    for label, patterns in (
+        ("revenue/sales", (r"(?:revenue|sales)(?:\s+(?:was|were|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("production volume", (r"sales volumes? of\s+([\d,.]+)\s*(boe/d|barrels of oil equivalent per day)",)),
+        ("capex", (r"(?:capital expenditures|capex)(?:\s+(?:was|were|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+    ):
+        value = _first_amount(text, patterns)
+        if value is not None:
+            facts.append(f"{label}: {value}")
+    lower = text.lower()
+    if "completed drilling operations" in lower or "wells online" in lower:
+        facts.append("operating milestone: drilling completion or wells online disclosed")
+    if "guidance" in lower:
+        facts.append("expectation context: guidance language appears")
+    return facts
+
+
+def _financing_transaction_facts(text: str) -> list[str]:
+    lower = text.lower()
+    facts: list[str] = []
+    if "business combination" in lower or "merger" in lower or "strategic transaction" in lower:
+        facts.append("strategic transaction: merger/business-combination language appears")
+    if "definitive agreement" in lower:
+        facts.append("deal status: definitive-agreement language appears")
+    if "credit agreement" in lower or "amendment" in lower and "credit" in lower:
+        facts.append("financing status: credit agreement or amendment language appears")
+    if "dividend" in lower or "repurchase" in lower or "buyback" in lower:
+        facts.append("capital return: dividend or repurchase language appears")
+    return facts
+
+
+def _first_amount(text: str, patterns: Iterable[str]) -> str | None:
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            amount = match.group(1).strip(" $.,;:")
+            if not re.search(r"\d", amount):
+                continue
+            unit = match.group(2) if len(match.groups()) > 1 and match.group(2) else ""
+            return f"{amount}{(' ' + unit) if unit else ''}"
+    return None
 
 
 def _refresh_sec_filing_documents_for_cases(

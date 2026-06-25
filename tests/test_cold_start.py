@@ -1201,10 +1201,76 @@ class ColdStartSignalTests(TestCase):
             any(item.get("item_type") == "ai_chain_transmission" for item in theme.items)
         )
         self.assertTrue(
+            any(
+                item.get("item_type") == "ai_chain_stage_map"
+                and item.get("directness_level") == "company_level"
+                and "cooling/thermal management" in item.get("matched_stages", ())
+                and "customer capex and order pull-through" in item.get("matched_stages", ())
+                for item in theme.items
+            )
+        )
+        self.assertTrue(
             any("liquid cooling" in item.get("summary", "") for item in materiality.items)
         )
         self.assertNotIn("Field: Set", packet_text)
         self.assertNotIn("Winner Corp", packet_text)
+        self.assertNotIn("https://", packet_text)
+
+    def test_ralph_packet_marks_ai_theme_without_direct_pullthrough_as_caution(self) -> None:
+        case = make_case(
+            "control-ai-theme-only",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.04,
+            earnings_growth=-0.05,
+            margin=0.02,
+            return_20d=0.03,
+            return_60d=0.08,
+            target_upside=0.05,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="ai-theme",
+                    symbol="THEME",
+                    kind=EvidenceKind.RESEARCH_REPORT,
+                    title="AI strategy overview",
+                    text=(
+                        "The company discussed artificial intelligence strategy and machine learning "
+                        "initiatives but disclosed no customer orders, capacity expansion, funding, "
+                        "or data center deployment."
+                    ),
+                    source_id="research:theme:ai",
+                    source_url="https://example.com/ai-theme",
+                    published_date=AS_OF - timedelta(days=5),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        learning = learn_pre_surge_signal_logic([case])
+        themes = build_cold_start_theme_maps([case], learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(case),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize([case], blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            [case],
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(case, scheme, anonymous_case_id="case_ai_theme_only")
+
+        theme = next(section for section in packet.sections if section.name == "Theme/Industry Transmission")
+        packet_text = json.dumps(packet.to_dict())
+        self.assertTrue(
+            any(
+                item.get("item_type") == "ai_chain_stage_map"
+                and item.get("directness_level") == "theme_only"
+                for item in theme.items
+            )
+        )
+        self.assertTrue(
+            any(item.get("item_type") == "ai_chain_theme_caution" for item in theme.items)
+        )
+        self.assertNotIn("https://example.com", packet_text)
 
     def test_ralph_packet_distills_event_polarity_materiality_and_risk(self) -> None:
         ai_order_case = make_case(
@@ -1383,6 +1449,74 @@ class ColdStartSignalTests(TestCase):
         self.assertTrue(
             any(item.get("item_type") == "source_quality_caution" for item in risk.items)
         )
+
+    def test_ralph_document_enrichment_adds_source_fact_digest(self) -> None:
+        case = make_case(
+            "abc-filing-digest",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.02,
+            earnings_growth=-0.10,
+            margin=-0.04,
+            return_20d=-0.18,
+            return_60d=-0.30,
+            target_upside=0.15,
+            catalyst_count=0,
+            sector="Unknown",
+            company_name="ABC Digest Corp",
+        )
+        document = DocumentRecord(
+            document_id="abc-10q",
+            symbol="ABC",
+            kind=EvidenceKind.FILING,
+            title="ABC Digest Corp 10-Q",
+            text=(
+                "<html><body><p>ABC Digest Corp generated sales volumes of 12,989 Boe/d.</p>"
+                "<p>Cash and cash equivalents totaled $10.5 million.</p>"
+                "<p>Total debt outstanding was $200 million.</p>"
+                "<p>Item 3.01 Notice of Delisting or Failure to Satisfy a Continued "
+                "Listing Rule. The exchange notice referenced stockholders' equity requirements.</p>"
+                "</body></html>"
+            ),
+            source_id="sec:abc:10q",
+            source_url="https://www.sec.gov/Archives/edgar/data/1/2/abc-10q.htm",
+            published_date=AS_OF - timedelta(days=4),
+            retrieved_at=STAMP,
+        )
+        enriched = _enrich_cases_with_documents((case,), {"ABC": (document,)})
+        learning = learn_pre_surge_signal_logic(enriched)
+        themes = build_cold_start_theme_maps(enriched, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(item) for item in enriched)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(enriched, blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            enriched,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(enriched[0], scheme, anonymous_case_id="case_digest")
+
+        fundamentals = next(section for section in packet.sections if section.name == "Compressed Fundamentals")
+        risk = next(section for section in packet.sections if section.name == "Contrary/Risk Evidence")
+        packet_text = json.dumps(packet.to_dict())
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_fact_digest"
+                and "cash: 10.5 million" in item.get("summary", "")
+                and "total debt: 200 million" in item.get("summary", "")
+                and "production volume: 12,989 Boe/d" in item.get("summary", "")
+                for item in fundamentals.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_fact_digest"
+                and "listing risk" in item.get("summary", "")
+                for item in risk.items
+            )
+        )
+        self.assertNotIn("ABC Digest", packet_text)
+        self.assertNotIn("https://www.sec.gov", packet_text)
 
     def test_ralph_experiment_rehydrates_saved_documents_for_current_packets(self) -> None:
         stale_case = make_case(
