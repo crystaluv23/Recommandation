@@ -92,6 +92,11 @@ Artifacts may also keep the raw confidence gap for historical comparison, but
 raw confidence is the model's confidence in its own judgment and must not be
 interpreted as bullish confidence when the judgment is `unlikely` or
 `insufficient_information`.
+The blind prompt should align with this metric: `possible` is a positive
+watchlist judgment and should only be used when source-backed positive evidence
+supports confidence of at least 0.45. Lower-confidence positive hunches should
+be returned as `insufficient_information` with missing evidence, not as
+low-confidence `possible`.
 
 If the holdout threshold is not met, Ralph must persist error analysis and a
 next proposal. It must not present the loop as solved just because the bounded
@@ -157,7 +162,11 @@ from already-saved local documents and optional refreshed SEC primary-document
 text before rendering blind packets. These digests should extract auditable
 point-in-time facts such as business/sector clues, revenue or sales, cash,
 debt, stockholders' equity, listing-compliance terms, financing commitments, and
-operating volumes without pasting raw tables. They remain source-linked,
+operating volumes without pasting raw tables. Listing digests should prefer
+concrete terms such as minimum bid, stockholders' equity thresholds or deficits,
+plan deadlines, and cure-period language; financing digests should prefer
+drawn amounts, facility size, and covenant/liquidity context when available.
+They remain source-linked,
 identity-masked at packet render time, and proposal-only; blind validation still
 receives no web tools and no labels.
 

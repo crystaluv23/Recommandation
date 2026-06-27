@@ -1474,7 +1474,12 @@ class ColdStartSignalTests(TestCase):
                 "<p>Cash and cash equivalents totaled $10.5 million.</p>"
                 "<p>Total debt outstanding was $200 million.</p>"
                 "<p>Item 3.01 Notice of Delisting or Failure to Satisfy a Continued "
-                "Listing Rule. The exchange notice referenced stockholders' equity requirements.</p>"
+                "Listing Rule. The exchange notice referenced a minimum bid price of at least "
+                "$1.00 per share and stockholders' equity requirements.</p>"
+                "<p>The company reported stockholders' equity of $(1.8) million.</p>"
+                "<p>The company must submit a plan of compliance by June 30, 2025.</p>"
+                "<p>The company borrowed approximately $121.3 million under the revolving credit "
+                "facility, and aggregate principal amount of borrowings was $175.0 million.</p>"
                 "</body></html>"
             ),
             source_id="sec:abc:10q",
@@ -1505,6 +1510,7 @@ class ColdStartSignalTests(TestCase):
                 and "cash: 10.5 million" in item.get("summary", "")
                 and "total debt: 200 million" in item.get("summary", "")
                 and "production volume: 12,989 Boe/d" in item.get("summary", "")
+                and "revolver draw: 121.3 million" in item.get("summary", "")
                 for item in fundamentals.items
             )
         )
@@ -1512,6 +1518,9 @@ class ColdStartSignalTests(TestCase):
             any(
                 item.get("item_type") == "source_fact_digest"
                 and "listing risk" in item.get("summary", "")
+                and "minimum bid 1.00 per share" in item.get("summary", "")
+                and "reported stockholders' equity: -1.8 million" in item.get("summary", "")
+                and "compliance plan due June 30, 2025" in item.get("summary", "")
                 for item in risk.items
             )
         )
@@ -2000,9 +2009,14 @@ class ColdStartSignalTests(TestCase):
         OpenAIRalphBlindResearcher(client).analyze(packet)
 
         payload = transport.calls[0][2]
+        developer_text = payload["input"][0]["content"][0]["text"]
         prompt_text = payload["input"][1]["content"][0]["text"]
         self.assertNotIn("tools", payload)
         self.assertIn("\"web_tools_allowed\": false", prompt_text)
+        self.assertIn("never list missing ticker or unmasked company name", developer_text)
+        self.assertIn("possible means a source-backed positive setup with confidence >= 0.45", developer_text)
+        self.assertIn("intentionally hidden", prompt_text)
+        self.assertIn("possible only when", prompt_text)
         for forbidden in ("AAPL", "Apple", "winner-apple", "winner", "control", "https://example.com"):
             self.assertNotIn(forbidden, prompt_text)
 

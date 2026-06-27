@@ -230,7 +230,13 @@ class BlindSchemePacket:
             "web_tools_allowed": False,
             "task": (
                 "Judge whether this anonymous as-of case looks like a potential "
-                "3-6 month surge candidate. Use only the sections below."
+                "3-6 month surge candidate. Use only the sections below. "
+                "The ticker and company name are intentionally hidden; do not treat missing "
+                "unmasked identity as missing context. Evaluate only identity-safe business "
+                "descriptions, source-backed facts, catalysts, timing, and risks. Calibrate "
+                "positive judgments consistently: use likely for high-conviction positive "
+                "setups, possible only when the positive setup is strong enough for confidence "
+                "of at least 0.45, and insufficient_information when confidence would be lower."
             ),
             "sections": [section.to_dict() for section in self.sections],
             "required_json_schema": {
@@ -403,8 +409,14 @@ class OpenAIRalphBlindResearcher:
                             "You are validating a proposed cold-start information scheme. "
                             "Use only the supplied anonymous as-of packet. Web search is disabled. "
                             "Do not infer or mention any hidden outcome group, ticker, company name, "
-                            "future return, or post-as-of fact. Return strict concise JSON."
-                            " Include missing_context for evidence buckets that prevent a confident judgment."
+                            "future return, or post-as-of fact. The company identity is intentionally "
+                            "masked; never list missing ticker or unmasked company name as missing_context. "
+                            "If business context is thin, ask for identity-safe sector, industry, customer, "
+                            "product, or capital-structure evidence instead. Calibrate confidence so "
+                            "likely means high-conviction positive evidence, possible means a source-backed "
+                            "positive setup with confidence >= 0.45, and lower-confidence positive hunches "
+                            "are insufficient_information. Return strict concise JSON. "
+                            "Include missing_context for evidence buckets that prevent a confident judgment."
                         ),
                     ),
                     ChatMessage("user", json.dumps(packet.to_prompt_dict(), indent=2, sort_keys=True)),
@@ -2254,7 +2266,47 @@ def _source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
                 "data_quality": evidence.data_quality.value,
             }
         )
-    return items[:4]
+    return sorted(
+        items,
+        key=lambda item: _source_fact_digest_score(str(item.get("summary", ""))),
+        reverse=True,
+    )[:4]
+
+
+def _source_fact_digest_score(summary: str) -> int:
+    text = summary.lower()
+    score = 0
+    for marker in (
+        "cash:",
+        "total debt:",
+        "long-term debt:",
+        "revolver draw:",
+        "revolver borrowings:",
+        "reported stockholders' equity:",
+        "revenue/sales:",
+        "production volume:",
+        "capex:",
+    ):
+        if marker in text:
+            score += 4
+    for marker in (
+        "listing risk",
+        "listing remediation",
+        "compliance plan due",
+        "credit facility",
+        "strategic transaction",
+        "definitive-agreement",
+        "financing status",
+        "operating milestone",
+        "guidance",
+    ):
+        if marker in text:
+            score += 2
+    if "business context:" in text:
+        score += 1
+    if _generic_market_source_summary(summary) or "source bucket" in text:
+        score -= 3
+    return score
 
 
 def _feature_items(packet: ResearchPacket, names: tuple[str, ...]) -> list[dict[str, Any]]:

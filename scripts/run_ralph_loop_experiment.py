@@ -339,7 +339,7 @@ def _source_fact_digest_evidence(document: DocumentRecord, as_of_date: date) -> 
         kind=document.kind,
         summary=(
             f"{document.kind.value} fact digest from {document.title}: "
-            + "; ".join(facts[:8])
+            + "; ".join(facts[:12])
         ),
         as_of_date=as_of_date,
         source_id=f"{document.source_id}:fact-digest",
@@ -390,8 +390,26 @@ def _listing_compliance_facts(text: str) -> list[str]:
     facts: list[str] = []
     if "notice of delisting" in lower or "continued listing" in lower or "minimum bid" in lower:
         facts.append("listing risk: exchange notice or continued-listing deficiency disclosed")
+    minimum_bid = _first_amount(text, (r"minimum (?:closing )?bid price of at least\s+\$?([\d,.]+)\s*(?:per share)?",))
+    if minimum_bid is not None:
+        facts.append(f"listing requirement: minimum bid {minimum_bid} per share")
     if "stockholders' equity" in lower or "stockholders equity" in lower:
         facts.append("listing/capital requirement mentions stockholders' equity threshold")
+    reported_equity = _first_amount(
+        text,
+        (
+            r"reported stockholders[’']?\s+equity of\s+\$?\(?([\d,.]+)\)?\s*(million|billion|thousand)?",
+        ),
+    )
+    if reported_equity is not None:
+        sign = "-" if re.search(r"reported stockholders[’']?\s+equity of\s+\$?\(", text, flags=re.IGNORECASE) else ""
+        facts.append(f"reported stockholders' equity: {sign}{reported_equity}")
+    plan_due = _first_date_phrase(
+        text,
+        (r"submit a plan(?: of compliance)?[^.]{0,80}? by ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",),
+    )
+    if plan_due is not None:
+        facts.append(f"listing remediation deadline: compliance plan due {plan_due}")
     if "plan to regain compliance" in lower or "acceptance of compliance plan" in lower:
         facts.append("listing remediation: compliance plan or cure-period language disclosed")
     if "reverse split" in lower or "reverse stock split" in lower:
@@ -407,6 +425,8 @@ def _capital_liquidity_facts(text: str) -> list[str]:
         ("long-term debt", (r"long[- ]term debt(?:\s+(?:was|of|outstanding|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
         ("stockholders' equity", (r"stockholders[’']?\s+equity(?:\s+(?:was|of|totaled|deficit of))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
         ("net loss", (r"net loss(?:\s+(?:was|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        ("revolver draw", (r"borrowed approximately\s+\$?([\d,.]+)\s*(million|billion|thousand)?\s+under (?:the )?(?:senior secured )?revolving credit facility",)),
+        ("revolver borrowings", (r"aggregate principal amount of borrowings[^.]{0,80}?\s+was\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
     ):
         value = _first_amount(text, patterns)
         if value is not None:
@@ -462,6 +482,14 @@ def _first_amount(text: str, patterns: Iterable[str]) -> str | None:
                 continue
             unit = match.group(2) if len(match.groups()) > 1 and match.group(2) else ""
             return f"{amount}{(' ' + unit) if unit else ''}"
+    return None
+
+
+def _first_date_phrase(text: str, patterns: Iterable[str]) -> str | None:
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            return " ".join(match.group(1).replace(".", "").split())
     return None
 
 
