@@ -1472,9 +1472,10 @@ def _scheme_rubrics() -> dict[str, list[str]]:
             "Require timing evidence that the theme can affect the as-of company within the evaluation horizon.",
         ],
         "ai_chain_bottleneck_transmission": [
-            "For AI/data-center cases, map upstream and downstream bottlenecks from demand to company economics.",
+            "Start top-down from the AI demand source, then map upstream and downstream bottleneck layers before judging the company.",
             "Prefer direct exposure to compute, memory, networking, power, cooling, grid, construction, or customer capex over generic AI mentions.",
-            "Require source-backed orders, capacity, funding, customer pull-through, or margin leverage before treating an AI-chain narrative as high conviction.",
+            "Treat a case as higher quality only when bottleneck position, company-level pull-through, irreplaceability, and near-term operating leverage are source-backed.",
+            "Require orders, capacity, funding, customer pull-through, guidance, revenue, margin, or EBITDA evidence before treating an AI-chain narrative as high conviction.",
         ],
         "contrary_evidence": [
             "Always include the strongest reason the case may be a false positive.",
@@ -2119,21 +2120,35 @@ def _ai_chain_transmission_items(packet: ResearchPacket) -> list[dict[str, Any]]
     if not anchors:
         return []
     direct_markers = _ai_chain_directness_markers(text)
+    irreplaceability_markers = _ai_chain_irreplaceability_markers(text)
+    operating_markers = _ai_chain_operating_leverage_markers(text)
+    bottleneck_markers = _ai_chain_bottleneck_markers(anchors, text)
     directness_level = "company_level" if direct_markers else "theme_only"
+    bottleneck_position = "bottleneck_candidate" if direct_markers and bottleneck_markers else "theme_adjacent"
     items = [
         {
             "item_type": "ai_chain_stage_map",
             "chain_focus": "AI/data-center",
             "matched_stages": anchors[:6],
             "directness_level": directness_level,
+            "bottleneck_position": bottleneck_position,
             "direct_evidence_markers": direct_markers[:4],
+            "bottleneck_markers": bottleneck_markers[:4],
+            "irreplaceability_markers": irreplaceability_markers[:4],
+            "operating_leverage_markers": operating_markers[:4],
+            "methodology": _ai_chain_methodology(),
             "summary": (
                 "AI/data-center chain stage map from as-of evidence: "
                 + ", ".join(anchors[:6])
-                + f". Directness: {directness_level}"
+                + f". Directness: {directness_level}; bottleneck read: {bottleneck_position}"
                 + (f" via {', '.join(direct_markers[:4])}." if direct_markers else ".")
+                + (
+                    f" Irreplaceability markers: {', '.join(irreplaceability_markers[:3])}."
+                    if irreplaceability_markers
+                    else " No explicit irreplaceability marker detected."
+                )
                 + " Prefer cases where theme demand transmits through orders, customer pull-through, "
-                "capacity, funding, or guidance inside 3-6 months; treat generic AI mentions as weak."
+                "capacity, funding, guidance, or operating leverage inside 3-6 months; treat generic AI mentions as weak."
             ),
         }
     ]
@@ -3221,12 +3236,74 @@ def _ai_chain_directness_definitions() -> tuple[tuple[str, tuple[str, ...]], ...
     )
 
 
+def _ai_chain_irreplaceability_definitions() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    return (
+        ("exclusive/proprietary position", ("exclusive", "sole source", "proprietary", "patent", "patented")),
+        ("qualification/certification barrier", ("qualified supplier", "certified", "approved vendor", "designed in")),
+        ("scarce capacity/lead time", ("capacity constrained", "sold out", "lead time", "allocation", "shortage")),
+        ("specialized integration", ("custom", "mission critical", "high density", "liquid cooling", "immersion cooling")),
+    )
+
+
+def _ai_chain_operating_leverage_definitions() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    return (
+        ("revenue/sales pull-through", ("revenue", "sales", "booking", "billings")),
+        ("margin/EBITDA leverage", ("gross margin", "margin", "ebitda", "operating income")),
+        ("guidance/backlog conversion", ("guidance", "backlog", "pipeline", "orders")),
+        ("capacity utilization", ("utilization", "ramp", "production", "shipment")),
+    )
+
+
 def _ai_chain_directness_markers(text: str) -> list[str]:
     return [
         label
         for label, keywords in _ai_chain_directness_definitions()
         if any(_matches_ai_chain_keyword_unnegated(text, keyword) for keyword in keywords)
     ]
+
+
+def _ai_chain_irreplaceability_markers(text: str) -> list[str]:
+    return [
+        label
+        for label, keywords in _ai_chain_irreplaceability_definitions()
+        if any(_matches_ai_chain_keyword_unnegated(text, keyword) for keyword in keywords)
+    ]
+
+
+def _ai_chain_operating_leverage_markers(text: str) -> list[str]:
+    return [
+        label
+        for label, keywords in _ai_chain_operating_leverage_definitions()
+        if any(_matches_ai_chain_keyword_unnegated(text, keyword) for keyword in keywords)
+    ]
+
+
+def _ai_chain_bottleneck_markers(anchors: list[str], text: str) -> list[str]:
+    markers = [
+        stage
+        for stage in anchors
+        if stage
+        in {
+            "accelerators and high-bandwidth memory",
+            "networking/server/rack integration",
+            "power/grid/electrical infrastructure",
+            "cooling/thermal management",
+            "construction/real estate/permitting",
+            "customer capex and order pull-through",
+        }
+    ]
+    markers.extend(_ai_chain_irreplaceability_markers(text))
+    return list(dict.fromkeys(markers))
+
+
+def _ai_chain_methodology() -> tuple[str, ...]:
+    return (
+        "Identify the AI demand source and spending pool.",
+        "Map upstream and downstream bottleneck layers.",
+        "Decide whether the company owns a bottleneck or is theme-adjacent.",
+        "Require source-backed orders, capacity, funding, customer pull-through, or operating leverage.",
+        "Subtract execution, financing, listing, valuation, and already-priced risks.",
+    )
 
 
 def _numeric(value: Any) -> float:

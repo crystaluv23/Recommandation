@@ -132,7 +132,11 @@ before packet rendering. This refresh is data acquisition for the label-aware
 research layer, not blind-stage web use. It must remain point-in-time by
 filtering on document availability dates, must skip refreshed text that
 introduces another selected case's identity tokens, and must pass global
-cross-case leakage scanning before any external blind provider call. For
+cross-case leakage scanning before any external blind provider call. Refreshed
+SEC primary documents must also be checked against their own declared
+registrant and trading-symbol table; when those declared identities conflict
+with the current case, the refreshed body is treated as a mismapped source and
+the original local document is retained with an audit warning. For
 AI-related evidence, `Theme/Industry Transmission` should map model/application
 demand through compute, data-center, power, cooling, networking, component, and
 customer-capex bottlenecks while explicitly distinguishing direct bottleneck
@@ -149,10 +153,14 @@ theme demand source, map the upstream and downstream bottleneck layers, decide
 whether the anonymous company sits in a bottleneck or is merely theme-adjacent,
 require source-backed proof of company-level pull-through, and then subtract
 execution, financing, listing, and valuation risks. For AI/cloud cases, compact
-digests may include identity-safe references to enterprise digital
-transformation, cybersecurity budgets, cloud-platform partnerships, customer or
-partner pull-through, guidance, revenue, or EBITDA evidence, but only when those
-facts are available point-in-time.
+digests should separately mark bottleneck position, direct evidence markers,
+irreplaceability clues such as exclusive/proprietary/qualification/scarce-
+capacity signals, and operating-leverage clues such as revenue, margin, EBITDA,
+guidance, backlog conversion, shipments, or utilization. They may include
+identity-safe references to enterprise digital transformation, cybersecurity
+budgets, cloud-platform partnerships, customer or partner pull-through,
+guidance, revenue, or EBITDA evidence, but only when those facts are available
+point-in-time.
 Ralph packets should also include a deterministic point-in-time event
 distillation layer before raw source excerpts dominate the context. This layer
 classifies saved as-of evidence into compact event families such as

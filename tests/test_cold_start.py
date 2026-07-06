@@ -1163,6 +1163,7 @@ class ColdStartSignalTests(TestCase):
                         "<!-- Field: Set; Name: xdx; ID: xdx_06D_USDPShares -->"
                         "<body><p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
                         "<p>The company signed a customer order for AI data center liquid cooling systems.</p>"
+                        "<p>Management described proprietary high density cooling and gross margin leverage.</p>"
                         "</body></html>"
                     ),
                     source_id="sec:winner:8k",
@@ -1204,8 +1205,12 @@ class ColdStartSignalTests(TestCase):
             any(
                 item.get("item_type") == "ai_chain_stage_map"
                 and item.get("directness_level") == "company_level"
+                and item.get("bottleneck_position") == "bottleneck_candidate"
                 and "cooling/thermal management" in item.get("matched_stages", ())
                 and "customer capex and order pull-through" in item.get("matched_stages", ())
+                and "specialized integration" in item.get("irreplaceability_markers", ())
+                and "margin/EBITDA leverage" in item.get("operating_leverage_markers", ())
+                and "Map upstream and downstream bottleneck layers." in item.get("methodology", ())
                 for item in theme.items
             )
         )
@@ -1264,6 +1269,7 @@ class ColdStartSignalTests(TestCase):
             any(
                 item.get("item_type") == "ai_chain_stage_map"
                 and item.get("directness_level") == "theme_only"
+                and item.get("bottleneck_position") == "theme_adjacent"
                 for item in theme.items
             )
         )
@@ -1796,6 +1802,60 @@ class ColdStartSignalTests(TestCase):
         )
 
         self.assertIn("cross-case identity terms", warnings[0])
+        self.assertEqual(refreshed["ABC"][0].text, original_text)
+
+    def test_ralph_refresh_skips_sec_declared_identity_conflict(self) -> None:
+        class MismatchedSecTextTransport:
+            def get_text(self, url, headers):
+                return (
+                    "<html><body><p>UNITED STATES SECURITIES AND EXCHANGE COMMISSION</p>"
+                    "<p>FORM 8-K</p>"
+                    "<p>Date of Report (Date of earliest event reported): January 6, 2025</p>"
+                    "<p>SRM ENTERTAINMENT, INC.</p>"
+                    "<p>(Exact name of registrant as specified in charter)</p>"
+                    "<p>Title of each class Trading Symbol(s) Name of each exchange on which registered</p>"
+                    "<p>Common Stock SRM The Nasdaq Stock Market LLC</p>"
+                    "<p>Item 5.02 Departure of Directors or Principal Officers.</p>"
+                    "</body></html>"
+                )
+
+        target_case = make_case(
+            "abc-filing-refresh",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        original_text = "8-K filed on the as-of date."
+        documents = {
+            "ABC": (
+                DocumentRecord(
+                    document_id="abc-sec-8k",
+                    symbol="ABC",
+                    kind=EvidenceKind.FILING,
+                    title="ABC 8-K",
+                    text=original_text,
+                    source_id="sec:abc:8k",
+                    source_url="https://www.sec.gov/Archives/edgar/data/1/2/form8-k.htm",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+            )
+        }
+
+        refreshed, warnings = _refresh_sec_filing_documents_for_cases(
+            documents,
+            (target_case,),
+            user_agent="test-agent",
+            transport=MismatchedSecTextTransport(),
+        )
+
+        self.assertIn("declared identity conflicts", warnings[0])
+        self.assertIn("trading symbols SRM", warnings[0])
         self.assertEqual(refreshed["ABC"][0].text, original_text)
 
     def test_ralph_preflight_leakage_report_scans_cross_case_identities(self) -> None:

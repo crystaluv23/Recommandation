@@ -670,6 +670,14 @@ def _refresh_sec_filing_documents_for_cases(
                 warnings.append(f"{symbol}: SEC filing text refresh failed for {document.source_id}: {exc}")
                 refreshed_documents.append(document)
                 continue
+            declared_conflicts = _sec_declared_identity_conflicts(text, cases_by_symbol[symbol])
+            if declared_conflicts:
+                warnings.append(
+                    f"{symbol}: SEC filing text refresh skipped for {document.source_id}: "
+                    f"declared identity conflicts {declared_conflicts}"
+                )
+                refreshed_documents.append(document)
+                continue
             contaminating_terms = _cross_case_identity_hits(text, cases_by_symbol[symbol], cases_by_symbol.values())
             if contaminating_terms:
                 warnings.append(
@@ -692,6 +700,81 @@ def _refresh_sec_filing_documents_for_cases(
 
 def _is_sec_archive_url(url: str) -> bool:
     return url.startswith("https://www.sec.gov/Archives/edgar/data/")
+
+
+def _sec_declared_identity_conflicts(text: str, case: HistoricalCase) -> list[str]:
+    cleaned = _normalized_source_text(text)
+    conflicts: list[str] = []
+    declared_symbols = _sec_declared_trading_symbols(cleaned)
+    own_symbol = case.packet.company.ticker.symbol.upper()
+    unexpected_symbols = sorted(symbol for symbol in declared_symbols if symbol != own_symbol)
+    if declared_symbols and own_symbol not in declared_symbols and unexpected_symbols:
+        conflicts.append("trading symbols " + ", ".join(unexpected_symbols[:4]))
+    registrant = _sec_declared_registrant(cleaned)
+    if registrant and not _registrant_matches_case(registrant, case):
+        conflicts.append(f"registrant {registrant}")
+    return conflicts[:4]
+
+
+def _sec_declared_trading_symbols(text: str) -> set[str]:
+    match = re.search(
+        r"Trading Symbol\(s\)(.*?)(?:Indicate by check mark|Emerging growth company|Item\s+\d+\.\d+)",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return set()
+    stopwords = {
+        "ACT",
+        "CAPITAL",
+        "CLASS",
+        "COMMON",
+        "EACH",
+        "EXCHANGE",
+        "LLC",
+        "MARKET",
+        "NAME",
+        "NASDAQ",
+        "NONE",
+        "NYSE",
+        "OF",
+        "ON",
+        "REGISTERED",
+        "SECURITIES",
+        "STOCK",
+        "SYMBOL",
+        "THE",
+        "TITLE",
+        "TRADING",
+        "WHICH",
+    }
+    symbols = {
+        candidate
+        for candidate in re.findall(r"\b[A-Z][A-Z0-9.]{0,5}\b", match.group(1).upper())
+        if candidate not in stopwords and not candidate.startswith("N/")
+    }
+    return symbols
+
+
+def _sec_declared_registrant(text: str) -> str | None:
+    match = re.search(
+        r"\b([A-Z][A-Z0-9&.,' -]{2,120})\s+\(Exact name of registrant",
+        text,
+    )
+    if not match:
+        return None
+    return " ".join(match.group(1).split()).strip(" .,:;-")
+
+
+def _registrant_matches_case(registrant: str, case: HistoricalCase) -> bool:
+    registrant_lower = registrant.lower()
+    for _kind, value in _leak_terms(case):
+        token = value.strip().lower()
+        if len(token) < 3:
+            continue
+        if token in registrant_lower or registrant_lower in token:
+            return True
+    return False
 
 
 def _cross_case_identity_hits(text: str, case: HistoricalCase, all_cases: Iterable[HistoricalCase]) -> list[str]:
