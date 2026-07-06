@@ -144,6 +144,15 @@ funding, capex, or guidance. Mentions of AI without these pull-through markers
 must be shown as a theme-only caution, not promoted into a bullish catalyst.
 Negated statements such as "no orders" or "no funding" must not be counted as
 directness evidence.
+The chain lens should follow a top-down methodology: identify the dominant
+theme demand source, map the upstream and downstream bottleneck layers, decide
+whether the anonymous company sits in a bottleneck or is merely theme-adjacent,
+require source-backed proof of company-level pull-through, and then subtract
+execution, financing, listing, and valuation risks. For AI/cloud cases, compact
+digests may include identity-safe references to enterprise digital
+transformation, cybersecurity budgets, cloud-platform partnerships, customer or
+partner pull-through, guidance, revenue, or EBITDA evidence, but only when those
+facts are available point-in-time.
 Ralph packets should also include a deterministic point-in-time event
 distillation layer before raw source excerpts dominate the context. This layer
 classifies saved as-of evidence into compact event families such as
@@ -166,9 +175,24 @@ operating volumes without pasting raw tables. Listing digests should prefer
 concrete terms such as minimum bid, stockholders' equity thresholds or deficits,
 plan deadlines, and cure-period language; financing digests should prefer
 drawn amounts, facility size, and covenant/liquidity context when available.
+Strategic-transaction digests should extract Form F-4 or registration-statement
+status, proposed business-combination language, shareholder approvals, merger
+deadline extensions, possible extension windows, redemption language, proposed
+listing plans, target-company revenue/EBITDA facts, and listing/tradability
+risks when these are present in saved point-in-time documents. Risk sections
+should receive a risk-focused digest so redemption, delisting/index-removal,
+going-concern, dilution, debt, or liquidity facts are not truncated behind
+positive operating facts.
 They remain source-linked,
 identity-masked at packet render time, and proposal-only; blind validation still
 receives no web tools and no labels.
+Because refreshed SEC filings often contain issuer, target, or counterparty
+names not present in the original ticker profile, blind rendering must mask
+counterparty names from merger-style titles and SEC issuer phrases such as
+"X Inc. (the Company)" before preflight export. Experiment-only selection
+controls may pin specified symbols into holdout or exclude suspected
+cross-contaminating symbols; these controls are for Ralph validation only and do
+not alter formal cold-start selection or any long-running default prompt.
 
 ## Artifacts
 

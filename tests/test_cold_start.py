@@ -1527,6 +1527,101 @@ class ColdStartSignalTests(TestCase):
         self.assertNotIn("ABC Digest", packet_text)
         self.assertNotIn("https://www.sec.gov", packet_text)
 
+    def test_ralph_document_enrichment_adds_deal_status_and_chain_digest(self) -> None:
+        case = make_case(
+            "spac-deal-digest",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.02,
+            earnings_growth=-0.10,
+            margin=-0.04,
+            return_20d=-0.18,
+            return_60d=-0.30,
+            target_upside=0.15,
+            catalyst_count=0,
+            sector="Unknown",
+            company_name="Acquirer Shell Corp",
+        )
+        document = DocumentRecord(
+            document_id="spac-deal-news",
+            symbol="SPAC",
+            kind=EvidenceKind.NEWS,
+            title="TargetOps and Acquirer Shell Corp File Form F-4/A Ahead of Proposed Nasdaq Listing",
+            text=(
+                "TargetOps and Acquirer Shell Corp filed a Form F-4/A registration statement "
+                "in connection with their proposed Business Combination. TargetOps reported "
+                "revenue reaching $219.8 million, up 36.4% year-over-year, and Adjusted "
+                "EBITDA increasing by 178.4% to $14.0 million. The company is actively "
+                "pursuing a Nasdaq listing and provided positive guidance. Management cited "
+                "digital transformation, cybersecurity, AI solutions, cloud partnerships, "
+                "and customer demand. The merger deadline was extended to July 31, 2024, "
+                "with potential further extensions to October 31, 2024 after shareholder "
+                "approval, though some Class A ordinary shares were redeemed. The company "
+                "was later dropped from Nasdaq Composite Index and auditor going concern "
+                "language appeared. Hidden Issuer, Inc. (the \"Company\") held an annual meeting."
+            ),
+            source_id="wire:spac:deal",
+            source_url="https://example.com/spac-deal",
+            published_date=AS_OF - timedelta(days=30),
+            retrieved_at=STAMP,
+        )
+        enriched = _enrich_cases_with_documents((case,), {"SPAC": (document,)})
+        learning = learn_pre_surge_signal_logic(enriched)
+        themes = build_cold_start_theme_maps(enriched, learning)
+        blind = tuple(HeuristicBlindCaseResearcher().analyze(item) for item in enriched)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(enriched, blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            enriched,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        packet = build_blind_scheme_packet(enriched[0], scheme, anonymous_case_id="case_deal_chain")
+
+        catalyst = next(section for section in packet.sections if section.name == "Catalyst/Event Ledger")
+        theme = next(section for section in packet.sections if section.name == "Theme/Industry Transmission")
+        materiality = next(section for section in packet.sections if section.name == "Materiality and Timing")
+        risk = next(section for section in packet.sections if section.name == "Contrary/Risk Evidence")
+        packet_text = json.dumps(packet.to_dict())
+        self.assertTrue(
+            any(
+                item.get("item_type") == "event_distillation"
+                and item.get("event_family") == "ai_chain_bottleneck_transmission"
+                for item in catalyst.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_fact_digest"
+                and "industry-chain lens" in item.get("summary", "")
+                and "company-level pull-through" in item.get("summary", "")
+                for item in theme.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_fact_digest"
+                and "deal status: Form F-4 registration statement" in item.get("summary", "")
+                and "deal timing: merger deadline extended to July 31, 2024" in item.get("summary", "")
+                and "revenue/sales: 219.8 million" in item.get("summary", "")
+                and "adjusted EBITDA: 14.0 million" in item.get("summary", "")
+                for item in materiality.items
+            )
+        )
+        self.assertTrue(
+            any(
+                item.get("item_type") == "source_fact_digest"
+                and "deal/capital risk: shareholder redemption" in item.get("summary", "")
+                and "listing/tradability risk" in item.get("summary", "")
+                and "liquidity risk" in item.get("summary", "")
+                for item in risk.items
+            )
+        )
+        self.assertNotIn("Acquirer Shell", packet_text)
+        self.assertNotIn("TargetOps", packet_text)
+        self.assertNotIn("Hidden Issuer", packet_text)
+        self.assertNotIn("https://example.com", packet_text)
+
     def test_ralph_experiment_rehydrates_saved_documents_for_current_packets(self) -> None:
         stale_case = make_case(
             "abc-1",
@@ -2548,6 +2643,19 @@ class ColdStartSignalTests(TestCase):
 
         self.assertEqual(selected["refinement"][0].case_id, "zzz-winner-rich")
         self.assertEqual(selected["refinement"][1].case_id, "zzz-control-rich")
+
+        pinned = _select_cases(
+            cases,
+            winner_symbol_count=2,
+            control_symbol_count=2,
+            refinement_per_label=1,
+            selection_policy="evidence-rich",
+            holdout_symbols=frozenset({"ZZZ"}),
+        )
+
+        self.assertEqual(pinned["refinement"][0].case_id, "bbb-winner-holdout")
+        self.assertIn("zzz-winner-rich", {case.case_id for case in pinned["holdout"]})
+        self.assertIn("zzz-control-rich", {case.case_id for case in pinned["holdout"]})
 
     def test_ralph_imported_responses_score_holdout_without_provider_call(self) -> None:
         cases = [

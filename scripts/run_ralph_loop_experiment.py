@@ -65,6 +65,13 @@ def main() -> None:
             cases,
             documents_by_symbol,
         )
+    excluded_symbols = _parse_symbol_set(args.exclude_symbols)
+    if excluded_symbols:
+        cases = tuple(
+            case
+            for case in cases
+            if case.packet.company.ticker.symbol.upper() not in excluded_symbols
+        )
     baseline = _load_blind_analyses(Path(args.baseline_blind_path))
     selected = _select_cases(
         cases,
@@ -72,6 +79,7 @@ def main() -> None:
         control_symbol_count=args.control_symbol_count,
         refinement_per_label=args.refinement_per_label,
         selection_policy=args.selection_policy,
+        holdout_symbols=_parse_symbol_set(args.holdout_symbols),
     )
     if args.refresh_sec_filing_text:
         refreshed_documents, refresh_warnings = _refresh_sec_filing_documents_for_cases(
@@ -233,6 +241,16 @@ def _parse_args() -> argparse.Namespace:
         help="Choose latest cases alphabetically or prioritize packets with richer scheme evidence.",
     )
     parser.add_argument(
+        "--holdout-symbols",
+        default="",
+        help="Comma-separated symbols that must remain in the holdout split if selected.",
+    )
+    parser.add_argument(
+        "--exclude-symbols",
+        default="",
+        help="Comma-separated symbols to exclude from the experiment selection.",
+    )
+    parser.add_argument(
         "--preflight-only",
         action="store_true",
         help="Write anonymous packet export review artifacts without calling a blind LLM.",
@@ -339,7 +357,7 @@ def _source_fact_digest_evidence(document: DocumentRecord, as_of_date: date) -> 
         kind=document.kind,
         summary=(
             f"{document.kind.value} fact digest from {document.title}: "
-            + "; ".join(facts[:12])
+            + "; ".join(facts[:20])
         ),
         as_of_date=as_of_date,
         source_id=f"{document.source_id}:fact-digest",
@@ -353,10 +371,11 @@ def _source_fact_digest_facts(document: DocumentRecord) -> list[str]:
     text = _normalized_source_text(f"{document.title}. {document.text}")
     facts: list[str] = []
     facts.extend(_business_context_facts(text))
+    facts.extend(_industry_chain_transmission_facts(text))
+    facts.extend(_financing_transaction_facts(text))
+    facts.extend(_operating_metric_facts(text))
     facts.extend(_listing_compliance_facts(text))
     facts.extend(_capital_liquidity_facts(text))
-    facts.extend(_operating_metric_facts(text))
-    facts.extend(_financing_transaction_facts(text))
     return list(dict.fromkeys(fact for fact in facts if fact.strip()))
 
 
@@ -378,10 +397,63 @@ def _business_context_facts(text: str) -> list[str]:
         facts.append("business context: oil and gas / energy operations")
     if any(marker in lower for marker in ("weight management", "weightwatchers", "weight watchers", "workshops")):
         facts.append("business context: consumer weight-management / wellness services")
+    if "digital transformation" in lower and ("cybersecurity" in lower or "ai solution" in lower):
+        facts.append("business context: digital transformation / cybersecurity / AI solutions")
     if "information technology stocks" in lower:
         facts.append("business context clue: information technology source bucket")
     if "energy stocks" in lower:
         facts.append("business context clue: energy source bucket")
+    return facts
+
+
+def _industry_chain_transmission_facts(text: str) -> list[str]:
+    lower = text.lower()
+    if not any(
+        marker in lower
+        for marker in (
+            "artificial intelligence",
+            " ai ",
+            "ai solution",
+            "machine learning",
+            "data center",
+            "datacenter",
+            "cloud",
+            "cybersecurity",
+            "digital transformation",
+        )
+    ):
+        return []
+
+    stages: list[str] = []
+    for label, markers in (
+        ("enterprise digital-transformation demand", ("digital transformation", "modernization")),
+        ("cybersecurity budget", ("cybersecurity", "security software", "security solution")),
+        ("AI/software applications", ("artificial intelligence", "ai solution", "machine learning")),
+        ("cloud-platform partnerships", ("microsoft", "aws", "azure", "cloud")),
+        ("data-center infrastructure", ("data center", "datacenter", "server", "gpu")),
+        ("power/cooling bottleneck", ("liquid cooling", "cooling", "power", "grid")),
+    ):
+        if any(marker in lower for marker in markers):
+            stages.append(label)
+    if not stages:
+        return []
+
+    facts = ["industry-chain lens: AI/cloud demand path through " + ", ".join(stages[:4])]
+    pullthrough_markers = [
+        label
+        for label, markers in (
+            ("orders/contracts", ("order", "contract", "backlog", "award")),
+            ("customer or partner pull-through", ("customer", "client", "partnership", "partner")),
+            ("capacity or shipments", ("capacity", "shipment", "deployment", "implementation")),
+            ("funding/capex/guidance", ("funding", "financing", "capital", "capex", "guidance")),
+            ("near-term revenue/profit metrics", ("revenue", "sales", "ebitda", "margin")),
+        )
+        if any(marker in lower for marker in markers)
+    ]
+    if pullthrough_markers:
+        facts.append("company-level pull-through: " + ", ".join(pullthrough_markers[:4]))
+    else:
+        facts.append("industry-chain caution: AI/cloud theme lacks company-level pull-through marker")
     return facts
 
 
@@ -390,6 +462,10 @@ def _listing_compliance_facts(text: str) -> list[str]:
     facts: list[str] = []
     if "notice of delisting" in lower or "continued listing" in lower or "minimum bid" in lower:
         facts.append("listing risk: exchange notice or continued-listing deficiency disclosed")
+    if "dropped from nasdaq composite index" in lower or "delisted from the nasdaq composite index" in lower:
+        facts.append("listing/tradability risk: dropped from Nasdaq Composite Index or delisted from index")
+    if "pursuing a nasdaq listing" in lower or "proposed nasdaq listing" in lower:
+        facts.append("listing plan: pursuing proposed Nasdaq listing")
     minimum_bid = _first_amount(text, (r"minimum (?:closing )?bid price of at least\s+\$?([\d,.]+)\s*(?:per share)?",))
     if minimum_bid is not None:
         facts.append(f"listing requirement: minimum bid {minimum_bid} per share")
@@ -444,13 +520,42 @@ def _capital_liquidity_facts(text: str) -> list[str]:
 def _operating_metric_facts(text: str) -> list[str]:
     facts: list[str] = []
     for label, patterns in (
-        ("revenue/sales", (r"(?:revenue|sales)(?:\s+(?:was|were|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
+        (
+            "revenue/sales",
+            (
+                r"(?:revenue|sales)(?:\s+(?:was|were|of|totaled|reached|reaching))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",
+            ),
+        ),
+        (
+            "adjusted EBITDA",
+            (
+                r"adjusted\s+ebitda(?:\s+(?:was|of|totaled|increasing by [\d,.]+% to))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",
+            ),
+        ),
         ("production volume", (r"sales volumes? of\s+([\d,.]+)\s*(boe/d|barrels of oil equivalent per day)",)),
         ("capex", (r"(?:capital expenditures|capex)(?:\s+(?:was|were|of|totaled))?\s+\$?([\d,.]+)\s*(million|billion|thousand)?",)),
     ):
         value = _first_amount(text, patterns)
         if value is not None:
             facts.append(f"{label}: {value}")
+    revenue_growth = _first_percent(
+        text,
+        (
+            r"revenue[^.]{0,120}?\bup\s+([\d,.]+%)\s+year[- ]over[- ]year",
+            r"revenue[^.]{0,120}?\bup\s+([\d,.]+%)\s+yoy",
+        ),
+    )
+    if revenue_growth is not None:
+        facts.append(f"target operating evidence: revenue growth {revenue_growth} year-over-year")
+    ebitda_growth = _first_percent(
+        text,
+        (
+            r"adjusted\s+ebitda[^.]{0,120}?\bincreasing by\s+([\d,.]+%)",
+            r"adjusted\s+ebitda[^.]{0,120}?\bup\s+([\d,.]+%)",
+        ),
+    )
+    if ebitda_growth is not None:
+        facts.append(f"target operating evidence: adjusted EBITDA growth {ebitda_growth}")
     lower = text.lower()
     if "completed drilling operations" in lower or "wells online" in lower:
         facts.append("operating milestone: drilling completion or wells online disclosed")
@@ -464,8 +569,33 @@ def _financing_transaction_facts(text: str) -> list[str]:
     facts: list[str] = []
     if "business combination" in lower or "merger" in lower or "strategic transaction" in lower:
         facts.append("strategic transaction: merger/business-combination language appears")
+    if ("form f-4" in lower or "form f-4/a" in lower) and "registration statement" in lower:
+        facts.append("deal status: Form F-4 registration statement filed for proposed business combination")
+    if "proposed business combination" in lower:
+        facts.append("deal status: proposed business combination disclosed")
     if "definitive agreement" in lower:
         facts.append("deal status: definitive-agreement language appears")
+    merger_deadline = _first_date_phrase(
+        text,
+        (
+            r"merger deadline(?:\s+(?:was|has been))?\s+extended to ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",
+            r"merger deadline to ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",
+            r"business combination deadline(?:\s+(?:was|has been))?\s+extended to ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",
+            r"business combination deadline to ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",
+        ),
+    )
+    if merger_deadline is not None:
+        facts.append(f"deal timing: merger deadline extended to {merger_deadline}")
+    further_extension = _first_date_phrase(
+        text,
+        (r"further extensions? to ([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})",),
+    )
+    if further_extension is not None:
+        facts.append(f"deal timing: possible further extension to {further_extension}")
+    if "shareholder approval" in lower or "shareholders approved" in lower:
+        facts.append("deal status: shareholder approval language appears")
+    if "redeemed" in lower or "redemption" in lower:
+        facts.append("deal/capital risk: shareholder redemption language appears")
     if "credit agreement" in lower or "amendment" in lower and "credit" in lower:
         facts.append("financing status: credit agreement or amendment language appears")
     if "dividend" in lower or "repurchase" in lower or "buyback" in lower:
@@ -490,6 +620,14 @@ def _first_date_phrase(text: str, patterns: Iterable[str]) -> str | None:
         match = re.search(pattern, text, flags=re.IGNORECASE)
         if match:
             return " ".join(match.group(1).replace(".", "").split())
+    return None
+
+
+def _first_percent(text: str, patterns: Iterable[str]) -> str | None:
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            return match.group(1).strip(" .,;:")
     return None
 
 
@@ -616,6 +754,7 @@ def _select_cases(
     control_symbol_count: int,
     refinement_per_label: int,
     selection_policy: str = "alphabetical",
+    holdout_symbols: frozenset[str] = frozenset(),
 ) -> dict[str, tuple[HistoricalCase, ...]]:
     if winner_symbol_count < 2 or control_symbol_count < 2:
         raise ValidationError("select at least two winner and two control symbols")
@@ -631,12 +770,52 @@ def _select_cases(
         raise ValidationError(f"unsupported Ralph selection policy: {selection_policy}")
     selected_winners = tuple(winners[:winner_symbol_count])
     selected_controls = tuple(controls[:control_symbol_count])
-    refinement = selected_winners[:refinement_per_label] + selected_controls[:refinement_per_label]
-    holdout = selected_winners[refinement_per_label:] + selected_controls[refinement_per_label:]
+    selected_symbols = {
+        case.packet.company.ticker.symbol.upper()
+        for case in selected_winners + selected_controls
+    }
+    missing_holdout_symbols = sorted(holdout_symbols - selected_symbols)
+    if missing_holdout_symbols:
+        raise ValidationError(f"--holdout-symbols were not selected: {missing_holdout_symbols}")
+    winner_refinement, winner_holdout = _split_refinement_holdout(
+        selected_winners,
+        refinement_per_label=refinement_per_label,
+        holdout_symbols=holdout_symbols,
+    )
+    control_refinement, control_holdout = _split_refinement_holdout(
+        selected_controls,
+        refinement_per_label=refinement_per_label,
+        holdout_symbols=holdout_symbols,
+    )
+    refinement = winner_refinement + control_refinement
+    holdout = winner_holdout + control_holdout
     return {
         "refinement": refinement,
         "holdout": holdout,
     }
+
+
+def _split_refinement_holdout(
+    selected_cases: tuple[HistoricalCase, ...],
+    *,
+    refinement_per_label: int,
+    holdout_symbols: frozenset[str],
+) -> tuple[tuple[HistoricalCase, ...], tuple[HistoricalCase, ...]]:
+    refinement_candidates = tuple(
+        case
+        for case in selected_cases
+        if case.packet.company.ticker.symbol.upper() not in holdout_symbols
+    )
+    if len(refinement_candidates) < refinement_per_label:
+        raise ValidationError("not enough non-pinned cases remain for the requested refinement split")
+    refinement = refinement_candidates[:refinement_per_label]
+    refinement_ids = {case.case_id for case in refinement}
+    holdout = tuple(case for case in selected_cases if case.case_id not in refinement_ids)
+    return refinement, holdout
+
+
+def _parse_symbol_set(raw: str) -> frozenset[str]:
+    return frozenset(symbol.strip().upper() for symbol in raw.split(",") if symbol.strip())
 
 
 def _ordered_latest_cases(

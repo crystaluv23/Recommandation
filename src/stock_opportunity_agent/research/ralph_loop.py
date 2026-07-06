@@ -1544,6 +1544,7 @@ def _section_items(packet: ResearchPacket, section_name: str) -> list[dict[str, 
     if section_name == "Contrary/Risk Evidence":
         return _dedupe_items(
             _event_risk_items(packet)
+            + _risk_source_fact_digest_items(packet)
             + _source_fact_digest_items(packet)
             + _generic_source_caution_items(packet)
             + _risk_items(packet)
@@ -1756,8 +1757,13 @@ def _event_family(summary: str) -> str | None:
             "order",
             "contract",
             "customer",
+            "partner",
+            "partnership",
             "capacity",
             "shipment",
+            "revenue",
+            "ebitda",
+            "guidance",
             "data center",
             "datacenter",
             "liquid cooling",
@@ -1775,7 +1781,16 @@ def _event_family(summary: str) -> str | None:
         ),
         (
             "strategic_transaction",
-            ("merger", "business combination", "acquisition", "transaction", "definitive agreement"),
+            (
+                "merger",
+                "business combination",
+                "acquisition",
+                "transaction",
+                "definitive agreement",
+                "form f-4",
+                "registration statement",
+                "redemption",
+            ),
         ),
         ("policy_regulatory", ("approval", "regulatory", "fda", "clearance", "tariff")),
         (
@@ -1816,7 +1831,20 @@ def _event_polarity(family: str, summary: str) -> str:
     if family == "strategic_transaction":
         if _contains_any(text, ("terminate", "delay", "extension", "liquidation", "redemption")):
             return "risk"
-        if _contains_any(text, ("closed", "closing", "definitive agreement", "consummated", "effective")):
+        if _contains_any(
+            text,
+            (
+                "closed",
+                "closing",
+                "definitive agreement",
+                "consummated",
+                "effective",
+                "form f-4",
+                "registration statement",
+                "proposed nasdaq listing",
+                "pursuing proposed nasdaq listing",
+            ),
+        ):
             return "positive"
     if family == "policy_regulatory":
         if _contains_any(text, ("investigation", "denial", "rejection", "clinical hold", "warning")):
@@ -2032,6 +2060,7 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
         }
     ] if packet.theme_ids else []
     items.extend(_ai_chain_transmission_items(packet))
+    items.extend(_theme_source_fact_digest_items(packet))
     items.extend(
         _evidence_by_kind(packet, {EvidenceKind.THEME_CONTEXT, EvidenceKind.RESEARCH_REPORT})
     )
@@ -2057,6 +2086,25 @@ def _theme_items(packet: ResearchPacket) -> list[dict[str, Any]]:
         )
     )
     return items
+
+
+def _theme_source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    return [
+        item
+        for item in _source_fact_digest_items(packet)
+        if _contains_any(
+            str(item.get("summary", "")),
+            (
+                "industry-chain lens",
+                "company-level pull-through",
+                "ai/cloud",
+                "digital transformation",
+                "cloud demand",
+                "data-center",
+                "bottleneck",
+            ),
+        )
+    ]
 
 
 def _ai_chain_transmission_items(packet: ResearchPacket) -> list[dict[str, Any]]:
@@ -2260,7 +2308,7 @@ def _source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
         items.append(
             {
                 "item_type": "source_fact_digest",
-                "summary": _compact_summary(evidence.summary, max_chars=620),
+                "summary": _compact_source_fact_digest_summary(evidence.summary),
                 "as_of_date": evidence.as_of_date.isoformat(),
                 "published_date": evidence.published_date.isoformat() if evidence.published_date else None,
                 "data_quality": evidence.data_quality.value,
@@ -2271,6 +2319,99 @@ def _source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
         key=lambda item: _source_fact_digest_score(str(item.get("summary", ""))),
         reverse=True,
     )[:4]
+
+
+def _risk_source_fact_digest_items(packet: ResearchPacket) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    risk_markers = (
+        "risk",
+        "redemption",
+        "redeemed",
+        "going-concern",
+        "substantial-doubt",
+        "delist",
+        "dropped from nasdaq",
+        "liquidity",
+        "dilution",
+        "warrant",
+        "convertible",
+        "debt",
+        "deficit",
+        "non-compliance",
+    )
+    for evidence in packet.evidence:
+        parts = _source_fact_digest_parts(evidence.summary)
+        if parts is None:
+            continue
+        kind, facts = parts
+        risk_facts = [fact for fact in facts if _contains_any(fact, risk_markers)]
+        if not risk_facts:
+            continue
+        items.append(
+            {
+                "item_type": "source_fact_digest",
+                "summary": _compact_summary(f"{kind} risk fact digest: {'; '.join(risk_facts)}", max_chars=520),
+                "as_of_date": evidence.as_of_date.isoformat(),
+                "published_date": evidence.published_date.isoformat() if evidence.published_date else None,
+                "data_quality": evidence.data_quality.value,
+            }
+        )
+    return sorted(
+        items,
+        key=lambda item: _source_fact_digest_score(str(item.get("summary", ""))),
+        reverse=True,
+    )[:3]
+
+
+def _source_fact_digest_parts(summary: str) -> tuple[str, list[str]] | None:
+    fact_prefixes = (
+        "business context",
+        "business context clue",
+        "industry-chain lens",
+        "company-level pull-through",
+        "industry-chain caution",
+        "strategic transaction",
+        "deal status",
+        "deal timing",
+        "deal/capital risk",
+        "revenue/sales",
+        "adjusted EBITDA",
+        "target operating evidence",
+        "expectation context",
+        "listing",
+        "reported stockholders",
+        "cash",
+        "total debt",
+        "long-term debt",
+        "stockholders",
+        "net loss",
+        "revolver",
+        "capital structure",
+        "dilution risk",
+        "operating milestone",
+        "production volume",
+        "capex",
+        "financing status",
+        "capital return",
+        "liquidity risk",
+    )
+    prefix_pattern = "|".join(re.escape(prefix) for prefix in fact_prefixes)
+    match = re.match(
+        rf"^([a-z_]+) fact digest from .*?: (?=({prefix_pattern}))(.+)$",
+        summary,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return None
+    return match.group(1), [fact.strip() for fact in match.group(3).split(";") if fact.strip()]
+
+
+def _compact_source_fact_digest_summary(summary: str) -> str:
+    parts = _source_fact_digest_parts(summary)
+    if parts is not None:
+        kind, facts = parts
+        return _compact_summary(f"{kind} fact digest: {'; '.join(facts)}", max_chars=900)
+    return _compact_summary(summary, max_chars=900)
 
 
 def _source_fact_digest_score(summary: str) -> int:
@@ -2286,9 +2427,22 @@ def _source_fact_digest_score(summary: str) -> int:
         "revenue/sales:",
         "production volume:",
         "capex:",
+        "adjusted ebitda:",
+        "target operating evidence:",
     ):
         if marker in text:
             score += 4
+    for marker in (
+        "industry-chain lens",
+        "company-level pull-through",
+        "deal status:",
+        "deal timing:",
+        "listing/tradability risk",
+        "listing plan:",
+        "deal/capital risk",
+    ):
+        if marker in text:
+            score += 3
     for marker in (
         "listing risk",
         "listing remediation",
@@ -2700,7 +2854,14 @@ def _identity_tokens(packet: ResearchPacket) -> tuple[str, ...]:
     tokens = [ticker.symbol, ticker.company_name or ""]
     company = ticker.company_name or ""
     tokens.extend(_company_name_variants(company))
-    return tuple(sorted({token for token in tokens if token and token.strip()}, key=len, reverse=True))
+    tokens.extend(_evidence_counterparty_identity_tokens(packet.evidence))
+    return tuple(
+        sorted(
+            {token.strip() for token in tokens if token and len(token.strip()) >= 2},
+            key=len,
+            reverse=True,
+        )
+    )
 
 
 def _company_name_variants(company: str) -> list[str]:
@@ -2729,6 +2890,57 @@ def _company_name_variants(company: str) -> list[str]:
                 if len(words) >= 2 and len(words[-1]) > 3:
                     variants.append(" ".join(words[:-1] + [words[-1][:3]]))
     return variants
+
+
+def _evidence_counterparty_identity_tokens(evidence: Iterable[EvidenceItem]) -> list[str]:
+    tokens: list[str] = []
+    for item in evidence:
+        summary = item.summary
+        for pattern, flags in (
+            (
+                r"\b([A-Z][A-Za-z0-9&'., -]{2,80}) and [A-Z][A-Za-z0-9&'., -]{2,100} "
+                r"(?:file|filed|announce|announced|report|reports)",
+                re.IGNORECASE,
+            ),
+            (r"\b([A-Z][A-Za-z0-9&'., -]{2,80}) Holdings? [A-Z][A-Za-z0-9&'., -]{0,20} and ", 0),
+            (
+                r"\b([A-Z][A-Za-z&' -]{2,80},?\s+(?:Inc|Corp|Corporation|Company|Co|Ltd|PLC)\.?)"
+                r"\s+\(the .Company",
+                0,
+            ),
+        ):
+            match = re.search(pattern, summary, flags=flags)
+            if not match:
+                continue
+            token = match.group(1).strip(" .,:;-")
+            if _safe_counterparty_identity_token(token):
+                tokens.extend(_company_name_variants(token) or [token])
+    return tokens
+
+
+def _safe_counterparty_identity_token(token: str) -> bool:
+    lowered = token.lower()
+    if len(token) < 3 or len(token.split()) > 6:
+        return False
+    stop_tokens = {
+        "ai",
+        "aws",
+        "business combination",
+        "form",
+        "microsoft",
+        "nasdaq",
+        "nyse",
+        "sec",
+        "shareholders",
+        "the company",
+    }
+    if lowered in stop_tokens or any(lowered.startswith(prefix) for prefix in ("form ", "item ")):
+        return False
+    return bool(
+        re.search(r"\b(inc|corp|corporation|company|co|ltd|plc|holdings?)\.?\b", lowered)
+        or re.search(r"\b[A-Z][A-Za-z0-9&'.-]+\s+[A-Z][A-Za-z0-9&'.-]+\b", token)
+        or re.fullmatch(r"[A-Z][A-Za-z0-9&'.-]{3,}", token)
+    )
 
 
 def _mask_identity_in_value(value: Any, tokens: tuple[str, ...]) -> Any:
@@ -3003,8 +3215,9 @@ def _ai_chain_directness_definitions() -> tuple[tuple[str, tuple[str, ...]], ...
         ("order/contract/backlog", ("order", "contract", "backlog", "purchase order", "supply agreement", "award")),
         ("shipment/deployment", ("shipment", "delivery", "deployment", "installation", "wells online")),
         ("capacity/facility expansion", ("capacity", "facility", "campus", "megawatt", "mw", "construction")),
-        ("customer pull-through", ("customer", "hyperscaler", "cloud provider", "data center operator")),
+        ("customer/partner pull-through", ("customer", "partner", "partnership", "hyperscaler", "cloud provider", "data center operator")),
         ("funding/capex/guidance", ("funding", "capex", "capital expenditure", "guidance", "credit facility")),
+        ("near-term operating pull-through", ("revenue", "sales", "ebitda", "margin")),
     )
 
 
