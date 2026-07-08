@@ -89,6 +89,7 @@ from scripts.run_cold_start_formal import (
     _theme_context_documents_for_candidate,
 )
 from scripts.run_ralph_loop_experiment import (
+    _augment_sec_submission_documents_for_cases,
     _enrich_cases_with_documents,
     _leakage_report,
     _load_documents_by_symbol,
@@ -1857,6 +1858,106 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("declared identity conflicts", warnings[0])
         self.assertIn("trading symbols SRM", warnings[0])
         self.assertEqual(refreshed["ABC"][0].text, original_text)
+
+    def test_ralph_sec_augmentation_allows_same_cik_former_name_and_masks_it(self) -> None:
+        class SameCikSecTransport:
+            def get_json(self, url, headers):
+                if url.endswith("/files/company_tickers_exchange.json"):
+                    return {"fields": ["cik", "name", "ticker", "exchange"], "data": []}
+                return {
+                    "name": "Tron Inc.",
+                    "tickers": ["TRON"],
+                    "formerNames": [{"name": "SRM Entertainment, Inc."}],
+                    "filings": {
+                        "recent": {
+                            "accessionNumber": [
+                                "0001493152-25-001960",
+                                "0001493152-25-999999",
+                            ],
+                            "filingDate": [
+                                (AS_OF - timedelta(days=2)).isoformat(),
+                                (AS_OF + timedelta(days=1)).isoformat(),
+                            ],
+                            "form": ["8-K", "8-K"],
+                            "primaryDocument": ["form8-k.htm", "future.htm"],
+                            "reportDate": [
+                                (AS_OF - timedelta(days=2)).isoformat(),
+                                (AS_OF + timedelta(days=1)).isoformat(),
+                            ],
+                        }
+                    },
+                }
+
+            def get_text(self, url, headers):
+                return (
+                    "<html><body><p>SRM ENTERTAINMENT, INC.</p>"
+                    "<p>(Exact name of registrant as specified in charter)</p>"
+                    "<p>Title of each class Trading Symbol(s) Name of each exchange on which registered</p>"
+                    "<p>Common Stock SRM The Nasdaq Stock Market LLC</p>"
+                    "<p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+                    "<p>The issuer entered into a credit agreement and reported cash and cash equivalents "
+                    "of $12.3 million.</p></body></html>"
+                )
+
+        case = make_case(
+            "tron-same-cik",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+            company_name="Corner Growth Acquisition Corp 2 - Class A / Tron Inc.",
+        )
+        documents = {
+            "TRON": (
+                DocumentRecord(
+                    document_id="old-sec",
+                    symbol="TRON",
+                    kind=EvidenceKind.FILING,
+                    title="Existing SEC filing",
+                    text="Existing SEC filing.",
+                    source_id="sec:0001956744:0000000000-25-000000",
+                    source_url="https://www.sec.gov/Archives/edgar/data/1956744/000000000025000000/form8-k.htm",
+                    published_date=AS_OF - timedelta(days=5),
+                    retrieved_at=STAMP,
+                ),
+            )
+        }
+
+        augmented, warnings = _augment_sec_submission_documents_for_cases(
+            documents,
+            (case,),
+            user_agent="test-agent",
+            forms=("8-K",),
+            lookback_days=30,
+            max_filings_per_symbol=5,
+            transport=SameCikSecTransport(),
+        )
+        enriched = _enrich_cases_with_documents((case,), augmented)
+        learning = learn_pre_surge_signal_logic(enriched)
+        themes = build_cold_start_theme_maps(enriched, learning)
+        blind = (HeuristicBlindCaseResearcher().analyze(enriched[0]),)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(enriched, blind, learning, themes)
+        scheme, _diagnostic = synthesize_information_scheme(
+            enriched,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+        packet = build_blind_scheme_packet(enriched[0], scheme, anonymous_case_id="case_same_cik")
+        packet_text = json.dumps(packet.to_dict())
+
+        self.assertEqual(warnings, ())
+        self.assertIn("0001493152-25-001960", {document.source_id.split(":")[-1] for document in augmented["TRON"]})
+        self.assertIn("credit agreement", packet_text)
+        self.assertIn("cash", packet_text)
+        self.assertNotIn("SRM", packet_text)
+        self.assertNotIn("SRM Entertainment", packet_text)
+        self.assertNotIn("TRON", packet_text)
+        self.assertNotIn("Corner Growth", packet_text)
 
     def test_ralph_preflight_leakage_report_scans_cross_case_identities(self) -> None:
         class FakePacket:

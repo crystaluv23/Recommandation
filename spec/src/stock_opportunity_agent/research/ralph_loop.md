@@ -201,6 +201,15 @@ counterparty names from merger-style titles and SEC issuer phrases such as
 controls may pin specified symbols into holdout or exclude suspected
 cross-contaminating symbols; these controls are for Ralph validation only and do
 not alter formal cold-start selection or any long-running default prompt.
+Standalone experiments may also augment selected cases from SEC submissions
+metadata by resolving the case to a CIK from already-saved SEC documents or the
+SEC ticker mapping, selecting only filings available on or before the case
+as-of date, and downloading a bounded number of primary documents. This is a
+label-aware research-layer data acquisition step, not blind-stage web use.
+Identity guards may allow same-CIK current and former registrant names or
+trading symbols for extraction, but every such identity token must be masked
+before blind-packet rendering and the global leakage preflight must pass before
+any external blind provider call.
 
 ## Artifacts
 

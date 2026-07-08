@@ -2923,6 +2923,11 @@ def _evidence_counterparty_identity_tokens(evidence: Iterable[EvidenceItem]) -> 
                 r"\s+\(the .Company",
                 0,
             ),
+            (
+                r"\b([A-Z][A-Za-z0-9&'., -]{2,100}?(?:Inc|Corp|Corporation|Company|Co|Ltd|PLC)\.?)"
+                r"\s+\(Exact name of registrant",
+                re.IGNORECASE,
+            ),
         ):
             match = re.search(pattern, summary, flags=flags)
             if not match:
@@ -2930,7 +2935,44 @@ def _evidence_counterparty_identity_tokens(evidence: Iterable[EvidenceItem]) -> 
             token = match.group(1).strip(" .,:;-")
             if _safe_counterparty_identity_token(token):
                 tokens.extend(_company_name_variants(token) or [token])
+        tokens.extend(_sec_declared_trading_symbol_tokens(summary))
     return tokens
+
+
+def _sec_declared_trading_symbol_tokens(text: str) -> list[str]:
+    match = re.search(
+        r"Trading Symbol\(s\)(.*?)(?:Indicate by check mark|Emerging growth company|Item\s+\d+\.\d+)",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return []
+    stopwords = {
+        "ACT",
+        "CAPITAL",
+        "CLASS",
+        "COMMON",
+        "EACH",
+        "EXCHANGE",
+        "LLC",
+        "MARKET",
+        "NAME",
+        "NASDAQ",
+        "NONE",
+        "NYSE",
+        "REGISTERED",
+        "SECURITIES",
+        "STOCK",
+        "SYMBOL",
+        "THE",
+        "TITLE",
+        "TRADING",
+    }
+    return [
+        candidate
+        for candidate in re.findall(r"\b[A-Z][A-Z0-9.]{1,5}\b", match.group(1).upper())
+        if candidate not in stopwords and not candidate.startswith("N/")
+    ]
 
 
 def _safe_counterparty_identity_token(token: str) -> bool:
@@ -2941,13 +2983,18 @@ def _safe_counterparty_identity_token(token: str) -> bool:
         "ai",
         "aws",
         "business combination",
+        "commission",
+        "exchange commission",
         "form",
         "microsoft",
         "nasdaq",
         "nyse",
         "sec",
+        "securities",
         "shareholders",
         "the company",
+        "united states securities",
+        "united states securities and exchange commission",
     }
     if lowered in stop_tokens or any(lowered.startswith(prefix) for prefix in ("form ", "item ")):
         return False

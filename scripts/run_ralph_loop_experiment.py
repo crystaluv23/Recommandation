@@ -9,14 +9,15 @@ import json
 import os
 import re
 from dataclasses import replace
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
 from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.documents import DocumentRecord
-from stock_opportunity_agent.data.sources.core import DataSourceError, UrllibJsonTransport
+from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata, UrllibJsonTransport, format_cik
+from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
 from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ResearchPacket, ValidationError
@@ -81,6 +82,23 @@ def main() -> None:
         selection_policy=args.selection_policy,
         holdout_symbols=_parse_symbol_set(args.holdout_symbols),
     )
+    selected_case_tuple = tuple(selected["refinement"] + selected["holdout"])
+    if args.augment_sec_submission_filings:
+        documents_by_symbol, augmentation_warnings = _augment_sec_submission_documents_for_cases(
+            documents_by_symbol,
+            selected_case_tuple,
+            user_agent=load_config().data_sources.sec_user_agent,
+            forms=tuple(form.upper() for form in _parse_csv_values(args.sec_submission_forms)),
+            lookback_days=args.sec_submission_lookback_days,
+            max_filings_per_symbol=args.max_sec_submission_filings_per_symbol,
+        )
+        if augmentation_warnings:
+            for warning in augmentation_warnings:
+                print(f"[ralph-experiment] warning={warning}")
+        selected = {
+            "refinement": _enrich_cases_with_documents(selected["refinement"], documents_by_symbol),
+            "holdout": _enrich_cases_with_documents(selected["holdout"], documents_by_symbol),
+        }
     if args.refresh_sec_filing_text:
         refreshed_documents, refresh_warnings = _refresh_sec_filing_documents_for_cases(
             documents_by_symbol,
@@ -267,6 +285,28 @@ def _parse_args() -> argparse.Namespace:
         "--refresh-sec-filing-text",
         action="store_true",
         help="Refresh selected SEC filing document bodies from existing source URLs before packet rendering.",
+    )
+    parser.add_argument(
+        "--augment-sec-submission-filings",
+        action="store_true",
+        help="Add selected SEC submissions filings as point-in-time source-detail documents for selected cases.",
+    )
+    parser.add_argument(
+        "--sec-submission-forms",
+        default="8-K,10-Q,10-K,10-K/A,DEF 14A,424B5,S-3,S-3/A,F-4,F-4/A",
+        help="Comma-separated SEC forms to add when --augment-sec-submission-filings is enabled.",
+    )
+    parser.add_argument(
+        "--sec-submission-lookback-days",
+        type=int,
+        default=540,
+        help="Lookback window for SEC submissions filing augmentation.",
+    )
+    parser.add_argument(
+        "--max-sec-submission-filings-per-symbol",
+        type=int,
+        default=8,
+        help="Maximum augmented SEC submissions filings per selected symbol.",
     )
     return parser.parse_args()
 
@@ -631,6 +671,179 @@ def _first_percent(text: str, patterns: Iterable[str]) -> str | None:
     return None
 
 
+def _augment_sec_submission_documents_for_cases(
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+    cases: Iterable[HistoricalCase],
+    *,
+    user_agent: str,
+    forms: tuple[str, ...],
+    lookback_days: int,
+    max_filings_per_symbol: int,
+    transport: Any | None = None,
+) -> tuple[dict[str, tuple[DocumentRecord, ...]], tuple[str, ...]]:
+    """Add selected as-of SEC filings from submissions JSON for Ralph experiments."""
+
+    case_list = list(cases)
+    if not case_list:
+        return documents_by_symbol, ()
+    if lookback_days < 1:
+        raise ValidationError("--sec-submission-lookback-days must be positive")
+    if max_filings_per_symbol < 1:
+        raise ValidationError("--max-sec-submission-filings-per-symbol must be positive")
+
+    sec_transport = transport or UrllibJsonTransport()
+    sec_client = SecEdgarClient(user_agent, transport=sec_transport)
+    warnings: list[str] = []
+    ciks_by_symbol = _sec_ciks_by_symbol(documents_by_symbol, case_list, sec_client, warnings)
+    if not ciks_by_symbol:
+        return documents_by_symbol, tuple(warnings)
+
+    augmented: dict[str, tuple[DocumentRecord, ...]] = dict(documents_by_symbol)
+    existing_source_ids_by_symbol = {
+        symbol: {document.source_id for document in documents}
+        for symbol, documents in documents_by_symbol.items()
+    }
+    selected_by_symbol = _latest_case_by_symbol(case_list)
+    identity_tokens_by_cik: dict[str, tuple[str, ...]] = {}
+    form_set = {form.upper() for form in forms}
+    for symbol, case in selected_by_symbol.items():
+        cik = ciks_by_symbol.get(symbol)
+        if cik is None:
+            warnings.append(f"{symbol}: SEC submissions augmentation skipped; no CIK available")
+            continue
+        try:
+            filings = sec_client.recent_filings_as_of(cik, case.packet.as_of.as_of_date)
+        except (DataSourceError, OSError, ValueError) as exc:
+            warnings.append(f"{symbol}: SEC submissions unavailable for CIK {cik}: {exc}")
+            continue
+        window_start = case.packet.as_of.as_of_date - timedelta(days=lookback_days)
+        selected_filings = [
+            filing
+            for filing in filings
+            if filing.form.upper() in form_set and window_start <= filing.filing_date <= case.packet.as_of.as_of_date
+        ]
+        selected_filings = sorted(
+            selected_filings,
+            key=lambda filing: (filing.filing_date, filing.accession_number),
+            reverse=True,
+        )[:max_filings_per_symbol]
+        documents = list(augmented.get(symbol, ()))
+        existing_source_ids = existing_source_ids_by_symbol.setdefault(symbol, set())
+        for filing in selected_filings:
+            source_id = f"sec:{filing.cik}:{filing.accession_number}"
+            source_id_exists = source_id in existing_source_ids
+            try:
+                text = sec_client.filing_document_text(filing)
+            except (DataSourceError, OSError) as exc:
+                warnings.append(f"{symbol}: SEC filing text unavailable for {filing.accession_number}: {exc}")
+                if source_id_exists:
+                    continue
+                text = f"{filing.form} filed on {filing.filing_date.isoformat()}."
+            allowed_tokens = identity_tokens_by_cik.setdefault(
+                filing.cik,
+                _sec_submission_identity_tokens(filing.cik, sec_transport, user_agent, warnings),
+            )
+            declared_conflicts = _sec_declared_identity_conflicts(text, case, allowed_identity_tokens=allowed_tokens)
+            if declared_conflicts:
+                warnings.append(
+                    f"{symbol}: SEC submissions filing skipped for {filing.accession_number}: "
+                    f"declared identity conflicts {declared_conflicts}"
+                )
+                continue
+            augmented_document = _document_from_sec_filing(symbol, case, filing, text)
+            if source_id_exists:
+                documents = [
+                    augmented_document if document.source_id == source_id else document
+                    for document in documents
+                ]
+            else:
+                documents.append(augmented_document)
+            existing_source_ids.add(source_id)
+        if documents:
+            augmented[symbol] = tuple(sorted(documents, key=lambda document: document.published_date))
+    return augmented, tuple(warnings)
+
+
+def _latest_case_by_symbol(cases: Iterable[HistoricalCase]) -> dict[str, HistoricalCase]:
+    latest: dict[str, HistoricalCase] = {}
+    for case in cases:
+        symbol = case.packet.company.ticker.symbol.upper()
+        current = latest.get(symbol)
+        if current is None or case.packet.as_of.as_of_date > current.packet.as_of.as_of_date:
+            latest[symbol] = case
+    return latest
+
+
+def _sec_ciks_by_symbol(
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+    cases: Iterable[HistoricalCase],
+    client: SecEdgarClient,
+    warnings: list[str],
+) -> dict[str, str]:
+    ciks_by_symbol: dict[str, str] = {}
+    for symbol, documents in documents_by_symbol.items():
+        cik = _first_document_cik(documents)
+        if cik:
+            ciks_by_symbol[symbol.upper()] = cik
+    missing_symbols = sorted(
+        {
+            case.packet.company.ticker.symbol.upper()
+            for case in cases
+            if case.packet.company.ticker.symbol.upper() not in ciks_by_symbol
+        }
+    )
+    if not missing_symbols:
+        return ciks_by_symbol
+    try:
+        listings = client.company_tickers_exchange()
+    except (DataSourceError, OSError, ValueError) as exc:
+        warnings.append(f"SEC ticker mapping unavailable for submissions augmentation: {exc}")
+        return ciks_by_symbol
+    wanted = set(missing_symbols)
+    for listing in listings:
+        symbol = listing.symbol.upper()
+        if symbol in wanted and listing.cik:
+            ciks_by_symbol[symbol] = format_cik(listing.cik)
+    return ciks_by_symbol
+
+
+def _first_document_cik(documents: Iterable[DocumentRecord]) -> str | None:
+    for document in documents:
+        cik = _document_cik(document)
+        if cik is not None:
+            return cik
+    return None
+
+
+def _document_cik(document: DocumentRecord) -> str | None:
+    for value in (document.source_id, document.source_url):
+        match = re.search(r"(?:sec:|/data/)(0*\d{4,10})(?::|/)", value)
+        if match:
+            return format_cik(match.group(1))
+    return None
+
+
+def _document_from_sec_filing(
+    symbol: str,
+    case: HistoricalCase,
+    filing: FilingMetadata,
+    text: str,
+) -> DocumentRecord:
+    company_name = case.packet.company.ticker.company_name or symbol
+    return DocumentRecord(
+        document_id=f"sec-submissions:{filing.cik}:{filing.accession_number}",
+        symbol=symbol,
+        kind=EvidenceKind.FILING,
+        title=f"{company_name} {filing.form} filed {filing.filing_date.isoformat()}",
+        text=text,
+        source_id=f"sec:{filing.cik}:{filing.accession_number}",
+        source_url=filing.source_url,
+        published_date=filing.filing_date,
+        available_date=filing.filing_date,
+        retrieved_at=filing.retrieved_at or datetime.now(timezone.utc),
+    )
+
+
 def _refresh_sec_filing_documents_for_cases(
     documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
     cases: Iterable[HistoricalCase],
@@ -654,6 +867,7 @@ def _refresh_sec_filing_documents_for_cases(
     warnings: list[str] = []
     refreshed_by_symbol: dict[str, tuple[DocumentRecord, ...]] = dict(documents_by_symbol)
     headers = {"User-Agent": user_agent, "Accept-Encoding": "gzip, deflate"}
+    identity_tokens_by_cik: dict[str, tuple[str, ...]] = {}
     for symbol, latest_as_of in selected_as_of_by_symbol.items():
         refreshed_documents: list[DocumentRecord] = []
         for document in documents_by_symbol.get(symbol, ()):
@@ -670,7 +884,18 @@ def _refresh_sec_filing_documents_for_cases(
                 warnings.append(f"{symbol}: SEC filing text refresh failed for {document.source_id}: {exc}")
                 refreshed_documents.append(document)
                 continue
-            declared_conflicts = _sec_declared_identity_conflicts(text, cases_by_symbol[symbol])
+            cik = _document_cik(document)
+            allowed_tokens = ()
+            if cik is not None:
+                allowed_tokens = identity_tokens_by_cik.setdefault(
+                    cik,
+                    _sec_submission_identity_tokens(cik, text_transport, user_agent, warnings),
+                )
+            declared_conflicts = _sec_declared_identity_conflicts(
+                text,
+                cases_by_symbol[symbol],
+                allowed_identity_tokens=allowed_tokens,
+            )
             if declared_conflicts:
                 warnings.append(
                     f"{symbol}: SEC filing text refresh skipped for {document.source_id}: "
@@ -702,18 +927,68 @@ def _is_sec_archive_url(url: str) -> bool:
     return url.startswith("https://www.sec.gov/Archives/edgar/data/")
 
 
-def _sec_declared_identity_conflicts(text: str, case: HistoricalCase) -> list[str]:
+def _sec_declared_identity_conflicts(
+    text: str,
+    case: HistoricalCase,
+    *,
+    allowed_identity_tokens: tuple[str, ...] = (),
+) -> list[str]:
     cleaned = _normalized_source_text(text)
     conflicts: list[str] = []
     declared_symbols = _sec_declared_trading_symbols(cleaned)
     own_symbol = case.packet.company.ticker.symbol.upper()
     unexpected_symbols = sorted(symbol for symbol in declared_symbols if symbol != own_symbol)
-    if declared_symbols and own_symbol not in declared_symbols and unexpected_symbols:
-        conflicts.append("trading symbols " + ", ".join(unexpected_symbols[:4]))
     registrant = _sec_declared_registrant(cleaned)
-    if registrant and not _registrant_matches_case(registrant, case):
+    registrant_allowed = bool(registrant and _registrant_matches_tokens(registrant, allowed_identity_tokens))
+    if declared_symbols and own_symbol not in declared_symbols and unexpected_symbols and not registrant_allowed:
+        conflicts.append("trading symbols " + ", ".join(unexpected_symbols[:4]))
+    if (
+        registrant
+        and not _registrant_matches_case(registrant, case)
+        and not registrant_allowed
+    ):
         conflicts.append(f"registrant {registrant}")
     return conflicts[:4]
+
+
+def _sec_submission_identity_tokens(
+    cik: str,
+    transport: Any,
+    user_agent: str,
+    warnings: list[str],
+) -> tuple[str, ...]:
+    get_json = getattr(transport, "get_json", None)
+    if get_json is None:
+        return ()
+    url = f"https://data.sec.gov/submissions/CIK{format_cik(cik)}.json"
+    try:
+        data = get_json(url, {"User-Agent": user_agent, "Accept-Encoding": "gzip, deflate"})
+    except (DataSourceError, OSError, ValueError) as exc:
+        warnings.append(f"SEC submissions identity lookup failed for CIK {format_cik(cik)}: {exc}")
+        return ()
+    tokens: list[str] = []
+    name = data.get("name")
+    if isinstance(name, str):
+        tokens.append(name)
+    tickers = data.get("tickers")
+    if isinstance(tickers, list):
+        tokens.extend(str(ticker) for ticker in tickers if isinstance(ticker, str) and ticker.strip())
+    former_names = data.get("formerNames")
+    if isinstance(former_names, list):
+        for item in former_names:
+            if isinstance(item, dict) and isinstance(item.get("name"), str):
+                tokens.append(item["name"])
+    expanded: list[str] = []
+    for token in tokens:
+        expanded.append(token)
+        expanded.extend(_company_name_variants_for_identity(token))
+    return tuple(
+        sorted(
+            {token.strip() for token in expanded if token and len(token.strip()) >= 2},
+            key=len,
+            reverse=True,
+        )
+    )
 
 
 def _sec_declared_trading_symbols(text: str) -> set[str]:
@@ -767,14 +1042,52 @@ def _sec_declared_registrant(text: str) -> str | None:
 
 
 def _registrant_matches_case(registrant: str, case: HistoricalCase) -> bool:
-    registrant_lower = registrant.lower()
+    registrant_normalized = _normalized_identity_text(registrant)
     for _kind, value in _leak_terms(case):
-        token = value.strip().lower()
+        token = _normalized_identity_text(value)
         if len(token) < 3:
             continue
-        if token in registrant_lower or registrant_lower in token:
+        if token in registrant_normalized or registrant_normalized in token:
             return True
     return False
+
+
+def _registrant_matches_tokens(registrant: str, tokens: Iterable[str]) -> bool:
+    registrant_normalized = _normalized_identity_text(registrant)
+    for token in tokens:
+        token_normalized = _normalized_identity_text(token)
+        if len(token_normalized) < 3:
+            continue
+        if token_normalized in registrant_normalized or registrant_normalized in token_normalized:
+            return True
+    return False
+
+
+def _company_name_variants_for_identity(company: str) -> list[str]:
+    variants: list[str] = []
+    for raw_piece in re.split(r"\s*/\s*|\s+\|\s+", company):
+        piece = re.sub(r"\s+", " ", raw_piece).strip(" ,.;:-")
+        if not piece:
+            continue
+        variants.append(piece)
+        stripped = re.sub(
+            r"\b(incorporated|inc|corporation|corp|company|co|ltd|plc)\.?(?:\s+\d+)?$",
+            "",
+            piece,
+            flags=re.IGNORECASE,
+        ).strip(" ,.;:-")
+        if stripped:
+            variants.append(stripped)
+    return variants
+
+
+def _normalized_identity_text(value: str) -> str:
+    normalized = re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+    return (
+        normalized.replace("corp oration", "corporation")
+        .replace("inc orporated", "incorporated")
+        .replace("co mpany", "company")
+    )
 
 
 def _cross_case_identity_hits(text: str, case: HistoricalCase, all_cases: Iterable[HistoricalCase]) -> list[str]:
@@ -899,6 +1212,10 @@ def _split_refinement_holdout(
 
 def _parse_symbol_set(raw: str) -> frozenset[str]:
     return frozenset(symbol.strip().upper() for symbol in raw.split(",") if symbol.strip())
+
+
+def _parse_csv_values(raw: str) -> tuple[str, ...]:
+    return tuple(value.strip() for value in raw.split(",") if value.strip())
 
 
 def _ordered_latest_cases(
