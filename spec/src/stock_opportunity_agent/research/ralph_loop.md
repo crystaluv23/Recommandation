@@ -13,6 +13,21 @@ cold-start winner, control, and failure artifacts, proposes a versioned
 evaluates whether the scheme separates historical winners from controls better
 than the baseline blind prompt.
 
+For the next research phase, Ralph must distinguish a broad
+`ResearchInformationPlan` from the existing packet-level `InformationScheme`.
+The research information plan answers what evidence to collect, where to obtain
+it, how to extract atomic facts, which candidate signals or analysis rubrics to
+derive, and how to validate representation quality. The current
+`InformationScheme` remains the narrower proposal for section order, context
+budgets, compression, and blind prompt/output contracts. Current code implements
+mainly the narrow scheme layer; source coverage, atomic-fact fidelity, and
+raw-versus-organized experiments are planned work rather than completed
+capabilities.
+
+The repository currently has no human-curated gold packet. Ralph must not refer
+to any automatic packet, source audit, or limited manual fact check as gold, and
+the next experiment must not depend on a gold-packet upper bound.
+
 ## External Interface
 
 The submodule exposes:
@@ -43,13 +58,20 @@ The submodule exposes:
 - `write_ralph_experiment_artifacts`: writes the refinement loop, holdout blind
   packets, holdout evaluation, holdout error analysis, and experiment manifest.
 
+The next implementation should add research-level artifacts for information
+requirements, source coverage, atomic evidence, raw-source blind packets,
+raw-versus-organized comparison, information-family ablation/add-back results,
+and layered failure attribution. These are proposal artifacts until their
+schemas and implementation are reviewed; they do not change the current
+production packet contract merely by appearing in this spec.
+
 ## Stage Contract
 
 Ralph Loop v1 is connected only to formal cold-start / historical learning. It
 does not run in daily monitoring, weekly scanning, watchlist publication, or
 production default prompt assembly.
 
-The loop has two phases:
+The loop has two trust boundaries:
 
 1. Retrospective diagnosis and scheme synthesis. This stage may read known
    historical outcome groups, baseline blind analyses, signal observations,
@@ -62,6 +84,38 @@ The loop has two phases:
    encoded ids, or web-search tools. Identity masking must cover common company
    name variants from merged/slash-separated names, class suffixes, and
    punctuation variants that can appear in document titles.
+
+Inside those trust boundaries, the information-plan research cycle is:
+
+1. Label-aware information discovery compares winner, control, and failure
+   cases across T-180, T-120, T-90, T-60, T-30, and other approved as-of
+   windows. It proposes information requirements, candidate signals, analysis
+   rubrics, and `unclassified` evidence families instead of forcing every fact
+   into the existing list.
+2. Source-visible acquisition maps each requirement to supported APIs, SEC
+   filings and exhibits, transcripts, news, investor materials, counterparty or
+   industry evidence, point-in-time rules, and fallback sources. Missing states
+   distinguish not found, not fetched, source unavailable, extraction failed,
+   ambiguous, contradicted, and not applicable.
+3. Atomic-fact extraction records subject, object or counterparty, event type,
+   status, amount, unit, period, event date, publication date, source reference,
+   and supporting span when applicable. Keyword presence alone is not a
+   confirmed order, contract, customer, financing, strategic transaction,
+   industry-chain transmission, or positive catalyst.
+4. Signal and representation research derives measurable signal observations
+   and analysis rubrics from atomic evidence, then renders versioned organized
+   packets. Full raw source documents remain archived and traceable even when
+   the blind packet is intentionally compressed.
+5. Blind plain-LLM validation compares variants on a disjoint company holdout,
+   attributes errors to the responsible layer, and returns only bounded
+   proposals to the label-aware refinement set. A holdout used to generate a
+   new proposal becomes retrospective feedback data and cannot independently
+   validate that proposal.
+
+Information requirements, signals, rubrics, and prompts are distinct. "Look for
+actual order confirmation" is an information requirement or analysis rubric;
+it becomes a signal only when the required source-linked facts and a repeatable
+measurement or explicit qualitative observation are defined.
 
 For small real experiments, Ralph must use a refinement/holdout split across
 symbols. The label-aware diagnosis and initial scheme feedback may use the
@@ -79,6 +133,86 @@ experiments may use an `evidence-rich` selection policy that still keeps
 labels balanced but prioritizes latest cases with concrete catalyst, materiality,
 risk, theme, fundamental, and market-confirmation content. This is a sampling
 choice for research validation, not a production promotion rule.
+
+## Next Experiment Contract
+
+The next Ralph objective is to repair the evidence and evaluation problems
+exposed by the July 7 12-company run, then identify an effective information
+plan for a fixed plain-LLM baseline before any multi-agent analysis experiment.
+The run showed anonymous no-web execution working, but winner and control
+packets collapsed toward `insufficient_information`. Current evidence also
+shows document-wide keyword matches can overstate orders, customers, AI-chain
+transmission, financing, or strategic transactions; event types and polarity
+can be wrong; multiple entities can be blended; numbers can lose units or
+subjects; and repeated digests can create false corroboration across sections.
+
+The next bounded experiment must:
+
+1. Freeze the current v27 result and active scheme as the baseline; do not
+   overwrite its packets or metrics.
+2. Produce a versioned information-requirement inventory from label-aware
+   cross-case and cross-window discovery. It must include an
+   `other_or_unclassified` path for information outside the current ontology.
+3. Produce a requirement-level source-coverage ledger before adding a new data
+   API. The ledger must separate unavailable evidence from acquisition misses
+   and extraction failures.
+4. Replace document-wide keyword confirmation with source-linked atomic facts,
+   entity roles, event-state and negation handling, normalized amount/unit/time
+   fields, and deduplication. Fix extraction precision before increasing prompt
+   volume or section budgets.
+5. Compare the same anonymous point-in-time source bundle in two primary arms:
+   a minimally processed raw-source packet and the organized packet. Both arms
+   must use the same model, output schema, as-of cutoff, source set, and a
+   documented context-budget policy. If the source bundle exceeds context,
+   deterministic selection or chunking must be fixed before outcomes are seen.
+6. Run targeted information-family add-back and ablation experiments for deal
+   status/timing, capital structure/liquidity, orders/contracts,
+   customer/capacity, policy/regulatory evidence, theme transmission, and
+   expectation gap. Add-backs must contain actual sourced facts, not a prompt
+   instruction that the facts would be useful.
+7. Attribute each blind failure to `source_unavailable`, `acquisition_miss`,
+   `extraction_error`, `signal_error`, `representation_loss`, `analysis_error`,
+   or `not_predictably_supported_as_of`. An error may have multiple linked
+   causes, but the report must identify the primary proposed intervention.
+8. Refine only on labeled development cases, then validate once on a new
+   untouched company holdout. Keep iterations bounded to one or two and return
+   a next proposal instead of continuing automatically.
+
+Raw-versus-organized comparison answers whether representation adds value; it
+does not prove the source set is complete. Source-family discovery,
+requirement-level coverage, unclassified-fact review, and add-back/ablation
+experiments answer what information should be collected. Because no human gold
+packet exists, Ralph may establish the best validated plan among tested sources,
+budgets, and schemes, but must not claim a universal or information-complete
+optimum.
+
+## Information-Plan Exit Gate
+
+Information-plan research is ready to hand off to analysis-method research only
+when all of the following hold:
+
+- anonymous point-in-time and no-web blind invariants pass, with no unresolved
+  critical cross-case contamination or subject misattribution;
+- requirement-level coverage and missing reasons are auditable, and sampled
+  organized claims remain traceable to supporting source spans;
+- the organized packet is compared fairly with the raw-source baseline and
+  either provides useful, repeatable holdout separation or shows a stable
+  representation plateau with residual failures attributed to analysis or
+  irreducible as-of predictability rather than missing information;
+- targeted add-backs and ablations no longer reveal a material, repeatable
+  missing information family or representation loss on fresh holdouts;
+- remaining errors are predominantly analysis or irreducible as-of
+  predictability errors rather than acquisition, extraction, signal, or packet
+  errors;
+- the selected plan is versioned and remains proposal-only pending human
+  review.
+
+Exact evidence-fidelity, sample-size, and material-lift thresholds are research
+design choices that must be confirmed before implementation. The existing v1
+blind-separation threshold remains a compatibility gate, not sufficient proof
+by itself that the broad information plan is complete. Multi-agent analysis may
+begin only after this exit gate, using the same fixed information plan so any
+gain is attributable to the analysis method.
 
 The default v1 success threshold is quantitative:
 
@@ -231,6 +365,20 @@ Standalone Ralph experiments also write:
 - `case_selection_label_aware.json`
 - `manifest.json`
 
+The next information-plan experiment should add versioned proposal artifacts:
+
+- `research_information_plan.json`
+- `information_requirements.json`
+- `evidence_coverage_ledger.json`
+- `atomic_evidence_by_case.json`
+- `raw_source_blind_packets.json`
+- `raw_vs_organized_evaluation.json`
+- `information_family_experiments.json`
+- `layered_failure_attribution.json`
+
+These filenames describe the intended next experiment contract. They are not
+current outputs until the corresponding implementation and tests exist.
+
 Before any external blind-LLM call, the standalone experiment runner can write
 preflight artifacts without contacting a provider:
 
@@ -290,6 +438,17 @@ successful.
 - Ralph Loop is separate from measurable signal learning and from surge
   playbook synthesis. Signals describe what to measure; playbooks describe how
   to think; Ralph describes how to package information for blind assessment.
+- Broad information-plan research may propose new requirements, signals, and
+  rubrics, but each remains owned by its corresponding module and proposal
+  boundary. Ralph coordinates their comparison; it does not silently promote
+  or collapse them into prompt text.
+- Raw sources are preserved as the audit layer. Organized packets may be lossy
+  working representations, but every retained factual claim must remain
+  traceable and representation loss must be measurable.
+- No current artifact may be called a human gold packet. A future gold packet
+  would require an explicit annotation protocol and separate approval.
+- Multi-agent experiments must not begin by changing both the evidence plan and
+  analyzer architecture in the same comparison.
 
 ## Testing
 
@@ -297,4 +456,8 @@ Tests should cover label-aware diagnostics, scheme and packet leakage checks,
 section priority and compression, evaluation metrics, feedback proposal
 generation, one-loop integration with fake artifacts and fake blind research,
 refinement/holdout experiment artifacts, manifest paths, and no-web blind
-prompt construction.
+prompt construction. The next implementation should also test requirement-level
+missing states, source-span traceability, entity and event-state extraction,
+negation, amount/unit preservation, deduplication, raw-versus-organized input
+parity, holdout-consumption rules, layered failure attribution, and the absence
+of any unsupported gold-packet claim.

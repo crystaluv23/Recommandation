@@ -46,8 +46,9 @@ Active child specs:
   pre-packet company, catalyst, theme, and public research evidence acquisition
   plus context coverage gating for formal cold start.
 - [`research/ralph_loop.md`](research/ralph_loop.md): retrospective
-  label-aware information-scheme proposal and blind scheme validation for
-  formal cold-start packets.
+  label-aware research-information-plan discovery, acquisition/extraction
+  diagnosis, packet-scheme proposal, and blind plain-LLM validation for formal
+  cold-start packets.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
@@ -63,6 +64,17 @@ Active child specs:
 - Preserve prompt and model versions.
 - Propose cold-start information schemes through Ralph Loop without promoting
   them into production prompt defaults.
+- Keep information requirements, atomic evidence, signals, analysis rubrics,
+  packet rendering, and prompt wording as distinct research products. A request
+  to collect actual order evidence is not itself a signal; a signal requires a
+  measurable or explicitly qualitative definition over source-linked facts.
+- Preserve the full source archive and provenance while allowing the final LLM
+  packet to be intentionally compressed. Every packet claim must remain
+  traceable to atomic evidence and its point-in-time source.
+- Compare raw-source and organized-packet variants only when they use the same
+  source bundle, as-of cutoff, model, output contract, and documented context
+  budget. Derived cross-sectional data used by a signal counts as additional
+  input information and must not be hidden inside only one comparison arm.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.
@@ -85,6 +97,18 @@ Active child specs:
 - Retrospective Ralph diagnostics may read historical outcome groups only in
   explicitly marked label-aware artifacts; scheme-built blind packets must stay
   anonymous and point-in-time.
+- Blind feedback must be attributed to one of: source unavailable, acquisition
+  miss, extraction error, signal error, representation loss, analysis error, or
+  outcome not predictably supported by available as-of evidence. Feedback may
+  refine a development set, but an independent claim requires a new untouched
+  company holdout.
+- Current experiments do not have a human-curated gold packet. Automatically
+  generated reference packets, source audits, or limited fact checks must not be
+  described as gold or used to claim that an information plan is globally
+  optimal.
+- Multi-agent analysis is a later analysis-method experiment. It must use a
+  fixed validated information plan so gains are not confounded with better data
+  acquisition or representation.
 - A high-priority recommendation requires structured evidence, catalysts, disconfirming conditions, and a validation contract.
 - Incremental research must compare new evidence to the prior thesis instead of silently generating a fresh thesis from scratch.
 

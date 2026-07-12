@@ -31,6 +31,10 @@ Expected records:
 
 - Evaluate Top 10 and Top 20 results across 1-month, 3-month, and 6-month horizons.
 - Compare LLM-only, quant-only, and hybrid signal groups when data allows.
+- Compare plain-LLM and multi-agent analysis methods only after fixing the same
+  validated information plan, source bundle, as-of cutoff, and output contract;
+  do not attribute gains to analysis architecture when acquisition or packet
+  representation changed at the same time.
 - Identify prompt bias, scoring weakness, data-source noise, sector-specific failures, and regime sensitivity.
 - Evaluate whether theme-first, stock-first, or hybrid discovery is currently producing better candidates.
 - Track whether prompts are becoming too bullish, too theme-seeking, too tolerant of weak evidence, or too dismissive of contrary evidence.

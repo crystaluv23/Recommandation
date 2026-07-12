@@ -33,6 +33,13 @@ growth, and liquidity expansion. These rules consume `ResearchPacket` features
 and known catalysts only; qualitative LLM-only signals stay out of the MVP until
 the research layer can attach source-backed evidence.
 
+An information requirement is not automatically a signal. For example,
+"collect evidence of actual orders" belongs to the research information plan;
+an order signal must define the required atomic facts and a repeatable
+observation such as order value relative to revenue, recency, contract status,
+duration, customer confirmation, or expected conversion timing. Prompt wording
+that tells an LLM to inspect orders is an analysis rubric, not the signal itself.
+
 ## Responsibilities
 
 - Store and version signal definitions.

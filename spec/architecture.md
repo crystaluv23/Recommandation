@@ -15,6 +15,7 @@ The architecture is organized around a single durable loop:
 
 ```text
 historical case learning
+-> validated research information plan
 -> signal library and theme map
 -> weekly theme-first market scan
 -> structured coarse candidate screen
@@ -58,9 +59,12 @@ The operating cadences are:
 ```text
 cold start
 -> identify historical winners, controls, and failures
--> build point-in-time case packets
--> run blind as-of-date research
--> initialize signal library, theme map, scoring defaults, prompts, and memory
+-> discover candidate information requirements across point-in-time windows
+-> acquire source-linked evidence and build point-in-time case packets
+-> extract atomic facts, signals, rubrics, and packet representations
+-> compare raw-source and organized-packet plain-LLM baselines
+-> run anonymous no-web holdout validation and route errors by layer
+-> initialize only validated signal, theme, prompt, and memory proposals
 
 daily
 -> update prices, volume, filings, news, earnings events, analyst revisions, and theme evidence
@@ -97,18 +101,39 @@ The system should be understood as four connected phases, not as one large monit
 
 ### Phase 1: Historical Case Learning
 
-Purpose: build the first signal library without survivorship bias or look-ahead bias.
+Purpose: establish a validated research information plan and then build the
+first signal library without survivorship bias or look-ahead bias.
 
 ```text
 find winners from the most recent one-year historical window
 -> match 3-5 same-sector, similar-size failure controls per winner
 -> construct T-180 / T-120 / T-90 / T-60 / T-30 point-in-time packets
--> run blind as-of-date LLM analysis
--> compare winners against controls and failures
--> update Signal Library, Theme Memory, prompt defaults, scoring hypotheses, and case memory
+-> use label-aware comparison to discover information requirements, including unclassified facts
+-> map each requirement to point-in-time sources and explicit missing states
+-> extract source-linked atomic facts before deriving signals or summaries
+-> compare the same source bundle as raw context and as an organized packet
+-> run blind as-of-date plain-LLM validation on a disjoint company holdout
+-> route failures to acquisition, extraction, signal, representation, analysis, or predictability
+-> update versioned information-plan, signal, theme, prompt, scoring, and case-memory proposals
 ```
 
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
+
+Phase 1 contains two ordered subphases:
+
+1. Information-plan research discovers what to collect, validates source
+   coverage, extracts auditable atomic facts, derives candidate signals and
+   research rubrics, and tests packet representations with a fixed plain LLM.
+2. Analysis-method research begins only after the information plan passes its
+   exit gate. It may then compare the plain-LLM baseline with multi-agent,
+   specialist, debate, or skeptic architectures using the same fixed evidence.
+
+The information-plan exit gate is not a claim of a universal optimum. It means
+the best validated plan among the tested sources, context budgets, and plain-LLM
+baseline has useful holdout separation, acceptable evidence fidelity, bounded
+representation loss, and no competing tested proposal with a material,
+repeatable improvement. The repository currently has no human-curated gold
+packet, so a gold-packet upper bound must not be assumed in current experiments.
 
 ### Phase 2: Current Market Scan
 

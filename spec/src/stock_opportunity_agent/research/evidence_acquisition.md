@@ -48,6 +48,24 @@ records the report and keeps the packet available for compatibility. `enforce`
 mode excludes insufficient packets from blind LLM analysis and signal learning
 while keeping the full packet audit artifact.
 
+Bucket presence is only a coarse compatibility check. The next Ralph
+information-plan iteration must add requirement-level coverage with explicit
+states such as `confirmed`, `contradicted`, `not_applicable`, `not_found`,
+`source_unavailable`, `not_fetched`, `extraction_failed`, and `ambiguous`.
+Keyword presence alone must not count as confirmed evidence of an order,
+contract, customer, financing, strategic transaction, industry-chain
+transmission, or catalyst.
+
+Acquisition should become gap-driven. Each information requirement should map
+to preferred and fallback sources, point-in-time constraints, retrieval status,
+and an extraction contract. A missing deal-status field may trigger SEC
+registration, proxy, transaction, and exhibit retrieval; missing capital or
+liquidity detail may trigger filings, XBRL, credit agreements, and prospectus
+evidence; missing customer or order detail may trigger earnings releases,
+transcripts, investor presentations, news, or counterparty evidence. A new paid
+API should be proposed only after the coverage ledger shows that the fact is not
+available from already-supported sources or public point-in-time documents.
+
 Provider company-profile APIs may contribute stale `profile.sector` and
 `profile.industry` features plus a short `THEME_CONTEXT` document. These fields
 are industry-chain context only; they must not be treated as point-in-time
@@ -76,6 +94,12 @@ not enough by themselves.
   bodies from web search.
 - Reject or ignore documents and catalysts published after the candidate
   inflection cutoff.
+- Distinguish facts absent from the source, sources not fetched, extraction
+  failures, and facts unavailable from supported sources. These states must not
+  collapse into one neutral or sufficient value.
+- Retain source spans or equivalent provenance for extracted atomic facts so a
+  later representation experiment can identify whether a raw-source fact was
+  lost, altered, or duplicated in the organized packet.
 - Convert public research summaries to `EvidenceKind.RESEARCH_REPORT` and
   theme summaries to `EvidenceKind.THEME_CONTEXT`.
 - Keep company-identifying web/context work separate from the later blind,

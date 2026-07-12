@@ -13,7 +13,8 @@ The product should feel less like a one-shot screener and more like a persistent
 
 ```text
 learn from historical winners and failures
--> extract signals and theme maps
+-> discover and validate what information a stock study needs
+-> extract signals, research rubrics, and theme maps
 -> scan the current market
 -> generate company theses
 -> bind each recommendation to validation metrics
@@ -23,6 +24,15 @@ learn from historical winners and failures
 ```
 
 The durable unit of work is the investment thesis and its evidence, not the ticker by itself.
+
+Historical learning has two ordered research objectives. First, the system must
+find a validated information plan: what evidence to collect, where to obtain it,
+how to extract it without losing provenance, and how to present it to a fixed
+plain-LLM baseline. Only after that information plan reaches a stable validation
+plateau should the project compare richer analysis methods such as multi-agent
+research, debate, or specialist critique. Weak plain-LLM separation is not by
+itself evidence that multi-agent analysis is needed when acquisition, extraction,
+or packet fidelity remains unresolved.
 
 ## Core Goal
 
@@ -47,7 +57,8 @@ The system's main line is:
 
 ```text
 historical learning
--> signal library
+-> validated research information plan
+-> signal library and analysis-method experiments
 -> theme and industry-chain map
 -> weekly theme-first scan
 -> structured coarse screen
@@ -99,6 +110,17 @@ Structured price, volume, financial, valuation, analyst revision, event, and mar
 ### Point-in-time Discipline
 
 Historical learning and backtests must only use information public as of the simulated date. Case analysis should use time slices such as T-180, T-120, T-90, T-60, T-30, and T-0 without leaking later explanations.
+
+### Information Before Analysis Complexity
+
+The historical-learning program must distinguish information discovery from
+analysis-method research. Label-aware winner/control/failure comparison may
+propose information requirements, candidate signals, and research rubrics.
+Anonymous holdout evaluation then tests whether the proposed information can be
+acquired, extracted, and represented effectively for a fixed plain LLM. The
+project should not attribute failure to the analyzer or move to multi-agent
+methods until source coverage, atomic-fact fidelity, and representation loss
+have been measured separately.
 
 ### Theme-first and Stock-second
 

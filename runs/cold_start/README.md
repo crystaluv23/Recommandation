@@ -59,6 +59,21 @@ call. If responses are generated outside this runtime, the runner can import
 them by request id and write imported-response evaluation artifacts in the same
 run directory.
 
+The next Ralph information-plan iteration is specified to add proposal artifacts
+for `research_information_plan.json`, `information_requirements.json`,
+`evidence_coverage_ledger.json`, source-linked atomic evidence,
+raw-versus-organized blind comparison, information-family add-back/ablation,
+and layered failure attribution. These are planned outputs, not current runner
+outputs. The repository has no human-curated gold packet; automatic or
+source-audited packets must not be labeled gold.
+
+Raw-source and organized-packet experiments must reuse the same point-in-time
+source bundle, model, output contract, and documented context-budget policy.
+Label-aware discovery and acquisition stay before packet masking. Blind
+evaluation remains anonymous and web-disabled, and a holdout used to propose a
+change becomes retrospective feedback data rather than independent validation
+for that change.
+
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation
 changes.
