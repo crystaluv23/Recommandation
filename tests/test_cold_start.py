@@ -59,7 +59,9 @@ from stock_opportunity_agent.research import (
     apply_context_coverage_gate,
     assess_context_coverage,
     audit_point_in_time_documents,
+    build_requirement_coverage_ledger,
     build_raw_source_blind_packet,
+    default_information_requirements,
     document_content_readiness,
     evaluate_information_plan_experiment,
     extract_atomic_evidence_by_case,
@@ -100,6 +102,7 @@ from scripts.run_cold_start_formal import (
     _theme_context_documents_for_candidate,
 )
 from scripts.run_ralph_loop_experiment import (
+    _augment_alpha_vantage_news_for_cases,
     _augment_sec_submission_documents_for_cases,
     _enrich_cases_with_documents,
     _leakage_report,
@@ -1970,6 +1973,70 @@ class ColdStartSignalTests(TestCase):
         self.assertNotIn("TRON", packet_text)
         self.assertNotIn("Corner Growth", packet_text)
 
+    def test_ralph_alpha_vantage_news_augmentation_is_bounded_and_point_in_time(self) -> None:
+        class FakeAlphaVantageClient:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def news_sentiment(self, symbol, **kwargs):
+                self.calls.append((symbol, kwargs))
+                return {
+                    "feed": [
+                        {
+                            "time_published": "20260415T120000",
+                            "title": "Company secures public contract",
+                            "summary": "The company secured a $10.9 million federal defense contract.",
+                            "url": "https://example.com/contract",
+                        },
+                        {
+                            "time_published": "20260504T120000",
+                            "title": "Future article",
+                            "summary": "This was published after the case cutoff.",
+                            "url": "https://example.com/future",
+                        },
+                        {
+                            "time_published": "20260420T120000",
+                            "title": "Low relevance industry article",
+                            "summary": "Another issuer signed a contract.",
+                            "url": "https://example.com/low-relevance",
+                            "ticker_sentiment": [
+                                {"ticker": "NEWS", "relevance_score": "0.05"}
+                            ],
+                        },
+                    ]
+                }
+
+        case = make_case(
+            "news-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.10,
+            earnings_growth=0.20,
+            margin=0.08,
+            return_20d=-0.10,
+            return_60d=-0.30,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        client = FakeAlphaVantageClient()
+
+        augmented, warnings = _augment_alpha_vantage_news_for_cases(
+            {},
+            (case,),
+            lookback_days=90,
+            max_news_per_symbol=25,
+            client=client,
+        )
+
+        self.assertEqual(warnings, ())
+        self.assertEqual(len(augmented["NEWS"]), 1)
+        document = augmented["NEWS"][0]
+        self.assertEqual(document.content_scope, DocumentContentScope.SUMMARY_ONLY)
+        self.assertEqual(document.published_date, date(2026, 4, 15))
+        self.assertIn("federal defense contract", document.text)
+        self.assertNotIn("Future article", document.text)
+        self.assertEqual(client.calls[0][0], "NEWS")
+        self.assertEqual(client.calls[0][1]["limit"], 25)
+
     def test_ralph_preflight_leakage_report_scans_cross_case_identities(self) -> None:
         class FakePacket:
             anonymous_case_id = "case_001"
@@ -2990,10 +3057,52 @@ class ColdStartSignalTests(TestCase):
                         "offering. We may face product liability lawsuits. The related consolidated "
                         "statements of cash flows for the two-year period are financial statements. "
                         "Options and warrants are not considered in the diluted loss-per-share "
-                        "calculations."
+                        "calculations. The company is committed to helping its customers. "
+                        "The warning letter template uses required legal wording. The company "
+                        "entered into a customer refundable deposit agreement for financing. "
+                        "Authoritative guidance for pensions permits a calculated value."
                     ),
                     source_id="sec:atom:bank-boilerplate",
                     source_url="https://www.sec.gov/example/atom-bank-boilerplate",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+                DocumentRecord(
+                    document_id="atom-unrelated-theme-context",
+                    symbol="ATOM",
+                    kind=EvidenceKind.THEME_CONTEXT,
+                    title="Industry financing context",
+                    text=(
+                        "Another company closed a public offering for gross proceeds of "
+                        "$184 million."
+                    ),
+                    source_id="theme:atom:unrelated-offering",
+                    source_url="https://example.com/atom-unrelated-theme",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+                DocumentRecord(
+                    document_id="atom-designed-agreement",
+                    symbol="ATOM",
+                    kind=EvidenceKind.NEWS,
+                    title="ATOM interconnection dispute",
+                    text=(
+                        "A regulator rejected an interconnection service agreement designed "
+                        "to increase power supply to a third-party data center."
+                    ),
+                    source_id="news:atom:designed-agreement",
+                    source_url="https://example.com/atom-designed-agreement",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+                DocumentRecord(
+                    document_id="atom-unrelated-provider-news",
+                    symbol="ATOM",
+                    kind=EvidenceKind.NEWS,
+                    title="Another issuer signs customer agreement",
+                    text="Another issuer signed a customer agreement for cloud services.",
+                    source_id="alpha_vantage:ATOM:unrelated",
+                    source_url="https://example.com/atom-unrelated",
                     published_date=AS_OF - timedelta(days=1),
                     retrieved_at=STAMP,
                 ),
@@ -3028,11 +3137,144 @@ class ColdStartSignalTests(TestCase):
         self.assertFalse(
             any(
                 fact.family
-                in {"fundamentals", "capital_structure_liquidity", "contrary_risk"}
+                in {
+                    "fundamentals",
+                    "capital_structure_liquidity",
+                    "contrary_risk",
+                    "expectation_gap",
+                }
                 and fact.source_id == "sec:atom:bank-boilerplate"
                 for fact in facts
             )
         )
+        self.assertFalse(
+            any(
+                fact.family == "capital_structure_liquidity"
+                and fact.source_id == "theme:atom:unrelated-offering"
+                for fact in facts
+            )
+        )
+
+    def test_information_plan_preserves_multifamily_facts_and_qualifies_coverage(self) -> None:
+        factual_case = make_case(
+            "factmulti-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.12,
+            return_20d=-0.05,
+            return_60d=-0.20,
+            target_upside=0.30,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="factmulti-agreement",
+                    symbol="FACTMULTI",
+                    kind=EvidenceKind.NEWS,
+                    title="Annual services agreement",
+                    text=(
+                        "The company announced the signing of a $25 million annual services "
+                        "agreement with a client for AI-driven compliance services. "
+                        "Its AI compliance platform is currently deployed by leading European banks. "
+                        "Amazon sales surged 417% in three months, driven by strong customer demand. "
+                        "The company is set to receive $750 million in CHIPS and Science Act "
+                        "funding and will boost manufacturing capacity. The company closed a "
+                        "public offering of common stock, no par value, for gross proceeds of "
+                        "$20 million."
+                    ),
+                    source_id="news:factmulti:agreement",
+                    source_url="https://example.com/factmulti-agreement",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        planned_case = make_case(
+            "planned-control",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.02,
+            earnings_growth=0.01,
+            margin=0.04,
+            return_20d=0.00,
+            return_60d=0.01,
+            target_upside=0.01,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="planned-proposal",
+                    symbol="PLANNED",
+                    kind=EvidenceKind.NEWS,
+                    title="Proposed pilot",
+                    text=(
+                        "The company was invited to submit a full proposal for a potential DoD "
+                        "pilot award. It plans an FDA submission and approval in 2026."
+                    ),
+                    source_id="news:planned:proposal",
+                    source_url="https://example.com/planned-proposal",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+        cases = (factual_case, planned_case)
+
+        facts_by_case = extract_atomic_evidence_by_case(cases)
+        factual_families = {fact.family for fact in facts_by_case[factual_case.case_id]}
+        self.assertTrue(
+            {
+                "orders_contracts",
+                "customer_capacity",
+                "capital_structure_liquidity",
+                "policy_regulatory",
+                "theme_industry_transmission",
+            }
+            <= factual_families
+        )
+        policy_fact = next(
+            fact
+            for fact in facts_by_case[factual_case.case_id]
+            if fact.family == "policy_regulatory"
+        )
+        self.assertEqual(policy_fact.status.value, "expected")
+        capital_fact = next(
+            fact
+            for fact in facts_by_case[factual_case.case_id]
+            if fact.family == "capital_structure_liquidity"
+            and "no par value" in fact.source_span
+        )
+        self.assertEqual(capital_fact.status.value, "completed")
+        self.assertFalse(capital_fact.negated)
+        self.assertFalse(
+            any(
+                fact.family in {"orders_contracts", "policy_regulatory"}
+                for fact in facts_by_case[planned_case.case_id]
+            )
+        )
+
+        coverage = build_requirement_coverage_ledger(
+            cases,
+            default_information_requirements(),
+            facts_by_case,
+        )
+        factual_states = {
+            entry.family: entry.state
+            for entry in coverage
+            if entry.source_case_id == factual_case.case_id
+        }
+        planned_states = {
+            entry.family: entry.state
+            for entry in coverage
+            if entry.source_case_id == planned_case.case_id
+        }
+        for family in (
+            "orders_contracts",
+            "customer_capacity",
+            "policy_regulatory",
+            "theme_industry_transmission",
+        ):
+            self.assertEqual(factual_states[family].value, "confirmed")
+        self.assertEqual(planned_states["orders_contracts"].value, "not_found")
+        self.assertEqual(planned_states["policy_regulatory"].value, "not_found")
 
     def test_information_plan_masks_source_aliases_and_interleaves_raw_documents(self) -> None:
         case = make_case(
@@ -3103,6 +3345,28 @@ class ColdStartSignalTests(TestCase):
             extra_identity_terms_by_case={case.case_id: identity_tokens},
         )
         self.assertTrue(leakage["passed"])
+
+    def test_information_plan_identity_tokens_reject_generic_news_words(self) -> None:
+        document = DocumentRecord(
+            document_id="generic-news-identity",
+            symbol="FCAP",
+            kind=EvidenceKind.NEWS,
+            title="First Capital, Inc. Reports Quarterly Earnings",
+            text=(
+                "First Capital reported results. Power reported strong demand while Energy "
+                "announced a project in New York. Biden announced a federal initiative."
+            ),
+            source_id="news:generic-identity",
+            source_url="https://example.com/generic-identity",
+            published_date=AS_OF - timedelta(days=1),
+            retrieved_at=STAMP,
+        )
+
+        tokens = point_in_time_document_identity_tokens((document,))
+
+        self.assertIn("First Capital", tokens)
+        for generic in ("Capital", "Power", "Energy", "York", "Biden"):
+            self.assertNotIn(generic, tokens)
 
     def test_information_plan_prepares_raw_organized_coverage_and_family_variants(self) -> None:
         discovery_cases = (
@@ -3359,7 +3623,7 @@ class ColdStartSignalTests(TestCase):
             if entry.source_case_id == control.case_id
             and entry.family == "orders_contracts"
         )
-        self.assertEqual(control_order_coverage.state.value, "extraction_failed")
+        self.assertEqual(control_order_coverage.state.value, "not_found")
         self.assertTrue(document_content_readiness(prepared)["passed"])
 
         result = evaluate_information_plan_experiment(

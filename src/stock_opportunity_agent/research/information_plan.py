@@ -608,6 +608,12 @@ def extract_atomic_evidence_by_case(
                 or evidence.source_id in full_document_source_ids
             ):
                 continue
+            if (
+                evidence.kind is EvidenceKind.NEWS
+                and (evidence.source_id or "").startswith("alpha_vantage:")
+                and not _source_text_mentions_issuer(case, evidence.summary)
+            ):
+                continue
             facts.extend(_facts_from_evidence(case, evidence))
         facts.extend(_facts_from_features(case))
         facts.extend(_facts_from_catalysts(case))
@@ -821,7 +827,7 @@ def build_requirement_coverage_ledger(
         for requirement in requirements:
             family_facts = tuple(fact for fact in facts if fact.family == requirement.family)
             state, reason = _coverage_state(
-                case.packet,
+                case,
                 requirement.family,
                 family_facts,
                 available_documents,
@@ -1581,47 +1587,82 @@ def _scheme_for_context_budget(
 
 def _facts_from_evidence(case: HistoricalCase, evidence: EvidenceItem) -> list[AtomicEvidence]:
     facts: list[AtomicEvidence] = []
-    for span in _source_spans(evidence.summary):
-        classification = _classify_source_span(span)
-        if classification is None:
-            continue
-        family, event_type = classification
-        status, negated = _fact_status(span, family)
-        amount, unit = _amount_and_unit(span)
-        period = _period_phrase(span)
-        source_id = evidence.source_id or _opaque_ref(case.case_id, evidence.source_url or evidence.summary)
-        facts.append(
-            AtomicEvidence(
-                fact_id=_fact_id(case.case_id, source_id, family, event_type, span),
-                source_case_id=case.case_id,
-                requirement_id=f"information-requirement:{family}",
-                family=family,
-                subject_role="issuer",
-                counterparty_role=_counterparty_role(span),
-                event_type=event_type,
-                status=status,
-                statement=_compact(span, 420),
-                source_span=_compact(span, 620),
-                source_id=source_id,
-                source_kind=evidence.kind.value,
-                as_of_date=evidence.as_of_date.isoformat(),
-                published_date=evidence.published_date.isoformat() if evidence.published_date else None,
-                event_date=(
-                    _event_date_phrase(span)
-                    or (evidence.published_date.isoformat() if evidence.published_date else None)
-                ),
-                amount=amount,
-                unit=unit,
-                period=period,
-                negated=negated,
-                confidence=0.95 if status is not AtomicFactStatus.AMBIGUOUS else 0.5,
+    source_spans = _source_spans(evidence.summary)
+    classified_spans = [
+        (span, _classify_source_span_all(span))
+        for span in source_spans
+    ]
+    for left, right in zip(source_spans, source_spans[1:]):
+        combined = f"{left}; {right}"
+        if (
+            _theme_transmission_span(combined.lower())
+            and not _theme_transmission_span(left.lower())
+            and not _theme_transmission_span(right.lower())
+        ):
+            classified_spans.append(
+                (combined, (("theme_industry_transmission", "theme_pull_through"),))
             )
-        )
+
+    for span, classifications in classified_spans:
+        if not classifications:
+            continue
+        for family, event_type in classifications:
+            if evidence.kind is EvidenceKind.THEME_CONTEXT and family not in {
+                "business_identity",
+                "theme_industry_transmission",
+            }:
+                continue
+            status, negated = _fact_status(span, family)
+            amount, unit = _amount_and_unit(span)
+            period = _period_phrase(span)
+            source_id = evidence.source_id or _opaque_ref(
+                case.case_id,
+                evidence.source_url or evidence.summary,
+            )
+            facts.append(
+                AtomicEvidence(
+                    fact_id=_fact_id(case.case_id, source_id, family, event_type, span),
+                    source_case_id=case.case_id,
+                    requirement_id=f"information-requirement:{family}",
+                    family=family,
+                    subject_role="issuer",
+                    counterparty_role=_counterparty_role(span),
+                    event_type=event_type,
+                    status=status,
+                    statement=_compact(span, 420),
+                    source_span=_compact(span, 620),
+                    source_id=source_id,
+                    source_kind=evidence.kind.value,
+                    as_of_date=evidence.as_of_date.isoformat(),
+                    published_date=(
+                        evidence.published_date.isoformat() if evidence.published_date else None
+                    ),
+                    event_date=(
+                        _event_date_phrase(span)
+                        or (evidence.published_date.isoformat() if evidence.published_date else None)
+                    ),
+                    amount=amount,
+                    unit=unit,
+                    period=period,
+                    negated=negated,
+                    confidence=0.95 if status is not AtomicFactStatus.AMBIGUOUS else 0.5,
+                )
+            )
     return facts
 
 
 def _facts_from_document(case: HistoricalCase, document: DocumentRecord) -> list[AtomicEvidence]:
     """Extract facts from the full saved point-in-time document, not only packet excerpts."""
+
+    if (
+        document.kind is EvidenceKind.NEWS
+        and document.source_id.startswith("alpha_vantage:")
+        and not _source_text_mentions_issuer(
+            case,
+            f"{document.title}. {document.text}",
+        )
+    ):
+        return []
 
     evidence = EvidenceItem(
         kind=document.kind,
@@ -1633,6 +1674,26 @@ def _facts_from_document(case: HistoricalCase, document: DocumentRecord) -> list
         data_quality=DataQuality.CONFIRMED,
     )
     return _facts_from_evidence(case, evidence)
+
+
+def _source_text_mentions_issuer(case: HistoricalCase, raw_text: str) -> bool:
+    symbol = case.packet.company.ticker.symbol
+    if re.search(rf"\b{re.escape(symbol)}\b", raw_text):
+        return True
+    company_name = case.packet.company.ticker.company_name or ""
+    aliases: set[str] = set()
+    for part in re.split(r"\s*/\s*", company_name):
+        alias = re.sub(r"\([^)]*\)", " ", part)
+        alias = re.sub(
+            r",?\s+(?:Incorporated|Inc|Corporation|Corp|Company|Co|Limited|Ltd|PLC|LLC)\.?$",
+            "",
+            alias,
+            flags=re.IGNORECASE,
+        ).strip(" .,:;-")
+        if len(alias) >= 4:
+            aliases.add(alias.lower())
+    lowered = raw_text.lower()
+    return any(re.search(rf"\b{re.escape(alias)}\b", lowered) for alias in aliases)
 
 
 def _facts_from_features(case: HistoricalCase) -> list[AtomicEvidence]:
@@ -1776,8 +1837,12 @@ def point_in_time_document_identity_tokens(
 ) -> tuple[str, ...]:
     """Return organization aliases and trading symbols that must be masked."""
 
-    text = " ".join(f"{document.title}. {document.text}" for document in documents)
-    return _document_identity_tokens_from_text(text)
+    tokens: set[str] = set()
+    for document in documents:
+        tokens.update(
+            _document_identity_tokens_from_text(f"{document.title}. {document.text}")
+        )
+    return tuple(sorted(tokens, key=len, reverse=True))
 
 
 def _document_identity_tokens(documents: Iterable[DocumentRecord]) -> tuple[str, ...]:
@@ -1806,7 +1871,7 @@ def _document_identity_tokens_from_text(text: str) -> tuple[str, ...]:
         text,
     ):
         token = match.group(1)
-        if _safe_document_identity_token(token) and _document_short_alias_is_used(text, token):
+        if _safe_document_identity_token(token):
             tokens.add(token)
     for match in re.finditer(
         r"\b(?:NASDAQ|NasdaqCM|NYSE|NYSEAmerican)\s*:\s*([A-Z][A-Z0-9.]{1,5})\b",
@@ -1885,16 +1950,47 @@ def _safe_document_identity_token(token: str) -> bool:
         "the company",
     )
     blocked_exact = {
+        "agreement",
+        "american",
+        "and",
+        "amount",
+        "amounts",
         "bank",
+        "biden",
+        "capital",
+        "ceo",
         "city",
         "company",
+        "company's",
+        "costs",
         "corp",
+        "defendants",
         "director",
+        "district",
+        "electric",
+        "energy",
+        "entities",
+        "foundation",
+        "general",
+        "generation",
+        "irs",
+        "notes",
+        "our",
+        "plaintiff",
+        "power",
         "registrant",
+        "securities",
         "shares",
         "shareholders",
         "source",
+        "state",
+        "states",
         "stockholders",
+        "that",
+        "the",
+        "trump",
+        "what",
+        "york",
     }
     return (
         3 <= len(token) <= 120
@@ -1930,6 +2026,33 @@ def _classify_source_span(span: str) -> tuple[str, str] | None:
     if _business_span(text):
         return "business_identity", "business_context"
     return None
+
+
+def _classify_source_span_all(span: str) -> tuple[tuple[str, str], ...]:
+    """Preserve independently supported target-family meanings in one span."""
+
+    primary = _classify_source_span(span)
+    if primary and primary[1] in {"governance_routine", "market_index_membership"}:
+        return (primary,)
+
+    text = span.lower()
+    target_classifiers = (
+        (_deal_span, "deal_status_timing", "strategic_transaction"),
+        (_orders_span, "orders_contracts", "order_or_contract"),
+        (_customer_capacity_span, "customer_capacity", "customer_or_capacity"),
+        (_capital_span, "capital_structure_liquidity", "capital_or_liquidity"),
+        (_policy_span, "policy_regulatory", "policy_or_regulatory"),
+        (_theme_transmission_span, "theme_industry_transmission", "theme_pull_through"),
+        (_expectation_span, "expectation_gap", "expectation_or_guidance"),
+    )
+    classifications = tuple(
+        (family, event_type)
+        for predicate, family, event_type in target_classifiers
+        if predicate(text)
+    )
+    if classifications:
+        return classifications
+    return (primary,) if primary else ()
 
 
 def _deal_span(text: str) -> bool:
@@ -1981,13 +2104,14 @@ def _orders_span(text: str) -> bool:
             "letter of credit",
             "payment on drafts",
             "underlying credit documents",
+            "customer refundable deposit agreement",
         )
     ):
         return False
     if "purchase order" in text or "customer order" in text or "backlog" in text:
-        return any(
-            action in text
-            for action in (
+        return _contains_phrase(
+            text,
+            (
                 "entered into",
                 "was awarded",
                 "received",
@@ -1998,7 +2122,7 @@ def _orders_span(text: str) -> bool:
                 "totaled",
                 "booked",
                 "reported",
-            )
+            ),
         )
     commercial_terms = (
         "customer",
@@ -2006,15 +2130,28 @@ def _orders_span(text: str) -> bool:
         "supply agreement",
         "sales agreement",
         "service agreement",
+        "services agreement",
+        "annual agreement",
         "government contract",
+        "federal contract",
+        "defense contract",
         "commercial contract",
     )
     return (
         any(term in text for term in ("contract", "award", "agreement"))
         and any(term in text for term in commercial_terms)
-        and any(
-            action in text
-            for action in ("entered into", "was awarded", "received", "signed", "secured", "won")
+        and _contains_phrase(
+            text,
+            (
+                "entered into",
+                "was awarded",
+                "received",
+                "signed",
+                "signs",
+                "signing of",
+                "secured",
+                "won",
+            ),
         )
     )
 
@@ -2024,14 +2161,51 @@ def _customer_capacity_span(text: str) -> bool:
         return False
     customer_pullthrough = (
         any(term in text for term in ("customer", "client"))
-        and any(
-            action in text
-            for action in ("selected", "committed", "ordered", "signed", "deployed", "demand increased")
+        and _contains_phrase(
+            text,
+            (
+                "selected",
+                "ordered",
+                "signed",
+                "signing",
+                "deployed",
+                "demand increased",
+            ),
+        )
+    )
+    signed_service_adoption = any(
+        term in text for term in ("service agreement", "services agreement")
+    ) and _contains_phrase(text, ("signed", "signs", "signing of", "entered into"))
+    reported_demand = bool(
+        re.search(r"driven by (?:strong|growing|increased) customer demand", text)
+        or re.search(
+            r"customer demand (?:was|is|remained)?\s*(?:strong|increased|grew|accelerated)",
+            text,
+        )
+    )
+    deployed_adoption = bool(
+        re.search(
+            r"currently deployed by (?:leading )?(?:[a-z-]+ )?"
+            r"(?:banks|customers|clients|enterprises|agencies)",
+            text,
         )
     )
     capacity_action = "capacity" in text and any(
         action in text
-        for action in ("expanded", "increased", "opened", "commissioned", "reached", "added")
+        for action in (
+            "expanded",
+            "increased",
+            "opened",
+            "commissioned",
+            "reached",
+            "added",
+            "boost",
+            "boosted",
+        )
+    )
+    construction_progress = bool(
+        re.search(r"\b(?:plant|facility|fab)\b.{0,80}\bnearing completion\b", text)
+        or re.search(r"\bnearing completion\b.{0,80}\b(?:plant|facility|fab)\b", text)
     )
     shipment_action = any(term in text for term in ("shipment", "shipments")) and any(
         action in text for action in ("increased", "began", "commenced", "totaled", "reached")
@@ -2039,7 +2213,16 @@ def _customer_capacity_span(text: str) -> bool:
     utilization_action = "utilization" in text and any(
         action in text for action in ("increased", "improved", "reached", "rose")
     )
-    return customer_pullthrough or capacity_action or shipment_action or utilization_action
+    return (
+        customer_pullthrough
+        or signed_service_adoption
+        or reported_demand
+        or deployed_adoption
+        or capacity_action
+        or construction_progress
+        or shipment_action
+        or utilization_action
+    )
 
 
 def _capital_span(text: str) -> bool:
@@ -2148,17 +2331,56 @@ def _capital_span(text: str) -> bool:
 def _policy_span(text: str) -> bool:
     if _generic_or_hypothetical(text):
         return False
-    direct_phrases = (
-        "fda approval",
-        "regulatory approval",
-        "received approval",
-        "permit was granted",
-        "government contract",
-        "funding award",
-        "clinical hold",
-        "warning letter",
+    actual_status = any(
+        phrase in text
+        for phrase in (
+            "received approval",
+            "approval was granted",
+            "approval has been granted",
+            "permit was granted",
+        )
     )
-    if any(phrase in text for phrase in direct_phrases):
+    planned_status = bool(
+        re.search(
+            r"\b(?:plan(?:s|ned)?|intend(?:s|ed)?|expect(?:s|ed)?|seek(?:s|ing)?|aim(?:s|ed)?)\b"
+            r".{0,80}\b(?:approval|clearance|permit|submission|proposal|award)\b",
+            text,
+        )
+        or re.search(r"\b(?:invited|selected) to submit\b", text)
+    )
+    if planned_status and not actual_status:
+        return False
+    if actual_status:
+        return True
+    if "funding award" in text and _contains_phrase(
+        text,
+        (
+            "received",
+            "was awarded",
+            "entered into",
+            "definitive direct funding award agreement",
+        ),
+    ):
+        return True
+    if "clinical hold" in text and _contains_phrase(
+        text,
+        ("placed", "imposed", "lifted", "removed"),
+    ):
+        return True
+    if "warning letter" in text and _contains_phrase(
+        text,
+        ("received", "issued", "sent", "fda warning letter"),
+    ):
+        return True
+    if (
+        any(term in text for term in ("chips funding", "chips and science act funding"))
+        and _contains_phrase(
+            text,
+            ("set to receive", "selected to receive", "was awarded", "awarded", "received"),
+        )
+    ):
+        return True
+    if "ferc ruling" in text and _contains_phrase(text, ("approved", "rejected", "issued")):
         return True
     return "tariff" in text and any(
         action in text
@@ -2167,7 +2389,16 @@ def _policy_span(text: str) -> bool:
 
 
 def _theme_transmission_span(text: str) -> bool:
-    theme = any(term in text for term in ("artificial intelligence", " ai ", "data center", "datacenter", "cloud"))
+    theme = bool(
+        "artificial intelligence" in text
+        or re.search(r"\bai\b", text)
+        or any(term in text for term in ("data center", "datacenter", "cloud"))
+    )
+    if re.search(
+        r"\b(?:no|not|without)\b.{0,50}\b(?:orders?|contracts?|customers?|deployments?)\b",
+        text,
+    ):
+        return False
     direct = _orders_span(text) or _customer_capacity_span(text) or any(
         phrase in text for phrase in ("revenue from", "guidance reflects", "capacity expansion")
     )
@@ -2175,19 +2406,37 @@ def _theme_transmission_span(text: str) -> bool:
 
 
 def _expectation_span(text: str) -> bool:
-    return any(
+    if any(
+        phrase in text
+        for phrase in (
+            "authoritative guidance",
+            "accounting guidance",
+            "revised guidance",
+            "guidance for pensions",
+            "guidance for postretirement",
+        )
+    ):
+        return False
+    direct = any(
         phrase in text
         for phrase in (
             "raised guidance",
             "lowered guidance",
             "reaffirmed guidance",
-            "guidance for",
             "analyst estimate",
             "consensus estimate",
             "earnings surprise",
             "price target",
         )
     )
+    issuer_outlook = bool(
+        re.search(
+            r"\b(?:company|management|we)\b.{0,80}\bguidance for\b"
+            r"|\bguidance for\b.{0,40}\b(?:fiscal|fy|quarter|year)\b",
+            text,
+        )
+    )
+    return direct or issuer_outlook
 
 
 def _risk_span(text: str) -> bool:
@@ -2287,18 +2536,25 @@ def _generic_or_hypothetical(text: str) -> bool:
     )
 
 
+def _contains_phrase(text: str, phrases: Iterable[str]) -> bool:
+    return any(
+        re.search(rf"(?<![a-z]){re.escape(phrase)}(?![a-z])", text)
+        for phrase in phrases
+    )
+
+
 def _fact_status(span: str, family: str) -> tuple[AtomicFactStatus, bool]:
     text = span.lower()
-    negated = bool(re.search(r"\b(no|not|without|did not|has not|have not|unable to)\b", text))
+    negated = _fact_is_negated(text, family)
     if negated:
         return AtomicFactStatus.CONTRADICTED, True
-    if any(term in text for term in ("terminated", "cancelled", "canceled", "liquidation")):
+    if any(term in text for term in ("terminate", "terminated", "cancelled", "canceled", "liquidation")):
         return AtomicFactStatus.TERMINATED, False
     if any(term in text for term in ("delayed", "extended", "postponed")):
         return AtomicFactStatus.DELAYED, False
     if any(term in text for term in ("proposed", "intends to", "plans to", "pursuing")):
         return AtomicFactStatus.PROPOSED, False
-    if any(term in text for term in ("expected", "scheduled", "guidance")):
+    if any(term in text for term in ("expected", "scheduled", "guidance", "set to receive")):
         return AtomicFactStatus.EXPECTED, False
     if any(term in text for term in ("closed", "completed", "consummated", "received approval", "was awarded")):
         return AtomicFactStatus.COMPLETED, False
@@ -2307,6 +2563,42 @@ def _fact_status(span: str, family: str) -> tuple[AtomicFactStatus, bool]:
     ):
         return AtomicFactStatus.RISK, False
     return AtomicFactStatus.CONFIRMED, False
+
+
+def _fact_is_negated(text: str, family: str) -> bool:
+    patterns = {
+        "orders_contracts": (
+            r"\b(?:no|without)\s+(?:customer\s+)?(?:orders?|contracts?|backlog|awards?)\b",
+            r"\b(?:did|has|have) not\b.{0,40}\b(?:receive|secure|sign|win|book)\b",
+        ),
+        "customer_capacity": (
+            r"\bno\s+(?:customer demand|customers?|capacity|shipments?|utilization)\b",
+            r"\b(?:did|has|have) not\b.{0,40}\b(?:deploy|expand|ship|open)\b",
+        ),
+        "capital_structure_liquidity": (
+            r"\bno\s+(?:restricted\s+)?(?:cash|debt|borrowings?|liquidity|credit facility)\b",
+            r"\b(?:did|has|have) not\b.{0,40}\b(?:close|raise|receive|borrow|repay)\b",
+        ),
+        "policy_regulatory": (
+            r"\bno\s+(?:regulatory |fda )?(?:approval|clearance|permit|award)\b",
+            r"\b(?:did|has|have) not\b.{0,40}\b(?:approve|grant|receive|issue)\b",
+        ),
+        "theme_industry_transmission": (
+            r"\bno\b.{0,40}\b(?:ai|artificial intelligence|data center|cloud)\b"
+            r".{0,40}\b(?:orders?|contracts?|customers?|deployment)\b",
+        ),
+        "expectation_gap": (
+            r"\bno\s+(?:guidance|estimate|expectation|price target)\b",
+            r"\b(?:did|has|have) not\b.{0,40}\b(?:raise|lower|reaffirm|beat|miss)\b",
+        ),
+        "fundamentals": (
+            r"\bno\s+(?:revenue|sales|ebitda|cash flow)\b",
+        ),
+        "contrary_risk": (
+            r"\bno\s+(?:material weakness|default|non-compliance|lawsuit|investigation)\b",
+        ),
+    }
+    return any(re.search(pattern, text) for pattern in patterns.get(family, ()))
 
 
 def _amount_and_unit(span: str) -> tuple[float | None, str | None]:
@@ -2414,11 +2706,12 @@ def _requirement_diagnostic(
 
 
 def _coverage_state(
-    packet: ResearchPacket,
+    case: HistoricalCase,
     family: str,
     facts: tuple[AtomicEvidence, ...],
     external_documents: tuple[DocumentRecord, ...] = (),
 ) -> tuple[RequirementCoverageState, str]:
+    packet = case.packet
     if facts:
         statuses = {fact.status for fact in facts}
         if statuses == {AtomicFactStatus.CONTRADICTED}:
@@ -2466,11 +2759,34 @@ def _coverage_state(
         and family not in {"market_confirmation", "fundamentals"}
     ):
         return RequirementCoverageState.NOT_FETCHED, "No source document for this requirement was fetched into the packet."
-    text = " ".join(
-        [item.summary for item in packet_documents]
-        + [f"{document.title}. {document.text}" for document in external_documents]
-    ).lower()
-    if _family_candidate_keywords(family, text):
+    unusable_external_source_ids = {
+        document.source_id
+        for document in external_documents
+        if _document_content_state(document, _clean_source_text(document.text))[0]
+        not in {DocumentContentState.USABLE, DocumentContentState.SUMMARY_ONLY}
+    }
+    candidate_texts = [
+        item.summary
+        for item in packet_documents
+        if item.source_id not in unusable_external_source_ids
+        and not (
+            (item.source_id or "").startswith("alpha_vantage:")
+            and not _source_text_mentions_issuer(case, item.summary)
+        )
+    ] + [
+        f"{document.title}. {document.text}"
+        for document in external_documents
+        if _document_content_state(document, _clean_source_text(document.text))[0]
+        in {DocumentContentState.USABLE, DocumentContentState.SUMMARY_ONLY}
+        and not (
+            document.source_id.startswith("alpha_vantage:")
+            and not _source_text_mentions_issuer(
+                case,
+                f"{document.title}. {document.text}",
+            )
+        )
+    ]
+    if _family_has_qualifying_candidate(family, candidate_texts):
         return RequirementCoverageState.EXTRACTION_FAILED, "Candidate source terms exist but no qualifying atomic fact was extracted."
     return RequirementCoverageState.NOT_FOUND, "Fetched point-in-time sources contain no qualifying fact for this requirement."
 
@@ -2528,6 +2844,23 @@ def _family_candidate_keywords(family: str, text: str) -> bool:
         "other_or_unclassified": (),
     }
     return any(keyword in text for keyword in keywords.get(family, ()))
+
+
+def _family_has_qualifying_candidate(family: str, source_texts: Iterable[str]) -> bool:
+    action_qualified = {
+        "orders_contracts": _orders_span,
+        "customer_capacity": _customer_capacity_span,
+        "policy_regulatory": _policy_span,
+        "theme_industry_transmission": _theme_transmission_span,
+    }
+    predicate = action_qualified.get(family)
+    if predicate:
+        return any(
+            predicate(span.lower())
+            for source_text in source_texts
+            for span in _source_spans(source_text)
+        )
+    return _family_candidate_keywords(family, " ".join(source_texts).lower())
 
 
 def _families_from_missing_context(reasons: Iterable[str]) -> set[str]:

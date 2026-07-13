@@ -54,11 +54,23 @@ to identify the event or measurement. Event extraction must prioritize specific
 form/item and action semantics, handle negation and proposed/closed/terminated
 states, keep issuer/target/counterparty roles distinct, preserve amount units and
 periods, and deduplicate repeated representations of the same source fact.
+Provider ticker-news results must also demonstrate issuer relevance; industry
+articles about another named company cannot inherit the queried ticker as their
+subject. Action terms use token or phrase boundaries, so words such as
+`designed` cannot satisfy a `signed` contract rule.
 
 The initial implementation may be conservative and return `ambiguous` or
 `not_found`. It must not convert generic risk-factor, boilerplate, index-removal,
 or document-wide co-occurrence into positive orders, financing, transactions,
 or AI-chain pull-through.
+
+One source span may support more than one requirement when the semantics are
+independently present. For example, a signed AI customer agreement may yield an
+orders/contracts fact, a customer-adoption fact, and a theme-transmission fact,
+all linked to the same span. Extraction must preserve those labels instead of
+forcing a lossy single-family choice. This does not permit document-wide joins:
+the theme and the qualifying commercial or operating action must occur in one
+sentence or a strictly adjacent two-sentence local span.
 
 ## Comparison Contract
 
@@ -136,6 +148,11 @@ none of these artifacts may be called gold.
 ## Invariants
 
 - Preserve point-in-time availability and full source provenance.
+- Diagnose an extraction failure only from sentence-scoped, action-qualified
+  candidate evidence. Bare words such as `contract`, `customer`, `FDA`, or `AI`
+  elsewhere in a document are not enough. Invitations, proposals, intended
+  submissions, and plans to seek approval remain `not_found` until a source
+  reports an actual qualifying event or status.
 - Preserve full fetched filing/transcript bodies in the retrospective audit
   layer while keeping blind packet excerpts bounded and identity-safe.
 - Treat accounting policies, statutory thresholds, generic prospectus terms,
@@ -173,6 +190,14 @@ standard Ralph manifests. Raw and organized arms share one context-budget
 ceiling and one audited point-in-time source pool; organized facts may use only
 sources in that pool.
 
+The Ralph experiment entry point may augment only the selected development
+symbols with bounded Alpha Vantage historical company news. The request sends a
+public ticker and historical date range, not case labels or research packets.
+Returned provider summaries remain explicitly `summary_only`, preserve their
+publication date and URL in the retrospective source archive, and pass through
+the same as-of, content-readiness, masking, and leakage checks as every other
+source.
+
 The July 12 v5 local preflight correctly stopped because legacy saved filing
 bodies were truncated before substantive text. The July 13 v11 SEC
 reconstruction removed that acquisition blocker for the bounded development
@@ -190,9 +215,26 @@ and control were labeled `possible`, producing FP 1.00 and FN 0.00. This is
 pipeline evidence only: the raw and organized heuristic parsers are different,
 and the rules react to section counts rather than perform the fixed plain-LLM
 analysis. Deal status/timing, capital/liquidity, and expectation gap have
-source-backed development facts; orders/contracts, customer/capacity,
-policy/regulatory, and theme/industry transmission remain at zero. The bounded
-plain-LLM raw-versus-organized development run was not sent to OpenRouter
-because external transmission of the anonymous project packets still requires
-explicit informed authorization. No effectiveness or Phase-1 exit claim is
-available, and a later one-shot claim still requires new untouched companies.
+source-backed development facts. A subsequent local-corpus audit found real
+extraction misses for signed annual service agreements, deployed customers, and
+reported customer demand, while planned submissions and proposal invitations
+had been false coverage alarms.
+
+The v25 WOLF/EXC development preflight is the latest source-complete proposal.
+It combines bounded Alpha Vantage company-news summaries with complete SEC
+filings, passes leakage and content readiness on 111 audited holdout sources
+(16 usable full bodies, 94 summary-only, one metadata-only), and has five
+source-backed experiment families. Orders/contracts, customer/capacity, and
+policy/regulatory are now populated with issuer-grounded facts; theme/industry
+transmission remains `not_found` for this pair. The v27 heuristic diagnostic
+still fails separation: raw positive-confidence gap is 0.00, organized gap is
+-0.05, FP is 1.00, and FN is 0.00. Contract add-back contributes +0.11, while
+expectation-gap add-back contributes -0.11 because the control also has genuine
+positive estimate evidence. This is evidence that section-count heuristics
+cannot assess fact meaning, not an effectiveness result.
+
+The bounded plain-LLM raw-versus-organized development run was not sent to
+OpenRouter because external transmission of the anonymous project packets still
+requires explicit informed authorization. No effectiveness or Phase-1 exit
+claim is available, and a later one-shot claim still requires new untouched
+companies.

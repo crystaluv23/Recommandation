@@ -179,7 +179,42 @@ analysis using exactly the same validated information plan.
   but not sent to OpenRouter because external transmission of anonymous project
   research packets requires explicit informed user authorization. No workaround
   was attempted.
-- The objective remains active. After authorization, run only the frozen v19
-  raw/organized development arms, use the result to route at most one more
-  bounded proposal, then acquire new symbols for a one-shot untouched-company
-  holdout. Multi-agent work remains gated.
+- At this checkpoint the objective remained active and the frozen v19 arms were
+  the planned authorized comparison. The v25-v27 checkpoint below supersedes
+  that next action. Multi-agent work remains gated.
+
+## Execution Checkpoint - 2026-07-13 v25-v27
+
+- Audited all 300 formal historical cases and 547 saved documents with the
+  action-qualified coverage ledger. The revised extractor recovered two SRM
+  winner customer-demand windows, four HUBC failure contract windows, six total
+  customer/capacity windows, and one HUBC theme-transmission window. Earlier
+  ADTX/KNW `extraction_failed` states disappeared because proposal invitations
+  and planned regulatory submissions are correctly `not_found`.
+- Replaced the lossy single-family span classifier with traceable multi-family
+  facts, while limiting theme joins to one sentence or a strictly adjacent
+  two-sentence context. Added issuer relevance for provider ticker news and
+  exact phrase boundaries so third-party stories and `designed`/`signed`
+  substring collisions do not become issuer contracts.
+- Added bounded Alpha Vantage historical company-news augmentation for selected
+  development symbols. Requests contain only public tickers and historical date
+  ranges; provider summaries remain `summary_only`. Added source-URL
+  deduplication and reused SEC submissions augmentation for complete filings.
+- v25 is the current source-complete preflight for WOLF winner versus EXC
+  control. It passes leakage and content readiness on 111 sources: 16 usable
+  full bodies, 94 summary-only, one metadata-only, and no critical issue. Five
+  families are packet-ready. WOLF has source-backed federal defense contract,
+  CHIPS funding-status, fab expansion, utilization, and supply-agreement facts;
+  theme/industry transmission remains absent for this pair.
+- v27 is the final local heuristic diagnostic for this development revision.
+  Raw positive-confidence gap is 0.00; organized gap is -0.05 with FP 1.00 and
+  FN 0.00. Contract add-back is +0.11, customer/capacity and policy are 0.00,
+  and expectation-gap add-back is -0.11 because EXC also has genuine positive
+  estimate evidence. This confirms the rule-based evaluator cannot interpret
+  status, baseline, or discriminative direction and must not guide more prompt
+  or extraction tuning.
+- The objective remains active. No project packet was sent externally. After
+  explicit informed authorization, run exactly four fixed plain-LLM calls on
+  the v25 anonymous WOLF/EXC raw and organized packets. Then route at most one
+  bounded proposal from that result and reserve new companies for the one-shot
+  untouched holdout. Multi-agent work remains gated.

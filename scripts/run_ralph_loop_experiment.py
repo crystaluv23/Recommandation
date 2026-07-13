@@ -16,6 +16,7 @@ from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
 from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.documents import DocumentContentScope, DocumentRecord
+from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
 from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata, UrllibJsonTransport, format_cik
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.llm.openai import UrllibTransport
@@ -93,6 +94,19 @@ def main() -> None:
         documents_by_symbol=documents_by_symbol,
     )
     selected_case_tuple = tuple(selected["refinement"] + selected["holdout"])
+    if args.augment_alpha_vantage_news:
+        documents_by_symbol, news_warnings = _augment_alpha_vantage_news_for_cases(
+            documents_by_symbol,
+            selected_case_tuple,
+            lookback_days=args.alpha_news_lookback_days,
+            max_news_per_symbol=args.max_alpha_news_per_symbol,
+        )
+        for warning in news_warnings:
+            print(f"[ralph-experiment] warning={warning}")
+        selected = {
+            "refinement": _enrich_cases_with_documents(selected["refinement"], documents_by_symbol),
+            "holdout": _enrich_cases_with_documents(selected["holdout"], documents_by_symbol),
+        }
     if args.augment_sec_submission_filings:
         documents_by_symbol, augmentation_warnings = _augment_sec_submission_documents_for_cases(
             documents_by_symbol,
@@ -742,6 +756,26 @@ def _parse_args() -> argparse.Namespace:
         help="Add selected SEC submissions filings as point-in-time source-detail documents for selected cases.",
     )
     parser.add_argument(
+        "--augment-alpha-vantage-news",
+        action="store_true",
+        help=(
+            "Add bounded Alpha Vantage historical company-news summaries for selected "
+            "development symbols."
+        ),
+    )
+    parser.add_argument(
+        "--alpha-news-lookback-days",
+        type=int,
+        default=365,
+        help="Historical company-news lookback before each selected case cutoff.",
+    )
+    parser.add_argument(
+        "--max-alpha-news-per-symbol",
+        type=int,
+        default=100,
+        help="Maximum Alpha Vantage company-news summaries added per selected symbol.",
+    )
+    parser.add_argument(
         "--sec-submission-forms",
         default="8-K,10-Q,10-K,10-K/A,DEF 14A,424B5,S-3,S-3/A,F-4,F-4/A",
         help="Comma-separated SEC forms to add when --augment-sec-submission-filings is enabled.",
@@ -788,7 +822,16 @@ def _load_documents_by_symbol(path: Path) -> dict[str, tuple[DocumentRecord, ...
     for symbol, records in records_by_symbol.items():
         if not isinstance(records, list):
             continue
-        documents[str(symbol).upper()] = tuple(_document_from_record(record) for record in records)
+        deduped: dict[str, DocumentRecord] = {}
+        for record in records:
+            document = _document_from_record(record)
+            key = document.source_url if document.source_url.startswith("http") else document.source_id
+            current = deduped.get(key)
+            if current is None or len(document.text) > len(current.text):
+                deduped[key] = document
+        documents[str(symbol).upper()] = tuple(
+            sorted(deduped.values(), key=lambda item: (item.published_date, item.source_id))
+        )
     return documents
 
 
@@ -1128,6 +1171,124 @@ def _first_percent(text: str, patterns: Iterable[str]) -> str | None:
         if match:
             return match.group(1).strip(" .,;:")
     return None
+
+
+def _augment_alpha_vantage_news_for_cases(
+    documents_by_symbol: Mapping[str, Iterable[DocumentRecord]],
+    cases: Iterable[HistoricalCase],
+    *,
+    lookback_days: int,
+    max_news_per_symbol: int,
+    client: AlphaVantageClient | None = None,
+) -> tuple[dict[str, tuple[DocumentRecord, ...]], tuple[str, ...]]:
+    """Add bounded public provider summaries for selected point-in-time cases."""
+
+    if lookback_days < 1:
+        raise ValidationError("alpha news lookback days must be positive")
+    if not 1 <= max_news_per_symbol <= 1000:
+        raise ValidationError("max alpha news per symbol must be between 1 and 1000")
+
+    result = {
+        symbol.upper(): tuple(documents)
+        for symbol, documents in documents_by_symbol.items()
+    }
+    cases_by_symbol: dict[str, list[HistoricalCase]] = {}
+    for case in cases:
+        cases_by_symbol.setdefault(case.packet.company.ticker.symbol.upper(), []).append(case)
+    warnings: list[str] = []
+    if not cases_by_symbol:
+        return result, ()
+
+    try:
+        news_client = client or AlphaVantageClient.from_config(load_config().data_sources)
+    except (DataSourceError, ValidationError) as exc:
+        return result, (f"Alpha Vantage news augmentation unavailable: {exc}",)
+
+    retrieved_at = datetime.now(timezone.utc)
+    for symbol, symbol_cases in sorted(cases_by_symbol.items()):
+        earliest_cutoff = min(case.packet.as_of.as_of_date for case in symbol_cases)
+        latest_cutoff = max(case.packet.as_of.as_of_date for case in symbol_cases)
+        start_date = earliest_cutoff - timedelta(days=lookback_days)
+        try:
+            response = news_client.news_sentiment(
+                symbol,
+                limit=max_news_per_symbol,
+                time_from=datetime.combine(start_date, datetime.min.time(), tzinfo=timezone.utc),
+                time_to=datetime.combine(latest_cutoff, datetime.max.time(), tzinfo=timezone.utc),
+                sort="EARLIEST",
+            )
+        except (DataSourceError, OSError) as exc:
+            warnings.append(f"{symbol}: Alpha Vantage historical news unavailable: {exc}")
+            continue
+        feed = response.get("feed") if isinstance(response, dict) else None
+        if not isinstance(feed, list):
+            warnings.append(f"{symbol}: Alpha Vantage historical news response had no feed")
+            continue
+        additions = tuple(
+            document
+            for item in feed
+            if (document := _alpha_vantage_news_record(symbol, item, retrieved_at)) is not None
+            and start_date <= document.published_date <= latest_cutoff
+        )
+        merged: dict[str, DocumentRecord] = {}
+        for document in (*result.get(symbol, ()), *additions):
+            key = document.source_url if document.source_url.startswith("http") else document.source_id
+            current = merged.get(key)
+            if current is None or len(document.text) > len(current.text):
+                merged[key] = document
+        result[symbol] = tuple(
+            sorted(merged.values(), key=lambda item: (item.published_date, item.source_id))
+        )
+    return result, tuple(warnings)
+
+
+def _alpha_vantage_news_record(
+    symbol: str,
+    item: object,
+    retrieved_at: datetime,
+) -> DocumentRecord | None:
+    if not isinstance(item, dict):
+        return None
+    raw_published = item.get("time_published")
+    title = str(item.get("title") or "").strip()
+    if not isinstance(raw_published, str) or not title:
+        return None
+    ticker_sentiment = item.get("ticker_sentiment")
+    if isinstance(ticker_sentiment, list):
+        matching_scores: list[float] = []
+        for record in ticker_sentiment:
+            if not isinstance(record, dict):
+                continue
+            if str(record.get("ticker") or "").upper() != symbol.upper():
+                continue
+            try:
+                matching_scores.append(float(record.get("relevance_score", 0.0)))
+            except (TypeError, ValueError):
+                continue
+        if not matching_scores or max(matching_scores) < 0.2:
+            return None
+    try:
+        published = datetime.strptime(raw_published[:15], "%Y%m%dT%H%M%S").date()
+    except ValueError:
+        return None
+    summary = str(item.get("summary") or "").strip()
+    source_url = str(item.get("url") or "").strip()
+    identity = source_url or f"{title}|{raw_published}"
+    opaque_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:20]
+    source_id = f"alpha_vantage:{symbol.upper()}:{opaque_id}"
+    return DocumentRecord(
+        document_id=source_id,
+        symbol=symbol.upper(),
+        kind=EvidenceKind.NEWS,
+        title=title,
+        text=f"{title}. {summary}".strip(),
+        source_id=source_id,
+        source_url=source_url or f"urn:{source_id}",
+        published_date=published,
+        available_date=published,
+        retrieved_at=retrieved_at,
+        content_scope=DocumentContentScope.SUMMARY_ONLY,
+    )
 
 
 def _augment_sec_submission_documents_for_cases(
