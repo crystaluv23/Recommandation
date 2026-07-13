@@ -32,6 +32,7 @@ from stock_opportunity_agent.config import AgentConfig, PromptConfig
 from stock_opportunity_agent.data import (
     AlphaVantageClient,
     DataSourceError,
+    DocumentContentScope,
     DocumentRecord,
     FinnhubClient,
     MassiveClient,
@@ -837,9 +838,11 @@ def _filing_documents_for_candidate(
     documents: list[DocumentRecord] = []
     for filing in selected:
         text = f"{filing.form} filed on {filing.filing_date.isoformat()}."
+        content_scope = DocumentContentScope.METADATA_ONLY
         if not args.skip_filing_text:
             try:
-                text = _excerpt(client.filing_document_text(filing), max_chars=args.document_excerpt_chars)
+                text = client.filing_document_text(filing)
+                content_scope = DocumentContentScope.COMPLETE_BODY
             except (DataSourceError, OSError) as exc:
                 warnings.append(f"{candidate.symbol}: SEC filing text unavailable for {filing.accession_number}: {exc}")
         documents.append(
@@ -854,6 +857,7 @@ def _filing_documents_for_candidate(
                 published_date=filing.filing_date,
                 available_date=filing.filing_date,
                 retrieved_at=filing.retrieved_at or created_at,
+                content_scope=content_scope,
             )
         )
     return documents
@@ -941,6 +945,7 @@ def _theme_context_documents_for_candidate(
             published_date=earliest_as_of,
             available_date=earliest_as_of,
             retrieved_at=created_at,
+            content_scope=DocumentContentScope.SUMMARY_ONLY,
         )
     ]
 
@@ -1032,6 +1037,7 @@ def _alpha_vantage_theme_document(
         published_date=published,
         available_date=published,
         retrieved_at=retrieved_at,
+        content_scope=DocumentContentScope.SUMMARY_ONLY,
     )
 
 
@@ -1087,12 +1093,13 @@ def _transcript_documents_for_candidate(
                 symbol=candidate.symbol,
                 kind=EvidenceKind.TRANSCRIPT,
                 title=title,
-                text=_excerpt(text, max_chars=args.document_excerpt_chars),
+                text=text,
                 source_id=source_id,
                 source_url=str(item.get("url") or f"urn:{source_id}"),
                 published_date=published,
                 available_date=published,
                 retrieved_at=created_at,
+                content_scope=DocumentContentScope.COMPLETE_BODY,
             )
         )
         if len(documents) >= args.max_transcripts_per_symbol:
@@ -1835,6 +1842,7 @@ def _document_to_dict(document: DocumentRecord) -> dict[str, object]:
         "published_date": document.published_date.isoformat(),
         "retrieved_at": document.retrieved_at.isoformat(),
         "available_date": document.available_date.isoformat() if document.available_date else None,
+        "content_scope": document.content_scope.value,
     }
 
 
@@ -1850,6 +1858,7 @@ def _document_from_dict(data: dict[str, object]) -> DocumentRecord:
         published_date=date.fromisoformat(str(data["published_date"])),
         retrieved_at=datetime.fromisoformat(str(data["retrieved_at"])),
         available_date=date.fromisoformat(str(data["available_date"])) if data.get("available_date") else None,
+        content_scope=DocumentContentScope(str(data.get("content_scope", "unknown"))),
     )
 
 
@@ -1873,6 +1882,7 @@ def _finnhub_news_document(symbol: str, item: object, retrieved_at: datetime) ->
         published_date=published,
         available_date=published,
         retrieved_at=retrieved_at,
+        content_scope=DocumentContentScope.SUMMARY_ONLY,
     )
 
 
@@ -1896,6 +1906,7 @@ def _alpha_vantage_news_document(symbol: str, item: object, retrieved_at: dateti
         published_date=published,
         available_date=published,
         retrieved_at=retrieved_at,
+        content_scope=DocumentContentScope.SUMMARY_ONLY,
     )
 
 

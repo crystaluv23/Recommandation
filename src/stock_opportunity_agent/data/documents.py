@@ -6,12 +6,22 @@ import html
 import re
 from dataclasses import dataclass
 from datetime import date, datetime
+from enum import Enum
 from typing import Iterable
 
 from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ValidationError
 
 
 MAX_EVIDENCE_EXCERPT_CHARS = 700
+
+
+class DocumentContentScope(str, Enum):
+    """How much source content a document record is expected to contain."""
+
+    COMPLETE_BODY = "complete_body"
+    SUMMARY_ONLY = "summary_only"
+    METADATA_ONLY = "metadata_only"
+    UNKNOWN = "unknown"
 
 
 @dataclass(frozen=True)
@@ -28,6 +38,7 @@ class DocumentRecord:
     published_date: date
     retrieved_at: datetime
     available_date: date | None = None
+    content_scope: DocumentContentScope = DocumentContentScope.UNKNOWN
 
     def __post_init__(self) -> None:
         _require_non_empty(self.document_id, "document_id")
@@ -38,6 +49,8 @@ class DocumentRecord:
         _require_non_empty(self.source_url, "source_url")
         if self.kind is EvidenceKind.INFERENCE:
             raise ValidationError("documents cannot use inference evidence kind")
+        if not isinstance(self.content_scope, DocumentContentScope):
+            object.__setattr__(self, "content_scope", DocumentContentScope(self.content_scope))
         object.__setattr__(self, "symbol", self.symbol.upper())
         if self.available_date is None:
             object.__setattr__(self, "available_date", self.published_date)

@@ -92,6 +92,11 @@ not enough by themselves.
 - Store short summaries, source URLs, publication dates, availability dates,
   queries, and warnings; do not persist full public research reports or article
   bodies from web search.
+- Preserve complete filing and transcript bodies when the provider returns
+  them. Apply excerpt budgets only when constructing packet evidence or blind
+  context, not while creating the source archive. Record whether each archived
+  item is a complete body, summary-only source, metadata-only placeholder,
+  likely truncated body, or unusable content.
 - Reject or ignore documents and catalysts published after the candidate
   inflection cutoff.
 - Distinguish facts absent from the source, sources not fetched, extraction
@@ -100,6 +105,9 @@ not enough by themselves.
 - Retain source spans or equivalent provenance for extracted atomic facts so a
   later representation experiment can identify whether a raw-source fact was
   lost, altered, or duplicated in the organized packet.
+- Fail the information-plan blind-call readiness gate when selected holdout
+  cases have no usable unstructured source body or when a target-family fact
+  depends on a likely truncated or unusable document.
 - Convert public research summaries to `EvidenceKind.RESEARCH_REPORT` and
   theme summaries to `EvidenceKind.THEME_CONTEXT`.
 - Keep company-identifying web/context work separate from the later blind,

@@ -339,11 +339,62 @@ class HeuristicRalphBlindResearcher:
         """Score a scheme packet using only section presence and text cues."""
 
         sections = {section.name: section for section in packet.sections}
+        raw_source = sections.get("Raw Source Context")
+        raw_structured = sections.get("Raw Structured Context")
+        if raw_source is not None:
+            raw_items = raw_source.items + (raw_structured.items if raw_structured else ())
+            text = json.dumps(raw_items, sort_keys=True).lower()
+            positive_hits = sum(
+                marker in text
+                for marker in (
+                    "was awarded",
+                    "purchase order",
+                    "raised guidance",
+                    "completed the acquisition",
+                    "revenue growth",
+                    "backlog increased",
+                )
+            )
+            risk_hits = sum(
+                marker in text
+                for marker in ("going concern", "delist", "dilution", "terminated", "default")
+            )
+            confidence = min(0.75, 0.25 + 0.08 * len(raw_items) + 0.08 * positive_hits)
+            if positive_hits >= 2 and positive_hits > risk_hits:
+                judgment = "possible"
+            elif not raw_items:
+                judgment = "insufficient_information"
+            elif risk_hits > positive_hits:
+                judgment = "unlikely"
+            else:
+                judgment = "insufficient_information"
+            return RalphBlindAnalysis(
+                source_case_id=packet.source_case_id,
+                anonymous_case_id=packet.anonymous_case_id,
+                as_of_date=packet.as_of_date,
+                scheme_version=packet.scheme_version,
+                surge_candidate=judgment,
+                surge_candidate_reason="Heuristic validation of minimally processed raw-source context.",
+                expectation_gap="Raw-source baseline does not synthesize an expectation gap.",
+                pre_surge_signals=(f"Detected {positive_hits} conservative positive source cues.",),
+                contrary_evidence=(f"Detected {risk_hits} conservative risk source cues.",),
+                catalyst_watch=(),
+                missing_context=("Raw-source baseline intentionally omits information-plan synthesis.",),
+                confidence=round(confidence, 4),
+                raw_text="heuristic-ralph-raw-source",
+            )
         high_priority_hits = sum(
-            1 for name in HIGH_PRIORITY_SECTION_NAMES if sections.get(name) and sections[name].items
+            1
+            for name in HIGH_PRIORITY_SECTION_NAMES
+            if sections.get(name)
+            and any(item.get("item_type") != "requirement_coverage" for item in sections[name].items)
         )
         risk_section = sections.get("Contrary/Risk Evidence")
-        risk_hits = len(risk_section.items) if risk_section is not None else 0
+        risk_hits = (
+            sum(item.get("item_type") != "requirement_coverage" for item in risk_section.items)
+            if risk_section is not None
+            else 0
+        )
         confidence = min(0.82, 0.25 + 0.11 * high_priority_hits + 0.02 * risk_hits)
         if high_priority_hits >= 4:
             judgment = "likely"
@@ -1013,6 +1064,25 @@ def build_blind_scheme_packet(
         scheme_version=scheme.version,
         sections=sections,
     )
+
+
+def identity_safe_blind_value(
+    packet: ResearchPacket,
+    value: Any,
+    *,
+    extra_identity_tokens: Iterable[str] = (),
+) -> Any:
+    """Remove source metadata and mask packet identities from a blind payload value."""
+
+    tokens = tuple(
+        sorted(
+            set(_identity_tokens(packet))
+            | {token.strip() for token in extra_identity_tokens if len(token.strip()) >= 2},
+            key=len,
+            reverse=True,
+        )
+    )
+    return _mask_identity_in_value(_strip_source_metadata(value), tokens)
 
 
 def evaluate_scheme_performance(

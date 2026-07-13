@@ -22,6 +22,11 @@ The implementation exposes:
 ## Responsibilities
 
 - Store document metadata, publication date, public availability date, retrieval time, source id, source URL, and text.
+- Preserve the complete fetched body for filings and transcripts in
+  `DocumentRecord`; do not apply packet-context truncation while acquiring or
+  serializing the source archive. Provider or web APIs that expose only a
+  summary must be marked and stored as summary-only evidence rather than
+  described as a complete document body.
 - Support point-in-time filtering by ticker and evidence kind.
 - Produce source-linked evidence metadata and short text excerpts for research
   packets so LLM research sees the substance of filings, transcripts, news,
@@ -44,8 +49,13 @@ The implementation exposes:
 - Documents and chunks may enter a historical packet only when their public availability date is on or before the packet `as_of_date`.
 - Document evidence must include source identifiers, source URLs, and a bounded
   excerpt or summary suitable for packet prompts.
+- Bounded packet excerpts and chunks are derived representations. They must not
+  replace or overwrite the archived source body used for extraction and audit.
 - Text chunking must preserve document ids and source metadata.
 
 ## Testing
 
-Cover as-of filtering, duplicate replacement in the early store, chunk metadata, source-linked evidence conversion, and future-document exclusion.
+Cover as-of filtering, duplicate replacement in the early store, chunk
+metadata, source-linked evidence conversion, future-document exclusion, and
+proof that complete filing/transcript bodies survive acquisition while packet
+evidence remains bounded.

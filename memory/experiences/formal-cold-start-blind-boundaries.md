@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 13
+visit_times: 15
 
 ## Trigger
 
@@ -124,6 +124,28 @@ The blind LLM distinction test could not complete because OpenRouter returned a
 402 insufficient-credits response after packet/coverage construction. Treat
 that as an external execution blocker, not evidence that the packet layer is
 still empty.
+
+## 2026-07-13 Information-Plan Boundary Correction
+
+A full-source archive and a blind packet are different artifacts. Fetching a
+filing and then storing only its 1,500-character packet excerpt destroys the
+ability to distinguish acquisition failure from extraction or representation
+failure. Preserve complete fetched filing/transcript bodies with an explicit
+content scope, audit them before blind calls, and derive bounded packet views
+later.
+
+Anonymous masking must use identities discovered from the complete source pool,
+not only the facts selected into one packet variant. Historical names,
+acquisition targets, related organizations, and exchange-qualified ticker
+aliases can survive otherwise-correct ticker/company masking. Reuse one
+source-derived alias inventory across raw, organized, add-back, and ablation
+packets, then scan every exact prompt variant.
+
+Finally, a fixed raw context budget needs deterministic source coverage. If
+chunks are appended document-by-document, one long recent 10-K can consume the
+entire raw arm and turn a representation experiment into a file-order test.
+Round-robin chunks across the frozen source pool before truncation. Keep this
+mechanical and outcome-independent.
 
 ## How to Apply
 

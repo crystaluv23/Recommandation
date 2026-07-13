@@ -40,6 +40,7 @@ from stock_opportunity_agent.data.sources.state import (
 )
 from stock_opportunity_agent.data.documents import (
     DocumentChunk,
+    DocumentContentScope,
     DocumentRecord,
     DocumentStore,
     chunk_document_text,
@@ -81,6 +82,7 @@ __all__ = [
     "DataQuotaDeferred",
     "DataSourceError",
     "DocumentChunk",
+    "DocumentContentScope",
     "DocumentRecord",
     "DocumentStore",
     "FREE_DATA_SOURCES",

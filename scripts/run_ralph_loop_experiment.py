@@ -11,11 +11,11 @@ import re
 from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
 from stock_opportunity_agent.config import load_config
-from stock_opportunity_agent.data.documents import DocumentRecord
+from stock_opportunity_agent.data.documents import DocumentContentScope, DocumentRecord
 from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata, UrllibJsonTransport, format_cik
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.llm.openai import UrllibTransport
@@ -26,11 +26,20 @@ from stock_opportunity_agent.research import (
     CachedRalphBlindResearcher,
     HeuristicRalphBlindResearcher,
     HeuristicSurgePlaybookSynthesizer,
+    INFORMATION_PLAN_SCHEMA_VERSION,
     OpenAIRalphBlindResearcher,
     RalphBlindAnalysis,
+    TARGET_INFORMATION_FAMILIES,
     build_blind_scheme_packet,
+    document_content_readiness,
+    evaluate_information_plan_experiment,
+    extract_atomic_evidence_by_case,
+    prepare_information_plan_experiment,
+    point_in_time_document_identity_tokens,
+    point_in_time_source_document_records,
     run_ralph_experiment,
     synthesize_information_scheme,
+    write_information_plan_experiment_artifacts,
     write_ralph_experiment_artifacts,
 )
 from stock_opportunity_agent.research.ralph_loop import (
@@ -81,6 +90,7 @@ def main() -> None:
         refinement_per_label=args.refinement_per_label,
         selection_policy=args.selection_policy,
         holdout_symbols=_parse_symbol_set(args.holdout_symbols),
+        documents_by_symbol=documents_by_symbol,
     )
     selected_case_tuple = tuple(selected["refinement"] + selected["holdout"])
     if args.augment_sec_submission_filings:
@@ -112,6 +122,7 @@ def main() -> None:
             "refinement": _enrich_cases_with_documents(selected["refinement"], refreshed_documents),
             "holdout": _enrich_cases_with_documents(selected["holdout"], refreshed_documents),
         }
+        documents_by_symbol = refreshed_documents
     refinement_cases = selected["refinement"]
     holdout_cases = selected["holdout"]
     baseline_refinement = tuple(
@@ -138,6 +149,32 @@ def main() -> None:
         "[ralph-experiment] refinement_cases="
         f"{len(refinement_cases)} holdout_cases={len(holdout_cases)} mode={args.mode}"
     )
+    if args.experiment_kind == "information-plan":
+        if args.responses_path:
+            raise ValidationError(
+                "--responses-path currently supports legacy-scheme preflight only; "
+                "run the information-plan experiment directly or use --preflight-only"
+            )
+        discovery_cases = _information_plan_discovery_cases(
+            cases,
+            refinement_cases,
+            documents_by_symbol,
+        )
+        _run_information_plan_path(
+            args,
+            output_dir=output_dir,
+            run_id=run_id,
+            created_at=created_at,
+            discovery_cases=discovery_cases,
+            refinement_cases=refinement_cases,
+            holdout_cases=holdout_cases,
+            learning_result=learning,
+            theme_maps=theme_maps,
+            playbook_synthesis=playbooks,
+            selected=selected,
+            documents_by_symbol=documents_by_symbol,
+        )
+        return
     if args.preflight_only:
         paths = _write_preflight_artifacts(
             output_dir,
@@ -222,6 +259,381 @@ def main() -> None:
     print(f"[ralph-experiment] manifest={paths['manifest']}")
 
 
+def _run_information_plan_path(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    run_id: str,
+    created_at: datetime,
+    discovery_cases: tuple[HistoricalCase, ...],
+    refinement_cases: tuple[HistoricalCase, ...],
+    holdout_cases: tuple[HistoricalCase, ...],
+    learning_result,
+    theme_maps,
+    playbook_synthesis,
+    selected: dict[str, tuple[HistoricalCase, ...]],
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+) -> None:
+    """Run or preflight the broad Ralph information-plan experiment."""
+
+    scheme, _diagnostic = synthesize_information_scheme(
+        refinement_cases,
+        learning_result=learning_result,
+        theme_maps=theme_maps,
+        playbook_synthesis=playbook_synthesis,
+    )
+    families = _parse_csv_values(args.information_families)
+    prepared = prepare_information_plan_experiment(
+        discovery_cases,
+        holdout_cases,
+        active_scheme=scheme,
+        run_id=run_id,
+        context_budget=args.information_plan_context_budget,
+        families=families,
+        documents_by_symbol=documents_by_symbol,
+    )
+    ready_family_count = sum(
+        experiment.status == "packet_variants_ready"
+        for experiment in prepared.family_experiments
+    )
+    content_readiness = document_content_readiness(prepared)
+    packet_cases = _information_plan_packet_cases(prepared, holdout_cases)
+    leakage_report = _leakage_report(
+        packet_cases,
+        extra_identity_terms_by_case={
+            case_id: point_in_time_document_identity_tokens(documents)
+            for case_id, documents in prepared.source_documents_by_case.items()
+        },
+    )
+    selection_path = _write_case_selection_artifact(
+        output_dir,
+        run_id=run_id,
+        created_at=created_at,
+        selected=selected,
+        args=args,
+        discovery_cases=discovery_cases,
+    )
+    if args.preflight_only:
+        paths = _write_information_plan_preflight_artifacts(
+            output_dir,
+            run_id=run_id,
+            created_at=created_at,
+            prepared=prepared,
+            leakage_report=leakage_report,
+            selection_path=selection_path,
+            evaluation_method=args.mode,
+            validation_role=args.validation_role,
+        )
+        print(f"[ralph-experiment] information_plan_preflight={paths['preflight_manifest']}")
+        return
+    if ready_family_count == 0:
+        raise ValidationError(
+            "information-plan holdout has no source-backed target-family facts; "
+            "improve acquisition or select atomic-evidence-rich cases before spending blind LLM budget"
+        )
+    if not leakage_report["passed"]:
+        raise ValidationError("information-plan leakage scan failed")
+    if args.mode == "llm" and not content_readiness["passed"]:
+        raise ValidationError(
+            "information-plan holdout source bodies failed content-readiness; "
+            "repair truncated, metadata-only, or unusable documents before spending blind LLM budget"
+        )
+    blind_cache_dir = Path(args.blind_cache_dir) if args.blind_cache_dir else output_dir / "blind_analysis_cache"
+    researcher = _ralph_researcher(args, cache_dir=blind_cache_dir)
+    result = evaluate_information_plan_experiment(
+        prepared,
+        holdout_cases,
+        blind_researcher=researcher,
+        family_experiment_mode=args.family_experiment_mode,
+        evaluation_method="plain_llm" if args.mode == "llm" else "heuristic",
+        validation_role=args.validation_role,
+    )
+    paths = write_information_plan_experiment_artifacts(
+        result,
+        output_dir,
+        created_at=created_at,
+        leakage_report=leakage_report,
+        extra_output_paths={
+            "case_selection_label_aware": selection_path,
+            "blind_analysis_cache": blind_cache_dir,
+        },
+    )
+    print(
+        "[ralph-experiment] information-plan holdout "
+        f"raw_positive_gap={result.raw_evaluation.positive_confidence_gap:.4f} "
+        f"organized_positive_gap={result.organized_evaluation.positive_confidence_gap:.4f} "
+        f"fp_rate={result.organized_evaluation.false_positive_rate:.4f} "
+        f"fn_rate={result.organized_evaluation.false_negative_rate:.4f}"
+    )
+    print(f"[ralph-experiment] manifest={paths['manifest']}")
+
+
+def _information_plan_discovery_cases(
+    all_cases: tuple[HistoricalCase, ...],
+    refinement_cases: tuple[HistoricalCase, ...],
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+) -> tuple[HistoricalCase, ...]:
+    """Return all available as-of windows for refinement symbols only."""
+
+    symbols = {case.packet.company.ticker.symbol.upper() for case in refinement_cases}
+    discovery = tuple(
+        case
+        for case in all_cases
+        if case.packet.company.ticker.symbol.upper() in symbols
+    )
+    if documents_by_symbol:
+        discovery = _enrich_cases_with_documents(discovery, documents_by_symbol)
+    return tuple(
+        sorted(
+            discovery,
+            key=lambda case: (
+                case.packet.company.ticker.symbol,
+                case.packet.as_of.as_of_date,
+            ),
+        )
+    )
+
+
+def _information_plan_packet_cases(prepared, holdout_cases):
+    pairs = list(zip(prepared.raw_packets, holdout_cases, strict=True))
+    pairs.extend(zip(prepared.organized_packets, holdout_cases, strict=True))
+    pairs.extend(zip(prepared.family_add_back_baseline_packets, holdout_cases, strict=True))
+    for experiment in prepared.family_experiments:
+        if experiment.add_back_packets:
+            pairs.extend(zip(experiment.add_back_packets, holdout_cases, strict=True))
+        if experiment.ablation_packets:
+            pairs.extend(zip(experiment.ablation_packets, holdout_cases, strict=True))
+    return pairs
+
+
+def _write_case_selection_artifact(
+    output_dir: Path,
+    *,
+    run_id: str,
+    created_at: datetime,
+    selected: dict[str, tuple[HistoricalCase, ...]],
+    args: argparse.Namespace,
+    discovery_cases: tuple[HistoricalCase, ...],
+) -> Path:
+    path = output_dir / "case_selection_label_aware.json"
+    _write_json(
+        path,
+        {
+            "schema_version": "ralph-case-selection-v0.2",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "retrospective_label_aware",
+            "selection_policy": {
+                "winner_symbol_count": args.winner_symbol_count,
+                "control_symbol_count": args.control_symbol_count,
+                "refinement_per_label": args.refinement_per_label,
+                "one_latest_case_per_symbol_for_blind_holdout": True,
+                "all_available_refinement_windows_for_discovery": True,
+            },
+            "discovery_cases": [_case_selection_record(case) for case in discovery_cases],
+            "refinement_cases": [_case_selection_record(case) for case in selected["refinement"]],
+            "holdout_cases": [_case_selection_record(case) for case in selected["holdout"]],
+        },
+    )
+    return path
+
+
+def _write_information_plan_preflight_artifacts(
+    output_dir: Path,
+    *,
+    run_id: str,
+    created_at: datetime,
+    prepared,
+    leakage_report: dict[str, Any],
+    selection_path: Path,
+    evaluation_method: str,
+    validation_role: str,
+) -> dict[str, Path]:
+    """Write the information-plan contract without external blind calls."""
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ready_family_count = sum(
+        experiment.status == "packet_variants_ready"
+        for experiment in prepared.family_experiments
+    )
+    content_readiness = document_content_readiness(prepared)
+    paths = {
+        "research_information_plan": output_dir / "research_information_plan.json",
+        "information_requirements": output_dir / "information_requirements.json",
+        "evidence_coverage_ledger": output_dir / "evidence_coverage_ledger.json",
+        "atomic_evidence_by_case": output_dir / "atomic_evidence_by_case.json",
+        "point_in_time_source_documents": output_dir / "point_in_time_source_documents.json",
+        "document_content_audit": output_dir / "document_content_audit.json",
+        "raw_source_blind_packets": output_dir / "raw_source_blind_packets.json",
+        "holdout_blind_packets_by_scheme": output_dir / "holdout_blind_packets_by_scheme.json",
+        "information_family_experiments": output_dir / "information_family_experiments.json",
+        "information_scheme": output_dir / "information_scheme.json",
+        "preflight_blind_llm_requests": output_dir / "preflight_blind_llm_requests.json",
+        "preflight_leakage_report": output_dir / "preflight_leakage_report.json",
+        "case_selection_label_aware": selection_path,
+        "preflight_manifest": output_dir / "preflight_manifest.json",
+    }
+    _write_json(paths["research_information_plan"], prepared.plan.to_dict())
+    _write_json(
+        paths["information_requirements"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_refinement",
+            "requirements": [item.to_dict() for item in prepared.plan.requirements],
+            "diagnostics": [item.to_dict() for item in prepared.plan.diagnostics],
+        },
+    )
+    _write_json(
+        paths["evidence_coverage_ledger"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_audit",
+            "source_pool_by_case": {
+                case_id: list(source_ids)
+                for case_id, source_ids in sorted(prepared.source_pool_by_case.items())
+            },
+            "entries": [item.to_dict() for item in prepared.coverage_entries],
+        },
+    )
+    _write_json(
+        paths["atomic_evidence_by_case"],
+        {
+            "schema_version": "atomic-evidence-v0.1",
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_audit",
+            "atomic_evidence_by_case": {
+                case_id: [fact.to_dict() for fact in facts]
+                for case_id, facts in sorted(prepared.atomic_evidence_by_case.items())
+            },
+        },
+    )
+    _write_json(
+        paths["point_in_time_source_documents"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_raw_source_audit",
+            "documents": point_in_time_source_document_records(prepared),
+        },
+    )
+    _write_json(
+        paths["document_content_audit"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "retrospective_label_aware_raw_source_audit",
+            "readiness": content_readiness,
+            "audits": [audit.to_dict() for audit in prepared.document_content_audits],
+        },
+    )
+    _write_json(
+        paths["raw_source_blind_packets"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "preflight_anonymous_blind_packet_export",
+            "context_budget": prepared.context_budget,
+            "packets": [packet.to_dict() for packet in prepared.raw_packets],
+        },
+    )
+    _write_json(
+        paths["holdout_blind_packets_by_scheme"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "preflight_anonymous_blind_packet_export",
+            "packets": [packet.to_dict() for packet in prepared.organized_packets],
+        },
+    )
+    _write_json(
+        paths["information_family_experiments"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "stage_boundary": "preflight_anonymous_blind_packet_export",
+            "experiments": [
+                {
+                    "family": experiment.family,
+                    "status": experiment.status,
+                    "available_fact_count": experiment.available_fact_count,
+                    "add_back_packets": [packet.to_dict() for packet in experiment.add_back_packets],
+                    "ablation_packets": [packet.to_dict() for packet in experiment.ablation_packets],
+                }
+                for experiment in prepared.family_experiments
+            ],
+            "add_back_core_baseline_packets": [
+                packet.to_dict()
+                for packet in prepared.family_add_back_baseline_packets
+            ],
+        },
+    )
+    _write_json(
+        paths["information_scheme"],
+        {
+            "schema_version": INFORMATION_PLAN_SCHEMA_VERSION,
+            "run_id": run_id,
+            "active_scheme": prepared.active_scheme.to_dict(),
+            "research_information_plan": prepared.plan.to_dict(),
+            "promotion_status": "pending_human_review",
+        },
+    )
+    requests = [
+        _blind_llm_request(packet, phase="raw_source_holdout")
+        for packet in prepared.raw_packets
+    ] + [
+        _blind_llm_request(packet, phase="organized_holdout")
+        for packet in prepared.organized_packets
+    ]
+    _write_json(
+        paths["preflight_blind_llm_requests"],
+        {
+            "schema_version": "ralph-information-plan-preflight-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "stage_boundary": "preflight_anonymous_blind_packet_export",
+            "external_call_performed": False,
+            "web_tools_allowed": False,
+            "requests": requests,
+        },
+    )
+    _write_json(paths["preflight_leakage_report"], leakage_report)
+    _write_json(
+        paths["preflight_manifest"],
+        {
+            "schema_version": "ralph-information-plan-preflight-v0.1",
+            "run_id": run_id,
+            "created_at": created_at.isoformat(),
+            "pipeline": "ralph_information_plan_experiment",
+            "frozen_baseline_run_id": "ralph-loop-openrouter-rich-2026-07-07-12sym-sec-augment-live-v27",
+            "external_call_performed": False,
+            "leakage_passed": leakage_report["passed"],
+            "raw_packet_count": len(prepared.raw_packets),
+            "organized_packet_count": len(prepared.organized_packets),
+            "family_experiment_count": len(prepared.family_experiments),
+            "source_backed_family_experiment_count": ready_family_count,
+            "document_content_readiness": content_readiness,
+            "blind_execution_ready": (
+                leakage_report["passed"]
+                and ready_family_count > 0
+                and content_readiness["passed"]
+            ),
+            "planned_evaluation_method": (
+                "plain_llm" if evaluation_method == "llm" else "heuristic"
+            ),
+            "validation_role": validation_role,
+            "effectiveness_claim_allowed": False,
+            "gold_packet_available": False,
+            "promotion_status": "pending_human_review",
+            "outputs": {name: str(path) for name, path in sorted(paths.items())},
+        },
+    )
+    if not leakage_report["passed"]:
+        raise ValidationError("information-plan preflight leakage scan failed")
+    return paths
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -235,10 +647,19 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--documents-path",
         default=str(DEFAULT_FORMAL_RUN_DIR / "04_documents/documents_and_catalysts.json"),
-        help="Optional formal cold-start documents artifact used to refresh source-detail excerpts.",
+        help=(
+            "Formal documents artifact or reusable point-in-time source archive used for "
+            "content audit, extraction, and blind packet rendering."
+        ),
     )
     parser.add_argument("--output-dir")
     parser.add_argument("--run-id")
+    parser.add_argument(
+        "--experiment-kind",
+        choices=("information-plan", "legacy-scheme"),
+        default="information-plan",
+        help="Run the broad information-plan experiment by default or the legacy packet-scheme loop.",
+    )
     parser.add_argument("--mode", choices=("llm", "heuristic"), default="llm")
     parser.add_argument("--openrouter-model", default="openai/gpt-5.5")
     parser.add_argument("--timeout-seconds", type=float, default=90.0)
@@ -247,6 +668,32 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--refinement-per-label", type=int, default=2)
     parser.add_argument("--max-iterations", type=int, default=2)
     parser.add_argument(
+        "--information-plan-context-budget",
+        type=int,
+        default=4500,
+        help="Shared documented context budget for raw and organized information-plan arms.",
+    )
+    parser.add_argument(
+        "--information-families",
+        default=",".join(TARGET_INFORMATION_FAMILIES),
+        help="Comma-separated source-backed families prepared for add-back and ablation.",
+    )
+    parser.add_argument(
+        "--family-experiment-mode",
+        choices=("packets_only", "ablation", "add_back", "both"),
+        default="packets_only",
+        help="Evaluate family variants or only persist packet-ready experiment definitions.",
+    )
+    parser.add_argument(
+        "--validation-role",
+        choices=("development_diagnostic", "untouched_company_holdout"),
+        default="development_diagnostic",
+        help=(
+            "Declare whether this run is development feedback or the one-shot untouched-company "
+            "holdout; only the latter can support an effectiveness claim."
+        ),
+    )
+    parser.add_argument(
         "--holdout-feedback-iterations",
         type=int,
         default=0,
@@ -254,9 +701,12 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--selection-policy",
-        choices=("alphabetical", "evidence-rich"),
-        default="alphabetical",
-        help="Choose latest cases alphabetically or prioritize packets with richer scheme evidence.",
+        choices=("alphabetical", "evidence-rich", "atomic-evidence-rich"),
+        default="atomic-evidence-rich",
+        help=(
+            "Choose latest cases alphabetically, by legacy keyword richness, or by conservative "
+            "source-linked atomic evidence richness."
+        ),
     )
     parser.add_argument(
         "--holdout-symbols",
@@ -325,7 +775,15 @@ def _load_documents_by_symbol(path: Path) -> dict[str, tuple[DocumentRecord, ...
     data = json.loads(path.read_text(encoding="utf-8"))
     records_by_symbol = data.get("documents_by_symbol")
     if not isinstance(records_by_symbol, dict):
-        return {}
+        archive_records = data.get("documents")
+        if not isinstance(archive_records, list):
+            return {}
+        grouped: dict[str, list[dict[str, Any]]] = {}
+        for record in archive_records:
+            if not isinstance(record, dict) or not isinstance(record.get("symbol"), str):
+                continue
+            grouped.setdefault(record["symbol"].upper(), []).append(record)
+        records_by_symbol = grouped
     documents: dict[str, tuple[DocumentRecord, ...]] = {}
     for symbol, records in records_by_symbol.items():
         if not isinstance(records, list):
@@ -347,6 +805,7 @@ def _document_from_record(record: dict[str, Any]) -> DocumentRecord:
         published_date=date.fromisoformat(_string(record, "published_date")),
         retrieved_at=datetime.fromisoformat(_string(record, "retrieved_at")),
         available_date=date.fromisoformat(str(available)) if isinstance(available, str) else None,
+        content_scope=DocumentContentScope(str(record.get("content_scope", "unknown"))),
     )
 
 
@@ -841,6 +1300,11 @@ def _document_from_sec_filing(
         published_date=filing.filing_date,
         available_date=filing.filing_date,
         retrieved_at=filing.retrieved_at or datetime.now(timezone.utc),
+        content_scope=(
+            DocumentContentScope.METADATA_ONLY
+            if re.fullmatch(r"\s*[A-Z0-9-]+ filed on \d{4}-\d{2}-\d{2}\.\s*", text)
+            else DocumentContentScope.COMPLETE_BODY
+        ),
     )
 
 
@@ -916,6 +1380,7 @@ def _refresh_sec_filing_documents_for_cases(
                     document,
                     text=text,
                     retrieved_at=datetime.now(timezone.utc),
+                    content_scope=DocumentContentScope.COMPLETE_BODY,
                 )
             )
         if refreshed_documents:
@@ -1151,18 +1616,29 @@ def _select_cases(
     refinement_per_label: int,
     selection_policy: str = "alphabetical",
     holdout_symbols: frozenset[str] = frozenset(),
+    documents_by_symbol: Mapping[str, tuple[DocumentRecord, ...]] | None = None,
 ) -> dict[str, tuple[HistoricalCase, ...]]:
     if winner_symbol_count < 2 or control_symbol_count < 2:
         raise ValidationError("select at least two winner and two control symbols")
-    winners = _ordered_latest_cases(cases, CaseOutcomeLabel.WINNER, selection_policy=selection_policy)
-    controls = _ordered_latest_cases(cases, CaseOutcomeLabel.CONTROL, selection_policy=selection_policy)
+    winners = _ordered_latest_cases(
+        cases,
+        CaseOutcomeLabel.WINNER,
+        selection_policy=selection_policy,
+        documents_by_symbol=documents_by_symbol,
+    )
+    controls = _ordered_latest_cases(
+        cases,
+        CaseOutcomeLabel.CONTROL,
+        selection_policy=selection_policy,
+        documents_by_symbol=documents_by_symbol,
+    )
     if len(winners) < winner_symbol_count or len(controls) < control_symbol_count:
         raise ValidationError("not enough winner/control symbols for requested Ralph experiment")
     if refinement_per_label < 1:
         raise ValidationError("refinement_per_label must be positive")
     if refinement_per_label >= min(winner_symbol_count, control_symbol_count):
         raise ValidationError("refinement_per_label must leave at least one holdout per label")
-    if selection_policy not in {"alphabetical", "evidence-rich"}:
+    if selection_policy not in {"alphabetical", "evidence-rich", "atomic-evidence-rich"}:
         raise ValidationError(f"unsupported Ralph selection policy: {selection_policy}")
     selected_winners = tuple(winners[:winner_symbol_count])
     selected_controls = tuple(controls[:control_symbol_count])
@@ -1223,6 +1699,7 @@ def _ordered_latest_cases(
     label: CaseOutcomeLabel,
     *,
     selection_policy: str,
+    documents_by_symbol: Mapping[str, tuple[DocumentRecord, ...]] | None = None,
 ) -> list[HistoricalCase]:
     latest_cases = _latest_case_per_symbol(cases, label)
     if selection_policy == "alphabetical":
@@ -1231,6 +1708,15 @@ def _ordered_latest_cases(
         return sorted(
             latest_cases,
             key=lambda case: (_case_evidence_richness(case), case.packet.company.ticker.symbol),
+            reverse=True,
+        )
+    if selection_policy == "atomic-evidence-rich":
+        return sorted(
+            latest_cases,
+            key=lambda case: (
+                _case_atomic_evidence_richness(case, documents_by_symbol),
+                case.packet.company.ticker.symbol,
+            ),
             reverse=True,
         )
     raise ValidationError(f"unsupported Ralph selection policy: {selection_policy}")
@@ -1275,6 +1761,20 @@ def _case_evidence_richness(case: HistoricalCase) -> tuple[int, int, int, int, i
         market_count,
         evidence_count,
     )
+
+
+def _case_atomic_evidence_richness(
+    case: HistoricalCase,
+    documents_by_symbol: Mapping[str, tuple[DocumentRecord, ...]] | None = None,
+) -> tuple[int, int, int, int]:
+    """Rank cases by conservative source-linked facts instead of document keywords."""
+
+    facts = extract_atomic_evidence_by_case((case,), documents_by_symbol)[case.case_id]
+    target_facts = [fact for fact in facts if fact.family in TARGET_INFORMATION_FAMILIES]
+    target_families = {fact.family for fact in target_facts}
+    source_facts = [fact for fact in facts if fact.extraction_method != "structured_feature"]
+    confirmed = [fact for fact in target_facts if fact.status.value not in {"ambiguous"}]
+    return len(target_families), len(confirmed), len(source_facts), len(facts)
 
 
 def _keyword_hit_count(text: str, keywords: tuple[str, ...]) -> int:
@@ -1688,12 +2188,27 @@ def _looks_like_response_payload(record: dict[str, Any]) -> bool:
     return all(key in record for key in ("surge_candidate", "expectation_gap", "confidence"))
 
 
-def _leakage_report(packet_cases: list[tuple[Any, HistoricalCase]]) -> dict[str, Any]:
+def _leakage_report(
+    packet_cases: list[tuple[Any, HistoricalCase]],
+    *,
+    extra_identity_terms_by_case: Mapping[str, Iterable[str]] | None = None,
+) -> dict[str, Any]:
     case_reports = []
     global_terms = _global_leak_terms(case for _packet, case in packet_cases)
+    for source_case_id, terms in (extra_identity_terms_by_case or {}).items():
+        global_terms.extend(
+            (source_case_id, "source_identity_token", value)
+            for value in terms
+            if value
+        )
     for packet, case in packet_cases:
         prompt = json.dumps(packet.to_prompt_dict(), sort_keys=True)
-        findings = _leakage_findings(prompt, case, global_terms)
+        findings = _leakage_findings(
+            prompt,
+            case,
+            global_terms,
+            extra_identity_terms=(extra_identity_terms_by_case or {}).get(case.case_id, ()),
+        )
         case_reports.append(
             {
                 "anonymous_case_id": packet.anonymous_case_id,
@@ -1713,11 +2228,15 @@ def _leakage_findings(
     prompt: str,
     case: HistoricalCase,
     global_terms: list[tuple[str, str, str]] | None = None,
+    extra_identity_terms: Iterable[str] = (),
 ) -> list[dict[str, str]]:
     findings = []
     for kind, value in _leak_terms(case):
         if value and re.search(_identity_token_pattern(value), prompt, flags=re.IGNORECASE):
             findings.append({"kind": kind, "value": value})
+    for value in extra_identity_terms:
+        if value and re.search(_identity_token_pattern(value), prompt, flags=re.IGNORECASE):
+            findings.append({"kind": "source_identity_token", "value": value})
     for source_case_id, kind, value in global_terms or ():
         if source_case_id == case.case_id:
             continue

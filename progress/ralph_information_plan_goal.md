@@ -103,3 +103,83 @@ Only after these conditions are satisfied should the next project phase compare
 the fixed plain-LLM baseline with multi-agent, specialist, debate, or skeptic
 analysis using exactly the same validated information plan.
 ```
+
+## Execution Checkpoint - 2026-07-12
+
+- Implemented the deterministic information-plan foundation and all required
+  artifact contracts; it remains proposal-only and does not assume a gold
+  packet.
+- Added same-source-pool raw/organized packet preparation, shared documented
+  context budgets, conservative source-linked atomic facts, requirement-level
+  coverage states, source-backed family variants, and layered failure routing.
+- The v5 local preflight passed anonymous leakage and packet-budget checks but
+  reported `blind_execution_ready=false`: zero requested target families had a
+  source-backed fact on the selected holdout.
+- Inspection attributes the immediate failure to acquisition/content
+  completeness. Saved SEC bodies frequently stop in inline-XBRL/header content
+  before substantive filing text, so a plain-LLM comparison would not test the
+  information representation hypothesis.
+- A live SEC-submissions augmentation attempt could not run because the
+  workspace approval service reported that credits were exhausted. No network
+  workaround was attempted; the local readiness failure remains the latest
+  valid result.
+- Next bounded action: obtain complete point-in-time filing/news bodies, rerun
+  coverage and atomic extraction, then spend blind-LLM budget only after at
+  least one requested family has real holdout facts. After refinement, reserve
+  a new untouched company holdout for the one-shot exit-gate validation.
+- The objective remains active. The information-plan exit gate has not passed,
+  and multi-agent analysis must not begin yet.
+- A source-rich local development diagnostic (v6) exercised the complete
+  evaluator with a deterministic heuristic researcher. On two deliberately
+  selected cases, organized packets moved positive-confidence gap from 0.00 to
+  0.77 and false-negative rate from 1.00 to 0.00 with FP 0.00. This is pipeline
+  feasibility evidence only, not a plain-LLM result or fresh-holdout claim.
+  Orders/contracts, customer/capacity, policy/regulatory, and theme/industry
+  transmission still had zero source-backed facts in that diagnostic.
+
+## Execution Checkpoint - 2026-07-13
+
+- Repaired acquisition-layer information loss: fetched filing and transcript
+  bodies are now archived in full with explicit complete, summary-only,
+  metadata-only, or unknown scope. Packet excerpts remain derived and bounded;
+  they no longer replace the retrospective source archive.
+- Added document-content audit/readiness artifacts and made a plain-LLM run
+  fail closed on truncated, metadata-only, unusable, or critically unsupported
+  target-family evidence. The reusable v11 SEC reconstruction produced the
+  first source-complete bounded development pool.
+- Corrected experiment semantics. Add-back now compares a fixed core baseline
+  with core plus exactly one family; ablation compares the full organized plan
+  with full minus one family. Every result persists its baseline and delta.
+  Heuristic runs are permanently marked `pipeline_diagnostic_only` and cannot
+  make effectiveness claims.
+- Tightened source-linked extraction against registration, accounting,
+  prospectus, award, credit, tariff, hypothetical customer/capacity, and other
+  keyword false positives. Added explicit event-date parsing, semantic
+  deduplication, family-balanced section selection, and actual-state tests for
+  capital and operating facts.
+- Made the raw comparison arm cover source documents round-robin under the
+  shared budget instead of allowing one long filing to consume the context.
+  Expanded identity masking and leakage preflight to historical names,
+  acquired-company names, related organizations, and exchange-qualified ticker
+  aliases; all organized family variants now reuse the same full-source alias
+  inventory.
+- Frozen development preflight v19 passes strict leakage and content readiness:
+  23 audited holdout sources, 16 usable full bodies, seven summary-only, and no
+  truncated, metadata-only, or unusable target-fact sources. Raw packets cover
+  all 12 winner and 11 control source documents.
+- Latest local evaluator v22 is diagnostic only. Organized positive-confidence
+  gap is 0.19 versus raw 0.00, but winner and control are both `possible`, so FP
+  is 1.00 and FN is 0.00. This supersedes v6 as the current heuristic result and
+  confirms that rules-based section counting cannot establish plan efficacy.
+- Only deal status/timing, capital structure/liquidity, and expectation gap have
+  source-backed facts in this development pair. Orders/contracts,
+  customer/capacity, policy/regulatory, and theme/industry transmission still
+  have zero facts and need requirement-driven acquisition on suitable cases.
+- A four-call plain-LLM raw-versus-organized development diagnostic was prepared
+  but not sent to OpenRouter because external transmission of anonymous project
+  research packets requires explicit informed user authorization. No workaround
+  was attempted.
+- The objective remains active. After authorization, run only the frozen v19
+  raw/organized development arms, use the result to route at most one more
+  bounded proposal, then acquire new symbols for a one-shot untouched-company
+  holdout. Multi-agent work remains gated.

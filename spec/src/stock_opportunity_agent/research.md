@@ -49,6 +49,10 @@ Active child specs:
   label-aware research-information-plan discovery, acquisition/extraction
   diagnosis, packet-scheme proposal, and blind plain-LLM validation for formal
   cold-start packets.
+- [`research/information_plan.md`](research/information_plan.md): broad
+  information requirements, source coverage, atomic evidence, raw-versus-
+  organized comparison, family experiments, and layered failure attribution
+  coordinated by Ralph before analysis-method experiments.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 

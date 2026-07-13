@@ -8,7 +8,7 @@ from datetime import date, datetime
 from typing import Any, Iterable, Literal
 
 from stock_opportunity_agent.cases import HistoricalCase
-from stock_opportunity_agent.data.documents import DocumentRecord
+from stock_opportunity_agent.data.documents import DocumentContentScope, DocumentRecord
 from stock_opportunity_agent.llm.openai import ChatMessage, OpenAIChatClient
 from stock_opportunity_agent.models import (
     Catalyst,
@@ -354,6 +354,7 @@ def _result_from_json(
                 published_date=published,
                 available_date=published,
                 retrieved_at=retrieved_at,
+                content_scope=DocumentContentScope.SUMMARY_ONLY,
             )
         )
     catalysts = _catalysts_from_json(request, data.get("catalysts", []), retrieved_at)

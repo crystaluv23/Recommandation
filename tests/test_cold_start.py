@@ -23,7 +23,9 @@ from stock_opportunity_agent.cases import (
 )
 from stock_opportunity_agent.config import AgentConfig, StorageConfig
 from stock_opportunity_agent.data import (
+    DocumentContentScope,
     DocumentRecord,
+    FilingMetadata,
     PriceBar,
     SecurityListing,
     build_research_packet,
@@ -56,6 +58,14 @@ from stock_opportunity_agent.research import (
     RalphBlindAnalysis,
     apply_context_coverage_gate,
     assess_context_coverage,
+    audit_point_in_time_documents,
+    build_raw_source_blind_packet,
+    document_content_readiness,
+    evaluate_information_plan_experiment,
+    extract_atomic_evidence_by_case,
+    prepare_information_plan_experiment,
+    point_in_time_document_identity_tokens,
+    write_information_plan_experiment_artifacts,
 )
 from stock_opportunity_agent.research.ralph_loop import (
     InformationSection,
@@ -81,6 +91,7 @@ from scripts.run_cold_start_formal import (
     _alpha_earnings_features,
     _catalyst_from_news_document,
     _fetch_context_documents,
+    _filing_documents_for_candidate,
     _finnhub_earnings_features,
     _finnhub_news_document,
     _news_documents_for_candidate,
@@ -2913,6 +2924,621 @@ class ColdStartSignalTests(TestCase):
             self.assertNotIn("winner-holdout", responses_text)
             self.assertNotIn("control-holdout", responses_text)
 
+    def test_information_plan_atomic_extraction_rejects_keyword_false_positives(self) -> None:
+        case = make_case(
+            "atom-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.12,
+            return_20d=-0.05,
+            return_60d=-0.20,
+            target_upside=0.30,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="atom-governance",
+                    symbol="ATOM",
+                    kind=EvidenceKind.FILING,
+                    title="ATOM 8-K",
+                    text=(
+                        "Item 5.02 Departure of Directors or Principal Officers. "
+                        "The board appointed a new director. "
+                        "The issuer was dropped from Nasdaq Composite Index. "
+                        "The company may enter into contracts in the ordinary course. "
+                        "Artificial intelligence and customer contracts were discussed as risk factors. "
+                        "Identify the previous filing by registration statement number. "
+                        "A director was awarded 1,200 shares of restricted stock. "
+                        "Tariffs could materially affect the business. "
+                        "Customers may request extended payment terms and manufacturers may not "
+                        "have capacity to increase production."
+                    ),
+                    source_id="sec:atom:governance",
+                    source_url="https://www.sec.gov/example/atom-governance",
+                    published_date=AS_OF - timedelta(days=2),
+                    retrieved_at=STAMP,
+                ),
+                DocumentRecord(
+                    document_id="atom-order",
+                    symbol="ATOM",
+                    kind=EvidenceKind.NEWS,
+                    title="ATOM customer order",
+                    text=(
+                        "The company received a purchase order with a customer for $12.3 million. "
+                        "The company has no orders from artificial intelligence customers."
+                    ),
+                    source_id="news:atom:order",
+                    source_url="https://example.com/atom-order",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+                DocumentRecord(
+                    document_id="atom-bank-boilerplate",
+                    symbol="ATOM",
+                    kind=EvidenceKind.FILING,
+                    title="ATOM banking boilerplate",
+                    text=(
+                        "The Company has entered into agreements with certain customers to extend "
+                        "credit or provide payment on drafts under credit documents. "
+                        "Under a commercial letter of credit, the underlying transaction is "
+                        "consummated between the customer and a third party. "
+                        "Crowe provided audit services that were pre-approved. "
+                        "We could remain an emerging growth company if annual gross revenues "
+                        "remain below $1.24 billion. Under ASC 606, revenues are recognized when "
+                        "control transfers. Proceeds on sales of available for sale securities "
+                        "were $14.8 million. We may sell securities from time to time in a public "
+                        "offering. We may face product liability lawsuits. The related consolidated "
+                        "statements of cash flows for the two-year period are financial statements. "
+                        "Options and warrants are not considered in the diluted loss-per-share "
+                        "calculations."
+                    ),
+                    source_id="sec:atom:bank-boilerplate",
+                    source_url="https://www.sec.gov/example/atom-bank-boilerplate",
+                    published_date=AS_OF - timedelta(days=1),
+                    retrieved_at=STAMP,
+                ),
+            ],
+        )
+
+        facts = extract_atomic_evidence_by_case((case,))[case.case_id]
+
+        event_types = {fact.event_type for fact in facts}
+        self.assertIn("governance_routine", event_types)
+        self.assertIn("market_index_membership", event_types)
+        self.assertNotIn("strategic_transaction", event_types)
+        self.assertNotIn("capital_or_liquidity", event_types)
+        order_facts = [fact for fact in facts if fact.family == "orders_contracts"]
+        self.assertEqual(len(order_facts), 2)
+        positive = next(fact for fact in order_facts if not fact.negated)
+        negative = next(fact for fact in order_facts if fact.negated)
+        self.assertEqual(positive.amount, 12_300_000.0)
+        self.assertEqual(positive.unit, "USD")
+        self.assertEqual(negative.status.value, "contradicted")
+        self.assertTrue(all(fact.source_span for fact in facts))
+        self.assertFalse(any(fact.family == "theme_industry_transmission" for fact in facts))
+        self.assertFalse(any(fact.family == "customer_capacity" for fact in facts))
+        self.assertFalse(any(fact.family == "policy_regulatory" for fact in facts))
+        self.assertFalse(
+            any(
+                fact.family == "business_identity"
+                and fact.source_id == "sec:atom:bank-boilerplate"
+                for fact in facts
+            )
+        )
+        self.assertFalse(
+            any(
+                fact.family
+                in {"fundamentals", "capital_structure_liquidity", "contrary_risk"}
+                and fact.source_id == "sec:atom:bank-boilerplate"
+                for fact in facts
+            )
+        )
+
+    def test_information_plan_masks_source_aliases_and_interleaves_raw_documents(self) -> None:
+        case = make_case(
+            "tron-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.12,
+            return_20d=-0.05,
+            return_60d=-0.20,
+            target_upside=0.30,
+            catalyst_count=0,
+            company_name="Corner Growth Acquisition Corp 2 - Class A / Tron Inc.",
+        )
+        documents = (
+            DocumentRecord(
+                document_id="tron-alias-one",
+                symbol="TRON",
+                kind=EvidenceKind.NEWS,
+                title="Noventiq Holdings PLC update",
+                text=(
+                    "Noventiq Holdings PLC and Corner Growth Acquisition Corp. announced an update. "
+                    "Noventiq CEO discussed the transaction under the former ticker (NASDAQ:COOL). "
+                    "Jupiter distributed shares. "
+                    + "first-source-word " * 240
+                ),
+                source_id="news:tron:alias-one",
+                source_url="https://example.com/tron-alias-one",
+                published_date=AS_OF - timedelta(days=1),
+                retrieved_at=STAMP,
+                content_scope=DocumentContentScope.SUMMARY_ONLY,
+            ),
+            DocumentRecord(
+                document_id="tron-alias-two",
+                symbol="TRON",
+                kind=EvidenceKind.FILING,
+                title="SRM Entertainment, Inc. filing",
+                text="second-source-word " * 240,
+                source_id="sec:tron:alias-two",
+                source_url="https://www.sec.gov/tron-alias-two",
+                published_date=AS_OF - timedelta(days=2),
+                retrieved_at=STAMP,
+                content_scope=DocumentContentScope.COMPLETE_BODY,
+            ),
+        )
+
+        identity_tokens = point_in_time_document_identity_tokens(documents)
+        raw_packet = build_raw_source_blind_packet(
+            case,
+            anonymous_case_id="holdout_001",
+            context_budget=1200,
+            documents=documents,
+        )
+        prompt = json.dumps(raw_packet.to_prompt_dict())
+        for identity in (
+            "Noventiq",
+            "Corner Growth",
+            "COOL",
+            "Jupiter",
+            "SRM Entertainment",
+        ):
+            self.assertNotIn(identity.lower(), prompt.lower())
+        source_items = raw_packet.sections[0].items
+        self.assertEqual([item["chunk_index"] for item in source_items[:2]], [1, 1])
+        self.assertNotEqual(source_items[0]["evidence_ref"], source_items[1]["evidence_ref"])
+        leakage = _leakage_report(
+            [(raw_packet, case)],
+            extra_identity_terms_by_case={case.case_id: identity_tokens},
+        )
+        self.assertTrue(leakage["passed"])
+
+    def test_information_plan_prepares_raw_organized_coverage_and_family_variants(self) -> None:
+        discovery_cases = (
+            make_case(
+                "discwin-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.35,
+                earnings_growth=0.55,
+                margin=0.20,
+                return_20d=-0.10,
+                return_60d=-0.25,
+                target_upside=0.35,
+                catalyst_count=1,
+            ),
+            make_case(
+                "discctl-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.03,
+                earnings_growth=0.01,
+                margin=0.05,
+                return_20d=0.01,
+                return_60d=0.02,
+                target_upside=0.02,
+                catalyst_count=0,
+            ),
+        )
+        holdout_cases = (
+            make_case(
+                "holdwin-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.28,
+                earnings_growth=0.40,
+                margin=0.18,
+                return_20d=-0.08,
+                return_60d=-0.20,
+                target_upside=0.30,
+                catalyst_count=0,
+                extra_documents=[
+                    DocumentRecord(
+                        document_id="holdwin-order",
+                        symbol="HOLDWIN",
+                        kind=EvidenceKind.NEWS,
+                        title="HOLDWIN order",
+                        text="The company was awarded a customer contract for $25 million.",
+                        source_id="news:holdwin:order",
+                        source_url="https://example.com/holdwin-order",
+                        published_date=AS_OF - timedelta(days=3),
+                        retrieved_at=STAMP,
+                    )
+                ],
+            ),
+            make_case(
+                "holdctl-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=-0.02,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+        )
+        learning = learn_pre_surge_signal_logic(discovery_cases)
+        themes = build_cold_start_theme_maps(discovery_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in discovery_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            discovery_cases,
+            baseline,
+            learning,
+            themes,
+        )
+        scheme, _diagnostic = synthesize_information_scheme(
+            discovery_cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        prepared = prepare_information_plan_experiment(
+            discovery_cases,
+            holdout_cases,
+            active_scheme=scheme,
+            run_id="information-plan-test",
+            context_budget=1200,
+        )
+
+        self.assertFalse(prepared.plan.to_dict()["gold_packet_available"])
+        self.assertIn(
+            "other_or_unclassified",
+            {requirement.family for requirement in prepared.plan.requirements},
+        )
+        self.assertEqual(len(prepared.raw_packets), 2)
+        self.assertEqual(len(prepared.organized_packets), 2)
+        self.assertEqual(prepared.active_scheme.total_token_budget, 1200)
+        self.assertEqual(sum(section.token_budget for section in prepared.raw_packets[0].sections), 1200)
+        self.assertEqual(
+            sum(section.token_budget for section in prepared.organized_packets[0].sections),
+            1200,
+        )
+        self.assertTrue(
+            all(
+                section.estimated_tokens <= section.token_budget
+                for packet in prepared.raw_packets + prepared.organized_packets
+                for section in packet.sections
+            )
+        )
+        self.assertIn("news:holdwin:order", prepared.source_pool_by_case["holdwin-winner"])
+        order_experiment = next(
+            item for item in prepared.family_experiments if item.family == "orders_contracts"
+        )
+        self.assertEqual(order_experiment.status, "packet_variants_ready")
+        self.assertGreater(order_experiment.available_fact_count, 0)
+        organized_text = json.dumps(prepared.organized_packets[0].to_dict())
+        raw_text = json.dumps(prepared.raw_packets[0].to_dict())
+        self.assertNotIn("news:holdwin:order", organized_text)
+        self.assertNotIn("https://example.com", organized_text)
+        self.assertNotIn("HOLDWIN", organized_text)
+        self.assertNotIn("HOLDWIN", raw_text)
+        self.assertIn("fact_", organized_text)
+        order_coverage = next(
+            entry
+            for entry in prepared.coverage_entries
+            if entry.source_case_id == "holdwin-winner"
+            and entry.family == "orders_contracts"
+        )
+        self.assertEqual(order_coverage.state.value, "confirmed")
+
+    def test_information_plan_full_document_pool_is_shared_and_identity_masked(self) -> None:
+        discovery_cases = (
+            make_case(
+                "pooltrain-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.20,
+                earnings_growth=0.30,
+                margin=0.15,
+                return_20d=0.02,
+                return_60d=0.08,
+                target_upside=0.20,
+                catalyst_count=1,
+            ),
+            make_case(
+                "poolctl-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=0.01,
+                margin=0.04,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+        )
+        holdout = make_case(
+            "poolhold-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.25,
+            earnings_growth=0.35,
+            margin=0.16,
+            return_20d=-0.04,
+            return_60d=-0.12,
+            target_upside=0.25,
+            catalyst_count=0,
+            company_name="Pool Hold Corp.",
+        )
+        control = make_case(
+            "poolfresh-control",
+            CaseOutcomeLabel.CONTROL,
+            revenue_growth=0.01,
+            earnings_growth=-0.01,
+            margin=0.03,
+            return_20d=0.00,
+            return_60d=0.01,
+            target_upside=0.01,
+            catalyst_count=0,
+        )
+        document = DocumentRecord(
+            document_id="poolhold-full",
+            symbol="POOLHOLD",
+            kind=EvidenceKind.FILING,
+            title="Pool Hold Corp. transaction filing",
+            text=(
+                "Pool Hold Corp. (the Company) entered into a business combination agreement "
+                "with Secret Target Inc. (the Company). The target received a purchase order "
+                "for $18 million. As of the quarter end, the company reported cash and cash "
+                "equivalents of $12 million."
+            ),
+            source_id="sec:poolhold:full",
+            source_url="https://www.sec.gov/poolhold/full",
+            published_date=AS_OF - timedelta(days=2),
+            retrieved_at=STAMP,
+            content_scope=DocumentContentScope.COMPLETE_BODY,
+        )
+        generic_control_document = DocumentRecord(
+            document_id="poolfresh-generic",
+            symbol="POOLFRESH",
+            kind=EvidenceKind.FILING,
+            title="Pool Fresh Corp. risk factors",
+            text="Risk factors include the possibility that customer orders may never materialize.",
+            source_id="sec:poolfresh:generic",
+            source_url="https://www.sec.gov/poolfresh/generic",
+            published_date=AS_OF - timedelta(days=2),
+            retrieved_at=STAMP,
+            content_scope=DocumentContentScope.SUMMARY_ONLY,
+        )
+        learning = learn_pre_surge_signal_logic(discovery_cases)
+        themes = build_cold_start_theme_maps(discovery_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in discovery_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            discovery_cases,
+            baseline,
+            learning,
+            themes,
+        )
+        scheme, _diagnostic = synthesize_information_scheme(
+            discovery_cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+
+        prepared = prepare_information_plan_experiment(
+            discovery_cases,
+            (holdout, control),
+            active_scheme=scheme,
+            run_id="source-pool-test",
+            context_budget=1000,
+            documents_by_symbol={
+                "POOLHOLD": (document,),
+                "POOLFRESH": (generic_control_document,),
+            },
+        )
+
+        raw_text = json.dumps(prepared.raw_packets[0].to_dict())
+        organized_text = json.dumps(prepared.organized_packets[0].to_dict())
+        self.assertIn("sec:poolhold:full", prepared.source_pool_by_case[holdout.case_id])
+        self.assertNotIn("Pool Hold", raw_text)
+        self.assertNotIn("Secret Target", raw_text)
+        self.assertNotIn("Pool Hold", organized_text)
+        self.assertNotIn("Secret Target", organized_text)
+        self.assertIn("purchase order", raw_text)
+        self.assertIn("purchase order", organized_text)
+        materiality_section = next(
+            section
+            for section in prepared.organized_packets[0].sections
+            if section.name == "Materiality and Timing"
+        )
+        materiality_families = {item.get("family") for item in materiality_section.items}
+        self.assertIn("deal_status_timing", materiality_families)
+        self.assertIn("capital_structure_liquidity", materiality_families)
+        control_order_coverage = next(
+            entry
+            for entry in prepared.coverage_entries
+            if entry.source_case_id == control.case_id
+            and entry.family == "orders_contracts"
+        )
+        self.assertEqual(control_order_coverage.state.value, "extraction_failed")
+        self.assertTrue(document_content_readiness(prepared)["passed"])
+
+        result = evaluate_information_plan_experiment(
+            prepared,
+            (holdout, control),
+            blind_researcher=HeuristicRalphBlindResearcher(),
+            family_experiment_mode="both",
+            evaluation_method="heuristic",
+        )
+        order_evaluation = next(
+            item
+            for item in result.family_evaluations
+            if item.family == "orders_contracts"
+        )
+        self.assertIsNotNone(order_evaluation.add_back_baseline_evaluation)
+        self.assertIsNotNone(order_evaluation.add_back_delta)
+        self.assertIsNotNone(order_evaluation.ablation_baseline_evaluation)
+        self.assertIsNotNone(order_evaluation.ablation_delta)
+
+    def test_information_plan_audits_legacy_truncated_source_bodies(self) -> None:
+        case = make_case(
+            "truncated-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.15,
+            return_20d=0.02,
+            return_60d=0.08,
+            target_upside=0.20,
+            catalyst_count=0,
+        )
+        document = DocumentRecord(
+            document_id="truncated-filing",
+            symbol="TRUNCATED",
+            kind=EvidenceKind.FILING,
+            title="Truncated filing",
+            text="Inline XBRL header " + "x" * 1478 + "...",
+            source_id="sec:truncated:filing",
+            source_url="https://www.sec.gov/truncated",
+            published_date=AS_OF - timedelta(days=1),
+            retrieved_at=STAMP,
+        )
+        news_summary = DocumentRecord(
+            document_id="truncated-news-summary",
+            symbol="TRUNCATED",
+            kind=EvidenceKind.NEWS,
+            title="Provider news summary",
+            text="The provider supplied a source-linked company news summary that naturally ends...",
+            source_id="news:truncated:summary",
+            source_url="https://example.com/news",
+            published_date=AS_OF - timedelta(days=1),
+            retrieved_at=STAMP,
+        )
+
+        audits = audit_point_in_time_documents(
+            (case,),
+            {"TRUNCATED": (document, news_summary)},
+        )
+
+        by_source = {audit.source_id: audit for audit in audits}
+        self.assertEqual(by_source[document.source_id].state.value, "likely_truncated")
+        self.assertTrue(
+            any("ellipsis" in reason for reason in by_source[document.source_id].reasons)
+        )
+        self.assertEqual(by_source[news_summary.source_id].state.value, "summary_only")
+
+    def test_information_plan_evaluates_and_writes_required_artifacts(self) -> None:
+        discovery_cases = (
+            make_case(
+                "trainwin-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.30,
+                earnings_growth=0.45,
+                margin=0.18,
+                return_20d=-0.08,
+                return_60d=-0.20,
+                target_upside=0.30,
+                catalyst_count=1,
+            ),
+            make_case(
+                "trainctl-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.02,
+                earnings_growth=0.01,
+                margin=0.04,
+                return_20d=0.01,
+                return_60d=0.02,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+        )
+        holdout_cases = (
+            make_case(
+                "freshwin-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.32,
+                earnings_growth=0.48,
+                margin=0.19,
+                return_20d=0.05,
+                return_60d=0.12,
+                target_upside=0.32,
+                catalyst_count=2,
+            ),
+            make_case(
+                "freshctl-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.01,
+                earnings_growth=-0.03,
+                margin=0.03,
+                return_20d=0.00,
+                return_60d=0.01,
+                target_upside=0.01,
+                catalyst_count=0,
+            ),
+        )
+        learning = learn_pre_surge_signal_logic(discovery_cases)
+        themes = build_cold_start_theme_maps(discovery_cases, learning)
+        baseline = tuple(HeuristicBlindCaseResearcher().analyze(case) for case in discovery_cases)
+        playbooks = HeuristicSurgePlaybookSynthesizer().synthesize(
+            discovery_cases,
+            baseline,
+            learning,
+            themes,
+        )
+        scheme, _diagnostic = synthesize_information_scheme(
+            discovery_cases,
+            learning_result=learning,
+            theme_maps=themes,
+            playbook_synthesis=playbooks,
+        )
+        prepared = prepare_information_plan_experiment(
+            discovery_cases,
+            holdout_cases,
+            active_scheme=scheme,
+            run_id="information-plan-artifact-test",
+            context_budget=1200,
+        )
+        result = evaluate_information_plan_experiment(
+            prepared,
+            holdout_cases,
+            blind_researcher=HeuristicRalphBlindResearcher(),
+            family_experiment_mode="both",
+            evaluation_method="heuristic",
+        )
+
+        with TemporaryDirectory() as tmp:
+            paths = write_information_plan_experiment_artifacts(
+                result,
+                tmp,
+                created_at=STAMP,
+                leakage_report={"passed": True, "case_reports": []},
+            )
+            required = {
+                "research_information_plan",
+                "information_requirements",
+                "evidence_coverage_ledger",
+                "atomic_evidence_by_case",
+                "point_in_time_source_documents",
+                "document_content_audit",
+                "raw_source_blind_packets",
+                "raw_vs_organized_evaluation",
+                "information_family_experiments",
+                "layered_failure_attribution",
+            }
+            self.assertTrue(required.issubset(paths))
+            self.assertTrue(all(paths[name].exists() for name in required))
+            manifest = json.loads(paths["manifest"].read_text())
+            comparison = json.loads(paths["raw_vs_organized_evaluation"].read_text())
+            family = json.loads(paths["information_family_experiments"].read_text())
+            self.assertEqual(manifest["pipeline"], "ralph_information_plan_experiment")
+            self.assertEqual(manifest["evaluation_method"], "heuristic")
+            self.assertFalse(manifest["effectiveness_claim_allowed"])
+            summary = json.loads(paths["ralph_experiment_summary"].read_text())
+            self.assertEqual(summary["final_status"], "pipeline_diagnostic_only")
+            self.assertFalse(comparison["comparison_contract"]["gold_packet_available"])
+            self.assertEqual(comparison["comparison_contract"]["source_pool_case_count"], 2)
+            self.assertEqual(len(family["experiments"]), 7)
+            self.assertTrue(result.failure_attributions)
+
     def test_web_evidence_researcher_collects_as_of_bounded_documents(self) -> None:
         transport = FakeOpenAITransport(
             json.dumps(
@@ -3126,6 +3752,67 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(result.web_queries_by_symbol["ABC"], ("ABC query before 2026-05-01",))
         self.assertTrue(any(catalyst.name == "AI product launch" for catalyst in catalysts))
         self.assertTrue(any(catalyst.status is CatalystStatus.CONFIRMED for catalyst in catalysts))
+
+    def test_formal_filing_acquisition_preserves_complete_source_body(self) -> None:
+        body = (
+            "<html><body><p>Item 1.01 Entry into a Material Definitive Agreement.</p>"
+            + "<p>The issuer signed a customer supply agreement.</p>" * 120
+            + "</body></html>"
+        )
+        filing = FilingMetadata(
+            cik="0000000001",
+            accession_number="0000000001-26-000001",
+            filing_date=date(2026, 4, 15),
+            report_date=None,
+            form="8-K",
+            primary_document="form8-k.htm",
+            source_url="https://www.sec.gov/Archives/edgar/data/1/form8-k.htm",
+            retrieved_at=STAMP,
+        )
+
+        class FullBodySecClient:
+            def recent_filings_as_of(self, cik, as_of_date):
+                return [filing]
+
+            def filing_document_text(self, selected_filing):
+                self.selected_filing = selected_filing
+                return body
+
+        candidate = HistoricalCandidate(
+            symbol="ABC",
+            company_name="ABC Corp.",
+            label=CaseOutcomeLabel.WINNER,
+            outcome_anchor_date=AS_OF,
+            inflection_date=AS_OF,
+            inflection_method="fixture",
+            inflection_score=1.0,
+            outcome_end_date=AS_OF + timedelta(days=90),
+            forward_return=1.0,
+            max_forward_return=1.2,
+            max_drawdown_from_start=-0.1,
+            trading_days=65,
+            selection_rank=1,
+        )
+        warnings: list[str] = []
+        documents = _filing_documents_for_candidate(
+            SimpleNamespace(
+                max_filings_per_symbol=2,
+                skip_filing_text=False,
+                document_excerpt_chars=100,
+            ),
+            FullBodySecClient(),
+            candidate,
+            "0000000001",
+            context_start=date(2026, 1, 1),
+            filing_forms=("8-K",),
+            created_at=STAMP,
+            warnings=warnings,
+        )
+
+        self.assertEqual(documents[0].text, body)
+        self.assertGreater(len(documents[0].text), 1500)
+        self.assertEqual(documents[0].content_scope, DocumentContentScope.COMPLETE_BODY)
+        self.assertEqual(warnings, [])
 
     def test_formal_news_context_turns_order_news_into_document_and_catalyst(self) -> None:
         document = _finnhub_news_document(
