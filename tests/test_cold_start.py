@@ -3116,7 +3116,11 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("market_index_membership", event_types)
         self.assertNotIn("strategic_transaction", event_types)
         self.assertNotIn("capital_or_liquidity", event_types)
-        order_facts = [fact for fact in facts if fact.family == "orders_contracts"]
+        order_facts = [
+            fact
+            for fact in facts
+            if fact.family == "orders_contracts" and fact.event_type == "order_or_contract"
+        ]
         self.assertEqual(len(order_facts), 2)
         positive = next(fact for fact in order_facts if not fact.negated)
         negative = next(fact for fact in order_facts if fact.negated)
@@ -3275,6 +3279,95 @@ class ColdStartSignalTests(TestCase):
             self.assertEqual(factual_states[family].value, "confirmed")
         self.assertEqual(planned_states["orders_contracts"].value, "not_found")
         self.assertEqual(planned_states["policy_regulatory"].value, "not_found")
+
+    def test_information_plan_derives_materiality_expectation_timing_and_chain_evidence(self) -> None:
+        case = make_case(
+            "derived-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.20,
+            earnings_growth=0.30,
+            margin=0.12,
+            return_20d=-0.10,
+            return_60d=-0.25,
+            target_upside=0.30,
+            catalyst_count=0,
+            extra_documents=[
+                DocumentRecord(
+                    document_id="derived-economics",
+                    symbol="DERIVED",
+                    kind=EvidenceKind.NEWS,
+                    title="DERIVED operating update",
+                    text=(
+                        "The company reported a Q2 revenue beat, reaching $100 million "
+                        "against a consensus estimate of $90 million. Revenue increased due "
+                        "to electric vehicle demand for its power semiconductors. The company "
+                        "said its $5 billion semiconductor plant is nearing completion. The company "
+                        "signed a $25 million customer contract to supply electric vehicle "
+                        "components."
+                    ),
+                    source_id="news:derived:economics",
+                    source_url="https://example.com/derived-economics",
+                    published_date=AS_OF - timedelta(days=10),
+                    retrieved_at=STAMP,
+                )
+            ],
+        )
+
+        facts = extract_atomic_evidence_by_case((case,))[case.case_id]
+
+        self.assertTrue(any(fact.family == "theme_industry_transmission" for fact in facts))
+        self.assertTrue(any(fact.event_type == "expectation_timeline" for fact in facts))
+        revenue_ratio = next(
+            fact
+            for fact in facts
+            if fact.event_type == "materiality_ratio"
+            and fact.unit == "percent_of_reported_revenue"
+        )
+        market_cap_ratio = next(
+            fact
+            for fact in facts
+            if fact.event_type == "materiality_ratio"
+            and fact.unit == "percent_of_market_cap"
+        )
+        self.assertEqual(revenue_ratio.amount, 25.0)
+        self.assertEqual(market_cap_ratio.amount, 0.17)
+        self.assertTrue(
+            all(
+                fact.family == "orders_contracts"
+                for fact in facts
+                if fact.event_type == "materiality_ratio"
+            )
+        )
+        self.assertEqual(len(revenue_ratio.derived_from_fact_ids), 2)
+        self.assertIn("Contract duration", revenue_ratio.statement)
+
+        raw_packet = build_raw_source_blind_packet(
+            case,
+            anonymous_case_id="holdout_001",
+            context_budget=800,
+        )
+        task = raw_packet.to_prompt_dict()["task"]
+        self.assertIn("industry demand", task)
+        self.assertIn("source-backed company fundamentals", task)
+        self.assertIn("stale, repeated, or already price-confirmed facts", task)
+        self.assertNotIn(
+            "Returns",
+            point_in_time_document_identity_tokens(
+                [
+                    DocumentRecord(
+                        document_id="generic-returns",
+                        symbol="DERIVED",
+                        kind=EvidenceKind.NEWS,
+                        title="Returns and valuation",
+                        text="Returns are calculated from historical prices.",
+                        source_id="news:derived:returns",
+                        source_url="https://example.com/derived-returns",
+                        published_date=AS_OF,
+                        retrieved_at=STAMP,
+                    )
+                ]
+            ),
+        )
 
     def test_information_plan_masks_source_aliases_and_interleaves_raw_documents(self) -> None:
         case = make_case(

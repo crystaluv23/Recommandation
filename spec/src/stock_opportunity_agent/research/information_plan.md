@@ -16,6 +16,49 @@ That record still owns section order, token budgets, compression, and blind
 prompt structure. The information plan composes requirements, source coverage,
 atomic facts, packet variants, and evaluation results around that scheme.
 
+## End-to-End Experiment Workflow
+
+The information-plan loop follows this order:
+
+1. Freeze a versioned development outcome definition, surge-inflection rule,
+   control pseudo-anchor rule, control-matching policy, and symbol-level
+   refinement/development/untouched-holdout split. Outcome labels, inflection
+   dates, and packet as-of cutoffs are distinct records.
+2. Define versioned information requirements before choosing provider APIs.
+   Map each requirement to preferred and fallback point-in-time sources, while
+   preserving `other_or_unclassified` evidence so the initial ontology can
+   expand.
+3. Acquire and freeze the full source archive for each approved pre-inflection
+   window. Retrieval and content-readiness state are audited before extraction.
+4. On refinement symbols only, compare winner, control, and failure evidence
+   across windows to propose measurable signals and analysis rubrics. A useful
+   instruction is not a signal until it has source-linked facts and a repeatable
+   observation or calculation.
+5. Preserve source facts, then derive auditable working features such as event
+   status, event age, event amount versus reported revenue or as-of market cap,
+   expectation-evidence timelines, and industry-demand-to-company pull-through.
+   Every calculation names its input fact ids and formula; derived values never
+   replace the source archive.
+6. Render a minimally processed raw arm and an organized arm from the same
+   anonymous source pool, cutoff, context budget, model, prompt rubric, and
+   output schema. The prompt specifies how to reason but cannot substitute for
+   absent facts.
+7. Run no-web plain-LLM development validation, reveal labels only after outputs
+   are frozen, and attribute errors to acquisition, extraction, signal,
+   representation, analysis, or irreducible point-in-time support. Feedback may
+   produce at most one or two bounded proposals; a used holdout becomes
+   refinement data.
+8. Evaluate the frozen final proposal once on new untouched companies. Persist
+   all artifacts and meta-experience, but keep schemes and signals proposal-only
+   until human review.
+
+The WOLF/EXC comparison is a development diagnostic that inherits the existing
+frozen historical labels and as-of dates. It does not approve the default
+180-calendar-day terminal-return rule as the production definition. Before the
+one-shot untouched holdout, the project must separately approve the winner
+threshold, whether maximum or terminal return defines a surge, the deterministic
+inflection rule, and the control pseudo-anchor/matching contract.
+
 ## External Interface
 
 The submodule should expose:
@@ -26,7 +69,9 @@ The submodule should expose:
   states that distinguish confirmed, contradicted, not applicable, not found,
   source unavailable, not fetched, extraction failed, and ambiguous.
 - `AtomicEvidence`: a source-linked fact carrying entity role, event type,
-  status/negation, amount/unit/period, dates, and supporting source span.
+  status/negation, amount/unit/period, dates, and supporting source span. A
+  deterministic derived fact additionally carries input fact ids and its
+  calculation.
 - `DocumentContentAudit`: point-in-time source-body state, size, content hash,
   and reasons distinguishing usable, summary-only, likely truncated,
   metadata-only, and unusable documents.
@@ -165,6 +210,8 @@ none of these artifacts may be called gold.
 - Keep outcome labels out of extraction and blind packet rendering.
 - Keep requirement discovery, evidence extraction, signals, rubrics, packet
   rendering, and prompt text as separate records or stages.
+- Keep deterministic derived features traceable to source fact ids and never
+  use outcome labels in their calculations.
 - Preserve the frozen v27 baseline; new artifacts are side-by-side proposals.
 - A holdout used to produce a proposal is not independent validation for that
   proposal.

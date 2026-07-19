@@ -23,6 +23,7 @@ from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
 from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ResearchPacket, ValidationError
 from stock_opportunity_agent.research import (
+    ATOMIC_EVIDENCE_SCHEMA_VERSION,
     BlindCaseAnalysis,
     CachedRalphBlindResearcher,
     HeuristicRalphBlindResearcher,
@@ -514,7 +515,7 @@ def _write_information_plan_preflight_artifacts(
     _write_json(
         paths["atomic_evidence_by_case"],
         {
-            "schema_version": "atomic-evidence-v0.1",
+            "schema_version": ATOMIC_EVIDENCE_SCHEMA_VERSION,
             "run_id": run_id,
             "stage_boundary": "retrospective_label_aware_audit",
             "atomic_evidence_by_case": {

@@ -34,8 +34,8 @@ from stock_opportunity_agent.research.ralph_loop import (
 )
 
 
-INFORMATION_PLAN_SCHEMA_VERSION = "research-information-plan-v0.2"
-ATOMIC_EVIDENCE_SCHEMA_VERSION = "atomic-evidence-v0.1"
+INFORMATION_PLAN_SCHEMA_VERSION = "research-information-plan-v0.3"
+ATOMIC_EVIDENCE_SCHEMA_VERSION = "atomic-evidence-v0.2"
 RAW_PACKET_SCHEME_ID = "ralph-raw-source-baseline"
 TARGET_INFORMATION_FAMILIES = (
     "deal_status_timing",
@@ -109,7 +109,7 @@ class InformationRequirement:
     fallback_sources: tuple[str, ...]
     extraction_fields: tuple[str, ...]
     analysis_rubric: str
-    version: str = "information-requirement-v0.1"
+    version: str = "information-requirement-v0.2"
     proposal_status: str = "proposal_only"
 
     def to_dict(self) -> dict[str, Any]:
@@ -180,6 +180,8 @@ class AtomicEvidence:
     negated: bool = False
     confidence: float = 1.0
     extraction_method: str = "deterministic_sentence_rule"
+    derived_from_fact_ids: tuple[str, ...] = ()
+    calculation: str | None = None
     schema_version: str = ATOMIC_EVIDENCE_SCHEMA_VERSION
 
     def to_dict(self, *, include_source_case_id: bool = True) -> dict[str, Any]:
@@ -207,6 +209,8 @@ class AtomicEvidence:
             "negated": self.negated,
             "confidence": self.confidence,
             "extraction_method": self.extraction_method,
+            "derived_from_fact_ids": list(self.derived_from_fact_ids),
+            "calculation": self.calculation,
         }
         if include_source_case_id:
             result["source_case_id"] = self.source_case_id
@@ -473,6 +477,8 @@ def default_information_requirements() -> tuple[InformationRequirement, ...]:
         "event_date",
         "published_date",
         "source_span",
+        "derived_from_fact_ids",
+        "calculation",
     )
     return (
         _requirement(
@@ -619,7 +625,10 @@ def extract_atomic_evidence_by_case(
         facts.extend(_facts_from_catalysts(case))
         for document in available_documents:
             facts.extend(_facts_from_document(case, document))
-        result[case.case_id] = _dedupe_facts(facts)
+        source_facts = _dedupe_facts(facts)
+        result[case.case_id] = _dedupe_facts(
+            source_facts + _derived_atomic_evidence(case, source_facts)
+        )
     return result
 
 
@@ -681,7 +690,7 @@ def document_content_readiness(
         for case_id in prepared.holdout_case_ids
         for fact in prepared.atomic_evidence_by_case.get(case_id, ())
         if fact.family in TARGET_INFORMATION_FAMILIES
-        and fact.source_kind not in {"structured_feature", "structured_catalyst"}
+        and fact.source_kind not in {"structured_feature", "structured_catalyst", "derived"}
     }
     critical_source_issues = tuple(
         {
@@ -781,7 +790,7 @@ def discover_research_information_plan(
     discovery_cases: Iterable[HistoricalCase],
     *,
     packet_scheme_version: str,
-    plan_version: str = "research-information-plan-v0.2",
+    plan_version: str = INFORMATION_PLAN_SCHEMA_VERSION,
     documents_by_symbol: Mapping[str, Iterable[DocumentRecord]] | None = None,
 ) -> ResearchInformationPlan:
     """Build a label-aware requirement proposal from refinement cases only."""
@@ -1613,7 +1622,7 @@ def _facts_from_evidence(case: HistoricalCase, evidence: EvidenceItem) -> list[A
             }:
                 continue
             status, negated = _fact_status(span, family)
-            amount, unit = _amount_and_unit(span)
+            amount, unit = _amount_and_unit(span, family=family)
             period = _period_phrase(span)
             source_id = evidence.source_id or _opaque_ref(
                 case.case_id,
@@ -1704,6 +1713,17 @@ def _facts_from_features(case: HistoricalCase) -> list[AtomicEvidence]:
             continue
         statement = f"{feature.name} = {feature.value}"
         source_id = feature.source_id or f"feature:{feature.source}:{feature.name}"
+        monetary_feature = feature.name in {
+            "valuation.market_cap_usd",
+            "financial.revenue_ttm",
+            "financial.cash_and_equivalents_usd",
+            "financial.total_debt_usd",
+        }
+        amount = (
+            float(feature.value)
+            if monetary_feature and isinstance(feature.value, (int, float))
+            else None
+        )
         facts.append(
             AtomicEvidence(
                 fact_id=_fact_id(case.case_id, source_id, family, "structured_feature", statement),
@@ -1719,6 +1739,8 @@ def _facts_from_features(case: HistoricalCase) -> list[AtomicEvidence]:
                 source_kind="structured_feature",
                 as_of_date=feature.as_of_date.isoformat(),
                 published_date=None,
+                amount=amount,
+                unit="USD" if amount is not None else None,
                 period=feature.period_end_date.isoformat() if feature.period_end_date else None,
                 confidence=1.0,
                 extraction_method="structured_feature",
@@ -1755,6 +1777,238 @@ def _facts_from_catalysts(case: HistoricalCase) -> list[AtomicEvidence]:
             )
         )
     return facts
+
+
+def _derived_atomic_evidence(
+    case: HistoricalCase,
+    facts: tuple[AtomicEvidence, ...],
+) -> tuple[AtomicEvidence, ...]:
+    """Build auditable comparison features without replacing their source facts."""
+
+    return _materiality_ratio_facts(case, facts) + _expectation_timeline_facts(case, facts)
+
+
+def _materiality_ratio_facts(
+    case: HistoricalCase,
+    facts: tuple[AtomicEvidence, ...],
+) -> tuple[AtomicEvidence, ...]:
+    revenue_fact = _latest_reported_revenue_fact(facts)
+    market_cap_fact = next(
+        (
+            fact
+            for fact in facts
+            if fact.statement.startswith("valuation.market_cap_usd = ")
+            and fact.amount is not None
+            and fact.amount > 0
+        ),
+        None,
+    )
+    denominators: list[tuple[AtomicEvidence, str, str | None]] = []
+    if revenue_fact is not None and revenue_fact.amount is not None:
+        denominators.append(
+            (revenue_fact, "reported revenue", _revenue_period_label(revenue_fact))
+        )
+    if market_cap_fact is not None:
+        denominators.append((market_cap_fact, "as-of market capitalization", "as-of"))
+    if not denominators:
+        return ()
+    events = tuple(
+        fact
+        for fact in facts
+        if fact.family == "orders_contracts"
+        and fact.amount is not None
+        and fact.amount > 0
+        and fact.unit == "USD"
+        and fact.status not in {AtomicFactStatus.CONTRADICTED, AtomicFactStatus.TERMINATED}
+        and fact.extraction_method != "deterministic_materiality_ratio"
+    )
+    derived: list[AtomicEvidence] = []
+    for event in events:
+        for denominator, denominator_name, denominator_period in denominators:
+            if denominator.amount is None:
+                continue
+            ratio = event.amount / denominator.amount
+            ratio_percent = round(ratio * 100, 2)
+            if ratio_percent <= 0 or ratio_percent > 10_000:
+                continue
+            calculation = (
+                f"{event.amount:.2f} / {denominator.amount:.2f} * 100 = "
+                f"{ratio_percent:.2f}%"
+            )
+            period_note = denominator_period or "reported period with duration unavailable"
+            statement = (
+                f"Materiality normalization: the source-reported event amount is "
+                f"{ratio_percent:.2f}% of {denominator_name} ({period_note}). Contract "
+                f"duration, revenue recognition, and margin are not inferred when absent."
+            )
+            source_id = f"derived:materiality:{event.fact_id}:{denominator.fact_id}"
+            publication_dates = tuple(
+                value
+                for value in (event.published_date, denominator.published_date)
+                if value is not None
+            )
+            derived.append(
+                AtomicEvidence(
+                    fact_id=_fact_id(
+                        case.case_id,
+                        source_id,
+                        event.family,
+                        "materiality_ratio",
+                        statement,
+                    ),
+                    source_case_id=case.case_id,
+                    requirement_id=event.requirement_id,
+                    family=event.family,
+                    subject_role=event.subject_role,
+                    counterparty_role=event.counterparty_role,
+                    event_type="materiality_ratio",
+                    status=AtomicFactStatus.CONFIRMED,
+                    statement=statement,
+                    source_span=(
+                        f"Event evidence: {event.source_span} Denominator evidence: "
+                        f"{denominator.source_span}"
+                    ),
+                    source_id=source_id,
+                    source_kind="derived",
+                    as_of_date=case.packet.as_of.as_of_date.isoformat(),
+                    published_date=max(publication_dates) if publication_dates else None,
+                    event_date=event.event_date,
+                    amount=ratio_percent,
+                    unit=(
+                        "percent_of_market_cap"
+                        if denominator_name == "as-of market capitalization"
+                        else "percent_of_reported_revenue"
+                    ),
+                    period=denominator_period,
+                    confidence=min(event.confidence, denominator.confidence),
+                    extraction_method="deterministic_materiality_ratio",
+                    derived_from_fact_ids=(event.fact_id, denominator.fact_id),
+                    calculation=calculation,
+                )
+            )
+    return tuple(derived)
+
+
+def _latest_reported_revenue_fact(
+    facts: tuple[AtomicEvidence, ...],
+) -> AtomicEvidence | None:
+    candidates = []
+    for fact in facts:
+        text = fact.statement.lower()
+        if (
+            fact.family != "fundamentals"
+            or fact.amount is None
+            or fact.amount < 1_000_000
+            or fact.unit != "USD"
+            or not (
+                re.search(r"\b(?:revenue|net sales)\b", text)
+                or text.startswith("financial.revenue_ttm = ")
+            )
+            or any(
+                phrase in text
+                for phrase in (
+                    "revenue requirement",
+                    "purchased power",
+                    "targeted revenue",
+                    "revenue recognition",
+                    "revenues are recognized",
+                )
+            )
+        ):
+            continue
+        period = _revenue_period_label(fact)
+        candidates.append((int(period is not None), _fact_date(fact), fact))
+    return max(candidates, default=(0, date.min, None), key=lambda item: item[:2])[2]
+
+
+def _revenue_period_label(fact: AtomicEvidence) -> str | None:
+    text = fact.statement.lower()
+    if text.startswith("financial.revenue_ttm = "):
+        return "ttm"
+    if re.search(r"\bq[1-4]\b|\bquarterly\b|\bthree months\b", text):
+        return "quarter"
+    if "six months" in text:
+        return "six months"
+    if "nine months" in text:
+        return "nine months"
+    if re.search(r"\b(?:fiscal year|full year|year ended|annual)\b", text):
+        return "year"
+    return fact.period
+
+
+def _expectation_timeline_facts(
+    case: HistoricalCase,
+    facts: tuple[AtomicEvidence, ...],
+) -> tuple[AtomicEvidence, ...]:
+    expectation_facts = tuple(
+        fact
+        for fact in facts
+        if fact.family == "expectation_gap" and fact.source_kind != "derived"
+    )
+    if not expectation_facts:
+        return ()
+    dated = tuple(sorted(expectation_facts, key=_fact_date))
+    first = dated[0]
+    latest = dated[-1]
+    as_of = case.packet.as_of.as_of_date
+    latest_age_days = max(0, (as_of - _fact_date(latest)).days)
+    price_returns = []
+    for fact in facts:
+        if fact.family != "market_confirmation":
+            continue
+        match = re.fullmatch(r"price\.return_(20|60|120)d = (-?\d+(?:\.\d+)?)", fact.statement)
+        if match:
+            price_returns.append(f"{match.group(1)}d={float(match.group(2)):.2%}")
+    market_context = ", ".join(sorted(price_returns)) or "not available"
+    first_observed = first.published_date or first.event_date or first.as_of_date
+    latest_observed = latest.published_date or latest.event_date or latest.as_of_date
+    statement = (
+        f"Expectation timeline: {len(expectation_facts)} source-backed expectation item(s); "
+        f"first observed {first_observed}, latest observed "
+        f"{latest_observed} ({latest_age_days} days before as-of); "
+        f"pre-as-of price returns: {market_context}. This records novelty and market response "
+        f"proxies but does not claim the event was unpriced."
+    )
+    source_id = "derived:expectation-timeline:" + hashlib.sha256(
+        "|".join(fact.fact_id for fact in dated).encode("utf-8")
+    ).hexdigest()[:16]
+    return (
+        AtomicEvidence(
+            fact_id=_fact_id(
+                case.case_id,
+                source_id,
+                "expectation_gap",
+                "expectation_timeline",
+                statement,
+            ),
+            source_case_id=case.case_id,
+            requirement_id="information-requirement:expectation_gap",
+            family="expectation_gap",
+            subject_role="issuer",
+            event_type="expectation_timeline",
+            status=AtomicFactStatus.CONFIRMED,
+            statement=statement,
+            source_span=" ".join(fact.source_span for fact in dated),
+            source_id=source_id,
+            source_kind="derived",
+            as_of_date=as_of.isoformat(),
+            published_date=latest.published_date,
+            event_date=latest.event_date,
+            amount=float(latest_age_days),
+            unit="days_before_as_of",
+            confidence=min(fact.confidence for fact in expectation_facts),
+            extraction_method="deterministic_expectation_timeline",
+            derived_from_fact_ids=tuple(fact.fact_id for fact in dated),
+            calculation="Count and date source-backed expectation facts; append structured pre-as-of returns.",
+        ),
+    )
+
+
+def _fact_date(fact: AtomicEvidence) -> date:
+    for value in (fact.published_date, fact.event_date, fact.as_of_date):
+        if value:
+            return date.fromisoformat(value)
+    return date.min
 
 
 def _source_spans(text: str) -> tuple[str, ...]:
@@ -1920,6 +2174,7 @@ def _document_short_alias_is_used(text: str, alias: str) -> bool:
         "national",
         "public",
         "resource",
+        "returns",
         "safety",
         "source",
         "stock",
@@ -1979,6 +2234,7 @@ def _safe_document_identity_token(token: str) -> bool:
         "plaintiff",
         "power",
         "registrant",
+        "returns",
         "securities",
         "shares",
         "shareholders",
@@ -2051,7 +2307,12 @@ def _classify_source_span_all(span: str) -> tuple[tuple[str, str], ...]:
         if predicate(text)
     )
     if classifications:
-        return classifications
+        supporting = []
+        if _fundamental_span(text):
+            supporting.append(("fundamentals", "operating_metric"))
+        if _business_span(text):
+            supporting.append(("business_identity", "business_context"))
+        return classifications + tuple(supporting)
     return (primary,) if primary else ()
 
 
@@ -2389,20 +2650,60 @@ def _policy_span(text: str) -> bool:
 
 
 def _theme_transmission_span(text: str) -> bool:
-    theme = bool(
+    technology_theme = bool(
         "artificial intelligence" in text
         or re.search(r"\bai\b", text)
         or any(term in text for term in ("data center", "datacenter", "cloud"))
+    )
+    industry_theme = any(
+        term in text
+        for term in (
+            "electric vehicle",
+            "automotive demand",
+            "industrial and energy",
+            "renewable energy",
+            "power demand",
+            "electricity demand",
+            "semiconductor supply chain",
+            "silicon carbide",
+            "grid modernization",
+            "directed energy",
+        )
     )
     if re.search(
         r"\b(?:no|not|without)\b.{0,50}\b(?:orders?|contracts?|customers?|deployments?)\b",
         text,
     ):
         return False
-    direct = _orders_span(text) or _customer_capacity_span(text) or any(
-        phrase in text for phrase in ("revenue from", "guidance reflects", "capacity expansion")
+    company_economics = _orders_span(text) or _customer_capacity_span(text) or any(
+        phrase in text
+        for phrase in (
+            "revenue from",
+            "revenue decreased",
+            "revenue increased",
+            "guidance reflects",
+            "capacity expansion",
+            "weak demand",
+            "softening of demand",
+            "driven by demand",
+        )
     )
-    return theme and direct
+    causal_link = any(
+        phrase in text
+        for phrase in (
+            "due to",
+            "driven by",
+            "impact",
+            "dependent on",
+            "used in",
+            "supply",
+            "powers",
+            "crucial for",
+        )
+    )
+    return (technology_theme or industry_theme) and company_economics and (
+        technology_theme or causal_link
+    )
 
 
 def _expectation_span(text: str) -> bool:
@@ -2427,6 +2728,14 @@ def _expectation_span(text: str) -> bool:
             "consensus estimate",
             "earnings surprise",
             "price target",
+            "revenue beat",
+            "earnings beat",
+            "revenue miss",
+            "earnings miss",
+            "exceeded consensus",
+            "exceeded expectations",
+            "below consensus",
+            "against an anticipated",
         )
     )
     issuer_outlook = bool(
@@ -2478,6 +2787,13 @@ def _fundamental_span(text: str) -> bool:
             "revenues are recognized",
             "recognizes revenue when",
             "total annual gross revenues of",
+            "internal revenue code",
+            "employment agreement",
+            "change in control for purposes of section 280g",
+            "interest rate step-down condition",
+            "statements of cash flows",
+            "present fairly, in all material respects",
+            "following table provides a summary",
         )
     ):
         return False
@@ -2601,15 +2917,30 @@ def _fact_is_negated(text: str, family: str) -> bool:
     return any(re.search(pattern, text) for pattern in patterns.get(family, ()))
 
 
-def _amount_and_unit(span: str) -> tuple[float | None, str | None]:
-    match = re.search(
-        r"(?P<currency>\$|usd\s*)(?P<amount>\d[\d,]*(?:\.\d+)?)\s*"
+def _amount_and_unit(
+    span: str,
+    *,
+    family: str | None = None,
+) -> tuple[float | None, str | None]:
+    amount_pattern = (
+        r"\(?\s*(?P<currency>\$|usd\s*)(?P<amount>\d[\d,]*(?:\.\d+)?)\s*\)?\s*"
         r"(?P<scale>billion|million|thousand)?"
         r"|(?P<amount_scaled>\d[\d,]*(?:\.\d+)?)\s*"
-        r"(?P<scale_only>billion|million|thousand|%|percent)\b",
-        span,
-        flags=re.IGNORECASE,
+        r"(?P<scale_only>billion|million|thousand|%|percent)\b"
     )
+    match = None
+    if family == "fundamentals":
+        preferred = re.search(
+            r"\b(?:revenue|net sales)\b.{0,120}?"
+            r"\b(?:reaching|to|was|were|totaled|of)\s+"
+            + amount_pattern,
+            span,
+            flags=re.IGNORECASE,
+        )
+        if preferred:
+            match = preferred
+    if match is None:
+        match = re.search(amount_pattern, span, flags=re.IGNORECASE)
     if not match:
         return None, None
     raw_amount = match.group("amount") or match.group("amount_scaled")
@@ -3051,6 +3382,10 @@ def _section_for_family(family: str) -> str:
 
 
 def _section_for_fact(fact: AtomicEvidence) -> str:
+    if fact.event_type == "materiality_ratio":
+        return "Materiality and Timing"
+    if fact.event_type == "expectation_timeline":
+        return "Expectation Gap Summary"
     if fact.family != "capital_structure_liquidity":
         return _section_for_family(fact.family)
     text = fact.source_span.lower()
@@ -3076,6 +3411,25 @@ def _families_for_section(section_name: str) -> tuple[str, ...]:
 
 
 def _atomic_blind_item(fact: AtomicEvidence) -> dict[str, Any]:
+    observed_date = _fact_date(fact)
+    as_of_age_days = max(0, (date.fromisoformat(fact.as_of_date) - observed_date).days)
+    if fact.source_kind == "derived":
+        return {
+            "item_type": "derived_evidence",
+            "fact_ref": fact.fact_id,
+            "family": fact.family,
+            "event_type": fact.event_type,
+            "status": fact.status.value,
+            "amount": fact.amount,
+            "unit": fact.unit,
+            "period": fact.period,
+            "event_date": fact.event_date,
+            "published_date": fact.published_date,
+            "as_of_age_days": as_of_age_days,
+            "summary": fact.statement,
+            "derived_from_fact_refs": list(fact.derived_from_fact_ids),
+            "calculation": fact.calculation,
+        }
     return {
         "item_type": "atomic_evidence",
         "fact_ref": fact.fact_id,
@@ -3089,9 +3443,12 @@ def _atomic_blind_item(fact: AtomicEvidence) -> dict[str, Any]:
         "period": fact.period,
         "event_date": fact.event_date,
         "published_date": fact.published_date,
+        "as_of_age_days": as_of_age_days,
         "negated": fact.negated,
         "summary": fact.statement,
         "supporting_span": fact.source_span,
+        "derived_from_fact_refs": list(fact.derived_from_fact_ids),
+        "calculation": fact.calculation,
     }
 
 
@@ -3164,6 +3521,8 @@ def _balanced_atomic_facts(
 
     grouped: dict[str, list[AtomicEvidence]] = {}
     for fact in facts:
+        if fact.family == "business_identity" and _low_signal_business_context(fact):
+            continue
         grouped.setdefault(fact.family, []).append(fact)
     for family_facts in grouped.values():
         family_facts.sort(key=_atomic_fact_sort_key, reverse=True)
@@ -3190,6 +3549,21 @@ def _balanced_atomic_facts(
     return tuple(selected)
 
 
+def _low_signal_business_context(fact: AtomicEvidence) -> bool:
+    """Drop generic governance and boilerplate that cannot identify company economics."""
+
+    text = fact.source_span.lower()
+    return any(
+        phrase in text
+        for phrase in (
+            "complex market and regulatory environment",
+            "provide limited perquisites",
+            "say-on-pay vote",
+            "standard warranty periods",
+        )
+    )
+
+
 def _atomic_fact_priority(fact: AtomicEvidence) -> tuple[int, int, int]:
     boilerplate = any(
         phrase in fact.source_span.lower()
@@ -3200,6 +3574,10 @@ def _atomic_fact_priority(fact: AtomicEvidence) -> tuple[int, int, int]:
             "form of ",
             "filed as exhibit",
             "deemed not filed",
+            "internal revenue code",
+            "employment agreement",
+            "following table provides a summary",
+            "present fairly, in all material respects",
         )
     )
     status_priority = {
@@ -3218,7 +3596,8 @@ def _atomic_fact_priority(fact: AtomicEvidence) -> tuple[int, int, int]:
     specificity = int(fact.amount is not None) + int(fact.period is not None) + int(
         fact.counterparty_role is not None
     )
-    return (0 if boilerplate else 1, status_priority, specificity)
+    source_quality = 0 if fact.source_kind == "derived" else 1
+    return (0 if boilerplate else source_quality, status_priority, specificity)
 
 
 def _atomic_fact_sort_key(fact: AtomicEvidence) -> tuple[int, str, int, int, str]:

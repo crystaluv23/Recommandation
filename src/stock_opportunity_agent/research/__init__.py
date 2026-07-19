@@ -26,6 +26,7 @@ from stock_opportunity_agent.research.inflection_discovery import (
     OpenAIWebInflectionResearcher,
 )
 from stock_opportunity_agent.research.information_plan import (
+    ATOMIC_EVIDENCE_SCHEMA_VERSION,
     AtomicEvidence,
     DocumentContentAudit,
     DocumentContentState,
@@ -87,6 +88,7 @@ from stock_opportunity_agent.research.ralph_loop import (
 )
 
 __all__ = [
+    "ATOMIC_EVIDENCE_SCHEMA_VERSION",
     "AtomicEvidence",
     "BlindCaseAnalysis",
     "BlindCaseResearcher",
