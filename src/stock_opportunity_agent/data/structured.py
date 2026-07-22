@@ -53,6 +53,11 @@ SEC_COMPANY_FACT_FEATURE_TAGS: dict[str, tuple[str, ...]] = {
         "CashAndCashEquivalentsAtCarryingValue",
         "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
     ),
+    "financial.total_debt_usd": (
+        "LongTermDebtAndFinanceLeaseObligations",
+        "LongTermDebt",
+        "LongTermDebtNoncurrent",
+    ),
     "financial.assets_usd": ("Assets",),
     "financial.liabilities_usd": ("Liabilities",),
     "financial.stockholders_equity_usd": (

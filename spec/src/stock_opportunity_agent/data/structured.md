@@ -14,8 +14,8 @@ The implementation exposes:
 - `normalize_price_features()` for daily OHLCV windows, latest close, liquidity, and trailing returns.
 - `normalize_alpha_vantage_overview()` for profile, valuation, analyst target, and high-level financial fields from Alpha Vantage overview snapshots.
 - `normalize_sec_company_facts()` for selected SEC XBRL company facts using
-  filing-date availability, including revenue, profit, cash flow, assets,
-  liabilities, equity, and EPS tags when available.
+  filing-date availability, including revenue, profit, cash flow, cash, debt,
+  assets, liabilities, equity, and EPS tags when available.
 - `company_profile_from_features()` for building `CompanyProfile` from listing metadata and normalized features.
 
 ## Responsibilities

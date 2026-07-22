@@ -511,6 +511,8 @@ class SchemeEvaluation:
     judgment_distribution_by_group: dict[str, dict[str, int]]
     false_positive_controls: tuple[str, ...]
     false_negative_winners: tuple[str, ...]
+    confusion_matrix: dict[str, int]
+    classification_metrics: dict[str, float]
     false_positive_rate: float
     false_negative_rate: float
     unable_to_judge_reasons: tuple[str, ...]
@@ -534,6 +536,8 @@ class SchemeEvaluation:
             },
             "false_positive_controls": list(self.false_positive_controls),
             "false_negative_winners": list(self.false_negative_winners),
+            "confusion_matrix": dict(self.confusion_matrix),
+            "classification_metrics": dict(self.classification_metrics),
             "false_positive_rate": self.false_positive_rate,
             "false_negative_rate": self.false_negative_rate,
             "unable_to_judge_reasons": list(self.unable_to_judge_reasons),
@@ -1114,7 +1118,9 @@ def evaluate_scheme_performance(
     analysis_by_case = {_analysis_case_id(analysis): analysis for analysis in analyses}
     by_group: dict[str, list[BlindCaseAnalysis | RalphBlindAnalysis]] = {}
     distributions: dict[str, dict[str, int]] = {}
+    true_positive_winners: list[str] = []
     false_positive_controls: list[str] = []
+    true_negative_controls: list[str] = []
     false_negative_winners: list[str] = []
     unable_to_judge: list[str] = []
     warnings: list[str] = []
@@ -1134,6 +1140,10 @@ def evaluate_scheme_performance(
             false_positive_controls.append(case.case_id)
             unable_to_judge.append(_analysis_reason(analysis))
             unable_to_judge.extend(_analysis_missing_context(analysis))
+        if case.label is CaseOutcomeLabel.CONTROL and not positive:
+            true_negative_controls.append(case.case_id)
+        if case.label is CaseOutcomeLabel.WINNER and positive:
+            true_positive_winners.append(case.case_id)
         if case.label is CaseOutcomeLabel.WINNER and not positive:
             false_negative_winners.append(case.case_id)
             unable_to_judge.append(_analysis_reason(analysis))
@@ -1161,6 +1171,30 @@ def evaluate_scheme_performance(
     winner_count = len(by_group.get(CaseOutcomeLabel.WINNER.value, ()))
     false_positive_rate = round(_safe_ratio(len(false_positive_controls), control_count), 4)
     false_negative_rate = round(_safe_ratio(len(false_negative_winners), winner_count), 4)
+    confusion_matrix = {
+        "true_positive": len(true_positive_winners),
+        "false_positive": len(false_positive_controls),
+        "true_negative": len(true_negative_controls),
+        "false_negative": len(false_negative_winners),
+    }
+    classification_metrics = {
+        "precision": round(
+            _safe_ratio(
+                len(true_positive_winners),
+                len(true_positive_winners) + len(false_positive_controls),
+            ),
+            4,
+        ),
+        "recall": round(_safe_ratio(len(true_positive_winners), winner_count), 4),
+        "specificity": round(_safe_ratio(len(true_negative_controls), control_count), 4),
+        "accuracy": round(
+            _safe_ratio(
+                len(true_positive_winners) + len(true_negative_controls),
+                winner_count + control_count,
+            ),
+            4,
+        ),
+    }
     separation_passed = (
         positive_gap >= min_confidence_gap
         and false_positive_rate <= max_false_positive_rate
@@ -1181,6 +1215,8 @@ def evaluate_scheme_performance(
         judgment_distribution_by_group=distributions,
         false_positive_controls=tuple(false_positive_controls),
         false_negative_winners=tuple(false_negative_winners),
+        confusion_matrix=confusion_matrix,
+        classification_metrics=classification_metrics,
         false_positive_rate=false_positive_rate,
         false_negative_rate=false_negative_rate,
         unable_to_judge_reasons=tuple(unable_to_judge),

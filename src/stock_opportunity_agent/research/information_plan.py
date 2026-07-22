@@ -460,6 +460,21 @@ class InformationPlanExperimentResult:
                     - self.raw_evaluation.false_negative_rate,
                     4,
                 ),
+                "confusion_matrix": {
+                    name: (
+                        self.organized_evaluation.confusion_matrix[name]
+                        - self.raw_evaluation.confusion_matrix[name]
+                    )
+                    for name in self.raw_evaluation.confusion_matrix
+                },
+                "classification_metrics": {
+                    name: round(
+                        self.organized_evaluation.classification_metrics[name]
+                        - self.raw_evaluation.classification_metrics[name],
+                        4,
+                    )
+                    for name in self.raw_evaluation.classification_metrics
+                },
             },
         }
 
@@ -1716,8 +1731,12 @@ def _facts_from_features(case: HistoricalCase) -> list[AtomicEvidence]:
         monetary_feature = feature.name in {
             "valuation.market_cap_usd",
             "financial.revenue_ttm",
+            "financial.revenue_usd",
             "financial.cash_and_equivalents_usd",
             "financial.total_debt_usd",
+            "financial.gross_profit_usd",
+            "financial.operating_cash_flow_usd",
+            "financial.capex_usd",
         }
         amount = (
             float(feature.value)
@@ -2096,7 +2115,13 @@ def point_in_time_document_identity_tokens(
         tokens.update(
             _document_identity_tokens_from_text(f"{document.title}. {document.text}")
         )
-    return tuple(sorted(tokens, key=len, reverse=True))
+    return tuple(
+        sorted(
+            (token for token in tokens if _safe_document_identity_token(token)),
+            key=len,
+            reverse=True,
+        )
+    )
 
 
 def _document_identity_tokens(documents: Iterable[DocumentRecord]) -> tuple[str, ...]:
@@ -2133,7 +2158,13 @@ def _document_identity_tokens_from_text(text: str) -> tuple[str, ...]:
         flags=re.IGNORECASE,
     ):
         tokens.add(match.group(1).upper())
-    return tuple(sorted(tokens, key=len, reverse=True))
+    return tuple(
+        sorted(
+            (token for token in tokens if _safe_document_identity_token(token)),
+            key=len,
+            reverse=True,
+        )
+    )
 
 
 def _document_company_name_variants(company: str) -> tuple[str, ...]:
@@ -2191,6 +2222,7 @@ def _document_short_alias_is_used(text: str, alias: str) -> bool:
 
 def _safe_document_identity_token(token: str) -> bool:
     lowered = token.lower()
+    normalized = re.sub(r"^the\s+", "", lowered)
     blocked = (
         "cash and cash equivalents",
         "emerging growth company",
@@ -2205,18 +2237,28 @@ def _safe_document_identity_token(token: str) -> bool:
         "the company",
     )
     blocked_exact = {
+        "act",
         "agreement",
         "american",
         "and",
         "amount",
         "amounts",
+        "assets",
         "bank",
+        "bank holding",
+        "bank holding company",
+        "best",
         "biden",
+        "board",
         "capital",
+        "cash",
         "ceo",
         "city",
+        "claims",
+        "commission",
         "company",
         "company's",
+        "corporation",
         "costs",
         "corp",
         "defendants",
@@ -2226,14 +2268,25 @@ def _safe_document_identity_token(token: str) -> bool:
         "energy",
         "entities",
         "foundation",
+        "former",
         "general",
         "generation",
+        "holding",
+        "holding company",
+        "inc",
+        "insurance",
         "irs",
+        "jones",
+        "management",
+        "national",
         "notes",
         "our",
         "plaintiff",
         "power",
+        "previously",
         "registrant",
+        "release",
+        "representative",
         "returns",
         "securities",
         "shares",
@@ -2241,17 +2294,20 @@ def _safe_document_identity_token(token: str) -> bool:
         "source",
         "state",
         "states",
+        "stock",
         "stockholders",
         "that",
         "the",
+        "thursday",
         "trump",
         "what",
+        "world",
         "york",
     }
     return (
         3 <= len(token) <= 120
-        and lowered not in blocked_exact
-        and not any(value in lowered for value in blocked)
+        and normalized not in blocked_exact
+        and not any(value in normalized for value in blocked)
     )
 
 
@@ -3360,6 +3416,20 @@ def _evaluation_delta(
             candidate.false_negative_rate - baseline.false_negative_rate,
             4,
         ),
+        **{
+            f"{name}_count": float(
+                candidate.confusion_matrix[name] - baseline.confusion_matrix[name]
+            )
+            for name in baseline.confusion_matrix
+        },
+        **{
+            name: round(
+                candidate.classification_metrics[name]
+                - baseline.classification_metrics[name],
+                4,
+            )
+            for name in baseline.classification_metrics
+        },
     }
 
 

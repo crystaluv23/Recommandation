@@ -218,3 +218,50 @@ analysis using exactly the same validated information plan.
   the v25 anonymous WOLF/EXC raw and organized packets. Then route at most one
   bounded proposal from that result and reserve new companies for the one-shot
   untouched holdout. Multi-agent work remains gated.
+
+## Execution Checkpoint - 2026-07-19 v31 and Next Bounded Loop
+
+- The fixed four-call plain-LLM comparison completed on WOLF winner versus EXC
+  control. Both raw and organized arms returned `insufficient_information` for
+  both cases. Raw winner/control confidence was 0.38/0.34; organized was
+  0.34/0.34. Both positive-confidence gaps were 0.0, with organized FP 0.0 and
+  FN 1.0.
+- Organization improved the specificity of missing-context feedback but did
+  not improve discrimination. The winner still lacked current cash/covenant
+  compliance, debt/liquidity runway, binding CHIPS funding status,
+  backlog/order/customer qualification, fab utilization/margin conversion,
+  and fresh expectation revisions.
+- Start one bounded acquisition/extraction proposal without changing prompt
+  weighting: add filing-date-bounded SEC Company Facts and selected historical
+  SEC/Alpha Vantage evidence for the development benchmark.
+- Create exactly six blind development cases. Draw the winner/control ratio
+  once from a recorded seed with at least one of each label, then freeze exact
+  case ids, labels, and as-of dates in `case_selection_label_aware.json`.
+  Refinement cases are separate.
+- First run current-source raw/organized on that frozen benchmark. Then run the
+  enriched-source raw/organized pair on the same manifest. Compare acquisition
+  lift, organization lift, and end-to-end lift case by case. These six cases
+  become consumed development data; a separate untouched holdout is still
+  required for the exit gate.
+
+## Execution Checkpoint - 2026-07-22 v35-v37
+
+- Froze the six-case development benchmark from seed `20260719`: SRM, WW, and
+  QMMM are winners; BPRN, WRB, and VTR are controls. TRON and CHCO remain
+  separate refinement cases. Future development iterations replay the exact
+  manifest rather than resampling.
+- Added first-class confusion-matrix reporting (`TP`, `FP`, `TN`, `FN`) plus
+  precision, recall, specificity, and accuracy without changing the positive
+  threshold. Raw-to-organized comparisons now persist count and rate deltas.
+- Current-source v35 preflight passes: 144 audited point-in-time documents, 32
+  usable full bodies, 112 summary-only sources, no unusable sources, all six
+  holdouts covered, 12 blind requests prepared, and zero leakage findings.
+- SEC Company Facts v37 preflight also passes on the same cases and documents.
+  Filing-date-bounded XBRL added 57 atomic facts across five holdout cases,
+  including revenue, cash, debt, operating cash flow, and capex. SRM has no CIK
+  in the current mapping and remains an explicit acquisition miss.
+- The current-source and enriched-source OpenRouter comparisons remain pending.
+  The tenant safety policy blocked the first 12-call attempt because sending
+  anonymous project research packets to a third party requires renewed,
+  informed user authorization. No provider response or confusion matrix has
+  been fabricated or replaced by heuristic output.

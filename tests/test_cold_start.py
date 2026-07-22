@@ -103,12 +103,15 @@ from scripts.run_cold_start_formal import (
 )
 from scripts.run_ralph_loop_experiment import (
     _augment_alpha_vantage_news_for_cases,
+    _augment_sec_company_facts_for_cases,
     _augment_sec_submission_documents_for_cases,
     _enrich_cases_with_documents,
     _leakage_report,
     _load_documents_by_symbol,
     _refresh_sec_filing_documents_for_cases,
+    _resolve_selection_counts,
     _select_cases,
+    _select_cases_from_manifest,
     _write_imported_response_artifacts,
     _write_preflight_artifacts,
 )
@@ -2152,6 +2155,19 @@ class ColdStartSignalTests(TestCase):
         self.assertEqual(evaluation.positive_confidence_gap, -0.4)
         self.assertEqual(evaluation.false_positive_controls, ("control-1",))
         self.assertEqual(evaluation.false_negative_winners, ("winner-1",))
+        self.assertEqual(
+            evaluation.confusion_matrix,
+            {
+                "true_positive": 0,
+                "false_positive": 1,
+                "true_negative": 0,
+                "false_negative": 1,
+            },
+        )
+        self.assertEqual(
+            evaluation.classification_metrics,
+            {"precision": 0.0, "recall": 0.0, "specificity": 0.0, "accuracy": 0.0},
+        )
         self.assertEqual(evaluation.false_positive_rate, 1.0)
         self.assertEqual(evaluation.false_negative_rate, 1.0)
         self.assertIn("business combination", " ".join(evaluation.unable_to_judge_reasons))
@@ -2896,6 +2912,194 @@ class ColdStartSignalTests(TestCase):
         self.assertIn("zzz-winner-rich", {case.case_id for case in pinned["holdout"]})
         self.assertIn("zzz-control-rich", {case.case_id for case in pinned["holdout"]})
 
+    def test_ralph_seeded_six_case_benchmark_replays_exact_manifest(self) -> None:
+        counts = _resolve_selection_counts(
+            winner_symbol_count=4,
+            control_symbol_count=4,
+            refinement_per_label=1,
+            blind_holdout_size=6,
+            selection_seed=20260719,
+        )
+        repeated_counts = _resolve_selection_counts(
+            winner_symbol_count=99,
+            control_symbol_count=99,
+            refinement_per_label=1,
+            blind_holdout_size=6,
+            selection_seed=20260719,
+        )
+
+        self.assertEqual(counts, repeated_counts)
+        self.assertEqual((counts[0] - 1) + (counts[1] - 1), 6)
+        self.assertGreaterEqual(counts[0] - 1, 1)
+        self.assertGreaterEqual(counts[1] - 1, 1)
+
+        cases = [
+            make_case(
+                "one-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.1,
+                earnings_growth=0.1,
+                margin=0.1,
+                return_20d=0.0,
+                return_60d=0.0,
+                target_upside=0.1,
+                catalyst_count=0,
+            ),
+            make_case(
+                "two-winner",
+                CaseOutcomeLabel.WINNER,
+                revenue_growth=0.1,
+                earnings_growth=0.1,
+                margin=0.1,
+                return_20d=0.0,
+                return_60d=0.0,
+                target_upside=0.1,
+                catalyst_count=0,
+            ),
+            make_case(
+                "one-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.0,
+                earnings_growth=0.0,
+                margin=0.1,
+                return_20d=0.0,
+                return_60d=0.0,
+                target_upside=0.0,
+                catalyst_count=0,
+            ),
+            make_case(
+                "two-control",
+                CaseOutcomeLabel.CONTROL,
+                revenue_growth=0.0,
+                earnings_growth=0.0,
+                margin=0.1,
+                return_20d=0.0,
+                return_60d=0.0,
+                target_upside=0.0,
+                catalyst_count=0,
+            ),
+        ]
+        with TemporaryDirectory() as tmp:
+            manifest = Path(tmp) / "selection.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "refinement_cases": [
+                            {
+                                "case_id": cases[0].case_id,
+                                "label": "winner",
+                                "as_of_date": AS_OF.isoformat(),
+                            },
+                            {
+                                "case_id": cases[2].case_id,
+                                "label": "control",
+                                "as_of_date": AS_OF.isoformat(),
+                            },
+                        ],
+                        "holdout_cases": [
+                            {
+                                "case_id": cases[1].case_id,
+                                "label": "winner",
+                                "as_of_date": AS_OF.isoformat(),
+                            },
+                            {
+                                "case_id": cases[3].case_id,
+                                "label": "control",
+                                "as_of_date": AS_OF.isoformat(),
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            replayed = _select_cases_from_manifest(reversed(cases), manifest)
+
+        self.assertEqual(
+            [case.case_id for case in replayed["refinement"]],
+            ["one-winner", "one-control"],
+        )
+        self.assertEqual(
+            [case.case_id for case in replayed["holdout"]],
+            ["two-winner", "two-control"],
+        )
+
+    def test_ralph_sec_company_facts_augmentation_respects_filing_cutoff(self) -> None:
+        class FakeCompanyFactsTransport:
+            def get_json(self, url, headers):
+                self.url = url
+                return {
+                    "cik": "0000000001",
+                    "facts": {
+                        "us-gaap": {
+                            "CashAndCashEquivalentsAtCarryingValue": {
+                                "units": {
+                                    "USD": [
+                                        {
+                                            "filed": (AS_OF - timedelta(days=5)).isoformat(),
+                                            "end": (AS_OF - timedelta(days=30)).isoformat(),
+                                            "val": 500_000_000,
+                                            "accn": "available",
+                                        },
+                                        {
+                                            "filed": (AS_OF + timedelta(days=1)).isoformat(),
+                                            "end": AS_OF.isoformat(),
+                                            "val": 900_000_000,
+                                            "accn": "future",
+                                        },
+                                    ]
+                                }
+                            },
+                            "LongTermDebt": {
+                                "units": {
+                                    "USD": [
+                                        {
+                                            "filed": (AS_OF - timedelta(days=5)).isoformat(),
+                                            "end": (AS_OF - timedelta(days=30)).isoformat(),
+                                            "val": 750_000_000,
+                                            "accn": "available",
+                                        }
+                                    ]
+                                }
+                            },
+                        }
+                    },
+                }
+
+        case = make_case(
+            "abc-winner",
+            CaseOutcomeLabel.WINNER,
+            revenue_growth=0.1,
+            earnings_growth=0.1,
+            margin=0.1,
+            return_20d=0.0,
+            return_60d=0.0,
+            target_upside=0.1,
+            catalyst_count=0,
+        )
+        document = DocumentRecord(
+            document_id="abc-sec",
+            symbol="ABC",
+            kind=EvidenceKind.FILING,
+            title="ABC filing",
+            text="filing body",
+            source_id="sec:0000000001:accession",
+            source_url="https://www.sec.gov/Archives/edgar/data/1/accession/form.htm",
+            published_date=AS_OF - timedelta(days=5),
+            retrieved_at=STAMP,
+        )
+        augmented, warnings = _augment_sec_company_facts_for_cases(
+            (case,),
+            documents_by_symbol={"ABC": (document,)},
+            user_agent="test test@example.com",
+            transport=FakeCompanyFactsTransport(),
+        )
+        features = {feature.name: feature for feature in augmented[0].packet.features}
+
+        self.assertEqual(warnings, ())
+        self.assertEqual(features["financial.cash_and_equivalents_usd"].value, 500_000_000)
+        self.assertEqual(features["financial.total_debt_usd"].value, 750_000_000)
+        self.assertIn("available", features["financial.cash_and_equivalents_usd"].source_id)
+
     def test_ralph_imported_responses_score_holdout_without_provider_call(self) -> None:
         cases = [
             make_case(
@@ -3368,6 +3572,25 @@ class ColdStartSignalTests(TestCase):
                 ]
             ),
         )
+        generic_tokens = point_in_time_document_identity_tokens(
+            [
+                DocumentRecord(
+                    document_id="generic-corporate-terms",
+                    symbol="DERIVED",
+                    kind=EvidenceKind.NEWS,
+                    title="Stock Release Thursday",
+                    text=(
+                        "The Bank Holding Company reported Cash and Assets. Management said "
+                        "the Insurance Claims Board previously used A.M. Best and Jones data."
+                    ),
+                    source_id="news:derived:generic-terms",
+                    source_url="https://example.com/generic-terms",
+                    published_date=AS_OF,
+                    retrieved_at=STAMP,
+                )
+            ]
+        )
+        self.assertEqual(generic_tokens, ())
 
     def test_information_plan_masks_source_aliases_and_interleaves_raw_documents(self) -> None:
         case = make_case(

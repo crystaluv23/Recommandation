@@ -66,6 +66,12 @@ transcripts, investor presentations, news, or counterparty evidence. A new paid
 API should be proposed only after the coverage ledger shows that the fact is not
 available from already-supported sources or public point-in-time documents.
 
+The active v31 feedback loop uses the already-supported SEC Company Facts API
+as a bounded capital/fundamentals proposal. Values are selected by filing-date
+availability for each frozen case cutoff and may add cash, debt, revenue, gross
+profit, operating cash flow, and capex features. It does not replace filing
+text for covenant terms, order conversion, utilization, or management timing.
+
 Provider company-profile APIs may contribute stale `profile.sector` and
 `profile.industry` features plus a short `THEME_CONTEXT` document. These fields
 are industry-chain context only; they must not be treated as point-in-time

@@ -178,6 +178,13 @@ The next bounded experiment must:
    untouched company holdout. Keep iterations bounded to one or two and return
    a next proposal instead of continuing automatically.
 
+For the active bounded loop, select six blind development companies once. Draw
+the winner/control ratio from a recorded seed while requiring at least one of
+each label, then freeze exact case ids and as-of dates in the selection
+artifact. Reuse that manifest for all development iterations so sample drift
+cannot be mistaken for information-plan improvement. Refinement symbols remain
+separate, and a later untouched-company holdout remains mandatory.
+
 Raw-versus-organized comparison answers whether representation adds value; it
 does not prove the source set is complete. Source-family discovery,
 requirement-level coverage, unclassified-fact review, and add-back/ablation
@@ -222,6 +229,10 @@ The default v1 success threshold is quantitative:
 - false-positive control rate is at most 0.25;
 - false-negative winner rate is 0.00;
 - blind packets remain anonymous, point-in-time, and no-web.
+Every evaluation also persists the confusion matrix (`TP`, `FP`, `TN`, `FN`)
+and its precision, recall, specificity, and accuracy. A positive prediction is
+still defined only as `likely` or `possible` with confidence at least 0.45;
+adding these fields does not change the decision threshold.
 Artifacts may also keep the raw confidence gap for historical comparison, but
 raw confidence is the model's confidence in its own judgment and must not be
 interpreted as bullish confidence when the judgment is `unlikely` or
@@ -403,8 +414,9 @@ must not overwrite production prompts or weekly/daily defaults.
 
 The evaluation artifact keeps baseline and Ralph scheme results side by side:
 winner/control confidence gaps, likely/possible distribution, false-positive
-controls, false-negative winners, insufficient-information reasons, and error
-analysis when separation remains weak.
+controls, false-negative winners, the full `TP`/`FP`/`TN`/`FN` confusion
+matrix, precision/recall/specificity/accuracy, insufficient-information
+reasons, and error analysis when separation remains weak.
 
 Experiment summaries include the final status (`holdout_separated` or
 `holdout_not_separated`), holdout positive-confidence gap, raw confidence gap

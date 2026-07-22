@@ -52,6 +52,16 @@ The information-plan loop follows this order:
    all artifacts and meta-experience, but keep schemes and signals proposal-only
    until human review.
 
+The bounded development benchmark contains exactly six blind companies.
+Winner/control composition is drawn once from a recorded random seed with at
+least one company from each label, then exact case ids, labels, and as-of dates
+are frozen in a replayable selection manifest. Refinement cases are separate.
+Every acquisition or representation iteration reuses the same six cases; only
+versioned source manifests, extraction, and packet rendering may change. The
+current-source raw/organized pair and candidate-source raw/organized pair form
+a paired 2x2 comparison. Repeated use makes these six companies development
+data, never the final untouched holdout.
+
 The WOLF/EXC comparison is a development diagnostic that inherits the existing
 frozen historical labels and as-of dates. It does not approve the default
 180-calendar-day terminal-return rule as the production definition. Before the
@@ -139,7 +149,11 @@ Add-back reports the delta between a fixed core-only baseline and that same
 baseline plus one family. Ablation reports the delta between the full organized
 baseline and that same packet with one family removed. The baseline metrics and
 deltas must be persisted so a family-only score is never mistaken for marginal
-contribution.
+contribution. Every raw, organized, add-back, and ablation evaluation persists
+`TP`, `FP`, `TN`, and `FN` counts plus precision, recall, specificity, and
+accuracy under the unchanged positive threshold (`likely` or `possible` with
+confidence at least 0.45). Organized-minus-raw artifacts include both rate and
+confusion-count deltas.
 
 Heuristic evaluation is a pipeline diagnostic because raw and organized
 representations may require different deterministic parsing rules. Its

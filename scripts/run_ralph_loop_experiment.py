@@ -7,6 +7,7 @@ import hashlib
 import html
 import json
 import os
+import random
 import re
 from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
@@ -15,6 +16,7 @@ from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase, learn_pre_surge_signal_logic
 from stock_opportunity_agent.config import load_config
+from stock_opportunity_agent.data import normalize_sec_company_facts
 from stock_opportunity_agent.data.documents import DocumentContentScope, DocumentRecord
 from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
 from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata, UrllibJsonTransport, format_cik
@@ -85,16 +87,37 @@ def main() -> None:
             if case.packet.company.ticker.symbol.upper() not in excluded_symbols
         )
     baseline = _load_blind_analyses(Path(args.baseline_blind_path))
-    selected = _select_cases(
-        cases,
-        winner_symbol_count=args.winner_symbol_count,
-        control_symbol_count=args.control_symbol_count,
-        refinement_per_label=args.refinement_per_label,
-        selection_policy=args.selection_policy,
-        holdout_symbols=_parse_symbol_set(args.holdout_symbols),
-        documents_by_symbol=documents_by_symbol,
-    )
+    if args.selection_manifest:
+        selected = _select_cases_from_manifest(cases, Path(args.selection_manifest))
+    else:
+        winner_count, control_count = _resolve_selection_counts(
+            winner_symbol_count=args.winner_symbol_count,
+            control_symbol_count=args.control_symbol_count,
+            refinement_per_label=args.refinement_per_label,
+            blind_holdout_size=args.blind_holdout_size,
+            selection_seed=args.selection_seed,
+        )
+        args.winner_symbol_count = winner_count
+        args.control_symbol_count = control_count
+        selected = _select_cases(
+            cases,
+            winner_symbol_count=winner_count,
+            control_symbol_count=control_count,
+            refinement_per_label=args.refinement_per_label,
+            selection_policy=args.selection_policy,
+            holdout_symbols=_parse_symbol_set(args.holdout_symbols),
+            documents_by_symbol=documents_by_symbol,
+        )
     selected_case_tuple = tuple(selected["refinement"] + selected["holdout"])
+    if args.augment_sec_company_facts:
+        selected_case_tuple, company_facts_warnings = _augment_sec_company_facts_for_cases(
+            selected_case_tuple,
+            documents_by_symbol=documents_by_symbol,
+            user_agent=load_config().data_sources.sec_user_agent,
+        )
+        for warning in company_facts_warnings:
+            print(f"[ralph-experiment] warning={warning}")
+        selected = _selected_cases_by_bucket(selected, selected_case_tuple)
     if args.augment_alpha_vantage_news:
         documents_by_symbol, news_warnings = _augment_alpha_vantage_news_for_cases(
             documents_by_symbol,
@@ -220,6 +243,7 @@ def main() -> None:
             "[ralph-experiment] imported holdout "
             f"gap={manifest['holdout_confidence_gap']:.4f} "
             f"positive_gap={manifest['holdout_positive_confidence_gap']:.4f} "
+            f"confusion={manifest['holdout_confusion_matrix']} "
             f"fp_rate={manifest['holdout_false_positive_rate']:.4f} "
             f"fn_rate={manifest['holdout_false_negative_rate']:.4f} "
             f"status={manifest['final_status']}"
@@ -377,6 +401,8 @@ def _run_information_plan_path(
         "[ralph-experiment] information-plan holdout "
         f"raw_positive_gap={result.raw_evaluation.positive_confidence_gap:.4f} "
         f"organized_positive_gap={result.organized_evaluation.positive_confidence_gap:.4f} "
+        f"raw_confusion={result.raw_evaluation.confusion_matrix} "
+        f"organized_confusion={result.organized_evaluation.confusion_matrix} "
         f"fp_rate={result.organized_evaluation.false_positive_rate:.4f} "
         f"fn_rate={result.organized_evaluation.false_negative_rate:.4f}"
     )
@@ -431,19 +457,38 @@ def _write_case_selection_artifact(
     discovery_cases: tuple[HistoricalCase, ...],
 ) -> Path:
     path = output_dir / "case_selection_label_aware.json"
+    winner_symbol_count = sum(
+        case.label is CaseOutcomeLabel.WINNER
+        for case in selected["refinement"] + selected["holdout"]
+    )
+    control_symbol_count = sum(
+        case.label is CaseOutcomeLabel.CONTROL
+        for case in selected["refinement"] + selected["holdout"]
+    )
+    holdout_label_counts = {
+        label.value: sum(case.label is label for case in selected["holdout"])
+        for label in (CaseOutcomeLabel.WINNER, CaseOutcomeLabel.CONTROL)
+    }
     _write_json(
         path,
         {
-            "schema_version": "ralph-case-selection-v0.2",
+            "schema_version": "ralph-case-selection-v0.3",
             "run_id": run_id,
             "created_at": created_at.isoformat(),
             "stage_boundary": "retrospective_label_aware",
             "selection_policy": {
-                "winner_symbol_count": args.winner_symbol_count,
-                "control_symbol_count": args.control_symbol_count,
+                "winner_symbol_count": winner_symbol_count,
+                "control_symbol_count": control_symbol_count,
                 "refinement_per_label": args.refinement_per_label,
+                "blind_holdout_size": len(selected["holdout"]),
+                "holdout_label_counts": holdout_label_counts,
+                "selection_seed": args.selection_seed if not args.selection_manifest else None,
+                "selection_manifest_source": args.selection_manifest,
+                "random_ratio_applied_once": bool(args.blind_holdout_size)
+                and not args.selection_manifest,
                 "one_latest_case_per_symbol_for_blind_holdout": True,
                 "all_available_refinement_windows_for_discovery": True,
+                "frozen_case_ids_replayable": True,
             },
             "discovery_cases": [_case_selection_record(case) for case in discovery_cases],
             "refinement_cases": [_case_selection_record(case) for case in selected["refinement"]],
@@ -681,6 +726,25 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--winner-symbol-count", type=int, default=4)
     parser.add_argument("--control-symbol-count", type=int, default=4)
     parser.add_argument("--refinement-per-label", type=int, default=2)
+    parser.add_argument(
+        "--blind-holdout-size",
+        type=int,
+        default=0,
+        help=(
+            "When positive, choose this many blind development symbols with a seeded random "
+            "winner/control ratio while keeping at least one of each label."
+        ),
+    )
+    parser.add_argument(
+        "--selection-seed",
+        type=int,
+        default=0,
+        help="Seed used once to choose the blind winner/control ratio; persist and replay the manifest.",
+    )
+    parser.add_argument(
+        "--selection-manifest",
+        help="Replay exact refinement and holdout case ids from a prior case-selection artifact.",
+    )
     parser.add_argument("--max-iterations", type=int, default=2)
     parser.add_argument(
         "--information-plan-context-budget",
@@ -755,6 +819,11 @@ def _parse_args() -> argparse.Namespace:
         "--augment-sec-submission-filings",
         action="store_true",
         help="Add selected SEC submissions filings as point-in-time source-detail documents for selected cases.",
+    )
+    parser.add_argument(
+        "--augment-sec-company-facts",
+        action="store_true",
+        help="Add filing-date-bounded SEC XBRL financial features for selected cases.",
     )
     parser.add_argument(
         "--augment-alpha-vantage-news",
@@ -1290,6 +1359,67 @@ def _alpha_vantage_news_record(
         retrieved_at=retrieved_at,
         content_scope=DocumentContentScope.SUMMARY_ONLY,
     )
+
+
+def _augment_sec_company_facts_for_cases(
+    cases: Iterable[HistoricalCase],
+    *,
+    documents_by_symbol: dict[str, tuple[DocumentRecord, ...]],
+    user_agent: str,
+    transport: Any | None = None,
+) -> tuple[tuple[HistoricalCase, ...], tuple[str, ...]]:
+    """Add filing-date-bounded SEC XBRL features to selected cases."""
+
+    case_list = tuple(cases)
+    if not case_list:
+        return (), ()
+    sec_client = SecEdgarClient(user_agent, transport=transport or UrllibJsonTransport())
+    warnings: list[str] = []
+    ciks_by_symbol = _sec_ciks_by_symbol(documents_by_symbol, case_list, sec_client, warnings)
+    facts_by_symbol: dict[str, Mapping[str, Any]] = {}
+    retrieved_at = datetime.now(timezone.utc)
+    updated: list[HistoricalCase] = []
+    for case in case_list:
+        symbol = case.packet.company.ticker.symbol.upper()
+        cik = ciks_by_symbol.get(symbol)
+        if cik is None:
+            warnings.append(f"{symbol}: SEC company facts skipped; no CIK available")
+            updated.append(case)
+            continue
+        if symbol not in facts_by_symbol:
+            try:
+                facts_by_symbol[symbol] = sec_client.company_facts(cik)
+            except (DataSourceError, OSError, ValueError) as exc:
+                warnings.append(f"{symbol}: SEC company facts unavailable for CIK {cik}: {exc}")
+                facts_by_symbol[symbol] = {}
+        payload = facts_by_symbol[symbol]
+        if not payload:
+            updated.append(case)
+            continue
+        normalized = tuple(
+            feature
+            for feature in normalize_sec_company_facts(
+                payload,
+                case.packet.as_of.as_of_date,
+                retrieved_at,
+            )
+            if feature.data_quality is not DataQuality.MISSING
+        )
+        if not normalized:
+            warnings.append(f"{symbol}: SEC company facts had no values available by case cutoff")
+            updated.append(case)
+            continue
+        normalized_names = {feature.name for feature in normalized}
+        retained = tuple(
+            feature for feature in case.packet.features if feature.name not in normalized_names
+        )
+        updated.append(
+            replace(
+                case,
+                packet=replace(case.packet, features=list(retained + normalized)),
+            )
+        )
+    return tuple(updated), tuple(dict.fromkeys(warnings))
 
 
 def _augment_sec_submission_documents_for_cases(
@@ -1829,6 +1959,76 @@ def _select_cases(
     }
 
 
+def _resolve_selection_counts(
+    *,
+    winner_symbol_count: int,
+    control_symbol_count: int,
+    refinement_per_label: int,
+    blind_holdout_size: int,
+    selection_seed: int,
+) -> tuple[int, int]:
+    """Resolve a one-time seeded blind label mix while preserving refinement cases."""
+
+    if blind_holdout_size == 0:
+        return winner_symbol_count, control_symbol_count
+    if blind_holdout_size < 2:
+        raise ValidationError("--blind-holdout-size must be zero or at least two")
+    if refinement_per_label < 1:
+        raise ValidationError("refinement_per_label must be positive")
+    winner_holdout_count = random.Random(selection_seed).randint(1, blind_holdout_size - 1)
+    control_holdout_count = blind_holdout_size - winner_holdout_count
+    return (
+        winner_holdout_count + refinement_per_label,
+        control_holdout_count + refinement_per_label,
+    )
+
+
+def _select_cases_from_manifest(
+    cases: Iterable[HistoricalCase],
+    manifest_path: Path,
+) -> dict[str, tuple[HistoricalCase, ...]]:
+    """Replay exact refinement and blind case ids from a frozen selection artifact."""
+
+    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    cases_by_id = {case.case_id: case for case in cases}
+    selected: dict[str, tuple[HistoricalCase, ...]] = {}
+    selected_ids: set[str] = set()
+    for bucket, field in (("refinement", "refinement_cases"), ("holdout", "holdout_cases")):
+        records = data.get(field)
+        if not isinstance(records, list) or not records:
+            raise ValidationError(f"selection manifest missing {field}")
+        bucket_cases: list[HistoricalCase] = []
+        for record in records:
+            case_id = record.get("case_id") if isinstance(record, dict) else None
+            if not isinstance(case_id, str) or case_id not in cases_by_id:
+                raise ValidationError(f"selection manifest case unavailable: {case_id}")
+            case = cases_by_id[case_id]
+            if case_id in selected_ids:
+                raise ValidationError(f"selection manifest repeats case: {case_id}")
+            if record.get("label") != case.label.value:
+                raise ValidationError(f"selection manifest label changed for {case_id}")
+            if record.get("as_of_date") != case.packet.as_of.as_of_date.isoformat():
+                raise ValidationError(f"selection manifest as-of changed for {case_id}")
+            selected_ids.add(case_id)
+            bucket_cases.append(case)
+        selected[bucket] = tuple(bucket_cases)
+    holdout_labels = {case.label for case in selected["holdout"]}
+    if not {CaseOutcomeLabel.WINNER, CaseOutcomeLabel.CONTROL}.issubset(holdout_labels):
+        raise ValidationError("selection manifest holdout must contain a winner and a control")
+    return selected
+
+
+def _selected_cases_by_bucket(
+    selected: Mapping[str, tuple[HistoricalCase, ...]],
+    updated_cases: Iterable[HistoricalCase],
+) -> dict[str, tuple[HistoricalCase, ...]]:
+    updated_by_id = {case.case_id: case for case in updated_cases}
+    return {
+        bucket: tuple(updated_by_id[case.case_id] for case in selected[bucket])
+        for bucket in ("refinement", "holdout")
+    }
+
+
 def _split_refinement_holdout(
     selected_cases: tuple[HistoricalCase, ...],
     *,
@@ -1983,6 +2183,7 @@ def _print_metric_summary(result) -> None:
         "[ralph-experiment] refinement "
         f"scheme={refinement.scheme_version} gap={refinement.confidence_gap:.4f} "
         f"positive_gap={refinement.positive_confidence_gap:.4f} "
+        f"confusion={refinement.confusion_matrix} "
         f"fp_rate={refinement.false_positive_rate:.4f} fn_rate={refinement.false_negative_rate:.4f} "
         f"passed={refinement.separation_passed}"
     )
@@ -1990,6 +2191,7 @@ def _print_metric_summary(result) -> None:
         "[ralph-experiment] holdout "
         f"scheme={holdout.scheme_version} gap={holdout.confidence_gap:.4f} "
         f"positive_gap={holdout.positive_confidence_gap:.4f} "
+        f"confusion={holdout.confusion_matrix} "
         f"fp_rate={holdout.false_positive_rate:.4f} fn_rate={holdout.false_negative_rate:.4f} "
         f"passed={holdout.separation_passed}"
     )
@@ -2247,10 +2449,18 @@ def _write_imported_response_artifacts(
             "final_status": final_status,
             "holdout_confidence_gap": holdout_evaluation.confidence_gap,
             "holdout_positive_confidence_gap": holdout_evaluation.positive_confidence_gap,
+            "holdout_confusion_matrix": dict(holdout_evaluation.confusion_matrix),
+            "holdout_classification_metrics": dict(
+                holdout_evaluation.classification_metrics
+            ),
             "holdout_false_positive_rate": holdout_evaluation.false_positive_rate,
             "holdout_false_negative_rate": holdout_evaluation.false_negative_rate,
             "refinement_confidence_gap": refinement_evaluation.confidence_gap,
             "refinement_positive_confidence_gap": refinement_evaluation.positive_confidence_gap,
+            "refinement_confusion_matrix": dict(refinement_evaluation.confusion_matrix),
+            "refinement_classification_metrics": dict(
+                refinement_evaluation.classification_metrics
+            ),
             "integrity_warning_count": len(integrity_warnings),
             "promotion_status": "pending_human_review",
             "can_enter_long_running_default": False,
