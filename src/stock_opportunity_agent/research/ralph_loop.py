@@ -311,17 +311,33 @@ class RalphBlindResearcher(Protocol):
 class CachedRalphBlindResearcher:
     """Persist blind analyses per anonymous packet so interrupted runs can resume."""
 
-    def __init__(self, inner: RalphBlindResearcher, cache_dir: str | Path) -> None:
+    def __init__(
+        self,
+        inner: RalphBlindResearcher,
+        cache_dir: str | Path,
+        *,
+        cache_key_context: Mapping[str, Any] | None = None,
+    ) -> None:
         self.inner = inner
         self.cache_dir = Path(cache_dir)
+        self.cache_key_context = dict(cache_key_context or {})
 
     def analyze(self, packet: BlindSchemePacket) -> RalphBlindAnalysis:
         """Return a cached blind analysis or call the wrapped researcher and save it."""
 
         packet_hash = _blind_packet_sha256(packet)
-        cache_path = self.cache_dir / f"{packet_hash}.json"
+        cache_key = (
+            _blind_analysis_cache_key(packet, self.cache_key_context)
+            if self.cache_key_context
+            else packet_hash
+        )
+        cache_path = self.cache_dir / f"{cache_key}.json"
         if cache_path.exists():
-            return _cached_ralph_analysis(packet, json.loads(cache_path.read_text(encoding="utf-8")))
+            return _cached_ralph_analysis(
+                packet,
+                json.loads(cache_path.read_text(encoding="utf-8")),
+                cache_key_context=self.cache_key_context,
+            )
         analysis = self.inner.analyze(packet)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         _write_json(
@@ -329,6 +345,7 @@ class CachedRalphBlindResearcher:
             {
                 "schema_version": "ralph-blind-analysis-cache-v0.1",
                 "packet_sha256": packet_hash,
+                "cache_key_context": self.cache_key_context,
                 "anonymous_case_id": packet.anonymous_case_id,
                 "as_of_date": packet.as_of_date,
                 "scheme_version": packet.scheme_version,
@@ -2848,9 +2865,16 @@ def _ralph_analysis_from_json(packet: BlindSchemePacket, text: str) -> RalphBlin
     )
 
 
-def _cached_ralph_analysis(packet: BlindSchemePacket, data: dict[str, Any]) -> RalphBlindAnalysis:
+def _cached_ralph_analysis(
+    packet: BlindSchemePacket,
+    data: dict[str, Any],
+    *,
+    cache_key_context: Mapping[str, Any] | None = None,
+) -> RalphBlindAnalysis:
     if data.get("packet_sha256") != _blind_packet_sha256(packet):
         raise ValidationError("cached Ralph blind analysis packet hash mismatch")
+    if data.get("cache_key_context", {}) != dict(cache_key_context or {}):
+        raise ValidationError("cached Ralph blind analysis model settings mismatch")
     analysis = data.get("analysis")
     if not isinstance(analysis, dict):
         raise ValidationError("cached Ralph blind analysis missing analysis object")
@@ -2873,6 +2897,21 @@ def _cached_ralph_analysis(packet: BlindSchemePacket, data: dict[str, Any]) -> R
 
 def _blind_packet_sha256(packet: BlindSchemePacket) -> str:
     body = json.dumps(packet.to_prompt_dict(), sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+def _blind_analysis_cache_key(
+    packet: BlindSchemePacket,
+    cache_key_context: Mapping[str, Any],
+) -> str:
+    body = json.dumps(
+        {
+            "packet": packet.to_prompt_dict(),
+            "cache_key_context": dict(cache_key_context),
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     return hashlib.sha256(body.encode("utf-8")).hexdigest()
 
 

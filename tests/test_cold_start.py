@@ -108,6 +108,7 @@ from scripts.run_ralph_loop_experiment import (
     _enrich_cases_with_documents,
     _leakage_report,
     _load_documents_by_symbol,
+    _record_information_plan_execution_settings,
     _refresh_sec_filing_documents_for_cases,
     _resolve_selection_counts,
     _select_cases,
@@ -2430,16 +2431,61 @@ class ColdStartSignalTests(TestCase):
 
         with TemporaryDirectory() as tmp:
             inner = CountingRalphResearcher()
-            first = CachedRalphBlindResearcher(inner, tmp).analyze(packet)
-            second = CachedRalphBlindResearcher(FailingRalphResearcher(), tmp).analyze(packet)
+            settings = {"provider": "openrouter", "model": "model-a", "temperature": 0.0}
+            first = CachedRalphBlindResearcher(
+                inner,
+                tmp,
+                cache_key_context=settings,
+            ).analyze(packet)
+            second = CachedRalphBlindResearcher(
+                FailingRalphResearcher(),
+                tmp,
+                cache_key_context=settings,
+            ).analyze(packet)
+            changed_settings_inner = CountingRalphResearcher()
+            third = CachedRalphBlindResearcher(
+                changed_settings_inner,
+                tmp,
+                cache_key_context={**settings, "model": "model-b"},
+            ).analyze(packet)
             cache_text = "\n".join(path.read_text(encoding="utf-8") for path in Path(tmp).glob("*.json"))
 
         self.assertEqual(inner.calls, 1)
+        self.assertEqual(changed_settings_inner.calls, 1)
         self.assertEqual(first.confidence, 0.61)
         self.assertEqual(second.confidence, 0.61)
+        self.assertEqual(third.confidence, 0.61)
         self.assertEqual(second.source_case_id, case.case_id)
         self.assertNotIn(case.case_id, cache_text)
         self.assertNotIn("Hidden Identity", cache_text)
+
+    def test_ralph_information_plan_records_model_settings(self) -> None:
+        with TemporaryDirectory() as tmp:
+            manifest_path = Path(tmp) / "manifest.json"
+            summary_path = Path(tmp) / "ralph_experiment_summary.json"
+            manifest_path.write_text('{"run_id":"settings-test"}', encoding="utf-8")
+            summary_path.write_text('{"run_id":"settings-test"}', encoding="utf-8")
+            args = SimpleNamespace(
+                mode="llm",
+                openrouter_model="openai/gpt-5.5",
+                openrouter_temperature=0.0,
+                information_plan_context_budget=4500,
+            )
+
+            _record_information_plan_execution_settings(
+                {
+                    "manifest": manifest_path,
+                    "ralph_experiment_summary": summary_path,
+                },
+                args,
+            )
+
+            for path in (manifest_path, summary_path):
+                settings = json.loads(path.read_text(encoding="utf-8"))["model_settings"]
+                self.assertEqual(settings["provider"], "openrouter")
+                self.assertEqual(settings["model"], "openai/gpt-5.5")
+                self.assertEqual(settings["temperature"], 0.0)
+                self.assertEqual(settings["context_budget"], 4500)
 
     def test_ralph_loop_writes_artifacts_with_fake_blind_researcher(self) -> None:
         class FakeRalphResearcher:

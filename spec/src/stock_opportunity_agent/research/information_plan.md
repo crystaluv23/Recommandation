@@ -140,6 +140,10 @@ identities must be included in both masking and leakage preflight.
 Organized packets render source-linked atomic facts and compact structured
 features through the active `InformationScheme`. Neither arm receives labels,
 future outcomes, source URLs, ticker/company identity, or web tools.
+For paired baseline-versus-candidate runs, an unchanged packet hash must reuse
+the same cached model response. The run must record model and sampling settings;
+otherwise response drift on identical packets is model noise, not acquisition
+or organization lift.
 
 Information-family experiments use actual source-backed facts. Ablation removes
 one family from an otherwise fixed organized packet. Add-back is valid only
@@ -270,32 +274,25 @@ round-robin across all 12 winner and 11 control source documents, while every
 organized arm and family variant uses the same source-derived alias set. The
 expanded leakage scan passes.
 
-The v22 local heuristic diagnostic is the latest completed evaluator run. Its
-organized positive-confidence gap was 0.19 versus 0.00 for raw, but both winner
-and control were labeled `possible`, producing FP 1.00 and FN 0.00. This is
-pipeline evidence only: the raw and organized heuristic parsers are different,
-and the rules react to section counts rather than perform the fixed plain-LLM
-analysis. Deal status/timing, capital/liquidity, and expectation gap have
-source-backed development facts. A subsequent local-corpus audit found real
-extraction misses for signed annual service agreements, deployed customers, and
-reported customer demand, while planned submissions and proposal invitations
-had been false coverage alarms.
+The July 24 frozen six-case plain-LLM comparison is the latest completed
+development result. Current-source v36 raw produced `TP=0`, `FP=1`, `TN=2`,
+`FN=3`; organization removed the false positive but left `TP=0`, `TN=3`, and
+`FN=3`. Filing-date-bounded SEC Company Facts v38 added 57 atomic facts across
+five holdouts, including revenue, cash, debt, operating cash flow, and capex,
+but produced the same raw and organized confusion matrices. The candidate
+organized confidence gap improved only from -0.1033 to -0.0867, while
+positive-confidence gap remained 0.0 and recall remained 0.0.
 
-The v25 WOLF/EXC development preflight is the latest source-complete proposal.
-It combines bounded Alpha Vantage company-news summaries with complete SEC
-filings, passes leakage and content readiness on 111 audited holdout sources
-(16 usable full bodies, 94 summary-only, one metadata-only), and has five
-source-backed experiment families. Orders/contracts, customer/capacity, and
-policy/regulatory are now populated with issuer-grounded facts; theme/industry
-transmission remains `not_found` for this pair. The v27 heuristic diagnostic
-still fails separation: raw positive-confidence gap is 0.00, organized gap is
--0.05, FP is 1.00, and FN is 0.00. Contract add-back contributes +0.11, while
-expectation-gap add-back contributes -0.11 because the control also has genuine
-positive estimate evidence. This is evidence that section-count heuristics
-cannot assess fact meaning, not an effectiveness result.
-
-The bounded plain-LLM raw-versus-organized development run was not sent to
-OpenRouter because external transmission of the anonymous project packets still
-requires explicit informed authorization. No effectiveness or Phase-1 exit
-claim is available, and a later one-shot claim still requires new untouched
-companies.
+The v38 diagnosis is that static financial denominators improve risk and
+materiality interpretation but do not recover the missing winner-side causal
+events. The next proposal should target binding orders/backlog/customer wins,
+transaction or restructuring status, financing and listing-compliance actions,
+identity-safe business and industry-chain transmission, and fresh
+guidance/estimate changes. Identical SRM packet hashes yielded raw confidence
+0.40 and 0.38 in separate calls, so future paired comparisons must share the
+packet-and-model-settings response cache and treat small single-call confidence
+changes as sampling noise. The experiment runner now defaults paired blind
+evaluation to temperature 0.0 and records provider, model, temperature, and
+context budget in its manifest. These six companies are consumed development
+data; no effectiveness or Phase-1 exit claim is available without a later
+untouched company holdout.

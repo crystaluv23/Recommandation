@@ -265,3 +265,41 @@ analysis using exactly the same validated information plan.
   anonymous project research packets to a third party requires renewed,
   informed user authorization. No provider response or confusion matrix has
   been fabricated or replaced by heuristic output.
+
+## Execution Checkpoint - 2026-07-24 v36-v38
+
+- Completed all 24 explicitly authorized OpenRouter calls on the frozen
+  six-case development manifest. Both runs passed leakage and content
+  readiness, and both produced 12 cached responses.
+- Current-source v36 raw results were `TP=0`, `FP=1`, `TN=2`, `FN=3`
+  (accuracy 0.3333, recall 0.0, specificity 0.6667, positive-confidence gap
+  -0.1567). Organized results were `TP=0`, `FP=0`, `TN=3`, `FN=3`
+  (accuracy 0.5, recall 0.0, specificity 1.0, positive-confidence gap 0.0).
+  Organization removed the VTR false positive but recovered no winner.
+- SEC Company Facts v38 produced exactly the same raw and organized confusion
+  matrices. Candidate organized winner/control average confidence was
+  0.22/0.3067 versus 0.20/0.3033 for v36, moving the raw confidence gap from
+  -0.1033 to -0.0867 but leaving positive-confidence gap, TP, and FN unchanged.
+  This small confidence movement is not effectiveness evidence.
+- The XBRL proposal supplied useful materiality and solvency denominators but
+  did not supply the missing discriminative events. SRM still has no CIK and
+  lacks revenue scale, orders/backlog, customer pull-through, financing, and
+  listing-compliance resolution. WW's added cash, debt, and negative-equity
+  facts reinforced distress without establishing a restructuring or operating
+  catalyst. QMMM's small revenue, low cash, and negative operating cash flow
+  clarified risk but did not establish orders, customers, theme transmission,
+  or a fresh expectation gap.
+- Static Company Facts should not receive another immediate add-more-fields
+  iteration. The next bounded acquisition proposal should target point-in-time
+  event evidence: binding orders/backlog/customer wins, transaction or
+  restructuring status, financing and listing-compliance actions, identity-safe
+  business and industry-chain transmission, and fresh guidance/estimate changes.
+- The same SRM packet produced raw confidence 0.40 in v36 and 0.38 in v38 under
+  the current OpenRouter temperature. The runner now defaults future paired
+  blind tests to temperature 0.0, keys caches by packet plus model settings,
+  records those settings in manifests, and can reuse one shared cache so an
+  unchanged packet does not create false information lift.
+- The objective remains active. The six companies are consumed development
+  data, the information-plan exit gate has not passed, and multi-agent analysis
+  remains gated pending a materially better development result followed by a
+  separate untouched-company holdout.

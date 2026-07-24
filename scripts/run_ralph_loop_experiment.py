@@ -363,6 +363,7 @@ def _run_information_plan_path(
             evaluation_method=args.mode,
             validation_role=args.validation_role,
         )
+        _record_information_plan_execution_settings(paths, args)
         print(f"[ralph-experiment] information_plan_preflight={paths['preflight_manifest']}")
         return
     if ready_family_count == 0:
@@ -397,6 +398,7 @@ def _run_information_plan_path(
             "blind_analysis_cache": blind_cache_dir,
         },
     )
+    _record_information_plan_execution_settings(paths, args)
     print(
         "[ralph-experiment] information-plan holdout "
         f"raw_positive_gap={result.raw_evaluation.positive_confidence_gap:.4f} "
@@ -722,6 +724,12 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--mode", choices=("llm", "heuristic"), default="llm")
     parser.add_argument("--openrouter-model", default="openai/gpt-5.5")
+    parser.add_argument(
+        "--openrouter-temperature",
+        type=float,
+        default=0.0,
+        help="Sampling temperature for Ralph blind evaluation; defaults to zero for paired tests.",
+    )
     parser.add_argument("--timeout-seconds", type=float, default=90.0)
     parser.add_argument("--winner-symbol-count", type=int, default=4)
     parser.add_argument("--control-symbol-count", type=int, default=4)
@@ -2152,9 +2160,39 @@ def _ralph_researcher(args: argparse.Namespace, *, cache_dir: Path):
     client = OpenRouterChatClient(
         args.openrouter_model,
         api_key,
+        temperature=args.openrouter_temperature,
         transport=UrllibTransport(timeout_seconds=args.timeout_seconds, max_attempts=4),
     )
-    return CachedRalphBlindResearcher(OpenAIRalphBlindResearcher(client), cache_dir)
+    cache_key_context = {
+        "provider": "openrouter",
+        "model": args.openrouter_model,
+        "temperature": args.openrouter_temperature,
+    }
+    return CachedRalphBlindResearcher(
+        OpenAIRalphBlindResearcher(client),
+        cache_dir,
+        cache_key_context=cache_key_context,
+    )
+
+
+def _record_information_plan_execution_settings(
+    paths: Mapping[str, Path],
+    args: argparse.Namespace,
+) -> None:
+    settings = {
+        "evaluation_mode": args.mode,
+        "provider": "openrouter" if args.mode == "llm" else "local_heuristic",
+        "model": args.openrouter_model if args.mode == "llm" else None,
+        "temperature": args.openrouter_temperature if args.mode == "llm" else None,
+        "context_budget": args.information_plan_context_budget,
+    }
+    for artifact_name in ("preflight_manifest", "manifest", "ralph_experiment_summary"):
+        path = paths.get(artifact_name)
+        if path is None or not path.exists():
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["model_settings"] = settings
+        _write_json(path, data)
 
 
 def _selection_symbols(selected: dict[str, tuple[HistoricalCase, ...]]) -> list[str]:
