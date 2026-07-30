@@ -303,3 +303,35 @@ analysis using exactly the same validated information plan.
   data, the information-plan exit gate has not passed, and multi-agent analysis
   remains gated pending a materially better development result followed by a
   separate untouched-company holdout.
+
+## Execution Checkpoint - 2026-07-31 Bounded Scheme Evolution
+
+- Added a separate proposal-only evolution controller around the existing
+  Ralph information-plan path. The evolved genome owns source recipes, signal
+  recipes, packet/prompt choices, and complexity limits; label definitions,
+  walk-forward splits, metrics, admission thresholds, and the sealed test stay
+  fixed outside the genome.
+- Codex authored two reviewable generation-one proposals: an event-evidence
+  source expansion and a static-financial-context ablation. Static validation
+  accepted both candidate records. The synthetic network-free vertical slice
+  selected the event-evidence candidate and populated three archive niches;
+  this proves controller mechanics only.
+- The saved-artifact heuristic diagnostic used four company-disjoint,
+  purge/embargo walk-forward folds and 29 admission samples. Both candidates
+  covered only 10.34% of samples. The event candidate's paired utility interval
+  was `[-0.143, -0.074]`; the ablation interval was `[-0.008, 0.015]`. Both
+  failed the positive-lower-bound and coverage gates, so the baseline remained
+  incumbent.
+- Twelve exact materialized-packet preflight artifacts passed with zero
+  identity or forbidden-label findings. Predictions are persisted before label
+  evaluation, resume keys include exact fold and Ralph case/source hashes,
+  external calls are separately counted from cache hits, and missing provider
+  usage is charged at the conservative request estimate.
+- No external provider call or sealed-test evaluation occurred. The current
+  artifacts still carry 180-day outcome labels; changing a CLI horizon does not
+  create a valid three-month study.
+- The objective remains active. Review the persisted packets, then obtain
+  explicit authorization and current provider prices before one bounded
+  temperature-zero event-evidence call batch. A better development result must
+  still pass a separate untouched-company holdout before the information-plan
+  exit gate can close.

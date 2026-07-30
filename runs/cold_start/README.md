@@ -32,9 +32,23 @@ runs/cold_start/
       preflight_blind_llm_requests.json
       preflight_leakage_report.json
       preflight_manifest.json
+      research_information_plan.json
+      information_requirements.json
+      evidence_coverage_ledger.json
+      atomic_evidence_by_case.json
+      raw_vs_organized_evaluation.json
       ralph_experiment_summary.json
       holdout_blind_scheme_evaluation.json
-      imported_response_manifest.json
+  evolution/
+    <run_id>/
+      evolution_summary.json
+      quality_diversity_archive.json
+      generation-01/
+        evolution_state.json
+        scheme_experiments.json
+        meta_lessons.json
+        experiment_report.json
+        experiments/
 ```
 
 `01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
@@ -52,12 +66,12 @@ packets are excluded from blind LLM learning but still remain in this packet
 checkpoint. Use `--web-context-mode off` only when intentionally testing the
 non-web context path.
 
-`ralph/<run_id>/` stores standalone Ralph Loop refinement/holdout experiments
-and optional preflight exports. Preflight outputs are local audit artifacts for
-reviewing the anonymous no-web blind packets before an approved external LLM
-call. If responses are generated outside this runtime, the runner can import
-them by request id and write imported-response evaluation artifacts in the same
-run directory.
+`ralph/<run_id>/` stores the broad information-plan experiment and optional
+preflight exports. Preflight outputs are local audit artifacts for reviewing
+the anonymous no-web blind packets before an approved external LLM call. The
+redundant legacy packet-scheme CLI and its separate response-import artifact
+family have been removed; the broad information-plan path is the only
+standalone Ralph experiment.
 
 The Ralph information-plan runner now emits proposal artifacts for
 `research_information_plan.json`, `information_requirements.json`,
@@ -89,7 +103,66 @@ cannot consume the full context budget. Local heuristic v22 is only a pipeline
 diagnostic: organized positive gap is 0.19 but FP is 1.00 because both cases are
 `possible`. Do not use it as an effectiveness estimate. Sending the frozen
 anonymous packets to an external provider still requires explicit informed
-authorization; otherwise keep the local preflight for response export/import.
+authorization; otherwise keep the local preflight for review and do not run the
+provider-backed path.
+
+`evolution/<run_id>/` stores the bounded genome search. Validate the Codex
+candidate file without evaluation:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+  --dry-run \
+  --output-dir runs/cold_start/evolution/codex-v1-dry-run
+```
+
+Run the network-free synthetic vertical slice:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+  --mock-llm \
+  --resume \
+  --output-dir runs/cold_start/evolution/codex-v1-mock
+```
+
+Run the same controller on the current saved Ralph cases and source archive
+with the deterministic heuristic analyzer:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+  --mode heuristic \
+  --resume \
+  --output-dir runs/cold_start/evolution/codex-v1-real-heuristic
+```
+
+After reviewing the exact persisted `packet_preflight/` payloads, an explicitly
+authorized first external run should remain one candidate, one concurrent
+request, and one bounded generation:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+  --mode llm \
+  --openrouter-model openai/gpt-5.5 \
+  --openrouter-provider openai \
+  --children-per-generation 1 \
+  --max-candidates 1 \
+  --max-concurrency 1 \
+  --max-api-cost 10 \
+  --input-cost-per-million-tokens 5 \
+  --output-cost-per-million-tokens 30 \
+  --blind-cache-dir runs/cold_start/evolution/shared-blind-cache \
+  --resume \
+  --output-dir runs/cold_start/evolution/codex-v1-llm
+```
+
+The provider and list-price inputs above were checked against OpenRouter on
+2026-07-31 and must be refreshed if pricing or endpoint availability changes.
+With four current folds, a cold cache can require up to 58 blind requests
+(incumbent plus one candidate over 29 admission samples). The command requires
+`OPENROUTER_API_KEY` in the environment and explicit authorization to send the
+anonymous packets.
+Synthetic and heuristic runs are pipeline diagnostics only. Current saved cases
+use 180-day outcome labels, so the default real split horizon remains 180 days;
+a 90-day study must first relabel cases under a new outcome definition.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation

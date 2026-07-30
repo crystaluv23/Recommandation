@@ -23,7 +23,7 @@ from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMet
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.llm.openai import UrllibTransport
 from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
-from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ResearchPacket, ValidationError
+from stock_opportunity_agent.models import DataQuality, EvidenceItem, EvidenceKind, ValidationError
 from stock_opportunity_agent.research import (
     ATOMIC_EVIDENCE_SCHEMA_VERSION,
     BlindCaseAnalysis,
@@ -32,26 +32,23 @@ from stock_opportunity_agent.research import (
     HeuristicSurgePlaybookSynthesizer,
     INFORMATION_PLAN_SCHEMA_VERSION,
     OpenAIRalphBlindResearcher,
-    RalphBlindAnalysis,
     TARGET_INFORMATION_FAMILIES,
-    build_blind_scheme_packet,
     document_content_readiness,
     evaluate_information_plan_experiment,
     extract_atomic_evidence_by_case,
     prepare_information_plan_experiment,
     point_in_time_document_identity_tokens,
     point_in_time_source_document_records,
-    run_ralph_experiment,
     synthesize_information_scheme,
     write_information_plan_experiment_artifacts,
-    write_ralph_experiment_artifacts,
 )
 from stock_opportunity_agent.research.ralph_loop import (
     _identity_token_pattern,
     _identity_tokens,
-    analyze_scheme_errors,
-    evaluate_scheme_performance,
-    propose_next_information_scheme,
+)
+from stock_opportunity_agent.research.ralph_artifacts import (
+    load_documents_by_symbol,
+    load_historical_cases,
 )
 from stock_opportunity_agent.themes import build_cold_start_theme_maps
 
@@ -65,8 +62,6 @@ def main() -> None:
     """Run a bounded Ralph experiment from saved cold-start artifacts."""
 
     args = _parse_args()
-    if args.preflight_only and args.responses_path:
-        raise ValidationError("--preflight-only and --responses-path cannot be used together")
     _load_local_env()
     created_at = datetime.now(timezone.utc)
     run_id = args.run_id or f"ralph-loop-experiment-{created_at.strftime('%Y%m%d-%H%M%S')}"
@@ -187,115 +182,25 @@ def main() -> None:
         "[ralph-experiment] refinement_cases="
         f"{len(refinement_cases)} holdout_cases={len(holdout_cases)} mode={args.mode}"
     )
-    if args.experiment_kind == "information-plan":
-        if args.responses_path:
-            raise ValidationError(
-                "--responses-path currently supports legacy-scheme preflight only; "
-                "run the information-plan experiment directly or use --preflight-only"
-            )
-        discovery_cases = _information_plan_discovery_cases(
-            cases,
-            refinement_cases,
-            documents_by_symbol,
-        )
-        _run_information_plan_path(
-            args,
-            output_dir=output_dir,
-            run_id=run_id,
-            created_at=created_at,
-            discovery_cases=discovery_cases,
-            refinement_cases=refinement_cases,
-            holdout_cases=holdout_cases,
-            learning_result=learning,
-            theme_maps=theme_maps,
-            playbook_synthesis=playbooks,
-            selected=selected,
-            documents_by_symbol=documents_by_symbol,
-        )
-        return
-    if args.preflight_only:
-        paths = _write_preflight_artifacts(
-            output_dir,
-            run_id=run_id,
-            created_at=created_at,
-            refinement_cases=refinement_cases,
-            holdout_cases=holdout_cases,
-            learning_result=learning,
-            theme_maps=theme_maps,
-            playbook_synthesis=playbooks,
-        )
-        print(f"[ralph-experiment] preflight_manifest={paths['preflight_manifest']}")
-        return
-    if args.responses_path:
-        paths = _write_imported_response_artifacts(
-            output_dir,
-            run_id=run_id,
-            created_at=created_at,
-            refinement_cases=refinement_cases,
-            holdout_cases=holdout_cases,
-            learning_result=learning,
-            theme_maps=theme_maps,
-            playbook_synthesis=playbooks,
-            responses_path=Path(args.responses_path),
-        )
-        manifest = json.loads(paths["imported_response_manifest"].read_text(encoding="utf-8"))
-        print(
-            "[ralph-experiment] imported holdout "
-            f"gap={manifest['holdout_confidence_gap']:.4f} "
-            f"positive_gap={manifest['holdout_positive_confidence_gap']:.4f} "
-            f"confusion={manifest['holdout_confusion_matrix']} "
-            f"fp_rate={manifest['holdout_false_positive_rate']:.4f} "
-            f"fn_rate={manifest['holdout_false_negative_rate']:.4f} "
-            f"status={manifest['final_status']}"
-        )
-        print(f"[ralph-experiment] imported_response_manifest={paths['imported_response_manifest']}")
-        return
-
-    blind_cache_dir = Path(args.blind_cache_dir) if args.blind_cache_dir else output_dir / "blind_analysis_cache"
-    researcher = _ralph_researcher(args, cache_dir=blind_cache_dir)
-    result = run_ralph_experiment(
+    discovery_cases = _information_plan_discovery_cases(
+        cases,
         refinement_cases,
-        holdout_cases,
-        baseline_refinement_blind_analyses=baseline_refinement,
+        documents_by_symbol,
+    )
+    _run_information_plan_path(
+        args,
+        output_dir=output_dir,
+        run_id=run_id,
+        created_at=created_at,
+        discovery_cases=discovery_cases,
+        refinement_cases=refinement_cases,
+        holdout_cases=holdout_cases,
         learning_result=learning,
         theme_maps=theme_maps,
         playbook_synthesis=playbooks,
-        run_id=run_id,
-        blind_researcher=researcher,
-        max_iterations=args.max_iterations,
-        holdout_feedback_iterations=args.holdout_feedback_iterations,
+        selected=selected,
+        documents_by_symbol=documents_by_symbol,
     )
-    selection_path = output_dir / "case_selection_label_aware.json"
-    _write_json(
-        selection_path,
-        {
-            "schema_version": "ralph-case-selection-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "retrospective_label_aware",
-            "selection_policy": {
-                "winner_symbol_count": args.winner_symbol_count,
-                "control_symbol_count": args.control_symbol_count,
-                "refinement_per_label": args.refinement_per_label,
-                "one_latest_case_per_symbol": True,
-            },
-            "refinement_cases": [_case_selection_record(case) for case in refinement_cases],
-            "holdout_cases": [_case_selection_record(case) for case in holdout_cases],
-        },
-    )
-    paths = write_ralph_experiment_artifacts(
-        result,
-        output_dir,
-        created_at=created_at,
-        proposal_memory_dir=Path(".agent_state/memory/ralph"),
-        extra_output_paths={
-            "case_selection_label_aware": selection_path,
-            "blind_analysis_cache": blind_cache_dir,
-        },
-    )
-
-    _print_metric_summary(result)
-    print(f"[ralph-experiment] manifest={paths['manifest']}")
 
 
 def _run_information_plan_path(
@@ -716,12 +621,6 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output-dir")
     parser.add_argument("--run-id")
-    parser.add_argument(
-        "--experiment-kind",
-        choices=("information-plan", "legacy-scheme"),
-        default="information-plan",
-        help="Run the broad information-plan experiment by default or the legacy packet-scheme loop.",
-    )
     parser.add_argument("--mode", choices=("llm", "heuristic"), default="llm")
     parser.add_argument("--openrouter-model", default="openai/gpt-5.5")
     parser.add_argument(
@@ -753,7 +652,6 @@ def _parse_args() -> argparse.Namespace:
         "--selection-manifest",
         help="Replay exact refinement and holdout case ids from a prior case-selection artifact.",
     )
-    parser.add_argument("--max-iterations", type=int, default=2)
     parser.add_argument(
         "--information-plan-context-budget",
         type=int,
@@ -781,12 +679,6 @@ def _parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--holdout-feedback-iterations",
-        type=int,
-        default=0,
-        help="Bounded label-aware holdout feedback proposal rounds after the initial holdout evaluation.",
-    )
-    parser.add_argument(
         "--selection-policy",
         choices=("alphabetical", "evidence-rich", "atomic-evidence-rich"),
         default="atomic-evidence-rich",
@@ -809,10 +701,6 @@ def _parse_args() -> argparse.Namespace:
         "--preflight-only",
         action="store_true",
         help="Write anonymous packet export review artifacts without calling a blind LLM.",
-    )
-    parser.add_argument(
-        "--responses-path",
-        help="Evaluate externally generated blind LLM responses for the selected preflight packets.",
     )
     parser.add_argument(
         "--blind-cache-dir",
@@ -874,60 +762,11 @@ def _parse_args() -> argparse.Namespace:
 
 
 def _load_cases(path: Path) -> tuple[HistoricalCase, ...]:
-    data = json.loads(path.read_text(encoding="utf-8"))
-    records = data.get("cases") or data.get("historical_cases")
-    if not isinstance(records, list):
-        raise ValidationError(f"{path} does not contain cases")
-    return tuple(_case_from_record(record) for record in records)
+    return load_historical_cases(path)
 
 
 def _load_documents_by_symbol(path: Path) -> dict[str, tuple[DocumentRecord, ...]]:
-    if not path.exists():
-        return {}
-    data = json.loads(path.read_text(encoding="utf-8"))
-    records_by_symbol = data.get("documents_by_symbol")
-    if not isinstance(records_by_symbol, dict):
-        archive_records = data.get("documents")
-        if not isinstance(archive_records, list):
-            return {}
-        grouped: dict[str, list[dict[str, Any]]] = {}
-        for record in archive_records:
-            if not isinstance(record, dict) or not isinstance(record.get("symbol"), str):
-                continue
-            grouped.setdefault(record["symbol"].upper(), []).append(record)
-        records_by_symbol = grouped
-    documents: dict[str, tuple[DocumentRecord, ...]] = {}
-    for symbol, records in records_by_symbol.items():
-        if not isinstance(records, list):
-            continue
-        deduped: dict[str, DocumentRecord] = {}
-        for record in records:
-            document = _document_from_record(record)
-            key = document.source_url if document.source_url.startswith("http") else document.source_id
-            current = deduped.get(key)
-            if current is None or len(document.text) > len(current.text):
-                deduped[key] = document
-        documents[str(symbol).upper()] = tuple(
-            sorted(deduped.values(), key=lambda item: (item.published_date, item.source_id))
-        )
-    return documents
-
-
-def _document_from_record(record: dict[str, Any]) -> DocumentRecord:
-    available = record.get("available_date")
-    return DocumentRecord(
-        document_id=_string(record, "document_id"),
-        symbol=_string(record, "symbol"),
-        kind=EvidenceKind(_string(record, "kind")),
-        title=_string(record, "title"),
-        text=_string(record, "text"),
-        source_id=_string(record, "source_id"),
-        source_url=_string(record, "source_url"),
-        published_date=date.fromisoformat(_string(record, "published_date")),
-        retrieved_at=datetime.fromisoformat(_string(record, "retrieved_at")),
-        available_date=date.fromisoformat(str(available)) if isinstance(available, str) else None,
-        content_scope=DocumentContentScope(str(record.get("content_scope", "unknown"))),
-    )
+    return load_documents_by_symbol(path)
 
 
 def _enrich_cases_with_documents(
@@ -1869,20 +1708,6 @@ def _cross_case_identity_hits(text: str, case: HistoricalCase, all_cases: Iterab
     return sorted(set(hits), key=len, reverse=True)[:5]
 
 
-def _case_from_record(record: dict[str, Any]) -> HistoricalCase:
-    return HistoricalCase(
-        case_id=_string(record, "case_id"),
-        label=CaseOutcomeLabel(_string(record, "label")),
-        packet=ResearchPacket.from_dict(_mapping(record, "packet")),
-        outcome_start_date=date.fromisoformat(_string(record, "outcome_start_date")),
-        outcome_end_date=date.fromisoformat(_string(record, "outcome_end_date")),
-        outcome_return=_optional_float(record.get("outcome_return")),
-        matched_group_id=_string(record, "matched_group_id"),
-        hidden_outcome_summary=_string(record, "hidden_outcome_summary"),
-        outcome_definition_id=record.get("outcome_definition_id"),
-    )
-
-
 def _load_blind_analyses(path: Path) -> dict[str, BlindCaseAnalysis]:
     data = json.loads(path.read_text(encoding="utf-8"))
     records = data.get("blind_case_analyses") or data.get("analyses")
@@ -2214,300 +2039,6 @@ def _case_selection_record(case: HistoricalCase) -> dict[str, Any]:
     }
 
 
-def _print_metric_summary(result) -> None:
-    refinement = result.refinement_loop.latest_evaluation
-    holdout = result.holdout_evaluation
-    print(
-        "[ralph-experiment] refinement "
-        f"scheme={refinement.scheme_version} gap={refinement.confidence_gap:.4f} "
-        f"positive_gap={refinement.positive_confidence_gap:.4f} "
-        f"confusion={refinement.confusion_matrix} "
-        f"fp_rate={refinement.false_positive_rate:.4f} fn_rate={refinement.false_negative_rate:.4f} "
-        f"passed={refinement.separation_passed}"
-    )
-    print(
-        "[ralph-experiment] holdout "
-        f"scheme={holdout.scheme_version} gap={holdout.confidence_gap:.4f} "
-        f"positive_gap={holdout.positive_confidence_gap:.4f} "
-        f"confusion={holdout.confusion_matrix} "
-        f"fp_rate={holdout.false_positive_rate:.4f} fn_rate={holdout.false_negative_rate:.4f} "
-        f"passed={holdout.separation_passed}"
-    )
-    if result.holdout_feedback_iterations:
-        print(
-            "[ralph-experiment] holdout_feedback_iterations="
-            f"{len(result.holdout_feedback_iterations)} final_scheme={result.final_information_scheme.version}"
-        )
-    print(f"[ralph-experiment] final_status={result.final_status}")
-    if result.final_status != "holdout_separated":
-        print(f"[ralph-experiment] error={result.holdout_error_analysis.recommendation}")
-
-
-def _write_preflight_artifacts(
-    output_dir: Path,
-    *,
-    run_id: str,
-    created_at: datetime,
-    refinement_cases: tuple[HistoricalCase, ...],
-    holdout_cases: tuple[HistoricalCase, ...],
-    learning_result,
-    theme_maps,
-    playbook_synthesis,
-) -> dict[str, Path]:
-    scheme, diagnostic = synthesize_information_scheme(
-        refinement_cases,
-        learning_result=learning_result,
-        theme_maps=theme_maps,
-        playbook_synthesis=playbook_synthesis,
-    )
-    refinement_packets = tuple(
-        build_blind_scheme_packet(
-            case,
-            scheme,
-            anonymous_case_id=f"case_{index:03d}",
-        )
-        for index, case in enumerate(refinement_cases, start=1)
-    )
-    holdout_packets = tuple(
-        build_blind_scheme_packet(
-            case,
-            scheme,
-            anonymous_case_id=f"holdout_{index:03d}",
-        )
-        for index, case in enumerate(holdout_cases, start=1)
-    )
-    packet_cases = list(zip(refinement_packets + holdout_packets, refinement_cases + holdout_cases, strict=True))
-    requests = [
-        _blind_llm_request(packet, phase="refinement_initial")
-        for packet in refinement_packets
-    ] + [
-        _blind_llm_request(packet, phase="holdout_preview")
-        for packet in holdout_packets
-    ]
-    leakage_report = _leakage_report(packet_cases)
-    paths = {
-        "preflight_blind_llm_requests": output_dir / "preflight_blind_llm_requests.json",
-        "preflight_leakage_report": output_dir / "preflight_leakage_report.json",
-        "preflight_scheme_diagnostic_label_aware": output_dir / "preflight_scheme_diagnostic_label_aware.json",
-        "case_selection_label_aware": output_dir / "case_selection_label_aware.json",
-        "preflight_manifest": output_dir / "preflight_manifest.json",
-    }
-    _write_json(
-        paths["preflight_blind_llm_requests"],
-        {
-            "schema_version": "ralph-blind-export-preflight-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "preflight_anonymous_blind_packet_export",
-            "external_destination": "OpenRouter only after explicit user approval",
-            "web_tools_allowed": False,
-            "requests": requests,
-        },
-    )
-    _write_json(paths["preflight_leakage_report"], leakage_report)
-    _write_json(
-        paths["preflight_scheme_diagnostic_label_aware"],
-        {
-            "schema_version": "ralph-preflight-diagnostic-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "retrospective_label_aware",
-            "scheme": scheme.to_dict(),
-            "diagnostic_summary": diagnostic.to_dict(),
-        },
-    )
-    _write_json(
-        paths["case_selection_label_aware"],
-        {
-            "schema_version": "ralph-case-selection-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "retrospective_label_aware",
-            "refinement_cases": [_case_selection_record(case) for case in refinement_cases],
-            "holdout_cases": [_case_selection_record(case) for case in holdout_cases],
-        },
-    )
-    _write_json(
-        paths["preflight_manifest"],
-        {
-            "schema_version": "ralph-preflight-manifest-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "scheme_version": scheme.version,
-            "request_count": len(requests),
-            "packet_sha256": [request["packet_sha256"] for request in requests],
-            "leakage_passed": leakage_report["passed"],
-            "external_call_performed": False,
-            "outputs": {name: str(path) for name, path in sorted(paths.items())},
-            "next_step": (
-                "Run without --preflight-only after explicit approval to send these anonymous "
-                "blind packets to the configured LLM provider."
-            ),
-        },
-    )
-    if not leakage_report["passed"]:
-        raise ValidationError("preflight leakage scan failed")
-    return paths
-
-
-def _write_imported_response_artifacts(
-    output_dir: Path,
-    *,
-    run_id: str,
-    created_at: datetime,
-    refinement_cases: tuple[HistoricalCase, ...],
-    holdout_cases: tuple[HistoricalCase, ...],
-    learning_result,
-    theme_maps,
-    playbook_synthesis,
-    responses_path: Path,
-) -> dict[str, Path]:
-    scheme, diagnostic = synthesize_information_scheme(
-        refinement_cases,
-        learning_result=learning_result,
-        theme_maps=theme_maps,
-        playbook_synthesis=playbook_synthesis,
-    )
-    refinement_packets = tuple(
-        build_blind_scheme_packet(
-            case,
-            scheme,
-            anonymous_case_id=f"case_{index:03d}",
-        )
-        for index, case in enumerate(refinement_cases, start=1)
-    )
-    holdout_packets = tuple(
-        build_blind_scheme_packet(
-            case,
-            scheme,
-            anonymous_case_id=f"holdout_{index:03d}",
-        )
-        for index, case in enumerate(holdout_cases, start=1)
-    )
-    all_packets = refinement_packets + holdout_packets
-    records = _load_external_response_records(responses_path)
-    analyses_by_id, integrity_warnings = _analyses_from_response_records(all_packets, records)
-    missing = sorted(packet.anonymous_case_id for packet in all_packets if packet.anonymous_case_id not in analyses_by_id)
-    if missing:
-        raise ValidationError(f"missing external blind responses for: {missing}")
-    refinement_analyses = tuple(analyses_by_id[packet.anonymous_case_id] for packet in refinement_packets)
-    holdout_analyses = tuple(analyses_by_id[packet.anonymous_case_id] for packet in holdout_packets)
-    refinement_evaluation = evaluate_scheme_performance(
-        refinement_cases,
-        refinement_analyses,
-        scheme_version=scheme.version + ":imported_refinement",
-    )
-    holdout_evaluation = evaluate_scheme_performance(
-        holdout_cases,
-        holdout_analyses,
-        scheme_version=scheme.version + ":imported_holdout",
-    )
-    refinement_error = analyze_scheme_errors(refinement_evaluation, diagnostic)
-    holdout_error = analyze_scheme_errors(holdout_evaluation, diagnostic)
-    next_scheme_proposal = None if holdout_evaluation.separation_passed else propose_next_information_scheme(
-        scheme,
-        holdout_error,
-    )
-    final_status = "holdout_separated" if holdout_evaluation.separation_passed else "holdout_not_separated"
-    paths = {
-        "imported_blind_responses": output_dir / "imported_blind_responses.json",
-        "imported_blind_scheme_evaluation": output_dir / "imported_blind_scheme_evaluation.json",
-        "imported_error_analysis": output_dir / "imported_error_analysis.json",
-        "imported_next_scheme_proposal": output_dir / "imported_next_scheme_proposal.json",
-        "case_selection_label_aware": output_dir / "case_selection_label_aware.json",
-        "imported_response_manifest": output_dir / "imported_response_manifest.json",
-    }
-    _write_json(
-        paths["imported_blind_responses"],
-        {
-            "schema_version": "ralph-imported-blind-responses-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "external_blind_response_import",
-            "provider_call_performed_by_script": False,
-            "source_responses_path": str(responses_path),
-            "scheme": scheme.to_dict(),
-            "refinement_blind_analyses": [analysis.to_dict() for analysis in refinement_analyses],
-            "holdout_blind_analyses": [analysis.to_dict() for analysis in holdout_analyses],
-            "integrity_warnings": integrity_warnings,
-        },
-    )
-    _write_json(
-        paths["imported_blind_scheme_evaluation"],
-        {
-            "schema_version": "ralph-imported-evaluation-v0.1",
-            "run_id": run_id,
-            "stage_boundary": "retrospective_label_aware_imported_blind_evaluation",
-            "refinement_evaluation": refinement_evaluation.to_dict(),
-            "holdout_evaluation": holdout_evaluation.to_dict(),
-        },
-    )
-    _write_json(
-        paths["imported_error_analysis"],
-        {
-            "schema_version": "ralph-imported-error-analysis-v0.1",
-            "run_id": run_id,
-            "stage_boundary": "retrospective_label_aware_imported_blind_evaluation",
-            "refinement_error_analysis": refinement_error.to_dict(),
-            "holdout_error_analysis": holdout_error.to_dict(),
-        },
-    )
-    _write_json(
-        paths["imported_next_scheme_proposal"],
-        {
-            "schema_version": "ralph-imported-next-scheme-v0.1",
-            "run_id": run_id,
-            "stage_boundary": "retrospective_label_aware_feedback",
-            "base_scheme": scheme.to_dict(),
-            "next_scheme_proposal": next_scheme_proposal.to_dict() if next_scheme_proposal is not None else None,
-            "promotion_status": "pending_human_review",
-            "can_enter_long_running_default": False,
-        },
-    )
-    _write_json(
-        paths["case_selection_label_aware"],
-        {
-            "schema_version": "ralph-case-selection-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "stage_boundary": "retrospective_label_aware",
-            "refinement_cases": [_case_selection_record(case) for case in refinement_cases],
-            "holdout_cases": [_case_selection_record(case) for case in holdout_cases],
-        },
-    )
-    _write_json(
-        paths["imported_response_manifest"],
-        {
-            "schema_version": "ralph-imported-response-manifest-v0.1",
-            "run_id": run_id,
-            "created_at": created_at.isoformat(),
-            "scheme_version": scheme.version,
-            "response_count": len(records),
-            "provider_call_performed_by_script": False,
-            "final_status": final_status,
-            "holdout_confidence_gap": holdout_evaluation.confidence_gap,
-            "holdout_positive_confidence_gap": holdout_evaluation.positive_confidence_gap,
-            "holdout_confusion_matrix": dict(holdout_evaluation.confusion_matrix),
-            "holdout_classification_metrics": dict(
-                holdout_evaluation.classification_metrics
-            ),
-            "holdout_false_positive_rate": holdout_evaluation.false_positive_rate,
-            "holdout_false_negative_rate": holdout_evaluation.false_negative_rate,
-            "refinement_confidence_gap": refinement_evaluation.confidence_gap,
-            "refinement_positive_confidence_gap": refinement_evaluation.positive_confidence_gap,
-            "refinement_confusion_matrix": dict(refinement_evaluation.confusion_matrix),
-            "refinement_classification_metrics": dict(
-                refinement_evaluation.classification_metrics
-            ),
-            "integrity_warning_count": len(integrity_warnings),
-            "promotion_status": "pending_human_review",
-            "can_enter_long_running_default": False,
-            "outputs": {name: str(path) for name, path in sorted(paths.items())},
-        },
-    )
-    return paths
-
-
 def _blind_llm_request(packet, *, phase: str) -> dict[str, Any]:
     payload = packet.to_prompt_dict()
     return {
@@ -2521,81 +2052,6 @@ def _blind_llm_request(packet, *, phase: str) -> dict[str, Any]:
         ),
         "packet": payload,
     }
-
-
-def _load_external_response_records(path: Path) -> list[dict[str, Any]]:
-    data = json.loads(path.read_text(encoding="utf-8"))
-    records = data.get("responses") if isinstance(data, dict) else data
-    if not isinstance(records, list):
-        raise ValidationError("external response file must contain a responses list")
-    if not all(isinstance(record, dict) for record in records):
-        raise ValidationError("external response records must be objects")
-    return records
-
-
-def _analyses_from_response_records(
-    packets: tuple[Any, ...],
-    records: list[dict[str, Any]],
-) -> tuple[dict[str, RalphBlindAnalysis], list[str]]:
-    packets_by_id = {packet.anonymous_case_id: packet for packet in packets}
-    analyses: dict[str, RalphBlindAnalysis] = {}
-    warnings: list[str] = []
-    for record in records:
-        request_id = record.get("request_id") or record.get("anonymous_case_id")
-        if not isinstance(request_id, str) or request_id not in packets_by_id:
-            raise ValidationError(f"unknown external response request_id: {request_id!r}")
-        if request_id in analyses:
-            raise ValidationError(f"duplicate external response request_id: {request_id}")
-        packet = packets_by_id[request_id]
-        expected_hash = _sha256(packet.to_prompt_dict())
-        provided_hash = record.get("packet_sha256")
-        if provided_hash is None:
-            warnings.append(f"{request_id}: response did not include packet_sha256")
-        elif provided_hash != expected_hash:
-            warnings.append(f"{request_id}: packet_sha256 mismatch")
-        analyses[request_id] = _analysis_from_external_response(packet, record)
-    return analyses, warnings
-
-
-def _analysis_from_external_response(packet, record: dict[str, Any]) -> RalphBlindAnalysis:
-    data, raw_text = _external_response_payload(record)
-    return RalphBlindAnalysis(
-        source_case_id=packet.source_case_id,
-        anonymous_case_id=packet.anonymous_case_id,
-        as_of_date=packet.as_of_date,
-        scheme_version=packet.scheme_version,
-        surge_candidate=_string(data, "surge_candidate"),
-        surge_candidate_reason=_string_any(data, ("surge_candidate_reason", "reason")),
-        expectation_gap=_string(data, "expectation_gap"),
-        pre_surge_signals=tuple(_string_list(data, "pre_surge_signals")),
-        contrary_evidence=tuple(_string_list(data, "contrary_evidence")),
-        catalyst_watch=tuple(_string_list(data, "catalyst_watch")),
-        confidence=_confidence(data.get("confidence")),
-        raw_text=raw_text,
-        missing_context=tuple(_optional_string_list(data, "missing_context")),
-    )
-
-
-def _external_response_payload(record: dict[str, Any]) -> tuple[dict[str, Any], str]:
-    if isinstance(record.get("output"), dict):
-        output = record["output"]
-        return output, json.dumps(output, sort_keys=True)
-    if _looks_like_response_payload(record):
-        return record, json.dumps(record, sort_keys=True)
-    text = record.get("output_text") or record.get("raw_text")
-    if not isinstance(text, str) or not text.strip():
-        raise ValidationError("external response must include output, output_text, or raw_text")
-    try:
-        data = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise ValidationError("external response text was not valid JSON") from exc
-    if not isinstance(data, dict):
-        raise ValidationError("external response text must decode to an object")
-    return data, text
-
-
-def _looks_like_response_payload(record: dict[str, Any]) -> bool:
-    return all(key in record for key in ("surge_candidate", "expectation_gap", "confidence"))
 
 
 def _leakage_report(
@@ -2714,43 +2170,11 @@ def _string(data: dict[str, Any], key: str) -> str:
     return value
 
 
-def _mapping(data: dict[str, Any], key: str) -> dict[str, Any]:
-    value = data.get(key)
-    if not isinstance(value, dict):
-        raise ValidationError(f"missing object {key}")
-    return value
-
-
 def _string_list(data: dict[str, Any], key: str) -> list[str]:
     value = data.get(key)
     if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
         raise ValidationError(f"{key} must be a non-empty string list")
     return value
-
-
-def _optional_string_list(data: dict[str, Any], key: str) -> list[str]:
-    value = data.get(key, [])
-    if value is None:
-        return []
-    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
-        raise ValidationError(f"{key} must be a string list")
-    return value
-
-
-def _string_any(data: dict[str, Any], keys: tuple[str, ...]) -> str:
-    for key in keys:
-        value = data.get(key)
-        if isinstance(value, str) and value.strip():
-            return value
-    raise ValidationError(f"missing non-empty {'/'.join(keys)}")
-
-
-def _optional_float(value: Any) -> float | None:
-    if value is None:
-        return None
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return float(value)
-    raise ValidationError("outcome_return must be numeric or null")
 
 
 def _confidence(value: Any) -> float:

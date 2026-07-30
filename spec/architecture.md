@@ -114,6 +114,8 @@ find winners from the most recent one-year historical window
 -> compare the same source bundle as raw context and as an organized packet
 -> run blind as-of-date plain-LLM validation on a disjoint company holdout
 -> route failures to acquisition, extraction, signal, representation, analysis, or predictability
+-> let a bounded proposal engine compare versioned information-scheme genomes under fixed split, label, and evaluation rules
+-> retain diverse Pareto candidates by source, signal, cost, and complexity niche instead of collapsing immediately to one global winner
 -> update versioned information-plan, signal, theme, prompt, scoring, and case-memory proposals
 ```
 
@@ -134,6 +136,13 @@ baseline has useful holdout separation, acceptable evidence fidelity, bounded
 representation loss, and no competing tested proposal with a material,
 repeatable improvement. The repository currently has no human-curated gold
 packet, so a gold-packet upper bound must not be assumed in current experiments.
+
+Information-scheme evolution changes only proposal genomes. Label definitions,
+walk-forward splits, purge/embargo, analyzer comparison rules, admission gates,
+and sealed-test ownership are framework controls and are not mutable genome
+fields. A genome is materialized from discovery labels inside one fold, then
+frozen before anonymous admission predictions. Sealed-test and live-forward
+records remain outside the proposal engine.
 
 ### Phase 2: Current Market Scan
 

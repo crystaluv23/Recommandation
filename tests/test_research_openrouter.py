@@ -74,6 +74,42 @@ class OpenRouterChatClientTests(TestCase):
         payload = transport.calls[0][2]
         self.assertEqual(payload["text"]["format"]["type"], "json_object")
 
+    def test_provider_routing_can_be_fixed_and_require_parameters(self) -> None:
+        transport = FakeTransport(
+            {
+                "id": "resp_1",
+                "model": "openai/gpt-5.5",
+                "output": [
+                    {
+                        "type": "message",
+                        "content": [{"type": "output_text", "text": "{\"ok\": true}"}],
+                    }
+                ],
+            }
+        )
+        client = OpenRouterChatClient(
+            "openai/gpt-5.5",
+            "test-key",
+            provider_only=("azure",),
+            provider_require_parameters=True,
+            provider_allow_fallbacks=False,
+            transport=transport,
+        )
+
+        client.complete(
+            [ChatMessage("user", "Analyze this packet.")],
+            response_format={"type": "json_object"},
+        )
+
+        self.assertEqual(
+            transport.calls[0][2]["provider"],
+            {
+                "only": ["azure"],
+                "require_parameters": True,
+                "allow_fallbacks": False,
+            },
+        )
+
     def test_from_config_reads_openrouter_api_key(self) -> None:
         client = create(
             "openrouter",

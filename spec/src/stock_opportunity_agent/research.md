@@ -32,7 +32,11 @@ Initial implementation provides a lightweight LLM provider registry under
 `src/stock_opportunity_agent/llm/`. Provider modules register factories with
 `@register("provider_name")`; concrete providers include an OpenAI Responses API
 adapter and an OpenRouter Responses API adapter. The OpenRouter adapter keeps
-provider-specific web-search compatibility separate from the OpenAI adapter.
+provider-specific web-search compatibility separate from the OpenAI adapter,
+and optionally fixes an allowed provider slug, disables fallbacks, and requires
+support for every requested parameter. The shared HTTP transport applies
+bounded exponential backoff to retryable transport, rate-limit, and server
+failures.
 Domain records remain in the top-level `models` module, and `research` is
 reserved for higher-level agents that consume prepared packets.
 
@@ -53,6 +57,9 @@ Active child specs:
   information requirements, source coverage, atomic evidence, raw-versus-
   organized comparison, family experiments, and layered failure attribution
   coordinated by Ralph before analysis-method experiments.
+- [`research/scheme_evolution.md`](research/scheme_evolution.md): bounded
+  proposal search over versioned information-scheme genomes while label, split,
+  evaluation, packet, and analyzer contracts remain fixed.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
@@ -79,6 +86,10 @@ Active child specs:
   source bundle, as-of cutoff, model, output contract, and documented context
   budget. Derived cross-sectional data used by a signal counts as additional
   input information and must not be hidden inside only one comparison arm.
+- Materialize each candidate genome with discovery labels from one fold only;
+  freeze the result before building anonymous admission inputs, persist all
+  predictions before deterministic scoring, and keep sealed-test records
+  outside the evolution engine.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.

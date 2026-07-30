@@ -376,7 +376,7 @@ Standalone Ralph experiments also write:
 - `case_selection_label_aware.json`
 - `manifest.json`
 
-The next information-plan experiment should add versioned proposal artifacts:
+The broad information-plan experiment writes versioned proposal artifacts:
 
 - `research_information_plan.json`
 - `information_requirements.json`
@@ -387,9 +387,6 @@ The next information-plan experiment should add versioned proposal artifacts:
 - `information_family_experiments.json`
 - `layered_failure_attribution.json`
 
-These filenames describe the intended next experiment contract. They are not
-current outputs until the corresponding implementation and tests exist.
-
 Before any external blind-LLM call, the standalone experiment runner can write
 preflight artifacts without contacting a provider:
 
@@ -397,15 +394,6 @@ preflight artifacts without contacting a provider:
 - `preflight_leakage_report.json`
 - `preflight_scheme_diagnostic_label_aware.json`
 - `preflight_manifest.json`
-
-If blind responses are produced outside the current runtime, the experiment
-runner can import them by `request_id` and write:
-
-- `imported_blind_responses.json`
-- `imported_blind_scheme_evaluation.json`
-- `imported_error_analysis.json`
-- `imported_next_scheme_proposal.json`
-- `imported_response_manifest.json`
 
 The run manifest records the Ralph artifact paths, active scheme version,
 iteration count, warning count, and proposal-only status. The loop may also
@@ -428,9 +416,11 @@ hashes, and pass leakage checks before an external provider run is attempted.
 Leakage checks scan every packet for the current case's identity terms and for
 all other selected cases' identity terms, because mismapped source documents can
 otherwise leak a different sampled issuer into an anonymous packet.
-Imported-response manifests must set `provider_call_performed_by_script=false`
-and compute the same holdout pass/fail metrics before any scheme is considered
-successful.
+The standalone script now exposes only the broad information-plan path. The
+redundant `legacy-scheme` selector, its separate preflight exporter, and its
+external-response importer were removed. The bounded narrow loop remains an
+internal formal-cold-start compatibility API until orchestration migrates to
+the genome controller; it is no longer a second user-facing experiment mode.
 
 ## Invariants
 

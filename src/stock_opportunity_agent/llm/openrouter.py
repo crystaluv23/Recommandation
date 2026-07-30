@@ -40,6 +40,9 @@ class OpenRouterChatClient(OpenAIChatClient):
         temperature: float = 0.2,
         app_referer: str = "http://localhost",
         app_title: str = "stock-opportunity-agent",
+        provider_only: tuple[str, ...] = (),
+        provider_require_parameters: bool = False,
+        provider_allow_fallbacks: bool = True,
         transport: HttpTransport | None = None,
     ) -> None:
         super().__init__(
@@ -53,8 +56,13 @@ class OpenRouterChatClient(OpenAIChatClient):
             raise ValidationError("app_referer must not be empty")
         if not app_title.strip():
             raise ValidationError("app_title must not be empty")
+        if any(not provider.strip() for provider in provider_only):
+            raise ValidationError("provider_only values must not be empty")
         self.app_referer = app_referer
         self.app_title = app_title
+        self.provider_only = tuple(provider_only)
+        self.provider_require_parameters = provider_require_parameters
+        self.provider_allow_fallbacks = provider_allow_fallbacks
         self.transport = transport or UrllibTransport()
 
     @classmethod
@@ -109,6 +117,16 @@ class OpenRouterChatClient(OpenAIChatClient):
             payload["text"] = {"format": dict(response_format)}
         if include is not None and not tools:
             payload["include"] = list(include)
+        if (
+            self.provider_only
+            or self.provider_require_parameters
+            or not self.provider_allow_fallbacks
+        ):
+            payload["provider"] = {
+                "only": list(self.provider_only),
+                "require_parameters": self.provider_require_parameters,
+                "allow_fallbacks": self.provider_allow_fallbacks,
+            }
 
         headers = {
             "Authorization": f"Bearer {self.api_key}",
