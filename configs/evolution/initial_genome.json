@@ -9,7 +9,8 @@
   "possible_side_effects": [
     "The incumbent may still miss event evidence that static filings and financial facts cannot supply."
   ],
-  "falsification_test": "Reject the baseline as sufficient if a bounded event-evidence candidate improves paired admission utility without violating cost or coverage gates.",
+  "falsification_test": "Reject the baseline as sufficient if a bounded event-evidence candidate improves validation binary F1 under the frozen A/B/C contract without violating cost or leakage gates.",
+  "target_failure_type": "general",
   "data_source_specs": [
     {
       "source_id": "sec_filings",
@@ -104,19 +105,20 @@
     "version": "signal-merge-v1"
   },
   "blind_analysis_prompt": {
-    "template": "Use only the anonymous point-in-time packet. Estimate the probability of a three-month surge, cite supplied evidence refs, preserve contradictions, and abstain when critical information is missing.",
+    "template": "Use only the anonymous point-in-time packet. Classify the stock as A, B, or C for the fixed six-month maximum-multiple task, cite supplied evidence refs, preserve contradictions, and express uncertainty only through the fixed qualitative diagnostic fields. Never output a probability.",
     "variables": [
       "anonymous_packet",
       "materialized_signals"
     ],
     "output_json_schema": {
-      "probability_of_surge": "number",
-      "decision": "positive|negative|abstain",
-      "confidence": "low|medium|high",
-      "supporting_signals": "array",
-      "contradicting_signals": "array",
-      "missing_critical_information": "array",
-      "difficulty_codes": "array",
+      "predicted_class": "A|B|C",
+      "confidence_level": "low|medium|high",
+      "difficulty_level": "low|medium|high",
+      "difficulty_reasons": "array",
+      "decisive_signals": "array",
+      "conflicting_signals": "array",
+      "missing_information": "array",
+      "flip_conditions": "array",
       "evidence_source_ids": "array"
     },
     "model_constraints": {
@@ -124,7 +126,7 @@
       "web_tools_allowed": false,
       "identity_masked": true
     },
-    "version": "blind-analysis-v1"
+    "version": "blind-analysis-abc-v2"
   },
   "complexity_budget": {
     "max_sources": 4,
@@ -137,13 +139,12 @@
     "dominant_signal_family": "event_causality",
     "orientation": "balanced",
     "specialist_sector": "universal",
-    "feature_weight": 0.25,
-    "probability_shift": 0.0,
+    "ordinal_shift": 0,
     "information_families": [
       "deal_status_timing",
       "capital_structure_liquidity",
       "expectation_gap"
     ]
   },
-  "schema_version": "scheme-evolution-v0.1"
+  "schema_version": "scheme-evolution-v0.2"
 }

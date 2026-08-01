@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import calendar
 import json
 import os
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -21,18 +23,22 @@ from stock_opportunity_agent.research.scheme_evolution import (
     CandidateRejection,
     CandidateValidator,
     DataSplitSpec,
+    EvaluationContract,
     EvaluationSpec,
     EvolutionStateStore,
     FileSchemeProposer,
     FixedEvolutionSpec,
-    LabelSpec,
     LabeledSample,
     MockSchemeFoldEvaluator,
-    QualityDiversityArchive,
+    MockSchemeProposer,
+    MutationOperator,
+    TopKArchive,
     SchemeEvolutionEngine,
     SchemeGenome,
     build_walk_forward_folds,
+    evaluate_predictions,
     merge_meta_lessons,
+    realized_max_multiple,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     HeuristicGenomeBlindAnalyzer,
@@ -58,17 +64,47 @@ def main() -> None:
 
     args = _parse_args()
     if args.max_concurrency != 1:
-        raise ValidationError("v0.1 supports max_concurrency=1; provider concurrency remains external")
+        raise ValidationError("v0.2 supports max_concurrency=1; provider concurrency remains external")
     initial = SchemeGenome.from_dict(
         json.loads(Path(args.initial_genome).read_text(encoding="utf-8"))
     )
     proposer = FileSchemeProposer(args.candidate_json)
     output_dir = Path(args.output_dir)
+    state_store = EvolutionStateStore(output_dir, run_id=args.run_id or output_dir.name)
+    if args.command == "status":
+        print(json.dumps(state_store.load_state(), indent=2, sort_keys=True))
+        return
+    if args.command == "resume":
+        args.resume = True
     if args.dry_run:
         _run_dry_validation(initial, proposer, output_dir, count=args.children_per_generation)
         return
     execution_mode = "synthetic_mock_vertical_slice" if args.mock_llm else args.mode
     fixed_spec = _fixed_spec(args, synthetic=args.mock_llm)
+    state_store.initialize(
+        fixed_spec,
+        config={
+            "random_seed": args.random_seed,
+            "initial_genome": str(args.initial_genome),
+            "candidate_json": str(args.candidate_json),
+            "mode": execution_mode,
+        },
+    )
+    state_store.write_objective_prompt(
+        Path("prompts/evolution_objective.md").read_text(encoding="utf-8")
+    )
+    if args.command == "init":
+        print(f"[scheme-evolution] initialized={output_dir}")
+        return
+    if args.command == "final-test":
+        if not args.mock_llm:
+            raise ValidationError(
+                "real final-test is fail-closed until a separately labeled A/B/C "
+                "dataset and source archive are supplied; ordinary run/resume never "
+                "loads final-test labels"
+            )
+        _run_mock_final_test(state_store, fixed_spec)
+        return
     if args.mock_llm:
         folds = build_walk_forward_folds(
             _synthetic_samples(),
@@ -82,7 +118,7 @@ def main() -> None:
     folds = _select_folds(folds, args.selected_folds)
     if not folds:
         raise ValidationError("no selected walk-forward folds are available")
-    archive = QualityDiversityArchive()
+    archive = TopKArchive()
     incumbent = initial
     all_experiments = []
     all_rejections: list[CandidateRejection] = []
@@ -91,13 +127,40 @@ def main() -> None:
     last_paths: dict[str, Path] = {}
     completed_generations = 0
     for generation in range(1, args.generations + 1):
-        state_store = EvolutionStateStore(output_dir / f"generation-{generation:02d}")
+        generation_proposer = proposer
+        if args.mock_llm and generation > 1:
+            generation_proposer = MockSchemeProposer(
+                [
+                    replace(
+                        incumbent,
+                        genome_id=f"{incumbent.genome_id}-local-refine-g{generation}",
+                        parent_ids=[incumbent.genome_id],
+                        generation=incumbent.generation + 1,
+                        mutation_operator=MutationOperator.LOCAL_REFINE,
+                        hypothesis_of_change="Test a stricter threshold for extreme C-class evidence.",
+                        changed_fields=["metadata.ordinal_shift_min_strength"],
+                        expected_benefit="Reduce B-to-C ordinal overclassification without changing binary semantics.",
+                        possible_side_effects=["May miss marginal C-class cases."],
+                        falsification_test="Reject if class C recall falls or ordinal distance rises.",
+                        target_failure_type="general",
+                        metadata={
+                            **incumbent.metadata,
+                            "ordinal_shift_min_strength": 0.75,
+                        },
+                    )
+                ]
+            )
         engine = SchemeEvolutionEngine(
-            proposer=proposer,
+            proposer=generation_proposer,
             evaluator=evaluator,
             fixed_spec=fixed_spec,
             state_store=state_store,
             archive=archive,
+            validator=(
+                CandidateValidator(near_duplicate_threshold=1.0)
+                if args.mock_llm and generation > 1
+                else None
+            ),
             max_candidates=args.max_candidates,
             max_api_cost_usd=args.max_api_cost,
         )
@@ -107,7 +170,7 @@ def main() -> None:
             meta_memory=meta_memory,
             mutation_requests=mutation_requests,
             candidate_count=args.children_per_generation,
-            resume=args.resume,
+            resume=args.resume or generation > 1,
         )
         incumbent = result.incumbent
         archive = result.archive
@@ -123,7 +186,7 @@ def main() -> None:
     archive_path = (
         Path(args.archive_export)
         if args.archive_export
-        else output_dir / "quality_diversity_archive.json"
+        else output_dir / "top_k.json"
     )
     archive_path.parent.mkdir(parents=True, exist_ok=True)
     archive_path.write_text(
@@ -134,7 +197,7 @@ def main() -> None:
     summary_path.write_text(
         json.dumps(
             {
-                "schema_version": "scheme-evolution-v0.1",
+                "schema_version": "scheme-evolution-v0.2",
                 "incumbent_genome_id": incumbent.genome_id,
                 "generation_count": completed_generations,
                 "selected_fold_ids": [fold.fold_id for fold in folds],
@@ -142,7 +205,7 @@ def main() -> None:
                 "rejection_count": len(all_rejections),
                 "meta_lesson_count": len(meta_memory),
                 "next_mutation_request_count": len(mutation_requests),
-                "archive_entry_count": len(archive.entries),
+                "top_k_entry_count": len(archive.entries),
                 "archive_path": str(archive_path),
                 "last_generation_artifacts": {
                     name: str(path) for name, path in sorted(last_paths.items())
@@ -172,6 +235,14 @@ def main() -> None:
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "command",
+        nargs="?",
+        choices=("init", "run", "resume", "status", "final-test"),
+        default="run",
+    )
+    parser.add_argument("--run-id", default="")
+    parser.add_argument("--config", default="", help="Optional JSON experiment config.")
     parser.add_argument("--initial-genome", default=str(DEFAULT_INITIAL_GENOME))
     parser.add_argument("--candidate-json", default=str(DEFAULT_CANDIDATES))
     parser.add_argument("--output-dir", default="runs/cold_start/evolution/codex-v1")
@@ -214,14 +285,21 @@ def _parse_args() -> argparse.Namespace:
         help="Comma-separated UTC dates defining walk-forward admission windows.",
     )
     parser.add_argument("--admission-window-days", type=int, default=15)
-    parser.add_argument("--label-horizon-days", type=int, default=180)
     parser.add_argument("--purge-days", type=int, default=15)
     parser.add_argument("--embargo-days", type=int, default=15)
     parser.add_argument("--generations", type=int, default=1)
     parser.add_argument("--children-per-generation", type=int, default=2)
     parser.add_argument("--max-candidates", type=int, default=8)
+    parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument("--prediction-similarity-threshold", type=float, default=0.95)
     parser.add_argument("--max-api-cost", type=float, default=20.0)
     parser.add_argument("--max-concurrency", type=int, default=1)
+    parser.add_argument("--random-seed", type=int, default=42)
+    parser.add_argument(
+        "--price-histories-path",
+        default="",
+        help="Required for real A/B/C evaluation; JSON with bars_by_symbol adjusted closes.",
+    )
     parser.add_argument(
         "--selected-folds",
         default="",
@@ -236,12 +314,22 @@ def _parse_args() -> argparse.Namespace:
         help="Use the synthetic network-free vertical slice instead of real Ralph artifacts.",
     )
     args = parser.parse_args()
+    if args.config:
+        config = json.loads(Path(args.config).read_text(encoding="utf-8"))
+        for key, value in config.get("cli", {}).items():
+            attribute = key.replace("-", "_")
+            if not hasattr(args, attribute):
+                parser.error(f"unknown config.cli field: {key}")
+            setattr(args, attribute, value)
+        args.evaluation_contract_config = config.get("evaluation_contract")
+    else:
+        args.evaluation_contract_config = None
     if args.generations < 1:
         parser.error("--generations must be positive")
     if args.children_per_generation < 1:
         parser.error("--children-per-generation must be positive")
-    if args.admission_window_days < 1 or args.label_horizon_days < 1:
-        parser.error("admission window and label horizon must be positive")
+    if args.admission_window_days < 1:
+        parser.error("admission window must be positive")
     return args
 
 
@@ -267,7 +355,7 @@ def _run_dry_validation(
     path.write_text(
         json.dumps(
             {
-                "schema_version": "scheme-evolution-v0.1",
+                "schema_version": "scheme-evolution-v0.2",
                 "initial_genome_id": initial.genome_id,
                 "accepted_candidate_ids": [candidate.genome_id for candidate in accepted],
                 "rejections": [rejection.to_dict() for rejection in rejections],
@@ -286,13 +374,10 @@ def _run_dry_validation(
 
 def _fixed_spec(args: argparse.Namespace, *, synthetic: bool) -> FixedEvolutionSpec:
     return FixedEvolutionSpec(
-        label_spec=LabelSpec(
-            version=(
-                "synthetic-surge-label-v1"
-                if synthetic
-                else f"historical-outcome-label-{args.label_horizon_days}d-v1"
-            ),
-            horizon_days=90 if synthetic else args.label_horizon_days,
+        evaluation_contract=(
+            EvaluationContract.from_dict(args.evaluation_contract_config)
+            if args.evaluation_contract_config
+            else EvaluationContract()
         ),
         split_spec=DataSplitSpec(
             version=(
@@ -305,13 +390,12 @@ def _fixed_spec(args: argparse.Namespace, *, synthetic: bool) -> FixedEvolutionS
         ),
         evaluation_spec=EvaluationSpec(
             version=(
-                "synthetic-paired-admission-v1"
+                "synthetic-binary-f1-top-k-v2"
                 if synthetic
-                else "ralph-paired-admission-v1"
+                else "ralph-binary-f1-top-k-v2"
             ),
-            top_k=4,
-            bootstrap_replicates=200,
-            minimum_paired_blocks=4,
+            top_k=args.top_k,
+            prediction_similarity_threshold=args.prediction_similarity_threshold,
             maximum_cost_usd=args.max_api_cost,
         ),
     )
@@ -323,8 +407,17 @@ def _real_evaluation_context(
 ):
     cases = load_historical_cases(Path(args.cases_path))
     documents = load_documents_by_symbol(Path(args.documents_path))
+    if not args.price_histories_path:
+        raise ValidationError(
+            "real A/B/C evaluation requires --price-histories-path; legacy terminal-return "
+            "labels cannot be presented as the frozen five-day-smoothed maximum multiple"
+        )
+    price_payload = json.loads(Path(args.price_histories_path).read_text(encoding="utf-8"))
+    bars_by_symbol = price_payload.get("bars_by_symbol")
+    if not isinstance(bars_by_symbol, dict):
+        raise ValidationError("price histories must contain bars_by_symbol")
     samples = [
-        _real_sample(case, documents)
+        _real_sample(case, documents, bars_by_symbol, fixed_spec.evaluation_contract)
         for case in cases
         if case.label in {CaseOutcomeLabel.WINNER, CaseOutcomeLabel.CONTROL}
     ]
@@ -421,7 +514,7 @@ def _real_evaluation_context(
     return folds, evaluator
 
 
-def _real_sample(case, documents_by_symbol) -> LabeledSample:
+def _real_sample(case, documents_by_symbol, bars_by_symbol, contract) -> LabeledSample:
     packet = case.packet
     symbol = packet.company.ticker.symbol.upper()
     market_cap = packet.company.market_cap_usd
@@ -445,11 +538,35 @@ def _real_sample(case, documents_by_symbol) -> LabeledSample:
         if document.available_date is not None
         and document.available_date <= packet.as_of.as_of_date
     ]
+    bars = sorted(
+        bars_by_symbol.get(symbol, ()),
+        key=lambda row: row["as_of_date"],
+    )
+    prediction_rows = [
+        row for row in bars if row["as_of_date"] <= packet.as_of.as_of_date.isoformat()
+    ]
+    if not prediction_rows:
+        raise ValidationError(f"{case.case_id} has no adjusted close at prediction time")
+    prediction_close = float(prediction_rows[-1]["adjusted_close"])
+    cutoff_date = _add_months(packet.as_of.as_of_date, contract.horizon_months)
+    future_closes = [
+        float(row["adjusted_close"])
+        for row in bars
+        if packet.as_of.as_of_date.isoformat() < row["as_of_date"] <= cutoff_date.isoformat()
+    ]
+    multiple = realized_max_multiple(
+        prediction_close,
+        future_closes,
+        smoothing_window_days=contract.smoothing_window_days,
+    )
+    true_class = contract.classify(multiple)
     return LabeledSample(
         sample_id=case.case_id,
         company_key=symbol,
         prediction_time=prediction_time,
-        label=1 if case.label is CaseOutcomeLabel.WINNER else 0,
+        realized_max_multiple=multiple,
+        true_class=true_class,
+        is_surge=contract.is_positive(true_class),
         sector=packet.company.sector,
         market_cap_bucket=market_cap_bucket,
         period=f"{packet.as_of.as_of_date.year}-Q{(packet.as_of.as_of_date.month - 1) // 3 + 1}",
@@ -511,11 +628,15 @@ def _synthetic_sample(
     strength: float,
     period: str,
 ) -> LabeledSample:
+    realized = 3.4 if label and strength >= 0.7 else 2.4 if label else 1.35
+    true_class = "C" if realized >= 3 else "B" if label else "A"
     return LabeledSample(
         sample_id=sample_id,
         company_key=company_key,
         prediction_time=prediction_time,
-        label=label,
+        realized_max_multiple=realized,
+        true_class=true_class,
+        is_surge=bool(label),
         sector="synthetic-sector-a" if label else "synthetic-sector-b",
         market_cap_bucket="small" if label else "mid",
         period=period,
@@ -523,6 +644,14 @@ def _synthetic_sample(
         evidence_source_ids=[f"source:{sample_id}"],
         document_available_dates=[prediction_time.date() - timedelta(days=1)],
     )
+
+
+def _add_months(value, months: int):
+    month_index = value.month - 1 + months
+    year = value.year + month_index // 12
+    month = month_index % 12 + 1
+    day = min(value.day, calendar.monthrange(year, month)[1])
+    return value.replace(year=year, month=month, day=day)
 
 
 def _select_folds(folds, raw_selection: str):
@@ -542,6 +671,72 @@ def _select_folds(folds, raw_selection: str):
     if missing:
         raise ValidationError(f"unknown selected folds: {sorted(missing)}")
     return selected
+
+
+def _run_mock_final_test(
+    state_store: EvolutionStateStore,
+    fixed_spec: FixedEvolutionSpec,
+) -> None:
+    """Run the selected proposal once on a separate synthetic sealed set."""
+
+    top_k_path = state_store.root / "top_k.json"
+    if not top_k_path.exists():
+        raise ValidationError("final-test requires a completed run with top_k.json")
+    archive = TopKArchive.from_dict(json.loads(top_k_path.read_text(encoding="utf-8")))
+    if not archive.entries:
+        raise ValidationError("final-test requires at least one selected scheme")
+    genome = archive.entries[0].genome
+    final_start = datetime(2026, 6, 1, tzinfo=timezone.utc)
+    final_samples = [
+        _synthetic_sample(
+            sample_id=f"final-test-{index}",
+            company_key=f"sealed-final-company-{index}",
+            prediction_time=final_start + timedelta(days=index),
+            label=1 if outcome_class in {"B", "C"} else 0,
+            strength={"A": 0.2, "B": 0.65, "C": 0.78}[outcome_class],
+            period="2026-06-final-test",
+        )
+        for index, outcome_class in enumerate(("A", "B", "C"), start=1)
+    ]
+    # Keep the explicit requested class when the binary fixture helper would
+    # otherwise derive B/C from strength alone.
+    final_samples[2] = replace(
+        final_samples[2],
+        realized_max_multiple=3.4,
+        true_class="C",
+        is_surge=True,
+    )
+    fold = build_walk_forward_folds(
+        [*_synthetic_samples(), *final_samples],
+        [final_start],
+        fixed_spec=fixed_spec,
+        admission_window_days=10,
+    )
+    if len(fold) != 1:
+        raise ValidationError("mock final-test split could not be constructed")
+    evaluator = MockSchemeFoldEvaluator()
+    materialized = evaluator.materialize(genome, fold[0])
+    predictions = []
+    extractions = {}
+    for sample in fold[0].admission_samples:
+        blind = sample.blind_view()
+        extractions[sample.sample_id] = evaluator.extract(genome, materialized, blind)
+        prediction = evaluator.predict(genome, materialized, blind)
+        predictions.append(
+            replace(
+                prediction,
+                input_hash=f"mock-final-test:{materialized.output_hash}:{sample.sample_id}",
+            )
+        )
+    evaluation = evaluate_predictions(
+        genome,
+        predictions,
+        {sample.sample_id: sample for sample in fold[0].admission_samples},
+    )
+    paths = state_store.write_final_test_artifacts(evaluation, predictions, extractions)
+    print(f"[scheme-evolution] final_test_genome={genome.genome_id}")
+    print(f"[scheme-evolution] final_test_binary_f1={evaluation.binary_f1}")
+    print(f"[scheme-evolution] final_test_evaluation={paths['evaluation']}")
 
 
 if __name__ == "__main__":

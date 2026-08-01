@@ -1,31 +1,43 @@
-"""Data contracts and protocols for information-scheme evolution."""
+"""Immutable contracts for resumable information-scheme evolution.
+
+The fixed evaluation contract is deliberately separate from ``SchemeGenome``:
+candidate generation may change information collection, signal discovery, and
+analysis instructions, but it cannot change labels, splits, or scoring rules.
+"""
 
 from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
-from typing import Any, Protocol
+from typing import Any, Mapping, Protocol
 
 from stock_opportunity_agent.models import SerializableRecord, ValidationError
 
 
-SCHEME_EVOLUTION_SCHEMA_VERSION = "scheme-evolution-v0.1"
+SCHEME_EVOLUTION_SCHEMA_VERSION = "scheme-evolution-v0.2"
+OUTCOME_CLASSES = ("A", "B", "C")
+POSITIVE_CLASSES = ("B", "C")
 _BLIND_FORBIDDEN_VARIABLES = {
     "label",
     "outcome",
     "outcome_return",
     "forward_return",
+    "future_price",
+    "realized_max_multiple",
+    "true_class",
+    "is_surge",
     "winner",
     "control",
     "sealed_test",
+    "final_test",
 }
 
 
 class MutationOperator(str, Enum):
-    """Supported ways to produce a child information-scheme genome."""
+    """Supported bounded mutations of an information-scheme genome."""
 
     LOCAL_REFINE = "local_refine"
     ABLATION = "ablation"
@@ -71,7 +83,7 @@ class DataSourceSpec(SerializableRecord):
 
 @dataclass(frozen=True)
 class SignalSpec(SerializableRecord):
-    """Evolvable signal recipe kept distinct from extracted facts."""
+    """Executable, falsifiable signal recipe kept separate from source facts."""
 
     signal_id: str
     name: str
@@ -116,7 +128,7 @@ class SignalSpec(SerializableRecord):
 
 @dataclass(frozen=True)
 class PromptSpec(SerializableRecord):
-    """Versioned prompt contract with a content-derived hash."""
+    """Versioned prompt contract with a deterministic content hash."""
 
     template: str
     variables: list[str]
@@ -146,7 +158,7 @@ class PromptSpec(SerializableRecord):
 
 @dataclass(frozen=True)
 class SchemeGenome(SerializableRecord):
-    """Evolvable information recipe; fixed evaluation rules are excluded."""
+    """Evolvable ``(data, signal, analysis)`` recipe with fixed rules excluded."""
 
     genome_id: str
     parent_ids: list[str]
@@ -164,6 +176,7 @@ class SchemeGenome(SerializableRecord):
     blind_analysis_prompt: PromptSpec
     complexity_budget: dict[str, float | int]
     metadata: dict[str, Any]
+    target_failure_type: str = "general"
     schema_version: str = SCHEME_EVOLUTION_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
@@ -177,9 +190,21 @@ class SchemeGenome(SerializableRecord):
             _require_text(getattr(self, name), name)
         if self.generation < 0:
             raise ValidationError("genome generation cannot be negative")
+        if self.target_failure_type not in {
+            "false_positive",
+            "false_negative",
+            "class_c_miss",
+            "general",
+        }:
+            raise ValidationError("invalid target_failure_type")
         if not self.data_source_specs:
             raise ValidationError("genome requires at least one data source")
-        for key in ("max_sources", "max_signals", "max_context_tokens", "max_estimated_cost_usd"):
+        for key in (
+            "max_sources",
+            "max_signals",
+            "max_context_tokens",
+            "max_estimated_cost_usd",
+        ):
             if key not in self.complexity_budget:
                 raise ValidationError(f"genome complexity_budget missing {key}")
             if float(self.complexity_budget[key]) < 0:
@@ -188,7 +213,7 @@ class SchemeGenome(SerializableRecord):
 
 @dataclass(frozen=True)
 class MaterializedScheme(SerializableRecord):
-    """One genome learned only from one discovery fold."""
+    """Signals discovered on one training fold and frozen before validation."""
 
     materialized_scheme_id: str
     genome_id: str
@@ -211,151 +236,80 @@ class MaterializedScheme(SerializableRecord):
 
 
 @dataclass(frozen=True)
-class PredictionRecord(SerializableRecord):
-    """Persisted blind prediction written before labels are evaluated."""
+class EvaluationContract(SerializableRecord):
+    """Frozen six-month A/B/C exam that candidate schemes cannot mutate."""
 
-    genome_id: str
-    materialized_scheme_id: str
-    fold_id: str
-    sample_id: str
-    prediction_time: datetime
-    probability_of_surge: float
-    binary_decision: str
-    confidence: str
-    supporting_signals: list[str]
-    contradicting_signals: list[str]
-    missing_information: list[str]
-    difficulty_codes: list[str]
-    evidence_source_ids: list[str]
-    model_metadata: dict[str, Any]
-    raw_response_location: str | None
+    version: str = "six-month-max-multiple-v1"
+    horizon_months: int = 6
+    price_field: str = "adjusted_close"
+    multiple_calculation_type: str = "max_future_price_ratio"
+    smoothing_window_days: int = 5
+    class_boundaries: dict[str, dict[str, float | None]] | None = None
+    positive_classes: list[str] | None = None
+    primary_metric: str = "binary_f1"
+    diagnostic_metrics: list[str] | None = None
 
     def __post_init__(self) -> None:
-        for name in (
-            "genome_id",
-            "materialized_scheme_id",
-            "fold_id",
-            "sample_id",
-            "binary_decision",
-            "confidence",
-        ):
-            _require_text(getattr(self, name), name)
-        if not 0 <= self.probability_of_surge <= 1:
-            raise ValidationError("probability_of_surge must be between 0 and 1")
-        if self.binary_decision not in {"positive", "negative", "abstain"}:
-            raise ValidationError("binary_decision must be positive, negative, or abstain")
-        if self.confidence not in {"low", "medium", "high"}:
-            raise ValidationError("confidence must be low, medium, or high")
+        boundaries = self.class_boundaries or {
+            "A": {"min_inclusive": 0.0, "max_exclusive": 2.0},
+            "B": {"min_inclusive": 2.0, "max_exclusive": 3.0},
+            "C": {"min_inclusive": 3.0, "max_exclusive": None},
+        }
+        diagnostics = self.diagnostic_metrics or [
+            "binary_precision",
+            "binary_recall",
+            "multiclass_macro_f1",
+            "class_c_recall",
+            "ordinal_distance",
+        ]
+        positives = self.positive_classes or list(POSITIVE_CLASSES)
+        object.__setattr__(self, "class_boundaries", boundaries)
+        object.__setattr__(self, "positive_classes", positives)
+        object.__setattr__(self, "diagnostic_metrics", diagnostics)
+        _require_text(self.version, "evaluation contract version")
+        if self.horizon_months != 6:
+            raise ValidationError("v1 evaluation contract requires horizon_months=6")
+        if self.price_field != "adjusted_close":
+            raise ValidationError("v1 evaluation contract requires adjusted_close")
+        if self.multiple_calculation_type != "max_future_price_ratio":
+            raise ValidationError("invalid multiple calculation type")
+        if self.smoothing_window_days != 5:
+            raise ValidationError("v1 evaluation contract requires five-day smoothing")
+        expected_boundaries = {
+            "A": {"min_inclusive": 0.0, "max_exclusive": 2.0},
+            "B": {"min_inclusive": 2.0, "max_exclusive": 3.0},
+            "C": {"min_inclusive": 3.0, "max_exclusive": None},
+        }
+        if boundaries != expected_boundaries:
+            raise ValidationError("v1 A/B/C class boundaries are fixed")
+        if positives != list(POSITIVE_CLASSES):
+            raise ValidationError("v1 positive classes are fixed to B and C")
+        if self.primary_metric != "binary_f1":
+            raise ValidationError("v1 primary metric is fixed to binary_f1")
 
+    @property
+    def content_hash(self) -> str:
+        """Return a deterministic hash of every fixed exam field."""
 
-@dataclass(frozen=True)
-class SchemeEvaluationResult(SerializableRecord):
-    """Deterministic metrics for one genome on label-hidden predictions."""
+        return _hash_json(self.to_dict())
 
-    genome_id: str
-    sample_count: int
-    confusion_matrix: dict[str, int]
-    precision: float
-    recall: float
-    f1: float
-    pr_auc: float
-    roc_auc: float
-    brier_score: float
-    log_loss: float
-    precision_at_k: float
-    recall_at_k: float
-    coverage_rate: float
-    abstention_rate: float
-    metrics_by_time_period: dict[str, dict[str, float]]
-    metrics_by_sector: dict[str, dict[str, float]]
-    metrics_by_market_cap_bucket: dict[str, dict[str, float]]
-    model_provider_sensitivity: dict[str, float]
-    data_cost_usd: float
-    token_cost_usd: float
-    latency_ms: float
-    confidence_intervals: dict[str, list[float]]
-    worst_period_f1: float
-    primary_utility: float
+    def classify(self, realized_max_multiple: float) -> str:
+        """Map a continuous realized multiple into the fixed ordinal class."""
 
+        if realized_max_multiple < 0:
+            raise ValidationError("realized_max_multiple cannot be negative")
+        if realized_max_multiple < 2.0:
+            return "A"
+        if realized_max_multiple < 3.0:
+            return "B"
+        return "C"
 
-@dataclass(frozen=True)
-class AdmissionDecision(SerializableRecord):
-    """Paired statistical admission decision against the incumbent."""
+    def is_positive(self, outcome_class: str) -> bool:
+        """Return the fixed binary interpretation of an A/B/C class."""
 
-    status: str
-    admitted: bool
-    utility_difference: float
-    confidence_interval: list[float]
-    paired_block_count: int
-    reasons: list[str]
-
-
-@dataclass(frozen=True)
-class SchemeExperimentRecord(SerializableRecord):
-    """Detailed candidate experiment beneath the canonical meta-learning record."""
-
-    experiment_id: str
-    parent_genome_ids: list[str]
-    candidate_genome_id: str
-    mutation_operator: MutationOperator
-    data_split_version: str
-    label_spec_version: str
-    configuration_hashes: dict[str, str]
-    evaluation_result: SchemeEvaluationResult
-    admission_decision: AdmissionDecision
-    failure_reason: str | None
-    started_at: datetime
-    completed_at: datetime
-    git_commit: str | None
-
-
-@dataclass(frozen=True)
-class MetaLesson(SerializableRecord):
-    """Bounded, structured evidence for future proposal rounds."""
-
-    lesson: str
-    scope: str
-    supporting_experiment_ids: list[str]
-    positive_cases_count: int
-    counterexamples_count: int
-    estimated_effect: float
-    confidence: float
-    suggested_mutation_operators: list[MutationOperator]
-    created_at: datetime
-    superseded_by: str | None = None
-
-    def __post_init__(self) -> None:
-        _require_text(self.lesson, "meta lesson")
-        _require_text(self.scope, "meta lesson scope")
-        if self.positive_cases_count < 0 or self.counterexamples_count < 0:
-            raise ValidationError("meta lesson case counts cannot be negative")
-        if not 0 <= self.confidence <= 1:
-            raise ValidationError("meta lesson confidence must be between 0 and 1")
-
-
-@dataclass(frozen=True)
-class MutationRequest(SerializableRecord):
-    """A bounded request routed from failure attribution to the proposer."""
-
-    operator: MutationOperator
-    target_fields: list[str]
-    reason: str
-
-
-@dataclass(frozen=True)
-class LabelSpec(SerializableRecord):
-    """Fixed surge-label observation contract."""
-
-    version: str
-    horizon_days: int
-    positive_label: int = 1
-
-    def __post_init__(self) -> None:
-        _require_text(self.version, "label spec version")
-        if self.horizon_days < 1:
-            raise ValidationError("label horizon_days must be positive")
-        if self.positive_label != 1:
-            raise ValidationError("the initial binary evaluator requires positive_label=1")
+        if outcome_class not in OUTCOME_CLASSES:
+            raise ValidationError("outcome class must be A, B, or C")
+        return outcome_class in POSITIVE_CLASSES
 
 
 @dataclass(frozen=True)
@@ -375,49 +329,28 @@ class DataSplitSpec(SerializableRecord):
 
 @dataclass(frozen=True)
 class EvaluationSpec(SerializableRecord):
-    """Fixed metrics and admission policy excluded from every genome."""
+    """Fixed Top-K and cost controls outside every candidate genome."""
 
     version: str
-    positive_threshold: float = 0.5
     top_k: int = 5
-    bootstrap_replicates: int = 400
-    confidence_level: float = 0.9
-    minimum_paired_blocks: int = 4
-    minimum_coverage: float = 0.75
-    maximum_worst_period_degradation: float = 0.1
+    prediction_similarity_threshold: float = 0.95
     maximum_cost_usd: float = 20.0
-    utility_weights: dict[str, float] = field(
-        default_factory=lambda: {
-            "pr_auc": 0.35,
-            "precision_at_k": 0.2,
-            "recall_at_k": 0.15,
-            "brier_score": -0.15,
-            "worst_period_f1": 0.15,
-            "cost_usd": -0.02,
-            "complexity": -0.01,
-        }
-    )
-    bootstrap_seed: int = 20260731
 
     def __post_init__(self) -> None:
         _require_text(self.version, "evaluation spec version")
-        if not 0 < self.positive_threshold < 1:
-            raise ValidationError("positive_threshold must be between 0 and 1")
-        if self.top_k < 1 or self.bootstrap_replicates < 20:
-            raise ValidationError("top_k must be positive and bootstrap_replicates at least 20")
-        if not 0 < self.confidence_level < 1:
-            raise ValidationError("confidence_level must be between 0 and 1")
-        if self.minimum_paired_blocks < 2:
-            raise ValidationError("minimum_paired_blocks must be at least two")
-        if not 0 <= self.minimum_coverage <= 1:
-            raise ValidationError("minimum_coverage must be between 0 and 1")
+        if self.top_k < 1:
+            raise ValidationError("top_k must be positive")
+        if not 0 <= self.prediction_similarity_threshold <= 1:
+            raise ValidationError("prediction_similarity_threshold must be between zero and one")
+        if self.maximum_cost_usd < 0:
+            raise ValidationError("maximum_cost_usd cannot be negative")
 
 
 @dataclass(frozen=True)
 class FixedEvolutionSpec(SerializableRecord):
     """All non-evolvable rules supplied to the engine."""
 
-    label_spec: LabelSpec
+    evaluation_contract: EvaluationContract
     split_spec: DataSplitSpec
     evaluation_spec: EvaluationSpec
 
@@ -430,12 +363,14 @@ class FixedEvolutionSpec(SerializableRecord):
 
 @dataclass(frozen=True)
 class LabeledSample(SerializableRecord):
-    """Internal sample whose label is never exposed through :meth:`blind_view`."""
+    """Internal labeled sample; only :meth:`blind_view` enters prediction."""
 
     sample_id: str
     company_key: str
     prediction_time: datetime
-    label: int
+    realized_max_multiple: float
+    true_class: str
+    is_surge: bool
     sector: str
     market_cap_bucket: str
     period: str
@@ -452,8 +387,11 @@ class LabeledSample(SerializableRecord):
             "period",
         ):
             _require_text(getattr(self, name), name)
-        if self.label not in {0, 1}:
-            raise ValidationError("evolution sample label must be binary")
+        contract = EvaluationContract()
+        if self.true_class != contract.classify(self.realized_max_multiple):
+            raise ValidationError("true_class does not match realized_max_multiple")
+        if self.is_surge != contract.is_positive(self.true_class):
+            raise ValidationError("is_surge does not match true_class")
         future_dates = [
             available
             for available in self.document_available_dates
@@ -479,7 +417,7 @@ class LabeledSample(SerializableRecord):
 
 @dataclass(frozen=True)
 class BlindSample(SerializableRecord):
-    """Admission input with no label, outcome, ticker, or company name."""
+    """Validation input with no labels, outcomes, ticker, or company name."""
 
     sample_id: str
     company_key: str
@@ -492,8 +430,149 @@ class BlindSample(SerializableRecord):
 
 
 @dataclass(frozen=True)
+class PredictionRecord(SerializableRecord):
+    """One persisted A/B/C prediction written before labels are revealed."""
+
+    genome_id: str
+    materialized_scheme_id: str
+    fold_id: str
+    sample_id: str
+    prediction_time: datetime
+    predicted_class: str
+    is_surge: bool
+    confidence_level: str
+    difficulty_level: str
+    difficulty_reasons: list[str]
+    decisive_signals: list[str]
+    conflicting_signals: list[str]
+    missing_information: list[str]
+    flip_conditions: list[str]
+    evidence_source_ids: list[str]
+    model_metadata: dict[str, Any]
+    input_hash: str
+    raw_response_location: str | None
+
+    def __post_init__(self) -> None:
+        for name in (
+            "genome_id",
+            "materialized_scheme_id",
+            "fold_id",
+            "sample_id",
+            "input_hash",
+        ):
+            _require_text(getattr(self, name), name)
+        contract = EvaluationContract()
+        if self.predicted_class not in OUTCOME_CLASSES:
+            raise ValidationError("predicted_class must be A, B, or C")
+        if self.is_surge != contract.is_positive(self.predicted_class):
+            raise ValidationError("predicted is_surge must be derived from predicted_class")
+        if self.confidence_level not in {"low", "medium", "high"}:
+            raise ValidationError("invalid confidence_level")
+        if self.difficulty_level not in {"low", "medium", "high"}:
+            raise ValidationError("invalid difficulty_level")
+
+
+@dataclass(frozen=True)
+class SchemeEvaluationResult(SerializableRecord):
+    """Deterministic A/B/C metrics and structured validation diagnostics."""
+
+    genome_id: str
+    sample_count: int
+    confusion_matrix: dict[str, int]
+    binary_precision: float
+    binary_recall: float
+    binary_f1: float
+    multiclass_confusion_matrix: dict[str, dict[str, int]]
+    per_class_recall: dict[str, float]
+    multiclass_macro_f1: float
+    class_c_recall: float
+    ordinal_distance: float
+    error_cases: list[dict[str, Any]]
+    reflection_summary: dict[str, Any]
+    predictions_by_sample: dict[str, str]
+    binary_predictions_by_sample: dict[str, bool]
+    metrics_by_time_period: dict[str, dict[str, float]]
+    metrics_by_sector: dict[str, dict[str, float]]
+    metrics_by_market_cap_bucket: dict[str, dict[str, float]]
+    data_cost_usd: float
+    token_cost_usd: float
+    latency_ms: float
+    primary_metric: str = "binary_f1"
+
+    @property
+    def primary_score(self) -> float:
+        """Return the only v1 Top-K score."""
+
+        return self.binary_f1
+
+
+@dataclass(frozen=True)
+class AdmissionDecision(SerializableRecord):
+    """Top-K retention decision; all retained schemes remain proposals."""
+
+    status: str
+    admitted: bool
+    primary_metric_delta: float
+    diagnostic_metric_deltas: dict[str, float]
+    reasons: list[str]
+
+
+@dataclass(frozen=True)
+class SchemeExperimentRecord(SerializableRecord):
+    """Detailed child-versus-parent experiment record."""
+
+    experiment_id: str
+    parent_genome_ids: list[str]
+    candidate_genome_id: str
+    mutation_operator: MutationOperator
+    data_split_version: str
+    evaluation_contract_hash: str
+    configuration_hashes: dict[str, str]
+    evaluation_result: SchemeEvaluationResult
+    admission_decision: AdmissionDecision
+    failure_reason: str | None
+    started_at: datetime
+    completed_at: datetime
+    git_commit: str | None
+
+
+@dataclass(frozen=True)
+class MetaLesson(SerializableRecord):
+    """Structured cross-iteration hypothesis with explicit experiment status."""
+
+    observation: str
+    evidence: dict[str, Any]
+    diagnosed_issue: str
+    tested_change: str
+    metric_delta: dict[str, float]
+    status: str
+    confidence: float
+    supporting_experiment_ids: list[str]
+    suggested_mutation_operators: list[MutationOperator]
+    created_at: datetime
+    superseded_by: str | None = None
+
+    def __post_init__(self) -> None:
+        for name in ("observation", "diagnosed_issue", "tested_change"):
+            _require_text(getattr(self, name), name)
+        if self.status not in {"hypothesis", "validated", "rejected"}:
+            raise ValidationError("meta lesson status must be hypothesis, validated, or rejected")
+        if not 0 <= self.confidence <= 1:
+            raise ValidationError("meta lesson confidence must be between 0 and 1")
+
+
+@dataclass(frozen=True)
+class MutationRequest(SerializableRecord):
+    """A bounded request routed from an observed failure to the proposer."""
+
+    operator: MutationOperator
+    target_fields: list[str]
+    reason: str
+
+
+@dataclass(frozen=True)
 class EvolutionFold(SerializableRecord):
-    """One expanding-window discovery/admission fold."""
+    """One expanding-window signal-train/validation fold."""
 
     fold_id: str
     discovery_samples: list[LabeledSample]
@@ -511,7 +590,7 @@ class EvolutionFold(SerializableRecord):
 
 
 class SchemeProposer(Protocol):
-    """Candidate source independent of any interactive model session."""
+    """Candidate source independent of any one model provider."""
 
     def propose(
         self,
@@ -524,14 +603,30 @@ class SchemeProposer(Protocol):
 
 
 class SchemeFoldEvaluator(Protocol):
-    """Adapter from genomes into existing materialization and blind analysis."""
+    """Adapter from genomes to discovery, extraction, and blind analysis."""
 
     @property
     def evaluator_fingerprint(self) -> str:
-        """Return the version/provider/settings hash used by resume checks."""
+        """Return the provider/model/settings hash used by resume checks."""
 
     def materialize(self, genome: SchemeGenome, fold: EvolutionFold) -> MaterializedScheme:
-        """Learn a concrete scheme using discovery labels from this fold only."""
+        """Discover and freeze signals using signal-train labels only."""
+
+    def restore(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        fold: EvolutionFold,
+    ) -> None:
+        """Restore transient packet state without rediscovering frozen signals."""
+
+    def extract(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        sample: BlindSample,
+    ) -> dict[str, Any]:
+        """Return label-free frozen-signal extraction input for one sample."""
 
     def predict(
         self,
@@ -539,9 +634,7 @@ class SchemeFoldEvaluator(Protocol):
         materialized: MaterializedScheme,
         sample: BlindSample,
     ) -> PredictionRecord:
-        """Predict from one label-free admission sample."""
-
-
+        """Predict from one label-free validation sample."""
 
 
 def _hash_json(value: Any) -> str:

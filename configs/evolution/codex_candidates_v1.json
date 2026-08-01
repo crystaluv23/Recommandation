@@ -1,5 +1,5 @@
 {
-  "schema_version": "scheme-evolution-candidates-v0.1",
+  "schema_version": "scheme-evolution-candidates-v0.2",
   "authored_by": "Codex",
   "candidate_quota": {
     "local_refine": 0,
@@ -33,7 +33,8 @@
         "Extra source calls may raise cost without improving coverage.",
         "Controls can also contain genuine positive estimate or contract evidence."
       ],
-      "falsification_test": "Reject if paired admission PR-AUC/calibration utility does not improve, if the lower confidence bound is non-positive, or if add-back evidence raises false positives or cost beyond the fixed gate.",
+      "falsification_test": "Reject if validation binary F1 does not improve or if recovered recall produces excessive false positives or cost under the frozen A/B/C contract.",
+      "target_failure_type": "false_negative",
       "data_source_specs": [
         {
           "source_id": "sec_filings",
@@ -176,19 +177,20 @@
         "version": "signal-merge-event-evidence-v2"
       },
       "blind_analysis_prompt": {
-        "template": "Use only the anonymous point-in-time packet. Estimate three-month surge probability from binding event status, company-level causal transmission, fresh expectation changes, materiality, and contradictions. Cite supplied evidence refs and abstain when a causal link or baseline is missing.",
+        "template": "Use only the anonymous point-in-time packet. Classify the fixed six-month maximum multiple as A, B, or C from binding event status, company-level causal transmission, fresh expectation changes, materiality, and contradictions. Cite supplied evidence refs and never output a probability.",
         "variables": [
           "anonymous_packet",
           "materialized_signals"
         ],
         "output_json_schema": {
-          "probability_of_surge": "number",
-          "decision": "positive|negative|abstain",
-          "confidence": "low|medium|high",
-          "supporting_signals": "array",
-          "contradicting_signals": "array",
-          "missing_critical_information": "array",
-          "difficulty_codes": "array",
+          "predicted_class": "A|B|C",
+          "confidence_level": "low|medium|high",
+          "difficulty_level": "low|medium|high",
+          "difficulty_reasons": "array",
+          "decisive_signals": "array",
+          "conflicting_signals": "array",
+          "missing_information": "array",
+          "flip_conditions": "array",
           "evidence_source_ids": "array"
         },
         "model_constraints": {
@@ -196,7 +198,7 @@
           "web_tools_allowed": false,
           "identity_masked": true
         },
-        "version": "blind-analysis-event-evidence-v2"
+        "version": "blind-analysis-event-evidence-abc-v3"
       },
       "complexity_budget": {
         "max_sources": 4,
@@ -209,8 +211,8 @@
         "dominant_signal_family": "event_causality",
         "orientation": "recall",
         "specialist_sector": "universal",
-        "feature_weight": 0.25,
-        "probability_shift": 0.18,
+        "ordinal_shift": 1,
+        "ordinal_shift_min_strength": 0.7,
         "information_families": [
           "orders_contracts",
           "customer_capacity",
@@ -221,7 +223,7 @@
           "expectation_gap"
         ]
       },
-      "schema_version": "scheme-evolution-v0.1"
+      "schema_version": "scheme-evolution-v0.2"
     },
     {
       "genome_id": "info-genome-static-financial-ablation-v2",
@@ -243,7 +245,8 @@
       "possible_side_effects": [
         "Removing financial denominators can make materiality and liquidity risk harder to judge."
       ],
-      "falsification_test": "Reject the ablation if Brier score, worst-period F1, or false-positive control worsens beyond the fixed gate.",
+      "falsification_test": "Reject the ablation if validation binary F1 or false-positive control worsens under the frozen A/B/C contract.",
+      "target_failure_type": "false_positive",
       "data_source_specs": [
         {
           "source_id": "provider_company_news",
@@ -324,19 +327,20 @@
         "version": "signal-merge-event-ablation-v2"
       },
       "blind_analysis_prompt": {
-        "template": "Use only the anonymous event packet. Estimate three-month surge probability, cite supplied evidence refs, preserve contradictions, and abstain when materiality cannot be judged.",
+        "template": "Use only the anonymous event packet. Classify the fixed six-month maximum multiple as A, B, or C, cite supplied evidence refs, preserve contradictions, and never output a probability.",
         "variables": [
           "anonymous_packet",
           "materialized_signals"
         ],
         "output_json_schema": {
-          "probability_of_surge": "number",
-          "decision": "positive|negative|abstain",
-          "confidence": "low|medium|high",
-          "supporting_signals": "array",
-          "contradicting_signals": "array",
-          "missing_critical_information": "array",
-          "difficulty_codes": "array",
+          "predicted_class": "A|B|C",
+          "confidence_level": "low|medium|high",
+          "difficulty_level": "low|medium|high",
+          "difficulty_reasons": "array",
+          "decisive_signals": "array",
+          "conflicting_signals": "array",
+          "missing_information": "array",
+          "flip_conditions": "array",
           "evidence_source_ids": "array"
         },
         "model_constraints": {
@@ -344,7 +348,7 @@
           "web_tools_allowed": false,
           "identity_masked": true
         },
-        "version": "blind-analysis-event-ablation-v2"
+        "version": "blind-analysis-event-ablation-abc-v3"
       },
       "complexity_budget": {
         "max_sources": 2,
@@ -357,15 +361,14 @@
         "dominant_signal_family": "event_ablation",
         "orientation": "precision",
         "specialist_sector": "universal",
-        "feature_weight": 0.25,
-        "probability_shift": -0.02,
+        "ordinal_shift": -1,
         "information_families": [
           "orders_contracts",
           "deal_status_timing",
           "expectation_gap"
         ]
       },
-      "schema_version": "scheme-evolution-v0.1"
+      "schema_version": "scheme-evolution-v0.2"
     }
   ]
 }

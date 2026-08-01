@@ -1,17 +1,16 @@
-"""Bounded, proposal-only evolution of Ralph information-scheme genomes.
+"""Bounded, proposal-only, resumable information-scheme evolution.
 
-The engine owns search state and admission control. Existing data archives,
-packet renderers, blind researchers, and provider clients remain outside this
-module and can be connected through :class:`SchemeFoldEvaluator`.
+This controller reuses the repository's data, packet, and provider boundaries.
+It owns only candidate validation, per-sample checkpoints, fixed evaluation,
+Top-K selection, and structured experiment memory.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
-import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -19,10 +18,12 @@ from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.models import SerializableRecord, ValidationError
 from stock_opportunity_agent.research.scheme_evolution_evaluation import (
     _genome_complexity,
-    _validate_folds,
+    build_labeled_sample,
     build_walk_forward_folds,
     evaluate_predictions,
-    paired_admission_decision,
+    prediction_agreement,
+    realized_max_multiple,
+    validate_folds,
 )
 from stock_opportunity_agent.research.scheme_evolution_records import (
     SCHEME_EVOLUTION_SCHEMA_VERSION,
@@ -31,10 +32,10 @@ from stock_opportunity_agent.research.scheme_evolution_records import (
     BlindSample,
     DataSourceSpec,
     DataSplitSpec,
+    EvaluationContract,
     EvaluationSpec,
     EvolutionFold,
     FixedEvolutionSpec,
-    LabelSpec,
     LabeledSample,
     MaterializedScheme,
     MetaLesson,
@@ -52,7 +53,7 @@ from stock_opportunity_agent.research.scheme_evolution_records import (
 
 
 class MockSchemeProposer:
-    """Deterministic proposer for tests and offline vertical slices."""
+    """Deterministic candidate provider for tests and offline vertical slices."""
 
     def __init__(self, candidates: Iterable[SchemeGenome]) -> None:
         self.candidates = list(candidates)
@@ -64,14 +65,14 @@ class MockSchemeProposer:
         mutation_requests: list[MutationRequest],
         count: int,
     ) -> list[SchemeGenome]:
-        """Return the configured candidates without reading labels or sealed data."""
+        """Return configured candidates without reading validation labels."""
 
         del parents, meta_memory, mutation_requests
         return self.candidates[:count]
 
 
 class FileSchemeProposer:
-    """Load Codex- or human-authored candidates from a reviewed JSON file."""
+    """Load Codex- or human-authored candidates from reviewed JSON."""
 
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
@@ -83,7 +84,7 @@ class FileSchemeProposer:
         mutation_requests: list[MutationRequest],
         count: int,
     ) -> list[SchemeGenome]:
-        """Return candidates related to the supplied parents, capped by ``count``."""
+        """Return candidates related to the active parents, capped by ``count``."""
 
         del meta_memory, mutation_requests
         try:
@@ -98,24 +99,23 @@ class FileSchemeProposer:
         except (KeyError, TypeError, ValueError) as exc:
             raise ValidationError(f"invalid scheme candidate: {exc}") from exc
         parent_ids = {parent.genome_id for parent in parents}
-        related = [
+        return [
             candidate
             for candidate in candidates
             if not candidate.parent_ids or parent_ids.intersection(candidate.parent_ids)
-        ]
-        return related[:count]
+        ][:count]
 
 
 @dataclass(frozen=True)
 class CandidateRejection(SerializableRecord):
-    """Auditable rejection produced before any expensive evaluation."""
+    """Auditable rejection produced before expensive evaluation."""
 
     genome_id: str
     reasons: list[str]
 
 
 class CandidateValidator:
-    """Static schema, leakage, budget, and duplicate validation."""
+    """Static schema, leakage, budget, fixed-output, and duplicate validation."""
 
     def __init__(self, *, near_duplicate_threshold: float = 0.97) -> None:
         if not 0.8 <= near_duplicate_threshold <= 1:
@@ -169,32 +169,42 @@ class CandidateValidator:
 
 
 class MockSchemeFoldEvaluator:
-    """Network-free evaluator used only to prove the evolution mechanics."""
+    """Network-free A/B/C evaluator used only to prove orchestration."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, interrupt_after: int | None = None) -> None:
         self.observed_blind_inputs: list[dict[str, Any]] = []
+        self.interrupt_after = interrupt_after
+        self.predict_call_count = 0
 
     @property
     def evaluator_fingerprint(self) -> str:
-        return "mock-scheme-evaluator-v0.1"
+        return "mock-abc-scheme-evaluator-v0.2"
 
     def materialize(self, genome: SchemeGenome, fold: EvolutionFold) -> MaterializedScheme:
-        """Retain seed signals and hash only discovery ids plus labels."""
+        """Freeze seed signals and hash continuous discovery labels."""
 
         materialization_input = {
             "genome": genome_recipe_hash(genome),
             "fold_id": fold.fold_id,
             "discovery": [
-                {"sample_id": sample.sample_id, "label": sample.label}
+                {
+                    "sample_id": sample.sample_id,
+                    "realized_max_multiple": sample.realized_max_multiple,
+                    "true_class": sample.true_class,
+                    "is_surge": sample.is_surge,
+                }
                 for sample in fold.discovery_samples
             ],
         }
         input_hash = _hash_json(materialization_input)
-        output = {
-            "retained_signal_ids": [signal.signal_id for signal in genome.seed_signal_specs],
-            "input_hash": input_hash,
-        }
-        output_hash = _hash_json(output)
+        output_hash = _hash_json(
+            {
+                "retained_signal_ids": [
+                    signal.signal_id for signal in genome.seed_signal_specs
+                ],
+                "input_hash": input_hash,
+            }
+        )
         return MaterializedScheme(
             materialized_scheme_id=f"{genome.genome_id}:{fold.fold_id}:{output_hash[:12]}",
             genome_id=genome.genome_id,
@@ -206,51 +216,85 @@ class MockSchemeFoldEvaluator:
             output_hash=output_hash,
         )
 
+    def restore(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        fold: EvolutionFold,
+    ) -> None:
+        """Mock materialization has no transient state to restore."""
+
+        del genome, materialized, fold
+
+    def extract(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        sample: BlindSample,
+    ) -> dict[str, Any]:
+        """Return deterministic label-free mock signal observations."""
+
+        del genome
+        return {
+            "sample_id": sample.sample_id,
+            "materialized_scheme_id": materialized.materialized_scheme_id,
+            "signal_observations": [
+                {
+                    "signal_id": signal.signal_id,
+                    "observed_strength": float(sample.features.get("signal_strength", 0.0)),
+                    "evidence_source_ids": list(sample.evidence_source_ids),
+                }
+                for signal in materialized.retained_signals
+            ],
+        }
+
     def predict(
         self,
         genome: SchemeGenome,
         materialized: MaterializedScheme,
         sample: BlindSample,
     ) -> PredictionRecord:
-        """Produce a deterministic probability from label-free synthetic features."""
+        """Classify deterministic label-free signal strength into A/B/C."""
 
+        self.predict_call_count += 1
+        if self.interrupt_after is not None and self.predict_call_count > self.interrupt_after:
+            raise KeyboardInterrupt
         blind_payload = sample.to_dict()
         if set(blind_payload) & _BLIND_FORBIDDEN_VARIABLES:
             raise ValidationError("blind sample unexpectedly contains label fields")
         self.observed_blind_inputs.append(blind_payload)
         strength = float(sample.features.get("signal_strength", 0.0))
-        shift = float(genome.metadata.get("probability_shift", 0.0))
-        weight = float(genome.metadata.get("feature_weight", 0.55))
-        probability = min(0.99, max(0.01, 0.22 + weight * strength + shift))
-        abstain_band = float(genome.metadata.get("abstain_band", 0.0))
-        if abs(probability - 0.5) < abstain_band:
-            decision = "abstain"
-        else:
-            decision = "positive" if probability >= 0.5 else "negative"
-        confidence = "high" if abs(probability - 0.5) >= 0.3 else "medium"
-        if abs(probability - 0.5) < 0.12:
-            confidence = "low"
+        ordinal_shift = int(genome.metadata.get("ordinal_shift", 0))
+        shift_min_strength = float(genome.metadata.get("ordinal_shift_min_strength", 0.5))
+        class_index = 2 if strength >= 0.8 else 1 if strength >= 0.5 else 0
+        class_index = min(
+            2,
+            max(0, class_index + (ordinal_shift if strength >= shift_min_strength else 0)),
+        )
+        predicted_class = ("A", "B", "C")[class_index]
+        confidence = "high" if strength >= 0.85 or strength <= 0.15 else "medium"
+        difficulty = "high" if 0.4 <= strength <= 0.6 else "low"
         return PredictionRecord(
             genome_id=genome.genome_id,
             materialized_scheme_id=materialized.materialized_scheme_id,
             fold_id=materialized.fold_id,
             sample_id=sample.sample_id,
             prediction_time=sample.prediction_time,
-            probability_of_surge=round(probability, 6),
-            binary_decision=decision,
-            confidence=confidence,
-            supporting_signals=(
-                [signal.signal_id for signal in materialized.retained_signals]
-                if probability >= 0.5
-                else []
-            ),
-            contradicting_signals=[] if probability >= 0.5 else ["weak_signal_strength"],
-            missing_information=[],
-            difficulty_codes=["near_threshold"] if confidence == "low" else [],
+            predicted_class=predicted_class,
+            is_surge=predicted_class in {"B", "C"},
+            confidence_level=confidence,
+            difficulty_level=difficulty,
+            difficulty_reasons=["near_class_boundary"] if difficulty == "high" else [],
+            decisive_signals=[
+                signal.signal_id for signal in materialized.retained_signals
+            ],
+            conflicting_signals=[],
+            missing_information=[] if difficulty == "low" else ["event_materiality"],
+            flip_conditions=["materially different event evidence"],
             evidence_source_ids=list(sample.evidence_source_ids),
             model_metadata={
                 "provider": "local_mock",
-                "model": "deterministic",
+                "model": "deterministic_abc",
                 "temperature": 0.0,
                 "token_cost_usd": 0.0,
                 "data_cost_usd": sum(
@@ -258,73 +302,77 @@ class MockSchemeFoldEvaluator:
                 ),
                 "latency_ms": 0.0,
             },
+            input_hash="pending-engine-hash",
             raw_response_location=None,
         )
 
 
 @dataclass(frozen=True)
 class ArchiveEntry(SerializableRecord):
-    """One non-dominated candidate retained in a quality-diversity niche."""
+    """One evaluated scheme retained by fixed binary-F1 Top-K selection."""
 
-    niche: str
     genome: SchemeGenome
     evaluation: SchemeEvaluationResult
-    admitted: bool
-    complexity: float
+    binary_predictions_by_sample: dict[str, bool]
 
 
-class QualityDiversityArchive:
-    """Keep Pareto candidates by source, signal, cost, complexity, and orientation."""
+class TopKArchive:
+    """Keep behaviorally distinct schemes ordered by the fixed v1 tie-breaks."""
 
     def __init__(self, entries: Iterable[ArchiveEntry] = ()) -> None:
-        self._entries: dict[str, list[ArchiveEntry]] = {}
-        for entry in entries:
-            self._entries.setdefault(entry.niche, []).append(entry)
+        self._entries = list(entries)
 
     @property
     def entries(self) -> list[ArchiveEntry]:
-        """Return entries in deterministic niche/genome order."""
+        """Return the current selected schemes in ranking order."""
 
-        return sorted(
-            (entry for rows in self._entries.values() for entry in rows),
-            key=lambda item: (item.niche, item.genome.genome_id),
-        )
+        return list(self._entries)
 
-    def update(
+    def select(
         self,
-        genome: SchemeGenome,
-        evaluation: SchemeEvaluationResult,
+        candidates: Iterable[ArchiveEntry],
         *,
-        admitted: bool,
-    ) -> bool:
-        """Insert a candidate unless an incumbent in its niche dominates it."""
+        top_k: int,
+        similarity_threshold: float,
+        maximum_cost_usd: float,
+    ) -> list[ArchiveEntry]:
+        """Merge, rank, and behaviorally deduplicate evaluated schemes."""
 
-        niche = _niche_for_genome(genome)
-        entry = ArchiveEntry(
-            niche=niche,
-            genome=genome,
-            evaluation=evaluation,
-            admitted=admitted,
-            complexity=_genome_complexity(genome),
-        )
-        current = self._entries.setdefault(niche, [])
-        if any(_dominates(existing, entry) for existing in current):
-            return False
-        self._entries[niche] = [
-            existing for existing in current if not _dominates(entry, existing)
-        ] + [entry]
-        return True
+        by_id = {entry.genome.genome_id: entry for entry in [*self._entries, *candidates]}
+        ranked = sorted(by_id.values(), key=_archive_sort_key)
+        selected: list[ArchiveEntry] = []
+        for entry in ranked:
+            total_cost = entry.evaluation.data_cost_usd + entry.evaluation.token_cost_usd
+            if total_cost > maximum_cost_usd:
+                continue
+            duplicate = False
+            for retained in selected:
+                agreement = prediction_agreement(
+                    entry.binary_predictions_by_sample,
+                    retained.binary_predictions_by_sample,
+                )
+                if agreement is not None and agreement >= similarity_threshold:
+                    duplicate = True
+                    break
+            if duplicate:
+                continue
+            selected.append(entry)
+            if len(selected) >= top_k:
+                break
+        self._entries = selected
+        return self.entries
 
     def to_dict(self) -> dict[str, Any]:
-        """Return an exportable archive artifact."""
+        """Return a JSON artifact for the current Top-K."""
 
         return {
             "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
-            "entries": [entry.to_dict() for entry in self.entries],
+            "selection_metric": "binary_f1",
+            "entries": [entry.to_dict() for entry in self._entries],
         }
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "QualityDiversityArchive":
+    def from_dict(cls, data: Mapping[str, Any]) -> "TopKArchive":
         """Restore an archive written by :meth:`to_dict`."""
 
         rows = data.get("entries", [])
@@ -333,63 +381,287 @@ class QualityDiversityArchive:
         return cls(ArchiveEntry.from_dict(row) for row in rows)
 
 
-class EvolutionStateStore:
-    """File-backed, hash-checked state for resumable candidate evaluation."""
+# Compatibility import for callers of the v0.1 name; active semantics are Top-K.
+QualityDiversityArchive = TopKArchive
 
-    def __init__(self, root: str | Path) -> None:
+
+class EvolutionStateStore:
+    """Atomic run store with append-only events and per-sample checkpoints."""
+
+    _DIRECTORIES = (
+        "schemes",
+        "frozen_signals",
+        "signal_extractions",
+        "predictions",
+        "evaluations",
+        "prompts",
+        "cache",
+        "experiments",
+    )
+
+    def __init__(self, root: str | Path, *, run_id: str | None = None) -> None:
         self.root = Path(root)
+        self.run_id = run_id or self.root.name
+
+    @property
+    def state_path(self) -> Path:
+        return self.root / "state.json"
+
+    def initialize(
+        self,
+        fixed_spec: FixedEvolutionSpec,
+        *,
+        config: Mapping[str, Any] | None = None,
+    ) -> None:
+        """Create or verify a run and freeze its evaluation contract."""
+
+        self.root.mkdir(parents=True, exist_ok=True)
+        for name in self._DIRECTORIES:
+            (self.root / name).mkdir(parents=True, exist_ok=True)
+        contract_path = self.root / "evaluation_contract.json"
+        if contract_path.exists():
+            existing = EvaluationContract.from_dict(_read_json(contract_path))
+            if existing.content_hash != fixed_spec.evaluation_contract.content_hash:
+                raise ValidationError("frozen evaluation contract does not match resume request")
+        else:
+            _write_json(contract_path, fixed_spec.evaluation_contract.to_dict())
+        config_path = self.root / "config.json"
+        if not config_path.exists():
+            _write_json(
+                config_path,
+                {
+                    "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
+                    "run_id": self.run_id,
+                    "fixed_spec_hash": fixed_spec.content_hash,
+                    "random_seed": (config or {}).get("random_seed", 42),
+                    **dict(config or {}),
+                },
+            )
+        if not (self.root / "memory.json").exists():
+            _write_json(self.root / "memory.json", {"lessons": []})
+        if not (self.root / "events.jsonl").exists():
+            (self.root / "events.jsonl").touch()
+        if not self.state_path.exists():
+            self._write_state(
+                {
+                    "run_id": self.run_id,
+                    "current_iteration": 0,
+                    "status": "initialized",
+                    "top_k_scheme_ids": [],
+                    "current_tasks": [],
+                    "last_checkpoint_at": _now(),
+                    "fixed_spec_hash": fixed_spec.content_hash,
+                    "proposal_status": "proposal_only_pending_human_review",
+                    "final_test_accessed": False,
+                }
+            )
+            self.append_event("run_initialized", {"fixed_spec_hash": fixed_spec.content_hash})
+        else:
+            state = self.load_state()
+            if state.get("fixed_spec_hash") != fixed_spec.content_hash:
+                raise ValidationError("fixed evolution spec changed since run initialization")
+
+    def load_state(self) -> dict[str, Any]:
+        """Read current atomic state."""
+
+        if not self.state_path.exists():
+            raise ValidationError("run is not initialized")
+        return _read_json(self.state_path)
+
+    def begin_iteration(self, iteration: int, *, resume: bool) -> None:
+        """Start an iteration and recover interrupted running tasks as pending."""
+
+        state = self.load_state()
+        tasks = list(state.get("current_tasks", []))
+        if resume:
+            tasks = [
+                {**task, "status": "pending" if task.get("status") == "running" else task.get("status")}
+                for task in tasks
+            ]
+        state.update(
+            {
+                "current_iteration": iteration,
+                "status": "running",
+                "current_tasks": tasks,
+                "last_checkpoint_at": _now(),
+            }
+        )
+        self._write_state(state)
+        self.append_event("iteration_started", {"iteration": iteration, "resume": resume})
+
+    def checkpoint_task(
+        self,
+        task_id: str,
+        *,
+        status: str,
+        context_hash: str,
+        error: str | None = None,
+    ) -> None:
+        """Atomically record one prediction task transition."""
+
+        if status not in {"pending", "running", "completed", "failed"}:
+            raise ValidationError("invalid task status")
+        state = self.load_state()
+        by_id = {task["task_id"]: task for task in state.get("current_tasks", [])}
+        by_id[task_id] = {
+            "task_id": task_id,
+            "context_hash": context_hash,
+            "status": status,
+            "error": error,
+            "updated_at": _now(),
+        }
+        state["current_tasks"] = [by_id[key] for key in sorted(by_id)]
+        state["last_checkpoint_at"] = _now()
+        self._write_state(state)
+        self.append_event(
+            "task_status_changed",
+            {"task_id": task_id, "context_hash": context_hash, "status": status, "error": error},
+        )
+
+    def pause(self, reason: str) -> None:
+        """Persist a resumable pause, including KeyboardInterrupt."""
+
+        state = self.load_state()
+        state["status"] = "paused"
+        state["last_checkpoint_at"] = _now()
+        self._write_state(state)
+        self.append_event("run_paused", {"reason": reason})
+
+    def fail(self, error: str) -> None:
+        """Persist a failed but resumable state."""
+
+        state = self.load_state()
+        state["status"] = "failed"
+        state["last_checkpoint_at"] = _now()
+        self._write_state(state)
+        self.append_event("run_failed", {"error": error})
+
+    def complete(self, top_k_scheme_ids: Iterable[str]) -> None:
+        """Mark the current bounded run complete."""
+
+        state = self.load_state()
+        state.update(
+            {
+                "status": "completed",
+                "top_k_scheme_ids": list(top_k_scheme_ids),
+                "last_checkpoint_at": _now(),
+            }
+        )
+        self._write_state(state)
+        self.append_event("iteration_completed", {"top_k_scheme_ids": state["top_k_scheme_ids"]})
+
+    def append_event(self, event_type: str, payload: Mapping[str, Any]) -> None:
+        """Append one JSON event without rewriting prior history."""
+
+        event = {"timestamp": _now(), "event_type": event_type, **dict(payload)}
+        with (self.root / "events.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(event, sort_keys=True, ensure_ascii=False) + "\n")
+            handle.flush()
+
+    def write_scheme(self, genome: SchemeGenome) -> None:
+        """Persist a candidate and all prompt contracts separately."""
+
+        name = _safe_name(genome.genome_id)
+        _write_json(self.root / "schemes" / f"{name}.json", genome.to_dict())
+        prompt_dir = self.root / "prompts" / name
+        _write_json(prompt_dir / "signal_discovery.json", genome.contrastive_discovery_prompt.to_dict())
+        _write_json(prompt_dir / "signal_merge.json", genome.signal_merge_prompt.to_dict())
+        _write_json(prompt_dir / "analysis_system.json", genome.blind_analysis_prompt.to_dict())
+
+    def write_objective_prompt(self, text: str) -> None:
+        """Freeze the static candidate-generation objective in the run directory."""
+
+        if not text.strip():
+            raise ValidationError("evolution objective prompt must be non-empty")
+        path = self.root / "prompts" / "evolution_objective.md"
+        temporary = path.with_suffix(".md.tmp")
+        temporary.write_text(text.rstrip() + "\n", encoding="utf-8")
+        temporary.replace(path)
 
     def fold_dir(self, context_hash: str) -> Path:
         return self.root / "experiments" / context_hash
 
-    def load_fold(
-        self,
-        context_hash: str,
-    ) -> tuple[MaterializedScheme, list[PredictionRecord], SchemeEvaluationResult] | None:
-        """Load a completed fold only when every required artifact exists."""
-
-        base = self.fold_dir(context_hash)
-        required = (
-            base / "materialized_scheme.json",
-            base / "predictions.json",
-            base / "evaluation.json",
-            base / "context.json",
-        )
-        if not all(path.exists() for path in required):
-            return None
-        context = json.loads((base / "context.json").read_text(encoding="utf-8"))
-        if context.get("context_hash") != context_hash:
-            raise ValidationError("resume context hash mismatch")
-        materialized = MaterializedScheme.from_dict(
-            json.loads((base / "materialized_scheme.json").read_text(encoding="utf-8"))
-        )
-        predictions_raw = json.loads((base / "predictions.json").read_text(encoding="utf-8"))
-        predictions = [PredictionRecord.from_dict(row) for row in predictions_raw["predictions"]]
-        evaluation = SchemeEvaluationResult.from_dict(
-            json.loads((base / "evaluation.json").read_text(encoding="utf-8"))
-        )
-        return materialized, predictions, evaluation
+    def load_materialized(self, context_hash: str) -> MaterializedScheme | None:
+        path = self.fold_dir(context_hash) / "materialized_scheme.json"
+        return MaterializedScheme.from_dict(_read_json(path)) if path.exists() else None
 
     def write_materialized(self, context_hash: str, materialized: MaterializedScheme) -> None:
-        """Persist materialization before any blind prediction."""
+        """Persist frozen signals before any validation prediction."""
 
-        _write_json(self.fold_dir(context_hash) / "materialized_scheme.json", materialized.to_dict())
+        payload = materialized.to_dict()
+        _write_json(self.fold_dir(context_hash) / "materialized_scheme.json", payload)
+        _write_json(
+            self.root
+            / "frozen_signals"
+            / _safe_name(materialized.genome_id)
+            / f"{_safe_name(materialized.fold_id)}.json",
+            payload,
+        )
 
-    def write_predictions(
+    def load_prediction(
         self,
         context_hash: str,
-        predictions: Iterable[PredictionRecord],
-    ) -> None:
-        """Durably write all predictions before labels are scored."""
+        sample_id: str,
+        *,
+        input_hash: str,
+    ) -> PredictionRecord | None:
+        path = self._prediction_path(context_hash, sample_id)
+        if not path.exists():
+            return None
+        prediction = PredictionRecord.from_dict(_read_json(path))
+        if prediction.input_hash != input_hash:
+            return None
+        return prediction
 
+    def write_prediction(self, context_hash: str, prediction: PredictionRecord) -> Path:
+        """Atomically persist one stock prediction immediately after completion."""
+
+        path = self._prediction_path(context_hash, prediction.sample_id)
+        payload = prediction.to_dict()
+        _write_json(path, payload)
         _write_json(
-            self.fold_dir(context_hash) / "predictions.json",
-            {
-                "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
-                "predictions_persisted_before_evaluation": True,
-                "predictions": [prediction.to_dict() for prediction in predictions],
-            },
+            self.root
+            / "predictions"
+            / _safe_name(prediction.genome_id)
+            / _safe_name(prediction.fold_id)
+            / f"{_safe_name(prediction.sample_id)}.json",
+            payload,
         )
+        return path
+
+    def load_signal_extraction(
+        self,
+        context_hash: str,
+        sample_id: str,
+        *,
+        input_hash: str,
+    ) -> dict[str, Any] | None:
+        """Reuse one extraction only when its exact label-free input matches."""
+
+        path = self._extraction_path(context_hash, sample_id)
+        if not path.exists():
+            return None
+        payload = _read_json(path)
+        return payload if payload.get("input_hash") == input_hash else None
+
+    def write_signal_extraction(
+        self,
+        context_hash: str,
+        sample_id: str,
+        payload: Mapping[str, Any],
+    ) -> Path:
+        """Atomically persist one frozen-signal extraction before analysis."""
+
+        path = self._extraction_path(context_hash, sample_id)
+        _write_json(path, dict(payload))
+        _write_json(
+            self.root
+            / "signal_extractions"
+            / context_hash
+            / f"{_safe_name(sample_id)}.json",
+            dict(payload),
+        )
+        return path
 
     def write_evaluation(
         self,
@@ -398,15 +670,21 @@ class EvolutionStateStore:
         *,
         context: Mapping[str, Any],
     ) -> None:
-        """Write label-aware evaluation after the prediction artifact exists."""
+        """Write label-aware evaluation only after prediction files exist."""
 
-        prediction_path = self.fold_dir(context_hash) / "predictions.json"
-        if not prediction_path.exists():
+        prediction_dir = self.fold_dir(context_hash) / "predictions"
+        if not prediction_dir.exists() or not any(prediction_dir.glob("*.json")):
             raise ValidationError("predictions must be persisted before evaluation")
         _write_json(self.fold_dir(context_hash) / "evaluation.json", evaluation.to_dict())
         _write_json(
             self.fold_dir(context_hash) / "context.json",
             {**dict(context), "context_hash": context_hash},
+        )
+        _write_json(
+            self.root
+            / "evaluations"
+            / f"{_safe_name(evaluation.genome_id)}-{context_hash[:12]}.json",
+            evaluation.to_dict(),
         )
 
     def write_run_artifacts(
@@ -416,39 +694,22 @@ class EvolutionStateStore:
         fixed_spec: FixedEvolutionSpec,
         rejections: Iterable[CandidateRejection],
     ) -> dict[str, Path]:
-        """Write final state, archive, experiments, and a compact report."""
+        """Write Top-K, experiments, meta-memory, and compact report."""
 
-        self.root.mkdir(parents=True, exist_ok=True)
         paths = {
-            "state": self.root / "evolution_state.json",
-            "archive": self.root / "quality_diversity_archive.json",
+            "state": self.state_path,
+            "top_k": self.root / "top_k.json",
             "experiments": self.root / "scheme_experiments.json",
-            "meta_lessons": self.root / "meta_lessons.json",
+            "meta_lessons": self.root / "memory.json",
             "report": self.root / "experiment_report.json",
         }
-        _write_json(
-            paths["state"],
-            {
-                "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
-                "fixed_spec_hash": fixed_spec.content_hash,
-                "incumbent": result.incumbent.to_dict(),
-                "completed_experiment_ids": [
-                    experiment.experiment_id for experiment in result.experiments
-                ],
-                "candidate_rejections": [item.to_dict() for item in rejections],
-                "next_mutation_requests": [
-                    item.to_dict() for item in result.mutation_requests
-                ],
-                "proposal_status": "proposal_only_pending_human_review",
-                "sealed_test_included": False,
-            },
-        )
-        _write_json(paths["archive"], result.archive.to_dict())
+        _write_json(paths["top_k"], result.archive.to_dict())
         _write_json(
             paths["experiments"],
             {
                 "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
                 "experiments": [item.to_dict() for item in result.experiments],
+                "candidate_rejections": [item.to_dict() for item in rejections],
             },
         )
         _write_json(
@@ -456,41 +717,91 @@ class EvolutionStateStore:
             {
                 "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
                 "lessons": [item.to_dict() for item in result.meta_lessons],
-                "next_mutation_requests": [
-                    item.to_dict() for item in result.mutation_requests
-                ],
-                "contains_per_sample_labels": False,
+                "next_mutation_requests": [item.to_dict() for item in result.mutation_requests],
+                "contains_validation_diagnostics": True,
+                "contains_final_test_labels": False,
             },
         )
         _write_json(
             paths["report"],
             {
                 "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
+                "fixed_spec_hash": fixed_spec.content_hash,
+                "evaluation_contract_hash": fixed_spec.evaluation_contract.content_hash,
                 "incumbent_genome_id": result.incumbent.genome_id,
+                "top_k_scheme_ids": [entry.genome.genome_id for entry in result.top_k],
                 "evaluated_candidate_count": len(result.experiments),
-                "archive_niche_count": len({entry.niche for entry in result.archive.entries}),
-                "archive_entry_count": len(result.archive.entries),
-                "admitted_candidate_ids": [
-                    item.candidate_genome_id
-                    for item in result.experiments
-                    if item.admission_decision.admitted
-                ],
-                "meta_lesson_count": len(result.meta_lessons),
-                "next_mutation_request_count": len(result.mutation_requests),
+                "selection_metric": "binary_f1",
                 "synthetic_or_mock_result_is_effectiveness_evidence": False,
-                "sealed_test_included": False,
+                "final_test_accessed": False,
+                "proposal_status": "proposal_only_pending_human_review",
             },
         )
         return paths
 
+    def write_final_test_artifacts(
+        self,
+        evaluation: SchemeEvaluationResult,
+        predictions: Iterable[PredictionRecord],
+        extractions: Mapping[str, Mapping[str, Any]],
+    ) -> dict[str, Path]:
+        """Persist an explicitly invoked one-shot final-test result separately."""
+
+        base = self.root / "final_test"
+        prediction_rows = list(predictions)
+        for prediction in prediction_rows:
+            _write_json(
+                base / "predictions" / f"{_safe_name(prediction.sample_id)}.json",
+                prediction.to_dict(),
+            )
+        for sample_id, extraction in extractions.items():
+            _write_json(
+                base / "signal_extractions" / f"{_safe_name(sample_id)}.json",
+                dict(extraction),
+            )
+        paths = {
+            "evaluation": base / "evaluation.json",
+            "manifest": base / "manifest.json",
+        }
+        _write_json(paths["evaluation"], evaluation.to_dict())
+        _write_json(
+            paths["manifest"],
+            {
+                "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
+                "explicit_final_test_command": True,
+                "genome_id": evaluation.genome_id,
+                "sample_count": evaluation.sample_count,
+                "prediction_count": len(prediction_rows),
+            },
+        )
+        state = self.load_state()
+        state["final_test_accessed"] = True
+        state["last_checkpoint_at"] = _now()
+        self._write_state(state)
+        self.append_event(
+            "final_test_completed",
+            {"genome_id": evaluation.genome_id, "sample_count": evaluation.sample_count},
+        )
+        return paths
+
+    def _prediction_path(self, context_hash: str, sample_id: str) -> Path:
+        return self.fold_dir(context_hash) / "predictions" / f"{_safe_name(sample_id)}.json"
+
+    def _extraction_path(self, context_hash: str, sample_id: str) -> Path:
+        return self.fold_dir(context_hash) / "signal_extractions" / f"{_safe_name(sample_id)}.json"
+
+    def _write_state(self, state: Mapping[str, Any]) -> None:
+        _write_json(self.state_path, dict(state))
+
 
 @dataclass(frozen=True)
 class EvolutionRunResult:
-    """Result of one bounded candidate batch."""
+    """Result of one bounded generation."""
 
     incumbent: SchemeGenome
+    top_k: list[ArchiveEntry]
     experiments: list[SchemeExperimentRecord]
-    archive: QualityDiversityArchive
+    archive: TopKArchive
     rejections: list[CandidateRejection]
     meta_lessons: list[MetaLesson]
     mutation_requests: list[MutationRequest]
@@ -498,7 +809,7 @@ class EvolutionRunResult:
 
 
 class SchemeEvolutionEngine:
-    """Evaluate a bounded proposal batch under fixed, non-evolvable rules."""
+    """Evaluate one candidate batch under a frozen A/B/C contract."""
 
     def __init__(
         self,
@@ -507,7 +818,7 @@ class SchemeEvolutionEngine:
         evaluator: SchemeFoldEvaluator,
         fixed_spec: FixedEvolutionSpec,
         state_store: EvolutionStateStore,
-        archive: QualityDiversityArchive | None = None,
+        archive: TopKArchive | None = None,
         validator: CandidateValidator | None = None,
         max_candidates: int = 8,
         max_api_cost_usd: float = 20.0,
@@ -520,7 +831,7 @@ class SchemeEvolutionEngine:
         self.evaluator = evaluator
         self.fixed_spec = fixed_spec
         self.state_store = state_store
-        self.archive = archive or QualityDiversityArchive()
+        self.archive = archive or TopKArchive()
         self.validator = validator or CandidateValidator()
         self.max_candidates = max_candidates
         self.max_api_cost_usd = max_api_cost_usd
@@ -536,131 +847,110 @@ class SchemeEvolutionEngine:
         resume: bool = False,
         git_commit: str | None = None,
     ) -> EvolutionRunResult:
-        """Run one bounded generation and return a proposal-only incumbent."""
+        """Run one bounded generation and return proposal-only Top-K schemes."""
 
         fold_list = list(folds)
         if not fold_list:
             raise ValidationError("scheme evolution requires at least one fold")
-        _validate_folds(fold_list, self.fixed_spec)
-        requested = min(candidate_count, self.max_candidates)
-        proposed = self.proposer.propose(
-            [incumbent],
-            list(meta_memory),
-            list(mutation_requests),
-            requested,
+        validate_folds(fold_list, self.fixed_spec)
+        self.state_store.initialize(self.fixed_spec)
+        iteration = max(
+            incumbent.generation + 1,
+            int(self.state_store.load_state().get("current_iteration", 0)) + 1,
         )
-        accepted: list[SchemeGenome] = []
-        rejections: list[CandidateRejection] = []
-        for candidate in proposed:
-            reasons = self.validator.validate(
-                candidate,
-                parents=[incumbent],
-                accepted=accepted,
+        self.state_store.begin_iteration(iteration, resume=resume)
+        try:
+            parents = [entry.genome for entry in self.archive.entries] or [incumbent]
+            requested = min(candidate_count, self.max_candidates)
+            proposed = self.proposer.propose(
+                parents,
+                list(meta_memory),
+                list(mutation_requests),
+                requested,
             )
-            if reasons:
-                rejections.append(CandidateRejection(candidate.genome_id, reasons))
-            else:
-                accepted.append(candidate)
-        incumbent_predictions, incumbent_evaluation = self._evaluate_genome(
-            incumbent,
-            fold_list,
-            resume=resume,
-        )
-        self.archive.update(incumbent, incumbent_evaluation, admitted=True)
-        experiments: list[SchemeExperimentRecord] = []
-        best = incumbent
-        best_lower_bound = 0.0
-        for candidate in accepted:
-            started_at = datetime.now(timezone.utc)
-            predictions, evaluation = self._evaluate_genome(
-                candidate,
-                fold_list,
-                resume=resume,
-            )
-            total_cost = evaluation.data_cost_usd + evaluation.token_cost_usd
-            if total_cost > self.max_api_cost_usd:
-                admission = AdmissionDecision(
-                    status="cost_budget_exceeded",
-                    admitted=False,
-                    utility_difference=evaluation.primary_utility
-                    - incumbent_evaluation.primary_utility,
-                    confidence_interval=[],
-                    paired_block_count=0,
-                    reasons=["candidate exceeded run-level API/data cost budget"],
+            accepted: list[SchemeGenome] = []
+            rejections: list[CandidateRejection] = []
+            for candidate in proposed:
+                reasons = self.validator.validate(
+                    candidate,
+                    parents=parents,
+                    accepted=accepted,
                 )
-            else:
-                admission = paired_admission_decision(
-                    incumbent_predictions,
-                    predictions,
+                if reasons:
+                    rejections.append(CandidateRejection(candidate.genome_id, reasons))
+                else:
+                    accepted.append(candidate)
+                    self.state_store.write_scheme(candidate)
+            for parent in parents:
+                self.state_store.write_scheme(parent)
+            evaluated: dict[str, tuple[SchemeGenome, list[PredictionRecord], SchemeEvaluationResult]] = {}
+            for genome in [*parents, *accepted]:
+                if genome.genome_id in evaluated:
+                    continue
+                predictions, evaluation = self._evaluate_genome(
+                    genome,
                     fold_list,
-                    incumbent=incumbent_evaluation,
-                    candidate=evaluation,
-                    spec=self.fixed_spec.evaluation_spec,
-                    candidate_complexity=_genome_complexity(candidate),
-                    incumbent_complexity=_genome_complexity(incumbent),
+                    resume=resume,
                 )
-            completed_at = datetime.now(timezone.utc)
-            experiment_id = _hash_json(
-                {
-                    "fixed_spec": self.fixed_spec.content_hash,
-                    "candidate": genome_recipe_hash(candidate),
-                    "incumbent": genome_recipe_hash(incumbent),
-                    "folds": [fold.fold_id for fold in fold_list],
-                    "evaluator": self.evaluator.evaluator_fingerprint,
-                }
+                evaluated[genome.genome_id] = (genome, predictions, evaluation)
+            new_entries = [
+                ArchiveEntry(
+                    genome=genome,
+                    evaluation=evaluation,
+                    binary_predictions_by_sample=evaluation.binary_predictions_by_sample,
+                )
+                for genome, _predictions, evaluation in evaluated.values()
+            ]
+            top_k = self.archive.select(
+                new_entries,
+                top_k=self.fixed_spec.evaluation_spec.top_k,
+                similarity_threshold=self.fixed_spec.evaluation_spec.prediction_similarity_threshold,
+                maximum_cost_usd=min(
+                    self.fixed_spec.evaluation_spec.maximum_cost_usd,
+                    self.max_api_cost_usd,
+                ),
             )
-            record = SchemeExperimentRecord(
-                experiment_id=experiment_id,
-                parent_genome_ids=list(candidate.parent_ids),
-                candidate_genome_id=candidate.genome_id,
-                mutation_operator=candidate.mutation_operator,
-                data_split_version=self.fixed_spec.split_spec.version,
-                label_spec_version=self.fixed_spec.label_spec.version,
-                configuration_hashes={
-                    "fixed_spec": self.fixed_spec.content_hash,
-                    "candidate_recipe": genome_recipe_hash(candidate),
-                    "evaluator": self.evaluator.evaluator_fingerprint,
-                },
-                evaluation_result=evaluation,
-                admission_decision=admission,
-                failure_reason=None if admission.admitted else "; ".join(admission.reasons),
-                started_at=started_at,
-                completed_at=completed_at,
-                git_commit=git_commit,
+            if not top_k:
+                raise ValidationError("no scheme remained after fixed cost and Top-K gates")
+            retained_ids = {entry.genome.genome_id for entry in top_k}
+            parent_evaluations = {
+                parent.genome_id: evaluated[parent.genome_id][2]
+                for parent in parents
+            }
+            experiments = [
+                self._experiment_record(
+                    candidate,
+                    evaluated[candidate.genome_id][2],
+                    parent_evaluations,
+                    retained=candidate.genome_id in retained_ids,
+                    git_commit=git_commit,
+                )
+                for candidate in accepted
+            ]
+            lessons, requests = derive_meta_lessons(experiments)
+            provisional = EvolutionRunResult(
+                incumbent=top_k[0].genome,
+                top_k=top_k,
+                experiments=experiments,
+                archive=self.archive,
+                rejections=rejections,
+                meta_lessons=lessons,
+                mutation_requests=requests,
+                artifact_paths={},
             )
-            experiments.append(record)
-            self.archive.update(candidate, evaluation, admitted=admission.admitted)
-            lower_bound = admission.confidence_interval[0] if admission.confidence_interval else math.nan
-            if admission.admitted and not math.isnan(lower_bound) and lower_bound > best_lower_bound:
-                best = candidate
-                best_lower_bound = lower_bound
-        generated_lessons, next_mutations = derive_meta_lessons(
-            experiments,
-            spec=self.fixed_spec.evaluation_spec,
-        )
-        provisional = EvolutionRunResult(
-            incumbent=best,
-            experiments=experiments,
-            archive=self.archive,
-            rejections=rejections,
-            meta_lessons=generated_lessons,
-            mutation_requests=next_mutations,
-            artifact_paths={},
-        )
-        paths = self.state_store.write_run_artifacts(
-            provisional,
-            fixed_spec=self.fixed_spec,
-            rejections=rejections,
-        )
-        return EvolutionRunResult(
-            incumbent=best,
-            experiments=experiments,
-            archive=self.archive,
-            rejections=rejections,
-            meta_lessons=generated_lessons,
-            mutation_requests=next_mutations,
-            artifact_paths=paths,
-        )
+            paths = self.state_store.write_run_artifacts(
+                provisional,
+                fixed_spec=self.fixed_spec,
+                rejections=rejections,
+            )
+            self.state_store.complete(entry.genome.genome_id for entry in top_k)
+            return replace(provisional, artifact_paths=paths)
+        except KeyboardInterrupt:
+            self.state_store.pause("keyboard_interrupt")
+            raise
+        except Exception as exc:
+            self.state_store.fail(f"{type(exc).__name__}: {exc}")
+            raise
 
     def _evaluate_genome(
         self,
@@ -670,59 +960,205 @@ class SchemeEvolutionEngine:
         resume: bool,
     ) -> tuple[list[PredictionRecord], SchemeEvaluationResult]:
         all_predictions: list[PredictionRecord] = []
-        labels: dict[str, int] = {}
-        metadata: dict[str, LabeledSample] = {}
+        labels: dict[str, LabeledSample] = {}
         for fold in folds:
             context = {
                 "fixed_spec_hash": self.fixed_spec.content_hash,
+                "evaluation_contract_hash": self.fixed_spec.evaluation_contract.content_hash,
                 "genome_recipe_hash": genome_recipe_hash(genome),
                 "fold_id": fold.fold_id,
                 "fold_fingerprint": _hash_json(fold.to_dict()),
                 "evaluator_fingerprint": self.evaluator.evaluator_fingerprint,
             }
             context_hash = _hash_json(context)
-            cached = self.state_store.load_fold(context_hash) if resume else None
-            if cached is not None:
-                _materialized, predictions, _evaluation = cached
-            else:
+            materialized = self.state_store.load_materialized(context_hash) if resume else None
+            if materialized is None:
                 materialized = self.evaluator.materialize(genome, fold)
                 self.state_store.write_materialized(context_hash, materialized)
-                predictions = [
-                    self.evaluator.predict(genome, materialized, sample.blind_view())
-                    for sample in fold.admission_samples
-                ]
-                self.state_store.write_predictions(context_hash, predictions)
-                fold_labels = {sample.sample_id: sample.label for sample in fold.admission_samples}
-                fold_metadata = {sample.sample_id: sample for sample in fold.admission_samples}
-                fold_evaluation = evaluate_predictions(
-                    genome,
-                    predictions,
-                    fold_labels,
-                    fold_metadata,
-                    spec=self.fixed_spec.evaluation_spec,
-                )
-                self.state_store.write_evaluation(
-                    context_hash,
-                    fold_evaluation,
-                    context=context,
-                )
-            all_predictions.extend(predictions)
+            else:
+                self.evaluator.restore(genome, materialized, fold)
+            fold_predictions: list[PredictionRecord] = []
             for sample in fold.admission_samples:
+                blind = sample.blind_view()
+                extraction_input_hash = _hash_json(
+                    {
+                        "genome_recipe_hash": genome_recipe_hash(genome),
+                        "materialized_output_hash": materialized.output_hash,
+                        "blind_sample": blind.to_dict(),
+                    }
+                )
+                extraction = (
+                    self.state_store.load_signal_extraction(
+                        context_hash,
+                        sample.sample_id,
+                        input_hash=extraction_input_hash,
+                    )
+                    if resume
+                    else None
+                )
+                if extraction is None:
+                    extraction = {
+                        "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
+                        "input_hash": extraction_input_hash,
+                        "extraction": self.evaluator.extract(
+                            genome,
+                            materialized,
+                            blind,
+                        ),
+                    }
+                    self.state_store.write_signal_extraction(
+                        context_hash,
+                        sample.sample_id,
+                        extraction,
+                    )
+                input_hash = _hash_json(
+                    {
+                        "genome_recipe_hash": genome_recipe_hash(genome),
+                        "materialized_output_hash": materialized.output_hash,
+                        "blind_sample": blind.to_dict(),
+                        "signal_extraction_hash": _hash_json(extraction),
+                        "evaluator_fingerprint": self.evaluator.evaluator_fingerprint,
+                    }
+                )
+                task_id = f"{genome.genome_id}:{fold.fold_id}:{sample.sample_id}"
+                cached = (
+                    self.state_store.load_prediction(
+                        context_hash,
+                        sample.sample_id,
+                        input_hash=input_hash,
+                    )
+                    if resume
+                    else None
+                )
+                if cached is not None:
+                    prediction = cached
+                    self.state_store.checkpoint_task(
+                        task_id,
+                        status="completed",
+                        context_hash=context_hash,
+                    )
+                else:
+                    self.state_store.checkpoint_task(
+                        task_id,
+                        status="running",
+                        context_hash=context_hash,
+                    )
+                    try:
+                        prediction = self.evaluator.predict(genome, materialized, blind)
+                    except KeyboardInterrupt:
+                        self.state_store.checkpoint_task(
+                            task_id,
+                            status="pending",
+                            context_hash=context_hash,
+                            error="keyboard_interrupt",
+                        )
+                        raise
+                    except Exception as exc:
+                        self.state_store.checkpoint_task(
+                            task_id,
+                            status="failed",
+                            context_hash=context_hash,
+                            error=f"{type(exc).__name__}: {exc}",
+                        )
+                        raise
+                    prediction = replace(prediction, input_hash=input_hash)
+                    self.state_store.write_prediction(context_hash, prediction)
+                    self.state_store.checkpoint_task(
+                        task_id,
+                        status="completed",
+                        context_hash=context_hash,
+                    )
+                fold_predictions.append(prediction)
                 if sample.sample_id in labels:
-                    raise ValidationError("admission sample appears in more than one selected fold")
-                labels[sample.sample_id] = sample.label
-                metadata[sample.sample_id] = sample
-        return all_predictions, evaluate_predictions(
-            genome,
-            all_predictions,
-            labels,
-            metadata,
-            spec=self.fixed_spec.evaluation_spec,
+                    raise ValidationError("validation sample appears in more than one selected fold")
+                labels[sample.sample_id] = sample
+            fold_evaluation = evaluate_predictions(
+                genome,
+                fold_predictions,
+                {sample.sample_id: sample for sample in fold.admission_samples},
+            )
+            self.state_store.write_evaluation(
+                context_hash,
+                fold_evaluation,
+                context=context,
+            )
+            all_predictions.extend(fold_predictions)
+        return all_predictions, evaluate_predictions(genome, all_predictions, labels)
+
+    def _experiment_record(
+        self,
+        candidate: SchemeGenome,
+        evaluation: SchemeEvaluationResult,
+        parent_evaluations: Mapping[str, SchemeEvaluationResult],
+        *,
+        retained: bool,
+        git_commit: str | None,
+    ) -> SchemeExperimentRecord:
+        parent_rows = [
+            parent_evaluations[parent_id]
+            for parent_id in candidate.parent_ids
+            if parent_id in parent_evaluations
+        ]
+        baseline = max(parent_rows, key=lambda row: row.binary_f1) if parent_rows else next(
+            iter(parent_evaluations.values())
+        )
+        deltas = {
+            "binary_f1": evaluation.binary_f1 - baseline.binary_f1,
+            "binary_precision": evaluation.binary_precision - baseline.binary_precision,
+            "binary_recall": evaluation.binary_recall - baseline.binary_recall,
+            "multiclass_macro_f1": evaluation.multiclass_macro_f1 - baseline.multiclass_macro_f1,
+            "class_c_recall": evaluation.class_c_recall - baseline.class_c_recall,
+            "ordinal_distance": evaluation.ordinal_distance - baseline.ordinal_distance,
+        }
+        total_cost = evaluation.data_cost_usd + evaluation.token_cost_usd
+        cost_limit = min(
+            self.fixed_spec.evaluation_spec.maximum_cost_usd,
+            self.max_api_cost_usd,
+        )
+        reasons: list[str] = []
+        if total_cost > cost_limit:
+            reasons.append("candidate exceeded the fixed cost ceiling")
+        if not retained:
+            reasons.append("candidate was not retained by binary-F1 Top-K behavior deduplication")
+        admission = AdmissionDecision(
+            status="top_k_retained" if retained and not reasons else "not_retained",
+            admitted=retained and not reasons,
+            primary_metric_delta=round(deltas["binary_f1"], 8),
+            diagnostic_metric_deltas={key: round(value, 8) for key, value in deltas.items()},
+            reasons=reasons,
+        )
+        now = datetime.now(timezone.utc)
+        experiment_id = _hash_json(
+            {
+                "fixed_spec": self.fixed_spec.content_hash,
+                "candidate": genome_recipe_hash(candidate),
+                "parents": sorted(candidate.parent_ids),
+                "evaluator": self.evaluator.evaluator_fingerprint,
+            }
+        )
+        return SchemeExperimentRecord(
+            experiment_id=experiment_id,
+            parent_genome_ids=list(candidate.parent_ids),
+            candidate_genome_id=candidate.genome_id,
+            mutation_operator=candidate.mutation_operator,
+            data_split_version=self.fixed_spec.split_spec.version,
+            evaluation_contract_hash=self.fixed_spec.evaluation_contract.content_hash,
+            configuration_hashes={
+                "fixed_spec": self.fixed_spec.content_hash,
+                "candidate_recipe": genome_recipe_hash(candidate),
+                "evaluator": self.evaluator.evaluator_fingerprint,
+            },
+            evaluation_result=evaluation,
+            admission_decision=admission,
+            failure_reason=None if admission.admitted else "; ".join(admission.reasons),
+            started_at=now,
+            completed_at=now,
+            git_commit=git_commit,
         )
 
 
 def genome_recipe_hash(genome: SchemeGenome) -> str:
-    """Hash evolvable recipe content while ignoring identity and lineage metadata."""
+    """Hash evolvable recipe content while ignoring identity and lineage."""
 
     data = genome.to_dict()
     for key in (
@@ -735,166 +1171,111 @@ def genome_recipe_hash(genome: SchemeGenome) -> str:
         "expected_benefit",
         "possible_side_effects",
         "falsification_test",
+        "target_failure_type",
     ):
         data.pop(key, None)
     return _hash_json(data)
 
 
 def merge_meta_lessons(lessons: Iterable[MetaLesson]) -> list[MetaLesson]:
-    """Merge equivalent scoped lessons without unbounded free-text accumulation."""
+    """Merge exact diagnosed issues without accumulating free-form reflections."""
 
     grouped: dict[tuple[str, str], list[MetaLesson]] = {}
     for lesson in lessons:
-        key = (_normalize_text(lesson.scope), _normalize_text(lesson.lesson))
+        key = (_normalize_text(lesson.diagnosed_issue), lesson.status)
         grouped.setdefault(key, []).append(lesson)
     merged: list[MetaLesson] = []
     for rows in grouped.values():
         latest = max(rows, key=lambda item: item.created_at)
-        positive = sum(item.positive_cases_count for item in rows)
-        counter = sum(item.counterexamples_count for item in rows)
-        weight = max(1, positive + counter)
-        effect = sum(
-            item.estimated_effect
-            * max(1, item.positive_cases_count + item.counterexamples_count)
-            for item in rows
-        ) / sum(
-            max(1, item.positive_cases_count + item.counterexamples_count)
-            for item in rows
-        )
         merged.append(
-            MetaLesson(
-                lesson=latest.lesson,
-                scope=latest.scope,
+            replace(
+                latest,
                 supporting_experiment_ids=sorted(
                     {
                         experiment_id
-                        for item in rows
-                        for experiment_id in item.supporting_experiment_ids
+                        for row in rows
+                        for experiment_id in row.supporting_experiment_ids
                     }
                 ),
-                positive_cases_count=positive,
-                counterexamples_count=counter,
-                estimated_effect=round(effect, 8),
-                confidence=round(min(1.0, max(item.confidence for item in rows) * weight / (weight + 2)), 8),
-                suggested_mutation_operators=sorted(
-                    {
-                        operator
-                        for item in rows
-                        for operator in item.suggested_mutation_operators
-                    },
-                    key=lambda item: item.value,
-                ),
-                created_at=latest.created_at,
-                superseded_by=latest.superseded_by,
+                confidence=round(sum(row.confidence for row in rows) / len(rows), 8),
             )
         )
-    return sorted(merged, key=lambda item: (-item.confidence, item.scope, item.lesson))
+    return sorted(merged, key=lambda item: (-item.confidence, item.status, item.observation))
 
 
 def derive_meta_lessons(
     experiments: Iterable[SchemeExperimentRecord],
-    *,
-    spec: EvaluationSpec,
 ) -> tuple[list[MetaLesson], list[MutationRequest]]:
-    """Aggregate candidate-level outcomes without exposing per-sample labels."""
+    """Turn measured errors and child deltas into testable structured memory."""
 
     lessons: list[MetaLesson] = []
     requests: list[MutationRequest] = []
     for experiment in experiments:
         evaluation = experiment.evaluation_result
         decision = experiment.admission_decision
-        confusion = evaluation.confusion_matrix
-        common = {
-            "supporting_experiment_ids": [experiment.experiment_id],
-            "positive_cases_count": int(confusion.get("tp", 0)),
-            "counterexamples_count": int(confusion.get("fp", 0))
-            + int(confusion.get("fn", 0)),
-            "estimated_effect": decision.utility_difference,
-            "confidence": min(
-                0.95,
-                decision.paired_block_count / max(1, spec.minimum_paired_blocks),
-            ),
-            "created_at": experiment.completed_at,
-        }
-        if decision.admitted:
-            lessons.append(
-                MetaLesson(
-                    lesson="Paired admission gates supported this recipe change.",
-                    scope="admitted_recipe",
-                    suggested_mutation_operators=[MutationOperator.LOCAL_REFINE],
-                    **common,
-                )
-            )
+        failure_counts = evaluation.reflection_summary.get("failure_type_counts", {})
+        dominant_failure = max(failure_counts, key=failure_counts.get) if failure_counts else "general"
+        affected = [
+            row["sample_id"]
+            for row in evaluation.error_cases
+            if row["failure_type"] == dominant_failure
+        ]
+        status = (
+            "validated"
+            if decision.admitted and decision.primary_metric_delta > 0
+            else "rejected"
+            if decision.primary_metric_delta <= 0
+            else "hypothesis"
+        )
+        observation = (
+            f"{dominant_failure} affected {len(affected)} validation cases"
+            if affected
+            else "No repeated validation error type dominated this candidate"
+        )
+        operator = (
+            MutationOperator.SOURCE_EXPAND
+            if dominant_failure in {"false_negative", "class_c_miss"}
+            else MutationOperator.COUNTEREXAMPLE_REPAIR
+            if dominant_failure == "false_positive"
+            else MutationOperator.LOCAL_REFINE
+        )
+        lesson = MetaLesson(
+            observation=observation,
+            evidence={
+                "affected_cases": len(affected),
+                "mostly_affects": dominant_failure,
+                "examples": affected[:10],
+                "severe_ordinal_errors": sum(
+                    row["ordinal_error"] == 2 for row in evaluation.error_cases
+                ),
+            },
+            diagnosed_issue=f"Candidate remains sensitive to {dominant_failure} errors.",
+            tested_change=experiment.mutation_operator.value,
+            metric_delta=dict(decision.diagnostic_metric_deltas),
+            status=status,
+            confidence=min(0.95, evaluation.sample_count / (evaluation.sample_count + 10)),
+            supporting_experiment_ids=[experiment.experiment_id],
+            suggested_mutation_operators=[operator],
+            created_at=experiment.completed_at,
+        )
+        lessons.append(lesson)
+        if status != "validated":
             requests.append(
                 MutationRequest(
-                    operator=MutationOperator.LOCAL_REFINE,
-                    target_fields=["changed_fields"],
-                    reason="Explore one bounded refinement while preserving admitted behavior.",
+                    operator=operator,
+                    target_fields=(
+                        ["data_source_specs", "seed_signal_specs"]
+                        if operator is MutationOperator.SOURCE_EXPAND
+                        else ["seed_signal_specs", "blind_analysis_prompt"]
+                    ),
+                    reason=observation,
                 )
             )
-        if evaluation.coverage_rate < spec.minimum_coverage:
-            lessons.append(
-                MetaLesson(
-                    lesson="Candidate coverage remained below the fixed admission floor.",
-                    scope="coverage",
-                    suggested_mutation_operators=[
-                        MutationOperator.SOURCE_EXPAND,
-                        MutationOperator.SOURCE_REPLACE,
-                    ],
-                    **common,
-                )
-            )
-            requests.append(
-                MutationRequest(
-                    operator=MutationOperator.SOURCE_EXPAND,
-                    target_fields=["data_source_specs", "seed_signal_specs"],
-                    reason="Raise aggregate blind coverage without reading admission labels.",
-                )
-            )
-        if not decision.confidence_interval or decision.confidence_interval[0] <= 0:
-            lessons.append(
-                MetaLesson(
-                    lesson="Candidate utility did not have a positive paired lower bound.",
-                    scope="paired_admission",
-                    suggested_mutation_operators=[
-                        MutationOperator.COUNTEREXAMPLE_REPAIR,
-                        MutationOperator.ORTHOGONAL_REDESIGN,
-                    ],
-                    **common,
-                )
-            )
-            requests.append(
-                MutationRequest(
-                    operator=MutationOperator.COUNTEREXAMPLE_REPAIR,
-                    target_fields=["seed_signal_specs", "blind_analysis_prompt"],
-                    reason="Address aggregate false-positive/false-negative tradeoffs.",
-                )
-            )
-        if evaluation.data_cost_usd + evaluation.token_cost_usd > spec.maximum_cost_usd:
-            lessons.append(
-                MetaLesson(
-                    lesson="Candidate exceeded the fixed evaluation cost ceiling.",
-                    scope="cost",
-                    suggested_mutation_operators=[MutationOperator.COST_COMPRESS],
-                    **common,
-                )
-            )
-            requests.append(
-                MutationRequest(
-                    operator=MutationOperator.COST_COMPRESS,
-                    target_fields=["data_source_specs", "complexity_budget"],
-                    reason="Reduce aggregate source and token cost.",
-                )
-            )
-    merged = merge_meta_lessons(lessons)
     unique_requests = {
-        (request.operator.value, tuple(request.target_fields), request.reason): request
-        for request in requests
+        (item.operator.value, tuple(item.target_fields), item.reason): item
+        for item in requests
     }
-    return merged, [
-        unique_requests[key]
-        for key in sorted(unique_requests)
-    ]
+    return merge_meta_lessons(lessons), [unique_requests[key] for key in sorted(unique_requests)]
 
 
 def _blind_prompt_leakage_reasons(genome: SchemeGenome) -> list[str]:
@@ -920,66 +1301,40 @@ def _blind_prompt_leakage_reasons(genome: SchemeGenome) -> list[str]:
         if prompt.model_constraints.get("web_tools_allowed") is not False:
             reasons.append(f"{prompt_name} must keep web tools disabled")
     expected_output_fields = {
-        "probability_of_surge",
-        "decision",
-        "confidence",
-        "supporting_signals",
-        "contradicting_signals",
-        "missing_critical_information",
-        "difficulty_codes",
+        "predicted_class",
+        "confidence_level",
+        "difficulty_level",
+        "difficulty_reasons",
+        "decisive_signals",
+        "conflicting_signals",
+        "missing_information",
+        "flip_conditions",
         "evidence_source_ids",
     }
     actual_output_fields = set(genome.blind_analysis_prompt.output_json_schema)
     if actual_output_fields != expected_output_fields:
-        reasons.append("blind_analysis_prompt must preserve the fixed prediction fields")
+        reasons.append("blind_analysis_prompt must preserve the fixed A/B/C prediction fields")
+    forbidden_probability_fields = {
+        field
+        for field in actual_output_fields
+        if "probability" in field or "logprob" in field
+    }
+    if forbidden_probability_fields:
+        reasons.append("blind_analysis_prompt must not request probabilities or logprobs")
     if genome.blind_analysis_prompt.model_constraints.get("identity_masked") is not True:
         reasons.append("blind_analysis_prompt must require masked identity")
     return reasons
 
 
-def _niche_for_genome(genome: SchemeGenome) -> str:
-    source_family = str(
-        genome.metadata.get(
-            "dominant_source_family",
-            genome.data_source_specs[0].source_family,
-        )
-    )
-    signal_family = str(
-        genome.metadata.get(
-            "dominant_signal_family",
-            genome.seed_signal_specs[0].signal_id if genome.seed_signal_specs else "none",
-        )
-    )
-    context = float(genome.complexity_budget["max_context_tokens"])
-    complexity_bucket = "small" if context <= 2500 else "medium" if context <= 5000 else "large"
-    cost = sum(source.estimated_cost_usd for source in genome.data_source_specs)
-    cost_bucket = "free" if cost == 0 else "low" if cost <= 1 else "high"
-    orientation = str(genome.metadata.get("orientation", "balanced"))
-    sector = str(genome.metadata.get("specialist_sector", "universal"))
-    return "|".join(
-        (source_family, signal_family, complexity_bucket, cost_bucket, orientation, sector)
-    )
-
-
-def _dominates(left: ArchiveEntry, right: ArchiveEntry) -> bool:
-    left_values = (
-        left.evaluation.pr_auc,
-        left.evaluation.precision_at_k,
-        left.evaluation.recall_at_k,
-        -left.evaluation.brier_score,
-        -left.evaluation.data_cost_usd - left.evaluation.token_cost_usd,
-        -left.complexity,
-    )
-    right_values = (
-        right.evaluation.pr_auc,
-        right.evaluation.precision_at_k,
-        right.evaluation.recall_at_k,
-        -right.evaluation.brier_score,
-        -right.evaluation.data_cost_usd - right.evaluation.token_cost_usd,
-        -right.complexity,
-    )
-    return all(left_value >= right_value for left_value, right_value in zip(left_values, right_values)) and any(
-        left_value > right_value for left_value, right_value in zip(left_values, right_values)
+def _archive_sort_key(entry: ArchiveEntry) -> tuple[Any, ...]:
+    evaluation = entry.evaluation
+    total_cost = evaluation.data_cost_usd + evaluation.token_cost_usd
+    return (
+        -evaluation.binary_f1,
+        -evaluation.class_c_recall,
+        evaluation.ordinal_distance,
+        total_cost,
+        entry.genome.genome_id,
     )
 
 
@@ -995,6 +1350,7 @@ def _genome_tokens(genome: SchemeGenome) -> set[str]:
         "expected_benefit",
         "possible_side_effects",
         "falsification_test",
+        "target_failure_type",
     ):
         data.pop(key, None)
     return set(re.findall(r"[a-z0-9_]+", json.dumps(data, sort_keys=True).lower()))
@@ -1012,6 +1368,25 @@ def _hash_json(value: Any) -> str:
 
 def _normalize_text(value: str) -> str:
     return " ".join(value.lower().split())
+
+
+def _safe_name(value: str) -> str:
+    prefix = re.sub(r"[^A-Za-z0-9_.-]+", "-", value).strip("-.")[:80] or "artifact"
+    return f"{prefix}-{hashlib.sha256(value.encode('utf-8')).hexdigest()[:10]}"
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValidationError(f"cannot read JSON artifact {path}: {exc}") from exc
+    if not isinstance(raw, dict):
+        raise ValidationError(f"JSON artifact must contain an object: {path}")
+    return raw
 
 
 def _write_json(path: Path, value: Any) -> None:

@@ -41,14 +41,23 @@ runs/cold_start/
       holdout_blind_scheme_evaluation.json
   evolution/
     <run_id>/
+      config.json
+      evaluation_contract.json
+      state.json
+      events.jsonl
+      memory.json
       evolution_summary.json
-      quality_diversity_archive.json
-      generation-01/
-        evolution_state.json
-        scheme_experiments.json
-        meta_lessons.json
-        experiment_report.json
-        experiments/
+      top_k.json
+      scheme_experiments.json
+      experiment_report.json
+      schemes/
+      frozen_signals/
+      signal_extractions/
+      predictions/
+      evaluations/
+      prompts/
+      cache/
+      experiments/
 ```
 
 `01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
@@ -106,30 +115,43 @@ anonymous packets to an external provider still requires explicit informed
 authorization; otherwise keep the local preflight for review and do not run the
 provider-backed path.
 
-`evolution/<run_id>/` stores the bounded genome search. Validate the Codex
-candidate file without evaluation:
+`evolution/<run_id>/` stores the resumable A/B/C genome search. The frozen exam
+uses the maximum five-day-smoothed adjusted-close multiple over six calendar
+months: A below 2x, B from 2x to below 3x, and C at or above 3x. B/C are binary
+positive and binary F1 is the only Top-K selection score. Model probability
+fields are rejected. Initialize and run the two-generation mock config:
 
 ```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
-  --dry-run \
-  --output-dir runs/cold_start/evolution/codex-v1-dry-run
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py init \
+  --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
+  --config configs/evolution/mock_experiment.json
 ```
 
-Run the network-free synthetic vertical slice:
+Resume or inspect the same run:
 
 ```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
-  --mock-llm \
-  --resume \
-  --output-dir runs/cold_start/evolution/codex-v1-mock
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py resume \
+  --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py status \
+  --config configs/evolution/mock_experiment.json
 ```
 
-Run the same controller on the current saved Ralph cases and source archive
-with the deterministic heuristic analyzer:
+Each stock's signal extraction and A/B/C prediction is written immediately.
+`resume` reuses it only when the frozen contract, fold, scheme recipe, signals,
+label-free input, extraction, and evaluator settings match. Mock `final-test`
+runs once on separate sealed synthetic companies; real `final-test` remains
+fail-closed until a compatible one-shot A/B/C dataset and source archive are
+configured. Ordinary `run` and `resume` never load those labels.
+
+Run on saved Ralph cases only with a compatible adjusted-close history. Legacy
+winner/control or terminal-return labels are rejected rather than silently
+treated as the new maximum-multiple contract:
 
 ```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
   --mode heuristic \
+  --price-histories-path <run>/02_prices/price_histories.json \
   --resume \
   --output-dir runs/cold_start/evolution/codex-v1-real-heuristic
 ```
@@ -139,7 +161,7 @@ authorized first external run should remain one candidate, one concurrent
 request, and one bounded generation:
 
 ```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
   --mode llm \
   --openrouter-model openai/gpt-5.5 \
   --openrouter-provider openai \
@@ -150,19 +172,16 @@ PYTHONPATH=src python3 scripts/evolve_information_schemes.py \
   --input-cost-per-million-tokens 5 \
   --output-cost-per-million-tokens 30 \
   --blind-cache-dir runs/cold_start/evolution/shared-blind-cache \
+  --price-histories-path <run>/02_prices/price_histories.json \
   --resume \
   --output-dir runs/cold_start/evolution/codex-v1-llm
 ```
 
-The provider and list-price inputs above were checked against OpenRouter on
-2026-07-31 and must be refreshed if pricing or endpoint availability changes.
-With four current folds, a cold cache can require up to 58 blind requests
-(incumbent plus one candidate over 29 admission samples). The command requires
-`OPENROUTER_API_KEY` in the environment and explicit authorization to send the
-anonymous packets.
-Synthetic and heuristic runs are pipeline diagnostics only. Current saved cases
-use 180-day outcome labels, so the default real split horizon remains 180 days;
-a 90-day study must first relabel cases under a new outcome definition.
+Provider availability and pricing are time-varying and must be refreshed before
+a real run. The command requires `OPENROUTER_API_KEY`; no credential is written
+to artifacts. Synthetic and heuristic runs are pipeline diagnostics only. A
+real effectiveness claim still requires an explicitly declared untouched-
+company final test after proposal changes stop.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation

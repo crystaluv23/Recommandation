@@ -6,237 +6,217 @@ Started
 
 ## Purpose
 
-Search over auditable information-scheme recipes without changing the fixed
-historical exam. The evolved object is `SchemeGenome`, not a signal list learned
-once from every labeled case and not the LLM itself.
+Search for a better auditable information scheme while keeping the historical
+exam fixed. The evolved object is `SchemeGenome`: the point-in-time data policy,
+seed and discovery signal policy, and final analysis system prompt. Outcome
+labels, A/B/C boundaries, splits, metrics, and model output fields are not
+genome fields and cannot be changed by a candidate.
 
-This module is a controller around the existing Ralph information-plan,
-anonymous packet, blind researcher, response cache, and deterministic evaluation
-boundaries. It must not implement a second document pipeline, packet renderer,
-labeler, or provider client.
+The layer remains retrospective, proposal-only, and separate from weekly or
+live research defaults. A selected scheme still requires human review and a
+fresh untouched-company test before it can support an effectiveness claim.
 
 ## Operating Spine
 
 ```text
-Codex or a human writes versioned candidate genomes
--> FileSchemeProposer imports bounded candidates
--> schema, leakage, complexity, cost, and duplicate checks
--> materialize each genome from one fold's discovery labels
--> freeze MaterializedScheme
--> build anonymous point-in-time admission inputs
--> persist all predictions
--> reveal admission labels to the deterministic evaluator
--> compare candidate and incumbent on the same samples
--> apply block-bootstrap admission gate
--> retain Pareto candidates in quality-diversity niches
--> aggregate structured meta-lessons
--> return the admitted incumbent and next mutation requests for review
+freeze EvaluationContract and walk-forward split
+-> import reviewed Codex/human candidate genomes
+-> validate schema, leakage, cost, complexity, and recipe duplication
+-> use signal-train labels to materialize and freeze signals per fold
+-> build label-free anonymous validation inputs
+-> persist each signal extraction and A/B/C prediction immediately
+-> reveal validation labels only to the deterministic evaluator
+-> rank old Top-K plus children by binary F1
+-> behaviorally deduplicate equal binary prediction vectors
+-> aggregate FP/FN/C-miss/ordinal diagnostics into structured meta-memory
+-> checkpoint proposal-only Top-K and bounded next mutation requests
 ```
 
-The first implementation includes a deterministic synthetic vertical slice,
-the evaluator protocol, and `RalphInformationPlanFoldEvaluator`, which reuses
-the existing Ralph discovery, atomic-evidence, organized-packet, blind-analysis,
-and source-archive boundaries. `HeuristicGenomeBlindAnalyzer` supports local
-pipeline diagnostics; `OpenAIGenomeBlindAnalyzer` uses the existing
-OpenAI/OpenRouter-compatible client, strict JSON Schema, exact request caching,
-source-reference validation, and secret-free request metadata. Synthetic and
-heuristic results prove orchestration only and cannot support an
-information-plan effectiveness claim.
+The implementation reuses the existing Ralph source archive, information-plan
+preparation, anonymous packet, identity preflight, OpenAI/OpenRouter-compatible
+client, and exact response cache. It does not implement a second document or
+packet pipeline.
 
-Implementation is split by responsibility:
+## Fixed Evaluation Contract
 
-- `scheme_evolution_records.py` owns immutable contracts and protocols;
-- `scheme_evolution_evaluation.py` owns walk-forward metrics, bootstrap
-  assumptions, and admission statistics;
-- `scheme_evolution.py` owns proposal validation, persistence, archive, and
-  bounded control flow; and
-- `scheme_evolution_ralph.py` adapts the controller to existing Ralph cases,
-  source documents, packets, heuristic diagnostics, and provider-backed blind
-  analysis.
+`EvaluationContract` is serialized to `evaluation_contract.json` when a run is
+initialized and verified by hash on every run or resume. Version 1 fixes:
 
-## Public Records
+- horizon: six calendar months;
+- price field: adjusted close;
+- continuous label: maximum complete five-trading-day moving-average future
+  adjusted close divided by the prediction-date adjusted close;
+- A: multiple below 2.0;
+- B: multiple at least 2.0 and below 3.0;
+- C: multiple at least 3.0;
+- binary negative: A;
+- binary positive: B or C;
+- primary selection metric: binary F1; and
+- diagnostics: binary precision/recall, multiclass macro-F1, per-class recall,
+  class-C recall, and mean ordinal distance with A=0, B=1, C=2.
 
-- `DataSourceSpec`: source family, retrieval/cutoff rules, required state,
-  freshness, estimated cost, and failure policy.
-- `SignalSpec`: source requirements, cutoff, extraction/value/direction rules,
-  horizon/decay, evidence minimums, contradiction/confounder handling, missing
-  policy, evidence schema, and version.
-- `PromptSpec`: template, variables, output schema, model constraints, version,
-  and deterministic content hash.
-- `SchemeGenome`: parents, generation, mutation operator, change hypothesis,
-  source specs, discovery/merge/blind prompts, seed signals, complexity budget,
-  metadata, and schema version.
-- `MaterializedScheme`: genome/fold identity, discovered and retained signals,
-  rejected signals with reasons, and materialization input/output hashes.
-- `PredictionRecord`: genome/materialized/fold/sample identities, prediction
-  time, probability, decision, confidence, supporting/contradicting evidence,
-  missing information, difficulty codes, evidence refs, model metadata, and raw
-  response location.
-- `SchemeEvaluationResult`: confusion counts, precision, recall, F1, PR-AUC,
-  ROC-AUC, Brier score, log loss, precision/recall at K, coverage/abstention,
-  period/sector/market-cap metrics, model sensitivity, cost, latency, and
-  confidence intervals.
-- `SchemeExperimentRecord`: parents, candidate, mutation, fixed-spec hashes,
-  evaluation, admission decision/reason, timestamps, and optional git commit.
-- `MetaLesson`: scoped lesson with supporting experiments, positive and
-  counterexample counts, effect estimate, confidence, suggested mutations, and
-  supersession metadata.
+Every labeled sample stores `realized_max_multiple`, `true_class`, and the
+derived `is_surge`. The fixed contract rejects changed boundaries, smoothing,
+price fields, positive classes, or primary metrics. Legacy winner/control and
+terminal-return artifacts cannot be silently presented as this contract; the
+real runner requires a compatible adjusted-close history and derives new
+labels.
 
-The existing top-level `ExperimentRecord` remains the canonical product-wide
-meta-learning approval record. `SchemeExperimentRecord` is the detailed
-research artifact for one candidate/fold comparison and does not replace it.
+## Evolvable Scheme
 
-## Fixed Framework Records
+The existing richer records map to `S=(D,P,A)` without duplicating schemas:
 
-- `LabelSpec` owns the positive outcome and observation horizon.
-- `DataSplitSpec` owns walk-forward construction, purge, embargo, and split
-  version.
-- `EvaluationSpec` owns thresholds, utility weights, bootstrap assumptions,
-  minimum evidence, coverage floor, degradation limit, and cost ceiling.
+- `DataSourceSpec` is the data policy, including retrieval, cutoff, freshness,
+  expected cost, and failure behavior.
+- `SignalSpec`, `contrastive_discovery_prompt`, and `signal_merge_prompt` are
+  the signal policy. Signals define required sources, source cutoff,
+  extraction, direction, horizon, contradiction/confounder handling, missing
+  behavior, evidence schema, and version.
+- `blind_analysis_prompt` is the final analysis system prompt.
 
-These records are inputs to the engine and are excluded from genome content and
-candidate mutation diffs.
+Candidates record parents, mutation, changed fields, expected benefit, side
+effects, falsification test, and target failure type. Each candidate should
+make few attributable changes. Automatic LLM candidate generation remains
+deferred; `FileSchemeProposer` is the reviewed Codex/CLI handoff and
+`MockSchemeProposer` is the deterministic test adapter.
 
-## Proposal Boundary
+## Signal Materialization and Blind Prediction
 
-`SchemeProposer` accepts parents, structured meta-memory, mutation requests, and
-a requested count. The initial implementations are:
+Discovery samples expose continuous and A/B/C labels only inside
+`SchemeFoldEvaluator.materialize`. The resulting `MaterializedScheme` freezes
+discovered, retained, and rejected signals with input/output hashes. Validation
+receives only `BlindSample`; it contains no future price, realized multiple,
+true class, binary label, ticker, or company name.
 
-- `MockSchemeProposer` for deterministic unit and end-to-end tests.
-- `FileSchemeProposer` for candidates authored by Codex or a human and reviewed
-  as JSON before execution.
+For each validation stock the evaluator produces and persists a label-free
+signal extraction, then the analyzer returns:
 
-An automatic LLM proposer is deliberately deferred. The existing provider
-adapters can execute structured blind research, but the current project does
-not yet have a sufficiently strict proposer-output audit, provider-independent
-request ledger, or evidence that automatic proposer calls add value. The engine
-therefore does not depend on an interactive Codex session or one model.
+- `predicted_class`: A, B, or C;
+- `confidence_level`: low, medium, or high;
+- `difficulty_level`: low, medium, or high;
+- difficulty reasons;
+- decisive signals;
+- conflicting signals;
+- missing information;
+- flip conditions; and
+- source evidence references required by this repository's provenance rules.
 
-Supported mutation names are `local_refine`, `ablation`, `source_expand`,
-`source_replace`, `signal_split`, `signal_merge`, `counterexample_repair`,
-`crossover`, `orthogonal_redesign`, `cost_compress`, `robustness_mutation`, and
-`random_restart`.
+`is_surge` is derived in code from the class. Numeric probability, likelihood,
+logprob, score, future-price, or label fields are rejected. Confidence and
+difficulty are qualitative diagnostics, not statistical probability and not
+part of Top-K scoring.
 
-Every candidate records changed fields, expected benefit, possible side effects,
-and a falsification test. Candidate validation rejects:
+The mock evaluator deterministically freezes seed signals and exercises the
+whole flow without network access. The current Ralph adapter freezes seed
+signals after source/coverage preparation and exposes its organized packet as
+the extraction artifact. A provider-backed label-aware signal-discovery call
+that can add, merge, or delete signals is still an explicit TODO; it must use
+the same strict JSON, retry, cache, and label-boundary rules before it may
+replace seed passthrough.
 
-- invalid schema or parent/generation relationships;
-- label or outcome variables in blind/merge prompt contracts;
-- complexity or estimated-cost budget violations;
-- exact duplicates; and
-- deterministic near-duplicates above the configured similarity threshold.
+## Split and Isolation
 
-Rejected candidates remain auditable with reasons.
+- Signal-train samples may expose labels only to materialization.
+- Validation inputs are label-free through signal extraction and analysis;
+  labels are read only after prediction artifacts exist.
+- Walk-forward construction requires the full six-calendar-month observation
+  horizon plus purge and embargo to end before validation begins.
+- One issuer cannot occur on both sides of a fold.
+- Final-test records are absent from the engine constructor and ordinary run
+  artifacts. The explicit command uses a separate one-shot path. The mock path
+  is executable; real execution remains fail-closed until a separately
+  configured A/B/C final-test dataset and source archive are supplied.
+- Development validation can update structured meta-memory. Once used for a
+  proposal, it is not independent evidence for that proposal.
 
-## Split and Leakage Boundaries
+## Evaluation, Top-K, and Memory
 
-- Discovery samples may expose labels only to materialization.
-- Admission samples are converted to label-free blind inputs before the
-  evaluator is called.
-- Admission labels are read only after prediction files have been durably
-  written.
-- A discovery sample is eligible only when its entire label-observation horizon
-  plus embargo ends before admission begins.
-- One issuer cannot appear on both sides of a fold.
-- Sealed-test and live-forward samples are not accepted by the evolution-engine
-  constructor or serialized into its state. A separate one-shot evaluator owns
-  them after a proposal has stopped changing.
-- Existing `DocumentRecord.available_date`, `published_date`, `retrieved_at`,
-  `source_id`, `source_url`, symbol, kind, and content-scope fields are the
-  current equivalent point-in-time snapshot contract. Full source hashes remain
-  computed in Ralph artifacts; the evolution layer references rather than
-  duplicates the archive.
+The evaluator saves binary confusion counts, A/B/C confusion counts, metrics,
+continuous multiples, and sample-level errors. Reflection aggregation counts
+repeated difficulty reasons, conflicts, missing information, confidence-level
+accuracy, and difficulty-level error rates. Text length or apparent insight is
+never scored.
 
-## Evaluation and Admission
+Top-K merges prior retained schemes and the current batch, then sorts by:
 
-Predictions are paired by fold and sample. The default utility combines PR-AUC,
-precision at K, recall at K, Brier score, worst-period performance, data/token
-cost, and complexity. The block bootstrap resamples configured period or issuer
-blocks, not independent rows.
+1. binary F1 descending;
+2. class-C recall descending;
+3. ordinal distance ascending;
+4. total API/data cost ascending.
 
-Admission requires all of:
+Schemes whose paired binary prediction agreement meets the configured
+threshold are behavior duplicates; only the better-ranked scheme remains. The
+first implementation deliberately does not use MMR, DPP, MAP-Elites, or a
+composite probability/calibration objective.
 
-- the paired utility-difference lower confidence bound is greater than zero;
-- enough paired blocks exist for the statistical claim;
-- worst-period degradation stays within the fixed limit;
-- coverage meets the floor;
-- total cost stays inside budget; and
-- no leakage, schema, or persistence violation occurred.
-
-Small samples return `insufficient_evidence`; they do not promote a candidate.
-All admitted genomes remain proposal-only pending the existing human-review
-boundary.
-
-## Quality-Diversity Archive
-
-The archive groups candidates by configured descriptors such as dominant source
-family, dominant signal family, complexity bucket, cost bucket,
-precision/recall orientation, and specialist sector. Each niche keeps
-non-dominated candidates across predictive quality, calibration, cost, and
-complexity. The archive, current incumbent, and sealed test are separate
-concepts.
+`MetaLesson` records observation, affected cases, diagnosed issue, tested
+change, metric deltas, status, confidence, and supporting experiment ids.
+Statuses are `hypothesis`, `validated`, and `rejected`. A child is marked
+validated only when its measured target behavior improves and it is retained;
+otherwise its reflection remains a hypothesis or rejected result.
 
 ## Persistence and Resume
 
-Each candidate/fold writes:
+Each run directory contains:
 
-- materialized scheme;
-- prediction records;
-- deterministic evaluation;
-- paired admission decision; and
-- experiment record.
+```text
+config.json
+evaluation_contract.json
+state.json
+events.jsonl
+memory.json
+schemes/
+frozen_signals/
+signal_extractions/
+predictions/
+evaluations/
+prompts/
+cache/
+experiments/
+```
 
-The run state stores fixed-spec hashes, incumbent, archive, candidate
-rejections, completed experiment ids, aggregate meta-lessons, next mutation
-requests, and proposal status. Only aggregate confusion counts, metrics, and
-experiment ids enter meta-memory; no admission sample label or full
-sample-specific critic is forwarded to the proposer. Multi-generation runs pass
-the merged lessons and requests into the next proposer call. `--resume` reuses
-completed work only when the genome recipe, exact fold contents, Ralph
-case/source archive, evaluator/model settings, base scheme, and fixed-spec
-hashes match. Prediction files are written before any label-aware evaluation
-artifact.
+`state.json` records run id, iteration, lifecycle status, Top-K ids, current
+tasks, checkpoint time, fixed-spec hash, proposal status, and whether final-test
+was accessed. JSON checkpoints use temporary files plus atomic replacement;
+events are append-only.
+
+Each stock extraction and prediction is written immediately. Resume converts
+stale `running` tasks to `pending`, reloads frozen materialization, and reuses a
+prediction only when the exact genome recipe, frozen signals, label-free input,
+extraction, evaluator/model settings, fold contents, and fixed rules hash to the
+same value. A KeyboardInterrupt writes `paused`; provider or validation errors
+write the task error and a resumable `failed` state. The OpenRouter adapter also
+reuses an exact packet/prompt/model/provider/temperature response cache and
+never persists credentials.
 
 ## CLI
 
-The thin runner supports dry-run, resume, synthetic mock mode, current-artifact
-heuristic mode, real OpenRouter mode, candidate JSON import,
-generation/candidate/cost caps, selected folds, archive export, and an
-experiment report. Real provider execution reuses the existing provider client
-and requires `OPENROUTER_API_KEY`, a fixed provider slug, strict parameter
-support, disabled provider fallback, and explicit current token-price inputs;
-no credential is persisted. Exact packet/prompt/model/provider requests share a
-cache. External execution is never implied by a dry run or heuristic run.
+The thin script supports:
 
-The tracked Codex proposal batch contains:
+```bash
+PYTHONPATH=src python scripts/evolve_information_schemes.py init --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py run --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py resume --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py status --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py final-test --config <real-config.json>
+```
 
-- a `source_expand` candidate focused on binding orders/backlog/customer wins,
-  transaction or restructuring status, financing/listing actions, causal
-  industry transmission, and fresh expectation changes; and
-- a low-context `ablation` candidate that tests whether static financial
-  context is consuming budget without restoring recall.
-
-The existing formal cases use the repository's current 180-day outcome labels.
-The real runner therefore defaults its purge horizon to 180 days even though
-the product target is 3-6 months. A distinct 90-day label experiment requires a
-new versioned outcome definition and relabeled folds; changing only the CLI
-number would not relabel the saved cases.
-
-## Explicitly Deferred
-
-- automatic `LLMSchemeProposer`;
-- semantic-embedding duplicate search;
-- parallel provider execution and provider-specific rate limiting beyond the
-  existing client;
-- sealed-test execution;
-- live-forward evaluation;
-- automatic promotion into weekly/daily defaults.
+The mock `final-test` command evaluates the selected proposal once on separate
+sealed synthetic companies and writes only under `final_test/`. Real
+`final-test` fails closed with a clear message rather than reading a development
+label source. Real LLM mode additionally requires
+`OPENROUTER_API_KEY`, an exact provider slug, positive current token-price
+inputs, disabled provider fallback, and a compatible price-history artifact.
 
 ## Testing
 
-Tests cover cutoff rejection, label-free analyzer inputs, discovery/admission
-separation, purge/embargo, sealed-test exclusion, invalid candidate JSON,
-duplicate filtering, persisted-before-evaluated ordering, exact-input resume
-invalidation, admission failure under insufficient confidence, different
-archive niches, secret-safe artifacts, cost fail-closed behavior, materialized
-packet identity scanning, and a network-free end-to-end mock run.
+Tests cover genome serialization, frozen contract mismatch, five-day smoothed
+labels, A/B/C-to-binary mapping, fixed metrics, point-in-time and walk-forward
+guards, atomic checkpoints, append-only events, interruption/resume without
+duplicate calls, exact analyzer cache reuse, malformed JSON retry, probability
+field rejection, label-free analyzer inputs, Top-K behavior deduplication, a
+two-generation mock flow, final-test exclusion, and packet identity preflight.
+
+Synthetic, mock, and heuristic results prove orchestration only. Only a frozen
+anonymous plain-LLM run on a declared untouched-company final test can support
+an effectiveness or Phase-1 exit claim.

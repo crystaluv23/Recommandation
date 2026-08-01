@@ -57,9 +57,10 @@ Active child specs:
   information requirements, source coverage, atomic evidence, raw-versus-
   organized comparison, family experiments, and layered failure attribution
   coordinated by Ralph before analysis-method experiments.
-- [`research/scheme_evolution.md`](research/scheme_evolution.md): bounded
-  proposal search over versioned information-scheme genomes while label, split,
-  evaluation, packet, and analyzer contracts remain fixed.
+- [`research/scheme_evolution.md`](research/scheme_evolution.md): resumable,
+  bounded proposal search over versioned information-scheme genomes under a
+  frozen six-month A/B/C contract, label-free per-stock validation, and
+  binary-F1 Top-K selection.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
@@ -87,9 +88,10 @@ Active child specs:
   budget. Derived cross-sectional data used by a signal counts as additional
   input information and must not be hidden inside only one comparison arm.
 - Materialize each candidate genome with discovery labels from one fold only;
-  freeze the result before building anonymous admission inputs, persist all
-  predictions before deterministic scoring, and keep sealed-test records
-  outside the evolution engine.
+  freeze the result before building anonymous validation inputs, persist each
+  signal extraction and A/B/C prediction before deterministic scoring, derive
+  binary surge status in code, reject numeric probability fields, and keep
+  final-test records outside the evolution engine.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.

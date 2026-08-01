@@ -137,12 +137,15 @@ representation loss, and no competing tested proposal with a material,
 repeatable improvement. The repository currently has no human-curated gold
 packet, so a gold-packet upper bound must not be assumed in current experiments.
 
-Information-scheme evolution changes only proposal genomes. Label definitions,
-walk-forward splits, purge/embargo, analyzer comparison rules, admission gates,
-and sealed-test ownership are framework controls and are not mutable genome
-fields. A genome is materialized from discovery labels inside one fold, then
-frozen before anonymous admission predictions. Sealed-test and live-forward
-records remain outside the proposal engine.
+Information-scheme evolution changes only proposal genomes. The fixed exam is a
+six-calendar-month, five-day-smoothed maximum adjusted-close multiple with
+ordered A/B/C classes (`A < 2x`, `2x <= B < 3x`, `C >= 3x`) and B/C as binary
+positive. Walk-forward splits, purge/embargo, output fields, binary-F1 Top-K
+selection, and final-test ownership are framework controls and are not mutable
+genome fields. A genome is materialized from signal-train labels inside one
+fold, then frozen before anonymous validation extraction and prediction. Every
+stock prediction is checkpointed before labels are revealed. Final-test and
+live-forward records remain outside the proposal engine.
 
 ### Phase 2: Current Market Scan
 

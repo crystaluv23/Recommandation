@@ -42,23 +42,25 @@ _STRICT_PREDICTION_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
     "required": [
-        "probability_of_surge",
-        "decision",
-        "confidence",
-        "supporting_signals",
-        "contradicting_signals",
-        "missing_critical_information",
-        "difficulty_codes",
+        "predicted_class",
+        "confidence_level",
+        "difficulty_level",
+        "difficulty_reasons",
+        "decisive_signals",
+        "conflicting_signals",
+        "missing_information",
+        "flip_conditions",
         "evidence_source_ids",
     ],
     "properties": {
-        "probability_of_surge": {"type": "number", "minimum": 0, "maximum": 1},
-        "decision": {"type": "string", "enum": ["positive", "negative", "abstain"]},
-        "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
-        "supporting_signals": {"type": "array", "items": {"type": "string"}},
-        "contradicting_signals": {"type": "array", "items": {"type": "string"}},
-        "missing_critical_information": {"type": "array", "items": {"type": "string"}},
-        "difficulty_codes": {"type": "array", "items": {"type": "string"}},
+        "predicted_class": {"type": "string", "enum": ["A", "B", "C"]},
+        "confidence_level": {"type": "string", "enum": ["low", "medium", "high"]},
+        "difficulty_level": {"type": "string", "enum": ["low", "medium", "high"]},
+        "difficulty_reasons": {"type": "array", "items": {"type": "string"}},
+        "decisive_signals": {"type": "array", "items": {"type": "string"}},
+        "conflicting_signals": {"type": "array", "items": {"type": "string"}},
+        "missing_information": {"type": "array", "items": {"type": "string"}},
+        "flip_conditions": {"type": "array", "items": {"type": "string"}},
         "evidence_source_ids": {"type": "array", "items": {"type": "string"}},
     },
 }
@@ -101,27 +103,35 @@ class HeuristicGenomeBlindAnalyzer:
         del genome, materialized
         analysis = self._researcher.analyze(packet)
         evidence_refs = sorted(_packet_evidence_refs(packet))
-        if analysis.surge_candidate in {"likely", "possible"}:
-            probability = analysis.confidence
-            decision = "positive"
-        elif analysis.surge_candidate == "unlikely":
-            probability = 1 - analysis.confidence
-            decision = "negative"
-        else:
-            probability = 0.5
-            decision = "abstain"
+        predicted_class = (
+            "C"
+            if analysis.surge_candidate == "likely" and analysis.confidence >= 0.7
+            else "B"
+            if analysis.surge_candidate in {"likely", "possible"}
+            else "A"
+        )
+        difficulty_level = (
+            "high"
+            if analysis.surge_candidate == "insufficient_information"
+            else "medium"
+            if analysis.confidence < 0.6
+            else "low"
+        )
         return {
-            "probability_of_surge": probability,
-            "decision": decision,
-            "confidence": _confidence_bucket(analysis.confidence),
-            "supporting_signals": list(analysis.pre_surge_signals),
-            "contradicting_signals": list(analysis.contrary_evidence),
-            "missing_critical_information": list(analysis.missing_context),
-            "difficulty_codes": (
+            "predicted_class": predicted_class,
+            "confidence_level": _confidence_bucket(analysis.confidence),
+            "difficulty_level": difficulty_level,
+            "difficulty_reasons": (
                 ["insufficient_information"]
                 if analysis.surge_candidate == "insufficient_information"
                 else []
             ),
+            "decisive_signals": list(analysis.pre_surge_signals),
+            "conflicting_signals": list(analysis.contrary_evidence),
+            "missing_information": list(analysis.missing_context),
+            "flip_conditions": [
+                "classification changes if missing point-in-time evidence contradicts the current signals"
+            ],
             "evidence_source_ids": evidence_refs,
             "_metadata": {
                 "provider": "local_heuristic",
@@ -231,6 +241,8 @@ class OpenAIGenomeBlindAnalyzer:
             + "\nUse only the supplied anonymous point-in-time packet and "
             "materialized signal definitions. Web tools are disabled. Do not "
             "infer identity, labels, forward returns, or post-cutoff facts. "
+            "Return only class A, B, or C for the fixed six-month maximum-multiple "
+            "task. Do not output probabilities, scores, or token likelihoods. "
             "Every supporting or contradicting claim must cite at least one "
             "evidence_source_id present in the packet."
         )
@@ -405,7 +417,12 @@ class RalphInformationPlanFoldEvaluator:
                 "genome_recipe": genome_recipe_hash(genome),
                 "fold_id": fold.fold_id,
                 "discovery": [
-                    {"sample_id": sample.sample_id, "label": sample.label}
+                    {
+                        "sample_id": sample.sample_id,
+                        "realized_max_multiple": sample.realized_max_multiple,
+                        "true_class": sample.true_class,
+                        "is_surge": sample.is_surge,
+                    }
                     for sample in fold.discovery_samples
                 ],
                 "source_pool": prepared.source_pool_by_case,
@@ -443,6 +460,39 @@ class RalphInformationPlanFoldEvaluator:
         self._prepared[materialized.materialized_scheme_id] = prepared
         return materialized
 
+    def restore(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        fold: EvolutionFold,
+    ) -> None:
+        """Rebuild transient packets while reusing the persisted frozen signals."""
+
+        discovery = [self._case(sample.sample_id) for sample in fold.discovery_samples]
+        admission = [self._case(sample.sample_id) for sample in fold.admission_samples]
+        scheme = _scheme_for_genome(self.base_scheme, genome)
+        documents = _documents_for_genome(self.documents_by_symbol, genome)
+        prepared = prepare_information_plan_experiment(
+            discovery,
+            admission,
+            active_scheme=scheme,
+            run_id=f"{genome.genome_id}:{fold.fold_id}",
+            context_budget=int(genome.complexity_budget["max_context_tokens"]),
+            families=tuple(genome.metadata.get("information_families", ())),
+            documents_by_symbol=documents,
+        )
+        retained, rejected = _retained_seed_signals(genome.seed_signal_specs, prepared)
+        expected_output_hash = _hash_json(
+            {
+                "plan": prepared.plan.to_dict(),
+                "retained_signals": [signal.to_dict() for signal in retained],
+                "rejected_signals": rejected,
+            }
+        )
+        if expected_output_hash != materialized.output_hash:
+            raise ValidationError("restored Ralph materialization differs from frozen signals")
+        self._prepared[materialized.materialized_scheme_id] = prepared
+
     def predict(
         self,
         genome: SchemeGenome,
@@ -469,17 +519,45 @@ class RalphInformationPlanFoldEvaluator:
             fold_id=materialized.fold_id,
             sample_id=sample.sample_id,
             prediction_time=sample.prediction_time,
-            probability_of_surge=float(output["probability_of_surge"]),
-            binary_decision=str(output["decision"]),
-            confidence=str(output["confidence"]),
-            supporting_signals=list(output["supporting_signals"]),
-            contradicting_signals=list(output["contradicting_signals"]),
-            missing_information=list(output["missing_critical_information"]),
-            difficulty_codes=list(output["difficulty_codes"]),
+            predicted_class=str(output["predicted_class"]),
+            is_surge=str(output["predicted_class"]) in {"B", "C"},
+            confidence_level=str(output["confidence_level"]),
+            difficulty_level=str(output["difficulty_level"]),
+            difficulty_reasons=list(output["difficulty_reasons"]),
+            decisive_signals=list(output["decisive_signals"]),
+            conflicting_signals=list(output["conflicting_signals"]),
+            missing_information=list(output["missing_information"]),
+            flip_conditions=list(output["flip_conditions"]),
             evidence_source_ids=list(output["evidence_source_ids"]),
             model_metadata=metadata,
+            input_hash="pending-engine-hash",
             raw_response_location=metadata.get("raw_response_location"),
         )
+
+    def extract(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        sample: BlindSample,
+    ) -> dict[str, Any]:
+        """Expose the exact label-free organized packet and frozen signal set."""
+
+        del genome
+        prepared = self._prepared.get(materialized.materialized_scheme_id)
+        if prepared is None:
+            raise ValidationError("materialized Ralph scheme is not available in this evaluator")
+        try:
+            index = prepared.holdout_case_ids.index(sample.sample_id)
+        except ValueError as exc:
+            raise ValidationError("blind sample is not in the materialized admission fold") from exc
+        packet = prepared.organized_packets[index]
+        return {
+            "sample_id": sample.sample_id,
+            "anonymous_packet": packet.to_prompt_dict(),
+            "frozen_signals": [
+                signal.to_dict() for signal in materialized.retained_signals
+            ],
+        }
 
     def _case(self, sample_id: str) -> HistoricalCase:
         try:
@@ -503,20 +581,18 @@ def _validate_prediction_output(
     extras = sorted(set(raw) - set(required))
     if extras:
         raise ValidationError(f"genome blind prediction has unexpected fields: {extras}")
-    probability = raw["probability_of_surge"]
-    if not isinstance(probability, (int, float)) or isinstance(probability, bool):
-        raise ValidationError("probability_of_surge must be numeric")
-    if not 0 <= float(probability) <= 1:
-        raise ValidationError("probability_of_surge must be between zero and one")
-    if raw["decision"] not in {"positive", "negative", "abstain"}:
-        raise ValidationError("invalid genome blind decision")
-    if raw["confidence"] not in {"low", "medium", "high"}:
-        raise ValidationError("invalid genome blind confidence")
+    if raw["predicted_class"] not in {"A", "B", "C"}:
+        raise ValidationError("predicted_class must be A, B, or C")
+    if raw["confidence_level"] not in {"low", "medium", "high"}:
+        raise ValidationError("invalid confidence_level")
+    if raw["difficulty_level"] not in {"low", "medium", "high"}:
+        raise ValidationError("invalid difficulty_level")
     for key in (
-        "supporting_signals",
-        "contradicting_signals",
-        "missing_critical_information",
-        "difficulty_codes",
+        "difficulty_reasons",
+        "decisive_signals",
+        "conflicting_signals",
+        "missing_information",
+        "flip_conditions",
         "evidence_source_ids",
     ):
         if not isinstance(raw[key], list) or not all(
@@ -527,7 +603,7 @@ def _validate_prediction_output(
     unknown_refs = sorted(set(raw["evidence_source_ids"]) - allowed_refs)
     if unknown_refs:
         raise ValidationError(f"prediction cited evidence refs outside the packet: {unknown_refs}")
-    claims = list(raw["supporting_signals"]) + list(raw["contradicting_signals"])
+    claims = list(raw["decisive_signals"]) + list(raw["conflicting_signals"])
     if claims and not raw["evidence_source_ids"]:
         raise ValidationError("supporting or contradicting claims require packet evidence refs")
     return {
