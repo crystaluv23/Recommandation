@@ -6,6 +6,7 @@ __pycache__/
 htmlcov/
 .lint-feedback/
 .agent_state/
+runs/cold_start/evolution/
 .env
 .env.*
 !.env.example

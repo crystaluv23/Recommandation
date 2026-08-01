@@ -696,12 +696,14 @@ class EvolutionStateStore:
     ) -> dict[str, Path]:
         """Write Top-K, experiments, meta-memory, and compact report."""
 
+        rejection_rows = list(rejections)
         paths = {
             "state": self.state_path,
             "top_k": self.root / "top_k.json",
             "experiments": self.root / "scheme_experiments.json",
             "meta_lessons": self.root / "memory.json",
             "report": self.root / "experiment_report.json",
+            "history": self.root / "evolution_history.json",
         }
         _write_json(paths["top_k"], result.archive.to_dict())
         _write_json(
@@ -709,7 +711,7 @@ class EvolutionStateStore:
             {
                 "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
                 "experiments": [item.to_dict() for item in result.experiments],
-                "candidate_rejections": [item.to_dict() for item in rejections],
+                "candidate_rejections": [item.to_dict() for item in rejection_rows],
             },
         )
         _write_json(
@@ -737,7 +739,93 @@ class EvolutionStateStore:
                 "proposal_status": "proposal_only_pending_human_review",
             },
         )
+        self._write_evolution_round(
+            paths["history"],
+            result,
+            rejection_count=len(rejection_rows),
+        )
         return paths
+
+    def _write_evolution_round(
+        self,
+        path: Path,
+        result: "EvolutionRunResult",
+        *,
+        rejection_count: int,
+    ) -> None:
+        """Atomically upsert one development-only metric snapshot by iteration."""
+
+        state = self.load_state()
+        iteration = int(state.get("current_iteration", 0))
+        if iteration < 1:
+            raise ValidationError("cannot record evolution metrics before an iteration starts")
+        if path.exists():
+            history = _read_json(path)
+        else:
+            history = {
+                "schema_version": "scheme-evolution-history-v1",
+                "run_id": self.run_id,
+                "primary_metric": "binary_f1",
+                "contains_final_test_metrics": False,
+                "rounds": [],
+            }
+        if history.get("schema_version") != "scheme-evolution-history-v1":
+            raise ValidationError("unsupported evolution history schema")
+        if history.get("primary_metric") != "binary_f1":
+            raise ValidationError("evolution history primary metric must remain binary_f1")
+        if history.get("contains_final_test_metrics") is not False:
+            raise ValidationError("evolution history must exclude final-test metrics")
+        existing_rounds = history.get("rounds", [])
+        if not isinstance(existing_rounds, list):
+            raise ValidationError("evolution history rounds must be a list")
+        if not result.top_k:
+            raise ValidationError("evolution history requires a retained archive entry")
+        archive_best = result.top_k[0]
+        completed_times = [item.completed_at.isoformat() for item in result.experiments]
+        snapshot = {
+            "iteration": iteration,
+            "completed_at": max(completed_times) if completed_times else _now(),
+            "source": "native_round",
+            "incumbent_genome_id": result.incumbent.genome_id,
+            "archive_best_genome_id": archive_best.genome.genome_id,
+            "archive_best_metrics": _dashboard_metrics(archive_best.evaluation),
+            "candidate_count": len(result.experiments),
+            "rejection_count": rejection_count,
+            "candidates": [
+                {
+                    "genome_id": item.candidate_genome_id,
+                    "parent_genome_ids": list(item.parent_genome_ids),
+                    "admitted": item.admission_decision.admitted,
+                    "admission_status": item.admission_decision.status,
+                    "metrics": _dashboard_metrics(item.evaluation_result),
+                }
+                for item in result.experiments
+            ],
+        }
+        rounds_by_iteration: dict[int, Mapping[str, Any]] = {}
+        for row in existing_rounds:
+            if not isinstance(row, Mapping):
+                raise ValidationError("evolution history round must be an object")
+            try:
+                existing_iteration = int(row.get("iteration", 0))
+            except (TypeError, ValueError) as exc:
+                raise ValidationError("evolution history iteration must be an integer") from exc
+            if existing_iteration < 1:
+                raise ValidationError("evolution history iteration must be positive")
+            if existing_iteration in rounds_by_iteration:
+                raise ValidationError("evolution history iteration must be unique")
+            rounds_by_iteration[existing_iteration] = row
+        rounds_by_iteration[iteration] = snapshot
+        history.update(
+            {
+                "schema_version": "scheme-evolution-history-v1",
+                "run_id": self.run_id,
+                "primary_metric": "binary_f1",
+                "contains_final_test_metrics": False,
+                "rounds": [rounds_by_iteration[key] for key in sorted(rounds_by_iteration)],
+            }
+        )
+        _write_json(path, history)
 
     def write_final_test_artifacts(
         self,
@@ -1336,6 +1424,23 @@ def _archive_sort_key(entry: ArchiveEntry) -> tuple[Any, ...]:
         total_cost,
         entry.genome.genome_id,
     )
+
+
+def _dashboard_metrics(evaluation: SchemeEvaluationResult) -> dict[str, float | int]:
+    """Return the bounded metric subset allowed in development drift history."""
+
+    return {
+        "sample_count": evaluation.sample_count,
+        "binary_f1": evaluation.binary_f1,
+        "binary_precision": evaluation.binary_precision,
+        "binary_recall": evaluation.binary_recall,
+        "multiclass_macro_f1": evaluation.multiclass_macro_f1,
+        "class_c_recall": evaluation.class_c_recall,
+        "ordinal_distance": evaluation.ordinal_distance,
+        "data_cost_usd": evaluation.data_cost_usd,
+        "token_cost_usd": evaluation.token_cost_usd,
+        "latency_ms": evaluation.latency_ms,
+    }
 
 
 def _genome_tokens(genome: SchemeGenome) -> set[str]:

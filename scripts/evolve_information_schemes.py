@@ -45,6 +45,9 @@ from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
     RalphInformationPlanFoldEvaluator,
 )
+from stock_opportunity_agent.research.scheme_evolution_dashboard import (
+    write_evolution_dashboard,
+)
 from stock_opportunity_agent.research.ralph_artifacts import (
     load_documents_by_symbol,
     load_historical_cases,
@@ -72,7 +75,14 @@ def main() -> None:
     output_dir = Path(args.output_dir)
     state_store = EvolutionStateStore(output_dir, run_id=args.run_id or output_dir.name)
     if args.command == "status":
-        print(json.dumps(state_store.load_state(), indent=2, sort_keys=True))
+        state = state_store.load_state()
+        write_evolution_dashboard(output_dir)
+        print(json.dumps(state, indent=2, sort_keys=True))
+        return
+    if args.command == "dashboard":
+        state_store.load_state()
+        paths = write_evolution_dashboard(output_dir)
+        print(f"[scheme-evolution] dashboard={paths['dashboard']}")
         return
     if args.command == "resume":
         args.resume = True
@@ -93,8 +103,10 @@ def main() -> None:
     state_store.write_objective_prompt(
         Path("prompts/evolution_objective.md").read_text(encoding="utf-8")
     )
+    dashboard_paths = write_evolution_dashboard(output_dir)
     if args.command == "init":
         print(f"[scheme-evolution] initialized={output_dir}")
+        print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
         return
     if args.command == "final-test":
         if not args.mock_llm:
@@ -179,6 +191,8 @@ def main() -> None:
         meta_memory = merge_meta_lessons([*meta_memory, *result.meta_lessons])
         mutation_requests = result.mutation_requests
         last_paths = result.artifact_paths
+        dashboard_paths = write_evolution_dashboard(output_dir)
+        last_paths = {**last_paths, **dashboard_paths}
         completed_generations = generation
         if not result.experiments:
             break
@@ -231,6 +245,7 @@ def main() -> None:
     print(f"[scheme-evolution] experiments={len(all_experiments)}")
     print(f"[scheme-evolution] archive_entries={len(archive.entries)}")
     print(f"[scheme-evolution] summary={summary_path}")
+    print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
 
 
 def _parse_args() -> argparse.Namespace:
@@ -238,7 +253,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=("init", "run", "resume", "status", "final-test"),
+        choices=("init", "run", "resume", "status", "dashboard", "final-test"),
         default="run",
     )
     parser.add_argument("--run-id", default="")

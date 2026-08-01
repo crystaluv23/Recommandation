@@ -47,6 +47,9 @@ runs/cold_start/
       events.jsonl
       memory.json
       evolution_summary.json
+      evolution_history.json
+      evolution_dashboard_data.js
+      evolution_dashboard.html
       top_k.json
       scheme_experiments.json
       experiment_report.json
@@ -135,6 +138,8 @@ PYTHONPATH=src python3 scripts/evolve_information_schemes.py resume \
   --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py status \
   --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py dashboard \
+  --config configs/evolution/mock_experiment.json
 ```
 
 Each stock's signal extraction and A/B/C prediction is written immediately.
@@ -143,6 +148,17 @@ label-free input, extraction, and evaluator settings match. Mock `final-test`
 runs once on separate sealed synthetic companies; real `final-test` remains
 fail-closed until a compatible one-shot A/B/C dataset and source archive are
 configured. Ordinary `run` and `resume` never load those labels.
+
+Every completed round also upserts `evolution_history.json` and refreshes the
+adjacent data script plus `evolution_dashboard.html`. Open the HTML directly in
+a local browser; it needs no server or network access. The chart uses round on
+the x-axis and binary F1 on the y-axis. Candidate points and their per-round
+median show the stochastic sequence, while the retained archive-best line is
+shown separately because Top-K makes it non-decreasing by construction. The
+`dashboard` command rebuilds the page from local records, and `status` refreshes
+it before printing state. A legacy run can recover only its last fully
+representable round; the page labels that limitation instead of inventing the
+missing history.
 
 Run on saved Ralph cases only with a compatible adjusted-close history. Legacy
 winner/control or terminal-return labels are rejected rather than silently

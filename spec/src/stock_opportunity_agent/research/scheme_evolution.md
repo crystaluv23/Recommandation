@@ -164,6 +164,9 @@ config.json
 evaluation_contract.json
 state.json
 events.jsonl
+evolution_history.json
+evolution_dashboard_data.js
+evolution_dashboard.html
 memory.json
 schemes/
 frozen_signals/
@@ -189,6 +192,39 @@ write the task error and a resumable `failed` state. The OpenRouter adapter also
 reuses an exact packet/prompt/model/provider/temperature response cache and
 never persists credentials.
 
+## Local Drift Dashboard
+
+Every completed development round atomically upserts one entry in
+`evolution_history.json`, keyed by the engine iteration. An entry contains the
+completed timestamp, selected incumbent, retained archive-best metrics, and one
+row for each evaluated child with its admission decision and fixed metrics.
+The record contains development validation metrics only; final-test artifacts
+remain under `final_test/` and are never imported into this history.
+
+`evolution_dashboard.html` is a dependency-free local report. It loads the
+adjacent `evolution_dashboard_data.js` with a normal script tag, so opening the
+HTML directly through `file://` works without a local server, browser file
+permissions, or network access. The data script is regenerated atomically from
+the canonical JSON history after initialization, every completed round, and
+the `status` or `dashboard` command. Existing runs with only the former
+`scheme_experiments.json` and `top_k.json` receive one explicitly marked
+recoverable legacy snapshot rather than fabricated missing rounds.
+
+The default effect metric is the frozen primary metric, binary F1. The chart
+uses round number on the horizontal axis and effect on the vertical axis, and
+simultaneously renders:
+
+- every accepted child score as a stochastic candidate point;
+- the per-round candidate median as the drift-sensitive sequence; and
+- the retained archive best as a separate best-so-far line.
+
+The report must explain that the archive line is monotone by construction and
+therefore cannot by itself demonstrate upward drift. It shows the ordinary
+least-squares slope of the round medians only when at least three rounds are
+available; this slope is descriptive and not an effectiveness or statistical
+significance claim. Missing or partial history renders an empty/partial state
+instead of failing the underlying evolution run.
+
 ## CLI
 
 The thin script supports:
@@ -198,6 +234,7 @@ PYTHONPATH=src python scripts/evolve_information_schemes.py init --config config
 PYTHONPATH=src python scripts/evolve_information_schemes.py run --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py resume --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py status --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py dashboard --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py final-test --config <real-config.json>
 ```
 
@@ -216,6 +253,9 @@ guards, atomic checkpoints, append-only events, interruption/resume without
 duplicate calls, exact analyzer cache reuse, malformed JSON retry, probability
 field rejection, label-free analyzer inputs, Top-K behavior deduplication, a
 two-generation mock flow, final-test exclusion, and packet identity preflight.
+Dashboard coverage additionally verifies idempotent round history, no
+final-test metric ingestion, direct-file script loading without `fetch`, empty
+and partial histories, and legacy latest-round recovery.
 
 Synthetic, mock, and heuristic results prove orchestration only. Only a frozen
 anonymous plain-LLM run on a declared untouched-company final test can support

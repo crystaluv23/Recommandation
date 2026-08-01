@@ -120,6 +120,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     merge_meta_lessons,
     realized_max_multiple,
 )
+from stock_opportunity_agent.research.scheme_evolution_dashboard import (
+    write_evolution_dashboard,
+)
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     GenomeBlindAnalyzer,
     HeuristicGenomeBlindAnalyzer,
@@ -244,4 +247,5 @@ __all__ = [
     "write_ralph_experiment_artifacts",
     "write_information_plan_experiment_artifacts",
     "write_ralph_loop_artifacts",
+    "write_evolution_dashboard",
 ]

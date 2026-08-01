@@ -36,6 +36,9 @@ from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
     _packet_identity_findings,
 )
+from stock_opportunity_agent.research.scheme_evolution_dashboard import (
+    write_evolution_dashboard,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -163,6 +166,20 @@ class SchemeEvolutionTests(TestCase):
             self.assertFalse(any(Path(tmp).rglob("*.tmp")))
             for line in event_lines:
                 self.assertIsInstance(json.loads(line), dict)
+
+    def test_empty_dashboard_opens_from_local_data_script_without_fetch(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            store = EvolutionStateStore(tmp, run_id="empty-dashboard")
+            store.initialize(_fixed_spec())
+            paths = write_evolution_dashboard(tmp)
+            history = json.loads(paths["history"].read_text(encoding="utf-8"))
+            html = paths["dashboard"].read_text(encoding="utf-8")
+            data_script = paths["data"].read_text(encoding="utf-8")
+        self.assertEqual(history["rounds"], [])
+        self.assertFalse(history["contains_final_test_metrics"])
+        self.assertIn('src="evolution_dashboard_data.js"', html)
+        self.assertNotIn("fetch(", html)
+        self.assertIn("window.__SCHEME_EVOLUTION_HISTORY__", data_script)
 
     def test_interruption_resume_reuses_completed_per_sample_predictions(self) -> None:
         initial, candidates = _genomes()
@@ -306,6 +323,11 @@ class SchemeEvolutionTests(TestCase):
                 fixed_spec=fixed,
                 state_store=store,
             ).run(initial, folds, candidate_count=2)
+            store.write_run_artifacts(first, fixed_spec=fixed, rejections=first.rejections)
+            first_history = json.loads(
+                (Path(tmp) / "evolution_history.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(len(first_history["rounds"]), 1)
             parent = first.incumbent
             child = replace(
                 parent,
@@ -329,6 +351,10 @@ class SchemeEvolutionTests(TestCase):
                 validator=CandidateValidator(near_duplicate_threshold=1.0),
             ).run(parent, folds, candidate_count=1, resume=True)
             state = store.load_state()
+            dashboard_paths = write_evolution_dashboard(tmp)
+            history = json.loads(
+                dashboard_paths["history"].read_text(encoding="utf-8")
+            )
             all_artifacts = "\n".join(
                 path.read_text(encoding="utf-8")
                 for path in Path(tmp).rglob("*.json")
@@ -337,8 +363,38 @@ class SchemeEvolutionTests(TestCase):
         self.assertEqual(state["status"], "completed")
         self.assertFalse(state["final_test_accessed"])
         self.assertEqual(len(second.experiments), 1)
+        self.assertEqual([row["iteration"] for row in history["rounds"]], [1, 2])
+        self.assertTrue(all("archive_best_metrics" in row for row in history["rounds"]))
+        self.assertTrue(all("candidates" in row for row in history["rounds"]))
         self.assertNotIn("final-test-company-do-not-touch", all_artifacts)
         self.assertTrue(second.meta_lessons)
+
+    def test_dashboard_recovers_only_latest_legacy_development_round(self) -> None:
+        initial, candidates = _genomes()
+        fixed = _fixed_spec()
+        with tempfile.TemporaryDirectory() as tmp:
+            store = EvolutionStateStore(tmp, run_id="legacy-dashboard")
+            SchemeEvolutionEngine(
+                proposer=MockSchemeProposer(candidates[:1]),
+                evaluator=MockSchemeFoldEvaluator(),
+                fixed_spec=fixed,
+                state_store=store,
+            ).run(initial, _folds(fixed)[:1], candidate_count=1)
+            history_path = Path(tmp) / "evolution_history.json"
+            history_path.unlink()
+            final_test_dir = Path(tmp) / "final_test"
+            final_test_dir.mkdir()
+            (final_test_dir / "evaluation.json").write_text(
+                json.dumps({"binary_f1": 0.123456789}),
+                encoding="utf-8",
+            )
+            paths = write_evolution_dashboard(tmp)
+            history = json.loads(paths["history"].read_text(encoding="utf-8"))
+            combined = json.dumps(history, sort_keys=True)
+        self.assertEqual(len(history["rounds"]), 1)
+        self.assertEqual(history["rounds"][0]["source"], "legacy_latest_only")
+        self.assertFalse(history["contains_final_test_metrics"])
+        self.assertNotIn("0.123456789", combined)
 
     def test_identity_preflight_still_checks_packet_evidence(self) -> None:
         packet = _blind_packet()

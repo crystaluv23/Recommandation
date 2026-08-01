@@ -145,7 +145,11 @@ selection, and final-test ownership are framework controls and are not mutable
 genome fields. A genome is materialized from signal-train labels inside one
 fold, then frozen before anonymous validation extraction and prediction. Every
 stock prediction is checkpointed before labels are revealed. Final-test and
-live-forward records remain outside the proposal engine.
+live-forward records remain outside the proposal engine. A local evolution
+dashboard may summarize development evaluations as a human-readable report,
+but it must read only the run's proposal-history artifact, identify binary F1
+as the fixed effect metric, and distinguish stochastic per-round candidate
+scores from the mechanically non-decreasing retained best-so-far series.
 
 ### Phase 2: Current Market Scan
 

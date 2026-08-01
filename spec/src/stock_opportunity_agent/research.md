@@ -92,6 +92,10 @@ Active child specs:
   signal extraction and A/B/C prediction before deterministic scoring, derive
   binary surge status in code, reject numeric probability fields, and keep
   final-test records outside the evolution engine.
+- Persist one idempotent development-metric snapshot per completed evolution
+  round and render a local dashboard that shows candidate-level binary-F1
+  scatter, per-round candidate median, and retained best-so-far separately;
+  never mix final-test metrics into this development drift view.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.
