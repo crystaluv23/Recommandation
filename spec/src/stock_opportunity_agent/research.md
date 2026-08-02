@@ -39,13 +39,18 @@ alias, provider/model ids, allowed roles (`evolution` and/or `judge`), credentia
 environment variable, web/tool posture, fixed provider route when applicable,
 and conservative runtime defaults. Generic external proposal registrations must
 also declare positive token-price bounds so the cumulative session ceiling
-cannot silently become ineffective. Concrete providers include OpenAI Responses
-API and OpenRouter Responses API adapters. The OpenRouter adapter keeps
-provider-specific web-search compatibility separate from the OpenAI adapter,
-and optionally fixes an allowed provider slug, disables fallbacks, and requires
-support for every requested parameter. The shared HTTP transport applies
-bounded exponential backoff to retryable transport, rate-limit, and server
-failures.
+cannot silently become ineffective. Concrete providers include OpenAI,
+OpenRouter, and DeepSeek Responses API adapters. The DeepSeek registration reads
+credentials only from `DEEPSEEK_API_KEY`, exposes `deepseek-v4-flash` for both
+evolution and no-web judging, and deliberately does not advertise
+`deepseek-v4-pro` until DeepSeek's Responses endpoint supports it. Its catalog
+cost bounds use the announced 2x peak-hour ceiling over the 2026-08-02
+cache-miss/output prices rather than assuming the lower off-peak bill. The
+OpenRouter adapter keeps provider-specific web-search compatibility separate
+from the OpenAI adapter, and optionally fixes an allowed provider slug, disables
+fallbacks, and requires support for every requested parameter. The shared HTTP
+transport applies bounded exponential backoff to retryable transport,
+rate-limit, and server failures.
 Domain records remain in the top-level `models` module, and `research` is
 reserved for higher-level agents that consume prepared packets.
 

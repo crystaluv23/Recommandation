@@ -563,6 +563,21 @@ are CLI-only and cannot be smuggled through experiment JSON. Re-running the same
 launch command resumes the current partial round first, then continues with new
 rounds until interrupted.
 
+The auto-discovered catalog includes `deepseek-v4-flash` as both a generic
+plain-JSON evolution model and an anonymous no-web judge. Its provider module
+uses DeepSeek's OpenAI-compatible Responses endpoint and reads only
+`DEEPSEEK_API_KEY`; run manifests and dashboards store the alias and public
+provider/model metadata, never the credential. The registration uses the
+announced 2x peak-hour price ceiling (`$0.28` per million cache-miss input tokens
+and `$0.56` per million output tokens) for fail-closed session accounting. Its
+judge default sends Responses reasoning effort `none`, which disables the
+default thinking mode so the frozen temperature-zero setting remains effective;
+the provider adapter removes the OpenRouter-only `exclude` hint before sending.
+`deepseek-v4-pro` remains absent because the provider's 2026-08-02 Responses API
+compatibility table marks it unsupported. Model availability and prices are
+external facts and must be refreshed in the provider module when DeepSeek
+changes them.
+
 The mock `final-test` command evaluates the selected proposal once on separate
 sealed synthetic companies and writes only under `final_test/`. Real
 `final-test` fails closed with a clear message rather than reading a development

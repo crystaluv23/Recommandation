@@ -169,6 +169,28 @@ An external continuous session additionally requires the CLI-only
 the cumulative ledger survives restart; neither flag grants final-test access
 or production promotion.
 
+DeepSeek is auto-discovered from the same catalog. Rotate any credential that
+has been exposed in a terminal, log, or chat, then export the replacement only
+in the launching shell:
+
+```sh
+export DEEPSEEK_API_KEY="<new-rotated-key>"
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py models
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
+  --trajectory-action new \
+  --trajectory-id <new-id> \
+  --evolution-model deepseek-v4-flash \
+  --judge-model deepseek-v4-flash \
+  --continuous-external-session-authorized \
+  --session-max-cost-usd <positive-limit> \
+  --config <experiment-config.json>
+```
+
+The key is not a config field and must not be written to trajectory artifacts.
+The current direct DeepSeek registration is `deepseek-v4-flash`; the catalog
+does not list `deepseek-v4-pro` until its Responses API support is available and
+verified.
+
 The older finite commands remain available for reproducible configs. Initialize
 and run the two-generation mock config:
 

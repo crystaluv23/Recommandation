@@ -1090,7 +1090,15 @@ class OpenAIGenomeBlindAnalyzer:
             raise ValidationError("max_attempts must be positive")
         if max_output_tokens < 1:
             raise ValidationError("max_output_tokens must be positive")
-        if reasoning_effort not in {None, "max", "xhigh", "high", "medium", "low"}:
+        if reasoning_effort not in {
+            None,
+            "none",
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low",
+        }:
             raise ValidationError("unsupported reasoning_effort")
         if input_cost_per_million_tokens < 0 or output_cost_per_million_tokens < 0:
             raise ValidationError("token price estimates cannot be negative")

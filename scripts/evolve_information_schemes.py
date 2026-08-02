@@ -1202,7 +1202,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--blind-max-output-tokens", type=int, default=2200)
     parser.add_argument(
         "--blind-reasoning-effort",
-        choices=("", "max", "xhigh", "high", "medium", "low"),
+        choices=("", "none", "max", "xhigh", "high", "medium", "low"),
         default="",
     )
     parser.add_argument("--fusion-model", default="openrouter/fusion")

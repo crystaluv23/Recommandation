@@ -18,6 +18,12 @@ class LLMModelRegistryTests(TestCase):
         self.assertIn("openrouter-fusion", catalog)
         self.assertIn("kimi-k3-together", catalog)
         self.assertIn("gpt-4.1-openai", catalog)
+        self.assertIn("deepseek-v4-flash", catalog)
+        self.assertEqual(
+            catalog["deepseek-v4-flash"].roles,
+            ("evolution", "judge"),
+        )
+        self.assertFalse(catalog["deepseek-v4-flash"].web_tools_allowed)
         self.assertTrue(
             {"codex-reviewed-file", "openrouter-fusion"}.issubset(
                 {item.alias for item in model_catalog(role="evolution")}
@@ -35,7 +41,12 @@ class LLMModelRegistryTests(TestCase):
             get_model("not-registered", role="evolution")
 
     def test_preview_client_construction_never_requires_real_credentials(self) -> None:
-        for alias in ("openrouter-fusion", "kimi-k3-together", "gpt-4.1-openai"):
+        for alias in (
+            "openrouter-fusion",
+            "kimi-k3-together",
+            "gpt-4.1-openai",
+            "deepseek-v4-flash",
+        ):
             registration = get_model(alias)
             client = registration.create_client(
                 ModelClientSettings(preview_only=True, environ={})

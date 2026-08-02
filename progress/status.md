@@ -24,6 +24,13 @@
 | Reports | [`spec/src/stock_opportunity_agent/reports.md`](../spec/src/stock_opportunity_agent/reports.md) | None | Spec Done | Weekly watchlists, company cards, validation contracts, earnings validation reports, theme maps, review-gate summaries, reviews, meta-learning reports, and audit bundles. |
 | Orchestration | [`spec/src/stock_opportunity_agent/orchestration.md`](../spec/src/stock_opportunity_agent/orchestration.md) | [`src/stock_opportunity_agent/orchestration.py`](../src/stock_opportunity_agent/orchestration.py), [`scripts/run_cold_start_formal.py`](../scripts/run_cold_start_formal.py), [`runs/cold_start/README.md`](../runs/cold_start/README.md), [`tests/test_cold_start.py`](../tests/test_cold_start.py) | Started | Formal cold start now has a single script entry point. The runner scans the historical universe into `runs/cold_start/formal/<run_id>/`, checkpoints universe, prices, selection, provider/web context, coverage reports, packets, blind LLM outputs, signal/theme artifacts, `surge_research_playbooks.json`, and Ralph Loop information-scheme artifacts; it can resume from universe/price/context/blind checkpoints, warn or enforce context sufficiency before learning, and keep Ralph proposals pending human review. |
 
+Provider catalog update (2026-08-02): direct `deepseek-v4-flash` is now
+auto-discovered for both plain-JSON evolution and anonymous no-web judging. It
+reads only `DEEPSEEK_API_KEY`, defaults the judge to non-thinking mode, and uses
+the announced peak-price ceiling for cost reservations. No credential or real
+DeepSeek call is part of the repository checkpoint; `deepseek-v4-pro` remains
+unlisted until its Responses API support is verified.
+
 Next step: supply compatible adjusted-close histories for the frozen A/B/C labels, implement and review the provider-backed signal-discovery adapter, then—only with explicit authorization and current price inputs—run one bounded temperature-0 plain-LLM generation with the shared cache. Keep the result proposal-only, configure a separate untouched-company final-test dataset only after development stops, and do not start multi-agent analysis before the information-plan exit gate passes.
 
 Current bounded objective: [`ralph_information_plan_goal.md`](ralph_information_plan_goal.md).
