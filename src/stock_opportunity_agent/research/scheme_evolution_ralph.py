@@ -205,21 +205,9 @@ class OpenAIGenomeBlindAnalyzer:
     ) -> dict[str, Any]:
         """Call or reuse the strict, anonymous, no-web prediction request."""
 
-        packet_payload = packet.to_prompt_dict()
-        input_payload = {
-            "packet": packet_payload,
-            "materialized_signals": [
-                signal.to_dict() for signal in materialized.retained_signals
-            ],
-        }
-        input_hash = _hash_json(input_payload)
-        cache_key = _hash_json(
-            {
-                "input_hash": input_hash,
-                "prompt_hash": genome.blind_analysis_prompt.content_hash,
-                "settings": self.settings_fingerprint,
-            }
-        )
+        request = self.preview_request(genome, materialized, packet)
+        input_hash = str(request["input_hash"])
+        cache_key = str(request["cache_key"])
         cache_path = self.cache_dir / f"{cache_key}.json"
         if cache_path.exists():
             cached = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -236,23 +224,11 @@ class OpenAIGenomeBlindAnalyzer:
                 packet,
                 metadata=cached_metadata,
             )
-        developer_prompt = (
-            genome.blind_analysis_prompt.template
-            + "\nUse only the supplied anonymous point-in-time packet and "
-            "materialized signal definitions. Web tools are disabled. Do not "
-            "infer identity, labels, forward returns, or post-cutoff facts. "
-            "Return only class A, B, or C for the fixed six-month maximum-multiple "
-            "task. Do not output probabilities, scores, or token likelihoods. "
-            "Every supporting or contradicting claim must cite at least one "
-            "evidence_source_id present in the packet."
-        )
-        user_prompt = json.dumps(input_payload, indent=2, sort_keys=True)
-        maximum_request_cost = (
-            (len(developer_prompt) + len(user_prompt)) / 4
-            * self.input_cost_per_million_tokens
-            / 1_000_000
-            + 2200 * self.output_cost_per_million_tokens / 1_000_000
-        )
+        messages = [
+            ChatMessage(str(message["role"]), str(message["content"]))
+            for message in request["messages"]
+        ]
+        maximum_request_cost = float(request["maximum_request_cost_usd"])
         if (
             self.max_cost_usd is not None
             and self.spent_cost_usd + maximum_request_cost > self.max_cost_usd
@@ -273,17 +249,9 @@ class OpenAIGenomeBlindAnalyzer:
             started = time.monotonic()
             self.external_call_count += 1
             response = self.client.complete(
-                [
-                    ChatMessage("developer", developer_prompt),
-                    ChatMessage("user", user_prompt),
-                ],
-                max_output_tokens=2200,
-                response_format={
-                    "type": "json_schema",
-                    "name": "scheme_prediction",
-                    "strict": True,
-                    "schema": _STRICT_PREDICTION_SCHEMA,
-                },
+                messages,
+                max_output_tokens=int(request["max_output_tokens"]),
+                response_format=request["response_format"],
             )
             latency_ms = (time.monotonic() - started) * 1000
             usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
@@ -353,6 +321,84 @@ class OpenAIGenomeBlindAnalyzer:
             )
             return validated
         raise last_error or ValidationError("genome blind analysis failed")
+
+    def preview_request(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        packet: BlindSchemePacket,
+    ) -> dict[str, Any]:
+        """Return the secret-free request content without calling the provider."""
+
+        input_payload = {
+            "packet": packet.to_prompt_dict(),
+            "materialized_signals": [
+                signal.to_dict() for signal in materialized.retained_signals
+            ],
+        }
+        input_hash = _hash_json(input_payload)
+        cache_key = _hash_json(
+            {
+                "input_hash": input_hash,
+                "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "settings": self.settings_fingerprint,
+            }
+        )
+        developer_prompt = (
+            genome.blind_analysis_prompt.template
+            + "\nUse only the supplied anonymous point-in-time packet and "
+            "materialized signal definitions. Web tools are disabled. Do not "
+            "infer identity, labels, forward returns, or post-cutoff facts. "
+            "Return only class A, B, or C for the fixed six-month maximum-multiple "
+            "task. Do not output probabilities, scores, or token likelihoods. "
+            "Every supporting or contradicting claim must cite at least one "
+            "evidence_source_id present in the packet."
+        )
+        user_prompt = json.dumps(input_payload, indent=2, sort_keys=True)
+        maximum_request_cost = (
+            (len(developer_prompt) + len(user_prompt)) / 4
+            * self.input_cost_per_million_tokens
+            / 1_000_000
+            + 2200 * self.output_cost_per_million_tokens / 1_000_000
+        )
+        provider_routing = None
+        if hasattr(self.client, "provider_only"):
+            provider_routing = {
+                "only": list(getattr(self.client, "provider_only")),
+                "require_parameters": bool(
+                    getattr(self.client, "provider_require_parameters")
+                ),
+                "allow_fallbacks": bool(
+                    getattr(self.client, "provider_allow_fallbacks")
+                ),
+            }
+        base_url = getattr(self.client, "base_url", None)
+        return {
+            "schema_version": "scheme-evolution-blind-request-preview-v0.1",
+            "destination": f"{base_url}/responses" if base_url else None,
+            "provider": self.provider,
+            "model": self.model,
+            "temperature": self.temperature,
+            "provider_routing": provider_routing,
+            "messages": [
+                {"role": "developer", "content": developer_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            "input_payload": input_payload,
+            "input_hash": input_hash,
+            "prompt_hash": genome.blind_analysis_prompt.content_hash,
+            "settings_fingerprint": self.settings_fingerprint,
+            "cache_key": cache_key,
+            "max_output_tokens": 2200,
+            "response_format": {
+                "type": "json_schema",
+                "name": "scheme_prediction",
+                "strict": True,
+                "schema": _STRICT_PREDICTION_SCHEMA,
+            },
+            "maximum_request_cost_usd": maximum_request_cost,
+            "external_call_performed": False,
+        }
 
 
 class RalphInformationPlanFoldEvaluator:
@@ -558,6 +604,29 @@ class RalphInformationPlanFoldEvaluator:
                 signal.to_dict() for signal in materialized.retained_signals
             ],
         }
+
+    def preview_request(
+        self,
+        genome: SchemeGenome,
+        materialized: MaterializedScheme,
+        sample: BlindSample,
+    ) -> dict[str, Any]:
+        """Build the exact provider request preview for one blind sample."""
+
+        prepared = self._prepared.get(materialized.materialized_scheme_id)
+        if prepared is None:
+            raise ValidationError("materialized Ralph scheme is not available in this evaluator")
+        try:
+            index = prepared.holdout_case_ids.index(sample.sample_id)
+        except ValueError as exc:
+            raise ValidationError("blind sample is not in the materialized admission fold") from exc
+        if not isinstance(self.analyzer, OpenAIGenomeBlindAnalyzer):
+            raise ValidationError("request preview requires the strict external analyzer")
+        return self.analyzer.preview_request(
+            genome,
+            materialized,
+            prepared.organized_packets[index],
+        )
 
     def _case(self, sample_id: str) -> HistoricalCase:
         try:

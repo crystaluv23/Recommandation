@@ -323,6 +323,48 @@ class SchemeEvolutionTests(TestCase):
         self.assertEqual(output["predicted_class"], "B")
         self.assertEqual(client.calls, 2)
 
+    def test_request_preview_is_exact_label_free_and_performs_no_call(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        client = _FakeChatClient([json.dumps(_valid_model_output())])
+        with tempfile.TemporaryDirectory() as tmp:
+            analyzer = OpenAIGenomeBlindAnalyzer(
+                client,
+                tmp,
+                provider="openrouter:openai",
+                model="openai/gpt-4.1",
+                temperature=0.0,
+                max_attempts=1,
+                input_cost_per_million_tokens=2.0,
+                output_cost_per_million_tokens=8.0,
+                max_cost_usd=2.0,
+            )
+            preview = analyzer.preview_request(
+                initial,
+                materialized,
+                _blind_packet(),
+            )
+        serialized_payload = json.dumps(preview["input_payload"], sort_keys=True)
+        self.assertEqual(client.calls, 0)
+        self.assertEqual(analyzer.external_call_count, 0)
+        self.assertFalse(preview["external_call_performed"])
+        self.assertEqual(preview["model"], "openai/gpt-4.1")
+        self.assertGreater(preview["maximum_request_cost_usd"], 0)
+        for forbidden in (
+            "source_case_id",
+            "realized_max_multiple",
+            "true_class",
+            "is_surge",
+        ):
+            self.assertNotIn(forbidden, serialized_payload)
+        self.assertEqual(
+            json.loads(preview["messages"][1]["content"]),
+            preview["input_payload"],
+        )
+
     def test_model_probability_field_is_rejected(self) -> None:
         initial, _candidates = _genomes()
         materialized = MockSchemeFoldEvaluator().materialize(initial, _folds(_fixed_spec())[0])

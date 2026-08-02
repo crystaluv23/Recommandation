@@ -132,10 +132,26 @@ def main() -> None:
         )
         evaluator = MockSchemeFoldEvaluator()
     else:
-        folds, evaluator = _real_evaluation_context(args, fixed_spec)
+        folds, evaluator = _real_evaluation_context(
+            args,
+            fixed_spec,
+            preview_only=args.command == "external-preflight",
+        )
     folds = _select_folds(folds, args.selected_folds)
     if not folds:
         raise ValidationError("no selected walk-forward folds are available")
+    if args.command == "external-preflight":
+        if args.mock_llm or args.mode != "llm":
+            raise ValidationError("external-preflight requires real llm mode")
+        _run_external_disclosure_preflight(
+            initial,
+            proposer,
+            evaluator,
+            folds,
+            args=args,
+            output_dir=output_dir,
+        )
+        return
     archive = TopKArchive()
     incumbent = initial
     all_experiments = []
@@ -275,7 +291,15 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=("init", "run", "resume", "status", "dashboard", "final-test"),
+        choices=(
+            "init",
+            "run",
+            "resume",
+            "status",
+            "dashboard",
+            "external-preflight",
+            "final-test",
+        ),
         default="run",
     )
     parser.add_argument("--run-id", default="")
@@ -300,6 +324,8 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--openrouter-temperature", type=float, default=0.0)
     parser.add_argument("--timeout-seconds", type=float, default=90.0)
+    parser.add_argument("--analysis-max-attempts", type=int, default=1)
+    parser.add_argument("--provider-http-max-attempts", type=int, default=1)
     parser.add_argument(
         "--input-cost-per-million-tokens",
         type=float,
@@ -367,6 +393,8 @@ def _parse_args() -> argparse.Namespace:
         parser.error("--children-per-generation must be positive")
     if args.admission_window_days < 1:
         parser.error("admission window must be positive")
+    if args.analysis_max_attempts < 1 or args.provider_http_max_attempts < 1:
+        parser.error("LLM attempt bounds must be positive")
     return args
 
 
@@ -423,6 +451,185 @@ def _run_dry_validation(
     print(f"[scheme-evolution] accepted={len(accepted)} rejected={len(rejections)}")
 
 
+def _run_external_disclosure_preflight(
+    initial: SchemeGenome,
+    proposer: FileSchemeProposer,
+    evaluator: RalphInformationPlanFoldEvaluator,
+    folds,
+    *,
+    args: argparse.Namespace,
+    output_dir: Path,
+) -> None:
+    """Persist exact secret-free requests without contacting the provider."""
+
+    if args.analysis_max_attempts != 1 or args.provider_http_max_attempts != 1:
+        raise ValidationError(
+            "the first external preflight requires one analyzer attempt and one HTTP attempt"
+        )
+    candidates = proposer.propose(
+        [initial],
+        [],
+        [],
+        min(args.children_per_generation, args.max_candidates),
+    )
+    validator = CandidateValidator()
+    accepted: list[SchemeGenome] = []
+    rejections: list[CandidateRejection] = []
+    for candidate in candidates:
+        reasons = validator.validate(candidate, parents=[initial], accepted=accepted)
+        if reasons:
+            rejections.append(CandidateRejection(candidate.genome_id, reasons))
+        else:
+            accepted.append(candidate)
+    genomes = [initial, *accepted]
+    forbidden_keys = {
+        "company_key",
+        "company_name",
+        "forward_return",
+        "future_price",
+        "is_surge",
+        "label",
+        "outcome",
+        "outcome_return",
+        "realized_max_multiple",
+        "source_case_id",
+        "ticker",
+        "true_class",
+    }
+    requests = []
+    findings: list[dict[str, object]] = []
+    maximum_cost_usd = 0.0
+    for genome in genomes:
+        print(
+            f"[scheme-evolution] preflight-genome={genome.genome_id} "
+            f"mutation={genome.mutation_operator.value} "
+            f"changed={','.join(genome.changed_fields) or 'baseline'} "
+            "scope=development proposal_only=true"
+        )
+        for fold in folds:
+            materialized = evaluator.materialize(genome, fold)
+            for sample in fold.admission_samples:
+                preview = evaluator.preview_request(
+                    genome,
+                    materialized,
+                    sample.blind_view(),
+                )
+                payload_keys = _nested_mapping_keys(preview["input_payload"])
+                request_findings = sorted(payload_keys & forbidden_keys)
+                serialized_input = json.dumps(
+                    preview["input_payload"],
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                if sample.sample_id in serialized_input:
+                    request_findings.append("source_sample_id_value")
+                if request_findings:
+                    findings.append(
+                        {
+                            "request_index": len(requests) + 1,
+                            "finding_types": request_findings,
+                        }
+                    )
+                request_cost = float(preview["maximum_request_cost_usd"])
+                maximum_cost_usd += request_cost
+                requests.append(
+                    {
+                        "request_index": len(requests) + 1,
+                        "genome_id": genome.genome_id,
+                        "fold_id": fold.fold_id,
+                        "anonymous_case_id": preview["input_payload"]["packet"][
+                            "anonymous_case_id"
+                        ],
+                        "input_hash": preview["input_hash"],
+                        "cache_key": preview["cache_key"],
+                        "finding_types": request_findings,
+                        "request": preview,
+                    }
+                )
+    packet_preflights = sorted(
+        str(path)
+        for path in (output_dir / "packet_preflight").glob(
+            "*/materialization_preflight.json"
+        )
+    )
+    passed = (
+        bool(requests)
+        and not findings
+        and maximum_cost_usd <= args.max_api_cost
+        and len(packet_preflights) == len(genomes) * len(folds)
+    )
+    payload = {
+        "schema_version": "scheme-evolution-external-disclosure-preflight-v0.1",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "run_id": args.run_id or output_dir.name,
+        "scope": "retrospective_development_proposal_only",
+        "authorization_status": "pending_explicit_user_approval",
+        "external_call_performed": False,
+        "effectiveness_claim_allowed": False,
+        "passed": passed,
+        "finding_count": len(findings),
+        "findings": findings,
+        "destination": requests[0]["request"]["destination"] if requests else None,
+        "provider": requests[0]["request"]["provider"] if requests else None,
+        "model": args.openrouter_model,
+        "temperature": args.openrouter_temperature,
+        "provider_routing": (
+            requests[0]["request"]["provider_routing"] if requests else None
+        ),
+        "analysis_max_attempts": args.analysis_max_attempts,
+        "provider_http_max_attempts": args.provider_http_max_attempts,
+        "request_count": len(requests),
+        "hard_maximum_external_request_count": len(requests),
+        "maximum_total_cost_usd": maximum_cost_usd,
+        "configured_cost_cap_usd": args.max_api_cost,
+        "accepted_genome_ids": [genome.genome_id for genome in genomes],
+        "candidate_summaries": [
+            {
+                "genome_id": genome.genome_id,
+                "parent_ids": genome.parent_ids,
+                "mutation_operator": genome.mutation_operator.value,
+                "changed_fields": genome.changed_fields,
+                "expected_benefit": genome.expected_benefit,
+                "falsification_test": genome.falsification_test,
+            }
+            for genome in accepted
+        ],
+        "candidate_rejections": [row.to_dict() for row in rejections],
+        "packet_preflight_paths": packet_preflights,
+        "requests": requests,
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "external_disclosure_preflight.json"
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+    analyzer = evaluator.analyzer
+    if int(getattr(analyzer, "external_call_count", -1)) != 0:
+        raise ValidationError("external disclosure preflight unexpectedly called the provider")
+    print(
+        f"[scheme-evolution] external-preflight={path} passed={str(passed).lower()} "
+        f"requests={len(requests)} findings={len(findings)} "
+        f"max_cost_usd={maximum_cost_usd:.6f} external_calls=0"
+    )
+    if not passed:
+        raise ValidationError("external disclosure preflight failed; inspect its findings")
+
+
+def _nested_mapping_keys(value) -> set[str]:
+    keys: set[str] = set()
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            keys.add(str(key))
+            keys.update(_nested_mapping_keys(nested))
+    elif isinstance(value, list):
+        for nested in value:
+            keys.update(_nested_mapping_keys(nested))
+    return keys
+
+
 def _fixed_spec(args: argparse.Namespace, *, synthetic: bool) -> FixedEvolutionSpec:
     return FixedEvolutionSpec(
         evaluation_contract=(
@@ -455,6 +662,8 @@ def _fixed_spec(args: argparse.Namespace, *, synthetic: bool) -> FixedEvolutionS
 def _real_evaluation_context(
     args: argparse.Namespace,
     fixed_spec: FixedEvolutionSpec,
+    *,
+    preview_only: bool = False,
 ):
     cases = load_historical_cases(Path(args.cases_path))
     documents = load_documents_by_symbol(Path(args.documents_path))
@@ -576,7 +785,11 @@ def _real_evaluation_context(
             raise ValidationError(
                 "llm mode requires --openrouter-provider so provider routing is fixed"
             )
-        api_key = os.environ.get("OPENROUTER_API_KEY")
+        api_key = (
+            "preview-only-no-network"
+            if preview_only
+            else os.environ.get("OPENROUTER_API_KEY")
+        )
         if not api_key:
             raise ValidationError("OPENROUTER_API_KEY is not set")
         cache_dir = (
@@ -593,7 +806,7 @@ def _real_evaluation_context(
             provider_allow_fallbacks=False,
             transport=UrllibTransport(
                 timeout_seconds=args.timeout_seconds,
-                max_attempts=4,
+                max_attempts=args.provider_http_max_attempts,
             ),
         )
         analyzer = OpenAIGenomeBlindAnalyzer(
@@ -602,6 +815,7 @@ def _real_evaluation_context(
             provider=f"openrouter:{args.openrouter_provider}",
             model=args.openrouter_model,
             temperature=args.openrouter_temperature,
+            max_attempts=args.analysis_max_attempts,
             input_cost_per_million_tokens=args.input_cost_per_million_tokens,
             output_cost_per_million_tokens=args.output_cost_per_million_tokens,
             max_cost_usd=args.max_api_cost,

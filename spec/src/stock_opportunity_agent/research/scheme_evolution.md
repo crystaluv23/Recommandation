@@ -224,6 +224,32 @@ candidate validation, cache keys, ranking, admission, persistence order, or the
 fixed evaluation contract. Label-aware scores may appear only after the
 corresponding label-free predictions are durably written.
 
+## External Disclosure Preflight
+
+Real LLM mode has a separate zero-network `external-preflight` command. It
+materializes the same baseline and statically accepted candidate genomes on the
+same selected folds, then uses the analyzer's shared request-construction path
+to persist the exact developer/user content and request parameters that a later
+`run` command would send. The preflight must not call the provider, read
+validation labels into request content, or mutate the evolution iteration.
+
+The resulting `external_disclosure_preflight.json` records the fixed
+OpenRouter endpoint, downstream provider/model, temperature, no-fallback and
+required-parameter routing, candidate summaries, request count, per-request
+anonymous packet/input hashes, conservative maximum cost, and the local packet
+preflight locations. It scans the data payload for identity-bearing source ids
+and forbidden label/outcome fields including `realized_max_multiple`,
+`true_class`, and `is_surge`; any finding fails closed. Exact request content is
+kept only in this local audit artifact, without credentials or authorization
+headers.
+
+The external run is still unauthorized by the existence or success of this
+artifact. It requires explicit informed approval covering transmission of the
+anonymous local-archive-derived text to both OpenRouter and the fixed downstream
+provider. For the first bounded run, logical analyzer retries and HTTP transport
+retries are both fixed to one so the preflight request count is also the hard
+maximum external request count.
+
 ## Local Drift Dashboard
 
 Every completed development round atomically upserts one entry in
@@ -289,15 +315,18 @@ PYTHONPATH=src python scripts/evolve_information_schemes.py run --config configs
 PYTHONPATH=src python scripts/evolve_information_schemes.py resume --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py status --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py dashboard --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py external-preflight --config configs/evolution/real_llm_development_v1.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py final-test --config <real-config.json>
 ```
 
 The mock `final-test` command evaluates the selected proposal once on separate
 sealed synthetic companies and writes only under `final_test/`. Real
 `final-test` fails closed with a clear message rather than reading a development
-label source. Real LLM mode additionally requires
-`OPENROUTER_API_KEY`, an exact provider slug, positive current token-price
-inputs, disabled provider fallback, and a compatible price-history artifact.
+label source. Real LLM execution additionally requires `OPENROUTER_API_KEY`, an
+exact provider slug, positive current token-price inputs, disabled provider
+fallback, explicit single-attempt retry bounds, and a compatible price-history
+artifact. The zero-network external preflight deliberately does not require a
+credential.
 
 ## Testing
 
@@ -307,6 +336,8 @@ guards, atomic checkpoints, append-only events, interruption/resume without
 duplicate calls, exact analyzer cache reuse, malformed JSON retry, probability
 field rejection, label-free analyzer inputs, Top-K behavior deduplication, a
 two-generation mock flow, final-test exclusion, and packet identity preflight.
+Request-preview coverage additionally verifies that the shared preview path
+performs no provider call and contains no source case id or validation label.
 Dashboard coverage additionally verifies idempotent round history, no
 final-test metric ingestion, direct-file script loading without `fetch`, empty
 and partial histories, legacy latest-round recovery, multi-run index ordering,

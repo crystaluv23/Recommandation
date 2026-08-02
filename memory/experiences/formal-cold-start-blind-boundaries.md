@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 21
+visit_times: 22
 
 ## Trigger
 
@@ -146,6 +146,20 @@ chunks are appended document-by-document, one long recent 10-K can consume the
 entire raw arm and turn a representation experiment into a file-order test.
 Round-robin chunks across the frozen source pool before truncation. Keep this
 mechanical and outcome-independent.
+
+## 2026-08-02 External Disclosure Preflight
+
+Permission to start a local research loop is not automatically permission to
+transmit archive-derived packet text to a third party. Before an external blind
+run, use the same request-construction path as execution to write a zero-network,
+secret-free disclosure artifact containing exact request content, hashes,
+routing, request count, and a conservative cost bound. Scan the data payload for
+source case ids, identity aliases, outcome fields, and future values. A passing
+artifact supports informed review but is never itself authorization.
+
+For a truly bounded first run, freeze both analyzer retries and HTTP transport
+retries to one. Otherwise a stated sample count does not equal the maximum
+number of external requests and the apparent cost ceiling can hide retry risk.
 
 ## How to Apply
 
