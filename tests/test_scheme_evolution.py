@@ -457,6 +457,15 @@ class SchemeEvolutionTests(TestCase):
         self.assertFalse(preview["external_call_performed"])
         self.assertEqual(preview["model"], "openai/gpt-4.1")
         self.assertGreater(preview["maximum_request_cost_usd"], 0)
+        developer_prompt = preview["messages"][0]["content"]
+        self.assertIn("class A means below 2.0", developer_prompt)
+        self.assertIn("class B means at least 2.0 and below 3.0", developer_prompt)
+        self.assertIn("class C means at least 3.0", developer_prompt)
+        self.assertIn("A negative or unsupported setup must map to A, never C", developer_prompt)
+        self.assertEqual(
+            preview["prompt_hash"],
+            hashlib.sha256(developer_prompt.encode("utf-8")).hexdigest(),
+        )
         for forbidden in (
             "source_case_id",
             "realized_max_multiple",
@@ -468,6 +477,36 @@ class SchemeEvolutionTests(TestCase):
             json.loads(preview["messages"][1]["content"]),
             preview["input_payload"],
         )
+
+    def test_effective_blind_prompt_changes_cache_identity(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        changed_prompt = replace(
+            initial.blind_analysis_prompt,
+            template=initial.blind_analysis_prompt.template + " Preserve abstention.",
+            content_hash="",
+        )
+        changed = replace(initial, blind_analysis_prompt=changed_prompt)
+        client = _FakeChatClient([])
+        with tempfile.TemporaryDirectory() as tmp:
+            analyzer = OpenAIGenomeBlindAnalyzer(
+                client,
+                tmp,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+            )
+            original = analyzer.preview_request(initial, materialized, _blind_packet())
+            modified = analyzer.preview_request(changed, materialized, _blind_packet())
+
+        self.assertEqual(original["input_hash"], modified["input_hash"])
+        self.assertNotEqual(original["prompt_hash"], modified["prompt_hash"])
+        self.assertNotEqual(original["cache_key"], modified["cache_key"])
+        self.assertEqual(client.calls, 0)
 
     def test_fusion_proposer_previews_and_caches_one_valid_candidate(self) -> None:
         initial, candidates = _genomes()
@@ -653,7 +692,7 @@ class SchemeEvolutionTests(TestCase):
                         "cache_key": request["cache_key"],
                         "input_hash": request["input_hash"],
                         "settings_fingerprint": analyzer.settings_fingerprint,
-                        "prompt_hash": initial.blind_analysis_prompt.content_hash,
+                        "prompt_hash": request["prompt_hash"],
                         "response_id": "response-paid-before-fix",
                         "response_model": "fake-model",
                         "response_hash": hashlib.sha256(raw_output.encode()).hexdigest(),

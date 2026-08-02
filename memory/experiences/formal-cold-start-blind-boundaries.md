@@ -226,7 +226,10 @@ can write a clearly negative explanation yet output `C` if it assumes ordinary
 alphabetic grading semantics, while this project's fixed contract defines `C`
 as the strongest positive class. Treat explanation/class disagreement as a
 prompt-contract failure for a future matched round; never remap the completed
-class after labels are revealed.
+class after labels are revealed. Hash the complete rendered developer prompt,
+including immutable harness instructions, into the response-cache identity;
+hashing only the evolvable template can silently reuse responses after a fixed
+class-mapping repair.
 
 ## How to Apply
 

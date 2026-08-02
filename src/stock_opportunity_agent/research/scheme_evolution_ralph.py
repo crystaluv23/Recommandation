@@ -69,6 +69,19 @@ _STRICT_PREDICTION_SCHEMA = {
     },
 }
 
+_FIXED_BLIND_TASK_INSTRUCTIONS = (
+    "Use only the supplied anonymous point-in-time packet and materialized signal "
+    "definitions. Web tools are disabled. Do not infer identity, historical "
+    "validation labels, realized outcomes, future prices, or post-cutoff facts. "
+    "Predict the fixed six-month smoothed maximum adjusted-close multiple using "
+    "exactly this immutable mapping: class A means below 2.0 and is binary "
+    "negative; class B means at least 2.0 and below 3.0 and is binary positive; "
+    "class C means at least 3.0 and is binary positive. A negative or unsupported "
+    "setup must map to A, never C. Do not output probabilities, scores, or token "
+    "likelihoods. Every supporting or contradicting claim must cite at least one "
+    "evidence_source_id present in the packet."
+)
+
 
 class GenomeBlindAnalyzer(Protocol):
     """Analyze one existing anonymous Ralph packet under a genome prompt."""
@@ -693,6 +706,7 @@ class OpenAIGenomeBlindAnalyzer:
 
         request = self.preview_request(genome, materialized, packet)
         input_hash = str(request["input_hash"])
+        prompt_hash = str(request["prompt_hash"])
         cache_key = str(request["cache_key"])
         cache_path = self.cache_dir / f"{cache_key}.json"
         if cache_path.exists():
@@ -701,6 +715,8 @@ class OpenAIGenomeBlindAnalyzer:
                 raise ValidationError("cached genome blind input hash mismatch")
             if cached.get("settings_fingerprint") != self.settings_fingerprint:
                 raise ValidationError("cached genome blind settings mismatch")
+            if cached.get("prompt_hash") != prompt_hash:
+                raise ValidationError("cached genome blind prompt hash mismatch")
             self.cache_hit_count += 1
             cached_metadata = dict(cached.get("request_metadata") or {})
             cached_metadata["cache_hit"] = True
@@ -711,10 +727,10 @@ class OpenAIGenomeBlindAnalyzer:
                 metadata=cached_metadata,
             )
         recovered = self._recover_failed_validation_attempt(
-            genome=genome,
             packet=packet,
             cache_key=cache_key,
             input_hash=input_hash,
+            prompt_hash=prompt_hash,
             cache_path=cache_path,
         )
         if recovered is not None:
@@ -816,7 +832,7 @@ class OpenAIGenomeBlindAnalyzer:
                 "cache_key": cache_key,
                 "input_hash": input_hash,
                 "settings_fingerprint": self.settings_fingerprint,
-                "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "prompt_hash": prompt_hash,
                 "response_id": response.response_id,
                 "response_model": response.model or self.model,
                 "response_hash": response_hash,
@@ -857,7 +873,7 @@ class OpenAIGenomeBlindAnalyzer:
                 "temperature": self.temperature,
                 "top_p": None,
                 "seed": None,
-                "system_prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "system_prompt_hash": prompt_hash,
                 "input_hash": input_hash,
                 "response_hash": response_hash,
                 "request_timestamp": datetime.now(timezone.utc).isoformat(),
@@ -922,7 +938,7 @@ class OpenAIGenomeBlindAnalyzer:
                     "schema_version": "genome-blind-analysis-cache-v0.1",
                     "input_hash": input_hash,
                     "settings_fingerprint": self.settings_fingerprint,
-                    "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                    "prompt_hash": prompt_hash,
                     "response_id": response.response_id,
                     "response_hash": response_hash,
                     "raw_output": response.output_text,
@@ -942,10 +958,10 @@ class OpenAIGenomeBlindAnalyzer:
     def _recover_failed_validation_attempt(
         self,
         *,
-        genome: SchemeGenome,
         packet: BlindSchemePacket,
         cache_key: str,
         input_hash: str,
+        prompt_hash: str,
         cache_path: Path,
     ) -> dict[str, Any] | None:
         """Revalidate a paid exact response before considering another HTTP call."""
@@ -961,7 +977,7 @@ class OpenAIGenomeBlindAnalyzer:
                 continue
             if audit.get("settings_fingerprint") != self.settings_fingerprint:
                 continue
-            if audit.get("prompt_hash") != genome.blind_analysis_prompt.content_hash:
+            if audit.get("prompt_hash") != prompt_hash:
                 continue
             raw_output = audit.get("raw_output")
             if not isinstance(raw_output, str):
@@ -979,7 +995,7 @@ class OpenAIGenomeBlindAnalyzer:
                 "temperature": self.temperature,
                 "top_p": None,
                 "seed": None,
-                "system_prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "system_prompt_hash": prompt_hash,
                 "input_hash": input_hash,
                 "response_hash": str(audit.get("response_hash", "")),
                 "request_timestamp": str(audit.get("received_at", "")),
@@ -1015,7 +1031,7 @@ class OpenAIGenomeBlindAnalyzer:
                     "schema_version": "genome-blind-analysis-cache-v0.1",
                     "input_hash": input_hash,
                     "settings_fingerprint": self.settings_fingerprint,
-                    "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                    "prompt_hash": prompt_hash,
                     "response_id": audit.get("response_id"),
                     "response_hash": audit.get("response_hash"),
                     "raw_output": raw_output,
@@ -1046,22 +1062,18 @@ class OpenAIGenomeBlindAnalyzer:
             ],
         }
         input_hash = _hash_json(input_payload)
+        developer_prompt = (
+            genome.blind_analysis_prompt.template
+            + "\n"
+            + _FIXED_BLIND_TASK_INSTRUCTIONS
+        )
+        prompt_hash = hashlib.sha256(developer_prompt.encode("utf-8")).hexdigest()
         cache_key = _hash_json(
             {
                 "input_hash": input_hash,
-                "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "prompt_hash": prompt_hash,
                 "settings": self.settings_fingerprint,
             }
-        )
-        developer_prompt = (
-            genome.blind_analysis_prompt.template
-            + "\nUse only the supplied anonymous point-in-time packet and "
-            "materialized signal definitions. Web tools are disabled. Do not "
-            "infer identity, labels, forward returns, or post-cutoff facts. "
-            "Return only class A, B, or C for the fixed six-month maximum-multiple "
-            "task. Do not output probabilities, scores, or token likelihoods. "
-            "Every supporting or contradicting claim must cite at least one "
-            "evidence_source_id present in the packet."
         )
         user_prompt = json.dumps(input_payload, indent=2, sort_keys=True)
         maximum_request_cost = (
@@ -1102,7 +1114,7 @@ class OpenAIGenomeBlindAnalyzer:
             ],
             "input_payload": input_payload,
             "input_hash": input_hash,
-            "prompt_hash": genome.blind_analysis_prompt.content_hash,
+            "prompt_hash": prompt_hash,
             "settings_fingerprint": self.settings_fingerprint,
             "cache_key": cache_key,
             "max_output_tokens": self.max_output_tokens,

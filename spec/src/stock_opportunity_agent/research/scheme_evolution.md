@@ -108,6 +108,13 @@ signal extraction, then the analyzer returns:
 - flip conditions; and
 - source evidence references required by this repository's provenance rules.
 
+The immutable blind harness, outside the evolvable genome prompt, states the
+class semantics verbatim on every request: A is a predicted smoothed maximum
+adjusted-close multiple below 2.0 and is binary negative; B is at least 2.0 and
+below 3.0; C is at least 3.0; B and C are binary positive. A negative thesis
+must therefore map to A, never C. These definitions are target metadata, not a
+validation label or realized outcome, and candidates cannot mutate them.
+
 Opaque provenance references may use the packet's existing `evidence_ref`,
 `source_id`, `fact_id`, or `fact_ref` keys, or a value explicitly exposed in a
 `derived_from_fact_refs` lineage list. The validator accepts only values that
@@ -215,6 +222,13 @@ same value. A KeyboardInterrupt writes `paused`; provider or validation errors
 write the task error and a resumable `failed` state. The OpenRouter adapter also
 reuses an exact packet/prompt/model/provider/temperature response cache and
 never persists credentials.
+
+The prompt identity used by that cache is the hash of the complete rendered
+developer prompt actually sent to the provider, including the immutable class
+mapping and other harness constraints, not merely the genome template's stored
+content hash. The exact input hash, effective prompt hash, and analyzer settings
+all participate in the cache key. Any harness wording change must therefore
+produce a cache miss and a new disclosure preflight.
 
 Real blind runs additionally maintain `external_attempts.json` as an atomic,
 secret-free HTTP-attempt ledger. The analyzer reserves one entry immediately
