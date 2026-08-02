@@ -36,6 +36,10 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalSpec,
     genome_recipe_hash,
 )
+from stock_opportunity_agent.research.scheme_evolution_records import (
+    MetaLesson,
+    MutationRequest,
+)
 
 
 _STRICT_PREDICTION_SCHEMA = {
@@ -146,6 +150,234 @@ class HeuristicGenomeBlindAnalyzer:
         }
 
 
+class OpenRouterFusionSchemeProposer:
+    """One-call, cached Fusion proposer for bounded SchemeGenome mutations."""
+
+    _PRICING_SNAPSHOT = {
+        "verified_at": "2026-08-02",
+        "panel_aliases": {
+            "~anthropic/claude-opus-latest": "anthropic/claude-opus-5",
+            "~openai/gpt-latest": "openai/gpt-5.6-sol",
+            "~google/gemini-pro-latest": "google/gemini-3.1-pro-preview",
+        },
+        "maximum_input_usd_per_million": 5.0,
+        "maximum_output_usd_per_million": 30.0,
+        "maximum_web_search_usd": 0.014,
+    }
+
+    def __init__(
+        self,
+        client: OpenAIChatClient,
+        cache_dir: str | Path,
+        *,
+        objective_text: str,
+        preset: str = "general-high",
+        max_tool_calls: int = 1,
+        inner_max_tokens: int = 3000,
+        outer_max_tokens: int = 5000,
+        max_cost_usd: float = 2.0,
+    ) -> None:
+        if not objective_text.strip():
+            raise ValidationError("Fusion proposal objective must not be empty")
+        if max_tool_calls < 1 or inner_max_tokens < 1 or outer_max_tokens < 1:
+            raise ValidationError("Fusion proposal bounds must be positive")
+        if max_cost_usd <= 0:
+            raise ValidationError("Fusion proposal cost cap must be positive")
+        self.client = client
+        self.cache_dir = Path(cache_dir)
+        self.objective_text = objective_text
+        self.preset = preset
+        self.max_tool_calls = max_tool_calls
+        self.inner_max_tokens = inner_max_tokens
+        self.outer_max_tokens = outer_max_tokens
+        self.max_cost_usd = max_cost_usd
+        self.external_call_count = 0
+        self.cache_hit_count = 0
+        self.spent_cost_usd = 0.0
+
+    @property
+    def settings_fingerprint(self) -> str:
+        return _hash_json(
+            {
+                "model": getattr(self.client, "model", "openrouter/fusion"),
+                "preset": self.preset,
+                "max_tool_calls": self.max_tool_calls,
+                "inner_max_tokens": self.inner_max_tokens,
+                "outer_max_tokens": self.outer_max_tokens,
+                "reasoning": {"effort": "high", "exclude": True},
+                "pricing_snapshot": self._PRICING_SNAPSHOT,
+            }
+        )
+
+    def preview_request(
+        self,
+        parents: list[SchemeGenome],
+        meta_memory: list[MetaLesson],
+        mutation_requests: list[MutationRequest],
+        count: int,
+    ) -> dict[str, Any]:
+        """Return exact proposal content and a conservative current-price bound."""
+
+        if count != 1:
+            raise ValidationError("bounded Fusion proposer currently requires count=1")
+        input_payload = {
+            "objective": self.objective_text,
+            "candidate_count": count,
+            "parents": [parent.to_dict() for parent in parents],
+            "aggregate_meta_memory": [
+                _sanitized_meta_lesson(lesson) for lesson in meta_memory
+            ],
+            "mutation_requests": [request.to_dict() for request in mutation_requests],
+            "fixed_boundaries": {
+                "evaluation_contract_mutable": False,
+                "blind_validation_must_be_anonymous": True,
+                "blind_validation_web_tools_allowed": False,
+                "proposal_only": True,
+                "human_review_required": True,
+            },
+        }
+        developer_prompt = (
+            "Act as the high-capability proposal layer for a bounded information-scheme "
+            "evolution experiment. Use Fusion deliberation to propose exactly one complete "
+            "SchemeGenome JSON object derived from an active parent. You may use web research "
+            "only for general source-family or research-method ideas; never identify or research "
+            "validation companies. Preserve the fixed A/B/C exam, anonymous no-web blind "
+            "analysis, output schema, point-in-time cutoffs, and proposal-only boundary. Make "
+            "few attributable changes. Return JSON only as {\"candidates\": [<full genome>]}."
+        )
+        user_prompt = json.dumps(input_payload, indent=2, sort_keys=True)
+        messages = [
+            {"role": "developer", "content": developer_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        request_hash = _hash_json(
+            {
+                "messages": messages,
+                "settings_fingerprint": self.settings_fingerprint,
+            }
+        )
+        approximate_input_tokens = sum(len(row["content"]) for row in messages) / 4
+        panel_and_analyst_calls = 4
+        estimated_cost = (
+            approximate_input_tokens
+            * 10
+            * self._PRICING_SNAPSHOT["maximum_input_usd_per_million"]
+            / 1_000_000
+            + (panel_and_analyst_calls * self.inner_max_tokens + self.outer_max_tokens)
+            * self._PRICING_SNAPSHOT["maximum_output_usd_per_million"]
+            / 1_000_000
+            + panel_and_analyst_calls
+            * self.max_tool_calls
+            * self._PRICING_SNAPSHOT["maximum_web_search_usd"]
+        )
+        return {
+            "schema_version": "scheme-evolution-fusion-proposal-preview-v0.1",
+            "destination": f"{getattr(self.client, 'base_url', 'https://openrouter.ai/api/v1')}/responses",
+            "model": getattr(self.client, "model", "openrouter/fusion"),
+            "messages": messages,
+            "plugins": [
+                {
+                    "id": "fusion",
+                    "preset": self.preset,
+                    "max_tool_calls": self.max_tool_calls,
+                    "max_completion_tokens": self.inner_max_tokens,
+                    "reasoning": {"effort": "high"},
+                }
+            ],
+            "tool_choice": "required",
+            "reasoning": {"effort": "high", "exclude": True},
+            "max_output_tokens": self.outer_max_tokens,
+            "request_hash": request_hash,
+            "settings_fingerprint": self.settings_fingerprint,
+            "pricing_snapshot": self._PRICING_SNAPSHOT,
+            "maximum_estimated_cost_usd": estimated_cost,
+            "cost_bound_kind": "conservative_snapshot_estimate_not_provider_hard_cap",
+            "external_call_performed": False,
+        }
+
+    def propose(
+        self,
+        parents: list[SchemeGenome],
+        meta_memory: list[MetaLesson],
+        mutation_requests: list[MutationRequest],
+        count: int,
+    ) -> list[SchemeGenome]:
+        """Call Fusion once or reuse its exact cached candidate response."""
+
+        preview = self.preview_request(parents, meta_memory, mutation_requests, count)
+        estimated_cost = float(preview["maximum_estimated_cost_usd"])
+        if estimated_cost > self.max_cost_usd:
+            raise ValidationError("Fusion proposal estimate exceeds its configured cost cap")
+        cache_path = self.cache_dir / f"{preview['request_hash']}.json"
+        if cache_path.exists():
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            if cached.get("settings_fingerprint") != self.settings_fingerprint:
+                raise ValidationError("cached Fusion proposal settings mismatch")
+            if cached.get("status") != "completed":
+                raise ValidationError(
+                    "cached Fusion proposal is incomplete or failed; automatic retry is disabled"
+                )
+            self.cache_hit_count += 1
+            return [SchemeGenome.from_dict(row) for row in cached["candidates"]]
+        messages = [
+            ChatMessage(str(row["role"]), str(row["content"]))
+            for row in preview["messages"]
+        ]
+        self.external_call_count += 1
+        response = self.client.complete(
+            messages,
+            max_output_tokens=self.outer_max_tokens,
+            tool_choice="required",
+            plugins=preview["plugins"],
+            reasoning=preview["reasoning"],
+        )
+        usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
+        actual_cost = _reported_usage_cost(usage)
+        self.spent_cost_usd += actual_cost if actual_cost is not None else estimated_cost
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        response_record = {
+            "schema_version": "scheme-evolution-fusion-proposal-cache-v0.1",
+            "status": "received_pending_validation",
+            "request_hash": preview["request_hash"],
+            "settings_fingerprint": self.settings_fingerprint,
+            "resolved_model": response.model,
+            "response_id": response.response_id,
+            "response_hash": hashlib.sha256(
+                response.output_text.encode("utf-8")
+            ).hexdigest(),
+            "usage": usage if isinstance(usage, Mapping) else {},
+            "reported_cost_usd": actual_cost,
+            "maximum_estimated_cost_usd": estimated_cost,
+            "raw_output": response.output_text,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        _write_json(cache_path, response_record)
+        try:
+            raw_candidates = _parse_fusion_candidates(response.output_text)
+            candidates = [SchemeGenome.from_dict(row) for row in raw_candidates]
+            if len(candidates) != count:
+                raise ValidationError("Fusion proposal returned the wrong candidate count")
+        except (KeyError, TypeError, ValueError, ValidationError) as exc:
+            _write_json(
+                cache_path,
+                {
+                    **response_record,
+                    "status": "failed_validation",
+                    "validation_error": f"{type(exc).__name__}: {exc}",
+                },
+            )
+            raise
+        _write_json(
+            cache_path,
+            {
+                **response_record,
+                "status": "completed",
+                "candidates": [candidate.to_dict() for candidate in candidates],
+            },
+        )
+        return candidates
+
+
 class OpenAIGenomeBlindAnalyzer:
     """Strict JSON, cached blind analyzer using the existing provider client."""
 
@@ -158,12 +390,18 @@ class OpenAIGenomeBlindAnalyzer:
         model: str,
         temperature: float,
         max_attempts: int = 2,
+        max_output_tokens: int = 2200,
+        reasoning_effort: str | None = None,
         input_cost_per_million_tokens: float = 0.0,
         output_cost_per_million_tokens: float = 0.0,
         max_cost_usd: float | None = None,
     ) -> None:
         if max_attempts < 1:
             raise ValidationError("max_attempts must be positive")
+        if max_output_tokens < 1:
+            raise ValidationError("max_output_tokens must be positive")
+        if reasoning_effort not in {None, "max", "xhigh", "high", "medium", "low"}:
+            raise ValidationError("unsupported reasoning_effort")
         if input_cost_per_million_tokens < 0 or output_cost_per_million_tokens < 0:
             raise ValidationError("token price estimates cannot be negative")
         if max_cost_usd is not None and max_cost_usd < 0:
@@ -174,6 +412,8 @@ class OpenAIGenomeBlindAnalyzer:
         self.model = model
         self.temperature = temperature
         self.max_attempts = max_attempts
+        self.max_output_tokens = max_output_tokens
+        self.reasoning_effort = reasoning_effort
         self.input_cost_per_million_tokens = input_cost_per_million_tokens
         self.output_cost_per_million_tokens = output_cost_per_million_tokens
         self.max_cost_usd = max_cost_usd
@@ -188,6 +428,8 @@ class OpenAIGenomeBlindAnalyzer:
                 "provider": self.provider,
                 "model": self.model,
                 "temperature": self.temperature,
+                "max_output_tokens": self.max_output_tokens,
+                "reasoning_effort": self.reasoning_effort,
                 "top_p": None,
                 "seed": None,
                 "input_cost_per_million_tokens": self.input_cost_per_million_tokens,
@@ -252,6 +494,11 @@ class OpenAIGenomeBlindAnalyzer:
                 messages,
                 max_output_tokens=int(request["max_output_tokens"]),
                 response_format=request["response_format"],
+                reasoning=(
+                    {"effort": self.reasoning_effort, "exclude": True}
+                    if self.reasoning_effort
+                    else None
+                ),
             )
             latency_ms = (time.monotonic() - started) * 1000
             usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
@@ -359,7 +606,9 @@ class OpenAIGenomeBlindAnalyzer:
             (len(developer_prompt) + len(user_prompt)) / 4
             * self.input_cost_per_million_tokens
             / 1_000_000
-            + 2200 * self.output_cost_per_million_tokens / 1_000_000
+            + self.max_output_tokens
+            * self.output_cost_per_million_tokens
+            / 1_000_000
         )
         provider_routing = None
         if hasattr(self.client, "provider_only"):
@@ -379,6 +628,11 @@ class OpenAIGenomeBlindAnalyzer:
             "provider": self.provider,
             "model": self.model,
             "temperature": self.temperature,
+            "reasoning": (
+                {"effort": self.reasoning_effort, "exclude": True}
+                if self.reasoning_effort
+                else None
+            ),
             "provider_routing": provider_routing,
             "messages": [
                 {"role": "developer", "content": developer_prompt},
@@ -389,7 +643,7 @@ class OpenAIGenomeBlindAnalyzer:
             "prompt_hash": genome.blind_analysis_prompt.content_hash,
             "settings_fingerprint": self.settings_fingerprint,
             "cache_key": cache_key,
-            "max_output_tokens": 2200,
+            "max_output_tokens": self.max_output_tokens,
             "response_format": {
                 "type": "json_schema",
                 "name": "scheme_prediction",
@@ -770,6 +1024,55 @@ def _packet_evidence_refs(packet: BlindSchemePacket) -> set[str]:
                 if isinstance(value, str) and value:
                     refs.add(value)
     return refs
+
+
+def _sanitized_meta_lesson(lesson: MetaLesson) -> dict[str, Any]:
+    evidence = dict(lesson.evidence)
+    evidence.pop("examples", None)
+    return {
+        "observation": lesson.observation,
+        "evidence": evidence,
+        "diagnosed_issue": lesson.diagnosed_issue,
+        "tested_change": lesson.tested_change,
+        "metric_delta": lesson.metric_delta,
+        "status": lesson.status,
+        "confidence": lesson.confidence,
+        "suggested_mutation_operators": [
+            operator.value for operator in lesson.suggested_mutation_operators
+        ],
+    }
+
+
+def _parse_fusion_candidates(text: str) -> list[dict[str, Any]]:
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        stripped = re.sub(r"^```(?:json)?\s*", "", stripped)
+        stripped = re.sub(r"\s*```$", "", stripped)
+    try:
+        payload = json.loads(stripped)
+    except json.JSONDecodeError:
+        start = stripped.find("{")
+        end = stripped.rfind("}")
+        if start < 0 or end <= start:
+            raise ValidationError("Fusion proposal did not contain a JSON object")
+        try:
+            payload = json.loads(stripped[start : end + 1])
+        except json.JSONDecodeError as exc:
+            raise ValidationError("Fusion proposal was not valid JSON") from exc
+    rows = payload.get("candidates") if isinstance(payload, Mapping) else None
+    if not isinstance(rows, list) or not all(isinstance(row, Mapping) for row in rows):
+        raise ValidationError("Fusion proposal must contain a candidates list")
+    return [dict(row) for row in rows]
+
+
+def _reported_usage_cost(usage: Any) -> float | None:
+    if not isinstance(usage, Mapping):
+        return None
+    for key in ("cost", "total_cost", "cost_usd"):
+        value = usage.get(key)
+        if isinstance(value, (int, float)) and value >= 0:
+            return float(value)
+    return None
 
 
 def _write_materialization_preflight(

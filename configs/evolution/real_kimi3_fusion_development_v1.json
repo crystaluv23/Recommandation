@@ -1,0 +1,83 @@
+{
+  "schema_version": "scheme-evolution-experiment-config-v0.2",
+  "purpose": "One Fusion-proposed candidate and one bounded Kimi K3 no-web development round on the consumed real-artifact A/B/C split.",
+  "provider_metadata_verified_at": "2026-08-02",
+  "limitations": [
+    "The 2025-08-05 admission window was selected after auditing this consumed development archive and is not independent effectiveness evidence.",
+    "Fusion is used only to propose a SchemeGenome; it never receives blind validation packets and its web-enabled output cannot score or label a stock.",
+    "Kimi K3 blind validation is fixed to the Together endpoint because that endpoint currently supports temperature, response_format, structured_outputs, and reasoning together.",
+    "The selected proposal remains pending human review and requires a fresh untouched-company final test."
+  ],
+  "cli": {
+    "run_id": "real-abc-dev-2026-08-02-kimi3-fusion-v1",
+    "output_dir": "runs/cold_start/evolution/real-abc-dev-2026-08-02-kimi3-fusion-v1",
+    "initial_genome": "configs/evolution/initial_genome.json",
+    "candidate_json": "runs/cold_start/evolution/real-abc-dev-2026-08-02-kimi3-fusion-v1/fusion_candidates.json",
+    "cases_path": "runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13-clean-universe/05_packets/historical_cases.json",
+    "documents_path": "runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13-clean-universe/04_documents/documents_and_catalysts.json",
+    "price_histories_path": "runs/cold_start/evolution/input/abc_adjusted_price_histories_2026-08-02.json",
+    "mode": "llm",
+    "openrouter_model": "moonshotai/kimi-k3",
+    "openrouter_provider": "together",
+    "openrouter_temperature": 0.0,
+    "analysis_max_attempts": 1,
+    "provider_http_max_attempts": 1,
+    "blind_max_output_tokens": 8000,
+    "blind_reasoning_effort": "max",
+    "input_cost_per_million_tokens": 3.0,
+    "output_cost_per_million_tokens": 15.0,
+    "blind_cache_dir": "runs/cold_start/evolution/shared-blind-cache-kimi3-together-temp0-max",
+    "fusion_model": "openrouter/fusion",
+    "fusion_preset": "general-high",
+    "fusion_max_tool_calls": 1,
+    "fusion_inner_max_tokens": 3000,
+    "fusion_max_output_tokens": 5000,
+    "fusion_max_cost": 2.0,
+    "fusion_cache_dir": "runs/cold_start/evolution/shared-fusion-proposal-cache-general-high-v1",
+    "admission_starts": "2025-08-05",
+    "admission_window_days": 15,
+    "purge_days": 15,
+    "embargo_days": 15,
+    "generations": 1,
+    "children_per_generation": 1,
+    "max_candidates": 1,
+    "top_k": 2,
+    "prediction_similarity_threshold": 0.95,
+    "max_api_cost": 2.0,
+    "max_concurrency": 1,
+    "random_seed": 42
+  },
+  "evaluation_contract": {
+    "version": "six-month-max-multiple-v1",
+    "horizon_months": 6,
+    "price_field": "adjusted_close",
+    "multiple_calculation_type": "max_future_price_ratio",
+    "smoothing_window_days": 5,
+    "class_boundaries": {
+      "A": {
+        "min_inclusive": 0.0,
+        "max_exclusive": 2.0
+      },
+      "B": {
+        "min_inclusive": 2.0,
+        "max_exclusive": 3.0
+      },
+      "C": {
+        "min_inclusive": 3.0,
+        "max_exclusive": null
+      }
+    },
+    "positive_classes": [
+      "B",
+      "C"
+    ],
+    "primary_metric": "binary_f1",
+    "diagnostic_metrics": [
+      "binary_precision",
+      "binary_recall",
+      "multiclass_macro_f1",
+      "class_c_recall",
+      "ordinal_distance"
+    ]
+  }
+}

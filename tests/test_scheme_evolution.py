@@ -35,6 +35,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
+    OpenRouterFusionSchemeProposer,
     _packet_identity_findings,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
@@ -364,6 +365,49 @@ class SchemeEvolutionTests(TestCase):
             json.loads(preview["messages"][1]["content"]),
             preview["input_payload"],
         )
+
+    def test_fusion_proposer_previews_and_caches_one_valid_candidate(self) -> None:
+        initial, candidates = _genomes()
+        response = json.dumps({"candidates": [candidates[0].to_dict()]})
+        client = _FakeChatClient([response])
+        with tempfile.TemporaryDirectory() as tmp:
+            proposer = OpenRouterFusionSchemeProposer(
+                client,
+                tmp,
+                objective_text="Keep the exam fixed and mutate one information scheme.",
+                max_cost_usd=2.0,
+            )
+            preview = proposer.preview_request([initial], [], [], 1)
+            first = proposer.propose([initial], [], [], 1)
+            second = proposer.propose([initial], [], [], 1)
+        self.assertFalse(preview["external_call_performed"])
+        self.assertEqual(preview["model"], "openrouter/fusion")
+        self.assertEqual(preview["plugins"][0]["preset"], "general-high")
+        self.assertLess(preview["maximum_estimated_cost_usd"], 2.0)
+        self.assertEqual(first, second)
+        self.assertEqual(first[0].genome_id, candidates[0].genome_id)
+        self.assertEqual(client.calls, 1)
+        self.assertEqual(proposer.external_call_count, 1)
+        self.assertEqual(proposer.cache_hit_count, 1)
+
+    def test_fusion_proposer_persists_invalid_response_without_retry(self) -> None:
+        initial, _candidates = _genomes()
+        client = _FakeChatClient(["not-json"])
+        with tempfile.TemporaryDirectory() as tmp:
+            proposer = OpenRouterFusionSchemeProposer(
+                client,
+                tmp,
+                objective_text="Keep the exam fixed.",
+                max_cost_usd=2.0,
+            )
+            with self.assertRaisesRegex(ValidationError, "JSON object"):
+                proposer.propose([initial], [], [], 1)
+            cache = json.loads(next(Path(tmp).glob("*.json")).read_text(encoding="utf-8"))
+            with self.assertRaisesRegex(ValidationError, "automatic retry is disabled"):
+                proposer.propose([initial], [], [], 1)
+        self.assertEqual(client.calls, 1)
+        self.assertEqual(cache["status"], "failed_validation")
+        self.assertEqual(cache["raw_output"], "not-json")
 
     def test_model_probability_field_is_rejected(self) -> None:
         initial, _candidates = _genomes()
@@ -728,7 +772,8 @@ class _FakeChatClient:
 
     def complete(self, messages, **kwargs):
         self.calls += 1
-        assert kwargs["response_format"]["type"] == "json_schema"
+        if "response_format" in kwargs:
+            assert kwargs["response_format"]["type"] == "json_schema"
         assert all(message.role != "tool" for message in messages)
         output = self.outputs[min(self.calls - 1, len(self.outputs) - 1)]
         return ChatResponse(

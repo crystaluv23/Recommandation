@@ -110,6 +110,42 @@ class OpenRouterChatClientTests(TestCase):
             },
         )
 
+    def test_fusion_plugin_and_reasoning_are_forwarded(self) -> None:
+        transport = FakeTransport(
+            {
+                "id": "resp_fusion",
+                "model": "anthropic/claude-opus-5",
+                "output": [
+                    {
+                        "type": "message",
+                        "content": [{"type": "output_text", "text": "{}"}],
+                    }
+                ],
+            }
+        )
+        client = OpenRouterChatClient("openrouter/fusion", "test-key", transport=transport)
+
+        client.complete(
+            [ChatMessage("user", "Propose one bounded information scheme.")],
+            max_output_tokens=5000,
+            tool_choice="required",
+            plugins=[
+                {
+                    "id": "fusion",
+                    "preset": "general-high",
+                    "max_tool_calls": 1,
+                    "max_completion_tokens": 3000,
+                }
+            ],
+            reasoning={"effort": "high", "exclude": True},
+        )
+
+        payload = transport.calls[0][2]
+        self.assertEqual(payload["model"], "openrouter/fusion")
+        self.assertEqual(payload["tool_choice"], "required")
+        self.assertEqual(payload["plugins"][0]["preset"], "general-high")
+        self.assertEqual(payload["reasoning"], {"effort": "high", "exclude": True})
+
     def test_from_config_reads_openrouter_api_key(self) -> None:
         client = create(
             "openrouter",

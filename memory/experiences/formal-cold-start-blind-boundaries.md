@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 22
+visit_times: 23
 
 ## Trigger
 
@@ -160,6 +160,20 @@ artifact supports informed review but is never itself authorization.
 For a truly bounded first run, freeze both analyzer retries and HTTP transport
 retries to one. Otherwise a stated sample count does not equal the maximum
 number of external requests and the apparent cost ceiling can hide retry risk.
+
+## 2026-08-02 Fusion Role Separation
+
+OpenRouter Fusion is not a stronger drop-in blind classifier: its panel and
+analyst receive `web_search` and `web_fetch`, and one outer request expands into
+multiple underlying completions. Keep it in the scheme-proposal and aggregate
+reflection layer, where general source/method research is useful. Never pass it
+validation packets or let its output directly produce TP/FP/TN/FN or Top-K.
+
+Freeze blind scoring on a separate concrete model and provider endpoint that
+supports the exact temperature, structured-output, reasoning, and no-fallback
+parameters. Cache and locally validate the Fusion-produced full genome before
+materialization so a drifting Quality panel cannot change an already-started
+exam.
 
 ## How to Apply
 

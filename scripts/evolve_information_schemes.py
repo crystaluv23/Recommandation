@@ -45,6 +45,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     HeuristicGenomeBlindAnalyzer,
     OpenAIGenomeBlindAnalyzer,
+    OpenRouterFusionSchemeProposer,
     RalphInformationPlanFoldEvaluator,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
@@ -114,6 +115,31 @@ def main() -> None:
         print(f"[scheme-evolution] initialized={output_dir}")
         print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
         return
+    if args.command in {"fusion-preflight", "fusion-sample"}:
+        fusion_proposer = _fusion_proposer(
+            args,
+            output_dir,
+            preview_only=args.command == "fusion-preflight",
+        )
+        if args.command == "fusion-preflight":
+            _run_fusion_proposal_preflight(
+                initial,
+                fusion_proposer,
+                output_dir=output_dir,
+            )
+        else:
+            if not args.external_transmission_authorized:
+                raise ValidationError(
+                    "fusion-sample requires --external-transmission-authorized"
+                )
+            _run_fusion_candidate_sample(
+                initial,
+                fusion_proposer,
+                candidate_path=Path(args.candidate_json),
+                output_dir=output_dir,
+                state_store=state_store,
+            )
+        return
     if args.command == "final-test":
         if not args.mock_llm:
             raise ValidationError(
@@ -123,6 +149,14 @@ def main() -> None:
             )
         _run_mock_final_test(state_store, fixed_spec)
         return
+    if (
+        args.command in {"run", "resume"}
+        and args.mode == "llm"
+        and not args.external_transmission_authorized
+    ):
+        raise ValidationError(
+            "real llm run/resume requires --external-transmission-authorized"
+        )
     if args.mock_llm:
         folds = build_walk_forward_folds(
             _synthetic_samples(),
@@ -298,6 +332,8 @@ def _parse_args() -> argparse.Namespace:
             "status",
             "dashboard",
             "external-preflight",
+            "fusion-preflight",
+            "fusion-sample",
             "final-test",
         ),
         default="run",
@@ -326,6 +362,20 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout-seconds", type=float, default=90.0)
     parser.add_argument("--analysis-max-attempts", type=int, default=1)
     parser.add_argument("--provider-http-max-attempts", type=int, default=1)
+    parser.add_argument("--blind-max-output-tokens", type=int, default=2200)
+    parser.add_argument(
+        "--blind-reasoning-effort",
+        choices=("", "max", "xhigh", "high", "medium", "low"),
+        default="",
+    )
+    parser.add_argument("--fusion-model", default="openrouter/fusion")
+    parser.add_argument("--fusion-preset", default="general-high")
+    parser.add_argument("--fusion-max-tool-calls", type=int, default=1)
+    parser.add_argument("--fusion-inner-max-tokens", type=int, default=3000)
+    parser.add_argument("--fusion-max-output-tokens", type=int, default=5000)
+    parser.add_argument("--fusion-max-cost", type=float, default=2.0)
+    parser.add_argument("--fusion-cache-dir", default="")
+    parser.add_argument("--external-transmission-authorized", action="store_true")
     parser.add_argument(
         "--input-cost-per-million-tokens",
         type=float,
@@ -381,6 +431,8 @@ def _parse_args() -> argparse.Namespace:
         config = json.loads(Path(args.config).read_text(encoding="utf-8"))
         for key, value in config.get("cli", {}).items():
             attribute = key.replace("-", "_")
+            if attribute == "external_transmission_authorized":
+                parser.error("external transmission authorization must be CLI-only")
             if not hasattr(args, attribute):
                 parser.error(f"unknown config.cli field: {key}")
             setattr(args, attribute, value)
@@ -395,6 +447,15 @@ def _parse_args() -> argparse.Namespace:
         parser.error("admission window must be positive")
     if args.analysis_max_attempts < 1 or args.provider_http_max_attempts < 1:
         parser.error("LLM attempt bounds must be positive")
+    if args.blind_max_output_tokens < 1:
+        parser.error("--blind-max-output-tokens must be positive")
+    if (
+        args.fusion_max_tool_calls < 1
+        or args.fusion_inner_max_tokens < 1
+        or args.fusion_max_output_tokens < 1
+        or args.fusion_max_cost <= 0
+    ):
+        parser.error("Fusion proposal bounds must be positive")
     return args
 
 
@@ -449,6 +510,146 @@ def _run_dry_validation(
     )
     print(f"[scheme-evolution] dry_run={path}")
     print(f"[scheme-evolution] accepted={len(accepted)} rejected={len(rejections)}")
+
+
+def _fusion_proposer(
+    args: argparse.Namespace,
+    output_dir: Path,
+    *,
+    preview_only: bool,
+) -> OpenRouterFusionSchemeProposer:
+    api_key = (
+        "preview-only-no-network"
+        if preview_only
+        else os.environ.get("OPENROUTER_API_KEY")
+    )
+    if not api_key:
+        raise ValidationError("OPENROUTER_API_KEY is not set")
+    client = OpenRouterChatClient(
+        args.fusion_model,
+        api_key,
+        temperature=0.0,
+        transport=UrllibTransport(
+            timeout_seconds=args.timeout_seconds,
+            max_attempts=args.provider_http_max_attempts,
+        ),
+    )
+    cache_dir = (
+        Path(args.fusion_cache_dir)
+        if args.fusion_cache_dir
+        else output_dir / "fusion_proposal_cache"
+    )
+    return OpenRouterFusionSchemeProposer(
+        client,
+        cache_dir,
+        objective_text=Path("prompts/evolution_objective.md").read_text(
+            encoding="utf-8"
+        ),
+        preset=args.fusion_preset,
+        max_tool_calls=args.fusion_max_tool_calls,
+        inner_max_tokens=args.fusion_inner_max_tokens,
+        outer_max_tokens=args.fusion_max_output_tokens,
+        max_cost_usd=args.fusion_max_cost,
+    )
+
+
+def _run_fusion_proposal_preflight(
+    initial: SchemeGenome,
+    proposer: OpenRouterFusionSchemeProposer,
+    *,
+    output_dir: Path,
+) -> None:
+    preview = proposer.preview_request([initial], [], [], 1)
+    estimated_cost = float(preview["maximum_estimated_cost_usd"])
+    passed = estimated_cost <= proposer.max_cost_usd
+    payload = {
+        "schema_version": "scheme-evolution-fusion-proposal-preflight-v0.1",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "scope": "proposal_generation_not_blind_validation",
+        "authorization_status": "pending_updated_request_scope_approval",
+        "proposal_only": True,
+        "external_call_performed": False,
+        "request_count": 1,
+        "passed": passed,
+        "configured_cost_cap_usd": proposer.max_cost_usd,
+        "request": preview,
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "fusion_proposal_preflight.json"
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+    print(
+        f"[scheme-evolution] fusion-preflight={path} passed={str(passed).lower()} "
+        f"requests=1 estimated_max_cost_usd={estimated_cost:.6f} external_calls=0"
+    )
+    if not passed:
+        raise ValidationError("Fusion proposal preflight exceeds its cost cap")
+
+
+def _run_fusion_candidate_sample(
+    initial: SchemeGenome,
+    proposer: OpenRouterFusionSchemeProposer,
+    *,
+    candidate_path: Path,
+    output_dir: Path,
+    state_store: EvolutionStateStore,
+) -> None:
+    preflight_path = output_dir / "fusion_proposal_preflight.json"
+    if not preflight_path.exists():
+        raise ValidationError("fusion-sample requires a passed Fusion preflight")
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    preview = proposer.preview_request([initial], [], [], 1)
+    if not preflight.get("passed"):
+        raise ValidationError("Fusion proposal preflight did not pass")
+    if preflight.get("request", {}).get("request_hash") != preview["request_hash"]:
+        raise ValidationError("Fusion proposal request differs from its reviewed preflight")
+    candidates = proposer.propose([initial], [], [], 1)
+    reasons = CandidateValidator().validate(
+        candidates[0],
+        parents=[initial],
+        accepted=[],
+    )
+    payload = {
+        "schema_version": "scheme-evolution-candidates-v0.2",
+        "authored_by": "openrouter/fusion:general-high",
+        "proposal_only": True,
+        "external_call_count": proposer.external_call_count,
+        "cache_hit_count": proposer.cache_hit_count,
+        "reported_or_estimated_cost_usd": proposer.spent_cost_usd,
+        "candidate_rejections": (
+            [{"genome_id": candidates[0].genome_id, "reasons": reasons}]
+            if reasons
+            else []
+        ),
+        "candidates": [candidate.to_dict() for candidate in candidates],
+    }
+    candidate_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = candidate_path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(candidate_path)
+    state_store.append_event(
+        "fusion_candidate_sampled",
+        {
+            "candidate_path": str(candidate_path),
+            "candidate_id": candidates[0].genome_id,
+            "rejection_reasons": reasons,
+            "external_call_count": proposer.external_call_count,
+        },
+    )
+    print(
+        f"[scheme-evolution] fusion-candidate={candidates[0].genome_id} "
+        f"accepted={str(not reasons).lower()} external_calls={proposer.external_call_count} "
+        f"candidate_file={candidate_path}"
+    )
+    if reasons:
+        raise ValidationError("Fusion candidate failed static validation")
 
 
 def _run_external_disclosure_preflight(
@@ -816,6 +1017,8 @@ def _real_evaluation_context(
             model=args.openrouter_model,
             temperature=args.openrouter_temperature,
             max_attempts=args.analysis_max_attempts,
+            max_output_tokens=args.blind_max_output_tokens,
+            reasoning_effort=args.blind_reasoning_effort or None,
             input_cost_per_million_tokens=args.input_cost_per_million_tokens,
             output_cost_per_million_tokens=args.output_cost_per_million_tokens,
             max_cost_usd=args.max_api_cost,

@@ -95,6 +95,8 @@ class OpenRouterChatClient(OpenAIChatClient):
         tools: list[Mapping[str, Any]] | None = None,
         tool_choice: str | Mapping[str, Any] | None = None,
         include: list[str] | None = None,
+        plugins: list[Mapping[str, Any]] | None = None,
+        reasoning: Mapping[str, Any] | None = None,
     ) -> ChatResponse:
         """Send messages through OpenRouter and return normalized text."""
 
@@ -117,6 +119,10 @@ class OpenRouterChatClient(OpenAIChatClient):
             payload["text"] = {"format": dict(response_format)}
         if include is not None and not tools:
             payload["include"] = list(include)
+        if plugins is not None:
+            payload["plugins"] = [dict(plugin) for plugin in plugins]
+        if reasoning is not None:
+            payload["reasoning"] = dict(reasoning)
         if (
             self.provider_only
             or self.provider_require_parameters

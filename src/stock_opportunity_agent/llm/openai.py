@@ -179,6 +179,7 @@ class OpenAIChatClient:
         tools: list[Mapping[str, Any]] | None = None,
         tool_choice: str | Mapping[str, Any] | None = None,
         include: list[str] | None = None,
+        reasoning: Mapping[str, Any] | None = None,
     ) -> ChatResponse:
         """Send messages to the OpenAI Responses API and return assistant text."""
 
@@ -201,6 +202,8 @@ class OpenAIChatClient:
             payload["tool_choice"] = tool_choice
         if include is not None:
             payload["include"] = list(include)
+        if reasoning is not None:
+            payload["reasoning"] = dict(reasoning)
 
         headers = {"Authorization": f"Bearer {self.api_key}"}
         raw = self.transport.post_json(f"{self.base_url}/responses", headers, payload)

@@ -202,22 +202,32 @@ to OpenRouter and the fixed downstream provider, not only permission to run the
 local loop:
 
 ```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py fusion-preflight \
+  --config configs/evolution/real_kimi3_fusion_development_v1.json
+
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py fusion-sample \
+  --external-transmission-authorized \
+  --config configs/evolution/real_kimi3_fusion_development_v1.json
+
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py external-preflight \
-  --config configs/evolution/real_llm_development_v1.json
+  --config configs/evolution/real_kimi3_fusion_development_v1.json
 
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
-  --config configs/evolution/real_llm_development_v1.json
+  --external-transmission-authorized \
+  --config configs/evolution/real_kimi3_fusion_development_v1.json
 ```
 
-The first command is zero-network and writes the exact secret-free request
-content, routing, hashes, label/identity findings, maximum request count, and
-conservative cost bound to `external_disclosure_preflight.json`; a passing
-preflight is not authorization to transmit it. The dated config freezes the
-provider, model, temperature, one-attempt analyzer/HTTP bounds, current
-token-price inputs, data split, one-candidate scope, and cost cap used by that
-development run. Provider parameter support and pricing are time-varying and
-must be refreshed before reuse. The run command loads `OPENROUTER_API_KEY` from
-the process or uncommitted `.env.local`; no credential is written to artifacts.
+The Fusion preflight and sample operate only on scheme/objective text; Fusion is
+web-enabled but never sees validation packets. The next zero-network preflight
+writes the exact Kimi blind request content, routing, hashes, label/identity
+findings, maximum request count, and conservative cost bound to
+`external_disclosure_preflight.json`; a passing preflight is not authorization
+to transmit it. The dated config freezes the Fusion bounds plus Kimi model,
+exact provider, reasoning effort, temperature, one-attempt analyzer/HTTP bounds,
+current token-price inputs, data split, one-candidate scope, and cost caps.
+Provider parameter support and pricing are time-varying and must be refreshed
+before reuse. External commands load `OPENROUTER_API_KEY` from the process or
+uncommitted `.env.local`; no credential is written to artifacts.
 Synthetic and heuristic runs are pipeline diagnostics only. A real
 effectiveness claim still requires an explicitly declared untouched-company
 final test after proposal changes stop.

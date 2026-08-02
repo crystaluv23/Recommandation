@@ -76,9 +76,16 @@ The existing richer records map to `S=(D,P,A)` without duplicating schemas:
 
 Candidates record parents, mutation, changed fields, expected benefit, side
 effects, falsification test, and target failure type. Each candidate should
-make few attributable changes. Automatic LLM candidate generation remains
-deferred; `FileSchemeProposer` is the reviewed Codex/CLI handoff and
-`MockSchemeProposer` is the deterministic test adapter.
+make few attributable changes. `OpenRouterFusionSchemeProposer` is the optional
+high-capability proposal adapter: it sends only the frozen objective, parent
+genomes, sanitized aggregate meta-lessons, and mutation requests to the
+web-enabled Fusion Quality panel. It never receives validation packets,
+company ids, per-case examples, or final-test data. Its exact request and
+current-price estimate are reviewed before one external call; the returned full
+genome is cached, parsed, and passed through the same local `CandidateValidator`
+before evaluation. `FileSchemeProposer` remains the frozen candidate handoff
+used by the scored engine, and `MockSchemeProposer` remains the deterministic
+test adapter.
 
 ## Signal Materialization and Blind Prediction
 
@@ -250,6 +257,23 @@ provider. For the first bounded run, logical analyzer retries and HTTP transport
 retries are both fixed to one so the preflight request count is also the hard
 maximum external request count.
 
+Fusion proposal generation has a distinct zero-network `fusion-preflight` and
+an explicitly authorized `fusion-sample` command. The preflight freezes the
+`openrouter/fusion` Quality preset, one web/tool step per panel or analyst,
+inner/outer output bounds, resolved-alias pricing snapshot, exact scheme-only
+request, and a conservative cost estimate. Because OpenRouter bills the panel,
+analyst, outer model, and web calls together, this estimate is recorded as a
+snapshot estimate rather than misrepresented as a provider-enforced per-request
+hard cap. The successful candidate response is cached and frozen to the run's
+candidate JSON before any blind-data materialization.
+
+The blind analyzer may separately freeze a concrete OpenRouter model endpoint,
+reasoning effort, output-token bound, temperature, structured-output contract,
+and no-fallback routing. The current Kimi configuration uses
+`moonshotai/kimi-k3` through the exact `together` endpoint at temperature zero
+and max reasoning; Fusion settings never enter the blind analyzer fingerprint
+or request body.
+
 ## Local Drift Dashboard
 
 Every completed development round atomically upserts one entry in
@@ -315,7 +339,9 @@ PYTHONPATH=src python scripts/evolve_information_schemes.py run --config configs
 PYTHONPATH=src python scripts/evolve_information_schemes.py resume --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py status --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py dashboard --config configs/evolution/mock_experiment.json
-PYTHONPATH=src python scripts/evolve_information_schemes.py external-preflight --config configs/evolution/real_llm_development_v1.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py fusion-preflight --config configs/evolution/real_kimi3_fusion_development_v1.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py fusion-sample --external-transmission-authorized --config configs/evolution/real_kimi3_fusion_development_v1.json
+PYTHONPATH=src python scripts/evolve_information_schemes.py external-preflight --config configs/evolution/real_kimi3_fusion_development_v1.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py final-test --config <real-config.json>
 ```
 
