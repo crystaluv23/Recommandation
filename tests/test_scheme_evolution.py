@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 from dataclasses import replace
@@ -542,6 +543,7 @@ class SchemeEvolutionTests(TestCase):
                     items=(
                         {
                             "fact_ref": "fact_visible_in_packet",
+                            "derived_from_fact_refs": ["fact_visible_lineage"],
                             "summary": "Point-in-time source-backed fact.",
                         },
                     ),
@@ -550,7 +552,10 @@ class SchemeEvolutionTests(TestCase):
         )
         valid_output = {
             **_valid_model_output(),
-            "evidence_source_ids": ["fact_visible_in_packet"],
+            "evidence_source_ids": [
+                "fact_visible_in_packet",
+                "fact_visible_lineage",
+            ],
         }
         invalid_output = {
             **_valid_model_output(),
@@ -587,11 +592,93 @@ class SchemeEvolutionTests(TestCase):
                 )
             )
 
-        self.assertEqual(valid["evidence_source_ids"], ["fact_visible_in_packet"])
+        self.assertEqual(
+            valid["evidence_source_ids"],
+            ["fact_visible_in_packet", "fact_visible_lineage"],
+        )
         self.assertEqual(valid_audit["status"], "validated")
         self.assertIn("fact_visible_in_packet", valid_audit["raw_output"])
         self.assertEqual(invalid_audit["status"], "failed_validation")
         self.assertIn("fact_outside_packet", invalid_audit["validation_error"])
+
+    def test_failed_validation_audit_is_revalidated_without_http(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        packet = replace(
+            _blind_packet(),
+            sections=(
+                replace(
+                    _blind_packet().sections[0],
+                    items=(
+                        {
+                            "fact_ref": "derived_fact",
+                            "derived_from_fact_refs": ["lineage_fact"],
+                            "summary": "Derived point-in-time fact.",
+                        },
+                    ),
+                ),
+            ),
+        )
+        output = {
+            **_valid_model_output(),
+            "evidence_source_ids": ["lineage_fact"],
+        }
+        client = _FakeChatClient([])
+        with tempfile.TemporaryDirectory() as tmp:
+            analyzer = OpenAIGenomeBlindAnalyzer(
+                client,
+                tmp,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+            )
+            request = analyzer.preview_request(initial, materialized, packet)
+            audit_path = (
+                Path(tmp)
+                / "_attempts"
+                / request["cache_key"]
+                / "attempt-0001.json"
+            )
+            audit_path.parent.mkdir(parents=True)
+            raw_output = json.dumps(output)
+            audit_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "genome-blind-response-attempt-v0.1",
+                        "status": "failed_validation",
+                        "cache_key": request["cache_key"],
+                        "input_hash": request["input_hash"],
+                        "settings_fingerprint": analyzer.settings_fingerprint,
+                        "prompt_hash": initial.blind_analysis_prompt.content_hash,
+                        "response_id": "response-paid-before-fix",
+                        "response_model": "fake-model",
+                        "response_hash": hashlib.sha256(raw_output.encode()).hexdigest(),
+                        "raw_output": raw_output,
+                        "usage": {"total_tokens": 10},
+                        "cost_usd": 0.01,
+                        "cost_observed": True,
+                        "received_at": "2026-08-02T00:00:00+00:00",
+                        "validation_error": "old validator rejected lineage_fact",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            recovered = analyzer.analyze(initial, materialized, packet)
+            cache = json.loads(
+                (Path(tmp) / f'{request["cache_key"]}.json').read_text(encoding="utf-8")
+            )
+            audit = json.loads(audit_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(client.calls, 0)
+        self.assertEqual(recovered["evidence_source_ids"], ["lineage_fact"])
+        self.assertTrue(recovered["_metadata"]["revalidated_from_attempt_audit"])
+        self.assertEqual(cache["prediction"]["predicted_class"], "B")
+        self.assertEqual(audit["status"], "validated")
+        self.assertIn("old validator", audit["prior_validation_error"])
 
     def test_identical_input_hits_secret_safe_openrouter_cache(self) -> None:
         initial, _candidates = _genomes()

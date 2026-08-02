@@ -710,6 +710,15 @@ class OpenAIGenomeBlindAnalyzer:
                 packet,
                 metadata=cached_metadata,
             )
+        recovered = self._recover_failed_validation_attempt(
+            genome=genome,
+            packet=packet,
+            cache_key=cache_key,
+            input_hash=input_hash,
+            cache_path=cache_path,
+        )
+        if recovered is not None:
+            return recovered
         messages = [
             ChatMessage(str(message["role"]), str(message["content"]))
             for message in request["messages"]
@@ -929,6 +938,98 @@ class OpenAIGenomeBlindAnalyzer:
             )
             return validated
         raise last_error or ValidationError("genome blind analysis failed")
+
+    def _recover_failed_validation_attempt(
+        self,
+        *,
+        genome: SchemeGenome,
+        packet: BlindSchemePacket,
+        cache_key: str,
+        input_hash: str,
+        cache_path: Path,
+    ) -> dict[str, Any] | None:
+        """Revalidate a paid exact response before considering another HTTP call."""
+
+        attempt_dir = self.cache_dir / "_attempts" / cache_key
+        if not attempt_dir.exists():
+            return None
+        for audit_path in sorted(attempt_dir.glob("*.json"), reverse=True):
+            audit = json.loads(audit_path.read_text(encoding="utf-8"))
+            if audit.get("status") != "failed_validation":
+                continue
+            if audit.get("input_hash") != input_hash:
+                continue
+            if audit.get("settings_fingerprint") != self.settings_fingerprint:
+                continue
+            if audit.get("prompt_hash") != genome.blind_analysis_prompt.content_hash:
+                continue
+            raw_output = audit.get("raw_output")
+            if not isinstance(raw_output, str):
+                continue
+            try:
+                raw = json.loads(raw_output)
+            except json.JSONDecodeError:
+                continue
+            usage = audit.get("usage")
+            usage = dict(usage) if isinstance(usage, Mapping) else {}
+            estimated_cost = float(audit.get("cost_usd", 0.0))
+            metadata = {
+                "provider": self.provider,
+                "model": str(audit.get("response_model") or self.model),
+                "temperature": self.temperature,
+                "top_p": None,
+                "seed": None,
+                "system_prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "input_hash": input_hash,
+                "response_hash": str(audit.get("response_hash", "")),
+                "request_timestamp": str(audit.get("received_at", "")),
+                "token_usage": usage,
+                "estimated_cost_usd": estimated_cost,
+                "token_cost_usd": estimated_cost,
+                "latency_ms": 0.0,
+                "retry_count": 0,
+                "raw_response_location": str(audit_path),
+                "pipeline_diagnostic_only": False,
+                "cache_hit": True,
+                "external_call_performed": False,
+                "revalidated_from_attempt_audit": True,
+            }
+            try:
+                validated = _validate_prediction_output(raw, packet, metadata=metadata)
+            except ValidationError:
+                continue
+            _write_json(
+                audit_path,
+                {
+                    **audit,
+                    "status": "validated",
+                    "validation_error": None,
+                    "prior_validation_error": audit.get("validation_error"),
+                    "revalidated_at": datetime.now(timezone.utc).isoformat(),
+                },
+            )
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            _write_json(
+                cache_path,
+                {
+                    "schema_version": "genome-blind-analysis-cache-v0.1",
+                    "input_hash": input_hash,
+                    "settings_fingerprint": self.settings_fingerprint,
+                    "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                    "response_id": audit.get("response_id"),
+                    "response_hash": audit.get("response_hash"),
+                    "raw_output": raw_output,
+                    "usage": usage,
+                    "response_audit_path": str(audit_path),
+                    "prediction": {
+                        key: value for key, value in validated.items() if key != "_metadata"
+                    },
+                    "request_metadata": metadata,
+                },
+            )
+            self.cache_hit_count += 1
+            return validated
+        return None
 
     def preview_request(
         self,
@@ -1384,6 +1485,11 @@ def _packet_evidence_refs(packet: BlindSchemePacket) -> set[str]:
                 value = item.get(key)
                 if isinstance(value, str) and value:
                     refs.add(value)
+            lineage = item.get("derived_from_fact_refs")
+            if isinstance(lineage, list):
+                refs.update(
+                    value for value in lineage if isinstance(value, str) and value
+                )
     return refs
 
 

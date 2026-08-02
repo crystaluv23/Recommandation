@@ -109,8 +109,9 @@ signal extraction, then the analyzer returns:
 - source evidence references required by this repository's provenance rules.
 
 Opaque provenance references may use the packet's existing `evidence_ref`,
-`source_id`, `fact_id`, or `fact_ref` keys. The validator accepts only values
-that are literally present under one of those keys in the supplied packet and
+`source_id`, `fact_id`, or `fact_ref` keys, or a value explicitly exposed in a
+`derived_from_fact_refs` lineage list. The validator accepts only values that
+are literally present under one of those keys in the supplied packet and
 rejects invented or cross-packet references.
 
 `is_surge` is derived in code from the class. Numeric probability, likelihood,
@@ -231,7 +232,11 @@ audit tree before JSON or provenance validation. The audit record is finalized
 as validated or failed-validation; a valid response cache also retains the raw
 output. Provider failures without a response body remain represented by the
 external-attempt ledger. A validator defect therefore cannot erase an otherwise
-inspectable paid response.
+inspectable paid response. Before making a new request for an uncached exact
+input, the analyzer revalidates matching failed-validation audits under the
+current local contract. A newly valid audit is promoted to the exact cache
+without another HTTP attempt or another charge; its original validation error
+and paid cost remain auditable.
 
 ## Intermediate Progress Output
 

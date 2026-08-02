@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 24
+visit_times: 25
 
 ## Trigger
 
@@ -204,6 +204,29 @@ Persist the raw provider output before parsing and provenance validation. An
 append-only attempt ledger proves that a call happened, but response id, error,
 and usage alone cannot reconstruct a stateless Responses API body after a local
 validator defect.
+
+Packet-visible lineage is part of the citation contract. If a derived item
+exposes `derived_from_fact_refs`, those literal opaque values are visible to the
+model and must be accepted just like the item's direct `fact_ref`; values not
+present in either place remain invalid. Before spending another request on an
+exact uncached input, revalidate any matching paid failed-validation audit under
+the current local validator and promote it to the exact cache when it now
+passes. Preserve the original validation error and cost in the audit trail.
+
+## 2026-08-02 Prediction Versus Label Semantics
+
+Do not compute partial TP/FP/TN/FN from `PredictionRecord.is_surge`. That field
+is deterministically derived from the model's predicted A/B/C class; it is not
+the hidden realized label. Confusion counts become valid only after the
+label-free predictions for the evaluation unit are durably persisted and the
+fixed evaluator joins them to `LabeledSample.true_class`.
+
+Audit whether the prompt states the ordinal class mapping explicitly. A model
+can write a clearly negative explanation yet output `C` if it assumes ordinary
+alphabetic grading semantics, while this project's fixed contract defines `C`
+as the strongest positive class. Treat explanation/class disagreement as a
+prompt-contract failure for a future matched round; never remap the completed
+class after labels are revealed.
 
 ## How to Apply
 
