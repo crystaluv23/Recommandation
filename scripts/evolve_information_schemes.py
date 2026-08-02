@@ -48,6 +48,7 @@ from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
     OpenRouterFusionSchemeProposer,
     RalphInformationPlanFoldEvaluator,
+    blind_request_contract_findings,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
     write_evolution_dashboard,
@@ -915,6 +916,7 @@ def _run_external_disclosure_preflight(
     }
     requests = []
     findings: list[dict[str, object]] = []
+    contract_passed_request_count = 0
     maximum_cost_usd = 0.0
     for genome in genomes:
         print(
@@ -940,6 +942,11 @@ def _run_external_disclosure_preflight(
                 )
                 if sample.sample_id in serialized_input:
                     request_findings.append("source_sample_id_value")
+                contract_findings = blind_request_contract_findings(preview)
+                request_findings.extend(contract_findings)
+                request_findings = sorted(set(request_findings))
+                if not contract_findings:
+                    contract_passed_request_count += 1
                 if request_findings:
                     findings.append(
                         {
@@ -960,6 +967,7 @@ def _run_external_disclosure_preflight(
                         "input_hash": preview["input_hash"],
                         "cache_key": preview["cache_key"],
                         "finding_types": request_findings,
+                        "contract_finding_types": contract_findings,
                         "request": preview,
                     }
                 )
@@ -1014,6 +1022,19 @@ def _run_external_disclosure_preflight(
             for genome in accepted
         ],
         "candidate_rejections": [row.to_dict() for row in rejections],
+        "blind_request_contract": {
+            "checked_request_count": len(requests),
+            "passed_request_count": contract_passed_request_count,
+            "all_requests_passed": contract_passed_request_count == len(requests),
+            "checks": [
+                "fixed_class_a_mapping",
+                "fixed_class_b_mapping",
+                "fixed_class_c_mapping",
+                "negative_to_a_guard",
+                "effective_prompt_hash",
+                "exact_user_prompt_payload",
+            ],
+        },
         "packet_preflight_paths": packet_preflights,
         "requests": requests,
     }

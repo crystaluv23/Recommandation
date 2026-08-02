@@ -1505,6 +1505,65 @@ def _packet_evidence_refs(packet: BlindSchemePacket) -> set[str]:
     return refs
 
 
+def blind_request_contract_findings(preview: Mapping[str, Any]) -> list[str]:
+    """Return fail-closed findings for an exact blind request preview."""
+
+    findings: list[str] = []
+    messages = preview.get("messages")
+    if not isinstance(messages, list):
+        return ["messages_missing"]
+    developer = next(
+        (
+            row.get("content")
+            for row in messages
+            if isinstance(row, Mapping) and row.get("role") == "developer"
+        ),
+        None,
+    )
+    user = next(
+        (
+            row.get("content")
+            for row in messages
+            if isinstance(row, Mapping) and row.get("role") == "user"
+        ),
+        None,
+    )
+    if not isinstance(developer, str):
+        findings.append("developer_prompt_missing")
+    else:
+        required_fragments = {
+            "fixed_class_a_mapping_missing": "class A means below 2.0 and is binary negative",
+            "fixed_class_b_mapping_missing": (
+                "class B means at least 2.0 and below 3.0 and is binary positive"
+            ),
+            "fixed_class_c_mapping_missing": (
+                "class C means at least 3.0 and is binary positive"
+            ),
+            "negative_to_a_guard_missing": (
+                "A negative or unsupported setup must map to A, never C"
+            ),
+        }
+        findings.extend(
+            finding
+            for finding, fragment in required_fragments.items()
+            if fragment not in developer
+        )
+        expected_prompt_hash = hashlib.sha256(developer.encode("utf-8")).hexdigest()
+        if preview.get("prompt_hash") != expected_prompt_hash:
+            findings.append("effective_prompt_hash_mismatch")
+    if not isinstance(user, str):
+        findings.append("user_prompt_missing")
+    else:
+        try:
+            user_payload = json.loads(user)
+        except json.JSONDecodeError:
+            findings.append("user_prompt_not_json")
+        else:
+            if user_payload != preview.get("input_payload"):
+                findings.append("user_prompt_payload_mismatch")
+    return sorted(set(findings))
+
+
 def _sanitized_meta_lesson(lesson: MetaLesson) -> dict[str, Any]:
     evidence = dict(lesson.evidence)
     evidence.pop("examples", None)

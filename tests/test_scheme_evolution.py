@@ -37,6 +37,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
     OpenRouterFusionSchemeProposer,
+    blind_request_contract_findings,
     _packet_identity_findings,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
@@ -507,6 +508,42 @@ class SchemeEvolutionTests(TestCase):
         self.assertNotEqual(original["prompt_hash"], modified["prompt_hash"])
         self.assertNotEqual(original["cache_key"], modified["cache_key"])
         self.assertEqual(client.calls, 0)
+
+    def test_blind_request_contract_findings_fail_closed(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        client = _FakeChatClient([])
+        with tempfile.TemporaryDirectory() as tmp:
+            analyzer = OpenAIGenomeBlindAnalyzer(
+                client,
+                tmp,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+            )
+            preview = analyzer.preview_request(initial, materialized, _blind_packet())
+
+        self.assertEqual(blind_request_contract_findings(preview), [])
+        tampered_messages = [dict(row) for row in preview["messages"]]
+        tampered_messages[0]["content"] = tampered_messages[0]["content"].replace(
+            "A negative or unsupported setup must map to A, never C.",
+            "",
+        )
+        tampered = {**preview, "messages": tampered_messages}
+        findings = blind_request_contract_findings(tampered)
+        self.assertIn("negative_to_a_guard_missing", findings)
+        self.assertIn("effective_prompt_hash_mismatch", findings)
+
+        mismatched_user = [dict(row) for row in preview["messages"]]
+        mismatched_user[1]["content"] = json.dumps({"different": "payload"})
+        findings = blind_request_contract_findings(
+            {**preview, "messages": mismatched_user}
+        )
+        self.assertEqual(findings, ["user_prompt_payload_mismatch"])
 
     def test_fusion_proposer_previews_and_caches_one_valid_candidate(self) -> None:
         initial, candidates = _genomes()

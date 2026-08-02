@@ -27,3 +27,9 @@
 Next step: supply compatible adjusted-close histories for the frozen A/B/C labels, implement and review the provider-backed signal-discovery adapter, then—only with explicit authorization and current price inputs—run one bounded temperature-0 plain-LLM generation with the shared cache. Keep the result proposal-only, configure a separate untouched-company final-test dataset only after development stops, and do not start multi-agent analysis before the information-plan exit gate passes.
 
 Current bounded objective: [`ralph_information_plan_goal.md`](ralph_information_plan_goal.md).
+
+Evolution verification note (2026-08-02): the regenerated class-map-v2
+disclosure artifact now records all six immutable class-mapping,
+effective-prompt-hash, and exact-user-payload checks passing for 12/12 blind
+requests. It still contains zero leakage findings, performed zero external
+calls, and leaves the new cache empty pending explicit transmission approval.

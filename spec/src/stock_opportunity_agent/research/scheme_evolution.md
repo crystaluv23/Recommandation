@@ -292,6 +292,13 @@ and forbidden label/outcome fields including `realized_max_multiple`,
 kept only in this local audit artifact, without credentials or authorization
 headers.
 
+For every request the preflight also independently checks that the rendered
+developer prompt contains all immutable A/B/C threshold and binary-polarity
+sentences, that its SHA-256 equals the advertised effective prompt hash, and
+that the serialized user message equals the audited input payload. These
+contract findings share the same fail-closed gate as identity or label leakage;
+the artifact records checked and passed request counts.
+
 The external run is still unauthorized by the existence or success of this
 artifact. It requires explicit informed approval covering transmission of the
 anonymous local-archive-derived text to both OpenRouter and the fixed downstream

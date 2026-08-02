@@ -229,7 +229,11 @@ prompt-contract failure for a future matched round; never remap the completed
 class after labels are revealed. Hash the complete rendered developer prompt,
 including immutable harness instructions, into the response-cache identity;
 hashing only the evolvable template can silently reuse responses after a fixed
-class-mapping repair.
+class-mapping repair. The zero-network disclosure preflight should recompute
+that effective hash from the exact developer message, verify every immutable
+class-mapping sentence, and compare the serialized user message with the
+audited input payload; prompt correctness should be a fail-closed runtime gate,
+not an operator eyeball check.
 
 ## How to Apply
 
