@@ -86,6 +86,171 @@ class GenomeBlindAnalyzer(Protocol):
         """Return the strict prediction object plus a ``_metadata`` object."""
 
 
+class ExternalAttemptLedger:
+    """Persist cumulative provider attempts and observed costs across resumes."""
+
+    def __init__(
+        self,
+        path: str | Path,
+        *,
+        scope_fingerprint: str,
+        authorized_max_attempts: int,
+    ) -> None:
+        if not scope_fingerprint.strip():
+            raise ValidationError("external attempt scope fingerprint must not be empty")
+        if authorized_max_attempts < 1:
+            raise ValidationError("authorized external attempt count must be positive")
+        self.path = Path(path)
+        self.scope_fingerprint = scope_fingerprint
+        self.authorized_max_attempts = authorized_max_attempts
+        if self.path.exists():
+            payload = json.loads(self.path.read_text(encoding="utf-8"))
+            self._validate(payload)
+            previous_max = int(payload["authorized_max_attempts"])
+            if authorized_max_attempts < previous_max:
+                raise ValidationError(
+                    "authorized external attempt count cannot shrink on resume"
+                )
+            if authorized_max_attempts > previous_max:
+                payload["authorization_changes"].append(
+                    {
+                        "changed_at": datetime.now(timezone.utc).isoformat(),
+                        "previous_max_attempts": previous_max,
+                        "authorized_max_attempts": authorized_max_attempts,
+                    }
+                )
+                payload["authorized_max_attempts"] = authorized_max_attempts
+                _write_json(self.path, payload)
+            self._payload = payload
+        else:
+            self._payload = {
+                "schema_version": "scheme-evolution-external-attempt-ledger-v0.1",
+                "scope_fingerprint": scope_fingerprint,
+                "authorized_max_attempts": authorized_max_attempts,
+                "authorization_changes": [],
+                "attempts": [],
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+            _write_json(self.path, self._payload)
+
+    @property
+    def attempt_count(self) -> int:
+        """Return every reserved HTTP attempt, including interrupted attempts."""
+
+        return len(self._payload["attempts"])
+
+    @property
+    def spent_cost_usd(self) -> float:
+        """Return cumulative observed or conservative estimated response cost."""
+
+        return round(
+            sum(float(row.get("cost_usd") or 0.0) for row in self._payload["attempts"]),
+            8,
+        )
+
+    def reserve(
+        self,
+        *,
+        cache_key: str,
+        input_hash: str,
+        maximum_cost_usd: float,
+    ) -> str:
+        """Atomically consume one authorized attempt before network access."""
+
+        if maximum_cost_usd < 0:
+            raise ValidationError("external attempt maximum cost cannot be negative")
+        if self.attempt_count >= self.authorized_max_attempts:
+            raise ValidationError("authorized external HTTP attempt budget is exhausted")
+        attempt_id = f"attempt-{self.attempt_count + 1:04d}"
+        self._payload["attempts"].append(
+            {
+                "attempt_id": attempt_id,
+                "cache_key": cache_key,
+                "input_hash": input_hash,
+                "status": "started",
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "finished_at": None,
+                "response_id": None,
+                "cost_usd": round(float(maximum_cost_usd), 8),
+                "cost_observed": False,
+                "error_type": None,
+                "error_summary": None,
+            }
+        )
+        self._persist()
+        return attempt_id
+
+    def finish(
+        self,
+        attempt_id: str,
+        *,
+        status: str,
+        response_id: str | None = None,
+        cost_usd: float | None = None,
+        cost_observed: bool = False,
+        error: Exception | None = None,
+        error_summary: str | None = None,
+    ) -> None:
+        """Finalize one reserved attempt without deleting failed history."""
+
+        if status not in {"completed", "provider_error", "failed_validation"}:
+            raise ValidationError("invalid external attempt status")
+        row = next(
+            (item for item in self._payload["attempts"] if item["attempt_id"] == attempt_id),
+            None,
+        )
+        if row is None:
+            raise ValidationError("external attempt id is not present in the ledger")
+        if row["status"] != "started":
+            raise ValidationError("external attempt was already finalized")
+        row.update(
+            {
+                "status": status,
+                "finished_at": datetime.now(timezone.utc).isoformat(),
+                "response_id": response_id,
+                "cost_usd": (
+                    row["cost_usd"]
+                    if cost_usd is None
+                    else round(float(cost_usd), 8)
+                ),
+                "cost_observed": bool(cost_observed) if cost_usd is not None else False,
+                "error_type": type(error).__name__ if error is not None else None,
+                "error_summary": (
+                    error_summary[:1000]
+                    if error_summary is not None
+                    else re.sub(r"\s+", " ", str(error)).strip()[:1000]
+                    if error is not None
+                    else None
+                ),
+            }
+        )
+        self._persist()
+
+    def _persist(self) -> None:
+        self._payload["updated_at"] = datetime.now(timezone.utc).isoformat()
+        _write_json(self.path, self._payload)
+
+    def _validate(self, payload: Any) -> None:
+        if not isinstance(payload, Mapping):
+            raise ValidationError("external attempt ledger must be a JSON object")
+        if payload.get("schema_version") != "scheme-evolution-external-attempt-ledger-v0.1":
+            raise ValidationError("unsupported external attempt ledger schema")
+        if payload.get("scope_fingerprint") != self.scope_fingerprint:
+            raise ValidationError("external attempt ledger scope mismatch")
+        if not isinstance(payload.get("attempts"), list):
+            raise ValidationError("external attempt ledger attempts must be a list")
+        if not isinstance(payload.get("authorization_changes"), list):
+            raise ValidationError(
+                "external attempt ledger authorization_changes must be a list"
+            )
+        previous_max = payload.get("authorized_max_attempts")
+        if not isinstance(previous_max, int) or isinstance(previous_max, bool):
+            raise ValidationError("external attempt ledger maximum must be an integer")
+        if len(payload["attempts"]) > previous_max:
+            raise ValidationError("external attempt ledger exceeds its authorized maximum")
+
+
 class HeuristicGenomeBlindAnalyzer:
     """Local diagnostic adapter; never evidence of real information-plan lift."""
 
@@ -290,8 +455,8 @@ class OpenRouterFusionSchemeProposer:
             "request_hash": request_hash,
             "settings_fingerprint": self.settings_fingerprint,
             "pricing_snapshot": self._PRICING_SNAPSHOT,
-            "maximum_estimated_cost_usd": estimated_cost,
-            "cost_bound_kind": "conservative_snapshot_estimate_not_provider_hard_cap",
+            "pricing_snapshot_estimated_cost_usd": estimated_cost,
+            "cost_bound_kind": "pricing_snapshot_estimate_not_provider_hard_cap",
             "external_call_performed": False,
         }
 
@@ -305,7 +470,7 @@ class OpenRouterFusionSchemeProposer:
         """Call Fusion once or reuse its exact cached candidate response."""
 
         preview = self.preview_request(parents, meta_memory, mutation_requests, count)
-        estimated_cost = float(preview["maximum_estimated_cost_usd"])
+        estimated_cost = float(preview["pricing_snapshot_estimated_cost_usd"])
         if estimated_cost > self.max_cost_usd:
             raise ValidationError("Fusion proposal estimate exceeds its configured cost cap")
         cache_path = self.cache_dir / f"{preview['request_hash']}.json"
@@ -347,7 +512,7 @@ class OpenRouterFusionSchemeProposer:
             ).hexdigest(),
             "usage": usage if isinstance(usage, Mapping) else {},
             "reported_cost_usd": actual_cost,
-            "maximum_estimated_cost_usd": estimated_cost,
+            "pricing_snapshot_estimated_cost_usd": estimated_cost,
             "raw_output": response.output_text,
             "created_at": datetime.now(timezone.utc).isoformat(),
         }
@@ -395,6 +560,9 @@ class OpenAIGenomeBlindAnalyzer:
         input_cost_per_million_tokens: float = 0.0,
         output_cost_per_million_tokens: float = 0.0,
         max_cost_usd: float | None = None,
+        attempt_ledger_path: str | Path | None = None,
+        attempt_scope_fingerprint: str | None = None,
+        authorized_max_external_attempts: int | None = None,
     ) -> None:
         if max_attempts < 1:
             raise ValidationError("max_attempts must be positive")
@@ -406,6 +574,17 @@ class OpenAIGenomeBlindAnalyzer:
             raise ValidationError("token price estimates cannot be negative")
         if max_cost_usd is not None and max_cost_usd < 0:
             raise ValidationError("max_cost_usd cannot be negative")
+        ledger_settings = (
+            attempt_ledger_path,
+            attempt_scope_fingerprint,
+            authorized_max_external_attempts,
+        )
+        if any(value is not None for value in ledger_settings) and not all(
+            value is not None for value in ledger_settings
+        ):
+            raise ValidationError(
+                "attempt ledger path, scope, and authorized maximum must be supplied together"
+            )
         self.client = client
         self.cache_dir = Path(cache_dir)
         self.provider = provider
@@ -417,9 +596,74 @@ class OpenAIGenomeBlindAnalyzer:
         self.input_cost_per_million_tokens = input_cost_per_million_tokens
         self.output_cost_per_million_tokens = output_cost_per_million_tokens
         self.max_cost_usd = max_cost_usd
-        self.spent_cost_usd = 0.0
+        self.attempt_ledger = (
+            ExternalAttemptLedger(
+                attempt_ledger_path,
+                scope_fingerprint=str(attempt_scope_fingerprint),
+                authorized_max_attempts=int(authorized_max_external_attempts),
+            )
+            if attempt_ledger_path is not None
+            else None
+        )
+        self.spent_cost_usd = (
+            self.attempt_ledger.spent_cost_usd if self.attempt_ledger else 0.0
+        )
         self.external_call_count = 0
         self.cache_hit_count = 0
+
+    @property
+    def cumulative_external_call_count(self) -> int:
+        """Return persisted attempts, or this process's count when no ledger is configured."""
+
+        if self.attempt_ledger is not None:
+            return self.attempt_ledger.attempt_count
+        return self.external_call_count
+
+    def assert_authorized_capacity(
+        self,
+        requests: Iterable[Mapping[str, Any]],
+    ) -> dict[str, int]:
+        """Fail before network access if uncached requests exceed remaining attempts."""
+
+        rows = list(requests)
+        if self.attempt_ledger is None:
+            return {
+                "logical_request_count": len(rows),
+                "cached_request_count": 0,
+                "outstanding_request_count": len(rows),
+                "remaining_authorized_attempts": len(rows),
+            }
+        cached_count = 0
+        for row in rows:
+            cache_key = str(row.get("cache_key", ""))
+            input_hash = str(row.get("input_hash", ""))
+            if not cache_key or not input_hash:
+                raise ValidationError("attempt-capacity request is missing cache identity")
+            cache_path = self.cache_dir / f"{cache_key}.json"
+            if not cache_path.exists():
+                continue
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            if cached.get("input_hash") != input_hash:
+                raise ValidationError("cached genome blind input hash mismatch")
+            if cached.get("settings_fingerprint") != self.settings_fingerprint:
+                raise ValidationError("cached genome blind settings mismatch")
+            cached_count += 1
+        outstanding_count = len(rows) - cached_count
+        remaining_attempts = (
+            self.attempt_ledger.authorized_max_attempts
+            - self.attempt_ledger.attempt_count
+        )
+        if outstanding_count > remaining_attempts:
+            raise ValidationError(
+                "uncached blind requests exceed the remaining authorized external HTTP "
+                f"attempts: outstanding={outstanding_count} remaining={remaining_attempts}"
+            )
+        return {
+            "logical_request_count": len(rows),
+            "cached_request_count": cached_count,
+            "outstanding_request_count": outstanding_count,
+            "remaining_authorized_attempts": remaining_attempts,
+        }
 
     @property
     def settings_fingerprint(self) -> str:
@@ -489,31 +733,69 @@ class OpenAIGenomeBlindAnalyzer:
                     "retry could exceed the configured API cost budget"
                 )
             started = time.monotonic()
-            self.external_call_count += 1
-            response = self.client.complete(
-                messages,
-                max_output_tokens=int(request["max_output_tokens"]),
-                response_format=request["response_format"],
-                reasoning=(
-                    {"effort": self.reasoning_effort, "exclude": True}
-                    if self.reasoning_effort
-                    else None
-                ),
+            ledger_attempt_id = (
+                self.attempt_ledger.reserve(
+                    cache_key=cache_key,
+                    input_hash=input_hash,
+                    maximum_cost_usd=maximum_request_cost,
+                )
+                if self.attempt_ledger is not None
+                else None
             )
+            self.external_call_count += 1
+            try:
+                response = self.client.complete(
+                    messages,
+                    max_output_tokens=int(request["max_output_tokens"]),
+                    response_format=request["response_format"],
+                    reasoning=(
+                        {"effort": self.reasoning_effort, "exclude": True}
+                        if self.reasoning_effort
+                        else None
+                    ),
+                )
+            except Exception as exc:
+                if self.attempt_ledger is not None and ledger_attempt_id is not None:
+                    self.attempt_ledger.finish(
+                        ledger_attempt_id,
+                        status="provider_error",
+                        error=exc,
+                        error_summary=_secret_safe_error_summary(
+                            exc,
+                            secrets=(str(getattr(self.client, "api_key", "")),),
+                        ),
+                    )
+                raise
             latency_ms = (time.monotonic() - started) * 1000
             usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
-            estimated_cost = _estimated_token_cost(
+            reported_cost = _reported_usage_cost(usage)
+            token_estimated_cost = _estimated_token_cost(
                 usage,
                 input_cost_per_million_tokens=self.input_cost_per_million_tokens,
                 output_cost_per_million_tokens=self.output_cost_per_million_tokens,
             )
-            if estimated_cost <= 0:
-                estimated_cost = maximum_request_cost
+            cost_observed = reported_cost is not None or token_estimated_cost > 0
+            estimated_cost = (
+                reported_cost
+                if reported_cost is not None
+                else token_estimated_cost
+                if token_estimated_cost > 0
+                else maximum_request_cost
+            )
             self.spent_cost_usd += estimated_cost
             try:
                 raw = json.loads(response.output_text)
             except json.JSONDecodeError as exc:
                 last_error = ValidationError("genome blind response was not valid JSON")
+                if self.attempt_ledger is not None and ledger_attempt_id is not None:
+                    self.attempt_ledger.finish(
+                        ledger_attempt_id,
+                        status="failed_validation",
+                        response_id=response.response_id,
+                        cost_usd=estimated_cost,
+                        cost_observed=cost_observed,
+                        error=last_error,
+                    )
                 if attempt >= self.max_attempts:
                     raise last_error from exc
                 continue
@@ -547,9 +829,26 @@ class OpenAIGenomeBlindAnalyzer:
                 )
             except ValidationError as exc:
                 last_error = exc
+                if self.attempt_ledger is not None and ledger_attempt_id is not None:
+                    self.attempt_ledger.finish(
+                        ledger_attempt_id,
+                        status="failed_validation",
+                        response_id=response.response_id,
+                        cost_usd=estimated_cost,
+                        cost_observed=cost_observed,
+                        error=exc,
+                    )
                 if attempt >= self.max_attempts:
                     raise
                 continue
+            if self.attempt_ledger is not None and ledger_attempt_id is not None:
+                self.attempt_ledger.finish(
+                    ledger_attempt_id,
+                    status="completed",
+                    response_id=response.response_id,
+                    cost_usd=estimated_cost,
+                    cost_observed=cost_observed,
+                )
             self.cache_dir.mkdir(parents=True, exist_ok=True)
             _write_json(
                 cache_path,
@@ -1197,6 +1496,26 @@ def _nested_keys(value: Any) -> set[str]:
 
 def _confidence_bucket(confidence: float) -> str:
     return "high" if confidence >= 0.75 else "medium" if confidence >= 0.5 else "low"
+
+
+def _secret_safe_error_summary(
+    error: Exception,
+    *,
+    secrets: Iterable[str] = (),
+) -> str:
+    """Bound provider errors while redacting credentials and account identifiers."""
+
+    summary = re.sub(r"\s+", " ", str(error)).strip()
+    for secret in secrets:
+        if secret:
+            summary = summary.replace(secret, "[REDACTED_SECRET]")
+    summary = re.sub(
+        r'(?i)("?(?:api[_-]?key|authorization|access[_-]?token|user_id)"?\s*[:=]\s*)'
+        r'("?)[^",}\s]+\2',
+        r'\1"[REDACTED_SECRET]"',
+        summary,
+    )
+    return summary[:1000]
 
 
 def _estimated_token_cost(

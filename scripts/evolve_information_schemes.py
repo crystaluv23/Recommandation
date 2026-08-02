@@ -158,11 +158,11 @@ def main() -> None:
         raise ValidationError(
             "real llm run/resume requires --external-transmission-authorized"
         )
+    blind_authorization_scope = None
     if args.command in {"run", "resume"} and args.mode == "llm":
-        _validate_blind_run_authorization(
+        blind_authorization_scope = _validate_blind_run_authorization(
             args,
             output_dir=output_dir,
-            state_store=state_store,
         )
     if args.mock_llm:
         folds = build_walk_forward_folds(
@@ -193,6 +193,12 @@ def main() -> None:
             output_dir=output_dir,
         )
         return
+    if blind_authorization_scope is not None:
+        _record_blind_run_authorization(
+            blind_authorization_scope,
+            output_dir=output_dir,
+            state_store=state_store,
+        )
     archive = TopKArchive()
     incumbent = initial
     all_experiments = []
@@ -293,7 +299,15 @@ def main() -> None:
                 "sealed_test_included": False,
                 "provider_execution_enabled": execution_mode == "llm",
                 "external_provider_call_count": int(
-                    getattr(getattr(evaluator, "analyzer", None), "external_call_count", 0)
+                    getattr(
+                        getattr(evaluator, "analyzer", None),
+                        "cumulative_external_call_count",
+                        getattr(
+                            getattr(evaluator, "analyzer", None),
+                            "external_call_count",
+                            0,
+                        ),
+                    )
                 ),
                 "blind_cache_hit_count": int(
                     getattr(getattr(evaluator, "analyzer", None), "cache_hit_count", 0)
@@ -384,6 +398,12 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--fusion-cache-dir", default="")
     parser.add_argument("--external-transmission-authorized", action="store_true")
     parser.add_argument(
+        "--authorized-extra-http-attempts",
+        type=int,
+        default=0,
+        help="CLI-only explicit increment for a previously failed real-LLM resume.",
+    )
+    parser.add_argument(
         "--input-cost-per-million-tokens",
         type=float,
         default=0.0,
@@ -438,7 +458,10 @@ def _parse_args() -> argparse.Namespace:
         config = json.loads(Path(args.config).read_text(encoding="utf-8"))
         for key, value in config.get("cli", {}).items():
             attribute = key.replace("-", "_")
-            if attribute == "external_transmission_authorized":
+            if attribute in {
+                "external_transmission_authorized",
+                "authorized_extra_http_attempts",
+            }:
                 parser.error("external transmission authorization must be CLI-only")
             if not hasattr(args, attribute):
                 parser.error(f"unknown config.cli field: {key}")
@@ -454,6 +477,10 @@ def _parse_args() -> argparse.Namespace:
         parser.error("admission window must be positive")
     if args.analysis_max_attempts < 1 or args.provider_http_max_attempts < 1:
         parser.error("LLM attempt bounds must be positive")
+    if args.authorized_extra_http_attempts < 0:
+        parser.error("--authorized-extra-http-attempts cannot be negative")
+    if args.authorized_extra_http_attempts and args.command != "resume":
+        parser.error("--authorized-extra-http-attempts is valid only with resume")
     if args.blind_max_output_tokens < 1:
         parser.error("--blind-max-output-tokens must be positive")
     if (
@@ -567,7 +594,7 @@ def _run_fusion_proposal_preflight(
     output_dir: Path,
 ) -> None:
     preview = proposer.preview_request([initial], [], [], 1)
-    estimated_cost = float(preview["maximum_estimated_cost_usd"])
+    estimated_cost = float(preview["pricing_snapshot_estimated_cost_usd"])
     passed = estimated_cost <= proposer.max_cost_usd
     payload = {
         "schema_version": "scheme-evolution-fusion-proposal-preflight-v0.1",
@@ -591,7 +618,7 @@ def _run_fusion_proposal_preflight(
     temporary.replace(path)
     print(
         f"[scheme-evolution] fusion-preflight={path} passed={str(passed).lower()} "
-        f"requests=1 estimated_max_cost_usd={estimated_cost:.6f} external_calls=0"
+        f"requests=1 pricing_snapshot_estimate_usd={estimated_cost:.6f} external_calls=0"
     )
     if not passed:
         raise ValidationError("Fusion proposal preflight exceeds its cost cap")
@@ -626,7 +653,9 @@ def _run_fusion_candidate_sample(
             "preset": preview["plugins"][0]["preset"],
             "web_enabled": True,
             "validation_packets_in_scope": False,
-            "estimated_max_cost_usd": preview["maximum_estimated_cost_usd"],
+            "pricing_snapshot_estimated_cost_usd": preview[
+                "pricing_snapshot_estimated_cost_usd"
+            ],
         },
     )
     candidates = proposer.propose([initial], [], [], 1)
@@ -678,8 +707,7 @@ def _validate_blind_run_authorization(
     args: argparse.Namespace,
     *,
     output_dir: Path,
-    state_store: EvolutionStateStore,
-) -> None:
+) -> dict[str, object]:
     preflight_path = output_dir / "external_disclosure_preflight.json"
     if not preflight_path.exists():
         raise ValidationError("real llm run requires a passed external disclosure preflight")
@@ -700,6 +728,16 @@ def _validate_blind_run_authorization(
         "request_bound": 0 < int(preflight.get("request_count", 0)) <= 12,
         "hard_request_bound": preflight.get("hard_maximum_external_request_count")
         == preflight.get("request_count"),
+        "analysis_attempt_bound": preflight.get("analysis_max_attempts")
+        == args.analysis_max_attempts
+        == 1,
+        "http_attempt_bound": preflight.get("provider_http_max_attempts")
+        == args.provider_http_max_attempts
+        == 1,
+        "input_price": preflight.get("input_cost_per_million_tokens")
+        == args.input_cost_per_million_tokens,
+        "output_price": preflight.get("output_cost_per_million_tokens")
+        == args.output_cost_per_million_tokens,
         "cost_bound": float(preflight.get("maximum_total_cost_usd", float("inf")))
         <= args.max_api_cost,
         "configured_cost_cap": preflight.get("configured_cost_cap_usd")
@@ -728,36 +766,64 @@ def _validate_blind_run_authorization(
         raise ValidationError(
             f"external disclosure preflight differs from the authorized run: {failed}"
         )
+    base_request_count = int(preflight["request_count"])
+    authorized_attempt_count = base_request_count + args.authorized_extra_http_attempts
+    return {
+        "scope": "anonymous_no_web_blind_validation",
+        "preflight_path": str(preflight_path),
+        "preflight_sha256": _file_sha256(preflight_path),
+        "model": args.openrouter_model,
+        "provider": args.openrouter_provider,
+        "temperature": args.openrouter_temperature,
+        "reasoning_effort": args.blind_reasoning_effort or None,
+        "max_output_tokens": args.blind_max_output_tokens,
+        "request_count": base_request_count,
+        "authorized_extra_http_attempts": args.authorized_extra_http_attempts,
+        "hard_maximum_external_http_attempts": authorized_attempt_count,
+        "maximum_total_cost_usd": preflight["maximum_total_cost_usd"],
+        "configured_cost_cap_usd": args.max_api_cost,
+        "web_enabled": False,
+        "provider_fallbacks_allowed": False,
+    }
+
+
+def _record_blind_run_authorization(
+    scope: dict[str, object],
+    *,
+    output_dir: Path,
+    state_store: EvolutionStateStore,
+) -> None:
     authorization_path = output_dir / "external_authorization.json"
-    _write_authorization_record(
-        authorization_path,
-        {
-            "scope": "anonymous_no_web_blind_validation",
-            "preflight_path": str(preflight_path),
-            "preflight_sha256": _file_sha256(preflight_path),
-            "model": args.openrouter_model,
-            "provider": args.openrouter_provider,
-            "temperature": args.openrouter_temperature,
-            "reasoning_effort": args.blind_reasoning_effort or None,
-            "max_output_tokens": args.blind_max_output_tokens,
-            "request_count": preflight["request_count"],
-            "maximum_total_cost_usd": preflight["maximum_total_cost_usd"],
-            "configured_cost_cap_usd": args.max_api_cost,
-            "web_enabled": False,
-            "provider_fallbacks_allowed": False,
-        },
-    )
+    _write_authorization_record(authorization_path, scope)
     state_store.append_event(
         "external_blind_run_authorized",
         {
             "authorization_path": str(authorization_path),
-            "preflight_sha256": _file_sha256(preflight_path),
-            "request_count": preflight["request_count"],
+            "preflight_sha256": scope["preflight_sha256"],
+            "request_count": scope["request_count"],
+            "authorized_extra_http_attempts": scope[
+                "authorized_extra_http_attempts"
+            ],
+            "hard_maximum_external_http_attempts": scope[
+                "hard_maximum_external_http_attempts"
+            ],
         },
     )
 
 
 def _write_authorization_record(path: Path, scope: dict[str, object]) -> None:
+    if path.exists():
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        existing_max = existing.get("hard_maximum_external_http_attempts")
+        proposed_max = scope.get("hard_maximum_external_http_attempts")
+        if (
+            isinstance(existing_max, int)
+            and isinstance(proposed_max, int)
+            and proposed_max < existing_max
+        ):
+            raise ValidationError(
+                "external HTTP attempt authorization cannot shrink on resume"
+            )
     payload = {
         "schema_version": "scheme-evolution-external-authorization-v0.1",
         "acknowledgement_method": "explicit_cli_flag_after_user_approval",
@@ -775,6 +841,31 @@ def _write_authorization_record(path: Path, scope: dict[str, object]) -> None:
 
 def _file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _hash_attempt_scope(
+    preflight_path: Path,
+    *,
+    analyzer_settings: dict[str, object],
+) -> str:
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    payload = {
+        "reviewed_request_scope": {
+            "schema_version": preflight.get("schema_version"),
+            "provider": preflight.get("provider"),
+            "model": preflight.get("model"),
+            "temperature": preflight.get("temperature"),
+            "provider_routing": preflight.get("provider_routing"),
+            "analysis_max_attempts": preflight.get("analysis_max_attempts"),
+            "provider_http_max_attempts": preflight.get("provider_http_max_attempts"),
+            "configured_cost_cap_usd": preflight.get("configured_cost_cap_usd"),
+            "requests": preflight.get("requests"),
+        },
+        "analyzer_settings": analyzer_settings,
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
 
 
 def _run_external_disclosure_preflight(
@@ -904,6 +995,8 @@ def _run_external_disclosure_preflight(
         ),
         "analysis_max_attempts": args.analysis_max_attempts,
         "provider_http_max_attempts": args.provider_http_max_attempts,
+        "input_cost_per_million_tokens": args.input_cost_per_million_tokens,
+        "output_cost_per_million_tokens": args.output_cost_per_million_tokens,
         "request_count": len(requests),
         "hard_maximum_external_request_count": len(requests),
         "maximum_total_cost_usd": maximum_cost_usd,
@@ -1135,6 +1228,34 @@ def _real_evaluation_context(
                 max_attempts=args.provider_http_max_attempts,
             ),
         )
+        attempt_ledger_path = None
+        attempt_scope_fingerprint = None
+        authorized_max_external_attempts = None
+        if args.command in {"run", "resume"}:
+            preflight_path = Path(args.output_dir) / "external_disclosure_preflight.json"
+            preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+            attempt_ledger_path = Path(args.output_dir) / "external_attempts.json"
+            attempt_scope_fingerprint = _hash_attempt_scope(
+                preflight_path,
+                analyzer_settings={
+                    "model": args.openrouter_model,
+                    "provider": args.openrouter_provider,
+                    "temperature": args.openrouter_temperature,
+                    "max_output_tokens": args.blind_max_output_tokens,
+                    "reasoning_effort": args.blind_reasoning_effort or None,
+                    "input_cost_per_million_tokens": (
+                        args.input_cost_per_million_tokens
+                    ),
+                    "output_cost_per_million_tokens": (
+                        args.output_cost_per_million_tokens
+                    ),
+                    "max_cost_usd": args.max_api_cost,
+                },
+            )
+            authorized_max_external_attempts = (
+                int(preflight["request_count"])
+                + args.authorized_extra_http_attempts
+            )
         analyzer = OpenAIGenomeBlindAnalyzer(
             client,
             cache_dir,
@@ -1147,7 +1268,19 @@ def _real_evaluation_context(
             input_cost_per_million_tokens=args.input_cost_per_million_tokens,
             output_cost_per_million_tokens=args.output_cost_per_million_tokens,
             max_cost_usd=args.max_api_cost,
+            attempt_ledger_path=attempt_ledger_path,
+            attempt_scope_fingerprint=attempt_scope_fingerprint,
+            authorized_max_external_attempts=authorized_max_external_attempts,
         )
+        if attempt_ledger_path is not None:
+            capacity = analyzer.assert_authorized_capacity(preflight["requests"])
+            print(
+                "[scheme-evolution] external-attempt-capacity "
+                f"logical={capacity['logical_request_count']} "
+                f"cached={capacity['cached_request_count']} "
+                f"outstanding={capacity['outstanding_request_count']} "
+                f"remaining_authorized={capacity['remaining_authorized_attempts']}"
+            )
     evaluator = RalphInformationPlanFoldEvaluator(
         cases=cases,
         documents_by_symbol=documents,

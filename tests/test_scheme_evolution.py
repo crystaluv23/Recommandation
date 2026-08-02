@@ -324,6 +324,97 @@ class SchemeEvolutionTests(TestCase):
         self.assertEqual(output["predicted_class"], "B")
         self.assertEqual(client.calls, 2)
 
+    def test_external_attempt_ledger_survives_provider_error_and_enforces_cap(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger_path = Path(tmp) / "external_attempts.json"
+            cache_path = Path(tmp) / "cache"
+            failed_client = _FailingChatClient(
+                RuntimeError("provider returned HTTP 429 for api_key=secret-key")
+            )
+            failed = OpenAIGenomeBlindAnalyzer(
+                failed_client,
+                cache_path,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+                input_cost_per_million_tokens=2.0,
+                output_cost_per_million_tokens=8.0,
+                max_cost_usd=2.0,
+                attempt_ledger_path=ledger_path,
+                attempt_scope_fingerprint="reviewed-preflight",
+                authorized_max_external_attempts=1,
+            )
+            with self.assertRaisesRegex(RuntimeError, "HTTP 429"):
+                failed.analyze(initial, materialized, _blind_packet())
+
+            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+            self.assertEqual(ledger["authorized_max_attempts"], 1)
+            self.assertEqual(len(ledger["attempts"]), 1)
+            self.assertEqual(ledger["attempts"][0]["status"], "provider_error")
+            self.assertGreater(ledger["attempts"][0]["cost_usd"], 0.0)
+            self.assertFalse(ledger["attempts"][0]["cost_observed"])
+            self.assertNotIn("secret-key", ledger_path.read_text(encoding="utf-8"))
+
+            blocked_client = _FakeChatClient([json.dumps(_valid_model_output())])
+            blocked = OpenAIGenomeBlindAnalyzer(
+                blocked_client,
+                cache_path,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+                input_cost_per_million_tokens=2.0,
+                output_cost_per_million_tokens=8.0,
+                max_cost_usd=2.0,
+                attempt_ledger_path=ledger_path,
+                attempt_scope_fingerprint="reviewed-preflight",
+                authorized_max_external_attempts=1,
+            )
+            request = blocked.preview_request(initial, materialized, _blind_packet())
+            with self.assertRaisesRegex(
+                ValidationError,
+                "uncached blind requests exceed the remaining authorized",
+            ):
+                blocked.assert_authorized_capacity([request])
+            self.assertEqual(blocked_client.calls, 0)
+
+            resumed_client = _FakeChatClient([json.dumps(_valid_model_output())])
+            resumed = OpenAIGenomeBlindAnalyzer(
+                resumed_client,
+                cache_path,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+                input_cost_per_million_tokens=2.0,
+                output_cost_per_million_tokens=8.0,
+                max_cost_usd=2.0,
+                attempt_ledger_path=ledger_path,
+                attempt_scope_fingerprint="reviewed-preflight",
+                authorized_max_external_attempts=2,
+            )
+            capacity = resumed.assert_authorized_capacity([request])
+            output = resumed.analyze(initial, materialized, _blind_packet())
+            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(output["predicted_class"], "B")
+        self.assertEqual(capacity["outstanding_request_count"], 1)
+        self.assertEqual(capacity["remaining_authorized_attempts"], 1)
+        self.assertEqual(resumed.cumulative_external_call_count, 2)
+        self.assertEqual(len(ledger["attempts"]), 2)
+        self.assertEqual(ledger["attempts"][1]["status"], "completed")
+        self.assertGreater(ledger["attempts"][1]["cost_usd"], 0.0)
+        self.assertEqual(
+            ledger["authorization_changes"][0]["authorized_max_attempts"],
+            2,
+        )
+
     def test_request_preview_is_exact_label_free_and_performs_no_call(self) -> None:
         initial, _candidates = _genomes()
         materialized = MockSchemeFoldEvaluator().materialize(
@@ -383,7 +474,7 @@ class SchemeEvolutionTests(TestCase):
         self.assertFalse(preview["external_call_performed"])
         self.assertEqual(preview["model"], "openrouter/fusion")
         self.assertEqual(preview["plugins"][0]["preset"], "general-high")
-        self.assertLess(preview["maximum_estimated_cost_usd"], 2.0)
+        self.assertLess(preview["pricing_snapshot_estimated_cost_usd"], 2.0)
         self.assertEqual(first, second)
         self.assertEqual(first[0].genome_id, candidates[0].genome_id)
         self.assertEqual(client.calls, 1)
@@ -782,3 +873,15 @@ class _FakeChatClient:
             output_text=output,
             raw={"usage": {"input_tokens": 10, "output_tokens": 10}},
         )
+
+
+class _FailingChatClient:
+    def __init__(self, error: Exception) -> None:
+        self.error = error
+        self.calls = 0
+        self.api_key = "secret-key"
+
+    def complete(self, messages, **kwargs):
+        del messages, kwargs
+        self.calls += 1
+        raise self.error

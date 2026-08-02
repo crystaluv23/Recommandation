@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 23
+visit_times: 24
 
 ## Trigger
 
@@ -174,6 +174,21 @@ supports the exact temperature, structured-output, reasoning, and no-fallback
 parameters. Cache and locally validate the Fusion-produced full genome before
 materialization so a drifting Quality panel cannot change an already-started
 exam.
+
+## 2026-08-02 Resume Attempt Budget
+
+An external request limit must survive process failure. A per-process counter
+is insufficient because a provider error can consume an HTTP attempt without
+producing a cache entry, and a later resume would otherwise silently restore the
+full allowance. Reserve each attempt in an atomic, secret-free ledger before
+network access, finalize it as completed, provider-error, or validation-error,
+and restore cumulative attempts plus observed cost in every new process.
+
+Before resume, compare exact uncached preflight requests with remaining
+authorized attempts. If the former is larger, fail before contacting the
+provider. Extra attempts require a new CLI-only acknowledgement for the exact
+increment; they must not loosen model, provider, no-fallback, packet, or cost
+boundaries.
 
 ## How to Apply
 

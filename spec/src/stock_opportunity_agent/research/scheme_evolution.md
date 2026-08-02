@@ -210,6 +210,16 @@ write the task error and a resumable `failed` state. The OpenRouter adapter also
 reuses an exact packet/prompt/model/provider/temperature response cache and
 never persists credentials.
 
+Real blind runs additionally maintain `external_attempts.json` as an atomic,
+secret-free HTTP-attempt ledger. The analyzer reserves one entry immediately
+before each provider call, so a timeout, process interruption, provider error,
+or invalid response still consumes one authorized attempt. Every completed
+response records its observed or conservative estimated cost, and a new process
+restores both cumulative attempts and cumulative cost before considering a
+resume. Exhausting either the authorized attempt count or the configured cost
+cap fails before network access. The ledger is scoped to the exact reviewed
+preflight hash and analyzer settings; mismatches fail closed.
+
 ## Intermediate Progress Output
 
 The CLI supplies a progress reporter to the evolution engine so a long round is
@@ -261,7 +271,7 @@ Fusion proposal generation has a distinct zero-network `fusion-preflight` and
 an explicitly authorized `fusion-sample` command. The preflight freezes the
 `openrouter/fusion` Quality preset, one web/tool step per panel or analyst,
 inner/outer output bounds, resolved-alias pricing snapshot, exact scheme-only
-request, and a conservative cost estimate. Because OpenRouter bills the panel,
+request, and a pricing-snapshot cost estimate. Because OpenRouter bills the panel,
 analyst, outer model, and web calls together, this estimate is recorded as a
 snapshot estimate rather than misrepresented as a provider-enforced per-request
 hard cap. The successful candidate response is cached and frozen to the run's
@@ -282,6 +292,15 @@ reasoning effort, output bound, no-fallback routing, request count, findings,
 and cost cap. It writes a separate secret-free authorization record and event.
 A stale flag therefore cannot authorize a request that differs from the exact
 reviewed preflight.
+
+A failed HTTP attempt is not erased by `resume`. When the original request
+allowance has been partly consumed without producing a cached prediction, an
+operator may extend it only with the CLI-only
+`--authorized-extra-http-attempts N` acknowledgement after obtaining explicit
+approval for that exact increment. The field is rejected in experiment JSON,
+is valid only for `resume`, and is written to the refreshed authorization
+record. It expands only the cumulative HTTP-attempt ceiling; model, provider,
+packet set, no-fallback routing, and API cost cap remain frozen.
 
 ## Local Drift Dashboard
 
