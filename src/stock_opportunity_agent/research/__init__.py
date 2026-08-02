@@ -122,6 +122,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
     write_evolution_dashboard,
+    write_evolution_dashboard_index,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     GenomeBlindAnalyzer,
@@ -248,4 +249,5 @@ __all__ = [
     "write_information_plan_experiment_artifacts",
     "write_ralph_loop_artifacts",
     "write_evolution_dashboard",
+    "write_evolution_dashboard_index",
 ]

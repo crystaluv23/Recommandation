@@ -210,6 +210,28 @@ the `status` or `dashboard` command. Existing runs with only the former
 `scheme_experiments.json` and `top_k.json` receive one explicitly marked
 recoverable legacy snapshot rather than fabricated missing rounds.
 
+The standard evolution root additionally owns one stable entry point:
+
+```text
+runs/cold_start/evolution/evolution_dashboard.html
+runs/cold_start/evolution/evolution_dashboard_data.js
+runs/cold_start/evolution/evolution_dashboard_index.json
+```
+
+The index scans only direct child run directories, validates each
+`evolution_history.json`, and stores the histories ordered by most recently
+completed round. The HTML contains the rendering and run-selection logic,
+defaults to the most recently updated run, and reloads the adjacent generated
+data script whenever it is opened or refreshed. Browsers do not permit a
+`file://` page to enumerate arbitrary sibling directories or fetch arbitrary
+JSON automatically, so the loop refreshes this local index after initialization,
+every completed round, and `status` or `dashboard`. This is not one HTML per
+round: the root path remains fixed while its local data index changes.
+
+Per-run HTML remains as a compatibility and portable-run view. Both root and
+per-run pages use the same executable HTML template; the per-run data bundle
+contains one history, while the root bundle contains all valid local histories.
+
 The default effect metric is the frozen primary metric, binary F1. The chart
 uses round number on the horizontal axis and effect on the vertical axis, and
 simultaneously renders:
@@ -255,7 +277,8 @@ field rejection, label-free analyzer inputs, Top-K behavior deduplication, a
 two-generation mock flow, final-test exclusion, and packet identity preflight.
 Dashboard coverage additionally verifies idempotent round history, no
 final-test metric ingestion, direct-file script loading without `fetch`, empty
-and partial histories, and legacy latest-round recovery.
+and partial histories, legacy latest-round recovery, multi-run index ordering,
+invalid-run isolation, and the stable root entry path.
 
 Synthetic, mock, and heuristic results prove orchestration only. Only a frozen
 anonymous plain-LLM run on a declared untouched-company final test can support

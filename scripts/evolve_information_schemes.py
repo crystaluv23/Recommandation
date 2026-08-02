@@ -47,6 +47,7 @@ from stock_opportunity_agent.research.scheme_evolution_ralph import (
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
     write_evolution_dashboard,
+    write_evolution_dashboard_index,
 )
 from stock_opportunity_agent.research.ralph_artifacts import (
     load_documents_by_symbol,
@@ -57,6 +58,7 @@ from stock_opportunity_agent.themes import build_cold_start_theme_maps
 
 DEFAULT_INITIAL_GENOME = Path("configs/evolution/initial_genome.json")
 DEFAULT_CANDIDATES = Path("configs/evolution/codex_candidates_v1.json")
+DEFAULT_EVOLUTION_ROOT = Path("runs/cold_start/evolution")
 DEFAULT_FORMAL_RUN_DIR = Path(
     "runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13-clean-universe"
 )
@@ -76,13 +78,14 @@ def main() -> None:
     state_store = EvolutionStateStore(output_dir, run_id=args.run_id or output_dir.name)
     if args.command == "status":
         state = state_store.load_state()
-        write_evolution_dashboard(output_dir)
+        _refresh_evolution_dashboards(output_dir)
         print(json.dumps(state, indent=2, sort_keys=True))
         return
     if args.command == "dashboard":
         state_store.load_state()
-        paths = write_evolution_dashboard(output_dir)
+        paths = _refresh_evolution_dashboards(output_dir)
         print(f"[scheme-evolution] dashboard={paths['dashboard']}")
+        print(f"[scheme-evolution] run_dashboard={paths['run_dashboard']}")
         return
     if args.command == "resume":
         args.resume = True
@@ -103,7 +106,7 @@ def main() -> None:
     state_store.write_objective_prompt(
         Path("prompts/evolution_objective.md").read_text(encoding="utf-8")
     )
-    dashboard_paths = write_evolution_dashboard(output_dir)
+    dashboard_paths = _refresh_evolution_dashboards(output_dir)
     if args.command == "init":
         print(f"[scheme-evolution] initialized={output_dir}")
         print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
@@ -191,7 +194,7 @@ def main() -> None:
         meta_memory = merge_meta_lessons([*meta_memory, *result.meta_lessons])
         mutation_requests = result.mutation_requests
         last_paths = result.artifact_paths
-        dashboard_paths = write_evolution_dashboard(output_dir)
+        dashboard_paths = _refresh_evolution_dashboards(output_dir)
         last_paths = {**last_paths, **dashboard_paths}
         completed_generations = generation
         if not result.experiments:
@@ -246,6 +249,21 @@ def main() -> None:
     print(f"[scheme-evolution] archive_entries={len(archive.entries)}")
     print(f"[scheme-evolution] summary={summary_path}")
     print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
+
+
+def _refresh_evolution_dashboards(output_dir: Path) -> dict[str, Path]:
+    """Refresh the portable run view and the one stable repository-level view."""
+
+    run_paths = write_evolution_dashboard(output_dir)
+    index_paths = write_evolution_dashboard_index(DEFAULT_EVOLUTION_ROOT)
+    return {
+        "run_history": run_paths["history"],
+        "run_data": run_paths["data"],
+        "run_dashboard": run_paths["dashboard"],
+        "dashboard_index": index_paths["index"],
+        "dashboard_data": index_paths["data"],
+        "dashboard": index_paths["dashboard"],
+    }
 
 
 def _parse_args() -> argparse.Namespace:

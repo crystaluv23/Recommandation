@@ -95,7 +95,9 @@ Active child specs:
 - Persist one idempotent development-metric snapshot per completed evolution
   round and render a local dashboard that shows candidate-level binary-F1
   scatter, per-round candidate median, and retained best-so-far separately;
-  never mix final-test metrics into this development drift view.
+  never mix final-test metrics into this development drift view. Refresh one
+  stable evolution-root index after each round so local run ids can be selected
+  without creating a separate human entry point per round.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.

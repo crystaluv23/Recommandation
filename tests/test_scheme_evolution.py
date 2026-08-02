@@ -38,6 +38,7 @@ from stock_opportunity_agent.research.scheme_evolution_ralph import (
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
     write_evolution_dashboard,
+    write_evolution_dashboard_index,
 )
 
 
@@ -179,7 +180,37 @@ class SchemeEvolutionTests(TestCase):
         self.assertFalse(history["contains_final_test_metrics"])
         self.assertIn('src="evolution_dashboard_data.js"', html)
         self.assertNotIn("fetch(", html)
-        self.assertIn("window.__SCHEME_EVOLUTION_HISTORY__", data_script)
+        self.assertIn("window.__SCHEME_EVOLUTION_DASHBOARD__", data_script)
+
+    def test_unified_dashboard_indexes_runs_and_defaults_to_latest(self) -> None:
+        initial, candidates = _genomes()
+        fixed = _fixed_spec()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "evolution"
+            for run_id in ("run-one", "run-two"):
+                SchemeEvolutionEngine(
+                    proposer=MockSchemeProposer(candidates[:1]),
+                    evaluator=MockSchemeFoldEvaluator(),
+                    fixed_spec=fixed,
+                    state_store=EvolutionStateStore(root / run_id, run_id=run_id),
+                ).run(initial, _folds(fixed)[:1], candidate_count=1)
+            invalid = root / "invalid-run"
+            invalid.mkdir()
+            (invalid / "state.json").write_text("{}\n", encoding="utf-8")
+            (invalid / "evolution_history.json").write_text(
+                json.dumps({"schema_version": "wrong"}),
+                encoding="utf-8",
+            )
+            paths = write_evolution_dashboard_index(root)
+            index = json.loads(paths["index"].read_text(encoding="utf-8"))
+            html = paths["dashboard"].read_text(encoding="utf-8")
+            data_script = paths["data"].read_text(encoding="utf-8")
+        self.assertEqual([run["run_id"] for run in index["runs"]], ["run-two", "run-one"])
+        self.assertEqual(index["skipped_runs"][0]["run_directory"], "invalid-run")
+        self.assertFalse(index["contains_final_test_metrics"])
+        self.assertIn('id="run-select"', html)
+        self.assertIn("window.__SCHEME_EVOLUTION_DASHBOARD__", data_script)
+        self.assertNotIn("fetch(", html)
 
     def test_interruption_resume_reuses_completed_per_sample_predictions(self) -> None:
         initial, candidates = _genomes()

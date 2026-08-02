@@ -149,7 +149,10 @@ live-forward records remain outside the proposal engine. A local evolution
 dashboard may summarize development evaluations as a human-readable report,
 but it must read only the run's proposal-history artifact, identify binary F1
 as the fixed effect metric, and distinguish stochastic per-round candidate
-scores from the mechanically non-decreasing retained best-so-far series.
+scores from the mechanically non-decreasing retained best-so-far series. The
+standard local evolution root owns one stable dashboard entry point that
+indexes all run histories; a run-id is a selectable view, not part of the
+human-facing entry URL.
 
 ### Phase 2: Current Market Scan
 

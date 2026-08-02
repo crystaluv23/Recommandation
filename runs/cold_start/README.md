@@ -40,6 +40,9 @@ runs/cold_start/
       ralph_experiment_summary.json
       holdout_blind_scheme_evaluation.json
   evolution/
+    evolution_dashboard.html
+    evolution_dashboard_data.js
+    evolution_dashboard_index.json
     <run_id>/
       config.json
       evaluation_contract.json
@@ -149,16 +152,28 @@ runs once on separate sealed synthetic companies; real `final-test` remains
 fail-closed until a compatible one-shot A/B/C dataset and source archive are
 configured. Ordinary `run` and `resume` never load those labels.
 
-Every completed round also upserts `evolution_history.json` and refreshes the
-adjacent data script plus `evolution_dashboard.html`. Open the HTML directly in
-a local browser; it needs no server or network access. The chart uses round on
-the x-axis and binary F1 on the y-axis. Candidate points and their per-round
-median show the stochastic sequence, while the retained archive-best line is
-shown separately because Top-K makes it non-decreasing by construction. The
-`dashboard` command rebuilds the page from local records, and `status` refreshes
-it before printing state. A legacy run can recover only its last fully
-representable round; the page labels that limitation instead of inventing the
-missing history.
+Every completed round also upserts its run-local `evolution_history.json` and
+refreshes both the portable per-run page and the fixed repository-level entry:
+
+```text
+runs/cold_start/evolution/evolution_dashboard.html
+```
+
+Open that same HTML for every run and round; it needs no server or network
+access. Its run selector reads the generated local index and defaults to the
+most recently completed run. The chart uses round on the x-axis and binary F1
+on the y-axis. Candidate points and their per-round median show the stochastic
+sequence, while the retained archive-best line is shown separately because
+Top-K makes it non-decreasing by construction. The `dashboard` command rebuilds
+the unified page from direct child run records, and `status` refreshes it before
+printing state. A legacy run can recover only its last fully representable
+round; the page labels that limitation instead of inventing missing history.
+
+The executable plotting and run-selection logic lives in the HTML. Because a
+browser opening `file://` cannot enumerate directories or fetch arbitrary JSON,
+the loop atomically refreshes the adjacent `evolution_dashboard_data.js` from
+the canonical local JSON histories after every round. Reopening the one HTML or
+clicking reload therefore reads the latest generated local index.
 
 Run on saved Ralph cases only with a compatible adjusted-close history. Legacy
 winner/control or terminal-return labels are rejected rather than silently
