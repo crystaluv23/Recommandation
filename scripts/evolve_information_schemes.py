@@ -4,17 +4,24 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import fcntl
 import hashlib
 import json
 import os
+import re
+import sys
 from collections import Counter
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from stock_opportunity_agent.cases import CaseOutcomeLabel, learn_pre_surge_signal_logic
-from stock_opportunity_agent.llm.openai import UrllibTransport
-from stock_opportunity_agent.llm.openrouter import OpenRouterChatClient
+from stock_opportunity_agent.llm import (
+    ModelClientSettings,
+    RegisteredModel,
+    get_model,
+    model_catalog,
+)
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research import (
     HeuristicBlindCaseResearcher,
@@ -39,18 +46,23 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SchemeGenome,
     build_walk_forward_folds,
     evaluate_predictions,
+    load_round_checkpoint,
     merge_meta_lessons,
     realized_max_multiple,
+    restore_round_context,
     validate_folds,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
+    ContinuousExternalSessionLedger,
     HeuristicGenomeBlindAnalyzer,
     OpenAIGenomeBlindAnalyzer,
     OpenRouterFusionSchemeProposer,
+    RegisteredLLMSchemeProposer,
     RalphInformationPlanFoldEvaluator,
     blind_request_contract_findings,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
+    list_evolution_trajectories,
     write_evolution_dashboard,
     write_evolution_dashboard_index,
 )
@@ -69,35 +81,452 @@ DEFAULT_FORMAL_RUN_DIR = Path(
 )
 
 
+def _print_model_catalog() -> None:
+    """Print the auto-discovered, role-aware model list."""
+
+    print("ALIAS\tROLES\tPROVIDER\tMODEL\tWEB\tDESCRIPTION")
+    for item in model_catalog():
+        print(
+            f"{item.alias}\t{','.join(item.roles)}\t{item.provider_identity}\t"
+            f"{item.model}\t{str(item.web_tools_allowed).lower()}\t{item.description}"
+        )
+
+
+def _print_trajectory_catalog(root: Path) -> None:
+    """Print local trajectories and their exactly branchable rounds."""
+
+    rows = list_evolution_trajectories(root)
+    if not rows:
+        print(f"[scheme-evolution] no trajectories under {root}")
+        return
+    print("TRAJECTORY\tSTATUS\tCURRENT\tCOMPLETED\tBRANCHABLE\tMODELS\tPARENT")
+    for row in rows:
+        if not row.get("valid"):
+            print(
+                f"{row['trajectory_id']}\tinvalid\t-\t-\t-\t-\t"
+                f"{row.get('error', '')}"
+            )
+            continue
+        models = row.get("models", {})
+        lineage = row.get("lineage", {})
+        parent = (
+            f"{lineage.get('parent_trajectory_id')}:round-{lineage.get('parent_round')}"
+            if lineage.get("parent_trajectory_id")
+            else "-"
+        )
+        print(
+            f"{row['trajectory_id']}\t{row['status']}\t{row['current_round']}\t"
+            f"{row['last_completed_round']}\t"
+            f"{','.join(str(value) for value in row['branchable_rounds']) or '-'}\t"
+            f"{models.get('evolution_model', 'unknown')}→"
+            f"{models.get('judge_model', 'unknown')}\t{parent}"
+        )
+
+
+def _resolve_launch_selection(args: argparse.Namespace) -> None:
+    """Resolve interactive or explicit new/resume/branch launch parameters."""
+
+    root = Path(args.evolution_root)
+    rows = [row for row in list_evolution_trajectories(root) if row.get("valid")]
+    by_id = {str(row["trajectory_id"]): row for row in rows}
+    action = args.trajectory_action
+    requested_model_aliases = {
+        "evolution_model": args.evolution_model,
+        "judge_model": args.judge_model,
+    }
+    if not action:
+        if not sys.stdin.isatty():
+            raise ValidationError(
+                "non-interactive launch requires --trajectory-action new, resume, or branch"
+            )
+        _print_trajectory_catalog(root)
+        choice = input("选择 new / resume / branch: ").strip().lower()
+        if choice not in {"new", "resume", "branch"}:
+            raise ValidationError("trajectory action must be new, resume, or branch")
+        action = choice
+    args.trajectory_action = action
+    session_overrides = {
+        "evolution_root": args.evolution_root,
+        "max_rounds": args.max_rounds,
+        "continuous_external_session_authorized": (
+            args.continuous_external_session_authorized
+        ),
+        "session_max_cost_usd": args.session_max_cost_usd,
+    }
+    if action == "new":
+        trajectory_id = args.trajectory_id or _default_trajectory_id()
+        _validate_trajectory_id(trajectory_id)
+        output_dir = root / trajectory_id
+        if (output_dir / "state.json").exists():
+            raise ValidationError(
+                f"trajectory already exists; use resume or choose another id: {trajectory_id}"
+            )
+        args.run_id = trajectory_id
+        args.output_dir = str(output_dir)
+        args.command = "run"
+        args.resume = False
+    elif action == "resume":
+        source_id = args.from_trajectory or args.trajectory_id
+        if not source_id:
+            if not sys.stdin.isatty():
+                raise ValidationError("resume requires --from-trajectory")
+            source_id = input("输入要继续的 trajectory id: ").strip()
+        if source_id not in by_id:
+            raise ValidationError(f"unknown local trajectory: {source_id}")
+        source_dir = Path(str(by_id[source_id]["run_directory"]))
+        _apply_saved_run_arguments(args, source_dir)
+        _reject_changed_saved_models(args, requested_model_aliases)
+        args.run_id = source_id
+        args.output_dir = str(source_dir)
+        args.command = "resume"
+        args.resume = True
+    else:
+        source_id = args.from_trajectory
+        if not source_id:
+            if not sys.stdin.isatty():
+                raise ValidationError("branch requires --from-trajectory")
+            source_id = input("输入父 trajectory id: ").strip()
+        if source_id not in by_id:
+            raise ValidationError(f"unknown local parent trajectory: {source_id}")
+        source_row = by_id[source_id]
+        source_round = args.from_round
+        if source_round == 0:
+            if not sys.stdin.isatty():
+                raise ValidationError("branch requires --from-round")
+            source_round = int(input("输入父 round: ").strip())
+        if source_round not in source_row["branchable_rounds"]:
+            raise ValidationError(
+                f"round {source_round} is not branchable; available: "
+                f"{source_row['branchable_rounds']}"
+            )
+        trajectory_id = args.trajectory_id or _default_trajectory_id(prefix=f"{source_id}-r{source_round}")
+        _validate_trajectory_id(trajectory_id)
+        output_dir = root / trajectory_id
+        if (output_dir / "state.json").exists():
+            raise ValidationError(f"branch target already exists: {trajectory_id}")
+        source_dir = Path(str(source_row["run_directory"]))
+        _apply_saved_run_arguments(args, source_dir)
+        _reject_changed_saved_models(args, requested_model_aliases)
+        args.from_round = source_round
+        args.branch_source_dir = str(source_dir)
+        args.run_id = trajectory_id
+        args.output_dir = str(output_dir)
+        args.command = "run"
+        args.resume = False
+    for key, value in session_overrides.items():
+        setattr(args, key, value)
+    args.continuous = True
+
+
+def _reject_changed_saved_models(
+    args: argparse.Namespace,
+    requested: dict[str, str],
+) -> None:
+    """Fail clearly when resume/branch tries to change a frozen model alias."""
+
+    for field, requested_alias in requested.items():
+        saved_alias = str(getattr(args, field, ""))
+        if requested_alias and requested_alias != saved_alias:
+            raise ValidationError(
+                f"{field} is frozen as {saved_alias!r} for this trajectory; "
+                "start a fresh trajectory to use another alias"
+            )
+
+
+def _resolve_registered_models(
+    args: argparse.Namespace,
+) -> tuple[RegisteredModel, RegisteredModel]:
+    """Resolve aliases and project their immutable defaults onto legacy CLI fields."""
+
+    evolution_alias = args.evolution_model or (
+        "openrouter-fusion"
+        if args.command in {"fusion-preflight", "fusion-sample"}
+        else "codex-reviewed-file"
+    )
+    judge_alias = args.judge_model
+    if not judge_alias:
+        if args.mock_llm or args.mode == "heuristic":
+            judge_alias = "local-heuristic"
+        else:
+            matches = [
+                item
+                for item in model_catalog(role="judge")
+                if item.provider == "openrouter"
+                and item.model == args.openrouter_model
+                and (item.provider_route or "") == (args.openrouter_provider or "")
+            ]
+            if len(matches) != 1:
+                available = ", ".join(item.alias for item in model_catalog(role="judge"))
+                raise ValidationError(
+                    "legacy judge provider/model does not map to one registered alias; "
+                    f"choose --judge-model from: {available}"
+                )
+            judge_alias = matches[0].alias
+    evolution_model = get_model(evolution_alias, role="evolution")
+    judge_model = get_model(judge_alias, role="judge")
+    args.evolution_model = evolution_model.alias
+    args.judge_model = judge_model.alias
+    if evolution_model.provider != "local":
+        args.fusion_model = evolution_model.model
+    if judge_model.provider == "local":
+        args.mode = "heuristic"
+    else:
+        args.mode = "llm"
+        args.openrouter_model = judge_model.model
+        args.openrouter_provider = judge_model.provider_route or ""
+        if (
+            args.blind_max_output_tokens == 2200
+            and judge_model.default_max_output_tokens != 2200
+        ):
+            args.blind_max_output_tokens = judge_model.default_max_output_tokens
+        if not args.blind_reasoning_effort and judge_model.default_reasoning_effort:
+            args.blind_reasoning_effort = judge_model.default_reasoning_effort
+        if args.input_cost_per_million_tokens == 0:
+            args.input_cost_per_million_tokens = (
+                judge_model.default_input_cost_per_million_tokens
+            )
+        if args.output_cost_per_million_tokens == 0:
+            args.output_cost_per_million_tokens = (
+                judge_model.default_output_cost_per_million_tokens
+            )
+    return evolution_model, judge_model
+
+
+def _apply_saved_run_arguments(args: argparse.Namespace, run_dir: Path) -> None:
+    """Restore fixed local paths/settings before resuming without a config flag."""
+
+    path = run_dir / "config.json"
+    if not path.exists():
+        return
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    saved = payload.get("run_arguments", {})
+    if not isinstance(saved, dict):
+        raise ValidationError("saved run_arguments must be an object")
+    for key, value in saved.items():
+        if hasattr(args, key):
+            setattr(args, key, value)
+    args.evolution_model = str(payload.get("evolution_model") or args.evolution_model)
+    args.judge_model = str(payload.get("judge_model") or args.judge_model)
+
+
+def _restore_pending_branch_intent(
+    args: argparse.Namespace,
+    state_store: EvolutionStateStore,
+) -> None:
+    """Recover branch initialization metadata after an early Ctrl+C."""
+
+    if getattr(args, "branch_source_dir", None):
+        return
+    state = state_store.load_state()
+    if int(state.get("current_iteration", 0)) != 0:
+        return
+    config = json.loads(
+        (state_store.root / "config.json").read_text(encoding="utf-8")
+    )
+    branch = config.get("branch_source")
+    if branch is None:
+        return
+    if not isinstance(branch, dict):
+        raise ValidationError("saved branch_source must be an object")
+    trajectory_id = str(branch.get("trajectory_id") or "")
+    try:
+        source_round = int(branch.get("round", 0))
+    except (TypeError, ValueError) as exc:
+        raise ValidationError("saved branch round must be an integer") from exc
+    source_dir = Path(str(branch.get("run_directory") or ""))
+    relocated_source = Path(args.evolution_root) / trajectory_id
+    if not (source_dir / "state.json").exists() and trajectory_id:
+        source_dir = relocated_source
+    if not trajectory_id or source_round < 1 or not (source_dir / "state.json").exists():
+        raise ValidationError("saved branch source is incomplete or unavailable")
+    args.branch_source_dir = str(source_dir)
+    args.from_trajectory = trajectory_id
+    args.from_round = source_round
+
+
+def _safe_run_arguments(args: argparse.Namespace) -> dict[str, object]:
+    """Persist replay settings while excluding CLI-only authority and session state."""
+
+    excluded = {
+        "command",
+        "config",
+        "external_transmission_authorized",
+        "continuous_external_session_authorized",
+        "session_max_cost_usd",
+        "authorized_extra_http_attempts",
+        "trajectory_action",
+        "trajectory_id",
+        "from_trajectory",
+        "from_round",
+        "branch_source_dir",
+        "continuous",
+        "max_rounds",
+        "resume",
+    }
+    return {
+        key: value
+        for key, value in vars(args).items()
+        if key not in excluded
+        and isinstance(value, (str, int, float, bool, list, dict, type(None)))
+    }
+
+
+def _validate_trajectory_id(value: str) -> None:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}", value):
+        raise ValidationError(
+            "trajectory id must be 1-96 characters using letters, digits, dot, underscore, or hyphen"
+        )
+
+
+def _default_trajectory_id(*, prefix: str = "evolution") -> str:
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    normalized = re.sub(r"[^A-Za-z0-9._-]+", "-", prefix).strip("-.")
+    return f"{normalized or 'evolution'}-{stamp}"
+
+
+def _continuous_session_ledger(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    fixed_spec: FixedEvolutionSpec,
+    evolution_model: RegisteredModel,
+    judge_model: RegisteredModel,
+) -> ContinuousExternalSessionLedger:
+    """Freeze a continuous external scope and restore its cumulative cost ledger."""
+
+    corpus: dict[str, dict[str, str | None]] = {}
+    for name, raw_path in (
+        ("cases", args.cases_path),
+        ("documents", args.documents_path),
+        ("price_histories", args.price_histories_path),
+        ("initial_genome", args.initial_genome),
+        ("candidate_json", args.candidate_json),
+        ("evolution_objective", "prompts/evolution_objective.md"),
+    ):
+        path = Path(raw_path) if raw_path else None
+        corpus[name] = {
+            "path": str(path) if path is not None else None,
+            "sha256": _file_sha256(path) if path is not None and path.exists() else None,
+        }
+    scope = {
+        "scope": "continuous_development_proposal_and_anonymous_judgment",
+        "fixed_spec_hash": fixed_spec.content_hash,
+        "evolution_model": evolution_model.to_public_dict(),
+        "judge_model": judge_model.to_public_dict(),
+        "corpus": corpus,
+        "temperature": args.openrouter_temperature,
+        "analysis_max_attempts": args.analysis_max_attempts,
+        "provider_http_max_attempts": args.provider_http_max_attempts,
+        "blind_max_output_tokens": args.blind_max_output_tokens,
+        "blind_reasoning_effort": args.blind_reasoning_effort or None,
+        "input_cost_per_million_tokens": args.input_cost_per_million_tokens,
+        "output_cost_per_million_tokens": args.output_cost_per_million_tokens,
+        "admission_starts": args.admission_starts,
+        "admission_window_days": args.admission_window_days,
+        "selected_folds": args.selected_folds,
+        "children_per_generation": args.children_per_generation,
+        "max_candidates": args.max_candidates,
+        "fusion_preset": args.fusion_preset,
+        "fusion_max_tool_calls": args.fusion_max_tool_calls,
+        "fusion_inner_max_tokens": args.fusion_inner_max_tokens,
+        "fusion_max_output_tokens": args.fusion_max_output_tokens,
+        "final_test_in_scope": False,
+        "production_promotion_allowed": False,
+    }
+    fingerprint = hashlib.sha256(
+        json.dumps(scope, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    authorization_path = output_dir / "continuous_external_authorization.json"
+    authorization = {
+        "schema_version": "scheme-evolution-continuous-authorization-v1",
+        "acknowledgement_method": "explicit_cli_flag",
+        "acknowledged_at": datetime.now(timezone.utc).isoformat(),
+        "scope_fingerprint": fingerprint,
+        "maximum_cost_usd": args.session_max_cost_usd,
+        "secret_persisted": False,
+        "scope": scope,
+    }
+    if authorization_path.exists():
+        existing = json.loads(authorization_path.read_text(encoding="utf-8"))
+        if existing.get("scope_fingerprint") != fingerprint:
+            raise ValidationError("continuous external authorization scope changed on resume")
+        if float(existing.get("maximum_cost_usd", 0.0)) > args.session_max_cost_usd:
+            raise ValidationError("continuous external session cost cap cannot shrink")
+    temporary = authorization_path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(authorization, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(authorization_path)
+    return ContinuousExternalSessionLedger(
+        output_dir / "continuous_external_session.json",
+        scope_fingerprint=fingerprint,
+        maximum_cost_usd=args.session_max_cost_usd,
+    )
+
+
 def main() -> None:
-    """Run a dry validation or the network-free vertical slice."""
+    """Run, resume, or continuously supervise proposal-only evolution."""
 
     _load_local_env()
     args = _parse_args()
+    if args.command == "models":
+        _print_model_catalog()
+        return
+    if args.command == "trajectories":
+        _print_trajectory_catalog(Path(args.evolution_root))
+        return
+    if args.command == "launch":
+        _resolve_launch_selection(args)
+    evolution_model, judge_model = _resolve_registered_models(args)
     if args.max_concurrency != 1:
-        raise ValidationError("v0.2 supports max_concurrency=1; provider concurrency remains external")
+        raise ValidationError(
+            "v0.2 supports max_concurrency=1; provider concurrency remains external"
+        )
+    output_dir = Path(args.output_dir)
     initial = SchemeGenome.from_dict(
         json.loads(Path(args.initial_genome).read_text(encoding="utf-8"))
     )
-    proposer = FileSchemeProposer(args.candidate_json)
-    output_dir = Path(args.output_dir)
+    reviewed_proposer = FileSchemeProposer(args.candidate_json)
     state_store = EvolutionStateStore(output_dir, run_id=args.run_id or output_dir.name)
     if args.command == "status":
         state = state_store.load_state()
-        _refresh_evolution_dashboards(output_dir)
+        try:
+            status_lock = _acquire_run_lock(output_dir)
+        except ValidationError:
+            print("[scheme-evolution] dashboard_refresh=skipped active_writer=true")
+        else:
+            _refresh_evolution_dashboards(
+                output_dir,
+                evolution_root=Path(args.evolution_root),
+            )
+            status_lock.close()
         print(json.dumps(state, indent=2, sort_keys=True))
         return
     if args.command == "dashboard":
         state_store.load_state()
-        paths = _refresh_evolution_dashboards(output_dir)
+        dashboard_lock = _acquire_run_lock(output_dir)
+        paths = _refresh_evolution_dashboards(
+            output_dir,
+            evolution_root=Path(args.evolution_root),
+        )
+        dashboard_lock.close()
         print(f"[scheme-evolution] dashboard={paths['dashboard']}")
         print(f"[scheme-evolution] run_dashboard={paths['run_dashboard']}")
         return
     if args.command == "resume":
         args.resume = True
     if args.dry_run:
-        _run_dry_validation(initial, proposer, output_dir, count=args.children_per_generation)
+        dry_run_lock = _acquire_run_lock(output_dir)
+        _run_dry_validation(
+            initial,
+            reviewed_proposer,
+            output_dir,
+            count=args.children_per_generation,
+        )
+        dry_run_lock.close()
         return
+    run_lock_handle = _acquire_run_lock(output_dir)
     execution_mode = "synthetic_mock_vertical_slice" if args.mock_llm else args.mode
     fixed_spec = _fixed_spec(args, synthetic=args.mock_llm)
     state_store.initialize(
@@ -107,12 +536,48 @@ def main() -> None:
             "initial_genome": str(args.initial_genome),
             "candidate_json": str(args.candidate_json),
             "mode": execution_mode,
+            "evolution_model": evolution_model.alias,
+            "judge_model": judge_model.alias,
+            "evolution_model_registration": evolution_model.to_public_dict(),
+            "judge_model_registration": judge_model.to_public_dict(),
+            "experiment_config_path": str(args.config or ""),
+            "run_arguments": _safe_run_arguments(args),
+            "branch_source": (
+                {
+                    "run_directory": str(args.branch_source_dir),
+                    "trajectory_id": str(args.from_trajectory),
+                    "round": int(args.from_round),
+                }
+                if getattr(args, "branch_source_dir", None)
+                else None
+            ),
         },
     )
     state_store.write_objective_prompt(
         Path("prompts/evolution_objective.md").read_text(encoding="utf-8")
     )
-    dashboard_paths = _refresh_evolution_dashboards(output_dir)
+    _restore_pending_branch_intent(args, state_store)
+    if (
+        getattr(args, "branch_source_dir", None)
+        and int(state_store.load_state().get("current_iteration", 0)) == 0
+    ):
+        checkpoint = load_round_checkpoint(args.branch_source_dir, args.from_round)
+        if checkpoint.get("fixed_spec_hash") != fixed_spec.content_hash:
+            raise ValidationError("branch source uses a different fixed evolution spec")
+        parent_history = json.loads(
+            (Path(args.branch_source_dir) / "evolution_history.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        state_store.seed_branch(
+            checkpoint,
+            parent_run_dir=args.branch_source_dir,
+            parent_history=parent_history,
+        )
+    dashboard_paths = _refresh_evolution_dashboards(
+        output_dir,
+        evolution_root=Path(args.evolution_root),
+    )
     if args.command == "init":
         print(f"[scheme-evolution] initialized={output_dir}")
         print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
@@ -122,13 +587,10 @@ def main() -> None:
             args,
             output_dir,
             preview_only=args.command == "fusion-preflight",
+            evolution_model=evolution_model,
         )
         if args.command == "fusion-preflight":
-            _run_fusion_proposal_preflight(
-                initial,
-                fusion_proposer,
-                output_dir=output_dir,
-            )
+            _run_fusion_proposal_preflight(initial, fusion_proposer, output_dir=output_dir)
         else:
             if not args.external_transmission_authorized:
                 raise ValidationError(
@@ -151,19 +613,44 @@ def main() -> None:
             )
         _run_mock_final_test(state_store, fixed_spec)
         return
+    continuous = bool(getattr(args, "continuous", False))
+    external_session = evolution_model.provider != "local" or judge_model.provider != "local"
+    if continuous and external_session:
+        if not args.continuous_external_session_authorized:
+            raise ValidationError(
+                "continuous external launch requires "
+                "--continuous-external-session-authorized"
+            )
+        if args.session_max_cost_usd <= 0:
+            raise ValidationError(
+                "continuous external launch requires positive --session-max-cost-usd"
+            )
+    continuous_session_ledger = (
+        _continuous_session_ledger(
+            args,
+            output_dir=output_dir,
+            fixed_spec=fixed_spec,
+            evolution_model=evolution_model,
+            judge_model=judge_model,
+        )
+        if continuous and external_session
+        else None
+    )
     if (
         args.command in {"run", "resume"}
         and args.mode == "llm"
+        and not continuous
         and not args.external_transmission_authorized
     ):
         raise ValidationError(
             "real llm run/resume requires --external-transmission-authorized"
         )
     blind_authorization_scope = None
-    if args.command in {"run", "resume"} and args.mode == "llm":
+    if args.command in {"run", "resume"} and args.mode == "llm" and not continuous:
         blind_authorization_scope = _validate_blind_run_authorization(
             args,
             output_dir=output_dir,
+            judge_model=judge_model,
         )
     if args.mock_llm:
         folds = build_walk_forward_folds(
@@ -177,6 +664,8 @@ def main() -> None:
         folds, evaluator = _real_evaluation_context(
             args,
             fixed_spec,
+            judge_model=judge_model,
+            continuous_session_ledger=continuous_session_ledger,
             preview_only=args.command == "external-preflight",
         )
     folds = _select_folds(folds, args.selected_folds)
@@ -187,11 +676,12 @@ def main() -> None:
             raise ValidationError("external-preflight requires real llm mode")
         _run_external_disclosure_preflight(
             initial,
-            proposer,
+            reviewed_proposer,
             evaluator,
             folds,
             args=args,
             output_dir=output_dir,
+            judge_model=judge_model,
         )
         return
     if blind_authorization_scope is not None:
@@ -200,138 +690,437 @@ def main() -> None:
             output_dir=output_dir,
             state_store=state_store,
         )
-    archive = TopKArchive()
-    incumbent = initial
+    incumbent, archive, meta_memory, mutation_requests = _restore_latest_context(
+        state_store,
+        initial=initial,
+    )
+    session_start_last_completed = int(
+        state_store.load_state().get("last_completed_iteration", 0)
+    )
+    proposer = _evolution_proposer(
+        args,
+        output_dir=output_dir,
+        evolution_model=evolution_model,
+        reviewed_proposer=reviewed_proposer,
+        continuous=continuous,
+        continuous_session_ledger=continuous_session_ledger,
+    )
+    _print_launch_header(
+        args,
+        output_dir=output_dir,
+        evolution_model=evolution_model,
+        judge_model=judge_model,
+        state=state_store.load_state(),
+    )
     all_experiments = []
     all_rejections: list[CandidateRejection] = []
-    meta_memory = []
-    mutation_requests = []
     last_paths: dict[str, Path] = {}
-    completed_generations = 0
-    for generation in range(1, args.generations + 1):
-        generation_proposer = proposer
-        if args.mock_llm and generation > 1:
-            generation_proposer = MockSchemeProposer(
-                [
-                    replace(
-                        incumbent,
-                        genome_id=f"{incumbent.genome_id}-local-refine-g{generation}",
-                        parent_ids=[incumbent.genome_id],
-                        generation=incumbent.generation + 1,
-                        mutation_operator=MutationOperator.LOCAL_REFINE,
-                        hypothesis_of_change="Test a stricter threshold for extreme C-class evidence.",
-                        changed_fields=["metadata.ordinal_shift_min_strength"],
-                        expected_benefit="Reduce B-to-C ordinal overclassification without changing binary semantics.",
-                        possible_side_effects=["May miss marginal C-class cases."],
-                        falsification_test="Reject if class C recall falls or ordinal distance rises.",
-                        target_failure_type="general",
-                        metadata={
-                            **incumbent.metadata,
-                            "ordinal_shift_min_strength": 0.75,
-                        },
-                    )
-                ]
+    completed_rounds = 0
+    round_limit = (
+        args.max_rounds
+        if continuous and args.max_rounds is not None
+        else 0
+        if continuous
+        else args.generations
+    )
+    try:
+        while round_limit == 0 or completed_rounds < round_limit:
+            state_before = state_store.load_state()
+            current_round = int(state_before.get("current_iteration", 0))
+            last_completed_round = int(
+                state_before.get("last_completed_iteration", 0)
             )
-        engine = SchemeEvolutionEngine(
-            proposer=generation_proposer,
-            evaluator=evaluator,
-            fixed_spec=fixed_spec,
-            state_store=state_store,
-            archive=archive,
-            validator=(
-                CandidateValidator(near_duplicate_threshold=1.0)
-                if args.mock_llm and generation > 1
-                else None
-            ),
-            max_candidates=args.max_candidates,
-            max_api_cost_usd=args.max_api_cost,
-            progress=print,
+            next_round = (
+                current_round
+                if current_round > last_completed_round
+                else last_completed_round + 1
+            )
+            generation_proposer = proposer
+            validator = None
+            if args.mock_llm and (
+                completed_rounds > 0
+                or int(state_before.get("last_completed_iteration", 0)) > 0
+            ):
+                generation_proposer = _mock_continuous_proposer(incumbent, next_round)
+                validator = CandidateValidator(near_duplicate_threshold=1.0)
+            print(
+                f"[scheme-evolution] supervisor next_round={next_round} "
+                f"completed_this_session={completed_rounds} "
+                f"limit={'ctrl-c' if round_limit == 0 else round_limit}"
+                + (
+                    f" session_cost_used={continuous_session_ledger.spent_or_reserved_cost_usd:.6f} "
+                    f"session_cost_remaining={continuous_session_ledger.remaining_cost_usd:.6f}"
+                    if continuous_session_ledger is not None
+                    else ""
+                )
+            )
+            engine = SchemeEvolutionEngine(
+                proposer=generation_proposer,
+                evaluator=evaluator,
+                fixed_spec=fixed_spec,
+                state_store=state_store,
+                archive=archive,
+                validator=validator,
+                max_candidates=args.max_candidates,
+                max_api_cost_usd=(
+                    args.session_max_cost_usd
+                    if continuous and args.session_max_cost_usd > 0
+                    else args.max_api_cost
+                ),
+                progress=print,
+            )
+            result = engine.run(
+                incumbent,
+                folds,
+                meta_memory=meta_memory,
+                mutation_requests=mutation_requests,
+                candidate_count=args.children_per_generation,
+                resume=args.resume or continuous or completed_rounds > 0,
+            )
+            incumbent = result.incumbent
+            archive = result.archive
+            all_experiments.extend(result.experiments)
+            all_rejections.extend(result.rejections)
+            meta_memory = result.meta_lessons
+            mutation_requests = result.mutation_requests
+            last_paths = result.artifact_paths
+            dashboard_paths = _refresh_evolution_dashboards(
+                output_dir,
+                evolution_root=Path(args.evolution_root),
+            )
+            last_paths = {**last_paths, **dashboard_paths}
+            completed_rounds += 1
+            if not result.experiments:
+                if continuous:
+                    raise ValidationError(
+                        "evolution produced no evaluated child; continuous mode cannot "
+                        "make progress until the evolution model supplies a new valid genome"
+                    )
+                break
+    except KeyboardInterrupt:
+        state = state_store.load_state()
+        if state.get("status") != "paused_by_operator":
+            state_store.pause("operator_ctrl_c")
+            state = state_store.load_state()
+        incumbent, archive, meta_memory, mutation_requests = _restore_latest_context(
+            state_store,
+            initial=initial,
         )
-        result = engine.run(
-            incumbent,
-            folds,
+        completed_rounds = max(
+            completed_rounds,
+            int(state.get("last_completed_iteration", 0))
+            - session_start_last_completed,
+        )
+        dashboard_paths = _refresh_evolution_dashboards(
+            output_dir,
+            evolution_root=Path(args.evolution_root),
+        )
+        summary_path = _write_evolution_summary(
+            args,
+            output_dir=output_dir,
+            incumbent=incumbent,
+            archive=archive,
+            folds=folds,
+            all_experiments=all_experiments,
+            all_rejections=all_rejections,
             meta_memory=meta_memory,
             mutation_requests=mutation_requests,
-            candidate_count=args.children_per_generation,
-            resume=args.resume or generation > 1,
+            last_paths={**last_paths, **dashboard_paths},
+            evaluator=evaluator,
+            execution_mode=execution_mode,
+            completed_rounds=completed_rounds,
+            interrupted=True,
         )
-        incumbent = result.incumbent
-        archive = result.archive
-        all_experiments.extend(result.experiments)
-        all_rejections.extend(result.rejections)
-        meta_memory = merge_meta_lessons([*meta_memory, *result.meta_lessons])
-        mutation_requests = result.mutation_requests
-        last_paths = result.artifact_paths
-        dashboard_paths = _refresh_evolution_dashboards(output_dir)
-        last_paths = {**last_paths, **dashboard_paths}
-        completed_generations = generation
-        if not result.experiments:
-            break
-    output_dir.mkdir(parents=True, exist_ok=True)
-    archive_path = (
-        Path(args.archive_export)
-        if args.archive_export
-        else output_dir / "top_k.json"
-    )
-    archive_path.parent.mkdir(parents=True, exist_ok=True)
-    archive_path.write_text(
-        json.dumps(archive.to_dict(), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    summary_path = output_dir / "evolution_summary.json"
-    summary_path.write_text(
-        json.dumps(
-            {
-                "schema_version": "scheme-evolution-v0.2",
-                "incumbent_genome_id": incumbent.genome_id,
-                "generation_count": completed_generations,
-                "selected_fold_ids": [fold.fold_id for fold in folds],
-                "experiment_count": len(all_experiments),
-                "rejection_count": len(all_rejections),
-                "meta_lesson_count": len(meta_memory),
-                "next_mutation_request_count": len(mutation_requests),
-                "top_k_entry_count": len(archive.entries),
-                "archive_path": str(archive_path),
-                "last_generation_artifacts": {
-                    name: str(path) for name, path in sorted(last_paths.items())
-                },
-                "execution_mode": execution_mode,
-                "effectiveness_claim_allowed": False,
-                "sealed_test_included": False,
-                "provider_execution_enabled": execution_mode == "llm",
-                "external_provider_call_count": int(
-                    getattr(
-                        getattr(evaluator, "analyzer", None),
-                        "cumulative_external_call_count",
-                        getattr(
-                            getattr(evaluator, "analyzer", None),
-                            "external_call_count",
-                            0,
-                        ),
-                    )
-                ),
-                "blind_cache_hit_count": int(
-                    getattr(getattr(evaluator, "analyzer", None), "cache_hit_count", 0)
-                ),
-            },
-            indent=2,
-            sort_keys=True,
+        print(
+            f"\n[scheme-evolution] paused_by_operator round={state.get('current_iteration')} "
+            f"last_completed={state.get('last_completed_iteration', 0)} "
+            f"summary={summary_path}",
+            file=sys.stderr,
         )
-        + "\n",
-        encoding="utf-8",
+        print(
+            f"[scheme-evolution] resume=PYTHONPATH=src python "
+            f"scripts/evolve_information_schemes.py launch --trajectory-action resume "
+            f"--from-trajectory {state_store.run_id}",
+            file=sys.stderr,
+        )
+        return
+    summary_path = _write_evolution_summary(
+        args,
+        output_dir=output_dir,
+        incumbent=incumbent,
+        archive=archive,
+        folds=folds,
+        all_experiments=all_experiments,
+        all_rejections=all_rejections,
+        meta_memory=meta_memory,
+        mutation_requests=mutation_requests,
+        last_paths=last_paths,
+        evaluator=evaluator,
+        execution_mode=execution_mode,
+        completed_rounds=completed_rounds,
+        interrupted=False,
     )
     print(f"[scheme-evolution] incumbent={incumbent.genome_id}")
     print(f"[scheme-evolution] experiments={len(all_experiments)}")
     print(f"[scheme-evolution] archive_entries={len(archive.entries)}")
     print(f"[scheme-evolution] summary={summary_path}")
     print(f"[scheme-evolution] dashboard={dashboard_paths['dashboard']}")
+    run_lock_handle.close()
 
 
-def _refresh_evolution_dashboards(output_dir: Path) -> dict[str, Path]:
+def _restore_latest_context(
+    state_store: EvolutionStateStore,
+    *,
+    initial: SchemeGenome,
+):
+    """Restore the last committed round while leaving a partial round resumable."""
+
+    state = state_store.load_state()
+    raw_completed = state.get("last_completed_iteration")
+    if raw_completed is None:
+        current = int(state.get("current_iteration", 0))
+        last_completed = current if state.get("status") == "completed" else max(0, current - 1)
+    else:
+        last_completed = int(raw_completed)
+    if last_completed < 1:
+        return initial, TopKArchive(), [], []
+    checkpoint = load_round_checkpoint(state_store.root, last_completed)
+    return restore_round_context(checkpoint)
+
+
+def _acquire_run_lock(output_dir: Path):
+    """Hold one advisory writer lock for the lifetime of a mutating process."""
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    handle = (output_dir / ".evolution.lock").open("a+", encoding="utf-8")
+    try:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError as exc:
+        handle.close()
+        raise ValidationError(
+            f"another evolution process is already writing {output_dir}"
+        ) from exc
+    handle.seek(0)
+    handle.truncate()
+    handle.write(
+        json.dumps(
+            {
+                "pid": os.getpid(),
+                "acquired_at": datetime.now(timezone.utc).isoformat(),
+            },
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    handle.flush()
+    return handle
+
+
+def _evolution_proposer(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    evolution_model: RegisteredModel,
+    reviewed_proposer: FileSchemeProposer,
+    continuous: bool,
+    continuous_session_ledger: ContinuousExternalSessionLedger | None,
+):
+    """Build the selected proposal adapter through its registered profile."""
+
+    if evolution_model.proposal_profile == "reviewed_file":
+        if continuous and not args.mock_llm and (args.max_rounds in {None, 0}):
+            raise ValidationError(
+                "codex-reviewed-file cannot autonomously supply infinite new genomes; "
+                "choose a registered API evolution model or set a finite --max-rounds"
+            )
+        return reviewed_proposer
+    if evolution_model.proposal_profile == "openrouter_fusion":
+        if args.children_per_generation != 1:
+            raise ValidationError("openrouter-fusion requires children_per_generation=1")
+        return _fusion_proposer(
+            args,
+            output_dir,
+            preview_only=False,
+            evolution_model=evolution_model,
+            continuous_session_ledger=continuous_session_ledger,
+        )
+    if evolution_model.proposal_profile == "plain_json":
+        client = evolution_model.create_client(
+            ModelClientSettings(
+                preview_only=False,
+                temperature=0.0,
+                timeout_seconds=args.timeout_seconds,
+                max_http_attempts=args.provider_http_max_attempts,
+            )
+        )
+        return RegisteredLLMSchemeProposer(
+            client,
+            output_dir / "model_proposal_cache" / evolution_model.alias,
+            objective_text=Path("prompts/evolution_objective.md").read_text(
+                encoding="utf-8"
+            ),
+            provider=evolution_model.provider_identity,
+            model=evolution_model.model,
+            max_output_tokens=evolution_model.default_max_output_tokens,
+            input_cost_per_million_tokens=(
+                evolution_model.default_input_cost_per_million_tokens
+            ),
+            output_cost_per_million_tokens=(
+                evolution_model.default_output_cost_per_million_tokens
+            ),
+            max_cost_usd=args.fusion_max_cost,
+            session_ledger=continuous_session_ledger,
+        )
+    raise ValidationError(
+        f"proposal profile is registered but not implemented: "
+        f"{evolution_model.proposal_profile}"
+    )
+
+
+def _mock_continuous_proposer(
+    incumbent: SchemeGenome,
+    next_round: int,
+) -> MockSchemeProposer:
+    """Produce one unique deterministic child for continuous supervisor tests."""
+
+    return MockSchemeProposer(
+        [
+            replace(
+                incumbent,
+                genome_id=f"{incumbent.genome_id}-local-refine-r{next_round}",
+                parent_ids=[incumbent.genome_id],
+                generation=incumbent.generation + 1,
+                mutation_operator=MutationOperator.LOCAL_REFINE,
+                hypothesis_of_change=(
+                    "Test one persisted mock refinement under the unchanged fixed exam."
+                ),
+                changed_fields=["metadata.mock_supervisor_round"],
+                expected_benefit="Exercise continuous checkpoint and resume semantics.",
+                possible_side_effects=["Synthetic result has no effectiveness meaning."],
+                falsification_test="Reject if the fixed mock evaluation contract changes.",
+                target_failure_type="general",
+                metadata={
+                    **incumbent.metadata,
+                    "mock_supervisor_round": next_round,
+                },
+            )
+        ]
+    )
+
+
+def _print_launch_header(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    evolution_model: RegisteredModel,
+    judge_model: RegisteredModel,
+    state: dict[str, object],
+) -> None:
+    """Print the fixed operator-visible context before any round starts."""
+
+    action = getattr(args, "trajectory_action", "") or (
+        "resume" if args.resume else "run"
+    )
+    source = (
+        f"{args.from_trajectory}:round-{args.from_round}"
+        if getattr(args, "from_trajectory", "") and args.from_round
+        else "none"
+    )
+    print(
+        f"[scheme-evolution] launch action={action} trajectory={state.get('run_id')} "
+        f"source={source} output={output_dir}"
+    )
+    print(
+        f"[scheme-evolution] models evolution={evolution_model.alias} "
+        f"({evolution_model.provider_identity}/{evolution_model.model}) "
+        f"judge={judge_model.alias} ({judge_model.provider_identity}/{judge_model.model})"
+    )
+    print(
+        "[scheme-evolution] boundary=development proposal_only=true "
+        "final_test=false production_promotion=false"
+    )
+
+
+def _write_evolution_summary(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    incumbent: SchemeGenome,
+    archive: TopKArchive,
+    folds,
+    all_experiments,
+    all_rejections,
+    meta_memory,
+    mutation_requests,
+    last_paths: dict[str, Path],
+    evaluator,
+    execution_mode: str,
+    completed_rounds: int,
+    interrupted: bool,
+) -> Path:
+    """Atomically persist one session summary, including operator interruption."""
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    archive_path = Path(args.archive_export) if args.archive_export else output_dir / "top_k.json"
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    archive_temporary = archive_path.with_suffix(archive_path.suffix + ".tmp")
+    archive_temporary.write_text(
+        json.dumps(archive.to_dict(), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    archive_temporary.replace(archive_path)
+    state = EvolutionStateStore(output_dir).load_state()
+    summary_path = output_dir / "evolution_summary.json"
+    payload = {
+        "schema_version": "scheme-evolution-v0.2",
+        "incumbent_genome_id": incumbent.genome_id,
+        "completed_rounds_this_session": completed_rounds,
+        "current_round": int(state.get("current_iteration", 0)),
+        "last_completed_round": int(state.get("last_completed_iteration", 0)),
+        "session_interrupted_by_operator": interrupted,
+        "selected_fold_ids": [fold.fold_id for fold in folds],
+        "experiment_count": len(all_experiments),
+        "rejection_count": len(all_rejections),
+        "meta_lesson_count": len(meta_memory),
+        "next_mutation_request_count": len(mutation_requests),
+        "top_k_entry_count": len(archive.entries),
+        "archive_path": str(archive_path),
+        "last_generation_artifacts": {
+            name: str(path) for name, path in sorted(last_paths.items())
+        },
+        "execution_mode": execution_mode,
+        "effectiveness_claim_allowed": False,
+        "sealed_test_included": False,
+        "provider_execution_enabled": execution_mode == "llm",
+        "external_provider_call_count": int(
+            getattr(
+                getattr(evaluator, "analyzer", None),
+                "cumulative_external_call_count",
+                getattr(getattr(evaluator, "analyzer", None), "external_call_count", 0),
+            )
+        ),
+        "blind_cache_hit_count": int(
+            getattr(getattr(evaluator, "analyzer", None), "cache_hit_count", 0)
+        ),
+    }
+    temporary = summary_path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(summary_path)
+    return summary_path
+
+
+def _refresh_evolution_dashboards(
+    output_dir: Path,
+    *,
+    evolution_root: Path = DEFAULT_EVOLUTION_ROOT,
+) -> dict[str, Path]:
     """Refresh the portable run view and the one stable repository-level view."""
 
     run_paths = write_evolution_dashboard(output_dir)
-    index_paths = write_evolution_dashboard_index(DEFAULT_EVOLUTION_ROOT)
+    index_paths = write_evolution_dashboard_index(evolution_root)
     return {
         "run_history": run_paths["history"],
         "run_data": run_paths["data"],
@@ -348,6 +1137,9 @@ def _parse_args() -> argparse.Namespace:
         "command",
         nargs="?",
         choices=(
+            "models",
+            "trajectories",
+            "launch",
             "init",
             "run",
             "resume",
@@ -360,6 +1152,23 @@ def _parse_args() -> argparse.Namespace:
         ),
         default="run",
     )
+    parser.add_argument("--evolution-root", default=str(DEFAULT_EVOLUTION_ROOT))
+    parser.add_argument("--trajectory-id", default="")
+    parser.add_argument(
+        "--trajectory-action",
+        choices=("new", "resume", "branch"),
+        default="",
+    )
+    parser.add_argument("--from-trajectory", default="")
+    parser.add_argument("--from-round", type=int, default=0)
+    parser.add_argument(
+        "--max-rounds",
+        type=int,
+        default=None,
+        help="Maximum new rounds for this launch; omit or use 0 to run until Ctrl+C.",
+    )
+    parser.add_argument("--evolution-model", default="")
+    parser.add_argument("--judge-model", default="")
     parser.add_argument("--run-id", default="")
     parser.add_argument("--config", default="", help="Optional JSON experiment config.")
     parser.add_argument("--initial-genome", default=str(DEFAULT_INITIAL_GENOME))
@@ -380,7 +1189,13 @@ def _parse_args() -> argparse.Namespace:
         default="",
         help="Exact OpenRouter provider slug; required in llm mode.",
     )
-    parser.add_argument("--openrouter-temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--openrouter-temperature",
+        "--judge-temperature",
+        dest="openrouter_temperature",
+        type=float,
+        default=0.0,
+    )
     parser.add_argument("--timeout-seconds", type=float, default=90.0)
     parser.add_argument("--analysis-max-attempts", type=int, default=1)
     parser.add_argument("--provider-http-max-attempts", type=int, default=1)
@@ -398,6 +1213,17 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--fusion-max-cost", type=float, default=2.0)
     parser.add_argument("--fusion-cache-dir", default="")
     parser.add_argument("--external-transmission-authorized", action="store_true")
+    parser.add_argument(
+        "--continuous-external-session-authorized",
+        action="store_true",
+        help="CLI-only acknowledgement for a fixed continuous external session scope.",
+    )
+    parser.add_argument(
+        "--session-max-cost-usd",
+        type=float,
+        default=0.0,
+        help="Cumulative external cost ceiling for continuous mode.",
+    )
     parser.add_argument(
         "--authorized-extra-http-attempts",
         type=int,
@@ -462,8 +1288,10 @@ def _parse_args() -> argparse.Namespace:
             if attribute in {
                 "external_transmission_authorized",
                 "authorized_extra_http_attempts",
+                "continuous_external_session_authorized",
+                "session_max_cost_usd",
             }:
-                parser.error("external transmission authorization must be CLI-only")
+                parser.error("external session authorization and cost scope must be CLI-only")
             if not hasattr(args, attribute):
                 parser.error(f"unknown config.cli field: {key}")
             setattr(args, attribute, value)
@@ -472,6 +1300,10 @@ def _parse_args() -> argparse.Namespace:
         args.evaluation_contract_config = None
     if args.generations < 1:
         parser.error("--generations must be positive")
+    if args.max_rounds is not None and args.max_rounds < 0:
+        parser.error("--max-rounds cannot be negative")
+    if args.from_round < 0:
+        parser.error("--from-round cannot be negative")
     if args.children_per_generation < 1:
         parser.error("--children-per-generation must be positive")
     if args.admission_window_days < 1:
@@ -491,6 +1323,8 @@ def _parse_args() -> argparse.Namespace:
         or args.fusion_max_cost <= 0
     ):
         parser.error("Fusion proposal bounds must be positive")
+    if args.session_max_cost_usd < 0:
+        parser.error("--session-max-cost-usd cannot be negative")
     return args
 
 
@@ -552,22 +1386,18 @@ def _fusion_proposer(
     output_dir: Path,
     *,
     preview_only: bool,
+    evolution_model: RegisteredModel,
+    continuous_session_ledger: ContinuousExternalSessionLedger | None = None,
 ) -> OpenRouterFusionSchemeProposer:
-    api_key = (
-        "preview-only-no-network"
-        if preview_only
-        else os.environ.get("OPENROUTER_API_KEY")
-    )
-    if not api_key:
-        raise ValidationError("OPENROUTER_API_KEY is not set")
-    client = OpenRouterChatClient(
-        args.fusion_model,
-        api_key,
-        temperature=0.0,
-        transport=UrllibTransport(
+    if evolution_model.proposal_profile != "openrouter_fusion":
+        raise ValidationError("selected evolution model is not a Fusion proposer")
+    client = evolution_model.create_client(
+        ModelClientSettings(
+            preview_only=preview_only,
+            temperature=0.0,
             timeout_seconds=args.timeout_seconds,
-            max_attempts=args.provider_http_max_attempts,
-        ),
+            max_http_attempts=args.provider_http_max_attempts,
+        )
     )
     cache_dir = (
         Path(args.fusion_cache_dir)
@@ -585,6 +1415,7 @@ def _fusion_proposer(
         inner_max_tokens=args.fusion_inner_max_tokens,
         outer_max_tokens=args.fusion_max_output_tokens,
         max_cost_usd=args.fusion_max_cost,
+        session_ledger=continuous_session_ledger,
     )
 
 
@@ -708,22 +1539,28 @@ def _validate_blind_run_authorization(
     args: argparse.Namespace,
     *,
     output_dir: Path,
+    judge_model: RegisteredModel,
 ) -> dict[str, object]:
     preflight_path = output_dir / "external_disclosure_preflight.json"
     if not preflight_path.exists():
         raise ValidationError("real llm run requires a passed external disclosure preflight")
     preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
-    expected_routing = {
-        "only": [args.openrouter_provider],
-        "require_parameters": True,
-        "allow_fallbacks": False,
-    }
+    expected_routing = (
+        {
+            "only": [judge_model.provider_route],
+            "require_parameters": True,
+            "allow_fallbacks": False,
+        }
+        if judge_model.provider_route
+        else None
+    )
     checks = {
         "passed": preflight.get("passed") is True,
         "no_prior_call": preflight.get("external_call_performed") is False,
-        "model": preflight.get("model") == args.openrouter_model,
-        "provider": preflight.get("provider")
-        == f"openrouter:{args.openrouter_provider}",
+        "model_alias": preflight.get("judge_model_alias", judge_model.alias)
+        == judge_model.alias,
+        "model": preflight.get("model") == judge_model.model,
+        "provider": preflight.get("provider") == judge_model.provider_identity,
         "temperature": preflight.get("temperature") == args.openrouter_temperature,
         "routing": preflight.get("provider_routing") == expected_routing,
         "request_bound": 0 < int(preflight.get("request_count", 0)) <= 12,
@@ -750,7 +1587,7 @@ def _validate_blind_run_authorization(
         checks["request_records"] = False
     else:
         checks["request_records"] = all(
-            row.get("request", {}).get("model") == args.openrouter_model
+            row.get("request", {}).get("model") == judge_model.model
             and row.get("request", {}).get("max_output_tokens")
             == args.blind_max_output_tokens
             and row.get("request", {}).get("reasoning")
@@ -773,8 +1610,9 @@ def _validate_blind_run_authorization(
         "scope": "anonymous_no_web_blind_validation",
         "preflight_path": str(preflight_path),
         "preflight_sha256": _file_sha256(preflight_path),
-        "model": args.openrouter_model,
-        "provider": args.openrouter_provider,
+        "model_alias": judge_model.alias,
+        "model": judge_model.model,
+        "provider": judge_model.provider_identity,
         "temperature": args.openrouter_temperature,
         "reasoning_effort": args.blind_reasoning_effort or None,
         "max_output_tokens": args.blind_max_output_tokens,
@@ -877,6 +1715,7 @@ def _run_external_disclosure_preflight(
     *,
     args: argparse.Namespace,
     output_dir: Path,
+    judge_model: RegisteredModel,
 ) -> None:
     """Persist exact secret-free requests without contacting the provider."""
 
@@ -977,7 +1816,10 @@ def _run_external_disclosure_preflight(
             "*/materialization_preflight.json"
         )
     )
-    api_key_available = bool(os.environ.get("OPENROUTER_API_KEY"))
+    api_key_available = bool(
+        judge_model.api_key_env_var
+        and os.environ.get(judge_model.api_key_env_var)
+    )
     state_path = output_dir / "state.json"
     state_payload = (
         json.loads(state_path.read_text(encoding="utf-8"))
@@ -999,7 +1841,11 @@ def _run_external_disclosure_preflight(
         api_key_available=api_key_available,
         final_test_accessed=final_test_accessed,
         configured_cost_cap_usd=args.max_api_cost,
-        cache_dir=Path(args.blind_cache_dir),
+        cache_dir=(
+            Path(args.blind_cache_dir)
+            if args.blind_cache_dir
+            else output_dir / "blind_analysis_cache"
+        ),
     )
     payload = {
         "schema_version": "scheme-evolution-external-disclosure-preflight-v0.1",
@@ -1014,7 +1860,8 @@ def _run_external_disclosure_preflight(
         "findings": findings,
         "destination": requests[0]["request"]["destination"] if requests else None,
         "provider": requests[0]["request"]["provider"] if requests else None,
-        "model": args.openrouter_model,
+        "judge_model_alias": judge_model.alias,
+        "model": judge_model.model,
         "temperature": args.openrouter_temperature,
         "provider_routing": (
             requests[0]["request"]["provider_routing"] if requests else None
@@ -1181,6 +2028,8 @@ def _real_evaluation_context(
     args: argparse.Namespace,
     fixed_spec: FixedEvolutionSpec,
     *,
+    judge_model: RegisteredModel,
+    continuous_session_ledger: ContinuousExternalSessionLedger | None = None,
     preview_only: bool = False,
 ):
     cases = load_historical_cases(Path(args.cases_path))
@@ -1299,46 +2148,33 @@ def _real_evaluation_context(
                 "llm mode requires positive input/output token price estimates "
                 "so --max-api-cost can fail closed"
             )
-        if not args.openrouter_provider.strip():
-            raise ValidationError(
-                "llm mode requires --openrouter-provider so provider routing is fixed"
-            )
-        api_key = (
-            "preview-only-no-network"
-            if preview_only
-            else os.environ.get("OPENROUTER_API_KEY")
-        )
-        if not api_key:
-            raise ValidationError("OPENROUTER_API_KEY is not set")
         cache_dir = (
             Path(args.blind_cache_dir)
             if args.blind_cache_dir
             else Path(args.output_dir) / "blind_analysis_cache"
         )
-        client = OpenRouterChatClient(
-            args.openrouter_model,
-            api_key,
-            temperature=args.openrouter_temperature,
-            provider_only=(args.openrouter_provider,),
-            provider_require_parameters=True,
-            provider_allow_fallbacks=False,
-            transport=UrllibTransport(
+        client = judge_model.create_client(
+            ModelClientSettings(
+                preview_only=preview_only,
+                temperature=args.openrouter_temperature,
                 timeout_seconds=args.timeout_seconds,
-                max_attempts=args.provider_http_max_attempts,
-            ),
+                max_http_attempts=args.provider_http_max_attempts,
+            )
         )
         attempt_ledger_path = None
         attempt_scope_fingerprint = None
         authorized_max_external_attempts = None
-        if args.command in {"run", "resume"}:
+        continuous = bool(getattr(args, "continuous", False))
+        if args.command in {"run", "resume"} and not continuous:
             preflight_path = Path(args.output_dir) / "external_disclosure_preflight.json"
             preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
             attempt_ledger_path = Path(args.output_dir) / "external_attempts.json"
             attempt_scope_fingerprint = _hash_attempt_scope(
                 preflight_path,
                 analyzer_settings={
-                    "model": args.openrouter_model,
-                    "provider": args.openrouter_provider,
+                    "model_alias": judge_model.alias,
+                    "model": judge_model.model,
+                    "provider": judge_model.provider_identity,
                     "temperature": args.openrouter_temperature,
                     "max_output_tokens": args.blind_max_output_tokens,
                     "reasoning_effort": args.blind_reasoning_effort or None,
@@ -1355,23 +2191,48 @@ def _real_evaluation_context(
                 int(preflight["request_count"])
                 + args.authorized_extra_http_attempts
             )
+        elif continuous:
+            attempt_ledger_path = Path(args.output_dir) / "external_attempts.json"
+            attempt_scope_fingerprint = hashlib.sha256(
+                json.dumps(
+                    {
+                        "scope": "continuous_anonymous_no_web_development",
+                        "fixed_spec_hash": fixed_spec.content_hash,
+                        "judge_model": judge_model.to_public_dict(),
+                        "temperature": args.openrouter_temperature,
+                        "max_output_tokens": args.blind_max_output_tokens,
+                        "reasoning_effort": args.blind_reasoning_effort or None,
+                        "cases_path": str(Path(args.cases_path)),
+                        "documents_path": str(Path(args.documents_path)),
+                        "price_histories_path": str(Path(args.price_histories_path)),
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+            authorized_max_external_attempts = 2_147_483_647
         analyzer = OpenAIGenomeBlindAnalyzer(
             client,
             cache_dir,
-            provider=f"openrouter:{args.openrouter_provider}",
-            model=args.openrouter_model,
+            provider=judge_model.provider_identity,
+            model=judge_model.model,
             temperature=args.openrouter_temperature,
             max_attempts=args.analysis_max_attempts,
             max_output_tokens=args.blind_max_output_tokens,
             reasoning_effort=args.blind_reasoning_effort or None,
             input_cost_per_million_tokens=args.input_cost_per_million_tokens,
             output_cost_per_million_tokens=args.output_cost_per_million_tokens,
-            max_cost_usd=args.max_api_cost,
+            max_cost_usd=(
+                args.session_max_cost_usd
+                if continuous
+                else args.max_api_cost
+            ),
             attempt_ledger_path=attempt_ledger_path,
             attempt_scope_fingerprint=attempt_scope_fingerprint,
             authorized_max_external_attempts=authorized_max_external_attempts,
+            session_ledger=continuous_session_ledger,
         )
-        if attempt_ledger_path is not None:
+        if attempt_ledger_path is not None and not continuous:
             capacity = analyzer.assert_authorized_capacity(preflight["requests"])
             print(
                 "[scheme-evolution] external-attempt-capacity "

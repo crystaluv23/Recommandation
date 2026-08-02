@@ -13,7 +13,7 @@ from urllib.error import HTTPError, URLError
 
 from stock_opportunity_agent.config import PromptConfig
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.llm import register
+from stock_opportunity_agent.llm import ModelClientSettings, register, register_model
 
 
 class HttpTransport(Protocol):
@@ -224,6 +224,39 @@ def model(
     """Registered OpenAI model provider factory."""
 
     return OpenAIChatClient.from_config(config, environ=environ, transport=transport)
+
+
+@register_model(
+    "gpt-4.1-openai",
+    provider="openai",
+    model="gpt-4.1",
+    roles=("judge",),
+    api_key_env_var="OPENAI_API_KEY",
+    description="Direct OpenAI Responses API GPT-4.1 anonymous no-web judge.",
+    default_max_output_tokens=2200,
+    default_input_cost_per_million_tokens=2.0,
+    default_output_cost_per_million_tokens=8.0,
+)
+def registered_gpt41_model(settings: ModelClientSettings) -> OpenAIChatClient:
+    """Build the registered direct OpenAI GPT-4.1 judge client."""
+
+    env = os.environ if settings.environ is None else settings.environ
+    api_key = (
+        "preview-only-no-network"
+        if settings.preview_only
+        else env.get("OPENAI_API_KEY")
+    )
+    if not api_key:
+        raise OpenAIClientError("OPENAI_API_KEY is not set")
+    return OpenAIChatClient(
+        "gpt-4.1",
+        api_key,
+        temperature=settings.temperature,
+        transport=UrllibTransport(
+            timeout_seconds=settings.timeout_seconds,
+            max_attempts=settings.max_http_attempts,
+        ),
+    )
 
 
 def _extract_output_text(raw: Mapping[str, Any]) -> str:

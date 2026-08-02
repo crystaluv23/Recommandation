@@ -16,6 +16,70 @@ DASHBOARD_HTML_NAME = "evolution_dashboard.html"
 DASHBOARD_INDEX_NAME = "evolution_dashboard_index.json"
 
 
+def list_evolution_trajectories(evolution_root: str | Path) -> list[dict[str, Any]]:
+    """Return secret-free local trajectory metadata for CLI selection."""
+
+    root = Path(evolution_root)
+    if not root.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    for child in sorted(root.iterdir(), key=lambda path: path.name):
+        if not child.is_dir() or not (child / "state.json").exists():
+            continue
+        try:
+            state = _read_json(child / "state.json")
+            history = _load_or_recover_history(child, child / "evolution_history.json")
+            _validate_history(history)
+        except ValidationError as exc:
+            rows.append(
+                {
+                    "trajectory_id": child.name,
+                    "run_directory": str(child),
+                    "valid": False,
+                    "error": str(exc),
+                }
+            )
+            continue
+        current = _positive_int(state.get("current_iteration"), default=0)
+        raw_completed = state.get("last_completed_iteration")
+        if raw_completed is None:
+            last_completed = current if state.get("status") == "completed" else max(0, current - 1)
+        else:
+            last_completed = _positive_int(raw_completed, default=0)
+        exact_rounds = sorted(
+            int(path.parent.name.removeprefix("round-"))
+            for path in (child / "rounds").glob("round-*/checkpoint.json")
+            if path.parent.name.removeprefix("round-").isdigit()
+            and int(path.parent.name.removeprefix("round-")) <= last_completed
+        )
+        branchable = sorted(set([*exact_rounds, *([last_completed] if last_completed else [])]))
+        rounds = history.get("rounds", [])
+        rows.append(
+            {
+                "trajectory_id": str(state.get("run_id") or child.name),
+                "run_directory": str(child),
+                "valid": True,
+                "status": str(state.get("status") or "unknown"),
+                "current_round": current,
+                "last_completed_round": last_completed,
+                "recorded_rounds": sorted(
+                    int(row.get("iteration", 0))
+                    for row in rounds
+                    if isinstance(row, Mapping) and int(row.get("iteration", 0)) > 0
+                ),
+                "branchable_rounds": branchable,
+                "models": dict(history.get("models", {})),
+                "lineage": dict(history.get("lineage", {})),
+                "updated_at": _history_updated_at(history),
+            }
+        )
+    return sorted(
+        rows,
+        key=lambda row: (str(row.get("updated_at", "")), str(row["trajectory_id"])),
+        reverse=True,
+    )
+
+
 def write_evolution_dashboard(run_dir: str | Path) -> dict[str, Path]:
     """Refresh a run's file-openable HTML dashboard from local metric history.
 
@@ -107,20 +171,48 @@ def _write_data_bundle(path: Path, bundle: Mapping[str, Any]) -> None:
 
 
 def _load_or_recover_history(root: Path, history_path: Path) -> dict[str, Any]:
-    if history_path.exists():
-        return _read_json(history_path)
     state = _read_optional_json(root / "state.json")
-    run_id = str(state.get("run_id") or root.name)
-    history: dict[str, Any] = {
-        "schema_version": HISTORY_SCHEMA_VERSION,
-        "run_id": run_id,
-        "primary_metric": "binary_f1",
-        "contains_final_test_metrics": False,
-        "rounds": [],
+    if history_path.exists():
+        history = _read_json(history_path)
+    else:
+        run_id = str(state.get("run_id") or root.name)
+        history = {
+            "schema_version": HISTORY_SCHEMA_VERSION,
+            "run_id": run_id,
+            "primary_metric": "binary_f1",
+            "contains_final_test_metrics": False,
+            "rounds": [],
+        }
+        recovered = _recover_legacy_latest_round(root, state)
+        if recovered is not None:
+            history["rounds"] = [recovered]
+    if state:
+        current = _positive_int(state.get("current_iteration"), default=0)
+        raw_completed = state.get("last_completed_iteration")
+        if raw_completed is None:
+            last_completed = (
+                current
+                if state.get("status") == "completed"
+                else max(0, current - 1)
+            )
+        else:
+            last_completed = _positive_int(raw_completed, default=0)
+        rounds = history.get("rounds", [])
+        if isinstance(rounds, list):
+            history["rounds"] = [
+                row
+                for row in rounds
+                if isinstance(row, Mapping)
+                and _positive_int(row.get("iteration"), default=0) <= last_completed
+            ]
+    config = _read_optional_json(root / "config.json")
+    history["models"] = {
+        "evolution_model": str(config.get("evolution_model") or "unknown"),
+        "judge_model": str(config.get("judge_model") or "unknown"),
     }
-    recovered = _recover_legacy_latest_round(root, state)
-    if recovered is not None:
-        history["rounds"] = [recovered]
+    lineage = _read_optional_json(root / "trajectory_lineage.json")
+    if lineage:
+        history["lineage"] = lineage
     return history
 
 
@@ -225,6 +317,12 @@ def _validate_history(history: Mapping[str, Any]) -> None:
         seen.add(iteration)
         if not isinstance(row.get("candidates", []), list):
             raise ValidationError("evolution history candidates must be a list")
+    models = history.get("models", {})
+    if not isinstance(models, Mapping):
+        raise ValidationError("evolution history models must be an object")
+    lineage = history.get("lineage")
+    if lineage is not None and not isinstance(lineage, Mapping):
+        raise ValidationError("evolution history lineage must be an object")
 
 
 def _positive_int(value: Any, *, default: int) -> int:
@@ -411,7 +509,11 @@ def _dashboard_html() -> str:
         const option = document.createElement("option");
         option.value = String(index);
         const roundCount = Array.isArray(history.rounds) ? history.rounds.length : 0;
-        option.textContent = `${history.run_id || `运行 ${index + 1}`} · ${roundCount} 轮`;
+        const models = history.models || {};
+        const modelPair = models.evolution_model && models.judge_model
+          ? ` · ${models.evolution_model} → ${models.judge_model}`
+          : "";
+        option.textContent = `${history.run_id || `运行 ${index + 1}`} · ${roundCount} 轮${modelPair}`;
         runSelect.appendChild(option);
       });
       if (!histories.length) {
@@ -470,7 +572,13 @@ def _dashboard_html() -> str:
         document.getElementById("latest-median").textContent = medianRows.length ? format(medianRows[medianRows.length - 1].candidateMedian) : "—";
         const driftSlope = slope(medianRows);
         document.getElementById("drift-slope").textContent = driftSlope === null ? "至少需要 3 轮" : `${driftSlope >= 0 ? "+" : ""}${driftSlope.toFixed(4)}`;
-        document.getElementById("run-label").textContent = `${history.run_id || "本地运行"} · 固定指标 Binary F1 · 开发集轮次`;
+        const models = history.models || {};
+        const modelPair = `${models.evolution_model || "未知进化模型"} → ${models.judge_model || "未知评判模型"}`;
+        const lineage = history.lineage || {};
+        const branchLabel = lineage.parent_trajectory_id
+          ? ` · 分支自 ${lineage.parent_trajectory_id} / round ${lineage.parent_round}`
+          : "";
+        document.getElementById("run-label").textContent = `${history.run_id || "本地运行"} · ${modelPair}${branchLabel} · 固定指标 Binary F1 · 开发集轮次`;
         const legacyCount = summaries.filter(row => row.source === "legacy_latest_only").length;
         const skippedSuffix = skippedRuns.length ? `；另有 ${skippedRuns.length} 个无效运行被跳过` : "";
         document.getElementById("data-status").textContent = legacyCount

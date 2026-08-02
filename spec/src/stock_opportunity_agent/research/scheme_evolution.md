@@ -30,12 +30,92 @@ freeze EvaluationContract and walk-forward split
 -> behaviorally deduplicate equal binary prediction vectors
 -> aggregate FP/FN/C-miss/ordinal diagnostics into structured meta-memory
 -> checkpoint proposal-only Top-K and bounded next mutation requests
+-> in continuous CLI mode, start the next bounded round after the checkpoint commits
 ```
 
 The implementation reuses the existing Ralph source archive, information-plan
 preparation, anonymous packet, identity preflight, OpenAI/OpenRouter-compatible
 client, and exact response cache. It does not implement a second document or
 packet pipeline.
+
+## Execution Entrypoints and Model Roles
+
+The controller is the single core flow for two entry paths:
+
+- In a Codex conversation, Codex or a human writes a reviewed candidate file and
+  the controller uses the `codex-reviewed-file` evolution registration.
+- From the command line, the operator chooses one registered `evolution` model
+  and one registered `judge` model. The evolution model may produce a complete
+  candidate genome through the bounded proposal adapter; the judge model sees
+  only anonymous point-in-time validation requests through the fixed blind
+  adapter.
+
+`models` is generated from the top-level LLM catalog on every process start.
+The runner validates both aliases and their declared roles before initializing
+a trajectory. It records aliases plus resolved provider/model/routing metadata
+in `config.json`; a resume or inherited-round branch rejects a changed model
+identity, while a fresh root trajectory may select another pair. Model
+registrations may select one of the existing
+standard proposal profiles (reviewed file, plain strict-JSON, or OpenRouter
+Fusion) and must build a client conforming to the shared Responses-style
+completion boundary. Adding another conforming provider or model therefore
+changes only `stock_opportunity_agent/llm/`.
+
+The proposal and judge roles never collapse into one mixed request. A web-
+enabled evolution model may research general source or method ideas, but it
+must not receive validation packets or per-company errors. A judge registration
+must be no-web, fixed-route where routing exists, deterministic where supported,
+and subject to the same disclosure preflight, attempt ledger, cache, label
+isolation, and human-review rules as the current concrete adapters.
+
+## Continuous CLI Supervisor
+
+`launch` defaults to continuous mode: it repeatedly invokes the one-round
+engine until the operator sends `SIGINT`/Ctrl+C or a fail-closed safety gate is
+reached. “Continuous” is an outer scheduling policy, not one unbounded engine
+transaction. Each round keeps finite candidate, retry, token, cost, and request
+limits. A `--max-rounds N` compatibility/testing bound may stop cleanly after N
+new completed rounds; omitting it means operator-stopped execution.
+One advisory writer lock is held for the trajectory process lifetime, so a
+second run/resume process cannot concurrently mutate the same checkpoints.
+
+The supervisor advances only after the prior round has durably committed, in
+this order:
+
+```text
+candidate response audit and parsed genome
+-> per-sample extraction and prediction checkpoints
+-> complete label-aware evaluation
+-> Top-K and meta-memory
+-> immutable round checkpoint and history
+-> state status=completed for that round
+-> next-round proposal context
+```
+
+Ctrl+C is handled at every point. If it arrives inside a provider call, the
+external-attempt reservation remains consumed and the current task stays
+`running` until the next launch atomically repairs it to `pending`; any received
+raw response already written to the attempt audit is recoverable. Because an
+interrupted HTTP request may have reached the provider without returning a
+response, its reservation is never erased or treated as free; a later retry is
+recorded as a separate attempt and remains subject to the cumulative cap. If
+Ctrl+C arrives after all round artifacts commit, the round remains
+`completed` and the supervisor writes `paused_by_operator` before exiting. The
+next launch of the same trajectory first repairs stale `running` tasks to
+`pending`, restores the last complete round checkpoint plus any exact per-task
+artifacts from the interrupted round, and continues without regenerating
+completed proposals or predictions. No resume path may delete a response audit,
+reset cumulative spend/attempts, renumber a committed round, or treat a partial
+round as complete.
+
+Continuous external mode additionally requires a CLI-only session
+acknowledgement and a positive cumulative session cost ceiling. The session
+freezes evolution/judge aliases, resolved endpoints and routing, source corpus,
+fixed spec, per-round candidate/request bounds, and retry policy. Every round
+still constructs and locally validates the exact disclosure preflight before
+transmission; a scope drift or cumulative-cost exhaustion pauses fail-closed.
+The session authorization and cumulative ledger never imply final-test access
+or production promotion.
 
 ## Fixed Evaluation Contract
 
@@ -207,6 +287,8 @@ evaluations/
 prompts/
 cache/
 experiments/
+rounds/round-<NNNN>/checkpoint.json
+trajectory_lineage.json  # only for a branch
 ```
 
 `state.json` records run id, iteration, lifecycle status, Top-K ids, current
@@ -214,11 +296,29 @@ tasks, checkpoint time, fixed-spec hash, proposal status, and whether final-test
 was accessed. JSON checkpoints use temporary files plus atomic replacement;
 events are append-only.
 
+Every completed round also writes an immutable branch checkpoint containing the
+round number, incumbent, complete Top-K archive, accumulated meta-lessons, next
+mutation requests, and fixed-spec hash; model identities remain frozen in the
+trajectory-level `config.json`. `resume` continues an
+interrupted trajectory in place from its latest exact per-task state. Starting
+from a completed historical round creates a new child trajectory instead: it
+loads that round checkpoint, seeds the child archive/memory, copies only the
+parent's public metric history through the selected round as `inherited_round`
+rows, copies exact evaluation contexts only for genomes retained in that
+checkpoint (their input hashes are revalidated before reuse), and records parent
+trajectory plus parent round in
+`trajectory_lineage.json`. It never truncates or overwrites the parent. A
+pre-checkpoint legacy run may branch only from its exactly reconstructable
+latest round; earlier non-reconstructable rounds are listed but fail closed.
+The child config records its branch intent before seeding archive/history state,
+so Ctrl+C during branch initialization can be recovered by resuming the child
+trajectory instead of leaving an unusable directory.
+
 Each stock extraction and prediction is written immediately. Resume converts
 stale `running` tasks to `pending`, reloads frozen materialization, and reuses a
 prediction only when the exact genome recipe, frozen signals, label-free input,
 extraction, evaluator/model settings, fold contents, and fixed rules hash to the
-same value. A KeyboardInterrupt writes `paused`; provider or validation errors
+same value. A KeyboardInterrupt writes `paused_by_operator`; provider or validation errors
 write the task error and a resumable `failed` state. The OpenRouter adapter also
 reuses an exact packet/prompt/model/provider/temperature response cache and
 never persists credentials.
@@ -260,6 +360,20 @@ one compact summary per proposed genome: id, parents, mutation operator, target
 failure type, changed fields, expected benefit, and falsification test. Static
 rejections print their reasons before any expensive call.
 
+At launch it first prints the selected trajectory action, trajectory id, source
+round when branching, evolution model, judge model, provider routing, output
+directory, and fixed development/proposal-only boundary. During evaluation it
+prints a bounded per-sample line only after the prediction has been persisted,
+including genome, fold, sample progress, cache/new status, predicted class, and
+qualitative confidence. Hidden labels and partial confusion counts remain
+absent until the complete persisted evaluation is available.
+
+Before each new continuous round it also prints the round number, committed
+checkpoint it is building from, completed/remaining session cost, cache
+coverage, and the next mutation requests. On Ctrl+C it prints exactly which
+round/task was paused and the one resume command; this message is derived from
+the state just written, not from an in-memory guess.
+
 After a genome's predictions have been persisted and its development labels are
 revealed to the deterministic evaluator, the reporter prints its confusion
 counts, binary F1, class-C recall, mean ordinal distance, and total data/token
@@ -282,9 +396,10 @@ to persist the exact developer/user content and request parameters that a later
 `run` command would send. The preflight must not call the provider, read
 validation labels into request content, or mutate the evolution iteration.
 
-The resulting `external_disclosure_preflight.json` records the fixed
-OpenRouter endpoint, downstream provider/model, temperature, no-fallback and
-required-parameter routing, candidate summaries, request count, per-request
+The resulting `external_disclosure_preflight.json` records the registered judge
+alias, exact endpoint, provider/model, temperature, no-fallback and required-
+parameter routing when the provider exposes routing, candidate summaries,
+request count, per-request
 anonymous packet/input hashes, conservative maximum cost, and the local packet
 preflight locations. It scans the data payload for identity-bearing source ids
 and forbidden label/outcome fields including `realized_max_multiple`,
@@ -300,7 +415,8 @@ contract findings share the same fail-closed gate as identity or label leakage;
 the artifact records checked and passed request counts.
 
 The same artifact includes a secret-free execution-readiness summary. It
-records only whether the OpenRouter key was available at preflight time, whether
+records only whether the registered provider credential was available at
+preflight time, whether
 final-test remained sealed, how many exact responses already exist, and the
 largest retry buffer whose worst-case per-request estimates still fit the
 configured blind-cost cap. It names every technical blocker separately from the
@@ -375,15 +491,20 @@ runs/cold_start/evolution/evolution_dashboard_data.js
 runs/cold_start/evolution/evolution_dashboard_index.json
 ```
 
-The index scans only direct child run directories, validates each
+The index scans only direct child trajectory directories, validates each
 `evolution_history.json`, and stores the histories ordered by most recently
-completed round. The HTML contains the rendering and run-selection logic,
-defaults to the most recently updated run, and reloads the adjacent generated
-data script whenever it is opened or refreshed. Browsers do not permit a
+completed round. Each trajectory row includes its evolution/judge model aliases
+and optional parent-trajectory/round lineage. The HTML contains the rendering
+and trajectory-selection logic, defaults to the most recently updated
+trajectory, displays the chosen model pair and branch origin, and reloads the
+adjacent generated data script whenever it is opened or refreshed. Browsers do not permit a
 `file://` page to enumerate arbitrary sibling directories or fetch arbitrary
 JSON automatically, so the loop refreshes this local index after initialization,
 every completed round, and `status` or `dashboard`. This is not one HTML per
 round: the root path remains fixed while its local data index changes.
+If `status` sees an active writer lock, it remains read-only and skips dashboard
+regeneration; the running supervisor refreshes the page at its next completed
+round.
 
 Per-run HTML remains as a compatibility and portable-run view. Both root and
 per-run pages use the same executable HTML template; the per-run data bundle
@@ -406,9 +527,14 @@ instead of failing the underlying evolution run.
 
 ## CLI
 
-The thin script supports:
+The thin script supports both explicit parameters and an interactive launcher:
 
 ```bash
+PYTHONPATH=src python scripts/evolve_information_schemes.py models
+PYTHONPATH=src python scripts/evolve_information_schemes.py trajectories
+PYTHONPATH=src python scripts/evolve_information_schemes.py launch --trajectory-id <new-id> --trajectory-action new --evolution-model codex-reviewed-file --judge-model local-heuristic --config <config.json>
+PYTHONPATH=src python scripts/evolve_information_schemes.py launch --trajectory-action resume --from-trajectory <existing-id> --config <config.json>
+PYTHONPATH=src python scripts/evolve_information_schemes.py launch --trajectory-id <branch-id> --trajectory-action branch --from-trajectory <existing-id> --from-round <N> --config <config.json>
 PYTHONPATH=src python scripts/evolve_information_schemes.py init --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py run --config configs/evolution/mock_experiment.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py resume --config configs/evolution/mock_experiment.json
@@ -419,6 +545,23 @@ PYTHONPATH=src python scripts/evolve_information_schemes.py fusion-sample --exte
 PYTHONPATH=src python scripts/evolve_information_schemes.py external-preflight --config configs/evolution/real_kimi3_fusion_development_v1.json
 PYTHONPATH=src python scripts/evolve_information_schemes.py final-test --config <real-config.json>
 ```
+
+When `launch` runs in a terminal without `--trajectory-action`, it lists the
+same local trajectory catalog and prompts for new, resume-latest, or branch-
+from-round. In non-interactive use those choices must be explicit. `models`
+prints the auto-discovered aliases and role support; `trajectories` prints local
+rounds, lifecycle status, model pair, branch lineage, and exactly branchable
+rounds. `--evolution-model` and `--judge-model` are stable aliases, while old
+provider-specific flags remain compatibility overrides and must match the
+selected registration.
+
+`launch` continues indefinitely by default. `--max-rounds` is intended for
+tests, smoke runs, scheduled batches, or operators who explicitly prefer a
+finite session. External continuous execution additionally requires
+`--continuous-external-session-authorized` and `--session-max-cost-usd`; both
+are CLI-only and cannot be smuggled through experiment JSON. Re-running the same
+launch command resumes the current partial round first, then continues with new
+rounds until interrupted.
 
 The mock `final-test` command evaluates the selected proposal once on separate
 sealed synthetic companies and writes only under `final_test/`. Real
@@ -439,10 +582,23 @@ field rejection, label-free analyzer inputs, Top-K behavior deduplication, a
 two-generation mock flow, final-test exclusion, and packet identity preflight.
 Request-preview coverage additionally verifies that the shared preview path
 performs no provider call and contains no source case id or validation label.
-Dashboard coverage additionally verifies idempotent round history, no
+Dashboard and trajectory coverage additionally verifies immutable branch
+checkpoints, exact archive/memory restore, parent preservation, inherited
+history marking, idempotent round history, no
 final-test metric ingestion, direct-file script loading without `fetch`, empty
 and partial histories, legacy latest-round recovery, multi-run index ordering,
-invalid-run isolation, and the stable root entry path.
+invalid-run isolation, registered model/lineage display, and the stable root
+entry path. Catalog tests verify lazy module discovery, role validation, unique
+aliases, and preview-only client construction without a credential or network
+call.
+
+Continuous-supervisor coverage interrupts between sample predictions and
+reserves a simulated in-flight external request before restart. Together with a
+real CLI Ctrl+C/resume smoke path, it verifies atomic JSON, append-only
+attempts/events, pending-task repair, no duplicate completed calls, conservative
+accounting for uncertain in-flight calls, monotone
+committed round numbers, restored Top-K/meta-memory, cumulative-cost
+restoration, and clean continuation into the interrupted round.
 
 Synthetic, mock, and heuristic results prove orchestration only. Only a frozen
 anonymous plain-LLM run on a declared untouched-company final test can support

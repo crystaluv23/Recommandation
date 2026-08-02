@@ -6,9 +6,14 @@ import tempfile
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import TestCase
 
-from scripts.evolve_information_schemes import _external_execution_readiness
+from scripts.evolve_information_schemes import (
+    _acquire_run_lock,
+    _external_execution_readiness,
+    _restore_pending_branch_intent,
+)
 
 from stock_opportunity_agent.llm.openai import ChatResponse
 from stock_opportunity_agent.models import ValidationError
@@ -33,16 +38,21 @@ from stock_opportunity_agent.research.scheme_evolution import (
     TopKArchive,
     build_walk_forward_folds,
     evaluate_predictions,
+    load_round_checkpoint,
     realized_max_multiple,
+    restore_round_context,
     validate_folds,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
+    ContinuousExternalSessionLedger,
     OpenAIGenomeBlindAnalyzer,
     OpenRouterFusionSchemeProposer,
+    RegisteredLLMSchemeProposer,
     blind_request_contract_findings,
     _packet_identity_findings,
 )
 from stock_opportunity_agent.research.scheme_evolution_dashboard import (
+    list_evolution_trajectories,
     write_evolution_dashboard,
     write_evolution_dashboard_index,
 )
@@ -54,6 +64,17 @@ CANDIDATE_PATH = ROOT / "configs/evolution/codex_candidates_v1.json"
 
 
 class SchemeEvolutionTests(TestCase):
+    def test_mutating_process_lock_rejects_concurrent_writer(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            first = _acquire_run_lock(Path(tmp))
+            try:
+                with self.assertRaisesRegex(ValidationError, "already writing"):
+                    _acquire_run_lock(Path(tmp))
+            finally:
+                first.close()
+            second = _acquire_run_lock(Path(tmp))
+            second.close()
+
     def test_genome_schema_round_trip_and_fixed_output_contract(self) -> None:
         initial, candidates = _genomes()
         restored = SchemeGenome.from_dict(initial.to_dict())
@@ -257,6 +278,38 @@ class SchemeEvolutionTests(TestCase):
         self.assertIn("window.__SCHEME_EVOLUTION_DASHBOARD__", data_script)
         self.assertNotIn("fetch(", html)
 
+    def test_commit_marker_hides_uncommitted_history_and_checkpoint(self) -> None:
+        initial, candidates = _genomes()
+        fixed = _fixed_spec()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "evolution"
+            run_dir = root / "partial"
+            store = EvolutionStateStore(run_dir, run_id="partial")
+            SchemeEvolutionEngine(
+                proposer=MockSchemeProposer(candidates[:1]),
+                evaluator=MockSchemeFoldEvaluator(),
+                fixed_spec=fixed,
+                state_store=store,
+            ).run(initial, _folds(fixed)[:1], candidate_count=1)
+            state = store.load_state()
+            state["status"] = "paused_by_operator"
+            state["last_completed_iteration"] = 0
+            (run_dir / "state.json").write_text(
+                json.dumps(state, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            history = json.loads(
+                write_evolution_dashboard(run_dir)["history"].read_text(
+                    encoding="utf-8"
+                )
+            )
+            trajectory = list_evolution_trajectories(root)[0]
+            with self.assertRaisesRegex(ValidationError, "not committed"):
+                load_round_checkpoint(run_dir, 1)
+        self.assertEqual(history["rounds"], [])
+        self.assertEqual(trajectory["last_completed_round"], 0)
+        self.assertEqual(trajectory["branchable_rounds"], [])
+
     def test_interruption_resume_reuses_completed_per_sample_predictions(self) -> None:
         initial, candidates = _genomes()
         folds = _folds(_fixed_spec())[:1]
@@ -274,7 +327,12 @@ class SchemeEvolutionTests(TestCase):
                 engine.run(initial, folds, candidate_count=1)
             completed_before_resume = list(Path(tmp).glob("experiments/*/predictions/*.json"))
             self.assertEqual(len(completed_before_resume), 2)
-            self.assertEqual(store.load_state()["status"], "paused")
+            paused_state = store.load_state()
+            self.assertEqual(paused_state["status"], "paused_by_operator")
+            self.assertEqual(paused_state["current_iteration"], 1)
+            self.assertEqual(paused_state["last_completed_iteration"], 0)
+            with self.assertRaisesRegex(ValidationError, "not committed"):
+                load_round_checkpoint(tmp, 1)
 
             resumed_evaluator = MockSchemeFoldEvaluator()
             result = SchemeEvolutionEngine(
@@ -288,7 +346,35 @@ class SchemeEvolutionTests(TestCase):
                 sample_count * 2 - len(completed_before_resume),
             )
             self.assertEqual(store.load_state()["status"], "completed")
+            self.assertEqual(store.load_state()["last_completed_iteration"], 1)
+            self.assertEqual(load_round_checkpoint(tmp, 1)["iteration"], 1)
             self.assertTrue(result.top_k)
+
+    def test_interrupt_after_commit_keeps_round_authoritative(self) -> None:
+        initial, candidates = _genomes()
+        fixed = _fixed_spec()
+
+        def interrupt_after_commit(message: str) -> None:
+            if "round=1 status=completed" in message:
+                raise KeyboardInterrupt
+
+        with tempfile.TemporaryDirectory() as tmp:
+            store = EvolutionStateStore(tmp, run_id="interrupt-after-commit")
+            with self.assertRaises(KeyboardInterrupt):
+                SchemeEvolutionEngine(
+                    proposer=MockSchemeProposer(candidates[:1]),
+                    evaluator=MockSchemeFoldEvaluator(),
+                    fixed_spec=fixed,
+                    state_store=store,
+                    progress=interrupt_after_commit,
+                ).run(initial, _folds(fixed)[:1], candidate_count=1)
+            state = store.load_state()
+            restored, archive, _lessons, _requests = restore_round_context(
+                load_round_checkpoint(tmp, 1)
+            )
+        self.assertEqual(state["status"], "paused_by_operator")
+        self.assertEqual(state["last_completed_iteration"], 1)
+        self.assertEqual(restored.genome_id, archive.entries[0].genome.genome_id)
 
     def test_blind_analyzer_never_receives_validation_labels(self) -> None:
         initial, candidates = _genomes()
@@ -624,6 +710,208 @@ class SchemeEvolutionTests(TestCase):
         self.assertEqual(client.calls, 1)
         self.assertEqual(cache["status"], "failed_validation")
         self.assertEqual(cache["raw_output"], "not-json")
+
+    def test_registered_json_proposer_caches_and_uses_continuous_cost_ledger(self) -> None:
+        initial, candidates = _genomes()
+        client = _FakeChatClient(
+            [json.dumps({"candidates": [candidates[0].to_dict()]})]
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = ContinuousExternalSessionLedger(
+                Path(tmp) / "session.json",
+                scope_fingerprint="fixed-session",
+                maximum_cost_usd=1.0,
+            )
+            proposer = RegisteredLLMSchemeProposer(
+                client,
+                Path(tmp) / "cache",
+                objective_text="Keep the fixed exam unchanged.",
+                provider="fake",
+                model="fake-model",
+                max_output_tokens=100,
+                input_cost_per_million_tokens=1.0,
+                output_cost_per_million_tokens=1.0,
+                session_ledger=ledger,
+            )
+            preview = proposer.preview_request([initial], [], [], 1)
+            first = proposer.propose([initial], [], [], 1)
+            second = proposer.propose([initial], [], [], 1)
+            persisted = json.loads(
+                (Path(tmp) / "session.json").read_text(encoding="utf-8")
+            )
+        self.assertFalse(preview["web_tools_allowed"])
+        self.assertFalse(preview["external_call_performed"])
+        self.assertEqual(first, second)
+        self.assertEqual(client.calls, 1)
+        self.assertEqual(proposer.cache_hit_count, 1)
+        self.assertEqual(persisted["requests"][0]["status"], "completed")
+        self.assertEqual(
+            persisted["requests"][0]["exact_secret_free_request"]["request_hash"],
+            preview["request_hash"],
+        )
+
+    def test_continuous_ledger_reserves_interrupted_request_across_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "continuous-session.json"
+            ledger = ContinuousExternalSessionLedger(
+                path,
+                scope_fingerprint="same-fixed-scope",
+                maximum_cost_usd=1.0,
+            )
+            request_id = ledger.reserve(
+                request_kind="blind_judgment",
+                request_hash="request-hash",
+                maximum_cost_usd=0.6,
+                exact_request={"labels_revealed": False, "web_tools_allowed": False},
+            )
+            restarted = ContinuousExternalSessionLedger(
+                path,
+                scope_fingerprint="same-fixed-scope",
+                maximum_cost_usd=1.0,
+            )
+            self.assertAlmostEqual(restarted.remaining_cost_usd, 0.4)
+            with self.assertRaisesRegex(ValidationError, "cost cap"):
+                restarted.reserve(
+                    request_kind="evolution_proposal",
+                    request_hash="too-expensive",
+                    maximum_cost_usd=0.5,
+                    exact_request={},
+                )
+            restarted.finish(
+                request_id,
+                status="completed",
+                response_id="response-1",
+                cost_usd=0.2,
+                cost_observed=True,
+            )
+            resumed = ContinuousExternalSessionLedger(
+                path,
+                scope_fingerprint="same-fixed-scope",
+                maximum_cost_usd=1.0,
+            )
+            self.assertAlmostEqual(resumed.remaining_cost_usd, 0.8)
+            with self.assertRaisesRegex(ValidationError, "scope changed"):
+                ContinuousExternalSessionLedger(
+                    path,
+                    scope_fingerprint="different-scope",
+                    maximum_cost_usd=1.0,
+                )
+            with self.assertRaisesRegex(ValidationError, "cannot shrink"):
+                ContinuousExternalSessionLedger(
+                    path,
+                    scope_fingerprint="same-fixed-scope",
+                    maximum_cost_usd=0.9,
+                )
+
+    def test_round_checkpoint_can_seed_and_continue_an_independent_branch(self) -> None:
+        initial, candidates = _genomes()
+        fixed = _fixed_spec()
+        folds = _folds(fixed)[:1]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "evolution"
+            parent_store = EvolutionStateStore(root / "parent", run_id="parent")
+            parent_result = SchemeEvolutionEngine(
+                proposer=MockSchemeProposer(candidates[:1]),
+                evaluator=MockSchemeFoldEvaluator(),
+                fixed_spec=fixed,
+                state_store=parent_store,
+            ).run(initial, folds, candidate_count=1)
+            checkpoint = load_round_checkpoint(root / "parent", 1)
+            restored, restored_archive, lessons, requests = restore_round_context(
+                checkpoint
+            )
+            parent_history = json.loads(
+                (root / "parent" / "evolution_history.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            child_store = EvolutionStateStore(root / "child", run_id="child")
+            child_store.initialize(fixed)
+            child_store.seed_branch(
+                checkpoint,
+                parent_run_dir=root / "parent",
+                parent_history=parent_history,
+            )
+            child_candidate = replace(
+                restored,
+                genome_id="branch-round-two",
+                parent_ids=[restored.genome_id],
+                generation=restored.generation + 1,
+                mutation_operator=MutationOperator.LOCAL_REFINE,
+                hypothesis_of_change="Test an independent branch refinement.",
+                changed_fields=["metadata.branch_round"],
+                expected_benefit="Verify branch-local continuation.",
+                possible_side_effects=["Synthetic fixture only."],
+                falsification_test="Reject if the fixed exam changes.",
+                target_failure_type="general",
+                metadata={**restored.metadata, "branch_round": 2},
+            )
+            child_evaluator = MockSchemeFoldEvaluator()
+            child_result = SchemeEvolutionEngine(
+                proposer=MockSchemeProposer([child_candidate]),
+                evaluator=child_evaluator,
+                fixed_spec=fixed,
+                state_store=child_store,
+                archive=restored_archive,
+                validator=CandidateValidator(near_duplicate_threshold=1.0),
+            ).run(
+                restored,
+                folds,
+                meta_memory=lessons,
+                mutation_requests=requests,
+                candidate_count=1,
+                resume=True,
+            )
+            child_history = json.loads(
+                (root / "child" / "evolution_history.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            trajectories = {
+                row["trajectory_id"]: row for row in list_evolution_trajectories(root)
+            }
+            parent_state = parent_store.load_state()
+            child_state = child_store.load_state()
+        self.assertEqual(parent_state["last_completed_iteration"], 1)
+        self.assertEqual(child_state["last_completed_iteration"], 2)
+        self.assertEqual(child_result.incumbent.generation, restored.generation + 1)
+        self.assertEqual([row["iteration"] for row in child_history["rounds"]], [1, 2])
+        self.assertEqual(child_history["rounds"][0]["source"], "inherited_round")
+        self.assertEqual(trajectories["child"]["lineage"]["parent_trajectory_id"], "parent")
+        self.assertEqual(
+            trajectories["child"]["lineage"]["inherited_evaluation_context_count"],
+            len(parent_result.archive.entries),
+        )
+        self.assertEqual(trajectories["child"]["branchable_rounds"], [1, 2])
+        self.assertEqual(child_evaluator.predict_call_count, len(folds[0].admission_samples))
+
+    def test_pending_branch_intent_is_recovered_after_early_interrupt(self) -> None:
+        fixed = _fixed_spec()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "evolution"
+            parent_store = EvolutionStateStore(root / "parent", run_id="parent")
+            parent_store.initialize(fixed)
+            child_store = EvolutionStateStore(root / "child", run_id="child")
+            child_store.initialize(
+                fixed,
+                config={
+                    "branch_source": {
+                        "run_directory": str(root / "parent"),
+                        "trajectory_id": "parent",
+                        "round": 1,
+                    }
+                },
+            )
+            args = SimpleNamespace(
+                branch_source_dir="",
+                evolution_root=str(root),
+                from_trajectory="",
+                from_round=0,
+            )
+            _restore_pending_branch_intent(args, child_store)
+        self.assertEqual(args.branch_source_dir, str(root / "parent"))
+        self.assertEqual(args.from_trajectory, "parent")
+        self.assertEqual(args.from_round, 1)
 
     def test_model_probability_field_is_rejected(self) -> None:
         initial, _candidates = _genomes()

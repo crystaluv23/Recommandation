@@ -119,6 +119,17 @@ find winners from the most recent one-year historical window
 -> update versioned information-plan, signal, theme, prompt, scoring, and case-memory proposals
 ```
 
+“Bounded proposal engine” applies to each atomic development round: candidate
+count, provider attempts, request scope, cost, and checkpoint commit are all
+finite and auditable. A CLI supervisor may continuously start another bounded
+round after the previous checkpoint commits, and may keep doing so until the
+operator sends an interrupt. Continuous orchestration does not authorize an
+unbounded request, spend, final-test loop, production promotion, or mutation of
+the fixed exam. External execution still requires an explicit session scope
+with fixed model/provider/routing, packet corpus, per-round limits, a cumulative
+cost ledger, and fail-closed preflight validation for every newly rendered
+request.
+
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
 
 Phase 1 contains two ordered subphases:

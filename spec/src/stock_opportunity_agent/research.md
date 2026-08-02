@@ -28,10 +28,19 @@ Expected outputs:
 - old and new narrative,
 - and confidence notes.
 
-Initial implementation provides a lightweight LLM provider registry under
-`src/stock_opportunity_agent/llm/`. Provider modules register factories with
-`@register("provider_name")`; concrete providers include an OpenAI Responses API
-adapter and an OpenRouter Responses API adapter. The OpenRouter adapter keeps
+Initial implementation provides a lightweight LLM provider and model catalog
+under `src/stock_opportunity_agent/llm/`. Provider modules register client
+factories with `@register("provider_name")` and concrete CLI-selectable models
+with `@register_model(...)`. Catalog lookup lazily discovers every non-private
+module in that package, so adding a conforming provider or model requires only
+changes under the LLM capability boundary; orchestration code must not maintain
+a second hard-coded model list. Each model registration declares its stable CLI
+alias, provider/model ids, allowed roles (`evolution` and/or `judge`), credential
+environment variable, web/tool posture, fixed provider route when applicable,
+and conservative runtime defaults. Generic external proposal registrations must
+also declare positive token-price bounds so the cumulative session ceiling
+cannot silently become ineffective. Concrete providers include OpenAI Responses
+API and OpenRouter Responses API adapters. The OpenRouter adapter keeps
 provider-specific web-search compatibility separate from the OpenAI adapter,
 and optionally fixes an allowed provider slug, disables fallbacks, and requires
 support for every requested parameter. The shared HTTP transport applies

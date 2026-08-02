@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
@@ -397,6 +398,7 @@ class EvolutionStateStore:
         "prompts",
         "cache",
         "experiments",
+        "rounds",
     )
 
     def __init__(self, root: str | Path, *, run_id: str | None = None) -> None:
@@ -426,7 +428,38 @@ class EvolutionStateStore:
         else:
             _write_json(contract_path, fixed_spec.evaluation_contract.to_dict())
         config_path = self.root / "config.json"
-        if not config_path.exists():
+        if config_path.exists():
+            existing_config = _read_json(config_path)
+            for key in (
+                "evolution_model",
+                "judge_model",
+                "evolution_model_registration",
+                "judge_model_registration",
+            ):
+                requested = (config or {}).get(key)
+                if (
+                    requested is not None
+                    and key in existing_config
+                    and existing_config.get(key) != requested
+                ):
+                    raise ValidationError(
+                        f"frozen run model configuration changed on resume: {key}"
+                    )
+            missing_config = {
+                key: value
+                for key, value in dict(config or {}).items()
+                if key not in existing_config
+                and key
+                in {
+                    "evolution_model",
+                    "judge_model",
+                    "evolution_model_registration",
+                    "judge_model_registration",
+                }
+            }
+            if missing_config:
+                _write_json(config_path, {**existing_config, **missing_config})
+        else:
             _write_json(
                 config_path,
                 {
@@ -446,6 +479,7 @@ class EvolutionStateStore:
                 {
                     "run_id": self.run_id,
                     "current_iteration": 0,
+                    "last_completed_iteration": 0,
                     "status": "initialized",
                     "top_k_scheme_ids": [],
                     "current_tasks": [],
@@ -472,7 +506,7 @@ class EvolutionStateStore:
         """Start an iteration and recover interrupted running tasks as pending."""
 
         state = self.load_state()
-        tasks = list(state.get("current_tasks", []))
+        tasks = list(state.get("current_tasks", [])) if resume else []
         if resume:
             tasks = [
                 {**task, "status": "pending" if task.get("status") == "running" else task.get("status")}
@@ -522,7 +556,7 @@ class EvolutionStateStore:
         """Persist a resumable pause, including KeyboardInterrupt."""
 
         state = self.load_state()
-        state["status"] = "paused"
+        state["status"] = "paused_by_operator"
         state["last_checkpoint_at"] = _now()
         self._write_state(state)
         self.append_event("run_paused", {"reason": reason})
@@ -543,6 +577,7 @@ class EvolutionStateStore:
         state.update(
             {
                 "status": "completed",
+                "last_completed_iteration": int(state.get("current_iteration", 0)),
                 "top_k_scheme_ids": list(top_k_scheme_ids),
                 "last_checkpoint_at": _now(),
             }
@@ -744,7 +779,194 @@ class EvolutionStateStore:
             result,
             rejection_count=len(rejection_rows),
         )
+        paths["round_checkpoint"] = self.write_round_checkpoint(
+            result,
+            fixed_spec=fixed_spec,
+        )
         return paths
+
+    def write_round_checkpoint(
+        self,
+        result: "EvolutionRunResult",
+        *,
+        fixed_spec: FixedEvolutionSpec,
+    ) -> Path:
+        """Write one immutable, branchable checkpoint for the active round."""
+
+        state = self.load_state()
+        iteration = int(state.get("current_iteration", 0))
+        if iteration < 1:
+            raise ValidationError("cannot checkpoint an evolution round before it starts")
+        path = self.round_checkpoint_path(iteration)
+        payload = {
+            "schema_version": "scheme-evolution-round-checkpoint-v1",
+            "run_id": self.run_id,
+            "iteration": iteration,
+            "created_at": _now(),
+            "fixed_spec_hash": fixed_spec.content_hash,
+            "incumbent": result.incumbent.to_dict(),
+            "archive": result.archive.to_dict(),
+            "meta_lessons": [item.to_dict() for item in result.meta_lessons],
+            "mutation_requests": [item.to_dict() for item in result.mutation_requests],
+            "contains_final_test_metrics": False,
+        }
+        if path.exists():
+            existing = _read_json(path)
+            comparable_existing = dict(existing)
+            comparable_payload = dict(payload)
+            comparable_existing.pop("created_at", None)
+            comparable_payload.pop("created_at", None)
+            if comparable_existing != comparable_payload:
+                raise ValidationError("completed round checkpoint is immutable")
+            return path
+        _write_json(path, payload)
+        return path
+
+    def round_checkpoint_path(self, iteration: int) -> Path:
+        """Return the canonical checkpoint path for one positive round number."""
+
+        if iteration < 1:
+            raise ValidationError("round checkpoint iteration must be positive")
+        return self.root / "rounds" / f"round-{iteration:04d}" / "checkpoint.json"
+
+    def seed_branch(
+        self,
+        checkpoint: Mapping[str, Any],
+        *,
+        parent_run_dir: str | Path,
+        parent_history: Mapping[str, Any],
+    ) -> Path:
+        """Seed a new trajectory from one completed parent round without mutation."""
+
+        state = self.load_state()
+        if int(state.get("current_iteration", 0)) != 0:
+            raise ValidationError("branch target trajectory has already started")
+        iteration = _validated_checkpoint_iteration(checkpoint)
+        if checkpoint.get("fixed_spec_hash") != state.get("fixed_spec_hash"):
+            raise ValidationError("branch checkpoint fixed spec does not match child trajectory")
+        archive = TopKArchive.from_dict(_mapping(checkpoint.get("archive"), "archive"))
+        incumbent = SchemeGenome.from_dict(
+            _mapping(checkpoint.get("incumbent"), "incumbent")
+        )
+        if not archive.entries or archive.entries[0].genome.genome_id != incumbent.genome_id:
+            raise ValidationError("branch checkpoint incumbent does not match archive best")
+        parent_root = Path(parent_run_dir)
+        inherited_context_count = self._inherit_branch_contexts(
+            parent_root,
+            genome_ids={entry.genome.genome_id for entry in archive.entries},
+        )
+        lineage = {
+            "schema_version": "scheme-evolution-trajectory-lineage-v1",
+            "trajectory_id": self.run_id,
+            "parent_trajectory_id": str(checkpoint.get("run_id") or parent_root.name),
+            "parent_run_directory": str(parent_root),
+            "parent_round": iteration,
+            "inherited_evaluation_context_count": inherited_context_count,
+            "parent_checkpoint": str(
+                parent_root / "rounds" / f"round-{iteration:04d}" / "checkpoint.json"
+            ),
+            "created_at": _now(),
+        }
+        lineage_path = self.root / "trajectory_lineage.json"
+        _write_json(lineage_path, lineage)
+        _write_json(self.root / "top_k.json", archive.to_dict())
+        _write_json(
+            self.root / "memory.json",
+            {
+                "schema_version": SCHEME_EVOLUTION_SCHEMA_VERSION,
+                "lessons": list(checkpoint.get("meta_lessons", [])),
+                "next_mutation_requests": list(checkpoint.get("mutation_requests", [])),
+                "contains_validation_diagnostics": True,
+                "contains_final_test_labels": False,
+            },
+        )
+        for entry in archive.entries:
+            self.write_scheme(entry.genome)
+        inherited_rounds = []
+        raw_rounds = parent_history.get("rounds", [])
+        if not isinstance(raw_rounds, list):
+            raise ValidationError("parent evolution history rounds must be a list")
+        for row in raw_rounds:
+            if not isinstance(row, Mapping):
+                raise ValidationError("parent evolution history round must be an object")
+            row_iteration = int(row.get("iteration", 0))
+            if row_iteration <= iteration:
+                inherited_rounds.append(
+                    {
+                        **dict(row),
+                        "source": "inherited_round",
+                        "inherited_from_trajectory": lineage["parent_trajectory_id"],
+                    }
+                )
+        _write_json(
+            self.root / "evolution_history.json",
+            {
+                "schema_version": "scheme-evolution-history-v1",
+                "run_id": self.run_id,
+                "primary_metric": "binary_f1",
+                "contains_final_test_metrics": False,
+                "lineage": lineage,
+                "rounds": inherited_rounds,
+            },
+        )
+        inherited_checkpoint = {
+            **dict(checkpoint),
+            "run_id": self.run_id,
+            "inherited_from_trajectory": lineage["parent_trajectory_id"],
+            "inherited_from_round": iteration,
+        }
+        _write_json(self.round_checkpoint_path(iteration), inherited_checkpoint)
+        state.update(
+            {
+                "current_iteration": iteration,
+                "last_completed_iteration": iteration,
+                "status": "initialized_from_branch",
+                "top_k_scheme_ids": [
+                    entry.genome.genome_id for entry in archive.entries
+                ],
+                "current_tasks": [],
+                "last_checkpoint_at": _now(),
+                "parent_trajectory_id": lineage["parent_trajectory_id"],
+                "parent_round": iteration,
+            }
+        )
+        self._write_state(state)
+        self.append_event(
+            "trajectory_branched",
+            {
+                "parent_trajectory_id": lineage["parent_trajectory_id"],
+                "parent_round": iteration,
+            },
+        )
+        return lineage_path
+
+    def _inherit_branch_contexts(
+        self,
+        parent_root: Path,
+        *,
+        genome_ids: set[str],
+    ) -> int:
+        """Copy exact parent contexts that match genomes in the branch archive."""
+
+        inherited = 0
+        for source in sorted((parent_root / "experiments").glob("*")):
+            materialized_path = source / "materialized_scheme.json"
+            if (
+                source.is_symlink()
+                or not source.is_dir()
+                or not materialized_path.exists()
+            ):
+                continue
+            materialized = _read_json(materialized_path)
+            if str(materialized.get("genome_id") or "") not in genome_ids:
+                continue
+            shutil.copytree(
+                source,
+                self.root / "experiments" / source.name,
+                dirs_exist_ok=True,
+            )
+            inherited += 1
+        return inherited
 
     def _write_evolution_round(
         self,
@@ -940,17 +1162,34 @@ class SchemeEvolutionEngine:
         """Run one bounded generation and return proposal-only Top-K schemes."""
 
         fold_list = list(folds)
+        meta_memory_list = list(meta_memory)
+        mutation_request_list = list(mutation_requests)
         if not fold_list:
             raise ValidationError("scheme evolution requires at least one fold")
         validate_folds(fold_list, self.fixed_spec)
         self.state_store.initialize(self.fixed_spec)
-        iteration = max(
-            incumbent.generation + 1,
-            int(self.state_store.load_state().get("current_iteration", 0)) + 1,
+        state = self.state_store.load_state()
+        current_iteration = int(state.get("current_iteration", 0))
+        last_completed_iteration = _last_completed_iteration(state)
+        resume_current_round = (
+            resume
+            and current_iteration > last_completed_iteration
+            and state.get("status") in {
+                "running",
+                "failed",
+                "paused",
+                "paused_by_operator",
+            }
         )
-        self.state_store.begin_iteration(iteration, resume=resume)
+        iteration = (
+            current_iteration
+            if resume_current_round
+            else max(incumbent.generation + 1, last_completed_iteration + 1)
+        )
+        self.state_store.begin_iteration(iteration, resume=resume_current_round)
         self._report(
             f"[scheme-evolution] round={iteration} status=started "
+            f"resume_partial={str(resume_current_round).lower()} "
             "scope=development proposal_only=true final_test=false"
         )
         try:
@@ -958,8 +1197,8 @@ class SchemeEvolutionEngine:
             requested = min(candidate_count, self.max_candidates)
             proposed = self.proposer.propose(
                 parents,
-                list(meta_memory),
-                list(mutation_requests),
+                meta_memory_list,
+                mutation_request_list,
                 requested,
             )
             self._report(
@@ -1073,13 +1312,14 @@ class SchemeEvolutionEngine:
                     f"reasons={_compact_progress_text('; '.join(decision.reasons) or 'none')}"
                 )
             lessons, requests = derive_meta_lessons(experiments)
+            cumulative_lessons = merge_meta_lessons([*meta_memory_list, *lessons])
             provisional = EvolutionRunResult(
                 incumbent=top_k[0].genome,
                 top_k=top_k,
                 experiments=experiments,
                 archive=self.archive,
                 rejections=rejections,
-                meta_lessons=lessons,
+                meta_lessons=cumulative_lessons,
                 mutation_requests=requests,
                 artifact_paths={},
             )
@@ -1137,7 +1377,8 @@ class SchemeEvolutionEngine:
             else:
                 self.evaluator.restore(genome, materialized, fold)
             fold_predictions: list[PredictionRecord] = []
-            for sample in fold.admission_samples:
+            sample_total = len(fold.admission_samples)
+            for sample_index, sample in enumerate(fold.admission_samples, start=1):
                 blind = sample.blind_view()
                 extraction_input_hash = _hash_json(
                     {
@@ -1191,12 +1432,14 @@ class SchemeEvolutionEngine:
                 )
                 if cached is not None:
                     prediction = cached
+                    cache_status = "reused"
                     self.state_store.checkpoint_task(
                         task_id,
                         status="completed",
                         context_hash=context_hash,
                     )
                 else:
+                    cache_status = "new"
                     self.state_store.checkpoint_task(
                         task_id,
                         status="running",
@@ -1227,6 +1470,12 @@ class SchemeEvolutionEngine:
                         status="completed",
                         context_hash=context_hash,
                     )
+                self._report(
+                    f"[scheme-evolution] prediction-persisted genome={genome.genome_id} "
+                    f"fold={fold.fold_id} sample={sample_index}/{sample_total} "
+                    f"cache={cache_status} class={prediction.predicted_class} "
+                    f"confidence={prediction.confidence_level} labels_revealed=false"
+                )
                 fold_predictions.append(prediction)
                 if sample.sample_id in labels:
                     raise ValidationError("validation sample appears in more than one selected fold")
@@ -1579,6 +1828,139 @@ def _normalize_text(value: str) -> str:
 def _safe_name(value: str) -> str:
     prefix = re.sub(r"[^A-Za-z0-9_.-]+", "-", value).strip("-.")[:80] or "artifact"
     return f"{prefix}-{hashlib.sha256(value.encode('utf-8')).hexdigest()[:10]}"
+
+
+def load_round_checkpoint(
+    run_dir: str | Path,
+    iteration: int,
+) -> dict[str, Any]:
+    """Load an exact branch checkpoint, with latest-round legacy reconstruction."""
+
+    root = Path(run_dir)
+    if iteration < 1:
+        raise ValidationError("round checkpoint iteration must be positive")
+    state = _read_json(root / "state.json")
+    last_completed = _last_completed_iteration(state)
+    if iteration > last_completed:
+        raise ValidationError(
+            "requested round is not committed; "
+            f"last completed round is {last_completed}"
+        )
+    path = root / "rounds" / f"round-{iteration:04d}" / "checkpoint.json"
+    if path.exists():
+        payload = _read_json(path)
+        _validate_round_checkpoint(payload, expected_iteration=iteration)
+        return payload
+    if iteration != last_completed:
+        available = sorted(
+            int(item.parent.name.removeprefix("round-"))
+            for item in (root / "rounds").glob("round-*/checkpoint.json")
+            if item.parent.name.removeprefix("round-").isdigit()
+        )
+        if last_completed:
+            available = sorted(set([*available, last_completed]))
+        raise ValidationError(
+            "requested round has no exact branch checkpoint; "
+            f"branchable rounds: {available}"
+        )
+    top_k_path = root / "top_k.json"
+    if not top_k_path.exists():
+        raise ValidationError("latest legacy round has no reconstructable Top-K archive")
+    archive_payload = _read_json(top_k_path)
+    archive = TopKArchive.from_dict(archive_payload)
+    if not archive.entries:
+        raise ValidationError("latest legacy Top-K archive is empty")
+    memory = _read_json(root / "memory.json") if (root / "memory.json").exists() else {}
+    config = _read_json(root / "config.json") if (root / "config.json").exists() else {}
+    payload = {
+        "schema_version": "scheme-evolution-round-checkpoint-v1",
+        "run_id": str(state.get("run_id") or root.name),
+        "iteration": iteration,
+        "created_at": str(state.get("last_checkpoint_at") or ""),
+        "fixed_spec_hash": str(
+            state.get("fixed_spec_hash") or config.get("fixed_spec_hash") or ""
+        ),
+        "incumbent": archive.entries[0].genome.to_dict(),
+        "archive": archive_payload,
+        "meta_lessons": list(memory.get("lessons", [])),
+        "mutation_requests": list(memory.get("next_mutation_requests", [])),
+        "contains_final_test_metrics": False,
+        "reconstructed_from_latest_legacy_artifacts": True,
+    }
+    _validate_round_checkpoint(payload, expected_iteration=iteration)
+    return payload
+
+
+def restore_round_context(
+    checkpoint: Mapping[str, Any],
+) -> tuple[SchemeGenome, TopKArchive, list[MetaLesson], list[MutationRequest]]:
+    """Restore controller objects from a validated round checkpoint."""
+
+    _validate_round_checkpoint(checkpoint)
+    incumbent = SchemeGenome.from_dict(
+        _mapping(checkpoint.get("incumbent"), "incumbent")
+    )
+    archive = TopKArchive.from_dict(_mapping(checkpoint.get("archive"), "archive"))
+    lessons = [MetaLesson.from_dict(row) for row in checkpoint.get("meta_lessons", [])]
+    requests = [
+        MutationRequest.from_dict(row)
+        for row in checkpoint.get("mutation_requests", [])
+    ]
+    return incumbent, archive, lessons, requests
+
+
+def _validate_round_checkpoint(
+    checkpoint: Mapping[str, Any],
+    *,
+    expected_iteration: int | None = None,
+) -> None:
+    if checkpoint.get("schema_version") != "scheme-evolution-round-checkpoint-v1":
+        raise ValidationError("unsupported evolution round checkpoint schema")
+    iteration = _validated_checkpoint_iteration(checkpoint)
+    if expected_iteration is not None and iteration != expected_iteration:
+        raise ValidationError("evolution round checkpoint iteration mismatch")
+    if checkpoint.get("contains_final_test_metrics") is not False:
+        raise ValidationError("round checkpoint must exclude final-test metrics")
+    if not str(checkpoint.get("fixed_spec_hash") or "").strip():
+        raise ValidationError("round checkpoint fixed-spec hash is missing")
+    _mapping(checkpoint.get("incumbent"), "incumbent")
+    _mapping(checkpoint.get("archive"), "archive")
+    if not isinstance(checkpoint.get("meta_lessons", []), list):
+        raise ValidationError("round checkpoint meta_lessons must be a list")
+    if not isinstance(checkpoint.get("mutation_requests", []), list):
+        raise ValidationError("round checkpoint mutation_requests must be a list")
+
+
+def _validated_checkpoint_iteration(checkpoint: Mapping[str, Any]) -> int:
+    try:
+        iteration = int(checkpoint.get("iteration", 0))
+    except (TypeError, ValueError) as exc:
+        raise ValidationError("round checkpoint iteration must be an integer") from exc
+    if iteration < 1:
+        raise ValidationError("round checkpoint iteration must be positive")
+    return iteration
+
+
+def _last_completed_iteration(state: Mapping[str, Any]) -> int:
+    """Read new state directly and conservatively infer pre-field legacy state."""
+
+    value = state.get("last_completed_iteration")
+    if value is None:
+        current = int(state.get("current_iteration", 0))
+        return current if state.get("status") == "completed" else max(0, current - 1)
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError) as exc:
+        raise ValidationError("last_completed_iteration must be an integer") from exc
+    if parsed < 0:
+        raise ValidationError("last_completed_iteration cannot be negative")
+    return parsed
+
+
+def _mapping(value: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise ValidationError(f"round checkpoint {name} must be an object")
+    return value
 
 
 def _now() -> str:

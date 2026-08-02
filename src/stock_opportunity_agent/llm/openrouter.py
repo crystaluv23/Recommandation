@@ -6,7 +6,7 @@ import os
 from typing import Any, Mapping
 
 from stock_opportunity_agent.config import PromptConfig
-from stock_opportunity_agent.llm import register
+from stock_opportunity_agent.llm import ModelClientSettings, register, register_model
 from stock_opportunity_agent.llm.openai import (
     ChatMessage,
     ChatResponse,
@@ -161,6 +161,102 @@ def model(
     """Registered OpenRouter model provider factory."""
 
     return OpenRouterChatClient.from_config(config, environ=environ, transport=transport)
+
+
+@register_model(
+    "openrouter-fusion",
+    provider="openrouter",
+    model="openrouter/fusion",
+    roles=("evolution",),
+    api_key_env_var=DEFAULT_OPENROUTER_API_KEY_ENV_VAR,
+    description="Web-enabled Fusion Quality proposer; never used for blind judging.",
+    proposal_profile="openrouter_fusion",
+    web_tools_allowed=True,
+    default_max_output_tokens=5000,
+)
+def registered_fusion_model(settings: ModelClientSettings) -> OpenRouterChatClient:
+    """Build the registered OpenRouter Fusion proposal client."""
+
+    return _registered_client(settings, model_name="openrouter/fusion")
+
+
+@register_model(
+    "kimi-k3-together",
+    provider="openrouter",
+    model="moonshotai/kimi-k3",
+    roles=("judge",),
+    api_key_env_var=DEFAULT_OPENROUTER_API_KEY_ENV_VAR,
+    description="Anonymous no-web Kimi K3 judge pinned to the Together route.",
+    provider_route="together",
+    default_max_output_tokens=8000,
+    default_reasoning_effort="max",
+    default_input_cost_per_million_tokens=3.0,
+    default_output_cost_per_million_tokens=15.0,
+)
+def registered_kimi_k3_model(settings: ModelClientSettings) -> OpenRouterChatClient:
+    """Build the registered fixed-route Kimi K3 judge client."""
+
+    return _registered_client(
+        settings,
+        model_name="moonshotai/kimi-k3",
+        provider_route="together",
+    )
+
+
+@register_model(
+    "gpt-4.1-openrouter",
+    provider="openrouter",
+    model="openai/gpt-4.1",
+    roles=("judge",),
+    api_key_env_var=DEFAULT_OPENROUTER_API_KEY_ENV_VAR,
+    description="Anonymous no-web GPT-4.1 judge pinned to OpenRouter's OpenAI route.",
+    provider_route="openai",
+    default_max_output_tokens=2200,
+    default_input_cost_per_million_tokens=2.0,
+    default_output_cost_per_million_tokens=8.0,
+)
+def registered_gpt41_openrouter_model(
+    settings: ModelClientSettings,
+) -> OpenRouterChatClient:
+    """Build the registered fixed-route GPT-4.1 judge client."""
+
+    return _registered_client(
+        settings,
+        model_name="openai/gpt-4.1",
+        provider_route="openai",
+    )
+
+
+def _registered_client(
+    settings: ModelClientSettings,
+    *,
+    model_name: str,
+    provider_route: str | None = None,
+) -> OpenRouterChatClient:
+    """Construct one catalog client with preview-safe credentials and fixed routing."""
+
+    env = os.environ if settings.environ is None else settings.environ
+    api_key = (
+        "preview-only-no-network"
+        if settings.preview_only
+        else env.get(DEFAULT_OPENROUTER_API_KEY_ENV_VAR)
+    )
+    if not api_key:
+        raise OpenRouterClientError(
+            f"{DEFAULT_OPENROUTER_API_KEY_ENV_VAR} is not set"
+        )
+    return OpenRouterChatClient(
+        model_name,
+        api_key,
+        temperature=settings.temperature,
+        provider_only=(provider_route,) if provider_route else (),
+        provider_require_parameters=bool(provider_route),
+        provider_allow_fallbacks=not bool(provider_route),
+        transport=UrllibTransport(
+            timeout_seconds=settings.timeout_seconds,
+            max_attempts=settings.max_http_attempts,
+        ),
+    )
 
 
 def _openrouter_tool(tool: Mapping[str, Any]) -> dict[str, Any]:

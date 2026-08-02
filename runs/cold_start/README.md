@@ -127,6 +127,51 @@ months: A below 2x, B from 2x to below 3x, and C at or above 3x. B/C are binary
 positive and binary F1 is the only Top-K selection score. Model probability
 fields are rejected. Initialize and run the two-generation mock config:
 
+The interactive/continuous entry point first auto-discovers model aliases from
+`stock_opportunity_agent/llm/` and stores each trajectory under the fixed
+evolution root. List available model roles and local trajectories with:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py models
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py trajectories
+```
+
+Start a new trajectory with explicit aliases. `launch` keeps starting another
+bounded round until Ctrl+C; `--max-rounds N` is only an optional finite bound:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
+  --trajectory-action new \
+  --trajectory-id <new-id> \
+  --evolution-model <evolution-alias> \
+  --judge-model <judge-alias> \
+  --config <experiment-config.json>
+```
+
+Ctrl+C atomically records `paused_by_operator`. Resume reads frozen paths and
+models from that trajectory, repairs a partial round, and reuses every exact
+completed prediction. Branching creates a child without modifying its parent:
+
+```sh
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
+  --trajectory-action resume \
+  --from-trajectory <existing-id>
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
+  --trajectory-action branch \
+  --from-trajectory <existing-id> \
+  --from-round <completed-round> \
+  --trajectory-id <child-id>
+```
+
+An external continuous session additionally requires the CLI-only
+`--continuous-external-session-authorized` acknowledgement and a positive
+`--session-max-cost-usd`. Exact requests are reserved before transmission and
+the cumulative ledger survives restart; neither flag grants final-test access
+or production promotion.
+
+The older finite commands remain available for reproducible configs. Initialize
+and run the two-generation mock config:
+
 ```sh
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py init \
   --config configs/evolution/mock_experiment.json
@@ -173,7 +218,9 @@ on the y-axis. Candidate points and their per-round median show the stochastic
 sequence, while the retained archive-best line is shown separately because
 Top-K makes it non-decreasing by construction. The `dashboard` command rebuilds
 the unified page from direct child run records, and `status` refreshes it before
-printing state. A legacy run can recover only its last fully representable
+printing state when no evolution writer is active; otherwise `status` stays
+read-only and the running process performs the next refresh. A legacy run can
+recover only its last fully representable
 round; the page labels that limitation instead of inventing missing history.
 
 The executable plotting and run-selection logic lives in the HTML. Because a

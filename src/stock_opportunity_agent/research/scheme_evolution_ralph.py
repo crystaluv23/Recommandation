@@ -264,6 +264,231 @@ class ExternalAttemptLedger:
             raise ValidationError("external attempt ledger exceeds its authorized maximum")
 
 
+class ContinuousExternalSessionLedger:
+    """Atomic cross-role request and cost ledger for a continuous CLI session."""
+
+    def __init__(
+        self,
+        path: str | Path,
+        *,
+        scope_fingerprint: str,
+        maximum_cost_usd: float,
+    ) -> None:
+        if not scope_fingerprint.strip():
+            raise ValidationError("continuous external session scope must not be empty")
+        if maximum_cost_usd <= 0:
+            raise ValidationError("continuous external session cost cap must be positive")
+        self.path = Path(path)
+        self.scope_fingerprint = scope_fingerprint
+        self.maximum_cost_usd = float(maximum_cost_usd)
+        if self.path.exists():
+            payload = json.loads(self.path.read_text(encoding="utf-8"))
+            self._validate(payload)
+            previous_cap = float(payload["maximum_cost_usd"])
+            if self.maximum_cost_usd < previous_cap:
+                raise ValidationError("continuous external session cost cap cannot shrink")
+            if self.maximum_cost_usd > previous_cap:
+                payload["authorization_changes"].append(
+                    {
+                        "changed_at": datetime.now(timezone.utc).isoformat(),
+                        "previous_maximum_cost_usd": previous_cap,
+                        "maximum_cost_usd": self.maximum_cost_usd,
+                    }
+                )
+                payload["maximum_cost_usd"] = self.maximum_cost_usd
+                _write_json(self.path, payload)
+            self._payload = payload
+        else:
+            self._payload = {
+                "schema_version": "scheme-evolution-continuous-session-ledger-v1",
+                "scope_fingerprint": scope_fingerprint,
+                "maximum_cost_usd": self.maximum_cost_usd,
+                "authorization_changes": [],
+                "requests": [],
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+            self._persist()
+
+    @property
+    def request_count(self) -> int:
+        """Return every reserved outer provider request, including failures."""
+
+        return len(self._payload["requests"])
+
+    @property
+    def spent_or_reserved_cost_usd(self) -> float:
+        """Return observed cost or conservative reservation for every request."""
+
+        return sum(float(row.get("cost_usd", 0.0)) for row in self._payload["requests"])
+
+    @property
+    def remaining_cost_usd(self) -> float:
+        """Return remaining authorized cost without going below zero."""
+
+        return max(0.0, self.maximum_cost_usd - self.spent_or_reserved_cost_usd)
+
+    def reserve(
+        self,
+        *,
+        request_kind: str,
+        request_hash: str,
+        maximum_cost_usd: float,
+        exact_request: Mapping[str, Any],
+    ) -> str:
+        """Persist an exact secret-free request before any external transmission."""
+
+        if request_kind not in {"evolution_proposal", "blind_judgment"}:
+            raise ValidationError("unsupported continuous external request kind")
+        if not request_hash.strip():
+            raise ValidationError("continuous external request hash must not be empty")
+        if maximum_cost_usd < 0:
+            raise ValidationError("continuous external request cost cannot be negative")
+        if (
+            self.spent_or_reserved_cost_usd + maximum_cost_usd
+            > self.maximum_cost_usd + 1e-12
+        ):
+            raise ValidationError(
+                "continuous external session cost cap would be exceeded before request"
+            )
+        request_id = f"request-{self.request_count + 1:06d}"
+        self._payload["requests"].append(
+            {
+                "request_id": request_id,
+                "request_kind": request_kind,
+                "request_hash": request_hash,
+                "status": "started",
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "finished_at": None,
+                "cost_usd": round(float(maximum_cost_usd), 8),
+                "cost_observed": False,
+                "response_id": None,
+                "error_type": None,
+                "error_summary": None,
+                "exact_secret_free_request": dict(exact_request),
+            }
+        )
+        self._persist()
+        return request_id
+
+    def finish(
+        self,
+        request_id: str,
+        *,
+        status: str,
+        response_id: str | None = None,
+        cost_usd: float | None = None,
+        cost_observed: bool = False,
+        error: Exception | None = None,
+    ) -> None:
+        """Finalize a reservation while preserving failed and interrupted history."""
+
+        if status not in {"completed", "provider_error", "failed_validation"}:
+            raise ValidationError("invalid continuous external request status")
+        row = next(
+            (
+                item
+                for item in self._payload["requests"]
+                if item["request_id"] == request_id
+            ),
+            None,
+        )
+        if row is None or row.get("status") != "started":
+            raise ValidationError("continuous external request is missing or finalized")
+        if cost_usd is not None and cost_usd < 0:
+            raise ValidationError("continuous external observed cost cannot be negative")
+        row.update(
+            {
+                "status": status,
+                "finished_at": datetime.now(timezone.utc).isoformat(),
+                "response_id": response_id,
+                "cost_usd": (
+                    row["cost_usd"]
+                    if cost_usd is None
+                    else round(float(cost_usd), 8)
+                ),
+                "cost_observed": bool(cost_observed) if cost_usd is not None else False,
+                "error_type": type(error).__name__ if error is not None else None,
+                "error_summary": (
+                    _secret_safe_error_summary(error, secrets=())
+                    if error is not None
+                    else None
+                ),
+            }
+        )
+        self._persist()
+
+    def _persist(self) -> None:
+        self._payload["updated_at"] = datetime.now(timezone.utc).isoformat()
+        _write_json(self.path, self._payload)
+
+    def _validate(self, payload: Any) -> None:
+        if not isinstance(payload, Mapping):
+            raise ValidationError("continuous external session ledger must be an object")
+        if payload.get("schema_version") != "scheme-evolution-continuous-session-ledger-v1":
+            raise ValidationError("unsupported continuous external session ledger schema")
+        if payload.get("scope_fingerprint") != self.scope_fingerprint:
+            raise ValidationError("continuous external session scope changed on resume")
+        if not isinstance(payload.get("requests"), list):
+            raise ValidationError("continuous external session requests must be a list")
+        if not isinstance(payload.get("authorization_changes"), list):
+            raise ValidationError(
+                "continuous external session authorization_changes must be a list"
+            )
+        stored_cap = payload.get("maximum_cost_usd")
+        if (
+            isinstance(stored_cap, bool)
+            or not isinstance(stored_cap, (int, float))
+            or stored_cap <= 0
+        ):
+            raise ValidationError("continuous external session cost cap is invalid")
+        seen_request_ids: set[str] = set()
+        for row in payload["requests"]:
+            if not isinstance(row, Mapping):
+                raise ValidationError(
+                    "continuous external session request must be an object"
+                )
+            request_id = row.get("request_id")
+            if (
+                not isinstance(request_id, str)
+                or not request_id
+                or request_id in seen_request_ids
+            ):
+                raise ValidationError(
+                    "continuous external session request id is invalid or duplicated"
+                )
+            seen_request_ids.add(request_id)
+            if row.get("request_kind") not in {
+                "evolution_proposal",
+                "blind_judgment",
+            }:
+                raise ValidationError(
+                    "continuous external session request kind is invalid"
+                )
+            if row.get("status") not in {
+                "started",
+                "completed",
+                "provider_error",
+                "failed_validation",
+            }:
+                raise ValidationError(
+                    "continuous external session request status is invalid"
+                )
+            cost = row.get("cost_usd")
+            if (
+                isinstance(cost, bool)
+                or not isinstance(cost, (int, float))
+                or cost < 0
+            ):
+                raise ValidationError(
+                    "continuous external session request cost is invalid"
+                )
+            if not isinstance(row.get("exact_secret_free_request"), Mapping):
+                raise ValidationError(
+                    "continuous external session exact request is invalid"
+                )
+
+
 class HeuristicGenomeBlindAnalyzer:
     """Local diagnostic adapter; never evidence of real information-plan lift."""
 
@@ -354,6 +579,7 @@ class OpenRouterFusionSchemeProposer:
         inner_max_tokens: int = 3000,
         outer_max_tokens: int = 5000,
         max_cost_usd: float = 2.0,
+        session_ledger: ContinuousExternalSessionLedger | None = None,
     ) -> None:
         if not objective_text.strip():
             raise ValidationError("Fusion proposal objective must not be empty")
@@ -369,6 +595,7 @@ class OpenRouterFusionSchemeProposer:
         self.inner_max_tokens = inner_max_tokens
         self.outer_max_tokens = outer_max_tokens
         self.max_cost_usd = max_cost_usd
+        self.session_ledger = session_ledger
         self.external_call_count = 0
         self.cache_hit_count = 0
         self.spent_cost_usd = 0.0
@@ -501,14 +728,33 @@ class OpenRouterFusionSchemeProposer:
             ChatMessage(str(row["role"]), str(row["content"]))
             for row in preview["messages"]
         ]
-        self.external_call_count += 1
-        response = self.client.complete(
-            messages,
-            max_output_tokens=self.outer_max_tokens,
-            tool_choice="required",
-            plugins=preview["plugins"],
-            reasoning=preview["reasoning"],
+        session_request_id = (
+            self.session_ledger.reserve(
+                request_kind="evolution_proposal",
+                request_hash=str(preview["request_hash"]),
+                maximum_cost_usd=estimated_cost,
+                exact_request=preview,
+            )
+            if self.session_ledger is not None
+            else None
         )
+        self.external_call_count += 1
+        try:
+            response = self.client.complete(
+                messages,
+                max_output_tokens=self.outer_max_tokens,
+                tool_choice="required",
+                plugins=preview["plugins"],
+                reasoning=preview["reasoning"],
+            )
+        except Exception as exc:
+            if self.session_ledger is not None and session_request_id is not None:
+                self.session_ledger.finish(
+                    session_request_id,
+                    status="provider_error",
+                    error=exc,
+                )
+            raise
         usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
         actual_cost = _reported_usage_cost(usage)
         self.spent_cost_usd += actual_cost if actual_cost is not None else estimated_cost
@@ -544,6 +790,15 @@ class OpenRouterFusionSchemeProposer:
                     "validation_error": f"{type(exc).__name__}: {exc}",
                 },
             )
+            if self.session_ledger is not None and session_request_id is not None:
+                self.session_ledger.finish(
+                    session_request_id,
+                    status="failed_validation",
+                    response_id=response.response_id,
+                    cost_usd=(actual_cost if actual_cost is not None else estimated_cost),
+                    cost_observed=actual_cost is not None,
+                    error=exc,
+                )
             raise
         _write_json(
             cache_path,
@@ -553,6 +808,259 @@ class OpenRouterFusionSchemeProposer:
                 "candidates": [candidate.to_dict() for candidate in candidates],
             },
         )
+        if self.session_ledger is not None and session_request_id is not None:
+            self.session_ledger.finish(
+                session_request_id,
+                status="completed",
+                response_id=response.response_id,
+                cost_usd=(actual_cost if actual_cost is not None else estimated_cost),
+                cost_observed=actual_cost is not None,
+            )
+        return candidates
+
+
+class RegisteredLLMSchemeProposer:
+    """Cached no-web strict-JSON proposer for any registered chat client."""
+
+    def __init__(
+        self,
+        client: OpenAIChatClient,
+        cache_dir: str | Path,
+        *,
+        objective_text: str,
+        provider: str,
+        model: str,
+        temperature: float = 0.0,
+        max_output_tokens: int = 5000,
+        input_cost_per_million_tokens: float = 0.0,
+        output_cost_per_million_tokens: float = 0.0,
+        max_cost_usd: float = 2.0,
+        session_ledger: ContinuousExternalSessionLedger | None = None,
+    ) -> None:
+        if not objective_text.strip():
+            raise ValidationError("scheme proposal objective must not be empty")
+        if not provider.strip() or not model.strip():
+            raise ValidationError("scheme proposal provider and model must not be empty")
+        if max_output_tokens < 1 or max_cost_usd <= 0:
+            raise ValidationError("scheme proposal output and cost bounds must be positive")
+        if input_cost_per_million_tokens < 0 or output_cost_per_million_tokens < 0:
+            raise ValidationError("scheme proposal token prices cannot be negative")
+        self.client = client
+        self.cache_dir = Path(cache_dir)
+        self.objective_text = objective_text
+        self.provider = provider
+        self.model = model
+        self.temperature = temperature
+        self.max_output_tokens = max_output_tokens
+        self.input_cost_per_million_tokens = input_cost_per_million_tokens
+        self.output_cost_per_million_tokens = output_cost_per_million_tokens
+        self.max_cost_usd = max_cost_usd
+        self.session_ledger = session_ledger
+        self.external_call_count = 0
+        self.cache_hit_count = 0
+        self.spent_cost_usd = 0.0
+
+    @property
+    def settings_fingerprint(self) -> str:
+        return _hash_json(
+            {
+                "provider": self.provider,
+                "model": self.model,
+                "temperature": self.temperature,
+                "max_output_tokens": self.max_output_tokens,
+                "web_tools_allowed": False,
+                "input_cost_per_million_tokens": self.input_cost_per_million_tokens,
+                "output_cost_per_million_tokens": self.output_cost_per_million_tokens,
+            }
+        )
+
+    def preview_request(
+        self,
+        parents: list[SchemeGenome],
+        meta_memory: list[MetaLesson],
+        mutation_requests: list[MutationRequest],
+        count: int,
+    ) -> dict[str, Any]:
+        """Build the exact label-free proposal request without provider access."""
+
+        if count < 1:
+            raise ValidationError("scheme proposal candidate count must be positive")
+        input_payload = {
+            "objective": self.objective_text,
+            "candidate_count": count,
+            "parents": [parent.to_dict() for parent in parents],
+            "aggregate_meta_memory": [
+                _sanitized_meta_lesson(lesson) for lesson in meta_memory
+            ],
+            "mutation_requests": [request.to_dict() for request in mutation_requests],
+            "fixed_boundaries": {
+                "evaluation_contract_mutable": False,
+                "validation_packets_available": False,
+                "blind_validation_must_be_anonymous": True,
+                "blind_validation_web_tools_allowed": False,
+                "proposal_only": True,
+                "human_review_required": True,
+            },
+        }
+        developer_prompt = (
+            "Propose complete SchemeGenome objects for a bounded information-scheme "
+            "development round. Use only the supplied parent genomes and sanitized "
+            "aggregate feedback. Do not infer validation-company identities or request "
+            "case-level examples. Preserve the fixed A/B/C exam, point-in-time and "
+            "anonymous no-web judge boundaries, output fields, and proposal-only status. "
+            "Make few attributable changes and return JSON only as "
+            '{"candidates": [<complete genome>, ...]}.'
+        )
+        messages = [
+            {"role": "developer", "content": developer_prompt},
+            {
+                "role": "user",
+                "content": json.dumps(input_payload, indent=2, sort_keys=True),
+            },
+        ]
+        request_hash = _hash_json(
+            {"messages": messages, "settings_fingerprint": self.settings_fingerprint}
+        )
+        maximum_cost = (
+            sum(len(row["content"]) for row in messages)
+            / 4
+            * self.input_cost_per_million_tokens
+            / 1_000_000
+            + self.max_output_tokens
+            * self.output_cost_per_million_tokens
+            / 1_000_000
+        )
+        return {
+            "schema_version": "scheme-evolution-model-proposal-preview-v1",
+            "destination": f"{getattr(self.client, 'base_url', '')}/responses",
+            "provider": self.provider,
+            "model": self.model,
+            "temperature": self.temperature,
+            "messages": messages,
+            "input_payload": input_payload,
+            "request_hash": request_hash,
+            "settings_fingerprint": self.settings_fingerprint,
+            "max_output_tokens": self.max_output_tokens,
+            "maximum_request_cost_usd": maximum_cost,
+            "web_tools_allowed": False,
+            "external_call_performed": False,
+        }
+
+    def propose(
+        self,
+        parents: list[SchemeGenome],
+        meta_memory: list[MetaLesson],
+        mutation_requests: list[MutationRequest],
+        count: int,
+    ) -> list[SchemeGenome]:
+        """Call once or restore the exact parsed candidate response from cache."""
+
+        preview = self.preview_request(
+            parents,
+            meta_memory,
+            mutation_requests,
+            count,
+        )
+        maximum_cost = float(preview["maximum_request_cost_usd"])
+        if maximum_cost > self.max_cost_usd + 1e-12:
+            raise ValidationError("scheme proposal request would exceed its cost cap")
+        cache_path = self.cache_dir / f"{preview['request_hash']}.json"
+        if cache_path.exists():
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            if cached.get("settings_fingerprint") != self.settings_fingerprint:
+                raise ValidationError("cached scheme proposal settings mismatch")
+            if cached.get("status") != "completed":
+                raise ValidationError("cached scheme proposal is not a valid completed response")
+            self.cache_hit_count += 1
+            return [SchemeGenome.from_dict(row) for row in cached["candidates"]]
+        session_request_id = (
+            self.session_ledger.reserve(
+                request_kind="evolution_proposal",
+                request_hash=str(preview["request_hash"]),
+                maximum_cost_usd=maximum_cost,
+                exact_request=preview,
+            )
+            if self.session_ledger is not None
+            else None
+        )
+        messages = [
+            ChatMessage(str(row["role"]), str(row["content"]))
+            for row in preview["messages"]
+        ]
+        self.external_call_count += 1
+        try:
+            response = self.client.complete(
+                messages,
+                max_output_tokens=self.max_output_tokens,
+            )
+        except Exception as exc:
+            if self.session_ledger is not None and session_request_id is not None:
+                self.session_ledger.finish(
+                    session_request_id,
+                    status="provider_error",
+                    error=exc,
+                )
+            raise
+        usage = response.raw.get("usage", {}) if isinstance(response.raw, Mapping) else {}
+        actual_cost = _reported_usage_cost(usage)
+        charged_cost = actual_cost if actual_cost is not None else maximum_cost
+        self.spent_cost_usd += charged_cost
+        response_record = {
+            "schema_version": "scheme-evolution-model-proposal-cache-v1",
+            "status": "received_pending_validation",
+            "request_hash": preview["request_hash"],
+            "settings_fingerprint": self.settings_fingerprint,
+            "response_id": response.response_id,
+            "resolved_model": response.model,
+            "response_hash": hashlib.sha256(
+                response.output_text.encode("utf-8")
+            ).hexdigest(),
+            "raw_output": response.output_text,
+            "usage": usage if isinstance(usage, Mapping) else {},
+            "cost_usd": charged_cost,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        _write_json(cache_path, response_record)
+        try:
+            rows = _parse_fusion_candidates(response.output_text)
+            candidates = [SchemeGenome.from_dict(row) for row in rows]
+            if len(candidates) != count:
+                raise ValidationError("scheme proposal returned the wrong candidate count")
+        except (KeyError, TypeError, ValueError, ValidationError) as exc:
+            _write_json(
+                cache_path,
+                {
+                    **response_record,
+                    "status": "failed_validation",
+                    "validation_error": f"{type(exc).__name__}: {exc}",
+                },
+            )
+            if self.session_ledger is not None and session_request_id is not None:
+                self.session_ledger.finish(
+                    session_request_id,
+                    status="failed_validation",
+                    response_id=response.response_id,
+                    cost_usd=charged_cost,
+                    cost_observed=actual_cost is not None,
+                    error=exc,
+                )
+            raise
+        _write_json(
+            cache_path,
+            {
+                **response_record,
+                "status": "completed",
+                "candidates": [candidate.to_dict() for candidate in candidates],
+            },
+        )
+        if self.session_ledger is not None and session_request_id is not None:
+            self.session_ledger.finish(
+                session_request_id,
+                status="completed",
+                response_id=response.response_id,
+                cost_usd=charged_cost,
+                cost_observed=actual_cost is not None,
+            )
         return candidates
 
 
@@ -576,6 +1084,7 @@ class OpenAIGenomeBlindAnalyzer:
         attempt_ledger_path: str | Path | None = None,
         attempt_scope_fingerprint: str | None = None,
         authorized_max_external_attempts: int | None = None,
+        session_ledger: ContinuousExternalSessionLedger | None = None,
     ) -> None:
         if max_attempts < 1:
             raise ValidationError("max_attempts must be positive")
@@ -623,6 +1132,7 @@ class OpenAIGenomeBlindAnalyzer:
         )
         self.external_call_count = 0
         self.cache_hit_count = 0
+        self.session_ledger = session_ledger
 
     @property
     def cumulative_external_call_count(self) -> int:
@@ -735,6 +1245,13 @@ class OpenAIGenomeBlindAnalyzer:
         )
         if recovered is not None:
             return recovered
+        if self.session_ledger is not None:
+            findings = _continuous_blind_request_findings(request)
+            if findings:
+                raise ValidationError(
+                    "continuous blind disclosure preflight failed: "
+                    + "; ".join(findings)
+                )
         messages = [
             ChatMessage(str(message["role"]), str(message["content"]))
             for message in request["messages"]
@@ -758,6 +1275,22 @@ class OpenAIGenomeBlindAnalyzer:
                     "retry could exceed the configured API cost budget"
                 )
             started = time.monotonic()
+            session_request_id = (
+                self.session_ledger.reserve(
+                    request_kind="blind_judgment",
+                    request_hash=_hash_json(
+                        {
+                            "cache_key": cache_key,
+                            "attempt": attempt,
+                            "settings_fingerprint": self.settings_fingerprint,
+                        }
+                    ),
+                    maximum_cost_usd=maximum_request_cost,
+                    exact_request=request,
+                )
+                if self.session_ledger is not None
+                else None
+            )
             ledger_attempt_id = (
                 self.attempt_ledger.reserve(
                     cache_key=cache_key,
@@ -789,6 +1322,12 @@ class OpenAIGenomeBlindAnalyzer:
                             exc,
                             secrets=(str(getattr(self.client, "api_key", "")),),
                         ),
+                    )
+                if self.session_ledger is not None and session_request_id is not None:
+                    self.session_ledger.finish(
+                        session_request_id,
+                        status="provider_error",
+                        error=exc,
                     )
                 raise
             latency_ms = (time.monotonic() - started) * 1000
@@ -864,6 +1403,15 @@ class OpenAIGenomeBlindAnalyzer:
                         cost_observed=cost_observed,
                         error=last_error,
                     )
+                if self.session_ledger is not None and session_request_id is not None:
+                    self.session_ledger.finish(
+                        session_request_id,
+                        status="failed_validation",
+                        response_id=response.response_id,
+                        cost_usd=estimated_cost,
+                        cost_observed=cost_observed,
+                        error=last_error,
+                    )
                 if attempt >= self.max_attempts:
                     raise last_error from exc
                 continue
@@ -912,6 +1460,15 @@ class OpenAIGenomeBlindAnalyzer:
                         cost_observed=cost_observed,
                         error=exc,
                     )
+                if self.session_ledger is not None and session_request_id is not None:
+                    self.session_ledger.finish(
+                        session_request_id,
+                        status="failed_validation",
+                        response_id=response.response_id,
+                        cost_usd=estimated_cost,
+                        cost_observed=cost_observed,
+                        error=exc,
+                    )
                 if attempt >= self.max_attempts:
                     raise
                 continue
@@ -926,6 +1483,14 @@ class OpenAIGenomeBlindAnalyzer:
             if self.attempt_ledger is not None and ledger_attempt_id is not None:
                 self.attempt_ledger.finish(
                     ledger_attempt_id,
+                    status="completed",
+                    response_id=response.response_id,
+                    cost_usd=estimated_cost,
+                    cost_observed=cost_observed,
+                )
+            if self.session_ledger is not None and session_request_id is not None:
+                self.session_ledger.finish(
+                    session_request_id,
                     status="completed",
                     response_id=response.response_id,
                     cost_usd=estimated_cost,
@@ -1561,6 +2126,39 @@ def blind_request_contract_findings(preview: Mapping[str, Any]) -> list[str]:
         else:
             if user_payload != preview.get("input_payload"):
                 findings.append("user_prompt_payload_mismatch")
+    return sorted(set(findings))
+
+
+def _continuous_blind_request_findings(preview: Mapping[str, Any]) -> list[str]:
+    """Fail closed on exact continuous requests before session reservation."""
+
+    findings = list(blind_request_contract_findings(preview))
+    forbidden_keys = {
+        "company_key",
+        "company_name",
+        "forward_return",
+        "future_price",
+        "is_surge",
+        "label",
+        "outcome",
+        "outcome_return",
+        "realized_max_multiple",
+        "source_case_id",
+        "ticker",
+        "true_class",
+    }
+    input_payload = preview.get("input_payload")
+    if not isinstance(input_payload, Mapping):
+        findings.append("missing_input_payload")
+    else:
+        findings.extend(
+            f"forbidden_input_key:{key}"
+            for key in sorted(_nested_keys(input_payload) & forbidden_keys)
+        )
+    if preview.get("external_call_performed") is not False:
+        findings.append("preview_external_call_marker")
+    if "tools" in preview or "plugins" in preview:
+        findings.append("blind_request_contains_tools_or_plugins")
     return sorted(set(findings))
 
 
