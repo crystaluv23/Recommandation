@@ -274,6 +274,15 @@ and no-fallback routing. The current Kimi configuration uses
 and max reasoning; Fusion settings never enter the blind analyzer fingerprint
 or request body.
 
+External `fusion-sample` and real LLM `run`/`resume` require the CLI-only
+`--external-transmission-authorized` acknowledgement; experiment JSON cannot
+store it. Before a blind call, the runner hashes and revalidates the adjacent
+passed disclosure artifact against the model, exact provider, temperature,
+reasoning effort, output bound, no-fallback routing, request count, findings,
+and cost cap. It writes a separate secret-free authorization record and event.
+A stale flag therefore cannot authorize a request that differs from the exact
+reviewed preflight.
+
 ## Local Drift Dashboard
 
 Every completed development round atomically upserts one entry in

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import hashlib
 import json
 import os
 from collections import Counter
@@ -156,6 +157,12 @@ def main() -> None:
     ):
         raise ValidationError(
             "real llm run/resume requires --external-transmission-authorized"
+        )
+    if args.command in {"run", "resume"} and args.mode == "llm":
+        _validate_blind_run_authorization(
+            args,
+            output_dir=output_dir,
+            state_store=state_store,
         )
     if args.mock_llm:
         folds = build_walk_forward_folds(
@@ -607,6 +614,21 @@ def _run_fusion_candidate_sample(
         raise ValidationError("Fusion proposal preflight did not pass")
     if preflight.get("request", {}).get("request_hash") != preview["request_hash"]:
         raise ValidationError("Fusion proposal request differs from its reviewed preflight")
+    authorization_path = output_dir / "fusion_authorization.json"
+    _write_authorization_record(
+        authorization_path,
+        {
+            "scope": "fusion_scheme_proposal_only",
+            "preflight_path": str(preflight_path),
+            "preflight_sha256": _file_sha256(preflight_path),
+            "request_count": 1,
+            "model": preview["model"],
+            "preset": preview["plugins"][0]["preset"],
+            "web_enabled": True,
+            "validation_packets_in_scope": False,
+            "estimated_max_cost_usd": preview["maximum_estimated_cost_usd"],
+        },
+    )
     candidates = proposer.propose([initial], [], [], 1)
     reasons = CandidateValidator().validate(
         candidates[0],
@@ -650,6 +672,109 @@ def _run_fusion_candidate_sample(
     )
     if reasons:
         raise ValidationError("Fusion candidate failed static validation")
+
+
+def _validate_blind_run_authorization(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    state_store: EvolutionStateStore,
+) -> None:
+    preflight_path = output_dir / "external_disclosure_preflight.json"
+    if not preflight_path.exists():
+        raise ValidationError("real llm run requires a passed external disclosure preflight")
+    preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+    expected_routing = {
+        "only": [args.openrouter_provider],
+        "require_parameters": True,
+        "allow_fallbacks": False,
+    }
+    checks = {
+        "passed": preflight.get("passed") is True,
+        "no_prior_call": preflight.get("external_call_performed") is False,
+        "model": preflight.get("model") == args.openrouter_model,
+        "provider": preflight.get("provider")
+        == f"openrouter:{args.openrouter_provider}",
+        "temperature": preflight.get("temperature") == args.openrouter_temperature,
+        "routing": preflight.get("provider_routing") == expected_routing,
+        "request_bound": 0 < int(preflight.get("request_count", 0)) <= 12,
+        "hard_request_bound": preflight.get("hard_maximum_external_request_count")
+        == preflight.get("request_count"),
+        "cost_bound": float(preflight.get("maximum_total_cost_usd", float("inf")))
+        <= args.max_api_cost,
+        "configured_cost_cap": preflight.get("configured_cost_cap_usd")
+        == args.max_api_cost,
+        "no_findings": preflight.get("finding_count") == 0,
+    }
+    requests = preflight.get("requests")
+    if not isinstance(requests, list) or not requests:
+        checks["request_records"] = False
+    else:
+        checks["request_records"] = all(
+            row.get("request", {}).get("model") == args.openrouter_model
+            and row.get("request", {}).get("max_output_tokens")
+            == args.blind_max_output_tokens
+            and row.get("request", {}).get("reasoning")
+            == (
+                {"effort": args.blind_reasoning_effort, "exclude": True}
+                if args.blind_reasoning_effort
+                else None
+            )
+            and not row.get("finding_types")
+            for row in requests
+        )
+    failed = sorted(key for key, passed in checks.items() if not passed)
+    if failed:
+        raise ValidationError(
+            f"external disclosure preflight differs from the authorized run: {failed}"
+        )
+    authorization_path = output_dir / "external_authorization.json"
+    _write_authorization_record(
+        authorization_path,
+        {
+            "scope": "anonymous_no_web_blind_validation",
+            "preflight_path": str(preflight_path),
+            "preflight_sha256": _file_sha256(preflight_path),
+            "model": args.openrouter_model,
+            "provider": args.openrouter_provider,
+            "temperature": args.openrouter_temperature,
+            "reasoning_effort": args.blind_reasoning_effort or None,
+            "max_output_tokens": args.blind_max_output_tokens,
+            "request_count": preflight["request_count"],
+            "maximum_total_cost_usd": preflight["maximum_total_cost_usd"],
+            "configured_cost_cap_usd": args.max_api_cost,
+            "web_enabled": False,
+            "provider_fallbacks_allowed": False,
+        },
+    )
+    state_store.append_event(
+        "external_blind_run_authorized",
+        {
+            "authorization_path": str(authorization_path),
+            "preflight_sha256": _file_sha256(preflight_path),
+            "request_count": preflight["request_count"],
+        },
+    )
+
+
+def _write_authorization_record(path: Path, scope: dict[str, object]) -> None:
+    payload = {
+        "schema_version": "scheme-evolution-external-authorization-v0.1",
+        "acknowledgement_method": "explicit_cli_flag_after_user_approval",
+        "acknowledged_at": datetime.now(timezone.utc).isoformat(),
+        "secret_persisted": False,
+        **scope,
+    }
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+
+
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _run_external_disclosure_preflight(
