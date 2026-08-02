@@ -8,6 +8,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest import TestCase
 
+from scripts.evolve_information_schemes import _external_execution_readiness
+
 from stock_opportunity_agent.llm.openai import ChatResponse
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.ralph_loop import BlindPacketSection, BlindSchemePacket
@@ -544,6 +546,41 @@ class SchemeEvolutionTests(TestCase):
             {**preview, "messages": mismatched_user}
         )
         self.assertEqual(findings, ["user_prompt_payload_mismatch"])
+
+    def test_external_execution_readiness_is_secret_free_and_cost_bounded(self) -> None:
+        requests = [
+            {
+                "cache_key": "cached",
+                "request": {"maximum_request_cost_usd": 0.4},
+            },
+            {
+                "cache_key": "uncached",
+                "request": {"maximum_request_cost_usd": 0.4},
+            },
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            Path(tmp, "cached.json").write_text("{}", encoding="utf-8")
+            readiness = _external_execution_readiness(
+                requests,
+                preflight_passed=True,
+                api_key_available=True,
+                final_test_accessed=False,
+                configured_cost_cap_usd=1.3,
+                cache_dir=Path(tmp),
+            )
+
+        self.assertTrue(readiness["technical_ready_except_authorization"])
+        self.assertEqual(
+            readiness["blockers"],
+            ["explicit_external_transmission_authorization"],
+        )
+        self.assertEqual(readiness["exact_cache_count"], 1)
+        self.assertEqual(readiness["uncached_request_count"], 1)
+        self.assertEqual(readiness["maximum_safe_retry_buffer"], 1)
+        self.assertEqual(readiness["recommended_authorized_max_attempts"], 3)
+        self.assertAlmostEqual(readiness["maximum_cost_with_retry_buffer_usd"], 1.2)
+        self.assertTrue(readiness["api_key_available_at_preflight"])
+        self.assertFalse(readiness["credentials_persisted"])
 
     def test_fusion_proposer_previews_and_caches_one_valid_candidate(self) -> None:
         initial, candidates = _genomes()

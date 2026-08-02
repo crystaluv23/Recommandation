@@ -233,7 +233,10 @@ class-mapping repair. The zero-network disclosure preflight should recompute
 that effective hash from the exact developer message, verify every immutable
 class-mapping sentence, and compare the serialized user message with the
 audited input payload; prompt correctness should be a fail-closed runtime gate,
-not an operator eyeball check.
+not an operator eyeball check. A readiness artifact may persist only a boolean
+for key availability, never credentials, and should calculate retry headroom
+from the largest per-request estimate so the recommended attempt cap remains
+inside the configured worst-case cost boundary.
 
 ## How to Apply
 

@@ -977,11 +977,29 @@ def _run_external_disclosure_preflight(
             "*/materialization_preflight.json"
         )
     )
+    api_key_available = bool(os.environ.get("OPENROUTER_API_KEY"))
+    state_path = output_dir / "state.json"
+    state_payload = (
+        json.loads(state_path.read_text(encoding="utf-8"))
+        if state_path.exists()
+        else {}
+    )
+    final_test_accessed = bool(state_payload.get("final_test_accessed", False))
     passed = (
         bool(requests)
         and not findings
+        and api_key_available
+        and not final_test_accessed
         and maximum_cost_usd <= args.max_api_cost
         and len(packet_preflights) == len(genomes) * len(folds)
+    )
+    execution_readiness = _external_execution_readiness(
+        requests,
+        preflight_passed=passed,
+        api_key_available=api_key_available,
+        final_test_accessed=final_test_accessed,
+        configured_cost_cap_usd=args.max_api_cost,
+        cache_dir=Path(args.blind_cache_dir),
     )
     payload = {
         "schema_version": "scheme-evolution-external-disclosure-preflight-v0.1",
@@ -1035,6 +1053,7 @@ def _run_external_disclosure_preflight(
                 "exact_user_prompt_payload",
             ],
         },
+        "execution_readiness": execution_readiness,
         "packet_preflight_paths": packet_preflights,
         "requests": requests,
     }
@@ -1068,6 +1087,65 @@ def _nested_mapping_keys(value) -> set[str]:
         for nested in value:
             keys.update(_nested_mapping_keys(nested))
     return keys
+
+
+def _external_execution_readiness(
+    requests: list[dict[str, object]],
+    *,
+    preflight_passed: bool,
+    api_key_available: bool,
+    final_test_accessed: bool,
+    configured_cost_cap_usd: float,
+    cache_dir: Path,
+) -> dict[str, object]:
+    """Summarize technical readiness without persisting credentials or authority."""
+
+    request_costs = [
+        float(dict(row["request"])["maximum_request_cost_usd"])
+        for row in requests
+    ]
+    maximum_total_cost = sum(request_costs)
+    maximum_request_cost = max(request_costs, default=0.0)
+    safe_retry_buffer = 0
+    while (
+        maximum_request_cost > 0
+        and maximum_total_cost
+        + (safe_retry_buffer + 1) * maximum_request_cost
+        <= configured_cost_cap_usd + 1e-12
+    ):
+        safe_retry_buffer += 1
+    exact_cache_count = sum(
+        (cache_dir / f"{row['cache_key']}.json").exists()
+        for row in requests
+    )
+    technical_blockers: list[str] = []
+    if not preflight_passed:
+        technical_blockers.append("external_disclosure_preflight_not_passed")
+    if not api_key_available:
+        technical_blockers.append("openrouter_api_key_unavailable")
+    if final_test_accessed:
+        technical_blockers.append("final_test_accessed")
+    technical_ready = not technical_blockers
+    blockers = [*technical_blockers, "explicit_external_transmission_authorization"]
+    return {
+        "schema_version": "scheme-evolution-external-readiness-v0.1",
+        "technical_ready_except_authorization": technical_ready,
+        "blockers": blockers,
+        "api_key_available_at_preflight": api_key_available,
+        "credentials_persisted": False,
+        "final_test_accessed": final_test_accessed,
+        "logical_request_count": len(requests),
+        "exact_cache_count": exact_cache_count,
+        "uncached_request_count": len(requests) - exact_cache_count,
+        "maximum_request_cost_usd": maximum_request_cost,
+        "maximum_total_cost_usd": maximum_total_cost,
+        "configured_cost_cap_usd": configured_cost_cap_usd,
+        "maximum_safe_retry_buffer": safe_retry_buffer,
+        "recommended_authorized_max_attempts": len(requests) + safe_retry_buffer,
+        "maximum_cost_with_retry_buffer_usd": (
+            maximum_total_cost + safe_retry_buffer * maximum_request_cost
+        ),
+    }
 
 
 def _fixed_spec(args: argparse.Namespace, *, synthetic: bool) -> FixedEvolutionSpec:

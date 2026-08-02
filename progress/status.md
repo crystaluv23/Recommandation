@@ -33,3 +33,8 @@ disclosure artifact now records all six immutable class-mapping,
 effective-prompt-hash, and exact-user-payload checks passing for 12/12 blind
 requests. It still contains zero leakage findings, performed zero external
 calls, and leaves the new cache empty pending explicit transmission approval.
+The same artifact's secret-free readiness section confirms the OpenRouter key
+was available without persisting credentials, final-test remains sealed, and
+all 12 requests are currently uncached. Under the `$2` blind cap, three
+worst-case retry slots fit (`15` total attempts, `$1.98407325` maximum), and the
+only recorded blocker is explicit external transmission authorization.

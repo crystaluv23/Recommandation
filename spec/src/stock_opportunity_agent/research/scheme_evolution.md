@@ -299,6 +299,14 @@ that the serialized user message equals the audited input payload. These
 contract findings share the same fail-closed gate as identity or label leakage;
 the artifact records checked and passed request counts.
 
+The same artifact includes a secret-free execution-readiness summary. It
+records only whether the OpenRouter key was available at preflight time, whether
+final-test remained sealed, how many exact responses already exist, and the
+largest retry buffer whose worst-case per-request estimates still fit the
+configured blind-cost cap. It names every technical blocker separately from the
+always-required explicit transmission authorization; it never persists the key
+or treats key presence as authorization.
+
 The external run is still unauthorized by the existence or success of this
 artifact. It requires explicit informed approval covering transmission of the
 anonymous local-archive-derived text to both OpenRouter and the fixed downstream
