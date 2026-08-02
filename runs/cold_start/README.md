@@ -152,6 +152,13 @@ runs once on separate sealed synthetic companies; real `final-test` remains
 fail-closed until a compatible one-shot A/B/C dataset and source archive are
 configured. Ordinary `run` and `resume` never load those labels.
 
+During each development round the CLI prints compact candidate summaries before
+evaluation, then prints persisted-evaluation confusion counts, binary F1,
+class-C recall, ordinal distance, cost, the current Top-K ranks, and each
+candidate's retained/not-retained decision. These lines are marked
+`scope=development proposal_only=true`; they are progress diagnostics, not
+final-test or effectiveness claims.
+
 Every completed round also upserts its run-local `evolution_history.json` and
 refreshes both the portable per-run page and the fixed repository-level entry:
 
@@ -189,30 +196,24 @@ PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
 
 After reviewing the exact persisted `packet_preflight/` payloads, an explicitly
 authorized first external run should remain one candidate, one concurrent
-request, and one bounded generation:
+request, and one bounded generation. Authorization must cover sending the
+anonymous point-in-time packet text derived from local case/document archives
+to OpenRouter and the fixed downstream provider, not only permission to run the
+local loop:
 
 ```sh
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
-  --mode llm \
-  --openrouter-model openai/gpt-5.5 \
-  --openrouter-provider openai \
-  --children-per-generation 1 \
-  --max-candidates 1 \
-  --max-concurrency 1 \
-  --max-api-cost 10 \
-  --input-cost-per-million-tokens 5 \
-  --output-cost-per-million-tokens 30 \
-  --blind-cache-dir runs/cold_start/evolution/shared-blind-cache \
-  --price-histories-path <run>/02_prices/price_histories.json \
-  --resume \
-  --output-dir runs/cold_start/evolution/codex-v1-llm
+  --config configs/evolution/real_llm_development_v1.json
 ```
 
-Provider availability and pricing are time-varying and must be refreshed before
-a real run. The command requires `OPENROUTER_API_KEY`; no credential is written
-to artifacts. Synthetic and heuristic runs are pipeline diagnostics only. A
-real effectiveness claim still requires an explicitly declared untouched-
-company final test after proposal changes stop.
+The dated config freezes the provider, model, temperature, current token-price
+inputs, data split, one-candidate scope, and cost cap used by that development
+run. Provider parameter support and pricing are time-varying and must be
+refreshed before reuse. The script loads `OPENROUTER_API_KEY` from the process or
+uncommitted `.env.local`; no credential is written to artifacts. Synthetic and
+heuristic runs are pipeline diagnostics only. A real effectiveness claim still
+requires an explicitly declared untouched-company final test after proposal
+changes stop.
 
 The generated run directories are ignored by git. Keep durable lessons in
 `memory/`, durable design in `spec/`, and only commit code or documentation

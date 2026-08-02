@@ -173,7 +173,7 @@ def evaluate_predictions(
 
 
 def validate_folds(folds: Iterable[EvolutionFold], fixed_spec: FixedEvolutionSpec) -> None:
-    """Reject overlapping label windows, repeated validation samples, and issuer leakage."""
+    """Reject invalid time isolation, issuer leakage, or unsupported binary metrics."""
 
     seen_admission: set[str] = set()
     for fold in folds:
@@ -194,6 +194,15 @@ def validate_folds(folds: Iterable[EvolutionFold], fixed_spec: FixedEvolutionSpe
         if seen_admission & admission_ids:
             raise ValidationError("selected folds reuse validation samples")
         seen_admission.update(admission_ids)
+        for partition_name, samples in (
+            ("signal-train", fold.discovery_samples),
+            ("development validation", fold.admission_samples),
+        ):
+            binary_classes = {sample.is_surge for sample in samples}
+            if binary_classes != {False, True}:
+                raise ValidationError(
+                    f"fold {fold.fold_id} {partition_name} requires both A and B/C classes"
+                )
 
 
 def prediction_agreement(

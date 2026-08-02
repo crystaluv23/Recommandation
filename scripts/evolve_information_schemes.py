@@ -6,6 +6,7 @@ import argparse
 import calendar
 import json
 import os
+from collections import Counter
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -39,6 +40,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     evaluate_predictions,
     merge_meta_lessons,
     realized_max_multiple,
+    validate_folds,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     HeuristicGenomeBlindAnalyzer,
@@ -67,6 +69,7 @@ DEFAULT_FORMAL_RUN_DIR = Path(
 def main() -> None:
     """Run a dry validation or the network-free vertical slice."""
 
+    _load_local_env()
     args = _parse_args()
     if args.max_concurrency != 1:
         raise ValidationError("v0.2 supports max_concurrency=1; provider concurrency remains external")
@@ -178,6 +181,7 @@ def main() -> None:
             ),
             max_candidates=args.max_candidates,
             max_api_cost_usd=args.max_api_cost,
+            progress=print,
         )
         result = engine.run(
             incumbent,
@@ -366,6 +370,20 @@ def _parse_args() -> argparse.Namespace:
     return args
 
 
+def _load_local_env(path: str = ".env.local") -> None:
+    """Load uncommitted local credentials without overwriting process settings."""
+
+    env_path = Path(path)
+    if not env_path.exists():
+        return
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip())
+
+
 def _run_dry_validation(
     initial: SchemeGenome,
     proposer: FileSchemeProposer,
@@ -449,26 +467,77 @@ def _real_evaluation_context(
     bars_by_symbol = price_payload.get("bars_by_symbol")
     if not isinstance(bars_by_symbol, dict):
         raise ValidationError("price histories must contain bars_by_symbol")
-    samples = [
-        _real_sample(case, documents, bars_by_symbol, fixed_spec.evaluation_contract)
+    considered_cases = [
+        case
         for case in cases
         if case.label in {CaseOutcomeLabel.WINNER, CaseOutcomeLabel.CONTROL}
     ]
+    samples: list[LabeledSample] = []
+    exclusions: list[dict[str, str]] = []
+    for case in considered_cases:
+        try:
+            samples.append(
+                _real_sample(
+                    case,
+                    documents,
+                    bars_by_symbol,
+                    fixed_spec.evaluation_contract,
+                )
+            )
+        except ValidationError as exc:
+            reason_code = _price_sample_exclusion_reason(exc)
+            if reason_code is None:
+                raise
+            exclusions.append(
+                {
+                    "case_id": case.case_id,
+                    "reason": reason_code,
+                    "detail": str(exc),
+                }
+            )
     admission_starts = [
         datetime.fromisoformat(value.strip()).replace(tzinfo=timezone.utc)
         for value in args.admission_starts.split(",")
         if value.strip()
     ]
-    folds = build_walk_forward_folds(
-        samples,
-        admission_starts,
-        fixed_spec=fixed_spec,
-        admission_window_days=args.admission_window_days,
+    folds = _select_folds(
+        build_walk_forward_folds(
+            samples,
+            admission_starts,
+            fixed_spec=fixed_spec,
+            admission_window_days=args.admission_window_days,
+        ),
+        args.selected_folds,
     )
-    if not folds:
-        raise ValidationError(
-            "real artifacts produced no eligible walk-forward folds after purge/embargo"
+    class_support_issues = _fold_class_support_issues(folds)
+    preflight_path = _write_real_dataset_preflight(
+        Path(args.output_dir),
+        args=args,
+        fixed_spec=fixed_spec,
+        considered_cases=considered_cases,
+        samples=samples,
+        exclusions=exclusions,
+        folds=folds,
+        price_payload=price_payload,
+        class_support_issues=class_support_issues,
+    )
+    print(
+        f"[scheme-evolution] dataset-preflight={preflight_path} "
+        f"eligible={len(samples)} excluded={len(exclusions)} folds={len(folds)}"
+    )
+    for fold in folds:
+        discovery_counts = Counter(sample.true_class for sample in fold.discovery_samples)
+        admission_counts = Counter(sample.true_class for sample in fold.admission_samples)
+        print(
+            f"[scheme-evolution] fold={fold.fold_id} "
+            f"signal_train={len(fold.discovery_samples)} "
+            f"signal_train_classes={dict(sorted(discovery_counts.items()))} "
+            f"development={len(fold.admission_samples)} "
+            f"development_classes={dict(sorted(admission_counts.items()))}"
         )
+    if class_support_issues:
+        raise ValidationError("; ".join(class_support_issues))
+    validate_folds(folds, fixed_spec)
     discovery_cases = [
         case
         for sample in folds[0].discovery_samples
@@ -545,6 +614,96 @@ def _real_evaluation_context(
         artifact_dir=Path(args.output_dir) / "packet_preflight",
     )
     return folds, evaluator
+
+
+def _price_sample_exclusion_reason(error: ValidationError) -> str | None:
+    message = str(error)
+    if "has no adjusted close at prediction time" in message:
+        return "missing_prediction_adjusted_close"
+    if message == "future price history is shorter than the smoothing window":
+        return "insufficient_future_smoothing_window"
+    return None
+
+
+def _fold_class_support_issues(folds) -> list[str]:
+    if not folds:
+        return ["real artifacts produced no eligible walk-forward folds after purge/embargo"]
+    issues: list[str] = []
+    for fold in folds:
+        for partition_name, samples in (
+            ("signal-train", fold.discovery_samples),
+            ("development validation", fold.admission_samples),
+        ):
+            binary_classes = {sample.is_surge for sample in samples}
+            if binary_classes != {False, True}:
+                issues.append(
+                    f"fold {fold.fold_id} {partition_name} requires both A and B/C classes"
+                )
+    return issues
+
+
+def _write_real_dataset_preflight(
+    output_dir: Path,
+    *,
+    args: argparse.Namespace,
+    fixed_spec: FixedEvolutionSpec,
+    considered_cases,
+    samples: list[LabeledSample],
+    exclusions: list[dict[str, str]],
+    folds,
+    price_payload: dict,
+    class_support_issues: list[str],
+) -> Path:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "dataset_preflight_label_aware.json"
+    payload = {
+        "schema_version": "scheme-evolution-dataset-preflight-v1",
+        "scope": "retrospective_label_aware_development",
+        "proposal_status": "proposal_only_pending_human_review",
+        "external_call_performed_during_dataset_preflight": False,
+        "effectiveness_claim_allowed": False,
+        "evaluation_contract_hash": fixed_spec.evaluation_contract.content_hash,
+        "cases_path": args.cases_path,
+        "documents_path": args.documents_path,
+        "price_histories_path": args.price_histories_path,
+        "considered_case_count": len(considered_cases),
+        "eligible_case_count": len(samples),
+        "excluded_case_count": len(exclusions),
+        "eligible_class_counts": dict(sorted(Counter(sample.true_class for sample in samples).items())),
+        "exclusion_reason_counts": dict(
+            sorted(Counter(row["reason"] for row in exclusions).items())
+        ),
+        "excluded_cases": exclusions,
+        "price_requested_symbol_count": price_payload.get("requested_symbol_count"),
+        "price_priced_symbol_count": price_payload.get("priced_symbol_count"),
+        "price_failed_symbols": price_payload.get("failed_symbols", {}),
+        "admission_starts": [value.strip() for value in args.admission_starts.split(",") if value.strip()],
+        "admission_window_days": args.admission_window_days,
+        "selected_fold_ids": [fold.fold_id for fold in folds],
+        "folds": [
+            {
+                "fold_id": fold.fold_id,
+                "signal_train_count": len(fold.discovery_samples),
+                "signal_train_class_counts": dict(
+                    sorted(Counter(sample.true_class for sample in fold.discovery_samples).items())
+                ),
+                "development_validation_count": len(fold.admission_samples),
+                "development_validation_class_counts": dict(
+                    sorted(Counter(sample.true_class for sample in fold.admission_samples).items())
+                ),
+            }
+            for fold in folds
+        ],
+        "class_support_passed": not class_support_issues,
+        "class_support_issues": class_support_issues,
+    }
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+    return path
 
 
 def _real_sample(case, documents_by_symbol, bars_by_symbol, contract) -> LabeledSample:

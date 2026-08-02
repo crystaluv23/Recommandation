@@ -122,6 +122,17 @@ replace seed passthrough.
 - Walk-forward construction requires the full six-calendar-month observation
   horizon plus purge and embargo to end before validation begins.
 - One issuer cannot occur on both sides of a fold.
+- Before fold construction, the real runner writes a label-aware dataset
+  preflight that records every legacy case considered, the newly derived A/B/C
+  class counts, and any deterministic exclusion. A case may be excluded only
+  when its prediction-date adjusted close is absent or fewer than five future
+  closes exist for the fixed smoothing window; the runner must not substitute
+  an unadjusted close, old terminal-return label, or fabricated future value.
+- Every selected fold must contain at least one binary negative (A) and one
+  binary positive (B/C) in both signal-train and development validation. If
+  class support is absent, the run fails before any blind provider call and the
+  preflight remains the diagnostic artifact; a zero-positive F1 is not treated
+  as an evolution result.
 - Final-test records are absent from the engine constructor and ordinary run
   artifacts. The explicit command uses a separate one-shot path. The mock path
   is executable; real execution remains fail-closed until a separately
@@ -191,6 +202,27 @@ same value. A KeyboardInterrupt writes `paused`; provider or validation errors
 write the task error and a resumable `failed` state. The OpenRouter adapter also
 reuses an exact packet/prompt/model/provider/temperature response cache and
 never persists credentials.
+
+## Intermediate Progress Output
+
+The CLI supplies a progress reporter to the evolution engine so a long round is
+inspectable without opening partial JSON artifacts. Before evaluation, it prints
+one compact summary per proposed genome: id, parents, mutation operator, target
+failure type, changed fields, expected benefit, and falsification test. Static
+rejections print their reasons before any expensive call.
+
+After a genome's predictions have been persisted and its development labels are
+revealed to the deterministic evaluator, the reporter prints its confusion
+counts, binary F1, class-C recall, mean ordinal distance, and total data/token
+cost. At the end of each round it prints every Top-K rank with the same fixed
+metrics plus each candidate's retained/not-retained decision and binary-F1
+delta. These lines are explicitly development, proposal-only diagnostics; they
+must not include final-test metrics or imply an effectiveness claim.
+
+Progress output is observational only. It must not change proposal sampling,
+candidate validation, cache keys, ranking, admission, persistence order, or the
+fixed evaluation contract. Label-aware scores may appear only after the
+corresponding label-free predictions are durably written.
 
 ## Local Drift Dashboard
 

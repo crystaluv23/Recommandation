@@ -31,6 +31,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     build_walk_forward_folds,
     evaluate_predictions,
     realized_max_multiple,
+    validate_folds,
 )
 from stock_opportunity_agent.research.scheme_evolution_ralph import (
     OpenAIGenomeBlindAnalyzer,
@@ -153,6 +154,21 @@ class SchemeEvolutionTests(TestCase):
         )
         self.assertEqual(folds, [])
 
+    def test_fold_requires_both_binary_classes_on_each_side(self) -> None:
+        fixed = _fixed_spec()
+        fold = _folds(fixed)[0]
+        unsupported = replace(
+            fold,
+            admission_samples=tuple(
+                sample for sample in fold.admission_samples if not sample.is_surge
+            ),
+        )
+        with self.assertRaisesRegex(
+            ValidationError,
+            "development validation requires both A and B/C classes",
+        ):
+            validate_folds([unsupported], fixed)
+
     def test_atomic_state_checkpoint_and_append_only_events(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             store = EvolutionStateStore(tmp, run_id="atomic")
@@ -167,6 +183,30 @@ class SchemeEvolutionTests(TestCase):
             self.assertFalse(any(Path(tmp).rglob("*.tmp")))
             for line in event_lines:
                 self.assertIsInstance(json.loads(line), dict)
+
+    def test_progress_reports_candidate_summary_and_round_top_k_metrics(self) -> None:
+        initial, candidates = _genomes()
+        messages: list[str] = []
+        with tempfile.TemporaryDirectory() as tmp:
+            result = SchemeEvolutionEngine(
+                proposer=MockSchemeProposer(candidates[:1]),
+                evaluator=MockSchemeFoldEvaluator(),
+                fixed_spec=_fixed_spec(),
+                state_store=EvolutionStateStore(tmp, run_id="progress"),
+                progress=messages.append,
+            ).run(initial, _folds(_fixed_spec())[:1], candidate_count=1)
+        output = "\n".join(messages)
+        self.assertTrue(result.top_k)
+        self.assertIn(f"candidate={candidates[0].genome_id}", output)
+        self.assertIn(f"candidate-summary={candidates[0].genome_id}", output)
+        self.assertIn("changed=", output)
+        self.assertIn("falsification=", output)
+        self.assertIn("top-k round=1 rank=1", output)
+        self.assertIn("tp=", output)
+        self.assertIn("binary_f1=", output)
+        self.assertIn("class_c_recall=", output)
+        self.assertIn("ordinal_distance=", output)
+        self.assertIn("scope=development proposal_only=true", output)
 
     def test_empty_dashboard_opens_from_local_data_script_without_fetch(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

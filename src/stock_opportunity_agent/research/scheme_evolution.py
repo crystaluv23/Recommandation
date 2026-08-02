@@ -13,7 +13,7 @@ import re
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 from stock_opportunity_agent.models import SerializableRecord, ValidationError
 from stock_opportunity_agent.research.scheme_evolution_evaluation import (
@@ -910,6 +910,7 @@ class SchemeEvolutionEngine:
         validator: CandidateValidator | None = None,
         max_candidates: int = 8,
         max_api_cost_usd: float = 20.0,
+        progress: Callable[[str], None] | None = None,
     ) -> None:
         if max_candidates < 1:
             raise ValidationError("max_candidates must be positive")
@@ -923,6 +924,7 @@ class SchemeEvolutionEngine:
         self.validator = validator or CandidateValidator()
         self.max_candidates = max_candidates
         self.max_api_cost_usd = max_api_cost_usd
+        self.progress = progress
 
     def run(
         self,
@@ -947,6 +949,10 @@ class SchemeEvolutionEngine:
             int(self.state_store.load_state().get("current_iteration", 0)) + 1,
         )
         self.state_store.begin_iteration(iteration, resume=resume)
+        self._report(
+            f"[scheme-evolution] round={iteration} status=started "
+            "scope=development proposal_only=true final_test=false"
+        )
         try:
             parents = [entry.genome for entry in self.archive.entries] or [incumbent]
             requested = min(candidate_count, self.max_candidates)
@@ -956,6 +962,23 @@ class SchemeEvolutionEngine:
                 list(mutation_requests),
                 requested,
             )
+            self._report(
+                f"[scheme-evolution] round={iteration} proposed={len(proposed)} "
+                f"parents={','.join(parent.genome_id for parent in parents)}"
+            )
+            for candidate in proposed:
+                self._report(
+                    f"[scheme-evolution] candidate={candidate.genome_id} "
+                    f"parents={','.join(candidate.parent_ids) or 'none'} "
+                    f"mutation={candidate.mutation_operator.value} "
+                    f"target={candidate.target_failure_type} "
+                    f"changed={','.join(candidate.changed_fields) or 'none'}"
+                )
+                self._report(
+                    f"[scheme-evolution] candidate-summary={candidate.genome_id} "
+                    f"expected={_compact_progress_text(candidate.expected_benefit)} "
+                    f"falsification={_compact_progress_text(candidate.falsification_test)}"
+                )
             accepted: list[SchemeGenome] = []
             rejections: list[CandidateRejection] = []
             for candidate in proposed:
@@ -966,21 +989,39 @@ class SchemeEvolutionEngine:
                 )
                 if reasons:
                     rejections.append(CandidateRejection(candidate.genome_id, reasons))
+                    self._report(
+                        f"[scheme-evolution] candidate-rejected={candidate.genome_id} "
+                        f"reasons={_compact_progress_text('; '.join(reasons))}"
+                    )
                 else:
                     accepted.append(candidate)
                     self.state_store.write_scheme(candidate)
+                    self._report(
+                        f"[scheme-evolution] candidate-accepted={candidate.genome_id}"
+                    )
             for parent in parents:
                 self.state_store.write_scheme(parent)
             evaluated: dict[str, tuple[SchemeGenome, list[PredictionRecord], SchemeEvaluationResult]] = {}
             for genome in [*parents, *accepted]:
                 if genome.genome_id in evaluated:
                     continue
+                self._report(
+                    f"[scheme-evolution] evaluating={genome.genome_id} "
+                    f"folds={len(fold_list)} resume={str(resume).lower()}"
+                )
                 predictions, evaluation = self._evaluate_genome(
                     genome,
                     fold_list,
                     resume=resume,
                 )
                 evaluated[genome.genome_id] = (genome, predictions, evaluation)
+                self._report(
+                    _evaluation_progress_line(
+                        "evaluated",
+                        evaluation,
+                        prefix=f"round={iteration} ",
+                    )
+                )
             new_entries = [
                 ArchiveEntry(
                     genome=genome,
@@ -1000,6 +1041,14 @@ class SchemeEvolutionEngine:
             )
             if not top_k:
                 raise ValidationError("no scheme remained after fixed cost and Top-K gates")
+            for rank, entry in enumerate(top_k, start=1):
+                self._report(
+                    _evaluation_progress_line(
+                        "top-k",
+                        entry.evaluation,
+                        prefix=f"round={iteration} rank={rank} ",
+                    )
+                )
             retained_ids = {entry.genome.genome_id for entry in top_k}
             parent_evaluations = {
                 parent.genome_id: evaluated[parent.genome_id][2]
@@ -1015,6 +1064,14 @@ class SchemeEvolutionEngine:
                 )
                 for candidate in accepted
             ]
+            for experiment in experiments:
+                decision = experiment.admission_decision
+                self._report(
+                    f"[scheme-evolution] decision={experiment.candidate_genome_id} "
+                    f"status={decision.status} retained={str(decision.admitted).lower()} "
+                    f"binary_f1_delta={decision.primary_metric_delta:.4f} "
+                    f"reasons={_compact_progress_text('; '.join(decision.reasons) or 'none')}"
+                )
             lessons, requests = derive_meta_lessons(experiments)
             provisional = EvolutionRunResult(
                 incumbent=top_k[0].genome,
@@ -1032,6 +1089,10 @@ class SchemeEvolutionEngine:
                 rejections=rejections,
             )
             self.state_store.complete(entry.genome.genome_id for entry in top_k)
+            self._report(
+                f"[scheme-evolution] round={iteration} status=completed "
+                f"incumbent={top_k[0].genome.genome_id} top_k={len(top_k)}"
+            )
             return replace(provisional, artifact_paths=paths)
         except KeyboardInterrupt:
             self.state_store.pause("keyboard_interrupt")
@@ -1039,6 +1100,16 @@ class SchemeEvolutionEngine:
         except Exception as exc:
             self.state_store.fail(f"{type(exc).__name__}: {exc}")
             raise
+
+    def _report(self, message: str) -> None:
+        """Emit best-effort observational progress without changing the run."""
+
+        if self.progress is None:
+            return
+        try:
+            self.progress(message)
+        except Exception:
+            return
 
     def _evaluate_genome(
         self,
@@ -1243,6 +1314,36 @@ class SchemeEvolutionEngine:
             completed_at=now,
             git_commit=git_commit,
         )
+
+
+def _evaluation_progress_line(
+    event: str,
+    evaluation: SchemeEvaluationResult,
+    *,
+    prefix: str = "",
+) -> str:
+    """Render one fixed-metric development evaluation summary."""
+
+    confusion = evaluation.confusion_matrix
+    total_cost = evaluation.data_cost_usd + evaluation.token_cost_usd
+    return (
+        f"[scheme-evolution] {event} {prefix}genome={evaluation.genome_id} "
+        f"tp={confusion.get('tp', 0)} fp={confusion.get('fp', 0)} "
+        f"tn={confusion.get('tn', 0)} fn={confusion.get('fn', 0)} "
+        f"binary_f1={evaluation.binary_f1:.4f} "
+        f"class_c_recall={evaluation.class_c_recall:.4f} "
+        f"ordinal_distance={evaluation.ordinal_distance:.4f} "
+        f"cost_usd={total_cost:.4f} scope=development proposal_only=true"
+    )
+
+
+def _compact_progress_text(value: str, *, maximum_length: int = 240) -> str:
+    """Keep free-text progress fields readable on one bounded terminal line."""
+
+    compact = re.sub(r"\s+", " ", value).strip()
+    if len(compact) <= maximum_length:
+        return compact
+    return compact[: maximum_length - 3].rstrip() + "..."
 
 
 def genome_recipe_hash(genome: SchemeGenome) -> str:
