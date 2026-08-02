@@ -783,10 +783,53 @@ class OpenAIGenomeBlindAnalyzer:
                 else maximum_request_cost
             )
             self.spent_cost_usd += estimated_cost
+            response_hash = hashlib.sha256(
+                response.output_text.encode("utf-8")
+            ).hexdigest()
+            response_audit_id = ledger_attempt_id or (
+                "response-"
+                + _hash_json(
+                    {
+                        "response_id": response.response_id,
+                        "response_hash": response_hash,
+                    }
+                )[:16]
+            )
+            response_audit_path = (
+                self.cache_dir
+                / "_attempts"
+                / cache_key
+                / f"{response_audit_id}.json"
+            )
+            response_audit = {
+                "schema_version": "genome-blind-response-attempt-v0.1",
+                "status": "received_pending_validation",
+                "cache_key": cache_key,
+                "input_hash": input_hash,
+                "settings_fingerprint": self.settings_fingerprint,
+                "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                "response_id": response.response_id,
+                "response_model": response.model or self.model,
+                "response_hash": response_hash,
+                "raw_output": response.output_text,
+                "usage": usage if isinstance(usage, Mapping) else {},
+                "cost_usd": estimated_cost,
+                "cost_observed": cost_observed,
+                "received_at": datetime.now(timezone.utc).isoformat(),
+            }
+            _write_json(response_audit_path, response_audit)
             try:
                 raw = json.loads(response.output_text)
             except json.JSONDecodeError as exc:
                 last_error = ValidationError("genome blind response was not valid JSON")
+                _write_json(
+                    response_audit_path,
+                    {
+                        **response_audit,
+                        "status": "failed_validation",
+                        "validation_error": str(last_error),
+                    },
+                )
                 if self.attempt_ledger is not None and ledger_attempt_id is not None:
                     self.attempt_ledger.finish(
                         ledger_attempt_id,
@@ -807,16 +850,14 @@ class OpenAIGenomeBlindAnalyzer:
                 "seed": None,
                 "system_prompt_hash": genome.blind_analysis_prompt.content_hash,
                 "input_hash": input_hash,
-                "response_hash": hashlib.sha256(
-                    response.output_text.encode("utf-8")
-                ).hexdigest(),
+                "response_hash": response_hash,
                 "request_timestamp": datetime.now(timezone.utc).isoformat(),
                 "token_usage": usage if isinstance(usage, Mapping) else {},
                 "estimated_cost_usd": estimated_cost,
                 "token_cost_usd": estimated_cost,
                 "latency_ms": round(latency_ms, 4),
                 "retry_count": attempt - 1,
-                "raw_response_location": str(cache_path),
+                "raw_response_location": str(response_audit_path),
                 "pipeline_diagnostic_only": False,
                 "cache_hit": False,
                 "external_call_performed": True,
@@ -829,6 +870,14 @@ class OpenAIGenomeBlindAnalyzer:
                 )
             except ValidationError as exc:
                 last_error = exc
+                _write_json(
+                    response_audit_path,
+                    {
+                        **response_audit,
+                        "status": "failed_validation",
+                        "validation_error": str(exc),
+                    },
+                )
                 if self.attempt_ledger is not None and ledger_attempt_id is not None:
                     self.attempt_ledger.finish(
                         ledger_attempt_id,
@@ -841,6 +890,14 @@ class OpenAIGenomeBlindAnalyzer:
                 if attempt >= self.max_attempts:
                     raise
                 continue
+            _write_json(
+                response_audit_path,
+                {
+                    **response_audit,
+                    "status": "validated",
+                    "validation_error": None,
+                },
+            )
             if self.attempt_ledger is not None and ledger_attempt_id is not None:
                 self.attempt_ledger.finish(
                     ledger_attempt_id,
@@ -857,6 +914,11 @@ class OpenAIGenomeBlindAnalyzer:
                     "input_hash": input_hash,
                     "settings_fingerprint": self.settings_fingerprint,
                     "prompt_hash": genome.blind_analysis_prompt.content_hash,
+                    "response_id": response.response_id,
+                    "response_hash": response_hash,
+                    "raw_output": response.output_text,
+                    "usage": usage if isinstance(usage, Mapping) else {},
+                    "response_audit_path": str(response_audit_path),
                     "prediction": {
                         key: value
                         for key, value in validated.items()
@@ -1318,7 +1380,7 @@ def _packet_evidence_refs(packet: BlindSchemePacket) -> set[str]:
     refs: set[str] = set()
     for section in packet.sections:
         for item in section.items:
-            for key in ("evidence_ref", "source_id", "fact_id"):
+            for key in ("evidence_ref", "source_id", "fact_id", "fact_ref"):
                 value = item.get(key)
                 if isinstance(value, str) and value:
                     refs.add(value)

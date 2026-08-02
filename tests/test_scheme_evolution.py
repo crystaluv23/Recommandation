@@ -321,8 +321,19 @@ class SchemeEvolutionTests(TestCase):
                 temperature=0.0,
                 max_attempts=2,
             ).analyze(initial, materialized, _blind_packet())
+            attempt_audits = [
+                json.loads(path.read_text(encoding="utf-8"))
+                for path in Path(tmp).glob("_attempts/*/*.json")
+            ]
         self.assertEqual(output["predicted_class"], "B")
         self.assertEqual(client.calls, 2)
+        self.assertEqual(
+            sorted(row["status"] for row in attempt_audits),
+            ["failed_validation", "validated"],
+        )
+        self.assertTrue(
+            any(row["raw_output"] == "not-json" for row in attempt_audits)
+        )
 
     def test_external_attempt_ledger_survives_provider_error_and_enforces_cap(self) -> None:
         initial, _candidates = _genomes()
@@ -515,6 +526,72 @@ class SchemeEvolutionTests(TestCase):
             )
             with self.assertRaisesRegex(ValidationError, "unexpected fields"):
                 analyzer.analyze(initial, materialized, _blind_packet())
+
+    def test_packet_fact_refs_are_valid_citations_and_external_refs_are_rejected(self) -> None:
+        initial, _candidates = _genomes()
+        materialized = MockSchemeFoldEvaluator().materialize(
+            initial,
+            _folds(_fixed_spec())[0],
+        )
+        packet = _blind_packet()
+        packet = replace(
+            packet,
+            sections=(
+                replace(
+                    packet.sections[0],
+                    items=(
+                        {
+                            "fact_ref": "fact_visible_in_packet",
+                            "summary": "Point-in-time source-backed fact.",
+                        },
+                    ),
+                ),
+            ),
+        )
+        valid_output = {
+            **_valid_model_output(),
+            "evidence_source_ids": ["fact_visible_in_packet"],
+        }
+        invalid_output = {
+            **_valid_model_output(),
+            "evidence_source_ids": ["fact_outside_packet"],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            valid_dir = Path(tmp) / "valid"
+            valid = OpenAIGenomeBlindAnalyzer(
+                _FakeChatClient([json.dumps(valid_output)]),
+                valid_dir,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+            ).analyze(initial, materialized, packet)
+            valid_audit = json.loads(
+                next(valid_dir.glob("_attempts/*/*.json")).read_text(encoding="utf-8")
+            )
+
+            invalid_dir = Path(tmp) / "invalid"
+            invalid_analyzer = OpenAIGenomeBlindAnalyzer(
+                _FakeChatClient([json.dumps(invalid_output)]),
+                invalid_dir,
+                provider="fake",
+                model="fake-model",
+                temperature=0.0,
+                max_attempts=1,
+            )
+            with self.assertRaisesRegex(ValidationError, "outside the packet"):
+                invalid_analyzer.analyze(initial, materialized, packet)
+            invalid_audit = json.loads(
+                next(invalid_dir.glob("_attempts/*/*.json")).read_text(
+                    encoding="utf-8"
+                )
+            )
+
+        self.assertEqual(valid["evidence_source_ids"], ["fact_visible_in_packet"])
+        self.assertEqual(valid_audit["status"], "validated")
+        self.assertIn("fact_visible_in_packet", valid_audit["raw_output"])
+        self.assertEqual(invalid_audit["status"], "failed_validation")
+        self.assertIn("fact_outside_packet", invalid_audit["validation_error"])
 
     def test_identical_input_hits_secret_safe_openrouter_cache(self) -> None:
         initial, _candidates = _genomes()

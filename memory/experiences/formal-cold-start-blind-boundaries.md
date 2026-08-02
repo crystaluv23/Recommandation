@@ -190,6 +190,21 @@ provider. Extra attempts require a new CLI-only acknowledgement for the exact
 increment; they must not loosen model, provider, no-fallback, packet, or cost
 boundaries.
 
+## 2026-08-02 Opaque Citation Contract
+
+Provenance validation must follow the actual anonymous packet schema rather
+than one remembered reference-key spelling. If packet items expose opaque
+`fact_ref` values but the validator accepts only `fact_id` or `evidence_ref`, a
+correct model citation is misclassified as hallucinated after a paid call.
+Collect every explicitly supported opaque reference field from the supplied
+packet, accept only literal values from that set, and keep rejecting cross-packet
+or invented references.
+
+Persist the raw provider output before parsing and provenance validation. An
+append-only attempt ledger proves that a call happened, but response id, error,
+and usage alone cannot reconstruct a stateless Responses API body after a local
+validator defect.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

@@ -108,6 +108,11 @@ signal extraction, then the analyzer returns:
 - flip conditions; and
 - source evidence references required by this repository's provenance rules.
 
+Opaque provenance references may use the packet's existing `evidence_ref`,
+`source_id`, `fact_id`, or `fact_ref` keys. The validator accepts only values
+that are literally present under one of those keys in the supplied packet and
+rejects invented or cross-packet references.
+
 `is_surge` is derived in code from the class. Numeric probability, likelihood,
 logprob, score, future-price, or label fields are rejected. Confidence and
 difficulty are qualitative diagnostics, not statistical probability and not
@@ -219,6 +224,14 @@ restores both cumulative attempts and cumulative cost before considering a
 resume. Exhausting either the authorized attempt count or the configured cost
 cap fails before network access. The ledger is scoped to the exact reviewed
 preflight hash and analyzer settings; mismatches fail closed.
+
+After a provider response arrives, its secret-free raw output, response hash,
+usage, and cost are atomically written under the analyzer cache's `_attempts/`
+audit tree before JSON or provenance validation. The audit record is finalized
+as validated or failed-validation; a valid response cache also retains the raw
+output. Provider failures without a response body remain represented by the
+external-attempt ledger. A validator defect therefore cannot erase an otherwise
+inspectable paid response.
 
 ## Intermediate Progress Output
 
