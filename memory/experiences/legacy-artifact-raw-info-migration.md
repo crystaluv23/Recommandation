@@ -1,6 +1,6 @@
 # Legacy Artifact to Raw Info Migration
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 

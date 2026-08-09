@@ -332,6 +332,17 @@ committed pointers intact, records an interruption event at the CLI boundary,
 refreshes reporting, and exits with the conventional interrupted status. This
 does not widen the frozen attempt or cost ceilings.
 
+`scripts/run_deepseek_evolution.sh` is the operator-facing unattended launcher
+for the direct `deepseek-v4-flash` route. It composes the existing CLI rather
+than implementing a second state machine: resolve the project Python 3.11+
+runtime, prompt for an in-memory API key when needed, run all zero-network data
+preparation, show the proposal summary and frozen overnight bounds, require one
+explicit human confirmation, then approve the exact proposal hash, freeze the
+contract, preview the first exact request, and run the continuous supervisor for
+a bounded wall-clock window. The launcher must never persist or print the key,
+open Locked Test, auto-promote Signal candidates, infer completion from files,
+or bypass the CLI's request leakage, cost, attempt, and contract-hash gates.
+
 The single human-facing entry remains
 `runs/cold_start/evolution/evolution_dashboard.html`. A read-only builder scans
 direct child workspaces, trusts only committed round/cycle pointers, retains
