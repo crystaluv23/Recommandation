@@ -14,6 +14,21 @@ from stock_opportunity_agent.models import ValidationError
 
 
 _SAFE_COMPONENT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]*$")
+_FORBIDDEN_OUTCOME_FIELDS = frozenset(
+    {
+        "ground_truth",
+        "outcome",
+        "outcome_label",
+        "label",
+        "is_surge",
+        "magnitude_class",
+        "realized_return",
+        "realized_max_multiple",
+        "future_price",
+        "future_return",
+        "post_outcome",
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -32,6 +47,8 @@ class RawInfoDocument:
     def __post_init__(self) -> None:
         for name in ("document_id", "company_id", "source_type"):
             _validate_component(str(getattr(self, name)), name)
+        if self.source_type.casefold() in _FORBIDDEN_OUTCOME_FIELDS:
+            raise ValidationError("raw info source_type cannot contain outcome data")
         if not self.content.strip():
             raise ValidationError("raw info content must not be empty")
         _require_aware(self.published_at, "published_at")
@@ -41,6 +58,7 @@ class RawInfoDocument:
         expected = content_sha256(self.content)
         if self.content_hash != expected:
             raise ValidationError("raw info content_hash does not match content")
+        _reject_outcome_metadata(self.metadata)
         try:
             json.dumps(dict(self.metadata), sort_keys=True)
         except (TypeError, ValueError) as exc:
@@ -243,6 +261,34 @@ def _validate_component(value: str, name: str) -> None:
         raise ValidationError(
             f"{name} must contain only safe identifier characters"
         )
+
+
+def _reject_outcome_metadata(value: Any, *, path: str = "metadata") -> None:
+    """Reject hidden label/post-outcome fields while leaving source prose alone."""
+
+    if isinstance(value, Mapping):
+        for key, nested in value.items():
+            normalized = re.sub(r"[^a-z0-9]+", "_", str(key).casefold()).strip("_")
+            if normalized in _FORBIDDEN_OUTCOME_FIELDS or any(
+                normalized.startswith(f"{field}_")
+                or normalized.endswith(f"_{field}")
+                for field in _FORBIDDEN_OUTCOME_FIELDS
+            ):
+                raise ValidationError(
+                    f"raw info metadata contains forbidden outcome field: {path}.{key}"
+                )
+            _reject_outcome_metadata(nested, path=f"{path}.{key}")
+        return
+    if isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _reject_outcome_metadata(nested, path=f"{path}[{index}]")
+        return
+    if isinstance(value, str):
+        normalized = re.sub(r"[^a-z0-9]+", "_", value.casefold()).strip("_")
+        if normalized in _FORBIDDEN_OUTCOME_FIELDS:
+            raise ValidationError(
+                f"raw info metadata contains forbidden outcome marker: {path}"
+            )
 
 
 def _parse_datetime(value: Any) -> datetime:

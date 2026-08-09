@@ -129,8 +129,10 @@ research logic.
 - Locked Test: absent from ordinary fast/slow-loop calls and opened only for a
   separate human-approved acceptance test.
 
-All source reads remain point-in-time. Repeated as-of cases for one issuer must
-not cross dataset ownership boundaries.
+All source reads remain point-in-time. Every observation has a stable `case_id`
+distinct from `company_id`; prediction artifacts, label closures, tool access,
+and statistics use `case_id`. Repeated as-of cases for one issuer must not cross
+dataset ownership boundaries, and no two observations may share a `case_id`.
 
 ## Two-Stage Prediction and Labels
 
@@ -139,6 +141,15 @@ Stage 1 predicts whether the fixed future horizon reaches at least 2x:
 ```text
 is_surge = realized_max_multiple >= 2.0
 ```
+
+For the historical six-month contract, the baseline is the arithmetic mean of
+the last five complete trading-day adjusted closes strictly before the as-of
+timestamp. The future numerator is the maximum arithmetic mean of any complete
+five consecutive trading-day adjusted-close window after as-of and no later
+than six calendar months after as-of. Fewer than five valid baseline or future
+bars makes the case ineligible. This implements the user's “上涨至少 1 倍” as
+price reaching at least `2x`; it does not classify `1x-<2x` as a surge and it
+does not reward an isolated one-day spike.
 
 If predicted false, Stage 2 is omitted. If predicted true, the Predictor must
 choose one magnitude class:
@@ -254,9 +265,15 @@ Plan experiments, failure trajectories, and version-cloning tools. It stages
 `vNext` candidates and cannot overwrite stable files.
 
 Both agents receive domain tools only. All candidates are staged first; the
-orchestrator then checks schema, executability, leakage, evidence traceability,
-semantic duplication, and version progression. Only passing candidates are
-promoted, and the Registry version advances once after the batch.
+orchestrator then executes the candidate's non-empty point-in-time fixtures
+through the real candidate executor and checks expected canonical state, schema,
+leakage (including discovery-case aliases and fixture data), evidence
+traceability, semantic duplication, and version progression. Passing candidates
+are recorded as `validated_pending_human_approval`; validation alone never
+changes the stable Registry. A separate approval command binds reviewer identity
+to the exact candidate hash (spec + skill + tests). Only those exact approved
+hashes may be promoted, and the Registry version advances once after the approved
+batch.
 
 ## Persistence and Completion
 
@@ -272,8 +289,36 @@ all candidate records and trajectories
 ```
 
 Restore, reporting, and parent selection ignore artifacts above the pointer.
-The first v1 supports recovery of committed history and safely ignores staged
-partial rounds; exact mid-call distributed recovery is not claimed.
+On restart, an already staged plan, meta record, or checkpoint is reused only
+when its canonical JSON exactly matches the artifact currently being committed;
+a mismatch fails closed. The pointer remains the last write. Exact external
+responses are separately reusable only under their exact request hash.
+
+## Frozen Run and External-Call Contract
+
+Before external execution, the runner writes a secret-free frozen manifest that
+binds dataset/splits, Signal snapshot, fixed priors, role-model/provider routing,
+code revision, runtime limits, maximum attempts, and cumulative cost. API-key
+availability is recorded only as a boolean; secrets are never serialized.
+
+Every newly rendered request is persisted and recursively checked for outcome
+fields, future facts, company identity, and cross-case aliases before network
+I/O. The durable attempt ledger reserves an attempt and its conservative cost
+ceiling before a call, then records completion or failure. An exact-response
+cache is keyed by canonical request hash and is evidence of reuse, not evidence
+of round completion. Dry-run and preflight perform no external calls. Locked
+Test remains sealed from all ordinary commands.
+
+## Local Point-in-Time Migration
+
+Legacy cold-start cases, source documents, and adjusted-price artifacts are
+inputs to an explicit migration step, not implicit runtime databases. Migration
+must record source hashes, preserve `published_at/available_at`, recompute the
+current six-month five-day-smoothed `realized_max_multiple` label from adjusted
+prices, assign stable case ids, and materialize a reviewed issuer-disjoint split
+manifest. Older terminal-return labels cannot be reused as if they were the
+current label. Missing symbols/cases are reported and excluded, never silently
+imputed.
 
 ## V1 Non-Goals
 
@@ -295,7 +340,8 @@ partial rounds; exact mid-call distributed recovery is not claimed.
 5. Independent candidate sampling, fast-loop evaluation, `H_R`, and FIFO meta.
 6. Observed-policy Signal state statistics.
 7. Generic-Agent Signal Mining into candidate storage.
-8. Generic-Agent Signal Update plus validation and versioned promotion.
+8. Generic-Agent Signal Update, executable validation, human approval, and
+   versioned promotion.
 
 ## Testing
 
@@ -303,6 +349,7 @@ Tests must prove point-in-time reads, dynamic Signal selection, whole-batch
 reflection, mandatory prediction persistence before label access, two-stage
 metric math, complete Plan records, quality-diverse selection, independent N
 proposal calls, grounded FIFO updates, observed-policy counts, candidate
-isolation, promotion checks, frozen fast-loop definitions, locked-test
+isolation, executable candidate fixtures, exact-hash human promotion checks,
+frozen fast-loop definitions, locked-test
 isolation, runtime budgets, authoritative completion pointer behavior, and one
 offline end-to-end dual-loop cycle.

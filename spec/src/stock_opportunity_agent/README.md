@@ -39,6 +39,7 @@ src/stock_opportunity_agent/
     ralph_loop
     information_plan
     scheme_evolution
+    evolution_runtime
     playbooks
   scoring
   ranking
@@ -78,6 +79,7 @@ spec/src/stock_opportunity_agent/
   research/ralph_loop.md
   research/information_plan.md
   research/scheme_evolution.md
+  research/evolution_runtime.md
   research/playbooks.md
   scoring.md
   ranking.md

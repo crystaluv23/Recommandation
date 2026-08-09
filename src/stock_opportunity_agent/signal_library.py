@@ -720,6 +720,7 @@ class SignalRegistry:
             raise ValidationError(
                 "deterministic signal candidate cannot include LLM skill content"
             )
+        materialized_tests = [dict(item) for item in tests]
         version_dir = (
             self.candidate_root
             / spec.category
@@ -730,34 +731,125 @@ class SignalRegistry:
             existing = SignalSpec.from_dict(_read_json(version_dir / "spec.json"))
             if existing != spec:
                 raise ValidationError(f"conflicting signal candidate: {spec.ref}")
+            existing_skill_path = version_dir / "skill.md"
+            existing_skill = (
+                existing_skill_path.read_text(encoding="utf-8").strip()
+                if existing_skill_path.exists()
+                else None
+            )
+            if existing_skill != ((skill or "").strip() or None):
+                raise ValidationError(f"conflicting signal candidate skill: {spec.ref}")
+            if self.load_candidate_tests(spec.ref) != tuple(materialized_tests):
+                raise ValidationError(f"conflicting signal candidate tests: {spec.ref}")
+            if _read_json(version_dir / "candidate.json").get("origin") != origin:
+                raise ValidationError(f"conflicting signal candidate origin: {spec.ref}")
             return spec.ref
         version_dir.mkdir(parents=True)
         _atomic_write_json(version_dir / "spec.json", spec.to_dict())
-        _atomic_write_json(version_dir / "tests.json", {"tests": list(tests)})
+        _atomic_write_json(version_dir / "tests.json", {"tests": materialized_tests})
         _atomic_write_json(version_dir / "candidate.json", {"origin": origin})
         if skill is not None:
             (version_dir / "skill.md").write_text(skill.rstrip() + "\n", encoding="utf-8")
         return spec.ref
 
     def load_candidate(self, signal_ref: str) -> tuple[SignalSpec, str | None]:
-        signal_id, version = _parse_ref(signal_ref)
-        matches = list(
-            self.candidate_root.glob(
-                f"*/{signal_id}/v{version}/spec.json"
-            )
-        )
-        if len(matches) != 1:
-            raise ValidationError(f"unknown or ambiguous signal candidate: {signal_ref}")
-        spec = SignalSpec.from_dict(_read_json(matches[0]))
-        skill_path = matches[0].parent / "skill.md"
+        spec_path = self._candidate_spec_path(signal_ref)
+        spec = SignalSpec.from_dict(_read_json(spec_path))
+        skill_path = spec_path.parent / "skill.md"
         return spec, (
             skill_path.read_text(encoding="utf-8") if skill_path.exists() else None
         )
 
-    def promote_candidate(self, signal_ref: str) -> SignalSpec:
-        """Promote one already-validated candidate as an immutable version."""
+    def load_candidate_tests(
+        self, signal_ref: str
+    ) -> tuple[Mapping[str, Any], ...]:
+        """Load immutable candidate fixtures used by executable validation."""
+
+        tests = _read_json(
+            self._candidate_spec_path(signal_ref).parent / "tests.json"
+        ).get("tests", ())
+        if not isinstance(tests, list) or any(not isinstance(item, Mapping) for item in tests):
+            raise ValidationError(f"candidate tests must be a list of objects: {signal_ref}")
+        return tuple(dict(item) for item in tests)
+
+    def candidate_hash(self, signal_ref: str) -> str:
+        """Hash the exact staged spec, skill, and executable fixtures."""
 
         spec, skill = self.load_candidate(signal_ref)
+        payload = {
+            "spec": spec.to_dict(),
+            "skill": (skill.rstrip() if skill is not None else None),
+            "tests": list(self.load_candidate_tests(signal_ref)),
+        }
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+    def record_candidate_validation(
+        self,
+        signal_ref: str,
+        *,
+        candidate_hash: str,
+        accepted: bool,
+        reasons: Iterable[str],
+    ) -> None:
+        """Persist the machine result without changing the stable Registry."""
+
+        if candidate_hash != self.candidate_hash(signal_ref):
+            raise ValidationError("candidate changed before validation was recorded")
+        path = self._candidate_spec_path(signal_ref).parent / "validation.json"
+        _write_or_verify_json(
+            path,
+            {
+                "signal_ref": signal_ref,
+                "candidate_hash": candidate_hash,
+                "accepted": bool(accepted),
+                "status": (
+                    "validated_pending_human_approval" if accepted else "rejected"
+                ),
+                "reasons": [str(item) for item in reasons],
+            },
+        )
+
+    def approve_candidate(
+        self,
+        signal_ref: str,
+        *,
+        expected_candidate_hash: str,
+        approved_by: str,
+    ) -> None:
+        """Record explicit human approval for one exact validated candidate."""
+
+        if not approved_by.strip():
+            raise ValidationError("signal approval requires reviewer identity")
+        current_hash = self.candidate_hash(signal_ref)
+        if expected_candidate_hash != current_hash:
+            raise ValidationError("approved candidate hash does not match staged content")
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        validation = _read_json(candidate_dir / "validation.json")
+        if not validation.get("accepted") or validation.get("candidate_hash") != current_hash:
+            raise ValidationError("candidate requires matching successful validation")
+        _write_or_verify_json(
+            candidate_dir / "approval.json",
+            {
+                "signal_ref": signal_ref,
+                "candidate_hash": current_hash,
+                "approved_by": approved_by.strip(),
+                "decision": "approve_stable_signal_promotion",
+            },
+        )
+
+    def promote_candidate(self, signal_ref: str) -> SignalSpec:
+        """Promote one exact validated and human-approved immutable version."""
+
+        spec, skill = self.load_candidate(signal_ref)
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        current_hash = self.candidate_hash(signal_ref)
+        approval = _read_json(candidate_dir / "approval.json")
+        if (
+            approval.get("decision") != "approve_stable_signal_promotion"
+            or approval.get("candidate_hash") != current_hash
+        ):
+            raise ValidationError("candidate lacks matching human approval")
         tests_path = next(
             iter(
                 self.candidate_root.glob(
@@ -772,6 +864,15 @@ class SignalRegistry:
             {"promoted": True, "stable_registry_version_before_bump": self.version},
         )
         return spec
+
+    def _candidate_spec_path(self, signal_ref: str) -> Path:
+        signal_id, version = _parse_ref(signal_ref)
+        matches = list(
+            self.candidate_root.glob(f"*/{signal_id}/v{version}/spec.json")
+        )
+        if len(matches) != 1:
+            raise ValidationError(f"unknown or ambiguous signal candidate: {signal_ref}")
+        return matches[0]
 
     def latest_spec(self, signal_id: str) -> SignalSpec:
         spec = self._latest_spec_or_none(signal_id)
@@ -1091,3 +1192,14 @@ def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
     finally:
         if os.path.exists(temporary):
             os.unlink(temporary)
+
+
+def _write_or_verify_json(path: Path, value: Mapping[str, Any]) -> None:
+    """Preserve an immutable governance artifact or verify an exact replay."""
+
+    expected = json.loads(json.dumps(dict(value), sort_keys=True))
+    if path.exists():
+        if _read_json(path) != expected:
+            raise ValidationError(f"conflicting immutable JSON artifact: {path}")
+        return
+    _atomic_write_json(path, expected)

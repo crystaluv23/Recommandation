@@ -10,12 +10,12 @@ import random
 import re
 import tempfile
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
 
-from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.llm.agent import (
     AgentUsage,
     DomainTool,
@@ -38,6 +38,21 @@ from stock_opportunity_agent.signal_library import (
 
 T = TypeVar("T")
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_.:-]*$")
+_FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
+    {
+        "ground_truth",
+        "outcome",
+        "outcome_label",
+        "label",
+        "is_surge",
+        "magnitude_class",
+        "realized_return",
+        "realized_max_multiple",
+        "future_price",
+        "future_return",
+        "post_outcome",
+    }
+)
 
 
 class ResearchDecision(str, Enum):
@@ -92,6 +107,16 @@ class BasicInfoPolicy:
             raise ValidationError("basic info policy requires non-empty fields")
         if len(set(self.fields)) != len(self.fields):
             raise ValidationError("basic info policy fields must be unique")
+        forbidden = sorted(
+            field_name
+            for field_name in self.fields
+            if _is_forbidden_basic_info_field(field_name)
+        )
+        if forbidden:
+            raise ValidationError(
+                "basic info policy cannot request outcome fields: "
+                + ", ".join(forbidden)
+            )
         object.__setattr__(self, "fields", tuple(self.fields))
 
     def to_dict(self) -> dict[str, Any]:
@@ -525,9 +550,15 @@ class ExecutionTrajectory:
     self_reflection: PredictionSelfReflection
     stop_reason: RuntimeStopReason
     usage: RuntimeUsage
+    case_id: str = ""
 
     def __post_init__(self) -> None:
         _validate_id(self.company_id, "company_id")
+        resolved_case_id = self.case_id or _default_case_id(
+            self.company_id, self.prediction_time
+        )
+        _validate_id(resolved_case_id, "case_id")
+        object.__setattr__(self, "case_id", resolved_case_id)
         if not self.prediction_ref.strip():
             raise ValidationError("execution trajectory requires persisted prediction ref")
         object.__setattr__(self, "basic_info", dict(self.basic_info))
@@ -538,6 +569,7 @@ class ExecutionTrajectory:
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "case_id": self.case_id,
             "company_id": self.company_id,
             "prediction_time": self.prediction_time.isoformat(),
             "basic_info": dict(self.basic_info),
@@ -556,6 +588,7 @@ class ExecutionTrajectory:
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ExecutionTrajectory":
         return cls(
+            case_id=str(data.get("case_id", "")),
             company_id=str(data["company_id"]),
             prediction_time=datetime.fromisoformat(str(data["prediction_time"])),
             basic_info=dict(data.get("basic_info", {})),
@@ -584,6 +617,7 @@ def execute_information_plan(
     *,
     plan: InformationPlan,
     company_id: str,
+    case_id: str | None = None,
     company_basic_source: Mapping[str, Any],
     prediction_time: datetime,
     signal_registry: FrozenSignalRegistry,
@@ -601,6 +635,8 @@ def execute_information_plan(
 
     _validate_id(company_id, "company_id")
     _require_aware_datetime(prediction_time, "prediction_time")
+    resolved_case_id = case_id or _default_case_id(company_id, prediction_time)
+    _validate_id(resolved_case_id, "case_id")
     basic_info = {
         field_name: company_basic_source.get(field_name)
         for field_name in plan.basic_info_policy.fields
@@ -687,6 +723,7 @@ def execute_information_plan(
     model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
 
     return ExecutionTrajectory(
+        case_id=resolved_case_id,
         company_id=company_id,
         prediction_time=prediction_time,
         basic_info=basic_info,
@@ -890,16 +927,23 @@ class EvolutionCase:
     prediction_time: datetime
     basic_info: Mapping[str, Any]
     ground_truth: GroundTruth
+    case_id: str = ""
 
     def __post_init__(self) -> None:
         _validate_id(self.company_id, "company_id")
         _require_aware_datetime(self.prediction_time, "prediction_time")
+        resolved_case_id = self.case_id or _default_case_id(
+            self.company_id, self.prediction_time
+        )
+        _validate_id(resolved_case_id, "case_id")
+        object.__setattr__(self, "case_id", resolved_case_id)
         object.__setattr__(self, "basic_info", dict(self.basic_info))
 
     def to_discovery_dict(self) -> dict[str, Any]:
         """Return label-visible data only for the Discovery workspace."""
 
         return {
+            "case_id": self.case_id,
             "company_id": self.company_id,
             "prediction_time": self.prediction_time.isoformat(),
             "basic_info": dict(self.basic_info),
@@ -922,6 +966,7 @@ class EvolutionDataset:
         )
         object.__setattr__(self, "locked_test", tuple(self.locked_test))
         owners: dict[str, str] = {}
+        seen_case_ids: set[str] = set()
         for split_name, cases in (
             ("discovery", self.discovery),
             ("evolution_validation", self.evolution_validation),
@@ -930,6 +975,9 @@ class EvolutionDataset:
             if not cases:
                 raise ValidationError(f"dataset split {split_name} must not be empty")
             for case in cases:
+                if case.case_id in seen_case_ids:
+                    raise ValidationError(f"duplicate evolution case_id: {case.case_id}")
+                seen_case_ids.add(case.case_id)
                 prior = owners.setdefault(case.company_id, split_name)
                 if prior != split_name:
                     raise ValidationError(
@@ -1433,7 +1481,6 @@ class RuntimePlanEvaluator:
     ) -> tuple[ExecutionTrajectory, ...]:
         if not cases:
             raise ValidationError("evolution validation cases must not be empty")
-        truths = {case.company_id: case.ground_truth for case in cases}
         executor = SignalExecutor(
             signal_registry,
             self.raw_info_store,
@@ -1442,7 +1489,7 @@ class RuntimePlanEvaluator:
         )
         trajectories: list[ExecutionTrajectory] = []
         for case in cases:
-            case_path = self.prediction_root / plan.plan_id / f"{case.company_id}.json"
+            case_path = self.prediction_root / plan.plan_id / f"{case.case_id}.json"
 
             def sink(
                 company_id: str,
@@ -1451,10 +1498,12 @@ class RuntimePlanEvaluator:
                 prediction: BlindPrediction,
                 *,
                 path: Path = case_path,
+                expected_case_id: str = case.case_id,
             ) -> str:
-                _atomic_write_json(
+                _write_or_verify_json(
                     path,
                     {
+                        "case_id": expected_case_id,
                         "company_id": company_id,
                         "prediction_time": prediction_time.isoformat(),
                         "final_context": dict(final_context),
@@ -1463,15 +1512,24 @@ class RuntimePlanEvaluator:
                 )
                 return str(path)
 
-            def truth_provider(company_id: str, *, path: Path = case_path) -> GroundTruth:
+            def truth_provider(
+                company_id: str,
+                *,
+                path: Path = case_path,
+                expected_company_id: str = case.company_id,
+                truth: GroundTruth = case.ground_truth,
+            ) -> GroundTruth:
                 if not path.exists():
                     raise ValidationError("ground truth requested before prediction persistence")
-                return truths[company_id]
+                if company_id != expected_company_id:
+                    raise ValidationError("ground truth requested for the wrong case")
+                return truth
 
             trajectories.append(
                 execute_information_plan(
                     plan=plan,
                     company_id=case.company_id,
+                    case_id=case.case_id,
                     company_basic_source=case.basic_info,
                     prediction_time=case.prediction_time,
                     signal_registry=signal_registry,
@@ -1521,8 +1579,9 @@ class EvolutionWorkspace:
         records: tuple[PlanRecord, ...],
         meta_entry: RoundMetaEntry,
         signal_registry_hash: str,
+        run_contract_hash: str = "",
     ) -> None:
-        """Write all round artifacts, checkpoint, then advance one pointer last."""
+        """Write or verify exact staged artifacts, then advance one pointer last."""
 
         expected = self.last_completed_round + 1
         if round_id != expected:
@@ -1539,17 +1598,15 @@ class EvolutionWorkspace:
 
         for record in records:
             path = self.plans_root / record.plan_id / "record.json"
-            if path.exists():
-                raise ValidationError(f"committed plan artifact already exists: {record.plan_id}")
-            _atomic_write_json(path, record.to_dict())
-        _atomic_write_json(
+            _write_or_verify_json(path, record.to_dict())
+        _write_or_verify_json(
             self.meta_root / f"round-{round_id:04d}.json",
             meta_entry.to_dict(),
         )
         checkpoint_path = (
             self.experiments_root / f"round-{round_id:04d}" / "checkpoint.json"
         )
-        _atomic_write_json(
+        _write_or_verify_json(
             checkpoint_path,
             {
                 "round_id": round_id,
@@ -1558,6 +1615,7 @@ class EvolutionWorkspace:
                     self.meta_root / f"round-{round_id:04d}.json"
                 ),
                 "signal_registry_hash": signal_registry_hash,
+                "run_contract_hash": run_contract_hash,
             },
         )
         _atomic_write_json(
@@ -1568,7 +1626,7 @@ class EvolutionWorkspace:
             },
         )
 
-    def restore_archive(self) -> PlanArchive:
+    def restore_archive(self, *, expected_run_contract_hash: str | None = None) -> PlanArchive:
         """Load only Plans reachable from authoritative completed checkpoints."""
 
         records: list[PlanRecord] = []
@@ -1580,6 +1638,11 @@ class EvolutionWorkspace:
             )
             if int(checkpoint["round_id"]) != round_id:
                 raise ValidationError("round checkpoint identity mismatch")
+            if (
+                expected_run_contract_hash is not None
+                and checkpoint.get("run_contract_hash") != expected_run_contract_hash
+            ):
+                raise ValidationError("round checkpoint run contract mismatch")
             for plan_id in checkpoint.get("plan_ids", ()):
                 records.append(
                     PlanRecord.from_dict(
@@ -1649,6 +1712,7 @@ class PlanEvolutionEngine:
         random_k: int = 2,
         similarity_threshold: float = 0.9,
         rng: random.Random | None = None,
+        run_contract_hash: str = "",
     ) -> None:
         if candidates_per_round < 1:
             raise ValidationError("candidates_per_round must be positive")
@@ -1670,6 +1734,7 @@ class PlanEvolutionEngine:
         self.random_k = random_k
         self.similarity_threshold = similarity_threshold
         self.rng = rng or random.Random()
+        self.run_contract_hash = run_contract_hash
         for committed_record in self.archive.records:
             self._record_signal_statistics(committed_record)
 
@@ -1750,6 +1815,7 @@ class PlanEvolutionEngine:
             records=record_tuple,
             meta_entry=meta_entry,
             signal_registry_hash=signal_snapshot.registry_hash,
+            run_contract_hash=self.run_contract_hash,
         )
         for record in record_tuple:
             self.archive.add(record)
@@ -1769,7 +1835,7 @@ class PlanEvolutionEngine:
                     observation_id = ":".join(
                         (
                             record.plan_id,
-                            trajectory.company_id,
+                            trajectory.case_id,
                             str(round_index),
                             str(result_index),
                             result.ref,
@@ -1806,6 +1872,8 @@ class SignalCandidateValidation:
     signal_ref: str
     accepted: bool
     reasons: tuple[str, ...]
+    candidate_hash: str = ""
+    executed_tests: int = 0
 
 
 class SignalCandidateValidator:
@@ -1817,6 +1885,7 @@ class SignalCandidateValidator:
         *,
         llm_runner: LLMSignalRunner | None,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
+        forbidden_identity_terms: Iterable[str] = (),
     ) -> None:
         self.registry = registry
         self.llm_runner = llm_runner
@@ -1824,14 +1893,27 @@ class SignalCandidateValidator:
             **default_deterministic_signal_functions(),
             **dict(deterministic_functions or {}),
         }
+        self.forbidden_identity_terms = tuple(
+            sorted(
+                {
+                    str(item).strip()
+                    for item in forbidden_identity_terms
+                    if len(str(item).strip()) >= 3
+                },
+                key=len,
+                reverse=True,
+            )
+        )
 
     def validate(
         self,
         spec: SignalSpec,
         *,
         skill: str | None,
+        tests: Iterable[Mapping[str, Any]],
     ) -> SignalCandidateValidation:
         reasons: list[str] = []
+        materialized_tests = tuple(dict(item) for item in tests)
         try:
             current = self.registry.latest_spec(spec.signal_id)
         except ValidationError:
@@ -1855,6 +1937,7 @@ class SignalCandidateValidator:
             reasons.append("candidate weakens required evidence traceability")
         serialized = json.dumps(spec.to_dict(), sort_keys=True).casefold()
         serialized += " " + (skill or "").casefold()
+        serialized += " " + json.dumps(materialized_tests, sort_keys=True).casefold()
         for phrase in (
             "ground truth",
             "outcome label",
@@ -1864,6 +1947,12 @@ class SignalCandidateValidator:
         ):
             if phrase in serialized:
                 reasons.append(f"obvious leakage phrase: {phrase}")
+        for identity in self.forbidden_identity_terms:
+            if re.search(
+                rf"(?<![a-z0-9]){re.escape(identity.casefold())}(?![a-z0-9])",
+                serialized,
+            ):
+                reasons.append(f"discovery identity leaked into candidate: {identity}")
         normalized = _normalize_semantics(spec.description)
         for card in self.registry.list_signal_cards():
             if card.signal_id == spec.signal_id:
@@ -1871,11 +1960,98 @@ class SignalCandidateValidator:
             if _normalize_semantics(card.description) == normalized:
                 reasons.append(f"semantic duplicate of stable signal {card.signal_id}")
                 break
+        executed_tests = 0
+        if not materialized_tests:
+            reasons.append("candidate requires non-empty executable fixtures")
+        elif not reasons:
+            for index, fixture in enumerate(materialized_tests):
+                try:
+                    self._execute_fixture(spec, skill, fixture, index=index)
+                    executed_tests += 1
+                except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                    reasons.append(f"fixture {index + 1} failed: {exc}")
         return SignalCandidateValidation(
             signal_ref=spec.ref,
             accepted=not reasons,
             reasons=tuple(reasons),
+            executed_tests=executed_tests,
         )
+
+    def _execute_fixture(
+        self,
+        spec: SignalSpec,
+        skill: str | None,
+        fixture: Mapping[str, Any],
+        *,
+        index: int,
+    ) -> None:
+        name = str(fixture.get("name", "")).strip()
+        if not name:
+            raise ValidationError("fixture name is required")
+        expected = SignalValue(str(fixture["expected"]))
+        as_of = datetime.fromisoformat(
+            str(fixture.get("as_of", "2025-01-01T00:00:00+00:00"))
+        )
+        _require_aware_datetime(as_of, "candidate fixture as_of")
+        company_id = str(fixture.get("company_id", f"candidate_fixture_{index + 1}"))
+        _validate_id(company_id, "candidate fixture company_id")
+        documents_data = fixture.get("documents")
+        if not isinstance(documents_data, list) or not documents_data:
+            raise ValidationError("fixture requires point-in-time documents")
+        documents: list[RawInfoDocument] = []
+        for document_index, raw_document in enumerate(documents_data):
+            if not isinstance(raw_document, Mapping):
+                raise ValidationError("fixture document must be an object")
+            published_at = datetime.fromisoformat(
+                str(raw_document.get("published_at", as_of.isoformat()))
+            )
+            available_at = datetime.fromisoformat(
+                str(raw_document.get("available_at", published_at.isoformat()))
+            )
+            source_type = str(raw_document["source_type"])
+            if source_type not in spec.source_types:
+                raise ValidationError("fixture source_type is outside candidate retrieval")
+            documents.append(
+                RawInfoDocument.create(
+                    document_id=str(
+                        raw_document.get(
+                            "document_id",
+                            f"candidate_fixture_{index + 1}_{document_index + 1}",
+                        )
+                    ),
+                    company_id=company_id,
+                    source_type=source_type,
+                    published_at=published_at,
+                    available_at=available_at,
+                    content=str(raw_document["content"]),
+                    metadata=dict(raw_document.get("metadata", {})),
+                )
+            )
+        snapshot_payload = {
+            "spec": spec.to_dict(),
+            "skill": (skill or "").rstrip(),
+        }
+        snapshot_hash = hashlib.sha256(
+            json.dumps(snapshot_payload, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+        executor = SignalExecutor(
+            FrozenSignalRegistry(
+                version=0,
+                registry_hash=snapshot_hash,
+                specs=(spec,),
+                skills=({spec.ref: skill} if skill is not None else {}),
+            ),
+            RawInfoStore(documents=documents),
+            deterministic_functions=self.deterministic_functions,
+            llm_runner=self.llm_runner,
+        )
+        result = executor.execute_batch(
+            (spec.ref,), company_id=company_id, as_of=as_of
+        ).results[0]
+        if result.value is not expected:
+            raise ValidationError(
+                f"expected {expected.value}, received {result.value.value}"
+            )
 
 
 @dataclass(frozen=True)
@@ -1885,6 +2061,7 @@ class SlowLoopResult:
     mined_candidates: tuple[str, ...]
     updated_candidates: tuple[str, ...]
     promoted: tuple[str, ...]
+    validated_pending_approval: Mapping[str, str]
     rejected: Mapping[str, tuple[str, ...]]
     registry_version: int
 
@@ -1923,6 +2100,7 @@ class SignalEvolutionEngine:
             registry,
             llm_runner=llm_signal_runner,
             deterministic_functions=deterministic_functions,
+            forbidden_identity_terms=_discovery_identity_terms(discovery_cases),
         )
 
     def run_cycle(self) -> SlowLoopResult:
@@ -1951,11 +2129,20 @@ class SignalEvolutionEngine:
         all_refs = _ordered_unique([*mined, *updated])
 
         validations: dict[str, SignalCandidateValidation] = {}
-        accepted_specs: list[SignalSpec] = []
+        accepted_hashes: dict[str, str] = {}
         semantic_seen: dict[str, str] = {}
         for signal_ref in all_refs:
             spec, skill = self.registry.load_candidate(signal_ref)
-            validation = self.validator.validate(spec, skill=skill)
+            tests = self.registry.load_candidate_tests(signal_ref)
+            candidate_hash = self.registry.candidate_hash(signal_ref)
+            validation = self.validator.validate(spec, skill=skill, tests=tests)
+            validation = SignalCandidateValidation(
+                signal_ref=validation.signal_ref,
+                accepted=validation.accepted,
+                reasons=validation.reasons,
+                candidate_hash=candidate_hash,
+                executed_tests=validation.executed_tests,
+            )
             semantic = _normalize_semantics(spec.description)
             prior_ref = semantic_seen.get(semantic)
             if validation.accepted and prior_ref is not None:
@@ -1963,27 +2150,72 @@ class SignalEvolutionEngine:
                     signal_ref=signal_ref,
                     accepted=False,
                     reasons=(f"semantic duplicate of candidate {prior_ref}",),
+                    candidate_hash=candidate_hash,
+                    executed_tests=validation.executed_tests,
                 )
             if validation.accepted:
                 semantic_seen[semantic] = signal_ref
-                accepted_specs.append(spec)
+                accepted_hashes[signal_ref] = candidate_hash
             validations[signal_ref] = validation
-
-        promoted: list[str] = []
-        for spec in accepted_specs:
-            self.registry.promote_candidate(spec.ref)
-            promoted.append(spec.ref)
-        if promoted:
-            self.registry.bump_version()
+            self.registry.record_candidate_validation(
+                signal_ref,
+                candidate_hash=candidate_hash,
+                accepted=validation.accepted,
+                reasons=validation.reasons,
+            )
         return SlowLoopResult(
             mined_candidates=tuple(mined),
             updated_candidates=tuple(updated),
-            promoted=tuple(promoted),
+            promoted=(),
+            validated_pending_approval=accepted_hashes,
             rejected={
                 signal_ref: validation.reasons
                 for signal_ref, validation in validations.items()
                 if not validation.accepted
             },
+            registry_version=self.registry.version,
+        )
+
+    def promote_approved(
+        self,
+        pending: SlowLoopResult,
+        *,
+        approvals: Mapping[str, str],
+        approved_by: str,
+    ) -> SlowLoopResult:
+        """Promote only caller-selected refs whose reviewed hashes are exact."""
+
+        if not approvals:
+            raise ValidationError("promotion requires at least one explicit approval")
+        unknown = set(approvals) - set(pending.validated_pending_approval)
+        if unknown:
+            raise ValidationError(
+                "approval contains non-validated candidate refs: "
+                + ", ".join(sorted(unknown))
+            )
+        promoted: list[str] = []
+        for signal_ref, expected_hash in approvals.items():
+            if pending.validated_pending_approval[signal_ref] != expected_hash:
+                raise ValidationError("approval hash differs from validation result")
+            self.registry.approve_candidate(
+                signal_ref,
+                expected_candidate_hash=expected_hash,
+                approved_by=approved_by,
+            )
+            self.registry.promote_candidate(signal_ref)
+            promoted.append(signal_ref)
+        if promoted:
+            self.registry.bump_version()
+        return SlowLoopResult(
+            mined_candidates=pending.mined_candidates,
+            updated_candidates=pending.updated_candidates,
+            promoted=tuple(promoted),
+            validated_pending_approval={
+                ref: value
+                for ref, value in pending.validated_pending_approval.items()
+                if ref not in approvals
+            },
+            rejected=pending.rejected,
             registry_version=self.registry.version,
         )
 
@@ -2034,12 +2266,12 @@ class SignalEvolutionEngine:
             ),
             DomainTool(
                 "search_raw_info",
-                "Search point-in-time Raw Info for one Discovery company.",
+                "Search point-in-time Raw Info for one exact Discovery case.",
                 self._search_raw_info_tool,
             ),
             DomainTool(
                 "load_raw_document",
-                "Load one Discovery Raw Info document by exact id.",
+                "Load one document under one exact Discovery case cutoff.",
                 self._load_discovery_raw_document,
             ),
             DomainTool(
@@ -2094,7 +2326,7 @@ class SignalEvolutionEngine:
             ),
             DomainTool(
                 "search_raw_info",
-                "Search point-in-time Raw Info for a Discovery company.",
+                "Search point-in-time Raw Info for one exact Discovery case.",
                 self._search_raw_info_tool,
             ),
             DomainTool(
@@ -2117,39 +2349,44 @@ class SignalEvolutionEngine:
 
     def _search_raw_info_tool(
         self,
-        company_id: str,
+        case_id: str,
         as_of: str,
         source_types: list[str] | None = None,
         query: str | None = None,
     ) -> list[dict[str, Any]]:
-        cases_by_id = {case.company_id: case for case in self.discovery_cases}
-        if company_id not in cases_by_id:
-            raise ValidationError("Signal Agent may search only Discovery companies")
+        cases_by_id = {case.case_id: case for case in self.discovery_cases}
+        if case_id not in cases_by_id:
+            raise ValidationError("Signal Agent may search only exact Discovery cases")
+        case = cases_by_id[case_id]
         requested_as_of = datetime.fromisoformat(as_of)
         _require_aware_datetime(requested_as_of, "raw info tool as_of")
-        if requested_as_of > cases_by_id[company_id].prediction_time:
+        if requested_as_of > case.prediction_time:
             raise ValidationError(
                 "Signal Agent cannot search after the Discovery prediction time"
             )
         return [
             document.to_dict()
             for document in self.raw_info_store.search(
-                company_id,
+                case.company_id,
                 as_of=requested_as_of,
                 source_types=source_types,
                 query=query,
             )
         ]
 
-    def _load_discovery_raw_document(self, document_id: str) -> dict[str, Any]:
+    def _load_discovery_raw_document(
+        self, case_id: str, document_id: str
+    ) -> dict[str, Any]:
         document = self.raw_info_store.load(str(document_id))
-        cases_by_id = {case.company_id: case for case in self.discovery_cases}
+        cases_by_id = {case.case_id: case for case in self.discovery_cases}
         try:
-            case = cases_by_id[document.company_id]
+            case = cases_by_id[str(case_id)]
         except KeyError as exc:
             raise ValidationError(
-                "Signal Agent may load documents only for Discovery companies"
+                "Signal Agent may load documents only for exact Discovery cases"
             ) from exc
+        if document.company_id != case.company_id:
+            raise ValidationError("raw document belongs to a different Discovery case")
         return self.raw_info_store.load(
             document.document_id,
             as_of=case.prediction_time,
@@ -2201,7 +2438,11 @@ class SignalEvolutionEngine:
 
     def _run_signal_tests_tool(self, signal_ref: str) -> dict[str, Any]:
         spec, skill = self.registry.load_candidate(str(signal_ref))
-        validation = self.validator.validate(spec, skill=skill)
+        validation = self.validator.validate(
+            spec,
+            skill=skill,
+            tests=self.registry.load_candidate_tests(str(signal_ref)),
+        )
         return {
             "signal_ref": signal_ref,
             "accepted": validation.accepted,
@@ -2335,6 +2576,45 @@ def _normalize_semantics(value: str) -> str:
     return " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
 
 
+def _normalize_field_name(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", value.casefold()).strip("_")
+
+
+def _is_forbidden_basic_info_field(value: str) -> bool:
+    normalized = _normalize_field_name(value)
+    return normalized in _FORBIDDEN_BASIC_INFO_FIELDS or any(
+        normalized.startswith(f"{field}_") or normalized.endswith(f"_{field}")
+        for field in _FORBIDDEN_BASIC_INFO_FIELDS
+    )
+
+
+def _discovery_identity_terms(cases: Iterable[EvolutionCase]) -> tuple[str, ...]:
+    identity_keys = {
+        "company_id",
+        "company_name",
+        "ticker",
+        "symbol",
+        "identity_aliases",
+    }
+    terms: set[str] = set()
+    for case in cases:
+        terms.add(case.company_id)
+        for key, value in case.basic_info.items():
+            if key not in identity_keys:
+                continue
+            if isinstance(value, str):
+                terms.add(value)
+            elif isinstance(value, Iterable) and not isinstance(value, Mapping):
+                terms.update(str(item) for item in value)
+    return tuple(sorted((item for item in terms if item.strip()), key=len, reverse=True))
+
+
+def _default_case_id(company_id: str, prediction_time: datetime) -> str:
+    _require_aware_datetime(prediction_time, "prediction_time")
+    timestamp = prediction_time.astimezone(timezone.utc).strftime("%Y%m%dt%H%M%sz")
+    return f"{company_id}:{timestamp}"
+
+
 def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
     normalized_aliases = sorted(
         {alias.strip() for alias in aliases if alias and alias.strip()},
@@ -2417,3 +2697,15 @@ def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
     finally:
         if os.path.exists(temporary):
             os.unlink(temporary)
+
+
+def _write_or_verify_json(path: Path, value: Mapping[str, Any]) -> None:
+    """Reuse a crash-staged JSON object only when its canonical value is exact."""
+
+    expected = json.loads(json.dumps(dict(value), sort_keys=True))
+    if path.exists():
+        actual = _read_json(path)
+        if actual != expected:
+            raise ValidationError(f"conflicting staged evolution artifact: {path}")
+        return
+    _atomic_write_json(path, expected)

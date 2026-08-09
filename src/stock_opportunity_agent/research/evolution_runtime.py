@@ -1,0 +1,2127 @@
+"""Frozen run, external-call, cache, ledger, and local-data preflight controls."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import platform
+import re
+import subprocess
+import tempfile
+from calendar import monthrange
+from dataclasses import dataclass, field
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any, Iterable, Mapping, Protocol
+
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.llm import ModelClientSettings, RegisteredModel, get_model
+from stock_opportunity_agent.llm.agent import (
+    AgentModel,
+    AgentRequest,
+    AgentTurn,
+    AgentUsage,
+    GenericAgent,
+    ToolCall,
+)
+from stock_opportunity_agent.llm.openai import ChatMessage
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.scheme_evolution import (
+    AgentStep,
+    BlindPrediction,
+    DEFAULT_EVOLUTION_PRIORS,
+    DualLoopEvolutionEngine,
+    DualLoopResult,
+    EvolutionCase,
+    EvolutionWorkspace,
+    GroundTruth,
+    InformationPlan,
+    PlanMetrics,
+    PlanArchive,
+    PlanEvolutionEngine,
+    PlanMetaMemory,
+    PlanRecord,
+    PlanReflection,
+    PredictionSelfReflection,
+    ResearchState,
+    RoundMetaEntry,
+    RuntimeLimits,
+    RuntimePlanEvaluator,
+    SignalEvolutionEngine,
+    default_information_plan,
+)
+from stock_opportunity_agent.signal_library import (
+    FrozenSignalRegistry,
+    SignalRegistry,
+    SignalBatchResult,
+    SignalResult,
+    SignalSpec,
+)
+
+
+_FORBIDDEN_OUTCOME_KEYS = frozenset(
+    {
+        "ground_truth",
+        "outcome",
+        "outcome_label",
+        "label",
+        "is_surge",
+        "magnitude_class",
+        "realized_return",
+        "realized_max_multiple",
+        "future_price",
+        "future_return",
+        "post_outcome",
+    }
+)
+
+
+@dataclass(frozen=True)
+class ArtifactSummary:
+    """Secret-free identity and shape of one local input artifact."""
+
+    path: str
+    sha256: str
+    size_bytes: int
+    schema_version: str | None
+    facts: Mapping[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "path": self.path,
+            "sha256": self.sha256,
+            "size_bytes": self.size_bytes,
+            "schema_version": self.schema_version,
+            "facts": dict(self.facts),
+        }
+
+
+@dataclass(frozen=True)
+class LocalEvolutionInventory:
+    """Current local evidence for a future reviewed dataset migration."""
+
+    cases: ArtifactSummary
+    documents: ArtifactSummary
+    adjusted_prices: ArtifactSummary
+    compatible_case_count: int
+    incompatible_label_reason: str
+    migration_ready: bool
+    blockers: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "local-evolution-inventory-v1",
+            "cases": self.cases.to_dict(),
+            "documents": self.documents.to_dict(),
+            "adjusted_prices": self.adjusted_prices.to_dict(),
+            "compatible_case_count": self.compatible_case_count,
+            "legacy_labels_compatible": False,
+            "incompatible_label_reason": self.incompatible_label_reason,
+            "migration_ready": self.migration_ready,
+            "blockers": list(self.blockers),
+            "locked_test_accessed": False,
+            "external_calls": 0,
+        }
+
+    @property
+    def inventory_hash(self) -> str:
+        return _canonical_hash(self.to_dict())
+
+
+@dataclass(frozen=True)
+class RawInfoMigrationReport:
+    """Auditable outcome of a label-free legacy-to-RawInfo migration."""
+
+    raw_info_root: str
+    source_inventory_hash: str
+    source_document_count: int
+    migrated_source_documents: int
+    migrated_market_snapshots: int
+    appended_source_documents: int
+    appended_market_snapshots: int
+    skipped_empty_documents: int
+    cases_without_price_history: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "legacy-raw-info-migration-v1",
+            "raw_info_root": self.raw_info_root,
+            "source_inventory_hash": self.source_inventory_hash,
+            "source_document_count": self.source_document_count,
+            "migrated_source_documents": self.migrated_source_documents,
+            "migrated_market_snapshots": self.migrated_market_snapshots,
+            "appended_source_documents": self.appended_source_documents,
+            "appended_market_snapshots": self.appended_market_snapshots,
+            "skipped_empty_documents": self.skipped_empty_documents,
+            "cases_without_price_history": list(self.cases_without_price_history),
+            "labels_migrated": False,
+            "future_prices_migrated": False,
+            "locked_test_accessed": False,
+            "external_calls": 0,
+        }
+
+
+@dataclass(frozen=True)
+class DatasetProposalReport:
+    """Label/split proposal that remains inactive until exact human approval."""
+
+    manifest_path: str
+    manifest_hash: str
+    eligible_case_count: int
+    excluded_case_count: int
+    split_case_counts: Mapping[str, int]
+    split_issuer_counts: Mapping[str, int]
+    split_surge_counts: Mapping[str, int]
+    approval_status: str = "proposal_only_pending_human_review"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "evolution-dataset-proposal-report-v1",
+            "manifest_path": self.manifest_path,
+            "manifest_hash": self.manifest_hash,
+            "eligible_case_count": self.eligible_case_count,
+            "excluded_case_count": self.excluded_case_count,
+            "split_case_counts": dict(self.split_case_counts),
+            "split_issuer_counts": dict(self.split_issuer_counts),
+            "split_surge_counts": dict(self.split_surge_counts),
+            "approval_status": self.approval_status,
+            "locked_test_accessed": False,
+            "external_calls": 0,
+        }
+
+
+def filter_case_price_history(
+    *,
+    cases_path: str | Path,
+    full_price_archive_path: str | Path,
+    output_path: str | Path,
+) -> ArtifactSummary:
+    """Stream a large local archive and retain only historical-case symbols."""
+
+    cases_data = _read_json(Path(cases_path))
+    symbols = {
+        symbol
+        for row in cases_data.get("cases", ())
+        if (symbol := _case_symbol(row)) is not None
+    }
+    if not symbols:
+        raise ValidationError("historical cases contain no symbols")
+    metadata, selected = _stream_selected_price_history(
+        Path(full_price_archive_path), symbols
+    )
+    missing = sorted(symbols - set(selected))
+    payload = {
+        "schema_version": "scheme-evolution-adjusted-prices-v1",
+        "source": metadata.get("source") or "massive",
+        "start_date": metadata.get("start_date"),
+        "end_date": metadata.get("end_date"),
+        "requested_symbol_count": len(symbols),
+        "priced_symbol_count": len(selected),
+        "failed_symbols": {symbol: "missing_from_local_archive" for symbol in missing},
+        "case_artifact": {
+            "path": str(Path(cases_path).resolve()),
+            "sha256": _sha256_file(Path(cases_path)),
+        },
+        "source_archive": {
+            "path": str(Path(full_price_archive_path).resolve()),
+            "sha256": _sha256_file(Path(full_price_archive_path)),
+        },
+        "bars_by_symbol": {symbol: selected[symbol] for symbol in sorted(selected)},
+    }
+    destination = Path(output_path)
+    _write_or_verify_json(destination, payload)
+    return ArtifactSummary(
+        path=str(destination.resolve()),
+        sha256=_sha256_file(destination),
+        size_bytes=destination.stat().st_size,
+        schema_version="scheme-evolution-adjusted-prices-v1",
+        facts={
+            "requested_symbol_count": len(symbols),
+            "priced_symbol_count": len(selected),
+            "failed_symbols": missing,
+            "bar_count": sum(len(rows) for rows in selected.values()),
+            "start_date": payload["start_date"],
+            "end_date": payload["end_date"],
+        },
+    )
+
+
+def inventory_local_evolution_inputs(
+    *,
+    cases_path: str | Path,
+    documents_path: str | Path,
+    adjusted_prices_path: str | Path,
+) -> LocalEvolutionInventory:
+    """Inspect actual local point-in-time artifacts without opening Locked Test."""
+
+    case_path = Path(cases_path)
+    document_path = Path(documents_path)
+    price_path = Path(adjusted_prices_path)
+    cases_data = _read_json(case_path)
+    documents_data = _read_json(document_path)
+    prices_data = _read_json(price_path)
+
+    cases = cases_data.get("cases", ())
+    if not isinstance(cases, list):
+        raise ValidationError("historical case artifact cases must be a list")
+    case_symbols: set[str] = set()
+    as_of_dates: list[str] = []
+    for row in cases:
+        if not isinstance(row, Mapping):
+            raise ValidationError("historical case row must be an object")
+        packet = row.get("packet", {})
+        company = packet.get("company", {}) if isinstance(packet, Mapping) else {}
+        ticker = company.get("ticker", {}) if isinstance(company, Mapping) else {}
+        symbol = ticker.get("symbol") if isinstance(ticker, Mapping) else None
+        if symbol:
+            case_symbols.add(str(symbol))
+        as_of = packet.get("as_of", {}) if isinstance(packet, Mapping) else {}
+        as_of_date = as_of.get("as_of_date") if isinstance(as_of, Mapping) else None
+        if as_of_date:
+            as_of_dates.append(str(as_of_date))
+
+    documents_by_symbol = documents_data.get("documents_by_symbol", {})
+    if not isinstance(documents_by_symbol, Mapping):
+        raise ValidationError("document artifact documents_by_symbol must be an object")
+    document_count = sum(
+        len(rows) for rows in documents_by_symbol.values() if isinstance(rows, list)
+    )
+    available_dates = [
+        str(document.get("available_date"))
+        for rows in documents_by_symbol.values()
+        if isinstance(rows, list)
+        for document in rows
+        if isinstance(document, Mapping) and document.get("available_date")
+    ]
+
+    bars_by_symbol = prices_data.get("bars_by_symbol", {})
+    if not isinstance(bars_by_symbol, Mapping):
+        raise ValidationError("price artifact bars_by_symbol must be an object")
+    priced_symbols = {str(symbol) for symbol, rows in bars_by_symbol.items() if rows}
+    compatible_symbols = case_symbols & priced_symbols
+    compatible_case_count = sum(
+        1
+        for row in cases
+        if _case_symbol(row) in compatible_symbols
+    )
+    failed_symbols = prices_data.get("failed_symbols", {})
+
+    case_summary = ArtifactSummary(
+        path=str(case_path.resolve()),
+        sha256=_sha256_file(case_path),
+        size_bytes=case_path.stat().st_size,
+        schema_version=_optional_string(cases_data.get("schema_version")),
+        facts={
+            "case_count": len(cases),
+            "symbol_count": len(case_symbols),
+            "as_of_min": min(as_of_dates) if as_of_dates else None,
+            "as_of_max": max(as_of_dates) if as_of_dates else None,
+            "legacy_outcome_definition_ids": sorted(
+                {
+                    str(row.get("outcome_definition_id"))
+                    for row in cases
+                    if isinstance(row, Mapping) and row.get("outcome_definition_id")
+                }
+            ),
+        },
+    )
+    document_summary = ArtifactSummary(
+        path=str(document_path.resolve()),
+        sha256=_sha256_file(document_path),
+        size_bytes=document_path.stat().st_size,
+        schema_version=_optional_string(documents_data.get("schema_version")),
+        facts={
+            "document_count": document_count,
+            "symbol_count": len(documents_by_symbol),
+            "available_date_min": min(available_dates) if available_dates else None,
+            "available_date_max": max(available_dates) if available_dates else None,
+        },
+    )
+    price_summary = ArtifactSummary(
+        path=str(price_path.resolve()),
+        sha256=_sha256_file(price_path),
+        size_bytes=price_path.stat().st_size,
+        schema_version=_optional_string(prices_data.get("schema_version")),
+        facts={
+            "source": prices_data.get("source"),
+            "start_date": prices_data.get("start_date"),
+            "end_date": prices_data.get("end_date"),
+            "requested_symbol_count": prices_data.get("requested_symbol_count"),
+            "priced_symbol_count": len(priced_symbols),
+            "bar_count": sum(
+                len(rows) for rows in bars_by_symbol.values() if isinstance(rows, list)
+            ),
+            "failed_symbols": dict(failed_symbols) if isinstance(failed_symbols, Mapping) else {},
+            "case_symbol_overlap": len(compatible_symbols),
+        },
+    )
+    blockers = (
+        "approve the exact six-month baseline and five-day smoothing boundary",
+        "approve an issuer-disjoint Discovery/Evolution-Validation/Locked-Test split manifest",
+        "recompute labels; legacy terminal-return labels are incompatible",
+    )
+    return LocalEvolutionInventory(
+        cases=case_summary,
+        documents=document_summary,
+        adjusted_prices=price_summary,
+        compatible_case_count=compatible_case_count,
+        incompatible_label_reason=(
+            "legacy cases use terminal-return winner/failure labels, while the active "
+            "contract uses six-month realized_max_multiple"
+        ),
+        migration_ready=False,
+        blockers=blockers,
+    )
+
+
+def migrate_legacy_raw_info(
+    *,
+    cases_path: str | Path,
+    documents_path: str | Path,
+    adjusted_prices_path: str | Path,
+    raw_info_root: str | Path,
+) -> RawInfoMigrationReport:
+    """Convert only point-in-time source facts; labels/future outcomes stay out."""
+
+    inventory = inventory_local_evolution_inputs(
+        cases_path=cases_path,
+        documents_path=documents_path,
+        adjusted_prices_path=adjusted_prices_path,
+    )
+    case_data = _read_json(Path(cases_path))
+    document_data = _read_json(Path(documents_path))
+    price_data = _read_json(Path(adjusted_prices_path))
+    store = RawInfoStore(raw_info_root)
+
+    migrated_documents = 0
+    appended_documents = 0
+    skipped_empty = 0
+    documents_by_symbol = document_data.get("documents_by_symbol", {})
+    for symbol, rows in sorted(documents_by_symbol.items()):
+        if not isinstance(rows, list):
+            continue
+        company_id = _company_id_from_symbol(str(symbol))
+        for row in rows:
+            if not isinstance(row, Mapping):
+                continue
+            content = str(row.get("text", "")).strip()
+            if not content:
+                skipped_empty += 1
+                continue
+            published_at = _date_at_utc(row.get("published_date"), "published_date")
+            available_at = _date_at_utc(row.get("available_date"), "available_date")
+            source_type = str(row.get("kind", "news")).casefold()
+            if source_type not in {"filing", "news"}:
+                raise ValidationError(f"unsupported legacy document kind: {source_type}")
+            original_id = str(row.get("document_id") or row.get("source_id") or "")
+            stable_seed = json.dumps(
+                {
+                    "symbol": symbol,
+                    "original_id": original_id,
+                    "available_at": available_at.isoformat(),
+                    "content_hash": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+                },
+                sort_keys=True,
+            )
+            document_id = "legacydoc_" + hashlib.sha256(
+                stable_seed.encode("utf-8")
+            ).hexdigest()[:24]
+            appended = store.append(
+                RawInfoDocument.create(
+                    document_id=document_id,
+                    company_id=company_id,
+                    source_type=source_type,
+                    published_at=published_at,
+                    available_at=available_at,
+                    content=content,
+                    metadata={
+                        "original_document_id": original_id,
+                        "source_id": row.get("source_id"),
+                        "source_url": row.get("source_url"),
+                        "title": row.get("title"),
+                        "symbol": str(symbol),
+                    },
+                )
+            )
+            migrated_documents += 1
+            appended_documents += int(appended)
+
+    bars_by_symbol = price_data.get("bars_by_symbol", {})
+    cases_without_prices: list[str] = []
+    migrated_market = 0
+    appended_market = 0
+    for row in case_data.get("cases", ()):
+        symbol = _case_symbol(row)
+        case_id = str(row.get("case_id", "")) if isinstance(row, Mapping) else ""
+        prediction_date = _case_as_of_date(row)
+        if symbol is None or prediction_date is None:
+            cases_without_prices.append(case_id or "unknown-case")
+            continue
+        bars = bars_by_symbol.get(symbol, ())
+        if not isinstance(bars, list):
+            bars = ()
+        historical_bars = [
+            bar
+            for bar in bars
+            if isinstance(bar, Mapping)
+            and bar.get("as_of_date")
+            and str(bar["as_of_date"]) < prediction_date
+            and bar.get("adjusted_close") is not None
+        ][-252:]
+        prices = [float(bar["adjusted_close"]) for bar in historical_bars]
+        if not prices:
+            cases_without_prices.append(case_id or f"{symbol}:{prediction_date}")
+            continue
+        company_id = _company_id_from_symbol(symbol)
+        prediction_time = _date_at_utc(prediction_date, "case as_of_date")
+        document_id = (
+            "market_"
+            + hashlib.sha256(f"{symbol}:{prediction_date}".encode("utf-8")).hexdigest()[:24]
+        )
+        content = (
+            f"Adjusted close history through {historical_bars[-1]['as_of_date']}; "
+            f"{len(prices)} observations; latest adjusted close {prices[-1]:.8g}."
+        )
+        appended = store.append(
+            RawInfoDocument.create(
+                document_id=document_id,
+                company_id=company_id,
+                source_type="market_data",
+                published_at=prediction_time,
+                available_at=prediction_time,
+                content=content,
+                metadata={
+                    "symbol": symbol,
+                    "prices": prices,
+                    "last_bar_date": historical_bars[-1]["as_of_date"],
+                    "price_source": price_data.get("source"),
+                    "prediction_date": prediction_date,
+                },
+            )
+        )
+        migrated_market += 1
+        appended_market += int(appended)
+
+    return RawInfoMigrationReport(
+        raw_info_root=str(Path(raw_info_root).resolve()),
+        source_inventory_hash=inventory.inventory_hash,
+        source_document_count=int(inventory.documents.facts["document_count"]),
+        migrated_source_documents=migrated_documents,
+        migrated_market_snapshots=migrated_market,
+        appended_source_documents=appended_documents,
+        appended_market_snapshots=appended_market,
+        skipped_empty_documents=skipped_empty,
+        cases_without_price_history=tuple(cases_without_prices),
+    )
+
+
+def prepare_dataset_proposal(
+    *,
+    cases_path: str | Path,
+    documents_path: str | Path,
+    adjusted_prices_path: str | Path,
+    output_root: str | Path,
+    split_seed: str = "information-plan-evolution-v1",
+) -> DatasetProposalReport:
+    """Recompute the approved label semantics and propose issuer-disjoint splits."""
+
+    inventory = inventory_local_evolution_inputs(
+        cases_path=cases_path,
+        documents_path=documents_path,
+        adjusted_prices_path=adjusted_prices_path,
+    )
+    case_data = _read_json(Path(cases_path))
+    price_data = _read_json(Path(adjusted_prices_path))
+    bars_by_symbol = price_data.get("bars_by_symbol", {})
+    eligible: list[dict[str, Any]] = []
+    excluded: list[dict[str, str]] = []
+    seen_case_ids: set[str] = set()
+    for legacy_case in case_data.get("cases", ()):
+        if not isinstance(legacy_case, Mapping):
+            continue
+        symbol = _case_symbol(legacy_case)
+        prediction_date_text = _case_as_of_date(legacy_case)
+        legacy_ref = str(legacy_case.get("case_id", "unknown-case"))
+        if symbol is None or prediction_date_text is None:
+            excluded.append({"legacy_case_ref": legacy_ref, "reason": "missing_case_identity"})
+            continue
+        try:
+            prediction_date = date.fromisoformat(prediction_date_text)
+            label = _six_month_smoothed_multiple(
+                bars_by_symbol.get(symbol, ()), prediction_date
+            )
+        except ValidationError as exc:
+            excluded.append({"legacy_case_ref": legacy_ref, "reason": str(exc)})
+            continue
+        company_id = _company_id_from_symbol(symbol)
+        case_id = f"{company_id}:{prediction_date.strftime('%Y%m%d')}"
+        if case_id in seen_case_ids:
+            excluded.append({"legacy_case_ref": legacy_ref, "reason": "duplicate_case_id"})
+            continue
+        seen_case_ids.add(case_id)
+        packet = legacy_case.get("packet", {})
+        company = packet.get("company", {}) if isinstance(packet, Mapping) else {}
+        ticker = company.get("ticker", {}) if isinstance(company, Mapping) else {}
+        company_name = ticker.get("company_name") if isinstance(ticker, Mapping) else None
+        basic_info = {
+            "company_name": company_name or symbol,
+            "ticker": symbol,
+            "market_cap": company.get("market_cap_usd") if isinstance(company, Mapping) else None,
+            "industry": company.get("industry") if isinstance(company, Mapping) else None,
+            "business_description": None,
+            "revenue_segments": [],
+            "development_stage": None,
+            "identity_aliases": [item for item in (symbol, company_name) if item],
+        }
+        eligible.append(
+            {
+                "case_id": case_id,
+                "company_id": company_id,
+                "prediction_time": datetime.combine(
+                    prediction_date, datetime.min.time(), tzinfo=timezone.utc
+                ).isoformat(),
+                "basic_info": basic_info,
+                "ground_truth": {
+                    "realized_max_multiple": label["realized_max_multiple"],
+                    "is_surge": label["is_surge"],
+                    "magnitude": label["magnitude"],
+                },
+                "label_provenance": {
+                    "baseline_mean": label["baseline_mean"],
+                    "future_peak_mean": label["future_peak_mean"],
+                    "baseline_dates": label["baseline_dates"],
+                    "future_peak_dates": label["future_peak_dates"],
+                    "horizon_end": label["horizon_end"],
+                    "legacy_case_ref_hash": hashlib.sha256(
+                        legacy_ref.encode("utf-8")
+                    ).hexdigest(),
+                },
+            }
+        )
+    if not eligible:
+        raise ValidationError("no local cases satisfy the active label contract")
+
+    splits = _propose_issuer_splits(eligible, seed=split_seed)
+    root = Path(output_root)
+    root.mkdir(parents=True, exist_ok=True)
+    artifacts: dict[str, dict[str, Any]] = {}
+    for split_name, rows in splits.items():
+        path = root / f"{split_name}.json"
+        payload = {
+            "schema_version": "evolution-dataset-split-v1",
+            "split": split_name,
+            "case_count": len(rows),
+            "cases": rows,
+        }
+        _write_or_verify_json(path, payload)
+        artifacts[split_name] = {
+            "path": str(path.resolve()),
+            "sha256": _sha256_file(path),
+            "case_count": len(rows),
+            "issuer_count": len({row["company_id"] for row in rows}),
+            "surge_count": sum(bool(row["ground_truth"]["is_surge"]) for row in rows),
+        }
+    excluded_path = root / "excluded_cases.json"
+    _write_or_verify_json(
+        excluded_path,
+        {
+            "schema_version": "evolution-dataset-exclusions-v1",
+            "excluded_case_count": len(excluded),
+            "cases": excluded,
+        },
+    )
+    manifest = {
+        "schema_version": "evolution-dataset-manifest-proposal-v1",
+        "approval_status": "proposal_only_pending_human_review",
+        "split_seed": split_seed,
+        "split_policy": {
+            "unit": "issuer",
+            "strata": "issuer_has_any_surge_case",
+            "target_ratios": {
+                "discovery": 0.60,
+                "evolution_validation": 0.25,
+                "locked_test": 0.15,
+            },
+        },
+        "label_contract": {
+            "horizon": "six_calendar_months",
+            "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+            "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+            "binary_threshold": 2.0,
+            "magnitude_classes": ["2-3x", "3-10x", "10x+"],
+        },
+        "source_inventory_hash": inventory.inventory_hash,
+        "eligible_case_count": len(eligible),
+        "excluded_case_count": len(excluded),
+        "artifacts": artifacts,
+        "excluded_cases": {
+            "path": str(excluded_path.resolve()),
+            "sha256": _sha256_file(excluded_path),
+        },
+        "locked_test_sealed": True,
+        "locked_test_accessed": False,
+    }
+    manifest_path = root / "dataset_manifest.proposal.json"
+    _write_or_verify_json(manifest_path, manifest)
+    return DatasetProposalReport(
+        manifest_path=str(manifest_path.resolve()),
+        manifest_hash=_sha256_file(manifest_path),
+        eligible_case_count=len(eligible),
+        excluded_case_count=len(excluded),
+        split_case_counts={name: len(rows) for name, rows in splits.items()},
+        split_issuer_counts={
+            name: len({row["company_id"] for row in rows})
+            for name, rows in splits.items()
+        },
+        split_surge_counts={
+            name: sum(bool(row["ground_truth"]["is_surge"]) for row in rows)
+            for name, rows in splits.items()
+        },
+    )
+
+
+def approve_dataset_proposal(
+    *,
+    proposal_manifest_path: str | Path,
+    expected_proposal_hash: str,
+    approved_by: str,
+) -> Path:
+    """Create a distinct approved manifest bound to the exact reviewed proposal."""
+
+    if not approved_by.strip():
+        raise ValidationError("dataset approval requires reviewer identity")
+    proposal_path = Path(proposal_manifest_path)
+    actual_hash = _sha256_file(proposal_path)
+    if actual_hash != expected_proposal_hash:
+        raise ValidationError("dataset proposal hash does not match reviewed content")
+    proposal = _read_json(proposal_path)
+    if proposal.get("approval_status") != "proposal_only_pending_human_review":
+        raise ValidationError("dataset proposal is not pending human review")
+    approved = {
+        **proposal,
+        "schema_version": "evolution-dataset-manifest-v1",
+        "approval_status": "human_approved",
+        "approved_by": approved_by.strip(),
+        "approved_proposal_hash": actual_hash,
+    }
+    approved_path = proposal_path.with_name("dataset_manifest.approved.json")
+    _write_or_verify_json(approved_path, approved)
+    return approved_path
+
+
+@dataclass(frozen=True)
+class EvolutionRunContract:
+    """Secret-free immutable identity for one bounded evolution run."""
+
+    run_id: str
+    created_at: str
+    dataset_manifest_hash: str
+    raw_info_inventory_hash: str
+    signal_registry_version: int
+    signal_registry_hash: str
+    priors_hash: str
+    models: Mapping[str, Mapping[str, Any]]
+    code_revision: str
+    python_runtime: str
+    limits: Mapping[str, Any]
+    max_external_attempts: int
+    max_total_cost: float
+    locked_test_accessed: bool = False
+
+    def __post_init__(self) -> None:
+        if not self.run_id.strip():
+            raise ValidationError("evolution run_id is required")
+        for name in (
+            "dataset_manifest_hash",
+            "raw_info_inventory_hash",
+            "signal_registry_hash",
+            "priors_hash",
+        ):
+            value = str(getattr(self, name))
+            if not re.fullmatch(r"[0-9a-f]{64}", value):
+                raise ValidationError(f"{name} must be a SHA-256 hex digest")
+        if self.signal_registry_version < 1:
+            raise ValidationError("signal registry version must be positive")
+        if self.max_external_attempts < 1 or self.max_total_cost <= 0:
+            raise ValidationError("external attempt and cost ceilings must be positive")
+        if self.locked_test_accessed:
+            raise ValidationError("ordinary evolution contract cannot open Locked Test")
+        object.__setattr__(
+            self,
+            "models",
+            {str(role): dict(metadata) for role, metadata in self.models.items()},
+        )
+        object.__setattr__(self, "limits", dict(self.limits))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "evolution-run-contract-v1",
+            "run_id": self.run_id,
+            "created_at": self.created_at,
+            "dataset_manifest_hash": self.dataset_manifest_hash,
+            "raw_info_inventory_hash": self.raw_info_inventory_hash,
+            "signal_registry_version": self.signal_registry_version,
+            "signal_registry_hash": self.signal_registry_hash,
+            "priors_hash": self.priors_hash,
+            "models": {role: dict(value) for role, value in self.models.items()},
+            "code_revision": self.code_revision,
+            "python_runtime": self.python_runtime,
+            "limits": dict(self.limits),
+            "max_external_attempts": self.max_external_attempts,
+            "max_total_cost": self.max_total_cost,
+            "locked_test_accessed": False,
+        }
+
+    @property
+    def contract_hash(self) -> str:
+        return _canonical_hash(self.to_dict())
+
+    def freeze(self, path: str | Path) -> None:
+        _write_or_verify_json(
+            Path(path),
+            {"contract_hash": self.contract_hash, "contract": self.to_dict()},
+        )
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "EvolutionRunContract":
+        return cls(
+            run_id=str(value["run_id"]),
+            created_at=str(value["created_at"]),
+            dataset_manifest_hash=str(value["dataset_manifest_hash"]),
+            raw_info_inventory_hash=str(value["raw_info_inventory_hash"]),
+            signal_registry_version=int(value["signal_registry_version"]),
+            signal_registry_hash=str(value["signal_registry_hash"]),
+            priors_hash=str(value["priors_hash"]),
+            models={
+                str(role): dict(metadata)
+                for role, metadata in dict(value["models"]).items()
+            },
+            code_revision=str(value["code_revision"]),
+            python_runtime=str(value["python_runtime"]),
+            limits=dict(value["limits"]),
+            max_external_attempts=int(value["max_external_attempts"]),
+            max_total_cost=float(value["max_total_cost"]),
+            locked_test_accessed=bool(value.get("locked_test_accessed", False)),
+        )
+
+    @classmethod
+    def load_frozen(cls, path: str | Path) -> "EvolutionRunContract":
+        envelope = _read_json(Path(path))
+        contract = cls.from_dict(dict(envelope["contract"]))
+        if envelope.get("contract_hash") != contract.contract_hash:
+            raise ValidationError("frozen evolution run contract hash mismatch")
+        return contract
+
+
+@dataclass(frozen=True)
+class ApprovedDevelopmentDataset:
+    """Ordinary loop inputs with Locked Test represented only by a sealed hash."""
+
+    discovery: tuple[EvolutionCase, ...]
+    evolution_validation: tuple[EvolutionCase, ...]
+    locked_test_hash: str
+    approved_manifest_hash: str
+
+
+def load_approved_development_dataset(
+    manifest_path: str | Path,
+) -> ApprovedDevelopmentDataset:
+    """Load Discovery/Validation only; never deserialize Locked Test cases."""
+
+    path = Path(manifest_path)
+    manifest = _read_json(path)
+    if manifest.get("approval_status") != "human_approved":
+        raise ValidationError("development dataset manifest is not human-approved")
+    if manifest.get("locked_test_sealed") is not True:
+        raise ValidationError("development dataset does not seal Locked Test")
+    artifacts = dict(manifest.get("artifacts", {}))
+    loaded: dict[str, tuple[EvolutionCase, ...]] = {}
+    for split_name in ("discovery", "evolution_validation"):
+        metadata = dict(artifacts[split_name])
+        split_path = Path(str(metadata["path"]))
+        if _sha256_file(split_path) != metadata.get("sha256"):
+            raise ValidationError(f"dataset split hash mismatch: {split_name}")
+        split = _read_json(split_path)
+        if split.get("split") != split_name:
+            raise ValidationError(f"dataset split identity mismatch: {split_name}")
+        loaded[split_name] = tuple(
+            EvolutionCase(
+                case_id=str(row["case_id"]),
+                company_id=str(row["company_id"]),
+                prediction_time=datetime.fromisoformat(str(row["prediction_time"])),
+                basic_info=dict(row["basic_info"]),
+                ground_truth=GroundTruth.from_dict(dict(row["ground_truth"])),
+            )
+            for row in split.get("cases", ())
+        )
+    locked_metadata = dict(artifacts["locked_test"])
+    return ApprovedDevelopmentDataset(
+        discovery=loaded["discovery"],
+        evolution_validation=loaded["evolution_validation"],
+        locked_test_hash=str(locked_metadata["sha256"]),
+        approved_manifest_hash=_sha256_file(path),
+    )
+
+
+def current_code_revision(project_root: str | Path) -> str:
+    """Return HEAD only when tracked/runtime source state is reproducible."""
+
+    root = Path(project_root)
+    tracked = subprocess.run(
+        ["git", "diff", "--quiet"],
+        cwd=root,
+        check=False,
+    )
+    if tracked.returncode != 0:
+        raise ValidationError("freeze-run requires committed tracked project changes")
+    untracked = subprocess.run(
+        [
+            "git",
+            "ls-files",
+            "--others",
+            "--exclude-standard",
+            "--",
+            "src",
+            "scripts",
+            "configs",
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if untracked.stdout.strip():
+        raise ValidationError("freeze-run requires committed runtime source files")
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def public_model_contract(
+    role_aliases: Mapping[str, str], *, environ: Mapping[str, str] | None = None
+) -> dict[str, dict[str, Any]]:
+    """Resolve registered models and record only public metadata/key presence."""
+
+    env = os.environ if environ is None else environ
+    result: dict[str, dict[str, Any]] = {}
+    for role, alias in role_aliases.items():
+        registry_role = "evolution" if role in {"proposer", "mining", "update"} else "judge"
+        registration = get_model(alias, role=registry_role)
+        metadata = registration.to_public_dict()
+        metadata["api_key_available"] = bool(env.get(registration.api_key_env_var))
+        result[str(role)] = metadata
+    return result
+
+
+class ExternalRequestPending(ValidationError):
+    """Raised after a no-network preflight has persisted one exact request."""
+
+    def __init__(self, request_hash: str, request_path: Path) -> None:
+        super().__init__(f"external request requires approval: {request_hash}")
+        self.request_hash = request_hash
+        self.request_path = request_path
+
+
+class ExactResponseCache:
+    """Exact response reuse keyed only by canonical request hash."""
+
+    def __init__(self, root: str | Path) -> None:
+        self.root = Path(root)
+        self.root.mkdir(parents=True, exist_ok=True)
+
+    def load(self, request_hash: str) -> dict[str, Any] | None:
+        path = self.root / f"{request_hash}.json"
+        return _read_json(path) if path.exists() else None
+
+    def store(self, request_hash: str, response: Mapping[str, Any]) -> None:
+        _write_or_verify_json(
+            self.root / f"{request_hash}.json",
+            {"request_hash": request_hash, **dict(response)},
+        )
+
+
+class ExternalAttemptLedger:
+    """Durable fail-closed reservation of attempts and conservative cost."""
+
+    def __init__(
+        self,
+        path: str | Path,
+        *,
+        max_attempts: int,
+        max_total_cost: float,
+    ) -> None:
+        if max_attempts < 1 or max_total_cost <= 0:
+            raise ValidationError("ledger ceilings must be positive")
+        self.path = Path(path)
+        self.max_attempts = max_attempts
+        self.max_total_cost = max_total_cost
+        if not self.path.exists():
+            _atomic_write_json(
+                self.path,
+                {
+                    "schema_version": "evolution-attempt-ledger-v1",
+                    "max_attempts": max_attempts,
+                    "max_total_cost": max_total_cost,
+                    "attempts": [],
+                },
+            )
+        else:
+            data = _read_json(self.path)
+            if (
+                int(data.get("max_attempts", 0)) != max_attempts
+                or float(data.get("max_total_cost", 0.0)) != max_total_cost
+            ):
+                raise ValidationError("attempt ledger ceilings conflict with frozen run")
+
+    def reserve(self, request_hash: str, *, reserved_cost: float) -> int:
+        if reserved_cost <= 0:
+            raise ValidationError("reserved request cost must be positive")
+        data = _read_json(self.path)
+        attempts = list(data.get("attempts", ()))
+        if len(attempts) >= self.max_attempts:
+            raise ValidationError("external attempt ceiling exhausted")
+        committed_cost = sum(float(item.get("reserved_cost", 0.0)) for item in attempts)
+        if committed_cost + reserved_cost > self.max_total_cost + 1e-12:
+            raise ValidationError("external cumulative cost ceiling would be exceeded")
+        attempt_id = len(attempts) + 1
+        attempts.append(
+            {
+                "attempt_id": attempt_id,
+                "request_hash": request_hash,
+                "reserved_cost": reserved_cost,
+                "status": "in_progress",
+                "started_at": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+        data["attempts"] = attempts
+        _atomic_write_json(self.path, data)
+        return attempt_id
+
+    def finalize(
+        self,
+        attempt_id: int,
+        *,
+        status: str,
+        actual_cost: float,
+        response_hash: str | None = None,
+        error_type: str | None = None,
+    ) -> None:
+        if status not in {"completed", "failed"} or actual_cost < 0:
+            raise ValidationError("invalid attempt completion")
+        data = _read_json(self.path)
+        attempts = list(data.get("attempts", ()))
+        try:
+            attempt = attempts[attempt_id - 1]
+        except IndexError as exc:
+            raise ValidationError("unknown external attempt id") from exc
+        if attempt.get("attempt_id") != attempt_id or attempt.get("status") != "in_progress":
+            raise ValidationError("external attempt is not pending")
+        attempt["status"] = status
+        attempt["actual_cost"] = actual_cost
+        attempt["finished_at"] = datetime.now(timezone.utc).isoformat()
+        if response_hash is not None:
+            attempt["response_hash"] = response_hash
+        if error_type is not None:
+            attempt["error_type"] = error_type
+        data["attempts"] = attempts
+        _atomic_write_json(self.path, data)
+
+    @property
+    def summary(self) -> dict[str, Any]:
+        data = _read_json(self.path)
+        attempts = list(data.get("attempts", ()))
+        return {
+            "attempt_count": len(attempts),
+            "in_progress": sum(item.get("status") == "in_progress" for item in attempts),
+            "reserved_cost": sum(float(item.get("reserved_cost", 0.0)) for item in attempts),
+            "actual_cost": sum(float(item.get("actual_cost", 0.0)) for item in attempts),
+        }
+
+
+class StructuredRoleClient:
+    """Registered JSON role client guarded by request disclosure/cache/ledger."""
+
+    def __init__(
+        self,
+        *,
+        registration: RegisteredModel,
+        contract: EvolutionRunContract,
+        workspace: str | Path,
+        ledger: ExternalAttemptLedger,
+        allow_external: bool = False,
+        acknowledged_contract_hash: str | None = None,
+        environ: Mapping[str, str] | None = None,
+    ) -> None:
+        self.registration = registration
+        self.contract = contract
+        self.workspace = Path(workspace)
+        self.requests_root = self.workspace / "requests"
+        self.requests_root.mkdir(parents=True, exist_ok=True)
+        self.cache = ExactResponseCache(self.workspace / "cache" / "responses")
+        self.ledger = ledger
+        self.allow_external = allow_external
+        self.acknowledged_contract_hash = acknowledged_contract_hash
+        self.environ = environ
+
+    def complete_json(
+        self,
+        *,
+        stage: str,
+        system_prompt: str,
+        payload: Mapping[str, Any],
+        allow_outcomes: bool,
+        anonymous_aliases: Iterable[str] = (),
+        max_output_tokens: int | None = None,
+    ) -> tuple[dict[str, Any], AgentUsage]:
+        """Persist and validate an exact request, then preview/cache/execute it."""
+
+        _scan_payload(
+            payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+        )
+        output_limit = max_output_tokens or self.registration.default_max_output_tokens
+        request = {
+            "schema_version": "evolution-exact-request-v1",
+            "contract_hash": self.contract.contract_hash,
+            "stage": stage,
+            "model": self.registration.to_public_dict(),
+            "temperature": 0.0,
+            "max_http_attempts": 1,
+            "max_output_tokens": output_limit,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {
+                    "role": "user",
+                    "content": json.dumps(payload, sort_keys=True, separators=(",", ":")),
+                },
+            ],
+        }
+        request_hash = _canonical_hash(request)
+        request_path = self.requests_root / f"{request_hash}.json"
+        _write_or_verify_json(
+            request_path,
+            {"request_hash": request_hash, "request": request},
+        )
+        cached = self.cache.load(request_hash)
+        if cached is not None:
+            return dict(cached["json_output"]), _usage_from_cache(cached)
+        if not self.allow_external:
+            raise ExternalRequestPending(request_hash, request_path)
+        if self.acknowledged_contract_hash != self.contract.contract_hash:
+            raise ValidationError("external execution requires exact run-contract acknowledgement")
+        if not (self.environ or os.environ).get(self.registration.api_key_env_var):
+            raise ValidationError(
+                f"required API key is unavailable: {self.registration.api_key_env_var}"
+            )
+
+        estimated_input_tokens = max(
+            1,
+            len(json.dumps(request["messages"], ensure_ascii=False).encode("utf-8")),
+        )
+        reserved_cost = _model_cost(
+            self.registration,
+            input_tokens=estimated_input_tokens,
+            output_tokens=output_limit,
+        )
+        attempt_id = self.ledger.reserve(request_hash, reserved_cost=reserved_cost)
+        client = self.registration.create_client(
+            ModelClientSettings(
+                preview_only=False,
+                temperature=0.0,
+                max_http_attempts=1,
+                environ=self.environ,
+            )
+        )
+        messages = [
+            ChatMessage("system", system_prompt),
+            ChatMessage("user", json.dumps(payload, sort_keys=True)),
+        ]
+        kwargs: dict[str, Any] = {"max_output_tokens": output_limit}
+        if self.registration.default_reasoning_effort:
+            kwargs["reasoning"] = {
+                "effort": self.registration.default_reasoning_effort
+            }
+        try:
+            response = client.complete(messages, **kwargs)
+            parsed = _parse_json_object(response.output_text)
+            usage_data = response.raw.get("usage", {})
+            input_tokens = int(usage_data.get("input_tokens", estimated_input_tokens))
+            output_tokens = int(usage_data.get("output_tokens", 0))
+            actual_cost = _model_cost(
+                self.registration,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
+            response_record = {
+                "response_id": response.response_id,
+                "model": response.model,
+                "json_output": parsed,
+                "usage": {
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "cost": actual_cost,
+                },
+            }
+            self.cache.store(request_hash, response_record)
+            response_hash = _canonical_hash(response_record)
+            self.ledger.finalize(
+                attempt_id,
+                status="completed",
+                actual_cost=actual_cost,
+                response_hash=response_hash,
+            )
+            return parsed, AgentUsage(
+                llm_calls=1,
+                tokens=input_tokens + output_tokens,
+                cost=actual_cost,
+            )
+        except Exception as exc:
+            self.ledger.finalize(
+                attempt_id,
+                status="failed",
+                actual_cost=0.0,
+                error_type=type(exc).__name__,
+            )
+            raise
+
+
+class JSONRoleCaller(Protocol):
+    """Small injectable boundary shared by concrete role adapters and tests."""
+
+    def complete_json(
+        self,
+        *,
+        stage: str,
+        system_prompt: str,
+        payload: Mapping[str, Any],
+        allow_outcomes: bool,
+        anonymous_aliases: Iterable[str] = (),
+        max_output_tokens: int | None = None,
+    ) -> tuple[dict[str, Any], AgentUsage]:
+        """Return one validated structured role response and usage."""
+
+
+class LLMResearchController:
+    """Concrete H_init/H_reflect adapter backed by a guarded JSON role client."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def initialize(
+        self, plan: InformationPlan, basic_info: Mapping[str, Any]
+    ) -> AgentStep[ResearchState]:
+        value, usage = self.caller.complete_json(
+            stage="research_controller_initialize",
+            system_prompt=(
+                "Apply H_init to Basic Info only. Return one ResearchState JSON object; "
+                "information needs must be natural language, not Signal ids."
+            ),
+            payload={
+                "initial_research_skill": plan.initial_research_skill,
+                "basic_info": dict(basic_info),
+            },
+            allow_outcomes=False,
+        )
+        return AgentStep(ResearchState.from_dict(value), usage)
+
+    def reflect(
+        self,
+        plan: InformationPlan,
+        state: ResearchState,
+        batch: SignalBatchResult,
+    ) -> AgentStep[ResearchState]:
+        value, usage = self.caller.complete_json(
+            stage="research_controller_reflect",
+            system_prompt=(
+                "Apply H_reflect once to the complete Signal batch. Return one "
+                "ResearchState JSON object with continue/finalize decision."
+            ),
+            payload={
+                "reflection_skill": plan.reflection_skill,
+                "research_state": state.to_dict(),
+                "signal_batch": [item.to_dict() for item in batch.results],
+            },
+            allow_outcomes=False,
+        )
+        return AgentStep(ResearchState.from_dict(value), usage)
+
+
+class LLMSignalRetrievalAgent:
+    """Two-step progressive category/card selector for one frozen Registry."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def select(
+        self,
+        information_needs: tuple[str, ...],
+        signal_registry: FrozenSignalRegistry,
+    ) -> AgentStep[tuple[str, ...]]:
+        categories = sorted({spec.category for spec in signal_registry.specs})
+        category_value, category_usage = self.caller.complete_json(
+            stage="signal_retrieval_categories",
+            system_prompt=(
+                "Choose only relevant category names for the information needs. "
+                "Return {\"categories\": [...]}."
+            ),
+            payload={
+                "information_needs": list(information_needs),
+                "available_categories": categories,
+            },
+            allow_outcomes=False,
+        )
+        selected_categories = tuple(
+            str(item) for item in category_value.get("categories", ())
+        )
+        if not selected_categories or not set(selected_categories).issubset(categories):
+            raise ValidationError("Signal Retrieval selected unknown/empty categories")
+        cards = [
+            {
+                "signal_ref": spec.ref,
+                "category": spec.category,
+                "description": spec.description,
+                "execution_type": spec.execution_type.value,
+            }
+            for spec in signal_registry.specs
+            if spec.category in selected_categories
+        ]
+        selection_value, selection_usage = self.caller.complete_json(
+            stage="signal_retrieval_cards",
+            system_prompt=(
+                "Choose the smallest unique Signal batch that answers the needs. "
+                "Return {\"signal_refs\": [...]}."
+            ),
+            payload={
+                "information_needs": list(information_needs),
+                "signal_cards": cards,
+            },
+            allow_outcomes=False,
+        )
+        refs = tuple(str(item) for item in selection_value.get("signal_refs", ()))
+        allowed = {card["signal_ref"] for card in cards}
+        if not refs or len(set(refs)) != len(refs) or not set(refs).issubset(allowed):
+            raise ValidationError("Signal Retrieval returned invalid Signal refs")
+        return AgentStep(refs, category_usage + selection_usage)
+
+
+class LLMBlindPredictor:
+    """No-web two-stage Predictor plus explicitly post-hoc reflection adapter."""
+
+    def __init__(
+        self,
+        caller: JSONRoleCaller,
+        *,
+        anonymous_aliases: Iterable[str] = (),
+    ) -> None:
+        registration = getattr(caller, "registration", None)
+        if registration is not None and registration.web_tools_allowed:
+            raise ValidationError("Blind Predictor model registration must be no-web")
+        self.caller = caller
+        self.anonymous_aliases = tuple(anonymous_aliases)
+
+    def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
+        value, usage = self.caller.complete_json(
+            stage="blind_predictor_predict",
+            system_prompt=(
+                "Using only the anonymous supplied context, predict whether the next "
+                "six months reach at least 2x. If yes choose 2-3x, 3-10x, or 10x+. "
+                "Return the BlindPrediction JSON schema and do not use web tools."
+            ),
+            payload={"final_context": dict(final_context)},
+            allow_outcomes=False,
+            anonymous_aliases=self.anonymous_aliases,
+        )
+        return AgentStep(BlindPrediction.from_dict(value), usage)
+
+    def reflect(
+        self,
+        original_context: Mapping[str, Any],
+        original_prediction: BlindPrediction,
+        ground_truth: GroundTruth,
+    ) -> AgentStep[PredictionSelfReflection]:
+        value, usage = self.caller.complete_json(
+            stage="blind_predictor_posthoc_reflect",
+            system_prompt=(
+                "The saved prediction is immutable. Given its original anonymous "
+                "context and newly revealed truth, return PredictionSelfReflection JSON."
+            ),
+            payload={
+                "original_context": dict(original_context),
+                "original_prediction": original_prediction.to_dict(),
+                "revealed_ground_truth": ground_truth.to_dict(),
+            },
+            allow_outcomes=True,
+            anonymous_aliases=self.anonymous_aliases,
+        )
+        return AgentStep(PredictionSelfReflection.from_dict(value), usage)
+
+
+class LLMInformationPlanProposer:
+    """Concrete fixed-H_P candidate proposer; it may change only four Plan fields."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def propose(
+        self,
+        *,
+        parents: tuple[InformationPlan, ...],
+        meta_info: tuple[RoundMetaEntry, ...],
+        prior: str,
+    ) -> InformationPlan:
+        value, _usage = self.caller.complete_json(
+            stage="information_plan_propose",
+            system_prompt=(
+                "Apply the fixed H_P prior. Return one complete InformationPlan JSON. "
+                "Only B, H_init, H_reflect, H_analyse, id, and parent ids may vary."
+            ),
+            payload={
+                "fixed_prior": prior,
+                "parents": [item.to_dict() for item in parents],
+                "meta_info": [item.to_dict() for item in meta_info],
+            },
+            allow_outcomes=False,
+        )
+        return InformationPlan.from_dict(value)
+
+
+class LLMPlanCritic:
+    """Plan-level critic over the complete saved validation batch."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def critique(
+        self,
+        *,
+        plan: InformationPlan,
+        trajectories: tuple[Any, ...],
+        metrics: PlanMetrics,
+    ) -> PlanReflection:
+        value, _usage = self.caller.complete_json(
+            stage="plan_critic",
+            system_prompt="Return one PlanReflection grounded only in the supplied batch.",
+            payload={
+                "plan": plan.to_dict(),
+                "metrics": metrics.to_dict(),
+                "trajectories": [item.to_dict() for item in trajectories],
+            },
+            allow_outcomes=True,
+        )
+        return PlanReflection.from_dict(value)
+
+
+class LLMRoundReflector:
+    """Concrete fixed-H_R reflector over newly completed round records only."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def reflect(
+        self,
+        *,
+        round_id: int,
+        records: tuple[PlanRecord, ...],
+        prior: str,
+    ) -> RoundMetaEntry:
+        value, _usage = self.caller.complete_json(
+            stage="round_reflect",
+            system_prompt=(
+                "Apply fixed H_R only to these new records. Return RoundMetaEntry JSON "
+                "whose evidence_refs cite supplied plan ids."
+            ),
+            payload={
+                "round_id": round_id,
+                "fixed_prior": prior,
+                "records": [item.to_dict() for item in records],
+            },
+            allow_outcomes=True,
+        )
+        return RoundMetaEntry.from_dict(value)
+
+
+class StructuredAgentModel(AgentModel):
+    """Concrete GenericAgent model adapter for Mining/Update tool loops."""
+
+    def __init__(
+        self,
+        caller: JSONRoleCaller,
+        *,
+        stage: str,
+        allow_outcomes: bool,
+    ) -> None:
+        self.caller = caller
+        self.stage = stage
+        self.allow_outcomes = allow_outcomes
+
+    def respond(self, request: AgentRequest) -> AgentTurn:
+        value, usage = self.caller.complete_json(
+            stage=self.stage,
+            system_prompt=(
+                "Use only the named domain tools. Return either "
+                "{\"action\":\"tool\",\"tool_name\":...,\"arguments\":{...}} "
+                "or {\"action\":\"final\",\"output\":...}."
+            ),
+            payload={
+                "task_prompt": request.prompt,
+                "tool_cards": list(request.tool_cards),
+                "workspace": dict(request.workspace),
+                "observations": [
+                    {
+                        "name": item.name,
+                        "arguments": dict(item.arguments),
+                        "result": item.result,
+                    }
+                    for item in request.observations
+                ],
+            },
+            allow_outcomes=self.allow_outcomes,
+        )
+        action = value.get("action")
+        if action == "tool":
+            return AgentTurn(
+                tool_call=ToolCall(
+                    str(value.get("tool_name", "")),
+                    dict(value.get("arguments", {})),
+                ),
+                usage=usage,
+            )
+        if action == "final":
+            return AgentTurn(final_output=value.get("output"), usage=usage)
+        raise ValidationError("Generic Agent model returned an unknown action")
+
+
+class StructuredLLMSignalRunner:
+    """No-label extraction-skill runner for one Signal and its exact documents."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def execute(
+        self,
+        spec: SignalSpec,
+        documents: tuple[RawInfoDocument, ...],
+        skill: str,
+        as_of: datetime,
+    ) -> tuple[SignalResult, AgentUsage]:
+        value, usage = self.caller.complete_json(
+            stage="llm_signal_execute",
+            system_prompt=(
+                "Apply the versioned extraction skill to only these point-in-time "
+                "documents. Return one SignalResult JSON with literal evidence spans."
+            ),
+            payload={
+                "signal_spec": spec.to_dict(),
+                "skill": skill,
+                "as_of": as_of.isoformat(),
+                "documents": [item.to_dict() for item in documents],
+            },
+            allow_outcomes=False,
+        )
+        return SignalResult.from_dict(value), usage
+
+
+def run_bounded_evolution_cycle(
+    *,
+    workspace_path: str | Path,
+    approved_dataset_manifest: str | Path,
+    contract: EvolutionRunContract,
+    allow_external: bool,
+    acknowledged_contract_hash: str | None,
+    environ: Mapping[str, str] | None = None,
+) -> DualLoopResult:
+    """Run/resume one frozen finite Fast group and one validation-only Slow cycle."""
+
+    workspace_root = Path(workspace_path)
+    dataset = load_approved_development_dataset(approved_dataset_manifest)
+    if dataset.approved_manifest_hash != contract.dataset_manifest_hash:
+        raise ValidationError("approved dataset differs from frozen run contract")
+    registry = SignalRegistry(
+        workspace_root / "signals",
+        candidate_root=workspace_root / "signals_candidates",
+    )
+    snapshot = registry.freeze()
+    if (
+        registry.version != contract.signal_registry_version
+        or snapshot.registry_hash != contract.signal_registry_hash
+    ):
+        raise ValidationError("stable Signal Registry differs from frozen run contract")
+    if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
+        raise ValidationError("fixed evolution priors differ from frozen run contract")
+
+    ledger = ExternalAttemptLedger(
+        workspace_root / "attempts.json",
+        max_attempts=contract.max_external_attempts,
+        max_total_cost=contract.max_total_cost,
+    )
+    judge_alias = str(contract.models["judge"]["alias"])
+    evolution_alias = str(contract.models["proposer"]["alias"])
+    judge_caller = StructuredRoleClient(
+        registration=get_model(judge_alias, role="judge"),
+        contract=contract,
+        workspace=workspace_root,
+        ledger=ledger,
+        allow_external=allow_external,
+        acknowledged_contract_hash=acknowledged_contract_hash,
+        environ=environ,
+    )
+    evolution_caller = StructuredRoleClient(
+        registration=get_model(evolution_alias, role="evolution"),
+        contract=contract,
+        workspace=workspace_root,
+        ledger=ledger,
+        allow_external=allow_external,
+        acknowledged_contract_hash=acknowledged_contract_hash,
+        environ=environ,
+    )
+    raw_info_store = RawInfoStore(workspace_root / "raw_info")
+    aliases = _dataset_identity_aliases(dataset)
+    limits = dict(contract.limits)
+    runtime_limits = RuntimeLimits(
+        max_signal_rounds=int(limits.get("max_signal_rounds", 5)),
+        max_signal_calls=int(limits.get("max_signal_calls", 20)),
+        max_llm_calls=int(limits.get("max_llm_calls", 40)),
+        max_tokens=int(limits.get("max_tokens", 120_000)),
+        max_cost=float(limits.get("max_case_cost", 5.0)),
+    )
+    evolution_workspace = EvolutionWorkspace(workspace_root)
+    archive = evolution_workspace.restore_archive(
+        expected_run_contract_hash=contract.contract_hash
+    )
+    meta_memory = evolution_workspace.restore_meta()
+    signal_runner = StructuredLLMSignalRunner(judge_caller)
+    evaluator = RuntimePlanEvaluator(
+        raw_info_store=raw_info_store,
+        controller=LLMResearchController(judge_caller),
+        signal_agent=LLMSignalRetrievalAgent(judge_caller),
+        predictor=LLMBlindPredictor(
+            judge_caller,
+            anonymous_aliases=aliases,
+        ),
+        prediction_root=workspace_root / "predictions",
+        limits=runtime_limits,
+        llm_signal_runner=signal_runner,
+    )
+    plan_engine = PlanEvolutionEngine(
+        archive=archive,
+        meta_memory=meta_memory,
+        signal_registry=registry,
+        evaluator=evaluator,
+        proposer=LLMInformationPlanProposer(evolution_caller),
+        critic=LLMPlanCritic(judge_caller),
+        round_reflector=LLMRoundReflector(judge_caller),
+        workspace=evolution_workspace,
+        seed_plans=(default_information_plan(),),
+        candidates_per_round=int(limits.get("candidates_per_round", 3)),
+        top_k=int(limits.get("top_k", 3)),
+        random_k=int(limits.get("random_k", 2)),
+        similarity_threshold=float(limits.get("similarity_threshold", 0.9)),
+        run_contract_hash=contract.contract_hash,
+    )
+    signal_engine = SignalEvolutionEngine(
+        registry=registry,
+        raw_info_store=raw_info_store,
+        discovery_cases=dataset.discovery,
+        meta_memory=meta_memory,
+        workspace=evolution_workspace,
+        mining_agent=GenericAgent(
+            StructuredAgentModel(
+                evolution_caller,
+                stage="signal_mining_agent",
+                allow_outcomes=True,
+            )
+        ),
+        update_agent=GenericAgent(
+            StructuredAgentModel(
+                evolution_caller,
+                stage="signal_update_agent",
+                allow_outcomes=True,
+            )
+        ),
+        llm_signal_runner=signal_runner,
+        max_agent_steps=int(limits.get("max_agent_steps", 20)),
+    )
+    return DualLoopEvolutionEngine(
+        plan_engine=plan_engine,
+        signal_engine=signal_engine,
+        signal_registry=registry,
+        dataset=dataset,  # type: ignore[arg-type]
+        plan_rounds_per_signal_cycle=int(
+            limits.get("plan_rounds_per_signal_cycle", 5)
+        ),
+    ).run_cycle()
+
+
+def build_run_contract(
+    *,
+    run_id: str,
+    dataset_manifest_path: str | Path,
+    inventory: LocalEvolutionInventory,
+    signal_registry_version: int,
+    signal_registry_hash: str,
+    priors: Mapping[str, str],
+    role_aliases: Mapping[str, str],
+    project_root: str | Path,
+    limits: Mapping[str, Any],
+    max_external_attempts: int,
+    max_total_cost: float,
+    environ: Mapping[str, str] | None = None,
+) -> EvolutionRunContract:
+    """Build one bounded contract from reviewed, hashed local inputs."""
+
+    manifest_path = Path(dataset_manifest_path)
+    manifest = _read_json(manifest_path)
+    if manifest.get("approval_status") != "human_approved":
+        raise ValidationError("dataset split manifest is not human-approved")
+    if manifest.get("locked_test_sealed") is not True:
+        raise ValidationError("dataset split manifest must seal Locked Test")
+    return EvolutionRunContract(
+        run_id=run_id,
+        created_at=datetime.now(timezone.utc).isoformat(),
+        dataset_manifest_hash=_sha256_file(manifest_path),
+        raw_info_inventory_hash=inventory.inventory_hash,
+        signal_registry_version=signal_registry_version,
+        signal_registry_hash=signal_registry_hash,
+        priors_hash=_canonical_hash(dict(priors)),
+        models=public_model_contract(role_aliases, environ=environ),
+        code_revision=current_code_revision(project_root),
+        python_runtime=platform.python_version(),
+        limits=dict(limits),
+        max_external_attempts=max_external_attempts,
+        max_total_cost=max_total_cost,
+    )
+
+
+def _six_month_smoothed_multiple(
+    raw_bars: Any, prediction_date: date
+) -> dict[str, Any]:
+    if not isinstance(raw_bars, (list, tuple)):
+        raise ValidationError("missing adjusted price history")
+    parsed: list[tuple[date, float]] = []
+    for bar in raw_bars:
+        if not isinstance(bar, Mapping) or not bar.get("as_of_date"):
+            continue
+        adjusted_close = bar.get("adjusted_close")
+        if adjusted_close is None:
+            continue
+        value = float(adjusted_close)
+        if value <= 0:
+            continue
+        parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
+    parsed.sort(key=lambda item: item[0])
+    baseline_rows = [item for item in parsed if item[0] < prediction_date][-5:]
+    if len(baseline_rows) < 5:
+        raise ValidationError("fewer_than_5_baseline_bars")
+    horizon_end = _add_months(prediction_date, 6)
+    future_rows = [
+        item for item in parsed if prediction_date <= item[0] <= horizon_end
+    ]
+    if len(future_rows) < 5:
+        raise ValidationError("fewer_than_5_future_bars")
+    if future_rows[-1][0] < horizon_end - timedelta(days=7):
+        raise ValidationError("incomplete_six_month_price_horizon")
+    baseline_mean = sum(value for _, value in baseline_rows) / 5
+    windows = [future_rows[index : index + 5] for index in range(len(future_rows) - 4)]
+    peak_window = max(
+        windows,
+        key=lambda rows: sum(value for _, value in rows) / len(rows),
+    )
+    future_peak_mean = sum(value for _, value in peak_window) / 5
+    multiple = future_peak_mean / baseline_mean
+    if multiple < 2.0:
+        magnitude = None
+    elif multiple < 3.0:
+        magnitude = "2-3x"
+    elif multiple < 10.0:
+        magnitude = "3-10x"
+    else:
+        magnitude = "10x+"
+    return {
+        "realized_max_multiple": multiple,
+        "is_surge": multiple >= 2.0,
+        "magnitude": magnitude,
+        "baseline_mean": baseline_mean,
+        "future_peak_mean": future_peak_mean,
+        "baseline_dates": [item[0].isoformat() for item in baseline_rows],
+        "future_peak_dates": [item[0].isoformat() for item in peak_window],
+        "horizon_end": horizon_end.isoformat(),
+    }
+
+
+def _default_priors_dict() -> dict[str, str]:
+    return {
+        "reflect_round": DEFAULT_EVOLUTION_PRIORS.reflect_round,
+        "propose_plan": DEFAULT_EVOLUTION_PRIORS.propose_plan,
+        "mine_signal": DEFAULT_EVOLUTION_PRIORS.mine_signal,
+        "update_signal": DEFAULT_EVOLUTION_PRIORS.update_signal,
+    }
+
+
+def _dataset_identity_aliases(dataset: ApprovedDevelopmentDataset) -> tuple[str, ...]:
+    aliases: set[str] = set()
+    for case in (*dataset.discovery, *dataset.evolution_validation):
+        aliases.add(case.company_id)
+        for key in ("company_name", "ticker", "symbol", "identity_aliases"):
+            value = case.basic_info.get(key)
+            if isinstance(value, str):
+                aliases.add(value)
+            elif isinstance(value, (list, tuple)):
+                aliases.update(str(item) for item in value)
+    return tuple(sorted((item for item in aliases if item.strip()), key=len, reverse=True))
+
+
+def _add_months(value: date, months: int) -> date:
+    total_month = value.month - 1 + months
+    year = value.year + total_month // 12
+    month = total_month % 12 + 1
+    day = min(value.day, monthrange(year, month)[1])
+    return date(year, month, day)
+
+
+def _propose_issuer_splits(
+    cases: list[dict[str, Any]], *, seed: str
+) -> dict[str, list[dict[str, Any]]]:
+    by_issuer: dict[str, list[dict[str, Any]]] = {}
+    for row in cases:
+        by_issuer.setdefault(str(row["company_id"]), []).append(row)
+    strata: dict[bool, list[str]] = {False: [], True: []}
+    for company_id, rows in by_issuer.items():
+        strata[any(bool(row["ground_truth"]["is_surge"]) for row in rows)].append(
+            company_id
+        )
+    issuer_split: dict[str, str] = {}
+    for has_surge, issuer_ids in strata.items():
+        if len(issuer_ids) < 3:
+            raise ValidationError(
+                "dataset requires at least three issuers in each surge-presence stratum"
+            )
+        ordered = sorted(
+            issuer_ids,
+            key=lambda company_id: hashlib.sha256(
+                f"{seed}:{has_surge}:{company_id}".encode("utf-8")
+            ).hexdigest(),
+        )
+        discovery_count, evolution_count, _ = _three_way_counts(len(ordered))
+        for index, company_id in enumerate(ordered):
+            if index < discovery_count:
+                split = "discovery"
+            elif index < discovery_count + evolution_count:
+                split = "evolution_validation"
+            else:
+                split = "locked_test"
+            issuer_split[company_id] = split
+    result = {"discovery": [], "evolution_validation": [], "locked_test": []}
+    for row in sorted(cases, key=lambda item: item["case_id"]):
+        result[issuer_split[str(row["company_id"])]].append(row)
+    return result
+
+
+def _three_way_counts(total: int) -> tuple[int, int, int]:
+    discovery = max(1, round(total * 0.60))
+    evolution = max(1, round(total * 0.25))
+    locked = total - discovery - evolution
+    if locked < 1:
+        discovery = max(1, discovery - (1 - locked))
+        locked = total - discovery - evolution
+    if min(discovery, evolution, locked) < 1:
+        raise ValidationError("issuer stratum cannot support three non-empty splits")
+    return discovery, evolution, locked
+
+
+def _scan_payload(
+    value: Any,
+    *,
+    allow_outcomes: bool,
+    anonymous_aliases: Iterable[str],
+) -> None:
+    aliases = tuple(
+        sorted(
+            {str(item).strip().casefold() for item in anonymous_aliases if str(item).strip()},
+            key=len,
+            reverse=True,
+        )
+    )
+
+    def visit(item: Any, path: str) -> None:
+        if isinstance(item, Mapping):
+            for key, nested in item.items():
+                normalized = _normalize_field(str(key))
+                if not allow_outcomes and _is_outcome_field(normalized):
+                    raise ValidationError(f"outcome field leaked into request: {path}.{key}")
+                visit(nested, f"{path}.{key}")
+            return
+        if isinstance(item, (list, tuple)):
+            for index, nested in enumerate(item):
+                visit(nested, f"{path}[{index}]")
+            return
+        if isinstance(item, str):
+            folded = item.casefold()
+            for alias in aliases:
+                if re.search(
+                    rf"(?<![a-z0-9]){re.escape(alias)}(?![a-z0-9])",
+                    folded,
+                ):
+                    raise ValidationError(f"identity alias leaked into anonymous request: {path}")
+
+    visit(value, "payload")
+
+
+def _model_cost(
+    registration: RegisteredModel, *, input_tokens: int, output_tokens: int
+) -> float:
+    return (
+        input_tokens * registration.default_input_cost_per_million_tokens
+        + output_tokens * registration.default_output_cost_per_million_tokens
+    ) / 1_000_000
+
+
+def _usage_from_cache(data: Mapping[str, Any]) -> AgentUsage:
+    usage = data.get("usage", {})
+    return AgentUsage(
+        llm_calls=0,
+        tokens=int(usage.get("input_tokens", 0)) + int(usage.get("output_tokens", 0)),
+        cost=0.0,
+    )
+
+
+def _parse_json_object(text: str) -> dict[str, Any]:
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        stripped = re.sub(r"^```(?:json)?\s*", "", stripped, flags=re.IGNORECASE)
+        stripped = re.sub(r"\s*```$", "", stripped)
+    value = json.loads(stripped)
+    if not isinstance(value, dict):
+        raise ValidationError("structured model response must be a JSON object")
+    return value
+
+
+class _StreamingJSONReader:
+    """Incremental JSON decoder used for multi-hundred-megabyte local archives."""
+
+    def __init__(self, path: Path, *, chunk_size: int = 1024 * 1024) -> None:
+        self.handle = path.open("r", encoding="utf-8")
+        self.chunk_size = chunk_size
+        self.buffer = ""
+        self.position = 0
+        self.eof = False
+        self.decoder = json.JSONDecoder()
+
+    def close(self) -> None:
+        self.handle.close()
+
+    def peek(self) -> str:
+        self._skip_whitespace()
+        self._ensure_available()
+        return self.buffer[self.position]
+
+    def consume(self, expected: str) -> None:
+        actual = self.peek()
+        if actual != expected:
+            raise ValidationError(
+                f"large price archive expected {expected!r}, received {actual!r}"
+            )
+        self.position += 1
+        self._compact()
+
+    def decode(self) -> Any:
+        self._skip_whitespace()
+        while True:
+            try:
+                value, end = self.decoder.raw_decode(self.buffer, self.position)
+            except json.JSONDecodeError as exc:
+                if self.eof:
+                    raise ValidationError("large price archive contains invalid JSON") from exc
+                self._fill()
+                continue
+            self.position = end
+            self._compact()
+            return value
+
+    def _skip_whitespace(self) -> None:
+        while True:
+            while self.position < len(self.buffer) and self.buffer[
+                self.position
+            ].isspace():
+                self.position += 1
+            if self.position < len(self.buffer) or self.eof:
+                return
+            self._fill()
+
+    def _ensure_available(self) -> None:
+        if self.position >= len(self.buffer) and not self.eof:
+            self._fill()
+        if self.position >= len(self.buffer):
+            raise ValidationError("large price archive ended unexpectedly")
+
+    def _fill(self) -> None:
+        chunk = self.handle.read(self.chunk_size)
+        if not chunk:
+            self.eof = True
+            return
+        if self.position:
+            self.buffer = self.buffer[self.position :] + chunk
+            self.position = 0
+        else:
+            self.buffer += chunk
+
+    def _compact(self) -> None:
+        if self.position > self.chunk_size:
+            self.buffer = self.buffer[self.position :]
+            self.position = 0
+
+
+def _stream_selected_price_history(
+    path: Path, symbols: set[str]
+) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]]]:
+    if not path.is_file():
+        raise ValidationError(f"large local price archive is missing: {path}")
+    reader = _StreamingJSONReader(path)
+    metadata: dict[str, Any] = {}
+    selected: dict[str, list[dict[str, Any]]] = {}
+    try:
+        reader.consume("{")
+        while reader.peek() != "}":
+            key = reader.decode()
+            if not isinstance(key, str):
+                raise ValidationError("large price archive top-level key is invalid")
+            reader.consume(":")
+            if key == "bars_by_symbol":
+                reader.consume("{")
+                while reader.peek() != "}":
+                    symbol = reader.decode()
+                    if not isinstance(symbol, str):
+                        raise ValidationError("large price archive symbol key is invalid")
+                    reader.consume(":")
+                    bars = reader.decode()
+                    if symbol in symbols:
+                        if not isinstance(bars, list):
+                            raise ValidationError("large price archive bars must be a list")
+                        selected[symbol] = [
+                            dict(bar) for bar in bars if isinstance(bar, Mapping)
+                        ]
+                    if reader.peek() == ",":
+                        reader.consume(",")
+                    else:
+                        break
+                reader.consume("}")
+            else:
+                metadata[key] = reader.decode()
+            if reader.peek() == ",":
+                reader.consume(",")
+            else:
+                break
+        reader.consume("}")
+    finally:
+        reader.close()
+    return metadata, selected
+
+
+def _case_symbol(row: Any) -> str | None:
+    if not isinstance(row, Mapping):
+        return None
+    packet = row.get("packet", {})
+    if not isinstance(packet, Mapping):
+        return None
+    company = packet.get("company", {})
+    if not isinstance(company, Mapping):
+        return None
+    ticker = company.get("ticker", {})
+    return str(ticker.get("symbol")) if isinstance(ticker, Mapping) and ticker.get("symbol") else None
+
+
+def _case_as_of_date(row: Any) -> str | None:
+    if not isinstance(row, Mapping):
+        return None
+    packet = row.get("packet", {})
+    if not isinstance(packet, Mapping):
+        return None
+    as_of = packet.get("as_of", {})
+    if not isinstance(as_of, Mapping) or not as_of.get("as_of_date"):
+        return None
+    return str(as_of["as_of_date"])
+
+
+def _company_id_from_symbol(symbol: str) -> str:
+    value = re.sub(r"[^a-z0-9_.:-]+", "_", symbol.casefold()).strip("_")
+    if not value:
+        raise ValidationError(f"cannot derive company_id from symbol: {symbol!r}")
+    return value
+
+
+def _date_at_utc(value: Any, name: str) -> datetime:
+    if not value:
+        raise ValidationError(f"legacy artifact is missing {name}")
+    parsed = datetime.fromisoformat(str(value))
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _optional_string(value: Any) -> str | None:
+    return str(value) if value is not None else None
+
+
+def _normalize_field(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", value.casefold()).strip("_")
+
+
+def _is_outcome_field(normalized: str) -> bool:
+    return normalized in _FORBIDDEN_OUTCOME_KEYS or any(
+        normalized.startswith(f"{field}_") or normalized.endswith(f"_{field}")
+        for field in _FORBIDDEN_OUTCOME_KEYS
+    )
+
+
+def _canonical_hash(value: Any) -> str:
+    canonical = json.dumps(value, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _sha256_file(path: Path) -> str:
+    if not path.is_file():
+        raise ValidationError(f"required local artifact is missing: {path}")
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise ValidationError(f"required JSON artifact is missing: {path}")
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValidationError(f"JSON artifact must contain an object: {path}")
+    return value
+
+
+def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            json.dump(value, handle, sort_keys=True, indent=2)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def _write_or_verify_json(path: Path, value: Mapping[str, Any]) -> None:
+    expected = json.loads(json.dumps(dict(value), sort_keys=True))
+    if path.exists():
+        if _read_json(path) != expected:
+            raise ValidationError(f"conflicting immutable evolution artifact: {path}")
+        return
+    _atomic_write_json(path, expected)

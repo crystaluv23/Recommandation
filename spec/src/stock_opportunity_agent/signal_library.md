@@ -85,7 +85,7 @@ totals when known. The statistic is explicitly observational under the current
 adaptive retrieval policy; it is not causal credit and does not count mere Plan
 membership as a Signal occurrence.
 
-Every occurrence uses a stable observation id derived from Plan, company,
+Every occurrence uses a stable observation id derived from Plan, case,
 research round, result position, and Signal version. Reconciliation after
 restore is idempotent so a committed trajectory cannot be counted twice.
 
@@ -95,19 +95,24 @@ Mining and update agents write only under `signals_candidates/`. A candidate
 can be promoted only after checks for:
 
 - schema validity;
-- executor availability;
+- a non-empty point-in-time fixture set executed through the real candidate
+  executor with expected canonical states;
 - obvious future/label leakage;
 - required evidence traceability;
 - semantic duplication against stable Signals; and
 - valid version progression for updates.
 
-An update creates `vNext`; it never overwrites a stable version. Promotions are
-applied only after the whole slow-loop candidate batch validates, then the
-Registry version advances once.
+An update creates `vNext`; it never overwrites a stable version. Machine
+validation writes a candidate hash and a `pending_human_approval` result. A
+separate human approval artifact must name the reviewer and the exact candidate
+hash. `promote_candidate` fails closed without that approval or if spec, skill,
+or tests changed afterward. Approved promotions are applied as one batch, then
+the Registry version advances once.
 
 ## Testing
 
 Cover progressive disclosure, immutable version registration, frozen snapshot
 behavior, deterministic and LLM execution, exact evidence validation,
-unavailable state, observed-policy counts, candidate isolation, semantic
-duplicate rejection, and versioned promotion.
+unavailable state, observed-policy counts, candidate isolation, executable
+candidate fixtures, alias-aware leakage rejection, exact-hash approval, and
+versioned promotion.

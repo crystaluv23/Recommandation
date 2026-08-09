@@ -39,6 +39,12 @@ available_at <= prediction_time
 - A future document cannot be loaded through an as-of read.
 - Paths are derived only from validated identifiers; caller-controlled path
   traversal is rejected.
+- Metadata is recursively rejected when keys encode labels or post-outcome
+  facts such as `ground_truth`, `is_surge`, `realized_max_multiple`,
+  `future_price`, or `future_return`. Source text may discuss forward-looking
+  expectations; the guard targets hidden machine metadata, not ordinary prose.
+- The Information Plan Basic Info policy is subject to the same forbidden-field
+  boundary and cannot request label or outcome columns.
 
 ## Dependencies
 

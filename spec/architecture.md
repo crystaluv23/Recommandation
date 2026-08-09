@@ -66,7 +66,9 @@ cold start
 -> execute adaptive Information Plans against label-hidden evolution validation
 -> retain quality-diverse plans and compress completed-round lessons into FIFO meta-info
 -> periodically mine or repair candidate signals on label-visible discovery data
--> validate candidates before versioned promotion into the stable Signal Registry
+-> execute candidate fixtures and validate leakage/evidence/version contracts
+-> hold passing candidates for explicit human approval
+-> promote only exact approved candidate hashes into the stable Signal Registry
 -> reserve the locked test for a later human-approved acceptance check
 
 daily
@@ -118,8 +120,9 @@ find winners from the most recent one-year historical window
 -> select high-F1 but embedding-diverse Top-K parents plus random exploration parents
 -> sample N new Information Plans from fixed proposer prior plus FIFO experimental meta-info
 -> every bounded group of plan rounds, mine or repair candidate Signals on discovery data
--> validate candidate schema, executability, leakage, evidence traceability, and semantic uniqueness
--> promote passing candidates as new Signal versions before the next fast-loop group
+-> execute candidate fixtures and validate schema, leakage, evidence traceability, and semantic uniqueness
+-> record passing candidates as pending human approval
+-> promote only exact human-approved candidate hashes before the next fast-loop group
 ```
 
 “Bounded proposal engine” applies to each atomic development round: candidate
@@ -132,6 +135,15 @@ the fixed exam. External execution still requires an explicit session scope
 with fixed model/provider/routing, packet corpus, per-round limits, a cumulative
 cost ledger, and fail-closed preflight validation for every newly rendered
 request.
+
+An external evolution run is identified by a secret-free frozen run contract:
+dataset and split hash, stable Signal snapshot hash, fixed-prior hash, role/model
+and provider routing, code revision, runtime limits, attempt limit, and cumulative
+cost ceiling. Every external request is written and leakage-scanned before it is
+sent, exact responses are keyed by the request hash, and every attempted call is
+reserved in a durable ledger before network I/O. Restart may reuse an exact
+response or an exact staged artifact, but it may not silently change the frozen
+contract.
 
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
 
@@ -169,8 +181,11 @@ evolution-validation label is inaccessible to plan execution; locked-test
 records are absent from ordinary evolution calls. Plan rounds are finite and
 advance one authoritative atomic `last_completed_round` pointer only after
 plan records, trajectories, metrics, reflections, archive state, and round
-meta-info have committed. Files beyond that pointer are staged recovery inputs,
-not completed history.
+meta-info have committed. Each repeated issuer/as-of observation has its own
+stable `case_id`; company identity is never used as a case or prediction-file
+key. Files beyond the pointer are staged recovery inputs, not completed history;
+restart reuses them only when their canonical content exactly matches the
+intended artifact under the same frozen run contract.
 
 ### Phase 2: Current Market Scan
 

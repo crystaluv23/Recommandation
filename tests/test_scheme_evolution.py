@@ -46,6 +46,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ResearchState,
     RoundMetaEntry,
     RuntimeLimits,
+    RuntimePlanEvaluator,
     RuntimeStopReason,
     RuntimeUsage,
     SignalCandidateValidator,
@@ -233,6 +234,18 @@ class RawInfoStoreTests(TestCase):
                 content="content",
             )
 
+    def test_hidden_outcome_metadata_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "forbidden outcome"):
+            RawInfoDocument.create(
+                document_id="leaking_doc",
+                company_id="issuer_1",
+                source_type="financials",
+                published_at=NOW,
+                available_at=NOW,
+                content="Contemporaneous financial statement.",
+                metadata={"analysis": {"realized_max_multiple": 4.0}},
+            )
+
 
 class GenericAgentTests(TestCase):
     def test_agent_uses_only_granted_domain_tools_and_validates_output(self) -> None:
@@ -399,6 +412,20 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_basic_info_policy_cannot_request_outcome_fields(self) -> None:
+        base = default_information_plan()
+        with self.assertRaisesRegex(ValidationError, "outcome fields"):
+            InformationPlan(
+                plan_id="leaking_plan",
+                parent_ids=(),
+                basic_info_policy=type(base.basic_info_policy)(
+                    fields=("company_name", "hidden_ground_truth")
+                ),
+                initial_research_skill=base.initial_research_skill,
+                reflection_skill=base.reflection_skill,
+                analysis_prompt=base.analysis_prompt,
+            )
+
     def _registry_and_store(self, directory: str):
         registry = SignalRegistry(Path(directory) / "signals")
         registry.install_catalog(SEED_CATALOG)
@@ -501,6 +528,56 @@ class InformationPlanRuntimeTests(TestCase):
             self.assertEqual(len(trajectory.signal_rounds), 1)
             self.assertEqual(persisted, ["done"])
 
+    def test_repeated_issuer_cases_keep_distinct_truths_and_prediction_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="shared_financials",
+                        company_id="shared_issuer",
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Revenue grew 25 percent.",
+                        metadata={"revenue_growth_yoy": 0.25},
+                    ),
+                )
+            )
+            predictor = FixedPredictor()
+            evaluator = RuntimePlanEvaluator(
+                raw_info_store=store,
+                controller=OneBatchController(),
+                signal_agent=OneSignalSelector(),
+                predictor=predictor,
+                prediction_root=root / "predictions",
+            )
+            cases = (
+                EvolutionCase(
+                    company_id="shared_issuer",
+                    prediction_time=NOW,
+                    basic_info={"company_name": "Shared One"},
+                    ground_truth=GroundTruth(1.2),
+                ),
+                EvolutionCase(
+                    company_id="shared_issuer",
+                    prediction_time=NOW + timedelta(days=1),
+                    basic_info={"company_name": "Shared Two"},
+                    ground_truth=GroundTruth(4.0),
+                ),
+            )
+            trajectories = evaluator.evaluate(
+                default_information_plan(), cases, registry.freeze()
+            )
+            self.assertEqual(
+                [row.ground_truth.realized_max_multiple for row in trajectories],
+                [1.2, 4.0],
+            )
+            self.assertEqual(len({row.case_id for row in trajectories}), 2)
+            self.assertEqual(len({row.prediction_ref for row in trajectories}), 2)
+
 
 class PredictionMetricTests(TestCase):
     def test_ground_truth_thresholds_and_two_stage_metrics(self) -> None:
@@ -600,6 +677,38 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 [entry.round_id for entry in workspace.restore_meta().entries],
                 [1],
             )
+
+    def test_round_commit_reuses_only_exact_crash_staged_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            record = make_record("plan_recovered", 0.8, (1.0, 0.0), round_id=1)
+            meta = RoundMetaEntry(round_id=1, evidence_refs=("plan_recovered",))
+            staged_path = workspace.plans_root / "plan_recovered" / "record.json"
+            staged_path.parent.mkdir(parents=True)
+            staged_path.write_text(json.dumps(record.to_dict()), encoding="utf-8")
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=meta,
+                signal_registry_hash="registry-hash",
+            )
+            self.assertEqual(workspace.last_completed_round, 1)
+
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            record = make_record("plan_conflict", 0.8, (1.0, 0.0), round_id=1)
+            meta = RoundMetaEntry(round_id=1, evidence_refs=("plan_conflict",))
+            staged_path = workspace.plans_root / "plan_conflict" / "record.json"
+            staged_path.parent.mkdir(parents=True)
+            staged_path.write_text('{"wrong": true}', encoding="utf-8")
+            with self.assertRaisesRegex(ValidationError, "conflicting staged"):
+                workspace.commit_round(
+                    round_id=1,
+                    records=(record,),
+                    meta_entry=meta,
+                    signal_registry_hash="registry-hash",
+                )
+            self.assertEqual(workspace.last_completed_round, 0)
 
     def test_meta_memory_is_fifo_and_requires_monotonic_grounded_entries(self) -> None:
         memory = PlanMetaMemory(maxlen=2)
@@ -810,7 +919,7 @@ class SignalEvolutionTests(TestCase):
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
-            finding = validator.validate(leaking, skill=None)
+            finding = validator.validate(leaking, skill=None, tests=())
             self.assertFalse(finding.accepted)
             self.assertTrue(any("leakage" in reason for reason in finding.reasons))
             duplicate = SignalSpec(
@@ -822,7 +931,9 @@ class SignalEvolutionTests(TestCase):
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
-            self.assertFalse(validator.validate(duplicate, skill=None).accepted)
+            self.assertFalse(
+                validator.validate(duplicate, skill=None, tests=()).accepted
+            )
             bad_update = SignalSpec(
                 signal_id="revenue_growth_yoy",
                 version=3,
@@ -832,9 +943,11 @@ class SignalEvolutionTests(TestCase):
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
-            self.assertFalse(validator.validate(bad_update, skill=None).accepted)
+            self.assertFalse(
+                validator.validate(bad_update, skill=None, tests=()).accepted
+            )
 
-    def test_slow_loop_stages_then_promotes_new_and_vnext_signals(self) -> None:
+    def test_slow_loop_validates_then_requires_exact_human_approval(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
@@ -863,7 +976,10 @@ class SignalEvolutionTests(TestCase):
                     AgentTurn(
                         tool_call=ToolCall(
                             "create_candidate_signal",
-                            {"spec": new_spec.to_dict(), "tests": []},
+                            {
+                                "spec": new_spec.to_dict(),
+                                "tests": [candidate_growth_fixture()],
+                            },
                         )
                     ),
                     AgentTurn(final_output={"candidate_refs": []}),
@@ -877,7 +993,7 @@ class SignalEvolutionTests(TestCase):
                             {
                                 "signal_ref": "revenue_growth_yoy:v1",
                                 "spec": updated_spec.to_dict(),
-                                "tests": [],
+                                "tests": [candidate_growth_fixture()],
                             },
                         )
                     ),
@@ -896,10 +1012,24 @@ class SignalEvolutionTests(TestCase):
             )
             result = engine.run_cycle()
             self.assertEqual(
-                set(result.promoted),
+                set(result.validated_pending_approval),
                 {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
             )
-            self.assertEqual(result.registry_version, 2)
+            self.assertEqual(result.promoted, ())
+            self.assertEqual(result.registry_version, 1)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
+            with self.assertRaisesRegex(ValidationError, "approval"):
+                registry.promote_candidate("revenue_growth_yoy:v2")
+            promoted = engine.promote_approved(
+                result,
+                approvals=result.validated_pending_approval,
+                approved_by="human-reviewer",
+            )
+            self.assertEqual(
+                set(promoted.promoted),
+                {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
+            )
+            self.assertEqual(promoted.registry_version, 2)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
             self.assertTrue(
@@ -954,11 +1084,14 @@ class SignalEvolutionTests(TestCase):
                 self.assertFalse(model.requests[0].workspace["locked_test_available"])
             with self.assertRaisesRegex(ValidationError, "after the Discovery"):
                 engine._search_raw_info_tool(
-                    "discovery_only",
+                    make_case("discovery_only", 3.0).case_id,
                     (NOW + timedelta(days=1)).isoformat(),
                 )
-            with self.assertRaisesRegex(ValidationError, "Discovery companies"):
-                engine._load_discovery_raw_document("locked_doc")
+            with self.assertRaisesRegex(ValidationError, "Discovery case"):
+                engine._load_discovery_raw_document(
+                    make_case("discovery_only", 3.0).case_id,
+                    "locked_doc",
+                )
 
 
 class DualLoopTests(TestCase):
@@ -1029,6 +1162,24 @@ def make_case(company_id: str, multiple: float) -> EvolutionCase:
         },
         ground_truth=GroundTruth(multiple),
     )
+
+
+def candidate_growth_fixture() -> dict[str, Any]:
+    return {
+        "name": "point-in-time positive growth",
+        "as_of": NOW.isoformat(),
+        "expected": "positive",
+        "documents": [
+            {
+                "document_id": "candidate_growth_fixture",
+                "source_type": "financials",
+                "published_at": NOW.isoformat(),
+                "available_at": NOW.isoformat(),
+                "content": "Revenue grew 25 percent year over year.",
+                "metadata": {"revenue_growth_yoy": 0.25},
+            }
+        ],
+    }
 
 
 def make_trajectory(
