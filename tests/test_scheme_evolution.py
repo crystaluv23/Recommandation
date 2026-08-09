@@ -291,6 +291,36 @@ class GenericAgentTests(TestCase):
         )
         self.assertEqual(model.requests[1].observations, result.observations)
 
+    def test_agent_returns_domain_validation_error_for_bounded_repair(self) -> None:
+        def validate_as_of(as_of: str) -> int:
+            raise ValidationError("as_of must be timezone-aware")
+
+        model = ScriptedAgentModel(
+            [
+                AgentTurn(
+                    tool_call=ToolCall("lookup", {"as_of": "2025-01-15"})
+                ),
+                AgentTurn(final_output={"answer": 4}),
+            ]
+        )
+
+        result = GenericAgent(model).run(
+            prompt="Use the domain tool and repair invalid values.",
+            tools=(DomainTool("lookup", "Look up a value.", validate_as_of),),
+            workspace={"scope": "fixture"},
+            output_schema=lambda value: int(value["answer"]),
+            max_steps=2,
+        )
+
+        self.assertEqual(
+            result.observations[0].result,
+            {
+                "error": "tool_validation",
+                "message": "as_of must be timezone-aware",
+            },
+        )
+        self.assertEqual(model.requests[1].observations, result.observations)
+
     def test_agent_rejects_ungranted_or_raw_tools_and_step_exhaustion(self) -> None:
         with self.assertRaisesRegex(ValidationError, "not allowed"):
             DomainTool("rm", "Remove anything.", lambda: None)

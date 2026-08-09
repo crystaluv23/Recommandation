@@ -188,7 +188,20 @@ class GenericAgent:
                     )
                 )
                 continue
-            result = tool.function(**arguments)
+            try:
+                result = tool.function(**arguments)
+            except ValidationError as exc:
+                observations.append(
+                    ToolObservation(
+                        name=tool.name,
+                        arguments=arguments,
+                        result={
+                            "error": "tool_validation",
+                            "message": str(exc),
+                        },
+                    )
+                )
+                continue
             observations.append(
                 ToolObservation(
                     name=tool.name,

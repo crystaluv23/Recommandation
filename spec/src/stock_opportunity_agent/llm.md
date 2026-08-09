@@ -31,9 +31,11 @@ prompt-safe callable signature; an unknown tool or malformed turn fails closed.
 When a granted tool call omits or misnames arguments, the harness records a
 structured `invalid_arguments` observation with the expected signature and lets
 the model repair it within the existing step bound. It does not invent missing
-values, and exceptions raised inside a correctly bound domain tool still fail
-closed. The harness never grants arbitrary shell or filesystem primitives such
-as `ls`, `cat`, or `rm`.
+values. Explicit domain `ValidationError` exceptions are likewise returned as a
+bounded `tool_validation` observation so the model can correct values such as a
+timezone-free cutoff; all other exceptions raised inside a correctly bound
+domain tool still fail closed. The harness never grants arbitrary shell or
+filesystem primitives such as `ls`, `cat`, or `rm`.
 
 ## Usage and Limits
 
