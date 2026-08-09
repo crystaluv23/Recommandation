@@ -1029,6 +1029,7 @@ class RunControlTests(TestCase):
                 "request"
             ]
             self.assertEqual(request["temperature"], 1.0)
+            self.assertEqual(request["response_format"], {"type": "json_object"})
 
             ExactResponseCache(root / "cache" / "responses").store(
                 request_hash,
@@ -1046,3 +1047,59 @@ class RunControlTests(TestCase):
             )
             self.assertEqual(value, {"ok": True})
             self.assertEqual(usage.llm_calls, 0)
+
+    def test_structured_client_enforces_json_response_format_on_provider_call(self) -> None:
+        class RecordingClient:
+            def __init__(self) -> None:
+                self.kwargs: dict[str, object] = {}
+
+            def complete(self, _messages, **kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                self.kwargs = dict(kwargs)
+                return ChatResponse(
+                    response_id="response-1",
+                    model="fixture-model",
+                    output_text='{"ok":true}',
+                    raw={"usage": {"input_tokens": 3, "output_tokens": 2}},
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            recording_client = RecordingClient()
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: recording_client,
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            value, usage = client.complete_json(
+                stage="predict",
+                system_prompt="Return JSON.",
+                payload={"context": "anonymous evidence"},
+                allow_outcomes=False,
+            )
+
+            self.assertEqual(value, {"ok": True})
+            self.assertEqual(usage.llm_calls, 1)
+            self.assertEqual(
+                recording_client.kwargs["response_format"],
+                {"type": "json_object"},
+            )

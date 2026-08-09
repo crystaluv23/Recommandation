@@ -1515,6 +1515,7 @@ class StructuredRoleClient:
             "stage": stage,
             "model": self.registration.to_public_dict(),
             "temperature": temperature,
+            "response_format": {"type": "json_object"},
             "max_http_attempts": 1,
             "max_output_tokens": output_limit,
             "messages": [
@@ -1598,6 +1599,7 @@ class StructuredRoleClient:
             ChatMessage("user", json.dumps(payload, sort_keys=True)),
         ]
         kwargs: dict[str, Any] = {"max_output_tokens": output_limit}
+        kwargs["response_format"] = {"type": "json_object"}
         if self.registration.default_reasoning_effort:
             kwargs["reasoning"] = {
                 "effort": self.registration.default_reasoning_effort

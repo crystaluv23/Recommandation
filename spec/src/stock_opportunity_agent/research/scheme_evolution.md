@@ -369,7 +369,10 @@ availability is recorded only as a boolean; secrets are never serialized.
 
 Every newly rendered request is persisted and recursively checked for outcome
 fields, future facts, company identity, and cross-case aliases before network
-I/O. The durable attempt ledger reserves an attempt and its conservative cost
+I/O. Structured roles include the provider JSON-object response format in both
+the persisted exact request and the provider call, so prompt compliance is not
+the only JSON boundary and the format setting participates in the cache hash.
+The durable attempt ledger reserves an attempt and its conservative cost
 ceiling before a call, then records completion or failure. An exact-response
 cache is keyed by canonical request hash and is evidence of reuse, not evidence
 of round completion. Dry-run and preflight perform no external calls. Locked
