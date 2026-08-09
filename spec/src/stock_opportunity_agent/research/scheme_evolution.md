@@ -287,6 +287,12 @@ to the exact candidate hash (spec + skill + tests). Only those exact approved
 hashes may be promoted, and the Registry version advances once after the approved
 batch.
 
+Both Slow agents have an explicit final-output contract:
+`{"candidate_refs":[...]}`. A non-empty ref must come from a successful candidate
+staging tool call; otherwise the agent returns an empty list. Diagnosis or a
+proposed Signal object is not itself a valid final result. Schema and tool
+validation errors may be repaired only within the frozen agent-step bound.
+
 ## Persistence and Completion
 
 Fine-grained Plan, trajectory, candidate, and response artifacts may be written

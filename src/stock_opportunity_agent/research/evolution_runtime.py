@@ -2202,10 +2202,12 @@ class StructuredAgentModel(AgentModel):
         *,
         stage: str,
         allow_outcomes: bool,
+        final_output_example: Mapping[str, Any],
     ) -> None:
         self.caller = caller
         self.stage = stage
         self.allow_outcomes = allow_outcomes
+        self.final_output_example = dict(final_output_example)
 
     def respond(self, request: AgentRequest) -> AgentTurn:
         value, usage = self.caller.complete_json(
@@ -2213,7 +2215,13 @@ class StructuredAgentModel(AgentModel):
             system_prompt=(
                 "Use only the named domain tools. Return either "
                 "{\"action\":\"tool\",\"tool_name\":...,\"arguments\":{...}} "
-                "or {\"action\":\"final\",\"output\":...}."
+                "or {\"action\":\"final\",\"output\":...}. The final output "
+                "must be an object shaped exactly like "
+                f"{json.dumps(self.final_output_example, sort_keys=True)}. "
+                "Return candidate refs only after a successful staging tool call; "
+                "if no valid candidate was staged, return an empty candidate_refs "
+                "list. Never return a diagnosis or proposed Signal directly as the "
+                "final output."
             ),
             payload={
                 "task_prompt": request.prompt,
@@ -2455,6 +2463,7 @@ def run_bounded_evolution_cycle(
                 evolution_caller,
                 stage="signal_mining_agent",
                 allow_outcomes=True,
+                final_output_example={"candidate_refs": ["candidate_signal:v1"]},
             )
         ),
         update_agent=GenericAgent(
@@ -2462,6 +2471,7 @@ def run_bounded_evolution_cycle(
                 evolution_caller,
                 stage="signal_update_agent",
                 allow_outcomes=True,
+                final_output_example={"candidate_refs": ["candidate_signal:v2"]},
             )
         ),
         llm_signal_runner=signal_runner,

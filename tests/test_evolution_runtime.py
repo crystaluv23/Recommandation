@@ -7,7 +7,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest import TestCase
 
-from stock_opportunity_agent.llm.agent import AgentUsage
+from stock_opportunity_agent.llm.agent import AgentRequest, AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel
 from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.models import ValidationError
@@ -21,6 +21,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     LLMResearchController,
     LLMSignalRetrievalAgent,
     StructuredLLMSignalRunner,
+    StructuredAgentModel,
     StructuredRoleClient,
     approve_dataset_proposal,
     filter_case_price_history,
@@ -657,6 +658,31 @@ class ScriptedRoleCaller:
 
 
 class ConcreteRoleAdapterTests(TestCase):
+    def test_slow_agent_role_states_exact_final_output_contract(self) -> None:
+        caller = ScriptedRoleCaller(
+            [{"action": "final", "output": {"candidate_refs": []}}]
+        )
+        model = StructuredAgentModel(
+            caller,
+            stage="signal_mining_agent",
+            allow_outcomes=True,
+            final_output_example={"candidate_refs": ["candidate_signal:v1"]},
+        )
+
+        turn = model.respond(
+            AgentRequest(
+                prompt="Mine one candidate.",
+                tool_cards=(),
+                workspace={},
+                observations=(),
+            )
+        )
+
+        self.assertEqual(turn.final_output, {"candidate_refs": []})
+        system_prompt = str(caller.calls[0]["system_prompt"])
+        self.assertIn('"candidate_refs": ["candidate_signal:v1"]', system_prompt)
+        self.assertIn("successful staging tool call", system_prompt)
+
     def test_controller_and_progressive_signal_selector_use_structured_roles(self) -> None:
         controller_caller = ScriptedRoleCaller(
             [
