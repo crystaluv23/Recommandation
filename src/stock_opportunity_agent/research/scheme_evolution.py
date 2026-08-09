@@ -1413,6 +1413,10 @@ class InformationPlanProposer(Protocol):
     def propose(
         self,
         *,
+        round_id: int,
+        candidate_index: int,
+        candidate_count: int,
+        forbidden_plan_ids: tuple[str, ...],
         parents: tuple[InformationPlan, ...],
         meta_info: tuple[RoundMetaEntry, ...],
         prior: str,
@@ -2088,6 +2092,17 @@ class PlanEvolutionEngine:
                 candidate_count=self.candidates_per_round,
             )
             candidate = self.proposer.propose(
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=self.candidates_per_round,
+                forbidden_plan_ids=tuple(
+                    sorted(
+                        {
+                            *(record.plan_id for record in self.archive.records),
+                            *(plan.plan_id for plan in candidate_plans),
+                        }
+                    )
+                ),
                 parents=parents,
                 meta_info=self.meta_memory.entries,
                 prior=self.priors.propose_plan,

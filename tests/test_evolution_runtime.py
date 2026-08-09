@@ -17,6 +17,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     ExternalAttemptLedger,
     ExternalRequestPending,
     LLMBlindPredictor,
+    LLMInformationPlanProposer,
     LLMResearchController,
     LLMSignalRetrievalAgent,
     StructuredRoleClient,
@@ -635,9 +636,11 @@ class ScriptedRoleCaller:
     def __init__(self, outputs: list[dict[str, object]]) -> None:
         self.outputs = list(outputs)
         self.stages: list[str] = []
+        self.calls: list[dict[str, object]] = []
 
     def complete_json(self, **kwargs):
         self.stages.append(str(kwargs["stage"]))
+        self.calls.append(dict(kwargs))
         return self.outputs.pop(0), AgentUsage(llm_calls=1, tokens=5, cost=0.01)
 
 
@@ -657,6 +660,10 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(state.value.next_information_needs, ("revenue growth",))
         self.assertEqual(controller_caller.stages, ["research_controller_initialize"])
+        self.assertIn(
+            '"next_information_needs"',
+            str(controller_caller.calls[0]["system_prompt"]),
+        )
 
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -694,6 +701,100 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
+        self.assertIn('"session_id"', str(caller.calls[0]["system_prompt"]))
+
+    def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "plan_id": "plan_manual_v2",
+                    "parent_ids": ["plan_manual_v1"],
+                    "B": {
+                        "company_name": "placeholder",
+                        "ticker": "PLACEHOLDER",
+                    },
+                    "H_init": {
+                        "basic_info_policy": {
+                            "fields": ["company_name", "ticker", "industry"]
+                        },
+                        "initial_research_skill": "Form a falsifiable hypothesis.",
+                    },
+                    "H_reflect": {
+                        "reflection_skill": "Track support and contradiction."
+                    },
+                    "H_analyse": {
+                        "analysis_prompt": "Weigh supporting and counter evidence."
+                    },
+                    "fixed_prior": "echoed input",
+                    "meta_info": [],
+                },
+                {
+                    "plan_id": "plan_manual_v2_slot_2",
+                    "parent_ids": ["plan_manual_v1"],
+                    "basic_info_policy": {
+                        "fields": ["company_name", "ticker", "industry"]
+                    },
+                    "initial_research_skill": "Test a distinct hypothesis.",
+                    "reflection_skill": "Track disconfirming evidence first.",
+                    "analysis_prompt": "Weigh both sides.",
+                },
+            ]
+        )
+        proposer = LLMInformationPlanProposer(caller)
+        parent = default_information_plan()
+
+        first = proposer.propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=2,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+        second = proposer.propose(
+            round_id=1,
+            candidate_index=2,
+            candidate_count=2,
+            forbidden_plan_ids=(first.plan_id,),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(first.plan_id, "plan_manual_v2")
+        self.assertEqual(first.basic_info_policy.fields[-1], "industry")
+        self.assertNotIn("proposal_slot", caller.calls[0]["payload"])
+        self.assertEqual(
+            caller.calls[1]["payload"]["proposal_slot"],
+            {
+                "round_id": 1,
+                "candidate_index": 2,
+                "candidate_count": 2,
+                "forbidden_plan_ids": ["plan_manual_v2"],
+            },
+        )
+        self.assertIn(
+            '"basic_info_policy"', str(caller.calls[1]["system_prompt"])
+        )
+        self.assertIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
+        self.assertEqual(second.plan_id, "plan_manual_v2_slot_2")
+
+    def test_plan_proposer_reports_invalid_shape_as_validation_error(self) -> None:
+        proposer = LLMInformationPlanProposer(ScriptedRoleCaller([{"unexpected": True}]))
+
+        with self.assertRaisesRegex(
+            ValidationError, "information_plan_propose returned invalid JSON fields"
+        ):
+            proposer.propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                forbidden_plan_ids=(),
+                parents=(default_information_plan(),),
+                meta_info=(),
+                prior="fixed H_P",
+            )
 
 
 class RunControlTests(TestCase):

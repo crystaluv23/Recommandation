@@ -832,9 +832,23 @@ class CountingProposer:
     def __init__(self) -> None:
         self.calls: list[dict[str, Any]] = []
 
-    def propose(self, *, parents, meta_info, prior):
+    def propose(
+        self,
+        *,
+        round_id,
+        candidate_index,
+        candidate_count,
+        forbidden_plan_ids,
+        parents,
+        meta_info,
+        prior,
+    ):
         self.calls.append(
             {
+                "round_id": round_id,
+                "candidate_index": candidate_index,
+                "candidate_count": candidate_count,
+                "forbidden_plan_ids": forbidden_plan_ids,
                 "parents": tuple(plan.plan_id for plan in parents),
                 "meta_rounds": tuple(entry.round_id for entry in meta_info),
                 "prior": prior,
@@ -951,6 +965,13 @@ class PlanEvolutionEngineTests(TestCase):
             self.assertEqual(len(proposer.calls), 2)
             self.assertEqual(proposer.calls[0]["parents"], ("plan_manual_v1",))
             self.assertEqual(proposer.calls[0]["prior"], DEFAULT_EVOLUTION_PRIORS.propose_plan)
+            self.assertEqual(proposer.calls[0]["candidate_index"], 1)
+            self.assertEqual(proposer.calls[0]["candidate_count"], 2)
+            self.assertEqual(proposer.calls[0]["forbidden_plan_ids"], ())
+            self.assertEqual(proposer.calls[1]["candidate_index"], 2)
+            self.assertEqual(
+                proposer.calls[1]["forbidden_plan_ids"], ("plan_child_1",)
+            )
             self.assertEqual(len(result.records), 2)
             for record in result.records:
                 self.assertTrue(record.embedding)

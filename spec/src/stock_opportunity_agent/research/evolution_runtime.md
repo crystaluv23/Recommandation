@@ -48,6 +48,14 @@ Completion/failure updates the same durable entry. Exact responses live under
 `cache/responses/<request_hash>.json`; reuse requires the exact request hash and
 does not consume another attempt.
 
+Every structured role prompt includes its literal accepted JSON field contract.
+The adapter validates and converts provider output at the role boundary before
+domain construction; malformed shapes fail with a stage-specific
+`ValidationError`, never a raw `KeyError`. The Information Plan proposer also
+accepts the observed semantic `B/H_init/H_reflect/H_analyse` nesting as a
+deterministic compatibility input, but durable Plan artifacts always use the
+canonical flat field names.
+
 Preflight and dry-run never perform network I/O. External mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash.
 

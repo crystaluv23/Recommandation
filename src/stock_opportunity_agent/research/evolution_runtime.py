@@ -1679,6 +1679,154 @@ class JSONRoleCaller(Protocol):
         """Return one validated structured role response and usage."""
 
 
+def _output_contract(name: str, example: Mapping[str, Any]) -> str:
+    """Render one literal provider-facing JSON contract without Python names."""
+
+    return (
+        f" Output contract for {name}: return exactly one JSON object shaped like "
+        f"{json.dumps(dict(example), sort_keys=True, separators=(',', ':'))}. "
+        "Replace example values with grounded values, keep the exact key names and "
+        "JSON types, do not add wrapper keys, and do not use Markdown."
+    )
+
+
+_RESEARCH_STATE_OUTPUT = _output_contract(
+    "ResearchState",
+    {
+        "hypotheses": ["one falsifiable hypothesis"],
+        "current_beliefs": [],
+        "supporting_evidence": [],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": ["one natural-language need"],
+        "decision": "continue",
+    },
+) + ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+
+_BLIND_PREDICTION_OUTPUT = _output_contract(
+    "BlindPrediction",
+    {
+        "is_surge": False,
+        "magnitude": None,
+        "confidence": {"level": "low"},
+        "key_reasons": ["one source-grounded reason"],
+        "uncertainties": [],
+        "session_id": "anonymous-session-id",
+    },
+) + (
+    ' confidence.level must be "low", "medium", or "high". When is_surge is '
+    'true, magnitude must be "2-3x", "3-10x", or "10x+"; otherwise it must be null.'
+)
+
+_PREDICTION_REFLECTION_OUTPUT = _output_contract(
+    "PredictionSelfReflection",
+    {
+        "prediction_outcome": {"correct": False},
+        "why_prediction_failed": [],
+        "misleading_signals": [],
+        "ignored_evidence": [],
+        "missing_information": [],
+        "plan_issues": [],
+    },
+)
+
+_PLAN_REFLECTION_OUTPUT = _output_contract(
+    "PlanReflection",
+    {
+        "successful_patterns": [],
+        "failed_patterns": [],
+        "repeated_failure_modes": [],
+        "misleading_signals": [],
+        "missing_information_needs": [],
+        "next_explorations": [],
+    },
+)
+
+_ROUND_META_OUTPUT = _output_contract(
+    "RoundMetaEntry",
+    {
+        "round_id": 1,
+        "plan_level": {"successful_patterns": [], "failed_patterns": []},
+        "prediction_errors": {"false_positive": [], "false_negative": []},
+        "signal_observations": {
+            "useful": [],
+            "suspicious": [],
+            "missing_capabilities": [],
+        },
+        "search_implications": [],
+        "evidence_refs": ["one supplied plan_id"],
+    },
+)
+
+_SIGNAL_RESULT_OUTPUT = _output_contract(
+    "SignalResult",
+    {
+        "signal_id": "requested_signal_id",
+        "version": 1,
+        "state": {"value": "neutral", "confidence": 0.5},
+        "interpretation": {"summary": "grounded interpretation"},
+        "evidence": {"supporting": [], "counter": []},
+        "status": {"coverage": "partial"},
+    },
+) + (
+    ' state.value must be "positive", "neutral", "negative", or "unavailable"; '
+    'status.coverage must be "sufficient", "partial", or "unavailable". Each '
+    'evidence item must contain document_id, exact_span, and ISO-8601 timestamp.'
+)
+
+_INFORMATION_PLAN_OUTPUT = _output_contract(
+    "InformationPlan",
+    {
+        "plan_id": "new_unique_plan_id",
+        "parent_ids": ["one_supplied_parent_id"],
+        "basic_info_policy": {"fields": ["company_name", "ticker"]},
+        "initial_research_skill": "complete initialization instructions",
+        "reflection_skill": "complete reflection instructions",
+        "analysis_prompt": "complete final analysis instructions",
+    },
+)
+
+
+def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any:
+    """Convert provider JSON into a domain object with a stage-specific error."""
+
+    try:
+        return parser(value)
+    except (KeyError, TypeError, ValueError) as exc:
+        keys = ", ".join(sorted(str(key) for key in value))
+        raise ValidationError(
+            f"{stage} returned invalid JSON fields [{keys}]: {type(exc).__name__}: {exc}"
+        ) from exc
+
+
+def _normalize_information_plan_output(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize the observed semantic B/H_* provider shape at the role boundary."""
+
+    if "basic_info_policy" in value:
+        return dict(value)
+    h_init = dict(value.get("H_init", {}))
+    h_reflect = dict(value.get("H_reflect", {}))
+    h_analyse = dict(value.get("H_analyse", value.get("H_analyze", {})))
+    policy = h_init.get("basic_info_policy")
+    if not isinstance(policy, Mapping):
+        basic = value.get("B", {})
+        if isinstance(basic, Mapping):
+            policy = (
+                dict(basic)
+                if "fields" in basic
+                else {"fields": [str(key) for key in basic]}
+            )
+    return {
+        "plan_id": value.get("plan_id", value.get("id")),
+        "parent_ids": value.get("parent_ids", value.get("parent ids", ())),
+        "basic_info_policy": policy,
+        "initial_research_skill": h_init.get("initial_research_skill"),
+        "reflection_skill": h_reflect.get("reflection_skill"),
+        "analysis_prompt": h_analyse.get("analysis_prompt"),
+    }
+
+
 class LLMResearchController:
     """Concrete H_init/H_reflect adapter backed by a guarded JSON role client."""
 
@@ -1693,6 +1841,7 @@ class LLMResearchController:
             system_prompt=(
                 "Apply H_init to Basic Info only. Return one ResearchState JSON object; "
                 "information needs must be natural language, not Signal ids."
+                + _RESEARCH_STATE_OUTPUT
             ),
             payload={
                 "initial_research_skill": plan.initial_research_skill,
@@ -1700,7 +1849,12 @@ class LLMResearchController:
             },
             allow_outcomes=False,
         )
-        return AgentStep(ResearchState.from_dict(value), usage)
+        return AgentStep(
+            _parse_role_output(
+                "research_controller_initialize", value, ResearchState.from_dict
+            ),
+            usage,
+        )
 
     def reflect(
         self,
@@ -1713,6 +1867,7 @@ class LLMResearchController:
             system_prompt=(
                 "Apply H_reflect once to the complete Signal batch. Return one "
                 "ResearchState JSON object with continue/finalize decision."
+                + _RESEARCH_STATE_OUTPUT
             ),
             payload={
                 "reflection_skill": plan.reflection_skill,
@@ -1721,7 +1876,12 @@ class LLMResearchController:
             },
             allow_outcomes=False,
         )
-        return AgentStep(ResearchState.from_dict(value), usage)
+        return AgentStep(
+            _parse_role_output(
+                "research_controller_reflect", value, ResearchState.from_dict
+            ),
+            usage,
+        )
 
 
 class LLMSignalRetrievalAgent:
@@ -1803,13 +1963,19 @@ class LLMBlindPredictor:
             system_prompt=(
                 "Using only the anonymous supplied context, predict whether the next "
                 "six months reach at least 2x. If yes choose 2-3x, 3-10x, or 10x+. "
-                "Return the BlindPrediction JSON schema and do not use web tools."
+                "Do not use web tools."
+                + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )
-        return AgentStep(BlindPrediction.from_dict(value), usage)
+        return AgentStep(
+            _parse_role_output(
+                "blind_predictor_predict", value, BlindPrediction.from_dict
+            ),
+            usage,
+        )
 
     def reflect(
         self,
@@ -1821,7 +1987,8 @@ class LLMBlindPredictor:
             stage="blind_predictor_posthoc_reflect",
             system_prompt=(
                 "The saved prediction is immutable. Given its original anonymous "
-                "context and newly revealed truth, return PredictionSelfReflection JSON."
+                "context and newly revealed truth, reflect on the prediction."
+                + _PREDICTION_REFLECTION_OUTPUT
             ),
             payload={
                 "original_context": dict(original_context),
@@ -1831,7 +1998,14 @@ class LLMBlindPredictor:
             allow_outcomes=True,
             anonymous_aliases=self.anonymous_aliases,
         )
-        return AgentStep(PredictionSelfReflection.from_dict(value), usage)
+        return AgentStep(
+            _parse_role_output(
+                "blind_predictor_posthoc_reflect",
+                value,
+                PredictionSelfReflection.from_dict,
+            ),
+            usage,
+        )
 
 
 class LLMInformationPlanProposer:
@@ -1843,24 +2017,46 @@ class LLMInformationPlanProposer:
     def propose(
         self,
         *,
+        round_id: int,
+        candidate_index: int,
+        candidate_count: int,
+        forbidden_plan_ids: tuple[str, ...],
         parents: tuple[InformationPlan, ...],
         meta_info: tuple[RoundMetaEntry, ...],
         prior: str,
     ) -> InformationPlan:
+        payload: dict[str, Any] = {
+            "fixed_prior": prior,
+            "parents": [item.to_dict() for item in parents],
+            "meta_info": [item.to_dict() for item in meta_info],
+        }
+        if round_id > 1 or candidate_index > 1 or forbidden_plan_ids:
+            payload["proposal_slot"] = {
+                "round_id": round_id,
+                "candidate_index": candidate_index,
+                "candidate_count": candidate_count,
+                "forbidden_plan_ids": list(forbidden_plan_ids),
+            }
+        system_prompt = (
+            "Apply the fixed H_P prior. Return one complete InformationPlan JSON. "
+            "Only B, H_init, H_reflect, H_analyse, id, and parent ids may vary."
+        )
+        if "proposal_slot" in payload:
+            system_prompt += (
+                " Obey proposal_slot: use a plan_id outside forbidden_plan_ids and "
+                "make this candidate materially distinct from prior slots."
+                + _INFORMATION_PLAN_OUTPUT
+            )
         value, _usage = self.caller.complete_json(
             stage="information_plan_propose",
-            system_prompt=(
-                "Apply the fixed H_P prior. Return one complete InformationPlan JSON. "
-                "Only B, H_init, H_reflect, H_analyse, id, and parent ids may vary."
-            ),
-            payload={
-                "fixed_prior": prior,
-                "parents": [item.to_dict() for item in parents],
-                "meta_info": [item.to_dict() for item in meta_info],
-            },
+            system_prompt=system_prompt,
+            payload=payload,
             allow_outcomes=False,
         )
-        return InformationPlan.from_dict(value)
+        normalized = _normalize_information_plan_output(value)
+        return _parse_role_output(
+            "information_plan_propose", normalized, InformationPlan.from_dict
+        )
 
 
 class LLMPlanCritic:
@@ -1878,7 +2074,10 @@ class LLMPlanCritic:
     ) -> PlanReflection:
         value, _usage = self.caller.complete_json(
             stage="plan_critic",
-            system_prompt="Return one PlanReflection grounded only in the supplied batch.",
+            system_prompt=(
+                "Ground the reflection only in the supplied batch."
+                + _PLAN_REFLECTION_OUTPUT
+            ),
             payload={
                 "plan": plan.to_dict(),
                 "metrics": metrics.to_dict(),
@@ -1886,7 +2085,7 @@ class LLMPlanCritic:
             },
             allow_outcomes=True,
         )
-        return PlanReflection.from_dict(value)
+        return _parse_role_output("plan_critic", value, PlanReflection.from_dict)
 
 
 class LLMRoundReflector:
@@ -1905,8 +2104,9 @@ class LLMRoundReflector:
         value, _usage = self.caller.complete_json(
             stage="round_reflect",
             system_prompt=(
-                "Apply fixed H_R only to these new records. Return RoundMetaEntry JSON "
-                "whose evidence_refs cite supplied plan ids."
+                "Apply fixed H_R only to these new records; evidence_refs must cite "
+                "supplied plan ids."
+                + _ROUND_META_OUTPUT
             ),
             payload={
                 "round_id": round_id,
@@ -1915,7 +2115,7 @@ class LLMRoundReflector:
             },
             allow_outcomes=True,
         )
-        return RoundMetaEntry.from_dict(value)
+        return _parse_role_output("round_reflect", value, RoundMetaEntry.from_dict)
 
 
 class StructuredAgentModel(AgentModel):
@@ -1986,7 +2186,8 @@ class StructuredLLMSignalRunner:
             stage="llm_signal_execute",
             system_prompt=(
                 "Apply the versioned extraction skill to only these point-in-time "
-                "documents. Return one SignalResult JSON with literal evidence spans."
+                "documents and use literal evidence spans."
+                + _SIGNAL_RESULT_OUTPUT
             ),
             payload={
                 "signal_spec": spec.to_dict(),
@@ -1996,7 +2197,12 @@ class StructuredLLMSignalRunner:
             },
             allow_outcomes=False,
         )
-        return SignalResult.from_dict(value), usage
+        result = _parse_role_output("llm_signal_execute", value, SignalResult.from_dict)
+        if result.signal_id != spec.signal_id or result.version != spec.version:
+            raise ValidationError(
+                "llm_signal_execute returned a Signal id/version outside the request"
+            )
+        return result, usage
 
 
 def run_bounded_evolution_cycle(

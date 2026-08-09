@@ -219,8 +219,12 @@ Select quality plus diversity:
 4. add up to two random non-selected archive records for exploration.
 
 The proposer receives `[top1..topK, rand1, rand2]`, current FIFO meta-info, and
-fixed `H_P`. It is called independently N times. This is conditional sampling,
-not a claim of genetic crossover.
+fixed `H_P`. It is called independently N times. Every call also receives a
+non-evolvable proposal slot (`round_id`, candidate index/count, and forbidden
+Plan ids) so deterministic temperature-zero models and exact caches do not
+collapse all N calls into one response. The slot participates in request
+identity but never becomes part of the candidate Plan. This is conditional
+sampling, not a claim of genetic crossover.
 
 ## Plan Meta-Info and Fixed Priors
 
@@ -409,7 +413,8 @@ imputed.
 Tests must prove point-in-time reads, dynamic Signal selection, whole-batch
 reflection, mandatory prediction persistence before label access, two-stage
 metric math, complete Plan records, quality-diverse selection, independent N
-proposal calls, grounded FIFO updates, observed-policy counts, candidate
+proposal calls with distinct slot identities, grounded FIFO updates,
+observed-policy counts, candidate
 isolation, executable candidate fixtures, exact-hash human promotion checks,
 frozen fast-loop definitions, locked-test
 isolation, runtime budgets, authoritative completion pointer behavior, and one
