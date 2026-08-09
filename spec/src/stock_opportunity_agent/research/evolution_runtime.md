@@ -72,6 +72,11 @@ every proposal call, including the first slot; provider responses that instead
 use evidence arrays under `H_*` are rejected and retained in the exact cache,
 not coerced into a bogus Plan.
 
+The Signal-result adapter also enforces the canonical unavailable-state
+invariant. If a provider returns `state.value=unavailable` with a looser
+coverage value, the boundary conservatively narrows coverage to `unavailable`;
+it never promotes an unavailable state to partial or sufficient evidence.
+
 Preflight and dry-run never perform network I/O. External mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash.
 

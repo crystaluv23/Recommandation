@@ -1776,7 +1776,8 @@ _SIGNAL_RESULT_OUTPUT = _output_contract(
 ) + (
     ' state.value must be "positive", "neutral", "negative", or "unavailable"; '
     'status.coverage must be "sufficient", "partial", or "unavailable". Each '
-    'evidence item must contain document_id, exact_span, and ISO-8601 timestamp.'
+    'evidence item must contain document_id, exact_span, and ISO-8601 timestamp. '
+    'When state.value is "unavailable", status.coverage must also be "unavailable".'
 )
 
 _INFORMATION_PLAN_OUTPUT = _output_contract(
@@ -1866,6 +1867,22 @@ def _normalize_information_plan_output(value: Mapping[str, Any]) -> dict[str, An
         raise ValidationError(
             "information_plan_propose returned invalid basic_info_policy"
         )
+    return normalized
+
+
+def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Conservatively align DeepSeek's unavailable state and coverage fields."""
+
+    normalized = dict(value)
+    state_value = normalized.get("state")
+    status_value = normalized.get("status")
+    if isinstance(state_value, Mapping) and isinstance(status_value, Mapping):
+        state = dict(state_value)
+        status = dict(status_value)
+        if state.get("value") == "unavailable":
+            status["coverage"] = "unavailable"
+            normalized["state"] = state
+            normalized["status"] = status
     return normalized
 
 
@@ -2250,7 +2267,10 @@ class StructuredLLMSignalRunner:
             },
             allow_outcomes=False,
         )
-        result = _parse_role_output("llm_signal_execute", value, SignalResult.from_dict)
+        normalized = _normalize_signal_result_output(value)
+        result = _parse_role_output(
+            "llm_signal_execute", normalized, SignalResult.from_dict
+        )
         if result.signal_id != spec.signal_id or result.version != spec.version:
             raise ValidationError(
                 "llm_signal_execute returned a Signal id/version outside the request"

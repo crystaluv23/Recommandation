@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import tempfile
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest import TestCase
 
@@ -20,6 +20,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     LLMInformationPlanProposer,
     LLMResearchController,
     LLMSignalRetrievalAgent,
+    StructuredLLMSignalRunner,
     StructuredRoleClient,
     approve_dataset_proposal,
     filter_case_price_history,
@@ -35,7 +36,13 @@ from stock_opportunity_agent.research.scheme_evolution import (
     GroundTruth,
     default_information_plan,
 )
-from stock_opportunity_agent.signal_library import SignalRegistry
+from stock_opportunity_agent.signal_library import (
+    SignalCoverage,
+    SignalExecutionType,
+    SignalRegistry,
+    SignalSpec,
+    SignalValue,
+)
 
 
 SHA_A = "a" * 64
@@ -881,6 +888,39 @@ class ConcreteRoleAdapterTests(TestCase):
                 meta_info=(),
                 prior="fixed H_P",
             )
+
+    def test_llm_signal_runner_conservatively_normalizes_unavailable_coverage(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "signal_id": "pilot_to_volume",
+                    "version": 1,
+                    "state": {"value": "unavailable", "confidence": 0.5},
+                    "interpretation": {"summary": "No usable source evidence."},
+                    "evidence": {"supporting": [], "counter": []},
+                    "status": {"coverage": "partial"},
+                }
+            ]
+        )
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, _usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (),
+            "Extract only source-grounded transitions.",
+            datetime(2025, 1, 1, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(result.coverage, SignalCoverage.UNAVAILABLE)
 
 
 class RunControlTests(TestCase):
