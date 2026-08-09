@@ -1030,6 +1030,7 @@ class RunControlTests(TestCase):
             ]
             self.assertEqual(request["temperature"], 1.0)
             self.assertEqual(request["response_format"], {"type": "json_object"})
+            self.assertIn("JSON", request["messages"][0]["content"])
 
             ExactResponseCache(root / "cache" / "responses").store(
                 request_hash,

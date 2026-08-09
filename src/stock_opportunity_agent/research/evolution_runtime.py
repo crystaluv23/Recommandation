@@ -1508,6 +1508,9 @@ class StructuredRoleClient:
             allow_outcomes=allow_outcomes,
             anonymous_aliases=anonymous_aliases,
         )
+        structured_system_prompt = (
+            "Return exactly one JSON object and no non-JSON text. " + system_prompt
+        )
         output_limit = max_output_tokens or self.registration.default_max_output_tokens
         request = {
             "schema_version": "evolution-exact-request-v1",
@@ -1519,7 +1522,7 @@ class StructuredRoleClient:
             "max_http_attempts": 1,
             "max_output_tokens": output_limit,
             "messages": [
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": structured_system_prompt},
                 {
                     "role": "user",
                     "content": json.dumps(payload, sort_keys=True, separators=(",", ":")),
@@ -1595,7 +1598,7 @@ class StructuredRoleClient:
             )
         )
         messages = [
-            ChatMessage("system", system_prompt),
+            ChatMessage("system", structured_system_prompt),
             ChatMessage("user", json.dumps(payload, sort_keys=True)),
         ]
         kwargs: dict[str, Any] = {"max_output_tokens": output_limit}

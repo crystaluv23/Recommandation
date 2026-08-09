@@ -372,6 +372,8 @@ fields, future facts, company identity, and cross-case aliases before network
 I/O. Structured roles include the provider JSON-object response format in both
 the persisted exact request and the provider call, so prompt compliance is not
 the only JSON boundary and the format setting participates in the cache hash.
+Every structured system message also explicitly requests one JSON object, as
+required by providers that reject JSON-object mode without that input token.
 The durable attempt ledger reserves an attempt and its conservative cost
 ceiling before a call, then records completion or failure. An exact-response
 cache is keyed by canonical request hash and is evidence of reuse, not evidence
