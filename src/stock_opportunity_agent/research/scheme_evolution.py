@@ -466,6 +466,18 @@ class SignalRound:
             },
         }
 
+    def to_model_context_dict(self) -> dict[str, Any]:
+        """Return semantic Signal evidence without cache-variant usage metadata."""
+
+        return {
+            "information_needs": list(self.information_needs),
+            "selected_signals": list(self.selected_signals),
+            "batch": {
+                "results": [result.to_dict() for result in self.batch.results],
+                "signal_calls": self.batch.signal_calls,
+            },
+        }
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalRound":
         batch = dict(data["batch"])
@@ -778,7 +790,7 @@ def _assemble_final_context(
         "basic_info": {
             key: value for key, value in basic_info.items() if key not in identity_keys
         },
-        "signal_rounds": [item.to_dict() for item in rounds],
+        "signal_rounds": [item.to_model_context_dict() for item in rounds],
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
         "runtime_stop_reason": stop_reason.value,

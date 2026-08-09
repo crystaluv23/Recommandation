@@ -298,6 +298,11 @@ validation errors may be repaired only within the frozen agent-step bound.
 Fine-grained Plan, trajectory, candidate, and response artifacts may be written
 as soon as available. A round becomes official only in this order:
 
+Exact request payloads include only semantic model inputs. Runtime usage,
+provider cost, cache-hit state, and other execution-accounting fields remain in
+audit trajectories but never enter Predictor context; therefore a resume from
+an exact cached response renders the same downstream request.
+
 ```text
 all candidate records and trajectories
 -> metrics and Plan reflections

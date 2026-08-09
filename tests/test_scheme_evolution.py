@@ -578,6 +578,10 @@ class InformationPlanRuntimeTests(TestCase):
             self.assertEqual(trajectory.ground_truth.magnitude, MagnitudeClass.THREE_TO_TEN)
             self.assertEqual(trajectory.usage.signal_rounds, 1)
             self.assertEqual(trajectory.usage.signal_calls, 1)
+            self.assertNotIn(
+                "usage", trajectory.final_context["signal_rounds"][0]["batch"]
+            )
+            self.assertIn("usage", trajectory.signal_rounds[0].to_dict()["batch"])
             self.assertEqual(predictor.reflection_truths, [GroundTruth(4.0)])
 
     def test_runtime_stops_at_fixed_round_guard(self) -> None:

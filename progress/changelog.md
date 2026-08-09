@@ -106,3 +106,4 @@
 2026-08-09: Let bounded GenericAgent loops return explicit domain `ValidationError` messages for model self-correction while preserving fail-closed behavior for unexpected tool exceptions.
 2026-08-09: Added bounded GenericAgent final-output schema repair after DeepSeek JSON-encoded a Slow Signal result instead of returning the required candidate-ref object; the schema remains strict.
 2026-08-09: Added the exact Slow Signal `candidate_refs` terminal contract and successful-staging requirement to the structured role prompt after a bounded real run repeatedly returned a diagnosis object.
+2026-08-09: Removed cache-variant Signal usage/cost metadata from Predictor context while retaining it in audit trajectories after a TLS resume changed the blind request solely because a cached call reports zero incremental cost.
