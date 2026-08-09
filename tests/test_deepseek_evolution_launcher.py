@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import subprocess
 from pathlib import Path
 from unittest import TestCase
@@ -33,3 +34,11 @@ class DeepSeekEvolutionLauncherTests(TestCase):
         self.assertNotIn("read -r -s", source)
         self.assertIn('REVIEWER="local-operator"', source)
         self.assertIn('KEY_SOURCE="git-ignored .env.local"', source)
+
+    def test_strict_mode_variables_are_braced_before_non_ascii_text(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+
+        unbraced_before_non_ascii = re.compile(
+            r"\$[A-Za-z_][A-Za-z0-9_]*[^\x00-\x7f]"
+        )
+        self.assertIsNone(unbraced_before_non_ascii.search(source))

@@ -136,13 +136,13 @@ printf '%s\n' \
   "  数据：当前脚本默认历史开发集（不是待审核的 expanded v7）" \
   "  proposal: $PROPOSAL" \
   "  proposal hash: $PROPOSAL_HASH" \
-  "  model: $MODEL_ALIAS（方案生成与盲评）" \
+  "  model: ${MODEL_ALIAS}（方案生成与盲评）" \
   "  duration: $OVERNIGHT_HOURS hours" \
   "  plan rounds/cycle: $PLAN_ROUNDS" \
   "  candidates/round: $CANDIDATES_PER_ROUND" \
   "  attempt ceiling: $MAX_EXTERNAL_ATTEMPTS" \
   "  cumulative cost ceiling: USD $MAX_TOTAL_COST" \
-  "  API key source: $KEY_SOURCE（内容不会显示或持久化）" \
+  "  API key source: ${KEY_SOURCE}（内容不会显示或持久化）" \
   "  reviewer: $REVIEWER" \
   "  Locked Test: sealed" \
   "  Signal candidates: staged only, never auto-promoted" \
