@@ -20,6 +20,9 @@ src/stock_opportunity_agent/
     structured
     documents
     point_in_time
+    raw_info
+  llm
+    agent
   memory
     signals
     themes
@@ -27,12 +30,15 @@ src/stock_opportunity_agent/
   themes
   cases
   signals
+  signal_library
   scanner
   research
     cold_start
     inflection_discovery
     evidence_acquisition
     ralph_loop
+    information_plan
+    scheme_evolution
     playbooks
   scoring
   ranking
@@ -54,6 +60,8 @@ spec/src/stock_opportunity_agent/
   data/structured.md
   data/documents.md
   data/point_in_time.md
+  data/raw_info.md
+  llm.md
   memory.md
   memory/signals.md
   memory/themes.md
@@ -61,12 +69,15 @@ spec/src/stock_opportunity_agent/
   themes.md
   cases.md
   signals.md
+  signal_library.md
   scanner.md
   research.md
   research/cold_start.md
   research/inflection_discovery.md
   research/evidence_acquisition.md
   research/ralph_loop.md
+  research/information_plan.md
+  research/scheme_evolution.md
   research/playbooks.md
   scoring.md
   ranking.md
@@ -82,11 +93,16 @@ spec/src/stock_opportunity_agent/
 The active module set reflects the system-design discussion without turning every future helper into an entity:
 
 - The thesis-centered loop, expectation-gap research, watchlist output, validation contracts, and recommendation/trading separation live in [`vision.md`](../../vision.md) and [`architecture.md`](../../architecture.md).
-- Point-in-time data, structured data as backbone, and document retrieval live in [`data.md`](data.md), with active child contracts for provider adapters in [`data/sources.md`](data/sources.md), feature normalization in [`data/structured.md`](data/structured.md), document retrieval in [`data/documents.md`](data/documents.md), and packet construction in [`data/point_in_time.md`](data/point_in_time.md).
+- Point-in-time data, structured data as backbone, document retrieval, and the
+  append-only adaptive research fact store live in [`data.md`](data.md).
 - Local long-term memory for companies, theses, signals, cases, decisions, reviews, current universe state, themes, research playbooks, segments, experiments, and preferences lives in [`memory.md`](memory.md).
 - Historical winners, controls, failures, and blind analysis packets live in [`cases.md`](cases.md).
 - Theme discovery, industry-chain transmission, segment stage, and timing live in [`themes.md`](themes.md).
-- Signal definitions, novelty/anomaly detection, and performance learning live in [`signals.md`](signals.md).
+- Existing packet measurement rules live in [`signals.md`](signals.md); the
+  versioned deterministic/LLM Signal Registry used by self-evolution lives in
+  [`signal_library.md`](signal_library.md).
+- Reusable provider discovery and the domain-tool-only Generic Agent harness
+  live in [`llm.md`](llm.md).
 - Non-LLM coarse screening, current-state-aware rerun selection, and anomaly-driven candidate surfacing before expensive research live in [`scanner.md`](scanner.md).
 - LLM research, skeptic passes, valuation critique, evidence-for/evidence-against, cold-start playbook synthesis, validation-contract drafting, and structured thesis output live in [`research.md`](research.md).
 - Theme scores, Segment Timing, Company Rocket Score, Launch Probability, Upside Potential, and risk adjustment live in [`scoring.md`](scoring.md).

@@ -71,10 +71,10 @@ Active child specs:
   information requirements, source coverage, atomic evidence, raw-versus-
   organized comparison, family experiments, and layered failure attribution
   coordinated by Ralph before analysis-method experiments.
-- [`research/scheme_evolution.md`](research/scheme_evolution.md): resumable,
-  bounded proposal search over versioned information-scheme genomes under a
-  frozen six-month A/B/C contract, label-free per-stock validation, and
-  binary-F1 Top-K selection.
+- [`research/scheme_evolution.md`](research/scheme_evolution.md): the active
+  dual-loop system: adaptive Information Plan execution, two-stage blind
+  prediction, Plan Archive and quality-diverse parent selection, FIFO
+  experimental meta-info, and bounded Signal mining/update cycles.
 - [`research/playbooks.md`](research/playbooks.md): retrospective cross-case
   synthesis of reusable surge-research thinking patterns and prompt playbooks.
 
@@ -101,17 +101,12 @@ Active child specs:
   source bundle, as-of cutoff, model, output contract, and documented context
   budget. Derived cross-sectional data used by a signal counts as additional
   input information and must not be hidden inside only one comparison arm.
-- Materialize each candidate genome with discovery labels from one fold only;
-  freeze the result before building anonymous validation inputs, persist each
-  signal extraction and A/B/C prediction before deterministic scoring, derive
-  binary surge status in code, reject numeric probability fields, and keep
-  final-test records outside the evolution engine.
-- Persist one idempotent development-metric snapshot per completed evolution
-  round and render a local dashboard that shows candidate-level binary-F1
-  scatter, per-round candidate median, and retained best-so-far separately;
-  never mix final-test metrics into this development drift view. Refresh one
-  stable evolution-root index after each round so local run ids can be selected
-  without creating a separate human entry point per round.
+- Freeze one exact Signal Registry snapshot across each group of Information
+  Plan rounds; dynamic retrieval may select only Signals in that snapshot.
+- Persist each two-stage blind prediction before revealing its label; keep
+  discovery, evolution validation, and locked test under separate ownership.
+- Reflect over a complete Signal batch, not one Signal at a time, and preserve
+  the full execution trajectory for later Plan critique and Signal diagnosis.
 - Synthesize candidate research playbooks from historical cases without directly
   rewriting prompt defaults.
 - Prefer monitor or ignore when evidence is weak.

@@ -47,6 +47,11 @@ from stock_opportunity_agent.data.documents import (
     documents_as_of,
     documents_to_evidence,
 )
+from stock_opportunity_agent.data.raw_info import (
+    RawInfoDocument,
+    RawInfoStore,
+    content_sha256,
+)
 from stock_opportunity_agent.data.point_in_time import (
     build_research_packet,
     catalysts_as_of,
@@ -99,6 +104,8 @@ __all__ = [
     "PRICE_FEATURE_WINDOWS",
     "RawCacheKey",
     "RawDataCache",
+    "RawInfoDocument",
+    "RawInfoStore",
     "RequestLedger",
     "RequestLedgerEntry",
     "RequestStatus",
@@ -115,6 +122,7 @@ __all__ = [
     "catalysts_as_of",
     "chunk_document_text",
     "company_profile_from_features",
+    "content_sha256",
     "create_source",
     "documents_as_of",
     "documents_to_evidence",

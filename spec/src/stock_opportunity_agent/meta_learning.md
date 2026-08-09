@@ -27,6 +27,13 @@ Expected records:
 - `VersionComparison`
 - `ChangeProposal`
 
+Information-scheme evolution also owns one bounded FIFO `meta-info(plan)`
+window. Each entry is grounded only in newly completed round experiments and
+contains plan patterns, prediction errors, signal observations, missing
+capabilities, search implications, and evidence references. It is not a second
+experiment database and it is never improved by asking an LLM to rewrite the
+previous meta text without new experiments.
+
 ## Responsibilities
 
 - Evaluate Top 10 and Top 20 results across 1-month, 3-month, and 6-month horizons.
@@ -44,6 +51,9 @@ Expected records:
 - Run walk-forward experiments before recommending framework changes.
 - Run new versions in shadow or side-by-side mode when the blast radius is meaningful.
 - Track prompt, scoring, signal, model, data pipeline, universe, and ranking versions.
+- Keep fixed evolution priors `H_R`, `H_P`, `H_E`, and `H_U` outside the
+  self-mutating state. Changing a prior is a human-reviewed framework change,
+  not an ordinary plan or signal candidate.
 
 ## Change Risk Classes
 

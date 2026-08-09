@@ -9,6 +9,17 @@ from dataclasses import dataclass, field
 from typing import Any, TypeVar, overload
 
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.llm.agent import (
+    AgentModel,
+    AgentRequest,
+    AgentRunResult,
+    AgentTurn,
+    AgentUsage,
+    DomainTool,
+    GenericAgent,
+    ToolCall,
+    ToolObservation,
+)
 
 
 ProviderFactory = Callable[..., Any]

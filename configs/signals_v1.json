@@ -1,0 +1,161 @@
+{
+  "catalog_version": 1,
+  "signals": [
+    {
+      "spec": {
+        "signal_id": "revenue_growth_yoy",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Measure the latest point-in-time year-over-year revenue growth."},
+        "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
+        "raw_retrieval": {"source_types": ["financials"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.2, "negative_max": 0.0}
+      },
+      "tests": [{"name": "positive growth", "metadata_key": "revenue_growth_yoy", "value": 0.25, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "revenue_acceleration",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."},
+        "execution": {"type": "deterministic", "function": "financial.revenue_acceleration"},
+        "raw_retrieval": {"source_types": ["financials"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.05, "negative_max": -0.05}
+      },
+      "tests": [{"name": "growth acceleration", "value": 0.08, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "gross_margin_change",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Measure the latest point-in-time change in gross margin."},
+        "execution": {"type": "deterministic", "function": "financial.gross_margin_change"},
+        "raw_retrieval": {"source_types": ["financials"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.02, "negative_max": -0.02}
+      },
+      "tests": [{"name": "margin expansion", "metadata_key": "gross_margin_change", "value": 0.03, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "max_drawdown_1y",
+        "version": 1,
+        "category": "market",
+        "definition": {"description": "Measure maximum drawdown from the point-in-time one-year price series."},
+        "execution": {"type": "deterministic", "function": "market.max_drawdown_1y"},
+        "raw_retrieval": {"source_types": ["market_data"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": -0.2, "negative_max": -0.5}
+      },
+      "tests": [{"name": "contained drawdown", "prices": [10, 12, 11, 13], "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "market_cap",
+        "version": 1,
+        "category": "company",
+        "definition": {"description": "Read the latest point-in-time market capitalization as research context."},
+        "execution": {"type": "deterministic", "function": "company.market_cap"},
+        "raw_retrieval": {"source_types": ["company_profile", "market_data"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 5000000000, "negative_max": 500000000}
+      },
+      "tests": [{"name": "large company", "metadata_key": "market_cap", "value": 6000000000, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "cash_reserves",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Read the latest point-in-time cash and equivalents balance."},
+        "execution": {"type": "deterministic", "function": "financial.cash_reserves"},
+        "raw_retrieval": {"source_types": ["financials", "filing"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 100000000, "negative_max": 10000000}
+      },
+      "tests": [{"name": "cash buffer", "metadata_key": "cash_reserves", "value": 150000000, "expected": "positive"}]
+    },
+    {
+      "spec": {
+        "signal_id": "pilot_to_volume",
+        "version": 1,
+        "category": "customers",
+        "definition": {"description": "Judge whether customers moved from pilot or validation into volume purchase or scaled deployment."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["earnings_call", "company_announcement", "customer_announcement"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Extract only explicit customer-stage evidence. Positive requires a stated move from trial, qualification, or pilot into repeat volume purchase or scaled deployment. Treat partnership language without deployment evidence as neutral. Return literal supporting and counter spans.",
+      "tests": [{"name": "partnership alone is not volume", "expected": "neutral"}]
+    },
+    {
+      "spec": {
+        "signal_id": "guidance_acceleration",
+        "version": 1,
+        "category": "management",
+        "definition": {"description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.",
+      "tests": [{"name": "generic optimism", "expected": "neutral"}]
+    },
+    {
+      "spec": {
+        "signal_id": "order_quality",
+        "version": 1,
+        "category": "orders",
+        "definition": {"description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.",
+      "tests": [{"name": "non-binding MOU", "expected": "neutral"}]
+    },
+    {
+      "spec": {
+        "signal_id": "commercialization_status",
+        "version": 1,
+        "category": "product",
+        "definition": {"description": "Judge whether a technical milestone has become a sellable and repeatable commercial product."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Cite literal spans.",
+      "tests": [{"name": "technical demo only", "expected": "neutral"}]
+    },
+    {
+      "spec": {
+        "signal_id": "customer_concentration",
+        "version": 1,
+        "category": "risks",
+        "definition": {"description": "Judge whether the growth thesis depends excessively on one customer or one customer program."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.",
+      "tests": [{"name": "single customer majority", "expected": "negative"}]
+    },
+    {
+      "spec": {
+        "signal_id": "financing_listing_action",
+        "version": 1,
+        "category": "catalysts",
+        "definition": {"description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."},
+        "execution": {"type": "llm", "skill_file": "skill.md"},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "news"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+      },
+      "skill": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Explain whether the point-in-time effect supports runway/tradability or increases dilution/distress, with literal spans.",
+      "tests": [{"name": "proposed financing is not completed", "expected": "neutral"}]
+    }
+  ]
+}

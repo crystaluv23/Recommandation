@@ -29,6 +29,8 @@ Post-source implementation adds active data-layer submodules:
 - [`data/structured.md`](data/structured.md): normalize prices, profile fields, valuation ratios, and SEC company facts into `FeatureRecord` values.
 - [`data/documents.md`](data/documents.md): archive, chunk, and retrieve source-linked documents with public-availability metadata.
 - [`data/point_in_time.md`](data/point_in_time.md): filter features and documents by availability and assemble `ResearchPacket` records.
+- [`data/raw_info.md`](data/raw_info.md): append-only facts and source bodies for
+  adaptive Signal execution, filtered by `available_at <= prediction_time`.
 
 ## Data Need Rationalization
 
@@ -65,6 +67,8 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Construct point-in-time packets for live scans and historical case learning.
 - Preserve source, timestamp, and availability metadata.
 - Separate raw archives, feature stores, and document stores.
+- Reject Raw Info replacement or deletion through the store API; corrected
+  source content must be a new document with its own id and lineage metadata.
 - Select sources by capability using the catalog preference order before invoking a provider.
 - Track request outcomes and source quotas so free API limits produce resumable deferred work instead of hidden partial data.
 

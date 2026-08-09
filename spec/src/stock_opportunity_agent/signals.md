@@ -7,6 +7,12 @@ Started
 
 Own the signal library: definitions, applicability, measurement, historical performance, false-positive patterns, and versioning.
 
+The adaptive, file-backed deterministic/LLM registry used by Information Plan
+self-evolution is owned by [`signal_library.md`](signal_library.md). This module
+continues to own the existing fixed `ResearchPacket` measurement rules and the
+broader production-facing signal responsibilities; the two paths share signal
+semantics but do not duplicate registry implementations.
+
 ## External Interface
 
 Signal categories should initially include:

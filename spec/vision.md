@@ -25,14 +25,21 @@ learn from historical winners and failures
 
 The durable unit of work is the investment thesis and its evidence, not the ticker by itself.
 
-Historical learning has two ordered research objectives. First, the system must
-find a validated information plan: what evidence to collect, where to obtain it,
-how to extract it without losing provenance, and how to present it to a fixed
-plain-LLM baseline. Only after that information plan reaches a stable validation
-plateau should the project compare richer analysis methods such as multi-agent
-research, debate, or specialist critique. Weak plain-LLM separation is not by
-itself evidence that multi-agent analysis is needed when acquisition, extraction,
-or packet fidelity remains unresolved.
+Historical learning has two coupled time scales. The fast loop evolves an
+`InformationPlan`: how to bootstrap a company study, formulate the next
+information need, reflect over a batch of evidence-backed signals, and assemble
+the final blind-prediction context. The slow loop evolves a versioned Signal
+Library: which reusable real-world concepts matter and how to extract them from
+the point-in-time Raw Info Store. The system evolves research strategy and
+cognitive tools, not one prediction prompt.
+
+The resulting information plan remains a proposal until it succeeds on
+label-hidden evolution validation and later passes a separately locked test.
+Only after the information layer reaches a stable validation plateau should the
+project compare richer analysis methods such as multi-agent research, debate,
+or specialist critique. Weak plain-LLM separation is not by itself evidence
+that multi-agent analysis is needed when acquisition, signal extraction, or
+context fidelity remains unresolved.
 
 ## Core Goal
 
@@ -57,8 +64,10 @@ The system's main line is:
 
 ```text
 historical learning
--> validated research information plan
--> signal library and analysis-method experiments
+-> fast-loop information-plan experiments
+-> slow-loop signal mining, repair, validation, and versioned promotion
+-> locked-test review of a selected research information plan
+-> analysis-method experiments
 -> theme and industry-chain map
 -> weekly theme-first scan
 -> structured coarse screen
@@ -96,6 +105,8 @@ These thresholds are starting defaults, not permanent beliefs.
 - Do not present LLM output as reliable financial prediction.
 - Do not learn only from winners; every historical study must include controls or failures when possible.
 - Do not let the system silently rewrite its own framework without experiment evidence and human confirmation.
+- Do not let the fast loop mutate labels, dataset ownership, blind-prediction
+  rules, fixed evolution priors, or Signal Registry versions.
 
 ## Operating Principles
 

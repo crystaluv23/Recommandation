@@ -1,1452 +1,1124 @@
 from __future__ import annotations
 
-import hashlib
 import json
+import random
 import tempfile
-from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from types import SimpleNamespace
+from typing import Any, Mapping
 from unittest import TestCase
 
-from scripts.evolve_information_schemes import (
-    _acquire_run_lock,
-    _external_execution_readiness,
-    _restore_pending_branch_intent,
+from stock_opportunity_agent.data.raw_info import (
+    RawInfoDocument,
+    RawInfoStore,
+    content_sha256,
 )
-
-from stock_opportunity_agent.llm.openai import ChatResponse
+from stock_opportunity_agent.llm.agent import (
+    AgentRequest,
+    AgentTurn,
+    AgentUsage,
+    DomainTool,
+    GenericAgent,
+    ToolCall,
+)
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research.ralph_loop import BlindPacketSection, BlindSchemePacket
 from stock_opportunity_agent.research.scheme_evolution import (
-    ArchiveEntry,
-    CandidateValidator,
-    DataSplitSpec,
-    EvaluationContract,
-    EvaluationSpec,
-    EvolutionStateStore,
-    FileSchemeProposer,
-    FixedEvolutionSpec,
-    LabeledSample,
-    MockSchemeFoldEvaluator,
-    MockSchemeProposer,
-    MutationOperator,
-    PredictionRecord,
-    SchemeEvaluationResult,
-    SchemeEvolutionEngine,
-    SchemeGenome,
-    TopKArchive,
-    build_walk_forward_folds,
-    evaluate_predictions,
-    load_round_checkpoint,
-    realized_max_multiple,
-    restore_round_context,
-    validate_folds,
+    DEFAULT_EVOLUTION_PRIORS,
+    AgentStep,
+    BlindPrediction,
+    ConfidenceLevel,
+    DualLoopEvolutionEngine,
+    EvolutionCase,
+    EvolutionDataset,
+    EvolutionWorkspace,
+    ExecutionTrajectory,
+    GroundTruth,
+    InformationPlan,
+    MagnitudeClass,
+    PlanArchive,
+    PlanEvolutionEngine,
+    PlanMetaMemory,
+    PlanMetrics,
+    PlanRecord,
+    PlanReflection,
+    PredictionSelfReflection,
+    ResearchDecision,
+    ResearchState,
+    RoundMetaEntry,
+    RuntimeLimits,
+    RuntimeStopReason,
+    RuntimeUsage,
+    SignalCandidateValidator,
+    SignalEvolutionEngine,
+    SignalRound,
+    default_information_plan,
+    execute_information_plan,
+    score_predictions,
 )
-from stock_opportunity_agent.research.scheme_evolution_ralph import (
-    ContinuousExternalSessionLedger,
-    OpenAIGenomeBlindAnalyzer,
-    OpenRouterFusionSchemeProposer,
-    RegisteredLLMSchemeProposer,
-    blind_request_contract_findings,
-    _packet_identity_findings,
-)
-from stock_opportunity_agent.research.scheme_evolution_dashboard import (
-    list_evolution_trajectories,
-    write_evolution_dashboard,
-    write_evolution_dashboard_index,
+from stock_opportunity_agent.signal_library import (
+    SignalEvidence,
+    SignalExecutionType,
+    SignalExecutor,
+    SignalRegistry,
+    SignalResult,
+    SignalSpec,
+    SignalValue,
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
-INITIAL_PATH = ROOT / "configs/evolution/initial_genome.json"
-CANDIDATE_PATH = ROOT / "configs/evolution/codex_candidates_v1.json"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SEED_CATALOG = PROJECT_ROOT / "configs" / "signals_v1.json"
+NOW = datetime(2025, 1, 15, 12, tzinfo=timezone.utc)
 
 
-class SchemeEvolutionTests(TestCase):
-    def test_mutating_process_lock_rejects_concurrent_writer(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            first = _acquire_run_lock(Path(tmp))
-            try:
-                with self.assertRaisesRegex(ValidationError, "already writing"):
-                    _acquire_run_lock(Path(tmp))
-            finally:
-                first.close()
-            second = _acquire_run_lock(Path(tmp))
-            second.close()
+class ScriptedAgentModel:
+    def __init__(self, turns: list[AgentTurn]) -> None:
+        self.turns = list(turns)
+        self.requests: list[AgentRequest] = []
 
-    def test_genome_schema_round_trip_and_fixed_output_contract(self) -> None:
-        initial, candidates = _genomes()
-        restored = SchemeGenome.from_dict(initial.to_dict())
-        self.assertEqual(restored, initial)
-        self.assertEqual(len(candidates), 2)
-        self.assertNotIn("probability_of_surge", restored.blind_analysis_prompt.output_json_schema)
-        self.assertEqual(
-            set(restored.blind_analysis_prompt.output_json_schema),
-            {
-                "predicted_class",
-                "confidence_level",
-                "difficulty_level",
-                "difficulty_reasons",
-                "decisive_signals",
-                "conflicting_signals",
-                "missing_information",
-                "flip_conditions",
-                "evidence_source_ids",
-            },
+    def respond(self, request: AgentRequest) -> AgentTurn:
+        self.requests.append(request)
+        if not self.turns:
+            raise AssertionError("scripted agent ran out of turns")
+        return self.turns.pop(0)
+
+
+class OneBatchController:
+    def __init__(self) -> None:
+        self.reflected_batch_sizes: list[int] = []
+
+    def initialize(
+        self, plan: InformationPlan, basic_info: Mapping[str, Any]
+    ) -> AgentStep[ResearchState]:
+        self.initial_basic_info = dict(basic_info)
+        return AgentStep(
+            ResearchState(
+                hypotheses=("commercial adoption may be accelerating",),
+                next_information_needs=("measure revenue growth",),
+            ),
+            AgentUsage(llm_calls=1, tokens=20, cost=0.01),
         )
 
-    def test_evaluation_contract_is_frozen_across_resume(self) -> None:
-        fixed = _fixed_spec()
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="frozen")
-            store.initialize(fixed)
-            with self.assertRaisesRegex(ValidationError, "frozen evaluation contract"):
-                store.initialize(
-                    replace(
-                        fixed,
-                        evaluation_contract=EvaluationContract(version="different-version"),
-                    )
-                )
-            self.assertFalse((Path(tmp) / "evaluation_contract.json.tmp").exists())
-
-    def test_realized_multiple_uses_five_day_smoothing_and_maps_classes(self) -> None:
-        contract = EvaluationContract()
-        multiple = realized_max_multiple(10.0, [10.0, 10.0, 100.0, 10.0, 10.0])
-        self.assertEqual(multiple, 2.8)
-        self.assertEqual(contract.classify(1.99), "A")
-        self.assertEqual(contract.classify(2.0), "B")
-        self.assertEqual(contract.classify(2.99), "B")
-        self.assertEqual(contract.classify(3.0), "C")
-
-    def test_binary_mapping_is_derived_from_abc(self) -> None:
-        contract = EvaluationContract()
-        self.assertFalse(contract.is_positive("A"))
-        self.assertTrue(contract.is_positive("B"))
-        self.assertTrue(contract.is_positive("C"))
-        with self.assertRaisesRegex(ValidationError, "true_class"):
-            replace(_sample("bad", outcome_class="A", strength=0.1), is_surge=True)
-
-    def test_binary_multiclass_and_ordinal_metrics(self) -> None:
-        initial, _candidates = _genomes()
-        samples = {
-            "a": _sample("a", outcome_class="A", strength=0.1),
-            "b": _sample("b", outcome_class="B", strength=0.6),
-            "c": _sample("c", outcome_class="C", strength=0.9),
-        }
-        predictions = [
-            _prediction(initial, "a", "A"),
-            _prediction(initial, "b", "B"),
-            _prediction(initial, "c", "A"),
-        ]
-        result = evaluate_predictions(initial, predictions, samples)
-        self.assertAlmostEqual(result.binary_f1, 2 / 3, places=7)
-        self.assertAlmostEqual(result.multiclass_macro_f1, 5 / 9, places=7)
-        self.assertEqual(result.class_c_recall, 0.0)
-        self.assertAlmostEqual(result.ordinal_distance, 2 / 3, places=7)
-        self.assertEqual(result.error_cases[0]["ordinal_error"], 2)
-        self.assertEqual(result.error_cases[0]["realized_max_multiple"], 3.4)
-
-    def test_future_document_and_walk_forward_overlap_are_rejected(self) -> None:
-        prediction_time = datetime(2025, 1, 1, tzinfo=timezone.utc)
-        with self.assertRaisesRegex(ValidationError, "after prediction_time"):
-            _sample(
-                "future-source",
-                outcome_class="A",
-                strength=0.1,
-                prediction_time=prediction_time,
-                available_date=prediction_time.date() + timedelta(days=1),
-            )
-        fixed = _fixed_spec()
-        samples = [
-            _sample(
-                "too-recent",
-                outcome_class="A",
-                strength=0.1,
-                prediction_time=datetime(2024, 12, 1, tzinfo=timezone.utc),
+    def reflect(
+        self,
+        plan: InformationPlan,
+        state: ResearchState,
+        batch,
+    ) -> AgentStep[ResearchState]:
+        self.reflected_batch_sizes.append(len(batch.results))
+        return AgentStep(
+            ResearchState(
+                hypotheses=state.hypotheses,
+                current_beliefs=("growth is supported",),
+                supporting_evidence=(batch.results[0].interpretation,),
+                resolved_questions=("measure revenue growth",),
+                decision=ResearchDecision.FINALIZE,
             ),
-            _sample(
-                "validation",
-                outcome_class="B",
-                strength=0.6,
-                prediction_time=datetime(2025, 1, 2, tzinfo=timezone.utc),
-            ),
-        ]
-        folds = build_walk_forward_folds(
-            samples,
-            [datetime(2025, 1, 1, tzinfo=timezone.utc)],
-            fixed_spec=fixed,
-            admission_window_days=10,
+            AgentUsage(llm_calls=1, tokens=20, cost=0.01),
         )
-        self.assertEqual(folds, [])
 
-    def test_fold_requires_both_binary_classes_on_each_side(self) -> None:
-        fixed = _fixed_spec()
-        fold = _folds(fixed)[0]
-        unsupported = replace(
-            fold,
-            admission_samples=tuple(
-                sample for sample in fold.admission_samples if not sample.is_surge
-            ),
+
+class OneSignalSelector:
+    def select(self, information_needs, signal_registry):
+        self.needs = tuple(information_needs)
+        return AgentStep(
+            ("revenue_growth_yoy:v1",),
+            AgentUsage(llm_calls=1, tokens=10, cost=0.005),
         )
-        with self.assertRaisesRegex(
-            ValidationError,
-            "development validation requires both A and B/C classes",
-        ):
-            validate_folds([unsupported], fixed)
 
-    def test_atomic_state_checkpoint_and_append_only_events(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="atomic")
-            store.initialize(_fixed_spec())
-            store.begin_iteration(1, resume=False)
-            store.checkpoint_task("task-1", status="running", context_hash="context")
-            store.checkpoint_task("task-1", status="completed", context_hash="context")
-            state = store.load_state()
-            event_lines = (Path(tmp) / "events.jsonl").read_text(encoding="utf-8").splitlines()
-            self.assertEqual(state["current_tasks"][0]["status"], "completed")
-            self.assertGreaterEqual(len(event_lines), 4)
-            self.assertFalse(any(Path(tmp).rglob("*.tmp")))
-            for line in event_lines:
-                self.assertIsInstance(json.loads(line), dict)
 
-    def test_progress_reports_candidate_summary_and_round_top_k_metrics(self) -> None:
-        initial, candidates = _genomes()
-        messages: list[str] = []
-        with tempfile.TemporaryDirectory() as tmp:
-            result = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=_fixed_spec(),
-                state_store=EvolutionStateStore(tmp, run_id="progress"),
-                progress=messages.append,
-            ).run(initial, _folds(_fixed_spec())[:1], candidate_count=1)
-        output = "\n".join(messages)
-        self.assertTrue(result.top_k)
-        self.assertIn(f"candidate={candidates[0].genome_id}", output)
-        self.assertIn(f"candidate-summary={candidates[0].genome_id}", output)
-        self.assertIn("changed=", output)
-        self.assertIn("falsification=", output)
-        self.assertIn("top-k round=1 rank=1", output)
-        self.assertIn("tp=", output)
-        self.assertIn("binary_f1=", output)
-        self.assertIn("class_c_recall=", output)
-        self.assertIn("ordinal_distance=", output)
-        self.assertIn("scope=development proposal_only=true", output)
+class FixedPredictor:
+    def __init__(self, *, is_surge: bool = True) -> None:
+        self.is_surge = is_surge
+        self.reflection_truths: list[GroundTruth] = []
 
-    def test_empty_dashboard_opens_from_local_data_script_without_fetch(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="empty-dashboard")
-            store.initialize(_fixed_spec())
-            paths = write_evolution_dashboard(tmp)
-            history = json.loads(paths["history"].read_text(encoding="utf-8"))
-            html = paths["dashboard"].read_text(encoding="utf-8")
-            data_script = paths["data"].read_text(encoding="utf-8")
-        self.assertEqual(history["rounds"], [])
-        self.assertFalse(history["contains_final_test_metrics"])
-        self.assertIn('src="evolution_dashboard_data.js"', html)
-        self.assertNotIn("fetch(", html)
-        self.assertIn("window.__SCHEME_EVOLUTION_DASHBOARD__", data_script)
+    def predict(self, final_context):
+        assert "ground_truth" not in final_context
+        return AgentStep(
+            BlindPrediction(
+                is_surge=self.is_surge,
+                magnitude=(MagnitudeClass.THREE_TO_TEN if self.is_surge else None),
+                confidence=ConfidenceLevel.MEDIUM,
+                key_reasons=("source-backed growth",),
+                uncertainties=("customer concentration",),
+                session_id="predictor-session-1",
+            ),
+            AgentUsage(llm_calls=1, tokens=30, cost=0.02),
+        )
 
-    def test_unified_dashboard_indexes_runs_and_defaults_to_latest(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "evolution"
-            for run_id in ("run-one", "run-two"):
-                SchemeEvolutionEngine(
-                    proposer=MockSchemeProposer(candidates[:1]),
-                    evaluator=MockSchemeFoldEvaluator(),
-                    fixed_spec=fixed,
-                    state_store=EvolutionStateStore(root / run_id, run_id=run_id),
-                ).run(initial, _folds(fixed)[:1], candidate_count=1)
-            invalid = root / "invalid-run"
-            invalid.mkdir()
-            (invalid / "state.json").write_text("{}\n", encoding="utf-8")
-            (invalid / "evolution_history.json").write_text(
-                json.dumps({"schema_version": "wrong"}),
-                encoding="utf-8",
+    def reflect(self, original_context, original_prediction, ground_truth):
+        self.reflection_truths.append(ground_truth)
+        correct = original_prediction.is_surge == ground_truth.is_surge
+        return AgentStep(
+            PredictionSelfReflection(
+                correct=correct,
+                why_prediction_failed=(() if correct else ("wrong binary class",)),
+            ),
+            AgentUsage(llm_calls=1, tokens=15, cost=0.01),
+        )
+
+
+class RawInfoStoreTests(TestCase):
+    def test_append_only_store_filters_by_available_at_and_reloads(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            store = RawInfoStore(directory)
+            visible = RawInfoDocument.create(
+                document_id="doc_visible",
+                company_id="issuer_1",
+                source_type="financials",
+                published_at=NOW - timedelta(days=2),
+                available_at=NOW - timedelta(days=1),
+                content="Revenue grew 25 percent year over year.",
+                metadata={"revenue_growth_yoy": 0.25},
             )
-            paths = write_evolution_dashboard_index(root)
-            index = json.loads(paths["index"].read_text(encoding="utf-8"))
-            html = paths["dashboard"].read_text(encoding="utf-8")
-            data_script = paths["data"].read_text(encoding="utf-8")
-        self.assertEqual([run["run_id"] for run in index["runs"]], ["run-two", "run-one"])
-        self.assertEqual(index["skipped_runs"][0]["run_directory"], "invalid-run")
-        self.assertFalse(index["contains_final_test_metrics"])
-        self.assertIn('id="run-select"', html)
-        self.assertIn("window.__SCHEME_EVOLUTION_DASHBOARD__", data_script)
-        self.assertNotIn("fetch(", html)
-
-    def test_commit_marker_hides_uncommitted_history_and_checkpoint(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "evolution"
-            run_dir = root / "partial"
-            store = EvolutionStateStore(run_dir, run_id="partial")
-            SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=fixed,
-                state_store=store,
-            ).run(initial, _folds(fixed)[:1], candidate_count=1)
-            state = store.load_state()
-            state["status"] = "paused_by_operator"
-            state["last_completed_iteration"] = 0
-            (run_dir / "state.json").write_text(
-                json.dumps(state, indent=2, sort_keys=True) + "\n",
-                encoding="utf-8",
+            future = RawInfoDocument.create(
+                document_id="doc_future",
+                company_id="issuer_1",
+                source_type="financials",
+                published_at=NOW + timedelta(days=1),
+                available_at=NOW + timedelta(days=1),
+                content="Future quarter revenue grew 80 percent.",
+                metadata={"revenue_growth_yoy": 0.8},
             )
-            history = json.loads(
-                write_evolution_dashboard(run_dir)["history"].read_text(
-                    encoding="utf-8"
-                )
-            )
-            trajectory = list_evolution_trajectories(root)[0]
-            with self.assertRaisesRegex(ValidationError, "not committed"):
-                load_round_checkpoint(run_dir, 1)
-        self.assertEqual(history["rounds"], [])
-        self.assertEqual(trajectory["last_completed_round"], 0)
-        self.assertEqual(trajectory["branchable_rounds"], [])
-
-    def test_interruption_resume_reuses_completed_per_sample_predictions(self) -> None:
-        initial, candidates = _genomes()
-        folds = _folds(_fixed_spec())[:1]
-        sample_count = len(folds[0].admission_samples)
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="interrupt-resume")
-            interrupted = MockSchemeFoldEvaluator(interrupt_after=2)
-            engine = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=interrupted,
-                fixed_spec=_fixed_spec(),
-                state_store=store,
-            )
-            with self.assertRaises(KeyboardInterrupt):
-                engine.run(initial, folds, candidate_count=1)
-            completed_before_resume = list(Path(tmp).glob("experiments/*/predictions/*.json"))
-            self.assertEqual(len(completed_before_resume), 2)
-            paused_state = store.load_state()
-            self.assertEqual(paused_state["status"], "paused_by_operator")
-            self.assertEqual(paused_state["current_iteration"], 1)
-            self.assertEqual(paused_state["last_completed_iteration"], 0)
-            with self.assertRaisesRegex(ValidationError, "not committed"):
-                load_round_checkpoint(tmp, 1)
-
-            resumed_evaluator = MockSchemeFoldEvaluator()
-            result = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=resumed_evaluator,
-                fixed_spec=_fixed_spec(),
-                state_store=store,
-            ).run(initial, folds, candidate_count=1, resume=True)
+            self.assertTrue(store.append(visible))
+            self.assertFalse(store.append(visible))
+            store.append(future)
             self.assertEqual(
-                resumed_evaluator.predict_call_count,
-                sample_count * 2 - len(completed_before_resume),
+                [item.document_id for item in store.search("issuer_1", as_of=NOW)],
+                ["doc_visible"],
             )
-            self.assertEqual(store.load_state()["status"], "completed")
-            self.assertEqual(store.load_state()["last_completed_iteration"], 1)
-            self.assertEqual(load_round_checkpoint(tmp, 1)["iteration"], 1)
-            self.assertTrue(result.top_k)
+            with self.assertRaisesRegex(ValidationError, "not available"):
+                store.load("doc_future", as_of=NOW)
+            reloaded = RawInfoStore(directory)
+            self.assertEqual(len(reloaded.documents), 2)
+            self.assertEqual(reloaded.load("doc_visible"), visible)
 
-    def test_interrupt_after_commit_keeps_round_authoritative(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-
-        def interrupt_after_commit(message: str) -> None:
-            if "round=1 status=completed" in message:
-                raise KeyboardInterrupt
-
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="interrupt-after-commit")
-            with self.assertRaises(KeyboardInterrupt):
-                SchemeEvolutionEngine(
-                    proposer=MockSchemeProposer(candidates[:1]),
-                    evaluator=MockSchemeFoldEvaluator(),
-                    fixed_spec=fixed,
-                    state_store=store,
-                    progress=interrupt_after_commit,
-                ).run(initial, _folds(fixed)[:1], candidate_count=1)
-            state = store.load_state()
-            restored, archive, _lessons, _requests = restore_round_context(
-                load_round_checkpoint(tmp, 1)
-            )
-        self.assertEqual(state["status"], "paused_by_operator")
-        self.assertEqual(state["last_completed_iteration"], 1)
-        self.assertEqual(restored.genome_id, archive.entries[0].genome.genome_id)
-
-    def test_blind_analyzer_never_receives_validation_labels(self) -> None:
-        initial, candidates = _genomes()
-        evaluator = MockSchemeFoldEvaluator()
-        with tempfile.TemporaryDirectory() as tmp:
-            SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=evaluator,
-                fixed_spec=_fixed_spec(),
-                state_store=EvolutionStateStore(tmp),
-            ).run(initial, _folds(_fixed_spec())[:1], candidate_count=1)
-        forbidden = {
-            "realized_max_multiple",
-            "true_class",
-            "is_surge",
-            "label",
-            "future_price",
-        }
-        self.assertTrue(evaluator.observed_blind_inputs)
-        self.assertTrue(
-            all(not forbidden.intersection(payload) for payload in evaluator.observed_blind_inputs)
+    def test_store_rejects_conflicting_id_hash_and_path_traversal(self) -> None:
+        valid = RawInfoDocument.create(
+            document_id="doc_1",
+            company_id="issuer_1",
+            source_type="news",
+            published_at=NOW,
+            available_at=NOW,
+            content="A sourced event occurred.",
         )
-
-    def test_invalid_json_retries_then_succeeds(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(initial, _folds(_fixed_spec())[0])
-        client = _FakeChatClient(["not-json", json.dumps(_valid_model_output())])
-        with tempfile.TemporaryDirectory() as tmp:
-            output = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=2,
-            ).analyze(initial, materialized, _blind_packet())
-            attempt_audits = [
-                json.loads(path.read_text(encoding="utf-8"))
-                for path in Path(tmp).glob("_attempts/*/*.json")
-            ]
-        self.assertEqual(output["predicted_class"], "B")
-        self.assertEqual(client.calls, 2)
-        self.assertEqual(
-            sorted(row["status"] for row in attempt_audits),
-            ["failed_validation", "validated"],
+        store = RawInfoStore(documents=(valid,))
+        conflicting = RawInfoDocument.create(
+            document_id="doc_1",
+            company_id="issuer_1",
+            source_type="news",
+            published_at=NOW,
+            available_at=NOW,
+            content="Different content.",
         )
-        self.assertTrue(
-            any(row["raw_output"] == "not-json" for row in attempt_audits)
-        )
-
-    def test_external_attempt_ledger_survives_provider_error_and_enforces_cap(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        with tempfile.TemporaryDirectory() as tmp:
-            ledger_path = Path(tmp) / "external_attempts.json"
-            cache_path = Path(tmp) / "cache"
-            failed_client = _FailingChatClient(
-                RuntimeError("provider returned HTTP 429 for api_key=secret-key")
+        with self.assertRaisesRegex(ValidationError, "different content"):
+            store.append(conflicting)
+        with self.assertRaisesRegex(ValidationError, "content_hash"):
+            RawInfoDocument(
+                document_id="doc_2",
+                company_id="issuer_1",
+                source_type="news",
+                published_at=NOW,
+                available_at=NOW,
+                content="content",
+                content_hash=content_sha256("other"),
             )
-            failed = OpenAIGenomeBlindAnalyzer(
-                failed_client,
-                cache_path,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-                input_cost_per_million_tokens=2.0,
-                output_cost_per_million_tokens=8.0,
-                max_cost_usd=2.0,
-                attempt_ledger_path=ledger_path,
-                attempt_scope_fingerprint="reviewed-preflight",
-                authorized_max_external_attempts=1,
-            )
-            with self.assertRaisesRegex(RuntimeError, "HTTP 429"):
-                failed.analyze(initial, materialized, _blind_packet())
-
-            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
-            self.assertEqual(ledger["authorized_max_attempts"], 1)
-            self.assertEqual(len(ledger["attempts"]), 1)
-            self.assertEqual(ledger["attempts"][0]["status"], "provider_error")
-            self.assertGreater(ledger["attempts"][0]["cost_usd"], 0.0)
-            self.assertFalse(ledger["attempts"][0]["cost_observed"])
-            self.assertNotIn("secret-key", ledger_path.read_text(encoding="utf-8"))
-
-            blocked_client = _FakeChatClient([json.dumps(_valid_model_output())])
-            blocked = OpenAIGenomeBlindAnalyzer(
-                blocked_client,
-                cache_path,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-                input_cost_per_million_tokens=2.0,
-                output_cost_per_million_tokens=8.0,
-                max_cost_usd=2.0,
-                attempt_ledger_path=ledger_path,
-                attempt_scope_fingerprint="reviewed-preflight",
-                authorized_max_external_attempts=1,
-            )
-            request = blocked.preview_request(initial, materialized, _blind_packet())
-            with self.assertRaisesRegex(
-                ValidationError,
-                "uncached blind requests exceed the remaining authorized",
-            ):
-                blocked.assert_authorized_capacity([request])
-            self.assertEqual(blocked_client.calls, 0)
-
-            resumed_client = _FakeChatClient([json.dumps(_valid_model_output())])
-            resumed = OpenAIGenomeBlindAnalyzer(
-                resumed_client,
-                cache_path,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-                input_cost_per_million_tokens=2.0,
-                output_cost_per_million_tokens=8.0,
-                max_cost_usd=2.0,
-                attempt_ledger_path=ledger_path,
-                attempt_scope_fingerprint="reviewed-preflight",
-                authorized_max_external_attempts=2,
-            )
-            capacity = resumed.assert_authorized_capacity([request])
-            output = resumed.analyze(initial, materialized, _blind_packet())
-            ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
-
-        self.assertEqual(output["predicted_class"], "B")
-        self.assertEqual(capacity["outstanding_request_count"], 1)
-        self.assertEqual(capacity["remaining_authorized_attempts"], 1)
-        self.assertEqual(resumed.cumulative_external_call_count, 2)
-        self.assertEqual(len(ledger["attempts"]), 2)
-        self.assertEqual(ledger["attempts"][1]["status"], "completed")
-        self.assertGreater(ledger["attempts"][1]["cost_usd"], 0.0)
-        self.assertEqual(
-            ledger["authorization_changes"][0]["authorized_max_attempts"],
-            2,
-        )
-
-    def test_request_preview_is_exact_label_free_and_performs_no_call(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        client = _FakeChatClient([json.dumps(_valid_model_output())])
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="openrouter:openai",
-                model="openai/gpt-4.1",
-                temperature=0.0,
-                max_attempts=1,
-                input_cost_per_million_tokens=2.0,
-                output_cost_per_million_tokens=8.0,
-                max_cost_usd=2.0,
-            )
-            preview = analyzer.preview_request(
-                initial,
-                materialized,
-                _blind_packet(),
-            )
-        serialized_payload = json.dumps(preview["input_payload"], sort_keys=True)
-        self.assertEqual(client.calls, 0)
-        self.assertEqual(analyzer.external_call_count, 0)
-        self.assertFalse(preview["external_call_performed"])
-        self.assertEqual(preview["model"], "openai/gpt-4.1")
-        self.assertGreater(preview["maximum_request_cost_usd"], 0)
-        developer_prompt = preview["messages"][0]["content"]
-        self.assertIn("class A means below 2.0", developer_prompt)
-        self.assertIn("class B means at least 2.0 and below 3.0", developer_prompt)
-        self.assertIn("class C means at least 3.0", developer_prompt)
-        self.assertIn("A negative or unsupported setup must map to A, never C", developer_prompt)
-        self.assertEqual(
-            preview["prompt_hash"],
-            hashlib.sha256(developer_prompt.encode("utf-8")).hexdigest(),
-        )
-        for forbidden in (
-            "source_case_id",
-            "realized_max_multiple",
-            "true_class",
-            "is_surge",
-        ):
-            self.assertNotIn(forbidden, serialized_payload)
-        self.assertEqual(
-            json.loads(preview["messages"][1]["content"]),
-            preview["input_payload"],
-        )
-
-    def test_effective_blind_prompt_changes_cache_identity(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        changed_prompt = replace(
-            initial.blind_analysis_prompt,
-            template=initial.blind_analysis_prompt.template + " Preserve abstention.",
-            content_hash="",
-        )
-        changed = replace(initial, blind_analysis_prompt=changed_prompt)
-        client = _FakeChatClient([])
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            original = analyzer.preview_request(initial, materialized, _blind_packet())
-            modified = analyzer.preview_request(changed, materialized, _blind_packet())
-
-        self.assertEqual(original["input_hash"], modified["input_hash"])
-        self.assertNotEqual(original["prompt_hash"], modified["prompt_hash"])
-        self.assertNotEqual(original["cache_key"], modified["cache_key"])
-        self.assertEqual(client.calls, 0)
-
-    def test_blind_request_contract_findings_fail_closed(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        client = _FakeChatClient([])
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            preview = analyzer.preview_request(initial, materialized, _blind_packet())
-
-        self.assertEqual(blind_request_contract_findings(preview), [])
-        tampered_messages = [dict(row) for row in preview["messages"]]
-        tampered_messages[0]["content"] = tampered_messages[0]["content"].replace(
-            "A negative or unsupported setup must map to A, never C.",
-            "",
-        )
-        tampered = {**preview, "messages": tampered_messages}
-        findings = blind_request_contract_findings(tampered)
-        self.assertIn("negative_to_a_guard_missing", findings)
-        self.assertIn("effective_prompt_hash_mismatch", findings)
-
-        mismatched_user = [dict(row) for row in preview["messages"]]
-        mismatched_user[1]["content"] = json.dumps({"different": "payload"})
-        findings = blind_request_contract_findings(
-            {**preview, "messages": mismatched_user}
-        )
-        self.assertEqual(findings, ["user_prompt_payload_mismatch"])
-
-    def test_external_execution_readiness_is_secret_free_and_cost_bounded(self) -> None:
-        requests = [
-            {
-                "cache_key": "cached",
-                "request": {"maximum_request_cost_usd": 0.4},
-            },
-            {
-                "cache_key": "uncached",
-                "request": {"maximum_request_cost_usd": 0.4},
-            },
-        ]
-        with tempfile.TemporaryDirectory() as tmp:
-            Path(tmp, "cached.json").write_text("{}", encoding="utf-8")
-            readiness = _external_execution_readiness(
-                requests,
-                preflight_passed=True,
-                api_key_available=True,
-                final_test_accessed=False,
-                configured_cost_cap_usd=1.3,
-                cache_dir=Path(tmp),
+        with self.assertRaisesRegex(ValidationError, "safe identifier"):
+            RawInfoDocument.create(
+                document_id="../escape",
+                company_id="issuer_1",
+                source_type="news",
+                published_at=NOW,
+                available_at=NOW,
+                content="content",
             )
 
-        self.assertTrue(readiness["technical_ready_except_authorization"])
-        self.assertEqual(
-            readiness["blockers"],
-            ["explicit_external_transmission_authorization"],
-        )
-        self.assertEqual(readiness["exact_cache_count"], 1)
-        self.assertEqual(readiness["uncached_request_count"], 1)
-        self.assertEqual(readiness["maximum_safe_retry_buffer"], 1)
-        self.assertEqual(readiness["recommended_authorized_max_attempts"], 3)
-        self.assertAlmostEqual(readiness["maximum_cost_with_retry_buffer_usd"], 1.2)
-        self.assertTrue(readiness["api_key_available_at_preflight"])
-        self.assertFalse(readiness["credentials_persisted"])
 
-    def test_fusion_proposer_previews_and_caches_one_valid_candidate(self) -> None:
-        initial, candidates = _genomes()
-        response = json.dumps({"candidates": [candidates[0].to_dict()]})
-        client = _FakeChatClient([response])
-        with tempfile.TemporaryDirectory() as tmp:
-            proposer = OpenRouterFusionSchemeProposer(
-                client,
-                tmp,
-                objective_text="Keep the exam fixed and mutate one information scheme.",
-                max_cost_usd=2.0,
-            )
-            preview = proposer.preview_request([initial], [], [], 1)
-            first = proposer.propose([initial], [], [], 1)
-            second = proposer.propose([initial], [], [], 1)
-        self.assertFalse(preview["external_call_performed"])
-        self.assertEqual(preview["model"], "openrouter/fusion")
-        self.assertEqual(preview["plugins"][0]["preset"], "general-high")
-        self.assertLess(preview["pricing_snapshot_estimated_cost_usd"], 2.0)
-        self.assertEqual(first, second)
-        self.assertEqual(first[0].genome_id, candidates[0].genome_id)
-        self.assertEqual(client.calls, 1)
-        self.assertEqual(proposer.external_call_count, 1)
-        self.assertEqual(proposer.cache_hit_count, 1)
-
-    def test_fusion_proposer_persists_invalid_response_without_retry(self) -> None:
-        initial, _candidates = _genomes()
-        client = _FakeChatClient(["not-json"])
-        with tempfile.TemporaryDirectory() as tmp:
-            proposer = OpenRouterFusionSchemeProposer(
-                client,
-                tmp,
-                objective_text="Keep the exam fixed.",
-                max_cost_usd=2.0,
-            )
-            with self.assertRaisesRegex(ValidationError, "JSON object"):
-                proposer.propose([initial], [], [], 1)
-            cache = json.loads(next(Path(tmp).glob("*.json")).read_text(encoding="utf-8"))
-            with self.assertRaisesRegex(ValidationError, "automatic retry is disabled"):
-                proposer.propose([initial], [], [], 1)
-        self.assertEqual(client.calls, 1)
-        self.assertEqual(cache["status"], "failed_validation")
-        self.assertEqual(cache["raw_output"], "not-json")
-
-    def test_registered_json_proposer_caches_and_uses_continuous_cost_ledger(self) -> None:
-        initial, candidates = _genomes()
-        client = _FakeChatClient(
-            [json.dumps({"candidates": [candidates[0].to_dict()]})]
-        )
-        with tempfile.TemporaryDirectory() as tmp:
-            ledger = ContinuousExternalSessionLedger(
-                Path(tmp) / "session.json",
-                scope_fingerprint="fixed-session",
-                maximum_cost_usd=1.0,
-            )
-            proposer = RegisteredLLMSchemeProposer(
-                client,
-                Path(tmp) / "cache",
-                objective_text="Keep the fixed exam unchanged.",
-                provider="fake",
-                model="fake-model",
-                max_output_tokens=100,
-                input_cost_per_million_tokens=1.0,
-                output_cost_per_million_tokens=1.0,
-                session_ledger=ledger,
-            )
-            preview = proposer.preview_request([initial], [], [], 1)
-            first = proposer.propose([initial], [], [], 1)
-            second = proposer.propose([initial], [], [], 1)
-            persisted = json.loads(
-                (Path(tmp) / "session.json").read_text(encoding="utf-8")
-            )
-        self.assertFalse(preview["web_tools_allowed"])
-        self.assertFalse(preview["external_call_performed"])
-        self.assertEqual(first, second)
-        self.assertEqual(client.calls, 1)
-        self.assertEqual(proposer.cache_hit_count, 1)
-        self.assertEqual(persisted["requests"][0]["status"], "completed")
-        self.assertEqual(
-            persisted["requests"][0]["exact_secret_free_request"]["request_hash"],
-            preview["request_hash"],
-        )
-
-    def test_continuous_ledger_reserves_interrupted_request_across_restart(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "continuous-session.json"
-            ledger = ContinuousExternalSessionLedger(
-                path,
-                scope_fingerprint="same-fixed-scope",
-                maximum_cost_usd=1.0,
-            )
-            request_id = ledger.reserve(
-                request_kind="blind_judgment",
-                request_hash="request-hash",
-                maximum_cost_usd=0.6,
-                exact_request={"labels_revealed": False, "web_tools_allowed": False},
-            )
-            restarted = ContinuousExternalSessionLedger(
-                path,
-                scope_fingerprint="same-fixed-scope",
-                maximum_cost_usd=1.0,
-            )
-            self.assertAlmostEqual(restarted.remaining_cost_usd, 0.4)
-            with self.assertRaisesRegex(ValidationError, "cost cap"):
-                restarted.reserve(
-                    request_kind="evolution_proposal",
-                    request_hash="too-expensive",
-                    maximum_cost_usd=0.5,
-                    exact_request={},
-                )
-            restarted.finish(
-                request_id,
-                status="completed",
-                response_id="response-1",
-                cost_usd=0.2,
-                cost_observed=True,
-            )
-            resumed = ContinuousExternalSessionLedger(
-                path,
-                scope_fingerprint="same-fixed-scope",
-                maximum_cost_usd=1.0,
-            )
-            self.assertAlmostEqual(resumed.remaining_cost_usd, 0.8)
-            with self.assertRaisesRegex(ValidationError, "scope changed"):
-                ContinuousExternalSessionLedger(
-                    path,
-                    scope_fingerprint="different-scope",
-                    maximum_cost_usd=1.0,
-                )
-            with self.assertRaisesRegex(ValidationError, "cannot shrink"):
-                ContinuousExternalSessionLedger(
-                    path,
-                    scope_fingerprint="same-fixed-scope",
-                    maximum_cost_usd=0.9,
-                )
-
-    def test_round_checkpoint_can_seed_and_continue_an_independent_branch(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-        folds = _folds(fixed)[:1]
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "evolution"
-            parent_store = EvolutionStateStore(root / "parent", run_id="parent")
-            parent_result = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=fixed,
-                state_store=parent_store,
-            ).run(initial, folds, candidate_count=1)
-            checkpoint = load_round_checkpoint(root / "parent", 1)
-            restored, restored_archive, lessons, requests = restore_round_context(
-                checkpoint
-            )
-            parent_history = json.loads(
-                (root / "parent" / "evolution_history.json").read_text(
-                    encoding="utf-8"
-                )
-            )
-            child_store = EvolutionStateStore(root / "child", run_id="child")
-            child_store.initialize(fixed)
-            child_store.seed_branch(
-                checkpoint,
-                parent_run_dir=root / "parent",
-                parent_history=parent_history,
-            )
-            child_candidate = replace(
-                restored,
-                genome_id="branch-round-two",
-                parent_ids=[restored.genome_id],
-                generation=restored.generation + 1,
-                mutation_operator=MutationOperator.LOCAL_REFINE,
-                hypothesis_of_change="Test an independent branch refinement.",
-                changed_fields=["metadata.branch_round"],
-                expected_benefit="Verify branch-local continuation.",
-                possible_side_effects=["Synthetic fixture only."],
-                falsification_test="Reject if the fixed exam changes.",
-                target_failure_type="general",
-                metadata={**restored.metadata, "branch_round": 2},
-            )
-            child_evaluator = MockSchemeFoldEvaluator()
-            child_result = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer([child_candidate]),
-                evaluator=child_evaluator,
-                fixed_spec=fixed,
-                state_store=child_store,
-                archive=restored_archive,
-                validator=CandidateValidator(near_duplicate_threshold=1.0),
-            ).run(
-                restored,
-                folds,
-                meta_memory=lessons,
-                mutation_requests=requests,
-                candidate_count=1,
-                resume=True,
-            )
-            child_history = json.loads(
-                (root / "child" / "evolution_history.json").read_text(
-                    encoding="utf-8"
-                )
-            )
-            trajectories = {
-                row["trajectory_id"]: row for row in list_evolution_trajectories(root)
-            }
-            parent_state = parent_store.load_state()
-            child_state = child_store.load_state()
-        self.assertEqual(parent_state["last_completed_iteration"], 1)
-        self.assertEqual(child_state["last_completed_iteration"], 2)
-        self.assertEqual(child_result.incumbent.generation, restored.generation + 1)
-        self.assertEqual([row["iteration"] for row in child_history["rounds"]], [1, 2])
-        self.assertEqual(child_history["rounds"][0]["source"], "inherited_round")
-        self.assertEqual(trajectories["child"]["lineage"]["parent_trajectory_id"], "parent")
-        self.assertEqual(
-            trajectories["child"]["lineage"]["inherited_evaluation_context_count"],
-            len(parent_result.archive.entries),
-        )
-        self.assertEqual(trajectories["child"]["branchable_rounds"], [1, 2])
-        self.assertEqual(child_evaluator.predict_call_count, len(folds[0].admission_samples))
-
-    def test_pending_branch_intent_is_recovered_after_early_interrupt(self) -> None:
-        fixed = _fixed_spec()
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "evolution"
-            parent_store = EvolutionStateStore(root / "parent", run_id="parent")
-            parent_store.initialize(fixed)
-            child_store = EvolutionStateStore(root / "child", run_id="child")
-            child_store.initialize(
-                fixed,
-                config={
-                    "branch_source": {
-                        "run_directory": str(root / "parent"),
-                        "trajectory_id": "parent",
-                        "round": 1,
-                    }
-                },
-            )
-            args = SimpleNamespace(
-                branch_source_dir="",
-                evolution_root=str(root),
-                from_trajectory="",
-                from_round=0,
-            )
-            _restore_pending_branch_intent(args, child_store)
-        self.assertEqual(args.branch_source_dir, str(root / "parent"))
-        self.assertEqual(args.from_trajectory, "parent")
-        self.assertEqual(args.from_round, 1)
-
-    def test_model_probability_field_is_rejected(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(initial, _folds(_fixed_spec())[0])
-        output = {**_valid_model_output(), "probability_of_surge": 0.7}
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                _FakeChatClient([json.dumps(output)]),
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            with self.assertRaisesRegex(ValidationError, "unexpected fields"):
-                analyzer.analyze(initial, materialized, _blind_packet())
-
-    def test_packet_fact_refs_are_valid_citations_and_external_refs_are_rejected(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        packet = _blind_packet()
-        packet = replace(
-            packet,
-            sections=(
-                replace(
-                    packet.sections[0],
-                    items=(
-                        {
-                            "fact_ref": "fact_visible_in_packet",
-                            "derived_from_fact_refs": ["fact_visible_lineage"],
-                            "summary": "Point-in-time source-backed fact.",
-                        },
-                    ),
-                ),
-            ),
-        )
-        valid_output = {
-            **_valid_model_output(),
-            "evidence_source_ids": [
-                "fact_visible_in_packet",
-                "fact_visible_lineage",
-            ],
-        }
-        invalid_output = {
-            **_valid_model_output(),
-            "evidence_source_ids": ["fact_outside_packet"],
-        }
-        with tempfile.TemporaryDirectory() as tmp:
-            valid_dir = Path(tmp) / "valid"
-            valid = OpenAIGenomeBlindAnalyzer(
-                _FakeChatClient([json.dumps(valid_output)]),
-                valid_dir,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            ).analyze(initial, materialized, packet)
-            valid_audit = json.loads(
-                next(valid_dir.glob("_attempts/*/*.json")).read_text(encoding="utf-8")
-            )
-
-            invalid_dir = Path(tmp) / "invalid"
-            invalid_analyzer = OpenAIGenomeBlindAnalyzer(
-                _FakeChatClient([json.dumps(invalid_output)]),
-                invalid_dir,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            with self.assertRaisesRegex(ValidationError, "outside the packet"):
-                invalid_analyzer.analyze(initial, materialized, packet)
-            invalid_audit = json.loads(
-                next(invalid_dir.glob("_attempts/*/*.json")).read_text(
-                    encoding="utf-8"
-                )
-            )
-
-        self.assertEqual(
-            valid["evidence_source_ids"],
-            ["fact_visible_in_packet", "fact_visible_lineage"],
-        )
-        self.assertEqual(valid_audit["status"], "validated")
-        self.assertIn("fact_visible_in_packet", valid_audit["raw_output"])
-        self.assertEqual(invalid_audit["status"], "failed_validation")
-        self.assertIn("fact_outside_packet", invalid_audit["validation_error"])
-
-    def test_failed_validation_audit_is_revalidated_without_http(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(
-            initial,
-            _folds(_fixed_spec())[0],
-        )
-        packet = replace(
-            _blind_packet(),
-            sections=(
-                replace(
-                    _blind_packet().sections[0],
-                    items=(
-                        {
-                            "fact_ref": "derived_fact",
-                            "derived_from_fact_refs": ["lineage_fact"],
-                            "summary": "Derived point-in-time fact.",
-                        },
-                    ),
-                ),
-            ),
-        )
-        output = {
-            **_valid_model_output(),
-            "evidence_source_ids": ["lineage_fact"],
-        }
-        client = _FakeChatClient([])
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            request = analyzer.preview_request(initial, materialized, packet)
-            audit_path = (
-                Path(tmp)
-                / "_attempts"
-                / request["cache_key"]
-                / "attempt-0001.json"
-            )
-            audit_path.parent.mkdir(parents=True)
-            raw_output = json.dumps(output)
-            audit_path.write_text(
-                json.dumps(
-                    {
-                        "schema_version": "genome-blind-response-attempt-v0.1",
-                        "status": "failed_validation",
-                        "cache_key": request["cache_key"],
-                        "input_hash": request["input_hash"],
-                        "settings_fingerprint": analyzer.settings_fingerprint,
-                        "prompt_hash": request["prompt_hash"],
-                        "response_id": "response-paid-before-fix",
-                        "response_model": "fake-model",
-                        "response_hash": hashlib.sha256(raw_output.encode()).hexdigest(),
-                        "raw_output": raw_output,
-                        "usage": {"total_tokens": 10},
-                        "cost_usd": 0.01,
-                        "cost_observed": True,
-                        "received_at": "2026-08-02T00:00:00+00:00",
-                        "validation_error": "old validator rejected lineage_fact",
-                    }
-                ),
-                encoding="utf-8",
-            )
-            recovered = analyzer.analyze(initial, materialized, packet)
-            cache = json.loads(
-                (Path(tmp) / f'{request["cache_key"]}.json').read_text(encoding="utf-8")
-            )
-            audit = json.loads(audit_path.read_text(encoding="utf-8"))
-
-        self.assertEqual(client.calls, 0)
-        self.assertEqual(recovered["evidence_source_ids"], ["lineage_fact"])
-        self.assertTrue(recovered["_metadata"]["revalidated_from_attempt_audit"])
-        self.assertEqual(cache["prediction"]["predicted_class"], "B")
-        self.assertEqual(audit["status"], "validated")
-        self.assertIn("old validator", audit["prior_validation_error"])
-
-    def test_identical_input_hits_secret_safe_openrouter_cache(self) -> None:
-        initial, _candidates = _genomes()
-        materialized = MockSchemeFoldEvaluator().materialize(initial, _folds(_fixed_spec())[0])
-        client = _FakeChatClient([json.dumps(_valid_model_output())])
-        with tempfile.TemporaryDirectory() as tmp:
-            analyzer = OpenAIGenomeBlindAnalyzer(
-                client,
-                tmp,
-                provider="fake",
-                model="fake-model",
-                temperature=0.0,
-                max_attempts=1,
-            )
-            first = analyzer.analyze(initial, materialized, _blind_packet())
-            second = analyzer.analyze(initial, materialized, _blind_packet())
-            cache_text = "\n".join(
-                path.read_text(encoding="utf-8") for path in Path(tmp).glob("*.json")
-            )
-        self.assertEqual(first["predicted_class"], "B")
-        self.assertEqual(second["predicted_class"], "B")
-        self.assertEqual(client.calls, 1)
-        self.assertEqual(analyzer.cache_hit_count, 1)
-        self.assertNotIn("secret-key", cache_text)
-
-    def test_top_k_uses_binary_f1_ties_and_behavior_dedup(self) -> None:
-        initial, candidates = _genomes()
-        common_vector = {"a": False, "b": True}
-        archive = TopKArchive()
-        selected = archive.select(
+class GenericAgentTests(TestCase):
+    def test_agent_uses_only_granted_domain_tools_and_validates_output(self) -> None:
+        model = ScriptedAgentModel(
             [
-                ArchiveEntry(initial, _evaluation(initial.genome_id, f1=0.8, c_recall=0.2), common_vector),
-                ArchiveEntry(candidates[0], _evaluation(candidates[0].genome_id, f1=0.8, c_recall=0.9), common_vector),
-                ArchiveEntry(candidates[1], _evaluation(candidates[1].genome_id, f1=0.6, c_recall=1.0), {"a": True, "b": False}),
-            ],
-            top_k=2,
-            similarity_threshold=0.95,
-            maximum_cost_usd=20.0,
+                AgentTurn(tool_call=ToolCall("lookup", {"key": "x"})),
+                AgentTurn(final_output={"answer": 4}),
+            ]
         )
-        self.assertEqual(
-            [entry.genome.genome_id for entry in selected],
-            [candidates[0].genome_id, candidates[1].genome_id],
+        result = GenericAgent(model).run(
+            prompt="Use the domain tool and return an integer answer.",
+            tools=(DomainTool("lookup", "Look up one fixture value.", lambda key: 4),),
+            workspace={"scope": "fixture"},
+            output_schema=lambda value: int(value["answer"]),
+            max_steps=2,
         )
+        self.assertEqual(result.value, 4)
+        self.assertEqual(result.observations[0].result, 4)
+        self.assertEqual(result.usage.llm_calls, 2)
+        self.assertNotIn("cat", {card["name"] for card in model.requests[0].tool_cards})
 
-    def test_mock_provider_runs_two_generations_and_keeps_final_test_sealed(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-        folds = _folds(fixed)
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="two-generations")
-            first = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=fixed,
-                state_store=store,
-            ).run(initial, folds, candidate_count=2)
-            store.write_run_artifacts(first, fixed_spec=fixed, rejections=first.rejections)
-            first_history = json.loads(
-                (Path(tmp) / "evolution_history.json").read_text(encoding="utf-8")
-            )
-            self.assertEqual(len(first_history["rounds"]), 1)
-            parent = first.incumbent
-            child = replace(
-                parent,
-                genome_id="second-generation-local-refine",
-                parent_ids=[parent.genome_id],
-                generation=parent.generation + 1,
-                mutation_operator=MutationOperator.LOCAL_REFINE,
-                hypothesis_of_change="Test stricter class-C materiality.",
-                changed_fields=["metadata.ordinal_shift_min_strength"],
-                expected_benefit="Reduce B-to-C errors.",
-                possible_side_effects=["May miss marginal C cases."],
-                falsification_test="Reject if class-C recall falls.",
-                metadata={**parent.metadata, "ordinal_shift_min_strength": 0.75},
-            )
-            second = SchemeEvolutionEngine(
-                proposer=MockSchemeProposer([child]),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=fixed,
-                state_store=store,
-                archive=first.archive,
-                validator=CandidateValidator(near_duplicate_threshold=1.0),
-            ).run(parent, folds, candidate_count=1, resume=True)
-            state = store.load_state()
-            dashboard_paths = write_evolution_dashboard(tmp)
-            history = json.loads(
-                dashboard_paths["history"].read_text(encoding="utf-8")
-            )
-            all_artifacts = "\n".join(
-                path.read_text(encoding="utf-8")
-                for path in Path(tmp).rglob("*.json")
-            )
-        self.assertEqual(state["current_iteration"], 2)
-        self.assertEqual(state["status"], "completed")
-        self.assertFalse(state["final_test_accessed"])
-        self.assertEqual(len(second.experiments), 1)
-        self.assertEqual([row["iteration"] for row in history["rounds"]], [1, 2])
-        self.assertTrue(all("archive_best_metrics" in row for row in history["rounds"]))
-        self.assertTrue(all("candidates" in row for row in history["rounds"]))
-        self.assertNotIn("final-test-company-do-not-touch", all_artifacts)
-        self.assertTrue(second.meta_lessons)
-
-    def test_dashboard_recovers_only_latest_legacy_development_round(self) -> None:
-        initial, candidates = _genomes()
-        fixed = _fixed_spec()
-        with tempfile.TemporaryDirectory() as tmp:
-            store = EvolutionStateStore(tmp, run_id="legacy-dashboard")
-            SchemeEvolutionEngine(
-                proposer=MockSchemeProposer(candidates[:1]),
-                evaluator=MockSchemeFoldEvaluator(),
-                fixed_spec=fixed,
-                state_store=store,
-            ).run(initial, _folds(fixed)[:1], candidate_count=1)
-            history_path = Path(tmp) / "evolution_history.json"
-            history_path.unlink()
-            final_test_dir = Path(tmp) / "final_test"
-            final_test_dir.mkdir()
-            (final_test_dir / "evaluation.json").write_text(
-                json.dumps({"binary_f1": 0.123456789}),
-                encoding="utf-8",
-            )
-            paths = write_evolution_dashboard(tmp)
-            history = json.loads(paths["history"].read_text(encoding="utf-8"))
-            combined = json.dumps(history, sort_keys=True)
-        self.assertEqual(len(history["rounds"]), 1)
-        self.assertEqual(history["rounds"][0]["source"], "legacy_latest_only")
-        self.assertFalse(history["contains_final_test_metrics"])
-        self.assertNotIn("0.123456789", combined)
-
-    def test_identity_preflight_still_checks_packet_evidence(self) -> None:
-        packet = _blind_packet()
-        self.assertEqual(
-            _packet_identity_findings(
-                packet,
-                own_identity_terms=("IN",),
-                cross_identity_terms=("AI",),
-            ),
-            [],
+    def test_agent_rejects_ungranted_or_raw_tools_and_step_exhaustion(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "not allowed"):
+            DomainTool("rm", "Remove anything.", lambda: None)
+        model = ScriptedAgentModel(
+            [AgentTurn(tool_call=ToolCall("not_granted", {}))]
         )
-        leaking = replace(
-            packet,
-            sections=(
-                replace(
-                    packet.sections[0],
-                    items=({"evidence_ref": "opaque-ref-1", "summary": "ACME contract."},),
-                ),
-            ),
-        )
-        self.assertEqual(
-            _packet_identity_findings(
-                leaking,
-                own_identity_terms=("IN",),
-                cross_identity_terms=("ACME",),
-            ),
-            ["ACME"],
-        )
-
-
-def _genomes() -> tuple[SchemeGenome, list[SchemeGenome]]:
-    initial = SchemeGenome.from_dict(json.loads(INITIAL_PATH.read_text(encoding="utf-8")))
-    candidates = FileSchemeProposer(CANDIDATE_PATH).propose([initial], [], [], 8)
-    return initial, candidates
-
-
-def _fixed_spec() -> FixedEvolutionSpec:
-    return FixedEvolutionSpec(
-        evaluation_contract=EvaluationContract(),
-        split_spec=DataSplitSpec(
-            version="test-company-disjoint-walk-forward-v2",
-            purge_days=5,
-            embargo_days=5,
-        ),
-        evaluation_spec=EvaluationSpec(
-            version="test-binary-f1-top-k-v2",
-            top_k=3,
-            prediction_similarity_threshold=0.95,
-            maximum_cost_usd=20.0,
-        ),
-    )
-
-
-def _folds(fixed: FixedEvolutionSpec):
-    samples: list[LabeledSample] = []
-    discovery_time = datetime(2023, 1, 1, tzinfo=timezone.utc)
-    discovery_classes = ("A", "B", "C", "A", "B", "C")
-    for index, outcome_class in enumerate(discovery_classes):
-        samples.append(
-            _sample(
-                f"discovery-{index}",
-                outcome_class=outcome_class,
-                strength={"A": 0.2, "B": 0.6, "C": 0.8}[outcome_class],
-                prediction_time=discovery_time + timedelta(days=index * 10),
+        with self.assertRaisesRegex(ValidationError, "ungranted"):
+            GenericAgent(model).run(
+                prompt="test",
+                tools=(),
+                workspace={},
+                output_schema=lambda value: value,
+                max_steps=1,
             )
+        looping = ScriptedAgentModel(
+            [AgentTurn(tool_call=ToolCall("lookup", {}))]
         )
-    starts = [
-        datetime(2024, 6, 1, tzinfo=timezone.utc),
-        datetime(2024, 10, 1, tzinfo=timezone.utc),
-    ]
-    for fold_index, start in enumerate(starts, start=1):
-        for offset, (outcome_class, strength) in enumerate(
-            (("C", 0.72), ("A", 0.24), ("B", 0.68), ("A", 0.28)),
-            start=1,
-        ):
-            samples.append(
-                _sample(
-                    f"validation-{fold_index}-{offset}",
-                    outcome_class=outcome_class,
-                    strength=strength,
-                    prediction_time=start + timedelta(days=offset),
-                    period=start.strftime("%Y-%m"),
+        with self.assertRaisesRegex(ValidationError, "exhausted"):
+            GenericAgent(looping).run(
+                prompt="test",
+                tools=(DomainTool("lookup", "fixture lookup", lambda: 1),),
+                workspace={},
+                output_schema=lambda value: value,
+                max_steps=1,
+            )
+
+
+class SignalLibraryTests(TestCase):
+    def _registry(self, directory: str) -> SignalRegistry:
+        registry = SignalRegistry(Path(directory) / "signals")
+        self.assertEqual(registry.install_catalog(SEED_CATALOG), 12)
+        return registry
+
+    def test_seed_catalog_progressive_disclosure_and_frozen_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            self.assertEqual(len(registry.list_signal_cards()), 12)
+            self.assertIn("financial", registry.list_categories())
+            cards = registry.search_signal_cards("customer")
+            self.assertTrue(cards)
+            spec = registry.load_spec("pilot_to_volume:v1")
+            self.assertEqual(spec.execution_type, SignalExecutionType.LLM)
+            self.assertIn("scaled deployment", registry.load_skill(spec.ref))
+            snapshot = registry.freeze()
+            v2 = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=2,
+                category="financial",
+                description="Measure audited year-over-year revenue growth.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            registry.register_stable(v2)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
+            self.assertEqual(snapshot.load_spec("revenue_growth_yoy:v1").version, 1)
+            with self.assertRaisesRegex(ValidationError, "unknown frozen"):
+                snapshot.load_spec("revenue_growth_yoy:v2")
+
+    def test_executor_uses_point_in_time_raw_info_and_tracks_observed_states(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="financial_1",
+                        company_id="issuer_1",
+                        source_type="financials",
+                        published_at=NOW - timedelta(days=2),
+                        available_at=NOW - timedelta(days=1),
+                        content="Revenue grew 25 percent year over year.",
+                        metadata={"revenue_growth_yoy": 0.25},
+                    ),
+                    RawInfoDocument.create(
+                        document_id="financial_future",
+                        company_id="issuer_1",
+                        source_type="financials",
+                        published_at=NOW + timedelta(days=1),
+                        available_at=NOW + timedelta(days=1),
+                        content="Revenue later fell.",
+                        metadata={"revenue_growth_yoy": -0.5},
+                    ),
                 )
             )
-    return build_walk_forward_folds(
-        samples,
-        starts,
-        fixed_spec=fixed,
-        admission_window_days=10,
-    )
+            executor = SignalExecutor(registry.freeze(), store)
+            batch = executor.execute_batch(
+                ("revenue_growth_yoy:v1",),
+                company_id="issuer_1",
+                as_of=NOW,
+            )
+            result = batch.results[0]
+            self.assertEqual(result.value, SignalValue.POSITIVE)
+            self.assertEqual(result.supporting_evidence[0].document_id, "financial_1")
+            registry.record_retrieval(result.ref)
+            registry.record_result(result, is_surge=True)
+            stats = registry.load_stats("revenue_growth_yoy")
+            self.assertEqual(stats.retrieved, 1)
+            self.assertEqual(stats.states["positive"], {"total": 1, "surge": 1})
+
+    def test_result_evidence_must_be_from_actual_input_with_literal_span(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            document = RawInfoDocument.create(
+                document_id="announcement_1",
+                company_id="issuer_1",
+                source_type="company_announcement",
+                published_at=NOW,
+                available_at=NOW,
+                content="The customer entered volume deployment.",
+            )
+
+            class BadRunner:
+                def execute(self, spec, documents, skill, as_of):
+                    return (
+                        SignalResult(
+                            signal_id=spec.signal_id,
+                            version=spec.version,
+                            value=SignalValue.POSITIVE,
+                            confidence=0.9,
+                            interpretation="Volume deployment started.",
+                            supporting_evidence=(
+                                SignalEvidence(
+                                    document_id="invented_doc",
+                                    exact_span="volume deployment",
+                                    timestamp=as_of,
+                                ),
+                            ),
+                        ),
+                        AgentUsage(llm_calls=1),
+                    )
+
+            executor = SignalExecutor(
+                registry.freeze(),
+                RawInfoStore(documents=(document,)),
+                llm_runner=BadRunner(),
+            )
+            with self.assertRaisesRegex(ValidationError, "outside its inputs"):
+                executor.execute_batch(
+                    ("pilot_to_volume:v1",),
+                    company_id="issuer_1",
+                    as_of=NOW,
+                )
 
 
-def _sample(
-    sample_id: str,
-    *,
-    outcome_class: str,
-    strength: float,
-    prediction_time: datetime | None = None,
-    period: str = "test-period",
-    available_date=None,
-) -> LabeledSample:
-    prediction_time = prediction_time or datetime(2025, 1, 1, tzinfo=timezone.utc)
-    multiple = {"A": 1.4, "B": 2.4, "C": 3.4}[outcome_class]
-    return LabeledSample(
-        sample_id=sample_id,
-        company_key=f"company:{sample_id}",
-        prediction_time=prediction_time,
-        realized_max_multiple=multiple,
-        true_class=outcome_class,
-        is_surge=outcome_class in {"B", "C"},
-        sector="technology",
-        market_cap_bucket="small",
-        period=period,
-        features={"signal_strength": strength},
-        evidence_source_ids=[f"source:{sample_id}"],
-        document_available_dates=[
-            available_date or prediction_time.date() - timedelta(days=1)
-        ],
-    )
+class InformationPlanRuntimeTests(TestCase):
+    def _registry_and_store(self, directory: str):
+        registry = SignalRegistry(Path(directory) / "signals")
+        registry.install_catalog(SEED_CATALOG)
+        document = RawInfoDocument.create(
+            document_id="financial_1",
+            company_id="winner_1",
+            source_type="financials",
+            published_at=NOW - timedelta(days=2),
+            available_at=NOW - timedelta(days=1),
+            content="Legacy Winner revenue grew 30 percent year over year.",
+            metadata={"revenue_growth_yoy": 0.30},
+        )
+        return registry, RawInfoStore(documents=(document,))
 
+    def test_runtime_reflects_over_batch_and_persists_before_label_reveal(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            controller = OneBatchController()
+            selector = OneSignalSelector()
+            predictor = FixedPredictor()
+            persisted: list[str] = []
 
-def _prediction(genome: SchemeGenome, sample_id: str, predicted_class: str) -> PredictionRecord:
-    return PredictionRecord(
-        genome_id=genome.genome_id,
-        materialized_scheme_id="materialized",
-        fold_id="fold",
-        sample_id=sample_id,
-        prediction_time=datetime(2025, 1, 1, tzinfo=timezone.utc),
-        predicted_class=predicted_class,
-        is_surge=predicted_class in {"B", "C"},
-        confidence_level="medium",
-        difficulty_level="medium",
-        difficulty_reasons=["fixture"],
-        decisive_signals=[],
-        conflicting_signals=[],
-        missing_information=[],
-        flip_conditions=[],
-        evidence_source_ids=[],
-        model_metadata={},
-        input_hash=f"hash-{sample_id}",
-        raw_response_location=None,
-    )
+            def sink(company_id, prediction_time, final_context, prediction):
+                serialized = json.dumps(final_context)
+                self.assertNotIn("ground_truth", serialized)
+                self.assertNotIn("Masked winner", serialized)
+                self.assertNotIn("Legacy Winner", serialized)
+                self.assertNotIn('"WIN"', serialized)
+                self.assertNotIn("company_name", final_context["basic_info"])
+                self.assertNotIn("ticker", final_context["basic_info"])
+                persisted.append(company_id)
+                return "predictions/winner_1.json"
 
+            def truth_provider(company_id):
+                self.assertEqual(persisted, [company_id])
+                return GroundTruth(4.0)
 
-def _evaluation(genome_id: str, *, f1: float, c_recall: float) -> SchemeEvaluationResult:
-    return SchemeEvaluationResult(
-        genome_id=genome_id,
-        sample_count=2,
-        confusion_matrix={"tp": 1, "fp": 0, "tn": 1, "fn": 0},
-        binary_precision=f1,
-        binary_recall=f1,
-        binary_f1=f1,
-        multiclass_confusion_matrix={
-            actual: {predicted: 0 for predicted in ("A", "B", "C")}
-            for actual in ("A", "B", "C")
-        },
-        per_class_recall={"A": 1.0, "B": 1.0, "C": c_recall},
-        multiclass_macro_f1=(2 + c_recall) / 3,
-        class_c_recall=c_recall,
-        ordinal_distance=1 - c_recall,
-        error_cases=[],
-        reflection_summary={},
-        predictions_by_sample={},
-        binary_predictions_by_sample={},
-        metrics_by_time_period={},
-        metrics_by_sector={},
-        metrics_by_market_cap_bucket={},
-        data_cost_usd=0.0,
-        token_cost_usd=0.0,
-        latency_ms=0.0,
-    )
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={
+                    "company_name": "Masked winner",
+                    "ticker": "WIN",
+                    "market_cap": 6_000_000_000,
+                    "industry": "industrial",
+                    "business_description": "equipment",
+                    "revenue_segments": ["systems"],
+                    "development_stage": "commercial",
+                    "identity_aliases": ("Legacy Winner",),
+                    "extra_raw_fact": "must not enter Basic Info",
+                },
+                prediction_time=NOW,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=controller,
+                signal_agent=selector,
+                predictor=predictor,
+                prediction_sink=sink,
+                ground_truth_provider=truth_provider,
+                limits=RuntimeLimits(max_llm_calls=10),
+            )
+            self.assertEqual(controller.reflected_batch_sizes, [1])
+            self.assertNotIn("extra_raw_fact", trajectory.basic_info)
+            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+            self.assertEqual(trajectory.ground_truth.magnitude, MagnitudeClass.THREE_TO_TEN)
+            self.assertEqual(trajectory.usage.signal_rounds, 1)
+            self.assertEqual(trajectory.usage.signal_calls, 1)
+            self.assertEqual(predictor.reflection_truths, [GroundTruth(4.0)])
 
+    def test_runtime_stops_at_fixed_round_guard(self) -> None:
+        class LoopingController(OneBatchController):
+            def reflect(self, plan, state, batch):
+                return AgentStep(
+                    ResearchState(next_information_needs=("repeat",)),
+                    AgentUsage(llm_calls=1),
+                )
 
-def _blind_packet() -> BlindSchemePacket:
-    return BlindSchemePacket(
-        source_case_id="internal-case-id",
-        anonymous_case_id="anonymous-001",
-        as_of_date="2025-01-01",
-        scheme_id="test-scheme",
-        scheme_version="test-scheme-v1",
-        sections=(
-            BlindPacketSection(
-                name="Catalyst/Event Ledger",
-                priority=1,
-                token_budget=100,
-                compression_rule="fixture",
-                items=(
-                    {
-                        "evidence_ref": "opaque-ref-1",
-                        "summary": "Confirmed source-linked event.",
-                    },
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            persisted: list[str] = []
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=LoopingController(),
+                signal_agent=OneSignalSelector(),
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: persisted.append("done") or "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(
+                    max_signal_rounds=1,
+                    max_signal_calls=5,
+                    max_llm_calls=10,
                 ),
-                estimated_tokens=10,
+            )
+            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.MAX_SIGNAL_ROUNDS)
+            self.assertEqual(len(trajectory.signal_rounds), 1)
+            self.assertEqual(persisted, ["done"])
+
+
+class PredictionMetricTests(TestCase):
+    def test_ground_truth_thresholds_and_two_stage_metrics(self) -> None:
+        self.assertFalse(GroundTruth(1.999).is_surge)
+        self.assertEqual(GroundTruth(2.0).magnitude, MagnitudeClass.TWO_TO_THREE)
+        self.assertEqual(GroundTruth(3.0).magnitude, MagnitudeClass.THREE_TO_TEN)
+        self.assertEqual(GroundTruth(10.0).magnitude, MagnitudeClass.TEN_PLUS)
+        trajectories = (
+            make_trajectory("case_1", 2.5, True, MagnitudeClass.TWO_TO_THREE),
+            make_trajectory("case_2", 5.0, False, None),
+            make_trajectory("case_3", 1.5, True, MagnitudeClass.TWO_TO_THREE),
+            make_trajectory("case_4", 1.2, False, None),
+            make_trajectory("case_5", 12.0, True, MagnitudeClass.TEN_PLUS),
+        )
+        metrics = score_predictions(trajectories)
+        self.assertEqual(
+            (
+                metrics.true_positive,
+                metrics.false_positive,
+                metrics.true_negative,
+                metrics.false_negative,
             ),
+            (2, 1, 1, 1),
+        )
+        self.assertAlmostEqual(metrics.binary_precision, 2 / 3)
+        self.assertAlmostEqual(metrics.binary_recall, 2 / 3)
+        self.assertAlmostEqual(metrics.binary_f1, 2 / 3)
+        self.assertAlmostEqual(metrics.magnitude_accuracy, 2 / 3)
+        self.assertGreater(metrics.magnitude_macro_f1, 0)
+
+    def test_prediction_schema_requires_stage_two_only_for_positive(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "requires magnitude"):
+            BlindPrediction(
+                is_surge=True,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("reason",),
+                uncertainties=(),
+                session_id="s",
+            )
+        with self.assertRaisesRegex(ValidationError, "cannot include magnitude"):
+            BlindPrediction(
+                is_surge=False,
+                magnitude=MagnitudeClass.TWO_TO_THREE,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("reason",),
+                uncertainties=(),
+                session_id="s",
+            )
+
+
+class PlanArchiveAndWorkspaceTests(TestCase):
+    def test_quality_diverse_topk_then_random_exploration(self) -> None:
+        archive = PlanArchive(
+            (
+                make_record("plan_a", 0.90, (1.0, 0.0)),
+                make_record("plan_b", 0.80, (0.99, 0.01)),
+                make_record("plan_c", 0.70, (0.0, 1.0)),
+                make_record("plan_d", 0.60, (-1.0, 0.0)),
+            )
+        )
+        selection = archive.select_parents(
+            top_k=2,
+            random_k=1,
+            similarity_threshold=0.95,
+            rng=random.Random(7),
+        )
+        self.assertEqual([record.plan_id for record in selection.top], ["plan_a", "plan_c"])
+        self.assertEqual(len(selection.random), 1)
+        self.assertNotIn(selection.random[0].plan_id, {"plan_a", "plan_c"})
+
+    def test_workspace_restores_only_records_reachable_from_completed_pointer(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            record = make_record("plan_committed", 0.8, (1.0, 0.0), round_id=1)
+            meta = RoundMetaEntry(
+                round_id=1,
+                successful_patterns=("evidence weighting",),
+                evidence_refs=("plan_committed",),
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=meta,
+                signal_registry_hash="registry-hash",
+            )
+            staged = make_record("plan_staged", 0.9, (0.0, 1.0), round_id=2)
+            staged_path = Path(directory) / "plans" / "plan_staged" / "record.json"
+            staged_path.parent.mkdir(parents=True)
+            staged_path.write_text(json.dumps(staged.to_dict()), encoding="utf-8")
+            self.assertEqual(workspace.last_completed_round, 1)
+            self.assertEqual(
+                [record.plan_id for record in workspace.restore_archive().records],
+                ["plan_committed"],
+            )
+            self.assertEqual(
+                [entry.round_id for entry in workspace.restore_meta().entries],
+                [1],
+            )
+
+    def test_meta_memory_is_fifo_and_requires_monotonic_grounded_entries(self) -> None:
+        memory = PlanMetaMemory(maxlen=2)
+        for round_id in (1, 2, 3):
+            memory.append(
+                RoundMetaEntry(
+                    round_id=round_id,
+                    evidence_refs=(f"plan_{round_id}",),
+                )
+            )
+        self.assertEqual([entry.round_id for entry in memory.entries], [2, 3])
+        with self.assertRaisesRegex(ValidationError, "monotonically"):
+            memory.append(RoundMetaEntry(round_id=3, evidence_refs=("plan_3",)))
+
+
+class CountingProposer:
+    def __init__(self) -> None:
+        self.calls: list[dict[str, Any]] = []
+
+    def propose(self, *, parents, meta_info, prior):
+        self.calls.append(
+            {
+                "parents": tuple(plan.plan_id for plan in parents),
+                "meta_rounds": tuple(entry.round_id for entry in meta_info),
+                "prior": prior,
+            }
+        )
+        index = len(self.calls)
+        base = default_information_plan()
+        return InformationPlan(
+            plan_id=f"plan_child_{index}",
+            parent_ids=tuple(plan.plan_id for plan in parents),
+            basic_info_policy=base.basic_info_policy,
+            initial_research_skill=f"{base.initial_research_skill} Variant {index}.",
+            reflection_skill=base.reflection_skill,
+            analysis_prompt=base.analysis_prompt,
+        )
+
+
+class SyntheticPlanEvaluator:
+    def __init__(self, *, include_signal: bool = True) -> None:
+        self.include_signal = include_signal
+        self.seen_company_ids: list[str] = []
+
+    def evaluate(self, plan, cases, signal_registry):
+        rows = []
+        for case in cases:
+            self.seen_company_ids.append(case.company_id)
+            predicted = case.ground_truth.is_surge
+            rows.append(
+                make_trajectory(
+                    case.company_id,
+                    case.ground_truth.realized_max_multiple,
+                    predicted,
+                    case.ground_truth.magnitude if predicted else None,
+                    signal_result=(
+                        SignalResult(
+                            signal_id="revenue_growth_yoy",
+                            version=1,
+                            value=(
+                                SignalValue.POSITIVE
+                                if case.ground_truth.is_surge
+                                else SignalValue.NEGATIVE
+                            ),
+                            confidence=1.0,
+                            interpretation="synthetic observed state",
+                        )
+                        if self.include_signal
+                        else None
+                    ),
+                )
+            )
+        return tuple(rows)
+
+
+class SimpleCritic:
+    def critique(self, *, plan, trajectories, metrics):
+        return PlanReflection(
+            successful_patterns=("correct binary separation",),
+            next_explorations=("test contradiction-first reflection",),
+        )
+
+
+class SimpleRoundReflector:
+    def __init__(self) -> None:
+        self.calls: list[tuple[int, tuple[str, ...], str]] = []
+
+    def reflect(self, *, round_id, records, prior):
+        self.calls.append((round_id, tuple(record.plan_id for record in records), prior))
+        return RoundMetaEntry(
+            round_id=round_id,
+            successful_patterns=("correct binary separation",),
+            useful_signals=("revenue_growth_yoy",),
+            search_implications=("try contradiction-first",),
+            evidence_refs=tuple(record.plan_id for record in records),
+        )
+
+
+class PlanEvolutionEngineTests(TestCase):
+    def test_fast_loop_calls_proposer_independently_and_commits_s_e_j_r_u_t(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            proposer = CountingProposer()
+            reflector = SimpleRoundReflector()
+            evaluator = SyntheticPlanEvaluator()
+            archive = PlanArchive()
+            meta = PlanMetaMemory()
+            engine = PlanEvolutionEngine(
+                archive=archive,
+                meta_memory=meta,
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=reflector,
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=2,
+                top_k=2,
+                random_k=1,
+                rng=random.Random(3),
+            )
+            cases = (
+                make_case("validation_positive", 4.0),
+                make_case("validation_control", 1.2),
+            )
+            result = engine.run_round(
+                round_id=1,
+                validation_cases=cases,
+                signal_snapshot=registry.freeze(),
+            )
+            self.assertEqual(len(proposer.calls), 2)
+            self.assertEqual(proposer.calls[0]["parents"], ("plan_manual_v1",))
+            self.assertEqual(proposer.calls[0]["prior"], DEFAULT_EVOLUTION_PRIORS.propose_plan)
+            self.assertEqual(len(result.records), 2)
+            for record in result.records:
+                self.assertTrue(record.embedding)
+                self.assertEqual(record.metrics.binary_f1, 1.0)
+                self.assertTrue(record.reflection.successful_patterns)
+                self.assertIn("revenue_growth_yoy:v1", record.signal_usage)
+                self.assertEqual(len(record.trajectories), 2)
+            self.assertEqual(workspace.last_completed_round, 1)
+            self.assertEqual(len(workspace.restore_archive().records), 2)
+            self.assertEqual(meta.entries[0].evidence_refs, ("plan_child_1", "plan_child_2"))
+            stats = registry.load_stats("revenue_growth_yoy")
+            self.assertEqual(stats.retrieved, 4)
+            self.assertEqual(stats.executed, 4)
+            PlanEvolutionEngine(
+                archive=workspace.restore_archive(),
+                meta_memory=workspace.restore_meta(),
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=CountingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+            reconciled = registry.load_stats("revenue_growth_yoy")
+            self.assertEqual(reconciled.retrieved, 4)
+            self.assertEqual(reconciled.executed, 4)
+
+    def test_round_meta_cannot_cite_old_or_unrelated_experiment(self) -> None:
+        class BadReflector(SimpleRoundReflector):
+            def reflect(self, *, round_id, records, prior):
+                return RoundMetaEntry(round_id=round_id, evidence_refs=("old_plan",))
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(include_signal=False),
+                proposer=CountingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=BadReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+            with self.assertRaisesRegex(ValidationError, "outside new experiments"):
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=(make_case("validation_1", 1.2),),
+                    signal_snapshot=registry.freeze(),
+                )
+            self.assertEqual(workspace.last_completed_round, 0)
+
+
+class SignalEvolutionTests(TestCase):
+    def test_candidate_validation_rejects_leakage_duplicate_and_bad_version(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            validator = SignalCandidateValidator(registry, llm_runner=None)
+            leaking = SignalSpec(
+                signal_id="future_outcome_hint",
+                version=1,
+                category="risks",
+                description="Use future price to infer the outcome label.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            finding = validator.validate(leaking, skill=None)
+            self.assertFalse(finding.accepted)
+            self.assertTrue(any("leakage" in reason for reason in finding.reasons))
+            duplicate = SignalSpec(
+                signal_id="duplicate_growth",
+                version=1,
+                category="financial",
+                description=registry.latest_spec("revenue_growth_yoy").description,
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            self.assertFalse(validator.validate(duplicate, skill=None).accepted)
+            bad_update = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=3,
+                category="financial",
+                description="Updated growth measure.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            self.assertFalse(validator.validate(bad_update, skill=None).accepted)
+
+    def test_slow_loop_stages_then_promotes_new_and_vnext_signals(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            new_spec = SignalSpec(
+                signal_id="discovery_growth_quality",
+                version=1,
+                category="financial",
+                description="Measure whether growth is broad-based across disclosed segments.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            updated_spec = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=2,
+                category="financial",
+                description="Measure point-in-time revenue growth with explicit comparable-period checks.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            mining_model = ScriptedAgentModel(
+                [
+                    AgentTurn(
+                        tool_call=ToolCall(
+                            "create_candidate_signal",
+                            {"spec": new_spec.to_dict(), "tests": []},
+                        )
+                    ),
+                    AgentTurn(final_output={"candidate_refs": []}),
+                ]
+            )
+            update_model = ScriptedAgentModel(
+                [
+                    AgentTurn(
+                        tool_call=ToolCall(
+                            "clone_signal_version",
+                            {
+                                "signal_ref": "revenue_growth_yoy:v1",
+                                "spec": updated_spec.to_dict(),
+                                "tests": [],
+                            },
+                        )
+                    ),
+                    AgentTurn(final_output={"candidate_refs": []}),
+                ]
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_positive", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_agent=GenericAgent(mining_model),
+                update_agent=GenericAgent(update_model),
+                llm_signal_runner=None,
+            )
+            result = engine.run_cycle()
+            self.assertEqual(
+                set(result.promoted),
+                {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
+            )
+            self.assertEqual(result.registry_version, 2)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
+            self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
+            self.assertTrue(
+                (root / "signals_candidates" / "financial" / "revenue_growth_yoy" / "v2").exists()
+            )
+
+    def test_slow_loop_agents_cannot_access_locked_test(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            mining_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            update_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            raw_store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="discovery_doc",
+                        company_id="discovery_only",
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Discovery evidence.",
+                    ),
+                    RawInfoDocument.create(
+                        document_id="locked_doc",
+                        company_id="locked_company",
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Locked evidence.",
+                    ),
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=(make_case("discovery_only", 3.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_agent=GenericAgent(mining_model),
+                update_agent=GenericAgent(update_model),
+                llm_signal_runner=None,
+            )
+            engine.run_cycle()
+            for model in (mining_model, update_model):
+                serialized = json.dumps(model.requests[0].workspace)
+                self.assertNotIn("locked_company", serialized)
+                self.assertFalse(model.requests[0].workspace["locked_test_available"])
+            with self.assertRaisesRegex(ValidationError, "after the Discovery"):
+                engine._search_raw_info_tool(
+                    "discovery_only",
+                    (NOW + timedelta(days=1)).isoformat(),
+                )
+            with self.assertRaisesRegex(ValidationError, "Discovery companies"):
+                engine._load_discovery_raw_document("locked_doc")
+
+
+class DualLoopTests(TestCase):
+    def test_offline_dual_loop_freezes_signals_then_runs_one_slow_cycle(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            meta = PlanMetaMemory()
+            proposer = CountingProposer()
+            evaluator = SyntheticPlanEvaluator(include_signal=False)
+            plan_engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=meta,
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+            mining_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            update_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            signal_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_case", 4.0),),
+                meta_memory=meta,
+                workspace=workspace,
+                mining_agent=GenericAgent(mining_model),
+                update_agent=GenericAgent(update_model),
+                llm_signal_runner=None,
+            )
+            dataset = EvolutionDataset(
+                discovery=(make_case("discovery_case", 4.0),),
+                evolution_validation=(make_case("validation_case", 1.5),),
+                locked_test=(make_case("locked_company", 12.0),),
+            )
+            result = DualLoopEvolutionEngine(
+                plan_engine=plan_engine,
+                signal_engine=signal_engine,
+                signal_registry=registry,
+                dataset=dataset,
+                plan_rounds_per_signal_cycle=1,
+            ).run_cycle()
+            self.assertEqual(len(result.plan_rounds), 1)
+            self.assertEqual(result.signal_evolution.promoted, ())
+            self.assertEqual(workspace.last_completed_round, 1)
+            self.assertEqual(evaluator.seen_company_ids, ["validation_case"])
+            self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
+
+
+def make_case(company_id: str, multiple: float) -> EvolutionCase:
+    return EvolutionCase(
+        company_id=company_id,
+        prediction_time=NOW,
+        basic_info={
+            "company_name": company_id,
+            "ticker": company_id.upper(),
+            "industry": "fixture",
+        },
+        ground_truth=GroundTruth(multiple),
+    )
+
+
+def make_trajectory(
+    company_id: str,
+    multiple: float,
+    predicted_surge: bool,
+    predicted_magnitude: MagnitudeClass | None,
+    *,
+    signal_result: SignalResult | None = None,
+) -> ExecutionTrajectory:
+    truth = GroundTruth(multiple)
+    prediction = BlindPrediction(
+        is_surge=predicted_surge,
+        magnitude=predicted_magnitude,
+        confidence=ConfidenceLevel.MEDIUM,
+        key_reasons=("fixture reason",),
+        uncertainties=(),
+        session_id=f"session_{company_id}",
+    )
+    final_state = ResearchState(decision=ResearchDecision.FINALIZE)
+    signal_rounds = ()
+    if signal_result is not None:
+        from stock_opportunity_agent.signal_library import SignalBatchResult
+
+        signal_rounds = (
+            SignalRound(
+                information_needs=("fixture need",),
+                selected_signals=(signal_result.ref,),
+                batch=SignalBatchResult(
+                    results=(signal_result,),
+                    signal_calls=1,
+                ),
+            ),
+        )
+    return ExecutionTrajectory(
+        company_id=company_id,
+        prediction_time=NOW,
+        basic_info={"ticker": company_id.upper()},
+        initial_state=final_state,
+        signal_rounds=signal_rounds,
+        final_state=final_state,
+        final_context={"fixture": True},
+        prediction=prediction,
+        prediction_ref=f"predictions/{company_id}.json",
+        ground_truth=truth,
+        self_reflection=PredictionSelfReflection(
+            correct=(predicted_surge == truth.is_surge),
+        ),
+        stop_reason=RuntimeStopReason.FINALIZED,
+        usage=RuntimeUsage(
+            signal_rounds=len(signal_rounds),
+            signal_calls=len(signal_rounds),
+            model=AgentUsage(),
         ),
     )
 
 
-def _valid_model_output() -> dict[str, object]:
-    return {
-        "predicted_class": "B",
-        "confidence_level": "medium",
-        "difficulty_level": "medium",
-        "difficulty_reasons": ["materiality is bounded"],
-        "decisive_signals": ["confirmed event"],
-        "conflicting_signals": [],
-        "missing_information": [],
-        "flip_conditions": ["event is cancelled"],
-        "evidence_source_ids": ["opaque-ref-1"],
-    }
-
-
-class _FakeChatClient:
-    def __init__(self, outputs: list[str]) -> None:
-        self.outputs = list(outputs)
-        self.calls = 0
-        self.api_key = "secret-key"
-
-    def complete(self, messages, **kwargs):
-        self.calls += 1
-        if "response_format" in kwargs:
-            assert kwargs["response_format"]["type"] == "json_schema"
-        assert all(message.role != "tool" for message in messages)
-        output = self.outputs[min(self.calls - 1, len(self.outputs) - 1)]
-        return ChatResponse(
-            response_id=f"response-{self.calls}",
-            model="fake-model",
-            output_text=output,
-            raw={"usage": {"input_tokens": 10, "output_tokens": 10}},
-        )
-
-
-class _FailingChatClient:
-    def __init__(self, error: Exception) -> None:
-        self.error = error
-        self.calls = 0
-        self.api_key = "secret-key"
-
-    def complete(self, messages, **kwargs):
-        del messages, kwargs
-        self.calls += 1
-        raise self.error
+def make_record(
+    plan_id: str,
+    binary_f1: float,
+    embedding: tuple[float, ...],
+    *,
+    round_id: int = 1,
+) -> PlanRecord:
+    base = default_information_plan()
+    plan = InformationPlan(
+        plan_id=plan_id,
+        parent_ids=(),
+        basic_info_policy=base.basic_info_policy,
+        initial_research_skill=f"{base.initial_research_skill} {plan_id}",
+        reflection_skill=base.reflection_skill,
+        analysis_prompt=base.analysis_prompt,
+    )
+    return PlanRecord(
+        plan=plan,
+        round_id=round_id,
+        embedding=embedding,
+        metrics=PlanMetrics(
+            binary_precision=binary_f1,
+            binary_recall=binary_f1,
+            binary_f1=binary_f1,
+            magnitude_accuracy=0.0,
+            magnitude_macro_f1=0.0,
+            true_positive=0,
+            false_positive=0,
+            true_negative=1,
+            false_negative=0,
+            sample_count=1,
+        ),
+        reflection=PlanReflection(),
+        signal_usage={},
+        trajectories=(make_trajectory(f"case_{plan_id}", 1.0, False, None),),
+    )

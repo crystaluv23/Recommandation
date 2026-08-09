@@ -1,306 +1,114 @@
 # Cold Start Run Workspace
 
-This directory is the clean workspace for formal cold-start runs.
+This directory is the local workspace for formal cold-start research, Ralph
+source/acquisition diagnostics, and the active dual-loop information-plan
+evolution system. Generated run directories are ignored by git.
 
-Default formal run layout:
+## Formal and Ralph workspaces
 
 ```text
 runs/cold_start/
-  formal/
-    <run_id>/
-      01_universe/
-        eligible_listings.json
-      02_prices/
-        price_histories.json
-      03_selection/
-        historical_candidate_selection.json
-      04_documents/
-        documents_and_catalysts.json
-      05_packets/
-        historical_cases.json
-      06_research/
-        inflection_analyses.json
-        blind_case_analyses.json
-        pre_surge_signal_logic.json
-        signal_definitions.json
-        case_signal_observations.json
-        theme_maps.json
-        surge_research_playbooks.json
-        manifest.json
-  ralph/
-    <run_id>/
-      preflight_blind_llm_requests.json
-      preflight_leakage_report.json
-      preflight_manifest.json
-      research_information_plan.json
-      information_requirements.json
-      evidence_coverage_ledger.json
-      atomic_evidence_by_case.json
-      raw_vs_organized_evaluation.json
-      ralph_experiment_summary.json
-      holdout_blind_scheme_evaluation.json
-  evolution/
-    evolution_dashboard.html
-    evolution_dashboard_data.js
-    evolution_dashboard_index.json
-    <run_id>/
-      config.json
-      evaluation_contract.json
-      state.json
-      events.jsonl
-      memory.json
-      evolution_summary.json
-      evolution_history.json
-      evolution_dashboard_data.js
-      evolution_dashboard.html
-      top_k.json
-      scheme_experiments.json
-      experiment_report.json
-      schemes/
-      frozen_signals/
-      signal_extractions/
-      predictions/
-      evaluations/
-      prompts/
-      cache/
-      experiments/
+  formal/<run_id>/
+    01_universe/
+    02_prices/
+    03_selection/
+    04_documents/
+    05_packets/
+    06_research/
+  ralph/<run_id>/
+    research_information_plan.json
+    information_requirements.json
+    evidence_coverage_ledger.json
+    atomic_evidence_by_case.json
+    raw_vs_organized_evaluation.json
+    ralph_experiment_summary.json
+  evolution/<run_id>/
+    plans/
+    signals/
+    signals_candidates/
+    raw_info/
+    experiments/
+    meta/
+    cache/
+    state.json
 ```
 
-`01_universe` through `05_packets` are pre-OpenRouter checkpoints. If LLM
-research is slow or interrupted, the next run should reuse these stage outputs
-rather than repeating the full universe scan. The formal runner can load an
-existing universe checkpoint with `--universe-path` and an existing price
-checkpoint with `--price-history-path`, while still reapplying the current
-eligibility and selection logic.
+`formal/01_universe` through `formal/05_packets` are pre-model checkpoints.
+Interrupted research should reuse compatible stage outputs rather than repeat
+the universe scan. `04_documents` preserves source content and coverage;
+`05_packets` remains the complete point-in-time packet audit even when a
+coverage gate excludes thin cases from model calls.
 
-`04_documents/documents_and_catalysts.json` also records web-context queries,
-company/theme/research-summary documents, catalysts, per-case context coverage,
-and coverage-gate exclusions. `05_packets/historical_cases.json` remains the
-complete packet audit; when `--coverage-gate-mode enforce` is used, insufficient
-packets are excluded from blind LLM learning but still remain in this packet
-checkpoint. Use `--web-context-mode off` only when intentionally testing the
-non-web context path.
+`ralph/<run_id>/` remains the broad retrospective information-requirement,
+source acquisition, atomic extraction, and raw-versus-organized diagnostic.
+It may expose labels only in explicitly marked discovery/diagnostic stages.
+Blind evaluation remains anonymous, point-in-time, and no-web. The repository
+has no human-curated gold packet, and a development holdout used to propose a
+change is not independent validation for that proposal.
 
-`ralph/<run_id>/` stores the broad information-plan experiment and optional
-preflight exports. Preflight outputs are local audit artifacts for reviewing
-the anonymous no-web blind packets before an approved external LLM call. The
-redundant legacy packet-scheme CLI and its separate response-import artifact
-family have been removed; the broad information-plan path is the only
-standalone Ralph experiment.
+## Active evolution workspace
 
-The Ralph information-plan runner now emits proposal artifacts for
-`research_information_plan.json`, `information_requirements.json`,
-`evidence_coverage_ledger.json`, `atomic_evidence_by_case.json`,
-`point_in_time_source_documents.json`, `document_content_audit.json`,
-`raw_source_blind_packets.json`, raw-versus-organized blind comparison,
-information-family add-back/ablation, and layered failure attribution. The
-point-in-time source artifact preserves the complete retrospective bodies and
-can be passed back through `--documents-path` for deterministic replay. In
-`--preflight-only` mode it writes packet and readiness artifacts without an
-external LLM call. The repository has no human-curated gold packet; automatic
-or source-audited packets must not be labeled gold.
+The former A/B/C `SchemeGenome` search, dashboard, provider preflight CLI, and
+its per-run configuration family were removed. The active system follows
+[`spec/src/stock_opportunity_agent/research/scheme_evolution.md`](../../spec/src/stock_opportunity_agent/research/scheme_evolution.md):
 
-Raw-source and organized-packet experiments must reuse the same point-in-time
-source bundle, model, output contract, and documented context-budget policy.
-Label-aware discovery and acquisition stay before packet masking. Blind
-evaluation remains anonymous and web-disabled, and a holdout used to propose a
-change becomes retrospective feedback data rather than independent validation
-for that change.
+```text
+Fast Loop: adaptive Information Plan experiments
+-> Plan Archive S/E/J/R/U/T
+-> quality-diverse Top-K plus random parents
+-> FIFO experiment-grounded meta-info
 
-Preflight must stop before blind calls when the selected holdout has no
-source-backed facts, when source bodies are truncated or unusable, or when the
-expanded source-alias leakage scan fails. The July 12 v5 preflight stopped on
-incomplete source bodies. The July 13 v19 bounded development preflight is the
-current frozen replay: 23 audited sources, 16 usable full bodies, seven
-summary-only bodies, strict leakage passed, and three source-backed target
-families. Its raw arm samples document chunks round-robin so one long filing
-cannot consume the full context budget. Local heuristic v22 is only a pipeline
-diagnostic: organized positive gap is 0.19 but FP is 1.00 because both cases are
-`possible`. Do not use it as an effectiveness estimate. Sending the frozen
-anonymous packets to an external provider still requires explicit informed
-authorization; otherwise keep the local preflight for review and do not run the
-provider-backed path.
-
-`evolution/<run_id>/` stores the resumable A/B/C genome search. The frozen exam
-uses the maximum five-day-smoothed adjusted-close multiple over six calendar
-months: A below 2x, B from 2x to below 3x, and C at or above 3x. B/C are binary
-positive and binary F1 is the only Top-K selection score. Model probability
-fields are rejected. Initialize and run the two-generation mock config:
-
-The interactive/continuous entry point first auto-discovers model aliases from
-`stock_opportunity_agent/llm/` and stores each trajectory under the fixed
-evolution root. List available model roles and local trajectories with:
-
-```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py models
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py trajectories
+Slow Loop: Signal Mining and Signal Update
+-> signals_candidates/
+-> schema/execution/leakage/evidence/duplicate validation
+-> versioned promotion into signals/
 ```
 
-Start a new trajectory with explicit aliases. `launch` keeps starting another
-bounded round until Ctrl+C; `--max-rounds N` is only an optional finite bound:
+The three dataset roles are separate:
 
-```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
-  --trajectory-action new \
-  --trajectory-id <new-id> \
-  --evolution-model <evolution-alias> \
-  --judge-model <judge-alias> \
-  --config <experiment-config.json>
-```
+- Discovery labels are visible only to Signal Mining/Update.
+- Evolution Validation labels remain hidden until each prediction is durably
+  written and are then used by the scorer and Predictor self-reflection.
+- Locked Test is absent from ordinary evolution calls.
 
-Ctrl+C atomically records `paused_by_operator`. Resume reads frozen paths and
-models from that trajectory, repairs a partial round, and reuses every exact
-completed prediction. Branching creates a child without modifying its parent:
+Stage 1 predicts whether the fixed horizon reaches at least 2x. Stage 2, when
+predicted positive, returns `2-3x`, `3-10x`, or `10x+`. Binary F1 is initial Plan
+fitness; precision, recall, magnitude accuracy, and magnitude macro-F1 remain
+diagnostics.
 
-```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
-  --trajectory-action resume \
-  --from-trajectory <existing-id>
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
-  --trajectory-action branch \
-  --from-trajectory <existing-id> \
-  --from-round <completed-round> \
-  --trajectory-id <child-id>
-```
-
-An external continuous session additionally requires the CLI-only
-`--continuous-external-session-authorized` acknowledgement and a positive
-`--session-max-cost-usd`. Exact requests are reserved before transmission and
-the cumulative ledger survives restart; neither flag grants final-test access
-or production promotion.
-
-DeepSeek is auto-discovered from the same catalog. Rotate any credential that
-has been exposed in a terminal, log, or chat, then export the replacement only
-in the launching shell:
-
-```sh
-export DEEPSEEK_API_KEY="<new-rotated-key>"
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py models
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py launch \
-  --trajectory-action new \
-  --trajectory-id <new-id> \
-  --evolution-model deepseek-v4-flash \
-  --judge-model deepseek-v4-flash \
-  --continuous-external-session-authorized \
-  --session-max-cost-usd <positive-limit> \
-  --config <experiment-config.json>
-```
-
-The key is not a config field and must not be written to trajectory artifacts.
-The current direct DeepSeek registration is `deepseek-v4-flash`; the catalog
-does not list `deepseek-v4-pro` until its Responses API support is available and
-verified.
-
-The older finite commands remain available for reproducible configs. Initialize
-and run the two-generation mock config:
+Initialize a run workspace and materialize the 12 manually defined v1 Signals:
 
 ```sh
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py init \
-  --config configs/evolution/mock_experiment.json
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
-  --config configs/evolution/mock_experiment.json
+  --workspace runs/cold_start/evolution/<run_id>
 ```
 
-Resume or inspect the same run:
+Validate the source-controlled seed catalog without changing a real workspace:
 
 ```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py resume \
-  --config configs/evolution/mock_experiment.json
+PYTHONPATH=src python3 scripts/evolve_information_schemes.py validate-catalog
+```
+
+Inspect committed state:
+
+```sh
 PYTHONPATH=src python3 scripts/evolve_information_schemes.py status \
-  --config configs/evolution/mock_experiment.json
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py dashboard \
-  --config configs/evolution/mock_experiment.json
+  --workspace runs/cold_start/evolution/<run_id>
 ```
 
-Each stock's signal extraction and A/B/C prediction is written immediately.
-`resume` reuses it only when the frozen contract, fold, scheme recipe, signals,
-label-free input, extraction, and evaluator settings match. Mock `final-test`
-runs once on separate sealed synthetic companies; real `final-test` remains
-fail-closed until a compatible one-shot A/B/C dataset and source archive are
-configured. Ordinary `run` and `resume` never load those labels.
+Actual Research Controller, Signal Retrieval Agent, Predictor, proposer,
+critics, and Signal Mining/Update agents are injected through the Python API.
+This keeps provider credentials and task-specific execution policy out of a
+generic repository config. External model calls require a separate exact
+preflight and explicit authorization; workspace initialization never transmits
+data.
 
-During each development round the CLI prints compact candidate summaries before
-evaluation, then prints persisted-evaluation confusion counts, binary F1,
-class-C recall, ordinal distance, cost, the current Top-K ranks, and each
-candidate's retained/not-retained decision. These lines are marked
-`scope=development proposal_only=true`; they are progress diagnostics, not
-final-test or effectiveness claims.
+`state.json:last_completed_round` is the only authority for restore and parent
+selection. Fine-grained artifacts may exist for an interrupted round, but a
+round becomes official only after its complete Plan records, trajectories,
+metrics, reflections, archive state, and meta entry are checkpointed and the
+pointer advances atomically. Artifacts above the pointer are staged recovery
+inputs, not completed history.
 
-Every completed round also upserts its run-local `evolution_history.json` and
-refreshes both the portable per-run page and the fixed repository-level entry:
-
-```text
-runs/cold_start/evolution/evolution_dashboard.html
-```
-
-Open that same HTML for every run and round; it needs no server or network
-access. Its run selector reads the generated local index and defaults to the
-most recently completed run. The chart uses round on the x-axis and binary F1
-on the y-axis. Candidate points and their per-round median show the stochastic
-sequence, while the retained archive-best line is shown separately because
-Top-K makes it non-decreasing by construction. The `dashboard` command rebuilds
-the unified page from direct child run records, and `status` refreshes it before
-printing state when no evolution writer is active; otherwise `status` stays
-read-only and the running process performs the next refresh. A legacy run can
-recover only its last fully representable
-round; the page labels that limitation instead of inventing missing history.
-
-The executable plotting and run-selection logic lives in the HTML. Because a
-browser opening `file://` cannot enumerate directories or fetch arbitrary JSON,
-the loop atomically refreshes the adjacent `evolution_dashboard_data.js` from
-the canonical local JSON histories after every round. Reopening the one HTML or
-clicking reload therefore reads the latest generated local index.
-
-Run on saved Ralph cases only with a compatible adjusted-close history. Legacy
-winner/control or terminal-return labels are rejected rather than silently
-treated as the new maximum-multiple contract:
-
-```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
-  --mode heuristic \
-  --price-histories-path <run>/02_prices/price_histories.json \
-  --resume \
-  --output-dir runs/cold_start/evolution/codex-v1-real-heuristic
-```
-
-After reviewing the exact persisted `packet_preflight/` payloads, an explicitly
-authorized first external run should remain one candidate, one concurrent
-request, and one bounded generation. Authorization must cover sending the
-anonymous point-in-time packet text derived from local case/document archives
-to OpenRouter and the fixed downstream provider, not only permission to run the
-local loop:
-
-```sh
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py fusion-preflight \
-  --config configs/evolution/real_kimi3_fusion_development_v1.json
-
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py fusion-sample \
-  --external-transmission-authorized \
-  --config configs/evolution/real_kimi3_fusion_development_v1.json
-
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py external-preflight \
-  --config configs/evolution/real_kimi3_fusion_development_v1.json
-
-PYTHONPATH=src python3 scripts/evolve_information_schemes.py run \
-  --external-transmission-authorized \
-  --config configs/evolution/real_kimi3_fusion_development_v1.json
-```
-
-The Fusion preflight and sample operate only on scheme/objective text; Fusion is
-web-enabled but never sees validation packets. The next zero-network preflight
-writes the exact Kimi blind request content, routing, hashes, label/identity
-findings, maximum request count, and conservative cost bound to
-`external_disclosure_preflight.json`; a passing preflight is not authorization
-to transmit it. The dated config freezes the Fusion bounds plus Kimi model,
-exact provider, reasoning effort, temperature, one-attempt analyzer/HTTP bounds,
-current token-price inputs, data split, one-candidate scope, and cost caps.
-Provider parameter support and pricing are time-varying and must be refreshed
-before reuse. External commands load `OPENROUTER_API_KEY` from the process or
-uncommitted `.env.local`; no credential is written to artifacts.
-Synthetic and heuristic runs are pipeline diagnostics only. A real
-effectiveness claim still requires an explicitly declared untouched-company
-final test after proposal changes stop.
-
-The generated run directories are ignored by git. Keep durable lessons in
-`memory/`, durable design in `spec/`, and only commit code or documentation
-changes.
+Keep durable lessons in `memory/`, durable design in `spec/`, and only commit
+code or documentation changes.

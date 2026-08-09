@@ -61,10 +61,13 @@ cold start
 -> identify historical winners, controls, and failures
 -> discover candidate information requirements across point-in-time windows
 -> acquire source-linked evidence and build point-in-time case packets
--> extract atomic facts, signals, rubrics, and packet representations
--> compare raw-source and organized-packet plain-LLM baselines
--> run anonymous no-web holdout validation and route errors by layer
--> initialize only validated signal, theme, prompt, and memory proposals
+-> append source facts to the point-in-time Raw Info Store
+-> initialize a versioned Signal Registry with deterministic and LLM-driven signals
+-> execute adaptive Information Plans against label-hidden evolution validation
+-> retain quality-diverse plans and compress completed-round lessons into FIFO meta-info
+-> periodically mine or repair candidate signals on label-visible discovery data
+-> validate candidates before versioned promotion into the stable Signal Registry
+-> reserve the locked test for a later human-approved acceptance check
 
 daily
 -> update prices, volume, filings, news, earnings events, analyst revisions, and theme evidence
@@ -107,16 +110,16 @@ first signal library without survivorship bias or look-ahead bias.
 ```text
 find winners from the most recent one-year historical window
 -> match 3-5 same-sector, similar-size failure controls per winner
--> construct T-180 / T-120 / T-90 / T-60 / T-30 point-in-time packets
--> use label-aware comparison to discover information requirements, including unclassified facts
--> map each requirement to point-in-time sources and explicit missing states
--> extract source-linked atomic facts before deriving signals or summaries
--> compare the same source bundle as raw context and as an organized packet
--> run blind as-of-date plain-LLM validation on a disjoint company holdout
--> route failures to acquisition, extraction, signal, representation, analysis, or predictability
--> let a bounded proposal engine compare versioned information-scheme genomes under fixed split, label, and evaluation rules
--> retain diverse Pareto candidates by source, signal, cost, and complexity niche instead of collapsing immediately to one global winner
--> update versioned information-plan, signal, theme, prompt, scoring, and case-memory proposals
+-> split companies into label-visible discovery, label-hidden evolution validation, and locked test
+-> append source documents with published_at and available_at to the Raw Info Store
+-> run a frozen Signal Registry through adaptive, evidence-backed research trajectories
+-> score two-stage blind predictions and collect Predictor self-reflection
+-> archive complete Plan records S/E/J/R/U/T
+-> select high-F1 but embedding-diverse Top-K parents plus random exploration parents
+-> sample N new Information Plans from fixed proposer prior plus FIFO experimental meta-info
+-> every bounded group of plan rounds, mine or repair candidate Signals on discovery data
+-> validate candidate schema, executability, leakage, evidence traceability, and semantic uniqueness
+-> promote passing candidates as new Signal versions before the next fast-loop group
 ```
 
 “Bounded proposal engine” applies to each atomic development round: candidate
@@ -148,22 +151,26 @@ representation loss, and no competing tested proposal with a material,
 repeatable improvement. The repository currently has no human-curated gold
 packet, so a gold-packet upper bound must not be assumed in current experiments.
 
-Information-scheme evolution changes only proposal genomes. The fixed exam is a
-six-calendar-month, five-day-smoothed maximum adjusted-close multiple with
-ordered A/B/C classes (`A < 2x`, `2x <= B < 3x`, `C >= 3x`) and B/C as binary
-positive. Walk-forward splits, purge/embargo, output fields, binary-F1 Top-K
-selection, and final-test ownership are framework controls and are not mutable
-genome fields. A genome is materialized from signal-train labels inside one
-fold, then frozen before anonymous validation extraction and prediction. Every
-stock prediction is checkpointed before labels are revealed. Final-test and
-live-forward records remain outside the proposal engine. A local evolution
-dashboard may summarize development evaluations as a human-readable report,
-but it must read only the run's proposal-history artifact, identify binary F1
-as the fixed effect metric, and distinguish stochastic per-round candidate
-scores from the mechanically non-decreasing retained best-so-far series. The
-standard local evolution root owns one stable dashboard entry point that
-indexes all run histories; a run-id is a selectable view, not part of the
-human-facing entry URL.
+Information-scheme evolution changes only the four-part Information Plan:
+basic-info policy, initial-research skill, batch-reflection skill, and final
+analysis prompt. The stable Signal Registry is frozen throughout a group of
+fast-loop rounds. Labels, dataset ownership, two-stage prediction semantics,
+metrics, runtime guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework
+controls and cannot be mutated by a candidate plan. Stage 1 predicts whether
+the future fixed horizon reaches at least 2x. Stage 2 is evaluated only for the
+positive ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes.
+Binary F1 is the first fitness objective; precision, recall, magnitude accuracy,
+and magnitude macro-F1 remain visible diagnostics.
+
+Every prediction is durably handed to a prediction sink before the ground-truth
+provider can be called. The Predictor receives the label only afterward for
+post-hoc self-reflection. Discovery labels may be read by Signal Mining; the
+evolution-validation label is inaccessible to plan execution; locked-test
+records are absent from ordinary evolution calls. Plan rounds are finite and
+advance one authoritative atomic `last_completed_round` pointer only after
+plan records, trajectories, metrics, reflections, archive state, and round
+meta-info have committed. Files beyond that pointer are staged recovery inputs,
+not completed history.
 
 ### Phase 2: Current Market Scan
 

@@ -1,0 +1,51 @@
+# LLM Capability and Generic Agent Harness
+
+## Status
+
+Started
+
+## Purpose
+
+Keep reusable model/provider adapters and the generic tool-calling runtime at a
+top-level capability boundary. Research, Signal mining, and Signal updating may
+share the harness without creating task-specific agent classes.
+
+## Generic Agent Contract
+
+`GenericAgent.run(prompt, tools, workspace, output_schema, max_steps)` executes
+a bounded loop:
+
+```text
+model response
+-> one named domain tool call or structured final output
+-> tool observation
+-> next model response
+```
+
+The model receives tool cards, an immutable serializable workspace view, and
+prior observations. The harness records a trajectory and returns validated
+structured output plus usage.
+
+Tools are explicit `DomainTool` values. They expose a name, description, and
+callable; an unknown tool or malformed turn fails closed. The harness never
+grants arbitrary shell or filesystem primitives such as `ls`, `cat`, or `rm`.
+
+## Usage and Limits
+
+Every model turn reports LLM calls, token count, and cost when known. `max_steps`
+is mandatory and positive. Task-specific runtimes add their own call, token,
+cost, and research-round limits.
+
+## Invariants
+
+- Provider secrets never enter prompts, workspaces, observations, or artifacts.
+- A judge role is no-web and receives no validation label or future outcome.
+- A web-enabled proposer or mining agent never receives locked-test records.
+- Final structured output is passed through the supplied schema validator.
+- The harness itself cannot promote a Plan or Signal; domain orchestration owns
+  validation and promotion.
+
+## Testing
+
+Cover multi-tool trajectories, structured output validation, unknown-tool
+rejection, malformed-turn rejection, and maximum-step exhaustion.
