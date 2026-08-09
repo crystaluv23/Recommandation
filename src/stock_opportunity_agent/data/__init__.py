@@ -20,6 +20,13 @@ from stock_opportunity_agent.data.backfill import (
 from stock_opportunity_agent.data.sources import create as create_source
 from stock_opportunity_agent.data.sources import get as get_source
 from stock_opportunity_agent.data.sources import registered as registered_sources
+from stock_opportunity_agent.data.historical_news import (
+    alpha_vantage_error_message,
+    load_alpha_vantage_news_plan,
+    preview_alpha_vantage_news_backfill,
+    run_alpha_vantage_news_backfill,
+    write_alpha_vantage_news_plan,
+)
 from stock_opportunity_agent.data.sources.catalog import (
     DATA_CAPABILITY_PLAN,
     FREE_DATA_SOURCES,
@@ -137,6 +144,7 @@ __all__ = [
     "ALPHA_VANTAGE_OVERVIEW_FEATURES",
     "audit_expanded_acquisition_coverage",
     "audit_historical_data_coverage",
+    "alpha_vantage_error_message",
     "build_research_packet",
     "catalysts_as_of",
     "chunk_document_text",
@@ -151,22 +159,26 @@ __all__ = [
     "get_source",
     "latest_features_by_name",
     "load_sec_filing_backfill_plan",
+    "load_alpha_vantage_news_plan",
     "load_sec_historical_submissions_plan",
     "load_sec_submissions_backfill_plan",
     "normalize_alpha_vantage_overview",
     "normalize_price_features",
     "normalize_sec_company_facts",
     "preview_sec_filing_backfill",
+    "preview_alpha_vantage_news_backfill",
     "preview_sec_historical_submissions_backfill",
     "preview_sec_submissions_backfill",
     "registered_sources",
     "run_sec_filing_backfill",
+    "run_alpha_vantage_news_backfill",
     "run_sec_historical_submissions_backfill",
     "run_sec_submissions_backfill",
     "select_source_for_capability",
     "source_catalog_by_capability",
     "source_plan_by_capability",
     "write_sec_filing_backfill_plan",
+    "write_alpha_vantage_news_plan",
     "write_sec_filing_plan_from_submissions",
     "write_sec_historical_submissions_plan",
     "write_sec_submissions_backfill_plan",

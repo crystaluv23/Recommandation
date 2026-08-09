@@ -23,6 +23,14 @@ from stock_opportunity_agent.data.backfill import (
     write_sec_historical_submissions_plan,
     write_sec_submissions_backfill_plan,
 )
+from stock_opportunity_agent.config import load_config
+from stock_opportunity_agent.data.historical_news import (
+    alpha_vantage_error_message,
+    preview_alpha_vantage_news_backfill,
+    run_alpha_vantage_news_backfill,
+    write_alpha_vantage_news_plan,
+)
+from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
@@ -51,7 +59,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Audit local historical coverage and run bounded, resumable source backfills. "
-            "All commands are zero-network unless a run-sec-* command receives a "
+            "All commands are zero-network unless a run-* command receives a "
             "positive --max-network-requests value."
         )
     )
@@ -145,6 +153,27 @@ def build_parser() -> argparse.ArgumentParser:
     history_run.add_argument("--plan", type=Path, required=True)
     history_run.add_argument("--workspace", type=Path, required=True)
     history_run.add_argument("--max-network-requests", type=int, default=0)
+
+    news_plan = subparsers.add_parser(
+        "plan-alpha-news",
+        help="write exact Alpha Vantage historical-news requests from a label-free scope",
+    )
+    news_plan.add_argument("--acquisition-scope", type=Path, required=True)
+    news_plan.add_argument("--output", type=Path, required=True)
+    news_plan.add_argument("--lookback-days", type=int, default=365)
+    news_plan.add_argument("--limit", type=int, default=1000)
+    news_plan.add_argument(
+        "--sort", choices=("LATEST", "EARLIEST", "RELEVANCE"), default="LATEST"
+    )
+
+    news_run = subparsers.add_parser(
+        "run-alpha-news",
+        help="preview or execute bounded Alpha Vantage historical-news acquisition",
+    )
+    news_run.add_argument("--plan", type=Path, required=True)
+    news_run.add_argument("--workspace", type=Path, required=True)
+    news_run.add_argument("--raw-info-root", type=Path, required=True)
+    news_run.add_argument("--max-network-requests", type=int, default=0)
     return parser
 
 
@@ -194,6 +223,40 @@ def main() -> int:
             event_per_as_of=args.event_per_as_of,
             event_lookback_days=args.event_lookback_days,
         )
+    elif args.command == "plan-alpha-news":
+        result = write_alpha_vantage_news_plan(
+            acquisition_scope_path=args.acquisition_scope,
+            output_path=args.output,
+            lookback_days=args.lookback_days,
+            limit=args.limit,
+            sort=args.sort,
+        )
+    elif args.command == "run-alpha-news":
+        if args.max_network_requests < 0:
+            raise ValidationError("--max-network-requests must be non-negative")
+        cache = RawDataCache(args.workspace / "raw_cache")
+        progress_path = args.workspace / "alpha_news_backfill_progress.json"
+        if args.max_network_requests == 0:
+            result = preview_alpha_vantage_news_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+                raw_info_root=args.raw_info_root,
+            )
+        else:
+            client = _managed_alpha_vantage_client(
+                workspace=args.workspace,
+                cache=cache,
+            )
+            result = run_alpha_vantage_news_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+                raw_info_root=args.raw_info_root,
+                client=client,
+                max_network_requests=args.max_network_requests,
+                on_progress=_print_progress,
+            )
     elif args.command == "run-sec-submissions":
         if args.max_network_requests < 0:
             raise ValidationError("--max-network-requests must be non-negative")
@@ -276,6 +339,7 @@ def main() -> int:
         "plan-sec-submissions",
         "plan-sec-history",
         "plan-sec-filing-bodies",
+        "plan-alpha-news",
     }:
         result = {
             "status": "exact_plan_written",
@@ -323,6 +387,35 @@ def _managed_sec_client(
         SourceBudget(ledger),
     )
     return SecEdgarClient(user_agent, transport=transport)
+
+
+def _managed_alpha_vantage_client(
+    *,
+    workspace: Path,
+    cache: RawDataCache,
+) -> AlphaVantageClient:
+    _load_local_env(PROJECT_ROOT / ".env.local")
+    source_config = load_config(environ=os.environ).data_sources
+    env_var = source_config.alpha_vantage_api_key_env_var
+    api_key = os.environ.get(env_var, "").strip()
+    if not api_key:
+        raise ValidationError(f"positive Alpha Vantage execution requires {env_var}")
+    ledger = RequestLedger(workspace / "request_ledger.jsonl")
+
+    def detect_error(payload: object) -> str | None:
+        message = alpha_vantage_error_message(payload)
+        return message.replace(api_key, "<redacted>") if message else None
+
+    transport = ManagedHttpTransport(
+        "alpha_vantage",
+        DataCapability.NEWS,
+        UrllibJsonTransport(),
+        cache,
+        ledger,
+        SourceBudget(ledger),
+        json_error_detector=detect_error,
+    )
+    return AlphaVantageClient(api_key, transport=transport)
 
 
 def _print_progress(event: dict[str, object]) -> None:

@@ -8,11 +8,12 @@ Do not read memory at session start. Use this guide only when prior project expe
 | --- | --- | ---: | --- |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 7 | Avoid coupling reusable providers to the first consumer module. |
 | Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 30 | Restate the execution contract, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
-| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 31 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
+| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 32 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
 | Comparing paired blind-LLM information plans or interpreting small confidence deltas | [`experiences/paired-llm-comparison-noise.md`](experiences/paired-llm-comparison-noise.md) | 8 | Reuse responses for identical packet hashes and separate model sampling noise from information lift. |
 | Changing continuous self-evolution persistence, resume, branching, or dashboard history | [`experiences/continuous-round-commit-marker.md`](experiences/continuous-round-commit-marker.md) | 5 | Treat one atomic completed-round pointer as authoritative; all earlier files are recoverable staging artifacts. |
 | Migrating legacy cold-start cases/documents/prices into the replacement evolution runtime | [`experiences/legacy-artifact-raw-info-migration.md`](experiences/legacy-artifact-raw-info-migration.md) | 1 | Separate source facts, Basic Info, and labels; recompute outcomes and keep Locked Test sealed. |
-| Expanding the historical case library from a full-market price archive | [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md) | 0 | Use shared calendar dates, reject pre-IPO identity conflicts, disclose outcome enrichment, and emit a label-free acquisition scope. |
+| Expanding the historical case library from a full-market price archive | [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md) | 1 | Use shared calendar dates, reject pre-IPO identity conflicts, disclose outcome enrichment, and emit a label-free acquisition scope. |
+| Acquiring historical company news or interpreting provider coverage | [`experiences/historical-news-backfill-boundaries.md`](experiences/historical-news-backfill-boundaries.md) | 0 | Preserve publication-time availability, title/summary scope, quota resume, and explicit provider-limit saturation. |
 
 ## Experience Index
 
@@ -23,6 +24,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 - [`experiences/continuous-round-commit-marker.md`](experiences/continuous-round-commit-marker.md): multi-file continuous rounds need one atomic commit pointer so Ctrl+C cannot expose a staged round as resumable or branchable history.
 - [`experiences/legacy-artifact-raw-info-migration.md`](experiences/legacy-artifact-raw-info-migration.md): legacy case objects must be decomposed into point-in-time Raw Info, minimal Basic Info, and separately recomputed labels rather than copied wholesale.
 - [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md): full-market case expansion needs fixed dates, issuer/security identity gates, explicit sampling-bias disclosure, and a label-free handoff to data acquisition.
+- [`experiences/historical-news-backfill-boundaries.md`](experiences/historical-news-backfill-boundaries.md): historical provider news needs exact label-free windows, publication-time availability, append-only summaries, quota-aware resume, and explicit saturation gaps.
 
 ## Consultation Protocol
 

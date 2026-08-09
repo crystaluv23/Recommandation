@@ -34,6 +34,10 @@ Use the source catalog as the canonical free/free-key capability manifest:
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.
+- Historical company-news backfills may call Alpha Vantage with an exact ticker,
+  UTC `time_from`/`time_to`, sort order, and limit. A 1,000-row response is a
+  saturation signal, not proof of complete coverage; stored Raw Info contains
+  provider title/summary only and never scrapes the linked publisher body.
 - `fred`: macro series metadata and vintage-aware observations.
 - `openfigi`: optional-key identifier mapping.
 - `finnhub`: fallback profile, news, financial metrics, filings mirror, estimates, earnings calendar, and transcripts.
