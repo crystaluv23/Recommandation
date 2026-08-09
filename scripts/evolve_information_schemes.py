@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import tempfile
+from datetime import date
 from pathlib import Path
 
 from stock_opportunity_agent.data.raw_info import RawInfoStore
@@ -22,6 +23,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     inventory_local_evolution_inputs,
     migrate_legacy_raw_info,
     prepare_dataset_proposal,
+    prepare_expanded_dataset_proposal,
     public_model_contract,
     run_bounded_evolution_cycle,
 )
@@ -57,6 +59,16 @@ DEFAULT_FULL_PRICE_ARCHIVE = (
     / "cold-start-formal-openrouter-2026-05-13"
     / "02_prices"
     / "price_histories.json"
+)
+DEFAULT_CLEAN_UNIVERSE = (
+    DEFAULT_LOCAL_RUN / "01_universe" / "eligible_listings.json"
+)
+DEFAULT_EXPANSION_PREDICTION_DATES = (
+    "2024-09-30",
+    "2024-12-31",
+    "2025-03-31",
+    "2025-06-30",
+    "2025-09-30",
 )
 
 
@@ -128,6 +140,28 @@ def build_parser() -> argparse.ArgumentParser:
     )
     prepare_dataset.add_argument(
         "--split-seed", default="information-plan-evolution-v1"
+    )
+
+    prepare_expanded = subparsers.add_parser(
+        "prepare-expanded-dataset",
+        help="stream saved full-market prices into a review-only expanded case proposal",
+    )
+    prepare_expanded.add_argument("--workspace", type=Path, required=True)
+    prepare_expanded.add_argument(
+        "--universe", type=Path, default=DEFAULT_CLEAN_UNIVERSE
+    )
+    prepare_expanded.add_argument(
+        "--full-price-archive", type=Path, default=DEFAULT_FULL_PRICE_ARCHIVE
+    )
+    prepare_expanded.add_argument("--target-issuers", type=int, default=240)
+    prepare_expanded.add_argument(
+        "--prediction-dates",
+        nargs="+",
+        default=DEFAULT_EXPANSION_PREDICTION_DATES,
+        help="shared YYYY-MM-DD prediction dates; every selected issuer must support all dates",
+    )
+    prepare_expanded.add_argument(
+        "--split-seed", default="expanded-information-plan-evolution-v1"
     )
 
     approve_dataset = subparsers.add_parser(
@@ -383,6 +417,26 @@ def prepare_dataset(
     return report.to_dict()
 
 
+def prepare_expanded_dataset(
+    *,
+    workspace_path: Path,
+    universe_path: Path,
+    full_price_archive_path: Path,
+    target_issuers: int,
+    prediction_dates: list[str] | tuple[str, ...],
+    split_seed: str,
+) -> dict[str, object]:
+    report = prepare_expanded_dataset_proposal(
+        universe_path=universe_path,
+        full_price_archive_path=full_price_archive_path,
+        output_root=workspace_path / "expanded_dataset_proposal",
+        prediction_dates=[date.fromisoformat(value) for value in prediction_dates],
+        target_issuers=target_issuers,
+        split_seed=split_seed,
+    )
+    return report.to_dict()
+
+
 def freeze_run(
     *,
     workspace_path: Path,
@@ -555,6 +609,15 @@ def main() -> int:
             cases_path=args.cases,
             documents_path=args.documents,
             adjusted_prices_path=args.adjusted_prices,
+            split_seed=args.split_seed,
+        )
+    elif args.command == "prepare-expanded-dataset":
+        result = prepare_expanded_dataset(
+            workspace_path=args.workspace,
+            universe_path=args.universe,
+            full_price_archive_path=args.full_price_archive,
+            target_issuers=args.target_issuers,
+            prediction_dates=args.prediction_dates,
             split_seed=args.split_seed,
         )
     elif args.command == "approve-dataset":

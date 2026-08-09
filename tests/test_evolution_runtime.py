@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+from datetime import date
 from pathlib import Path
 from unittest import TestCase
 
@@ -24,6 +25,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     load_approved_development_dataset,
     migrate_legacy_raw_info,
     prepare_dataset_proposal,
+    prepare_expanded_dataset_proposal,
 )
 from stock_opportunity_agent.research.scheme_evolution import default_information_plan
 from stock_opportunity_agent.signal_library import SignalRegistry
@@ -38,6 +40,39 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value), encoding="utf-8")
+
+
+def _label_bars(
+    multiple: float,
+    *,
+    volume: int = 100_000,
+    complete_horizon: bool = True,
+) -> list[dict[str, object]]:
+    bars = [
+        {
+            "as_of_date": f"2025-01-0{day}",
+            "adjusted_close": 10.0,
+            "volume": volume,
+        }
+        for day in range(5, 10)
+    ]
+    bars.extend(
+        {
+            "as_of_date": f"2025-01-{day:02d}",
+            "adjusted_close": 10.0 * multiple,
+            "volume": volume,
+        }
+        for day in range(10, 15)
+    )
+    if complete_horizon:
+        bars.append(
+            {
+                "as_of_date": "2025-07-10",
+                "adjusted_close": 10.0 * multiple,
+                "volume": volume,
+            }
+        )
+    return bars
 
 
 def make_contract() -> EvolutionRunContract:
@@ -310,6 +345,135 @@ class LocalInventoryTests(TestCase):
             development = load_approved_development_dataset(approved)
             self.assertEqual(len(development.discovery), 2)
             self.assertEqual(len(development.evolution_validation), 2)
+
+    def test_full_market_expansion_is_fixed_date_deduplicated_and_proposal_only(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            universe_path = root / "universe.json"
+            prices_path = root / "prices.json"
+            multiples = (1.2, 1.7, 2.5, 4.0, 12.0)
+            listings = []
+            bars_by_symbol = {}
+            for stratum_index, multiple in enumerate(multiples):
+                for issuer_index in range(3):
+                    symbol = f"S{stratum_index}{issuer_index}"
+                    cik = str(1000 + stratum_index * 10 + issuer_index)
+                    listings.append(
+                        {
+                            "symbol": symbol,
+                            "name": f"{symbol} Corp",
+                            "cik": cik,
+                            "exchange": "NASDAQ" if issuer_index % 2 else "NYSE",
+                            "ipo_date": f"20{10 + issuer_index}-01-01",
+                        }
+                    )
+                    bars_by_symbol[symbol] = _label_bars(
+                        multiple,
+                        volume=100_000 * (issuer_index + 1),
+                    )
+            listings.append(
+                {
+                    "symbol": "DUP",
+                    "name": "Duplicate Share Class",
+                    "cik": "1000",
+                    "exchange": "NYSE",
+                    "ipo_date": "2010-01-01",
+                }
+            )
+            bars_by_symbol["DUP"] = _label_bars(1.2, volume=10_000_000)
+            listings.append(
+                {
+                    "symbol": "SHORT",
+                    "name": "Short History Corp",
+                    "cik": "9999",
+                    "exchange": "NASDAQ",
+                    "ipo_date": "2024-01-01",
+                }
+            )
+            bars_by_symbol["SHORT"] = _label_bars(1.2, complete_horizon=False)
+            listings.append(
+                {
+                    "symbol": "PREIPO",
+                    "name": "Future Listing Corp",
+                    "cik": "9998",
+                    "exchange": "NASDAQ",
+                    "ipo_date": "2025-02-01",
+                }
+            )
+            bars_by_symbol["PREIPO"] = _label_bars(1.2)
+            write_json(universe_path, {"listing_count": len(listings), "listings": listings})
+            write_json(
+                prices_path,
+                {
+                    "schema_version": "fixture-prices-v1",
+                    "bars_by_symbol": bars_by_symbol,
+                    "warning_count": 0,
+                },
+            )
+
+            report = prepare_expanded_dataset_proposal(
+                universe_path=universe_path,
+                full_price_archive_path=prices_path,
+                output_root=root / "proposal",
+                prediction_dates=[date(2025, 1, 10)],
+                target_issuers=15,
+                stratum_weights={key: 1.0 for key in (
+                    "below_1_5x",
+                    "near_surge_1_5_to_2x",
+                    "surge_2_to_3x",
+                    "surge_3_to_10x",
+                    "surge_10x_plus",
+                )},
+                split_seed="fixture-expansion",
+            )
+
+            self.assertEqual(report.universe_listing_count, 18)
+            self.assertEqual(report.priced_symbol_count, 18)
+            self.assertEqual(report.eligible_issuer_count, 15)
+            self.assertEqual(report.selected_issuer_count, 15)
+            self.assertEqual(report.case_count, 15)
+            self.assertEqual(set(report.selected_stratum_counts.values()), {3})
+            self.assertEqual(set(report.split_issuer_counts.values()), {5})
+            self.assertEqual(set(report.split_surge_counts.values()), {3})
+            self.assertEqual(report.exclusion_reason_counts["duplicate_issuer_identity"], 1)
+            self.assertEqual(report.exclusion_reason_counts["incomplete_six_month_price_horizon"], 1)
+            self.assertEqual(report.exclusion_reason_counts["prediction_before_listing_ipo_date"], 1)
+            self.assertFalse(report.to_dict()["locked_test_accessed"])
+            self.assertEqual(report.to_dict()["external_calls"], 0)
+
+            manifest = json.loads(Path(report.manifest_path).read_text(encoding="utf-8"))
+            self.assertTrue(manifest["approval_blockers"])
+            acquisition_path = Path(
+                manifest["audit_artifacts"]["acquisition_scope"]["path"]
+            )
+            acquisition_text = acquisition_path.read_text(encoding="utf-8")
+            acquisition = json.loads(acquisition_text)
+            self.assertEqual(acquisition["company_count"], 15)
+            self.assertFalse(acquisition["outcome_fields_included"])
+            self.assertFalse(acquisition["split_ownership_included"])
+            self.assertNotIn("ground_truth", acquisition_text)
+            self.assertNotIn("selection_stratum", acquisition_text)
+            self.assertNotIn("locked_test", acquisition_text)
+            issuer_sets = []
+            for split_name in ("discovery", "evolution_validation", "locked_test"):
+                split = json.loads(
+                    Path(manifest["artifacts"][split_name]["path"]).read_text(encoding="utf-8")
+                )
+                issuer_sets.append({row["company_id"] for row in split["cases"]})
+            self.assertFalse(issuer_sets[0] & issuer_sets[1])
+            self.assertFalse(issuer_sets[0] & issuer_sets[2])
+            self.assertFalse(issuer_sets[1] & issuer_sets[2])
+
+            replay = prepare_expanded_dataset_proposal(
+                universe_path=universe_path,
+                full_price_archive_path=prices_path,
+                output_root=root / "proposal",
+                prediction_dates=[date(2025, 1, 10)],
+                target_issuers=15,
+                stratum_weights={key: 1.0 for key in report.selected_stratum_counts},
+                split_seed="fixture-expansion",
+            )
+            self.assertEqual(replay.to_dict(), report.to_dict())
 
 
 class ScriptedRoleCaller:

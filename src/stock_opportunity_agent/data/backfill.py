@@ -27,8 +27,12 @@ from stock_opportunity_agent.models import ValidationError
 
 SEC_PLAN_SCHEMA = "sec-filing-backfill-plan-v1"
 SEC_PROGRESS_SCHEMA = "sec-filing-backfill-progress-v1"
+SEC_SUBMISSIONS_PLAN_SCHEMA = "sec-submissions-backfill-plan-v1"
+SEC_SUBMISSIONS_PROGRESS_SCHEMA = "sec-submissions-backfill-progress-v1"
 _SEC_ARCHIVE_HOST = "www.sec.gov"
 _SEC_ARCHIVE_PREFIX = "/Archives/edgar/data/"
+_SEC_DATA_HOST = "data.sec.gov"
+_SEC_SUBMISSIONS_PREFIX = "/submissions/CIK"
 _FORM_PATTERN = re.compile(
     r"(?<![A-Z0-9])(10-K(?:/A)?|10-Q(?:/A)?|8-K(?:/A)?|20-F(?:/A)?|"
     r"40-F(?:/A)?|6-K(?:/A)?)(?![A-Z0-9])",
@@ -49,6 +53,13 @@ class SecFilingBodyClient(Protocol):
 
     def filing_document_text(self, filing: FilingMetadata) -> str:
         """Return one exact SEC primary-document body."""
+
+
+class SecSubmissionsClient(Protocol):
+    """Small provider boundary used by submissions discovery."""
+
+    def submissions(self, cik: str) -> dict[str, Any]:
+        """Return one exact SEC submissions JSON object."""
 
 
 def audit_historical_data_coverage(
@@ -188,6 +199,123 @@ def audit_historical_data_coverage(
     }
 
 
+def audit_expanded_acquisition_coverage(
+    *,
+    acquisition_scope_path: str | Path,
+    documents_path: str | Path,
+) -> dict[str, Any]:
+    """Measure saved point-in-time documents for a label-free expanded scope."""
+
+    scope_path = Path(acquisition_scope_path)
+    document_path = Path(documents_path)
+    scope = _read_json(scope_path)
+    if scope.get("schema_version") != "expanded-case-acquisition-scope-v1":
+        raise ValidationError("unsupported expanded acquisition scope schema")
+    _assert_label_free_scope(scope)
+    if scope.get("outcome_fields_included") is not False:
+        raise ValidationError("expanded acquisition audit requires no outcomes")
+    if scope.get("split_ownership_included") is not False:
+        raise ValidationError("expanded acquisition audit requires no split ownership")
+    companies = scope.get("companies")
+    prediction_dates = scope.get("prediction_dates")
+    if not isinstance(companies, list) or not isinstance(prediction_dates, list):
+        raise ValidationError("expanded acquisition scope is incomplete")
+    dates = [_parse_date(value, "acquisition prediction date") for value in prediction_dates]
+    document_data = _read_json(document_path)
+    documents_by_symbol = document_data.get("documents_by_symbol", {})
+    if not isinstance(documents_by_symbol, Mapping):
+        raise ValidationError("document artifact documents_by_symbol must be an object")
+
+    company_coverage: Counter[str] = Counter()
+    observation_coverage: Counter[str] = Counter()
+    kind_counts: Counter[str] = Counter()
+    form_counts: Counter[str] = Counter()
+    selected_document_count = 0
+    existing_sec_primary_urls = 0
+    likely_truncated_sec_filings = 0
+    missing_cik = 0
+    for company in companies:
+        if not isinstance(company, Mapping):
+            raise ValidationError("expanded acquisition company must be an object")
+        symbol = str(company.get("symbol") or "").upper()
+        if not symbol:
+            raise ValidationError("expanded acquisition company is missing symbol")
+        missing_cik += int(_normalize_cik(company.get("cik")) is None)
+        raw_rows = documents_by_symbol.get(symbol, ())
+        if not isinstance(raw_rows, (list, tuple)):
+            raise ValidationError(f"documents for {symbol} must be a list")
+        rows: list[Mapping[str, Any]] = []
+        for row in raw_rows:
+            if not isinstance(row, Mapping):
+                raise ValidationError(f"document for {symbol} must be an object")
+            rows.append(row)
+            kind = str(row.get("kind", "unknown")).casefold()
+            kind_counts[kind] += 1
+            selected_document_count += 1
+            if kind == "filing":
+                form_counts[_filing_form(row)] += 1
+                source_url = str(row.get("source_url", ""))
+                if _is_sec_archive_url(source_url):
+                    existing_sec_primary_urls += 1
+                    if len(str(row.get("text", ""))) == 1500:
+                        likely_truncated_sec_filings += 1
+        kinds = {str(row.get("kind", "unknown")).casefold() for row in rows}
+        company_coverage["with_any_documents" if rows else "without_documents"] += 1
+        company_coverage["with_filing" if "filing" in kinds else "without_filing"] += 1
+        company_coverage["with_news" if "news" in kinds else "without_news"] += 1
+        for prediction_date in dates:
+            available = [
+                row for row in rows if _document_available_date(row) <= prediction_date
+            ]
+            available_kinds = {
+                str(row.get("kind", "unknown")).casefold() for row in available
+            }
+            has_filing = "filing" in available_kinds
+            has_news = "news" in available_kinds
+            if not available:
+                observation_coverage["no_documents"] += 1
+            if not has_filing:
+                observation_coverage["no_filing"] += 1
+            if not has_news:
+                observation_coverage["no_news"] += 1
+            if has_filing and has_news:
+                observation_coverage["filing_and_news"] += 1
+            elif has_filing:
+                observation_coverage["filing_only"] += 1
+            elif has_news:
+                observation_coverage["news_only"] += 1
+
+    return {
+        "schema_version": "expanded-acquisition-coverage-audit-v1",
+        "acquisition_scope": _artifact_identity(scope_path),
+        "documents_artifact": _artifact_identity(document_path),
+        "company_count": len(companies),
+        "prediction_dates": [value.isoformat() for value in dates],
+        "case_observation_count": len(companies) * len(dates),
+        "company_coverage": dict(sorted(company_coverage.items())),
+        "point_in_time_observation_coverage": dict(
+            sorted(observation_coverage.items())
+        ),
+        "saved_document_count": selected_document_count,
+        "saved_document_kind_counts": dict(sorted(kind_counts.items())),
+        "saved_filing_form_counts": dict(sorted(form_counts.items())),
+        "existing_sec_primary_url_count": existing_sec_primary_urls,
+        "likely_truncated_sec_filing_count": likely_truncated_sec_filings,
+        "missing_cik_count": missing_cik,
+        "missing_capabilities": [
+            "historical_registrant_identity",
+            "complete_sec_filing_bodies",
+            "annual_and_quarterly_filings",
+            "point_in_time_company_profile",
+            "point_in_time_company_news",
+            "earnings_transcripts",
+        ],
+        "outcome_fields_read": False,
+        "split_ownership_read": False,
+        "external_calls": 0,
+    }
+
+
 def write_sec_filing_backfill_plan(
     *,
     documents_path: str | Path,
@@ -274,6 +402,312 @@ def write_sec_filing_backfill_plan(
     return payload
 
 
+def write_sec_submissions_backfill_plan(
+    *,
+    acquisition_scope_path: str | Path,
+    output_path: str | Path,
+) -> dict[str, Any]:
+    """Write exact per-CIK SEC discovery requests from a label-free scope."""
+
+    source_path = Path(acquisition_scope_path)
+    scope = _read_json(source_path)
+    if scope.get("schema_version") != "expanded-case-acquisition-scope-v1":
+        raise ValidationError("unsupported expanded acquisition scope schema")
+    if scope.get("outcome_fields_included") is not False:
+        raise ValidationError("SEC discovery scope must exclude outcome fields")
+    if scope.get("split_ownership_included") is not False:
+        raise ValidationError("SEC discovery scope must exclude split ownership")
+    _assert_label_free_scope(scope)
+    companies = scope.get("companies")
+    prediction_dates = scope.get("prediction_dates")
+    if not isinstance(companies, list):
+        raise ValidationError("expanded acquisition scope companies must be a list")
+    if int(scope.get("company_count", -1)) != len(companies):
+        raise ValidationError("expanded acquisition scope company count mismatch")
+    if not isinstance(prediction_dates, list) or not prediction_dates:
+        raise ValidationError("expanded acquisition scope prediction dates are missing")
+    parsed_dates = sorted(
+        _parse_date(value, "acquisition prediction date") for value in prediction_dates
+    )
+    items_by_cik: dict[str, dict[str, Any]] = {}
+    missing_cik: list[dict[str, str]] = []
+    for company in companies:
+        if not isinstance(company, Mapping):
+            raise ValidationError("expanded acquisition company must be an object")
+        symbol = str(company.get("symbol") or "").upper()
+        company_id = str(company.get("company_id") or "")
+        if not symbol or not company_id:
+            raise ValidationError("expanded acquisition company identity is incomplete")
+        cik = _normalize_cik(company.get("cik"))
+        if cik is None:
+            missing_cik.append({"company_id": company_id, "symbol": symbol})
+            continue
+        item = {
+            "item_id": f"secsub_{cik}",
+            "company_id": company_id,
+            "symbol": symbol,
+            "cik": cik,
+            "source_url": f"https://{_SEC_DATA_HOST}/submissions/CIK{cik}.json",
+            "required_as_of_min": parsed_dates[0].isoformat(),
+            "required_as_of_max": parsed_dates[-1].isoformat(),
+        }
+        existing = items_by_cik.get(cik)
+        if existing is not None and existing != item:
+            raise ValidationError(f"conflicting SEC submissions CIK in scope: {cik}")
+        items_by_cik[cik] = item
+    items = sorted(items_by_cik.values(), key=lambda item: str(item["cik"]))
+    payload: dict[str, Any] = {
+        "schema_version": SEC_SUBMISSIONS_PLAN_SCHEMA,
+        "source_artifact": _artifact_identity(source_path),
+        "selection": {
+            "kind": "sec_submissions_metadata",
+            "allowed_url_pattern": (
+                f"https://{_SEC_DATA_HOST}{_SEC_SUBMISSIONS_PREFIX}##########.json"
+            ),
+            "prediction_dates": [value.isoformat() for value in parsed_dates],
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+        "request_count": len(items),
+        "missing_cik_count": len(missing_cik),
+        "missing_cik": sorted(missing_cik, key=lambda item: item["company_id"]),
+        "items": items,
+    }
+    payload["plan_hash"] = _canonical_hash(payload)
+    _atomic_write_json(Path(output_path), payload)
+    return payload
+
+
+def load_sec_submissions_backfill_plan(path: str | Path) -> dict[str, Any]:
+    """Load and validate one exact SEC submissions discovery plan."""
+
+    payload = _read_json(Path(path))
+    if payload.get("schema_version") != SEC_SUBMISSIONS_PLAN_SCHEMA:
+        raise ValidationError("unsupported SEC submissions backfill plan schema")
+    supplied_hash = str(payload.get("plan_hash", ""))
+    without_hash = dict(payload)
+    without_hash.pop("plan_hash", None)
+    if supplied_hash != _canonical_hash(without_hash):
+        raise ValidationError("SEC submissions backfill plan hash mismatch")
+    items = payload.get("items")
+    if not isinstance(items, list) or int(payload.get("request_count", -1)) != len(items):
+        raise ValidationError("SEC submissions backfill plan item count mismatch")
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, Mapping):
+            raise ValidationError("SEC submissions backfill item must be an object")
+        cik = _normalize_cik(item.get("cik"))
+        if cik is None or cik in seen:
+            raise ValidationError("SEC submissions backfill CIKs must be unique")
+        seen.add(cik)
+        expected = f"https://{_SEC_DATA_HOST}/submissions/CIK{cik}.json"
+        if item.get("source_url") != expected:
+            raise ValidationError("SEC submissions backfill contains an invalid URL")
+    return payload
+
+
+def preview_sec_submissions_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+) -> dict[str, Any]:
+    """Describe exact SEC discovery work without network I/O or writes."""
+
+    plan = load_sec_submissions_backfill_plan(plan_path)
+    progress = _load_submissions_progress(
+        Path(progress_path), str(plan["plan_hash"])
+    )
+    completed = dict(progress.get("completed", {}))
+    cached = 0
+    pending = 0
+    for item in plan["items"]:
+        if item["item_id"] in completed:
+            continue
+        pending += 1
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILINGS,
+            "GET",
+            str(item["source_url"]),
+        )
+        cached += int(cache.get_json(key) is not None)
+    return {
+        "status": "zero_network_preview",
+        "stage": "sec_submissions_metadata",
+        "plan_hash": plan["plan_hash"],
+        "request_count": plan["request_count"],
+        "missing_cik_count": plan["missing_cik_count"],
+        "completed_count": len(completed),
+        "pending_count": pending,
+        "pending_cache_hits": cached,
+        "maximum_new_network_requests": pending - cached,
+        "filing_bodies_completed": 0,
+        "external_calls": 0,
+    }
+
+
+def run_sec_submissions_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+    client: SecSubmissionsClient,
+    max_network_requests: int,
+    now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+    on_progress: Callable[[Mapping[str, Any]], None] | None = None,
+) -> dict[str, Any]:
+    """Execute/resume bounded SEC submissions discovery into raw cache."""
+
+    if max_network_requests < 0:
+        raise ValidationError("max_network_requests must be non-negative")
+    plan = load_sec_submissions_backfill_plan(plan_path)
+    plan_hash = str(plan["plan_hash"])
+    state_path = Path(progress_path)
+    progress = _load_submissions_progress(state_path, plan_hash)
+    completed: dict[str, Any] = dict(progress.get("completed", {}))
+    failures: list[dict[str, Any]] = list(progress.get("failures", ()))
+    network_requests = 0
+    cache_hits = 0
+    failures_this_run = 0
+    last_stop = "plan_exhausted"
+    for item_index, item in enumerate(plan["items"], start=1):
+        item_id = str(item["item_id"])
+        if item_id in completed:
+            continue
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILINGS,
+            "GET",
+            str(item["source_url"]),
+        )
+        was_cached = cache.get_json(key) is not None
+        if not was_cached and network_requests >= max_network_requests:
+            last_stop = "invocation_network_limit_reached"
+            _emit_progress(
+                on_progress,
+                stage="sec_submissions_metadata",
+                status="paused_network_limit",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=False,
+            )
+            break
+        _emit_progress(
+            on_progress,
+            stage="sec_submissions_metadata",
+            status="starting",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+        try:
+            response = client.submissions(str(item["cik"]))
+            _validate_submissions_response(response, str(item["cik"]))
+        except DataQuotaDeferred as exc:
+            last_stop = "source_quota_deferred"
+            progress["last_deferred"] = {
+                "item_id": item_id,
+                "next_retry_at": exc.next_retry_at.isoformat(),
+                "reason": exc.reason,
+            }
+            _store_submissions_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_submissions_metadata",
+                status="quota_deferred",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            break
+        except Exception as exc:
+            if not was_cached:
+                network_requests += 1
+            failures_this_run += 1
+            failures.append(
+                {
+                    "item_id": item_id,
+                    "at": now().isoformat(),
+                    "error_type": type(exc).__name__,
+                    "message": str(exc),
+                }
+            )
+            last_stop = "item_failed"
+            _store_submissions_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_submissions_metadata",
+                status="failed",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            continue
+        if was_cached:
+            cache_hits += 1
+        else:
+            network_requests += 1
+        cached = cache.get(key)
+        retrieved_at = cached.retrieved_at if cached is not None else now()
+        recent = response.get("filings", {}).get("recent", {})
+        files = response.get("filings", {}).get("files", ())
+        recent_accessions = recent.get("accessionNumber", ()) if isinstance(recent, Mapping) else ()
+        completed[item_id] = {
+            "cache_key": key.digest,
+            "response_hash": _canonical_hash(response),
+            "recent_filing_count": len(recent_accessions)
+            if isinstance(recent_accessions, list)
+            else 0,
+            "referenced_historical_file_count": len(files)
+            if isinstance(files, list)
+            else 0,
+            "retrieved_at": retrieved_at.isoformat(),
+            "completed_at": now().isoformat(),
+        }
+        last_stop = "item_completed"
+        _store_submissions_progress(
+            state_path, progress, completed, failures, last_stop, now()
+        )
+        _emit_progress(
+            on_progress,
+            stage="sec_submissions_metadata",
+            status="completed",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+    pending_count = len(plan["items"]) - len(completed)
+    status = "completed" if pending_count == 0 else "paused_resumable"
+    _store_submissions_progress(
+        state_path, progress, completed, failures, last_stop, now()
+    )
+    return {
+        "status": status,
+        "stage": "sec_submissions_metadata",
+        "plan_hash": plan_hash,
+        "request_count": plan["request_count"],
+        "missing_cik_count": plan["missing_cik_count"],
+        "completed_count": len(completed),
+        "pending_count": pending_count,
+        "network_requests_this_run": network_requests,
+        "cache_hits_this_run": cache_hits,
+        "failures_this_run": failures_this_run,
+        "filing_bodies_completed": 0,
+        "last_stop": last_stop,
+        "progress_path": str(state_path.resolve()),
+    }
+
+
 def load_sec_filing_backfill_plan(path: str | Path) -> dict[str, Any]:
     """Load and validate one exact SEC backfill plan."""
 
@@ -352,6 +786,7 @@ def run_sec_filing_backfill(
     client: SecFilingBodyClient,
     max_network_requests: int,
     now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+    on_progress: Callable[[Mapping[str, Any]], None] | None = None,
 ) -> dict[str, Any]:
     """Execute/resume one bounded SEC primary-document backfill invocation."""
 
@@ -371,7 +806,7 @@ def run_sec_filing_backfill(
     failures_this_run = 0
     last_stop = "plan_exhausted"
 
-    for item in plan["items"]:
+    for item_index, item in enumerate(plan["items"], start=1):
         item_id = str(item["item_id"])
         if item_id in completed:
             continue
@@ -385,7 +820,25 @@ def run_sec_filing_backfill(
         was_cached = cache.get_text(key) is not None
         if not was_cached and network_requests >= max_network_requests:
             last_stop = "invocation_network_limit_reached"
+            _emit_progress(
+                on_progress,
+                stage="sec_filing_bodies",
+                status="paused_network_limit",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=False,
+            )
             break
+        _emit_progress(
+            on_progress,
+            stage="sec_filing_bodies",
+            status="starting",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
         filing = FilingMetadata(
             cik=str(item["cik"]),
             accession_number=str(item["accession_number"]),
@@ -408,6 +861,15 @@ def run_sec_filing_backfill(
                 "reason": exc.reason,
             }
             _store_progress(state_path, progress, completed, failures, last_stop, now())
+            _emit_progress(
+                on_progress,
+                stage="sec_filing_bodies",
+                status="quota_deferred",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
             break
         except Exception as exc:
             if not was_cached:
@@ -423,6 +885,15 @@ def run_sec_filing_backfill(
             )
             last_stop = "item_failed"
             _store_progress(state_path, progress, completed, failures, last_stop, now())
+            _emit_progress(
+                on_progress,
+                stage="sec_filing_bodies",
+                status="failed",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
             continue
         if was_cached:
             cache_hits += 1
@@ -467,6 +938,15 @@ def run_sec_filing_backfill(
         }
         last_stop = "item_completed"
         _store_progress(state_path, progress, completed, failures, last_stop, now())
+        _emit_progress(
+            on_progress,
+            stage="sec_filing_bodies",
+            status="completed",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
 
     pending_count = len(plan["items"]) - len(completed)
     status = "completed" if pending_count == 0 else "paused_resumable"
@@ -503,6 +983,48 @@ def _load_progress(path: Path, plan_hash: str) -> dict[str, Any]:
     return progress
 
 
+def _emit_progress(
+    callback: Callable[[Mapping[str, Any]], None] | None,
+    *,
+    stage: str,
+    status: str,
+    item_index: int,
+    item_count: int,
+    item: Mapping[str, Any],
+    cache_hit: bool,
+) -> None:
+    if callback is None:
+        return
+    callback(
+        {
+            "stage": stage,
+            "status": status,
+            "item_index": item_index,
+            "item_count": item_count,
+            "item_id": str(item["item_id"]),
+            "company_id": str(item["company_id"]),
+            "symbol": str(item["symbol"]),
+            "cache_hit": cache_hit,
+        }
+    )
+
+
+def _load_submissions_progress(path: Path, plan_hash: str) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "schema_version": SEC_SUBMISSIONS_PROGRESS_SCHEMA,
+            "plan_hash": plan_hash,
+            "completed": {},
+            "failures": [],
+        }
+    progress = _read_json(path)
+    if progress.get("schema_version") != SEC_SUBMISSIONS_PROGRESS_SCHEMA:
+        raise ValidationError("unsupported SEC submissions backfill progress schema")
+    if progress.get("plan_hash") != plan_hash:
+        raise ValidationError("SEC submissions backfill progress plan hash mismatch")
+    return progress
+
+
 def _store_progress(
     path: Path,
     progress: dict[str, Any],
@@ -520,6 +1042,72 @@ def _store_progress(
         }
     )
     _atomic_write_json(path, progress)
+
+
+def _store_submissions_progress(
+    path: Path,
+    progress: dict[str, Any],
+    completed: Mapping[str, Any],
+    failures: list[dict[str, Any]],
+    last_stop: str,
+    updated_at: datetime,
+) -> None:
+    progress.update(
+        {
+            "completed": dict(completed),
+            "failures": failures,
+            "last_stop": last_stop,
+            "updated_at": updated_at.isoformat(),
+        }
+    )
+    _atomic_write_json(path, progress)
+
+
+def _validate_submissions_response(response: Any, expected_cik: str) -> None:
+    if not isinstance(response, Mapping):
+        raise DataSourceError("SEC submissions response must be an object")
+    response_cik = _normalize_cik(response.get("cik"))
+    if response_cik is not None and response_cik != expected_cik:
+        raise DataSourceError("SEC submissions response CIK mismatch")
+    filings = response.get("filings")
+    if not isinstance(filings, Mapping) or not isinstance(filings.get("recent"), Mapping):
+        raise DataSourceError("SEC submissions response missing filings.recent")
+
+
+def _assert_label_free_scope(value: Any, path: str = "scope") -> None:
+    forbidden = {
+        "ground_truth",
+        "outcome",
+        "outcome_label",
+        "label",
+        "is_surge",
+        "magnitude",
+        "magnitude_class",
+        "realized_max_multiple",
+        "future_return",
+        "split",
+        "split_name",
+        "split_ownership",
+        "locked_test",
+    }
+    if isinstance(value, Mapping):
+        for key, nested in value.items():
+            normalized = re.sub(r"[^a-z0-9]+", "_", str(key).casefold()).strip("_")
+            if normalized in forbidden:
+                raise ValidationError(f"forbidden label/split field in acquisition scope: {path}.{key}")
+            _assert_label_free_scope(nested, f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _assert_label_free_scope(nested, f"{path}[{index}]")
+
+
+def _normalize_cik(value: Any) -> str | None:
+    if value is None or not str(value).strip():
+        return None
+    digits = re.sub(r"\D", "", str(value))
+    if not digits or len(digits) > 10:
+        raise ValidationError("CIK must contain at most ten digits")
+    return digits.zfill(10)
 
 
 def _artifact_identity(path: Path) -> dict[str, Any]:

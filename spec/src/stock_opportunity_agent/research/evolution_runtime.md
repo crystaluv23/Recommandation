@@ -70,6 +70,46 @@ requires a reviewed definition of the six-month baseline/smoothing boundary and
 a human-approved issuer-disjoint split manifest. Locked Test ids must remain
 sealed from ordinary run inputs.
 
+## Full-Market Case Expansion Proposal
+
+The saved clean-universe and full adjusted-price archive may be transformed
+offline into a larger case-library proposal before any new source acquisition.
+This is a distinct path from reusing the 60-issuer legacy case artifact.
+
+The expansion command must:
+
+- require an explicit list of shared calendar prediction dates and compute the
+  active six-month five-day-smoothed label independently at every date;
+- require complete baseline and forward-price eligibility at every requested
+  date, rather than silently producing different case counts per issuer;
+- exclude a listing when any requested prediction date precedes its recorded
+  IPO/listing date, because pre-listing prices may belong to a reused ticker or
+  a different historical security identity;
+- deduplicate issuers by CIK when available and otherwise use a stable symbol
+  identity;
+- classify issuers into `<1.5x`, `1.5-<2x`, `2-<3x`, `3-<10x`, and `10x+`
+  maximum-multiple strata across the requested dates;
+- select deterministically from explicit stratum weights while rotating across
+  exchange, IPO-age, and point-in-time dollar-liquidity buckets;
+- split by issuer and selection stratum so no issuer crosses Discovery,
+  Evolution Validation, or Locked Test ownership; and
+- record source hashes, exact prediction dates, available/selected strata,
+  exclusions, selection weights, seed, and the known sampling-bias boundary.
+
+This is a label-aware retrospective dataset-construction step. Outcome labels
+may select a learnable benchmark, but they never enter Raw Info or prediction
+requests. Because positive and near-threshold strata are deliberately enriched,
+unweighted benchmark F1 is a controlled comparison metric, not an estimate of
+live market prevalence or expected returns.
+
+The command writes immutable proposal artifacts only. It performs no external
+calls, does not approve the proposal, and does not expose Locked Test to an
+ordinary evolution run. New filing/news/profile acquisition begins only from a
+reviewed exact issuer manifest, never by indiscriminately fetching the full
+listed universe. It also emits a label-free acquisition scope containing only
+company/CIK/ticker identities and required as-of dates. Data backfill jobs may
+consume that scope without learning outcome strata or split ownership.
+
 ## Dependencies
 
 Uses the top-level `llm` model registry for provider construction and the
@@ -83,3 +123,6 @@ Cover secret-free canonical contracts, exact replay/conflict rejection,
 request hashing, predictor leakage scans, preview no-network behavior, exact
 cache reuse, durable attempt/cost reservation, stale in-progress attempt
 visibility, local artifact inventory, missing paths, and Locked Test sealing.
+Full-market expansion tests additionally cover fixed-date labels, incomplete
+issuer exclusion, CIK deduplication, deterministic weighted/diversity sampling,
+issuer-disjoint stratified splits, immutable replay, and zero external calls.

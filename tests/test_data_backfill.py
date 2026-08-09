@@ -7,11 +7,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from stock_opportunity_agent.data.backfill import (
+    audit_expanded_acquisition_coverage,
     audit_historical_data_coverage,
     load_sec_filing_backfill_plan,
+    load_sec_submissions_backfill_plan,
     preview_sec_filing_backfill,
+    preview_sec_submissions_backfill,
     run_sec_filing_backfill,
+    run_sec_submissions_backfill,
     write_sec_filing_backfill_plan,
+    write_sec_submissions_backfill_plan,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.data.sources.catalog import DataCapability
@@ -41,6 +46,19 @@ class FakeSecTransport:
         if self.calls <= self.failures:
             raise DataSourceError("temporary SEC failure")
         return self.body
+
+
+class FakeSecJsonTransport:
+    def __init__(self, body: dict[str, object]) -> None:
+        self.body = body
+        self.calls = 0
+
+    def get_json(self, url, headers):
+        self.calls += 1
+        return self.body
+
+    def get_text(self, url, headers):
+        raise AssertionError("text was not expected")
 
 
 class HistoricalDataBackfillTests(unittest.TestCase):
@@ -267,12 +285,155 @@ class HistoricalDataBackfillTests(unittest.TestCase):
                     progress_path=root / "progress.json",
                 )
 
+    def test_label_free_scope_plans_and_resumes_exact_sec_submissions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            scope = root / "acquisition_scope.json"
+            plan_path = root / "submissions_plan.json"
+            _write_json(
+                scope,
+                {
+                    "schema_version": "expanded-case-acquisition-scope-v1",
+                    "source_inventory_hash": "a" * 64,
+                    "prediction_dates": ["2024-09-30", "2025-09-30"],
+                    "company_count": 2,
+                    "companies": [
+                        {
+                            "company_id": "cik_0000001234",
+                            "cik": "1234",
+                            "symbol": "ABC",
+                            "company_name": "ABC Corp",
+                        },
+                        {
+                            "company_id": "nocik",
+                            "cik": None,
+                            "symbol": "NCIK",
+                            "company_name": "No CIK Corp",
+                        },
+                    ],
+                    "outcome_fields_included": False,
+                    "split_ownership_included": False,
+                },
+            )
+            documents = root / "documents.json"
+            _write_json(
+                documents,
+                {
+                    "documents_by_symbol": {
+                        "ABC": [
+                            _filing("ABC", "10-K", "2024-09-01", chars=1500),
+                            _news("ABC", "2025-01-01"),
+                        ],
+                        "NCIK": [],
+                    }
+                },
+            )
+            coverage = audit_expanded_acquisition_coverage(
+                acquisition_scope_path=scope,
+                documents_path=documents,
+            )
+            self.assertEqual(coverage["company_count"], 2)
+            self.assertEqual(coverage["case_observation_count"], 4)
+            self.assertEqual(coverage["company_coverage"]["without_documents"], 1)
+            self.assertEqual(
+                coverage["point_in_time_observation_coverage"]["no_documents"], 2
+            )
+            self.assertEqual(coverage["missing_cik_count"], 1)
+            self.assertFalse(coverage["outcome_fields_read"])
+            self.assertEqual(coverage["external_calls"], 0)
+
+            plan = write_sec_submissions_backfill_plan(
+                acquisition_scope_path=scope,
+                output_path=plan_path,
+            )
+            self.assertEqual(plan["request_count"], 1)
+            self.assertEqual(plan["missing_cik_count"], 1)
+            self.assertEqual(
+                plan["items"][0]["source_url"],
+                "https://data.sec.gov/submissions/CIK0000001234.json",
+            )
+            self.assertEqual(load_sec_submissions_backfill_plan(plan_path), plan)
+            cache = RawDataCache(root / "cache")
+            preview = preview_sec_submissions_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "submissions_progress.json",
+            )
+            self.assertEqual(preview["maximum_new_network_requests"], 1)
+            self.assertEqual(preview["filing_bodies_completed"], 0)
+            self.assertEqual(preview["external_calls"], 0)
+
+            inner = FakeSecJsonTransport(
+                {
+                    "cik": "1234",
+                    "filings": {
+                        "recent": {"accessionNumber": []},
+                        "files": [
+                            {
+                                "name": "CIK0000001234-submissions-001.json",
+                                "filingCount": 10,
+                                "filingFrom": "2020-01-01",
+                                "filingTo": "2023-12-31",
+                            }
+                        ],
+                    },
+                }
+            )
+            client = _managed_submissions_client(root, cache, inner)
+            progress_events = []
+            result = run_sec_submissions_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "submissions_progress.json",
+                client=client,
+                max_network_requests=1,
+                now=lambda: datetime(2026, 8, 9, tzinfo=timezone.utc),
+                on_progress=progress_events.append,
+            )
+            self.assertEqual(result["status"], "completed")
+            self.assertEqual(result["network_requests_this_run"], 1)
+            self.assertEqual(result["filing_bodies_completed"], 0)
+            self.assertEqual(inner.calls, 1)
+            self.assertEqual(
+                [event["status"] for event in progress_events],
+                ["starting", "completed"],
+            )
+            self.assertEqual(progress_events[-1]["item_count"], 1)
+
+            resumed = run_sec_submissions_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "submissions_progress.json",
+                client=client,
+                max_network_requests=0,
+            )
+            self.assertEqual(resumed["status"], "completed")
+            self.assertEqual(resumed["network_requests_this_run"], 0)
+            self.assertEqual(inner.calls, 1)
+
 
 def _managed_client(root: Path, cache: RawDataCache, inner: FakeSecTransport) -> SecEdgarClient:
     ledger = RequestLedger(root / "ledger.jsonl")
     transport = ManagedHttpTransport(
         "sec_edgar",
         DataCapability.FILING_DOCUMENTS,
+        inner,
+        cache,
+        ledger,
+        SourceBudget(ledger, {}),
+    )
+    return SecEdgarClient("test@example.test", transport=transport)
+
+
+def _managed_submissions_client(
+    root: Path,
+    cache: RawDataCache,
+    inner: FakeSecJsonTransport,
+) -> SecEdgarClient:
+    ledger = RequestLedger(root / "submissions_ledger.jsonl")
+    transport = ManagedHttpTransport(
+        "sec_edgar",
+        DataCapability.FILINGS,
         inner,
         cache,
         ledger,

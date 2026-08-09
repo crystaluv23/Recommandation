@@ -12,6 +12,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Comparing paired blind-LLM information plans or interpreting small confidence deltas | [`experiences/paired-llm-comparison-noise.md`](experiences/paired-llm-comparison-noise.md) | 8 | Reuse responses for identical packet hashes and separate model sampling noise from information lift. |
 | Changing continuous self-evolution persistence, resume, branching, or dashboard history | [`experiences/continuous-round-commit-marker.md`](experiences/continuous-round-commit-marker.md) | 5 | Treat one atomic completed-round pointer as authoritative; all earlier files are recoverable staging artifacts. |
 | Migrating legacy cold-start cases/documents/prices into the replacement evolution runtime | [`experiences/legacy-artifact-raw-info-migration.md`](experiences/legacy-artifact-raw-info-migration.md) | 1 | Separate source facts, Basic Info, and labels; recompute outcomes and keep Locked Test sealed. |
+| Expanding the historical case library from a full-market price archive | [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md) | 0 | Use shared calendar dates, reject pre-IPO identity conflicts, disclose outcome enrichment, and emit a label-free acquisition scope. |
 
 ## Experience Index
 
@@ -21,6 +22,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 - [`experiences/paired-llm-comparison-noise.md`](experiences/paired-llm-comparison-noise.md): paired information-plan runs must reuse identical-packet responses and avoid treating small single-call confidence movement as evidence.
 - [`experiences/continuous-round-commit-marker.md`](experiences/continuous-round-commit-marker.md): multi-file continuous rounds need one atomic commit pointer so Ctrl+C cannot expose a staged round as resumable or branchable history.
 - [`experiences/legacy-artifact-raw-info-migration.md`](experiences/legacy-artifact-raw-info-migration.md): legacy case objects must be decomposed into point-in-time Raw Info, minimal Basic Info, and separately recomputed labels rather than copied wholesale.
+- [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md): full-market case expansion needs fixed dates, issuer/security identity gates, explicit sampling-bias disclosure, and a label-free handoff to data acquisition.
 
 ## Consultation Protocol
 

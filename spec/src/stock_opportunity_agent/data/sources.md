@@ -62,6 +62,10 @@ The data layer decides whether a request is currently allowed and whether cached
 - Allow historical backfill orchestration to reuse exact SEC primary-document
   URLs through the managed cache/quota transport; selection and Raw Info
   persistence remain outside the provider adapter.
+- Allow label-free expanded-case acquisition to fetch exact per-CIK SEC
+  submissions JSON through the same managed transport. Secondary submissions
+  files and primary documents must be derived into new exact plans rather than
+  followed as an unbounded crawl.
 
 ## Invariants
 

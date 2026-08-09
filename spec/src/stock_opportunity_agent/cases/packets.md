@@ -36,11 +36,14 @@ The submodule exposes:
   is already visible.
 - Missing or insufficient future bars should skip the case rather than invent a
   label.
+- A larger evolution benchmark should prefer shared, predeclared calendar
+  prediction dates over selecting each issuer's most extreme retrospective
+  outcome anchor. If labels are used to enrich learnable strata, the manifest
+  must disclose that sampling bias and preserve issuer-disjoint ownership.
 
 ## Limits
 
-The initial implementation expects data-layer records to be provided by the
-caller or a later storage/fetch layer. It does not yet fetch the whole universe
-by itself, and it does not yet own the production step that scans the historical
-US-listed universe for winner/control/failure candidates before cold-start
-learning.
+The packet builder expects data-layer records to be provided by the caller. The
+evolution runtime owns a proposal-only offline transform from the saved full
+universe/prices into an expanded issuer manifest; packet materialization and
+targeted point-in-time source acquisition remain later explicit steps.

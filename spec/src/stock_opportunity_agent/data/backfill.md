@@ -31,6 +31,24 @@ ids, symbols/company ids, filing forms, public dates, legacy content lengths,
 and a canonical plan hash. It contains no historical outcome label, future
 return, or Locked Test ownership.
 
+For an expanded case proposal, acquisition begins from the separate label-free
+`acquisition_scope.json`, not from selected/split case artifacts. The first
+discovery stage writes an exact SEC submissions plan containing one
+`https://data.sec.gov/submissions/CIK##########.json` request per available CIK,
+plus an explicit list of companies whose CIK is missing. Its executor stores
+raw JSON only in the managed cache and records durable per-CIK progress. It does
+not yet fetch primary documents or write Raw Info.
+
+After submissions metadata is cached, a later deterministic stage may derive:
+
+1. exact referenced historical submissions-file requests needed to cover the
+   requested as-of dates; and
+2. exact filing primary-document requests, filtered by form and SEC acceptance
+   time before each case cutoff.
+
+The two-stage plan prevents an open-ended crawl and avoids constructing document
+URLs before SEC metadata identifies the accession and primary document.
+
 ## Point-in-Time Contract
 
 Legacy filing artifacts currently preserve only a public date, not a precise
@@ -58,6 +76,13 @@ boundary by substituting current retrieval time or same-day midnight.
 - Failed or quota-deferred items remain pending and are eligible for a later
   bounded retry. They are never silently marked complete.
 - Reusing a progress file with a different plan hash fails closed.
+- Positive CLI execution emits one secret-free JSON progress event when an item
+  starts and when it completes, fails, defers, or reaches the invocation limit;
+  the final JSON summary remains machine-readable.
+- SEC submissions discovery uses the same cache/ledger/quota primitives and
+  invocation request ceiling as filing-body execution. A completed CIK means
+  its exact JSON response is durable in raw cache; it does not mean document
+  coverage is complete.
 
 ## SEC Filing Upgrade
 
@@ -90,4 +115,8 @@ replace them.
 Cover coverage counts, deterministic plan hashing, SEC URL allow-listing,
 label-free plan content, conservative availability, zero-network preview,
 network-call ceilings, cache reuse, append-only Raw Info lineage, progress
-resume, transient failure retry, and conflicting progress rejection.
+resume, transient failure retry, and conflicting progress rejection. Expanded
+scope tests additionally prove outcome/split fields are absent, exact CIK
+submissions URLs are planned, missing CIKs stay explicit, cached discovery
+resumes with zero network calls, and metadata completion is not misreported as
+filing-body completion.

@@ -76,6 +76,21 @@ _FORBIDDEN_OUTCOME_KEYS = frozenset(
     }
 )
 
+EXPANSION_STRATUM_ORDER = (
+    "below_1_5x",
+    "near_surge_1_5_to_2x",
+    "surge_2_to_3x",
+    "surge_3_to_10x",
+    "surge_10x_plus",
+)
+DEFAULT_EXPANSION_STRATUM_WEIGHTS: dict[str, float] = {
+    "below_1_5x": 0.30,
+    "near_surge_1_5_to_2x": 0.25,
+    "surge_2_to_3x": 0.25,
+    "surge_3_to_10x": 0.15,
+    "surge_10x_plus": 0.05,
+}
+
 
 @dataclass(frozen=True)
 class ArtifactSummary:
@@ -182,6 +197,47 @@ class DatasetProposalReport:
             "manifest_hash": self.manifest_hash,
             "eligible_case_count": self.eligible_case_count,
             "excluded_case_count": self.excluded_case_count,
+            "split_case_counts": dict(self.split_case_counts),
+            "split_issuer_counts": dict(self.split_issuer_counts),
+            "split_surge_counts": dict(self.split_surge_counts),
+            "approval_status": self.approval_status,
+            "locked_test_accessed": False,
+            "external_calls": 0,
+        }
+
+
+@dataclass(frozen=True)
+class ExpandedDatasetProposalReport:
+    """Full-market fixed-date case proposal that remains inactive."""
+
+    manifest_path: str
+    manifest_hash: str
+    universe_listing_count: int
+    priced_symbol_count: int
+    eligible_issuer_count: int
+    selected_issuer_count: int
+    case_count: int
+    available_stratum_counts: Mapping[str, int]
+    selected_stratum_counts: Mapping[str, int]
+    exclusion_reason_counts: Mapping[str, int]
+    split_case_counts: Mapping[str, int]
+    split_issuer_counts: Mapping[str, int]
+    split_surge_counts: Mapping[str, int]
+    approval_status: str = "proposal_only_pending_human_review"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "expanded-evolution-dataset-proposal-report-v1",
+            "manifest_path": self.manifest_path,
+            "manifest_hash": self.manifest_hash,
+            "universe_listing_count": self.universe_listing_count,
+            "priced_symbol_count": self.priced_symbol_count,
+            "eligible_issuer_count": self.eligible_issuer_count,
+            "selected_issuer_count": self.selected_issuer_count,
+            "case_count": self.case_count,
+            "available_stratum_counts": dict(self.available_stratum_counts),
+            "selected_stratum_counts": dict(self.selected_stratum_counts),
+            "exclusion_reason_counts": dict(self.exclusion_reason_counts),
             "split_case_counts": dict(self.split_case_counts),
             "split_issuer_counts": dict(self.split_issuer_counts),
             "split_surge_counts": dict(self.split_surge_counts),
@@ -678,6 +734,313 @@ def prepare_dataset_proposal(
             name: sum(bool(row["ground_truth"]["is_surge"]) for row in rows)
             for name, rows in splits.items()
         },
+    )
+
+
+def prepare_expanded_dataset_proposal(
+    *,
+    universe_path: str | Path,
+    full_price_archive_path: str | Path,
+    output_root: str | Path,
+    prediction_dates: Iterable[date],
+    target_issuers: int = 240,
+    stratum_weights: Mapping[str, float] | None = None,
+    split_seed: str = "expanded-information-plan-evolution-v1",
+) -> ExpandedDatasetProposalReport:
+    """Build a zero-network fixed-date case-library proposal from local prices."""
+
+    if target_issuers < 6:
+        raise ValidationError("expanded dataset target_issuers must be at least 6")
+    dates = tuple(sorted(set(prediction_dates)))
+    if not dates:
+        raise ValidationError("expanded dataset requires prediction dates")
+    weights = _validate_expansion_weights(
+        DEFAULT_EXPANSION_STRATUM_WEIGHTS if stratum_weights is None else stratum_weights
+    )
+    universe_file = Path(universe_path)
+    price_file = Path(full_price_archive_path)
+    universe = _read_json(universe_file)
+    raw_listings = universe.get("listings", ())
+    if not isinstance(raw_listings, list):
+        raise ValidationError("clean-universe artifact listings must be a list")
+    listings: dict[str, dict[str, Any]] = {}
+    for raw_listing in raw_listings:
+        if not isinstance(raw_listing, Mapping) or not raw_listing.get("symbol"):
+            raise ValidationError("clean-universe listing is missing symbol")
+        symbol = str(raw_listing["symbol"]).upper()
+        listing = dict(raw_listing)
+        existing = listings.get(symbol)
+        if existing is not None and existing != listing:
+            raise ValidationError(f"conflicting clean-universe listing: {symbol}")
+        listings[symbol] = listing
+    if not listings:
+        raise ValidationError("clean-universe artifact has no listings")
+
+    price_metadata, candidates, exclusions, priced_symbol_count = (
+        _stream_expansion_candidates(
+            price_file,
+            listings=listings,
+            prediction_dates=dates,
+        )
+    )
+    deduplicated, duplicate_exclusions = _deduplicate_expansion_candidates(
+        candidates,
+        seed=split_seed,
+    )
+    exclusions.extend(duplicate_exclusions)
+    if target_issuers > len(deduplicated):
+        raise ValidationError(
+            "expanded dataset target exceeds eligible deduplicated issuers"
+        )
+
+    available_counts = {
+        stratum: sum(
+            candidate["selection_stratum"] == stratum
+            for candidate in deduplicated
+        )
+        for stratum in EXPANSION_STRATUM_ORDER
+    }
+    allocations = _allocate_expansion_strata(
+        available_counts,
+        target_issuers=target_issuers,
+        weights=weights,
+    )
+    selected: list[dict[str, Any]] = []
+    for stratum in EXPANSION_STRATUM_ORDER:
+        pool = [
+            candidate
+            for candidate in deduplicated
+            if candidate["selection_stratum"] == stratum
+        ]
+        selected.extend(
+            _select_diverse_expansion_issuers(
+                pool,
+                count=allocations[stratum],
+                seed=f"{split_seed}:{stratum}",
+            )
+        )
+    selected.sort(key=lambda item: str(item["company_id"]))
+    if len(selected) != target_issuers:
+        raise ValidationError("expanded dataset selector returned wrong issuer count")
+    split_candidates = _propose_expanded_issuer_splits(selected, seed=split_seed)
+
+    root = Path(output_root)
+    root.mkdir(parents=True, exist_ok=True)
+    universe_identity = _artifact_file_identity(universe_file)
+    price_identity = _artifact_file_identity(price_file)
+    source_inventory_hash = _canonical_hash(
+        {
+            "universe": universe_identity,
+            "adjusted_prices": price_identity,
+        }
+    )
+    exclusion_reason_counts: dict[str, int] = {}
+    for item in exclusions:
+        reason = str(item["reason"])
+        exclusion_reason_counts[reason] = exclusion_reason_counts.get(reason, 0) + 1
+
+    inventory_path = root / "candidate_inventory.json"
+    _write_or_verify_json(
+        inventory_path,
+        {
+            "schema_version": "expanded-case-candidate-inventory-v1",
+            "source_inventory_hash": source_inventory_hash,
+            "prediction_dates": [value.isoformat() for value in dates],
+            "eligible_issuer_count": len(deduplicated),
+            "available_stratum_counts": available_counts,
+            "candidates": sorted(
+                deduplicated,
+                key=lambda item: (str(item["selection_stratum"]), str(item["company_id"])),
+            ),
+        },
+    )
+    exclusions_path = root / "excluded_issuers.json"
+    _write_or_verify_json(
+        exclusions_path,
+        {
+            "schema_version": "expanded-case-exclusions-v1",
+            "excluded_record_count": len(exclusions),
+            "reason_counts": dict(sorted(exclusion_reason_counts.items())),
+            "records": sorted(
+                exclusions,
+                key=lambda item: (str(item["reason"]), str(item.get("symbol", ""))),
+            ),
+        },
+    )
+    selected_path = root / "selected_issuers.json"
+    _write_or_verify_json(
+        selected_path,
+        {
+            "schema_version": "expanded-case-selected-issuers-v1",
+            "selection_seed": split_seed,
+            "target_issuer_count": target_issuers,
+            "selection_weights": weights,
+            "selected_stratum_counts": allocations,
+            "issuers": selected,
+        },
+    )
+    acquisition_scope_path = root / "acquisition_scope.json"
+    _write_or_verify_json(
+        acquisition_scope_path,
+        {
+            "schema_version": "expanded-case-acquisition-scope-v1",
+            "source_inventory_hash": source_inventory_hash,
+            "prediction_dates": [value.isoformat() for value in dates],
+            "company_count": len(selected),
+            "companies": [
+                {
+                    "company_id": item["company_id"],
+                    "cik": item["cik"],
+                    "symbol": item["symbol"],
+                    "company_name": item["company_name"],
+                }
+                for item in selected
+            ],
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+    )
+
+    artifacts: dict[str, dict[str, Any]] = {}
+    split_case_counts: dict[str, int] = {}
+    split_issuer_counts: dict[str, int] = {}
+    split_surge_counts: dict[str, int] = {}
+    for split_name, issuer_rows in split_candidates.items():
+        cases = sorted(
+            (
+                case
+                for issuer in issuer_rows
+                for case in issuer["cases"]
+            ),
+            key=lambda item: str(item["case_id"]),
+        )
+        path = root / f"{split_name}.json"
+        _write_or_verify_json(
+            path,
+            {
+                "schema_version": "evolution-dataset-split-v1",
+                "split": split_name,
+                "case_count": len(cases),
+                "cases": cases,
+            },
+        )
+        issuer_count = len(issuer_rows)
+        surge_count = sum(bool(case["ground_truth"]["is_surge"]) for case in cases)
+        split_case_counts[split_name] = len(cases)
+        split_issuer_counts[split_name] = issuer_count
+        split_surge_counts[split_name] = surge_count
+        artifacts[split_name] = {
+            "path": str(path.resolve()),
+            "sha256": _sha256_file(path),
+            "case_count": len(cases),
+            "issuer_count": issuer_count,
+            "surge_count": surge_count,
+        }
+
+    selected_counts = {
+        stratum: sum(item["selection_stratum"] == stratum for item in selected)
+        for stratum in EXPANSION_STRATUM_ORDER
+    }
+    manifest = {
+        "schema_version": "expanded-evolution-dataset-manifest-proposal-v1",
+        "approval_status": "proposal_only_pending_human_review",
+        "approval_blockers": [
+            "validate historical registrant/ticker identity for every selected issuer",
+            "resolve companies without CIK or record a reviewed exclusion",
+            "classify and review non-operating securities such as funds, notes, preferred shares, and SPACs",
+            "acquire and audit point-in-time filings, profiles, news, and other required Raw Info",
+        ],
+        "source_inventory_hash": source_inventory_hash,
+        "sources": {
+            "clean_universe": universe_identity,
+            "adjusted_prices": price_identity,
+            "price_metadata": price_metadata,
+        },
+        "case_generation": {
+            "kind": "shared_fixed_calendar_panel",
+            "prediction_dates": [value.isoformat() for value in dates],
+            "required_cases_per_issuer": len(dates),
+            "eligibility": "complete_active_label_at_every_prediction_date",
+            "issuer_identity": "zero_padded_cik_else_symbol",
+        },
+        "selection": {
+            "target_issuer_count": target_issuers,
+            "available_issuer_count": len(deduplicated),
+            "stratum_order": list(EXPANSION_STRATUM_ORDER),
+            "stratum_definition": "maximum_realized_multiple_across_prediction_dates",
+            "weights": weights,
+            "available_stratum_counts": available_counts,
+            "selected_stratum_counts": selected_counts,
+            "diversity_rotation": ["exchange", "ipo_age_bucket", "dollar_liquidity_bucket"],
+            "seed": split_seed,
+            "sampling_boundary": (
+                "Outcome and near-threshold strata are enriched for controlled learning; "
+                "unweighted metrics do not estimate live market prevalence or returns."
+            ),
+        },
+        "split_policy": {
+            "unit": "issuer",
+            "strata": "selection_stratum",
+            "target_ratios": {
+                "discovery": 0.60,
+                "evolution_validation": 0.25,
+                "locked_test": 0.15,
+            },
+        },
+        "label_contract": {
+            "horizon": "six_calendar_months",
+            "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+            "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+            "binary_threshold": 2.0,
+            "magnitude_classes": ["2-3x", "3-10x", "10x+"],
+        },
+        "counts": {
+            "universe_listings": len(listings),
+            "priced_symbols": priced_symbol_count,
+            "eligible_issuers": len(deduplicated),
+            "selected_issuers": len(selected),
+            "selected_cases": sum(split_case_counts.values()),
+            "exclusion_records": len(exclusions),
+        },
+        "audit_artifacts": {
+            "candidate_inventory": {
+                "path": str(inventory_path.resolve()),
+                "sha256": _sha256_file(inventory_path),
+            },
+            "excluded_issuers": {
+                "path": str(exclusions_path.resolve()),
+                "sha256": _sha256_file(exclusions_path),
+            },
+            "selected_issuers": {
+                "path": str(selected_path.resolve()),
+                "sha256": _sha256_file(selected_path),
+            },
+            "acquisition_scope": {
+                "path": str(acquisition_scope_path.resolve()),
+                "sha256": _sha256_file(acquisition_scope_path),
+            },
+        },
+        "artifacts": artifacts,
+        "locked_test_sealed": True,
+        "locked_test_accessed": False,
+        "external_calls": 0,
+    }
+    manifest_path = root / "dataset_manifest.proposal.json"
+    _write_or_verify_json(manifest_path, manifest)
+    return ExpandedDatasetProposalReport(
+        manifest_path=str(manifest_path.resolve()),
+        manifest_hash=_sha256_file(manifest_path),
+        universe_listing_count=len(listings),
+        priced_symbol_count=priced_symbol_count,
+        eligible_issuer_count=len(deduplicated),
+        selected_issuer_count=len(selected),
+        case_count=sum(split_case_counts.values()),
+        available_stratum_counts=available_counts,
+        selected_stratum_counts=selected_counts,
+        exclusion_reason_counts=dict(sorted(exclusion_reason_counts.items())),
+        split_case_counts=split_case_counts,
+        split_issuer_counts=split_issuer_counts,
+        split_surge_counts=split_surge_counts,
     )
 
 
@@ -1833,6 +2196,467 @@ def _three_way_counts(total: int) -> tuple[int, int, int]:
     if min(discovery, evolution, locked) < 1:
         raise ValidationError("issuer stratum cannot support three non-empty splits")
     return discovery, evolution, locked
+
+
+def _validate_expansion_weights(weights: Mapping[str, float]) -> dict[str, float]:
+    if set(weights) != set(EXPANSION_STRATUM_ORDER):
+        raise ValidationError("expanded dataset weights must name every fixed stratum")
+    normalized = {key: float(weights[key]) for key in EXPANSION_STRATUM_ORDER}
+    if any(value < 0 for value in normalized.values()) or sum(normalized.values()) <= 0:
+        raise ValidationError("expanded dataset weights must be non-negative and non-zero")
+    total = sum(normalized.values())
+    return {key: normalized[key] / total for key in EXPANSION_STRATUM_ORDER}
+
+
+def _stream_expansion_candidates(
+    path: Path,
+    *,
+    listings: Mapping[str, Mapping[str, Any]],
+    prediction_dates: tuple[date, ...],
+) -> tuple[
+    dict[str, Any],
+    list[dict[str, Any]],
+    list[dict[str, str]],
+    int,
+]:
+    if not path.is_file():
+        raise ValidationError(f"large local price archive is missing: {path}")
+    reader = _StreamingJSONReader(path)
+    metadata: dict[str, Any] = {}
+    candidates: list[dict[str, Any]] = []
+    exclusions: list[dict[str, str]] = []
+    seen_symbols: set[str] = set()
+    priced_symbol_count = 0
+    try:
+        reader.consume("{")
+        while reader.peek() != "}":
+            key = reader.decode()
+            if not isinstance(key, str):
+                raise ValidationError("large price archive top-level key is invalid")
+            reader.consume(":")
+            if key == "bars_by_symbol":
+                reader.consume("{")
+                while reader.peek() != "}":
+                    raw_symbol = reader.decode()
+                    if not isinstance(raw_symbol, str):
+                        raise ValidationError("large price archive symbol key is invalid")
+                    reader.consume(":")
+                    raw_bars = reader.decode()
+                    symbol = raw_symbol.upper()
+                    listing = listings.get(symbol)
+                    if listing is not None:
+                        seen_symbols.add(symbol)
+                        if not isinstance(raw_bars, list):
+                            raise ValidationError("large price archive bars must be a list")
+                        if raw_bars:
+                            priced_symbol_count += 1
+                        candidate, exclusion = _expansion_candidate(
+                            listing,
+                            raw_bars,
+                            prediction_dates=prediction_dates,
+                        )
+                        if candidate is not None:
+                            candidates.append(candidate)
+                        elif exclusion is not None:
+                            exclusions.append(exclusion)
+                    if reader.peek() == ",":
+                        reader.consume(",")
+                    else:
+                        break
+                reader.consume("}")
+            else:
+                value = reader.decode()
+                if key == "warnings" and isinstance(value, Mapping):
+                    metadata["warning_count"] = len(value)
+                elif key not in {"listings", "bars_by_symbol"}:
+                    metadata[key] = value
+            if reader.peek() == ",":
+                reader.consume(",")
+            else:
+                break
+        reader.consume("}")
+    finally:
+        reader.close()
+    for symbol, listing in listings.items():
+        if symbol not in seen_symbols:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": _expansion_company_id(listing),
+                    "reason": "missing_price_history",
+                }
+            )
+    return metadata, candidates, exclusions, priced_symbol_count
+
+
+def _expansion_candidate(
+    listing: Mapping[str, Any],
+    raw_bars: list[Any],
+    *,
+    prediction_dates: tuple[date, ...],
+) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+    symbol = str(listing["symbol"]).upper()
+    company_id = _expansion_company_id(listing)
+    ipo_date = str(listing.get("ipo_date") or "") or None
+    if ipo_date:
+        try:
+            parsed_ipo_date = date.fromisoformat(ipo_date)
+        except ValueError:
+            return None, {
+                "symbol": symbol,
+                "company_id": company_id,
+                "reason": "invalid_listing_ipo_date",
+            }
+        if prediction_dates[0] < parsed_ipo_date:
+            return None, {
+                "symbol": symbol,
+                "company_id": company_id,
+                "prediction_date": prediction_dates[0].isoformat(),
+                "ipo_date": ipo_date,
+                "reason": "prediction_before_listing_ipo_date",
+            }
+    if not raw_bars:
+        return None, {
+            "symbol": symbol,
+            "company_id": company_id,
+            "reason": "empty_price_history",
+        }
+    labels: list[tuple[date, dict[str, Any]]] = []
+    for prediction_date in prediction_dates:
+        try:
+            label = _six_month_smoothed_multiple(raw_bars, prediction_date)
+        except (TypeError, ValueError, ValidationError) as exc:
+            return None, {
+                "symbol": symbol,
+                "company_id": company_id,
+                "prediction_date": prediction_date.isoformat(),
+                "reason": str(exc),
+            }
+        labels.append((prediction_date, label))
+    liquidity = _historical_dollar_liquidity(raw_bars, prediction_dates)
+    company_name = str(listing.get("name") or symbol)
+    cik = _normalized_cik(listing.get("cik"))
+    exchange = str(listing.get("exchange") or "unknown").upper()
+    max_multiple = max(float(label["realized_max_multiple"]) for _, label in labels)
+    stratum = _expansion_stratum(max_multiple)
+    diversity = {
+        "exchange": exchange,
+        "ipo_age_bucket": _ipo_age_bucket(ipo_date, prediction_dates[0]),
+        "dollar_liquidity_bucket": _dollar_liquidity_bucket(liquidity),
+        "pre_prediction_average_dollar_volume": liquidity,
+    }
+    cases: list[dict[str, Any]] = []
+    for prediction_date, label in labels:
+        cases.append(
+            {
+                "case_id": f"{company_id}:{prediction_date.strftime('%Y%m%d')}",
+                "company_id": company_id,
+                "prediction_time": datetime.combine(
+                    prediction_date,
+                    datetime.min.time(),
+                    tzinfo=timezone.utc,
+                ).isoformat(),
+                "basic_info": {
+                    "company_name": company_name,
+                    "ticker": symbol,
+                    "market_cap": None,
+                    "industry": None,
+                    "business_description": None,
+                    "revenue_segments": [],
+                    "development_stage": None,
+                    "exchange": exchange,
+                    "ipo_date": ipo_date,
+                    "identity_aliases": [symbol, company_name],
+                },
+                "ground_truth": {
+                    "realized_max_multiple": label["realized_max_multiple"],
+                    "is_surge": label["is_surge"],
+                    "magnitude": label["magnitude"],
+                },
+                "label_provenance": {
+                    "baseline_mean": label["baseline_mean"],
+                    "future_peak_mean": label["future_peak_mean"],
+                    "baseline_dates": label["baseline_dates"],
+                    "future_peak_dates": label["future_peak_dates"],
+                    "horizon_end": label["horizon_end"],
+                    "source_symbol": symbol,
+                },
+            }
+        )
+    return (
+        {
+            "company_id": company_id,
+            "cik": cik,
+            "symbol": symbol,
+            "company_name": company_name,
+            "selection_stratum": stratum,
+            "maximum_realized_multiple": max_multiple,
+            "diversity": diversity,
+            "cases": cases,
+        },
+        None,
+    )
+
+
+def _deduplicate_expansion_candidates(
+    candidates: Iterable[dict[str, Any]],
+    *,
+    seed: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
+    by_company: dict[str, dict[str, Any]] = {}
+    exclusions: list[dict[str, str]] = []
+    for candidate in candidates:
+        company_id = str(candidate["company_id"])
+        existing = by_company.get(company_id)
+        if existing is None:
+            by_company[company_id] = candidate
+            continue
+        ranked = sorted(
+            (existing, candidate),
+            key=lambda item: (
+                -float(
+                    item["diversity"].get("pre_prediction_average_dollar_volume")
+                    or 0.0
+                ),
+                hashlib.sha256(
+                    f"{seed}:{company_id}:{item['symbol']}".encode("utf-8")
+                ).hexdigest(),
+            ),
+        )
+        kept, dropped = ranked
+        by_company[company_id] = kept
+        exclusions.append(
+            {
+                "symbol": str(dropped["symbol"]),
+                "company_id": company_id,
+                "reason": "duplicate_issuer_identity",
+                "kept_symbol": str(kept["symbol"]),
+            }
+        )
+    return list(by_company.values()), exclusions
+
+
+def _allocate_expansion_strata(
+    available: Mapping[str, int],
+    *,
+    target_issuers: int,
+    weights: Mapping[str, float],
+) -> dict[str, int]:
+    if sum(int(available.get(key, 0)) for key in EXPANSION_STRATUM_ORDER) < target_issuers:
+        raise ValidationError("expanded dataset target exceeds available strata")
+    allocations = {
+        key: min(int(available.get(key, 0)), int(target_issuers * weights[key]))
+        for key in EXPANSION_STRATUM_ORDER
+    }
+    while sum(allocations.values()) < target_issuers:
+        options = [
+            key
+            for key in EXPANSION_STRATUM_ORDER
+            if allocations[key] < int(available.get(key, 0))
+        ]
+        if not options:
+            raise ValidationError("expanded dataset cannot fill target allocation")
+        selected = max(
+            options,
+            key=lambda key: (
+                target_issuers * weights[key] - allocations[key],
+                weights[key],
+                -EXPANSION_STRATUM_ORDER.index(key),
+            ),
+        )
+        allocations[selected] += 1
+    undersized = [key for key, count in allocations.items() if 0 < count < 3]
+    if undersized:
+        raise ValidationError(
+            "expanded dataset selected strata need at least three issuers for sealed splits: "
+            + ", ".join(undersized)
+        )
+    return allocations
+
+
+def _select_diverse_expansion_issuers(
+    candidates: Iterable[dict[str, Any]],
+    *,
+    count: int,
+    seed: str,
+) -> list[dict[str, Any]]:
+    if count == 0:
+        return []
+    buckets: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    for candidate in candidates:
+        diversity = dict(candidate["diversity"])
+        bucket = (
+            str(diversity["exchange"]),
+            str(diversity["ipo_age_bucket"]),
+            str(diversity["dollar_liquidity_bucket"]),
+        )
+        buckets.setdefault(bucket, []).append(candidate)
+    for bucket, rows in buckets.items():
+        rows.sort(
+            key=lambda item: hashlib.sha256(
+                f"{seed}:{bucket}:{item['company_id']}".encode("utf-8")
+            ).hexdigest()
+        )
+    bucket_order = sorted(
+        buckets,
+        key=lambda bucket: hashlib.sha256(
+            f"{seed}:{bucket}".encode("utf-8")
+        ).hexdigest(),
+    )
+    selected: list[dict[str, Any]] = []
+    positions = {bucket: 0 for bucket in bucket_order}
+    while len(selected) < count:
+        progressed = False
+        for bucket in bucket_order:
+            position = positions[bucket]
+            rows = buckets[bucket]
+            if position >= len(rows):
+                continue
+            selected.append(rows[position])
+            positions[bucket] += 1
+            progressed = True
+            if len(selected) == count:
+                break
+        if not progressed:
+            raise ValidationError("expanded dataset diversity selector exhausted early")
+    return selected
+
+
+def _propose_expanded_issuer_splits(
+    candidates: Iterable[dict[str, Any]],
+    *,
+    seed: str,
+) -> dict[str, list[dict[str, Any]]]:
+    by_stratum: dict[str, list[dict[str, Any]]] = {
+        key: [] for key in EXPANSION_STRATUM_ORDER
+    }
+    for candidate in candidates:
+        by_stratum[str(candidate["selection_stratum"])].append(candidate)
+    result: dict[str, list[dict[str, Any]]] = {
+        "discovery": [],
+        "evolution_validation": [],
+        "locked_test": [],
+    }
+    for stratum in EXPANSION_STRATUM_ORDER:
+        rows = by_stratum[stratum]
+        if not rows:
+            continue
+        if len(rows) < 3:
+            raise ValidationError(
+                f"expanded dataset stratum cannot support three splits: {stratum}"
+            )
+        ordered = sorted(
+            rows,
+            key=lambda item: hashlib.sha256(
+                f"{seed}:{stratum}:{item['company_id']}".encode("utf-8")
+            ).hexdigest(),
+        )
+        discovery_count, validation_count, _ = _three_way_counts(len(ordered))
+        result["discovery"].extend(ordered[:discovery_count])
+        result["evolution_validation"].extend(
+            ordered[discovery_count : discovery_count + validation_count]
+        )
+        result["locked_test"].extend(
+            ordered[discovery_count + validation_count :]
+        )
+    for rows in result.values():
+        rows.sort(key=lambda item: str(item["company_id"]))
+    return result
+
+
+def _expansion_company_id(listing: Mapping[str, Any]) -> str:
+    cik = _normalized_cik(listing.get("cik"))
+    if cik is not None:
+        return f"cik_{cik}"
+    return _company_id_from_symbol(str(listing["symbol"]))
+
+
+def _normalized_cik(value: Any) -> str | None:
+    if value is None or not str(value).strip():
+        return None
+    digits = re.sub(r"\D", "", str(value))
+    return digits.zfill(10) if digits else None
+
+
+def _expansion_stratum(maximum_multiple: float) -> str:
+    if maximum_multiple < 1.5:
+        return "below_1_5x"
+    if maximum_multiple < 2.0:
+        return "near_surge_1_5_to_2x"
+    if maximum_multiple < 3.0:
+        return "surge_2_to_3x"
+    if maximum_multiple < 10.0:
+        return "surge_3_to_10x"
+    return "surge_10x_plus"
+
+
+def _historical_dollar_liquidity(
+    raw_bars: Iterable[Any], prediction_dates: tuple[date, ...]
+) -> float | None:
+    parsed: list[tuple[date, float]] = []
+    for bar in raw_bars:
+        if not isinstance(bar, Mapping) or not bar.get("as_of_date"):
+            continue
+        adjusted_close = bar.get("adjusted_close")
+        volume = bar.get("volume")
+        if adjusted_close is None or volume is None:
+            continue
+        value = float(adjusted_close) * float(volume)
+        if value >= 0:
+            parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
+    means: list[float] = []
+    for prediction_date in prediction_dates:
+        values = [value for bar_date, value in parsed if bar_date < prediction_date][-20:]
+        if values:
+            means.append(sum(values) / len(values))
+    if not means:
+        return None
+    ordered = sorted(means)
+    midpoint = len(ordered) // 2
+    if len(ordered) % 2:
+        return ordered[midpoint]
+    return (ordered[midpoint - 1] + ordered[midpoint]) / 2
+
+
+def _dollar_liquidity_bucket(value: float | None) -> str:
+    if value is None:
+        return "unknown"
+    if value < 1_000_000:
+        return "below_1m"
+    if value < 10_000_000:
+        return "1m_to_10m"
+    if value < 100_000_000:
+        return "10m_to_100m"
+    return "100m_plus"
+
+
+def _ipo_age_bucket(value: str | None, prediction_date: date) -> str:
+    if not value:
+        return "unknown"
+    try:
+        ipo_date = date.fromisoformat(value)
+    except ValueError:
+        return "unknown"
+    age_days = (prediction_date - ipo_date).days
+    if age_days < 0:
+        return "pre_ipo"
+    if age_days < 2 * 365:
+        return "under_2y"
+    if age_days < 5 * 365:
+        return "2y_to_5y"
+    if age_days < 10 * 365:
+        return "5y_to_10y"
+    return "10y_plus"
+
+
+def _artifact_file_identity(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise ValidationError(f"required local artifact is missing: {path}")
+    return {
+        "path": str(path.resolve()),
+        "sha256": _sha256_file(path),
+        "size_bytes": path.stat().st_size,
+    }
 
 
 def _scan_payload(
