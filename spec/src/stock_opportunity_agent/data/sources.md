@@ -44,6 +44,10 @@ The source layer owns these runtime state primitives:
 - `SourceQuota` and `SourceBudget`: source-level quota rules and checks. Network fetches and upstream errors count against quota; cache hits and quota deferrals do not.
 - `ManagedHttpTransport`: optional transport wrapper that applies cache lookup before quota checks, lets callers reject provider-level error payloads before caching, records every outcome, and raises `DataQuotaDeferred` instead of sleeping across reset windows.
 
+Raw cache records must be replaced atomically after a complete fsynced write,
+and request-ledger rows must be flushed before a caller treats a request outcome
+as durable.
+
 The data layer decides whether a request is currently allowed and whether cached data exists. It does not decide how to spend tomorrow's quota. Cold-start and live-run orchestration will prioritize pending jobs and resume them after reset windows.
 
 ## Responsibilities
@@ -55,6 +59,9 @@ The data layer decides whether a request is currently allowed and whether cached
 - Raise explicit, secret-redacted data-source errors for missing credentials, rate-limit messages, malformed upstream responses, and unsupported transports.
 - Decode common compressed HTTP responses before JSON/CSV parsing, and surface malformed response bodies as explicit data-source errors.
 - Keep raw cache and request ledger records source-linked and secret-safe.
+- Allow historical backfill orchestration to reuse exact SEC primary-document
+  URLs through the managed cache/quota transport; selection and Raw Info
+  persistence remain outside the provider adapter.
 
 ## Invariants
 

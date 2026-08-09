@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
+import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -160,14 +162,23 @@ class RawInfoStore:
         if self.root is not None:
             path = self._path_for(document)
             path.parent.mkdir(parents=True, exist_ok=True)
+            descriptor, temporary = tempfile.mkstemp(
+                prefix=f".{path.name}.", dir=path.parent
+            )
             try:
-                with path.open("x", encoding="utf-8") as handle:
+                with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
                     json.dump(document.to_dict(), handle, sort_keys=True, indent=2)
                     handle.write("\n")
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                os.link(temporary, path)
             except FileExistsError as exc:
                 raise ValidationError(
                     f"raw info path already exists for {document.document_id}"
                 ) from exc
+            finally:
+                if os.path.exists(temporary):
+                    os.unlink(temporary)
         self._documents[document.document_id] = document
         return True
 

@@ -62,6 +62,7 @@ spec/src/stock_opportunity_agent/
   data/documents.md
   data/point_in_time.md
   data/raw_info.md
+  data/backfill.md
   llm.md
   memory.md
   memory/signals.md

@@ -33,6 +33,8 @@ available_at <= prediction_time
 ## Invariants
 
 - The public store API has no update or delete operation.
+- File-backed append writes must become visible atomically; process interruption
+  cannot leave a partial JSON document at its canonical path.
 - Reusing a `document_id` with different content or provenance fails closed.
 - Re-appending a byte-identical record is idempotent.
 - `available_at` cannot precede `published_at`.

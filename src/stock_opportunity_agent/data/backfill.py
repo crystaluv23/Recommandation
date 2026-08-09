@@ -1,0 +1,660 @@
+"""Audited, bounded historical source backfills into append-only Raw Info."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import re
+import tempfile
+from collections import Counter
+from collections.abc import Callable, Iterable, Mapping
+from datetime import date, datetime, time, timedelta, timezone
+from pathlib import Path
+from typing import Any, Protocol
+from urllib.parse import urlsplit
+
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.sources.catalog import DataCapability
+from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata
+from stock_opportunity_agent.data.sources.state import (
+    DataQuotaDeferred,
+    RawCacheKey,
+    RawDataCache,
+)
+from stock_opportunity_agent.models import ValidationError
+
+
+SEC_PLAN_SCHEMA = "sec-filing-backfill-plan-v1"
+SEC_PROGRESS_SCHEMA = "sec-filing-backfill-progress-v1"
+_SEC_ARCHIVE_HOST = "www.sec.gov"
+_SEC_ARCHIVE_PREFIX = "/Archives/edgar/data/"
+_FORM_PATTERN = re.compile(
+    r"(?<![A-Z0-9])(10-K(?:/A)?|10-Q(?:/A)?|8-K(?:/A)?|20-F(?:/A)?|"
+    r"40-F(?:/A)?|6-K(?:/A)?)(?![A-Z0-9])",
+    flags=re.IGNORECASE,
+)
+_FORM_PRIORITY = {
+    "10-K": 0,
+    "20-F": 0,
+    "40-F": 0,
+    "10-Q": 1,
+    "8-K": 2,
+    "6-K": 2,
+}
+
+
+class SecFilingBodyClient(Protocol):
+    """Small provider boundary used by the backfill executor."""
+
+    def filing_document_text(self, filing: FilingMetadata) -> str:
+        """Return one exact SEC primary-document body."""
+
+
+def audit_historical_data_coverage(
+    *,
+    cases_path: str | Path,
+    documents_path: str | Path,
+) -> dict[str, Any]:
+    """Measure actual point-in-time document coverage without reading outcomes."""
+
+    case_path = Path(cases_path)
+    document_path = Path(documents_path)
+    case_data = _read_json(case_path)
+    document_data = _read_json(document_path)
+    cases = case_data.get("cases", ())
+    documents_by_symbol = document_data.get("documents_by_symbol", {})
+    if not isinstance(cases, list):
+        raise ValidationError("historical case artifact cases must be a list")
+    if not isinstance(documents_by_symbol, Mapping):
+        raise ValidationError("document artifact documents_by_symbol must be an object")
+
+    kind_counts: Counter[str] = Counter()
+    form_counts: Counter[str] = Counter()
+    text_lengths: dict[str, list[int]] = {}
+    symbols_by_form_family: dict[str, set[str]] = {
+        "annual": set(),
+        "quarterly": set(),
+        "event": set(),
+    }
+    document_count = 0
+    likely_truncated_sec_filings = 0
+    transcript_count = 0
+    normalized_documents: dict[str, list[Mapping[str, Any]]] = {}
+    for raw_symbol, rows in documents_by_symbol.items():
+        symbol = str(raw_symbol).upper()
+        if not isinstance(rows, list):
+            raise ValidationError(f"documents for {symbol} must be a list")
+        normalized_rows: list[Mapping[str, Any]] = []
+        for row in rows:
+            if not isinstance(row, Mapping):
+                raise ValidationError(f"document for {symbol} must be an object")
+            kind = str(row.get("kind", "unknown")).casefold()
+            text = str(row.get("text", ""))
+            kind_counts[kind] += 1
+            text_lengths.setdefault(kind, []).append(len(text))
+            document_count += 1
+            if kind == "transcript":
+                transcript_count += 1
+            if kind == "filing":
+                form = _filing_form(row)
+                form_counts[form] += 1
+                family = _form_family(form)
+                if family is not None:
+                    symbols_by_form_family[family].add(symbol)
+                if len(text) == 1500 and _is_sec_archive_url(str(row.get("source_url", ""))):
+                    likely_truncated_sec_filings += 1
+            normalized_rows.append(row)
+        normalized_documents[symbol] = normalized_rows
+
+    case_coverage: Counter[str] = Counter()
+    case_symbols: set[str] = set()
+    unknown_profile_cases = 0
+    for row in cases:
+        if not isinstance(row, Mapping):
+            raise ValidationError("historical case row must be an object")
+        packet = row.get("packet", {})
+        if not isinstance(packet, Mapping):
+            raise ValidationError("historical case packet must be an object")
+        company = packet.get("company", {})
+        as_of = packet.get("as_of", {})
+        if not isinstance(company, Mapping) or not isinstance(as_of, Mapping):
+            raise ValidationError("historical case packet is missing company/as_of")
+        ticker = company.get("ticker", {})
+        if not isinstance(ticker, Mapping) or not ticker.get("symbol"):
+            raise ValidationError("historical case is missing ticker symbol")
+        symbol = str(ticker["symbol"]).upper()
+        as_of_date = _parse_date(as_of.get("as_of_date"), "case as_of_date")
+        case_symbols.add(symbol)
+        if str(company.get("industry", "")).casefold() in {"", "unknown"}:
+            unknown_profile_cases += 1
+        available = [
+            document
+            for document in normalized_documents.get(symbol, ())
+            if _document_available_date(document) <= as_of_date
+        ]
+        kinds = {str(document.get("kind", "unknown")).casefold() for document in available}
+        has_filing = "filing" in kinds
+        has_news = "news" in kinds
+        if not available:
+            case_coverage["no_documents"] += 1
+        if not has_filing:
+            case_coverage["no_filing"] += 1
+        if not has_news:
+            case_coverage["no_news"] += 1
+        if has_filing and has_news:
+            case_coverage["filing_and_news"] += 1
+        elif has_filing:
+            case_coverage["filing_only"] += 1
+        elif has_news:
+            case_coverage["news_only"] += 1
+
+    symbol_count = len(case_symbols)
+    missing_capabilities = []
+    if likely_truncated_sec_filings:
+        missing_capabilities.append("complete_sec_filing_bodies")
+    if len(symbols_by_form_family["annual"]) < symbol_count:
+        missing_capabilities.append("annual_filings")
+    if case_coverage["no_news"]:
+        missing_capabilities.append("point_in_time_company_news")
+    if transcript_count == 0:
+        missing_capabilities.append("earnings_transcripts")
+    if unknown_profile_cases:
+        missing_capabilities.append("point_in_time_company_profile")
+
+    return {
+        "schema_version": "historical-data-coverage-audit-v1",
+        "cases_artifact": _artifact_identity(case_path),
+        "documents_artifact": _artifact_identity(document_path),
+        "case_count": len(cases),
+        "symbol_count": symbol_count,
+        "document_count": document_count,
+        "document_kind_counts": dict(sorted(kind_counts.items())),
+        "filing_form_counts": dict(sorted(form_counts.items())),
+        "symbol_form_family_coverage": {
+            family: len(symbols) for family, symbols in symbols_by_form_family.items()
+        },
+        "symbols_without_any_documents": sum(
+            not normalized_documents.get(symbol) for symbol in case_symbols
+        ),
+        "case_coverage": dict(sorted(case_coverage.items())),
+        "unknown_industry_case_count": unknown_profile_cases,
+        "transcript_count": transcript_count,
+        "likely_truncated_sec_filing_count": likely_truncated_sec_filings,
+        "text_length_stats": {
+            kind: _length_stats(values) for kind, values in sorted(text_lengths.items())
+        },
+        "missing_capabilities": missing_capabilities,
+    }
+
+
+def write_sec_filing_backfill_plan(
+    *,
+    documents_path: str | Path,
+    output_path: str | Path,
+    forms: Iterable[str] = (),
+) -> dict[str, Any]:
+    """Write a deterministic, exact, label-free plan for legacy SEC bodies."""
+
+    source_path = Path(documents_path)
+    data = _read_json(source_path)
+    documents_by_symbol = data.get("documents_by_symbol", {})
+    if not isinstance(documents_by_symbol, Mapping):
+        raise ValidationError("document artifact documents_by_symbol must be an object")
+    selected_forms = {_normalize_form(value) for value in forms if str(value).strip()}
+    items_by_id: dict[str, dict[str, Any]] = {}
+    for raw_symbol, rows in documents_by_symbol.items():
+        symbol = str(raw_symbol).upper()
+        if not isinstance(rows, list):
+            raise ValidationError(f"documents for {symbol} must be a list")
+        for row in rows:
+            if not isinstance(row, Mapping) or str(row.get("kind", "")).casefold() != "filing":
+                continue
+            source_url = str(row.get("source_url", ""))
+            if not _is_sec_archive_url(source_url):
+                continue
+            form = _filing_form(row)
+            if selected_forms and form not in selected_forms:
+                continue
+            published_date = _parse_date(row.get("published_date"), "published_date")
+            legacy_available_date = _document_available_date(row)
+            source_id = str(row.get("source_id") or row.get("document_id") or "")
+            cik, accession = _sec_identity(source_id, source_url)
+            item_seed = {
+                "source_id": source_id,
+                "source_url": source_url,
+                "legacy_available_date": legacy_available_date.isoformat(),
+            }
+            item_id = "secitem_" + _canonical_hash(item_seed)[:24]
+            item = {
+                "item_id": item_id,
+                "symbol": symbol,
+                "company_id": _company_id_from_symbol(symbol),
+                "original_document_id": str(row.get("document_id") or source_id),
+                "source_id": source_id,
+                "source_url": source_url,
+                "cik": cik,
+                "accession_number": accession,
+                "primary_document": Path(urlsplit(source_url).path).name,
+                "form": form,
+                "published_at": _midnight_utc(published_date).isoformat(),
+                "available_at": _midnight_utc(
+                    legacy_available_date + timedelta(days=1)
+                ).isoformat(),
+                "legacy_content_chars": len(str(row.get("text", ""))),
+            }
+            existing = items_by_id.get(item_id)
+            if existing is not None and existing != item:
+                raise ValidationError(f"conflicting SEC backfill item: {item_id}")
+            items_by_id[item_id] = item
+
+    items = sorted(
+        items_by_id.values(),
+        key=lambda item: (
+            _FORM_PRIORITY.get(_base_form(str(item["form"])), 9),
+            item["published_at"],
+            item["symbol"],
+            item["item_id"],
+        ),
+    )
+    payload: dict[str, Any] = {
+        "schema_version": SEC_PLAN_SCHEMA,
+        "source_artifact": _artifact_identity(source_path),
+        "selection": {
+            "kind": "filing",
+            "forms": sorted(selected_forms),
+            "allowed_url_prefix": f"https://{_SEC_ARCHIVE_HOST}{_SEC_ARCHIVE_PREFIX}",
+            "availability_policy": "next_utc_day_after_legacy_available_date",
+        },
+        "request_count": len(items),
+        "items": items,
+    }
+    payload["plan_hash"] = _canonical_hash(payload)
+    _atomic_write_json(Path(output_path), payload)
+    return payload
+
+
+def load_sec_filing_backfill_plan(path: str | Path) -> dict[str, Any]:
+    """Load and validate one exact SEC backfill plan."""
+
+    payload = _read_json(Path(path))
+    if payload.get("schema_version") != SEC_PLAN_SCHEMA:
+        raise ValidationError("unsupported SEC filing backfill plan schema")
+    supplied_hash = str(payload.get("plan_hash", ""))
+    without_hash = dict(payload)
+    without_hash.pop("plan_hash", None)
+    if supplied_hash != _canonical_hash(without_hash):
+        raise ValidationError("SEC filing backfill plan hash mismatch")
+    items = payload.get("items")
+    if not isinstance(items, list) or int(payload.get("request_count", -1)) != len(items):
+        raise ValidationError("SEC filing backfill plan item count mismatch")
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, Mapping):
+            raise ValidationError("SEC filing backfill item must be an object")
+        item_id = str(item.get("item_id", ""))
+        if not item_id or item_id in seen:
+            raise ValidationError("SEC filing backfill item ids must be unique")
+        seen.add(item_id)
+        if not _is_sec_archive_url(str(item.get("source_url", ""))):
+            raise ValidationError("SEC filing backfill plan contains a non-SEC URL")
+        published_at = datetime.fromisoformat(str(item["published_at"]))
+        available_at = datetime.fromisoformat(str(item["available_at"]))
+        if available_at <= published_at:
+            raise ValidationError("SEC filing availability must be after publication")
+    return payload
+
+
+def preview_sec_filing_backfill(
+    *,
+    plan_path: str | Path,
+    raw_info_root: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+) -> dict[str, Any]:
+    """Return current exact work without performing network I/O or writes."""
+
+    plan = load_sec_filing_backfill_plan(plan_path)
+    progress = _load_progress(Path(progress_path), str(plan["plan_hash"]))
+    completed = dict(progress.get("completed", {}))
+    cached = 0
+    pending = 0
+    for item in plan["items"]:
+        if item["item_id"] in completed:
+            continue
+        pending += 1
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILING_DOCUMENTS,
+            "GET",
+            str(item["source_url"]),
+        )
+        cached += int(cache.get_text(key) is not None)
+    return {
+        "status": "zero_network_preview",
+        "plan_hash": plan["plan_hash"],
+        "request_count": plan["request_count"],
+        "completed_count": len(completed),
+        "pending_count": pending,
+        "pending_cache_hits": cached,
+        "maximum_new_network_requests": pending - cached,
+        "raw_info_root": str(Path(raw_info_root).resolve()),
+        "external_calls": 0,
+    }
+
+
+def run_sec_filing_backfill(
+    *,
+    plan_path: str | Path,
+    raw_info_root: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+    client: SecFilingBodyClient,
+    max_network_requests: int,
+    now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+) -> dict[str, Any]:
+    """Execute/resume one bounded SEC primary-document backfill invocation."""
+
+    if max_network_requests < 0:
+        raise ValidationError("max_network_requests must be non-negative")
+    plan = load_sec_filing_backfill_plan(plan_path)
+    plan_hash = str(plan["plan_hash"])
+    state_path = Path(progress_path)
+    progress = _load_progress(state_path, plan_hash)
+    completed: dict[str, Any] = dict(progress.get("completed", {}))
+    failures: list[dict[str, Any]] = list(progress.get("failures", ()))
+    store = RawInfoStore(raw_info_root)
+    network_requests = 0
+    cache_hits = 0
+    appended = 0
+    reused = 0
+    failures_this_run = 0
+    last_stop = "plan_exhausted"
+
+    for item in plan["items"]:
+        item_id = str(item["item_id"])
+        if item_id in completed:
+            continue
+        source_url = str(item["source_url"])
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILING_DOCUMENTS,
+            "GET",
+            source_url,
+        )
+        was_cached = cache.get_text(key) is not None
+        if not was_cached and network_requests >= max_network_requests:
+            last_stop = "invocation_network_limit_reached"
+            break
+        filing = FilingMetadata(
+            cik=str(item["cik"]),
+            accession_number=str(item["accession_number"]),
+            filing_date=datetime.fromisoformat(str(item["published_at"])).date(),
+            report_date=None,
+            form=str(item["form"]),
+            primary_document=str(item["primary_document"]),
+            source_url=source_url,
+            retrieved_at=now(),
+        )
+        try:
+            content = client.filing_document_text(filing).strip()
+            if not content:
+                raise DataSourceError("SEC primary document body was empty")
+        except DataQuotaDeferred as exc:
+            last_stop = "source_quota_deferred"
+            progress["last_deferred"] = {
+                "item_id": item_id,
+                "next_retry_at": exc.next_retry_at.isoformat(),
+                "reason": exc.reason,
+            }
+            _store_progress(state_path, progress, completed, failures, last_stop, now())
+            break
+        except Exception as exc:
+            if not was_cached:
+                network_requests += 1
+            failures_this_run += 1
+            failures.append(
+                {
+                    "item_id": item_id,
+                    "at": now().isoformat(),
+                    "error_type": type(exc).__name__,
+                    "message": str(exc),
+                }
+            )
+            last_stop = "item_failed"
+            _store_progress(state_path, progress, completed, failures, last_stop, now())
+            continue
+        if was_cached:
+            cache_hits += 1
+        else:
+            network_requests += 1
+        content_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        raw_document_id = "secfull_" + hashlib.sha256(
+            f"{item['source_id']}:{content_hash}".encode("utf-8")
+        ).hexdigest()[:24]
+        cached = cache.get(key)
+        retrieved_at = cached.retrieved_at if cached is not None else now()
+        document = RawInfoDocument.create(
+            document_id=raw_document_id,
+            company_id=str(item["company_id"]),
+            source_type="filing",
+            published_at=datetime.fromisoformat(str(item["published_at"])),
+            available_at=datetime.fromisoformat(str(item["available_at"])),
+            content=content,
+            metadata={
+                "original_document_id": item["original_document_id"],
+                "source_id": item["source_id"],
+                "source_url": source_url,
+                "symbol": item["symbol"],
+                "cik": item["cik"],
+                "accession_number": item["accession_number"],
+                "form": item["form"],
+                "content_scope": "complete_body",
+                "legacy_content_chars": item["legacy_content_chars"],
+                "retrieved_at": retrieved_at.isoformat(),
+                "backfill_plan_hash": plan_hash,
+            },
+        )
+        did_append = store.append(document)
+        appended += int(did_append)
+        reused += int(not did_append)
+        completed[item_id] = {
+            "raw_info_document_id": raw_document_id,
+            "content_hash": content_hash,
+            "content_chars": len(content),
+            "cache_key": key.digest,
+            "completed_at": now().isoformat(),
+        }
+        last_stop = "item_completed"
+        _store_progress(state_path, progress, completed, failures, last_stop, now())
+
+    pending_count = len(plan["items"]) - len(completed)
+    status = "completed" if pending_count == 0 else "paused_resumable"
+    _store_progress(state_path, progress, completed, failures, last_stop, now())
+    return {
+        "status": status,
+        "plan_hash": plan_hash,
+        "request_count": plan["request_count"],
+        "completed_count": len(completed),
+        "pending_count": pending_count,
+        "network_requests_this_run": network_requests,
+        "cache_hits_this_run": cache_hits,
+        "raw_info_appended_this_run": appended,
+        "raw_info_reused_this_run": reused,
+        "failures_this_run": failures_this_run,
+        "last_stop": last_stop,
+        "progress_path": str(state_path.resolve()),
+    }
+
+
+def _load_progress(path: Path, plan_hash: str) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "schema_version": SEC_PROGRESS_SCHEMA,
+            "plan_hash": plan_hash,
+            "completed": {},
+            "failures": [],
+        }
+    progress = _read_json(path)
+    if progress.get("schema_version") != SEC_PROGRESS_SCHEMA:
+        raise ValidationError("unsupported SEC filing backfill progress schema")
+    if progress.get("plan_hash") != plan_hash:
+        raise ValidationError("SEC filing backfill progress plan hash mismatch")
+    return progress
+
+
+def _store_progress(
+    path: Path,
+    progress: dict[str, Any],
+    completed: Mapping[str, Any],
+    failures: list[dict[str, Any]],
+    last_stop: str,
+    updated_at: datetime,
+) -> None:
+    progress.update(
+        {
+            "completed": dict(completed),
+            "failures": failures,
+            "last_stop": last_stop,
+            "updated_at": updated_at.isoformat(),
+        }
+    )
+    _atomic_write_json(path, progress)
+
+
+def _artifact_identity(path: Path) -> dict[str, Any]:
+    return {
+        "path": str(path.resolve()),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "size_bytes": path.stat().st_size,
+    }
+
+
+def _filing_form(row: Mapping[str, Any]) -> str:
+    explicit = row.get("form")
+    if explicit:
+        return _normalize_form(str(explicit))
+    text = " ".join(
+        str(row.get(key, "")) for key in ("title", "source_id", "document_id")
+    )
+    match = _FORM_PATTERN.search(text)
+    return _normalize_form(match.group(1)) if match else "OTHER"
+
+
+def _normalize_form(value: str) -> str:
+    normalized = value.strip().upper()
+    if not normalized:
+        raise ValidationError("filing form must not be empty")
+    return normalized
+
+
+def _base_form(form: str) -> str:
+    return _normalize_form(form).removesuffix("/A")
+
+
+def _form_family(form: str) -> str | None:
+    base = _base_form(form)
+    if base in {"10-K", "20-F", "40-F"}:
+        return "annual"
+    if base == "10-Q":
+        return "quarterly"
+    if base in {"8-K", "6-K"}:
+        return "event"
+    return None
+
+
+def _document_available_date(row: Mapping[str, Any]) -> date:
+    value = row.get("available_date") or row.get("published_date")
+    return _parse_date(value, "document available_date")
+
+
+def _sec_identity(source_id: str, source_url: str) -> tuple[str, str]:
+    match = re.fullmatch(r"sec:(\d+):([0-9-]+)", source_id)
+    if match:
+        return match.group(1).zfill(10), match.group(2)
+    parts = [part for part in urlsplit(source_url).path.split("/") if part]
+    try:
+        data_index = parts.index("data")
+        cik = parts[data_index + 1].zfill(10)
+        accession_compact = parts[data_index + 2]
+    except (ValueError, IndexError) as exc:
+        raise ValidationError("cannot derive SEC filing identity") from exc
+    if len(accession_compact) != 18 or not accession_compact.isdigit():
+        raise ValidationError("SEC archive URL contains invalid accession number")
+    accession = (
+        f"{accession_compact[:10]}-{accession_compact[10:12]}-"
+        f"{accession_compact[12:]}"
+    )
+    return cik, accession
+
+
+def _is_sec_archive_url(value: str) -> bool:
+    parsed = urlsplit(value)
+    return (
+        parsed.scheme == "https"
+        and parsed.hostname == _SEC_ARCHIVE_HOST
+        and parsed.path.startswith(_SEC_ARCHIVE_PREFIX)
+        and not parsed.query
+        and not parsed.fragment
+    )
+
+
+def _parse_date(value: Any, name: str) -> date:
+    if not value:
+        raise ValidationError(f"missing {name}")
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError as exc:
+        raise ValidationError(f"invalid {name}") from exc
+
+
+def _midnight_utc(value: date) -> datetime:
+    return datetime.combine(value, time.min, tzinfo=timezone.utc)
+
+
+def _company_id_from_symbol(symbol: str) -> str:
+    value = re.sub(r"[^a-z0-9_.:-]+", "_", symbol.casefold()).strip("_")
+    if not value:
+        raise ValidationError("cannot derive company_id from symbol")
+    return value
+
+
+def _length_stats(values: list[int]) -> dict[str, int]:
+    ordered = sorted(values)
+    if not ordered:
+        return {"min": 0, "median": 0, "max": 0}
+    return {
+        "min": ordered[0],
+        "median": ordered[len(ordered) // 2],
+        "max": ordered[-1],
+    }
+
+
+def _canonical_hash(value: Mapping[str, Any]) -> str:
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValidationError(f"cannot read JSON artifact: {path}") from exc
+    if not isinstance(value, dict):
+        raise ValidationError(f"JSON artifact must be an object: {path}")
+    return value
+
+
+def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            json.dump(value, handle, sort_keys=True, indent=2)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)

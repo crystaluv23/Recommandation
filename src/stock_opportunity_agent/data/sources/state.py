@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
 from dataclasses import dataclass
 from datetime import datetime, time, timedelta, timezone
 from enum import Enum
@@ -144,7 +146,7 @@ class RawDataCache:
         )
 
     def set(self, key: RawCacheKey, payload_kind: str, body: Any, retrieved_at: datetime) -> None:
-        """Store a raw response payload."""
+        """Store a raw response payload atomically."""
 
         if payload_kind not in {"json", "text"}:
             raise ValidationError("payload_kind must be json or text")
@@ -159,8 +161,17 @@ class RawDataCache:
             "retrieved_at": retrieved_at.isoformat(),
             "body": body,
         }
-        with path.open("w", encoding="utf-8") as handle:
-            json.dump(record, handle, sort_keys=True)
+        descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+        try:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                json.dump(record, handle, sort_keys=True)
+                handle.write("\n")
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temporary, path)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
 
     def _path(self, key: RawCacheKey) -> Path:
         return self.root_dir / key.source_key / key.capability.value / f"{key.digest}.json"
@@ -225,6 +236,8 @@ class RequestLedger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(entry.to_dict(), sort_keys=True) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
 
     def entries(self, *, source_key: str | None = None) -> list[RequestLedgerEntry]:
         """Return ledger entries, optionally filtered by source."""

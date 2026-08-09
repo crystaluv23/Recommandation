@@ -31,6 +31,8 @@ Post-source implementation adds active data-layer submodules:
 - [`data/point_in_time.md`](data/point_in_time.md): filter features and documents by availability and assemble `ResearchPacket` records.
 - [`data/raw_info.md`](data/raw_info.md): append-only facts and source bodies for
   adaptive Signal execution, filtered by `available_at <= prediction_time`.
+- [`data/backfill.md`](data/backfill.md): audited, bounded, resumable repair of
+  incomplete historical source bodies into append-only Raw Info.
 
 ## Data Need Rationalization
 
@@ -71,6 +73,8 @@ Do not add separate first-class source capabilities for brokerage, order routing
   source content must be a new document with its own id and lineage metadata.
 - Select sources by capability using the catalog preference order before invoking a provider.
 - Track request outcomes and source quotas so free API limits produce resumable deferred work instead of hidden partial data.
+- Audit historical coverage and backfill only exact, source-linked requests
+  under an explicit per-invocation network ceiling.
 
 ## Dependencies
 

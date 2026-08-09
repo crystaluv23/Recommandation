@@ -1,5 +1,12 @@
 """Data layer public API and registered data-source providers."""
 
+from stock_opportunity_agent.data.backfill import (
+    audit_historical_data_coverage,
+    load_sec_filing_backfill_plan,
+    preview_sec_filing_backfill,
+    run_sec_filing_backfill,
+    write_sec_filing_backfill_plan,
+)
 from stock_opportunity_agent.data.sources import create as create_source
 from stock_opportunity_agent.data.sources import get as get_source
 from stock_opportunity_agent.data.sources import registered as registered_sources
@@ -118,6 +125,7 @@ __all__ = [
     "TextTransport",
     "UrllibJsonTransport",
     "ALPHA_VANTAGE_OVERVIEW_FEATURES",
+    "audit_historical_data_coverage",
     "build_research_packet",
     "catalysts_as_of",
     "chunk_document_text",
@@ -131,11 +139,15 @@ __all__ = [
     "filing_to_evidence",
     "get_source",
     "latest_features_by_name",
+    "load_sec_filing_backfill_plan",
     "normalize_alpha_vantage_overview",
     "normalize_price_features",
     "normalize_sec_company_facts",
+    "preview_sec_filing_backfill",
     "registered_sources",
+    "run_sec_filing_backfill",
     "select_source_for_capability",
     "source_catalog_by_capability",
     "source_plan_by_capability",
+    "write_sec_filing_backfill_plan",
 ]
