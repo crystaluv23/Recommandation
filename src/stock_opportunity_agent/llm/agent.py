@@ -160,8 +160,22 @@ class GenericAgent:
             )
             usage = usage + turn.usage
             if turn.final_output is not None:
+                try:
+                    value = output_schema(turn.final_output)
+                except ValidationError as exc:
+                    observations.append(
+                        ToolObservation(
+                            name="validate_final_output",
+                            arguments={"output": turn.final_output},
+                            result={
+                                "error": "output_validation",
+                                "message": str(exc),
+                            },
+                        )
+                    )
+                    continue
                 return AgentRunResult(
-                    value=output_schema(turn.final_output),
+                    value=value,
                     observations=tuple(observations),
                     usage=usage,
                 )

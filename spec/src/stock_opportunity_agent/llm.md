@@ -37,6 +37,11 @@ timezone-free cutoff; all other exceptions raised inside a correctly bound
 domain tool still fail closed. The harness never grants arbitrary shell or
 filesystem primitives such as `ls`, `cat`, or `rm`.
 
+Final-output schema `ValidationError` exceptions follow the same bounded repair
+path: the invalid output and concise validation message are recorded as a
+`validate_final_output` observation, while the schema remains unchanged. Other
+schema exceptions fail closed.
+
 ## Usage and Limits
 
 Every model turn reports LLM calls, token count, and cost when known. `max_steps`
@@ -55,5 +60,5 @@ cost, and research-round limits.
 ## Testing
 
 Cover multi-tool trajectories, structured output validation, unknown-tool
-rejection, bounded invalid-argument repair, malformed-turn rejection, and
-maximum-step exhaustion.
+rejection, bounded invalid-argument repair, malformed-turn rejection, bounded
+output-schema repair, and maximum-step exhaustion.

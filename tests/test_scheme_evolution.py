@@ -321,6 +321,37 @@ class GenericAgentTests(TestCase):
         )
         self.assertEqual(model.requests[1].observations, result.observations)
 
+    def test_agent_returns_output_validation_error_for_bounded_repair(self) -> None:
+        def parse_answer(value):
+            if not isinstance(value, dict):
+                raise ValidationError("final output must be an object")
+            return int(value["answer"])
+
+        model = ScriptedAgentModel(
+            [
+                AgentTurn(final_output='{"answer": 4}'),
+                AgentTurn(final_output={"answer": 4}),
+            ]
+        )
+
+        result = GenericAgent(model).run(
+            prompt="Return a validated object.",
+            tools=(),
+            workspace={"scope": "fixture"},
+            output_schema=parse_answer,
+            max_steps=2,
+        )
+
+        self.assertEqual(result.value, 4)
+        self.assertEqual(
+            result.observations[0].result,
+            {
+                "error": "output_validation",
+                "message": "final output must be an object",
+            },
+        )
+        self.assertEqual(model.requests[1].observations, result.observations)
+
     def test_agent_rejects_ungranted_or_raw_tools_and_step_exhaustion(self) -> None:
         with self.assertRaisesRegex(ValidationError, "not allowed"):
             DomainTool("rm", "Remove anything.", lambda: None)

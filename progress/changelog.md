@@ -104,3 +104,4 @@
 2026-08-09: Added an explicit JSON-object instruction to every structured role request after DeepSeek correctly rejected JSON mode for a category-selection prompt that lacked the required `JSON` input token.
 2026-08-09: Made GenericAgent tool cards expose exact callable signatures and converted pre-execution argument-binding mistakes into bounded repair observations after DeepSeek omitted Slow Signal `search_raw_info.as_of`.
 2026-08-09: Let bounded GenericAgent loops return explicit domain `ValidationError` messages for model self-correction while preserving fail-closed behavior for unexpected tool exceptions.
+2026-08-09: Added bounded GenericAgent final-output schema repair after DeepSeek JSON-encoded a Slow Signal result instead of returning the required candidate-ref object; the schema remains strict.
