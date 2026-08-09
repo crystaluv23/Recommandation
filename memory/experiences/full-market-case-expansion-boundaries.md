@@ -1,6 +1,6 @@
 # Full-Market Case Expansion Boundaries
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
@@ -36,6 +36,11 @@ point-in-time observations had none. The exact first provider plan contains 237
 SEC submissions requests and three missing-CIK records, with zero external calls
 at preflight.
 
+The post-primary implementation keeps that boundary intact: only cached SEC
+`filings.files` references can create history requests, every stage has its own
+atomic progress file, and filing bodies are selected per midnight case cutoff
+from explicit acceptance timestamps or a conservative next-day fallback.
+
 ## How to Apply
 
 1. Fix calendar prediction dates before scanning outcomes.
@@ -47,6 +52,9 @@ at preflight.
 6. Split by issuer and stratum, never by individual case.
 7. Hand providers only a label-free, split-free acquisition scope.
 8. Keep API requests exact, cached, quota-bounded, and resumable.
+9. Derive SEC history files only from cached `filings.files` references, then
+   select bounded primary documents by timezone-aware acceptance time; when that
+   time is absent or timezone-naive, use next-day UTC rather than guessing.
 
 ## Limits
 

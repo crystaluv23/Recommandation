@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date
+import re
+from datetime import date, datetime, timezone
 from typing import Any
 
 from stock_opportunity_agent.config import DataSourceConfig
@@ -51,6 +52,16 @@ class SecEdgarClient:
 
         return self.transport.get_json(
             f"{self.base_url}/submissions/CIK{format_cik(cik)}.json",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+
+    def historical_submissions(self, filename: str) -> dict[str, Any]:
+        """Return one exact SEC-referenced historical submissions JSON file."""
+
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.json", filename):
+            raise ValidationError("SEC historical submissions filename is unsafe")
+        return self.transport.get_json(
+            f"{self.base_url}/submissions/{filename}",
             {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
         )
 
@@ -119,6 +130,9 @@ class SecEdgarClient:
             cik_padded = format_cik(cik)
             cik_no_zeros = str(int(cik_padded))
             accession_path = accession.replace("-", "")
+            accepted_at = _optional_aware_datetime(
+                array_get(recent, "acceptanceDateTime", index)
+            )
             filings.append(
                 FilingMetadata(
                     cik=cik_padded,
@@ -132,6 +146,7 @@ class SecEdgarClient:
                         f"{cik_no_zeros}/{accession_path}/{primary_document}"
                     ),
                     retrieved_at=utc_now(),
+                    accepted_at=accepted_at,
                 )
             )
         return filings
@@ -153,3 +168,15 @@ def source(config: DataSourceConfig, transport: JsonTransport | None = None) -> 
     """Registered SEC EDGAR source factory."""
 
     return SecEdgarClient.from_config(config, transport=transport)
+
+
+def _optional_aware_datetime(value: Any) -> datetime | None:
+    if not value or str(value).casefold() in {"none", "null", "nan", "-"}:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc)

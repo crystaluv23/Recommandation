@@ -10,12 +10,17 @@ from stock_opportunity_agent.data.backfill import (
     audit_expanded_acquisition_coverage,
     audit_historical_data_coverage,
     load_sec_filing_backfill_plan,
+    load_sec_historical_submissions_plan,
     load_sec_submissions_backfill_plan,
     preview_sec_filing_backfill,
+    preview_sec_historical_submissions_backfill,
     preview_sec_submissions_backfill,
     run_sec_filing_backfill,
+    run_sec_historical_submissions_backfill,
     run_sec_submissions_backfill,
     write_sec_filing_backfill_plan,
+    write_sec_filing_plan_from_submissions,
+    write_sec_historical_submissions_plan,
     write_sec_submissions_backfill_plan,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoStore
@@ -411,6 +416,267 @@ class HistoricalDataBackfillTests(unittest.TestCase):
             self.assertEqual(resumed["network_requests_this_run"], 0)
             self.assertEqual(inner.calls, 1)
 
+    def test_sec_history_and_body_plans_are_resumable_and_point_in_time(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            primary_path = _one_company_submissions_plan(root)
+            history_path = root / "history_plan.json"
+            body_path = root / "body_plan.json"
+            cache = RawDataCache(root / "cache")
+
+            with self.assertRaisesRegex(ValidationError, "primary submissions cache"):
+                write_sec_historical_submissions_plan(
+                    primary_plan_path=primary_path,
+                    cache=cache,
+                    output_path=history_path,
+                )
+
+            primary_plan = load_sec_submissions_backfill_plan(primary_path)
+            primary_item = primary_plan["items"][0]
+            primary_response = {
+                "cik": "1234",
+                "filings": {
+                    "recent": _filing_table(
+                        [
+                            (
+                                "0000001234-25-000001",
+                                "2025-02-20",
+                                "2024-12-31",
+                                "2025-02-20T16:30:00-05:00",
+                                "10-K",
+                                "abc-20241231.htm",
+                            ),
+                            (
+                                "0000001234-25-000002",
+                                "2025-03-31",
+                                "2025-03-31",
+                                "2025-03-31T18:00:00Z",
+                                "8-K",
+                                "abc-20250331.htm",
+                            ),
+                            (
+                                "0000001234-24-000003",
+                                "2024-09-29",
+                                "2024-06-30",
+                                None,
+                                "10-Q",
+                                "abc-20240630.htm",
+                            ),
+                        ]
+                    ),
+                    "files": [
+                        {
+                            "name": "CIK0000001234-submissions-001.json",
+                            "filingCount": 4,
+                            "filingFrom": "2023-01-01",
+                            "filingTo": "2024-09-30",
+                        },
+                        {
+                            "name": "CIK0000001234-submissions-002.json",
+                            "filingCount": 4,
+                            "filingFrom": "2018-01-01",
+                            "filingTo": "2020-12-31",
+                        },
+                    ],
+                },
+            }
+            _cache_plan_item(cache, primary_item, primary_response)
+
+            history_plan = write_sec_historical_submissions_plan(
+                primary_plan_path=primary_path,
+                cache=cache,
+                output_path=history_path,
+                metadata_lookback_days=550,
+            )
+            self.assertEqual(history_plan["request_count"], 1)
+            self.assertEqual(
+                history_plan["items"][0]["filename"],
+                "CIK0000001234-submissions-001.json",
+            )
+            self.assertEqual(load_sec_historical_submissions_plan(history_path), history_plan)
+            preview = preview_sec_historical_submissions_backfill(
+                plan_path=history_path,
+                cache=cache,
+                progress_path=root / "history_progress.json",
+            )
+            self.assertEqual(preview["maximum_new_network_requests"], 1)
+            self.assertEqual(preview["external_calls"], 0)
+
+            with self.assertRaisesRegex(ValidationError, "metadata cache is incomplete"):
+                write_sec_filing_plan_from_submissions(
+                    primary_plan_path=primary_path,
+                    historical_plan_path=history_path,
+                    cache=cache,
+                    output_path=body_path,
+                )
+
+            history_response = _filing_table(
+                [
+                    (
+                        "0000001234-24-000003",
+                        "2024-09-29",
+                        "2024-06-30",
+                        "2024-09-29T20:00:00Z",
+                        "10-Q",
+                        "abc-20240630.htm",
+                    ),
+                    (
+                        "0000001234-23-000004",
+                        "2023-03-01",
+                        "2022-12-31",
+                        None,
+                        "10-K",
+                        "abc-20221231.htm",
+                    ),
+                    (
+                        "0000001234-24-000005",
+                        "2024-09-01",
+                        "2024-09-01",
+                        "2024-09-01T12:00:00Z",
+                        "8-K",
+                        "abc-20240901.htm",
+                    ),
+                    (
+                        "0000001234-25-000006",
+                        "2025-04-01",
+                        "2025-04-01",
+                        "2025-04-01T12:00:00Z",
+                        "8-K",
+                        "abc-20250401.htm",
+                    ),
+                ]
+            )
+            inner = FakeSecJsonTransport(history_response)
+            client = _managed_submissions_client(root, cache, inner)
+            events = []
+            executed = run_sec_historical_submissions_backfill(
+                plan_path=history_path,
+                cache=cache,
+                progress_path=root / "history_progress.json",
+                client=client,
+                max_network_requests=1,
+                now=lambda: datetime(2026, 8, 9, tzinfo=timezone.utc),
+                on_progress=events.append,
+            )
+            self.assertEqual(executed["status"], "completed")
+            self.assertEqual(executed["network_requests_this_run"], 1)
+            self.assertEqual([event["status"] for event in events], ["starting", "completed"])
+
+            resumed = run_sec_historical_submissions_backfill(
+                plan_path=history_path,
+                cache=cache,
+                progress_path=root / "history_progress.json",
+                client=client,
+                max_network_requests=0,
+            )
+            self.assertEqual(resumed["status"], "completed")
+            self.assertEqual(resumed["network_requests_this_run"], 0)
+            self.assertEqual(inner.calls, 1)
+
+            body_plan = write_sec_filing_plan_from_submissions(
+                primary_plan_path=primary_path,
+                historical_plan_path=history_path,
+                cache=cache,
+                output_path=body_path,
+                annual_per_as_of=1,
+                quarterly_per_as_of=1,
+                event_per_as_of=1,
+                event_lookback_days=120,
+            )
+            self.assertEqual(load_sec_filing_backfill_plan(body_path), body_plan)
+            accessions = {
+                item["accession_number"]: item for item in body_plan["items"]
+            }
+            self.assertEqual(
+                set(accessions),
+                {
+                    "0000001234-23-000004",
+                    "0000001234-24-000003",
+                    "0000001234-24-000005",
+                    "0000001234-25-000001",
+                },
+            )
+            self.assertNotIn("0000001234-25-000002", accessions)
+            self.assertNotIn("0000001234-25-000006", accessions)
+            duplicate = accessions["0000001234-24-000003"]
+            self.assertEqual(
+                duplicate["availability_policy"],
+                "timezone_aware_sec_acceptance_datetime",
+            )
+            self.assertEqual(
+                duplicate["metadata_sources"],
+                ["CIK0000001234-submissions-001.json", "primary_submissions"],
+            )
+            self.assertEqual(
+                accessions["0000001234-23-000004"]["availability_policy"],
+                "next_utc_day_after_filing_date",
+            )
+            serialized = json.dumps(body_plan).casefold()
+            self.assertNotIn("outcome_label", serialized)
+            self.assertNotIn('"split"', serialized)
+
+            for item in body_plan["items"]:
+                key = RawCacheKey.from_request(
+                    "sec_edgar",
+                    DataCapability.FILING_DOCUMENTS,
+                    "GET",
+                    item["source_url"],
+                )
+                cache.set_text(
+                    key,
+                    "cached complete SEC filing body " * 100,
+                    datetime(2026, 8, 9, tzinfo=timezone.utc),
+                )
+            body_inner = FakeSecTransport("must not be fetched")
+            body_client = _managed_client(root, cache, body_inner)
+            body_result = run_sec_filing_backfill(
+                plan_path=body_path,
+                raw_info_root=root / "raw_info",
+                cache=cache,
+                progress_path=root / "body_progress.json",
+                client=body_client,
+                max_network_requests=0,
+            )
+            self.assertEqual(body_result["status"], "completed")
+            self.assertEqual(body_result["network_requests_this_run"], 0)
+            self.assertEqual(body_result["cache_hits_this_run"], 4)
+            self.assertEqual(body_inner.calls, 0)
+            stored = RawInfoStore(root / "raw_info").documents
+            self.assertEqual(len(stored), 4)
+            self.assertTrue(all(row.metadata["metadata_sources"] for row in stored))
+            self.assertTrue(
+                all(row.metadata["required_as_of_dates"] for row in stored)
+            )
+
+    def test_sec_history_plan_rejects_unsafe_provider_filename(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            primary_path = _one_company_submissions_plan(root)
+            plan = load_sec_submissions_backfill_plan(primary_path)
+            response = {
+                "cik": "1234",
+                "filings": {
+                    "recent": _filing_table([]),
+                    "files": [
+                        {
+                            "name": "../secret.json",
+                            "filingCount": 1,
+                            "filingFrom": "2024-01-01",
+                            "filingTo": "2024-09-30",
+                        }
+                    ],
+                },
+            }
+            cache = RawDataCache(root / "cache")
+            _cache_plan_item(cache, plan["items"][0], response)
+
+            with self.assertRaisesRegex(ValidationError, "unsafe"):
+                write_sec_historical_submissions_plan(
+                    primary_plan_path=primary_path,
+                    cache=cache,
+                    output_path=root / "history_plan.json",
+                )
+
 
 def _managed_client(root: Path, cache: RawDataCache, inner: FakeSecTransport) -> SecEdgarClient:
     ledger = RequestLedger(root / "ledger.jsonl")
@@ -451,6 +717,63 @@ def _one_item_plan(root: Path) -> Path:
     )
     write_sec_filing_backfill_plan(documents_path=documents, output_path=plan)
     return plan
+
+
+def _one_company_submissions_plan(root: Path) -> Path:
+    scope = root / "acquisition_scope.json"
+    plan = root / "submissions_plan.json"
+    _write_json(
+        scope,
+        {
+            "schema_version": "expanded-case-acquisition-scope-v1",
+            "source_inventory_hash": "b" * 64,
+            "prediction_dates": ["2024-09-30", "2025-03-31"],
+            "company_count": 1,
+            "companies": [
+                {
+                    "company_id": "cik_0000001234",
+                    "cik": "1234",
+                    "symbol": "ABC",
+                    "company_name": "ABC Corp",
+                }
+            ],
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+    )
+    write_sec_submissions_backfill_plan(
+        acquisition_scope_path=scope,
+        output_path=plan,
+    )
+    return plan
+
+
+def _filing_table(
+    rows: list[tuple[str, str, str, str | None, str, str]],
+) -> dict[str, list[object]]:
+    columns = list(zip(*rows)) if rows else [()] * 6
+    return {
+        "accessionNumber": list(columns[0]),
+        "filingDate": list(columns[1]),
+        "reportDate": list(columns[2]),
+        "acceptanceDateTime": list(columns[3]),
+        "form": list(columns[4]),
+        "primaryDocument": list(columns[5]),
+    }
+
+
+def _cache_plan_item(
+    cache: RawDataCache,
+    item: dict[str, object],
+    response: dict[str, object],
+) -> None:
+    key = RawCacheKey.from_request(
+        "sec_edgar",
+        DataCapability.FILINGS,
+        "GET",
+        str(item["source_url"]),
+    )
+    cache.set_json(key, response, datetime(2026, 8, 9, tzinfo=timezone.utc))
 
 
 def _case(symbol: str, as_of_date: str, *, industry: str) -> dict[str, object]:

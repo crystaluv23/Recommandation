@@ -13,10 +13,14 @@ from stock_opportunity_agent.data.backfill import (
     audit_expanded_acquisition_coverage,
     audit_historical_data_coverage,
     preview_sec_filing_backfill,
+    preview_sec_historical_submissions_backfill,
     preview_sec_submissions_backfill,
     run_sec_filing_backfill,
+    run_sec_historical_submissions_backfill,
     run_sec_submissions_backfill,
     write_sec_filing_backfill_plan,
+    write_sec_filing_plan_from_submissions,
+    write_sec_historical_submissions_plan,
     write_sec_submissions_backfill_plan,
 )
 from stock_opportunity_agent.data.sources.catalog import DataCapability
@@ -47,8 +51,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Audit local historical coverage and run bounded, resumable source backfills. "
-            "All commands are zero-network unless run-sec-filings receives a positive "
-            "--max-network-requests value."
+            "All commands are zero-network unless a run-sec-* command receives a "
+            "positive --max-network-requests value."
         )
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -90,6 +94,33 @@ def build_parser() -> argparse.ArgumentParser:
     )
     submissions_plan.add_argument("--output", type=Path, required=True)
 
+    history_plan = subparsers.add_parser(
+        "plan-sec-history",
+        help="derive exact SEC history-file requests from cached primary submissions",
+    )
+    history_plan.add_argument("--primary-plan", type=Path, required=True)
+    history_plan.add_argument("--workspace", type=Path, required=True)
+    history_plan.add_argument("--output", type=Path, required=True)
+    history_plan.add_argument("--metadata-lookback-days", type=int, default=550)
+
+    discovered_filings = subparsers.add_parser(
+        "plan-sec-filing-bodies",
+        help="derive exact accepted-time filing body requests from cached SEC metadata",
+    )
+    discovered_filings.add_argument("--primary-plan", type=Path, required=True)
+    discovered_filings.add_argument("--historical-plan", type=Path, required=True)
+    discovered_filings.add_argument("--workspace", type=Path, required=True)
+    discovered_filings.add_argument("--output", type=Path, required=True)
+    discovered_filings.add_argument(
+        "--forms",
+        nargs="+",
+        default=("10-K", "20-F", "40-F", "10-Q", "8-K", "6-K"),
+    )
+    discovered_filings.add_argument("--annual-per-as-of", type=int, default=2)
+    discovered_filings.add_argument("--quarterly-per-as-of", type=int, default=4)
+    discovered_filings.add_argument("--event-per-as-of", type=int, default=8)
+    discovered_filings.add_argument("--event-lookback-days", type=int, default=120)
+
     run = subparsers.add_parser(
         "run-sec-filings",
         help="preview or execute a bounded SEC primary-document backfill",
@@ -106,6 +137,14 @@ def build_parser() -> argparse.ArgumentParser:
     submissions_run.add_argument("--plan", type=Path, required=True)
     submissions_run.add_argument("--workspace", type=Path, required=True)
     submissions_run.add_argument("--max-network-requests", type=int, default=0)
+
+    history_run = subparsers.add_parser(
+        "run-sec-history",
+        help="preview or execute bounded SEC historical submissions discovery",
+    )
+    history_run.add_argument("--plan", type=Path, required=True)
+    history_run.add_argument("--workspace", type=Path, required=True)
+    history_run.add_argument("--max-network-requests", type=int, default=0)
     return parser
 
 
@@ -136,6 +175,25 @@ def main() -> int:
             acquisition_scope_path=args.acquisition_scope,
             output_path=args.output,
         )
+    elif args.command == "plan-sec-history":
+        result = write_sec_historical_submissions_plan(
+            primary_plan_path=args.primary_plan,
+            cache=RawDataCache(args.workspace / "raw_cache"),
+            output_path=args.output,
+            metadata_lookback_days=args.metadata_lookback_days,
+        )
+    elif args.command == "plan-sec-filing-bodies":
+        result = write_sec_filing_plan_from_submissions(
+            primary_plan_path=args.primary_plan,
+            historical_plan_path=args.historical_plan,
+            cache=RawDataCache(args.workspace / "raw_cache"),
+            output_path=args.output,
+            forms=args.forms,
+            annual_per_as_of=args.annual_per_as_of,
+            quarterly_per_as_of=args.quarterly_per_as_of,
+            event_per_as_of=args.event_per_as_of,
+            event_lookback_days=args.event_lookback_days,
+        )
     elif args.command == "run-sec-submissions":
         if args.max_network_requests < 0:
             raise ValidationError("--max-network-requests must be non-negative")
@@ -154,6 +212,31 @@ def main() -> int:
                 capability=DataCapability.FILINGS,
             )
             result = run_sec_submissions_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+                client=client,
+                max_network_requests=args.max_network_requests,
+                on_progress=_print_progress,
+            )
+    elif args.command == "run-sec-history":
+        if args.max_network_requests < 0:
+            raise ValidationError("--max-network-requests must be non-negative")
+        cache = RawDataCache(args.workspace / "raw_cache")
+        progress_path = args.workspace / "sec_history_backfill_progress.json"
+        if args.max_network_requests == 0:
+            result = preview_sec_historical_submissions_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+            )
+        else:
+            client = _managed_sec_client(
+                workspace=args.workspace,
+                cache=cache,
+                capability=DataCapability.FILINGS,
+            )
+            result = run_sec_historical_submissions_backfill(
                 plan_path=args.plan,
                 cache=cache,
                 progress_path=progress_path,
@@ -188,7 +271,12 @@ def main() -> int:
                 max_network_requests=args.max_network_requests,
                 on_progress=_print_progress,
             )
-    if args.command in {"plan-sec-filings", "plan-sec-submissions"}:
+    if args.command in {
+        "plan-sec-filings",
+        "plan-sec-submissions",
+        "plan-sec-history",
+        "plan-sec-filing-bodies",
+    }:
         result = {
             "status": "exact_plan_written",
             "plan_path": str(args.output.resolve()),

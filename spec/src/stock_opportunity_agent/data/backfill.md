@@ -39,7 +39,7 @@ plus an explicit list of companies whose CIK is missing. Its executor stores
 raw JSON only in the managed cache and records durable per-CIK progress. It does
 not yet fetch primary documents or write Raw Info.
 
-After submissions metadata is cached, a later deterministic stage may derive:
+After submissions metadata is cached, deterministic stages derive:
 
 1. exact referenced historical submissions-file requests needed to cover the
    requested as-of dates; and
@@ -48,6 +48,27 @@ After submissions metadata is cached, a later deterministic stage may derive:
 
 The two-stage plan prevents an open-ended crawl and avoids constructing document
 URLs before SEC metadata identifies the accession and primary document.
+
+Historical submissions-file selection uses only SEC's `filings.files` entries.
+The referenced filename must be a safe basename under
+`https://data.sec.gov/submissions/`; its declared `filingFrom`/`filingTo` range
+must overlap the exact metadata window. The default metadata window begins 550
+calendar days before the earliest requested as-of and ends at the latest
+requested as-of. Every primary CIK response must exist in raw cache before the
+historical-file plan is written, and every planned historical response must be
+cached before the filing-body plan is written.
+
+The filing-body planner combines `filings.recent` arrays with selected historical
+arrays, deduplicates by CIK/accession, and applies these bounded defaults at each
+as-of:
+
+- latest two annual forms (`10-K`, `20-F`, `40-F`);
+- latest four quarterly forms (`10-Q`); and
+- latest eight event forms (`8-K`, `6-K`) accepted in the preceding 120 days.
+
+The union across all as-of dates becomes the exact primary-document plan. Forms,
+lookbacks, and per-as-of limits are serialized into the plan and changing them
+produces a new hash.
 
 ## Point-in-Time Contract
 
@@ -62,8 +83,11 @@ available_at = 00:00 UTC on the day after legacy available_date
 ```
 
 `published_at` remains the original filing date. A later submissions-based
-backfill may use the exact acceptance timestamp, but it must never weaken this
-boundary by substituting current retrieval time or same-day midnight.
+backfill uses an SEC `acceptanceDateTime` only when it includes an explicit time
+zone. A missing or timezone-naive acceptance value falls back to next-day UTC;
+it must never be interpreted as same-day midnight or replaced with retrieval
+time. Each plan records the raw acceptance value, derived availability time,
+policy, and the as-of dates for which the filing was selected.
 
 ## Persistence and Resume
 
@@ -119,4 +143,8 @@ resume, transient failure retry, and conflicting progress rejection. Expanded
 scope tests additionally prove outcome/split fields are absent, exact CIK
 submissions URLs are planned, missing CIKs stay explicit, cached discovery
 resumes with zero network calls, and metadata completion is not misreported as
-filing-body completion.
+filing-body completion. Historical-stage tests cover safe referenced filenames,
+date-range overlap, incomplete-parent rejection, cache-only plan derivation,
+primary/historical array merging, accession deduplication, timezone-aware versus
+conservative availability, bounded per-family selection, and exact body-plan
+replay.

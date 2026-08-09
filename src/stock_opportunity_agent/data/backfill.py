@@ -29,6 +29,9 @@ SEC_PLAN_SCHEMA = "sec-filing-backfill-plan-v1"
 SEC_PROGRESS_SCHEMA = "sec-filing-backfill-progress-v1"
 SEC_SUBMISSIONS_PLAN_SCHEMA = "sec-submissions-backfill-plan-v1"
 SEC_SUBMISSIONS_PROGRESS_SCHEMA = "sec-submissions-backfill-progress-v1"
+SEC_HISTORICAL_SUBMISSIONS_PLAN_SCHEMA = "sec-historical-submissions-plan-v1"
+SEC_HISTORICAL_SUBMISSIONS_PROGRESS_SCHEMA = "sec-historical-submissions-progress-v1"
+SEC_DISCOVERED_FILING_PLAN_SCHEMA = "sec-discovered-filing-backfill-plan-v1"
 _SEC_ARCHIVE_HOST = "www.sec.gov"
 _SEC_ARCHIVE_PREFIX = "/Archives/edgar/data/"
 _SEC_DATA_HOST = "data.sec.gov"
@@ -60,6 +63,13 @@ class SecSubmissionsClient(Protocol):
 
     def submissions(self, cik: str) -> dict[str, Any]:
         """Return one exact SEC submissions JSON object."""
+
+
+class SecHistoricalSubmissionsClient(Protocol):
+    """Provider boundary for exact SEC-referenced history files."""
+
+    def historical_submissions(self, filename: str) -> dict[str, Any]:
+        """Return one exact historical submissions JSON object."""
 
 
 def audit_historical_data_coverage(
@@ -708,11 +718,517 @@ def run_sec_submissions_backfill(
     }
 
 
+def write_sec_historical_submissions_plan(
+    *,
+    primary_plan_path: str | Path,
+    cache: RawDataCache,
+    output_path: str | Path,
+    metadata_lookback_days: int = 550,
+) -> dict[str, Any]:
+    """Derive exact SEC history-file requests from cached primary submissions."""
+
+    if metadata_lookback_days < 1:
+        raise ValidationError("metadata_lookback_days must be positive")
+    primary_path = Path(primary_plan_path)
+    primary = load_sec_submissions_backfill_plan(primary_path)
+    raw_dates = primary.get("selection", {}).get("prediction_dates", ())
+    if not isinstance(raw_dates, list) or not raw_dates:
+        raise ValidationError("primary SEC plan prediction dates are missing")
+    prediction_dates = sorted(
+        _parse_date(value, "SEC primary prediction date") for value in raw_dates
+    )
+    window_start = prediction_dates[0] - timedelta(days=metadata_lookback_days)
+    window_end = prediction_dates[-1]
+    missing_primary: list[str] = []
+    items_by_id: dict[str, dict[str, Any]] = {}
+    for primary_item in primary["items"]:
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILINGS,
+            "GET",
+            str(primary_item["source_url"]),
+        )
+        response = cache.get_json(key)
+        if response is None:
+            missing_primary.append(str(primary_item["item_id"]))
+            continue
+        _validate_submissions_response(response, str(primary_item["cik"]))
+        files = response.get("filings", {}).get("files", ())
+        if not isinstance(files, list):
+            raise DataSourceError("SEC submissions response filings.files must be a list")
+        for file_row in files:
+            if not isinstance(file_row, Mapping):
+                raise DataSourceError("SEC historical submissions reference must be an object")
+            filename = _validated_sec_history_filename(file_row.get("name"))
+            filing_from = _parse_date(
+                file_row.get("filingFrom"), "SEC history filingFrom"
+            )
+            filing_to = _parse_date(file_row.get("filingTo"), "SEC history filingTo")
+            if filing_to < filing_from:
+                raise DataSourceError("SEC history filing range is reversed")
+            if filing_to < window_start or filing_from > window_end:
+                continue
+            item_id = "sechist_" + _canonical_hash(
+                {"cik": primary_item["cik"], "filename": filename}
+            )[:24]
+            item = {
+                "item_id": item_id,
+                "company_id": primary_item["company_id"],
+                "symbol": primary_item["symbol"],
+                "cik": primary_item["cik"],
+                "filename": filename,
+                "source_url": f"https://{_SEC_DATA_HOST}/submissions/{filename}",
+                "filing_from": filing_from.isoformat(),
+                "filing_to": filing_to.isoformat(),
+                "filing_count": int(file_row.get("filingCount") or 0),
+            }
+            existing = items_by_id.get(item_id)
+            if existing is not None and existing != item:
+                raise ValidationError(f"conflicting SEC history plan item: {item_id}")
+            items_by_id[item_id] = item
+    if missing_primary:
+        raise ValidationError(
+            "SEC primary submissions cache is incomplete for historical planning: "
+            f"{len(missing_primary)} missing"
+        )
+    items = sorted(
+        items_by_id.values(),
+        key=lambda item: (item["cik"], item["filing_from"], item["filename"]),
+    )
+    payload: dict[str, Any] = {
+        "schema_version": SEC_HISTORICAL_SUBMISSIONS_PLAN_SCHEMA,
+        "source_artifact": _artifact_identity(primary_path),
+        "parent_plan_hash": primary["plan_hash"],
+        "selection": {
+            "kind": "sec_historical_submissions_metadata",
+            "metadata_lookback_days": metadata_lookback_days,
+            "metadata_window_start": window_start.isoformat(),
+            "metadata_window_end": window_end.isoformat(),
+            "prediction_dates": [value.isoformat() for value in prediction_dates],
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+        "primary_response_count": len(primary["items"]),
+        "request_count": len(items),
+        "items": items,
+    }
+    payload["plan_hash"] = _canonical_hash(payload)
+    _atomic_write_json(Path(output_path), payload)
+    return payload
+
+
+def load_sec_historical_submissions_plan(path: str | Path) -> dict[str, Any]:
+    """Load and validate an exact SEC historical-submissions plan."""
+
+    payload = _read_json(Path(path))
+    if payload.get("schema_version") != SEC_HISTORICAL_SUBMISSIONS_PLAN_SCHEMA:
+        raise ValidationError("unsupported SEC historical submissions plan schema")
+    supplied_hash = str(payload.get("plan_hash", ""))
+    without_hash = dict(payload)
+    without_hash.pop("plan_hash", None)
+    if supplied_hash != _canonical_hash(without_hash):
+        raise ValidationError("SEC historical submissions plan hash mismatch")
+    items = payload.get("items")
+    if not isinstance(items, list) or int(payload.get("request_count", -1)) != len(items):
+        raise ValidationError("SEC historical submissions plan item count mismatch")
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, Mapping):
+            raise ValidationError("SEC historical submissions item must be an object")
+        item_id = str(item.get("item_id") or "")
+        if not item_id or item_id in seen:
+            raise ValidationError("SEC historical submissions item ids must be unique")
+        seen.add(item_id)
+        filename = _validated_sec_history_filename(item.get("filename"))
+        if item.get("source_url") != f"https://{_SEC_DATA_HOST}/submissions/{filename}":
+            raise ValidationError("SEC historical submissions plan contains invalid URL")
+        if _parse_date(item.get("filing_to"), "filing_to") < _parse_date(
+            item.get("filing_from"), "filing_from"
+        ):
+            raise ValidationError("SEC historical submissions range is reversed")
+    return payload
+
+
+def preview_sec_historical_submissions_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+) -> dict[str, Any]:
+    """Describe exact historical metadata work without network I/O or writes."""
+
+    plan = load_sec_historical_submissions_plan(plan_path)
+    progress = _load_historical_submissions_progress(
+        Path(progress_path), str(plan["plan_hash"])
+    )
+    completed = dict(progress.get("completed", {}))
+    cached = 0
+    pending = 0
+    for item in plan["items"]:
+        if item["item_id"] in completed:
+            continue
+        pending += 1
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILINGS,
+            "GET",
+            str(item["source_url"]),
+        )
+        cached += int(cache.get_json(key) is not None)
+    return {
+        "status": "zero_network_preview",
+        "stage": "sec_historical_submissions_metadata",
+        "plan_hash": plan["plan_hash"],
+        "request_count": plan["request_count"],
+        "completed_count": len(completed),
+        "pending_count": pending,
+        "pending_cache_hits": cached,
+        "maximum_new_network_requests": pending - cached,
+        "filing_bodies_completed": 0,
+        "external_calls": 0,
+    }
+
+
+def run_sec_historical_submissions_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+    client: SecHistoricalSubmissionsClient,
+    max_network_requests: int,
+    now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+    on_progress: Callable[[Mapping[str, Any]], None] | None = None,
+) -> dict[str, Any]:
+    """Execute/resume bounded SEC historical submissions discovery."""
+
+    if max_network_requests < 0:
+        raise ValidationError("max_network_requests must be non-negative")
+    plan = load_sec_historical_submissions_plan(plan_path)
+    plan_hash = str(plan["plan_hash"])
+    state_path = Path(progress_path)
+    progress = _load_historical_submissions_progress(state_path, plan_hash)
+    completed: dict[str, Any] = dict(progress.get("completed", {}))
+    failures: list[dict[str, Any]] = list(progress.get("failures", ()))
+    network_requests = 0
+    cache_hits = 0
+    failures_this_run = 0
+    last_stop = "plan_exhausted"
+    for item_index, item in enumerate(plan["items"], start=1):
+        item_id = str(item["item_id"])
+        if item_id in completed:
+            continue
+        key = RawCacheKey.from_request(
+            "sec_edgar",
+            DataCapability.FILINGS,
+            "GET",
+            str(item["source_url"]),
+        )
+        was_cached = cache.get_json(key) is not None
+        if not was_cached and network_requests >= max_network_requests:
+            last_stop = "invocation_network_limit_reached"
+            _emit_progress(
+                on_progress,
+                stage="sec_historical_submissions_metadata",
+                status="paused_network_limit",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=False,
+            )
+            break
+        _emit_progress(
+            on_progress,
+            stage="sec_historical_submissions_metadata",
+            status="starting",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+        try:
+            response = client.historical_submissions(str(item["filename"]))
+            filing_rows = _filing_rows_from_submission_payload(response)
+        except DataQuotaDeferred as exc:
+            last_stop = "source_quota_deferred"
+            progress["last_deferred"] = {
+                "item_id": item_id,
+                "next_retry_at": exc.next_retry_at.isoformat(),
+                "reason": exc.reason,
+            }
+            _store_historical_submissions_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_historical_submissions_metadata",
+                status="quota_deferred",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            break
+        except Exception as exc:
+            if not was_cached:
+                network_requests += 1
+            failures_this_run += 1
+            failures.append(
+                {
+                    "item_id": item_id,
+                    "at": now().isoformat(),
+                    "error_type": type(exc).__name__,
+                    "message": str(exc),
+                }
+            )
+            last_stop = "item_failed"
+            _store_historical_submissions_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_historical_submissions_metadata",
+                status="failed",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            continue
+        if was_cached:
+            cache_hits += 1
+        else:
+            network_requests += 1
+        cached = cache.get(key)
+        retrieved_at = cached.retrieved_at if cached is not None else now()
+        completed[item_id] = {
+            "cache_key": key.digest,
+            "response_hash": _canonical_hash(response),
+            "filing_count": len(filing_rows),
+            "retrieved_at": retrieved_at.isoformat(),
+            "completed_at": now().isoformat(),
+        }
+        last_stop = "item_completed"
+        _store_historical_submissions_progress(
+            state_path, progress, completed, failures, last_stop, now()
+        )
+        _emit_progress(
+            on_progress,
+            stage="sec_historical_submissions_metadata",
+            status="completed",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+    pending_count = len(plan["items"]) - len(completed)
+    status = "completed" if pending_count == 0 else "paused_resumable"
+    _store_historical_submissions_progress(
+        state_path, progress, completed, failures, last_stop, now()
+    )
+    return {
+        "status": status,
+        "stage": "sec_historical_submissions_metadata",
+        "plan_hash": plan_hash,
+        "request_count": plan["request_count"],
+        "completed_count": len(completed),
+        "pending_count": pending_count,
+        "network_requests_this_run": network_requests,
+        "cache_hits_this_run": cache_hits,
+        "failures_this_run": failures_this_run,
+        "filing_bodies_completed": 0,
+        "last_stop": last_stop,
+        "progress_path": str(state_path.resolve()),
+    }
+
+
+def write_sec_filing_plan_from_submissions(
+    *,
+    primary_plan_path: str | Path,
+    historical_plan_path: str | Path,
+    cache: RawDataCache,
+    output_path: str | Path,
+    forms: Iterable[str] = ("10-K", "20-F", "40-F", "10-Q", "8-K", "6-K"),
+    annual_per_as_of: int = 2,
+    quarterly_per_as_of: int = 4,
+    event_per_as_of: int = 8,
+    event_lookback_days: int = 120,
+) -> dict[str, Any]:
+    """Build an exact accepted-time filing-body plan from cached SEC metadata."""
+
+    for name, value in (
+        ("annual_per_as_of", annual_per_as_of),
+        ("quarterly_per_as_of", quarterly_per_as_of),
+        ("event_per_as_of", event_per_as_of),
+        ("event_lookback_days", event_lookback_days),
+    ):
+        if value < 1:
+            raise ValidationError(f"{name} must be positive")
+    selected_forms = {_base_form(value) for value in forms}
+    if not selected_forms:
+        raise ValidationError("discovered filing plan requires at least one form")
+    primary_path = Path(primary_plan_path)
+    historical_path = Path(historical_plan_path)
+    primary = load_sec_submissions_backfill_plan(primary_path)
+    historical = load_sec_historical_submissions_plan(historical_path)
+    if historical.get("parent_plan_hash") != primary.get("plan_hash"):
+        raise ValidationError("SEC historical plan does not belong to primary plan")
+    raw_dates = primary.get("selection", {}).get("prediction_dates", ())
+    if not isinstance(raw_dates, list) or not raw_dates:
+        raise ValidationError("SEC filing plan prediction dates are missing")
+    prediction_dates = sorted(
+        _parse_date(value, "SEC filing prediction date") for value in raw_dates
+    )
+
+    rows_by_company: dict[str, dict[tuple[str, str], dict[str, Any]]] = {}
+    missing_metadata: list[str] = []
+    excluded_reasons: Counter[str] = Counter()
+    for item in primary["items"]:
+        response = _cached_json_for_plan_item(cache, item)
+        if response is None:
+            missing_metadata.append(str(item["item_id"]))
+            continue
+        _validate_submissions_response(response, str(item["cik"]))
+        _merge_filing_rows(
+            rows_by_company,
+            plan_item=item,
+            payload=response,
+            metadata_source="primary_submissions",
+            excluded_reasons=excluded_reasons,
+        )
+    for item in historical["items"]:
+        response = _cached_json_for_plan_item(cache, item)
+        if response is None:
+            missing_metadata.append(str(item["item_id"]))
+            continue
+        _merge_filing_rows(
+            rows_by_company,
+            plan_item=item,
+            payload=response,
+            metadata_source=str(item["filename"]),
+            excluded_reasons=excluded_reasons,
+        )
+    if missing_metadata:
+        raise ValidationError(
+            "SEC metadata cache is incomplete for filing-body planning: "
+            f"{len(missing_metadata)} missing"
+        )
+
+    selected_items: dict[tuple[str, str], dict[str, Any]] = {}
+    for company_id, company_rows in rows_by_company.items():
+        normalized_rows = list(company_rows.values())
+        for prediction_date in prediction_dates:
+            as_of = _midnight_utc(prediction_date)
+            available = [
+                row
+                for row in normalized_rows
+                if row["available_at_datetime"] <= as_of
+                and _base_form(row["form"]) in selected_forms
+            ]
+            annual = _latest_filing_rows(
+                [row for row in available if _form_family(row["form"]) == "annual"],
+                annual_per_as_of,
+            )
+            quarterly = _latest_filing_rows(
+                [row for row in available if _form_family(row["form"]) == "quarterly"],
+                quarterly_per_as_of,
+            )
+            event_start = as_of - timedelta(days=event_lookback_days)
+            events = _latest_filing_rows(
+                [
+                    row
+                    for row in available
+                    if _form_family(row["form"]) == "event"
+                    and row["available_at_datetime"] >= event_start
+                ],
+                event_per_as_of,
+            )
+            for row in (*annual, *quarterly, *events):
+                identity = (str(row["cik"]), str(row["accession_number"]))
+                item = selected_items.get(identity)
+                if item is None:
+                    item = {
+                        "item_id": "secitem_"
+                        + _canonical_hash(
+                            {"cik": identity[0], "accession_number": identity[1]}
+                        )[:24],
+                        "company_id": company_id,
+                        "symbol": row["symbol"],
+                        "original_document_id": row["source_id"],
+                        "source_id": row["source_id"],
+                        "source_url": row["source_url"],
+                        "cik": row["cik"],
+                        "accession_number": row["accession_number"],
+                        "primary_document": row["primary_document"],
+                        "form": row["form"],
+                        "published_at": row["published_at"],
+                        "available_at": row["available_at"],
+                        "acceptance_datetime_raw": row["acceptance_datetime_raw"],
+                        "availability_policy": row["availability_policy"],
+                        "metadata_sources": list(row["metadata_sources"]),
+                        "required_as_of_dates": [],
+                        "legacy_content_chars": 0,
+                    }
+                    selected_items[identity] = item
+                required_dates = item["required_as_of_dates"]
+                prediction_text = prediction_date.isoformat()
+                if prediction_text not in required_dates:
+                    required_dates.append(prediction_text)
+    items = sorted(
+        selected_items.values(),
+        key=lambda item: (
+            item["company_id"],
+            _FORM_PRIORITY.get(_base_form(str(item["form"])), 9),
+            item["available_at"],
+            item["accession_number"],
+        ),
+    )
+    for item in items:
+        item["required_as_of_dates"].sort()
+    payload: dict[str, Any] = {
+        "schema_version": SEC_DISCOVERED_FILING_PLAN_SCHEMA,
+        "source_artifacts": {
+            "primary_submissions_plan": _artifact_identity(primary_path),
+            "historical_submissions_plan": _artifact_identity(historical_path),
+        },
+        "parent_plan_hashes": {
+            "primary": primary["plan_hash"],
+            "historical": historical["plan_hash"],
+        },
+        "selection": {
+            "kind": "filing",
+            "source": "cached_sec_submissions_metadata",
+            "forms": sorted(selected_forms),
+            "prediction_dates": [value.isoformat() for value in prediction_dates],
+            "annual_per_as_of": annual_per_as_of,
+            "quarterly_per_as_of": quarterly_per_as_of,
+            "event_per_as_of": event_per_as_of,
+            "event_lookback_days": event_lookback_days,
+            "availability_policy": (
+                "timezone_aware_sec_acceptance_else_next_utc_day_after_filing_date"
+            ),
+            "allowed_url_prefix": f"https://{_SEC_ARCHIVE_HOST}{_SEC_ARCHIVE_PREFIX}",
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+        "metadata_filing_count": sum(len(rows) for rows in rows_by_company.values()),
+        "excluded_filing_count": sum(excluded_reasons.values()),
+        "excluded_reason_counts": dict(sorted(excluded_reasons.items())),
+        "request_count": len(items),
+        "items": items,
+    }
+    payload["plan_hash"] = _canonical_hash(payload)
+    _atomic_write_json(Path(output_path), payload)
+    return payload
+
+
 def load_sec_filing_backfill_plan(path: str | Path) -> dict[str, Any]:
     """Load and validate one exact SEC backfill plan."""
 
     payload = _read_json(Path(path))
-    if payload.get("schema_version") != SEC_PLAN_SCHEMA:
+    if payload.get("schema_version") not in {
+        SEC_PLAN_SCHEMA,
+        SEC_DISCOVERED_FILING_PLAN_SCHEMA,
+    }:
         raise ValidationError("unsupported SEC filing backfill plan schema")
     supplied_hash = str(payload.get("plan_hash", ""))
     without_hash = dict(payload)
@@ -848,6 +1364,9 @@ def run_sec_filing_backfill(
             primary_document=str(item["primary_document"]),
             source_url=source_url,
             retrieved_at=now(),
+            accepted_at=_optional_aware_datetime(
+                item.get("acceptance_datetime_raw")
+            ),
         )
         try:
             content = client.filing_document_text(filing).strip()
@@ -921,9 +1440,16 @@ def run_sec_filing_backfill(
                 "accession_number": item["accession_number"],
                 "form": item["form"],
                 "content_scope": "complete_body",
-                "legacy_content_chars": item["legacy_content_chars"],
+                "legacy_content_chars": int(item.get("legacy_content_chars", 0)),
                 "retrieved_at": retrieved_at.isoformat(),
                 "backfill_plan_hash": plan_hash,
+                "acceptance_datetime_raw": item.get("acceptance_datetime_raw"),
+                "availability_policy": item.get(
+                    "availability_policy",
+                    plan.get("selection", {}).get("availability_policy"),
+                ),
+                "required_as_of_dates": list(item.get("required_as_of_dates", ())),
+                "metadata_sources": list(item.get("metadata_sources", ())),
             },
         )
         did_append = store.append(document)
@@ -1025,6 +1551,26 @@ def _load_submissions_progress(path: Path, plan_hash: str) -> dict[str, Any]:
     return progress
 
 
+def _load_historical_submissions_progress(
+    path: Path, plan_hash: str
+) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "schema_version": SEC_HISTORICAL_SUBMISSIONS_PROGRESS_SCHEMA,
+            "plan_hash": plan_hash,
+            "completed": {},
+            "failures": [],
+        }
+    progress = _read_json(path)
+    if progress.get("schema_version") != SEC_HISTORICAL_SUBMISSIONS_PROGRESS_SCHEMA:
+        raise ValidationError(
+            "unsupported SEC historical submissions progress schema"
+        )
+    if progress.get("plan_hash") != plan_hash:
+        raise ValidationError("SEC historical submissions progress plan hash mismatch")
+    return progress
+
+
 def _store_progress(
     path: Path,
     progress: dict[str, Any],
@@ -1045,6 +1591,25 @@ def _store_progress(
 
 
 def _store_submissions_progress(
+    path: Path,
+    progress: dict[str, Any],
+    completed: Mapping[str, Any],
+    failures: list[dict[str, Any]],
+    last_stop: str,
+    updated_at: datetime,
+) -> None:
+    progress.update(
+        {
+            "completed": dict(completed),
+            "failures": failures,
+            "last_stop": last_stop,
+            "updated_at": updated_at.isoformat(),
+        }
+    )
+    _atomic_write_json(path, progress)
+
+
+def _store_historical_submissions_progress(
     path: Path,
     progress: dict[str, Any],
     completed: Mapping[str, Any],
@@ -1108,6 +1673,183 @@ def _normalize_cik(value: Any) -> str | None:
     if not digits or len(digits) > 10:
         raise ValidationError("CIK must contain at most ten digits")
     return digits.zfill(10)
+
+
+def _validated_sec_history_filename(value: Any) -> str:
+    filename = str(value or "")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.json", filename):
+        raise ValidationError("SEC historical submissions filename is unsafe")
+    return filename
+
+
+def _cached_json_for_plan_item(
+    cache: RawDataCache, item: Mapping[str, Any]
+) -> Any | None:
+    key = RawCacheKey.from_request(
+        "sec_edgar",
+        DataCapability.FILINGS,
+        "GET",
+        str(item["source_url"]),
+    )
+    return cache.get_json(key)
+
+
+def _filing_rows_from_submission_payload(payload: Any) -> list[dict[str, Any]]:
+    if not isinstance(payload, Mapping):
+        raise DataSourceError("SEC filing metadata payload must be an object")
+    filings = payload.get("filings")
+    if isinstance(filings, Mapping) and isinstance(filings.get("recent"), Mapping):
+        table = filings["recent"]
+    else:
+        table = payload
+    required = ("accessionNumber", "filingDate", "form", "primaryDocument")
+    if not all(isinstance(table.get(key), list) for key in required):
+        raise DataSourceError("SEC filing metadata arrays are incomplete")
+    count = len(table["accessionNumber"])
+    if any(len(table[key]) < count for key in required):
+        raise DataSourceError("SEC filing metadata arrays have inconsistent lengths")
+    rows: list[dict[str, Any]] = []
+    for index in range(count):
+        rows.append(
+            {
+                "accession_number": table["accessionNumber"][index],
+                "filing_date": table["filingDate"][index],
+                "report_date": _array_value(table, "reportDate", index),
+                "acceptance_datetime_raw": _array_value(
+                    table, "acceptanceDateTime", index
+                ),
+                "form": table["form"][index],
+                "primary_document": table["primaryDocument"][index],
+            }
+        )
+    return rows
+
+
+def _array_value(table: Mapping[str, Any], key: str, index: int) -> Any:
+    values = table.get(key)
+    if not isinstance(values, list) or index >= len(values):
+        return None
+    return values[index]
+
+
+def _merge_filing_rows(
+    rows_by_company: dict[str, dict[tuple[str, str], dict[str, Any]]],
+    *,
+    plan_item: Mapping[str, Any],
+    payload: Any,
+    metadata_source: str,
+    excluded_reasons: Counter[str],
+) -> None:
+    company_id = str(plan_item["company_id"])
+    symbol = str(plan_item["symbol"])
+    cik = str(plan_item["cik"])
+    company_rows = rows_by_company.setdefault(company_id, {})
+    for raw in _filing_rows_from_submission_payload(payload):
+        try:
+            accession = str(raw["accession_number"])
+            if not re.fullmatch(r"\d{10}-\d{2}-\d{6}", accession):
+                raise ValidationError("invalid_accession_number")
+            filing_date = _parse_date(raw["filing_date"], "SEC filing date")
+            form = _normalize_form(str(raw["form"]))
+            primary_document = _validated_primary_document(raw["primary_document"])
+        except (TypeError, ValueError, ValidationError) as exc:
+            excluded_reasons[str(exc)] += 1
+            continue
+        acceptance_raw = (
+            str(raw["acceptance_datetime_raw"])
+            if raw.get("acceptance_datetime_raw")
+            else None
+        )
+        accepted_at = _optional_aware_datetime(acceptance_raw)
+        if accepted_at is not None:
+            available_at = accepted_at
+            availability_policy = "timezone_aware_sec_acceptance_datetime"
+        else:
+            available_at = _midnight_utc(filing_date + timedelta(days=1))
+            availability_policy = "next_utc_day_after_filing_date"
+        cik_no_zeros = str(int(cik))
+        accession_path = accession.replace("-", "")
+        source_url = (
+            f"https://{_SEC_ARCHIVE_HOST}{_SEC_ARCHIVE_PREFIX}"
+            f"{cik_no_zeros}/{accession_path}/{primary_document}"
+        )
+        key = (cik, accession)
+        normalized = {
+            "company_id": company_id,
+            "symbol": symbol,
+            "cik": cik,
+            "accession_number": accession,
+            "filing_date": filing_date.isoformat(),
+            "report_date": str(raw["report_date"])
+            if raw.get("report_date")
+            else None,
+            "form": form,
+            "primary_document": primary_document,
+            "source_id": f"sec:{cik}:{accession}",
+            "source_url": source_url,
+            "published_at": _midnight_utc(filing_date).isoformat(),
+            "available_at": available_at.isoformat(),
+            "available_at_datetime": available_at,
+            "acceptance_datetime_raw": acceptance_raw,
+            "availability_policy": availability_policy,
+            "metadata_sources": [metadata_source],
+        }
+        existing = company_rows.get(key)
+        if existing is None:
+            company_rows[key] = normalized
+            continue
+        for field in ("filing_date", "form", "primary_document", "source_url"):
+            if existing[field] != normalized[field]:
+                raise DataSourceError(
+                    f"conflicting SEC metadata for {cik}/{accession}: {field}"
+                )
+        existing["metadata_sources"] = sorted(
+            set(existing["metadata_sources"]) | {metadata_source}
+        )
+        if (
+            existing["availability_policy"] == "next_utc_day_after_filing_date"
+            and availability_policy == "timezone_aware_sec_acceptance_datetime"
+        ):
+            for field in (
+                "available_at",
+                "available_at_datetime",
+                "acceptance_datetime_raw",
+                "availability_policy",
+            ):
+                existing[field] = normalized[field]
+
+
+def _validated_primary_document(value: Any) -> str:
+    filename = str(value or "")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", filename):
+        raise ValidationError("unsafe_primary_document")
+    return filename
+
+
+def _optional_aware_datetime(value: Any) -> datetime | None:
+    if not value or str(value).casefold() in {"none", "null", "nan", "-"}:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+def _latest_filing_rows(
+    rows: Iterable[dict[str, Any]], count: int
+) -> list[dict[str, Any]]:
+    return sorted(
+        rows,
+        key=lambda row: (
+            row["available_at_datetime"],
+            row["filing_date"],
+            row["accession_number"],
+        ),
+        reverse=True,
+    )[:count]
 
 
 def _artifact_identity(path: Path) -> dict[str, Any]:

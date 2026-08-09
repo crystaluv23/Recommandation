@@ -115,6 +115,7 @@ class FilingMetadata:
     primary_document: str
     source_url: str
     retrieved_at: datetime
+    accepted_at: datetime | None = None
 
 
 @dataclass(frozen=True)

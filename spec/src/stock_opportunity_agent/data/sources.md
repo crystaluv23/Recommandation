@@ -28,6 +28,9 @@ Use the source catalog as the canonical free/free-key capability manifest:
 ## Current Adapters
 
 - `sec_edgar`: CIK/ticker mappings, submissions, company facts, filing metadata, and filing document text.
+- SEC filing metadata preserves `acceptanceDateTime` when the upstream value has
+  a timezone, and the adapter can fetch only a validated submissions-history
+  basename supplied by an outer exact plan.
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.

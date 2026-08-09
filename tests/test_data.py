@@ -54,6 +54,7 @@ from stock_opportunity_agent.models import (
     EvidenceKind,
     FeatureRecord,
     TickerRef,
+    ValidationError,
     VersionStamp,
 )
 
@@ -159,6 +160,10 @@ class SecEdgarClientTests(TestCase):
                             "accessionNumber": ["0000320193-26-000001", "0000320193-26-000002"],
                             "filingDate": ["2026-04-30", "2026-05-03"],
                             "reportDate": ["2026-03-31", "2026-06-30"],
+                            "acceptanceDateTime": [
+                                "2026-04-30T17:30:00-04:00",
+                                "2026-05-03T12:00:00-04:00",
+                            ],
                             "form": ["10-Q", "10-Q"],
                             "primaryDocument": ["aapl-20260331.htm", "aapl-20260630.htm"],
                         }
@@ -173,7 +178,21 @@ class SecEdgarClientTests(TestCase):
         self.assertEqual(len(filings), 1)
         self.assertEqual(filings[0].cik, "0000320193")
         self.assertIn("000032019326000001", filings[0].source_url)
+        self.assertEqual(
+            filings[0].accepted_at.isoformat(), "2026-04-30T21:30:00+00:00"
+        )
         self.assertEqual(transport.calls[0][1]["User-Agent"], "test@example.com")
+
+    def test_historical_submissions_require_safe_exact_filename(self) -> None:
+        filename = "CIK0000320193-submissions-001.json"
+        url = f"https://data.sec.gov/submissions/{filename}"
+        transport = FakeJsonTransport({url: {"accessionNumber": []}})
+        client = SecEdgarClient("test@example.com", transport=transport)
+
+        self.assertEqual(client.historical_submissions(filename), {"accessionNumber": []})
+        with self.assertRaisesRegex(ValidationError, "unsafe"):
+            client.historical_submissions("../secret.json")
+        self.assertEqual(len(transport.calls), 1)
 
     def test_filing_metadata_becomes_source_linked_evidence(self) -> None:
         url = "https://data.sec.gov/submissions/CIK0000320193.json"
