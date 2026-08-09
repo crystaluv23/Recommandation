@@ -70,6 +70,41 @@ The union across all as-of dates becomes the exact primary-document plan. Forms,
 lookbacks, and per-as-of limits are serialized into the plan and changing them
 produces a new hash.
 
+## SEC Company Facts
+
+The label-free expanded acquisition scope may also produce one exact
+`data.sec.gov/api/xbrl/companyfacts/CIK##########.json` request per CIK. This is
+an independent financial-statements stage: completing submissions metadata does
+not imply Company Facts coverage, and completing Company Facts does not imply
+filing-body, news, profile-taxonomy, or transcript coverage.
+
+The plan freezes the requested prediction dates, a period-end lookback, standard
+taxonomy allow-list, filing-form allow-list, source artifact hash, and canonical
+plan hash. The default lookback is 1,100 days before the earliest prediction
+date. It accepts the standard namespaces returned by the SEC Company Facts API
+(`dei`, `ifrs-full`, `srt`, and `us-gaap`) rather than silently limiting foreign
+issuers to US-GAAP concepts.
+
+Raw responses remain in the managed source cache. The materializer groups
+selected fact rows by filing accession and appends one immutable
+`source_type=sec_company_facts` Raw Info document per accession/content version.
+Each document contains the complete selected standard-taxonomy fact rows for
+that accession; it does not copy the response's current entity name into
+historical content. Rows must have:
+
+- a well-formed SEC accession number (its prefix is not assumed to equal the
+  registrant CIK);
+- an allowed filing form and standard taxonomy;
+- a parseable filing date and period end within the frozen plan window; and
+- an availability boundary no later than the latest prediction cutoff.
+
+Company Facts rows expose a filing date but not a timezone-aware acceptance
+timestamp. Therefore `published_at` is filing-date midnight UTC and
+`available_at` is the next UTC midnight. Same-day facts are unavailable to a
+historical case represented at midnight. Metadata records retrieval time,
+taxonomy/tag/unit/accession lineage, selection window, and that the retrospective
+API extraction remains auditable against the primary filing.
+
 ## Point-in-Time Contract
 
 Legacy filing artifacts currently preserve only a public date, not a precise
@@ -107,6 +142,11 @@ policy, and the as-of dates for which the filing was selected.
   invocation request ceiling as filing-body execution. A completed CIK means
   its exact JSON response is durable in raw cache; it does not mean document
   coverage is complete.
+- SEC Company Facts uses `financial_statements` cache/ledger capability keys,
+  independently durable per-CIK progress, cache-first resume, and append-only
+  fact materialization. A cached response may be materialized with zero new
+  network requests through the executor API; the CLI's zero-request mode remains
+  a read-only preview.
 
 ## SEC Filing Upgrade
 
@@ -148,3 +188,7 @@ date-range overlap, incomplete-parent rejection, cache-only plan derivation,
 primary/historical array merging, accession deduplication, timezone-aware versus
 conservative availability, bounded per-family selection, and exact body-plan
 replay.
+Company Facts tests cover exact per-CIK URLs, canonical plan tamper rejection,
+standard-taxonomy/form/date filtering, foreign-taxonomy retention, CIK/accession
+guards, next-day availability, current-name exclusion, cache-only recovery,
+content-versioned append-only ids, and zero-network preview.

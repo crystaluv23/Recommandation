@@ -73,6 +73,10 @@ The data layer decides whether a request is currently allowed and whether cached
   submissions JSON through the same managed transport. Secondary submissions
   files and primary documents must be derived into new exact plans rather than
   followed as an unbounded crawl.
+- Allow the same label-free scope to fetch exact per-CIK SEC Company Facts JSON
+  under the `financial_statements` capability. The adapter returns provider raw
+  data; accession grouping, historical availability, and Raw Info persistence
+  remain in backfill orchestration.
 
 ## Invariants
 

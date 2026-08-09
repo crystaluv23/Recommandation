@@ -1,6 +1,6 @@
 # Full-Market Case Expansion Boundaries
 
-visit_times: 2
+visit_times: 3
 
 ## Trigger
 
@@ -48,6 +48,15 @@ OAKU and SCPX. That input participates in the proposal inventory hash, and its
 agent-proposed review status remains an approval blocker. The regenerated
 label-free scope has 240 CIKs and both SEC and news plans remain zero-network
 until separately authorized.
+
+The v7 regeneration replaced the mixed 2024/2025 panel with five mature 2025
+dates from January 31 through September 30. It found 4,102 eligible issuers and
+again selected 240 issuers/1,200 cases, with 720/300/180 case splits and no
+missing CIK in the label-free scope. Ending before the observed PWM-to-AURE
+ticker transition avoided applying one identity across an invalid later date.
+Separate 240-request SEC submissions, Company Facts, and news plans remain
+zero-network; the existing document archive still leaves 1,187 observations
+without point-in-time documents.
 
 ## How to Apply
 

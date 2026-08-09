@@ -12,12 +12,15 @@ from pathlib import Path
 from stock_opportunity_agent.data.backfill import (
     audit_expanded_acquisition_coverage,
     audit_historical_data_coverage,
+    preview_sec_company_facts_backfill,
     preview_sec_filing_backfill,
     preview_sec_historical_submissions_backfill,
     preview_sec_submissions_backfill,
+    run_sec_company_facts_backfill,
     run_sec_filing_backfill,
     run_sec_historical_submissions_backfill,
     run_sec_submissions_backfill,
+    write_sec_company_facts_backfill_plan,
     write_sec_filing_backfill_plan,
     write_sec_filing_plan_from_submissions,
     write_sec_historical_submissions_plan,
@@ -102,6 +105,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     submissions_plan.add_argument("--output", type=Path, required=True)
 
+    company_facts_plan = subparsers.add_parser(
+        "plan-sec-company-facts",
+        help="write exact per-CIK SEC XBRL Company Facts requests",
+    )
+    company_facts_plan.add_argument(
+        "--acquisition-scope", type=Path, required=True
+    )
+    company_facts_plan.add_argument("--output", type=Path, required=True)
+    company_facts_plan.add_argument("--period-lookback-days", type=int, default=1100)
+
     history_plan = subparsers.add_parser(
         "plan-sec-history",
         help="derive exact SEC history-file requests from cached primary submissions",
@@ -145,6 +158,15 @@ def build_parser() -> argparse.ArgumentParser:
     submissions_run.add_argument("--plan", type=Path, required=True)
     submissions_run.add_argument("--workspace", type=Path, required=True)
     submissions_run.add_argument("--max-network-requests", type=int, default=0)
+
+    company_facts_run = subparsers.add_parser(
+        "run-sec-company-facts",
+        help="preview or execute bounded SEC XBRL Company Facts acquisition",
+    )
+    company_facts_run.add_argument("--plan", type=Path, required=True)
+    company_facts_run.add_argument("--workspace", type=Path, required=True)
+    company_facts_run.add_argument("--raw-info-root", type=Path, required=True)
+    company_facts_run.add_argument("--max-network-requests", type=int, default=0)
 
     history_run = subparsers.add_parser(
         "run-sec-history",
@@ -203,6 +225,12 @@ def main() -> int:
         result = write_sec_submissions_backfill_plan(
             acquisition_scope_path=args.acquisition_scope,
             output_path=args.output,
+        )
+    elif args.command == "plan-sec-company-facts":
+        result = write_sec_company_facts_backfill_plan(
+            acquisition_scope_path=args.acquisition_scope,
+            output_path=args.output,
+            period_lookback_days=args.period_lookback_days,
         )
     elif args.command == "plan-sec-history":
         result = write_sec_historical_submissions_plan(
@@ -282,6 +310,32 @@ def main() -> int:
                 max_network_requests=args.max_network_requests,
                 on_progress=_print_progress,
             )
+    elif args.command == "run-sec-company-facts":
+        if args.max_network_requests < 0:
+            raise ValidationError("--max-network-requests must be non-negative")
+        cache = RawDataCache(args.workspace / "raw_cache")
+        progress_path = args.workspace / "sec_company_facts_backfill_progress.json"
+        if args.max_network_requests == 0:
+            result = preview_sec_company_facts_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+            )
+        else:
+            client = _managed_sec_client(
+                workspace=args.workspace,
+                cache=cache,
+                capability=DataCapability.FINANCIAL_STATEMENTS,
+            )
+            result = run_sec_company_facts_backfill(
+                plan_path=args.plan,
+                cache=cache,
+                progress_path=progress_path,
+                raw_info_root=args.raw_info_root,
+                client=client,
+                max_network_requests=args.max_network_requests,
+                on_progress=_print_progress,
+            )
     elif args.command == "run-sec-history":
         if args.max_network_requests < 0:
             raise ValidationError("--max-network-requests must be non-negative")
@@ -337,6 +391,7 @@ def main() -> int:
     if args.command in {
         "plan-sec-filings",
         "plan-sec-submissions",
+        "plan-sec-company-facts",
         "plan-sec-history",
         "plan-sec-filing-bodies",
         "plan-alpha-news",

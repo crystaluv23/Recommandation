@@ -29,6 +29,8 @@ SEC_PLAN_SCHEMA = "sec-filing-backfill-plan-v1"
 SEC_PROGRESS_SCHEMA = "sec-filing-backfill-progress-v1"
 SEC_SUBMISSIONS_PLAN_SCHEMA = "sec-submissions-backfill-plan-v1"
 SEC_SUBMISSIONS_PROGRESS_SCHEMA = "sec-submissions-backfill-progress-v1"
+SEC_COMPANY_FACTS_PLAN_SCHEMA = "sec-company-facts-backfill-plan-v1"
+SEC_COMPANY_FACTS_PROGRESS_SCHEMA = "sec-company-facts-backfill-progress-v1"
 SEC_HISTORICAL_SUBMISSIONS_PLAN_SCHEMA = "sec-historical-submissions-plan-v1"
 SEC_HISTORICAL_SUBMISSIONS_PROGRESS_SCHEMA = "sec-historical-submissions-progress-v1"
 SEC_DISCOVERED_FILING_PLAN_SCHEMA = "sec-discovered-filing-backfill-plan-v1"
@@ -36,6 +38,22 @@ _SEC_ARCHIVE_HOST = "www.sec.gov"
 _SEC_ARCHIVE_PREFIX = "/Archives/edgar/data/"
 _SEC_DATA_HOST = "data.sec.gov"
 _SEC_SUBMISSIONS_PREFIX = "/submissions/CIK"
+_SEC_COMPANY_FACTS_PREFIX = "/api/xbrl/companyfacts/CIK"
+_SEC_FACT_TAXONOMIES = ("dei", "ifrs-full", "srt", "us-gaap")
+_SEC_FACT_FORMS = (
+    "10-K",
+    "10-K/A",
+    "10-Q",
+    "10-Q/A",
+    "20-F",
+    "20-F/A",
+    "40-F",
+    "40-F/A",
+    "6-K",
+    "6-K/A",
+    "8-K",
+    "8-K/A",
+)
 _FORM_PATTERN = re.compile(
     r"(?<![A-Z0-9])(10-K(?:/A)?|10-Q(?:/A)?|8-K(?:/A)?|20-F(?:/A)?|"
     r"40-F(?:/A)?|6-K(?:/A)?)(?![A-Z0-9])",
@@ -63,6 +81,13 @@ class SecSubmissionsClient(Protocol):
 
     def submissions(self, cik: str) -> dict[str, Any]:
         """Return one exact SEC submissions JSON object."""
+
+
+class SecCompanyFactsClient(Protocol):
+    """Small provider boundary used by Company Facts acquisition."""
+
+    def company_facts(self, cik: str) -> dict[str, Any]:
+        """Return one exact SEC Company Facts JSON object."""
 
 
 class SecHistoricalSubmissionsClient(Protocol):
@@ -715,6 +740,365 @@ def run_sec_submissions_backfill(
         "filing_bodies_completed": 0,
         "last_stop": last_stop,
         "progress_path": str(state_path.resolve()),
+    }
+
+
+def write_sec_company_facts_backfill_plan(
+    *,
+    acquisition_scope_path: str | Path,
+    output_path: str | Path,
+    period_lookback_days: int = 1100,
+) -> dict[str, Any]:
+    """Write exact per-CIK SEC Company Facts requests from a label-free scope."""
+
+    if period_lookback_days < 1:
+        raise ValidationError("period_lookback_days must be positive")
+    source_path = Path(acquisition_scope_path)
+    scope = _read_json(source_path)
+    if scope.get("schema_version") != "expanded-case-acquisition-scope-v1":
+        raise ValidationError("unsupported expanded acquisition scope schema")
+    if scope.get("outcome_fields_included") is not False:
+        raise ValidationError("SEC Company Facts scope must exclude outcome fields")
+    if scope.get("split_ownership_included") is not False:
+        raise ValidationError("SEC Company Facts scope must exclude split ownership")
+    _assert_label_free_scope(scope)
+    companies = scope.get("companies")
+    prediction_dates = scope.get("prediction_dates")
+    if not isinstance(companies, list):
+        raise ValidationError("expanded acquisition scope companies must be a list")
+    if int(scope.get("company_count", -1)) != len(companies):
+        raise ValidationError("expanded acquisition scope company count mismatch")
+    if not isinstance(prediction_dates, list) or not prediction_dates:
+        raise ValidationError("expanded acquisition scope prediction dates are missing")
+    parsed_dates = sorted(
+        _parse_date(value, "acquisition prediction date") for value in prediction_dates
+    )
+    period_end_from = parsed_dates[0] - timedelta(days=period_lookback_days)
+    items_by_cik: dict[str, dict[str, Any]] = {}
+    missing_cik: list[dict[str, str]] = []
+    for company in companies:
+        if not isinstance(company, Mapping):
+            raise ValidationError("expanded acquisition company must be an object")
+        symbol = str(company.get("symbol") or "").upper()
+        company_id = str(company.get("company_id") or "")
+        if not symbol or not company_id:
+            raise ValidationError("expanded acquisition company identity is incomplete")
+        cik = _normalize_cik(company.get("cik"))
+        if cik is None:
+            missing_cik.append({"company_id": company_id, "symbol": symbol})
+            continue
+        item = {
+            "item_id": f"secfacts_{cik}",
+            "company_id": company_id,
+            "symbol": symbol,
+            "cik": cik,
+            "source_url": (
+                f"https://{_SEC_DATA_HOST}{_SEC_COMPANY_FACTS_PREFIX}{cik}.json"
+            ),
+            "required_as_of_min": parsed_dates[0].isoformat(),
+            "required_as_of_max": parsed_dates[-1].isoformat(),
+        }
+        existing = items_by_cik.get(cik)
+        if existing is not None and existing != item:
+            raise ValidationError(f"conflicting SEC Company Facts CIK in scope: {cik}")
+        items_by_cik[cik] = item
+    items = sorted(items_by_cik.values(), key=lambda item: str(item["cik"]))
+    payload: dict[str, Any] = {
+        "schema_version": SEC_COMPANY_FACTS_PLAN_SCHEMA,
+        "source_artifact": _artifact_identity(source_path),
+        "selection": {
+            "kind": "sec_company_facts",
+            "allowed_url_pattern": (
+                f"https://{_SEC_DATA_HOST}{_SEC_COMPANY_FACTS_PREFIX}##########.json"
+            ),
+            "prediction_dates": [value.isoformat() for value in parsed_dates],
+            "period_lookback_days": period_lookback_days,
+            "period_end_from": period_end_from.isoformat(),
+            "period_end_through": parsed_dates[-1].isoformat(),
+            "available_at_through": _midnight_utc(parsed_dates[-1]).isoformat(),
+            "taxonomy_allowlist": list(_SEC_FACT_TAXONOMIES),
+            "form_allowlist": list(_SEC_FACT_FORMS),
+            "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+            "outcome_fields_included": False,
+            "split_ownership_included": False,
+        },
+        "request_count": len(items),
+        "missing_cik_count": len(missing_cik),
+        "missing_cik": sorted(missing_cik, key=lambda item: item["company_id"]),
+        "items": items,
+    }
+    payload["plan_hash"] = _canonical_hash(payload)
+    _atomic_write_json(Path(output_path), payload)
+    return payload
+
+
+def load_sec_company_facts_backfill_plan(path: str | Path) -> dict[str, Any]:
+    """Load and validate one exact SEC Company Facts plan."""
+
+    payload = _read_json(Path(path))
+    if payload.get("schema_version") != SEC_COMPANY_FACTS_PLAN_SCHEMA:
+        raise ValidationError("unsupported SEC Company Facts backfill plan schema")
+    supplied_hash = str(payload.get("plan_hash", ""))
+    without_hash = dict(payload)
+    without_hash.pop("plan_hash", None)
+    if supplied_hash != _canonical_hash(without_hash):
+        raise ValidationError("SEC Company Facts backfill plan hash mismatch")
+    selection = payload.get("selection")
+    if not isinstance(selection, Mapping):
+        raise ValidationError("SEC Company Facts backfill selection is missing")
+    if selection.get("outcome_fields_included") is not False:
+        raise ValidationError("SEC Company Facts plan must exclude outcome fields")
+    if selection.get("split_ownership_included") is not False:
+        raise ValidationError("SEC Company Facts plan must exclude split ownership")
+    if tuple(selection.get("taxonomy_allowlist", ())) != _SEC_FACT_TAXONOMIES:
+        raise ValidationError("SEC Company Facts taxonomy allow-list is invalid")
+    if tuple(selection.get("form_allowlist", ())) != _SEC_FACT_FORMS:
+        raise ValidationError("SEC Company Facts form allow-list is invalid")
+    _parse_date(selection.get("period_end_from"), "fact period_end_from")
+    _parse_date(selection.get("period_end_through"), "fact period_end_through")
+    _parse_datetime(
+        selection.get("available_at_through"), "fact available_at_through"
+    )
+    items = payload.get("items")
+    if not isinstance(items, list) or int(payload.get("request_count", -1)) != len(items):
+        raise ValidationError("SEC Company Facts plan item count mismatch")
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, Mapping):
+            raise ValidationError("SEC Company Facts item must be an object")
+        cik = _normalize_cik(item.get("cik"))
+        if cik is None or cik in seen:
+            raise ValidationError("SEC Company Facts CIKs must be unique")
+        seen.add(cik)
+        expected = (
+            f"https://{_SEC_DATA_HOST}{_SEC_COMPANY_FACTS_PREFIX}{cik}.json"
+        )
+        if item.get("source_url") != expected:
+            raise ValidationError("SEC Company Facts plan contains an invalid URL")
+    return payload
+
+
+def preview_sec_company_facts_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+) -> dict[str, Any]:
+    """Describe exact Company Facts work without network I/O or writes."""
+
+    plan = load_sec_company_facts_backfill_plan(plan_path)
+    progress = _load_company_facts_progress(
+        Path(progress_path), str(plan["plan_hash"])
+    )
+    completed = dict(progress.get("completed", {}))
+    cached = 0
+    pending = 0
+    for item in plan["items"]:
+        if item["item_id"] in completed:
+            continue
+        pending += 1
+        key = _company_facts_cache_key(item)
+        cached += int(cache.get_json(key) is not None)
+    return {
+        "status": "zero_network_preview",
+        "stage": "sec_company_facts",
+        "plan_hash": plan["plan_hash"],
+        "request_count": plan["request_count"],
+        "missing_cik_count": plan["missing_cik_count"],
+        "completed_count": len(completed),
+        "pending_count": pending,
+        "pending_cache_hits": cached,
+        "maximum_new_network_requests": pending - cached,
+        "fact_document_count": sum(
+            int(row.get("fact_document_count", 0)) for row in completed.values()
+        ),
+        "external_calls": 0,
+    }
+
+
+def run_sec_company_facts_backfill(
+    *,
+    plan_path: str | Path,
+    cache: RawDataCache,
+    progress_path: str | Path,
+    raw_info_root: str | Path,
+    client: SecCompanyFactsClient,
+    max_network_requests: int,
+    now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+    on_progress: Callable[[Mapping[str, Any]], None] | None = None,
+) -> dict[str, Any]:
+    """Execute/resume bounded SEC Company Facts acquisition and materialization."""
+
+    if max_network_requests < 0:
+        raise ValidationError("max_network_requests must be non-negative")
+    plan = load_sec_company_facts_backfill_plan(plan_path)
+    plan_hash = str(plan["plan_hash"])
+    state_path = Path(progress_path)
+    progress = _load_company_facts_progress(state_path, plan_hash)
+    completed: dict[str, Any] = dict(progress.get("completed", {}))
+    failures: list[dict[str, Any]] = list(progress.get("failures", ()))
+    store = RawInfoStore(raw_info_root)
+    network_requests = 0
+    cache_hits = 0
+    failures_this_run = 0
+    appended_this_run = 0
+    reused_this_run = 0
+    last_stop = "plan_exhausted"
+    for item_index, item in enumerate(plan["items"], start=1):
+        item_id = str(item["item_id"])
+        if item_id in completed:
+            continue
+        key = _company_facts_cache_key(item)
+        was_cached = cache.get_json(key) is not None
+        if not was_cached and network_requests >= max_network_requests:
+            last_stop = "invocation_network_limit_reached"
+            _emit_progress(
+                on_progress,
+                stage="sec_company_facts",
+                status="paused_network_limit",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=False,
+            )
+            break
+        _emit_progress(
+            on_progress,
+            stage="sec_company_facts",
+            status="starting",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+        try:
+            response = client.company_facts(str(item["cik"]))
+            _validate_company_facts_response(response, str(item["cik"]))
+            cached = cache.get(key)
+            retrieved_at = cached.retrieved_at if cached is not None else now()
+            documents, extraction = _company_fact_documents(
+                response,
+                item=item,
+                selection=plan["selection"],
+                plan_hash=plan_hash,
+                retrieved_at=retrieved_at,
+            )
+            appended = 0
+            reused = 0
+            for document in documents:
+                if store.append(document):
+                    appended += 1
+                else:
+                    reused += 1
+        except DataQuotaDeferred as exc:
+            last_stop = "source_quota_deferred"
+            progress["last_deferred"] = {
+                "item_id": item_id,
+                "next_retry_at": exc.next_retry_at.isoformat(),
+                "reason": exc.reason,
+            }
+            _store_company_facts_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_company_facts",
+                status="quota_deferred",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            break
+        except Exception as exc:
+            if not was_cached:
+                network_requests += 1
+            failures_this_run += 1
+            failures.append(
+                {
+                    "item_id": item_id,
+                    "at": now().isoformat(),
+                    "error_type": type(exc).__name__,
+                    "message": str(exc),
+                }
+            )
+            last_stop = "item_failed"
+            _store_company_facts_progress(
+                state_path, progress, completed, failures, last_stop, now()
+            )
+            _emit_progress(
+                on_progress,
+                stage="sec_company_facts",
+                status="failed",
+                item_index=item_index,
+                item_count=len(plan["items"]),
+                item=item,
+                cache_hit=was_cached,
+            )
+            continue
+        if was_cached:
+            cache_hits += 1
+        else:
+            network_requests += 1
+        appended_this_run += appended
+        reused_this_run += reused
+        completed[item_id] = {
+            "cache_key": key.digest,
+            "response_hash": _canonical_hash(response),
+            "raw_fact_row_count": extraction["raw_fact_row_count"],
+            "selected_fact_row_count": extraction["selected_fact_row_count"],
+            "fact_document_count": len(documents),
+            "appended_document_count": appended,
+            "reused_document_count": reused,
+            "excluded_reason_counts": extraction["excluded_reason_counts"],
+            "retrieved_at": retrieved_at.isoformat(),
+            "completed_at": now().isoformat(),
+        }
+        last_stop = "item_completed"
+        _store_company_facts_progress(
+            state_path, progress, completed, failures, last_stop, now()
+        )
+        _emit_progress(
+            on_progress,
+            stage="sec_company_facts",
+            status="completed",
+            item_index=item_index,
+            item_count=len(plan["items"]),
+            item=item,
+            cache_hit=was_cached,
+        )
+    pending_count = len(plan["items"]) - len(completed)
+    status = "completed" if pending_count == 0 else "paused_resumable"
+    _store_company_facts_progress(
+        state_path, progress, completed, failures, last_stop, now()
+    )
+    return {
+        "status": status,
+        "stage": "sec_company_facts",
+        "plan_hash": plan_hash,
+        "request_count": plan["request_count"],
+        "missing_cik_count": plan["missing_cik_count"],
+        "completed_count": len(completed),
+        "pending_count": pending_count,
+        "network_requests_this_run": network_requests,
+        "cache_hits_this_run": cache_hits,
+        "failures_this_run": failures_this_run,
+        "fact_document_count": sum(
+            int(row.get("fact_document_count", 0)) for row in completed.values()
+        ),
+        "selected_fact_row_count": sum(
+            int(row.get("selected_fact_row_count", 0))
+            for row in completed.values()
+        ),
+        "zero_fact_company_count": sum(
+            int(row.get("fact_document_count", 0)) == 0
+            for row in completed.values()
+        ),
+        "appended_documents_this_run": appended_this_run,
+        "reused_documents_this_run": reused_this_run,
+        "last_stop": last_stop,
+        "progress_path": str(state_path.resolve()),
+        "raw_info_root": str(Path(raw_info_root).resolve()),
     }
 
 
@@ -1551,6 +1935,22 @@ def _load_submissions_progress(path: Path, plan_hash: str) -> dict[str, Any]:
     return progress
 
 
+def _load_company_facts_progress(path: Path, plan_hash: str) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "schema_version": SEC_COMPANY_FACTS_PROGRESS_SCHEMA,
+            "plan_hash": plan_hash,
+            "completed": {},
+            "failures": [],
+        }
+    progress = _read_json(path)
+    if progress.get("schema_version") != SEC_COMPANY_FACTS_PROGRESS_SCHEMA:
+        raise ValidationError("unsupported SEC Company Facts progress schema")
+    if progress.get("plan_hash") != plan_hash:
+        raise ValidationError("SEC Company Facts progress plan hash mismatch")
+    return progress
+
+
 def _load_historical_submissions_progress(
     path: Path, plan_hash: str
 ) -> dict[str, Any]:
@@ -1609,6 +2009,25 @@ def _store_submissions_progress(
     _atomic_write_json(path, progress)
 
 
+def _store_company_facts_progress(
+    path: Path,
+    progress: dict[str, Any],
+    completed: Mapping[str, Any],
+    failures: list[dict[str, Any]],
+    last_stop: str,
+    updated_at: datetime,
+) -> None:
+    progress.update(
+        {
+            "completed": dict(completed),
+            "failures": failures,
+            "last_stop": last_stop,
+            "updated_at": updated_at.isoformat(),
+        }
+    )
+    _atomic_write_json(path, progress)
+
+
 def _store_historical_submissions_progress(
     path: Path,
     progress: dict[str, Any],
@@ -1626,6 +2045,244 @@ def _store_historical_submissions_progress(
         }
     )
     _atomic_write_json(path, progress)
+
+
+def _company_facts_cache_key(item: Mapping[str, Any]) -> RawCacheKey:
+    return RawCacheKey.from_request(
+        "sec_edgar",
+        DataCapability.FINANCIAL_STATEMENTS,
+        "GET",
+        str(item["source_url"]),
+    )
+
+
+def _validate_company_facts_response(response: Any, expected_cik: str) -> None:
+    if not isinstance(response, Mapping):
+        raise DataSourceError("SEC Company Facts response must be an object")
+    response_cik = _normalize_cik(response.get("cik"))
+    if response_cik is None or response_cik != expected_cik:
+        raise DataSourceError("SEC Company Facts response CIK mismatch")
+    if not isinstance(response.get("facts"), Mapping):
+        raise DataSourceError("SEC Company Facts response missing facts")
+
+
+def _company_fact_documents(
+    response: Mapping[str, Any],
+    *,
+    item: Mapping[str, Any],
+    selection: Mapping[str, Any],
+    plan_hash: str,
+    retrieved_at: datetime,
+) -> tuple[list[RawInfoDocument], dict[str, Any]]:
+    cik = str(item["cik"])
+    company_id = str(item["company_id"])
+    symbol = str(item["symbol"])
+    source_url = str(item["source_url"])
+    period_end_from = _parse_date(
+        selection.get("period_end_from"), "fact period_end_from"
+    )
+    period_end_through = _parse_date(
+        selection.get("period_end_through"), "fact period_end_through"
+    )
+    available_at_through = _parse_datetime(
+        selection.get("available_at_through"), "fact available_at_through"
+    )
+    allowed_taxonomies = set(selection.get("taxonomy_allowlist", ()))
+    allowed_forms = set(selection.get("form_allowlist", ()))
+    facts = response.get("facts")
+    if not isinstance(facts, Mapping):
+        raise DataSourceError("SEC Company Facts response missing facts")
+    excluded: Counter[str] = Counter()
+    raw_fact_rows = 0
+    groups: dict[str, dict[str, Any]] = {}
+    for raw_taxonomy, raw_concepts in facts.items():
+        taxonomy = str(raw_taxonomy)
+        if not isinstance(raw_concepts, Mapping):
+            excluded["invalid_taxonomy_payload"] += 1
+            continue
+        if taxonomy not in allowed_taxonomies:
+            skipped = _count_company_fact_rows(raw_concepts)
+            raw_fact_rows += skipped
+            excluded["taxonomy_not_allowed"] += skipped
+            continue
+        for raw_tag, raw_concept in raw_concepts.items():
+            tag = str(raw_tag)
+            if not isinstance(raw_concept, Mapping):
+                excluded["invalid_concept_payload"] += 1
+                continue
+            label = str(raw_concept.get("label") or "").strip() or None
+            description = (
+                str(raw_concept.get("description") or "").strip() or None
+            )
+            units = raw_concept.get("units")
+            if not isinstance(units, Mapping):
+                excluded["missing_units"] += 1
+                continue
+            for raw_unit, raw_rows in units.items():
+                unit = str(raw_unit)
+                if not isinstance(raw_rows, list):
+                    excluded["invalid_unit_rows"] += 1
+                    continue
+                for raw_row in raw_rows:
+                    raw_fact_rows += 1
+                    if not isinstance(raw_row, Mapping):
+                        excluded["invalid_fact_row"] += 1
+                        continue
+                    accession = str(raw_row.get("accn") or "")
+                    if not re.fullmatch(r"\d{10}-\d{2}-\d{6}", accession):
+                        excluded["invalid_accession"] += 1
+                        continue
+                    form = str(raw_row.get("form") or "").strip().upper()
+                    if form not in allowed_forms:
+                        excluded["form_not_allowed"] += 1
+                        continue
+                    filed_date = _optional_fact_date(raw_row.get("filed"))
+                    if filed_date is None:
+                        excluded["invalid_filed_date"] += 1
+                        continue
+                    available_at = _midnight_utc(filed_date + timedelta(days=1))
+                    if available_at > available_at_through:
+                        excluded["unavailable_by_latest_cutoff"] += 1
+                        continue
+                    end_date = _optional_fact_date(raw_row.get("end"))
+                    if end_date is None:
+                        excluded["invalid_period_end"] += 1
+                        continue
+                    if end_date < period_end_from:
+                        excluded["period_before_lookback"] += 1
+                        continue
+                    if end_date > period_end_through:
+                        excluded["period_after_latest_cutoff"] += 1
+                        continue
+                    start_date: date | None = None
+                    if raw_row.get("start") is not None:
+                        start_date = _optional_fact_date(raw_row.get("start"))
+                        if start_date is None or start_date > end_date:
+                            excluded["invalid_period_start"] += 1
+                            continue
+                    value = raw_row.get("val")
+                    if isinstance(value, bool) or not isinstance(
+                        value, (int, float, str)
+                    ):
+                        excluded["invalid_fact_value"] += 1
+                        continue
+                    fact = {
+                        "taxonomy": taxonomy,
+                        "tag": tag,
+                        "label": label,
+                        "description": description,
+                        "unit": unit,
+                        "value": value,
+                        "start": start_date.isoformat() if start_date else None,
+                        "end": end_date.isoformat(),
+                        "fiscal_year": raw_row.get("fy"),
+                        "fiscal_period": raw_row.get("fp"),
+                        "frame": raw_row.get("frame"),
+                    }
+                    fact_key = _canonical_hash(fact)
+                    group = groups.setdefault(
+                        accession,
+                        {
+                            "filing_date": filed_date,
+                            "form": form,
+                            "available_at": available_at,
+                            "facts": {},
+                        },
+                    )
+                    if group["filing_date"] != filed_date or group["form"] != form:
+                        raise DataSourceError(
+                            f"conflicting SEC Company Facts filing metadata: {accession}"
+                        )
+                    group["facts"][fact_key] = fact
+    documents: list[RawInfoDocument] = []
+    selected_fact_rows = 0
+    for accession, group in sorted(groups.items()):
+        selected_facts = sorted(
+            group["facts"].values(),
+            key=lambda fact: (
+                fact["taxonomy"],
+                fact["tag"],
+                fact["unit"],
+                fact["end"],
+                fact["start"] or "",
+                json.dumps(fact["value"], sort_keys=True),
+            ),
+        )
+        if not selected_facts:
+            continue
+        selected_fact_rows += len(selected_facts)
+        content_payload = {
+            "schema_version": "sec-company-facts-document-v1",
+            "cik": cik,
+            "accession_number": accession,
+            "filing_date": group["filing_date"].isoformat(),
+            "form": group["form"],
+            "facts": selected_facts,
+        }
+        content = json.dumps(
+            content_payload,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        version_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        documents.append(
+            RawInfoDocument.create(
+                document_id=(
+                    f"secfacts:{cik}:{accession}:{version_hash[:16]}"
+                ),
+                company_id=company_id,
+                source_type="sec_company_facts",
+                published_at=_midnight_utc(group["filing_date"]),
+                available_at=group["available_at"],
+                content=content,
+                metadata={
+                    "symbol": symbol,
+                    "cik": cik,
+                    "accession_number": accession,
+                    "form": group["form"],
+                    "source_key": "sec_edgar",
+                    "source_url": source_url,
+                    "retrieved_at": retrieved_at.isoformat(),
+                    "backfill_plan_hash": plan_hash,
+                    "content_scope": "standard_taxonomy_facts_for_accession",
+                    "fact_count": len(selected_facts),
+                    "taxonomy_namespaces": sorted(
+                        {fact["taxonomy"] for fact in selected_facts}
+                    ),
+                    "period_end_from": period_end_from.isoformat(),
+                    "period_end_through": period_end_through.isoformat(),
+                    "availability_policy": (
+                        "next_utc_day_after_companyfacts_filed_date"
+                    ),
+                    "retrospective_api_extraction": True,
+                    "requires_primary_filing_audit": True,
+                },
+            )
+        )
+    return documents, {
+        "raw_fact_row_count": raw_fact_rows,
+        "selected_fact_row_count": selected_fact_rows,
+        "excluded_reason_counts": dict(sorted(excluded.items())),
+    }
+
+
+def _count_company_fact_rows(concepts: Mapping[str, Any]) -> int:
+    count = 0
+    for concept in concepts.values():
+        units = concept.get("units") if isinstance(concept, Mapping) else None
+        if not isinstance(units, Mapping):
+            continue
+        count += sum(len(rows) for rows in units.values() if isinstance(rows, list))
+    return count
+
+
+def _optional_fact_date(value: Any) -> date | None:
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError:
+        return None
 
 
 def _validate_submissions_response(response: Any, expected_cik: str) -> None:
@@ -1936,6 +2593,18 @@ def _parse_date(value: Any, name: str) -> date:
         return date.fromisoformat(str(value))
     except ValueError as exc:
         raise ValidationError(f"invalid {name}") from exc
+
+
+def _parse_datetime(value: Any, name: str) -> datetime:
+    if not value:
+        raise ValidationError(f"missing {name}")
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValidationError(f"invalid {name}") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValidationError(f"{name} must be timezone-aware")
+    return parsed.astimezone(timezone.utc)
 
 
 def _midnight_utc(value: date) -> datetime:

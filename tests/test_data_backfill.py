@@ -9,15 +9,19 @@ from pathlib import Path
 from stock_opportunity_agent.data.backfill import (
     audit_expanded_acquisition_coverage,
     audit_historical_data_coverage,
+    load_sec_company_facts_backfill_plan,
     load_sec_filing_backfill_plan,
     load_sec_historical_submissions_plan,
     load_sec_submissions_backfill_plan,
+    preview_sec_company_facts_backfill,
     preview_sec_filing_backfill,
     preview_sec_historical_submissions_backfill,
     preview_sec_submissions_backfill,
+    run_sec_company_facts_backfill,
     run_sec_filing_backfill,
     run_sec_historical_submissions_backfill,
     run_sec_submissions_backfill,
+    write_sec_company_facts_backfill_plan,
     write_sec_filing_backfill_plan,
     write_sec_filing_plan_from_submissions,
     write_sec_historical_submissions_plan,
@@ -416,6 +420,218 @@ class HistoricalDataBackfillTests(unittest.TestCase):
             self.assertEqual(resumed["network_requests_this_run"], 0)
             self.assertEqual(inner.calls, 1)
 
+    def test_company_facts_plan_materializes_point_in_time_raw_info(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _one_company_submissions_plan(root)
+            scope = root / "acquisition_scope.json"
+            plan_path = root / "company_facts_plan.json"
+            plan = write_sec_company_facts_backfill_plan(
+                acquisition_scope_path=scope,
+                output_path=plan_path,
+            )
+            self.assertEqual(plan["request_count"], 1)
+            self.assertEqual(plan["missing_cik_count"], 0)
+            self.assertEqual(
+                plan["items"][0]["source_url"],
+                "https://data.sec.gov/api/xbrl/companyfacts/CIK0000001234.json",
+            )
+            self.assertIn("ifrs-full", plan["selection"]["taxonomy_allowlist"])
+            self.assertEqual(load_sec_company_facts_backfill_plan(plan_path), plan)
+
+            cache = RawDataCache(root / "cache")
+            preview = preview_sec_company_facts_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "company_facts_progress.json",
+            )
+            self.assertEqual(preview["maximum_new_network_requests"], 1)
+            self.assertEqual(preview["fact_document_count"], 0)
+            self.assertEqual(preview["external_calls"], 0)
+
+            valid_quarter = {
+                "accn": "0000001234-24-000001",
+                "filed": "2024-08-01",
+                "form": "10-Q",
+                "fy": 2024,
+                "fp": "Q2",
+                "start": "2024-04-01",
+                "end": "2024-06-30",
+                "val": 100,
+            }
+            response = {
+                "cik": 1234,
+                "entityName": "CURRENT NAME MUST NOT ENTER HISTORICAL CONTENT",
+                "facts": {
+                    "us-gaap": {
+                        "Revenues": {
+                            "label": "Revenue",
+                            "description": "Quarterly revenue.",
+                            "units": {
+                                "USD": [
+                                    valid_quarter,
+                                    {
+                                        **valid_quarter,
+                                        "accn": "0000001234-21-000001",
+                                        "filed": "2021-02-01",
+                                        "start": "2020-01-01",
+                                        "end": "2020-12-31",
+                                        "form": "10-K",
+                                        "val": 1,
+                                    },
+                                    {
+                                        **valid_quarter,
+                                        "accn": "0000001234-25-000003",
+                                        "filed": "2025-04-01",
+                                        "end": "2025-03-31",
+                                        "val": 999,
+                                    },
+                                    {
+                                        **valid_quarter,
+                                        "accn": "0000001234-25-000004",
+                                        "filed": "2025-03-31",
+                                        "end": "2024-12-31",
+                                        "val": 998,
+                                    },
+                                    {
+                                        **valid_quarter,
+                                        "accn": "0001213900-24-000001",
+                                        "val": 997,
+                                    },
+                                    {
+                                        **valid_quarter,
+                                        "accn": "not-an-accession",
+                                        "val": 996,
+                                    },
+                                ]
+                            },
+                        },
+                        "Assets": {
+                            "label": "Assets",
+                            "units": {
+                                "USD": [
+                                    {
+                                        **valid_quarter,
+                                        "start": None,
+                                        "val": 500,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                    "ifrs-full": {
+                        "Revenue": {
+                            "label": "Revenue",
+                            "units": {
+                                "USD": [
+                                    {
+                                        "accn": "0000001234-25-000002",
+                                        "filed": "2025-02-20",
+                                        "form": "20-F",
+                                        "fy": 2024,
+                                        "fp": "FY",
+                                        "start": "2024-01-01",
+                                        "end": "2024-12-31",
+                                        "val": 200,
+                                    }
+                                ]
+                            },
+                        }
+                    },
+                    "custom-company": {
+                        "NonstandardMetric": {
+                            "units": {"pure": [valid_quarter]},
+                        }
+                    },
+                },
+            }
+            inner = FakeSecJsonTransport(response)
+            client = _managed_company_facts_client(root, cache, inner)
+            events = []
+            result = run_sec_company_facts_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "company_facts_progress.json",
+                raw_info_root=root / "raw_info",
+                client=client,
+                max_network_requests=1,
+                now=lambda: datetime(2026, 8, 9, tzinfo=timezone.utc),
+                on_progress=events.append,
+            )
+            self.assertEqual(result["status"], "completed")
+            self.assertEqual(result["network_requests_this_run"], 1)
+            self.assertEqual(result["fact_document_count"], 3)
+            self.assertEqual(result["selected_fact_row_count"], 4)
+            self.assertEqual(result["appended_documents_this_run"], 3)
+            self.assertEqual([event["status"] for event in events], ["starting", "completed"])
+            self.assertEqual(inner.calls, 1)
+
+            stored = RawInfoStore(root / "raw_info").documents
+            self.assertEqual(len(stored), 3)
+            serialized = json.dumps([document.to_dict() for document in stored])
+            self.assertNotIn("CURRENT NAME", serialized)
+            self.assertNotIn("custom-company", serialized)
+            selected_values = {
+                fact["value"]
+                for document in stored
+                for fact in json.loads(document.content)["facts"]
+            }
+            self.assertEqual(selected_values, {100, 200, 500, 997})
+            same_cik_accession = next(
+                document
+                for document in stored
+                if document.metadata["accession_number"]
+                == "0000001234-24-000001"
+            )
+            self.assertEqual(
+                same_cik_accession.available_at,
+                datetime(2024, 8, 2, tzinfo=timezone.utc),
+            )
+            self.assertEqual(same_cik_accession.metadata["fact_count"], 2)
+            self.assertTrue(
+                same_cik_accession.metadata["requires_primary_filing_audit"]
+            )
+            before_second = RawInfoStore(root / "raw_info").search(
+                "cik_0000001234",
+                as_of=datetime(2024, 9, 30, tzinfo=timezone.utc),
+                source_types=("sec_company_facts",),
+            )
+            self.assertEqual(len(before_second), 2)
+
+            recovered = run_sec_company_facts_backfill(
+                plan_path=plan_path,
+                cache=cache,
+                progress_path=root / "recovered_progress.json",
+                raw_info_root=root / "recovered_raw_info",
+                client=client,
+                max_network_requests=0,
+            )
+            self.assertEqual(recovered["status"], "completed")
+            self.assertEqual(recovered["network_requests_this_run"], 0)
+            self.assertEqual(recovered["cache_hits_this_run"], 1)
+            self.assertEqual(inner.calls, 1)
+
+            bad_cache = RawDataCache(root / "bad_cache")
+            bad_inner = FakeSecJsonTransport({**response, "cik": 9999})
+            bad_client = _managed_company_facts_client(root, bad_cache, bad_inner)
+            rejected = run_sec_company_facts_backfill(
+                plan_path=plan_path,
+                cache=bad_cache,
+                progress_path=root / "bad_progress.json",
+                raw_info_root=root / "bad_raw_info",
+                client=bad_client,
+                max_network_requests=1,
+            )
+            self.assertEqual(rejected["status"], "paused_resumable")
+            self.assertEqual(rejected["failures_this_run"], 1)
+            self.assertEqual(rejected["fact_document_count"], 0)
+
+            tampered = json.loads(plan_path.read_text(encoding="utf-8"))
+            tampered["selection"]["period_end_from"] = "2024-01-01"
+            _write_json(plan_path, tampered)
+            with self.assertRaisesRegex(ValidationError, "hash mismatch"):
+                load_sec_company_facts_backfill_plan(plan_path)
+
     def test_sec_history_and_body_plans_are_resumable_and_point_in_time(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -700,6 +916,23 @@ def _managed_submissions_client(
     transport = ManagedHttpTransport(
         "sec_edgar",
         DataCapability.FILINGS,
+        inner,
+        cache,
+        ledger,
+        SourceBudget(ledger, {}),
+    )
+    return SecEdgarClient("test@example.test", transport=transport)
+
+
+def _managed_company_facts_client(
+    root: Path,
+    cache: RawDataCache,
+    inner: FakeSecJsonTransport,
+) -> SecEdgarClient:
+    ledger = RequestLedger(root / "company_facts_ledger.jsonl")
+    transport = ManagedHttpTransport(
+        "sec_edgar",
+        DataCapability.FINANCIAL_STATEMENTS,
         inner,
         cache,
         ledger,

@@ -32,7 +32,8 @@ Post-source implementation adds active data-layer submodules:
 - [`data/raw_info.md`](data/raw_info.md): append-only facts and source bodies for
   adaptive Signal execution, filtered by `available_at <= prediction_time`.
 - [`data/backfill.md`](data/backfill.md): audited, bounded, resumable repair of
-  incomplete historical source bodies into append-only Raw Info.
+  incomplete historical source bodies and SEC XBRL facts into append-only Raw
+  Info.
 - [`data/historical_news.md`](data/historical_news.md): exact, quota-aware,
   point-in-time company-news summary acquisition for label-free case scopes.
 
