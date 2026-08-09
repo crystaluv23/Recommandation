@@ -27,8 +27,13 @@ prior observations. The harness records a trajectory and returns validated
 structured output plus usage.
 
 Tools are explicit `DomainTool` values. They expose a name, description, and
-callable; an unknown tool or malformed turn fails closed. The harness never
-grants arbitrary shell or filesystem primitives such as `ls`, `cat`, or `rm`.
+prompt-safe callable signature; an unknown tool or malformed turn fails closed.
+When a granted tool call omits or misnames arguments, the harness records a
+structured `invalid_arguments` observation with the expected signature and lets
+the model repair it within the existing step bound. It does not invent missing
+values, and exceptions raised inside a correctly bound domain tool still fail
+closed. The harness never grants arbitrary shell or filesystem primitives such
+as `ls`, `cat`, or `rm`.
 
 ## Usage and Limits
 
@@ -48,4 +53,5 @@ cost, and research-round limits.
 ## Testing
 
 Cover multi-tool trajectories, structured output validation, unknown-tool
-rejection, malformed-turn rejection, and maximum-step exhaustion.
+rejection, bounded invalid-argument repair, malformed-turn rejection, and
+maximum-step exhaustion.

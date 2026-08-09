@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 from dataclasses import dataclass, field
 from typing import Any, Callable, Generic, Mapping, Protocol, TypeVar
 
@@ -102,7 +103,11 @@ class DomainTool:
     def card(self) -> Mapping[str, str]:
         """Return the prompt-safe progressive-disclosure card."""
 
-        return {"name": self.name, "description": self.description}
+        return {
+            "name": self.name,
+            "description": self.description,
+            "arguments": str(inspect.signature(self.function)),
+        }
 
 
 @dataclass(frozen=True)
@@ -168,16 +173,26 @@ class GenericAgent:
                 raise ValidationError(
                     f"agent requested ungranted tool: {turn.tool_call.name}"
                 ) from exc
+            arguments = dict(turn.tool_call.arguments)
             try:
-                result = tool.function(**dict(turn.tool_call.arguments))
-            except TypeError as exc:
-                raise ValidationError(
-                    f"invalid arguments for domain tool {tool.name}"
-                ) from exc
+                inspect.signature(tool.function).bind(**arguments)
+            except TypeError:
+                observations.append(
+                    ToolObservation(
+                        name=tool.name,
+                        arguments=arguments,
+                        result={
+                            "error": "invalid_arguments",
+                            "expected": str(inspect.signature(tool.function)),
+                        },
+                    )
+                )
+                continue
+            result = tool.function(**arguments)
             observations.append(
                 ToolObservation(
                     name=tool.name,
-                    arguments=dict(turn.tool_call.arguments),
+                    arguments=arguments,
                     result=result,
                 )
             )

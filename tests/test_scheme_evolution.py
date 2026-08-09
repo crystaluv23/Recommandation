@@ -268,6 +268,29 @@ class GenericAgentTests(TestCase):
         self.assertEqual(result.usage.llm_calls, 2)
         self.assertNotIn("cat", {card["name"] for card in model.requests[0].tool_cards})
 
+    def test_agent_exposes_tool_signature_and_returns_argument_error_for_repair(self) -> None:
+        model = ScriptedAgentModel(
+            [
+                AgentTurn(tool_call=ToolCall("lookup", {})),
+                AgentTurn(final_output={"answer": 4}),
+            ]
+        )
+
+        result = GenericAgent(model).run(
+            prompt="Use the domain tool and repair invalid arguments.",
+            tools=(DomainTool("lookup", "Look up a value.", lambda key: 4),),
+            workspace={"scope": "fixture"},
+            output_schema=lambda value: int(value["answer"]),
+            max_steps=2,
+        )
+
+        self.assertIn("key", model.requests[0].tool_cards[0]["arguments"])
+        self.assertEqual(
+            result.observations[0].result,
+            {"error": "invalid_arguments", "expected": "(key)"},
+        )
+        self.assertEqual(model.requests[1].observations, result.observations)
+
     def test_agent_rejects_ungranted_or_raw_tools_and_step_exhaustion(self) -> None:
         with self.assertRaisesRegex(ValidationError, "not allowed"):
             DomainTool("rm", "Remove anything.", lambda: None)
