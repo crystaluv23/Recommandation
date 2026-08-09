@@ -765,6 +765,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(first.plan_id, "plan_manual_v2")
         self.assertEqual(first.basic_info_policy.fields[-1], "industry")
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
+        self.assertIn(
+            '"basic_info_policy"', str(caller.calls[0]["system_prompt"])
+        )
         self.assertNotIn("proposal_slot", caller.calls[0]["payload"])
         self.assertEqual(
             caller.calls[1]["payload"]["proposal_slot"],
@@ -785,7 +788,35 @@ class ConcreteRoleAdapterTests(TestCase):
         proposer = LLMInformationPlanProposer(ScriptedRoleCaller([{"unexpected": True}]))
 
         with self.assertRaisesRegex(
-            ValidationError, "information_plan_propose returned invalid JSON fields"
+            ValidationError, "information_plan_propose returned"
+        ):
+            proposer.propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                forbidden_plan_ids=(),
+                parents=(default_information_plan(),),
+                meta_info=(),
+                prior="fixed H_P",
+            )
+
+    def test_plan_proposer_rejects_deepseek_evidence_arrays_cleanly(self) -> None:
+        proposer = LLMInformationPlanProposer(
+            ScriptedRoleCaller(
+                [
+                    {
+                        "B": {"purpose": "not a Basic Info policy"},
+                        "H_init": [{"statement": "one"}],
+                        "H_reflect": [{"statement": "two"}],
+                        "H_analyse": [{"statement": "three"}],
+                    }
+                ]
+            )
+        )
+
+        with self.assertRaisesRegex(
+            ValidationError,
+            "information_plan_propose returned incompatible semantic fields",
         ):
             proposer.propose(
                 round_id=1,

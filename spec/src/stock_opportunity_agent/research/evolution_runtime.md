@@ -61,7 +61,10 @@ domain construction; malformed shapes fail with a stage-specific
 `ValidationError`, never a raw `KeyError`. The Information Plan proposer also
 accepts the observed semantic `B/H_init/H_reflect/H_analyse` nesting as a
 deterministic compatibility input, but durable Plan artifacts always use the
-canonical flat field names.
+canonical flat field names. The literal canonical Plan contract is present on
+every proposal call, including the first slot; provider responses that instead
+use evidence arrays under `H_*` are rejected and retained in the exact cache,
+not coerced into a bogus Plan.
 
 Preflight and dry-run never perform network I/O. External mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash.

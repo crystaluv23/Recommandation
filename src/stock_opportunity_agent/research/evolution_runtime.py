@@ -1808,27 +1808,65 @@ def _normalize_information_plan_output(value: Mapping[str, Any]) -> dict[str, An
     """Normalize the observed semantic B/H_* provider shape at the role boundary."""
 
     if "basic_info_policy" in value:
-        return dict(value)
-    h_init = dict(value.get("H_init", {}))
-    h_reflect = dict(value.get("H_reflect", {}))
-    h_analyse = dict(value.get("H_analyse", value.get("H_analyze", {})))
-    policy = h_init.get("basic_info_policy")
-    if not isinstance(policy, Mapping):
-        basic = value.get("B", {})
-        if isinstance(basic, Mapping):
-            policy = (
-                dict(basic)
-                if "fields" in basic
-                else {"fields": [str(key) for key in basic]}
+        normalized = dict(value)
+    else:
+        h_init_value = value.get("H_init")
+        h_reflect_value = value.get("H_reflect")
+        h_analyse_value = value.get("H_analyse", value.get("H_analyze"))
+        if not all(
+            isinstance(item, Mapping)
+            for item in (h_init_value, h_reflect_value, h_analyse_value)
+        ):
+            field_types = ", ".join(
+                f"{key}={type(item).__name__}"
+                for key, item in (
+                    ("H_init", h_init_value),
+                    ("H_reflect", h_reflect_value),
+                    ("H_analyse", h_analyse_value),
+                )
             )
-    return {
-        "plan_id": value.get("plan_id", value.get("id")),
-        "parent_ids": value.get("parent_ids", value.get("parent ids", ())),
-        "basic_info_policy": policy,
-        "initial_research_skill": h_init.get("initial_research_skill"),
-        "reflection_skill": h_reflect.get("reflection_skill"),
-        "analysis_prompt": h_analyse.get("analysis_prompt"),
-    }
+            raise ValidationError(
+                "information_plan_propose returned incompatible semantic fields: "
+                + field_types
+            )
+        h_init = dict(h_init_value)
+        h_reflect = dict(h_reflect_value)
+        h_analyse = dict(h_analyse_value)
+        policy = h_init.get("basic_info_policy")
+        if not isinstance(policy, Mapping):
+            basic = value.get("B", {})
+            if isinstance(basic, Mapping):
+                policy = (
+                    dict(basic)
+                    if "fields" in basic
+                    else {"fields": [str(key) for key in basic]}
+                )
+        normalized = {
+            "plan_id": value.get("plan_id", value.get("id")),
+            "parent_ids": value.get("parent_ids", value.get("parent ids", ())),
+            "basic_info_policy": policy,
+            "initial_research_skill": h_init.get("initial_research_skill"),
+            "reflection_skill": h_reflect.get("reflection_skill"),
+            "analysis_prompt": h_analyse.get("analysis_prompt"),
+        }
+    required_strings = (
+        "plan_id",
+        "initial_research_skill",
+        "reflection_skill",
+        "analysis_prompt",
+    )
+    if any(
+        not isinstance(normalized.get(key), str) or not normalized[key].strip()
+        for key in required_strings
+    ):
+        raise ValidationError(
+            "information_plan_propose returned missing or non-string Plan fields"
+        )
+    if not isinstance(normalized.get("basic_info_policy"), Mapping):
+        raise ValidationError(
+            "information_plan_propose returned invalid basic_info_policy"
+        )
+    return normalized
 
 
 class LLMResearchController:
@@ -2047,12 +2085,12 @@ class LLMInformationPlanProposer:
         system_prompt = (
             "Apply the fixed H_P prior. Return one complete InformationPlan JSON. "
             "Only B, H_init, H_reflect, H_analyse, id, and parent ids may vary."
+            + _INFORMATION_PLAN_OUTPUT
         )
         if "proposal_slot" in payload:
             system_prompt += (
                 " Obey proposal_slot: use a plan_id outside forbidden_plan_ids and "
                 "make this candidate materially distinct from prior slots."
-                + _INFORMATION_PLAN_OUTPUT
             )
         value, _usage = self.caller.complete_json(
             stage="information_plan_propose",
