@@ -994,6 +994,22 @@ class RunControlTests(TestCase):
                     allow_outcomes=False,
                     anonymous_aliases=("AAA",),
                 )
+            with self.assertRaisesRegex(ExternalRequestPending, "requires approval"):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "or an artifact with low liquidity"},
+                    allow_outcomes=False,
+                    anonymous_aliases=("AN", "LOW"),
+                )
+            with self.assertRaisesRegex(ValidationError, "identity alias"):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "AN identity disclosed"},
+                    allow_outcomes=False,
+                    anonymous_aliases=("AN",),
+                )
             try:
                 client.complete_json(
                     stage="predict",

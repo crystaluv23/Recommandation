@@ -50,6 +50,14 @@ numeric revealed truth as typed records. It does not rescan prediction enum
 values as free identity text, because legitimate values such as confidence
 `low` can equal a ticker alias (`LOW`).
 
+Free-text scanning preserves alias type. Company names are matched
+case-insensitively, while short uppercase ticker aliases are matched
+case-sensitively; internal lowercase company ids are not added as global
+free-text aliases. This still catches an explicit `AN`/`LOW` ticker leak but
+does not misclassify ordinary prose such as "an artifact" or "low liquidity".
+The current case's identity fields and aliases are independently stripped and
+masked before this defense-in-depth scan.
+
 An attempt is reserved in `attempts.json` before the call. Reservation fails if
 the attempt count or cumulative conservative cost ceiling would be exceeded.
 Completion/failure updates the same durable entry. Exact responses live under

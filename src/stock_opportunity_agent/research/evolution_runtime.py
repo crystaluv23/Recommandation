@@ -2601,7 +2601,6 @@ def _default_priors_dict() -> dict[str, str]:
 def _dataset_identity_aliases(dataset: ApprovedDevelopmentDataset) -> tuple[str, ...]:
     aliases: set[str] = set()
     for case in (*dataset.discovery, *dataset.evolution_validation):
-        aliases.add(case.company_id)
         for key in ("company_name", "ticker", "symbol", "identity_aliases"):
             value = case.basic_info.get(key)
             if isinstance(value, str):
@@ -3242,7 +3241,7 @@ def _scan_payload(
 ) -> None:
     aliases = tuple(
         sorted(
-            {str(item).strip().casefold() for item in anonymous_aliases if str(item).strip()},
+            {str(item).strip() for item in anonymous_aliases if str(item).strip()},
             key=len,
             reverse=True,
         )
@@ -3261,11 +3260,13 @@ def _scan_payload(
                 visit(nested, f"{path}[{index}]")
             return
         if isinstance(item, str):
-            folded = item.casefold()
             for alias in aliases:
+                ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
+                haystack = item if ticker_like else item.casefold()
+                needle = alias if ticker_like else alias.casefold()
                 if re.search(
-                    rf"(?<![a-z0-9]){re.escape(alias)}(?![a-z0-9])",
-                    folded,
+                    rf"(?<![A-Za-z0-9]){re.escape(needle)}(?![A-Za-z0-9])",
+                    haystack,
                 ):
                     raise ValidationError(f"identity alias leaked into anonymous request: {path}")
 
