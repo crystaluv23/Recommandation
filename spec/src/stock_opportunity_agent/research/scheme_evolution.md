@@ -221,10 +221,11 @@ Select quality plus diversity:
 The proposer receives `[top1..topK, rand1, rand2]`, current FIFO meta-info, and
 fixed `H_P`. It is called independently N times. Every call also receives a
 non-evolvable proposal slot (`round_id`, candidate index/count, and forbidden
-Plan ids) so deterministic temperature-zero models and exact caches do not
-collapse all N calls into one response. The slot participates in request
-identity but never becomes part of the candidate Plan. This is conditional
-sampling, not a claim of genetic crossover.
+Plan ids). The proposer uses frozen temperature `1.0` sampling; anonymous blind
+judging stays at temperature `0.0`. The slot prevents exact-cache collapse and
+still rejects repeated ids if sampling returns the same candidate. It
+participates in request identity but never becomes part of the candidate Plan.
+This is conditional sampling, not a claim of genetic crossover.
 
 ## Plan Meta-Info and Fixed Priors
 

@@ -24,6 +24,8 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - role/model/provider/routing metadata;
 - code revision and Python runtime;
 - candidate/round/runtime limits;
+- role sampling settings: Plan proposer temperature `1.0`, judge temperature
+  `0.0`;
 - maximum external attempts and cumulative cost; and
 - `locked_test_accessed=false` for ordinary evolution.
 
@@ -47,6 +49,11 @@ the attempt count or cumulative conservative cost ceiling would be exceeded.
 Completion/failure updates the same durable entry. Exact responses live under
 `cache/responses/<request_hash>.json`; reuse requires the exact request hash and
 does not consume another attempt.
+
+Temperature is part of the exact request hash. Only Information Plan proposal
+calls sample (`1.0`); prediction, research, reflection, Signal execution, and
+all other judge calls remain greedy (`0.0`). The runtime alters temperature
+only, leaving nucleus sampling at its provider default.
 
 Every structured role prompt includes its literal accepted JSON field contract.
 The adapter validates and converts provider output at the role boundary before

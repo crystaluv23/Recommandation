@@ -764,6 +764,7 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(first.plan_id, "plan_manual_v2")
         self.assertEqual(first.basic_info_policy.fields[-1], "industry")
+        self.assertEqual(caller.calls[0]["temperature"], 1.0)
         self.assertNotIn("proposal_slot", caller.calls[0]["payload"])
         self.assertEqual(
             caller.calls[1]["payload"]["proposal_slot"],
@@ -874,13 +875,19 @@ class RunControlTests(TestCase):
                     system_prompt="Return JSON.",
                     payload={"context": "anonymous evidence"},
                     allow_outcomes=False,
+                    temperature=1.0,
                 )
             except ExternalRequestPending as pending:
                 self.assertTrue(pending.request_path.is_file())
                 request_hash = pending.request_hash
+                request_path = pending.request_path
             else:
                 self.fail("preview should stop after persisting the exact request")
             self.assertEqual(ledger.summary["attempt_count"], 0)
+            request = json.loads(request_path.read_text(encoding="utf-8"))[
+                "request"
+            ]
+            self.assertEqual(request["temperature"], 1.0)
 
             ExactResponseCache(root / "cache" / "responses").store(
                 request_hash,
@@ -894,6 +901,7 @@ class RunControlTests(TestCase):
                 system_prompt="Return JSON.",
                 payload={"context": "anonymous evidence"},
                 allow_outcomes=False,
+                temperature=1.0,
             )
             self.assertEqual(value, {"ok": True})
             self.assertEqual(usage.llm_calls, 0)

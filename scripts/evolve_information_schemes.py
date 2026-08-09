@@ -583,6 +583,8 @@ def freeze_run(
                 "top_k": 3,
                 "random_k": 2,
                 "similarity_threshold": 0.9,
+                "plan_proposal_temperature": 1.0,
+                "judge_temperature": 0.0,
                 "max_signal_rounds": 5,
                 "max_signal_calls": 20,
                 "max_llm_calls": 40,

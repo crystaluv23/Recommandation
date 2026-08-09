@@ -1497,9 +1497,12 @@ class StructuredRoleClient:
         allow_outcomes: bool,
         anonymous_aliases: Iterable[str] = (),
         max_output_tokens: int | None = None,
+        temperature: float = 0.0,
     ) -> tuple[dict[str, Any], AgentUsage]:
         """Persist and validate an exact request, then preview/cache/execute it."""
 
+        if not 0 <= temperature <= 1:
+            raise ValidationError("role temperature must be between 0 and 1")
         _scan_payload(
             payload,
             allow_outcomes=allow_outcomes,
@@ -1511,7 +1514,7 @@ class StructuredRoleClient:
             "contract_hash": self.contract.contract_hash,
             "stage": stage,
             "model": self.registration.to_public_dict(),
-            "temperature": 0.0,
+            "temperature": temperature,
             "max_http_attempts": 1,
             "max_output_tokens": output_limit,
             "messages": [
@@ -1585,7 +1588,7 @@ class StructuredRoleClient:
         client = self.registration.create_client(
             ModelClientSettings(
                 preview_only=False,
-                temperature=0.0,
+                temperature=temperature,
                 max_http_attempts=1,
                 environ=self.environ,
             )
@@ -1675,6 +1678,7 @@ class JSONRoleCaller(Protocol):
         allow_outcomes: bool,
         anonymous_aliases: Iterable[str] = (),
         max_output_tokens: int | None = None,
+        temperature: float = 0.0,
     ) -> tuple[dict[str, Any], AgentUsage]:
         """Return one validated structured role response and usage."""
 
@@ -2011,8 +2015,11 @@ class LLMBlindPredictor:
 class LLMInformationPlanProposer:
     """Concrete fixed-H_P candidate proposer; it may change only four Plan fields."""
 
-    def __init__(self, caller: JSONRoleCaller) -> None:
+    def __init__(self, caller: JSONRoleCaller, *, temperature: float = 1.0) -> None:
+        if not 0 < temperature <= 1:
+            raise ValidationError("Plan proposal temperature must be in (0, 1]")
         self.caller = caller
+        self.temperature = temperature
 
     def propose(
         self,
@@ -2052,6 +2059,7 @@ class LLMInformationPlanProposer:
             system_prompt=system_prompt,
             payload=payload,
             allow_outcomes=False,
+            temperature=self.temperature,
         )
         normalized = _normalize_information_plan_output(value)
         return _parse_role_output(
@@ -2351,7 +2359,10 @@ def run_bounded_evolution_cycle(
         meta_memory=meta_memory,
         signal_registry=registry,
         evaluator=evaluator,
-        proposer=LLMInformationPlanProposer(evolution_caller),
+        proposer=LLMInformationPlanProposer(
+            evolution_caller,
+            temperature=float(limits.get("plan_proposal_temperature", 1.0)),
+        ),
         critic=LLMPlanCritic(judge_caller),
         round_reflector=LLMRoundReflector(judge_caller),
         workspace=evolution_workspace,
