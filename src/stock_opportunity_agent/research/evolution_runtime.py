@@ -43,11 +43,13 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanMetaMemory,
     PlanRecord,
     PlanReflection,
+    ProgressCallback,
     PredictionSelfReflection,
     ResearchState,
     RoundMetaEntry,
     RuntimeLimits,
     RuntimePlanEvaluator,
+    SlowLoopResult,
     SignalEvolutionEngine,
     default_information_plan,
 )
@@ -1472,6 +1474,7 @@ class StructuredRoleClient:
         allow_external: bool = False,
         acknowledged_contract_hash: str | None = None,
         environ: Mapping[str, str] | None = None,
+        on_progress: ProgressCallback | None = None,
     ) -> None:
         self.registration = registration
         self.contract = contract
@@ -1483,6 +1486,7 @@ class StructuredRoleClient:
         self.allow_external = allow_external
         self.acknowledged_contract_hash = acknowledged_contract_hash
         self.environ = environ
+        self.on_progress = on_progress
 
     def complete_json(
         self,
@@ -1524,10 +1528,33 @@ class StructuredRoleClient:
             request_path,
             {"request_hash": request_hash, "request": request},
         )
+        _emit_runtime_progress(
+            self.on_progress,
+            "request_ready",
+            stage=stage,
+            model_alias=self.registration.alias,
+            request_hash=request_hash,
+            request_path=str(request_path),
+        )
         cached = self.cache.load(request_hash)
         if cached is not None:
+            _emit_runtime_progress(
+                self.on_progress,
+                "request_cache_hit",
+                stage=stage,
+                model_alias=self.registration.alias,
+                request_hash=request_hash,
+            )
             return dict(cached["json_output"]), _usage_from_cache(cached)
         if not self.allow_external:
+            _emit_runtime_progress(
+                self.on_progress,
+                "request_pending_external_approval",
+                stage=stage,
+                model_alias=self.registration.alias,
+                request_hash=request_hash,
+                request_path=str(request_path),
+            )
             raise ExternalRequestPending(request_hash, request_path)
         if self.acknowledged_contract_hash != self.contract.contract_hash:
             raise ValidationError("external execution requires exact run-contract acknowledgement")
@@ -1546,6 +1573,15 @@ class StructuredRoleClient:
             output_tokens=output_limit,
         )
         attempt_id = self.ledger.reserve(request_hash, reserved_cost=reserved_cost)
+        _emit_runtime_progress(
+            self.on_progress,
+            "external_call_started",
+            stage=stage,
+            model_alias=self.registration.alias,
+            request_hash=request_hash,
+            attempt_id=attempt_id,
+            reserved_cost=reserved_cost,
+        )
         client = self.registration.create_client(
             ModelClientSettings(
                 preview_only=False,
@@ -1592,6 +1628,17 @@ class StructuredRoleClient:
                 actual_cost=actual_cost,
                 response_hash=response_hash,
             )
+            _emit_runtime_progress(
+                self.on_progress,
+                "external_call_completed",
+                stage=stage,
+                model_alias=self.registration.alias,
+                request_hash=request_hash,
+                attempt_id=attempt_id,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                actual_cost=actual_cost,
+            )
             return parsed, AgentUsage(
                 llm_calls=1,
                 tokens=input_tokens + output_tokens,
@@ -1602,6 +1649,15 @@ class StructuredRoleClient:
                 attempt_id,
                 status="failed",
                 actual_cost=0.0,
+                error_type=type(exc).__name__,
+            )
+            _emit_runtime_progress(
+                self.on_progress,
+                "external_call_failed",
+                stage=stage,
+                model_alias=self.registration.alias,
+                request_hash=request_hash,
+                attempt_id=attempt_id,
                 error_type=type(exc).__name__,
             )
             raise
@@ -1951,6 +2007,7 @@ def run_bounded_evolution_cycle(
     allow_external: bool,
     acknowledged_contract_hash: str | None,
     environ: Mapping[str, str] | None = None,
+    on_progress: ProgressCallback | None = None,
 ) -> DualLoopResult:
     """Run/resume one frozen finite Fast group and one validation-only Slow cycle."""
 
@@ -1971,6 +2028,63 @@ def run_bounded_evolution_cycle(
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
 
+    limits = dict(contract.limits)
+    target_plan_rounds = int(limits.get("plan_rounds_per_signal_cycle", 5))
+    evolution_workspace = EvolutionWorkspace(workspace_root)
+    cycle = evolution_workspace.start_or_resume_cycle(
+        run_contract_hash=contract.contract_hash,
+        target_plan_rounds=target_plan_rounds,
+    )
+    cycle_id = int(cycle["cycle_id"])
+
+    def emit(event: Mapping[str, Any]) -> None:
+        event_type = str(event.get("event_type") or "runtime_progress")
+        details = {
+            key: value for key, value in event.items() if key != "event_type"
+        }
+        details.setdefault("cycle_id", cycle_id)
+        if event_type == "round_committed":
+            evolution_workspace.mark_cycle_phase("fast_loop")
+        elif event_type == "slow_loop_started":
+            evolution_workspace.mark_cycle_phase("slow_loop")
+        stored = evolution_workspace.append_event(event_type, details)
+        if on_progress is not None:
+            on_progress(stored)
+
+    emit(
+        {
+            "event_type": "cycle_resumed" if cycle["resumed"] else "cycle_started",
+            "start_round": int(cycle["start_round"]),
+            "completed_plan_rounds": int(cycle["completed_plan_rounds"]),
+            "target_plan_rounds": target_plan_rounds,
+            "phase": str(cycle["phase"]),
+        }
+    )
+    completed_plan_rounds = int(cycle["completed_plan_rounds"])
+    staged_slow = evolution_workspace.staged_slow_result(cycle_id)
+    if staged_slow is not None:
+        if completed_plan_rounds != target_plan_rounds:
+            raise ValidationError("staged Slow result exists before Fast loop completion")
+        signal_result = SlowLoopResult.from_dict(staged_slow)
+        emit(
+            {
+                "event_type": "slow_loop_result_reused",
+                "validated_pending_approval": dict(
+                    signal_result.validated_pending_approval
+                ),
+                "registry_version": signal_result.registry_version,
+            }
+        )
+        evolution_workspace.complete_cycle(cycle_id=cycle_id)
+        emit(
+            {
+                "event_type": "cycle_committed",
+                "last_completed_round": evolution_workspace.last_completed_round,
+                "last_completed_cycle": evolution_workspace.last_completed_cycle,
+            }
+        )
+        return DualLoopResult(plan_rounds=(), signal_evolution=signal_result)
+
     ledger = ExternalAttemptLedger(
         workspace_root / "attempts.json",
         max_attempts=contract.max_external_attempts,
@@ -1986,6 +2100,7 @@ def run_bounded_evolution_cycle(
         allow_external=allow_external,
         acknowledged_contract_hash=acknowledged_contract_hash,
         environ=environ,
+        on_progress=emit,
     )
     evolution_caller = StructuredRoleClient(
         registration=get_model(evolution_alias, role="evolution"),
@@ -1995,10 +2110,10 @@ def run_bounded_evolution_cycle(
         allow_external=allow_external,
         acknowledged_contract_hash=acknowledged_contract_hash,
         environ=environ,
+        on_progress=emit,
     )
     raw_info_store = RawInfoStore(workspace_root / "raw_info")
     aliases = _dataset_identity_aliases(dataset)
-    limits = dict(contract.limits)
     runtime_limits = RuntimeLimits(
         max_signal_rounds=int(limits.get("max_signal_rounds", 5)),
         max_signal_calls=int(limits.get("max_signal_calls", 20)),
@@ -2006,7 +2121,6 @@ def run_bounded_evolution_cycle(
         max_tokens=int(limits.get("max_tokens", 120_000)),
         max_cost=float(limits.get("max_case_cost", 5.0)),
     )
-    evolution_workspace = EvolutionWorkspace(workspace_root)
     archive = evolution_workspace.restore_archive(
         expected_run_contract_hash=contract.contract_hash
     )
@@ -2021,8 +2135,10 @@ def run_bounded_evolution_cycle(
             anonymous_aliases=aliases,
         ),
         prediction_root=workspace_root / "predictions",
+        trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,
         llm_signal_runner=signal_runner,
+        on_progress=emit,
     )
     plan_engine = PlanEvolutionEngine(
         archive=archive,
@@ -2039,6 +2155,7 @@ def run_bounded_evolution_cycle(
         random_k=int(limits.get("random_k", 2)),
         similarity_threshold=float(limits.get("similarity_threshold", 0.9)),
         run_contract_hash=contract.contract_hash,
+        on_progress=emit,
     )
     signal_engine = SignalEvolutionEngine(
         registry=registry,
@@ -2063,7 +2180,7 @@ def run_bounded_evolution_cycle(
         llm_signal_runner=signal_runner,
         max_agent_steps=int(limits.get("max_agent_steps", 20)),
     )
-    return DualLoopEvolutionEngine(
+    result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,
         signal_engine=signal_engine,
         signal_registry=registry,
@@ -2071,7 +2188,27 @@ def run_bounded_evolution_cycle(
         plan_rounds_per_signal_cycle=int(
             limits.get("plan_rounds_per_signal_cycle", 5)
         ),
-    ).run_cycle()
+        on_progress=emit,
+    ).run_cycle(completed_plan_rounds=completed_plan_rounds)
+    slow_result_path = evolution_workspace.stage_slow_result(
+        cycle_id=cycle_id,
+        result=result.signal_evolution.to_dict(),
+    )
+    emit(
+        {
+            "event_type": "slow_loop_result_staged",
+            "slow_result_path": str(slow_result_path),
+        }
+    )
+    evolution_workspace.complete_cycle(cycle_id=cycle_id)
+    emit(
+        {
+            "event_type": "cycle_committed",
+            "last_completed_round": evolution_workspace.last_completed_round,
+            "last_completed_cycle": evolution_workspace.last_completed_cycle,
+        }
+    )
+    return result
 
 
 def build_run_contract(
@@ -3057,6 +3194,15 @@ def _is_outcome_field(normalized: str) -> bool:
         normalized.startswith(f"{field}_") or normalized.endswith(f"_{field}")
         for field in _FORBIDDEN_OUTCOME_KEYS
     )
+
+
+def _emit_runtime_progress(
+    callback: ProgressCallback | None,
+    event_type: str,
+    **details: Any,
+) -> None:
+    if callback is not None:
+        callback({"event_type": event_type, **details})
 
 
 def _canonical_hash(value: Any) -> str:

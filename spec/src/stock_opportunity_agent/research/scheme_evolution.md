@@ -2,7 +2,7 @@
 
 ## Status
 
-Started - v1 replacement contract
+Preflight Ready - v1 replacement contract implemented
 
 ## Purpose
 
@@ -43,6 +43,7 @@ experiments/            # complete trajectories and round checkpoints
 meta/                   # FIFO plan-round reflections
 cache/                  # exact reusable model/tool outputs
 state.json              # authoritative last_completed_round
+cycle_state.json        # authoritative completed/active Fast+Slow cycle
 ```
 
 The three logical cores are the Plan Archive, Signal Registry, and Raw Info
@@ -104,7 +105,13 @@ Company -> B -> Basic Info -> H_init -> information needs
 The prediction sink is mandatory and runs before the ground-truth provider is
 called. A trajectory preserves Basic Info, every need, selected Signal ref,
 Signal result, evidence, reflection state, final context, prediction, ground
-truth, self-reflection, usage, and stop reason.
+truth, self-reflection, usage, and stop reason. Each completed case trajectory
+is also written independently under
+`experiments/trajectories/<plan_id>/<case_id>.json` with an exact input hash
+covering the Plan, case, frozen Signal snapshot, and runtime limits. Restart
+reuses it only when that hash and serialized trajectory remain exact; this
+prevents a process interruption late in a validation batch from repeating
+completed case work.
 
 Runtime engineering guards are fixed framework controls:
 
@@ -294,6 +301,46 @@ when its canonical JSON exactly matches the artifact currently being committed;
 a mismatch fails closed. The pointer remains the last write. Exact external
 responses are separately reusable only under their exact request hash.
 
+One Fast/Slow cycle has a second atomic `cycle_state.json` marker. It records the
+cycle id, starting committed round, fixed round target, current Fast/Slow phase,
+and last completed cycle under the frozen run-contract hash. After `Ctrl+C`, the
+supervisor derives completed Fast work from `last_completed_round`, runs only
+the remaining rounds, and reuses an exact staged Slow result before advancing
+the completed-cycle pointer. It never infers completion from candidate files or
+an event log.
+
+`experiments/trajectory.jsonl` is the append-only debug stream for lifecycle,
+request/cache, round, candidate, case, score, Top-K, Slow-loop, interruption,
+and resume events. Each line carries a UTC timestamp and monotonic sequence
+number; it is diagnostic evidence, not a completion authority. A
+truncated/corrupt line is counted and ignored so it cannot block recovery or
+impersonate a commit.
+
+## CLI Visibility and Local Dashboard
+
+The API runner accepts a structured progress callback. The CLI renders those
+events immediately with flushing and includes cycle/round ids, candidate Plan
+summaries, per-case progress, request/cache state, candidate metrics, current
+quality-diverse Top-K scores, checkpoint commits, resume decisions, and Slow
+Signal candidate status. It must never print prompts, credentials, raw packet
+content, or identity-masked Predictor inputs.
+
+`run-cycle` executes or resumes one frozen Fast/Slow cycle. `run-loop` is a thin
+supervisor that starts another bounded cycle only after the prior cycle commits;
+zero `--max-cycles` means continue until `Ctrl+C`. `KeyboardInterrupt` leaves
+committed pointers intact, records an interruption event at the CLI boundary,
+refreshes reporting, and exits with the conventional interrupted status. This
+does not widen the frozen attempt or cost ceilings.
+
+The single human-facing entry remains
+`runs/cold_start/evolution/evolution_dashboard.html`. A read-only builder scans
+direct child workspaces, trusts only committed round/cycle pointers, retains
+legacy history compatibility, and rewrites the adjacent local data/index
+artifacts. The page selects a run in-place and shows Binary F1 by round,
+candidate scatter/median, committed best, current Top-K, cycle/resume status,
+trajectory counts, stop reasons, and recent debug events. Locked Test metrics
+are never included.
+
 ## Frozen Run and External-Call Contract
 
 Before external execution, the runner writes a secret-free frozen manifest that
@@ -352,4 +399,7 @@ proposal calls, grounded FIFO updates, observed-policy counts, candidate
 isolation, executable candidate fixtures, exact-hash human promotion checks,
 frozen fast-loop definitions, locked-test
 isolation, runtime budgets, authoritative completion pointer behavior, and one
-offline end-to-end dual-loop cycle.
+offline end-to-end dual-loop cycle. Recovery tests must additionally cover
+independent case-trajectory reuse, interrupt-after-round recovery with no extra
+Fast rounds, exact staged Slow-result recovery, append-only debug events, CLI
+progress flushing, and dashboard filtering to committed pointers.

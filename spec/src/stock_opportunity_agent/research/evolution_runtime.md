@@ -2,7 +2,7 @@
 
 ## Status
 
-Started
+Preflight Ready
 
 ## Purpose
 
@@ -50,6 +50,24 @@ does not consume another attempt.
 
 Preflight and dry-run never perform network I/O. External mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash.
+
+## Supervision, Interrupt, and Resume
+
+The runtime emits structured, secret-free progress events before and after
+request, cache, Plan, case, scoring, round-commit, and Slow-loop boundaries.
+The workspace appends those events to its debug trajectory before forwarding
+them to an optional caller callback. An external request interrupted after its
+attempt reservation remains visibly `in_progress`; it is not silently retried
+or marked unused.
+
+One cycle freezes its start round and configured Fast-round count in
+`cycle_state.json`. Resume calculates remaining Fast work from the authoritative
+`state.json:last_completed_round`, not from files or printed output. The Slow
+result is written as an exact immutable artifact before the cycle pointer
+advances. The continuous CLI supervisor may start successive bounded cycles,
+but `Ctrl+C` stops at the current durable boundary without changing the frozen
+run contract, attempt ceiling, cost ceiling, dataset, Signal snapshot, or
+Locked Test posture.
 
 ## Local Artifact Inventory
 
@@ -143,12 +161,19 @@ evolution module's fixed priors and Signal snapshot hashes. Provider-specific
 transport logic remains under `llm`; this module owns only evolution-run
 governance.
 
+The read-only local dashboard builder is described in
+[`evolution_dashboard.md`](evolution_dashboard.md). Runtime code refreshes its
+data bundle only at status, completed-round/cycle, pause, and interruption
+boundaries; the HTML itself never becomes a state authority.
+
 ## Testing
 
 Cover secret-free canonical contracts, exact replay/conflict rejection,
 request hashing, predictor leakage scans, preview no-network behavior, exact
 cache reuse, durable attempt/cost reservation, stale in-progress attempt
-visibility, local artifact inventory, missing paths, and Locked Test sealing.
+visibility, structured progress events, cycle-level remaining-round recovery,
+exact Slow-result staging, local artifact inventory, missing paths, and Locked
+Test sealing.
 Full-market expansion tests additionally cover fixed-date labels, incomplete
 issuer exclusion, CIK deduplication, deterministic weighted/diversity sampling,
 issuer-disjoint stratified splits, hashed official-source identity decisions,

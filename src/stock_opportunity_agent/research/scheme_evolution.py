@@ -37,6 +37,7 @@ from stock_opportunity_agent.signal_library import (
 
 
 T = TypeVar("T")
+ProgressCallback = Callable[[Mapping[str, Any]], None]
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_.:-]*$")
 _FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
     {
@@ -507,6 +508,15 @@ class RuntimeLimits:
             raise ValidationError("runtime requires at least three LLM calls")
         if self.max_cost <= 0:
             raise ValidationError("runtime max_cost must be positive")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "max_signal_rounds": self.max_signal_rounds,
+            "max_signal_calls": self.max_signal_calls,
+            "max_llm_calls": self.max_llm_calls,
+            "max_tokens": self.max_tokens,
+            "max_cost": self.max_cost,
+        }
 
 
 @dataclass(frozen=True)
@@ -1459,9 +1469,11 @@ class RuntimePlanEvaluator:
         signal_agent: SignalRetrievalAgent,
         predictor: BlindPredictor,
         prediction_root: str | Path,
+        trajectory_root: str | Path | None = None,
         limits: RuntimeLimits = RuntimeLimits(),
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
         llm_signal_runner: LLMSignalRunner | None = None,
+        on_progress: ProgressCallback | None = None,
     ) -> None:
         self.raw_info_store = raw_info_store
         self.controller = controller
@@ -1469,9 +1481,16 @@ class RuntimePlanEvaluator:
         self.predictor = predictor
         self.prediction_root = Path(prediction_root)
         self.prediction_root.mkdir(parents=True, exist_ok=True)
+        self.trajectory_root = (
+            Path(trajectory_root)
+            if trajectory_root is not None
+            else self.prediction_root.parent / "trajectories"
+        )
+        self.trajectory_root.mkdir(parents=True, exist_ok=True)
         self.limits = limits
         self.deterministic_functions = deterministic_functions
         self.llm_signal_runner = llm_signal_runner
+        self.on_progress = on_progress
 
     def evaluate(
         self,
@@ -1488,8 +1507,61 @@ class RuntimePlanEvaluator:
             llm_runner=self.llm_signal_runner,
         )
         trajectories: list[ExecutionTrajectory] = []
-        for case in cases:
+        for case_index, case in enumerate(cases, start=1):
             case_path = self.prediction_root / plan.plan_id / f"{case.case_id}.json"
+            trajectory_path = (
+                self.trajectory_root / plan.plan_id / f"{case.case_id}.json"
+            )
+            input_hash = _canonical_hash(
+                {
+                    "schema_version": "execution-trajectory-input-v1",
+                    "plan": plan.to_dict(),
+                    "case": {
+                        "case_id": case.case_id,
+                        "company_id": case.company_id,
+                        "prediction_time": case.prediction_time.isoformat(),
+                        "basic_info": dict(case.basic_info),
+                        "ground_truth": case.ground_truth.to_dict(),
+                    },
+                    "signal_registry_hash": signal_registry.registry_hash,
+                    "runtime_limits": self.limits.to_dict(),
+                }
+            )
+            if trajectory_path.exists():
+                staged = _read_json(trajectory_path)
+                if (
+                    staged.get("schema_version")
+                    != "execution-trajectory-checkpoint-v1"
+                    or staged.get("input_hash") != input_hash
+                ):
+                    raise ValidationError(
+                        f"conflicting staged execution trajectory: {trajectory_path}"
+                    )
+                trajectory = ExecutionTrajectory.from_dict(
+                    dict(staged.get("trajectory", {}))
+                )
+                if trajectory.case_id != case.case_id:
+                    raise ValidationError("staged execution trajectory case mismatch")
+                trajectories.append(trajectory)
+                _emit_progress(
+                    self.on_progress,
+                    "case_trajectory_reused",
+                    plan_id=plan.plan_id,
+                    case_id=case.case_id,
+                    case_index=case_index,
+                    case_count=len(cases),
+                    trajectory_path=str(trajectory_path),
+                )
+                continue
+
+            _emit_progress(
+                self.on_progress,
+                "case_started",
+                plan_id=plan.plan_id,
+                case_id=case.case_id,
+                case_index=case_index,
+                case_count=len(cases),
+            )
 
             def sink(
                 company_id: str,
@@ -1525,22 +1597,46 @@ class RuntimePlanEvaluator:
                     raise ValidationError("ground truth requested for the wrong case")
                 return truth
 
-            trajectories.append(
-                execute_information_plan(
-                    plan=plan,
-                    company_id=case.company_id,
-                    case_id=case.case_id,
-                    company_basic_source=case.basic_info,
-                    prediction_time=case.prediction_time,
-                    signal_registry=signal_registry,
-                    signal_executor=executor,
-                    controller=self.controller,
-                    signal_agent=self.signal_agent,
-                    predictor=self.predictor,
-                    prediction_sink=sink,
-                    ground_truth_provider=truth_provider,
-                    limits=self.limits,
-                )
+            trajectory = execute_information_plan(
+                plan=plan,
+                company_id=case.company_id,
+                case_id=case.case_id,
+                company_basic_source=case.basic_info,
+                prediction_time=case.prediction_time,
+                signal_registry=signal_registry,
+                signal_executor=executor,
+                controller=self.controller,
+                signal_agent=self.signal_agent,
+                predictor=self.predictor,
+                prediction_sink=sink,
+                ground_truth_provider=truth_provider,
+                limits=self.limits,
+            )
+            _write_or_verify_json(
+                trajectory_path,
+                {
+                    "schema_version": "execution-trajectory-checkpoint-v1",
+                    "input_hash": input_hash,
+                    "plan_id": plan.plan_id,
+                    "case_id": case.case_id,
+                    "trajectory": trajectory.to_dict(),
+                },
+            )
+            trajectories.append(trajectory)
+            _emit_progress(
+                self.on_progress,
+                "case_completed",
+                plan_id=plan.plan_id,
+                case_id=case.case_id,
+                case_index=case_index,
+                case_count=len(cases),
+                stop_reason=trajectory.stop_reason.value,
+                signal_rounds=trajectory.usage.signal_rounds,
+                signal_calls=trajectory.usage.signal_calls,
+                llm_calls=trajectory.usage.model.llm_calls,
+                tokens=trajectory.usage.model.tokens,
+                cost=trajectory.usage.model.cost,
+                trajectory_path=str(trajectory_path),
             )
         return tuple(trajectories)
 
@@ -1554,23 +1650,227 @@ class EvolutionWorkspace:
         self.experiments_root = self.root / "experiments"
         self.meta_root = self.root / "meta"
         self.cache_root = self.root / "cache"
+        self.trajectory_root = self.experiments_root / "trajectories"
         for path in (
             self.plans_root,
             self.experiments_root,
             self.meta_root,
             self.cache_root,
+            self.trajectory_root,
         ):
             path.mkdir(parents=True, exist_ok=True)
         if not self.state_path.exists():
             _atomic_write_json(self.state_path, {"last_completed_round": 0})
+        self._event_sequence = _last_event_sequence(self.trajectory_events_path)
 
     @property
     def state_path(self) -> Path:
         return self.root / "state.json"
 
     @property
+    def cycle_state_path(self) -> Path:
+        return self.root / "cycle_state.json"
+
+    @property
+    def trajectory_events_path(self) -> Path:
+        return self.experiments_root / "trajectory.jsonl"
+
+    @property
     def last_completed_round(self) -> int:
         return int(_read_json(self.state_path).get("last_completed_round", 0))
+
+    @property
+    def last_completed_cycle(self) -> int:
+        if not self.cycle_state_path.exists():
+            return 0
+        return int(_read_json(self.cycle_state_path).get("last_completed_cycle", 0))
+
+    def append_event(
+        self,
+        event_type: str,
+        details: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Append one diagnostic event; never use it as completion authority."""
+
+        normalized_type = str(event_type).strip()
+        if not normalized_type:
+            raise ValidationError("evolution event type must not be empty")
+        self._event_sequence += 1
+        event = {
+            **dict(details or {}),
+            "schema_version": "evolution-trajectory-event-v1",
+            "sequence": self._event_sequence,
+            "at": datetime.now(timezone.utc).isoformat(),
+            "event_type": normalized_type,
+        }
+        self.trajectory_events_path.parent.mkdir(parents=True, exist_ok=True)
+        encoded = (
+            json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n"
+        ).encode("utf-8")
+        with self.trajectory_events_path.open("a+b") as handle:
+            if handle.tell() > 0:
+                handle.seek(-1, os.SEEK_END)
+                if handle.read(1) != b"\n":
+                    handle.write(b"\n")
+            handle.write(encoded)
+            handle.flush()
+            os.fsync(handle.fileno())
+        return event
+
+    def load_events(self, *, limit: int | None = None) -> list[dict[str, Any]]:
+        """Load valid append-only debug events, optionally retaining the tail."""
+
+        if limit is not None and limit < 1:
+            raise ValidationError("evolution event limit must be positive")
+        if not self.trajectory_events_path.exists():
+            return []
+        events: list[dict[str, Any]] = []
+        for line in self.trajectory_events_path.read_text(
+            encoding="utf-8"
+        ).splitlines():
+            if not line.strip():
+                continue
+            try:
+                value = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(value, dict):
+                continue
+            events.append(value)
+        return events[-limit:] if limit is not None else events
+
+    def start_or_resume_cycle(
+        self,
+        *,
+        run_contract_hash: str,
+        target_plan_rounds: int,
+    ) -> dict[str, Any]:
+        """Freeze or recover one Fast/Slow cycle under the exact run contract."""
+
+        if not run_contract_hash or target_plan_rounds < 1:
+            raise ValidationError("cycle contract hash and round target are required")
+        if self.cycle_state_path.exists():
+            state = _read_json(self.cycle_state_path)
+            if state.get("schema_version") != "dual-loop-cycle-state-v1":
+                raise ValidationError("unsupported dual-loop cycle state schema")
+            if state.get("run_contract_hash") != run_contract_hash:
+                raise ValidationError("cycle state run contract mismatch")
+        else:
+            state = {
+                "schema_version": "dual-loop-cycle-state-v1",
+                "run_contract_hash": run_contract_hash,
+                "last_completed_cycle": 0,
+                "active_cycle": None,
+            }
+        active = state.get("active_cycle")
+        resumed = isinstance(active, Mapping)
+        if not resumed:
+            active = {
+                "cycle_id": int(state.get("last_completed_cycle", 0)) + 1,
+                "start_round": self.last_completed_round,
+                "target_plan_rounds": target_plan_rounds,
+                "completed_plan_rounds": 0,
+                "phase": "fast_loop",
+            }
+        else:
+            active = dict(active)
+            if int(active.get("target_plan_rounds", 0)) != target_plan_rounds:
+                raise ValidationError("active cycle round target mismatch")
+        start_round = int(active.get("start_round", -1))
+        completed = self.last_completed_round - start_round
+        if completed < 0 or completed > target_plan_rounds:
+            raise ValidationError("committed round pointer conflicts with active cycle")
+        active["completed_plan_rounds"] = completed
+        active["phase"] = (
+            "slow_loop" if completed == target_plan_rounds else "fast_loop"
+        )
+        state["active_cycle"] = active
+        _atomic_write_json(self.cycle_state_path, state)
+        return {**active, "resumed": resumed}
+
+    def mark_cycle_phase(self, phase: str) -> None:
+        if phase not in {"fast_loop", "slow_loop"}:
+            raise ValidationError("invalid dual-loop cycle phase")
+        state = _read_json(self.cycle_state_path)
+        active = state.get("active_cycle")
+        if not isinstance(active, Mapping):
+            raise ValidationError("no active dual-loop cycle")
+        active = dict(active)
+        active["completed_plan_rounds"] = (
+            self.last_completed_round - int(active["start_round"])
+        )
+        active["phase"] = phase
+        state["active_cycle"] = active
+        _atomic_write_json(self.cycle_state_path, state)
+
+    def staged_slow_result(self, cycle_id: int) -> dict[str, Any] | None:
+        path = self._slow_result_path(cycle_id)
+        if not path.exists():
+            return None
+        payload = _read_json(path)
+        cycle_state = _read_json(self.cycle_state_path)
+        if (
+            payload.get("schema_version") != "dual-loop-slow-result-v1"
+            or int(payload.get("cycle_id", 0)) != cycle_id
+            or payload.get("run_contract_hash")
+            != cycle_state.get("run_contract_hash")
+        ):
+            raise ValidationError("staged Slow-loop result identity mismatch")
+        return dict(payload.get("result", {}))
+
+    def stage_slow_result(
+        self,
+        *,
+        cycle_id: int,
+        result: Mapping[str, Any],
+    ) -> Path:
+        path = self._slow_result_path(cycle_id)
+        cycle_state = _read_json(self.cycle_state_path)
+        _write_or_verify_json(
+            path,
+            {
+                "schema_version": "dual-loop-slow-result-v1",
+                "cycle_id": cycle_id,
+                "run_contract_hash": cycle_state.get("run_contract_hash"),
+                "result": dict(result),
+            },
+        )
+        return path
+
+    def complete_cycle(self, *, cycle_id: int) -> None:
+        """Advance the cycle pointer only after Fast rounds and Slow result exist."""
+
+        state = _read_json(self.cycle_state_path)
+        active = state.get("active_cycle")
+        if not isinstance(active, Mapping) or int(active.get("cycle_id", 0)) != cycle_id:
+            raise ValidationError("active dual-loop cycle identity mismatch")
+        target = int(active["target_plan_rounds"])
+        expected_round = int(active["start_round"]) + target
+        if self.last_completed_round != expected_round:
+            raise ValidationError("cannot complete cycle before all Fast rounds")
+        slow_path = self._slow_result_path(cycle_id)
+        if not slow_path.exists():
+            raise ValidationError("cannot complete cycle without staged Slow result")
+        self.staged_slow_result(cycle_id)
+        state.update(
+            {
+                "last_completed_cycle": cycle_id,
+                "last_completed_round": self.last_completed_round,
+                "last_cycle_ref": str(slow_path),
+                "active_cycle": None,
+            }
+        )
+        _atomic_write_json(self.cycle_state_path, state)
+
+    def _slow_result_path(self, cycle_id: int) -> Path:
+        if cycle_id < 1:
+            raise ValidationError("cycle id must be positive")
+        return (
+            self.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_result.json"
+        )
 
     def commit_round(
         self,
@@ -1713,6 +2013,7 @@ class PlanEvolutionEngine:
         similarity_threshold: float = 0.9,
         rng: random.Random | None = None,
         run_contract_hash: str = "",
+        on_progress: ProgressCallback | None = None,
     ) -> None:
         if candidates_per_round < 1:
             raise ValidationError("candidates_per_round must be positive")
@@ -1735,6 +2036,7 @@ class PlanEvolutionEngine:
         self.similarity_threshold = similarity_threshold
         self.rng = rng or random.Random()
         self.run_contract_hash = run_contract_hash
+        self.on_progress = on_progress
         for committed_record in self.archive.records:
             self._record_signal_statistics(committed_record)
 
@@ -1749,6 +2051,13 @@ class PlanEvolutionEngine:
 
         if round_id != self.workspace.last_completed_round + 1:
             raise ValidationError("fast-loop round id does not follow committed state")
+        _emit_progress(
+            self.on_progress,
+            "round_started",
+            round_id=round_id,
+            candidate_count=self.candidates_per_round,
+            validation_case_count=len(validation_cases),
+        )
         selection = self.archive.select_parents(
             top_k=self.top_k,
             random_k=self.random_k,
@@ -1756,9 +2065,28 @@ class PlanEvolutionEngine:
             rng=self.rng,
         )
         parents = selection.plans or self.seed_plans
+        _emit_progress(
+            self.on_progress,
+            "parents_selected",
+            round_id=round_id,
+            top_parent_ids=[record.plan_id for record in selection.top],
+            random_parent_ids=[record.plan_id for record in selection.random],
+            seed_parent_ids=(
+                [plan.plan_id for plan in self.seed_plans]
+                if not selection.plans
+                else []
+            ),
+        )
         allowed_parent_ids = {plan.plan_id for plan in parents}
         candidate_plans: list[InformationPlan] = []
-        for _ in range(self.candidates_per_round):
+        for candidate_index in range(1, self.candidates_per_round + 1):
+            _emit_progress(
+                self.on_progress,
+                "candidate_proposal_started",
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=self.candidates_per_round,
+            )
             candidate = self.proposer.propose(
                 parents=parents,
                 meta_info=self.meta_memory.entries,
@@ -1775,15 +2103,43 @@ class PlanEvolutionEngine:
                     "candidate parent_ids must cite only selected parent Plans"
                 )
             candidate_plans.append(candidate)
+            _emit_progress(
+                self.on_progress,
+                "candidate_proposed",
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=self.candidates_per_round,
+                plan_id=candidate.plan_id,
+                parent_ids=list(candidate.parent_ids),
+                plan_summary=summarize_information_plan(candidate),
+            )
 
         records: list[PlanRecord] = []
-        for plan in candidate_plans:
+        for candidate_index, plan in enumerate(candidate_plans, start=1):
+            _emit_progress(
+                self.on_progress,
+                "candidate_evaluation_started",
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=len(candidate_plans),
+                plan_id=plan.plan_id,
+            )
             trajectories = self.evaluator.evaluate(
                 plan,
                 validation_cases,
                 signal_snapshot,
             )
             metrics = score_predictions(trajectories)
+            _emit_progress(
+                self.on_progress,
+                "candidate_scored",
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=len(candidate_plans),
+                plan_id=plan.plan_id,
+                metrics=metrics.to_dict(),
+                trajectory_count=len(trajectories),
+            )
             reflection = self.critic.critique(
                 plan=plan,
                 trajectories=trajectories,
@@ -1810,6 +2166,12 @@ class PlanEvolutionEngine:
         expected_refs = {record.plan_id for record in record_tuple}
         if not set(meta_entry.evidence_refs).issubset(expected_refs):
             raise ValidationError("round meta entry cites evidence outside new experiments")
+        _emit_progress(
+            self.on_progress,
+            "round_commit_started",
+            round_id=round_id,
+            plan_ids=[record.plan_id for record in record_tuple],
+        )
         self.workspace.commit_round(
             round_id=round_id,
             records=record_tuple,
@@ -1821,6 +2183,39 @@ class PlanEvolutionEngine:
             self.archive.add(record)
             self._record_signal_statistics(record)
         self.meta_memory.append(meta_entry)
+        current_top = self.archive.select_parents(
+            top_k=self.top_k,
+            random_k=0,
+            similarity_threshold=self.similarity_threshold,
+            rng=self.rng,
+        ).top
+        _emit_progress(
+            self.on_progress,
+            "round_committed",
+            round_id=round_id,
+            plan_ids=[record.plan_id for record in record_tuple],
+            candidate_scores=[
+                {
+                    "plan_id": record.plan_id,
+                    "binary_f1": record.metrics.binary_f1,
+                    "binary_precision": record.metrics.binary_precision,
+                    "binary_recall": record.metrics.binary_recall,
+                }
+                for record in record_tuple
+            ],
+            top_k=[
+                {
+                    "plan_id": record.plan_id,
+                    "binary_f1": record.metrics.binary_f1,
+                }
+                for record in current_top
+            ],
+            checkpoint_ref=str(
+                self.workspace.experiments_root
+                / f"round-{round_id:04d}"
+                / "checkpoint.json"
+            ),
+        )
         return PlanRoundResult(
             round_id=round_id,
             parents=parents,
@@ -2064,6 +2459,43 @@ class SlowLoopResult:
     validated_pending_approval: Mapping[str, str]
     rejected: Mapping[str, tuple[str, ...]]
     registry_version: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "mined_candidates": list(self.mined_candidates),
+            "updated_candidates": list(self.updated_candidates),
+            "promoted": list(self.promoted),
+            "validated_pending_approval": dict(
+                self.validated_pending_approval
+            ),
+            "rejected": {
+                ref: list(reasons) for ref, reasons in self.rejected.items()
+            },
+            "registry_version": self.registry_version,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SlowLoopResult":
+        return cls(
+            mined_candidates=tuple(
+                str(item) for item in data.get("mined_candidates", ())
+            ),
+            updated_candidates=tuple(
+                str(item) for item in data.get("updated_candidates", ())
+            ),
+            promoted=tuple(str(item) for item in data.get("promoted", ())),
+            validated_pending_approval={
+                str(ref): str(candidate_hash)
+                for ref, candidate_hash in dict(
+                    data.get("validated_pending_approval", {})
+                ).items()
+            },
+            rejected={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(data.get("rejected", {})).items()
+            },
+            registry_version=int(data.get("registry_version", 0)),
+        )
 
 
 class SignalEvolutionEngine:
@@ -2485,6 +2917,7 @@ class DualLoopEvolutionEngine:
         signal_registry: SignalRegistry,
         dataset: EvolutionDataset,
         plan_rounds_per_signal_cycle: int = 5,
+        on_progress: ProgressCallback | None = None,
     ) -> None:
         if plan_rounds_per_signal_cycle < 1:
             raise ValidationError("plan rounds per Signal cycle must be positive")
@@ -2493,13 +2926,27 @@ class DualLoopEvolutionEngine:
         self.signal_registry = signal_registry
         self.dataset = dataset
         self.plan_rounds_per_signal_cycle = plan_rounds_per_signal_cycle
+        self.on_progress = on_progress
 
-    def run_cycle(self) -> DualLoopResult:
-        """Freeze Signals for all fast rounds, then run one slow-loop promotion."""
+    def run_cycle(self, *, completed_plan_rounds: int = 0) -> DualLoopResult:
+        """Resume remaining Fast rounds, then run one validation-only Slow loop."""
+
+        if not 0 <= completed_plan_rounds <= self.plan_rounds_per_signal_cycle:
+            raise ValidationError("completed Fast-round count is outside cycle target")
 
         snapshot = self.signal_registry.freeze()
         rounds: list[PlanRoundResult] = []
-        for _ in range(self.plan_rounds_per_signal_cycle):
+        _emit_progress(
+            self.on_progress,
+            "fast_loop_started",
+            completed_plan_rounds=completed_plan_rounds,
+            target_plan_rounds=self.plan_rounds_per_signal_cycle,
+            signal_registry_hash=snapshot.registry_hash,
+        )
+        for _ in range(
+            completed_plan_rounds,
+            self.plan_rounds_per_signal_cycle,
+        ):
             round_id = self.plan_engine.workspace.last_completed_round + 1
             rounds.append(
                 self.plan_engine.run_round(
@@ -2510,7 +2957,27 @@ class DualLoopEvolutionEngine:
             )
         if self.signal_registry.version != snapshot.version:
             raise ValidationError("stable Signal definitions changed during fast loop")
+        _emit_progress(
+            self.on_progress,
+            "slow_loop_started",
+            completed_plan_rounds=self.plan_rounds_per_signal_cycle,
+            target_plan_rounds=self.plan_rounds_per_signal_cycle,
+        )
         signal_result = self.signal_engine.run_cycle()
+        _emit_progress(
+            self.on_progress,
+            "slow_loop_completed",
+            mined_candidates=list(signal_result.mined_candidates),
+            updated_candidates=list(signal_result.updated_candidates),
+            validated_pending_approval=dict(
+                signal_result.validated_pending_approval
+            ),
+            rejected={
+                ref: list(reasons)
+                for ref, reasons in signal_result.rejected.items()
+            },
+            registry_version=signal_result.registry_version,
+        )
         return DualLoopResult(
             plan_rounds=tuple(rounds),
             signal_evolution=signal_result,
@@ -2673,6 +3140,64 @@ def _usage_from_dict(data: Mapping[str, Any]) -> AgentUsage:
         tokens=int(data.get("tokens", 0)),
         cost=float(data.get("cost", 0.0)),
     )
+
+
+def summarize_information_plan(
+    plan: InformationPlan,
+    *,
+    max_text_chars: int = 180,
+) -> dict[str, Any]:
+    """Return a concise, terminal/dashboard-safe summary of one sampled Plan."""
+
+    if max_text_chars < 20:
+        raise ValidationError("Plan summary text limit is too small")
+
+    def clip(value: str) -> str:
+        normalized = " ".join(value.split())
+        if len(normalized) <= max_text_chars:
+            return normalized
+        return normalized[: max_text_chars - 1].rstrip() + "…"
+
+    return {
+        "plan_id": plan.plan_id,
+        "parent_ids": list(plan.parent_ids),
+        "basic_info_fields": list(plan.basic_info_policy.fields),
+        "initial_research": clip(plan.initial_research_skill),
+        "reflection": clip(plan.reflection_skill),
+        "analysis": clip(plan.analysis_prompt),
+    }
+
+
+def _emit_progress(
+    callback: ProgressCallback | None,
+    event_type: str,
+    **details: Any,
+) -> None:
+    if callback is not None:
+        callback({"event_type": event_type, **details})
+
+
+def _canonical_hash(value: Mapping[str, Any]) -> str:
+    encoded = json.dumps(
+        dict(value),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _last_event_sequence(path: Path) -> int:
+    if not path.exists():
+        return 0
+    latest = 0
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, Mapping):
+            latest = max(latest, int(value.get("sequence", 0)))
+    return latest
 
 
 def _read_json(path: Path) -> dict[str, Any]:

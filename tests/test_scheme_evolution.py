@@ -33,6 +33,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionWorkspace,
     ExecutionTrajectory,
     GroundTruth,
+    HashingPlanEmbedder,
     InformationPlan,
     MagnitudeClass,
     PlanArchive,
@@ -578,6 +579,42 @@ class InformationPlanRuntimeTests(TestCase):
             self.assertEqual(len({row.case_id for row in trajectories}), 2)
             self.assertEqual(len({row.prediction_ref for row in trajectories}), 2)
 
+            resumed_events = []
+            resumed_predictor = FixedPredictor()
+            resumed = RuntimePlanEvaluator(
+                raw_info_store=store,
+                controller=OneBatchController(),
+                signal_agent=OneSignalSelector(),
+                predictor=resumed_predictor,
+                prediction_root=root / "predictions",
+                on_progress=resumed_events.append,
+            ).evaluate(default_information_plan(), cases, registry.freeze())
+            self.assertEqual(resumed, trajectories)
+            self.assertEqual(resumed_predictor.reflection_truths, [])
+            self.assertEqual(
+                [event["event_type"] for event in resumed_events],
+                ["case_trajectory_reused", "case_trajectory_reused"],
+            )
+
+            changed_case = EvolutionCase(
+                company_id="shared_issuer",
+                prediction_time=NOW,
+                basic_info={"company_name": "Shared One"},
+                ground_truth=GroundTruth(2.2),
+            )
+            with self.assertRaisesRegex(ValidationError, "conflicting staged"):
+                RuntimePlanEvaluator(
+                    raw_info_store=store,
+                    controller=OneBatchController(),
+                    signal_agent=OneSignalSelector(),
+                    predictor=FixedPredictor(),
+                    prediction_root=root / "predictions",
+                ).evaluate(
+                    default_information_plan(),
+                    (changed_case,),
+                    registry.freeze(),
+                )
+
 
 class PredictionMetricTests(TestCase):
     def test_ground_truth_thresholds_and_two_stage_metrics(self) -> None:
@@ -723,6 +760,73 @@ class PlanArchiveAndWorkspaceTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "monotonically"):
             memory.append(RoundMetaEntry(round_id=3, evidence_refs=("plan_3",)))
 
+    def test_cycle_state_and_debug_events_resume_from_committed_round_pointer(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            started = workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=2,
+            )
+            self.assertFalse(started["resumed"])
+            self.assertEqual(started["completed_plan_rounds"], 0)
+            first_event = workspace.append_event(
+                "cycle_started",
+                {"cycle_id": 1, "sequence": 99, "event_type": "spoofed"},
+            )
+            self.assertEqual(first_event["sequence"], 1)
+            self.assertEqual(first_event["event_type"], "cycle_started")
+            with workspace.trajectory_events_path.open("ab") as handle:
+                handle.write(b'{"truncated":')
+            recovered_event = EvolutionWorkspace(directory).append_event(
+                "recovered_after_truncated_log",
+            )
+            self.assertEqual(recovered_event["sequence"], 2)
+
+            for round_id in (1, 2):
+                plan_id = f"plan_cycle_{round_id}"
+                workspace.commit_round(
+                    round_id=round_id,
+                    records=(
+                        make_record(
+                            plan_id,
+                            0.5 + round_id / 10,
+                            (1.0, float(round_id)),
+                            round_id=round_id,
+                        ),
+                    ),
+                    meta_entry=RoundMetaEntry(
+                        round_id=round_id,
+                        evidence_refs=(plan_id,),
+                    ),
+                    signal_registry_hash="registry-hash",
+                    run_contract_hash="contract-hash",
+                )
+                resumed = EvolutionWorkspace(directory).start_or_resume_cycle(
+                    run_contract_hash="contract-hash",
+                    target_plan_rounds=2,
+                )
+                self.assertEqual(resumed["completed_plan_rounds"], round_id)
+
+            workspace = EvolutionWorkspace(directory)
+            self.assertEqual(
+                [event["event_type"] for event in workspace.load_events()],
+                ["cycle_started", "recovered_after_truncated_log"],
+            )
+            staged = workspace.stage_slow_result(
+                cycle_id=1,
+                result={"registry_version": 1},
+            )
+            self.assertTrue(staged.is_file())
+            self.assertEqual(
+                workspace.staged_slow_result(1),
+                {"registry_version": 1},
+            )
+            workspace.complete_cycle(cycle_id=1)
+            self.assertEqual(workspace.last_completed_cycle, 1)
+            self.assertIsNone(
+                json.loads(workspace.cycle_state_path.read_text())["active_cycle"]
+            )
+
 
 class CountingProposer:
     def __init__(self) -> None:
@@ -818,6 +922,7 @@ class PlanEvolutionEngineTests(TestCase):
             evaluator = SyntheticPlanEvaluator()
             archive = PlanArchive()
             meta = PlanMetaMemory()
+            progress_events = []
             engine = PlanEvolutionEngine(
                 archive=archive,
                 meta_memory=meta,
@@ -832,6 +937,7 @@ class PlanEvolutionEngineTests(TestCase):
                 top_k=2,
                 random_k=1,
                 rng=random.Random(3),
+                on_progress=progress_events.append,
             )
             cases = (
                 make_case("validation_positive", 4.0),
@@ -855,6 +961,19 @@ class PlanEvolutionEngineTests(TestCase):
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(workspace.restore_archive().records), 2)
             self.assertEqual(meta.entries[0].evidence_refs, ("plan_child_1", "plan_child_2"))
+            event_types = [event["event_type"] for event in progress_events]
+            self.assertIn("candidate_proposed", event_types)
+            self.assertIn("candidate_scored", event_types)
+            self.assertEqual(event_types[-1], "round_committed")
+            committed_event = progress_events[-1]
+            self.assertEqual(committed_event["round_id"], 1)
+            self.assertEqual(len(committed_event["top_k"]), 1)
+            proposed = next(
+                event
+                for event in progress_events
+                if event["event_type"] == "candidate_proposed"
+            )
+            self.assertIn("basic_info_fields", proposed["plan_summary"])
             stats = registry.load_stats("revenue_growth_yoy")
             self.assertEqual(stats.retrieved, 4)
             self.assertEqual(stats.executed, 4)
@@ -1149,6 +1268,77 @@ class DualLoopTests(TestCase):
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(evaluator.seen_company_ids, ["validation_case"])
             self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
+
+    def test_dual_loop_resume_runs_only_remaining_fast_rounds(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            committed = make_record(
+                "plan_committed",
+                0.75,
+                HashingPlanEmbedder().embed(default_information_plan()),
+                round_id=1,
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(committed,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    evidence_refs=(committed.plan_id,),
+                ),
+                signal_registry_hash=registry.freeze().registry_hash,
+            )
+            meta = workspace.restore_meta()
+            proposer = CountingProposer()
+            evaluator = SyntheticPlanEvaluator(include_signal=False)
+            plan_engine = PlanEvolutionEngine(
+                archive=workspace.restore_archive(),
+                meta_memory=meta,
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+            mining_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            update_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            signal_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_case", 4.0),),
+                meta_memory=meta,
+                workspace=workspace,
+                mining_agent=GenericAgent(mining_model),
+                update_agent=GenericAgent(update_model),
+                llm_signal_runner=None,
+            )
+            dataset = EvolutionDataset(
+                discovery=(make_case("discovery_case", 4.0),),
+                evolution_validation=(make_case("validation_case", 1.5),),
+                locked_test=(make_case("locked_company", 12.0),),
+            )
+
+            result = DualLoopEvolutionEngine(
+                plan_engine=plan_engine,
+                signal_engine=signal_engine,
+                signal_registry=registry,
+                dataset=dataset,
+                plan_rounds_per_signal_cycle=2,
+            ).run_cycle(completed_plan_rounds=1)
+
+            self.assertEqual([item.round_id for item in result.plan_rounds], [2])
+            self.assertEqual(workspace.last_completed_round, 2)
+            self.assertEqual(len(proposer.calls), 1)
+            self.assertEqual(evaluator.seen_company_ids, ["validation_case"])
 
 
 def make_case(company_id: str, multiple: float) -> EvolutionCase:

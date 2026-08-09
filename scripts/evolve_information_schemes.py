@@ -7,13 +7,18 @@ import argparse
 import hashlib
 import json
 import os
+import sys
 import tempfile
 from datetime import date
 from pathlib import Path
 
 from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import EvolutionWorkspace
 from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_PRIORS
+from stock_opportunity_agent.research.evolution_dashboard import (
+    write_evolution_dashboard_bundle,
+)
 from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
     ExternalRequestPending,
@@ -63,6 +68,7 @@ DEFAULT_FULL_PRICE_ARCHIVE = (
 DEFAULT_CLEAN_UNIVERSE = (
     DEFAULT_LOCAL_RUN / "01_universe" / "eligible_listings.json"
 )
+DEFAULT_EVOLUTION_ROOT = PROJECT_ROOT / "runs" / "cold_start" / "evolution"
 DEFAULT_EXPANSION_PREDICTION_DATES = (
     "2024-09-30",
     "2024-12-31",
@@ -84,6 +90,9 @@ def build_parser() -> argparse.ArgumentParser:
     initialize = subparsers.add_parser("init", help="initialize a workspace")
     initialize.add_argument("--workspace", type=Path, required=True)
     initialize.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
+    initialize.add_argument(
+        "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
+    )
 
     validate = subparsers.add_parser(
         "validate-catalog", help="materialize and validate the seed Signal catalog"
@@ -92,6 +101,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     status = subparsers.add_parser("status", help="show committed workspace state")
     status.add_argument("--workspace", type=Path, required=True)
+    status.add_argument(
+        "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
+    )
 
     preflight = subparsers.add_parser(
         "preflight-local",
@@ -202,6 +214,35 @@ def build_parser() -> argparse.ArgumentParser:
     run_cycle.add_argument("--approved-dataset", type=Path, required=True)
     run_cycle.add_argument("--external", action="store_true")
     run_cycle.add_argument("--acknowledge-contract-hash")
+    run_cycle.add_argument(
+        "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
+    )
+
+    run_loop = subparsers.add_parser(
+        "run-loop",
+        help="continuously start bounded cycles until Ctrl+C or --max-cycles",
+    )
+    run_loop.add_argument("--workspace", type=Path, required=True)
+    run_loop.add_argument("--approved-dataset", type=Path, required=True)
+    run_loop.add_argument("--external", action="store_true")
+    run_loop.add_argument("--acknowledge-contract-hash")
+    run_loop.add_argument(
+        "--max-cycles",
+        type=int,
+        default=0,
+        help="0 continues until Ctrl+C; positive values stop after that many cycles",
+    )
+    run_loop.add_argument(
+        "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
+    )
+
+    dashboard = subparsers.add_parser(
+        "refresh-dashboard",
+        help="rebuild the single local evolution dashboard bundle",
+    )
+    dashboard.add_argument(
+        "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
+    )
 
     approve = subparsers.add_parser(
         "approve-signals",
@@ -263,11 +304,47 @@ def workspace_status(workspace_path: Path) -> dict[str, object]:
         registry_root,
         candidate_root=workspace_path / "signals_candidates",
     )
+    archive = workspace.restore_archive()
+    contract_path = workspace_path / "run_contract.json"
+    if contract_path.is_file():
+        contract = EvolutionRunContract.load_frozen(contract_path)
+        top_k = int(contract.limits.get("top_k", 3))
+        similarity_threshold = float(
+            contract.limits.get("similarity_threshold", 0.9)
+        )
+    else:
+        top_k = 3
+        similarity_threshold = 0.9
+    selected = archive.select_parents(
+        top_k=top_k,
+        random_k=0,
+        similarity_threshold=similarity_threshold,
+    ).top
+    cycle_state = (
+        json.loads(workspace.cycle_state_path.read_text(encoding="utf-8"))
+        if workspace.cycle_state_path.is_file()
+        else {"last_completed_cycle": 0, "active_cycle": None}
+    )
+    events = workspace.load_events()
     return {
         "workspace": str(workspace.root),
         "last_completed_round": workspace.last_completed_round,
-        "committed_plan_count": len(workspace.restore_archive().records),
+        "last_completed_cycle": int(cycle_state.get("last_completed_cycle", 0)),
+        "active_cycle": cycle_state.get("active_cycle"),
+        "committed_plan_count": len(archive.records),
         "meta_entries": len(workspace.restore_meta().entries),
+        "current_top_k": [
+            {
+                "plan_id": record.plan_id,
+                "binary_f1": record.metrics.binary_f1,
+            }
+            for record in selected
+        ],
+        "trajectory_event_count": len(events),
+        "interruption_count": sum(
+            event.get("event_type") == "run_interrupted" for event in events
+        ),
+        "trajectory_path": str(workspace.trajectory_events_path),
         "registry_version": registry.version,
         "stable_signal_count": len(registry.list_signal_cards()),
         "locked_test_accessed": False,
@@ -537,6 +614,7 @@ def run_cycle_command(
     approved_dataset_path: Path,
     external: bool,
     acknowledged_contract_hash: str | None,
+    on_progress=None,
 ) -> dict[str, object]:
     _load_local_env(PROJECT_ROOT / ".env.local")
     contract = EvolutionRunContract.load_frozen(workspace_path / "run_contract.json")
@@ -547,8 +625,21 @@ def run_cycle_command(
             contract=contract,
             allow_external=external,
             acknowledged_contract_hash=acknowledged_contract_hash,
+            on_progress=on_progress,
         )
     except ExternalRequestPending as pending:
+        workspace = EvolutionWorkspace(workspace_path)
+        pause_event = workspace.append_event(
+            "cycle_paused",
+            {
+                "reason": "exact_request_pending_external_approval",
+                "request_hash": pending.request_hash,
+                "last_completed_round": workspace.last_completed_round,
+                "last_completed_cycle": workspace.last_completed_cycle,
+            },
+        )
+        if on_progress is not None:
+            on_progress(pause_event)
         return {
             "status": "exact_request_pending_external_approval",
             "request_hash": pending.request_hash,
@@ -556,7 +647,11 @@ def run_cycle_command(
             "contract_hash": contract.contract_hash,
             "external_calls": 0,
             "locked_test_accessed": False,
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": workspace.last_completed_cycle,
+            "trajectory_path": str(workspace.trajectory_events_path),
         }
+    workspace = EvolutionWorkspace(workspace_path)
     return {
         "status": "cycle_completed",
         "contract_hash": contract.contract_hash,
@@ -566,7 +661,48 @@ def run_cycle_command(
         ),
         "promoted_signals": list(result.signal_evolution.promoted),
         "registry_version": result.signal_evolution.registry_version,
+        "last_completed_round": workspace.last_completed_round,
+        "last_completed_cycle": workspace.last_completed_cycle,
+        "trajectory_path": str(workspace.trajectory_events_path),
         "locked_test_accessed": False,
+    }
+
+
+def run_loop_command(
+    *,
+    workspace_path: Path,
+    approved_dataset_path: Path,
+    external: bool,
+    acknowledged_contract_hash: str | None,
+    max_cycles: int,
+    on_progress=None,
+) -> dict[str, object]:
+    """Run successive bounded cycles; zero max_cycles waits for Ctrl+C."""
+
+    if max_cycles < 0:
+        raise ValueError("--max-cycles must be non-negative")
+    completed: list[int] = []
+    while max_cycles == 0 or len(completed) < max_cycles:
+        result = run_cycle_command(
+            workspace_path=workspace_path,
+            approved_dataset_path=approved_dataset_path,
+            external=external,
+            acknowledged_contract_hash=acknowledged_contract_hash,
+            on_progress=on_progress,
+        )
+        if result["status"] != "cycle_completed":
+            return {
+                **result,
+                "supervisor_status": "paused",
+                "completed_cycles_this_invocation": completed,
+            }
+        completed.append(int(result["last_completed_cycle"]))
+    final = workspace_status(workspace_path)
+    return {
+        "status": "loop_limit_reached",
+        "supervisor_status": "completed_requested_cycles",
+        "completed_cycles_this_invocation": completed,
+        **final,
     }
 
 
@@ -581,96 +717,292 @@ def _load_local_env(path: Path) -> None:
         os.environ.setdefault(key.strip(), value.strip())
 
 
-def main() -> int:
-    args = build_parser().parse_args()
-    if args.command == "init":
-        result = initialize_workspace(args.workspace, args.catalog)
-    elif args.command == "validate-catalog":
-        result = validate_catalog(args.catalog)
-    elif args.command == "preflight-local":
-        result = preflight_local(
-            workspace_path=args.workspace,
-            catalog_path=args.catalog,
-            cases_path=args.cases,
-            documents_path=args.documents,
-            adjusted_prices_path=args.adjusted_prices,
-            judge_model=args.judge_model,
-            evolution_model=args.evolution_model,
+def refresh_dashboard(dashboard_root: Path) -> dict[str, object]:
+    bundle = write_evolution_dashboard_bundle(dashboard_root)
+    return {
+        "dashboard": str(dashboard_root / "evolution_dashboard.html"),
+        "dashboard_run_count": len(bundle["runs"]),
+        "dashboard_skipped_run_count": len(bundle["skipped_runs"]),
+    }
+
+
+def _print_progress(event: dict[str, object], *, stream=None) -> None:
+    """Render one secret-free progress event immediately for a human operator."""
+
+    output = stream or sys.stderr
+    at = str(event.get("at") or "")
+    clock = at[11:19] if len(at) >= 19 else "--:--:--"
+    event_type = str(event.get("event_type") or "progress")
+    cycle = event.get("cycle_id")
+    round_id = event.get("round_id")
+    scope = []
+    if cycle is not None:
+        scope.append(f"cycle {cycle}")
+    if round_id is not None:
+        scope.append(f"round {round_id}")
+    prefix = f"[{clock}]" + (f" [{' / '.join(scope)}]" if scope else "")
+
+    if event_type in {"cycle_started", "cycle_resumed"}:
+        verb = "恢复" if event_type == "cycle_resumed" else "开始"
+        message = (
+            f"{verb} cycle：Fast 已完成 "
+            f"{event.get('completed_plan_rounds', 0)}/"
+            f"{event.get('target_plan_rounds', 0)}，阶段 {event.get('phase')}"
         )
-    elif args.command == "filter-local-prices":
-        result = filter_local_prices(
-            workspace_path=args.workspace,
-            cases_path=args.cases,
-            full_price_archive_path=args.full_price_archive,
+    elif event_type == "parents_selected":
+        message = (
+            f"父方案 Top-K={event.get('top_parent_ids', [])}，"
+            f"随机探索={event.get('random_parent_ids', [])}，"
+            f"seed={event.get('seed_parent_ids', [])}"
         )
-    elif args.command == "migrate-raw-info":
-        result = migrate_raw_info(
-            workspace_path=args.workspace,
-            cases_path=args.cases,
-            documents_path=args.documents,
-            adjusted_prices_path=args.adjusted_prices,
+    elif event_type == "candidate_proposed":
+        summary = dict(event.get("plan_summary") or {})
+        message = (
+            f"采样方案 {event.get('candidate_index')}/"
+            f"{event.get('candidate_count')}：{event.get('plan_id')}；"
+            f"Basic Info={summary.get('basic_info_fields', [])}；"
+            f"H_init={summary.get('initial_research', '')}"
         )
-    elif args.command == "prepare-dataset":
-        result = prepare_dataset(
-            workspace_path=args.workspace,
-            cases_path=args.cases,
-            documents_path=args.documents,
-            adjusted_prices_path=args.adjusted_prices,
-            split_seed=args.split_seed,
+    elif event_type in {"case_started", "case_completed", "case_trajectory_reused"}:
+        action = {
+            "case_started": "开始 case",
+            "case_completed": "完成 case",
+            "case_trajectory_reused": "恢复已完成 case",
+        }[event_type]
+        message = (
+            f"{action} {event.get('case_index')}/{event.get('case_count')} "
+            f"{event.get('case_id')} · Plan {event.get('plan_id')}"
         )
-    elif args.command == "prepare-expanded-dataset":
-        result = prepare_expanded_dataset(
-            workspace_path=args.workspace,
-            universe_path=args.universe,
-            full_price_archive_path=args.full_price_archive,
-            target_issuers=args.target_issuers,
-            prediction_dates=args.prediction_dates,
-            split_seed=args.split_seed,
-            identity_decisions_path=args.identity_decisions,
+        if event_type == "case_completed":
+            message += (
+                f" · stop={event.get('stop_reason')} · "
+                f"LLM calls={event.get('llm_calls')}"
+            )
+    elif event_type == "candidate_scored":
+        metrics = dict(event.get("metrics") or {})
+        message = (
+            f"候选评分 {event.get('plan_id')}："
+            f"F1={float(metrics.get('binary_f1', 0.0)):.3f}，"
+            f"precision={float(metrics.get('binary_precision', 0.0)):.3f}，"
+            f"recall={float(metrics.get('binary_recall', 0.0)):.3f}"
         )
-    elif args.command == "approve-dataset":
-        approved_path = approve_dataset_proposal(
-            proposal_manifest_path=args.proposal,
-            expected_proposal_hash=args.proposal_hash,
-            approved_by=args.approved_by,
+    elif event_type == "round_committed":
+        message = (
+            f"轮次 checkpoint 已提交；候选={event.get('candidate_scores', [])}；"
+            f"当前 Top-K={event.get('top_k', [])}"
         )
-        result = {
-            "approved_manifest": str(approved_path),
-            "approved_manifest_hash": hashlib.sha256(approved_path.read_bytes()).hexdigest(),
-            "approval_status": "human_approved",
-        }
-    elif args.command == "freeze-run":
-        result = freeze_run(
-            workspace_path=args.workspace,
-            approved_dataset_path=args.approved_dataset,
-            run_id=args.run_id,
-            cases_path=args.cases,
-            documents_path=args.documents,
-            adjusted_prices_path=args.adjusted_prices,
-            judge_model=args.judge_model,
-            evolution_model=args.evolution_model,
-            plan_rounds=args.plan_rounds,
-            candidates_per_round=args.candidates_per_round,
-            max_external_attempts=args.max_external_attempts,
-            max_total_cost=args.max_total_cost,
+    elif event_type in {
+        "request_ready",
+        "request_cache_hit",
+        "request_pending_external_approval",
+        "external_call_started",
+        "external_call_completed",
+        "external_call_failed",
+    }:
+        message = (
+            f"{event_type} · stage={event.get('stage')} · "
+            f"model={event.get('model_alias')}"
         )
-    elif args.command == "run-cycle":
-        result = run_cycle_command(
-            workspace_path=args.workspace,
-            approved_dataset_path=args.approved_dataset,
-            external=args.external,
-            acknowledged_contract_hash=args.acknowledge_contract_hash,
+        if event.get("attempt_id") is not None:
+            message += f" · attempt={event.get('attempt_id')}"
+    elif event_type in {
+        "slow_loop_started",
+        "slow_loop_completed",
+        "slow_loop_result_reused",
+        "slow_loop_result_staged",
+    }:
+        message = (
+            f"{event_type} · pending="
+            f"{event.get('validated_pending_approval', {})}"
         )
-    elif args.command == "approve-signals":
-        result = approve_signals(
-            workspace_path=args.workspace,
-            approved_by=args.approved_by,
-            candidate_args=args.candidate,
+    elif event_type in {"cycle_committed", "cycle_paused", "run_interrupted"}:
+        message = (
+            f"{event_type} · committed round="
+            f"{event.get('last_completed_round')} · committed cycle="
+            f"{event.get('last_completed_cycle')}"
         )
     else:
-        result = workspace_status(args.workspace)
+        message = event_type
+    print(f"{prefix} {message}", file=output, flush=True)
+
+
+def _progress_handler(dashboard_root: Path, *, stream=None):
+    """Print every event and refresh the derived dashboard at durable boundaries."""
+
+    refresh_events = {
+        "round_committed",
+        "cycle_committed",
+        "cycle_paused",
+        "run_interrupted",
+    }
+
+    def handle(event: dict[str, object]) -> None:
+        _print_progress(event, stream=stream)
+        if event.get("event_type") not in refresh_events:
+            return
+        try:
+            refresh_dashboard(dashboard_root)
+        except (OSError, ValueError, ValidationError) as exc:
+            print(
+                f"[dashboard] refresh failed: {type(exc).__name__}: {exc}",
+                file=stream or sys.stderr,
+                flush=True,
+            )
+
+    return handle
+
+
+def _interrupt_result(workspace_path: Path, *, on_progress=None) -> dict[str, object]:
+    workspace = EvolutionWorkspace(workspace_path)
+    cycle_state = (
+        json.loads(workspace.cycle_state_path.read_text(encoding="utf-8"))
+        if workspace.cycle_state_path.is_file()
+        else {"last_completed_cycle": 0, "active_cycle": None}
+    )
+    event = workspace.append_event(
+        "run_interrupted",
+        {
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": int(
+                cycle_state.get("last_completed_cycle", 0)
+            ),
+            "active_cycle": cycle_state.get("active_cycle"),
+            "resume_command": "rerun the same command with the same contract",
+        },
+    )
+    if on_progress is not None:
+        on_progress(event)
+    return {
+        "status": "interrupted_resumable",
+        "workspace": str(workspace_path),
+        "last_completed_round": workspace.last_completed_round,
+        "last_completed_cycle": int(cycle_state.get("last_completed_cycle", 0)),
+        "active_cycle": cycle_state.get("active_cycle"),
+        "trajectory_path": str(workspace.trajectory_events_path),
+        "resume": "rerun the same command with the same frozen contract",
+        "locked_test_accessed": False,
+    }
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    exit_code = 0
+    progress = (
+        _progress_handler(args.dashboard_root)
+        if args.command in {"run-cycle", "run-loop"}
+        else None
+    )
+    try:
+        if args.command == "init":
+            result = initialize_workspace(args.workspace, args.catalog)
+        elif args.command == "validate-catalog":
+            result = validate_catalog(args.catalog)
+        elif args.command == "preflight-local":
+            result = preflight_local(
+                workspace_path=args.workspace,
+                catalog_path=args.catalog,
+                cases_path=args.cases,
+                documents_path=args.documents,
+                adjusted_prices_path=args.adjusted_prices,
+                judge_model=args.judge_model,
+                evolution_model=args.evolution_model,
+            )
+        elif args.command == "filter-local-prices":
+            result = filter_local_prices(
+                workspace_path=args.workspace,
+                cases_path=args.cases,
+                full_price_archive_path=args.full_price_archive,
+            )
+        elif args.command == "migrate-raw-info":
+            result = migrate_raw_info(
+                workspace_path=args.workspace,
+                cases_path=args.cases,
+                documents_path=args.documents,
+                adjusted_prices_path=args.adjusted_prices,
+            )
+        elif args.command == "prepare-dataset":
+            result = prepare_dataset(
+                workspace_path=args.workspace,
+                cases_path=args.cases,
+                documents_path=args.documents,
+                adjusted_prices_path=args.adjusted_prices,
+                split_seed=args.split_seed,
+            )
+        elif args.command == "prepare-expanded-dataset":
+            result = prepare_expanded_dataset(
+                workspace_path=args.workspace,
+                universe_path=args.universe,
+                full_price_archive_path=args.full_price_archive,
+                target_issuers=args.target_issuers,
+                prediction_dates=args.prediction_dates,
+                split_seed=args.split_seed,
+                identity_decisions_path=args.identity_decisions,
+            )
+        elif args.command == "approve-dataset":
+            approved_path = approve_dataset_proposal(
+                proposal_manifest_path=args.proposal,
+                expected_proposal_hash=args.proposal_hash,
+                approved_by=args.approved_by,
+            )
+            result = {
+                "approved_manifest": str(approved_path),
+                "approved_manifest_hash": hashlib.sha256(
+                    approved_path.read_bytes()
+                ).hexdigest(),
+                "approval_status": "human_approved",
+            }
+        elif args.command == "freeze-run":
+            result = freeze_run(
+                workspace_path=args.workspace,
+                approved_dataset_path=args.approved_dataset,
+                run_id=args.run_id,
+                cases_path=args.cases,
+                documents_path=args.documents,
+                adjusted_prices_path=args.adjusted_prices,
+                judge_model=args.judge_model,
+                evolution_model=args.evolution_model,
+                plan_rounds=args.plan_rounds,
+                candidates_per_round=args.candidates_per_round,
+                max_external_attempts=args.max_external_attempts,
+                max_total_cost=args.max_total_cost,
+            )
+        elif args.command == "run-cycle":
+            result = run_cycle_command(
+                workspace_path=args.workspace,
+                approved_dataset_path=args.approved_dataset,
+                external=args.external,
+                acknowledged_contract_hash=args.acknowledge_contract_hash,
+                on_progress=progress,
+            )
+        elif args.command == "run-loop":
+            result = run_loop_command(
+                workspace_path=args.workspace,
+                approved_dataset_path=args.approved_dataset,
+                external=args.external,
+                acknowledged_contract_hash=args.acknowledge_contract_hash,
+                max_cycles=args.max_cycles,
+                on_progress=progress,
+            )
+        elif args.command == "approve-signals":
+            result = approve_signals(
+                workspace_path=args.workspace,
+                approved_by=args.approved_by,
+                candidate_args=args.candidate,
+            )
+        elif args.command == "refresh-dashboard":
+            result = refresh_dashboard(args.dashboard_root)
+        else:
+            result = workspace_status(args.workspace)
+    except KeyboardInterrupt:
+        if args.command not in {"run-cycle", "run-loop"}:
+            raise
+        result = _interrupt_result(args.workspace, on_progress=progress)
+        exit_code = 130
+
+    if args.command in {"init", "status", "run-cycle", "run-loop"}:
+        result.update(refresh_dashboard(args.dashboard_root))
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

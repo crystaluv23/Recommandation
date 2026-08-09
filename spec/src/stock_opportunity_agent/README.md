@@ -40,6 +40,7 @@ src/stock_opportunity_agent/
     information_plan
     scheme_evolution
     evolution_runtime
+    evolution_dashboard
     playbooks
   scoring
   ranking
@@ -81,6 +82,7 @@ spec/src/stock_opportunity_agent/
   research/information_plan.md
   research/scheme_evolution.md
   research/evolution_runtime.md
+  research/evolution_dashboard.md
   research/playbooks.md
   scoring.md
   ranking.md
