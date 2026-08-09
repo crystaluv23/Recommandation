@@ -44,6 +44,12 @@ network I/O. Role-specific validation enforces:
 - judge registrations are no-web and retries stay at one; and
 - the request cites the frozen run-contract hash.
 
+The post-hoc reflection boundary rescans the original anonymous context for
+identity aliases, then treats the already validated immutable prediction and
+numeric revealed truth as typed records. It does not rescan prediction enum
+values as free identity text, because legitimate values such as confidence
+`low` can equal a ticker alias (`LOW`).
+
 An attempt is reserved in `attempts.json` before the call. Reservation fails if
 the attempt count or cumulative conservative cost ceiling would be exceeded.
 Completion/failure updates the same durable entry. Exact responses live under

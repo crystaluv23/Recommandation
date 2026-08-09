@@ -29,7 +29,12 @@ from stock_opportunity_agent.research.evolution_runtime import (
     prepare_dataset_proposal,
     prepare_expanded_dataset_proposal,
 )
-from stock_opportunity_agent.research.scheme_evolution import default_information_plan
+from stock_opportunity_agent.research.scheme_evolution import (
+    BlindPrediction,
+    ConfidenceLevel,
+    GroundTruth,
+    default_information_plan,
+)
 from stock_opportunity_agent.signal_library import SignalRegistry
 
 
@@ -702,6 +707,55 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
         self.assertIn('"session_id"', str(caller.calls[0]["system_prompt"]))
+
+    def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "prediction_outcome": {"correct": False},
+                    "why_prediction_failed": [],
+                    "misleading_signals": [],
+                    "ignored_evidence": [],
+                    "missing_information": [],
+                    "plan_issues": [],
+                }
+            ]
+        )
+        predictor = LLMBlindPredictor(caller, anonymous_aliases=("LOW",))
+
+        predictor.reflect(
+            {"summary": "anonymous evidence"},
+            BlindPrediction(
+                is_surge=False,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("limited evidence",),
+                uncertainties=(),
+                session_id="anonymous-session",
+            ),
+            GroundTruth(1.2),
+        )
+
+        self.assertEqual(caller.calls[0]["anonymous_aliases"], ())
+
+    def test_posthoc_reflection_still_scans_original_context(self) -> None:
+        predictor = LLMBlindPredictor(
+            ScriptedRoleCaller([]), anonymous_aliases=("LEAKME",)
+        )
+
+        with self.assertRaisesRegex(ValidationError, "identity alias leaked"):
+            predictor.reflect(
+                {"summary": "LEAKME disclosed"},
+                BlindPrediction(
+                    is_surge=False,
+                    magnitude=None,
+                    confidence=ConfidenceLevel.LOW,
+                    key_reasons=("limited evidence",),
+                    uncertainties=(),
+                    session_id="anonymous-session",
+                ),
+                GroundTruth(1.2),
+            )
 
     def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
         caller = ScriptedRoleCaller(

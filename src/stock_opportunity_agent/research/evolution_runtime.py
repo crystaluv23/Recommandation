@@ -2025,6 +2025,11 @@ class LLMBlindPredictor:
         original_prediction: BlindPrediction,
         ground_truth: GroundTruth,
     ) -> AgentStep[PredictionSelfReflection]:
+        _scan_payload(
+            {"original_context": dict(original_context)},
+            allow_outcomes=False,
+            anonymous_aliases=self.anonymous_aliases,
+        )
         value, usage = self.caller.complete_json(
             stage="blind_predictor_posthoc_reflect",
             system_prompt=(
@@ -2038,7 +2043,9 @@ class LLMBlindPredictor:
                 "revealed_ground_truth": ground_truth.to_dict(),
             },
             allow_outcomes=True,
-            anonymous_aliases=self.anonymous_aliases,
+            # The context was scanned above. Validated prediction enums may equal
+            # common ticker aliases, for example confidence "low" and ticker LOW.
+            anonymous_aliases=(),
         )
         return AgentStep(
             _parse_role_output(
