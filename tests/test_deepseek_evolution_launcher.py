@@ -23,5 +23,13 @@ class DeepSeekEvolutionLauncherTests(TestCase):
         self.assertIn("DeepSeek V4 Flash", result.stdout)
         self.assertIn("10 hours", result.stdout)
         self.assertIn("USD 30", result.stdout)
-        self.assertIn("one confirmation", result.stdout)
-        self.assertIn("never opens Locked Test", result.stdout)
+        self.assertIn("exported environment", result.stdout)
+        self.assertIn("git-ignored .env.local", result.stdout)
+        self.assertIn("opens Locked Test", result.stdout)
+
+    def test_key_and_reviewer_do_not_require_interactive_input(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+
+        self.assertNotIn("read -r -s", source)
+        self.assertIn('REVIEWER="local-operator"', source)
+        self.assertIn('KEY_SOURCE="git-ignored .env.local"', source)

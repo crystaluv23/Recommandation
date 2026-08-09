@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 CLI="$PROJECT_ROOT/scripts/evolve_information_schemes.py"
+LOCAL_ENV="$PROJECT_ROOT/.env.local"
 BUNDLED_PYTHON="/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
 WORKSPACE="$PROJECT_ROOT/runs/cold_start/evolution/deepseek-v4-flash-overnight-v1"
 PROPOSAL="$WORKSPACE/dataset_proposal/dataset_manifest.proposal.json"
@@ -35,9 +36,9 @@ usage() {
     "the wall-clock duration, for example:" \
     "  EVOLUTION_OVERNIGHT_HOURS=12 bash scripts/run_deepseek_evolution.sh" \
     "" \
-    "The script asks for the API key if needed and requires one confirmation" \
-    "before dataset approval or any external call. It never opens Locked Test" \
-    "or promotes staged Signal candidates."
+    "The script loads DEEPSEEK_API_KEY from the exported environment or the" \
+    "git-ignored .env.local file. It requires one execution confirmation, never" \
+    "opens Locked Test, and never promotes staged Signal candidates."
 }
 
 fail() {
@@ -77,24 +78,34 @@ run_cli() {
     "$PYTHON_BIN" "$CLI" "$@"
 }
 
+KEY_SOURCE="exported environment"
 if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
-  if [ ! -t 0 ]; then
-    fail "DEEPSEEK_API_KEY is unset and no interactive terminal is available"
+  if "$PYTHON_BIN" -c '
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+found = False
+if path.is_file():
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in stripped:
+            continue
+        key, value = stripped.split("=", 1)
+        if key.strip() == "DEEPSEEK_API_KEY" and value.strip():
+            found = True
+            break
+raise SystemExit(0 if found else 1)
+' "$LOCAL_ENV"; then
+    KEY_SOURCE="git-ignored .env.local"
+  else
+    fail "DEEPSEEK_API_KEY is absent from the environment and $LOCAL_ENV"
   fi
-  IFS= read -r -s -p "请输入 DEEPSEEK_API_KEY（不会显示或写入文件）: " DEEPSEEK_API_KEY
-  printf '\n'
 fi
-if [ -z "$DEEPSEEK_API_KEY" ]; then
-  fail "DEEPSEEK_API_KEY cannot be empty"
-fi
-export DEEPSEEK_API_KEY
 
 REVIEWER="${EVOLUTION_REVIEWER:-$(git -C "$PROJECT_ROOT" config --get user.name 2>/dev/null || true)}"
 if [ -z "$REVIEWER" ]; then
-  IFS= read -r -p "请输入数据集批准人名称: " REVIEWER
-fi
-if [ -z "$REVIEWER" ]; then
-  fail "a non-empty reviewer name is required"
+  REVIEWER="local-operator"
 fi
 
 printf '%s\n' \
@@ -131,6 +142,7 @@ printf '%s\n' \
   "  candidates/round: $CANDIDATES_PER_ROUND" \
   "  attempt ceiling: $MAX_EXTERNAL_ATTEMPTS" \
   "  cumulative cost ceiling: USD $MAX_TOTAL_COST" \
+  "  API key source: $KEY_SOURCE（内容不会显示或持久化）" \
   "  reviewer: $REVIEWER" \
   "  Locked Test: sealed" \
   "  Signal candidates: staged only, never auto-promoted" \
