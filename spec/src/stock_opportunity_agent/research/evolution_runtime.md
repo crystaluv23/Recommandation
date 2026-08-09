@@ -110,6 +110,32 @@ listed universe. It also emits a label-free acquisition scope containing only
 company/CIK/ticker identities and required as-of dates. Data backfill jobs may
 consume that scope without learning outcome strata or split ownership.
 
+### Historical Identity Decisions
+
+An expansion may optionally consume one
+`expanded-case-identity-decisions-v1` artifact when local listing metadata is
+known to contain a stale ticker, missing CIK, or reused security identity. The
+artifact is itself proposal input, not dataset approval. It must contain:
+
+- a canonical `decision_hash`, review status, and unique decision ids/symbols;
+- an `exclude` or `set_cik` action;
+- an inclusive date range covering every requested prediction date;
+- at least one immutable official SEC filing URL published no later than the
+  earliest requested prediction date, plus a concise observed fact; and
+- no outcome, return, stratum, or split ownership field.
+
+`set_cik` is applied to the clean-universe listing before issuer ids and CIK
+deduplication are computed. `exclude` removes the symbol from eligibility before
+stratum allocation and records an explicit identity-decision exclusion. Neither
+action edits the source universe or an older proposal.
+
+The decision artifact identity participates in the proposal source-inventory
+hash and is copied into the manifest audit inputs. An agent-proposed artifact
+may create a new proposal, but the manifest retains a blocker requiring human
+review of that exact decision hash before dataset approval. This allows obvious
+source corrections to be evaluated without silently converting them into
+approved research facts.
+
 ## Dependencies
 
 Uses the top-level `llm` model registry for provider construction and the
@@ -125,4 +151,5 @@ cache reuse, durable attempt/cost reservation, stale in-progress attempt
 visibility, local artifact inventory, missing paths, and Locked Test sealing.
 Full-market expansion tests additionally cover fixed-date labels, incomplete
 issuer exclusion, CIK deduplication, deterministic weighted/diversity sampling,
-issuer-disjoint stratified splits, immutable replay, and zero external calls.
+issuer-disjoint stratified splits, hashed official-source identity decisions,
+date-bound CIK replacement/exclusion, immutable replay, and zero external calls.

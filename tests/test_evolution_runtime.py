@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 from datetime import date
@@ -474,6 +475,160 @@ class LocalInventoryTests(TestCase):
                 split_seed="fixture-expansion",
             )
             self.assertEqual(replay.to_dict(), report.to_dict())
+
+            decisions_path = root / "identity_decisions.json"
+            decisions = {
+                "schema_version": "expanded-case-identity-decisions-v1",
+                "review_status": "agent_proposed_pending_human_review",
+                "decision_count": 2,
+                "decisions": [
+                    {
+                        "decision_id": "fixture-set-cik",
+                        "symbol": "S00",
+                        "action": "set_cik",
+                        "cik": "8000",
+                        "applies_from": "2025-01-10",
+                        "applies_to": "2025-01-10",
+                        "rationale": "official filing identifies the issuer",
+                        "evidence": [
+                            {
+                                "source_url": (
+                                    "https://www.sec.gov/Archives/edgar/data/8000/fixture.htm"
+                                ),
+                                "filing_date": "2025-01-01",
+                                "observed_fact": "The filing identifies S00 under CIK 8000.",
+                            }
+                        ],
+                    },
+                    {
+                        "decision_id": "fixture-exclude-preipo",
+                        "symbol": "PREIPO",
+                        "action": "exclude",
+                        "applies_from": "2025-01-10",
+                        "applies_to": "2025-01-10",
+                        "rationale": "the symbol is not valid at the prediction date",
+                        "evidence": [
+                            {
+                                "source_url": (
+                                    "https://www.sec.gov/Archives/edgar/data/9998/fixture.htm"
+                                ),
+                                "filing_date": "2025-01-01",
+                                "observed_fact": "The filing proves a different valid period.",
+                            }
+                        ],
+                    },
+                ],
+            }
+            decisions["decision_hash"] = hashlib.sha256(
+                json.dumps(
+                    decisions, sort_keys=True, separators=(",", ":")
+                ).encode("utf-8")
+            ).hexdigest()
+            write_json(decisions_path, decisions)
+            identity_report = prepare_expanded_dataset_proposal(
+                universe_path=universe_path,
+                full_price_archive_path=prices_path,
+                output_root=root / "proposal-identity",
+                prediction_dates=[date(2025, 1, 10)],
+                target_issuers=15,
+                stratum_weights={key: 1.0 for key in report.selected_stratum_counts},
+                split_seed="fixture-expansion",
+                identity_decisions_path=decisions_path,
+            )
+            self.assertEqual(identity_report.universe_listing_count, 18)
+            self.assertEqual(identity_report.eligible_issuer_count, 16)
+            self.assertEqual(
+                identity_report.exclusion_reason_counts["identity_decision_exclude"],
+                1,
+            )
+            identity_manifest = json.loads(
+                Path(identity_report.manifest_path).read_text(encoding="utf-8")
+            )
+            self.assertEqual(identity_manifest["identity_decisions"]["decision_count"], 2)
+            self.assertEqual(identity_manifest["identity_decisions"]["cik_update_count"], 1)
+            self.assertEqual(identity_manifest["identity_decisions"]["exclusion_count"], 1)
+            self.assertEqual(
+                identity_manifest["counts"]["identity_eligible_universe_listings"],
+                17,
+            )
+            self.assertIn(
+                "human-review the exact applied identity-decision artifact",
+                identity_manifest["approval_blockers"],
+            )
+            inventory = json.loads(
+                Path(
+                    identity_manifest["audit_artifacts"]["candidate_inventory"]["path"]
+                ).read_text(encoding="utf-8")
+            )
+            s00 = next(row for row in inventory["candidates"] if row["symbol"] == "S00")
+            self.assertEqual(s00["cik"], "0000008000")
+            self.assertEqual(s00["company_id"], "cik_0000008000")
+            identity_replay = prepare_expanded_dataset_proposal(
+                universe_path=universe_path,
+                full_price_archive_path=prices_path,
+                output_root=root / "proposal-identity",
+                prediction_dates=[date(2025, 1, 10)],
+                target_issuers=15,
+                stratum_weights={key: 1.0 for key in report.selected_stratum_counts},
+                split_seed="fixture-expansion",
+                identity_decisions_path=decisions_path,
+            )
+            self.assertEqual(identity_replay.to_dict(), identity_report.to_dict())
+
+            invalid_evidence = json.loads(json.dumps(decisions))
+            invalid_evidence["decisions"][0]["evidence"][0]["source_url"] = (
+                "https://example.com/not-sec.htm"
+            )
+            invalid_evidence.pop("decision_hash")
+            invalid_evidence["decision_hash"] = hashlib.sha256(
+                json.dumps(
+                    invalid_evidence, sort_keys=True, separators=(",", ":")
+                ).encode("utf-8")
+            ).hexdigest()
+            write_json(decisions_path, invalid_evidence)
+            with self.assertRaisesRegex(ValidationError, "official SEC"):
+                prepare_expanded_dataset_proposal(
+                    universe_path=universe_path,
+                    full_price_archive_path=prices_path,
+                    output_root=root / "invalid-evidence-proposal",
+                    prediction_dates=[date(2025, 1, 10)],
+                    target_issuers=15,
+                    identity_decisions_path=decisions_path,
+                )
+
+            future_evidence = json.loads(json.dumps(decisions))
+            future_evidence["decisions"][0]["evidence"][0]["filing_date"] = (
+                "2025-01-11"
+            )
+            future_evidence.pop("decision_hash")
+            future_evidence["decision_hash"] = hashlib.sha256(
+                json.dumps(
+                    future_evidence, sort_keys=True, separators=(",", ":")
+                ).encode("utf-8")
+            ).hexdigest()
+            write_json(decisions_path, future_evidence)
+            with self.assertRaisesRegex(ValidationError, "postdates"):
+                prepare_expanded_dataset_proposal(
+                    universe_path=universe_path,
+                    full_price_archive_path=prices_path,
+                    output_root=root / "future-evidence-proposal",
+                    prediction_dates=[date(2025, 1, 10)],
+                    target_issuers=15,
+                    identity_decisions_path=decisions_path,
+                )
+
+            tampered = dict(decisions)
+            tampered["review_status"] = "human_reviewed"
+            write_json(decisions_path, tampered)
+            with self.assertRaisesRegex(ValidationError, "hash mismatch"):
+                prepare_expanded_dataset_proposal(
+                    universe_path=universe_path,
+                    full_price_archive_path=prices_path,
+                    output_root=root / "tampered-proposal",
+                    prediction_dates=[date(2025, 1, 10)],
+                    target_issuers=15,
+                    identity_decisions_path=decisions_path,
+                )
 
 
 class ScriptedRoleCaller:

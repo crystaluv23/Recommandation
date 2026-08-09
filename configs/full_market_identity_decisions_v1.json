@@ -1,0 +1,57 @@
+{
+  "schema_version": "expanded-case-identity-decisions-v1",
+  "review_status": "agent_proposed_pending_human_review",
+  "description": "Official-SEC corrections for the three missing-CIK identities selected by the v4 full-market proposal.",
+  "decision_count": 3,
+  "decisions": [
+    {
+      "decision_id": "exclude-cpsr-after-gls-ticker-transition",
+      "symbol": "CPSR",
+      "action": "exclude",
+      "applies_from": "2024-09-30",
+      "applies_to": "2025-09-30",
+      "replacement_symbol": "GLS",
+      "rationale": "The local listing combines the predecessor ticker CPSR with the successor company name during dates when SEC filings identify the traded common-stock ticker as GLS.",
+      "evidence": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1805087/000095017023010349/gls-20221231.htm",
+          "filing_date": "2023-03-28",
+          "observed_fact": "Gelesis states that predecessor CPSR changed its name in January 2022 and its common stock began trading under GLS on January 14, 2022."
+        }
+      ]
+    },
+    {
+      "decision_id": "set-oaku-cik-0001945422",
+      "symbol": "OAKU",
+      "action": "set_cik",
+      "cik": "0001945422",
+      "applies_from": "2024-09-30",
+      "applies_to": "2025-09-30",
+      "rationale": "An official SEC filing identifies Oak Woods Acquisition Corp under this CIK.",
+      "evidence": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1945422/0001213900-24-071237-index.htm",
+          "filing_date": "2024-08-21",
+          "observed_fact": "The SEC filing detail names Oak Woods Acquisition Corp as filer CIK 0001945422."
+        }
+      ]
+    },
+    {
+      "decision_id": "set-scpx-cik-0001476963",
+      "symbol": "SCPX",
+      "action": "set_cik",
+      "cik": "0001476963",
+      "applies_from": "2024-09-30",
+      "applies_to": "2025-09-30",
+      "rationale": "An official SEC cover page identifies Scorpius Holdings and common-stock ticker SCPX under this CIK.",
+      "evidence": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1476963/000107997324000767/scpx_8k.htm",
+          "filing_date": "2024-05-16",
+          "observed_fact": "The filing identifies Scorpius Holdings, Inc., ticker SCPX on NYSE American, under CIK 0001476963."
+        }
+      ]
+    }
+  ],
+  "decision_hash": "b8202b6babc5862926d992e81ca41e88c102a0649951f647d104c319d2031fae"
+}

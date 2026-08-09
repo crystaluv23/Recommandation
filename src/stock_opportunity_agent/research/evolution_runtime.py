@@ -746,6 +746,7 @@ def prepare_expanded_dataset_proposal(
     target_issuers: int = 240,
     stratum_weights: Mapping[str, float] | None = None,
     split_seed: str = "expanded-information-plan-evolution-v1",
+    identity_decisions_path: str | Path | None = None,
 ) -> ExpandedDatasetProposalReport:
     """Build a zero-network fixed-date case-library proposal from local prices."""
 
@@ -775,14 +776,48 @@ def prepare_expanded_dataset_proposal(
         listings[symbol] = listing
     if not listings:
         raise ValidationError("clean-universe artifact has no listings")
+    source_listing_count = len(listings)
+    identity_decisions: dict[str, dict[str, Any]] = {}
+    identity_artifact: dict[str, Any] | None = None
+    identity_review_status: str | None = None
+    if identity_decisions_path is not None:
+        identity_path = Path(identity_decisions_path)
+        identity_payload, identity_decisions = _load_expansion_identity_decisions(
+            identity_path,
+            prediction_dates=dates,
+            listings=listings,
+        )
+        identity_artifact = _artifact_file_identity(identity_path)
+        identity_review_status = str(identity_payload["review_status"])
+    identity_exclusions: list[dict[str, str]] = []
+    active_listings: dict[str, dict[str, Any]] = {}
+    cik_update_count = 0
+    for symbol, listing in listings.items():
+        decision = identity_decisions.get(symbol)
+        if decision is not None and decision["action"] == "exclude":
+            identity_exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": _expansion_company_id(listing),
+                    "reason": "identity_decision_exclude",
+                    "decision_id": str(decision["decision_id"]),
+                }
+            )
+            continue
+        resolved_listing = dict(listing)
+        if decision is not None and decision["action"] == "set_cik":
+            resolved_listing["cik"] = str(decision["cik"])
+            cik_update_count += 1
+        active_listings[symbol] = resolved_listing
 
     price_metadata, candidates, exclusions, priced_symbol_count = (
         _stream_expansion_candidates(
             price_file,
-            listings=listings,
+            listings=active_listings,
             prediction_dates=dates,
         )
     )
+    exclusions.extend(identity_exclusions)
     deduplicated, duplicate_exclusions = _deduplicate_expansion_candidates(
         candidates,
         seed=split_seed,
@@ -828,11 +863,14 @@ def prepare_expanded_dataset_proposal(
     root.mkdir(parents=True, exist_ok=True)
     universe_identity = _artifact_file_identity(universe_file)
     price_identity = _artifact_file_identity(price_file)
+    source_inputs: dict[str, Any] = {
+        "universe": universe_identity,
+        "adjusted_prices": price_identity,
+    }
+    if identity_artifact is not None:
+        source_inputs["identity_decisions"] = identity_artifact
     source_inventory_hash = _canonical_hash(
-        {
-            "universe": universe_identity,
-            "adjusted_prices": price_identity,
-        }
+        source_inputs
     )
     exclusion_reason_counts: dict[str, int] = {}
     for item in exclusions:
@@ -949,12 +987,25 @@ def prepare_expanded_dataset_proposal(
             "resolve companies without CIK or record a reviewed exclusion",
             "classify and review non-operating securities such as funds, notes, preferred shares, and SPACs",
             "acquire and audit point-in-time filings, profiles, news, and other required Raw Info",
+            *(
+                ["human-review the exact applied identity-decision artifact"]
+                if identity_review_status == "agent_proposed_pending_human_review"
+                else []
+            ),
         ],
         "source_inventory_hash": source_inventory_hash,
         "sources": {
             "clean_universe": universe_identity,
             "adjusted_prices": price_identity,
+            "identity_decisions": identity_artifact,
             "price_metadata": price_metadata,
+        },
+        "identity_decisions": {
+            "applied": identity_artifact is not None,
+            "review_status": identity_review_status,
+            "decision_count": len(identity_decisions),
+            "cik_update_count": cik_update_count,
+            "exclusion_count": len(identity_exclusions),
         },
         "case_generation": {
             "kind": "shared_fixed_calendar_panel",
@@ -995,7 +1046,8 @@ def prepare_expanded_dataset_proposal(
             "magnitude_classes": ["2-3x", "3-10x", "10x+"],
         },
         "counts": {
-            "universe_listings": len(listings),
+            "universe_listings": source_listing_count,
+            "identity_eligible_universe_listings": len(active_listings),
             "priced_symbols": priced_symbol_count,
             "eligible_issuers": len(deduplicated),
             "selected_issuers": len(selected),
@@ -1030,7 +1082,7 @@ def prepare_expanded_dataset_proposal(
     return ExpandedDatasetProposalReport(
         manifest_path=str(manifest_path.resolve()),
         manifest_hash=_sha256_file(manifest_path),
-        universe_listing_count=len(listings),
+        universe_listing_count=source_listing_count,
         priced_symbol_count=priced_symbol_count,
         eligible_issuer_count=len(deduplicated),
         selected_issuer_count=len(selected),
@@ -2206,6 +2258,110 @@ def _validate_expansion_weights(weights: Mapping[str, float]) -> dict[str, float
         raise ValidationError("expanded dataset weights must be non-negative and non-zero")
     total = sum(normalized.values())
     return {key: normalized[key] / total for key in EXPANSION_STRATUM_ORDER}
+
+
+def _load_expansion_identity_decisions(
+    path: Path,
+    *,
+    prediction_dates: tuple[date, ...],
+    listings: Mapping[str, Mapping[str, Any]],
+) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
+    payload = _read_json(path)
+    if payload.get("schema_version") != "expanded-case-identity-decisions-v1":
+        raise ValidationError("unsupported expanded identity-decision schema")
+    supplied_hash = str(payload.get("decision_hash") or "")
+    without_hash = dict(payload)
+    without_hash.pop("decision_hash", None)
+    if supplied_hash != _canonical_hash(without_hash):
+        raise ValidationError("expanded identity-decision hash mismatch")
+    _scan_payload(payload, allow_outcomes=False, anonymous_aliases=())
+    review_status = str(payload.get("review_status") or "")
+    if review_status not in {
+        "agent_proposed_pending_human_review",
+        "human_reviewed",
+    }:
+        raise ValidationError("expanded identity-decision review status is invalid")
+    decisions = payload.get("decisions")
+    if not isinstance(decisions, list):
+        raise ValidationError("expanded identity decisions must be a list")
+    if int(payload.get("decision_count", -1)) != len(decisions):
+        raise ValidationError("expanded identity-decision count mismatch")
+    by_symbol: dict[str, dict[str, Any]] = {}
+    seen_ids: set[str] = set()
+    for raw in decisions:
+        if not isinstance(raw, Mapping):
+            raise ValidationError("expanded identity decision must be an object")
+        decision = dict(raw)
+        decision_id = str(decision.get("decision_id") or "").strip()
+        symbol = str(decision.get("symbol") or "").strip().upper()
+        action = str(decision.get("action") or "")
+        if not decision_id or decision_id in seen_ids:
+            raise ValidationError("expanded identity decision ids must be unique")
+        if not symbol or symbol in by_symbol:
+            raise ValidationError("expanded identity decision symbols must be unique")
+        if symbol not in listings:
+            raise ValidationError(
+                f"expanded identity decision symbol is not in universe: {symbol}"
+            )
+        if action not in {"exclude", "set_cik"}:
+            raise ValidationError("expanded identity decision action is invalid")
+        applies_from = _parse_identity_date(
+            decision.get("applies_from"), "applies_from"
+        )
+        applies_to = _parse_identity_date(
+            decision.get("applies_to"), "applies_to"
+        )
+        if applies_to < applies_from:
+            raise ValidationError("expanded identity decision date range is reversed")
+        if prediction_dates[0] < applies_from or prediction_dates[-1] > applies_to:
+            raise ValidationError(
+                f"expanded identity decision does not cover prediction dates: {symbol}"
+            )
+        evidence = decision.get("evidence")
+        if not isinstance(evidence, list) or not evidence:
+            raise ValidationError("expanded identity decision requires SEC evidence")
+        normalized_cik: str | None = None
+        if action == "set_cik":
+            raw_cik = str(decision.get("cik") or "")
+            if not re.fullmatch(r"\d{1,10}", raw_cik):
+                raise ValidationError("expanded identity decision CIK is invalid")
+            normalized_cik = raw_cik.zfill(10)
+            decision["cik"] = normalized_cik
+        for item in evidence:
+            if not isinstance(item, Mapping):
+                raise ValidationError("expanded identity evidence must be an object")
+            source_url = str(item.get("source_url") or "")
+            match = re.fullmatch(
+                r"https://www\.sec\.gov/Archives/edgar/data/(\d+)/[^\s]+",
+                source_url,
+            )
+            if match is None:
+                raise ValidationError(
+                    "expanded identity evidence must be an official SEC filing URL"
+                )
+            if normalized_cik is not None and match.group(1).zfill(10) != normalized_cik:
+                raise ValidationError("expanded identity evidence CIK mismatch")
+            filing_date = _parse_identity_date(
+                item.get("filing_date"), "evidence filing_date"
+            )
+            if filing_date > prediction_dates[0]:
+                raise ValidationError(
+                    "expanded identity evidence postdates the earliest prediction date"
+                )
+            if not str(item.get("observed_fact") or "").strip():
+                raise ValidationError(
+                    "expanded identity evidence observed_fact is missing"
+                )
+        seen_ids.add(decision_id)
+        by_symbol[symbol] = decision
+    return payload, by_symbol
+
+
+def _parse_identity_date(value: Any, label: str) -> date:
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError as exc:
+        raise ValidationError(f"invalid expanded identity {label}: {value}") from exc
 
 
 def _stream_expansion_candidates(

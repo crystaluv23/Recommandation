@@ -163,6 +163,11 @@ def build_parser() -> argparse.ArgumentParser:
     prepare_expanded.add_argument(
         "--split-seed", default="expanded-information-plan-evolution-v1"
     )
+    prepare_expanded.add_argument(
+        "--identity-decisions",
+        type=Path,
+        help="optional hashed SEC-evidenced CIK corrections/exclusions for a new proposal",
+    )
 
     approve_dataset = subparsers.add_parser(
         "approve-dataset",
@@ -425,6 +430,7 @@ def prepare_expanded_dataset(
     target_issuers: int,
     prediction_dates: list[str] | tuple[str, ...],
     split_seed: str,
+    identity_decisions_path: Path | None = None,
 ) -> dict[str, object]:
     report = prepare_expanded_dataset_proposal(
         universe_path=universe_path,
@@ -433,6 +439,7 @@ def prepare_expanded_dataset(
         prediction_dates=[date.fromisoformat(value) for value in prediction_dates],
         target_issuers=target_issuers,
         split_seed=split_seed,
+        identity_decisions_path=identity_decisions_path,
     )
     return report.to_dict()
 
@@ -619,6 +626,7 @@ def main() -> int:
             target_issuers=args.target_issuers,
             prediction_dates=args.prediction_dates,
             split_seed=args.split_seed,
+            identity_decisions_path=args.identity_decisions,
         )
     elif args.command == "approve-dataset":
         approved_path = approve_dataset_proposal(

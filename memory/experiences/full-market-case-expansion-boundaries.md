@@ -1,6 +1,6 @@
 # Full-Market Case Expansion Boundaries
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 
@@ -41,6 +41,14 @@ The post-primary implementation keeps that boundary intact: only cached SEC
 atomic progress file, and filing bodies are selected per midnight case cutoff
 from explicit acceptance timestamps or a conservative next-day fallback.
 
+The v5 regeneration resolved the three v4 missing-CIK identities without
+editing the clean-universe artifact. One canonical, hashed, date-bounded
+decision file excludes stale CPSR and supplies official SEC CIK evidence for
+OAKU and SCPX. That input participates in the proposal inventory hash, and its
+agent-proposed review status remains an approval blocker. The regenerated
+label-free scope has 240 CIKs and both SEC and news plans remain zero-network
+until separately authorized.
+
 ## How to Apply
 
 1. Fix calendar prediction dates before scanning outcomes.
@@ -55,12 +63,15 @@ from explicit acceptance timestamps or a conservative next-day fallback.
 9. Derive SEC history files only from cached `filings.files` references, then
    select bounded primary documents by timezone-aware acceptance time; when that
    time is absent or timezone-naive, use next-day UTC rather than guessing.
+10. Represent stale tickers and missing CIKs as canonical, hashed, date-bounded
+    proposal inputs backed by official filings; never patch the source inventory
+    or treat agent-proposed evidence as human-approved.
 
 ## Limits
 
 The exact dates, 240-issuer target, weights, counts, symbols, and artifact hashes
-belong to the 2026-08-09 v4 proposal. They are not permanent defaults and must be
-regenerated when the price archive, label contract, or reviewed research design
-changes. SEC submissions metadata is only discovery evidence; it does not prove
-filing bodies, company profiles, news, transcripts, or historical identity are
-complete.
+belong to the 2026-08-09 v4/v5 proposals. They are not permanent defaults and
+must be regenerated when the price archive, label contract, identity-decision
+hash, or reviewed research design changes. SEC submissions metadata is only
+discovery evidence; it does not prove filing bodies, company profiles, news,
+transcripts, or historical identity are complete.
