@@ -1963,23 +1963,36 @@ class LLMSignalRetrievalAgent:
         signal_registry: FrozenSignalRegistry,
     ) -> AgentStep[tuple[str, ...]]:
         categories = sorted({spec.category for spec in signal_registry.specs})
-        category_value, category_usage = self.caller.complete_json(
-            stage="signal_retrieval_categories",
-            system_prompt=(
-                "Choose only relevant category names for the information needs. "
-                "Return {\"categories\": [...]}."
-            ),
-            payload={
-                "information_needs": list(information_needs),
-                "available_categories": categories,
-            },
-            allow_outcomes=False,
-        )
-        selected_categories = tuple(
-            str(item) for item in category_value.get("categories", ())
-        )
-        if not selected_categories or not set(selected_categories).issubset(categories):
-            raise ValidationError("Signal Retrieval selected unknown/empty categories")
+        category_usage = AgentUsage()
+        selected_categories: tuple[str, ...] = ()
+        category_payload: dict[str, Any] = {
+            "information_needs": list(information_needs),
+            "available_categories": categories,
+        }
+        for attempt in range(2):
+            if attempt:
+                category_payload["validation_feedback"] = (
+                    "The previous categories were empty or outside "
+                    "available_categories. Return a non-empty subset only."
+                )
+            category_value, step_usage = self.caller.complete_json(
+                stage="signal_retrieval_categories",
+                system_prompt=(
+                    "Choose only relevant category names for the information needs. "
+                    "Return {\"categories\": [...]}."
+                ),
+                payload=category_payload,
+                allow_outcomes=False,
+            )
+            category_usage = category_usage + step_usage
+            selected_categories = tuple(
+                str(item) for item in category_value.get("categories", ())
+            )
+            if selected_categories and set(selected_categories).issubset(categories):
+                break
+        else:
+            return AgentStep((), category_usage)
+
         cards = [
             {
                 "signal_ref": spec.ref,
@@ -1990,22 +2003,36 @@ class LLMSignalRetrievalAgent:
             for spec in signal_registry.specs
             if spec.category in selected_categories
         ]
-        selection_value, selection_usage = self.caller.complete_json(
-            stage="signal_retrieval_cards",
-            system_prompt=(
-                "Choose the smallest unique Signal batch that answers the needs. "
-                "Return {\"signal_refs\": [...]}."
-            ),
-            payload={
+        selection_usage = AgentUsage()
+        refs: tuple[str, ...] = ()
+        selection_payload: dict[str, Any] = {
                 "information_needs": list(information_needs),
                 "signal_cards": cards,
-            },
-            allow_outcomes=False,
-        )
-        refs = tuple(str(item) for item in selection_value.get("signal_refs", ()))
+        }
         allowed = {card["signal_ref"] for card in cards}
-        if not refs or len(set(refs)) != len(refs) or not set(refs).issubset(allowed):
-            raise ValidationError("Signal Retrieval returned invalid Signal refs")
+        for attempt in range(2):
+            if attempt:
+                selection_payload["validation_feedback"] = (
+                    "The previous signal_refs were empty, duplicated, or outside "
+                    "the supplied signal_cards. Return a non-empty unique subset only."
+                )
+            selection_value, step_usage = self.caller.complete_json(
+                stage="signal_retrieval_cards",
+                system_prompt=(
+                    "Choose the smallest unique Signal batch that answers the needs. "
+                    "Return {\"signal_refs\": [...]}."
+                ),
+                payload=selection_payload,
+                allow_outcomes=False,
+            )
+            selection_usage = selection_usage + step_usage
+            refs = tuple(
+                str(item) for item in selection_value.get("signal_refs", ())
+            )
+            if refs and len(set(refs)) == len(refs) and set(refs).issubset(allowed):
+                break
+        else:
+            return AgentStep((), category_usage + selection_usage)
         return AgentStep(refs, category_usage + selection_usage)
 
 

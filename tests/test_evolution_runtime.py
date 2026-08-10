@@ -721,6 +721,47 @@ class ConcreteRoleAdapterTests(TestCase):
                 ["signal_retrieval_categories", "signal_retrieval_cards"],
             )
 
+    def test_signal_selector_repairs_invalid_categories_and_refs_once(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    {"categories": ["unknown"]},
+                    {"categories": ["financial"]},
+                    {"signal_refs": ["unknown:v1"]},
+                    {"signal_refs": ["revenue_growth_yoy:v1"]},
+                ]
+            )
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("revenue growth",), registry.freeze()
+            )
+
+            self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
+            self.assertEqual(selection.usage.llm_calls, 4)
+            self.assertIn("validation_feedback", caller.calls[1]["payload"])
+            self.assertIn("validation_feedback", caller.calls[3]["payload"])
+
+    def test_signal_selector_returns_empty_after_failed_category_repair(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [{"categories": []}, {"categories": ["unknown"]}]
+            )
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("unmatched need",), registry.freeze()
+            )
+
+            self.assertEqual(selection.value, ())
+            self.assertEqual(selection.usage.llm_calls, 2)
+            self.assertEqual(
+                caller.stages,
+                ["signal_retrieval_categories", "signal_retrieval_categories"],
+            )
+
     def test_blind_predictor_parses_two_stage_schema(self) -> None:
         caller = ScriptedRoleCaller(
             [

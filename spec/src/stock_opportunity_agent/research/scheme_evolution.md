@@ -76,7 +76,10 @@ Research Controller answers: “What information is needed next?” It owns
 
 Signal Retrieval Agent answers: “Which existing Signals can answer that need?”
 It progressively browses categories, Signal cards, then full specs, and may
-select a batch.
+select a batch. Unknown, empty, or duplicate category/ref selections receive at
+most one correction call with the exact allowed set. If the correction remains
+invalid, the agent returns an empty selection and the runtime records
+`no_signal_match`; it never guesses a category or Signal on the model's behalf.
 
 Signal Executor retrieves point-in-time Raw Info and runs deterministic
 functions or LLM extraction skills.
