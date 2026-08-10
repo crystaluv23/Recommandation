@@ -9,7 +9,7 @@ from unittest import TestCase
 
 from stock_opportunity_agent.llm.agent import AgentRequest, AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel
-from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
@@ -947,6 +947,113 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(result.value, SignalValue.UNAVAILABLE)
         self.assertEqual(result.coverage, SignalCoverage.UNAVAILABLE)
+
+    def test_llm_signal_runner_repairs_invalid_exact_span_once(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-1",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="The customer entered volume deployment.",
+        )
+        base_result = {
+            "signal_id": "pilot_to_volume",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "The pilot reached volume deployment."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": "filing-1",
+                        "exact_span": "not a literal source span",
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        corrected = json.loads(json.dumps(base_result))
+        corrected["evidence"]["supporting"][0]["exact_span"] = (
+            "The customer entered volume deployment."
+        )
+        caller = ScriptedRoleCaller([base_result, corrected])
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Extract only source-grounded transitions.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(len(caller.calls), 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("exact span", feedback["validation_error"])
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertAlmostEqual(usage.cost, 0.02)
+
+    def test_llm_signal_runner_falls_back_unavailable_after_failed_repair(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-1",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="The customer entered volume deployment.",
+        )
+        invalid_result = {
+            "signal_id": "pilot_to_volume",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "Unsupported interpretation."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": "filing-1",
+                        "exact_span": "not a literal source span",
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        caller = ScriptedRoleCaller([invalid_result, invalid_result])
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Extract only source-grounded transitions.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(result.coverage, SignalCoverage.UNAVAILABLE)
+        self.assertEqual(result.supporting_evidence, ())
+        self.assertIn("failed strict validation", result.interpretation)
+        self.assertEqual(usage.llm_calls, 2)
 
 
 class RunControlTests(TestCase):

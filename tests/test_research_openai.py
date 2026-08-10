@@ -8,6 +8,7 @@ from stock_opportunity_agent.llm.openai import (
     ChatMessage,
     OpenAIChatClient,
     OpenAIClientError,
+    RetryableOpenAIClientError,
     UrllibTransport,
 )
 from stock_opportunity_agent.models import ValidationError
@@ -122,7 +123,7 @@ class OpenAIChatClientTests(TestCase):
 
     def test_urllib_transport_wraps_incomplete_chunked_response(self) -> None:
         with patch("stock_opportunity_agent.llm.openai.request.urlopen", return_value=IncompleteReadResponse()):
-            with self.assertRaises(OpenAIClientError) as context:
+            with self.assertRaises(RetryableOpenAIClientError) as context:
                 UrllibTransport(max_attempts=1).post_json("https://api.example.test/responses", {}, {"ok": True})
 
         self.assertIn("incomplete or invalid", str(context.exception))

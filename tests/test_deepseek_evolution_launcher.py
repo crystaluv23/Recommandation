@@ -27,6 +27,7 @@ class DeepSeekEvolutionLauncherTests(TestCase):
         self.assertIn("exported environment", result.stdout)
         self.assertIn("git-ignored .env.local", result.stdout)
         self.assertIn("opens Locked Test", result.stdout)
+        self.assertIn("resume automatically", result.stdout)
 
     def test_key_and_reviewer_do_not_require_interactive_input(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
@@ -34,6 +35,12 @@ class DeepSeekEvolutionLauncherTests(TestCase):
         self.assertNotIn("read -r -s", source)
         self.assertIn('REVIEWER="local-operator"', source)
         self.assertIn('KEY_SOURCE="git-ignored .env.local"', source)
+
+    def test_only_temporary_failure_status_is_restarted(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+
+        self.assertIn('if [ "$RUN_STATUS" -ne 75 ]; then', source)
+        self.assertIn("临时网络/服务故障", source)
 
     def test_strict_mode_variables_are_braced_before_non_ascii_text(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")

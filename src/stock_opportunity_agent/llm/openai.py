@@ -57,25 +57,34 @@ class UrllibTransport:
                     return json.loads(response.read().decode("utf-8"))
             except HTTPError as exc:
                 detail = exc.read().decode("utf-8", errors="replace")
-                if attempt < self.max_attempts and (
-                    exc.code in {408, 429} or 500 <= exc.code < 600
-                ):
+                retryable = exc.code in {408, 429} or 500 <= exc.code < 600
+                if attempt < self.max_attempts and retryable:
                     self._backoff(attempt)
                     continue
+                if retryable:
+                    raise RetryableOpenAIClientError(
+                        f"OpenAI API returned retryable HTTP {exc.code}: {detail}"
+                    ) from exc
                 raise OpenAIClientError(f"OpenAI API returned HTTP {exc.code}: {detail}") from exc
             except URLError as exc:
                 if attempt >= self.max_attempts:
-                    raise OpenAIClientError(f"OpenAI API request failed: {exc.reason}") from exc
+                    raise RetryableOpenAIClientError(
+                        f"OpenAI API request failed: {exc.reason}"
+                    ) from exc
                 self._backoff(attempt)
             except TimeoutError as exc:
                 if attempt >= self.max_attempts:
-                    raise OpenAIClientError(f"OpenAI API request timed out: {exc}") from exc
+                    raise RetryableOpenAIClientError(
+                        f"OpenAI API request timed out: {exc}"
+                    ) from exc
                 self._backoff(attempt)
             except (HTTPException, json.JSONDecodeError) as exc:
                 if attempt >= self.max_attempts:
-                    raise OpenAIClientError(f"OpenAI API response was incomplete or invalid: {exc}") from exc
+                    raise RetryableOpenAIClientError(
+                        f"OpenAI API response was incomplete or invalid: {exc}"
+                    ) from exc
                 self._backoff(attempt)
-        raise OpenAIClientError("OpenAI API request failed")
+        raise RetryableOpenAIClientError("OpenAI API request failed")
 
     def _backoff(self, attempt: int) -> None:
         delay = self.retry_backoff_seconds * (2 ** (attempt - 1))
@@ -85,6 +94,10 @@ class UrllibTransport:
 
 class OpenAIClientError(RuntimeError):
     """Raised when the OpenAI API request or response is invalid."""
+
+
+class RetryableOpenAIClientError(OpenAIClientError):
+    """Raised when a temporary provider/transport failure exhausts local retries."""
 
 
 @dataclass(frozen=True)

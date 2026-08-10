@@ -57,8 +57,11 @@ from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     SignalRegistry,
     SignalBatchResult,
+    SignalCoverage,
     SignalResult,
     SignalSpec,
+    SignalValue,
+    validate_signal_result,
 )
 
 
@@ -2265,30 +2268,66 @@ class StructuredLLMSignalRunner:
         skill: str,
         as_of: datetime,
     ) -> tuple[SignalResult, AgentUsage]:
-        value, usage = self.caller.complete_json(
-            stage="llm_signal_execute",
-            system_prompt=(
-                "Apply the versioned extraction skill to only these point-in-time "
-                "documents and use literal evidence spans."
-                + _SIGNAL_RESULT_OUTPUT
-            ),
-            payload={
-                "signal_spec": spec.to_dict(),
-                "skill": skill,
-                "as_of": as_of.isoformat(),
-                "documents": [item.to_dict() for item in documents],
-            },
-            allow_outcomes=False,
-        )
-        normalized = _normalize_signal_result_output(value)
-        result = _parse_role_output(
-            "llm_signal_execute", normalized, SignalResult.from_dict
-        )
-        if result.signal_id != spec.signal_id or result.version != spec.version:
-            raise ValidationError(
-                "llm_signal_execute returned a Signal id/version outside the request"
+        base_payload = {
+            "signal_spec": spec.to_dict(),
+            "skill": skill,
+            "as_of": as_of.isoformat(),
+            "documents": [item.to_dict() for item in documents],
+        }
+        usage = AgentUsage()
+        validation_feedback: dict[str, Any] | None = None
+        last_validation_error = "unknown validation failure"
+
+        for _attempt in range(2):
+            payload = dict(base_payload)
+            if validation_feedback is not None:
+                payload["validation_feedback"] = validation_feedback
+            value, step_usage = self.caller.complete_json(
+                stage="llm_signal_execute",
+                system_prompt=(
+                    "Apply the versioned extraction skill to only these point-in-time "
+                    "documents and use literal evidence spans. If an exact literal "
+                    "span cannot be cited, return unavailable with no evidence. When "
+                    "validation_feedback is supplied, correct the failed JSON output."
+                    + _SIGNAL_RESULT_OUTPUT
+                ),
+                payload=payload,
+                allow_outcomes=False,
             )
-        return result, usage
+            usage = usage + step_usage
+            normalized = _normalize_signal_result_output(value)
+            try:
+                result = _parse_role_output(
+                    "llm_signal_execute", normalized, SignalResult.from_dict
+                )
+                validate_signal_result(spec, result, documents, as_of=as_of)
+            except ValidationError as exc:
+                last_validation_error = str(exc)
+                validation_feedback = {
+                    "validation_error": last_validation_error,
+                    "failed_output": normalized,
+                    "required_action": (
+                        "Return corrected JSON grounded only in literal input-document "
+                        "spans, or return unavailable with empty evidence."
+                    ),
+                }
+                continue
+            return result, usage
+
+        return (
+            SignalResult(
+                signal_id=spec.signal_id,
+                version=spec.version,
+                value=SignalValue.UNAVAILABLE,
+                confidence=0.0,
+                interpretation=(
+                    "LLM Signal output failed strict validation after one correction: "
+                    f"{last_validation_error}"
+                ),
+                coverage=SignalCoverage.UNAVAILABLE,
+            ),
+            usage,
+        )
 
 
 def run_bounded_evolution_cycle(

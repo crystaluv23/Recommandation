@@ -107,3 +107,5 @@
 2026-08-09: Added bounded GenericAgent final-output schema repair after DeepSeek JSON-encoded a Slow Signal result instead of returning the required candidate-ref object; the schema remains strict.
 2026-08-09: Added the exact Slow Signal `candidate_refs` terminal contract and successful-staging requirement to the structured role prompt after a bounded real run repeatedly returned a diagnosis object.
 2026-08-09: Removed cache-variant Signal usage/cost metadata from Predictor context while retaining it in audit trajectories after a TLS resume changed the blind request solely because a cached call reports zero incremental cost.
+2026-08-09: Added one bounded correction for LLM Signal schema/evidence validation failures after a real DeepSeek result cited a non-literal span; a second invalid result now becomes evidence-free unavailable while strict identity, source, time, and exact-span validation remains unchanged.
+2026-08-09: Made the unattended DeepSeek launcher resume only explicit temporary transport/provider failures under the same wall-clock, attempt, cost, and contract bounds; deterministic HTTP, validation, and code failures remain terminal.

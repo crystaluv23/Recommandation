@@ -362,6 +362,15 @@ never persist or print the key, open Locked Test, auto-promote Signal
 candidates, infer completion from files, or bypass the CLI's request leakage,
 cost, attempt, and contract-hash gates.
 
+The CLI classifies exhausted transient transport failures (timeouts, connection
+errors, incomplete responses, HTTP 408/429, and HTTP 5xx) with a dedicated
+temporary-failure exit status. During the fixed wall-clock window, the launcher
+may restart the same exact `run-loop` only for that status, after a short bounded
+backoff. Every restart uses the same frozen contract and durable attempt ledger,
+so the existing attempt/cost ceilings still apply. Provider rejections, invalid
+model content, contract conflicts, and other deterministic failures remain
+terminal and are never converted into unattended retry loops.
+
 The single human-facing entry remains
 `runs/cold_start/evolution/evolution_dashboard.html`. A read-only builder scans
 direct child workspaces, trusts only committed round/cycle pointers, retains

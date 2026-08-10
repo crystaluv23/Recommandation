@@ -77,6 +77,14 @@ When evidence policy requires it, each non-unavailable result must cite a
 document in the actual input set, the cited timestamp cannot exceed the as-of
 time, and the exact span must literally occur in the cited document.
 
+An LLM Signal result that fails schema, identity, source, timestamp, or exact-
+span validation receives at most one corrective model call with the validation
+feedback and failed output. The correction is subject to the same strict
+validator. If it also fails, execution returns a canonical `unavailable` result
+with no evidence rather than accepting or fabricating a citation. Provider and
+unexpected runtime failures still propagate so external-call recovery remains
+explicit.
+
 ## Observed Policy Statistics
 
 For each canonical state maintain actual occurrence counts against `surge` and

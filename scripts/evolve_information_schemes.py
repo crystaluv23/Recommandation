@@ -13,6 +13,7 @@ from datetime import date
 from pathlib import Path
 
 from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import EvolutionWorkspace
 from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_PRIORS
@@ -886,6 +887,35 @@ def _interrupt_result(workspace_path: Path, *, on_progress=None) -> dict[str, ob
     }
 
 
+def _retryable_external_error_result(
+    workspace_path: Path,
+    error: RetryableOpenAIClientError,
+    *,
+    on_progress=None,
+) -> dict[str, object]:
+    """Record a temporary provider failure for exact process-level resume."""
+
+    workspace = EvolutionWorkspace(workspace_path)
+    event = workspace.append_event(
+        "retryable_external_error",
+        {
+            "error_type": type(error).__name__,
+            "message": str(error),
+            "resume": "rerun the same command with the same frozen contract",
+        },
+    )
+    if on_progress is not None:
+        on_progress(event)
+    return {
+        "status": "retryable_external_error",
+        "workspace": str(workspace_path),
+        "error_type": type(error).__name__,
+        "message": str(error),
+        "resume": "rerun the same command with the same frozen contract",
+        "locked_test_accessed": False,
+    }
+
+
 def main() -> int:
     args = build_parser().parse_args()
     exit_code = 0
@@ -1000,6 +1030,15 @@ def main() -> int:
             raise
         result = _interrupt_result(args.workspace, on_progress=progress)
         exit_code = 130
+    except RetryableOpenAIClientError as exc:
+        if args.command not in {"run-cycle", "run-loop"}:
+            raise
+        result = _retryable_external_error_result(
+            args.workspace,
+            exc,
+            on_progress=progress,
+        )
+        exit_code = 75
 
     if args.command in {"init", "status", "run-cycle", "run-loop"}:
         result.update(refresh_dashboard(args.dashboard_root))

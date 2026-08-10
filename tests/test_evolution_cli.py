@@ -10,6 +10,8 @@ from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 
+from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
+
 
 SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "evolve_information_schemes.py"
 SPEC = importlib.util.spec_from_file_location("evolve_information_schemes", SCRIPT_PATH)
@@ -141,3 +143,39 @@ class EvolutionCliTests(TestCase):
             self.assertEqual(payload["status"], "interrupted_resumable")
             self.assertEqual(payload["last_completed_round"], 0)
             self.assertTrue((dashboard / "evolution_dashboard_index.json").is_file())
+
+    def test_main_returns_75_for_retryable_provider_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            dashboard = root / "dashboard"
+            stdout = io.StringIO()
+            argv = [
+                str(SCRIPT_PATH),
+                "run-loop",
+                "--workspace",
+                str(workspace),
+                "--approved-dataset",
+                str(root / "approved.json"),
+                "--dashboard-root",
+                str(dashboard),
+            ]
+            with (
+                patch.object(sys, "argv", argv),
+                patch.object(
+                    CLI,
+                    "run_loop_command",
+                    side_effect=RetryableOpenAIClientError("temporary TLS error"),
+                ),
+                redirect_stdout(stdout),
+            ):
+                exit_code = CLI.main()
+
+            payload = json.loads(stdout.getvalue())
+            self.assertEqual(exit_code, 75)
+            self.assertEqual(payload["status"], "retryable_external_error")
+            self.assertFalse(payload["locked_test_accessed"])
+            events = (
+                workspace / "experiments" / "trajectory.jsonl"
+            ).read_text(encoding="utf-8")
+            self.assertIn("retryable_external_error", events)

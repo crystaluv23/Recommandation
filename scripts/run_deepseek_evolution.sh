@@ -7,10 +7,10 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 CLI="$PROJECT_ROOT/scripts/evolve_information_schemes.py"
 LOCAL_ENV="$PROJECT_ROOT/.env.local"
 BUNDLED_PYTHON="/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
-WORKSPACE="$PROJECT_ROOT/runs/cold_start/evolution/deepseek-v4-flash-overnight-v2"
+WORKSPACE="$PROJECT_ROOT/runs/cold_start/evolution/deepseek-v4-flash-overnight-v3"
 PROPOSAL="$WORKSPACE/dataset_proposal/dataset_manifest.proposal.json"
 APPROVED_DATASET="$WORKSPACE/dataset_proposal/dataset_manifest.approved.json"
-RUN_ID="deepseek-v4-flash-overnight-v2"
+RUN_ID="deepseek-v4-flash-overnight-v3"
 MODEL_ALIAS="deepseek-v4-flash"
 PLAN_ROUNDS=2
 CANDIDATES_PER_ROUND=2
@@ -38,7 +38,8 @@ usage() {
     "" \
     "The script loads DEEPSEEK_API_KEY from the exported environment or the" \
     "git-ignored .env.local file. It requires one execution confirmation, never" \
-    "opens Locked Test, and never promotes staged Signal candidates."
+    "opens Locked Test, and never promotes staged Signal candidates. Temporary" \
+    "network/provider failures resume automatically under the same frozen bounds."
 }
 
 fail() {
@@ -200,6 +201,7 @@ printf '%s\n' \
   "也可以随时按 Ctrl+C；以后重新执行本脚本会复用已提交进度。"
 
 DURATION_SECONDS=$((OVERNIGHT_HOURS * 3600))
+DEADLINE_EPOCH=$(($(date +%s) + DURATION_SECONDS))
 RUNNER_PID=""
 WATCHDOG_PID=""
 
@@ -219,25 +221,53 @@ cleanup() {
 trap forward_interrupt INT TERM
 trap cleanup EXIT
 
-PYTHONPATH="$PROJECT_ROOT/src${PYTHONPATH:+:$PYTHONPATH}" \
-  "$PYTHON_BIN" "$CLI" run-loop \
-  --workspace "$WORKSPACE" \
-  --approved-dataset "$APPROVED_DATASET" \
-  --external \
-  --acknowledge-contract-hash "$CONTRACT_HASH" \
-  --max-cycles 0 &
-RUNNER_PID=$!
+while true; do
+  REMAINING_SECONDS=$((DEADLINE_EPOCH - $(date +%s)))
+  if [ "$REMAINING_SECONDS" -le 0 ]; then
+    RUN_STATUS=130
+    break
+  fi
 
-"$PYTHON_BIN" -c \
-  'import os,signal,sys,time; time.sleep(int(sys.argv[2])); print("夜间时限已到，正在请求安全停止。", flush=True); os.kill(int(sys.argv[1]), signal.SIGINT)' \
-  "$RUNNER_PID" "$DURATION_SECONDS" &
-WATCHDOG_PID=$!
+  PYTHONPATH="$PROJECT_ROOT/src${PYTHONPATH:+:$PYTHONPATH}" \
+    "$PYTHON_BIN" "$CLI" run-loop \
+    --workspace "$WORKSPACE" \
+    --approved-dataset "$APPROVED_DATASET" \
+    --external \
+    --acknowledge-contract-hash "$CONTRACT_HASH" \
+    --max-cycles 0 &
+  RUNNER_PID=$!
 
-set +e
-wait "$RUNNER_PID"
-RUN_STATUS=$?
-set -e
-RUNNER_PID=""
+  "$PYTHON_BIN" -c \
+    'import os,signal,sys,time; time.sleep(int(sys.argv[2])); print("夜间时限已到，正在请求安全停止。", flush=True); os.kill(int(sys.argv[1]), signal.SIGINT)' \
+    "$RUNNER_PID" "$REMAINING_SECONDS" &
+  WATCHDOG_PID=$!
+
+  set +e
+  wait "$RUNNER_PID"
+  RUN_STATUS=$?
+  set -e
+  RUNNER_PID=""
+
+  if kill -0 "$WATCHDOG_PID" 2>/dev/null; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+  wait "$WATCHDOG_PID" 2>/dev/null || true
+  WATCHDOG_PID=""
+
+  if [ "$RUN_STATUS" -ne 75 ]; then
+    break
+  fi
+
+  REMAINING_SECONDS=$((DEADLINE_EPOCH - $(date +%s)))
+  if [ "$REMAINING_SECONDS" -le 0 ]; then
+    RUN_STATUS=130
+    break
+  fi
+  printf '%s\n' "检测到临时网络/服务故障；5 秒后按同一冻结合同自动续跑。"
+  "$PYTHON_BIN" -c \
+    'import sys,time; time.sleep(min(5, max(0, int(sys.argv[1]))))' \
+    "$REMAINING_SECONDS"
+done
 
 if [ "$RUN_STATUS" -eq 0 ] || [ "$RUN_STATUS" -eq 130 ]; then
   printf '%s\n' \
