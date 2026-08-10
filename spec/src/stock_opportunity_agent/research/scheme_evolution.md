@@ -292,6 +292,9 @@ Both Slow agents have an explicit final-output contract:
 staging tool call; otherwise the agent returns an empty list. Diagnosis or a
 proposed Signal object is not itself a valid final result. Schema and tool
 validation errors may be repaired only within the frozen agent-step bound.
+Missing required candidate fields, invalid enums, and other `SignalSpec`
+deserialization failures are exposed to the agent as domain validation feedback;
+they never escape as raw parser exceptions and are never filled with defaults.
 
 ## Persistence and Completion
 

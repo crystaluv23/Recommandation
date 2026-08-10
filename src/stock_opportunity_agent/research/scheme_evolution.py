@@ -2860,7 +2860,7 @@ class SignalEvolutionEngine:
         origin: str,
         collected: list[str],
     ) -> str:
-        candidate = SignalSpec.from_dict(dict(spec))
+        candidate = self._candidate_spec_from_tool(spec)
         signal_ref = self.registry.stage_candidate(
             candidate,
             skill=skill,
@@ -2869,6 +2869,15 @@ class SignalEvolutionEngine:
         )
         collected.append(signal_ref)
         return signal_ref
+
+    @staticmethod
+    def _candidate_spec_from_tool(spec: Mapping[str, Any]) -> SignalSpec:
+        try:
+            return SignalSpec.from_dict(dict(spec))
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValidationError(
+                f"candidate SignalSpec JSON is invalid: {type(exc).__name__}: {exc}"
+            ) from exc
 
     def _clone_from_tool(
         self,
@@ -2880,7 +2889,7 @@ class SignalEvolutionEngine:
         collected: list[str],
     ) -> str:
         stable = self.registry.load_spec(str(signal_ref))
-        candidate = SignalSpec.from_dict(dict(spec))
+        candidate = self._candidate_spec_from_tool(spec)
         if candidate.signal_id != stable.signal_id:
             raise ValidationError("cloned Signal must preserve signal_id")
         if candidate.version != stable.version + 1:

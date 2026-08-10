@@ -1264,6 +1264,46 @@ class SignalEvolutionTests(TestCase):
                 (root / "signals_candidates" / "financial" / "revenue_growth_yoy" / "v2").exists()
             )
 
+    def test_slow_agent_can_repair_malformed_candidate_spec(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            invalid_spec = registry.load_spec("pilot_to_volume:v1").to_dict()
+            invalid_spec["execution"].pop("type")
+            mining_model = ScriptedAgentModel(
+                [
+                    AgentTurn(
+                        tool_call=ToolCall(
+                            "create_candidate_signal",
+                            {"spec": invalid_spec, "tests": []},
+                        )
+                    ),
+                    AgentTurn(final_output={"candidate_refs": []}),
+                ]
+            )
+            update_model = ScriptedAgentModel(
+                [AgentTurn(final_output={"candidate_refs": []})]
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_positive", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_agent=GenericAgent(mining_model),
+                update_agent=GenericAgent(update_model),
+                llm_signal_runner=None,
+            )
+
+            result = engine.run_cycle()
+
+            self.assertEqual(result.validated_pending_approval, {})
+            self.assertIn(
+                "candidate SignalSpec JSON is invalid",
+                str(mining_model.requests[1].observations[0].result),
+            )
+
     def test_slow_loop_agents_cannot_access_locked_test(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
