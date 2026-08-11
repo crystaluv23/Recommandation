@@ -15,7 +15,33 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Protocol
 
+from stock_opportunity_agent.config import load_config
+from stock_opportunity_agent.data.acquisition import (
+    AlphaVantageNewsAdapter,
+    HistoricalPriceAdapter,
+    HistoricalUnavailableAdapter,
+    SecCompanyFactsAdapter,
+    SecFilingAdapter,
+    UnavailableProviderAdapter,
+)
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.resolution import (
+    DataAcquisitionBudget,
+    DataAcquisitionPolicy,
+    EvidenceResolver,
+)
+from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
+from stock_opportunity_agent.data.sources.catalog import DataCapability
+from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
+from stock_opportunity_agent.data.sources.massive import MassiveClient
+from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
+from stock_opportunity_agent.data.sources.state import (
+    ManagedHttpTransport,
+    RawDataCache,
+    RequestLedger,
+    SourceBudget,
+)
+from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import ModelClientSettings, RegisteredModel, get_model
 from stock_opportunity_agent.llm.agent import (
     AgentModel,
@@ -30,6 +56,7 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
     BlindPrediction,
+    CandidateProposalRejected,
     DEFAULT_EVOLUTION_PRIORS,
     DualLoopEvolutionEngine,
     DualLoopResult,
@@ -1148,6 +1175,8 @@ class EvolutionRunContract:
     max_external_attempts: int
     max_total_cost: float
     locked_test_accessed: bool = False
+    data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
+    schema_version: str = "evolution-run-contract-v2"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -1173,10 +1202,15 @@ class EvolutionRunContract:
             {str(role): dict(metadata) for role, metadata in self.models.items()},
         )
         object.__setattr__(self, "limits", dict(self.limits))
+        if self.schema_version not in {
+            "evolution-run-contract-v1",
+            "evolution-run-contract-v2",
+        }:
+            raise ValidationError("unsupported evolution run contract schema")
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "schema_version": "evolution-run-contract-v1",
+        value = {
+            "schema_version": self.schema_version,
             "run_id": self.run_id,
             "created_at": self.created_at,
             "dataset_manifest_hash": self.dataset_manifest_hash,
@@ -1192,6 +1226,9 @@ class EvolutionRunContract:
             "max_total_cost": self.max_total_cost,
             "locked_test_accessed": False,
         }
+        if self.schema_version != "evolution-run-contract-v1":
+            value["data_acquisition"] = self.data_acquisition.to_dict()
+        return value
 
     @property
     def contract_hash(self) -> str:
@@ -1223,6 +1260,12 @@ class EvolutionRunContract:
             max_external_attempts=int(value["max_external_attempts"]),
             max_total_cost=float(value["max_total_cost"]),
             locked_test_accessed=bool(value.get("locked_test_accessed", False)),
+            data_acquisition=DataAcquisitionPolicy.from_dict(
+                dict(value.get("data_acquisition", {}))
+            ),
+            schema_version=str(
+                value.get("schema_version", "evolution-run-contract-v1")
+            ),
         )
 
     @classmethod
@@ -1789,16 +1832,25 @@ _SIGNAL_RESULT_OUTPUT = _output_contract(
 )
 
 _INFORMATION_PLAN_OUTPUT = _output_contract(
-    "InformationPlan",
+    "InformationPlanContent",
     {
-        "plan_id": "new_unique_plan_id",
-        "parent_ids": ["one_supplied_parent_id"],
-        "basic_info_policy": {"fields": ["company_name", "ticker"]},
-        "initial_research_skill": "complete initialization instructions",
-        "reflection_skill": "complete reflection instructions",
-        "analysis_prompt": "complete final analysis instructions",
+        "B": {
+            "requests": [
+                {
+                    "request_id": "recent_company_news",
+                    "description": "Recent company-specific news that may change expectations",
+                    "source_types": ["news"],
+                    "lookback_days": 180,
+                    "max_documents": 5,
+                    "query": "regulatory customer financing product",
+                }
+            ]
+        },
+        "H_init": "complete initialization instructions",
+        "H_reflect": "complete reflection instructions",
+        "H_analyse": "complete final analysis instructions",
     },
-)
+) + " Do not return plan_id or parent_ids; runtime owns structural metadata."
 
 
 def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any:
@@ -1813,11 +1865,26 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
         ) from exc
 
 
-def _normalize_information_plan_output(value: Mapping[str, Any]) -> dict[str, Any]:
+def _normalize_information_plan_output(
+    value: Mapping[str, Any],
+    *,
+    plan_id: str,
+    parent_ids: tuple[str, ...],
+) -> dict[str, Any]:
     """Normalize the observed semantic B/H_* provider shape at the role boundary."""
 
     if "basic_info_policy" in value:
         normalized = dict(value)
+    elif isinstance(value.get("B"), Mapping) and all(
+        isinstance(value.get(key), str)
+        for key in ("H_init", "H_reflect", "H_analyse")
+    ):
+        normalized = {
+            "basic_info_policy": dict(value["B"]),
+            "initial_research_skill": value["H_init"],
+            "reflection_skill": value["H_reflect"],
+            "analysis_prompt": value["H_analyse"],
+        }
     else:
         h_init_value = value.get("H_init")
         h_reflect_value = value.get("H_reflect")
@@ -1847,19 +1914,18 @@ def _normalize_information_plan_output(value: Mapping[str, Any]) -> dict[str, An
             if isinstance(basic, Mapping):
                 policy = (
                     dict(basic)
-                    if "fields" in basic
+                    if "fields" in basic or "requests" in basic
                     else {"fields": [str(key) for key in basic]}
                 )
         normalized = {
-            "plan_id": value.get("plan_id", value.get("id")),
-            "parent_ids": value.get("parent_ids", value.get("parent ids", ())),
             "basic_info_policy": policy,
             "initial_research_skill": h_init.get("initial_research_skill"),
             "reflection_skill": h_reflect.get("reflection_skill"),
             "analysis_prompt": h_analyse.get("analysis_prompt"),
         }
+    normalized["plan_id"] = plan_id
+    normalized["parent_ids"] = list(parent_ids)
     required_strings = (
-        "plan_id",
         "initial_research_skill",
         "reflection_skill",
         "analysis_prompt",
@@ -2134,33 +2200,52 @@ class LLMInformationPlanProposer:
             "parents": [item.to_dict() for item in parents],
             "meta_info": [item.to_dict() for item in meta_info],
         }
-        if round_id > 1 or candidate_index > 1 or forbidden_plan_ids:
-            payload["proposal_slot"] = {
-                "round_id": round_id,
-                "candidate_index": candidate_index,
-                "candidate_count": candidate_count,
-                "forbidden_plan_ids": list(forbidden_plan_ids),
-            }
+        payload["proposal_slot"] = {
+            "round_id": round_id,
+            "candidate_index": candidate_index,
+            "candidate_count": candidate_count,
+        }
         system_prompt = (
-            "Apply the fixed H_P prior. Return one complete InformationPlan JSON. "
-            "Only B, H_init, H_reflect, H_analyse, id, and parent ids may vary."
+            "Apply the fixed H_P prior. Return only evolvable Plan content: "
+            "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
+            "retrieval plan, not a fixed company profile or computed Signal."
             + _INFORMATION_PLAN_OUTPUT
         )
-        if "proposal_slot" in payload:
-            system_prompt += (
-                " Obey proposal_slot: use a plan_id outside forbidden_plan_ids and "
-                "make this candidate materially distinct from prior slots."
+        plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
+        parent_ids = tuple(item.plan_id for item in parents)
+        failed_value: Mapping[str, Any] | None = None
+        failure: ValidationError | None = None
+        for attempt in range(2):
+            stage = (
+                "information_plan_propose"
+                if attempt == 0
+                else "information_plan_propose_correction"
             )
-        value, _usage = self.caller.complete_json(
-            stage="information_plan_propose",
-            system_prompt=system_prompt,
-            payload=payload,
-            allow_outcomes=False,
-            temperature=self.temperature,
-        )
-        normalized = _normalize_information_plan_output(value)
-        return _parse_role_output(
-            "information_plan_propose", normalized, InformationPlan.from_dict
+            request_payload = dict(payload)
+            prompt = system_prompt
+            if attempt:
+                request_payload["invalid_output"] = dict(failed_value or {})
+                request_payload["validation_error"] = str(failure)
+                prompt += " Correct the invalid content once; return the exact contract only."
+            value, _usage = self.caller.complete_json(
+                stage=stage,
+                system_prompt=prompt,
+                payload=request_payload,
+                allow_outcomes=False,
+                temperature=self.temperature,
+            )
+            try:
+                normalized = _normalize_information_plan_output(
+                    value,
+                    plan_id=plan_id,
+                    parent_ids=parent_ids,
+                )
+                return _parse_role_output(stage, normalized, InformationPlan.from_dict)
+            except ValidationError as exc:
+                failed_value = value
+                failure = exc
+        raise CandidateProposalRejected(
+            f"information_plan_propose rejected after one correction: {failure}"
         )
 
 
@@ -2363,7 +2448,8 @@ def run_bounded_evolution_cycle(
     approved_dataset_manifest: str | Path,
     contract: EvolutionRunContract,
     allow_external: bool,
-    acknowledged_contract_hash: str | None,
+    acknowledged_contract_hash: str | None = None,
+    allow_data_external: bool = False,
     environ: Mapping[str, str] | None = None,
     on_progress: ProgressCallback | None = None,
 ) -> DualLoopResult:
@@ -2471,6 +2557,14 @@ def run_bounded_evolution_cycle(
         on_progress=emit,
     )
     raw_info_store = RawInfoStore(workspace_root / "raw_info")
+    evidence_resolver = _build_evidence_resolver(
+        workspace_root,
+        raw_info_store,
+        contract=contract,
+        allow_data_external=allow_data_external,
+        environ=environ,
+        cycle_id=cycle_id,
+    )
     aliases = _dataset_identity_aliases(dataset)
     runtime_limits = RuntimeLimits(
         max_signal_rounds=int(limits.get("max_signal_rounds", 5)),
@@ -2486,6 +2580,7 @@ def run_bounded_evolution_cycle(
     signal_runner = StructuredLLMSignalRunner(judge_caller)
     evaluator = RuntimePlanEvaluator(
         raw_info_store=raw_info_store,
+        evidence_resolver=evidence_resolver,
         controller=LLMResearchController(judge_caller),
         signal_agent=LLMSignalRetrievalAgent(judge_caller),
         predictor=LLMBlindPredictor(
@@ -2587,6 +2682,7 @@ def build_run_contract(
     limits: Mapping[str, Any],
     max_external_attempts: int,
     max_total_cost: float,
+    data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy(),
     environ: Mapping[str, str] | None = None,
 ) -> EvolutionRunContract:
     """Build one bounded contract from reviewed, hashed local inputs."""
@@ -2611,6 +2707,184 @@ def build_run_contract(
         limits=dict(limits),
         max_external_attempts=max_external_attempts,
         max_total_cost=max_total_cost,
+        data_acquisition=data_acquisition,
+    )
+
+
+def _build_evidence_resolver(
+    workspace_root: Path,
+    store: RawInfoStore,
+    *,
+    contract: EvolutionRunContract,
+    allow_data_external: bool,
+    environ: Mapping[str, str] | None,
+    cycle_id: int,
+) -> EvidenceResolver:
+    """Build production adapters over the existing cache/ledger/quota boundary."""
+
+    configured = contract.data_acquisition
+    effective_policy = DataAcquisitionPolicy(
+        enabled=configured.enabled and allow_data_external,
+        allowed_providers=configured.allowed_providers,
+        allowed_capabilities=configured.allowed_capabilities,
+        allowed_source_types=configured.allowed_source_types,
+        max_requests_per_cycle=configured.max_requests_per_cycle,
+        max_requests_per_run=configured.max_requests_per_run,
+    )
+    adapters: list[Any] = []
+    env = os.environ if environ is None else environ
+    config = load_config(environ=env).data_sources
+    if effective_policy.enabled:
+        cache = RawDataCache(workspace_root / "cache" / "data")
+        ledger = RequestLedger(workspace_root / "data_requests.jsonl")
+        source_budget = SourceBudget(ledger)
+
+        def managed(source: str, capability: DataCapability) -> ManagedHttpTransport:
+            return ManagedHttpTransport(
+                source,
+                capability,
+                UrllibJsonTransport(),
+                cache,
+                ledger,
+                source_budget,
+            )
+
+        sec_user_agent = str(env.get("SOA_SEC_USER_AGENT", "")).strip()
+        if sec_user_agent:
+            sec_facts_client = SecEdgarClient(
+                sec_user_agent,
+                transport=managed(
+                    "sec_edgar", DataCapability.FINANCIAL_STATEMENTS
+                ),
+            )
+            sec_filing_client = SecEdgarClient(
+                sec_user_agent,
+                transport=managed("sec_edgar", DataCapability.FILING_DOCUMENTS),
+            )
+            adapters.extend(
+                [
+                    SecCompanyFactsAdapter(sec_facts_client),
+                    SecFilingAdapter(sec_filing_client),
+                ]
+            )
+        else:
+            adapters.extend(
+                [
+                    UnavailableProviderAdapter(
+                        "sec_edgar",
+                        SecCompanyFactsAdapter.source_types,
+                        SecCompanyFactsAdapter.capabilities,
+                        "SOA_SEC_USER_AGENT is not configured.",
+                    ),
+                    UnavailableProviderAdapter(
+                        "sec_edgar",
+                        SecFilingAdapter.source_types,
+                        SecFilingAdapter.capabilities,
+                        "SOA_SEC_USER_AGENT is not configured.",
+                    ),
+                ]
+            )
+        alpha_key = env.get(config.alpha_vantage_api_key_env_var)
+        if alpha_key:
+            alpha_news = AlphaVantageClient(
+                alpha_key,
+                transport=managed("alpha_vantage", DataCapability.NEWS),
+            )
+            alpha_prices = AlphaVantageClient(
+                alpha_key,
+                transport=managed("alpha_vantage", DataCapability.PRICE_DAILY),
+            )
+            adapters.extend(
+                [
+                    AlphaVantageNewsAdapter(alpha_news),
+                    HistoricalPriceAdapter(
+                        "alpha_vantage",
+                        lambda symbol, _start, _end: alpha_prices.daily_prices(
+                            symbol, outputsize="full"
+                        ),
+                        event_source=alpha_prices,
+                    ),
+                ]
+            )
+        else:
+            adapters.extend(
+                [
+                    UnavailableProviderAdapter(
+                        "alpha_vantage",
+                        ("news", "company_news"),
+                        ("news",),
+                        f"{config.alpha_vantage_api_key_env_var} is not configured.",
+                    ),
+                    UnavailableProviderAdapter(
+                        "alpha_vantage",
+                        ("price_daily", "historical_price", "prices"),
+                        ("price_daily",),
+                        f"{config.alpha_vantage_api_key_env_var} is not configured.",
+                    ),
+                ]
+            )
+        massive_key = env.get(config.massive_api_key_env_var)
+        if massive_key:
+            massive = MassiveClient(
+                massive_key,
+                transport=managed("massive", DataCapability.PRICE_DAILY),
+            )
+            adapters.append(
+                HistoricalPriceAdapter(
+                    "massive",
+                    lambda symbol, start, end: massive.daily_prices(
+                        symbol, start_date=start, end_date=end
+                    ),
+                    event_source=massive,
+                )
+            )
+        else:
+            adapters.append(
+                UnavailableProviderAdapter(
+                    "massive",
+                    ("price_daily", "historical_price", "prices"),
+                    ("price_daily",),
+                    f"{config.massive_api_key_env_var} is not configured.",
+                )
+            )
+        stooq = StooqClient(
+            api_key=env.get(config.stooq_api_key_env_var),
+            transport=managed("stooq", DataCapability.PRICE_DAILY),
+        )
+        adapters.append(
+            HistoricalPriceAdapter(
+                "stooq",
+                lambda symbol, start, end: stooq.daily_prices(
+                    symbol, start_date=start, end_date=end
+                ),
+                event_source=stooq,
+            )
+        )
+    else:
+        # Adapter descriptors are still present so a local miss is correctly
+        # classified as unauthorized rather than as an unknown capability.
+        adapters.extend(
+            [
+                SecCompanyFactsAdapter(None),
+                SecFilingAdapter(None),
+                AlphaVantageNewsAdapter(None),
+                HistoricalPriceAdapter("massive", lambda *_: ()),
+            ]
+        )
+    adapters.append(
+        HistoricalUnavailableAdapter(
+            "alpha_vantage",
+            ("company_profile", "company_overview"),
+        )
+    )
+    return EvidenceResolver(
+        store,
+        adapters=adapters,
+        policy=effective_policy,
+        budget=DataAcquisitionBudget(
+            ledger_path=workspace_root / "data_acquisition_requests.jsonl",
+            cycle_id=cycle_id,
+        ),
     )
 
 

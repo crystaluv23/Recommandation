@@ -285,12 +285,25 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
         tokens += int(model.get("tokens", 0))
         cost += float(model.get("cost", 0.0))
     policy = dict(plan.get("basic_info_policy", {}))
+    request_summaries = []
+    for request in policy.get("requests", ()):
+        if not isinstance(request, Mapping):
+            continue
+        request_summaries.append(
+            {
+                "request_id": str(request.get("request_id", "")),
+                "source_types": [str(item) for item in request.get("source_types", ())],
+                "lookback_days": request.get("lookback_days"),
+                "max_documents": request.get("max_documents"),
+            }
+        )
     return {
         "plan_id": str(record["plan_id"]),
         "parent_ids": [str(item) for item in record.get("parent_ids", ())],
         "embedding": [float(item) for item in embedding],
         "metrics": metrics,
         "plan_summary": {
+            "basic_info_requests": request_summaries,
             "basic_info_fields": [str(item) for item in policy.get("fields", ())],
             "initial_research": _clip(plan.get("initial_research_skill")),
             "reflection": _clip(plan.get("reflection_skill")),

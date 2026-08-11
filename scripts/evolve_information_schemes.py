@@ -13,6 +13,7 @@ from datetime import date
 from pathlib import Path
 
 from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import EvolutionWorkspace
@@ -206,6 +207,16 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--candidates-per-round", type=int, default=1)
     freeze.add_argument("--max-external-attempts", type=int, default=500)
     freeze.add_argument("--max-total-cost", type=float, default=100.0)
+    freeze.add_argument(
+        "--data-external",
+        action="store_true",
+        help="authorize bounded source-data API acquisition in this frozen run",
+    )
+    freeze.add_argument("--data-provider", action="append", default=[])
+    freeze.add_argument("--data-capability", action="append", default=[])
+    freeze.add_argument("--data-source-type", action="append", default=[])
+    freeze.add_argument("--max-data-requests-per-cycle", type=int, default=0)
+    freeze.add_argument("--max-data-requests-per-run", type=int, default=0)
 
     run_cycle = subparsers.add_parser(
         "run-cycle",
@@ -214,6 +225,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_cycle.add_argument("--workspace", type=Path, required=True)
     run_cycle.add_argument("--approved-dataset", type=Path, required=True)
     run_cycle.add_argument("--external", action="store_true")
+    run_cycle.add_argument("--data-external", action="store_true")
     run_cycle.add_argument("--acknowledge-contract-hash")
     run_cycle.add_argument(
         "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
@@ -226,6 +238,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_loop.add_argument("--workspace", type=Path, required=True)
     run_loop.add_argument("--approved-dataset", type=Path, required=True)
     run_loop.add_argument("--external", action="store_true")
+    run_loop.add_argument("--data-external", action="store_true")
     run_loop.add_argument("--acknowledge-contract-hash")
     run_loop.add_argument(
         "--max-cycles",
@@ -536,6 +549,12 @@ def freeze_run(
     candidates_per_round: int,
     max_external_attempts: int,
     max_total_cost: float,
+    data_external: bool = False,
+    data_providers: tuple[str, ...] = (),
+    data_capabilities: tuple[str, ...] = (),
+    data_source_types: tuple[str, ...] = (),
+    max_data_requests_per_cycle: int = 0,
+    max_data_requests_per_run: int = 0,
 ) -> dict[str, object]:
     _load_local_env(PROJECT_ROOT / ".env.local")
     contract_path = workspace_path / "run_contract.json"
@@ -551,6 +570,15 @@ def freeze_run(
             or contract.models["proposer"]["alias"] != evolution_model
             or contract.max_external_attempts != max_external_attempts
             or contract.max_total_cost != max_total_cost
+            or contract.data_acquisition
+            != DataAcquisitionPolicy(
+                enabled=data_external,
+                allowed_providers=data_providers,
+                allowed_capabilities=data_capabilities,
+                allowed_source_types=data_source_types,
+                max_requests_per_cycle=max_data_requests_per_cycle,
+                max_requests_per_run=max_data_requests_per_run,
+            )
         ):
             raise ValueError("existing run contract conflicts with requested freeze scope")
     else:
@@ -595,6 +623,14 @@ def freeze_run(
             },
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,
+            data_acquisition=DataAcquisitionPolicy(
+                enabled=data_external,
+                allowed_providers=data_providers,
+                allowed_capabilities=data_capabilities,
+                allowed_source_types=data_source_types,
+                max_requests_per_cycle=max_data_requests_per_cycle,
+                max_requests_per_run=max_data_requests_per_run,
+            ),
         )
         contract.freeze(contract_path)
     return {
@@ -606,6 +642,7 @@ def freeze_run(
         "models": contract.models,
         "max_external_attempts": contract.max_external_attempts,
         "max_total_cost": contract.max_total_cost,
+        "data_acquisition": contract.data_acquisition.to_dict(),
         "locked_test_accessed": False,
         "external_calls": 0,
     }
@@ -617,6 +654,7 @@ def run_cycle_command(
     approved_dataset_path: Path,
     external: bool,
     acknowledged_contract_hash: str | None,
+    data_external: bool = False,
     on_progress=None,
 ) -> dict[str, object]:
     _load_local_env(PROJECT_ROOT / ".env.local")
@@ -627,6 +665,7 @@ def run_cycle_command(
             approved_dataset_manifest=approved_dataset_path,
             contract=contract,
             allow_external=external,
+            allow_data_external=data_external,
             acknowledged_contract_hash=acknowledged_contract_hash,
             on_progress=on_progress,
         )
@@ -678,6 +717,7 @@ def run_loop_command(
     external: bool,
     acknowledged_contract_hash: str | None,
     max_cycles: int,
+    data_external: bool = False,
     on_progress=None,
 ) -> dict[str, object]:
     """Run successive bounded cycles; zero max_cycles waits for Ctrl+C."""
@@ -690,6 +730,7 @@ def run_loop_command(
             workspace_path=workspace_path,
             approved_dataset_path=approved_dataset_path,
             external=external,
+            data_external=data_external,
             acknowledged_contract_hash=acknowledged_contract_hash,
             on_progress=on_progress,
         )
@@ -763,7 +804,8 @@ def _print_progress(event: dict[str, object], *, stream=None) -> None:
         message = (
             f"采样方案 {event.get('candidate_index')}/"
             f"{event.get('candidate_count')}：{event.get('plan_id')}；"
-            f"Basic Info={summary.get('basic_info_fields', [])}；"
+            "Basic Info="
+            f"{summary.get('basic_info_requests', summary.get('basic_info_fields', []))}；"
             f"H_init={summary.get('initial_research', '')}"
         )
     elif event_type in {"case_started", "case_completed", "case_trajectory_reused"}:
@@ -997,12 +1039,19 @@ def main() -> int:
                 candidates_per_round=args.candidates_per_round,
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
+                data_external=args.data_external,
+                data_providers=tuple(args.data_provider),
+                data_capabilities=tuple(args.data_capability),
+                data_source_types=tuple(args.data_source_type),
+                max_data_requests_per_cycle=args.max_data_requests_per_cycle,
+                max_data_requests_per_run=args.max_data_requests_per_run,
             )
         elif args.command == "run-cycle":
             result = run_cycle_command(
                 workspace_path=args.workspace,
                 approved_dataset_path=args.approved_dataset,
                 external=args.external,
+                data_external=args.data_external,
                 acknowledged_contract_hash=args.acknowledge_contract_hash,
                 on_progress=progress,
             )
@@ -1011,6 +1060,7 @@ def main() -> int:
                 workspace_path=args.workspace,
                 approved_dataset_path=args.approved_dataset,
                 external=args.external,
+                data_external=args.data_external,
                 acknowledged_contract_hash=args.acknowledge_contract_hash,
                 max_cycles=args.max_cycles,
                 on_progress=progress,

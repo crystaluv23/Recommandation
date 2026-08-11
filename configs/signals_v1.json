@@ -146,6 +146,19 @@
     },
     {
       "spec": {
+        "signal_id": "negative_word_count",
+        "version": 1,
+        "category": "news",
+        "definition": {"description": "Count configured negative terms in complete point-in-time company news source documents."},
+        "execution": {"type": "deterministic", "function": "news.negative_word_count"},
+        "raw_retrieval": {"source_types": ["news"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"terms": ["decline", "loss", "risk", "delay", "investigation", "default"], "negative_count_min": 1}
+      },
+      "tests": [{"name": "negative news terms", "expected": "negative"}]
+    },
+    {
+      "spec": {
         "signal_id": "financing_listing_action",
         "version": 1,
         "category": "catalysts",

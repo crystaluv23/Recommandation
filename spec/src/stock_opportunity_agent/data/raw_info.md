@@ -23,7 +23,7 @@ Signal result, a prediction, or an outcome label.
   evolution-validation workspace.
 
 The store exposes append, exact load, and filtered search. Search may filter by
-company, source type, query text, and prediction time, but every result must
+company, source type, publication lookback, and prediction time, but every result must
 satisfy:
 
 ```text
@@ -47,6 +47,11 @@ available_at <= prediction_time
   expectations; the guard targets hidden machine metadata, not ordinary prose.
 - The Information Plan Basic Info policy is subject to the same forbidden-field
   boundary and cannot request label or outcome columns.
+- Raw Info is a global oracle, not Plan or cycle state. Appending a document
+  must not advance `state.json`, `cycle_state.json`, Plan embeddings, Top-K
+  selection, or fitness.
+- Provider responses retain the complete response body (text or canonical raw
+  JSON). Derived Signal values never enter this store.
 
 ## Dependencies
 
@@ -56,5 +61,5 @@ the Signal Library and adaptive research runtime.
 ## Testing
 
 Cover hash validation, idempotent append, conflicting append rejection,
-point-in-time search, future-load rejection, source filtering, and persistence
-reload.
+point-in-time/lookback search, future-load rejection, source filtering, and
+persistence reload.

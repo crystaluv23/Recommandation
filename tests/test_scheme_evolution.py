@@ -13,6 +13,7 @@ from stock_opportunity_agent.data.raw_info import (
     RawInfoStore,
     content_sha256,
 )
+from stock_opportunity_agent.data.resolution import RawInfoRequest
 from stock_opportunity_agent.llm.agent import (
     AgentRequest,
     AgentTurn,
@@ -26,6 +27,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     DEFAULT_EVOLUTION_PRIORS,
     AgentStep,
     BlindPrediction,
+    CandidateProposalRejected,
     ConfidenceLevel,
     DualLoopEvolutionEngine,
     EvolutionCase,
@@ -382,13 +384,13 @@ class GenericAgentTests(TestCase):
 class SignalLibraryTests(TestCase):
     def _registry(self, directory: str) -> SignalRegistry:
         registry = SignalRegistry(Path(directory) / "signals")
-        self.assertEqual(registry.install_catalog(SEED_CATALOG), 12)
+        self.assertEqual(registry.install_catalog(SEED_CATALOG), 13)
         return registry
 
     def test_seed_catalog_progressive_disclosure_and_frozen_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
-            self.assertEqual(len(registry.list_signal_cards()), 12)
+            self.assertEqual(len(registry.list_signal_cards()), 13)
             self.assertIn("financial", registry.list_categories())
             cards = registry.search_signal_cards("customer")
             self.assertTrue(cards)
@@ -497,14 +499,30 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_legacy_basic_info_fields_read_but_new_artifacts_write_requests(self) -> None:
+        policy = type(default_information_plan().basic_info_policy).from_dict(
+            {"fields": ["industry", "business_description"]}
+        )
+        self.assertEqual(
+            [item.request_id for item in policy.requests],
+            ["legacy_industry", "legacy_business_description"],
+        )
+        self.assertEqual(set(policy.to_dict()), {"requests"})
+
     def test_basic_info_policy_cannot_request_outcome_fields(self) -> None:
         base = default_information_plan()
-        with self.assertRaisesRegex(ValidationError, "outcome fields"):
+        with self.assertRaisesRegex(ValidationError, "outcome data"):
             InformationPlan(
                 plan_id="leaking_plan",
                 parent_ids=(),
                 basic_info_policy=type(base.basic_info_policy)(
-                    fields=("company_name", "hidden_ground_truth")
+                    requests=(
+                        RawInfoRequest(
+                            request_id="hidden_ground_truth",
+                            description="Retrieve a hidden outcome.",
+                            source_types=("filing",),
+                        ),
+                    )
                 ),
                 initial_research_skill=base.initial_research_skill,
                 reflection_skill=base.reflection_skill,
@@ -1014,6 +1032,83 @@ class SimpleRoundReflector:
 
 
 class PlanEvolutionEngineTests(TestCase):
+    def test_non_content_pause_is_not_converted_to_candidate_rejection(self) -> None:
+        class PendingApproval(ValidationError):
+            pass
+
+        class PausingProposer:
+            def propose(self, **kwargs):
+                raise PendingApproval("external approval pending")
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            events = []
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=PausingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+                on_progress=events.append,
+            )
+            with self.assertRaisesRegex(PendingApproval, "approval pending"):
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=(make_case("validation_1", 1.2),),
+                    signal_snapshot=registry.freeze(),
+                )
+            self.assertEqual(workspace.last_completed_round, 0)
+            self.assertNotIn(
+                "candidate_proposal_rejected",
+                [item["event_type"] for item in events],
+            )
+
+    def test_all_rejected_candidates_leave_round_uncommitted(self) -> None:
+        class RejectingProposer:
+            def propose(self, **kwargs):
+                raise CandidateProposalRejected(
+                    "invalid Plan content after correction"
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            events = []
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=RejectingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=2,
+                on_progress=events.append,
+            )
+            with self.assertRaisesRegex(ValidationError, "all candidate"):
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=(make_case("validation_1", 1.2),),
+                    signal_snapshot=registry.freeze(),
+                )
+            self.assertEqual(workspace.last_completed_round, 0)
+            self.assertEqual(
+                [item["event_type"] for item in events].count(
+                    "candidate_proposal_rejected"
+                ),
+                2,
+            )
+
     def test_fast_loop_calls_proposer_independently_and_commits_s_e_j_r_u_t(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -1082,7 +1177,7 @@ class PlanEvolutionEngineTests(TestCase):
                 for event in progress_events
                 if event["event_type"] == "candidate_proposed"
             )
-            self.assertIn("basic_info_fields", proposed["plan_summary"])
+            self.assertIn("basic_info_requests", proposed["plan_summary"])
             stats = registry.load_stats("revenue_growth_yoy")
             self.assertEqual(stats.retrieved, 4)
             self.assertEqual(stats.executed, 4)

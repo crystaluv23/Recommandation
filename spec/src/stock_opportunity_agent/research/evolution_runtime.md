@@ -18,7 +18,8 @@ One immutable, secret-free `EvolutionRunContract` binds:
 
 - run id and schema version;
 - dataset and reviewed split-manifest hashes;
-- Raw Info inventory hash;
+- initial Raw Info inventory hash (diagnostic identity only; later oracle
+  growth is not evolutionary state);
 - stable Signal Registry version/hash;
 - fixed `H_R/H_P/H_E/H_U` hash;
 - role/model/provider/routing metadata;
@@ -26,7 +27,10 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - candidate/round/runtime limits;
 - role sampling settings: Plan proposer temperature `1.0`, judge temperature
   `0.0`;
-- maximum external attempts and cumulative cost; and
+- maximum external attempts and cumulative cost;
+- an independent source-data authorization block containing enabled status,
+  allowed providers/capabilities/source types, and per-cycle/run request
+  ceilings; and
 - `locked_test_accessed=false` for ordinary evolution.
 
 An existing contract path may be reused only if canonical content is exact.
@@ -85,8 +89,16 @@ invariant. If a provider returns `state.value=unavailable` with a looser
 coverage value, the boundary conservatively narrows coverage to `unavailable`;
 it never promotes an unavailable state to partial or sufficient evidence.
 
-Preflight and dry-run never perform network I/O. External mode additionally
-requires an explicit acknowledgement equal to the frozen contract hash.
+Preflight and dry-run never perform network I/O. LLM external mode additionally
+requires an explicit acknowledgement equal to the frozen contract hash. Source
+data is controlled independently; when disabled, a local resolver miss records
+`external_not_authorized` and performs no network I/O.
+
+Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
+`H_analyse`. Runtime owns deterministic Plan ids and the exact selected-parent
+lineage; provider-supplied ids are ignored. One correction request may repair
+malformed content. An unrepaired candidate is rejected as a bounded event
+without committing a partial round.
 
 ## Supervision, Interrupt, and Resume
 

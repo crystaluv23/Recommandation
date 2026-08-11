@@ -15,6 +15,11 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.resolution import (
+    EvidenceResolver,
+    RawInfoRequest,
+    RawInfoResolution,
+)
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import ValidationError
 
@@ -303,11 +308,13 @@ class SignalBatchResult:
     results: tuple[SignalResult, ...]
     signal_calls: int
     usage: AgentUsage = field(default_factory=AgentUsage)
+    resolutions: tuple[RawInfoResolution, ...] = ()
 
     def __post_init__(self) -> None:
         if self.signal_calls != len(self.results):
             raise ValidationError("signal_calls must match batch result count")
         object.__setattr__(self, "results", tuple(self.results))
+        object.__setattr__(self, "resolutions", tuple(self.resolutions))
 
 
 @dataclass(frozen=True)
@@ -928,11 +935,13 @@ class SignalExecutor:
         snapshot: FrozenSignalRegistry,
         raw_info_store: RawInfoStore,
         *,
+        resolver: EvidenceResolver | None = None,
         deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
         llm_runner: LLMSignalRunner | None = None,
     ) -> None:
         self.snapshot = snapshot
         self.raw_info_store = raw_info_store
+        self.resolver = resolver or EvidenceResolver(raw_info_store)
         self.deterministic_functions = {
             **default_deterministic_signal_functions(),
             **dict(deterministic_functions or {}),
@@ -950,23 +959,31 @@ class SignalExecutor:
         *,
         company_id: str,
         as_of: datetime,
+        identity: Mapping[str, Any] | None = None,
     ) -> SignalBatchResult:
         """Execute every selected Signal and validate literal evidence."""
 
         results: list[SignalResult] = []
+        resolutions: list[RawInfoResolution] = []
         usage = AgentUsage()
         refs = tuple(signal_refs)
         if len(set(refs)) != len(refs):
             raise ValidationError("signal batch cannot contain duplicate refs")
         for signal_ref in refs:
             spec = self.snapshot.load_spec(signal_ref)
-            documents = tuple(
-                self.raw_info_store.search(
-                    company_id,
-                    as_of=as_of,
+            resolution = self.resolver.resolve(
+                RawInfoRequest(
+                    request_id=f"signal:{spec.ref}",
+                    description=spec.description,
                     source_types=spec.source_types,
-                )
+                    max_documents=10,
+                ),
+                company_id=company_id,
+                identity=dict(identity or {}),
+                as_of=as_of,
             )
+            resolutions.append(resolution)
+            documents = self.resolver.load_documents(resolution, as_of=as_of)
             if not documents:
                 result = SignalResult(
                     signal_id=spec.signal_id,
@@ -1000,6 +1017,7 @@ class SignalExecutor:
             results=tuple(results),
             signal_calls=len(results),
             usage=usage,
+            resolutions=tuple(resolutions),
         )
 
 
@@ -1041,6 +1059,7 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
         "market.max_drawdown_1y": _max_drawdown_signal,
         "company.market_cap": _metadata_signal("market_cap"),
         "financial.cash_reserves": _metadata_signal("cash_reserves"),
+        "news.negative_word_count": _negative_word_count_signal,
     }
 
 
@@ -1100,6 +1119,45 @@ def _max_drawdown_signal(
         peak = max(peak, price)
         drawdown = min(drawdown, (price / peak) - 1)
     return _numeric_result(spec, drawdown, document, as_of, label="max_drawdown_1y")
+
+
+def _negative_word_count_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    """Count configured literal negative terms across complete news documents."""
+
+    raw_terms = spec.parameters.get(
+        "terms",
+        ("decline", "loss", "risk", "delay", "investigation", "default"),
+    )
+    if not isinstance(raw_terms, (list, tuple)):
+        raise ValidationError("negative word count terms must be a list")
+    terms = tuple(str(item).casefold() for item in raw_terms if str(item).strip())
+    count = sum(
+        document.content.casefold().count(term)
+        for document in documents
+        for term in terms
+    )
+    threshold = int(spec.parameters.get("negative_count_min", 1))
+    document = documents[0]
+    span = document.content[: min(240, len(document.content))]
+    return SignalResult(
+        signal_id=spec.signal_id,
+        version=spec.version,
+        value=(SignalValue.NEGATIVE if count >= threshold else SignalValue.NEUTRAL),
+        confidence=1.0,
+        interpretation=f"negative_word_count={count}",
+        supporting_evidence=(
+            SignalEvidence(
+                document_id=document.document_id,
+                exact_span=span,
+                timestamp=min(document.available_at, as_of),
+            ),
+        ),
+        coverage=SignalCoverage.SUFFICIENT,
+    )
 
 
 def _numeric_result(

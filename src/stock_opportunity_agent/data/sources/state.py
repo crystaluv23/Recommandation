@@ -374,6 +374,7 @@ class ManagedHttpTransport:
         self.clock = clock or _utc_now
         self.json_error_detector = json_error_detector
         self.text_error_detector = text_error_detector
+        self.request_events: list[RequestLedgerEntry] = []
 
     def get_json(self, url: str, headers: Mapping[str, str]) -> dict[str, Any] | list[Any]:
         """Fetch JSON through cache and quota accounting."""
@@ -477,8 +478,7 @@ class ManagedHttpTransport:
         next_retry_at: datetime | None = None,
         message: str | None = None,
     ) -> None:
-        self.ledger.append(
-            RequestLedgerEntry(
+        entry = RequestLedgerEntry(
                 source_key=self.source_key,
                 capability=self.capability,
                 endpoint=key.endpoint,
@@ -488,7 +488,8 @@ class ManagedHttpTransport:
                 next_retry_at=next_retry_at,
                 message=message,
             )
-        )
+        self.ledger.append(entry)
+        self.request_events.append(entry)
 
 
 def _stable_hash(value: Any) -> str:

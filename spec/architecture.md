@@ -145,6 +145,11 @@ reserved in a durable ledger before network I/O. Restart may reuse an exact
 response or an exact staged artifact, but it may not silently change the frozen
 contract.
 
+LLM authorization and source-data acquisition authorization are independent.
+The latter freezes allowed providers, capabilities/source types, and per-cycle
+and whole-run request ceilings. A disabled data boundary performs no network
+I/O and records an `external_not_authorized` DataGap after a local miss.
+
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
 
 Phase 1 contains two ordered subphases:
@@ -164,11 +169,19 @@ repeatable improvement. The repository currently has no human-curated gold
 packet, so a gold-packet upper bound must not be assumed in current experiments.
 
 Information-scheme evolution changes only the four-part Information Plan:
-basic-info policy, initial-research skill, batch-reflection skill, and final
-analysis prompt. The stable Signal Registry is frozen throughout a group of
-fast-loop rounds. Labels, dataset ownership, two-stage prediction semantics,
-metrics, runtime guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework
-controls and cannot be mutated by a candidate plan. Stage 1 predicts whether
+Basic Info retrieval requests, initial-research skill, batch-reflection skill,
+and final analysis prompt. `B` is an analyst's source-retrieval plan (for
+example, read the latest eligible 10-K and retrieve company news from the prior
+180 days), not a fixed profile schema. Company identifiers are fixed routing
+inputs. The global append-only Raw Info Store is a point-in-time oracle and is
+not evolutionary state: its growth does not change plan identity, parent
+selection, archive ranking, or state pointers. Both Basic Info and Signals use
+one local-first resolver; Basic Info sends deterministic exact source spans to
+`H_init`, while Signals compute derived results from complete source documents.
+The stable Signal Registry is frozen throughout a group of fast-loop rounds.
+Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
+guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
+cannot be mutated by a candidate plan. Stage 1 predicts whether
 the future fixed horizon reaches at least 2x. Stage 2 is evaluated only for the
 positive ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes.
 Binary F1 is the first fitness objective; precision, recall, magnitude accuracy,

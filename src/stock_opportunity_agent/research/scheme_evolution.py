@@ -16,6 +16,12 @@ from pathlib import Path
 from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.resolution import (
+    EvidenceResolver,
+    MAX_BASIC_INFO_REQUESTS,
+    RawInfoRequest,
+    RawInfoResolution,
+)
 from stock_opportunity_agent.llm.agent import (
     AgentUsage,
     DomainTool,
@@ -99,33 +105,55 @@ class AgentStep(Generic[T]):
 
 @dataclass(frozen=True)
 class BasicInfoPolicy:
-    """Small bootstrap field set that cannot preload the Raw Info Store."""
+    """Evolvable analyst-style requests for original point-in-time sources."""
 
-    fields: tuple[str, ...]
+    requests: tuple[RawInfoRequest, ...]
 
     def __post_init__(self) -> None:
-        if not self.fields or any(not field_name.strip() for field_name in self.fields):
-            raise ValidationError("basic info policy requires non-empty fields")
-        if len(set(self.fields)) != len(self.fields):
-            raise ValidationError("basic info policy fields must be unique")
-        forbidden = sorted(
-            field_name
-            for field_name in self.fields
-            if _is_forbidden_basic_info_field(field_name)
-        )
+        if not self.requests:
+            raise ValidationError("basic info policy requires requests")
+        if len(self.requests) > MAX_BASIC_INFO_REQUESTS:
+            raise ValidationError("basic info policy cannot exceed 8 requests")
+        request_ids = [item.request_id for item in self.requests]
+        if len(set(request_ids)) != len(request_ids):
+            raise ValidationError("basic info policy request ids must be unique")
+        forbidden = [
+            item.request_id
+            for item in self.requests
+            if any(
+                _is_forbidden_basic_info_field(value)
+                for value in (
+                    item.request_id,
+                    item.description,
+                    *item.source_types,
+                    item.query or "",
+                )
+            )
+        ]
         if forbidden:
             raise ValidationError(
-                "basic info policy cannot request outcome fields: "
+                "basic info policy cannot request outcome data: "
                 + ", ".join(forbidden)
             )
-        object.__setattr__(self, "fields", tuple(self.fields))
+        object.__setattr__(self, "requests", tuple(self.requests))
 
     def to_dict(self) -> dict[str, Any]:
-        return {"fields": list(self.fields)}
+        return {"requests": [item.to_dict() for item in self.requests]}
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "BasicInfoPolicy":
-        return cls(fields=tuple(str(item) for item in data.get("fields", ())))
+        if "requests" in data:
+            return cls(
+                requests=tuple(
+                    RawInfoRequest.from_dict(item) for item in data.get("requests", ())
+                )
+            )
+        return cls(
+            requests=tuple(
+                _legacy_basic_info_request(str(item))
+                for item in data.get("fields", ())
+            )
+        )
 
 
 @dataclass(frozen=True)
@@ -158,7 +186,9 @@ class InformationPlan:
         """Return stable content for embedding and identity checks."""
 
         return {
-            "basic_info": list(self.basic_info_policy.fields),
+            "basic_info": [
+                item.to_dict() for item in self.basic_info_policy.requests
+            ],
             "initial_research": " ".join(self.initial_research_skill.split()),
             "reflection": " ".join(self.reflection_skill.split()),
             "analysis": " ".join(self.analysis_prompt.split()),
@@ -463,6 +493,9 @@ class SignalRound:
                 "results": [result.to_dict() for result in self.batch.results],
                 "signal_calls": self.batch.signal_calls,
                 "usage": _usage_to_dict(self.batch.usage),
+                "resolutions": [
+                    item.to_dict() for item in self.batch.resolutions
+                ],
             },
         }
 
@@ -494,6 +527,10 @@ class SignalRound:
                 ),
                 signal_calls=int(batch.get("signal_calls", 0)),
                 usage=_usage_from_dict(dict(batch.get("usage", {}))),
+                resolutions=tuple(
+                    RawInfoResolution.from_dict(item)
+                    for item in batch.get("resolutions", ())
+                ),
             ),
         )
 
@@ -594,7 +631,7 @@ class ExecutionTrajectory:
             "case_id": self.case_id,
             "company_id": self.company_id,
             "prediction_time": self.prediction_time.isoformat(),
-            "basic_info": dict(self.basic_info),
+            "basic_info_bundle": dict(self.basic_info),
             "initial_state": self.initial_state.to_dict(),
             "signal_rounds": [item.to_dict() for item in self.signal_rounds],
             "final_state": self.final_state.to_dict(),
@@ -613,7 +650,9 @@ class ExecutionTrajectory:
             case_id=str(data.get("case_id", "")),
             company_id=str(data["company_id"]),
             prediction_time=datetime.fromisoformat(str(data["prediction_time"])),
-            basic_info=dict(data.get("basic_info", {})),
+            basic_info=dict(
+                data.get("basic_info_bundle", data.get("basic_info", {}))
+            ),
             initial_state=ResearchState.from_dict(dict(data["initial_state"])),
             signal_rounds=tuple(
                 SignalRound.from_dict(item) for item in data.get("signal_rounds", ())
@@ -659,13 +698,24 @@ def execute_information_plan(
     _require_aware_datetime(prediction_time, "prediction_time")
     resolved_case_id = case_id or _default_case_id(company_id, prediction_time)
     _validate_id(resolved_case_id, "case_id")
-    basic_info = {
-        field_name: company_basic_source.get(field_name)
-        for field_name in plan.basic_info_policy.fields
-    }
+    basic_info_bundle = signal_executor.resolver.resolve_basic_info(
+        plan.basic_info_policy.requests,
+        company_id=company_id,
+        identity=company_basic_source,
+        as_of=prediction_time,
+    )
+    basic_info = basic_info_bundle.to_model_context_dict()
     source_aliases = company_basic_source.get("identity_aliases", ())
     if isinstance(source_aliases, str):
         source_aliases = (source_aliases,)
+    source_aliases = (
+        *source_aliases,
+        *(
+            str(company_basic_source[key])
+            for key in ("company_name", "ticker", "symbol")
+            if company_basic_source.get(key)
+        ),
+    )
     model_usage = AgentUsage()
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
@@ -703,6 +753,7 @@ def execute_information_plan(
             selected,
             company_id=company_id,
             as_of=prediction_time,
+            identity=company_basic_source,
         )
         model_usage = _consume_usage(model_usage, batch.usage, limits)
         signal_calls += batch.signal_calls
@@ -748,7 +799,7 @@ def execute_information_plan(
         case_id=resolved_case_id,
         company_id=company_id,
         prediction_time=prediction_time,
-        basic_info=basic_info,
+        basic_info=basic_info_bundle.to_dict(),
         initial_state=initial_state,
         signal_rounds=tuple(rounds),
         final_state=state,
@@ -1436,6 +1487,10 @@ class InformationPlanProposer(Protocol):
         """Return one complete candidate Plan."""
 
 
+class CandidateProposalRejected(ValidationError):
+    """Raised only after model Plan content exhausts bounded correction."""
+
+
 class PlanCritic(Protocol):
     """Summarizes Plan behavior over its full validation batch."""
 
@@ -1481,6 +1536,7 @@ class RuntimePlanEvaluator:
         self,
         *,
         raw_info_store: RawInfoStore,
+        evidence_resolver: EvidenceResolver | None = None,
         controller: ResearchController,
         signal_agent: SignalRetrievalAgent,
         predictor: BlindPredictor,
@@ -1492,6 +1548,7 @@ class RuntimePlanEvaluator:
         on_progress: ProgressCallback | None = None,
     ) -> None:
         self.raw_info_store = raw_info_store
+        self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.controller = controller
         self.signal_agent = signal_agent
         self.predictor = predictor
@@ -1519,6 +1576,7 @@ class RuntimePlanEvaluator:
         executor = SignalExecutor(
             signal_registry,
             self.raw_info_store,
+            resolver=self.evidence_resolver,
             deterministic_functions=self.deterministic_functions,
             llm_runner=self.llm_signal_runner,
         )
@@ -2103,22 +2161,33 @@ class PlanEvolutionEngine:
                 candidate_index=candidate_index,
                 candidate_count=self.candidates_per_round,
             )
-            candidate = self.proposer.propose(
-                round_id=round_id,
-                candidate_index=candidate_index,
-                candidate_count=self.candidates_per_round,
-                forbidden_plan_ids=tuple(
-                    sorted(
-                        {
-                            *(record.plan_id for record in self.archive.records),
-                            *(plan.plan_id for plan in candidate_plans),
-                        }
-                    )
-                ),
-                parents=parents,
-                meta_info=self.meta_memory.entries,
-                prior=self.priors.propose_plan,
-            )
+            try:
+                candidate = self.proposer.propose(
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    candidate_count=self.candidates_per_round,
+                    forbidden_plan_ids=tuple(
+                        sorted(
+                            {
+                                *(record.plan_id for record in self.archive.records),
+                                *(plan.plan_id for plan in candidate_plans),
+                            }
+                        )
+                    ),
+                    parents=parents,
+                    meta_info=self.meta_memory.entries,
+                    prior=self.priors.propose_plan,
+                )
+            except CandidateProposalRejected as exc:
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_proposal_rejected",
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    candidate_count=self.candidates_per_round,
+                    reason=str(exc),
+                )
+                continue
             if candidate.plan_id in {plan.plan_id for plan in candidate_plans}:
                 raise ValidationError("proposer returned duplicate Plan ids in one round")
             if candidate.plan_id in {record.plan_id for record in self.archive.records}:
@@ -2140,6 +2209,9 @@ class PlanEvolutionEngine:
                 parent_ids=list(candidate.parent_ids),
                 plan_summary=summarize_information_plan(candidate),
             )
+
+        if not candidate_plans:
+            raise ValidationError("all candidate proposals were rejected")
 
         records: list[PlanRecord] = []
         for candidate_index, plan in enumerate(candidate_plans, start=1):
@@ -3027,14 +3099,38 @@ def default_information_plan() -> InformationPlan:
         plan_id="plan_manual_v1",
         parent_ids=(),
         basic_info_policy=BasicInfoPolicy(
-            fields=(
-                "company_name",
-                "ticker",
-                "market_cap",
-                "industry",
-                "business_description",
-                "revenue_segments",
-                "development_stage",
+            requests=(
+                RawInfoRequest(
+                    request_id="recent_annual_filing",
+                    description=(
+                        "Read the latest annual filing available before the prediction "
+                        "time for the business model, risks, and segment economics."
+                    ),
+                    source_types=("10-k",),
+                    lookback_days=730,
+                    max_documents=1,
+                ),
+                RawInfoRequest(
+                    request_id="recent_company_news",
+                    description=(
+                        "Retrieve recent company-specific news that may change market "
+                        "expectations, financing, customers, regulation, or products."
+                    ),
+                    source_types=("news",),
+                    lookback_days=180,
+                    max_documents=5,
+                    query="regulatory customer financing product order",
+                ),
+                RawInfoRequest(
+                    request_id="reported_financial_facts",
+                    description=(
+                        "Inspect reported financial facts available at the prediction "
+                        "time for growth, margins, cash, and capital structure."
+                    ),
+                    source_types=("sec_company_facts",),
+                    lookback_days=730,
+                    max_documents=2,
+                ),
             )
         ),
         initial_research_skill=(
@@ -3088,6 +3184,32 @@ def _is_forbidden_basic_info_field(value: str) -> bool:
     return normalized in _FORBIDDEN_BASIC_INFO_FIELDS or any(
         normalized.startswith(f"{field}_") or normalized.endswith(f"_{field}")
         for field in _FORBIDDEN_BASIC_INFO_FIELDS
+    )
+
+
+def _legacy_basic_info_request(field_name: str) -> RawInfoRequest:
+    """Map a legacy bootstrap field to one fixed source request."""
+
+    normalized = _normalize_field_name(field_name)
+    mappings: dict[str, tuple[tuple[str, ...], int | None]] = {
+        "company_name": (("company_identity",), None),
+        "ticker": (("company_identity",), None),
+        "symbol": (("company_identity",), None),
+        "market_cap": (("historical_price", "financial_statements"), 365),
+        "industry": (("10-k", "filing"), 730),
+        "business_description": (("10-k", "filing"), 730),
+        "revenue_segments": (("10-k", "financial_statements"), 730),
+        "development_stage": (("10-k", "news"), 730),
+    }
+    source_types, lookback_days = mappings.get(
+        normalized, (("legacy_basic_info",), None)
+    )
+    return RawInfoRequest(
+        request_id=f"legacy_{normalized}",
+        description=f"Legacy request for source evidence about {field_name}.",
+        source_types=source_types,
+        lookback_days=lookback_days,
+        max_documents=5,
     )
 
 
@@ -3197,7 +3319,15 @@ def summarize_information_plan(
     return {
         "plan_id": plan.plan_id,
         "parent_ids": list(plan.parent_ids),
-        "basic_info_fields": list(plan.basic_info_policy.fields),
+        "basic_info_requests": [
+            {
+                "request_id": item.request_id,
+                "source_types": list(item.source_types),
+                "lookback_days": item.lookback_days,
+                "max_documents": item.max_documents,
+            }
+            for item in plan.basic_info_policy.requests
+        ],
         "initial_research": clip(plan.initial_research_skill),
         "reflection": clip(plan.reflection_skill),
         "analysis": clip(plan.analysis_prompt),

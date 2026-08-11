@@ -10,6 +10,7 @@ from unittest import TestCase
 from stock_opportunity_agent.llm.agent import AgentRequest, AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
@@ -890,30 +891,38 @@ class ConcreteRoleAdapterTests(TestCase):
             prior="fixed H_P",
         )
 
-        self.assertEqual(first.plan_id, "plan_manual_v2")
-        self.assertEqual(first.basic_info_policy.fields[-1], "industry")
+        self.assertEqual(first.plan_id, "plan_r0001_c01")
+        self.assertEqual(
+            first.basic_info_policy.requests[-1].request_id,
+            "legacy_industry",
+        )
+        self.assertEqual(first.parent_ids, ("plan_manual_v1",))
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
         self.assertIn(
-            '"basic_info_policy"', str(caller.calls[0]["system_prompt"])
+            '"B"', str(caller.calls[0]["system_prompt"])
         )
-        self.assertNotIn("proposal_slot", caller.calls[0]["payload"])
+        self.assertEqual(
+            caller.calls[0]["payload"]["proposal_slot"],
+            {"round_id": 1, "candidate_index": 1, "candidate_count": 2},
+        )
         self.assertEqual(
             caller.calls[1]["payload"]["proposal_slot"],
             {
                 "round_id": 1,
                 "candidate_index": 2,
                 "candidate_count": 2,
-                "forbidden_plan_ids": ["plan_manual_v2"],
             },
         )
         self.assertIn(
-            '"basic_info_policy"', str(caller.calls[1]["system_prompt"])
+            '"B"', str(caller.calls[1]["system_prompt"])
         )
-        self.assertIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
-        self.assertEqual(second.plan_id, "plan_manual_v2_slot_2")
+        self.assertNotIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
+        self.assertEqual(second.plan_id, "plan_r0001_c02")
 
     def test_plan_proposer_reports_invalid_shape_as_validation_error(self) -> None:
-        proposer = LLMInformationPlanProposer(ScriptedRoleCaller([{"unexpected": True}]))
+        proposer = LLMInformationPlanProposer(
+            ScriptedRoleCaller([{"unexpected": True}, {"unexpected": True}])
+        )
 
         with self.assertRaisesRegex(
             ValidationError, "information_plan_propose returned"
@@ -937,7 +946,13 @@ class ConcreteRoleAdapterTests(TestCase):
                         "H_init": [{"statement": "one"}],
                         "H_reflect": [{"statement": "two"}],
                         "H_analyse": [{"statement": "three"}],
-                    }
+                    },
+                    {
+                        "B": {"purpose": "still invalid"},
+                        "H_init": [{"statement": "one"}],
+                        "H_reflect": [{"statement": "two"}],
+                        "H_analyse": [{"statement": "three"}],
+                    },
                 ]
             )
         )
@@ -1098,6 +1113,32 @@ class ConcreteRoleAdapterTests(TestCase):
 
 
 class RunControlTests(TestCase):
+    def test_contract_separates_data_acquisition_from_llm_external_scope(self) -> None:
+        contract = EvolutionRunContract(
+            **{
+                **make_contract().__dict__,
+                "data_acquisition": DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("sec_edgar", "alpha_vantage"),
+                    allowed_capabilities=("filings", "news"),
+                    allowed_source_types=("10-k", "news"),
+                    max_requests_per_cycle=10,
+                    max_requests_per_run=50,
+                ),
+            }
+        )
+        value = contract.to_dict()
+        self.assertTrue(value["data_acquisition"]["enabled"])
+        self.assertNotIn("allow_external", value["data_acquisition"])
+        restored = EvolutionRunContract.from_dict(value)
+        self.assertEqual(restored.data_acquisition, contract.data_acquisition)
+
+        legacy = {**value, "schema_version": "evolution-run-contract-v1"}
+        legacy.pop("data_acquisition")
+        restored_legacy = EvolutionRunContract.from_dict(legacy)
+        self.assertFalse(restored_legacy.data_acquisition.enabled)
+        self.assertNotIn("data_acquisition", restored_legacy.to_dict())
+
     def test_contract_freeze_is_exact_and_secret_free(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "run_contract.json"

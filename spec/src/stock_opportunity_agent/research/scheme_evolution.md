@@ -56,8 +56,11 @@ and never evidence that a round completed.
 S = (B, H_init, H_reflect, H_analyse)
 ```
 
-- `B`, Basic Info Policy: the small company profile needed to form initial
-  hypotheses. It must not preload the full Raw Info Store.
+- `B`, Basic Info Policy: up to eight analyst-style retrieval requests describing
+  which original sources to inspect and within what range. Each request contains
+  `request_id`, information-purpose `description`, `source_types`, optional
+  `lookback_days` and literal `query`, and `max_documents` up to ten. It does
+  not define a fixed company-profile schema and cannot set `as_of`.
 - `H_init`: turns Basic Info into hypotheses and natural-language information
   needs, not hard-coded Signal ids.
 - `H_reflect`: consumes the complete current research state plus one whole
@@ -81,8 +84,17 @@ most one correction call with the exact allowed set. If the correction remains
 invalid, the agent returns an empty selection and the runtime records
 `no_signal_match`; it never guesses a category or Signal on the model's behalf.
 
-Signal Executor retrieves point-in-time Raw Info and runs deterministic
-functions or LLM extraction skills.
+An `EvidenceResolver` serves both bootstrap and Signal paths. It queries the
+global Raw Info oracle first, optionally performs separately authorized and
+bounded data acquisition, appends complete provider responses, and immediately
+re-queries. Unknown or unavailable capabilities produce structured DataGaps.
+
+Basic Info is an ordered `BasicInfoBundle` of exact original spans plus complete
+lineage. `H_init` receives each request's purpose and these literal spans; it
+does not receive a framework-generated summary. Signal Executor asks the same
+resolver for complete point-in-time documents and then runs deterministic
+functions or LLM extraction skills. Signal results remain derived trajectory
+records and are never appended to Raw Info.
 
 Blind Predictor consumes only the assembled label-free context. The same
 Predictor adapter later receives its saved original context, saved prediction,
@@ -97,7 +109,8 @@ the blind context is the only Predictor input.
 ## `execute_information_plan`
 
 ```text
-Company -> B -> Basic Info -> H_init -> information needs
+Company routing identity -> B -> resolve Raw Info -> exact-span Basic InfoBundle
+-> H_init -> information needs
 -> select and execute Signal batch -> H_reflect
 -> repeat until finalize or a runtime guard fires
 -> H_analyse -> label-free final context -> blind two-stage prediction
@@ -105,16 +118,27 @@ Company -> B -> Basic Info -> H_init -> information needs
 -> complete ExecutionTrajectory
 ```
 
+Exact Basic Info spans use fixed 2,000-character chunks with 200-character
+overlap and a 48,000-character per-case budget. Query requests rank literal
+token hits deterministically; non-query requests rank by recency. Selected
+spans are never partially truncated and must remain literal Raw Info substrings.
+
 The prediction sink is mandatory and runs before the ground-truth provider is
 called. A trajectory preserves Basic Info, every need, selected Signal ref,
-Signal result, evidence, reflection state, final context, prediction, ground
-truth, self-reflection, usage, and stop reason. Each completed case trajectory
+Signal result, evidence, local resolution query, API/cache result, appended
+document ref, DataGap, Signal-consumed document id/hash, reflection state, final
+context, prediction, ground truth, self-reflection, usage, and stop reason. Each completed case trajectory
 is also written independently under
 `experiments/trajectories/<plan_id>/<case_id>.json` with an exact input hash
 covering the Plan, case, frozen Signal snapshot, and runtime limits. Restart
 reuses it only when that hash and serialized trajectory remain exact; this
 prevents a process interruption late in a validation batch from repeating
 completed case work.
+
+The Raw Info oracle is deliberately not frozen candidate state. Earlier
+candidates may enrich it and later candidates may reuse the new facts; already
+completed candidates are not replayed. API cost constrains acquisition and is
+diagnostic only, never part of Binary F1 fitness.
 
 Runtime engineering guards are fixed framework controls:
 
@@ -223,12 +247,19 @@ Select quality plus diversity:
 
 The proposer receives `[top1..topK, rand1, rand2]`, current FIFO meta-info, and
 fixed `H_P`. It is called independently N times. Every call also receives a
-non-evolvable proposal slot (`round_id`, candidate index/count, and forbidden
-Plan ids). The proposer uses frozen temperature `1.0` sampling; anonymous blind
+non-evolvable proposal slot (`round_id` and candidate index/count). Runtime
+assigns the Plan id deterministically from the slot and copies parent ids from
+the selected parents actually sent to the prompt. Model-supplied structural ids
+are ignored. Malformed four-field content receives one bounded correction; a
+second failure records `candidate_proposal_rejected` and leaves no partially
+committed round. The proposer uses frozen temperature `1.0` sampling; anonymous blind
 judging stays at temperature `0.0`. The slot prevents exact-cache collapse and
 still rejects repeated ids if sampling returns the same candidate. It
 participates in request identity but never becomes part of the candidate Plan.
 This is conditional sampling, not a claim of genetic crossover.
+
+Legacy Plans containing `BasicInfoPolicy.fields` remain readable through a
+fixed compatibility mapping. New Plan artifacts write only `requests`.
 
 ## Plan Meta-Info and Fixed Priors
 

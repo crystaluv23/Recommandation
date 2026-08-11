@@ -21,6 +21,7 @@ src/stock_opportunity_agent/
     documents
     point_in_time
     raw_info
+    resolution
   llm
     agent
   memory
@@ -63,6 +64,7 @@ spec/src/stock_opportunity_agent/
   data/documents.md
   data/point_in_time.md
   data/raw_info.md
+  data/resolution.md
   data/backfill.md
   llm.md
   memory.md
