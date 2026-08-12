@@ -212,6 +212,9 @@ error, not a reason to resample. Per-Plan diagnostic records persist all case
 attempts and failure reasons. Fitness records additionally persist all 20 case
 ids, their snapshot id, metrics, evidence-coverage counts, predicted-positive
 count, and eligibility decision.
+Loading revalidates the same invariants as creation: exact round and seed,
+target and actual `8/6/4/2` counts, unique case ids, and one distinct company per
+case. A self-consistent snapshot hash cannot weaken these evaluation rules.
 
 ### Fitness eligibility
 
@@ -305,6 +308,10 @@ Select quality plus diversity:
 3. stop at Top-K; and
 4. add up to two random non-selected archive records for exploration.
 
+Random exploration is deterministic per `(frozen parent-selection seed,
+round_id)`. A restart before the round commit therefore selects the same
+parents, while different rounds still receive independent deterministic draws.
+
 The proposer receives `[top1..topK, rand1, rand2]`, current FIFO meta-info, and
 fixed `H_P`. It is called independently N times. Every call also receives a
 non-evolvable proposal slot (`round_id` and candidate index/count). Runtime
@@ -389,6 +396,15 @@ validation errors may be repaired only within the frozen agent-step bound.
 Missing required candidate fields, invalid enums, and other `SignalSpec`
 deserialization failures are exposed to the agent as domain validation feedback;
 they never escape as raw parser exceptions and are never filled with defaults.
+External-approval pauses and other orchestration control-flow exceptions are not
+domain validation feedback: every Fast evaluator, Generic Agent tool boundary,
+candidate fixture, and Slow agent propagates them unchanged to the CLI.
+
+Every durable Plan evaluation attempt contains its complete serialized case
+trajectories, including DataGaps and stop reasons. The derived capability
+backlog is rebuilt from those durable trajectories while preserving the source
+types available from the current resolver, so the Slow loop receives the real
+Fast-loop capability gaps rather than an empty or accidentally reopened report.
 
 ## Persistence and Completion
 
@@ -447,15 +463,19 @@ committed pointers intact, records an interruption event at the CLI boundary,
 refreshes reporting, and exits with the conventional interrupted status. This
 does not widen the frozen attempt or cost ceilings.
 
-`scripts/run_deepseek_evolution.sh` remains the operator-facing unattended
-launcher shell, but its old default v2 workspace is explicitly read-only. It
-must stop before preparation when it sees a legacy contract. Before future use,
-the operator must deliberately point it at a newly reviewed, feasible v3
-workspace and the global oracle; the launcher may then compose the CLI rather
-than implement a second state machine. It must never persist or print a key,
-open Locked Test, auto-promote Signal candidates, infer completion from files,
-or bypass request leakage, cost, attempt, dataset-feasibility, and contract-hash
-gates.
+`scripts/run_information_plan_evolution.sh` is the stable operator-facing
+launcher. `new` requires an unused workspace, the global Raw Info oracle, and an
+already human-approved feasible dataset; it initializes and freezes one v3
+contract, then stops at the first exact-request approval boundary without
+external execution. `resume` requires the same workspace/oracle/dataset and
+derives progress only from committed pointers. External execution is available
+only in `resume` mode with both `--external` and an acknowledgement equal to the
+stored contract hash. The launcher composes the Python CLI rather than
+implementing a second state machine. It never persists or prints a key, opens
+Locked Test, auto-promotes Signal candidates, infers completion from files, or
+bypasses request leakage, cost, attempt, dataset-feasibility, and contract-hash
+gates. The former DeepSeek-named shell is only a compatibility forwarder to this
+entry and carries no workspace, model, budget, or approval defaults.
 
 The CLI classifies exhausted transient transport failures (timeouts, connection
 errors, incomplete responses, HTTP 408/429, and HTTP 5xx) with a dedicated

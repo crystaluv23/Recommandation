@@ -317,6 +317,25 @@ class EvidenceResolverTests(TestCase):
         self.assertEqual(batch.results[0].interpretation, "negative_word_count=3")
         self.assertEqual(batch.resolutions[0].documents[0].content_hash, raw.content_hash)
 
+        older = document(
+            "older_negative",
+            "A material loss was reported.",
+            available_at=AS_OF - timedelta(days=2),
+        )
+        latest = document(
+            "latest_neutral",
+            "Operations continued normally.",
+            available_at=AS_OF - timedelta(days=1),
+        )
+        grounded = SignalExecutor(
+            snapshot,
+            RawInfoStore(documents=(latest, older)),
+            resolver=EvidenceResolver(RawInfoStore(documents=(latest, older))),
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF)
+        evidence = grounded.results[0].supporting_evidence
+        self.assertEqual([item.document_id for item in evidence], ["older_negative"])
+        self.assertIn("loss", evidence[0].exact_span)
+
     def test_file_backed_oracle_growth_does_not_create_evolution_state(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

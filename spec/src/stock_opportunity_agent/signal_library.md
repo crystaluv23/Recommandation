@@ -97,6 +97,10 @@ fact rows used in the calculation.
 When evidence policy requires it, each non-unavailable result must cite a
 document in the actual input set, the cited timestamp cannot exceed the as-of
 time, and the exact span must literally occur in the cited document.
+Aggregate deterministic Signals cite every input document that contributed to
+the aggregate, using a span containing a matched term when the result depends on
+literal term counts; they do not cite an unrelated first document merely
+because it was present in the batch.
 
 An LLM Signal result that fails schema, identity, source, timestamp, or exact-
 span validation receives at most one corrective model call with the validation

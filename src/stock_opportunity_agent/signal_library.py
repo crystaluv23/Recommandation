@@ -1627,27 +1627,45 @@ def _negative_word_count_signal(
     if not isinstance(raw_terms, (list, tuple)):
         raise ValidationError("negative word count terms must be a list")
     terms = tuple(str(item).casefold() for item in raw_terms if str(item).strip())
-    count = sum(
-        document.content.casefold().count(term)
-        for document in documents
-        for term in terms
-    )
+    count = 0
+    evidence: list[SignalEvidence] = []
+    for document in documents:
+        content = document.content.casefold()
+        document_count = sum(content.count(term) for term in terms)
+        count += document_count
+        if document_count == 0:
+            continue
+        first_match = min(
+            position
+            for term in terms
+            if (position := content.find(term)) >= 0
+        )
+        start = max(0, first_match - 80)
+        span = document.content[start : min(len(document.content), start + 240)]
+        evidence.append(
+            SignalEvidence(
+                document_id=document.document_id,
+                exact_span=span,
+                timestamp=min(document.available_at, as_of),
+            )
+        )
     threshold = int(spec.parameters.get("negative_count_min", 1))
-    document = documents[0]
-    span = document.content[: min(240, len(document.content))]
+    if not evidence:
+        document = documents[0]
+        evidence.append(
+            SignalEvidence(
+                document_id=document.document_id,
+                exact_span=document.content[: min(240, len(document.content))],
+                timestamp=min(document.available_at, as_of),
+            )
+        )
     return SignalResult(
         signal_id=spec.signal_id,
         version=spec.version,
         value=(SignalValue.NEGATIVE if count >= threshold else SignalValue.NEUTRAL),
         confidence=1.0,
         interpretation=f"negative_word_count={count}",
-        supporting_evidence=(
-            SignalEvidence(
-                document_id=document.document_id,
-                exact_span=span,
-                timestamp=min(document.available_at, as_of),
-            ),
-        ),
+        supporting_evidence=tuple(evidence),
         coverage=SignalCoverage.SUFFICIENT,
     )
 

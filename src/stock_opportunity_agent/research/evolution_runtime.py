@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import platform
 import re
@@ -1205,7 +1206,14 @@ class EvolutionRunContract:
             raise ValidationError("signal registry version must be positive")
         if not self.raw_info_oracle_id.strip():
             raise ValidationError("raw_info_oracle_id is required")
-        if self.max_external_attempts < 1 or self.max_total_cost <= 0:
+        if (
+            type(self.max_external_attempts) is not int
+            or self.max_external_attempts < 1
+            or isinstance(self.max_total_cost, bool)
+            or not isinstance(self.max_total_cost, (int, float))
+            or not math.isfinite(self.max_total_cost)
+            or self.max_total_cost <= 0
+        ):
             raise ValidationError("external attempt and cost ceilings must be positive")
         if self.locked_test_accessed:
             raise ValidationError("ordinary evolution contract cannot open Locked Test")
@@ -1222,7 +1230,97 @@ class EvolutionRunContract:
         }:
             raise ValidationError("unsupported evolution run contract schema")
         if self.schema_version == "evolution-run-contract-v3":
-            evaluation = self.limits.get("evaluation")
+            required_roles = {"judge", "proposer"}
+            missing_roles = sorted(required_roles - set(self.models))
+            if missing_roles:
+                raise ValidationError(
+                    "v3 contract is missing model roles: " + ", ".join(missing_roles)
+                )
+            for role in sorted(required_roles):
+                metadata = self.models[role]
+                for field in ("alias", "provider", "model"):
+                    if not str(metadata.get(field, "")).strip():
+                        raise ValidationError(
+                            f"v3 contract model role {role} is missing {field}"
+                        )
+            if not self.code_revision.strip() or not self.python_runtime.strip():
+                raise ValidationError(
+                    "v3 contract requires code revision and Python runtime"
+                )
+            required_limits = {
+                "plan_rounds_per_signal_cycle",
+                "candidates_per_round",
+                "top_k",
+                "random_k",
+                "similarity_threshold",
+                "parent_selection_seed",
+                "plan_proposal_temperature",
+                "judge_temperature",
+                "max_signal_rounds",
+                "max_signal_calls",
+                "max_llm_calls",
+                "max_tokens",
+                "max_case_cost",
+                "max_agent_steps",
+                "evaluation",
+            }
+            missing_limits = sorted(required_limits - set(self.limits))
+            if missing_limits:
+                raise ValidationError(
+                    "v3 contract is missing runtime limits: "
+                    + ", ".join(missing_limits)
+                )
+
+            def require_integer(name: str, *, minimum: int | None = None) -> int:
+                value = self.limits[name]
+                if type(value) is not int or (
+                    minimum is not None and value < minimum
+                ):
+                    qualifier = (
+                        f"at least {minimum}" if minimum is not None else "an integer"
+                    )
+                    raise ValidationError(
+                        f"v3 contract limit {name} must be {qualifier}"
+                    )
+                return value
+
+            def require_number(name: str) -> float:
+                value = self.limits[name]
+                if (
+                    isinstance(value, bool)
+                    or not isinstance(value, (int, float))
+                    or not math.isfinite(float(value))
+                ):
+                    raise ValidationError(
+                        f"v3 contract limit {name} must be finite numeric"
+                    )
+                return float(value)
+
+            for name in (
+                "plan_rounds_per_signal_cycle",
+                "candidates_per_round",
+                "top_k",
+                "max_signal_rounds",
+                "max_signal_calls",
+                "max_llm_calls",
+                "max_tokens",
+                "max_agent_steps",
+            ):
+                require_integer(name, minimum=1)
+            require_integer("random_k", minimum=0)
+            require_integer("parent_selection_seed")
+            similarity = require_number("similarity_threshold")
+            if not -1 < similarity <= 1:
+                raise ValidationError(
+                    "v3 contract similarity_threshold must be in (-1, 1]"
+                )
+            if require_number("plan_proposal_temperature") != 1.0:
+                raise ValidationError("v3 contract proposer temperature must be 1.0")
+            if require_number("judge_temperature") != 0.0:
+                raise ValidationError("v3 contract judge temperature must be 0.0")
+            if require_number("max_case_cost") <= 0:
+                raise ValidationError("v3 contract max_case_cost must be positive")
+            evaluation = self.limits["evaluation"]
             if not isinstance(evaluation, Mapping):
                 raise ValidationError("v3 contract requires evaluation limits")
             evaluation_config = PlanEvaluationConfig.from_dict(evaluation)
@@ -1233,6 +1331,10 @@ class EvolutionRunContract:
                 or evaluation_config.max_cases_per_company_per_round != 1
             ):
                 raise ValidationError("v3 contract requires exact 20-case 8/6/4/2 evaluation")
+            if dict(evaluation) != evaluation_config.to_dict():
+                raise ValidationError(
+                    "v3 contract evaluation limits must be complete and canonical"
+                )
 
     def to_dict(self) -> dict[str, Any]:
         value = {
@@ -2639,7 +2741,7 @@ def run_bounded_evolution_cycle(
     oracle = RawInfoOracle.load_or_create(raw_info_root)
     if oracle.oracle_id != contract.raw_info_oracle_id:
         raise ValidationError("Raw Info oracle differs from frozen run contract")
-    evaluation_limits = contract.limits.get("evaluation", {})
+    evaluation_limits = contract.limits["evaluation"]
     if not isinstance(evaluation_limits, Mapping):
         raise ValidationError("run contract evaluation limits must be an object")
     evaluation_config = PlanEvaluationConfig.from_dict(evaluation_limits)
@@ -2662,7 +2764,7 @@ def run_bounded_evolution_cycle(
         raise ValidationError("fixed evolution priors differ from frozen run contract")
 
     limits = dict(contract.limits)
-    target_plan_rounds = int(limits.get("plan_rounds_per_signal_cycle", 5))
+    target_plan_rounds = int(limits["plan_rounds_per_signal_cycle"])
     evolution_workspace = EvolutionWorkspace(workspace_root)
     cycle = evolution_workspace.start_or_resume_cycle(
         run_contract_hash=contract.contract_hash,
@@ -2754,20 +2856,21 @@ def run_bounded_evolution_cycle(
         environ=environ,
         cycle_id=cycle_id,
     )
+    available_source_types = {
+        source_type
+        for adapter in evidence_resolver.adapters
+        for source_type in adapter.source_types
+    }
     evolution_workspace.refresh_capability_backlog(
-        available_source_types={
-            source_type
-            for adapter in evidence_resolver.adapters
-            for source_type in adapter.source_types
-        }
+        available_source_types=available_source_types
     )
     aliases = _dataset_identity_aliases(dataset)
     runtime_limits = RuntimeLimits(
-        max_signal_rounds=int(limits.get("max_signal_rounds", 5)),
-        max_signal_calls=int(limits.get("max_signal_calls", 20)),
-        max_llm_calls=int(limits.get("max_llm_calls", 40)),
-        max_tokens=int(limits.get("max_tokens", 120_000)),
-        max_cost=float(limits.get("max_case_cost", 5.0)),
+        max_signal_rounds=int(limits["max_signal_rounds"]),
+        max_signal_calls=int(limits["max_signal_calls"]),
+        max_llm_calls=int(limits["max_llm_calls"]),
+        max_tokens=int(limits["max_tokens"]),
+        max_cost=float(limits["max_case_cost"]),
     )
     archive = evolution_workspace.restore_archive(
         expected_run_contract_hash=contract.contract_hash
@@ -2796,16 +2899,18 @@ def run_bounded_evolution_cycle(
         evaluator=evaluator,
         proposer=LLMInformationPlanProposer(
             evolution_caller,
-            temperature=float(limits.get("plan_proposal_temperature", 1.0)),
+            temperature=float(limits["plan_proposal_temperature"]),
         ),
         critic=LLMPlanCritic(judge_caller),
         round_reflector=LLMRoundReflector(judge_caller),
         workspace=evolution_workspace,
         seed_plans=(default_information_plan(),),
-        candidates_per_round=int(limits.get("candidates_per_round", 3)),
-        top_k=int(limits.get("top_k", 3)),
-        random_k=int(limits.get("random_k", 2)),
-        similarity_threshold=float(limits.get("similarity_threshold", 0.9)),
+        candidates_per_round=int(limits["candidates_per_round"]),
+        top_k=int(limits["top_k"]),
+        random_k=int(limits["random_k"]),
+        similarity_threshold=float(limits["similarity_threshold"]),
+        parent_selection_seed=int(limits["parent_selection_seed"]),
+        capability_source_types=available_source_types,
         evaluation_config=evaluation_config,
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
@@ -2833,16 +2938,14 @@ def run_bounded_evolution_cycle(
             )
         ),
         llm_signal_runner=signal_runner,
-        max_agent_steps=int(limits.get("max_agent_steps", 20)),
+        max_agent_steps=int(limits["max_agent_steps"]),
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,
         signal_engine=signal_engine,
         signal_registry=registry,
         dataset=dataset,  # type: ignore[arg-type]
-        plan_rounds_per_signal_cycle=int(
-            limits.get("plan_rounds_per_signal_cycle", 5)
-        ),
+        plan_rounds_per_signal_cycle=int(limits["plan_rounds_per_signal_cycle"]),
         on_progress=emit,
     ).run_cycle(completed_plan_rounds=completed_plan_rounds)
     slow_result_path = evolution_workspace.stage_slow_result(

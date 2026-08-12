@@ -719,7 +719,7 @@ class RuntimeBudgetExceeded(ValidationError):
     """Raised when a completed model step crosses a hard token or cost limit."""
 
 
-class EvolutionControlFlow(ValidationError):
+class EvolutionControlFlow(RuntimeError):
     """Base for pauses that must propagate beyond candidate diagnostics."""
 
 
@@ -889,8 +889,6 @@ def execute_information_plan(
         basic_info=basic_info,
         state=state,
         rounds=rounds,
-        stop_reason=stop_reason,
-        termination_trigger=termination_trigger,
     )
     prediction_step = predictor.predict(final_context)
     model_usage = _consume_model_step(model_usage, prediction_step.usage, limits)
@@ -939,8 +937,6 @@ def _assemble_final_context(
     basic_info: Mapping[str, Any],
     state: ResearchState,
     rounds: Iterable[SignalRound],
-    stop_reason: RuntimeStopReason,
-    termination_trigger: RuntimeStopReason | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -959,10 +955,6 @@ def _assemble_final_context(
         "signal_rounds": [item.to_model_context_dict() for item in rounds],
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
-        "runtime_stop_reason": stop_reason.value,
-        "runtime_termination_trigger": (
-            termination_trigger.value if termination_trigger else None
-        ),
     }
     return _mask_identity_values(context, identity_aliases)
 
@@ -1574,9 +1566,10 @@ class EvaluationDatasetManager:
     ) -> dict[str, tuple[int, int]]:
         history: dict[str, tuple[int, int]] = {}
         for path in sorted(self.root.glob("round_*/snapshot.json")):
-            snapshot = EvaluationDatasetSnapshot.from_dict(_read_json(path))
-            if snapshot.round_id >= before_round:
+            snapshot_round = int(path.parent.name.removeprefix("round_"))
+            if snapshot_round >= before_round:
                 continue
+            snapshot = self._load_snapshot(path, round_id=snapshot_round)
             for case_id in snapshot.case_ids:
                 count, _last = history.get(case_id, (0, 0))
                 history[case_id] = (count + 1, snapshot.round_id)
@@ -1689,12 +1682,22 @@ class EvaluationDatasetManager:
         if snapshot.round_id != round_id:
             raise ValidationError("evaluation dataset snapshot identity mismatch")
         cases = self.resolve_cases(snapshot.case_ids)
+        expected_counts = {
+            label: int(self.config.label_counts[label])
+            for label in EVALUATION_LABELS
+        }
         if (
-            _count_evaluation_labels(cases) != dict(snapshot.actual_counts)
-            or dict(snapshot.actual_counts) != dict(self.config.label_counts)
+            snapshot.random_seed != self.config.base_seed + round_id
+            or dict(snapshot.target_counts) != expected_counts
+            or _count_evaluation_labels(cases) != dict(snapshot.actual_counts)
+            or dict(snapshot.actual_counts) != expected_counts
             or len(cases) != self.config.cases_per_round
+            or len(set(snapshot.case_ids)) != len(snapshot.case_ids)
+            or len({case.company_id for case in cases}) != len(cases)
         ):
-            raise ValidationError("evaluation snapshot labels changed in approved pool")
+            raise ValidationError(
+                "evaluation snapshot violates the frozen round sampling contract"
+            )
         return snapshot
 
     def _write_snapshot(
@@ -2811,6 +2814,7 @@ class EvolutionWorkspace:
         *,
         round_id: int,
         attempt: PlanEvaluationAttempt,
+        available_source_types: Iterable[str] = (),
     ) -> Path:
         """Persist one candidate attempt whether or not it is fitness-eligible."""
 
@@ -2823,7 +2827,9 @@ class EvolutionWorkspace:
             / f"{attempt.plan.plan_id}.json"
         )
         _write_or_verify_json(path, attempt.to_dict())
-        self.refresh_capability_backlog()
+        self.refresh_capability_backlog(
+            available_source_types=available_source_types
+        )
         return path
 
     def refresh_capability_backlog(
@@ -2992,6 +2998,7 @@ class PlanEvaluationAttempt:
             "plan_id": self.plan.plan_id,
             "expected_case_ids": list(self.expected_case_ids),
             "completed_case_ids": [item.case_id for item in self.trajectories],
+            "trajectories": [item.to_dict() for item in self.trajectories],
             "failures": [item.to_dict() for item in self.failures],
             "metrics": metrics.to_dict() if metrics is not None else None,
             "fitness": self.fitness.to_dict(),
@@ -3030,6 +3037,8 @@ class PlanEvolutionEngine:
         random_k: int = 2,
         similarity_threshold: float = 0.9,
         rng: random.Random | None = None,
+        parent_selection_seed: int | None = None,
+        capability_source_types: Iterable[str] = (),
         evaluation_config: PlanEvaluationConfig = PlanEvaluationConfig(),
         run_contract_hash: str = "",
         on_progress: ProgressCallback | None = None,
@@ -3054,6 +3063,8 @@ class PlanEvolutionEngine:
         self.random_k = random_k
         self.similarity_threshold = similarity_threshold
         self.rng = rng or random.Random()
+        self.parent_selection_seed = parent_selection_seed
+        self.capability_source_types = tuple(capability_source_types)
         self.evaluation_config = evaluation_config
         self.run_contract_hash = run_contract_hash
         self.on_progress = on_progress
@@ -3099,7 +3110,11 @@ class PlanEvolutionEngine:
             top_k=self.top_k,
             random_k=self.random_k,
             similarity_threshold=self.similarity_threshold,
-            rng=self.rng,
+            rng=(
+                random.Random(f"{self.parent_selection_seed}:{round_id}")
+                if self.parent_selection_seed is not None
+                else self.rng
+            ),
         )
         parents = selection.plans or self.seed_plans
         _emit_progress(
@@ -3232,6 +3247,7 @@ class PlanEvolutionEngine:
             attempt_path = self.workspace.stage_evaluation_attempt(
                 round_id=round_id,
                 attempt=attempt,
+                available_source_types=self.capability_source_types,
             )
             metrics = attempt.metrics
             fitness = attempt.fitness
@@ -4334,7 +4350,11 @@ def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
                     pattern,
                     "[MASKED_COMPANY]",
                     result,
-                    flags=re.IGNORECASE,
+                    flags=(
+                        0
+                        if alias.isalnum() and alias.isupper() and len(alias) <= 5
+                        else re.IGNORECASE
+                    ),
                 )
             return result
         if isinstance(item, list):

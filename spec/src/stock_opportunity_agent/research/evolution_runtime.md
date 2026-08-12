@@ -24,7 +24,8 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - fixed `H_R/H_P/H_E/H_U` hash;
 - role/model/provider/routing metadata;
 - code revision and Python runtime;
-- candidate/round/runtime limits;
+- candidate/round/runtime limits, including a parent-selection seed used
+  deterministically with each round id;
 - a mandatory Fast-loop evaluation contract containing 20 exact cases,
   `8/6/4/2` label counts, primary and secondary metrics, the per-company cap,
   deterministic rotation seed, fitness eligibility, and bounded proposal/
@@ -49,6 +50,9 @@ exact Git revision, Python runtime, dataset hash, stable enabled-Signal snapshot
 and oracle id. Evaluation snapshots are immutable recovery inputs under the run
 workspace. Their existence does not prove round completion or advance
 `state.json:last_completed_round`.
+For v3, both model roles, code/runtime identities, and every consumed limit are
+mandatory and type/range validated when the contract is loaded. Execution uses
+those exact fields and never substitutes Python-side defaults.
 
 ## External Request Boundary
 

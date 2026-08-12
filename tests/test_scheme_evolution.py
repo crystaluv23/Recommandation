@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import random
 import tempfile
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
@@ -42,6 +44,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     MagnitudeClass,
     PlanArchive,
     PlanEvaluationConfig,
+    PlanEvaluationAttempt,
     PlanEvolutionEngine,
     PlanMetaMemory,
     PlanMetrics,
@@ -62,7 +65,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     default_information_plan,
     execute_information_plan,
     score_predictions,
+    _mask_identity_values,
 )
+from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
     SignalEvidence,
     SignalExecutionType,
@@ -273,6 +278,23 @@ class RawInfoStoreTests(TestCase):
 
 
 class GenericAgentTests(TestCase):
+    def test_external_approval_pause_propagates_through_tool_boundary(self) -> None:
+        model = ScriptedAgentModel(
+            [AgentTurn(tool_call=ToolCall("lookup", {}))]
+        )
+
+        def pause() -> None:
+            raise ExternalRequestPending("a" * 64, Path("request.json"))
+
+        with self.assertRaises(ExternalRequestPending):
+            GenericAgent(model).run(
+                prompt="fixture",
+                tools=(DomainTool("lookup", "fixture lookup", pause),),
+                workspace={},
+                output_schema=lambda value: value,
+                max_steps=1,
+            )
+
     def test_agent_uses_only_granted_domain_tools_and_validates_output(self) -> None:
         model = ScriptedAgentModel(
             [
@@ -528,6 +550,16 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_short_ticker_masking_is_case_sensitive(self) -> None:
+        masked = _mask_identity_values(
+            "low liquidity improved while LOW remained anonymous",
+            ("LOW",),
+        )
+        self.assertEqual(
+            masked,
+            "low liquidity improved while [MASKED_COMPANY] remained anonymous",
+        )
+
     def test_legacy_basic_info_fields_read_but_new_artifacts_write_requests(self) -> None:
         policy = type(default_information_plan().basic_info_policy).from_dict(
             {"fields": ["industry", "business_description"]}
@@ -585,9 +617,11 @@ class InformationPlanRuntimeTests(TestCase):
                 self.assertNotIn("ground_truth", serialized)
                 self.assertNotIn("Masked winner", serialized)
                 self.assertNotIn("Legacy Winner", serialized)
-                self.assertNotIn('"WIN"', serialized)
+                self.assertNotIn('"LOW"', serialized)
                 self.assertNotIn("company_name", final_context["basic_info"])
                 self.assertNotIn("ticker", final_context["basic_info"])
+                self.assertNotIn("runtime_stop_reason", final_context)
+                self.assertNotIn("runtime_termination_trigger", final_context)
                 persisted.append(company_id)
                 return "predictions/winner_1.json"
 
@@ -600,10 +634,10 @@ class InformationPlanRuntimeTests(TestCase):
                 company_id="winner_1",
                 company_basic_source={
                     "company_name": "Masked winner",
-                    "ticker": "WIN",
+                    "ticker": "LOW",
                     "market_cap": 6_000_000_000,
                     "industry": "industrial",
-                    "business_description": "equipment",
+                    "business_description": "low liquidity equipment",
                     "revenue_segments": ["systems"],
                     "development_stage": "commercial",
                     "identity_aliases": ("Legacy Winner",),
@@ -839,6 +873,36 @@ class EvaluationDatasetSamplingTests(TestCase):
             self.assertEqual(reused.snapshot_id, round_one.snapshot_id)
             self.assertEqual(reused.case_ids, round_one.case_ids)
 
+    def test_hash_valid_snapshot_cannot_reuse_one_company(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "evaluation"
+            pool = make_evaluation_pool()
+            manager = EvaluationDatasetManager(root, pool)
+            snapshot = manager.get_or_create_round_dataset(1)
+            original = manager.resolve_cases((snapshot.case_ids[0],))[0]
+            duplicate_company = EvolutionCase(
+                company_id=original.company_id,
+                prediction_time=NOW + timedelta(days=1),
+                basic_info=original.basic_info,
+                ground_truth=original.ground_truth,
+            )
+            path = root / "round_001" / "snapshot.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["case_ids"][1] = duplicate_company.case_id
+            unhashed = {key: value for key, value in payload.items() if key != "snapshot_id"}
+            payload["snapshot_id"] = hashlib.sha256(
+                json.dumps(
+                    unhashed,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+            path.write_text(json.dumps(payload), encoding="utf-8")
+
+            restarted = EvaluationDatasetManager(root, (*pool, duplicate_company))
+            with self.assertRaisesRegex(ValidationError, "sampling contract"):
+                restarted.get_or_create_round_dataset(1)
+
     def test_sampling_shortage_fails_closed(self) -> None:
         shared_one = EvolutionCase(
             company_id="shared",
@@ -865,6 +929,47 @@ class EvaluationDatasetSamplingTests(TestCase):
 
 
 class PlanArchiveAndWorkspaceTests(TestCase):
+    def test_durable_attempt_trajectories_feed_capability_backlog(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            trajectory = replace(
+                make_trajectory("issuer_gap", 1.2, False, None),
+                basic_info={
+                    "requests": [
+                        {
+                            "data_gap": {
+                                "request_id": "recent_news",
+                                "reason": "adapter_missing",
+                                "message": "missing",
+                                "source_types": ["news"],
+                                "provider": None,
+                            }
+                        }
+                    ]
+                },
+            )
+            attempt = PlanEvaluationAttempt(
+                plan=default_information_plan(),
+                expected_case_ids=(trajectory.case_id,),
+                trajectories=(trajectory,),
+            )
+
+            path = workspace.stage_evaluation_attempt(
+                round_id=1,
+                attempt=attempt,
+                available_source_types=("news",),
+            )
+
+            stored = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(stored["trajectories"][0]["case_id"], trajectory.case_id)
+            backlog = json.loads(
+                (workspace.root / "capability_backlog.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(backlog["items"][0]["request_id"], "recent_news")
+            self.assertEqual(backlog["items"][0]["status"], "resolved")
+
     def test_quality_diverse_topk_then_random_exploration(self) -> None:
         archive = PlanArchive(
             (

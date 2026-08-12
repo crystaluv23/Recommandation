@@ -216,6 +216,7 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--evolution-model", default="openrouter-fusion")
     freeze.add_argument("--plan-rounds", type=int, default=1)
     freeze.add_argument("--candidates-per-round", type=int, default=1)
+    freeze.add_argument("--parent-selection-seed", type=int, default=42)
     freeze.add_argument("--max-external-attempts", type=int, default=500)
     freeze.add_argument("--max-total-cost", type=float, default=100.0)
     freeze.add_argument(
@@ -573,6 +574,7 @@ def freeze_run(
     evolution_model: str,
     plan_rounds: int,
     candidates_per_round: int,
+    parent_selection_seed: int,
     max_external_attempts: int,
     max_total_cost: float,
     data_external: bool = False,
@@ -602,6 +604,12 @@ def freeze_run(
             or contract.dataset_manifest_hash != expected_dataset_hash
             or contract.models["judge"]["alias"] != judge_model
             or contract.models["proposer"]["alias"] != evolution_model
+            or int(contract.limits["plan_rounds_per_signal_cycle"])
+            != plan_rounds
+            or int(contract.limits["candidates_per_round"])
+            != candidates_per_round
+            or int(contract.limits["parent_selection_seed"])
+            != parent_selection_seed
             or contract.max_external_attempts != max_external_attempts
             or contract.max_total_cost != max_total_cost
             or contract.raw_info_oracle_id != oracle.oracle_id
@@ -649,6 +657,7 @@ def freeze_run(
                 "top_k": 3,
                 "random_k": 2,
                 "similarity_threshold": 0.9,
+                "parent_selection_seed": parent_selection_seed,
                 "plan_proposal_temperature": 1.0,
                 "judge_temperature": 0.0,
                 "max_signal_rounds": 5,
@@ -1112,6 +1121,7 @@ def main() -> int:
                 evolution_model=args.evolution_model,
                 plan_rounds=args.plan_rounds,
                 candidates_per_round=args.candidates_per_round,
+                parent_selection_seed=args.parent_selection_seed,
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
                 data_external=args.data_external,

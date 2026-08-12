@@ -104,10 +104,37 @@ def make_contract() -> EvolutionRunContract:
         signal_registry_version=1,
         signal_registry_hash=SHA_C,
         priors_hash=SHA_D,
-        models={"judge": {"alias": "fixture-judge"}},
+        models={
+            "judge": {
+                "alias": "fixture-judge",
+                "provider": "fixture",
+                "model": "fixture-judge-model",
+            },
+            "proposer": {
+                "alias": "fixture-proposer",
+                "provider": "fixture",
+                "model": "fixture-proposer-model",
+            },
+        },
         code_revision="deadbeef",
         python_runtime="3.12.0",
-        limits={"rounds": 1, "evaluation": PlanEvaluationConfig().to_dict()},
+        limits={
+            "plan_rounds_per_signal_cycle": 1,
+            "candidates_per_round": 1,
+            "top_k": 3,
+            "random_k": 2,
+            "similarity_threshold": 0.9,
+            "parent_selection_seed": 42,
+            "plan_proposal_temperature": 1.0,
+            "judge_temperature": 0.0,
+            "max_signal_rounds": 5,
+            "max_signal_calls": 20,
+            "max_llm_calls": 40,
+            "max_tokens": 120_000,
+            "max_case_cost": 5.0,
+            "max_agent_steps": 20,
+            "evaluation": PlanEvaluationConfig().to_dict(),
+        },
         max_external_attempts=2,
         max_total_cost=1.0,
     )
@@ -1148,6 +1175,19 @@ class ConcreteRoleAdapterTests(TestCase):
 
 
 class RunControlTests(TestCase):
+    def test_v3_contract_rejects_missing_behavioral_defaults(self) -> None:
+        contract = make_contract()
+        incomplete_limits = dict(contract.limits)
+        incomplete_limits.pop("parent_selection_seed")
+        with self.assertRaisesRegex(ValidationError, "parent_selection_seed"):
+            EvolutionRunContract(
+                **{**contract.__dict__, "limits": incomplete_limits}
+            )
+        with self.assertRaisesRegex(ValidationError, "code revision"):
+            EvolutionRunContract(
+                **{**contract.__dict__, "code_revision": ""}
+            )
+
     def test_contract_separates_data_acquisition_from_llm_external_scope(self) -> None:
         contract = EvolutionRunContract(
             **{
