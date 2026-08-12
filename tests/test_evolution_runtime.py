@@ -35,7 +35,10 @@ from stock_opportunity_agent.research.evolution_runtime import (
 from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     ConfidenceLevel,
+    EvaluationDatasetInfeasible,
+    EvaluationDatasetManager,
     GroundTruth,
+    PlanEvaluationConfig,
     default_information_plan,
 )
 from stock_opportunity_agent.signal_library import (
@@ -96,6 +99,7 @@ def make_contract() -> EvolutionRunContract:
         run_id="fixture-run",
         created_at="2026-08-09T00:00:00+00:00",
         dataset_manifest_hash=SHA_A,
+        raw_info_oracle_id="raw-info-fixture",
         raw_info_inventory_hash=SHA_B,
         signal_registry_version=1,
         signal_registry_hash=SHA_C,
@@ -103,13 +107,34 @@ def make_contract() -> EvolutionRunContract:
         models={"judge": {"alias": "fixture-judge"}},
         code_revision="deadbeef",
         python_runtime="3.12.0",
-        limits={"rounds": 1},
+        limits={"rounds": 1, "evaluation": PlanEvaluationConfig().to_dict()},
         max_external_attempts=2,
         max_total_cost=1.0,
     )
 
 
 class LocalInventoryTests(TestCase):
+    def test_current_53_case_dataset_fails_exact_v3_preflight_without_calls(self) -> None:
+        manifest = (
+            PROJECT_ROOT
+            / "runs"
+            / "cold_start"
+            / "evolution"
+            / "deepseek-v4-flash-overnight-v3"
+            / "dataset_proposal"
+            / "dataset_manifest.approved.json"
+        )
+        dataset = load_approved_development_dataset(manifest)
+        self.assertEqual(len(dataset.evolution_validation), 53)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(EvaluationDatasetInfeasible) as caught:
+                EvaluationDatasetManager(
+                    directory,
+                    dataset.evolution_validation,
+                    PlanEvaluationConfig(),
+                )
+        self.assertEqual(caught.exception.available_counts["2_3x"], 0)
+
     def test_inventory_hashes_current_local_shapes_without_reusing_legacy_label(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -714,7 +739,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 ]
             )
             selection = LLMSignalRetrievalAgent(selector_caller).select(
-                ("revenue growth",), registry.freeze()
+                ("revenue growth",), registry.freeze(), {}
             )
             self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
             self.assertEqual(
@@ -736,7 +761,7 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
             selection = LLMSignalRetrievalAgent(caller).select(
-                ("revenue growth",), registry.freeze()
+                ("revenue growth",), registry.freeze(), {}
             )
 
             self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
@@ -753,7 +778,7 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
             selection = LLMSignalRetrievalAgent(caller).select(
-                ("unmatched need",), registry.freeze()
+                ("unmatched need",), registry.freeze(), {}
             )
 
             self.assertEqual(selection.value, ())
@@ -837,7 +862,7 @@ class ConcreteRoleAdapterTests(TestCase):
             [
                 {
                     "plan_id": "plan_manual_v2",
-                    "parent_ids": ["plan_manual_v1"],
+                    "parent_ids": ["invented_parent"],
                     "B": {
                         "company_name": "placeholder",
                         "ticker": "PLACEHOLDER",
@@ -859,7 +884,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 },
                 {
                     "plan_id": "plan_manual_v2_slot_2",
-                    "parent_ids": ["plan_manual_v1"],
+                    "parent_ids": ["another_invented_parent"],
                     "basic_info_policy": {
                         "fields": ["company_name", "ticker", "industry"]
                     },
@@ -876,6 +901,7 @@ class ConcreteRoleAdapterTests(TestCase):
             round_id=1,
             candidate_index=1,
             candidate_count=2,
+            proposal_attempt=1,
             forbidden_plan_ids=(),
             parents=(parent,),
             meta_info=(),
@@ -885,6 +911,7 @@ class ConcreteRoleAdapterTests(TestCase):
             round_id=1,
             candidate_index=2,
             candidate_count=2,
+            proposal_attempt=1,
             forbidden_plan_ids=(first.plan_id,),
             parents=(parent,),
             meta_info=(),
@@ -903,7 +930,12 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             caller.calls[0]["payload"]["proposal_slot"],
-            {"round_id": 1, "candidate_index": 1, "candidate_count": 2},
+            {
+                "round_id": 1,
+                "candidate_index": 1,
+                "candidate_count": 2,
+                "proposal_attempt": 1,
+            },
         )
         self.assertEqual(
             caller.calls[1]["payload"]["proposal_slot"],
@@ -911,6 +943,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 "round_id": 1,
                 "candidate_index": 2,
                 "candidate_count": 2,
+                "proposal_attempt": 1,
             },
         )
         self.assertIn(
@@ -931,6 +964,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 round_id=1,
                 candidate_index=1,
                 candidate_count=1,
+                proposal_attempt=1,
                 forbidden_plan_ids=(),
                 parents=(default_information_plan(),),
                 meta_info=(),
@@ -965,6 +999,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 round_id=1,
                 candidate_index=1,
                 candidate_count=1,
+                proposal_attempt=1,
                 forbidden_plan_ids=(),
                 parents=(default_information_plan(),),
                 meta_info=(),
@@ -1138,6 +1173,8 @@ class RunControlTests(TestCase):
         restored_legacy = EvolutionRunContract.from_dict(legacy)
         self.assertFalse(restored_legacy.data_acquisition.enabled)
         self.assertNotIn("data_acquisition", restored_legacy.to_dict())
+        self.assertFalse(restored_legacy.executable)
+        self.assertTrue(contract.executable)
 
     def test_contract_freeze_is_exact_and_secret_free(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

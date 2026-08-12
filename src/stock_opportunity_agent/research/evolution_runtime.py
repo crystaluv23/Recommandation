@@ -24,7 +24,11 @@ from stock_opportunity_agent.data.acquisition import (
     SecFilingAdapter,
     UnavailableProviderAdapter,
 )
-from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.raw_info import (
+    RawInfoDocument,
+    RawInfoOracle,
+    RawInfoStore,
+)
 from stock_opportunity_agent.data.resolution import (
     DataAcquisitionBudget,
     DataAcquisitionPolicy,
@@ -56,12 +60,16 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
     BlindPrediction,
+    CandidateExecutionRejected,
     CandidateProposalRejected,
     DEFAULT_EVOLUTION_PRIORS,
     DualLoopEvolutionEngine,
     DualLoopResult,
     EvolutionCase,
+    EvolutionControlFlow,
     EvolutionWorkspace,
+    EvaluationDatasetInfeasible,
+    EvaluationDatasetManager,
     GroundTruth,
     InformationPlan,
     PlanMetrics,
@@ -473,6 +481,7 @@ def migrate_legacy_raw_info(
 ) -> RawInfoMigrationReport:
     """Convert only point-in-time source facts; labels/future outcomes stay out."""
 
+    RawInfoOracle.load_or_create(raw_info_root)
     inventory = inventory_local_evolution_inputs(
         cases_path=cases_path,
         documents_path=documents_path,
@@ -1165,6 +1174,7 @@ class EvolutionRunContract:
     run_id: str
     created_at: str
     dataset_manifest_hash: str
+    raw_info_oracle_id: str
     raw_info_inventory_hash: str
     signal_registry_version: int
     signal_registry_hash: str
@@ -1177,7 +1187,7 @@ class EvolutionRunContract:
     max_total_cost: float
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
-    schema_version: str = "evolution-run-contract-v2"
+    schema_version: str = "evolution-run-contract-v3"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -1193,6 +1203,8 @@ class EvolutionRunContract:
                 raise ValidationError(f"{name} must be a SHA-256 hex digest")
         if self.signal_registry_version < 1:
             raise ValidationError("signal registry version must be positive")
+        if not self.raw_info_oracle_id.strip():
+            raise ValidationError("raw_info_oracle_id is required")
         if self.max_external_attempts < 1 or self.max_total_cost <= 0:
             raise ValidationError("external attempt and cost ceilings must be positive")
         if self.locked_test_accessed:
@@ -1206,8 +1218,21 @@ class EvolutionRunContract:
         if self.schema_version not in {
             "evolution-run-contract-v1",
             "evolution-run-contract-v2",
+            "evolution-run-contract-v3",
         }:
             raise ValidationError("unsupported evolution run contract schema")
+        if self.schema_version == "evolution-run-contract-v3":
+            evaluation = self.limits.get("evaluation")
+            if not isinstance(evaluation, Mapping):
+                raise ValidationError("v3 contract requires evaluation limits")
+            evaluation_config = PlanEvaluationConfig.from_dict(evaluation)
+            if (
+                evaluation_config.cases_per_round != 20
+                or dict(evaluation_config.label_counts)
+                != {"non_surge": 8, "2_3x": 6, "3_10x": 4, "10x_plus": 2}
+                or evaluation_config.max_cases_per_company_per_round != 1
+            ):
+                raise ValidationError("v3 contract requires exact 20-case 8/6/4/2 evaluation")
 
     def to_dict(self) -> dict[str, Any]:
         value = {
@@ -1229,11 +1254,19 @@ class EvolutionRunContract:
         }
         if self.schema_version != "evolution-run-contract-v1":
             value["data_acquisition"] = self.data_acquisition.to_dict()
+        if self.schema_version == "evolution-run-contract-v3":
+            value["raw_info_oracle_id"] = self.raw_info_oracle_id
         return value
 
     @property
     def contract_hash(self) -> str:
         return _canonical_hash(self.to_dict())
+
+    @property
+    def executable(self) -> bool:
+        """Only v3 contracts may advance evolution state."""
+
+        return self.schema_version == "evolution-run-contract-v3"
 
     def freeze(self, path: str | Path) -> None:
         _write_or_verify_json(
@@ -1247,6 +1280,9 @@ class EvolutionRunContract:
             run_id=str(value["run_id"]),
             created_at=str(value["created_at"]),
             dataset_manifest_hash=str(value["dataset_manifest_hash"]),
+            raw_info_oracle_id=str(
+                value.get("raw_info_oracle_id", "legacy-workspace-raw-info")
+            ),
             raw_info_inventory_hash=str(value["raw_info_inventory_hash"]),
             signal_registry_version=int(value["signal_registry_version"]),
             signal_registry_hash=str(value["signal_registry_hash"]),
@@ -1339,6 +1375,13 @@ def current_code_revision(project_root: str | Path) -> str:
     )
     if tracked.returncode != 0:
         raise ValidationError("freeze-run requires committed tracked project changes")
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--quiet"],
+        cwd=root,
+        check=False,
+    )
+    if staged.returncode != 0:
+        raise ValidationError("freeze-run requires committed staged project changes")
     untracked = subprocess.run(
         [
             "git",
@@ -1383,7 +1426,7 @@ def public_model_contract(
     return result
 
 
-class ExternalRequestPending(ValidationError):
+class ExternalRequestPending(EvolutionControlFlow):
     """Raised after a no-network preflight has persisted one exact request."""
 
     def __init__(self, request_hash: str, request_path: Path) -> None:
@@ -1866,6 +1909,49 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
         ) from exc
 
 
+def _complete_parsed_role(
+    caller: JSONRoleCaller,
+    *,
+    stage: str,
+    system_prompt: str,
+    payload: Mapping[str, Any],
+    parser: Any,
+    allow_outcomes: bool,
+    anonymous_aliases: Iterable[str] = (),
+) -> tuple[Any, AgentUsage]:
+    """Apply one bounded semantic correction around a structured role."""
+
+    usage = AgentUsage()
+    failed_output: Mapping[str, Any] | None = None
+    failure: ValidationError | None = None
+    for attempt in range(2):
+        request_payload = dict(payload)
+        request_stage = stage if attempt == 0 else f"{stage}_correction"
+        prompt = system_prompt
+        if attempt:
+            request_payload["invalid_output"] = dict(failed_output or {})
+            request_payload["validation_error"] = str(failure)
+            prompt += " Correct the invalid output once; return the exact contract only."
+        value, step_usage = caller.complete_json(
+            stage=request_stage,
+            system_prompt=prompt,
+            payload=request_payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+        )
+        usage = usage + step_usage
+        try:
+            return _parse_role_output(request_stage, value, parser), usage
+        except ValidationError as exc:
+            failed_output = value
+            failure = exc
+    raise CandidateExecutionRejected(
+        stage,
+        f"{stage} failed validation after one correction: {failure}",
+        usage,
+    )
+
+
 def _normalize_information_plan_output(
     value: Mapping[str, Any],
     *,
@@ -1970,7 +2056,8 @@ class LLMResearchController:
     def initialize(
         self, plan: InformationPlan, basic_info: Mapping[str, Any]
     ) -> AgentStep[ResearchState]:
-        value, usage = self.caller.complete_json(
+        state, usage = _complete_parsed_role(
+            self.caller,
             stage="research_controller_initialize",
             system_prompt=(
                 "Apply H_init to Basic Info only. Return one ResearchState JSON object; "
@@ -1981,14 +2068,10 @@ class LLMResearchController:
                 "initial_research_skill": plan.initial_research_skill,
                 "basic_info": dict(basic_info),
             },
+            parser=ResearchState.from_dict,
             allow_outcomes=False,
         )
-        return AgentStep(
-            _parse_role_output(
-                "research_controller_initialize", value, ResearchState.from_dict
-            ),
-            usage,
-        )
+        return AgentStep(state, usage)
 
     def reflect(
         self,
@@ -1996,7 +2079,8 @@ class LLMResearchController:
         state: ResearchState,
         batch: SignalBatchResult,
     ) -> AgentStep[ResearchState]:
-        value, usage = self.caller.complete_json(
+        reflected, usage = _complete_parsed_role(
+            self.caller,
             stage="research_controller_reflect",
             system_prompt=(
                 "Apply H_reflect once to the complete Signal batch. Return one "
@@ -2008,14 +2092,40 @@ class LLMResearchController:
                 "research_state": state.to_dict(),
                 "signal_batch": [item.to_dict() for item in batch.results],
             },
+            parser=ResearchState.from_dict,
             allow_outcomes=False,
         )
-        return AgentStep(
-            _parse_role_output(
-                "research_controller_reflect", value, ResearchState.from_dict
+        return AgentStep(reflected, usage)
+
+    def finalize(
+        self,
+        plan: InformationPlan,
+        state: ResearchState,
+        reason: Any,
+    ) -> AgentStep[ResearchState]:
+        finalized, usage = _complete_parsed_role(
+            self.caller,
+            stage="research_controller_finalize",
+            system_prompt=(
+                "Research cannot make another useful Signal call. Apply H_reflect "
+                "to the evidence already collected and return a final ResearchState. "
+                "The decision must be finalize and next_information_needs must be empty."
+                + _RESEARCH_STATE_OUTPUT
             ),
-            usage,
+            payload={
+                "reflection_skill": plan.reflection_skill,
+                "research_state": state.to_dict(),
+                "termination_trigger": str(getattr(reason, "value", reason)),
+            },
+            parser=ResearchState.from_dict,
+            allow_outcomes=False,
         )
+        if finalized.decision.value != "finalize":
+            raise CandidateExecutionRejected(
+                "research_controller_finalize",
+                "terminal reflection returned continue",
+            )
+        return AgentStep(finalized, usage)
 
 
 class LLMSignalRetrievalAgent:
@@ -2028,6 +2138,8 @@ class LLMSignalRetrievalAgent:
         self,
         information_needs: tuple[str, ...],
         signal_registry: FrozenSignalRegistry,
+        prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
+        prior_signal_results: Mapping[str, Mapping[str, Any]] | None = None,
     ) -> AgentStep[tuple[str, ...]]:
         categories = sorted({spec.category for spec in signal_registry.specs})
         category_usage = AgentUsage()
@@ -2035,6 +2147,14 @@ class LLMSignalRetrievalAgent:
         category_payload: dict[str, Any] = {
             "information_needs": list(information_needs),
             "available_categories": categories,
+            "previous_signal_document_fingerprints": {
+                ref: list(value)
+                for ref, value in prior_signal_fingerprints.items()
+            },
+            "previous_signal_results": {
+                ref: dict(value)
+                for ref, value in (prior_signal_results or {}).items()
+            },
         }
         for attempt in range(2):
             if attempt:
@@ -2073,8 +2193,12 @@ class LLMSignalRetrievalAgent:
         selection_usage = AgentUsage()
         refs: tuple[str, ...] = ()
         selection_payload: dict[str, Any] = {
-                "information_needs": list(information_needs),
-                "signal_cards": cards,
+            "information_needs": list(information_needs),
+            "signal_cards": cards,
+            "previous_signal_document_fingerprints": {
+                ref: list(value)
+                for ref, value in prior_signal_fingerprints.items()
+            },
         }
         allowed = {card["signal_ref"] for card in cards}
         for attempt in range(2):
@@ -2119,7 +2243,8 @@ class LLMBlindPredictor:
         self.anonymous_aliases = tuple(anonymous_aliases)
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
-        value, usage = self.caller.complete_json(
+        prediction, usage = _complete_parsed_role(
+            self.caller,
             stage="blind_predictor_predict",
             system_prompt=(
                 "Using only the anonymous supplied context, predict whether the next "
@@ -2128,15 +2253,11 @@ class LLMBlindPredictor:
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
+            parser=BlindPrediction.from_dict,
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )
-        return AgentStep(
-            _parse_role_output(
-                "blind_predictor_predict", value, BlindPrediction.from_dict
-            ),
-            usage,
-        )
+        return AgentStep(prediction, usage)
 
     def reflect(
         self,
@@ -2149,31 +2270,40 @@ class LLMBlindPredictor:
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )
-        value, usage = self.caller.complete_json(
-            stage="blind_predictor_posthoc_reflect",
-            system_prompt=(
-                "The saved prediction is immutable. Given its original anonymous "
-                "context and newly revealed truth, reflect on the prediction."
-                + _PREDICTION_REFLECTION_OUTPUT
-            ),
-            payload={
-                "original_context": dict(original_context),
-                "original_prediction": original_prediction.to_dict(),
-                "revealed_ground_truth": ground_truth.to_dict(),
-            },
-            allow_outcomes=True,
-            # The context was scanned above. Validated prediction enums may equal
-            # common ticker aliases, for example confidence "low" and ticker LOW.
-            anonymous_aliases=(),
-        )
-        return AgentStep(
-            _parse_role_output(
-                "blind_predictor_posthoc_reflect",
-                value,
-                PredictionSelfReflection.from_dict,
-            ),
-            usage,
-        )
+        try:
+            reflection, usage = _complete_parsed_role(
+                self.caller,
+                stage="blind_predictor_posthoc_reflect",
+                system_prompt=(
+                    "The saved prediction is immutable. Given its original anonymous "
+                    "context and newly revealed truth, reflect on the prediction."
+                    + _PREDICTION_REFLECTION_OUTPUT
+                ),
+                payload={
+                    "original_context": dict(original_context),
+                    "original_prediction": original_prediction.to_dict(),
+                    "revealed_ground_truth": ground_truth.to_dict(),
+                },
+                parser=PredictionSelfReflection.from_dict,
+                allow_outcomes=True,
+                # Validated enums may equal short ticker aliases such as LOW.
+                anonymous_aliases=(),
+            )
+            return AgentStep(reflection, usage)
+        except CandidateExecutionRejected as exc:
+            correct = original_prediction.is_surge == ground_truth.is_surge and (
+                not ground_truth.is_surge
+                or original_prediction.magnitude is ground_truth.magnitude
+            )
+            return AgentStep(
+                PredictionSelfReflection(
+                    correct=correct,
+                    plan_issues=(
+                        "posthoc_reflection_validation_failed: " + str(exc),
+                    ),
+                ),
+                exc.usage,
+            )
 
 
 class LLMInformationPlanProposer:
@@ -2191,6 +2321,7 @@ class LLMInformationPlanProposer:
         round_id: int,
         candidate_index: int,
         candidate_count: int,
+        proposal_attempt: int,
         forbidden_plan_ids: tuple[str, ...],
         parents: tuple[InformationPlan, ...],
         meta_info: tuple[RoundMetaEntry, ...],
@@ -2205,6 +2336,7 @@ class LLMInformationPlanProposer:
             "round_id": round_id,
             "candidate_index": candidate_index,
             "candidate_count": candidate_count,
+            "proposal_attempt": proposal_attempt,
         }
         system_prompt = (
             "Apply the fixed H_P prior. Return only evolvable Plan content: "
@@ -2263,20 +2395,28 @@ class LLMPlanCritic:
         trajectories: tuple[Any, ...],
         metrics: PlanMetrics,
     ) -> PlanReflection:
-        value, _usage = self.caller.complete_json(
-            stage="plan_critic",
-            system_prompt=(
-                "Ground the reflection only in the supplied batch."
-                + _PLAN_REFLECTION_OUTPUT
-            ),
-            payload={
-                "plan": plan.to_dict(),
-                "metrics": metrics.to_dict(),
-                "trajectories": [item.to_dict() for item in trajectories],
-            },
-            allow_outcomes=True,
-        )
-        return _parse_role_output("plan_critic", value, PlanReflection.from_dict)
+        try:
+            reflection, _usage = _complete_parsed_role(
+                self.caller,
+                stage="plan_critic",
+                system_prompt=(
+                    "Ground the reflection only in the supplied batch."
+                    + _PLAN_REFLECTION_OUTPUT
+                ),
+                payload={
+                    "plan": plan.to_dict(),
+                    "metrics": metrics.to_dict(),
+                    "trajectories": [item.to_dict() for item in trajectories],
+                },
+                parser=PlanReflection.from_dict,
+                allow_outcomes=True,
+            )
+            return reflection
+        except CandidateExecutionRejected as exc:
+            return PlanReflection(
+                failed_patterns=("plan_critic_validation_failed",),
+                repeated_failure_modes=(str(exc),),
+            )
 
 
 class LLMRoundReflector:
@@ -2292,21 +2432,30 @@ class LLMRoundReflector:
         records: tuple[PlanRecord, ...],
         prior: str,
     ) -> RoundMetaEntry:
-        value, _usage = self.caller.complete_json(
-            stage="round_reflect",
-            system_prompt=(
-                "Apply fixed H_R only to these new records; evidence_refs must cite "
-                "supplied plan ids."
-                + _ROUND_META_OUTPUT
-            ),
-            payload={
-                "round_id": round_id,
-                "fixed_prior": prior,
-                "records": [item.to_dict() for item in records],
-            },
-            allow_outcomes=True,
-        )
-        return _parse_role_output("round_reflect", value, RoundMetaEntry.from_dict)
+        try:
+            reflection, _usage = _complete_parsed_role(
+                self.caller,
+                stage="round_reflect",
+                system_prompt=(
+                    "Apply fixed H_R only to these new records; evidence_refs must cite "
+                    "supplied plan ids."
+                    + _ROUND_META_OUTPUT
+                ),
+                payload={
+                    "round_id": round_id,
+                    "fixed_prior": prior,
+                    "records": [item.to_dict() for item in records],
+                },
+                parser=RoundMetaEntry.from_dict,
+                allow_outcomes=True,
+            )
+            return reflection
+        except CandidateExecutionRejected as exc:
+            return RoundMetaEntry(
+                round_id=round_id,
+                failed_patterns=("round_reflection_validation_failed: " + str(exc),),
+                evidence_refs=tuple(record.plan_id for record in records),
+            )
 
 
 class StructuredAgentModel(AgentModel):
@@ -2326,20 +2475,18 @@ class StructuredAgentModel(AgentModel):
         self.final_output_example = dict(final_output_example)
 
     def respond(self, request: AgentRequest) -> AgentTurn:
-        value, usage = self.caller.complete_json(
-            stage=self.stage,
-            system_prompt=(
-                "Use only the named domain tools. Return either "
-                "{\"action\":\"tool\",\"tool_name\":...,\"arguments\":{...}} "
-                "or {\"action\":\"final\",\"output\":...}. The final output "
-                "must be an object shaped exactly like "
-                f"{json.dumps(self.final_output_example, sort_keys=True)}. "
-                "Return candidate refs only after a successful staging tool call; "
-                "if no valid candidate was staged, return an empty candidate_refs "
-                "list. Never return a diagnosis or proposed Signal directly as the "
-                "final output."
-            ),
-            payload={
+        system_prompt = (
+            "Use only the named domain tools. Return either "
+            "{\"action\":\"tool\",\"tool_name\":...,\"arguments\":{...}} "
+            "or {\"action\":\"final\",\"output\":...}. The final output "
+            "must be an object shaped exactly like "
+            f"{json.dumps(self.final_output_example, sort_keys=True)}. "
+            "Return candidate refs only after a successful staging tool call; "
+            "if no valid candidate was staged, return an empty candidate_refs "
+            "list. Never return a diagnosis or proposed Signal directly as the "
+            "final output."
+        )
+        base_payload = {
                 "task_prompt": request.prompt,
                 "tool_cards": list(request.tool_cards),
                 "workspace": dict(request.workspace),
@@ -2351,21 +2498,42 @@ class StructuredAgentModel(AgentModel):
                     }
                     for item in request.observations
                 ],
-            },
-            allow_outcomes=self.allow_outcomes,
-        )
-        action = value.get("action")
-        if action == "tool":
-            return AgentTurn(
-                tool_call=ToolCall(
-                    str(value.get("tool_name", "")),
-                    dict(value.get("arguments", {})),
-                ),
-                usage=usage,
+        }
+        usage = AgentUsage()
+        validation_error = ""
+        for attempt in range(2):
+            payload = dict(base_payload)
+            if attempt:
+                payload["validation_feedback"] = {
+                    "error": validation_error,
+                    "required_action": "return one valid tool or final action",
+                }
+            value, call_usage = self.caller.complete_json(
+                stage=(self.stage if not attempt else f"{self.stage}_correction"),
+                system_prompt=system_prompt,
+                payload=payload,
+                allow_outcomes=self.allow_outcomes,
             )
-        if action == "final":
-            return AgentTurn(final_output=value.get("output"), usage=usage)
-        raise ValidationError("Generic Agent model returned an unknown action")
+            usage = usage + call_usage
+            action = value.get("action")
+            if action == "tool" and isinstance(value.get("arguments", {}), Mapping):
+                tool_name = str(value.get("tool_name", "")).strip()
+                if tool_name:
+                    return AgentTurn(
+                        tool_call=ToolCall(
+                            tool_name,
+                            dict(value.get("arguments", {})),
+                        ),
+                        usage=usage,
+                    )
+                validation_error = "tool_name must not be empty"
+                continue
+            if action == "final" and "output" in value:
+                return AgentTurn(final_output=value.get("output"), usage=usage)
+            validation_error = "unknown or incomplete Generic Agent action"
+        raise ValidationError(
+            "Generic Agent action remained invalid after one correction"
+        )
 
 
 class StructuredLLMSignalRunner:
@@ -2446,6 +2614,7 @@ class StructuredLLMSignalRunner:
 def run_bounded_evolution_cycle(
     *,
     workspace_path: str | Path,
+    raw_info_root: str | Path,
     approved_dataset_manifest: str | Path,
     contract: EvolutionRunContract,
     allow_external: bool,
@@ -2457,9 +2626,28 @@ def run_bounded_evolution_cycle(
     """Run/resume one frozen finite Fast group and one validation-only Slow cycle."""
 
     workspace_root = Path(workspace_path)
+    if not contract.executable:
+        raise ValidationError("legacy_contract_read_only")
     dataset = load_approved_development_dataset(approved_dataset_manifest)
     if dataset.approved_manifest_hash != contract.dataset_manifest_hash:
         raise ValidationError("approved dataset differs from frozen run contract")
+    if contract.python_runtime != platform.python_version():
+        raise ValidationError("Python runtime differs from frozen run contract")
+    project_root = Path(__file__).resolve().parents[3]
+    if contract.code_revision != current_code_revision(project_root):
+        raise ValidationError("Git revision differs from frozen run contract")
+    oracle = RawInfoOracle.load_or_create(raw_info_root)
+    if oracle.oracle_id != contract.raw_info_oracle_id:
+        raise ValidationError("Raw Info oracle differs from frozen run contract")
+    evaluation_limits = contract.limits.get("evaluation", {})
+    if not isinstance(evaluation_limits, Mapping):
+        raise ValidationError("run contract evaluation limits must be an object")
+    evaluation_config = PlanEvaluationConfig.from_dict(evaluation_limits)
+    EvaluationDatasetManager(
+        workspace_root / "evaluation",
+        dataset.evolution_validation,
+        evaluation_config,
+    ).validate_feasibility()
     registry = SignalRegistry(
         workspace_root / "signals",
         candidate_root=workspace_root / "signals_candidates",
@@ -2557,7 +2745,7 @@ def run_bounded_evolution_cycle(
         environ=environ,
         on_progress=emit,
     )
-    raw_info_store = RawInfoStore(workspace_root / "raw_info")
+    raw_info_store = RawInfoStore(raw_info_root)
     evidence_resolver = _build_evidence_resolver(
         workspace_root,
         raw_info_store,
@@ -2565,6 +2753,13 @@ def run_bounded_evolution_cycle(
         allow_data_external=allow_data_external,
         environ=environ,
         cycle_id=cycle_id,
+    )
+    evolution_workspace.refresh_capability_backlog(
+        available_source_types={
+            source_type
+            for adapter in evidence_resolver.adapters
+            for source_type in adapter.source_types
+        }
     )
     aliases = _dataset_identity_aliases(dataset)
     runtime_limits = RuntimeLimits(
@@ -2594,9 +2789,6 @@ def run_bounded_evolution_cycle(
         llm_signal_runner=signal_runner,
         on_progress=emit,
     )
-    evaluation_limits = limits.get("evaluation", {})
-    if not isinstance(evaluation_limits, Mapping):
-        raise ValidationError("run contract evaluation limits must be an object")
     plan_engine = PlanEvolutionEngine(
         archive=archive,
         meta_memory=meta_memory,
@@ -2614,7 +2806,7 @@ def run_bounded_evolution_cycle(
         top_k=int(limits.get("top_k", 3)),
         random_k=int(limits.get("random_k", 2)),
         similarity_threshold=float(limits.get("similarity_threshold", 0.9)),
-        evaluation_config=PlanEvaluationConfig.from_dict(evaluation_limits),
+        evaluation_config=evaluation_config,
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
@@ -2679,6 +2871,8 @@ def build_run_contract(
     run_id: str,
     dataset_manifest_path: str | Path,
     inventory: LocalEvolutionInventory,
+    raw_info_oracle: RawInfoOracle,
+    raw_info_inventory_hash: str,
     signal_registry_version: int,
     signal_registry_hash: str,
     priors: Mapping[str, str],
@@ -2702,7 +2896,8 @@ def build_run_contract(
         run_id=run_id,
         created_at=datetime.now(timezone.utc).isoformat(),
         dataset_manifest_hash=_sha256_file(manifest_path),
-        raw_info_inventory_hash=inventory.inventory_hash,
+        raw_info_oracle_id=raw_info_oracle.oracle_id,
+        raw_info_inventory_hash=raw_info_inventory_hash,
         signal_registry_version=signal_registry_version,
         signal_registry_hash=signal_registry_hash,
         priors_hash=_canonical_hash(dict(priors)),

@@ -74,6 +74,9 @@ Do not add separate first-class source capabilities for brokerage, order routing
 - Separate raw archives, feature stores, and document stores.
 - Reject Raw Info replacement or deletion through the store API; corrected
   source content must be a new document with its own id and lineage metadata.
+- Host Raw Info in one explicitly identified oracle root outside evolution
+  workspaces. Workspaces store only references and resolution/DataGap events;
+  oracle growth never advances an evolution state pointer.
 - Select sources by capability using the catalog preference order before invoking a provider.
 - Track request outcomes and source quotas so free API limits produce resumable deferred work instead of hidden partial data.
 - Audit historical coverage and backfill only exact, source-linked requests

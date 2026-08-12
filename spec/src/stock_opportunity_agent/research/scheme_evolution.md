@@ -2,7 +2,7 @@
 
 ## Status
 
-Preflight Ready - v1 replacement contract implemented
+Ready - strict v3 evaluation and runtime repair implemented
 
 ## Purpose
 
@@ -38,7 +38,6 @@ A workspace contains:
 plans/                 # Plan Archive records
 signals/               # stable Signal Registry
 signals_candidates/    # slow-loop staging only
-raw_info/               # append-only facts and source bodies
 experiments/            # complete trajectories and round checkpoints
 meta/                   # FIFO plan-round reflections
 cache/                  # exact reusable model/tool outputs
@@ -46,9 +45,12 @@ state.json              # authoritative last_completed_round
 cycle_state.json        # authoritative completed/active Fast+Slow cycle
 ```
 
-The three logical cores are the Plan Archive, Signal Registry, and Raw Info
-Store. Experiments and meta-info preserve auditability; cache is an optimization
-and never evidence that a round completed.
+The three logical cores are the Plan Archive, Signal Registry, and one global
+Raw Info oracle stored outside the workspace. The run contract binds the oracle
+identity and its initial inventory hash for diagnostics, but later oracle growth
+is allowed. A workspace stores document references and resolution events, never
+a private Raw Info copy. Experiments and meta-info preserve auditability; cache
+is an optimization and never evidence that a round completed.
 
 ## Information Plan
 
@@ -135,6 +137,12 @@ reuses it only when that hash and serialized trajectory remain exact; this
 prevents a process interruption late in a validation batch from repeating
 completed case work.
 
+Unrepaired pre-prediction structured-output failures are stored as
+`CaseEvaluationFailure` artifacts and stop that candidate without fabricating a
+prediction. Post-hoc, critic, or round-reflection failures use explicit
+deterministic failure records because they occur after the immutable prediction
+boundary.
+
 The Raw Info oracle is deliberately not frozen candidate state. Earlier
 candidates may enrich it and later candidates may reuse the new facts; already
 completed candidates are not replayed. API cost constrains acquisition and is
@@ -149,7 +157,10 @@ Runtime engineering guards are fixed framework controls:
 - maximum cost.
 
 They prevent infinite or unexpectedly expensive execution and are not Plan
-research logic.
+research logic. When a guard or an empty/repeated Signal selection prevents the
+controller from finishing normally, the runtime allows one bounded terminal
+reflection. The case is valid only if that reflection returns `finalize` and a
+source-backed prediction is durably saved.
 
 ## Dataset Ownership
 
@@ -173,49 +184,49 @@ dataset ownership boundaries, and no two observations may share a `case_id`.
 Information Plan evolution evaluates only within the human-approved Evolution
 Validation pool. It does not use the Locked Test and it does not try to mirror
 the extreme class imbalance of the live market. The fixed development target is
-`40% non_surge / 30% 2_3x / 20% 3_10x / 10% 10x_plus`, with Binary F1 as the
-selection metric. Binary precision/recall and magnitude macro-F1/accuracy remain
-diagnostics. Sampling never duplicates a case to fill a short stratum; shortages
-fall back to other eligible cases when available and the snapshot records the
-actual per-class counts.
+exactly 20 cases per round: `8 non_surge / 6 2_3x / 4 3_10x / 2 10x_plus`, with
+Binary F1 as the selection metric. Binary precision/recall and magnitude
+macro-F1/accuracy remain diagnostics. All Plans in one round use the same
+snapshot. The sampling unit is `(company_id, prediction_time)`, represented by
+`case_id`, and at most one case per company is selected per round.
 
-The default per-round screening set contains 20 cases:
-
-- one globally fixed, durable eight-case Anchor target of `3/2/2/1`; and
-- one round-specific twelve-case Rotating target of `5/4/2/1`.
-
-All Plans in one round use the exact same screening snapshot. The sampling unit
-is `(company_id, prediction_time)`, represented by `case_id`, and at most one
-case per company is selected across the Anchor, Rotating, and Promotion sets in
-one round by default. The Anchor is initialized once and reused across rounds.
-Rotating sampling uses `base_seed + round_id`.
-
-After screening, candidates are ranked by Binary F1. The top two candidates by
-default share one additional 20-case stratified Promotion snapshot, disjoint
-from screening, and run only those additional cases. Their final metrics are
-recomputed from the combined 40 predictions; stage metrics are never averaged.
-Non-promoted records remain explicitly marked `screening`, while promoted
-records are marked `promotion`. When configured, the historical Binary-F1
-champion is rerun on the same screening cases as a paired baseline but does not
-consume a candidate promotion slot or create a duplicate archive member.
+There is no fixed Anchor, Promotion stage, or champion rerun. Every round rotates
+all 20 cases. Within each label the deterministic order prefers cases with the
+fewest prior selections, then the least recent selection, then a
+`base_seed + round_id + case_id` hash. A shortage in any exact label count or in
+distinct issuers fails preflight before any external request; the sampler never
+duplicates, silently backfills another label, or emits fewer than 20 cases.
 
 Evaluation sampling is frozen below the evolution workspace:
 
 ```text
 evaluation/
-  anchor.json
   round_001/
-    screening.json
-    promotion.json
-    champion.json
+    snapshot.json
 ```
 
 Snapshots contain their deterministic snapshot id, seed, target and actual
 label counts, and ordered case ids. Existing snapshots are loaded before any
 sampling. A missing or changed case referenced by a durable snapshot is an
-error, not a reason to resample. Per-Plan archive records persist the evaluation
-stage, total case count, all case ids, Anchor/Rotating/Promotion ids, referenced
-snapshot ids, and the metrics calculated over their complete saved predictions.
+error, not a reason to resample. Per-Plan diagnostic records persist all case
+attempts and failure reasons. Fitness records additionally persist all 20 case
+ids, their snapshot id, metrics, evidence-coverage counts, predicted-positive
+count, and eligibility decision.
+
+### Fitness eligibility
+
+Metrics are calculated only for a complete 20-case prediction set. Each case
+must reach `finalize`, persist its prediction before label reveal, and contain at
+least one exact Basic Info span or one non-unavailable Signal result backed by
+validated source evidence. Incomplete or invalid candidates remain durable
+diagnostic attempts.
+
+A complete candidate is still `diagnostic_only` when it predicts zero positives
+or has `TP=0`. Such records retain their confusion matrix and an explicit
+`precision_defined` flag, but neither Top-K nor random exploration may select
+them as parents. If every candidate in a round is ineligible, the workspace
+writes `round_rejected` plus a capability-gap report and pauses without
+advancing `state.json` or `cycle_state.json`.
 
 ## Two-Stage Prediction and Labels
 
@@ -427,26 +438,24 @@ quality-diverse Top-K scores, checkpoint commits, resume decisions, and Slow
 Signal candidate status. It must never print prompts, credentials, raw packet
 content, or identity-masked Predictor inputs.
 
-`run-cycle` executes or resumes one frozen Fast/Slow cycle. `run-loop` is a thin
-supervisor that starts another bounded cycle only after the prior cycle commits;
+`init`, local preflight, migration, freeze, `run-cycle`, and `run-loop` require
+an explicit global `--raw-info-root`; none may infer a workspace-private Raw
+Info directory. `run-cycle` executes or resumes one frozen Fast/Slow cycle.
+`run-loop` is a thin supervisor that starts another bounded cycle only after the prior cycle commits;
 zero `--max-cycles` means continue until `Ctrl+C`. `KeyboardInterrupt` leaves
 committed pointers intact, records an interruption event at the CLI boundary,
 refreshes reporting, and exits with the conventional interrupted status. This
 does not widen the frozen attempt or cost ceilings.
 
-`scripts/run_deepseek_evolution.sh` is the operator-facing unattended launcher
-for the direct `deepseek-v4-flash` route. It composes the existing CLI rather
-than implementing a second state machine: resolve the project Python 3.11+
-runtime, reuse an already exported API key or the git-ignored `.env.local`, run
-all zero-network data preparation, show the proposal summary and frozen
-overnight bounds, require one explicit human confirmation, then approve the
-exact proposal hash, freeze the contract, preview the first exact request, and
-run the continuous supervisor for a bounded wall-clock window. Reviewer
-identity defaults to the repository Git user and then `local-operator`; it is
-audit metadata, not an account or authorization credential. The launcher must
-never persist or print the key, open Locked Test, auto-promote Signal
-candidates, infer completion from files, or bypass the CLI's request leakage,
-cost, attempt, and contract-hash gates.
+`scripts/run_deepseek_evolution.sh` remains the operator-facing unattended
+launcher shell, but its old default v2 workspace is explicitly read-only. It
+must stop before preparation when it sees a legacy contract. Before future use,
+the operator must deliberately point it at a newly reviewed, feasible v3
+workspace and the global oracle; the launcher may then compose the CLI rather
+than implement a second state machine. It must never persist or print a key,
+open Locked Test, auto-promote Signal candidates, infer completion from files,
+or bypass request leakage, cost, attempt, dataset-feasibility, and contract-hash
+gates.
 
 The CLI classifies exhausted transient transport failures (timeouts, connection
 errors, incomplete responses, HTTP 408/429, and HTTP 5xx) with a dedicated

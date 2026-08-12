@@ -2,7 +2,7 @@
 
 ## Status
 
-Preflight Ready
+Ready - v3 fail-closed contract implemented
 
 ## Purpose
 
@@ -18,16 +18,17 @@ One immutable, secret-free `EvolutionRunContract` binds:
 
 - run id and schema version;
 - dataset and reviewed split-manifest hashes;
-- initial Raw Info inventory hash (diagnostic identity only; later oracle
-  growth is not evolutionary state);
+- global Raw Info oracle id and initial inventory hash (diagnostic identity
+  only; later oracle growth is not evolutionary state);
 - stable Signal Registry version/hash;
 - fixed `H_R/H_P/H_E/H_U` hash;
 - role/model/provider/routing metadata;
 - code revision and Python runtime;
 - candidate/round/runtime limits;
-- a Fast-loop evaluation contract containing label ratios, Anchor/screening/
-  Promotion sizes, primary and secondary metrics, the per-company cap, champion
-  rerun switch, and base seed;
+- a mandatory Fast-loop evaluation contract containing 20 exact cases,
+  `8/6/4/2` label counts, primary and secondary metrics, the per-company cap,
+  deterministic rotation seed, fitness eligibility, and bounded proposal/
+  correction counts;
 - role sampling settings: Plan proposer temperature `1.0`, judge temperature
   `0.0`;
 - maximum external attempts and cumulative cost;
@@ -40,8 +41,12 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Older frozen contracts without the evaluation block use the documented
-defaults. Evaluation snapshots are immutable recovery inputs under the run
+Only `evolution-run-contract-v3` may execute. Older frozen contracts remain
+readable for status/audit commands but run commands return
+`legacy_contract_read_only`; no missing evaluation field receives an implicit
+default. Before creating requests or execution artifacts, runtime verifies the
+exact Git revision, Python runtime, dataset hash, stable enabled-Signal snapshot,
+and oracle id. Evaluation snapshots are immutable recovery inputs under the run
 workspace. Their existence does not prove round completion or advance
 `state.json:last_completed_round`.
 
@@ -108,6 +113,13 @@ lineage; provider-supplied ids are ignored. One correction request may repair
 malformed content. An unrepaired candidate is rejected as a bounded event
 without committing a partial round.
 
+Each candidate slot may make at most three independently hashed proposal
+attempts. Every structured runtime role receives at most one correction with
+the failed output and validation message. Unrepaired initialization/prediction
+failures terminate that candidate; non-fitness reflections degrade to explicit
+deterministic failure records. Exact transport responses remain in cache for
+audit, but a transport-cache hit is never treated as domain validation.
+
 ## Supervision, Interrupt, and Resume
 
 The runtime emits structured, secret-free progress events before and after
@@ -125,6 +137,11 @@ advances. The continuous CLI supervisor may start successive bounded cycles,
 but `Ctrl+C` stops at the current durable boundary without changing the frozen
 run contract, attempt ceiling, cost ceiling, dataset, Signal snapshot, or
 Locked Test posture.
+
+When no candidate is fitness-eligible, the runtime persists a deterministic
+round-rejection checkpoint and capability-gap aggregation, emits a paused
+status, and leaves both authoritative pointers unchanged. Resuming the same
+immutable contract returns the same pause without repeating external calls.
 
 ## Local Artifact Inventory
 

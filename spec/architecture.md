@@ -137,10 +137,13 @@ cost ledger, and fail-closed preflight validation for every newly rendered
 request.
 
 An external evolution run is identified by a secret-free frozen run contract:
-dataset and split hash, stable Signal snapshot hash, fixed-prior hash, role/model
-and provider routing, code revision, runtime limits, attempt limit, and cumulative
-cost ceiling. Every external request is written and leakage-scanned before it is
-sent, exact responses are keyed by the request hash, and every attempted call is
+dataset and split hash, stable Signal snapshot hash, global Raw Info oracle id,
+fixed-prior hash, role/model and provider routing, exact code revision and Python
+runtime, runtime limits, attempt limit, and cumulative cost ceiling. The current
+contract evaluates every candidate on one shared, exact 20-case round snapshot
+with fixed `8/6/4/2` label counts and no Anchor, Promotion, or champion-rerun
+stage. Every external request is written and leakage-scanned before it is sent,
+exact responses are keyed by the request hash, and every attempted call is
 reserved in a durable ledger before network I/O. Restart may reuse an exact
 response or an exact staged artifact, but it may not silently change the frozen
 contract.
@@ -173,11 +176,13 @@ Basic Info retrieval requests, initial-research skill, batch-reflection skill,
 and final analysis prompt. `B` is an analyst's source-retrieval plan (for
 example, read the latest eligible 10-K and retrieve company news from the prior
 180 days), not a fixed profile schema. Company identifiers are fixed routing
-inputs. The global append-only Raw Info Store is a point-in-time oracle and is
-not evolutionary state: its growth does not change plan identity, parent
-selection, archive ranking, or state pointers. Both Basic Info and Signals use
-one local-first resolver; Basic Info sends deterministic exact source spans to
-`H_init`, while Signals compute derived results from complete source documents.
+inputs. The global append-only Raw Info Store is a point-in-time oracle outside
+every evolution workspace and is not evolutionary state: its growth does not
+change plan identity, parent selection, archive ranking, or state pointers.
+Evolution workspaces preserve only document references and resolution
+trajectories. Both Basic Info and Signals use one local-first resolver; Basic
+Info sends deterministic exact source spans to `H_init`, while Signals compute
+derived results from complete source documents.
 The stable Signal Registry is frozen throughout a group of fast-loop rounds.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
@@ -194,7 +199,11 @@ evolution-validation label is inaccessible to plan execution; locked-test
 records are absent from ordinary evolution calls. Plan rounds are finite and
 advance one authoritative atomic `last_completed_round` pointer only after
 plan records, trajectories, metrics, reflections, archive state, and round
-meta-info have committed. Each repeated issuer/as-of observation has its own
+meta-info have committed. A candidate that lacks 20 valid evidence-backed
+predictions, predicts no positives, or has no true positive remains a diagnostic
+experiment and cannot enter parent selection. A round with no fitness-eligible
+candidate persists a rejection checkpoint and pauses without advancing either
+the round or cycle pointer. Each repeated issuer/as-of observation has its own
 stable `case_id`; company identity is never used as a case or prediction-file
 key. Files beyond the pointer are staged recovery inputs, not completed history;
 restart reuses them only when their canonical content exactly matches the

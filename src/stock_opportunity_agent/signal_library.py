@@ -28,6 +28,25 @@ _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_:-]*$")
 _FORBIDDEN_SOURCE_TYPES = frozenset(
     {"ground_truth", "outcome_label", "future_price", "future_return"}
 )
+_BUILTIN_ADAPTER_SOURCE_TYPES = frozenset(
+    {
+        "financials",
+        "financial_statements",
+        "sec_company_facts",
+        "company_facts",
+        "filing",
+        "sec_filing",
+        "filing_body",
+        "10-k",
+        "10-q",
+        "news",
+        "company_news",
+        "market_data",
+        "historical_price",
+        "price_daily",
+        "prices",
+    }
+)
 
 
 class SignalExecutionType(str, Enum):
@@ -309,12 +328,29 @@ class SignalBatchResult:
     signal_calls: int
     usage: AgentUsage = field(default_factory=AgentUsage)
     resolutions: tuple[RawInfoResolution, ...] = ()
+    document_fingerprints: Mapping[str, tuple[str, ...]] = field(
+        default_factory=dict
+    )
+    skipped_unchanged_refs: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if self.signal_calls != len(self.results):
             raise ValidationError("signal_calls must match batch result count")
         object.__setattr__(self, "results", tuple(self.results))
         object.__setattr__(self, "resolutions", tuple(self.resolutions))
+        object.__setattr__(
+            self,
+            "document_fingerprints",
+            {
+                str(ref): tuple(str(item) for item in fingerprint)
+                for ref, fingerprint in self.document_fingerprints.items()
+            },
+        )
+        object.__setattr__(
+            self,
+            "skipped_unchanged_refs",
+            tuple(str(item) for item in self.skipped_unchanged_refs),
+        )
 
 
 @dataclass(frozen=True)
@@ -478,6 +514,28 @@ class FrozenSignalRegistry:
         raise ValidationError(f"unknown frozen signal ref: {signal_ref}")
 
 
+@dataclass(frozen=True)
+class SignalCapabilityAudit:
+    """Fail-closed executable-surface audit for one frozen Signal snapshot."""
+
+    enabled_refs: tuple[str, ...]
+    disabled: Mapping[str, tuple[str, ...]]
+
+    @property
+    def passed(self) -> bool:
+        return not self.disabled
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "signal-capability-audit-v1",
+            "enabled_refs": list(self.enabled_refs),
+            "disabled": {
+                ref: list(reasons) for ref, reasons in self.disabled.items()
+            },
+            "passed": self.passed,
+        }
+
+
 class SignalRegistry:
     """File-backed progressive-disclosure Signal Registry."""
 
@@ -558,6 +616,8 @@ class SignalRegistry:
         catalog = _read_json(Path(path))
         installed = 0
         for item in catalog.get("signals", ()):
+            if item.get("enabled", True) is not True:
+                continue
             spec = SignalSpec.from_dict(item["spec"])
             if self._latest_spec_or_none(spec.signal_id) is not None:
                 continue
@@ -568,6 +628,55 @@ class SignalRegistry:
             )
             installed += 1
         return installed
+
+    def audit_capabilities(
+        self,
+        *,
+        available_source_types: Iterable[str] = _BUILTIN_ADAPTER_SOURCE_TYPES,
+    ) -> SignalCapabilityAudit:
+        """Verify that every exposed stable Signal has an executable implementation."""
+
+        functions = default_deterministic_signal_functions()
+        available = {item.casefold() for item in available_source_types}
+        enabled: list[str] = []
+        disabled: dict[str, tuple[str, ...]] = {}
+        for card in self.list_signal_cards():
+            spec = self.load_spec(card.ref)
+            reasons: list[str] = []
+            tests_path = (
+                self._manifest_for(spec.signal_id).parent
+                / "versions"
+                / f"v{spec.version}"
+                / "tests.json"
+            )
+            fixtures = tuple(_read_json(tests_path).get("tests", ()))
+            if not set(spec.source_types).intersection(available):
+                reasons.append("acquisition_adapter_missing")
+            if not fixtures or any(
+                not isinstance(fixture, Mapping)
+                or not fixture.get("documents")
+                for fixture in fixtures
+            ):
+                reasons.append("real_schema_fixture_missing")
+            if spec.execution_type is SignalExecutionType.DETERMINISTIC:
+                if spec.function not in functions:
+                    reasons.append("deterministic_function_missing")
+                elif not reasons:
+                    for index, fixture in enumerate(fixtures):
+                        try:
+                            _audit_deterministic_fixture(
+                                spec, fixture, index=index
+                            )
+                        except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                            reasons.append("schema_fixture_failed: " + str(exc))
+                            break
+            elif not (self.load_skill(spec.ref) or "").strip():
+                reasons.append("llm_skill_missing")
+            if reasons:
+                disabled[spec.ref] = tuple(reasons)
+            else:
+                enabled.append(spec.ref)
+        return SignalCapabilityAudit(tuple(enabled), disabled)
 
     def list_categories(self) -> tuple[str, ...]:
         """Return category names without exposing full Signal specs."""
@@ -685,6 +794,12 @@ class SignalRegistry:
     def freeze(self) -> FrozenSignalRegistry:
         """Freeze all current stable definitions and LLM skill text."""
 
+        audit = self.audit_capabilities()
+        if not audit.passed:
+            raise ValidationError(
+                "Signal capability audit failed: "
+                + json.dumps(audit.to_dict(), sort_keys=True)
+            )
         specs = tuple(
             self.load_spec(card.ref) for card in self.list_signal_cards()
         )
@@ -960,11 +1075,14 @@ class SignalExecutor:
         company_id: str,
         as_of: datetime,
         identity: Mapping[str, Any] | None = None,
+        prior_fingerprints: Mapping[str, tuple[str, ...]] | None = None,
     ) -> SignalBatchResult:
         """Execute every selected Signal and validate literal evidence."""
 
         results: list[SignalResult] = []
         resolutions: list[RawInfoResolution] = []
+        fingerprints: dict[str, tuple[str, ...]] = {}
+        skipped: list[str] = []
         usage = AgentUsage()
         refs = tuple(signal_refs)
         if len(set(refs)) != len(refs):
@@ -984,6 +1102,16 @@ class SignalExecutor:
             )
             resolutions.append(resolution)
             documents = self.resolver.load_documents(resolution, as_of=as_of)
+            fingerprint = tuple(
+                sorted(
+                    f"{document.document_id}:{document.content_hash}"
+                    for document in documents
+                )
+            )
+            fingerprints[spec.ref] = fingerprint
+            if (prior_fingerprints or {}).get(spec.ref) == fingerprint:
+                skipped.append(spec.ref)
+                continue
             if not documents:
                 result = SignalResult(
                     signal_id=spec.signal_id,
@@ -1018,6 +1146,8 @@ class SignalExecutor:
             signal_calls=len(results),
             usage=usage,
             resolutions=tuple(resolutions),
+            document_fingerprints=fingerprints,
+            skipped_unchanged_refs=tuple(skipped),
         )
 
 
@@ -1053,14 +1183,71 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
     """Return executable functions used by the manually seeded v1 Signals."""
 
     return {
-        "financial.revenue_growth_yoy": _metadata_signal("revenue_growth_yoy"),
+        "financial.revenue_growth_yoy": _revenue_growth_signal,
         "financial.revenue_acceleration": _revenue_acceleration_signal,
-        "financial.gross_margin_change": _metadata_signal("gross_margin_change"),
+        "financial.gross_margin_change": _gross_margin_change_signal,
         "market.max_drawdown_1y": _max_drawdown_signal,
-        "company.market_cap": _metadata_signal("market_cap"),
-        "financial.cash_reserves": _metadata_signal("cash_reserves"),
+        "financial.cash_reserves": _cash_reserves_signal,
         "news.negative_word_count": _negative_word_count_signal,
     }
+
+
+def _audit_deterministic_fixture(
+    spec: SignalSpec,
+    fixture: Mapping[str, Any],
+    *,
+    index: int,
+) -> None:
+    """Execute one source-backed fixture without an LLM or external call."""
+
+    expected = SignalValue(str(fixture["expected"]))
+    as_of = datetime.fromisoformat(
+        str(fixture.get("as_of", "2025-01-01T00:00:00+00:00"))
+    )
+    documents: list[RawInfoDocument] = []
+    for document_index, raw in enumerate(fixture.get("documents", ())):
+        if not isinstance(raw, Mapping):
+            raise ValidationError("capability fixture document must be an object")
+        source_type = str(raw["source_type"])
+        if source_type not in spec.source_types:
+            raise ValidationError("capability fixture source_type is outside SignalSpec")
+        published_at = datetime.fromisoformat(
+            str(raw.get("published_at", raw.get("available_at", as_of.isoformat())))
+        )
+        available_at = datetime.fromisoformat(
+            str(raw.get("available_at", published_at.isoformat()))
+        )
+        documents.append(
+            RawInfoDocument.create(
+                document_id=str(
+                    raw.get(
+                        "document_id",
+                        f"capability_{spec.signal_id}_{index}_{document_index}",
+                    )
+                ),
+                company_id="capability_fixture",
+                source_type=source_type,
+                published_at=published_at,
+                available_at=available_at,
+                content=str(raw["content"]),
+                metadata=dict(raw.get("metadata", {})),
+            )
+        )
+    snapshot_hash = hashlib.sha256(
+        json.dumps(spec.to_dict(), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+    result = SignalExecutor(
+        FrozenSignalRegistry(1, snapshot_hash, (spec,), {}),
+        RawInfoStore(documents=documents),
+    ).execute_batch(
+        (spec.ref,),
+        company_id="capability_fixture",
+        as_of=as_of,
+    ).results[0]
+    if result.value is not expected:
+        raise ValidationError(
+            f"expected {expected.value}, received {result.value.value}"
+        )
 
 
 def _metadata_signal(key: str) -> DeterministicSignalFunction:
@@ -1080,23 +1267,328 @@ def _metadata_signal(key: str) -> DeterministicSignalFunction:
     return execute
 
 
+@dataclass(frozen=True)
+class _SecFact:
+    tag: str
+    value: float
+    unit: str
+    start: str | None
+    end: str
+    filed: str
+    form: str
+    document: RawInfoDocument
+    exact_span: str
+
+
+_REVENUE_TAGS = (
+    "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "Revenues",
+    "SalesRevenueNet",
+    "Revenue",
+)
+_CASH_TAGS = (
+    "CashAndCashEquivalentsAtCarryingValue",
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+)
+
+
+def _revenue_growth_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    pair = _latest_yoy_pair(series)
+    if pair is None or pair[1].value == 0:
+        return _unavailable_result(spec, "Comparable SEC revenue periods were unavailable.")
+    current, previous = pair
+    value = current.value / previous.value - 1.0
+    return _numeric_result(
+        spec,
+        value,
+        current.document,
+        as_of,
+        label="revenue_growth_yoy",
+        evidence=_fact_evidence((current, previous), as_of),
+    )
+
+
 def _revenue_acceleration_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
-    direct = _latest_metadata_value(documents, "revenue_acceleration")
-    if direct is not None:
-        value, document = direct
-        return _numeric_result(
-            spec, float(value), document, as_of, label="revenue_acceleration"
+    series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    pairs = _yoy_pairs(series)
+    if len(pairs) < 2:
+        return _unavailable_result(spec, "Two comparable SEC revenue growth periods were unavailable.")
+    current_pair = pairs[0]
+    prior_pair = next(
+        (pair for pair in pairs[1:] if pair[0].end < current_pair[0].end),
+        None,
+    )
+    if prior_pair is None or current_pair[1].value == 0 or prior_pair[1].value == 0:
+        return _unavailable_result(spec, "Revenue acceleration history was incomplete.")
+    current_growth = current_pair[0].value / current_pair[1].value - 1.0
+    prior_growth = prior_pair[0].value / prior_pair[1].value - 1.0
+    facts = (*current_pair, *prior_pair)
+    return _numeric_result(
+        spec,
+        current_growth - prior_growth,
+        current_pair[0].document,
+        as_of,
+        label="revenue_acceleration",
+        evidence=_fact_evidence(facts, as_of),
+    )
+
+
+def _gross_margin_change_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    facts = _sec_facts(documents, as_of)
+    revenues = _duration_series(facts, _REVENUE_TAGS)
+    gross_profit = _duration_series(facts, ("GrossProfit",))
+    margins: list[tuple[str, float, _SecFact, _SecFact]] = []
+    gross_by_period = {(fact.start, fact.end): fact for fact in gross_profit}
+    for revenue in revenues:
+        gross = gross_by_period.get((revenue.start, revenue.end))
+        if gross is not None and revenue.value != 0:
+            margins.append((revenue.end, gross.value / revenue.value, revenue, gross))
+    margins.sort(key=lambda item: item[0], reverse=True)
+    if len(margins) < 2:
+        return _unavailable_result(spec, "Comparable SEC gross-margin periods were unavailable.")
+    current = margins[0]
+    previous = next(
+        (item for item in margins[1:] if _comparable_duration(current[2], item[2])),
+        None,
+    )
+    if previous is None:
+        return _unavailable_result(spec, "Comparable SEC gross-margin periods were unavailable.")
+    return _numeric_result(
+        spec,
+        current[1] - previous[1],
+        current[2].document,
+        as_of,
+        label="gross_margin_change",
+        evidence=_fact_evidence(
+            (current[2], current[3], previous[2], previous[3]), as_of
+        ),
+    )
+
+
+def _cash_reserves_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    facts = [
+        fact
+        for fact in _sec_facts(documents, as_of)
+        if fact.tag in _CASH_TAGS and fact.start is None
+    ]
+    if not facts:
+        return _unavailable_result(spec, "Point-in-time SEC cash balance was unavailable.")
+    latest = max(facts, key=lambda fact: (fact.end, fact.filed, fact.document.document_id))
+    return _numeric_result(
+        spec,
+        latest.value,
+        latest.document,
+        as_of,
+        label="cash_reserves",
+        evidence=_fact_evidence((latest,), as_of),
+    )
+
+
+def _sec_facts(
+    documents: tuple[RawInfoDocument, ...], as_of: datetime
+) -> tuple[_SecFact, ...]:
+    """Parse only the two supported SEC Company Facts source schemas."""
+
+    facts: list[_SecFact] = []
+    for document in documents:
+        try:
+            payload = json.loads(document.content)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(payload, Mapping):
+            continue
+        if payload.get("schema_version") == "sec-company-facts-document-v1":
+            filing_date = str(payload.get("filing_date", ""))
+            form = str(payload.get("form", ""))
+            for raw in payload.get("facts", ()):
+                if not isinstance(raw, Mapping):
+                    continue
+                fact = _make_sec_fact(
+                    raw,
+                    tag=str(raw.get("tag", "")),
+                    value=raw.get("value"),
+                    unit=str(raw.get("unit", "")),
+                    filed=filing_date,
+                    form=form,
+                    document=document,
+                    as_of=as_of,
+                )
+                if fact is not None:
+                    facts.append(fact)
+            continue
+        namespaces = payload.get("facts")
+        if not isinstance(namespaces, Mapping):
+            continue
+        us_gaap = namespaces.get("us-gaap")
+        if not isinstance(us_gaap, Mapping):
+            continue
+        for tag, definition in us_gaap.items():
+            if not isinstance(definition, Mapping):
+                continue
+            units = definition.get("units")
+            if not isinstance(units, Mapping):
+                continue
+            for unit, rows in units.items():
+                if not isinstance(rows, list):
+                    continue
+                for raw in rows:
+                    if not isinstance(raw, Mapping):
+                        continue
+                    fact = _make_sec_fact(
+                        raw,
+                        tag=str(tag),
+                        value=raw.get("val"),
+                        unit=str(unit),
+                        filed=str(raw.get("filed", "")),
+                        form=str(raw.get("form", "")),
+                        document=document,
+                        as_of=as_of,
+                    )
+                    if fact is not None:
+                        facts.append(fact)
+    return tuple(facts)
+
+
+def _make_sec_fact(
+    raw: Mapping[str, Any],
+    *,
+    tag: str,
+    value: Any,
+    unit: str,
+    filed: str,
+    form: str,
+    document: RawInfoDocument,
+    as_of: datetime,
+) -> _SecFact | None:
+    if not tag or not isinstance(value, (int, float)) or isinstance(value, bool):
+        return None
+    end = str(raw.get("end", ""))
+    start_value = raw.get("start")
+    start = str(start_value) if start_value else None
+    try:
+        end_date = datetime.fromisoformat(end).date()
+        filed_date = datetime.fromisoformat(filed).date()
+        if start is not None:
+            datetime.fromisoformat(start)
+    except ValueError:
+        return None
+    if filed_date > as_of.date() or end_date > as_of.date():
+        return None
+    exact_span = json.dumps(dict(raw), sort_keys=True, separators=(",", ":"))
+    if exact_span not in document.content:
+        return None
+    return _SecFact(
+        tag=tag,
+        value=float(value),
+        unit=unit,
+        start=start,
+        end=end,
+        filed=filed,
+        form=form,
+        document=document,
+        exact_span=exact_span,
+    )
+
+
+def _duration_series(
+    facts: Iterable[_SecFact], tags: tuple[str, ...]
+) -> list[_SecFact]:
+    tag_priority = {tag: index for index, tag in enumerate(tags)}
+    eligible = [
+        fact
+        for fact in facts
+        if fact.tag in tag_priority
+        and fact.start is not None
+        and fact.unit.casefold() in {"usd", "usd/shares"}
+    ]
+    by_period: dict[tuple[str, str], _SecFact] = {}
+    for fact in sorted(
+        eligible,
+        key=lambda item: (
+            item.start or "",
+            item.end,
+            -tag_priority[item.tag],
+            item.filed,
+            item.document.document_id,
+        ),
+    ):
+        key = (fact.start or "", fact.end)
+        current = by_period.get(key)
+        if current is None or tag_priority[fact.tag] < tag_priority[current.tag]:
+            by_period[key] = fact
+    return sorted(by_period.values(), key=lambda fact: fact.end, reverse=True)
+
+
+def _comparable_duration(left: _SecFact, right: _SecFact) -> bool:
+    if left.start is None or right.start is None:
+        return False
+    left_days = (
+        datetime.fromisoformat(left.end) - datetime.fromisoformat(left.start)
+    ).days
+    right_days = (
+        datetime.fromisoformat(right.end) - datetime.fromisoformat(right.start)
+    ).days
+    return abs(left_days - right_days) <= 45
+
+
+def _yoy_pairs(series: list[_SecFact]) -> list[tuple[_SecFact, _SecFact]]:
+    pairs: list[tuple[_SecFact, _SecFact]] = []
+    for current in series:
+        current_end = datetime.fromisoformat(current.end).date()
+        candidates = [
+            previous
+            for previous in series
+            if previous.end < current.end
+            and 330 <= (current_end - datetime.fromisoformat(previous.end).date()).days <= 400
+            and _comparable_duration(current, previous)
+        ]
+        if candidates:
+            pairs.append((current, max(candidates, key=lambda fact: fact.end)))
+    return pairs
+
+
+def _latest_yoy_pair(
+    series: list[_SecFact],
+) -> tuple[_SecFact, _SecFact] | None:
+    pairs = _yoy_pairs(series)
+    return pairs[0] if pairs else None
+
+
+def _fact_evidence(
+    facts: Iterable[_SecFact], as_of: datetime
+) -> tuple[SignalEvidence, ...]:
+    seen: set[tuple[str, str]] = set()
+    evidence: list[SignalEvidence] = []
+    for fact in facts:
+        key = (fact.document.document_id, fact.exact_span)
+        if key in seen:
+            continue
+        seen.add(key)
+        evidence.append(
+            SignalEvidence(
+                document_id=fact.document.document_id,
+                exact_span=fact.exact_span,
+                timestamp=min(fact.document.available_at, as_of),
+            )
         )
-    current = _latest_metadata_value(documents, "revenue_growth_yoy")
-    previous = _latest_metadata_value(documents, "previous_revenue_growth_yoy")
-    if current is None or previous is None:
-        return _unavailable_result(spec, "Revenue growth history was incomplete.")
-    value = float(current[0]) - float(previous[0])
-    return _numeric_result(spec, value, current[1], as_of, label="revenue_acceleration")
+    return tuple(evidence)
 
 
 def _max_drawdown_signal(
@@ -1167,6 +1659,7 @@ def _numeric_result(
     as_of: datetime,
     *,
     label: str,
+    evidence: tuple[SignalEvidence, ...] | None = None,
 ) -> SignalResult:
     positive_min = float(spec.parameters.get("positive_min", 0.0))
     negative_max = float(spec.parameters.get("negative_max", positive_min))
@@ -1179,19 +1672,20 @@ def _numeric_result(
     else:
         value = SignalValue.NEUTRAL
     span = document.content[: min(240, len(document.content))]
+    supporting = evidence or (
+        SignalEvidence(
+            document_id=document.document_id,
+            exact_span=span,
+            timestamp=min(document.available_at, as_of),
+        ),
+    )
     return SignalResult(
         signal_id=spec.signal_id,
         version=spec.version,
         value=value,
         confidence=1.0,
         interpretation=f"{label}={numeric_value:.6g}",
-        supporting_evidence=(
-            SignalEvidence(
-                document_id=document.document_id,
-                exact_span=span,
-                timestamp=min(document.available_at, as_of),
-            ),
-        ),
+        supporting_evidence=supporting,
         coverage=SignalCoverage.SUFFICIENT,
     )
 

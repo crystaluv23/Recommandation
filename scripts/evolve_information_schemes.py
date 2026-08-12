@@ -12,13 +12,16 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
-from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.data.raw_info import RawInfoOracle, RawInfoStore
 from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionWorkspace,
+    EvaluationDatasetInfeasible,
+    EvaluationDatasetManager,
     PlanEvaluationConfig,
+    RoundPaused,
 )
 from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_PRIORS
 from stock_opportunity_agent.research.evolution_dashboard import (
@@ -31,6 +34,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     build_run_contract,
     filter_case_price_history,
     inventory_local_evolution_inputs,
+    load_approved_development_dataset,
     migrate_legacy_raw_info,
     prepare_dataset_proposal,
     prepare_expanded_dataset_proposal,
@@ -94,6 +98,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     initialize = subparsers.add_parser("init", help="initialize a workspace")
     initialize.add_argument("--workspace", type=Path, required=True)
+    initialize.add_argument("--raw-info-root", type=Path, required=True)
     initialize.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     initialize.add_argument(
         "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
@@ -115,6 +120,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="inventory local point-in-time inputs and registered API routes",
     )
     preflight.add_argument("--workspace", type=Path, required=True)
+    preflight.add_argument("--raw-info-root", type=Path, required=True)
     preflight.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     preflight.add_argument("--cases", type=Path, default=DEFAULT_CASES)
     preflight.add_argument("--documents", type=Path, default=DEFAULT_DOCUMENTS)
@@ -139,6 +145,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="convert label-free legacy sources into the append-only Raw Info Store",
     )
     migrate.add_argument("--workspace", type=Path, required=True)
+    migrate.add_argument("--raw-info-root", type=Path, required=True)
     migrate.add_argument("--cases", type=Path, default=DEFAULT_CASES)
     migrate.add_argument("--documents", type=Path, default=DEFAULT_DOCUMENTS)
     migrate.add_argument(
@@ -199,6 +206,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="freeze an approved dataset, Signal snapshot, models, limits, and budget",
     )
     freeze.add_argument("--workspace", type=Path, required=True)
+    freeze.add_argument("--raw-info-root", type=Path, required=True)
     freeze.add_argument("--approved-dataset", type=Path, required=True)
     freeze.add_argument("--run-id", required=True)
     freeze.add_argument("--cases", type=Path, default=DEFAULT_CASES)
@@ -226,6 +234,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="preflight or execute one frozen bounded Fast/Slow cycle",
     )
     run_cycle.add_argument("--workspace", type=Path, required=True)
+    run_cycle.add_argument("--raw-info-root", type=Path, required=True)
     run_cycle.add_argument("--approved-dataset", type=Path, required=True)
     run_cycle.add_argument("--external", action="store_true")
     run_cycle.add_argument("--data-external", action="store_true")
@@ -239,6 +248,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="continuously start bounded cycles until Ctrl+C or --max-cycles",
     )
     run_loop.add_argument("--workspace", type=Path, required=True)
+    run_loop.add_argument("--raw-info-root", type=Path, required=True)
     run_loop.add_argument("--approved-dataset", type=Path, required=True)
     run_loop.add_argument("--external", action="store_true")
     run_loop.add_argument("--data-external", action="store_true")
@@ -276,9 +286,14 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def initialize_workspace(workspace_path: Path, catalog_path: Path) -> dict[str, object]:
+def initialize_workspace(
+    workspace_path: Path,
+    catalog_path: Path,
+    raw_info_root: Path,
+) -> dict[str, object]:
     workspace = EvolutionWorkspace(workspace_path)
-    RawInfoStore(workspace_path / "raw_info")
+    oracle = RawInfoOracle.load_or_create(raw_info_root)
+    raw_info = RawInfoStore(raw_info_root)
     registry = SignalRegistry(
         workspace_path / "signals",
         candidate_root=workspace_path / "signals_candidates",
@@ -287,6 +302,9 @@ def initialize_workspace(workspace_path: Path, catalog_path: Path) -> dict[str, 
     snapshot = registry.freeze()
     return {
         "workspace": str(workspace.root),
+        "raw_info_root": str(raw_info_root),
+        "raw_info_oracle_id": oracle.oracle_id,
+        "raw_info_inventory_hash": raw_info.inventory_hash,
         "last_completed_round": workspace.last_completed_round,
         "registry_version": registry.version,
         "registry_hash": snapshot.registry_hash,
@@ -371,6 +389,7 @@ def workspace_status(workspace_path: Path) -> dict[str, object]:
 def preflight_local(
     *,
     workspace_path: Path,
+    raw_info_root: Path,
     catalog_path: Path,
     cases_path: Path,
     documents_path: Path,
@@ -381,7 +400,9 @@ def preflight_local(
     """Write a no-network evidence bundle for local data and model readiness."""
 
     _load_local_env(PROJECT_ROOT / ".env.local")
-    workspace_state = initialize_workspace(workspace_path, catalog_path)
+    workspace_state = initialize_workspace(
+        workspace_path, catalog_path, raw_info_root
+    )
     inventory = inventory_local_evolution_inputs(
         cases_path=cases_path,
         documents_path=documents_path,
@@ -478,6 +499,7 @@ def approve_signals(
 def migrate_raw_info(
     *,
     workspace_path: Path,
+    raw_info_root: Path,
     cases_path: Path,
     documents_path: Path,
     adjusted_prices_path: Path,
@@ -486,7 +508,7 @@ def migrate_raw_info(
         cases_path=cases_path,
         documents_path=documents_path,
         adjusted_prices_path=adjusted_prices_path,
-        raw_info_root=workspace_path / "raw_info",
+        raw_info_root=raw_info_root,
     )
     preflight_root = workspace_path / "preflight"
     preflight_root.mkdir(parents=True, exist_ok=True)
@@ -541,6 +563,7 @@ def prepare_expanded_dataset(
 def freeze_run(
     *,
     workspace_path: Path,
+    raw_info_root: Path,
     approved_dataset_path: Path,
     run_id: str,
     cases_path: Path,
@@ -560,6 +583,14 @@ def freeze_run(
     max_data_requests_per_run: int = 0,
 ) -> dict[str, object]:
     _load_local_env(PROJECT_ROOT / ".env.local")
+    oracle = RawInfoOracle.load_or_create(raw_info_root)
+    raw_info_store = RawInfoStore(raw_info_root)
+    approved_dataset = load_approved_development_dataset(approved_dataset_path)
+    EvaluationDatasetManager(
+        workspace_path / "evaluation",
+        approved_dataset.evolution_validation,
+        PlanEvaluationConfig(),
+    ).validate_feasibility()
     contract_path = workspace_path / "run_contract.json"
     if contract_path.exists():
         contract = EvolutionRunContract.load_frozen(contract_path)
@@ -573,6 +604,7 @@ def freeze_run(
             or contract.models["proposer"]["alias"] != evolution_model
             or contract.max_external_attempts != max_external_attempts
             or contract.max_total_cost != max_total_cost
+            or contract.raw_info_oracle_id != oracle.oracle_id
             or contract.data_acquisition
             != DataAcquisitionPolicy(
                 enabled=data_external,
@@ -599,6 +631,8 @@ def freeze_run(
             run_id=run_id,
             dataset_manifest_path=approved_dataset_path,
             inventory=inventory,
+            raw_info_oracle=oracle,
+            raw_info_inventory_hash=raw_info_store.inventory_hash,
             signal_registry_version=registry.version,
             signal_registry_hash=snapshot.registry_hash,
             priors={
@@ -642,6 +676,8 @@ def freeze_run(
         "contract_hash": contract.contract_hash,
         "run_id": contract.run_id,
         "dataset_manifest_hash": contract.dataset_manifest_hash,
+        "raw_info_oracle_id": contract.raw_info_oracle_id,
+        "raw_info_inventory_hash": contract.raw_info_inventory_hash,
         "signal_registry_hash": contract.signal_registry_hash,
         "models": contract.models,
         "max_external_attempts": contract.max_external_attempts,
@@ -655,6 +691,7 @@ def freeze_run(
 def run_cycle_command(
     *,
     workspace_path: Path,
+    raw_info_root: Path,
     approved_dataset_path: Path,
     external: bool,
     acknowledged_contract_hash: str | None,
@@ -663,9 +700,18 @@ def run_cycle_command(
 ) -> dict[str, object]:
     _load_local_env(PROJECT_ROOT / ".env.local")
     contract = EvolutionRunContract.load_frozen(workspace_path / "run_contract.json")
+    if not contract.executable:
+        return {
+            "status": "legacy_contract_read_only",
+            "contract_hash": contract.contract_hash,
+            "schema_version": contract.schema_version,
+            "external_calls": 0,
+            "locked_test_accessed": False,
+        }
     try:
         result = run_bounded_evolution_cycle(
             workspace_path=workspace_path,
+            raw_info_root=raw_info_root,
             approved_dataset_manifest=approved_dataset_path,
             contract=contract,
             allow_external=external,
@@ -697,6 +743,24 @@ def run_cycle_command(
             "last_completed_cycle": workspace.last_completed_cycle,
             "trajectory_path": str(workspace.trajectory_events_path),
         }
+    except EvaluationDatasetInfeasible as infeasible:
+        return {
+            **infeasible.to_dict(),
+            "contract_hash": contract.contract_hash,
+            "external_calls": 0,
+            "locked_test_accessed": False,
+        }
+    except RoundPaused as paused:
+        workspace = EvolutionWorkspace(workspace_path)
+        return {
+            "status": "round_rejected",
+            "round_id": paused.round_id,
+            "reason": paused.reason,
+            "checkpoint_ref": paused.checkpoint_ref,
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": workspace.last_completed_cycle,
+            "locked_test_accessed": False,
+        }
     workspace = EvolutionWorkspace(workspace_path)
     return {
         "status": "cycle_completed",
@@ -717,6 +781,7 @@ def run_cycle_command(
 def run_loop_command(
     *,
     workspace_path: Path,
+    raw_info_root: Path,
     approved_dataset_path: Path,
     external: bool,
     acknowledged_contract_hash: str | None,
@@ -732,6 +797,7 @@ def run_loop_command(
     while max_cycles == 0 or len(completed) < max_cycles:
         result = run_cycle_command(
             workspace_path=workspace_path,
+            raw_info_root=raw_info_root,
             approved_dataset_path=approved_dataset_path,
             external=external,
             data_external=data_external,
@@ -972,12 +1038,15 @@ def main() -> int:
     )
     try:
         if args.command == "init":
-            result = initialize_workspace(args.workspace, args.catalog)
+            result = initialize_workspace(
+                args.workspace, args.catalog, args.raw_info_root
+            )
         elif args.command == "validate-catalog":
             result = validate_catalog(args.catalog)
         elif args.command == "preflight-local":
             result = preflight_local(
                 workspace_path=args.workspace,
+                raw_info_root=args.raw_info_root,
                 catalog_path=args.catalog,
                 cases_path=args.cases,
                 documents_path=args.documents,
@@ -994,6 +1063,7 @@ def main() -> int:
         elif args.command == "migrate-raw-info":
             result = migrate_raw_info(
                 workspace_path=args.workspace,
+                raw_info_root=args.raw_info_root,
                 cases_path=args.cases,
                 documents_path=args.documents,
                 adjusted_prices_path=args.adjusted_prices,
@@ -1032,6 +1102,7 @@ def main() -> int:
         elif args.command == "freeze-run":
             result = freeze_run(
                 workspace_path=args.workspace,
+                raw_info_root=args.raw_info_root,
                 approved_dataset_path=args.approved_dataset,
                 run_id=args.run_id,
                 cases_path=args.cases,
@@ -1053,6 +1124,7 @@ def main() -> int:
         elif args.command == "run-cycle":
             result = run_cycle_command(
                 workspace_path=args.workspace,
+                raw_info_root=args.raw_info_root,
                 approved_dataset_path=args.approved_dataset,
                 external=args.external,
                 data_external=args.data_external,
@@ -1062,6 +1134,7 @@ def main() -> int:
         elif args.command == "run-loop":
             result = run_loop_command(
                 workspace_path=args.workspace,
+                raw_info_root=args.raw_info_root,
                 approved_dataset_path=args.approved_dataset,
                 external=args.external,
                 data_external=args.data_external,
@@ -1084,6 +1157,13 @@ def main() -> int:
             raise
         result = _interrupt_result(args.workspace, on_progress=progress)
         exit_code = 130
+    except EvaluationDatasetInfeasible as infeasible:
+        result = {
+            **infeasible.to_dict(),
+            "external_calls": 0,
+            "locked_test_accessed": False,
+        }
+        exit_code = 2
     except RetryableOpenAIClientError as exc:
         if args.command not in {"run-cycle", "run-loop"}:
             raise

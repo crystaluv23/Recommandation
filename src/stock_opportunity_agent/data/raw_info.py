@@ -7,6 +7,7 @@ import json
 import os
 import re
 import tempfile
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -31,6 +32,69 @@ _FORBIDDEN_OUTCOME_FIELDS = frozenset(
         "post_outcome",
     }
 )
+_ORACLE_METADATA_NAME = "oracle.json"
+_ORACLE_SCHEMA = "raw-info-oracle-v1"
+
+
+@dataclass(frozen=True)
+class RawInfoOracle:
+    """Stable identity for one global append-only Raw Info oracle."""
+
+    oracle_id: str
+    created_at: str
+    schema_version: str = _ORACLE_SCHEMA
+
+    def __post_init__(self) -> None:
+        _validate_component(self.oracle_id, "oracle_id")
+        if self.schema_version != _ORACLE_SCHEMA:
+            raise ValidationError("unsupported Raw Info oracle schema")
+        _require_aware(_parse_datetime(self.created_at), "created_at")
+
+    def to_dict(self) -> dict[str, str]:
+        """Return the immutable, secret-free oracle identity."""
+
+        return {
+            "schema_version": self.schema_version,
+            "oracle_id": self.oracle_id,
+            "created_at": self.created_at,
+        }
+
+    @classmethod
+    def load_or_create(cls, root: str | Path) -> "RawInfoOracle":
+        """Load the oracle identity, creating it only for a new empty root."""
+
+        root_path = Path(root)
+        root_path.mkdir(parents=True, exist_ok=True)
+        metadata_path = root_path / _ORACLE_METADATA_NAME
+        if metadata_path.is_file():
+            data = json.loads(metadata_path.read_text(encoding="utf-8"))
+            return cls(
+                oracle_id=str(data["oracle_id"]),
+                created_at=str(data["created_at"]),
+                schema_version=str(data.get("schema_version", "")),
+            )
+        if any(root_path.iterdir()):
+            raise ValidationError(
+                "existing Raw Info root has no oracle identity; migrate it explicitly"
+            )
+        oracle = cls(
+            oracle_id=f"raw-info-{uuid.uuid4().hex}",
+            created_at=datetime.now().astimezone().isoformat(),
+        )
+        descriptor, temporary = tempfile.mkstemp(
+            prefix=".oracle.", dir=root_path
+        )
+        try:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                json.dump(oracle.to_dict(), handle, sort_keys=True, indent=2)
+                handle.write("\n")
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.link(temporary, metadata_path)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+        return oracle
 
 
 @dataclass(frozen=True)
@@ -238,9 +302,29 @@ class RawInfoStore:
 
         return tuple(self._documents[key] for key in sorted(self._documents))
 
+    @property
+    def inventory_hash(self) -> str:
+        """Hash document identities without treating oracle growth as run state."""
+
+        payload = [
+            {
+                "document_id": item.document_id,
+                "content_hash": item.content_hash,
+                "available_at": item.available_at.isoformat(),
+            }
+            for item in self.documents
+        ]
+        return hashlib.sha256(
+            json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
+                "utf-8"
+            )
+        ).hexdigest()
+
     def _load_existing(self) -> None:
         assert self.root is not None
         for path in sorted(self.root.rglob("*.json")):
+            if path == self.root / _ORACLE_METADATA_NAME:
+                continue
             document = RawInfoDocument.from_dict(
                 json.loads(path.read_text(encoding="utf-8"))
             )

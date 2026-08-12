@@ -9,7 +9,11 @@ from stock_opportunity_agent.data.acquisition import (
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
 )
-from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.raw_info import (
+    RawInfoDocument,
+    RawInfoOracle,
+    RawInfoStore,
+)
 from stock_opportunity_agent.data.resolution import (
     AcquisitionFailure,
     AcquisitionResult,
@@ -17,6 +21,7 @@ from stock_opportunity_agent.data.resolution import (
     DataGapReason,
     EvidenceResolver,
     RawInfoRequest,
+    aggregate_capability_gaps,
 )
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -315,7 +320,40 @@ class EvidenceResolverTests(TestCase):
     def test_file_backed_oracle_growth_does_not_create_evolution_state(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
+            oracle = RawInfoOracle.load_or_create(root / "raw_info")
+            self.assertEqual(
+                RawInfoOracle.load_or_create(root / "raw_info").oracle_id,
+                oracle.oracle_id,
+            )
             store = RawInfoStore(root / "raw_info")
             store.append(document("one", "source fact"))
             self.assertFalse((root / "state.json").exists())
             self.assertFalse((root / "cycle_state.json").exists())
+
+    def test_capability_backlog_aggregates_gaps_and_marks_added_adapter_resolved(self) -> None:
+        trajectory = {
+            "case_id": "case_1",
+            "basic_info_bundle": {
+                "requests": [
+                    {
+                        "data_gap": {
+                            "request_id": "recent_news",
+                            "reason": "adapter_missing",
+                            "message": "missing",
+                            "source_types": ["news"],
+                            "provider": None,
+                        }
+                    }
+                ]
+            },
+            "signal_rounds": [],
+        }
+        open_report = aggregate_capability_gaps((trajectory, trajectory))
+        self.assertEqual(open_report["items"][0]["occurrences"], 2)
+        self.assertEqual(open_report["items"][0]["affected_case_ids"], ["case_1"])
+        self.assertEqual(open_report["open_count"], 1)
+
+        resolved = aggregate_capability_gaps(
+            (trajectory,), available_source_types=("news",)
+        )
+        self.assertEqual(resolved["items"][0]["status"], "resolved")

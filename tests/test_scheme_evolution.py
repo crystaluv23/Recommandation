@@ -31,6 +31,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ConfidenceLevel,
     DualLoopEvolutionEngine,
     EvaluationDatasetManager,
+    EvaluationDatasetInfeasible,
     EvolutionCase,
     EvolutionDataset,
     EvolutionWorkspace,
@@ -54,12 +55,12 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimePlanEvaluator,
     RuntimeStopReason,
     RuntimeUsage,
+    RoundPaused,
     SignalCandidateValidator,
     SignalEvolutionEngine,
     SignalRound,
     default_information_plan,
     execute_information_plan,
-    sample_stratified_cases,
     score_predictions,
 )
 from stock_opportunity_agent.signal_library import (
@@ -124,9 +125,27 @@ class OneBatchController:
             AgentUsage(llm_calls=1, tokens=20, cost=0.01),
         )
 
+    def finalize(self, plan, state, reason):
+        return AgentStep(
+            ResearchState(
+                hypotheses=state.hypotheses,
+                current_beliefs=state.current_beliefs,
+                supporting_evidence=state.supporting_evidence,
+                resolved_questions=state.resolved_questions,
+                decision=ResearchDecision.FINALIZE,
+            ),
+            AgentUsage(llm_calls=1, tokens=10, cost=0.005),
+        )
+
 
 class OneSignalSelector:
-    def select(self, information_needs, signal_registry):
+    def select(
+        self,
+        information_needs,
+        signal_registry,
+        prior_signal_fingerprints=None,
+        prior_signal_results=None,
+    ):
         self.needs = tuple(information_needs)
         return AgentStep(
             ("revenue_growth_yoy:v1",),
@@ -387,19 +406,22 @@ class GenericAgentTests(TestCase):
 class SignalLibraryTests(TestCase):
     def _registry(self, directory: str) -> SignalRegistry:
         registry = SignalRegistry(Path(directory) / "signals")
-        self.assertEqual(registry.install_catalog(SEED_CATALOG), 13)
+        self.assertEqual(registry.install_catalog(SEED_CATALOG), 11)
         return registry
 
     def test_seed_catalog_progressive_disclosure_and_frozen_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
-            self.assertEqual(len(registry.list_signal_cards()), 13)
+            self.assertEqual(len(registry.list_signal_cards()), 11)
             self.assertIn("financial", registry.list_categories())
             cards = registry.search_signal_cards("customer")
             self.assertTrue(cards)
-            spec = registry.load_spec("pilot_to_volume:v1")
+            self.assertFalse(registry.search_signal_cards("market cap"))
+            with self.assertRaises(ValidationError):
+                registry.load_spec("pilot_to_volume:v1")
+            spec = registry.load_spec("guidance_acceleration:v1")
             self.assertEqual(spec.execution_type, SignalExecutionType.LLM)
-            self.assertIn("scaled deployment", registry.load_skill(spec.ref))
+            self.assertIn("guidance", registry.load_skill(spec.ref))
             snapshot = registry.freeze()
             v2 = SignalSpec(
                 signal_id="revenue_growth_yoy",
@@ -427,8 +449,10 @@ class SignalLibraryTests(TestCase):
                         source_type="financials",
                         published_at=NOW - timedelta(days=2),
                         available_at=NOW - timedelta(days=1),
-                        content="Revenue grew 25 percent year over year.",
-                        metadata={"revenue_growth_yoy": 0.25},
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
                     ),
                     RawInfoDocument.create(
                         document_id="financial_future",
@@ -436,8 +460,10 @@ class SignalLibraryTests(TestCase):
                         source_type="financials",
                         published_at=NOW + timedelta(days=1),
                         available_at=NOW + timedelta(days=1),
-                        content="Revenue later fell.",
-                        metadata={"revenue_growth_yoy": -0.5},
+                        content=sec_company_facts_content(
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                            ("2025-01-01", "2025-12-31", 50.0, "2026-01-10"),
+                        ),
                     ),
                 )
             )
@@ -495,7 +521,7 @@ class SignalLibraryTests(TestCase):
             )
             with self.assertRaisesRegex(ValidationError, "outside its inputs"):
                 executor.execute_batch(
-                    ("pilot_to_volume:v1",),
+                    ("guidance_acceleration:v1",),
                     company_id="issuer_1",
                     as_of=NOW,
                 )
@@ -634,7 +660,11 @@ class InformationPlanRuntimeTests(TestCase):
                     max_llm_calls=10,
                 ),
             )
-            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.MAX_SIGNAL_ROUNDS)
+            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+            self.assertEqual(
+                trajectory.termination_trigger,
+                RuntimeStopReason.MAX_SIGNAL_ROUNDS,
+            )
             self.assertEqual(len(trajectory.signal_rounds), 1)
             self.assertEqual(persisted, ["done"])
 
@@ -678,9 +708,10 @@ class InformationPlanRuntimeTests(TestCase):
                     ground_truth=GroundTruth(4.0),
                 ),
             )
-            trajectories = evaluator.evaluate(
+            attempt = evaluator.evaluate(
                 default_information_plan(), cases, registry.freeze()
             )
+            trajectories = attempt.trajectories
             self.assertEqual(
                 [row.ground_truth.realized_max_multiple for row in trajectories],
                 [1.2, 4.0],
@@ -698,7 +729,7 @@ class InformationPlanRuntimeTests(TestCase):
                 prediction_root=root / "predictions",
                 on_progress=resumed_events.append,
             ).evaluate(default_information_plan(), cases, registry.freeze())
-            self.assertEqual(resumed, trajectories)
+            self.assertEqual(resumed.trajectories, trajectories)
             self.assertEqual(resumed_predictor.reflection_truths, [])
             self.assertEqual(
                 [event["event_type"] for event in resumed_events],
@@ -776,55 +807,39 @@ class PredictionMetricTests(TestCase):
 
 
 class EvaluationDatasetSamplingTests(TestCase):
-    def test_snapshots_are_stratified_reused_and_round_disjoint(self) -> None:
+    def test_snapshots_have_exact_counts_and_rotate_without_anchors(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "evaluation"
             pool = make_evaluation_pool()
             config = PlanEvaluationConfig()
             manager = EvaluationDatasetManager(root, pool, config)
 
-            anchor = manager.get_or_create_anchor_dataset()
-            round_one = manager.get_or_create_screening_dataset(1)
-            promotion = manager.get_or_create_promotion_dataset(1)
-            round_two = manager.get_or_create_screening_dataset(2)
+            round_one = manager.get_or_create_round_dataset(1)
+            round_two = manager.get_or_create_round_dataset(2)
 
-            self.assertEqual(anchor.actual_counts, {
-                "non_surge": 3,
-                "2_3x": 2,
-                "3_10x": 2,
-                "10x_plus": 1,
-            })
             self.assertEqual(round_one.actual_counts, {
                 "non_surge": 8,
                 "2_3x": 6,
                 "3_10x": 4,
                 "10x_plus": 2,
             })
-            self.assertEqual(promotion.actual_counts, round_one.actual_counts)
-            self.assertEqual(round_one.anchor_case_ids, round_two.anchor_case_ids)
-            self.assertNotEqual(
-                round_one.rotating_case_ids,
-                round_two.rotating_case_ids,
-            )
-            self.assertFalse(set(round_one.case_ids) & set(promotion.case_ids))
-            all_round_cases = manager.resolve_cases(
-                round_one.case_ids + promotion.case_ids
-            )
+            self.assertEqual(round_two.actual_counts, round_one.actual_counts)
+            self.assertFalse(set(round_one.case_ids) & set(round_two.case_ids))
+            all_round_cases = manager.resolve_cases(round_one.case_ids)
             self.assertEqual(
                 len({case.company_id for case in all_round_cases}),
                 len(all_round_cases),
             )
             self.assertEqual(round_one.random_seed, 43)
-            self.assertTrue((root / "anchor.json").is_file())
-            self.assertTrue((root / "round_001" / "screening.json").is_file())
-            self.assertTrue((root / "round_001" / "promotion.json").is_file())
+            self.assertTrue((root / "round_001" / "snapshot.json").is_file())
+            self.assertFalse((root / "anchor.json").exists())
 
             restarted = EvaluationDatasetManager(root, tuple(reversed(pool)), config)
-            reused = restarted.get_or_create_screening_dataset(1)
+            reused = restarted.get_or_create_round_dataset(1)
             self.assertEqual(reused.snapshot_id, round_one.snapshot_id)
             self.assertEqual(reused.case_ids, round_one.case_ids)
 
-    def test_sampling_shortage_never_duplicates_cases_or_company(self) -> None:
+    def test_sampling_shortage_fails_closed(self) -> None:
         shared_one = EvolutionCase(
             company_id="shared",
             prediction_time=NOW,
@@ -840,19 +855,13 @@ class EvaluationDatasetSamplingTests(TestCase):
             case_id="shared:second",
         )
         positive = make_case("only_positive", 2.2)
-        sampled = sample_stratified_cases(
-            (shared_one, shared_two, positive),
-            {
-                "non_surge": 2,
-                "2_3x": 2,
-                "3_10x": 1,
-                "10x_plus": 1,
-            },
-            seed=7,
-        )
-        self.assertEqual(len(sampled), 2)
-        self.assertEqual(len({case.case_id for case in sampled}), 2)
-        self.assertEqual(len({case.company_id for case in sampled}), 2)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(EvaluationDatasetInfeasible):
+                EvaluationDatasetManager(
+                    Path(directory),
+                    (shared_one, shared_two, positive),
+                    PlanEvaluationConfig(),
+                )
 
 
 class PlanArchiveAndWorkspaceTests(TestCase):
@@ -1027,6 +1036,7 @@ class CountingProposer:
         round_id,
         candidate_index,
         candidate_count,
+        proposal_attempt,
         forbidden_plan_ids,
         parents,
         meta_info,
@@ -1037,6 +1047,7 @@ class CountingProposer:
                 "round_id": round_id,
                 "candidate_index": candidate_index,
                 "candidate_count": candidate_count,
+                "proposal_attempt": proposal_attempt,
                 "forbidden_plan_ids": forbidden_plan_ids,
                 "parents": tuple(plan.plan_id for plan in parents),
                 "meta_rounds": tuple(entry.round_id for entry in meta_info),
@@ -1071,6 +1082,7 @@ class SyntheticPlanEvaluator:
                     case.ground_truth.realized_max_multiple,
                     predicted,
                     case.ground_truth.magnitude if predicted else None,
+                    case_id=case.case_id,
                     signal_result=(
                         SignalResult(
                             signal_id="revenue_growth_yoy",
@@ -1115,7 +1127,7 @@ class SimpleRoundReflector:
 
 
 class PlanEvolutionEngineTests(TestCase):
-    def test_two_stage_shares_cases_and_recomputes_full_metrics(self) -> None:
+    def test_one_stage_shares_exact_round_snapshot_and_keeps_diagnostics(self) -> None:
         class StageAwareEvaluator:
             def __init__(self) -> None:
                 self.calls: dict[str, list[tuple[str, ...]]] = {}
@@ -1123,11 +1135,10 @@ class PlanEvolutionEngineTests(TestCase):
             def evaluate(self, plan, cases, signal_registry):
                 prior_calls = self.calls.setdefault(plan.plan_id, [])
                 prior_calls.append(tuple(case.case_id for case in cases))
-                is_promotion = len(prior_calls) == 2
                 rows = []
                 for case in cases:
                     if plan.plan_id == "plan_child_1":
-                        predicted = not is_promotion
+                        predicted = True
                     elif plan.plan_id == "plan_child_2":
                         predicted = case.ground_truth.is_surge
                     else:
@@ -1146,6 +1157,7 @@ class PlanEvolutionEngineTests(TestCase):
                                     else None
                                 )
                             ),
+                            case_id=case.case_id,
                         )
                     )
                 return tuple(rows)
@@ -1173,34 +1185,25 @@ class PlanEvolutionEngineTests(TestCase):
                 signal_snapshot=registry.freeze(),
             )
 
-            screening_ids = evaluator.calls["plan_child_1"][0]
-            self.assertEqual(evaluator.calls["plan_child_2"][0], screening_ids)
-            self.assertEqual(evaluator.calls["plan_child_3"][0], screening_ids)
-            promotion_ids = evaluator.calls["plan_child_1"][1]
-            self.assertEqual(evaluator.calls["plan_child_2"][1], promotion_ids)
-            self.assertFalse(set(screening_ids) & set(promotion_ids))
-            self.assertNotIn("plan_child_3", {
-                plan_id
-                for plan_id, calls in evaluator.calls.items()
-                if len(calls) == 2
-            })
+            round_ids = evaluator.calls["plan_child_1"][0]
+            self.assertEqual(evaluator.calls["plan_child_2"][0], round_ids)
+            self.assertEqual(evaluator.calls["plan_child_3"][0], round_ids)
+            self.assertTrue(all(len(calls) == 1 for calls in evaluator.calls.values()))
 
             records = {record.plan_id: record for record in result.records}
             self.assertEqual(
                 records["plan_child_3"].evaluation.evaluation_stage,
-                "screening",
+                "round",
             )
             self.assertEqual(records["plan_child_3"].evaluation.n_cases, 20)
-            promoted = records["plan_child_1"]
-            self.assertEqual(promoted.evaluation.evaluation_stage, "promotion")
-            self.assertEqual(promoted.evaluation.n_cases, 40)
-            self.assertEqual(promoted.metrics, score_predictions(promoted.trajectories))
-            screening_f1 = score_predictions(promoted.trajectories[:20]).binary_f1
-            promotion_f1 = score_predictions(promoted.trajectories[20:]).binary_f1
-            self.assertNotAlmostEqual(
-                promoted.metrics.binary_f1,
-                (screening_f1 + promotion_f1) / 2,
-            )
+            self.assertFalse(records["plan_child_3"].fitness.eligible)
+            self.assertIn("no_positive_prediction", records["plan_child_3"].fitness.reasons)
+            self.assertEqual(records["plan_child_3"].metrics.predicted_positive_count, 0)
+            self.assertFalse(records["plan_child_3"].metrics.precision_defined)
+            evaluated = records["plan_child_1"]
+            self.assertEqual(evaluated.evaluation.evaluation_stage, "round")
+            self.assertEqual(evaluated.evaluation.n_cases, 20)
+            self.assertEqual(evaluated.metrics, score_predictions(evaluated.trajectories))
             saved = json.loads(
                 (
                     workspace.plans_root
@@ -1208,9 +1211,9 @@ class PlanEvolutionEngineTests(TestCase):
                     / "record.json"
                 ).read_text()
             )
-            self.assertEqual(saved["evaluation_stage"], "promotion")
-            self.assertEqual(saved["n_cases"], 40)
-            self.assertEqual(len(saved["dataset_snapshot_ids"]), 2)
+            self.assertEqual(saved["evaluation_stage"], "round")
+            self.assertEqual(saved["n_cases"], 20)
+            self.assertEqual(len(saved["dataset_snapshot_ids"]), 1)
 
     def test_non_content_pause_is_not_converted_to_candidate_rejection(self) -> None:
         class PendingApproval(ValidationError):
@@ -1241,7 +1244,7 @@ class PlanEvolutionEngineTests(TestCase):
             with self.assertRaisesRegex(PendingApproval, "approval pending"):
                 engine.run_round(
                     round_id=1,
-                    validation_cases=(make_case("validation_1", 1.2),),
+                    validation_cases=make_evaluation_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1275,10 +1278,10 @@ class PlanEvolutionEngineTests(TestCase):
                 candidates_per_round=2,
                 on_progress=events.append,
             )
-            with self.assertRaisesRegex(ValidationError, "all candidate"):
+            with self.assertRaisesRegex(RoundPaused, "all_candidate"):
                 engine.run_round(
                     round_id=1,
-                    validation_cases=(make_case("validation_1", 1.2),),
+                    validation_cases=make_evaluation_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1286,7 +1289,7 @@ class PlanEvolutionEngineTests(TestCase):
                 [item["event_type"] for item in events].count(
                     "candidate_proposal_rejected"
                 ),
-                2,
+                6,
             )
 
     def test_fast_loop_calls_proposer_independently_and_commits_s_e_j_r_u_t(self) -> None:
@@ -1316,10 +1319,7 @@ class PlanEvolutionEngineTests(TestCase):
                 rng=random.Random(3),
                 on_progress=progress_events.append,
             )
-            cases = (
-                make_case("validation_positive", 4.0),
-                make_case("validation_control", 1.2),
-            )
+            cases = make_evaluation_pool()
             result = engine.run_round(
                 round_id=1,
                 validation_cases=cases,
@@ -1341,7 +1341,7 @@ class PlanEvolutionEngineTests(TestCase):
                 self.assertEqual(record.metrics.binary_f1, 1.0)
                 self.assertTrue(record.reflection.successful_patterns)
                 self.assertIn("revenue_growth_yoy:v1", record.signal_usage)
-                self.assertEqual(len(record.trajectories), 2)
+                self.assertEqual(len(record.trajectories), 20)
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(workspace.restore_archive().records), 2)
             self.assertEqual(meta.entries[0].evidence_refs, ("plan_child_1", "plan_child_2"))
@@ -1359,8 +1359,8 @@ class PlanEvolutionEngineTests(TestCase):
             )
             self.assertIn("basic_info_requests", proposed["plan_summary"])
             stats = registry.load_stats("revenue_growth_yoy")
-            self.assertEqual(stats.retrieved, 4)
-            self.assertEqual(stats.executed, 4)
+            self.assertEqual(stats.retrieved, 40)
+            self.assertEqual(stats.executed, 40)
             PlanEvolutionEngine(
                 archive=workspace.restore_archive(),
                 meta_memory=workspace.restore_meta(),
@@ -1374,8 +1374,8 @@ class PlanEvolutionEngineTests(TestCase):
                 candidates_per_round=1,
             )
             reconciled = registry.load_stats("revenue_growth_yoy")
-            self.assertEqual(reconciled.retrieved, 4)
-            self.assertEqual(reconciled.executed, 4)
+            self.assertEqual(reconciled.retrieved, 40)
+            self.assertEqual(reconciled.executed, 40)
 
     def test_round_meta_cannot_cite_old_or_unrelated_experiment(self) -> None:
         class BadReflector(SimpleRoundReflector):
@@ -1401,7 +1401,7 @@ class PlanEvolutionEngineTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "outside new experiments"):
                 engine.run_round(
                     round_id=1,
-                    validation_cases=(make_case("validation_1", 1.2),),
+                    validation_cases=make_evaluation_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1544,7 +1544,7 @@ class SignalEvolutionTests(TestCase):
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
-            invalid_spec = registry.load_spec("pilot_to_volume:v1").to_dict()
+            invalid_spec = registry.load_spec("guidance_acceleration:v1").to_dict()
             invalid_spec["execution"].pop("type")
             mining_model = ScriptedAgentModel(
                 [
@@ -1677,7 +1677,7 @@ class DualLoopTests(TestCase):
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
-                evolution_validation=(make_case("validation_case", 1.5),),
+                evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
             result = DualLoopEvolutionEngine(
@@ -1690,7 +1690,8 @@ class DualLoopTests(TestCase):
             self.assertEqual(len(result.plan_rounds), 1)
             self.assertEqual(result.signal_evolution.promoted, ())
             self.assertEqual(workspace.last_completed_round, 1)
-            self.assertEqual(evaluator.seen_company_ids, ["validation_case"])
+            self.assertEqual(len(evaluator.seen_company_ids), 20)
+            self.assertEqual(len(set(evaluator.seen_company_ids)), 20)
             self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
 
     def test_dual_loop_resume_runs_only_remaining_fast_rounds(self) -> None:
@@ -1747,7 +1748,7 @@ class DualLoopTests(TestCase):
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
-                evolution_validation=(make_case("validation_case", 1.5),),
+                evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
 
@@ -1762,17 +1763,11 @@ class DualLoopTests(TestCase):
             self.assertEqual([item.round_id for item in result.plan_rounds], [2])
             self.assertEqual(workspace.last_completed_round, 2)
             self.assertEqual(len(proposer.calls), 1)
-            self.assertEqual(
-                result.plan_rounds[0].champion_record.plan_id,
-                "plan_committed",
+            self.assertEqual(len(result.plan_rounds[0].records), 1)
+            self.assertFalse(
+                (workspace.evaluation_root / "round_002" / "champion.json").exists()
             )
-            self.assertTrue(
-                (workspace.evaluation_root / "round_002" / "champion.json").is_file()
-            )
-            self.assertEqual(
-                evaluator.seen_company_ids,
-                ["validation_case", "validation_case"],
-            )
+            self.assertEqual(len(evaluator.seen_company_ids), 20)
 
 
 def make_evaluation_pool() -> tuple[EvolutionCase, ...]:
@@ -1813,11 +1808,43 @@ def candidate_growth_fixture() -> dict[str, Any]:
                 "source_type": "financials",
                 "published_at": NOW.isoformat(),
                 "available_at": NOW.isoformat(),
-                "content": "Revenue grew 25 percent year over year.",
-                "metadata": {"revenue_growth_yoy": 0.25},
+                "content": sec_company_facts_content(
+                    ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                    ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                ),
             }
         ],
     }
+
+
+def sec_company_facts_content(
+    *periods: tuple[str, str, float, str],
+) -> str:
+    rows = [
+        {
+            "accn": f"fixture-{index}",
+            "end": end,
+            "filed": filed,
+            "form": "10-K",
+            "start": start,
+            "val": value,
+        }
+        for index, (start, end, value, filed) in enumerate(periods, start=1)
+    ]
+    return json.dumps(
+        {
+            "cik": 1,
+            "facts": {
+                "us-gaap": {
+                    "RevenueFromContractWithCustomerExcludingAssessedTax": {
+                        "units": {"USD": rows}
+                    }
+                }
+            },
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
 
 
 def make_trajectory(
@@ -1827,6 +1854,7 @@ def make_trajectory(
     predicted_magnitude: MagnitudeClass | None,
     *,
     signal_result: SignalResult | None = None,
+    case_id: str | None = None,
 ) -> ExecutionTrajectory:
     truth = GroundTruth(multiple)
     prediction = BlindPrediction(
@@ -1853,9 +1881,17 @@ def make_trajectory(
             ),
         )
     return ExecutionTrajectory(
+        case_id=case_id or f"case_{company_id}",
         company_id=company_id,
         prediction_time=NOW,
-        basic_info={"ticker": company_id.upper()},
+        basic_info={
+            "requests": [
+                {
+                    "status": "resolved",
+                    "context_spans": [{"exact_text": "fixture source text"}],
+                }
+            ]
+        },
         initial_state=final_state,
         signal_rounds=signal_rounds,
         final_state=final_state,
@@ -1901,13 +1937,20 @@ def make_record(
             binary_f1=binary_f1,
             magnitude_accuracy=0.0,
             magnitude_macro_f1=0.0,
-            true_positive=0,
+            true_positive=1,
             false_positive=0,
-            true_negative=1,
+            true_negative=0,
             false_negative=0,
             sample_count=1,
         ),
         reflection=PlanReflection(),
         signal_usage={},
-        trajectories=(make_trajectory(f"case_{plan_id}", 1.0, False, None),),
+        trajectories=(
+            make_trajectory(
+                f"case_{plan_id}",
+                2.5,
+                True,
+                MagnitudeClass.TWO_TO_THREE,
+            ),
+        ),
     )

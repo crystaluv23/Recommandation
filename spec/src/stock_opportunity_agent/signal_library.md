@@ -50,8 +50,15 @@ signals_candidates/<category>/<signal_id>/v<N>/...
 
 The source-controlled v1 seed catalog may be compact JSON, but workspace
 initialization must materialize this runtime structure. The first seed catalog
-contains 12 manually defined Signals across financial, market, customers,
-management, orders, product, risk, and catalyst categories.
+contains 13 auditable definitions across financial, market, customers,
+management, orders, product, risk, and catalyst categories; 11 are enabled in
+the executable snapshot and two remain disabled.
+
+Seed and runtime manifests carry an explicit enabled status. Structurally
+unsupported definitions remain auditable but disabled and are omitted from
+category/card/spec disclosure. They may be enabled only after the capability
+audit below passes; absence of case-specific data remains a normal DataGap and
+does not structurally disable an otherwise executable Signal.
 
 ## Progressive Disclosure
 
@@ -66,12 +73,26 @@ The Registry exposes:
 accumulating while frozen, but stable definitions and versions cannot change
 until the fast-loop group ends.
 
+Before freeze, `SignalCapabilityAudit` validates every enabled Signal against
+its registered deterministic function or LLM skill, supported source routing,
+and a fixture in the actual Raw Info schema. The enabled-only snapshot and audit
+hash are bound by the run contract. `market_cap` and `pilot_to_volume` remain
+disabled until reliable historical inputs and adapters exist.
+
 ## Execution and Evidence
 
 `SignalExecutor.execute_batch()` retrieves only documents satisfying
 `available_at <= as_of`, executes all selected Signals, validates evidence, and
 returns one `SignalBatchResult`. Batch reflection happens later in the research
 controller.
+
+Within one case, executor identity is `(signal_ref, sorted document_id/hash
+fingerprint)`. Re-selecting the same Signal with an unchanged fingerprint is a
+no-op and does not consume another Signal call. A changed oracle fingerprint may
+be executed again. Financial deterministic Signals parse both scoped SEC
+Company Facts API JSON and accession-scoped
+`sec-company-facts-document-v1`; derived evidence cites the exact serialized
+fact rows used in the calculation.
 
 When evidence policy requires it, each non-unavailable result must cite a
 document in the actual input set, the cited timestamp cannot exceed the as-of

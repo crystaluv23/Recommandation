@@ -146,6 +146,7 @@ class GenericAgent:
 
         observations: list[ToolObservation] = []
         usage = AgentUsage()
+        output_corrections = 0
         cards = tuple(tool.card() for tool in tools)
         safe_workspace = dict(workspace)
 
@@ -163,6 +164,11 @@ class GenericAgent:
                 try:
                     value = output_schema(turn.final_output)
                 except ValidationError as exc:
+                    if output_corrections >= 1:
+                        raise ValidationError(
+                            "agent final output remained invalid after one correction"
+                        ) from exc
+                    output_corrections += 1
                     observations.append(
                         ToolObservation(
                             name="validate_final_output",

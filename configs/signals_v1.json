@@ -12,7 +12,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.2, "negative_max": 0.0}
       },
-      "tests": [{"name": "positive growth", "metadata_key": "revenue_growth_yoy", "value": 0.25, "expected": "positive"}]
+      "tests": [{"name": "positive growth", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}]}"}]}]
     },
     {
       "spec": {
@@ -25,7 +25,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.05, "negative_max": -0.05}
       },
-      "tests": [{"name": "growth acceleration", "value": 0.08, "expected": "positive"}]
+      "tests": [{"name": "growth acceleration", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2022-12-31\",\"start\":\"2022-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":80},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150}]}"}]}]
     },
     {
       "spec": {
@@ -38,7 +38,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.02, "negative_max": -0.02}
       },
-      "tests": [{"name": "margin expansion", "metadata_key": "gross_margin_change", "value": 0.03, "expected": "positive"}]
+      "tests": [{"name": "margin expansion", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":90}]}"}]}]
     },
     {
       "spec": {
@@ -51,9 +51,10 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": -0.2, "negative_max": -0.5}
       },
-      "tests": [{"name": "contained drawdown", "prices": [10, 12, 11, 13], "expected": "positive"}]
+      "tests": [{"name": "contained drawdown", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "market_data", "available_at": "2025-01-20T00:00:00+00:00", "content": "Point-in-time adjusted prices.", "metadata": {"prices": [10, 12, 11, 13]}}]}]
     },
     {
+      "enabled": false,
       "spec": {
         "signal_id": "market_cap",
         "version": 1,
@@ -77,9 +78,10 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 100000000, "negative_max": 10000000}
       },
-      "tests": [{"name": "cash buffer", "metadata_key": "cash_reserves", "value": 150000000, "expected": "positive"}]
+      "tests": [{"name": "cash buffer", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}]}"}]}]
     },
     {
+      "enabled": false,
       "spec": {
         "signal_id": "pilot_to_volume",
         "version": 1,
@@ -103,7 +105,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.",
-      "tests": [{"name": "generic optimism", "expected": "neutral"}]
+      "tests": [{"name": "generic optimism", "expected": "neutral", "documents": [{"source_type": "filing", "content": "Management remains optimistic but did not change guidance."}]}]
     },
     {
       "spec": {
@@ -116,7 +118,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.",
-      "tests": [{"name": "non-binding MOU", "expected": "neutral"}]
+      "tests": [{"name": "non-binding MOU", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The memorandum of understanding is non-binding."}]}]
     },
     {
       "spec": {
@@ -129,7 +131,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Cite literal spans.",
-      "tests": [{"name": "technical demo only", "expected": "neutral"}]
+      "tests": [{"name": "technical demo only", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The product remains a laboratory demonstration."}]}]
     },
     {
       "spec": {
@@ -142,7 +144,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.",
-      "tests": [{"name": "single customer majority", "expected": "negative"}]
+      "tests": [{"name": "single customer majority", "expected": "negative", "documents": [{"source_type": "filing", "content": "One customer represented 72 percent of revenue."}]}]
     },
     {
       "spec": {
@@ -155,7 +157,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"terms": ["decline", "loss", "risk", "delay", "investigation", "default"], "negative_count_min": 1}
       },
-      "tests": [{"name": "negative news terms", "expected": "negative"}]
+      "tests": [{"name": "negative news terms", "expected": "negative", "documents": [{"source_type": "news", "content": "The company reported a loss and material delay."}]}]
     },
     {
       "spec": {
@@ -168,7 +170,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Explain whether the point-in-time effect supports runway/tradability or increases dilution/distress, with literal spans.",
-      "tests": [{"name": "proposed financing is not completed", "expected": "neutral"}]
+      "tests": [{"name": "proposed financing is not completed", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The financing remains a proposal and has not closed."}]}]
     }
   ]
 }

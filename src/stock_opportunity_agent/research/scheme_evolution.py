@@ -17,6 +17,7 @@ from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
+    aggregate_capability_gaps,
     EvidenceResolver,
     MAX_BASIC_INFO_REQUESTS,
     RawInfoRequest,
@@ -306,6 +307,14 @@ class ResearchController(Protocol):
     ) -> AgentStep[ResearchState]:
         """Run H_reflect once over the complete Signal batch."""
 
+    def finalize(
+        self,
+        plan: InformationPlan,
+        state: ResearchState,
+        reason: RuntimeStopReason,
+    ) -> AgentStep[ResearchState]:
+        """Perform one bounded terminal reflection using available evidence."""
+
 
 class SignalRetrievalAgent(Protocol):
     """Maps natural-language needs to existing frozen Signal refs."""
@@ -314,6 +323,8 @@ class SignalRetrievalAgent(Protocol):
         self,
         information_needs: tuple[str, ...],
         signal_registry: FrozenSignalRegistry,
+        prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
+        prior_signal_results: Mapping[str, Mapping[str, Any]],
     ) -> AgentStep[tuple[str, ...]]:
         """Return a unique Signal batch after progressive disclosure."""
 
@@ -496,6 +507,13 @@ class SignalRound:
                 "resolutions": [
                     item.to_dict() for item in self.batch.resolutions
                 ],
+                "document_fingerprints": {
+                    ref: list(value)
+                    for ref, value in self.batch.document_fingerprints.items()
+                },
+                "skipped_unchanged_refs": list(
+                    self.batch.skipped_unchanged_refs
+                ),
             },
         }
 
@@ -530,6 +548,16 @@ class SignalRound:
                 resolutions=tuple(
                     RawInfoResolution.from_dict(item)
                     for item in batch.get("resolutions", ())
+                ),
+                document_fingerprints={
+                    str(ref): tuple(str(item) for item in value)
+                    for ref, value in dict(
+                        batch.get("document_fingerprints", {})
+                    ).items()
+                },
+                skipped_unchanged_refs=tuple(
+                    str(item)
+                    for item in batch.get("skipped_unchanged_refs", ())
                 ),
             ),
         )
@@ -610,6 +638,7 @@ class ExecutionTrajectory:
     stop_reason: RuntimeStopReason
     usage: RuntimeUsage
     case_id: str = ""
+    termination_trigger: RuntimeStopReason | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.company_id, "company_id")
@@ -625,6 +654,14 @@ class ExecutionTrajectory:
         object.__setattr__(self, "final_context", dict(self.final_context))
         if not isinstance(self.stop_reason, RuntimeStopReason):
             object.__setattr__(self, "stop_reason", RuntimeStopReason(self.stop_reason))
+        if self.termination_trigger is not None and not isinstance(
+            self.termination_trigger, RuntimeStopReason
+        ):
+            object.__setattr__(
+                self,
+                "termination_trigger",
+                RuntimeStopReason(self.termination_trigger),
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -641,6 +678,9 @@ class ExecutionTrajectory:
             "ground_truth": self.ground_truth.to_dict(),
             "self_reflection": self.self_reflection.to_dict(),
             "stop_reason": self.stop_reason.value,
+            "termination_trigger": (
+                self.termination_trigger.value if self.termination_trigger else None
+            ),
             "usage": self.usage.to_dict(),
         }
 
@@ -667,11 +707,44 @@ class ExecutionTrajectory:
             ),
             stop_reason=RuntimeStopReason(str(data["stop_reason"])),
             usage=RuntimeUsage.from_dict(dict(data["usage"])),
+            termination_trigger=(
+                RuntimeStopReason(str(data["termination_trigger"]))
+                if data.get("termination_trigger")
+                else None
+            ),
         )
 
 
 class RuntimeBudgetExceeded(ValidationError):
     """Raised when a completed model step crosses a hard token or cost limit."""
+
+
+class EvolutionControlFlow(ValidationError):
+    """Base for pauses that must propagate beyond candidate diagnostics."""
+
+
+class CandidateExecutionRejected(ValidationError):
+    """One candidate cannot continue after bounded structured correction."""
+
+    def __init__(
+        self,
+        stage: str,
+        message: str,
+        usage: AgentUsage = AgentUsage(),
+    ) -> None:
+        self.stage = str(stage)
+        self.usage = usage
+        super().__init__(message)
+
+
+class RoundPaused(EvolutionControlFlow):
+    """No valid evolutionary progress is possible under the frozen inputs."""
+
+    def __init__(self, round_id: int, reason: str, checkpoint_ref: str) -> None:
+        self.round_id = int(round_id)
+        self.reason = str(reason)
+        self.checkpoint_ref = str(checkpoint_ref)
+        super().__init__(f"round {round_id} paused: {reason}")
 
 
 def execute_information_plan(
@@ -724,28 +797,33 @@ def execute_information_plan(
     rounds: list[SignalRound] = []
     signal_calls = 0
     stop_reason = RuntimeStopReason.FINALIZED
+    termination_trigger: RuntimeStopReason | None = None
+    signal_fingerprints: dict[str, tuple[str, ...]] = {}
+    prior_signal_results: dict[str, Mapping[str, Any]] = {}
 
     while state.decision is ResearchDecision.CONTINUE:
         if len(rounds) >= limits.max_signal_rounds:
-            stop_reason = RuntimeStopReason.MAX_SIGNAL_ROUNDS
+            termination_trigger = RuntimeStopReason.MAX_SIGNAL_ROUNDS
             break
         if signal_calls >= limits.max_signal_calls:
-            stop_reason = RuntimeStopReason.MAX_SIGNAL_CALLS
+            termination_trigger = RuntimeStopReason.MAX_SIGNAL_CALLS
             break
         if model_usage.llm_calls + 4 > limits.max_llm_calls:
-            stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
 
         selection_step = signal_agent.select(
             state.next_information_needs,
             signal_registry,
+            signal_fingerprints,
+            prior_signal_results,
         )
         model_usage = _consume_model_step(model_usage, selection_step.usage, limits)
         selected = tuple(selection_step.value)
         if len(set(selected)) != len(selected):
             raise ValidationError("Signal Retrieval Agent returned duplicate refs")
         if not selected:
-            stop_reason = RuntimeStopReason.NO_SIGNAL_MATCH
+            termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break
         remaining_calls = limits.max_signal_calls - signal_calls
         selected = selected[:remaining_calls]
@@ -754,21 +832,55 @@ def execute_information_plan(
             company_id=company_id,
             as_of=prediction_time,
             identity=company_basic_source,
+            prior_fingerprints=signal_fingerprints,
+        )
+        signal_fingerprints.update(batch.document_fingerprints)
+        prior_signal_results.update(
+            {result.ref: result.to_dict() for result in batch.results}
         )
         model_usage = _consume_usage(model_usage, batch.usage, limits)
         signal_calls += batch.signal_calls
+        executed = tuple(result.ref for result in batch.results)
         rounds.append(
             SignalRound(
                 information_needs=state.next_information_needs,
-                selected_signals=selected,
+                selected_signals=executed,
                 batch=batch,
             )
         )
+        if not batch.results:
+            termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
+            break
         reflection_step = controller.reflect(plan, state, batch)
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
         state = reflection_step.value
         if state.decision is ResearchDecision.FINALIZE:
             stop_reason = RuntimeStopReason.FINALIZED
+
+    if state.decision is ResearchDecision.CONTINUE:
+        if termination_trigger is None:
+            termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
+        try:
+            terminal_step = controller.finalize(
+                plan,
+                state,
+                termination_trigger,
+            )
+            model_usage = _consume_model_step(
+                model_usage, terminal_step.usage, limits
+            )
+            state = terminal_step.value
+        except (AttributeError, RuntimeBudgetExceeded) as exc:
+            raise CandidateExecutionRejected(
+                "research_controller_finalize",
+                f"terminal reflection could not complete: {exc}",
+            ) from exc
+        if state.decision is not ResearchDecision.FINALIZE:
+            raise CandidateExecutionRejected(
+                "research_controller_finalize",
+                "terminal reflection did not return finalize",
+            )
+        stop_reason = RuntimeStopReason.FINALIZED
 
     final_context = _assemble_final_context(
         plan=plan,
@@ -778,6 +890,7 @@ def execute_information_plan(
         state=state,
         rounds=rounds,
         stop_reason=stop_reason,
+        termination_trigger=termination_trigger,
     )
     prediction_step = predictor.predict(final_context)
     model_usage = _consume_model_step(model_usage, prediction_step.usage, limits)
@@ -809,6 +922,7 @@ def execute_information_plan(
         ground_truth=ground_truth,
         self_reflection=reflection_step.value,
         stop_reason=stop_reason,
+        termination_trigger=termination_trigger,
         usage=RuntimeUsage(
             signal_rounds=len(rounds),
             signal_calls=signal_calls,
@@ -826,6 +940,7 @@ def _assemble_final_context(
     state: ResearchState,
     rounds: Iterable[SignalRound],
     stop_reason: RuntimeStopReason,
+    termination_trigger: RuntimeStopReason | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -845,6 +960,9 @@ def _assemble_final_context(
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
         "runtime_stop_reason": stop_reason.value,
+        "runtime_termination_trigger": (
+            termination_trigger.value if termination_trigger else None
+        ),
     }
     return _mask_identity_values(context, identity_aliases)
 
@@ -888,6 +1006,24 @@ class PlanMetrics:
     true_negative: int
     false_negative: int
     sample_count: int
+    predicted_positive_count: int | None = None
+    precision_defined: bool | None = None
+    valid_case_count: int | None = None
+
+    def __post_init__(self) -> None:
+        predicted = self.true_positive + self.false_positive
+        if self.predicted_positive_count is None:
+            object.__setattr__(self, "predicted_positive_count", predicted)
+        elif self.predicted_positive_count != predicted:
+            raise ValidationError("predicted-positive count differs from confusion")
+        if self.precision_defined is None:
+            object.__setattr__(self, "precision_defined", predicted > 0)
+        elif self.precision_defined != (predicted > 0):
+            raise ValidationError("precision-defined flag differs from confusion")
+        if self.valid_case_count is None:
+            object.__setattr__(self, "valid_case_count", self.sample_count)
+        if self.valid_case_count < 0 or self.valid_case_count > self.sample_count:
+            raise ValidationError("valid case count is outside the metric sample")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -903,6 +1039,9 @@ class PlanMetrics:
                 "false_negative": self.false_negative,
             },
             "sample_count": self.sample_count,
+            "predicted_positive_count": self.predicted_positive_count,
+            "precision_defined": self.precision_defined,
+            "valid_case_count": self.valid_case_count,
         }
 
     @classmethod
@@ -919,6 +1058,22 @@ class PlanMetrics:
             true_negative=int(confusion.get("true_negative", 0)),
             false_negative=int(confusion.get("false_negative", 0)),
             sample_count=int(data["sample_count"]),
+            predicted_positive_count=int(
+                data.get(
+                    "predicted_positive_count",
+                    int(confusion.get("true_positive", 0))
+                    + int(confusion.get("false_positive", 0)),
+                )
+            ),
+            precision_defined=bool(
+                data.get(
+                    "precision_defined",
+                    int(confusion.get("true_positive", 0))
+                    + int(confusion.get("false_positive", 0))
+                    > 0,
+                )
+            ),
+            valid_case_count=int(data.get("valid_case_count", data["sample_count"])),
         )
 
 
@@ -940,7 +1095,8 @@ def score_predictions(trajectories: Iterable[ExecutionTrajectory]) -> PlanMetric
     false_negative = sum(
         not row.prediction.is_surge and row.ground_truth.is_surge for row in rows
     )
-    precision = _safe_ratio(true_positive, true_positive + false_positive)
+    predicted_positive_count = true_positive + false_positive
+    precision = _safe_ratio(true_positive, predicted_positive_count)
     recall = _safe_ratio(true_positive, true_positive + false_negative)
     binary_f1 = _safe_ratio(2 * precision * recall, precision + recall)
 
@@ -985,6 +1141,111 @@ def score_predictions(trajectories: Iterable[ExecutionTrajectory]) -> PlanMetric
         true_negative=true_negative,
         false_negative=false_negative,
         sample_count=len(rows),
+        predicted_positive_count=predicted_positive_count,
+        precision_defined=predicted_positive_count > 0,
+        valid_case_count=len(rows),
+    )
+
+
+@dataclass(frozen=True)
+class FitnessEligibility:
+    """Explicit separation between durable diagnostics and selectable fitness."""
+
+    eligible: bool
+    reasons: tuple[str, ...]
+    expected_case_count: int
+    valid_case_count: int
+    evidence_covered_count: int
+    predicted_positive_count: int
+    true_positive_count: int
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "reasons", tuple(str(item) for item in self.reasons))
+        if self.eligible != (not self.reasons):
+            raise ValidationError("fitness eligibility must match its reasons")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "eligible": self.eligible,
+            "status": "eligible" if self.eligible else "diagnostic_only",
+            "reasons": list(self.reasons),
+            "expected_case_count": self.expected_case_count,
+            "valid_case_count": self.valid_case_count,
+            "evidence_covered_count": self.evidence_covered_count,
+            "predicted_positive_count": self.predicted_positive_count,
+            "true_positive_count": self.true_positive_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "FitnessEligibility":
+        reasons = tuple(str(item) for item in data.get("reasons", ()))
+        return cls(
+            eligible=bool(data.get("eligible", not reasons)),
+            reasons=reasons,
+            expected_case_count=int(data.get("expected_case_count", 0)),
+            valid_case_count=int(data.get("valid_case_count", 0)),
+            evidence_covered_count=int(data.get("evidence_covered_count", 0)),
+            predicted_positive_count=int(data.get("predicted_positive_count", 0)),
+            true_positive_count=int(data.get("true_positive_count", 0)),
+        )
+
+
+def assess_fitness_eligibility(
+    trajectories: Iterable[ExecutionTrajectory],
+    *,
+    expected_case_ids: Iterable[str],
+) -> FitnessEligibility:
+    """Assess completeness, finalization, evidence, and non-degenerate fitness."""
+
+    rows = tuple(trajectories)
+    expected = tuple(str(item) for item in expected_case_ids)
+    actual = tuple(row.case_id for row in rows)
+    valid_rows = tuple(
+        row
+        for row in rows
+        if row.stop_reason is RuntimeStopReason.FINALIZED
+        and row.final_state.decision is ResearchDecision.FINALIZE
+        and bool(row.prediction_ref.strip())
+    )
+    evidence_covered = sum(_trajectory_has_source_evidence(row) for row in rows)
+    predicted_positive = sum(row.prediction.is_surge for row in rows)
+    true_positive = sum(
+        row.prediction.is_surge and row.ground_truth.is_surge for row in rows
+    )
+    reasons: list[str] = []
+    if len(expected) != len(rows) or set(expected) != set(actual):
+        reasons.append("incomplete_case_set")
+    if len(valid_rows) != len(rows):
+        reasons.append("unfinalized_case")
+    if evidence_covered != len(rows):
+        reasons.append("missing_source_evidence")
+    if predicted_positive == 0:
+        reasons.append("no_positive_prediction")
+    if true_positive == 0:
+        reasons.append("no_true_positive")
+    return FitnessEligibility(
+        eligible=not reasons,
+        reasons=tuple(reasons),
+        expected_case_count=len(expected),
+        valid_case_count=len(valid_rows),
+        evidence_covered_count=evidence_covered,
+        predicted_positive_count=predicted_positive,
+        true_positive_count=true_positive,
+    )
+
+
+def _trajectory_has_source_evidence(trajectory: ExecutionTrajectory) -> bool:
+    requests = trajectory.basic_info.get("requests", ())
+    if isinstance(requests, list) and any(
+        isinstance(item, Mapping) and bool(item.get("context_spans"))
+        for item in requests
+    ):
+        return True
+    return any(
+        result.value is not SignalValue.UNAVAILABLE
+        and bool(result.supporting_evidence or result.counter_evidence)
+        for signal_round in trajectory.signal_rounds
+        for result in signal_round.batch.results
     )
 
 
@@ -1059,11 +1320,11 @@ class EvolutionDataset:
 
 
 EVALUATION_LABELS = ("non_surge", "2_3x", "3_10x", "10x_plus")
-DEFAULT_EVALUATION_LABEL_RATIOS = {
-    "non_surge": 0.40,
-    "2_3x": 0.30,
-    "3_10x": 0.20,
-    "10x_plus": 0.10,
+DEFAULT_EVALUATION_LABEL_COUNTS = {
+    "non_surge": 8,
+    "2_3x": 6,
+    "3_10x": 4,
+    "10x_plus": 2,
 }
 DEFAULT_EVALUATION_SECONDARY_METRICS = (
     "binary_precision",
@@ -1075,46 +1336,40 @@ DEFAULT_EVALUATION_SECONDARY_METRICS = (
 
 @dataclass(frozen=True)
 class PlanEvaluationConfig:
-    """Fixed low-cost Fast-loop evaluation contract."""
+    """Exact one-stage Fast-loop evaluation and fitness contract."""
 
-    label_ratios: Mapping[str, float] = field(
-        default_factory=lambda: dict(DEFAULT_EVALUATION_LABEL_RATIOS)
+    cases_per_round: int = 20
+    label_counts: Mapping[str, int] = field(
+        default_factory=lambda: dict(DEFAULT_EVALUATION_LABEL_COUNTS)
     )
-    anchor_enabled: bool = True
-    anchor_size: int = 8
-    screening_total_cases: int = 20
-    promotion_enabled: bool = True
-    promotion_top_n: int = 2
-    promotion_additional_cases: int = 20
     primary_metric: str = "binary_f1"
     secondary_metrics: tuple[str, ...] = DEFAULT_EVALUATION_SECONDARY_METRICS
     max_cases_per_company_per_round: int = 1
-    rerun_champion: bool = True
     base_seed: int = 42
+    require_finalized: bool = True
+    require_source_evidence: bool = True
+    max_proposal_attempts_per_slot: int = 3
+    max_structured_corrections: int = 1
 
     def __post_init__(self) -> None:
-        ratios = {str(key): float(value) for key, value in self.label_ratios.items()}
-        if set(ratios) != set(EVALUATION_LABELS):
-            raise ValidationError("evaluation label ratios must name all four labels")
-        if any(not math.isfinite(value) or value < 0 for value in ratios.values()):
+        counts = {str(key): int(value) for key, value in self.label_counts.items()}
+        if set(counts) != set(EVALUATION_LABELS):
+            raise ValidationError("evaluation label counts must name all four labels")
+        if any(value < 1 for value in counts.values()):
+            raise ValidationError("evaluation label counts must be positive")
+        if self.cases_per_round < 1 or sum(counts.values()) != self.cases_per_round:
             raise ValidationError(
-                "evaluation label ratios must be finite and non-negative"
+                "evaluation label counts must sum to cases_per_round"
             )
-        if sum(ratios.values()) <= 0:
-            raise ValidationError(
-                "evaluation label ratios must have positive total weight"
-            )
-        if self.anchor_size < 0 or self.screening_total_cases < 1:
-            raise ValidationError("evaluation Anchor/screening sizes are invalid")
-        if self.anchor_enabled and self.anchor_size > self.screening_total_cases:
-            raise ValidationError("evaluation Anchor cannot exceed screening size")
-        if self.promotion_top_n < 1 or self.promotion_additional_cases < 1:
-            raise ValidationError("evaluation Promotion sizes must be positive")
         if self.primary_metric != "binary_f1":
             raise ValidationError("Plan evolution primary metric must be binary_f1")
         if self.max_cases_per_company_per_round < 1:
             raise ValidationError("max cases per company per round must be positive")
-        object.__setattr__(self, "label_ratios", ratios)
+        if self.max_proposal_attempts_per_slot < 1:
+            raise ValidationError("proposal attempts per slot must be positive")
+        if self.max_structured_corrections != 1:
+            raise ValidationError("v3 requires exactly one structured correction")
+        object.__setattr__(self, "label_counts", counts)
         object.__setattr__(
             self,
             "secondary_metrics",
@@ -1123,40 +1378,43 @@ class PlanEvaluationConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "label_ratios": dict(self.label_ratios),
-            "anchor": {"enabled": self.anchor_enabled, "size": self.anchor_size},
-            "screening": {"total_cases": self.screening_total_cases},
-            "promotion": {
-                "enabled": self.promotion_enabled,
-                "top_n": self.promotion_top_n,
-                "additional_cases": self.promotion_additional_cases,
-            },
+            "cases_per_round": self.cases_per_round,
+            "label_counts": dict(self.label_counts),
             "primary_metric": self.primary_metric,
             "secondary_metrics": list(self.secondary_metrics),
             "max_cases_per_company_per_round": (
                 self.max_cases_per_company_per_round
             ),
-            "rerun_champion": self.rerun_champion,
             "base_seed": self.base_seed,
+            "fitness_gate": {
+                "require_finalized": self.require_finalized,
+                "require_source_evidence": self.require_source_evidence,
+                "require_predicted_positive": True,
+                "require_true_positive": True,
+            },
+            "proposal": {
+                "max_attempts_per_slot": self.max_proposal_attempts_per_slot,
+                "max_structured_corrections": self.max_structured_corrections,
+            },
         }
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PlanEvaluationConfig":
-        anchor = dict(data.get("anchor", {}))
-        screening = dict(data.get("screening", {}))
-        promotion = dict(data.get("promotion", {}))
+        required = {"cases_per_round", "label_counts", "fitness_gate", "proposal"}
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "v3 evaluation contract is missing: " + ", ".join(missing)
+            )
+        gate = dict(data["fitness_gate"])
+        proposal = dict(data["proposal"])
+        if not gate.get("require_predicted_positive", False):
+            raise ValidationError("v3 fitness requires at least one positive prediction")
+        if not gate.get("require_true_positive", False):
+            raise ValidationError("v3 fitness requires at least one true positive")
         return cls(
-            label_ratios=dict(
-                data.get("label_ratios", DEFAULT_EVALUATION_LABEL_RATIOS)
-            ),
-            anchor_enabled=bool(anchor.get("enabled", True)),
-            anchor_size=int(anchor.get("size", 8)),
-            screening_total_cases=int(screening.get("total_cases", 20)),
-            promotion_enabled=bool(promotion.get("enabled", True)),
-            promotion_top_n=int(promotion.get("top_n", 2)),
-            promotion_additional_cases=int(
-                promotion.get("additional_cases", 20)
-            ),
+            cases_per_round=int(data["cases_per_round"]),
+            label_counts=dict(data["label_counts"]),
             primary_metric=str(data.get("primary_metric", "binary_f1")),
             secondary_metrics=tuple(
                 str(item)
@@ -1167,8 +1425,17 @@ class PlanEvaluationConfig:
             max_cases_per_company_per_round=int(
                 data.get("max_cases_per_company_per_round", 1)
             ),
-            rerun_champion=bool(data.get("rerun_champion", True)),
             base_seed=int(data.get("base_seed", 42)),
+            require_finalized=bool(gate.get("require_finalized", True)),
+            require_source_evidence=bool(
+                gate.get("require_source_evidence", True)
+            ),
+            max_proposal_attempts_per_slot=int(
+                proposal.get("max_attempts_per_slot", 3)
+            ),
+            max_structured_corrections=int(
+                proposal.get("max_structured_corrections", 1)
+            ),
         )
 
 
@@ -1184,142 +1451,60 @@ def evaluation_label(case: EvolutionCase) -> str:
     }[case.ground_truth.magnitude]
 
 
-def allocate_stratified_counts(
-    total_cases: int,
-    label_ratios: Mapping[str, float],
-) -> dict[str, int]:
-    """Allocate an integer total by largest remainder in stable label order."""
+class EvaluationDatasetInfeasible(ValidationError):
+    """Raised before external work when an exact round cannot be assembled."""
 
-    if total_cases < 0:
-        raise ValidationError("stratified sample size cannot be negative")
-    weights = {
-        label: float(label_ratios.get(label, 0.0))
-        for label in EVALUATION_LABELS
-    }
-    total_weight = sum(weights.values())
-    if total_weight <= 0:
-        raise ValidationError("stratified sampling requires positive label weights")
-    exact = {
-        label: total_cases * weights[label] / total_weight
-        for label in EVALUATION_LABELS
-    }
-    counts = {label: math.floor(exact[label]) for label in EVALUATION_LABELS}
-    remaining = total_cases - sum(counts.values())
-    order = sorted(
-        EVALUATION_LABELS,
-        key=lambda label: (
-            -(exact[label] - counts[label]),
-            EVALUATION_LABELS.index(label),
-        ),
-    )
-    for label in order[:remaining]:
-        counts[label] += 1
-    return counts
+    def __init__(
+        self,
+        *,
+        expected_counts: Mapping[str, int],
+        available_counts: Mapping[str, int],
+        available_companies: int,
+    ) -> None:
+        self.expected_counts = dict(expected_counts)
+        self.available_counts = dict(available_counts)
+        self.available_companies = int(available_companies)
+        super().__init__(
+            "evaluation_dataset_infeasible: expected "
+            f"{self.expected_counts}, available {self.available_counts}, "
+            f"distinct_companies={self.available_companies}"
+        )
 
-
-def sample_stratified_cases(
-    pool: Iterable[EvolutionCase],
-    target_counts: Mapping[str, int],
-    exclude_case_ids: Iterable[str] | None = None,
-    exclude_company_ids: Iterable[str] | None = None,
-    seed: int | None = None,
-    *,
-    max_cases_per_company: int = 1,
-    initial_company_counts: Mapping[str, int] | None = None,
-) -> tuple[EvolutionCase, ...]:
-    """Sample without replacement, then gracefully backfill short strata."""
-
-    if set(target_counts) != set(EVALUATION_LABELS):
-        raise ValidationError("target counts must name all evaluation labels")
-    if any(int(value) < 0 for value in target_counts.values()):
-        raise ValidationError("target counts must be non-negative")
-    if max_cases_per_company < 1:
-        raise ValidationError("max cases per company must be positive")
-    excluded_cases = {str(item) for item in (exclude_case_ids or ())}
-    excluded_companies = {str(item) for item in (exclude_company_ids or ())}
-    company_counts = {
-        str(key): int(value) for key, value in (initial_company_counts or {}).items()
-    }
-    eligible = [
-        case
-        for case in pool
-        if case.case_id not in excluded_cases
-        and case.company_id not in excluded_companies
-    ]
-    if len({case.case_id for case in eligible}) != len(eligible):
-        raise ValidationError("stratified sampling pool contains duplicate case ids")
-    generator = random.Random(seed)
-    grouped = {label: [] for label in EVALUATION_LABELS}
-    for case in sorted(eligible, key=lambda item: item.case_id):
-        grouped[evaluation_label(case)].append(case)
-    for cases in grouped.values():
-        generator.shuffle(cases)
-
-    selected: list[EvolutionCase] = []
-    selected_ids: set[str] = set()
-
-    def take(case: EvolutionCase) -> bool:
-        count = company_counts.get(case.company_id, 0)
-        if count >= max_cases_per_company or case.case_id in selected_ids:
-            return False
-        selected.append(case)
-        selected_ids.add(case.case_id)
-        company_counts[case.company_id] = count + 1
-        return True
-
-    for label in EVALUATION_LABELS:
-        wanted = int(target_counts[label])
-        for case in grouped[label]:
-            selected_in_label = sum(
-                evaluation_label(item) == label for item in selected
-            )
-            if selected_in_label >= wanted:
-                break
-            take(case)
-
-    target_total = sum(int(value) for value in target_counts.values())
-    remainder = [case for case in eligible if case.case_id not in selected_ids]
-    generator.shuffle(remainder)
-    for case in remainder:
-        if len(selected) >= target_total:
-            break
-        take(case)
-    return tuple(selected)
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": "evaluation_dataset_infeasible",
+            "expected_counts": dict(self.expected_counts),
+            "available_counts": dict(self.available_counts),
+            "available_companies": self.available_companies,
+        }
 
 
 @dataclass(frozen=True)
 class EvaluationDatasetSnapshot:
-    """Immutable case-id snapshot for one evaluation stage."""
+    """Immutable exact case-id snapshot shared by all Plans in one round."""
 
     snapshot_id: str
-    stage: str
-    round_id: int | None
+    round_id: int
     random_seed: int
     target_counts: Mapping[str, int]
     actual_counts: Mapping[str, int]
     case_ids: tuple[str, ...]
-    anchor_case_ids: tuple[str, ...] = ()
-    rotating_case_ids: tuple[str, ...] = ()
-    promotion_case_ids: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "plan-evaluation-dataset-v1",
+            "schema_version": "plan-evaluation-dataset-v2",
             "snapshot_id": self.snapshot_id,
-            "stage": self.stage,
+            "stage": "round",
             "round_id": self.round_id,
             "random_seed": self.random_seed,
             "target_counts": dict(self.target_counts),
             "actual_counts": dict(self.actual_counts),
             "case_ids": list(self.case_ids),
-            "anchor_case_ids": list(self.anchor_case_ids),
-            "rotating_case_ids": list(self.rotating_case_ids),
-            "promotion_case_ids": list(self.promotion_case_ids),
         }
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "EvaluationDatasetSnapshot":
-        if data.get("schema_version") != "plan-evaluation-dataset-v1":
+        if data.get("schema_version") != "plan-evaluation-dataset-v2":
             raise ValidationError("unsupported evaluation dataset snapshot schema")
         payload = dict(data)
         snapshot_id = str(payload.pop("snapshot_id", ""))
@@ -1327,10 +1512,7 @@ class EvaluationDatasetSnapshot:
             raise ValidationError("evaluation dataset snapshot hash mismatch")
         return cls(
             snapshot_id=snapshot_id,
-            stage=str(data["stage"]),
-            round_id=(
-                None if data.get("round_id") is None else int(data["round_id"])
-            ),
+            round_id=int(data["round_id"]),
             random_seed=int(data["random_seed"]),
             target_counts={
                 str(key): int(value)
@@ -1341,20 +1523,11 @@ class EvaluationDatasetSnapshot:
                 for key, value in dict(data.get("actual_counts", {})).items()
             },
             case_ids=tuple(str(item) for item in data.get("case_ids", ())),
-            anchor_case_ids=tuple(
-                str(item) for item in data.get("anchor_case_ids", ())
-            ),
-            rotating_case_ids=tuple(
-                str(item) for item in data.get("rotating_case_ids", ())
-            ),
-            promotion_case_ids=tuple(
-                str(item) for item in data.get("promotion_case_ids", ())
-            ),
         )
 
 
 class EvaluationDatasetManager:
-    """Create or load fixed Anchor and round-level evaluation snapshots."""
+    """Create exact, fully rotating round snapshots with deterministic fairness."""
 
     def __init__(
         self,
@@ -1369,112 +1542,127 @@ class EvaluationDatasetManager:
         self._cases_by_id = {case.case_id: case for case in self.pool}
         if len(self._cases_by_id) != len(self.pool):
             raise ValidationError("evaluation pool contains duplicate case ids")
+        if self.config.max_cases_per_company_per_round != 1:
+            raise ValidationError("v3 evaluation requires one case per company")
+        self.validate_feasibility()
 
-    def get_or_create_anchor_dataset(self) -> EvaluationDatasetSnapshot:
-        path = self.root / "anchor.json"
+    def validate_feasibility(self) -> None:
+        """Prove the exact quotas can be assigned to distinct companies."""
+
+        self._select_exact_cases(round_id=1, history={})
+
+    def get_or_create_round_dataset(
+        self, round_id: int
+    ) -> EvaluationDatasetSnapshot:
+        path = self._round_root(round_id) / "snapshot.json"
         if path.exists():
-            return self._load_snapshot(path, expected_stage="anchor", round_id=None)
-        target = (
-            allocate_stratified_counts(
-                self.config.anchor_size, self.config.label_ratios
-            )
-            if self.config.anchor_enabled
-            else {label: 0 for label in EVALUATION_LABELS}
-        )
-        cases = sample_stratified_cases(
-            self.pool,
-            target,
-            seed=self.config.base_seed,
-            max_cases_per_company=self.config.max_cases_per_company_per_round,
+            return self._load_snapshot(path, round_id=round_id)
+        seed = self.config.base_seed + round_id
+        cases = self._select_exact_cases(
+            round_id=round_id,
+            history=self._selection_history(before_round=round_id),
         )
         return self._write_snapshot(
             path,
-            stage="anchor",
-            round_id=None,
-            seed=self.config.base_seed,
-            target_counts=target,
+            round_id=round_id,
+            seed=seed,
             cases=cases,
-            anchor_case_ids=tuple(case.case_id for case in cases),
         )
 
-    def get_or_create_screening_dataset(
-        self, round_id: int
-    ) -> EvaluationDatasetSnapshot:
-        path = self._round_root(round_id) / "screening.json"
-        if path.exists():
-            return self._load_snapshot(
-                path, expected_stage="screening", round_id=round_id
-            )
-        anchor = self.get_or_create_anchor_dataset()
-        anchor_cases = self.resolve_cases(anchor.case_ids)
-        desired_total = allocate_stratified_counts(
-            self.config.screening_total_cases, self.config.label_ratios
-        )
-        anchor_actual = _count_evaluation_labels(anchor_cases)
-        rotating_target = {
-            label: max(0, desired_total[label] - anchor_actual[label])
-            for label in EVALUATION_LABELS
+    def _selection_history(
+        self, *, before_round: int
+    ) -> dict[str, tuple[int, int]]:
+        history: dict[str, tuple[int, int]] = {}
+        for path in sorted(self.root.glob("round_*/snapshot.json")):
+            snapshot = EvaluationDatasetSnapshot.from_dict(_read_json(path))
+            if snapshot.round_id >= before_round:
+                continue
+            for case_id in snapshot.case_ids:
+                count, _last = history.get(case_id, (0, 0))
+                history[case_id] = (count + 1, snapshot.round_id)
+        return history
+
+    def _select_exact_cases(
+        self,
+        *,
+        round_id: int,
+        history: Mapping[str, tuple[int, int]],
+    ) -> tuple[EvolutionCase, ...]:
+        by_label_company: dict[str, dict[str, list[EvolutionCase]]] = {
+            label: {} for label in EVALUATION_LABELS
         }
-        missing_total = max(
-            0, self.config.screening_total_cases - len(anchor_cases)
-        )
-        rotating_target = _resize_target_counts(
-            rotating_target, missing_total, self.config.label_ratios
-        )
-        company_counts = _count_companies(anchor_cases)
-        seed = self.config.base_seed + round_id
-        rotating = sample_stratified_cases(
-            self.pool,
-            rotating_target,
-            exclude_case_ids=anchor.case_ids,
-            seed=seed,
-            max_cases_per_company=self.config.max_cases_per_company_per_round,
-            initial_company_counts=company_counts,
-        )
-        cases = anchor_cases + rotating
-        return self._write_snapshot(
-            path,
-            stage="screening",
-            round_id=round_id,
-            seed=seed,
-            target_counts=desired_total,
-            cases=cases,
-            anchor_case_ids=anchor.case_ids,
-            rotating_case_ids=tuple(case.case_id for case in rotating),
-        )
+        for case in self.pool:
+            by_label_company[evaluation_label(case)].setdefault(
+                case.company_id, []
+            ).append(case)
 
-    def get_or_create_promotion_dataset(
-        self, round_id: int
-    ) -> EvaluationDatasetSnapshot:
-        path = self._round_root(round_id) / "promotion.json"
-        if path.exists():
-            return self._load_snapshot(
-                path, expected_stage="promotion", round_id=round_id
+        def case_key(case: EvolutionCase) -> tuple[int, int, str]:
+            count, last_round = history.get(case.case_id, (0, 0))
+            tie = hashlib.sha256(
+                f"{self.config.base_seed}:{round_id}:{case.case_id}".encode(
+                    "utf-8"
+                )
+            ).hexdigest()
+            return count, last_round, tie
+
+        company_order: dict[str, list[str]] = {}
+        best_case: dict[tuple[str, str], EvolutionCase] = {}
+        for label, companies in by_label_company.items():
+            for company_id, cases in companies.items():
+                best_case[(label, company_id)] = min(cases, key=case_key)
+            company_order[label] = sorted(
+                companies,
+                key=lambda company_id: (
+                    case_key(best_case[(label, company_id)]),
+                    company_id,
+                ),
             )
-        screening = self.get_or_create_screening_dataset(round_id)
-        screening_cases = self.resolve_cases(screening.case_ids)
-        target = allocate_stratified_counts(
-            self.config.promotion_additional_cases,
-            self.config.label_ratios,
+
+        slots = [
+            (label, index)
+            for label in EVALUATION_LABELS
+            for index in range(int(self.config.label_counts[label]))
+        ]
+        slots.sort(
+            key=lambda slot: (
+                len(company_order[slot[0]]),
+                EVALUATION_LABELS.index(slot[0]),
+                slot[1],
+            )
         )
-        seed = self.config.base_seed + round_id
-        promotion = sample_stratified_cases(
-            self.pool,
-            target,
-            exclude_case_ids=screening.case_ids,
-            seed=seed,
-            max_cases_per_company=self.config.max_cases_per_company_per_round,
-            initial_company_counts=_count_companies(screening_cases),
+        matched_company: dict[str, tuple[str, int]] = {}
+
+        def assign(slot: tuple[str, int], seen: set[str]) -> bool:
+            label, _index = slot
+            for company_id in company_order[label]:
+                if company_id in seen:
+                    continue
+                seen.add(company_id)
+                prior = matched_company.get(company_id)
+                if prior is None or assign(prior, seen):
+                    matched_company[company_id] = slot
+                    return True
+            return False
+
+        if any(not assign(slot, set()) for slot in slots):
+            raise EvaluationDatasetInfeasible(
+                expected_counts=self.config.label_counts,
+                available_counts=_count_evaluation_labels(self.pool),
+                available_companies=len({case.company_id for case in self.pool}),
+            )
+        slot_company = {slot: company for company, slot in matched_company.items()}
+        selected = tuple(
+            best_case[(label, slot_company[(label, index)])]
+            for label in EVALUATION_LABELS
+            for index in range(int(self.config.label_counts[label]))
         )
-        return self._write_snapshot(
-            path,
-            stage="promotion",
-            round_id=round_id,
-            seed=seed,
-            target_counts=target,
-            cases=promotion,
-            promotion_case_ids=tuple(case.case_id for case in promotion),
-        )
+        if (
+            len(selected) != self.config.cases_per_round
+            or _count_evaluation_labels(selected) != dict(self.config.label_counts)
+            or len({case.company_id for case in selected}) != len(selected)
+        ):
+            raise ValidationError("exact evaluation matching produced invalid output")
+        return selected
 
     def resolve_cases(self, case_ids: Iterable[str]) -> tuple[EvolutionCase, ...]:
         resolved: list[EvolutionCase] = []
@@ -1495,14 +1683,17 @@ class EvaluationDatasetManager:
         self,
         path: Path,
         *,
-        expected_stage: str,
-        round_id: int | None,
+        round_id: int,
     ) -> EvaluationDatasetSnapshot:
         snapshot = EvaluationDatasetSnapshot.from_dict(_read_json(path))
-        if snapshot.stage != expected_stage or snapshot.round_id != round_id:
+        if snapshot.round_id != round_id:
             raise ValidationError("evaluation dataset snapshot identity mismatch")
         cases = self.resolve_cases(snapshot.case_ids)
-        if _count_evaluation_labels(cases) != dict(snapshot.actual_counts):
+        if (
+            _count_evaluation_labels(cases) != dict(snapshot.actual_counts)
+            or dict(snapshot.actual_counts) != dict(self.config.label_counts)
+            or len(cases) != self.config.cases_per_round
+        ):
             raise ValidationError("evaluation snapshot labels changed in approved pool")
         return snapshot
 
@@ -1510,29 +1701,21 @@ class EvaluationDatasetManager:
         self,
         path: Path,
         *,
-        stage: str,
-        round_id: int | None,
+        round_id: int,
         seed: int,
-        target_counts: Mapping[str, int],
         cases: tuple[EvolutionCase, ...],
-        anchor_case_ids: tuple[str, ...] = (),
-        rotating_case_ids: tuple[str, ...] = (),
-        promotion_case_ids: tuple[str, ...] = (),
     ) -> EvaluationDatasetSnapshot:
         payload = {
-            "schema_version": "plan-evaluation-dataset-v1",
-            "stage": stage,
+            "schema_version": "plan-evaluation-dataset-v2",
+            "stage": "round",
             "round_id": round_id,
             "random_seed": seed,
             "target_counts": {
-                label: int(target_counts[label])
+                label: int(self.config.label_counts[label])
                 for label in EVALUATION_LABELS
             },
             "actual_counts": _count_evaluation_labels(cases),
             "case_ids": [case.case_id for case in cases],
-            "anchor_case_ids": list(anchor_case_ids),
-            "rotating_case_ids": list(rotating_case_ids),
-            "promotion_case_ids": list(promotion_case_ids),
         }
         snapshot = EvaluationDatasetSnapshot.from_dict(
             {**payload, "snapshot_id": _canonical_hash(payload)}
@@ -1548,41 +1731,6 @@ def _count_evaluation_labels(
     for case in cases:
         counts[evaluation_label(case)] += 1
     return counts
-
-
-def _count_companies(cases: Iterable[EvolutionCase]) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for case in cases:
-        counts[case.company_id] = counts.get(case.company_id, 0) + 1
-    return counts
-
-
-def _resize_target_counts(
-    counts: Mapping[str, int],
-    total: int,
-    ratios: Mapping[str, float],
-) -> dict[str, int]:
-    result = {label: int(counts.get(label, 0)) for label in EVALUATION_LABELS}
-    while sum(result.values()) > total:
-        label = max(
-            EVALUATION_LABELS,
-            key=lambda item: (
-                result[item],
-                -EVALUATION_LABELS.index(item),
-            ),
-        )
-        result[label] -= 1
-    desired = allocate_stratified_counts(total, ratios)
-    while sum(result.values()) < total:
-        label = max(
-            EVALUATION_LABELS,
-            key=lambda item: (
-                desired[item] - result[item],
-                -EVALUATION_LABELS.index(item),
-            ),
-        )
-        result[label] += 1
-    return result
 
 
 @dataclass(frozen=True)
@@ -1643,61 +1791,37 @@ class PlanReflection:
 
 @dataclass(frozen=True)
 class PlanEvaluationSummary:
-    """Dataset lineage and completion stage for one Plan evaluation."""
+    """Dataset lineage for one comparable round evaluation."""
 
     evaluation_stage: str
     n_cases: int
     case_ids: tuple[str, ...]
-    anchor_case_ids: tuple[str, ...] = ()
-    rotating_case_ids: tuple[str, ...] = ()
-    promotion_case_ids: tuple[str, ...] = ()
     dataset_snapshot_ids: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
-        if self.evaluation_stage not in {"screening", "promotion"}:
-            raise ValidationError(
-                "Plan evaluation stage must be screening or promotion"
-            )
+        if self.evaluation_stage not in {"round", "legacy"}:
+            raise ValidationError("Plan evaluation stage must be round or legacy")
         if self.n_cases < 1 or self.n_cases != len(self.case_ids):
             raise ValidationError("Plan evaluation case count does not match case ids")
         if len(set(self.case_ids)) != len(self.case_ids):
             raise ValidationError("Plan evaluation case ids must be unique")
-        if self.evaluation_stage == "screening" and self.promotion_case_ids:
-            raise ValidationError("screening evaluation cannot include Promotion cases")
-        if not set(self.anchor_case_ids).issubset(self.case_ids):
-            raise ValidationError("Anchor case ids must belong to the evaluation")
-        if not set(self.rotating_case_ids).issubset(self.case_ids):
-            raise ValidationError("Rotating case ids must belong to the evaluation")
-        if not set(self.promotion_case_ids).issubset(self.case_ids):
-            raise ValidationError("Promotion case ids must belong to the evaluation")
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "evaluation_stage": self.evaluation_stage,
             "n_cases": self.n_cases,
             "case_ids": list(self.case_ids),
-            "anchor_case_ids": list(self.anchor_case_ids),
-            "rotating_case_ids": list(self.rotating_case_ids),
-            "promotion_case_ids": list(self.promotion_case_ids),
             "dataset_snapshot_ids": list(self.dataset_snapshot_ids),
         }
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PlanEvaluationSummary":
         case_ids = tuple(str(item) for item in data.get("case_ids", ()))
+        raw_stage = str(data.get("evaluation_stage", "legacy"))
         return cls(
-            evaluation_stage=str(data.get("evaluation_stage", "screening")),
+            evaluation_stage="round" if raw_stage == "round" else "legacy",
             n_cases=int(data.get("n_cases", len(case_ids))),
             case_ids=case_ids,
-            anchor_case_ids=tuple(
-                str(item) for item in data.get("anchor_case_ids", ())
-            ),
-            rotating_case_ids=tuple(
-                str(item) for item in data.get("rotating_case_ids", ())
-            ),
-            promotion_case_ids=tuple(
-                str(item) for item in data.get("promotion_case_ids", ())
-            ),
             dataset_snapshot_ids=tuple(
                 str(item) for item in data.get("dataset_snapshot_ids", ())
             ),
@@ -1716,6 +1840,7 @@ class PlanRecord:
     signal_usage: Mapping[str, Mapping[str, int]]
     trajectories: tuple[ExecutionTrajectory, ...]
     evaluation: PlanEvaluationSummary | None = None
+    fitness: FitnessEligibility | None = None
 
     def __post_init__(self) -> None:
         if self.round_id < 1:
@@ -1739,7 +1864,7 @@ class PlanRecord:
                 self,
                 "evaluation",
                 PlanEvaluationSummary(
-                    evaluation_stage="screening",
+                    evaluation_stage="legacy",
                     n_cases=len(self.trajectories),
                     case_ids=tuple(item.case_id for item in self.trajectories),
                 ),
@@ -1748,6 +1873,17 @@ class PlanRecord:
             raise ValidationError(
                 "Plan evaluation metadata must cover every saved trajectory"
             )
+        if self.fitness is None:
+            object.__setattr__(
+                self,
+                "fitness",
+                assess_fitness_eligibility(
+                    self.trajectories,
+                    expected_case_ids=self.evaluation.case_ids,
+                ),
+            )
+        if self.metrics.predicted_positive_count != self.fitness.predicted_positive_count:
+            raise ValidationError("Plan metrics and fitness predicted positives differ")
 
     @property
     def plan_id(self) -> str:
@@ -1766,6 +1902,7 @@ class PlanRecord:
                 ref: dict(counts) for ref, counts in self.signal_usage.items()
             },
             "trajectories": [item.to_dict() for item in self.trajectories],
+            "fitness": self.fitness.to_dict(),
             **self.evaluation.to_dict(),
         }
 
@@ -1788,6 +1925,11 @@ class PlanRecord:
             evaluation=(
                 PlanEvaluationSummary.from_dict(data)
                 if data.get("case_ids")
+                else None
+            ),
+            fitness=(
+                FitnessEligibility.from_dict(dict(data["fitness"]))
+                if isinstance(data.get("fitness"), Mapping)
                 else None
             ),
         )
@@ -1882,7 +2024,11 @@ class PlanArchive:
         if not -1 < similarity_threshold <= 1:
             raise ValidationError("similarity threshold must be in (-1, 1]")
         ranked = sorted(
-            self._records.values(),
+            (
+                record
+                for record in self._records.values()
+                if record.fitness is not None and record.fitness.eligible
+            ),
             key=lambda record: (-record.metrics.binary_f1, record.plan_id),
         )
         selected: list[PlanRecord] = []
@@ -2090,6 +2236,7 @@ class InformationPlanProposer(Protocol):
         round_id: int,
         candidate_index: int,
         candidate_count: int,
+        proposal_attempt: int,
         forbidden_plan_ids: tuple[str, ...],
         parents: tuple[InformationPlan, ...],
         meta_info: tuple[RoundMetaEntry, ...],
@@ -2136,8 +2283,8 @@ class PlanEvaluator(Protocol):
         plan: InformationPlan,
         cases: tuple[EvolutionCase, ...],
         signal_registry: FrozenSignalRegistry,
-    ) -> tuple[ExecutionTrajectory, ...]:
-        """Return complete trajectories after the persistence/reveal boundary."""
+    ) -> PlanEvaluationAttempt | tuple[ExecutionTrajectory, ...]:
+        """Return one bounded attempt after the persistence/reveal boundary."""
 
 
 class RuntimePlanEvaluator:
@@ -2181,7 +2328,7 @@ class RuntimePlanEvaluator:
         plan: InformationPlan,
         cases: tuple[EvolutionCase, ...],
         signal_registry: FrozenSignalRegistry,
-    ) -> tuple[ExecutionTrajectory, ...]:
+    ) -> PlanEvaluationAttempt:
         if not cases:
             raise ValidationError("evolution validation cases must not be empty")
         executor = SignalExecutor(
@@ -2282,21 +2429,63 @@ class RuntimePlanEvaluator:
                     raise ValidationError("ground truth requested for the wrong case")
                 return truth
 
-            trajectory = execute_information_plan(
-                plan=plan,
-                company_id=case.company_id,
-                case_id=case.case_id,
-                company_basic_source=case.basic_info,
-                prediction_time=case.prediction_time,
-                signal_registry=signal_registry,
-                signal_executor=executor,
-                controller=self.controller,
-                signal_agent=self.signal_agent,
-                predictor=self.predictor,
-                prediction_sink=sink,
-                ground_truth_provider=truth_provider,
-                limits=self.limits,
-            )
+            try:
+                trajectory = execute_information_plan(
+                    plan=plan,
+                    company_id=case.company_id,
+                    case_id=case.case_id,
+                    company_basic_source=case.basic_info,
+                    prediction_time=case.prediction_time,
+                    signal_registry=signal_registry,
+                    signal_executor=executor,
+                    controller=self.controller,
+                    signal_agent=self.signal_agent,
+                    predictor=self.predictor,
+                    prediction_sink=sink,
+                    ground_truth_provider=truth_provider,
+                    limits=self.limits,
+                )
+            except ValidationError as exc:
+                stage = (
+                    exc.stage
+                    if isinstance(exc, CandidateExecutionRejected)
+                    else "case_execution"
+                )
+                failure_path = (
+                    self.trajectory_root
+                    / plan.plan_id
+                    / f"{case.case_id}.failure.json"
+                )
+                failure = CaseEvaluationFailure(
+                    case_id=case.case_id,
+                    stage=stage,
+                    error_type=type(exc).__name__,
+                    message=str(exc),
+                    artifact_ref=str(failure_path),
+                )
+                _write_or_verify_json(
+                    failure_path,
+                    {
+                        "schema_version": "case-evaluation-failure-v1",
+                        "input_hash": input_hash,
+                        **failure.to_dict(),
+                    },
+                )
+                _emit_progress(
+                    self.on_progress,
+                    "case_evaluation_failed",
+                    plan_id=plan.plan_id,
+                    case_id=case.case_id,
+                    stage=stage,
+                    error_type=type(exc).__name__,
+                    failure_path=str(failure_path),
+                )
+                return PlanEvaluationAttempt(
+                    plan=plan,
+                    expected_case_ids=tuple(item.case_id for item in cases),
+                    trajectories=tuple(trajectories),
+                    failures=(failure,),
+                )
             _write_or_verify_json(
                 trajectory_path,
                 {
@@ -2323,7 +2512,11 @@ class RuntimePlanEvaluator:
                 cost=trajectory.usage.model.cost,
                 trajectory_path=str(trajectory_path),
             )
-        return tuple(trajectories)
+        return PlanEvaluationAttempt(
+            plan=plan,
+            expected_case_ids=tuple(item.case_id for item in cases),
+            trajectories=tuple(trajectories),
+        )
 
 
 class EvolutionWorkspace:
@@ -2613,26 +2806,78 @@ class EvolutionWorkspace:
             },
         )
 
-    def stage_champion_evaluation(
+    def stage_evaluation_attempt(
         self,
         *,
         round_id: int,
-        record: PlanRecord,
+        attempt: PlanEvaluationAttempt,
     ) -> Path:
-        """Persist one paired historical-champion screening result."""
+        """Persist one candidate attempt whether or not it is fitness-eligible."""
 
-        if round_id < 1 or record.round_id != round_id:
-            raise ValidationError("champion evaluation round identity mismatch")
-        path = self.evaluation_root / f"round_{round_id:03d}" / "champion.json"
-        _write_or_verify_json(
-            path,
-            {
-                "schema_version": "plan-champion-evaluation-v1",
-                "historical_plan_id": record.plan_id,
-                "record": record.to_dict(),
-            },
+        if round_id < 1:
+            raise ValidationError("evaluation attempt round must be positive")
+        path = (
+            self.experiments_root
+            / f"round-{round_id:04d}"
+            / "attempts"
+            / f"{attempt.plan.plan_id}.json"
         )
+        _write_or_verify_json(path, attempt.to_dict())
+        self.refresh_capability_backlog()
         return path
+
+    def refresh_capability_backlog(
+        self, *, available_source_types: Iterable[str] = ()
+    ) -> Path:
+        """Rebuild the derived capability backlog from durable attempts."""
+
+        trajectories: list[Mapping[str, Any]] = []
+        for path in sorted(
+            self.experiments_root.glob("round-*/attempts/*.json")
+        ):
+            attempt = _read_json(path)
+            trajectories.extend(
+                item
+                for item in attempt.get("trajectories", ())
+                if isinstance(item, Mapping)
+            )
+        report = aggregate_capability_gaps(
+            trajectories,
+            available_source_types=available_source_types,
+        )
+        _atomic_write_json(
+            self.experiments_root / "capability_gap_report.json",
+            report,
+        )
+        path = self.root / "capability_backlog.json"
+        _atomic_write_json(path, report)
+        return path
+
+    def reject_round(
+        self,
+        *,
+        round_id: int,
+        reason: str,
+        attempts: Iterable[PlanEvaluationAttempt],
+    ) -> Path:
+        """Persist one immutable pause checkpoint without advancing state."""
+
+        if round_id != self.last_completed_round + 1:
+            raise ValidationError("round rejection does not follow committed state")
+        path = self.experiments_root / f"round-{round_id:04d}" / "rejected.json"
+        payload = {
+            "schema_version": "plan-round-rejected-v1",
+            "round_id": round_id,
+            "reason": str(reason),
+            "attempts": [attempt.to_dict() for attempt in attempts],
+            "last_completed_round": self.last_completed_round,
+        }
+        _write_or_verify_json(path, payload)
+        return path
+
+    def load_round_rejection(self, round_id: int) -> dict[str, Any] | None:
+        path = self.experiments_root / f"round-{round_id:04d}" / "rejected.json"
+        return _read_json(path) if path.exists() else None
 
     def restore_archive(self, *, expected_run_contract_hash: str | None = None) -> PlanArchive:
         """Load only Plans reachable from authoritative completed checkpoints."""
@@ -2696,7 +2941,61 @@ class PlanRoundResult:
     parents: tuple[InformationPlan, ...]
     records: tuple[PlanRecord, ...]
     meta_entry: RoundMetaEntry
-    champion_record: PlanRecord | None = None
+
+
+@dataclass(frozen=True)
+class CaseEvaluationFailure:
+    """Durable reason one case could not cross the prediction boundary."""
+
+    case_id: str
+    stage: str
+    error_type: str
+    message: str
+    artifact_ref: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_id": self.case_id,
+            "stage": self.stage,
+            "error_type": self.error_type,
+            "message": self.message,
+            "artifact_ref": self.artifact_ref,
+        }
+
+
+@dataclass(frozen=True)
+class PlanEvaluationAttempt:
+    """Complete or stopped candidate evaluation before archive admission."""
+
+    plan: InformationPlan
+    expected_case_ids: tuple[str, ...]
+    trajectories: tuple[ExecutionTrajectory, ...]
+    failures: tuple[CaseEvaluationFailure, ...] = ()
+
+    @property
+    def metrics(self) -> PlanMetrics | None:
+        if self.failures or len(self.trajectories) != len(self.expected_case_ids):
+            return None
+        return score_predictions(self.trajectories)
+
+    @property
+    def fitness(self) -> FitnessEligibility:
+        return assess_fitness_eligibility(
+            self.trajectories,
+            expected_case_ids=self.expected_case_ids,
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        metrics = self.metrics
+        return {
+            "schema_version": "plan-evaluation-attempt-v1",
+            "plan_id": self.plan.plan_id,
+            "expected_case_ids": list(self.expected_case_ids),
+            "completed_case_ids": [item.case_id for item in self.trajectories],
+            "failures": [item.to_dict() for item in self.failures],
+            "metrics": metrics.to_dict() if metrics is not None else None,
+            "fitness": self.fitness.to_dict(),
+        }
 
 
 @dataclass(frozen=True)
@@ -2706,29 +3005,7 @@ class PlanEvaluationResult:
     plan: InformationPlan
     trajectories: tuple[ExecutionTrajectory, ...]
     metrics: PlanMetrics
-
-
-def rank_and_select(
-    results: Iterable[PlanEvaluationResult],
-    *,
-    metric: str = "binary_f1",
-    top_n: int = 2,
-) -> tuple[PlanEvaluationResult, ...]:
-    """Rank evaluation results by one PlanMetrics field with stable ties."""
-
-    if top_n < 1:
-        raise ValidationError("promotion top_n must be positive")
-    if metric != "binary_f1":
-        raise ValidationError("Plan promotion metric must be binary_f1")
-    return tuple(
-        sorted(
-            tuple(results),
-            key=lambda item: (
-                -float(getattr(item.metrics, metric)),
-                item.plan.plan_id,
-            ),
-        )[:top_n]
-    )
+    fitness: FitnessEligibility
 
 
 class PlanEvolutionEngine:
@@ -2794,25 +3071,29 @@ class PlanEvolutionEngine:
 
         if round_id != self.workspace.last_completed_round + 1:
             raise ValidationError("fast-loop round id does not follow committed state")
+        rejected = self.workspace.load_round_rejection(round_id)
+        if rejected is not None:
+            checkpoint = (
+                self.workspace.experiments_root
+                / f"round-{round_id:04d}"
+                / "rejected.json"
+            )
+            raise RoundPaused(round_id, str(rejected["reason"]), str(checkpoint))
         dataset_manager = EvaluationDatasetManager(
             self.workspace.evaluation_root,
             validation_cases,
             self.evaluation_config,
         )
-        screening_snapshot = dataset_manager.get_or_create_screening_dataset(
-            round_id
-        )
-        screening_cases = dataset_manager.resolve_cases(
-            screening_snapshot.case_ids
-        )
+        round_snapshot = dataset_manager.get_or_create_round_dataset(round_id)
+        round_cases = dataset_manager.resolve_cases(round_snapshot.case_ids)
         _emit_progress(
             self.on_progress,
             "round_started",
             round_id=round_id,
             candidate_count=self.candidates_per_round,
             validation_case_count=len(validation_cases),
-            screening_case_count=len(screening_cases),
-            screening_snapshot_id=screening_snapshot.snapshot_id,
+            evaluation_case_count=len(round_cases),
+            evaluation_snapshot_id=round_snapshot.snapshot_id,
         )
         selection = self.archive.select_parents(
             top_k=self.top_k,
@@ -2833,110 +3114,97 @@ class PlanEvolutionEngine:
                 else []
             ),
         )
-        champion_record: PlanRecord | None = None
-        if self.evaluation_config.rerun_champion and self.archive.records:
-            historical_champion = sorted(
-                self.archive.records,
-                key=lambda record: (-record.metrics.binary_f1, record.plan_id),
-            )[0]
-            champion_trajectories = self.evaluator.evaluate(
-                historical_champion.plan,
-                screening_cases,
-                signal_snapshot,
-            )
-            champion_metrics = score_predictions(champion_trajectories)
-            champion_record = PlanRecord(
-                plan=historical_champion.plan,
-                round_id=round_id,
-                embedding=historical_champion.embedding,
-                metrics=champion_metrics,
-                reflection=PlanReflection(),
-                signal_usage=collect_signal_usage(champion_trajectories),
-                trajectories=champion_trajectories,
-                evaluation=PlanEvaluationSummary(
-                    evaluation_stage="screening",
-                    n_cases=len(screening_cases),
-                    case_ids=screening_snapshot.case_ids,
-                    anchor_case_ids=screening_snapshot.anchor_case_ids,
-                    rotating_case_ids=screening_snapshot.rotating_case_ids,
-                    dataset_snapshot_ids=(screening_snapshot.snapshot_id,),
-                ),
-            )
-            champion_path = self.workspace.stage_champion_evaluation(
-                round_id=round_id,
-                record=champion_record,
-            )
-            _emit_progress(
-                self.on_progress,
-                "champion_screening_scored",
-                round_id=round_id,
-                plan_id=champion_record.plan_id,
-                metrics=champion_metrics.to_dict(),
-                checkpoint_ref=str(champion_path),
-            )
         allowed_parent_ids = {plan.plan_id for plan in parents}
         candidate_plans: list[InformationPlan] = []
+        forbidden_content_hashes = {
+            _canonical_hash(record.plan.canonical_dict())
+            for record in self.archive.records
+        } | {_canonical_hash(plan.canonical_dict()) for plan in parents}
         for candidate_index in range(1, self.candidates_per_round + 1):
-            _emit_progress(
-                self.on_progress,
-                "candidate_proposal_started",
-                round_id=round_id,
-                candidate_index=candidate_index,
-                candidate_count=self.candidates_per_round,
-            )
-            try:
-                candidate = self.proposer.propose(
-                    round_id=round_id,
-                    candidate_index=candidate_index,
-                    candidate_count=self.candidates_per_round,
-                    forbidden_plan_ids=tuple(
-                        sorted(
-                            {
-                                *(record.plan_id for record in self.archive.records),
-                                *(plan.plan_id for plan in candidate_plans),
-                            }
-                        )
-                    ),
-                    parents=parents,
-                    meta_info=self.meta_memory.entries,
-                    prior=self.priors.propose_plan,
-                )
-            except CandidateProposalRejected as exc:
+            accepted: InformationPlan | None = None
+            for proposal_attempt in range(
+                1, self.evaluation_config.max_proposal_attempts_per_slot + 1
+            ):
                 _emit_progress(
                     self.on_progress,
-                    "candidate_proposal_rejected",
+                    "candidate_proposal_started",
                     round_id=round_id,
                     candidate_index=candidate_index,
                     candidate_count=self.candidates_per_round,
-                    reason=str(exc),
+                    proposal_attempt=proposal_attempt,
                 )
+                try:
+                    candidate = self.proposer.propose(
+                        round_id=round_id,
+                        candidate_index=candidate_index,
+                        candidate_count=self.candidates_per_round,
+                        proposal_attempt=proposal_attempt,
+                        forbidden_plan_ids=tuple(
+                            sorted(
+                                {
+                                    *(record.plan_id for record in self.archive.records),
+                                    *(plan.plan_id for plan in candidate_plans),
+                                }
+                            )
+                        ),
+                        parents=parents,
+                        meta_info=self.meta_memory.entries,
+                        prior=self.priors.propose_plan,
+                    )
+                    if (
+                        not candidate.parent_ids
+                        or set(candidate.parent_ids) != allowed_parent_ids
+                    ):
+                        raise CandidateProposalRejected(
+                            "runtime lineage differs from selected parents"
+                        )
+                    content_hash = _canonical_hash(candidate.canonical_dict())
+                    if content_hash in forbidden_content_hashes:
+                        raise CandidateProposalRejected(
+                            "candidate Plan content duplicates an existing Plan"
+                        )
+                except CandidateProposalRejected as exc:
+                    _emit_progress(
+                        self.on_progress,
+                        "candidate_proposal_rejected",
+                        round_id=round_id,
+                        candidate_index=candidate_index,
+                        candidate_count=self.candidates_per_round,
+                        proposal_attempt=proposal_attempt,
+                        reason=str(exc),
+                    )
+                    continue
+                accepted = candidate
+                forbidden_content_hashes.add(content_hash)
+                break
+            if accepted is None:
                 continue
-            if candidate.plan_id in {plan.plan_id for plan in candidate_plans}:
-                raise ValidationError("proposer returned duplicate Plan ids in one round")
-            if candidate.plan_id in {record.plan_id for record in self.archive.records}:
-                raise ValidationError("proposer reused an archived Plan id")
-            if not candidate.parent_ids or not set(candidate.parent_ids).issubset(
-                allowed_parent_ids
-            ):
-                raise ValidationError(
-                    "candidate parent_ids must cite only selected parent Plans"
-                )
-            candidate_plans.append(candidate)
+            candidate_plans.append(accepted)
             _emit_progress(
                 self.on_progress,
                 "candidate_proposed",
                 round_id=round_id,
                 candidate_index=candidate_index,
                 candidate_count=self.candidates_per_round,
-                plan_id=candidate.plan_id,
-                parent_ids=list(candidate.parent_ids),
-                plan_summary=summarize_information_plan(candidate),
+                plan_id=accepted.plan_id,
+                parent_ids=list(accepted.parent_ids),
+                plan_summary=summarize_information_plan(accepted),
             )
 
         if not candidate_plans:
-            raise ValidationError("all candidate proposals were rejected")
+            checkpoint = self.workspace.reject_round(
+                round_id=round_id,
+                reason="all_candidate_proposals_rejected",
+                attempts=(),
+            )
+            raise RoundPaused(
+                round_id,
+                "all_candidate_proposals_rejected",
+                str(checkpoint),
+            )
 
-        screening_results: list[PlanEvaluationResult] = []
+        attempts: list[PlanEvaluationAttempt] = []
+        evaluation_results: list[PlanEvaluationResult] = []
         for candidate_index, plan in enumerate(candidate_plans, start=1):
             _emit_progress(
                 self.on_progress,
@@ -2946,93 +3214,65 @@ class PlanEvolutionEngine:
                 candidate_count=len(candidate_plans),
                 plan_id=plan.plan_id,
             )
-            trajectories = self.evaluator.evaluate(
+            raw_attempt = self.evaluator.evaluate(
                 plan,
-                screening_cases,
+                round_cases,
                 signal_snapshot,
             )
-            metrics = score_predictions(trajectories)
+            attempt = (
+                raw_attempt
+                if isinstance(raw_attempt, PlanEvaluationAttempt)
+                else PlanEvaluationAttempt(
+                    plan=plan,
+                    expected_case_ids=round_snapshot.case_ids,
+                    trajectories=tuple(raw_attempt),
+                )
+            )
+            attempts.append(attempt)
+            attempt_path = self.workspace.stage_evaluation_attempt(
+                round_id=round_id,
+                attempt=attempt,
+            )
+            metrics = attempt.metrics
+            fitness = attempt.fitness
+            if metrics is None:
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_evaluation_rejected",
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    plan_id=plan.plan_id,
+                    reasons=list(fitness.reasons),
+                    attempt_ref=str(attempt_path),
+                )
+                continue
             _emit_progress(
                 self.on_progress,
-                "candidate_scored",
+                "candidate_scored" if fitness.eligible else "candidate_diagnostic_only",
                 round_id=round_id,
                 candidate_index=candidate_index,
                 candidate_count=len(candidate_plans),
                 plan_id=plan.plan_id,
                 metrics=metrics.to_dict(),
-                trajectory_count=len(trajectories),
-                evaluation_stage="screening",
-                case_ids=list(screening_snapshot.case_ids),
+                fitness=fitness.to_dict(),
+                trajectory_count=len(attempt.trajectories),
+                evaluation_stage="round",
+                case_ids=list(round_snapshot.case_ids),
+                attempt_ref=str(attempt_path),
             )
-            screening_results.append(
+            evaluation_results.append(
                 PlanEvaluationResult(
                     plan=plan,
-                    trajectories=trajectories,
+                    trajectories=attempt.trajectories,
                     metrics=metrics,
+                    fitness=fitness,
                 )
-            )
-
-        promoted_plan_ids: set[str] = set()
-        promotion_snapshot: EvaluationDatasetSnapshot | None = None
-        promotion_cases: tuple[EvolutionCase, ...] = ()
-        if self.evaluation_config.promotion_enabled:
-            promoted = rank_and_select(
-                screening_results,
-                metric=self.evaluation_config.primary_metric,
-                top_n=self.evaluation_config.promotion_top_n,
-            )
-            promoted_plan_ids = {item.plan.plan_id for item in promoted}
-            promotion_snapshot = dataset_manager.get_or_create_promotion_dataset(
-                round_id
-            )
-            promotion_cases = dataset_manager.resolve_cases(
-                promotion_snapshot.case_ids
-            )
-            _emit_progress(
-                self.on_progress,
-                "promotion_selected",
-                round_id=round_id,
-                plan_ids=sorted(promoted_plan_ids),
-                case_ids=list(promotion_snapshot.case_ids),
-                snapshot_id=promotion_snapshot.snapshot_id,
             )
 
         records: list[PlanRecord] = []
-        for result in screening_results:
+        for result in evaluation_results:
             trajectories = result.trajectories
             metrics = result.metrics
-            evaluation_stage = "screening"
-            promotion_case_ids: tuple[str, ...] = ()
-            snapshot_ids = (screening_snapshot.snapshot_id,)
-            if result.plan.plan_id in promoted_plan_ids and promotion_cases:
-                _emit_progress(
-                    self.on_progress,
-                    "candidate_promotion_started",
-                    round_id=round_id,
-                    plan_id=result.plan.plan_id,
-                    additional_case_count=len(promotion_cases),
-                )
-                additional = self.evaluator.evaluate(
-                    result.plan,
-                    promotion_cases,
-                    signal_snapshot,
-                )
-                trajectories = result.trajectories + additional
-                metrics = score_predictions(trajectories)
-                evaluation_stage = "promotion"
-                promotion_case_ids = promotion_snapshot.case_ids
-                snapshot_ids = (
-                    screening_snapshot.snapshot_id,
-                    promotion_snapshot.snapshot_id,
-                )
-                _emit_progress(
-                    self.on_progress,
-                    "candidate_promotion_scored",
-                    round_id=round_id,
-                    plan_id=result.plan.plan_id,
-                    metrics=metrics.to_dict(),
-                    trajectory_count=len(trajectories),
-                )
             reflection = self.critic.critique(
                 plan=result.plan,
                 trajectories=trajectories,
@@ -3048,20 +3288,34 @@ class PlanEvolutionEngine:
                     signal_usage=collect_signal_usage(trajectories),
                     trajectories=trajectories,
                     evaluation=PlanEvaluationSummary(
-                        evaluation_stage=evaluation_stage,
+                        evaluation_stage="round",
                         n_cases=len(trajectories),
-                        case_ids=(
-                            screening_snapshot.case_ids + promotion_case_ids
-                        ),
-                        anchor_case_ids=screening_snapshot.anchor_case_ids,
-                        rotating_case_ids=screening_snapshot.rotating_case_ids,
-                        promotion_case_ids=promotion_case_ids,
-                        dataset_snapshot_ids=snapshot_ids,
+                        case_ids=round_snapshot.case_ids,
+                        dataset_snapshot_ids=(round_snapshot.snapshot_id,),
                     ),
+                    fitness=result.fitness,
                 )
             )
 
         record_tuple = tuple(records)
+        if not any(record.fitness.eligible for record in record_tuple):
+            checkpoint = self.workspace.reject_round(
+                round_id=round_id,
+                reason="no_fitness_eligible_candidates",
+                attempts=attempts,
+            )
+            _emit_progress(
+                self.on_progress,
+                "round_rejected",
+                round_id=round_id,
+                reason="no_fitness_eligible_candidates",
+                checkpoint_ref=str(checkpoint),
+            )
+            raise RoundPaused(
+                round_id,
+                "no_fitness_eligible_candidates",
+                str(checkpoint),
+            )
         meta_entry = self.round_reflector.reflect(
             round_id=round_id,
             records=record_tuple,
@@ -3125,7 +3379,6 @@ class PlanEvolutionEngine:
             parents=parents,
             records=record_tuple,
             meta_entry=meta_entry,
-            champion_record=champion_record,
         )
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:
@@ -3447,22 +3700,33 @@ class SignalEvolutionEngine:
         updated: list[str] = []
         mining_tools = self._mining_tools(mined)
         update_tools = self._update_tools(updated)
-        mining_result = self.mining_agent.run(
-            prompt=self.priors.mine_signal,
-            tools=mining_tools,
-            workspace=self._agent_workspace(),
-            output_schema=_candidate_refs_schema,
-            max_steps=self.max_agent_steps,
-        )
-        update_result = self.update_agent.run(
-            prompt=self.priors.update_signal,
-            tools=update_tools,
-            workspace=self._agent_workspace(),
-            output_schema=_candidate_refs_schema,
-            max_steps=self.max_agent_steps,
-        )
-        mined = _ordered_unique([*mined, *mining_result.value])
-        updated = _ordered_unique([*updated, *update_result.value])
+        agent_failures: dict[str, tuple[str, ...]] = {}
+        try:
+            mining_result = self.mining_agent.run(
+                prompt=self.priors.mine_signal,
+                tools=mining_tools,
+                workspace=self._agent_workspace(),
+                output_schema=_candidate_refs_schema,
+                max_steps=self.max_agent_steps,
+            )
+            mined = _ordered_unique([*mined, *mining_result.value])
+        except ValidationError as exc:
+            agent_failures["slow_loop:mining_agent"] = (
+                "structured_output_failed: " + str(exc),
+            )
+        try:
+            update_result = self.update_agent.run(
+                prompt=self.priors.update_signal,
+                tools=update_tools,
+                workspace=self._agent_workspace(),
+                output_schema=_candidate_refs_schema,
+                max_steps=self.max_agent_steps,
+            )
+            updated = _ordered_unique([*updated, *update_result.value])
+        except ValidationError as exc:
+            agent_failures["slow_loop:update_agent"] = (
+                "structured_output_failed: " + str(exc),
+            )
         all_refs = _ordered_unique([*mined, *updated])
 
         validations: dict[str, SignalCandidateValidation] = {}
@@ -3500,16 +3764,20 @@ class SignalEvolutionEngine:
                 accepted=validation.accepted,
                 reasons=validation.reasons,
             )
+        rejected = dict(agent_failures)
+        rejected.update(
+            {
+                signal_ref: validation.reasons
+                for signal_ref, validation in validations.items()
+                if not validation.accepted
+            }
+        )
         return SlowLoopResult(
             mined_candidates=tuple(mined),
             updated_candidates=tuple(updated),
             promoted=(),
             validated_pending_approval=accepted_hashes,
-            rejected={
-                signal_ref: validation.reasons
-                for signal_ref, validation in validations.items()
-                if not validation.accepted
-            },
+            rejected=rejected,
             registry_version=self.registry.version,
         )
 

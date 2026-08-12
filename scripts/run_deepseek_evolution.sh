@@ -8,6 +8,7 @@ CLI="$PROJECT_ROOT/scripts/evolve_information_schemes.py"
 LOCAL_ENV="$PROJECT_ROOT/.env.local"
 BUNDLED_PYTHON="/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
 WORKSPACE="$PROJECT_ROOT/runs/cold_start/evolution/deepseek-v4-flash-overnight-v3"
+RAW_INFO_ROOT="$PROJECT_ROOT/runs/cold_start/evolution/raw_info_oracle"
 PROPOSAL="$WORKSPACE/dataset_proposal/dataset_manifest.proposal.json"
 APPROVED_DATASET="$WORKSPACE/dataset_proposal/dataset_manifest.approved.json"
 RUN_ID="deepseek-v4-flash-overnight-v3"
@@ -79,6 +80,17 @@ run_cli() {
     "$PYTHON_BIN" "$CLI" "$@"
 }
 
+if [ -f "$WORKSPACE/run_contract.json" ]; then
+  CONTRACT_SCHEMA="$(
+    "$PYTHON_BIN" -c \
+      'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["contract"].get("schema_version", "evolution-run-contract-v1"))' \
+      "$WORKSPACE/run_contract.json"
+  )"
+  if [ "$CONTRACT_SCHEMA" != "evolution-run-contract-v3" ]; then
+    fail "legacy evolution contract is read-only; review a feasible dataset and create a new v3 workspace"
+  fi
+fi
+
 KEY_SOURCE="exported environment"
 if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
   if "$PYTHON_BIN" -c '
@@ -116,10 +128,13 @@ printf '%s\n' \
 
 run_cli preflight-local \
   --workspace "$WORKSPACE" \
+  --raw-info-root "$RAW_INFO_ROOT" \
   --judge-model "$MODEL_ALIAS" \
   --evolution-model "$MODEL_ALIAS"
 
-run_cli migrate-raw-info --workspace "$WORKSPACE"
+run_cli migrate-raw-info \
+  --workspace "$WORKSPACE" \
+  --raw-info-root "$RAW_INFO_ROOT"
 
 PREPARE_RESULT="$(run_cli prepare-dataset --workspace "$WORKSPACE")"
 printf '%s\n' "$PREPARE_RESULT"
@@ -171,6 +186,7 @@ fi
 
 run_cli freeze-run \
   --workspace "$WORKSPACE" \
+  --raw-info-root "$RAW_INFO_ROOT" \
   --approved-dataset "$APPROVED_DATASET" \
   --run-id "$RUN_ID" \
   --judge-model "$MODEL_ALIAS" \
@@ -191,6 +207,7 @@ CONTRACT_HASH="$(
 printf '%s\n' "" "[3/4] 生成并校验首个精确请求（零外部调用）"
 run_cli run-cycle \
   --workspace "$WORKSPACE" \
+  --raw-info-root "$RAW_INFO_ROOT" \
   --approved-dataset "$APPROVED_DATASET"
 
 printf '%s\n' \
@@ -231,6 +248,7 @@ while true; do
   PYTHONPATH="$PROJECT_ROOT/src${PYTHONPATH:+:$PYTHONPATH}" \
     "$PYTHON_BIN" "$CLI" run-loop \
     --workspace "$WORKSPACE" \
+    --raw-info-root "$RAW_INFO_ROOT" \
     --approved-dataset "$APPROVED_DATASET" \
     --external \
     --acknowledge-contract-hash "$CONTRACT_HASH" \

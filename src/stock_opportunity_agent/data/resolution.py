@@ -184,6 +184,78 @@ class DataGap:
         )
 
 
+def aggregate_capability_gaps(
+    trajectories: Iterable[Mapping[str, Any]],
+    *,
+    available_source_types: Iterable[str] = (),
+) -> dict[str, Any]:
+    """Build a deterministic backlog from persisted execution trajectories."""
+
+    available = {item.casefold() for item in available_source_types}
+    grouped: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+    for trajectory in trajectories:
+        case_id = str(trajectory.get("case_id", "unknown"))
+        resolutions = list(
+            dict(trajectory.get("basic_info_bundle", {})).get("requests", ())
+        )
+        for signal_round in trajectory.get("signal_rounds", ()):
+            batch = dict(signal_round).get("batch", {})
+            resolutions.extend(dict(batch).get("resolutions", ()))
+        for resolution in resolutions:
+            if not isinstance(resolution, Mapping):
+                continue
+            gap = resolution.get("data_gap")
+            if not isinstance(gap, Mapping):
+                continue
+            source_types = tuple(sorted(str(item) for item in gap.get("source_types", ())))
+            key = (
+                str(gap.get("reason", "")),
+                str(gap.get("provider") or ""),
+                ",".join(source_types),
+                str(gap.get("request_id", "")),
+            )
+            item = grouped.setdefault(
+                key,
+                {
+                    "reason": key[0],
+                    "provider": key[1] or None,
+                    "source_types": list(source_types),
+                    "request_id": key[3],
+                    "signal_ref": (
+                        key[3].removeprefix("signal:")
+                        if key[3].startswith("signal:")
+                        else None
+                    ),
+                    "basic_info_request_id": (
+                        None if key[3].startswith("signal:") else key[3]
+                    ),
+                    "affected_case_ids": set(),
+                    "occurrences": 0,
+                },
+            )
+            item["affected_case_ids"].add(case_id)
+            item["occurrences"] += 1
+    items: list[dict[str, Any]] = []
+    for key in sorted(grouped):
+        item = grouped[key]
+        resolved = item["reason"] == DataGapReason.ADAPTER_MISSING.value and bool(
+            {value.casefold() for value in item["source_types"]} & available
+        )
+        items.append(
+            {
+                **item,
+                "affected_case_ids": sorted(item["affected_case_ids"]),
+                "status": "resolved" if resolved else "open",
+            }
+        )
+    return {
+        "schema_version": "capability-gap-report-v1",
+        "items": items,
+        "open_count": sum(item["status"] == "open" for item in items),
+        "resolved_count": sum(item["status"] == "resolved" for item in items),
+    }
+
+
 @dataclass(frozen=True)
 class ResolutionEvent:
     """One local-query or acquisition event retained in the trajectory."""
@@ -724,6 +796,8 @@ def _matches_source_type(
         "prices": {"market_data", "price_daily", "historical_price"},
         "sec_company_facts": {"company_facts", "financial_statements"},
         "company_facts": {"sec_company_facts", "financial_statements"},
+        "financial_statements": {"sec_company_facts", "company_facts", "financials"},
+        "financials": {"sec_company_facts", "company_facts", "financial_statements"},
     }
     return any(actual in aliases.get(item, set()) for item in requested)
 
