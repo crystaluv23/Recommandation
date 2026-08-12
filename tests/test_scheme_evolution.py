@@ -30,6 +30,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     CandidateProposalRejected,
     ConfidenceLevel,
     DualLoopEvolutionEngine,
+    EvaluationDatasetManager,
     EvolutionCase,
     EvolutionDataset,
     EvolutionWorkspace,
@@ -39,6 +40,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     InformationPlan,
     MagnitudeClass,
     PlanArchive,
+    PlanEvaluationConfig,
     PlanEvolutionEngine,
     PlanMetaMemory,
     PlanMetrics,
@@ -57,6 +59,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalRound,
     default_information_plan,
     execute_information_plan,
+    sample_stratified_cases,
     score_predictions,
 )
 from stock_opportunity_agent.signal_library import (
@@ -772,6 +775,86 @@ class PredictionMetricTests(TestCase):
             )
 
 
+class EvaluationDatasetSamplingTests(TestCase):
+    def test_snapshots_are_stratified_reused_and_round_disjoint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "evaluation"
+            pool = make_evaluation_pool()
+            config = PlanEvaluationConfig()
+            manager = EvaluationDatasetManager(root, pool, config)
+
+            anchor = manager.get_or_create_anchor_dataset()
+            round_one = manager.get_or_create_screening_dataset(1)
+            promotion = manager.get_or_create_promotion_dataset(1)
+            round_two = manager.get_or_create_screening_dataset(2)
+
+            self.assertEqual(anchor.actual_counts, {
+                "non_surge": 3,
+                "2_3x": 2,
+                "3_10x": 2,
+                "10x_plus": 1,
+            })
+            self.assertEqual(round_one.actual_counts, {
+                "non_surge": 8,
+                "2_3x": 6,
+                "3_10x": 4,
+                "10x_plus": 2,
+            })
+            self.assertEqual(promotion.actual_counts, round_one.actual_counts)
+            self.assertEqual(round_one.anchor_case_ids, round_two.anchor_case_ids)
+            self.assertNotEqual(
+                round_one.rotating_case_ids,
+                round_two.rotating_case_ids,
+            )
+            self.assertFalse(set(round_one.case_ids) & set(promotion.case_ids))
+            all_round_cases = manager.resolve_cases(
+                round_one.case_ids + promotion.case_ids
+            )
+            self.assertEqual(
+                len({case.company_id for case in all_round_cases}),
+                len(all_round_cases),
+            )
+            self.assertEqual(round_one.random_seed, 43)
+            self.assertTrue((root / "anchor.json").is_file())
+            self.assertTrue((root / "round_001" / "screening.json").is_file())
+            self.assertTrue((root / "round_001" / "promotion.json").is_file())
+
+            restarted = EvaluationDatasetManager(root, tuple(reversed(pool)), config)
+            reused = restarted.get_or_create_screening_dataset(1)
+            self.assertEqual(reused.snapshot_id, round_one.snapshot_id)
+            self.assertEqual(reused.case_ids, round_one.case_ids)
+
+    def test_sampling_shortage_never_duplicates_cases_or_company(self) -> None:
+        shared_one = EvolutionCase(
+            company_id="shared",
+            prediction_time=NOW,
+            basic_info={"company_name": "shared"},
+            ground_truth=GroundTruth(1.1),
+            case_id="shared:first",
+        )
+        shared_two = EvolutionCase(
+            company_id="shared",
+            prediction_time=NOW + timedelta(days=1),
+            basic_info={"company_name": "shared"},
+            ground_truth=GroundTruth(1.2),
+            case_id="shared:second",
+        )
+        positive = make_case("only_positive", 2.2)
+        sampled = sample_stratified_cases(
+            (shared_one, shared_two, positive),
+            {
+                "non_surge": 2,
+                "2_3x": 2,
+                "3_10x": 1,
+                "10x_plus": 1,
+            },
+            seed=7,
+        )
+        self.assertEqual(len(sampled), 2)
+        self.assertEqual(len({case.case_id for case in sampled}), 2)
+        self.assertEqual(len({case.company_id for case in sampled}), 2)
+
+
 class PlanArchiveAndWorkspaceTests(TestCase):
     def test_quality_diverse_topk_then_random_exploration(self) -> None:
         archive = PlanArchive(
@@ -1032,6 +1115,103 @@ class SimpleRoundReflector:
 
 
 class PlanEvolutionEngineTests(TestCase):
+    def test_two_stage_shares_cases_and_recomputes_full_metrics(self) -> None:
+        class StageAwareEvaluator:
+            def __init__(self) -> None:
+                self.calls: dict[str, list[tuple[str, ...]]] = {}
+
+            def evaluate(self, plan, cases, signal_registry):
+                prior_calls = self.calls.setdefault(plan.plan_id, [])
+                prior_calls.append(tuple(case.case_id for case in cases))
+                is_promotion = len(prior_calls) == 2
+                rows = []
+                for case in cases:
+                    if plan.plan_id == "plan_child_1":
+                        predicted = not is_promotion
+                    elif plan.plan_id == "plan_child_2":
+                        predicted = case.ground_truth.is_surge
+                    else:
+                        predicted = False
+                    rows.append(
+                        make_trajectory(
+                            case.company_id,
+                            case.ground_truth.realized_max_multiple,
+                            predicted,
+                            (
+                                case.ground_truth.magnitude
+                                if predicted and case.ground_truth.is_surge
+                                else (
+                                    MagnitudeClass.TWO_TO_THREE
+                                    if predicted
+                                    else None
+                                )
+                            ),
+                        )
+                    )
+                return tuple(rows)
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            evaluator = StageAwareEvaluator()
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=CountingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=3,
+            )
+            result = engine.run_round(
+                round_id=1,
+                validation_cases=make_evaluation_pool(),
+                signal_snapshot=registry.freeze(),
+            )
+
+            screening_ids = evaluator.calls["plan_child_1"][0]
+            self.assertEqual(evaluator.calls["plan_child_2"][0], screening_ids)
+            self.assertEqual(evaluator.calls["plan_child_3"][0], screening_ids)
+            promotion_ids = evaluator.calls["plan_child_1"][1]
+            self.assertEqual(evaluator.calls["plan_child_2"][1], promotion_ids)
+            self.assertFalse(set(screening_ids) & set(promotion_ids))
+            self.assertNotIn("plan_child_3", {
+                plan_id
+                for plan_id, calls in evaluator.calls.items()
+                if len(calls) == 2
+            })
+
+            records = {record.plan_id: record for record in result.records}
+            self.assertEqual(
+                records["plan_child_3"].evaluation.evaluation_stage,
+                "screening",
+            )
+            self.assertEqual(records["plan_child_3"].evaluation.n_cases, 20)
+            promoted = records["plan_child_1"]
+            self.assertEqual(promoted.evaluation.evaluation_stage, "promotion")
+            self.assertEqual(promoted.evaluation.n_cases, 40)
+            self.assertEqual(promoted.metrics, score_predictions(promoted.trajectories))
+            screening_f1 = score_predictions(promoted.trajectories[:20]).binary_f1
+            promotion_f1 = score_predictions(promoted.trajectories[20:]).binary_f1
+            self.assertNotAlmostEqual(
+                promoted.metrics.binary_f1,
+                (screening_f1 + promotion_f1) / 2,
+            )
+            saved = json.loads(
+                (
+                    workspace.plans_root
+                    / "plan_child_1"
+                    / "record.json"
+                ).read_text()
+            )
+            self.assertEqual(saved["evaluation_stage"], "promotion")
+            self.assertEqual(saved["n_cases"], 40)
+            self.assertEqual(len(saved["dataset_snapshot_ids"]), 2)
+
     def test_non_content_pause_is_not_converted_to_candidate_rejection(self) -> None:
         class PendingApproval(ValidationError):
             pass
@@ -1582,7 +1762,31 @@ class DualLoopTests(TestCase):
             self.assertEqual([item.round_id for item in result.plan_rounds], [2])
             self.assertEqual(workspace.last_completed_round, 2)
             self.assertEqual(len(proposer.calls), 1)
-            self.assertEqual(evaluator.seen_company_ids, ["validation_case"])
+            self.assertEqual(
+                result.plan_rounds[0].champion_record.plan_id,
+                "plan_committed",
+            )
+            self.assertTrue(
+                (workspace.evaluation_root / "round_002" / "champion.json").is_file()
+            )
+            self.assertEqual(
+                evaluator.seen_company_ids,
+                ["validation_case", "validation_case"],
+            )
+
+
+def make_evaluation_pool() -> tuple[EvolutionCase, ...]:
+    cases = []
+    label_inputs = (
+        ("non_surge", 32, 1.2),
+        ("2_3x", 24, 2.5),
+        ("3_10x", 16, 5.0),
+        ("10x_plus", 8, 12.0),
+    )
+    for label, count, multiple in label_inputs:
+        for index in range(count):
+            cases.append(make_case(f"{label}_{index:02d}", multiple))
+    return tuple(cases)
 
 
 def make_case(company_id: str, multiple: float) -> EvolutionCase:

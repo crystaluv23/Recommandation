@@ -16,7 +16,10 @@ from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research.scheme_evolution import EvolutionWorkspace
+from stock_opportunity_agent.research.scheme_evolution import (
+    EvolutionWorkspace,
+    PlanEvaluationConfig,
+)
 from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_PRIORS
 from stock_opportunity_agent.research.evolution_dashboard import (
     write_evolution_dashboard_bundle,
@@ -620,6 +623,7 @@ def freeze_run(
                 "max_tokens": 120_000,
                 "max_case_cost": 5.0,
                 "max_agent_steps": 20,
+                "evaluation": PlanEvaluationConfig().to_dict(),
             },
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,

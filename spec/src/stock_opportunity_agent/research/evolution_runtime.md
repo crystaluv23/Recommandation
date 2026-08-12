@@ -25,6 +25,9 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - role/model/provider/routing metadata;
 - code revision and Python runtime;
 - candidate/round/runtime limits;
+- a Fast-loop evaluation contract containing label ratios, Anchor/screening/
+  Promotion sizes, primary and secondary metrics, the per-company cap, champion
+  rerun switch, and base seed;
 - role sampling settings: Plan proposer temperature `1.0`, judge temperature
   `0.0`;
 - maximum external attempts and cumulative cost;
@@ -36,6 +39,11 @@ One immutable, secret-free `EvolutionRunContract` binds:
 An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
+
+Older frozen contracts without the evaluation block use the documented
+defaults. Evaluation snapshots are immutable recovery inputs under the run
+workspace. Their existence does not prove round completion or advance
+`state.json:last_completed_round`.
 
 ## External Request Boundary
 

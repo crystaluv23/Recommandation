@@ -168,6 +168,55 @@ distinct from `company_id`; prediction artifacts, label closures, tool access,
 and statistics use `case_id`. Repeated as-of cases for one issuer must not cross
 dataset ownership boundaries, and no two observations may share a `case_id`.
 
+### Fast-loop evaluation sampling
+
+Information Plan evolution evaluates only within the human-approved Evolution
+Validation pool. It does not use the Locked Test and it does not try to mirror
+the extreme class imbalance of the live market. The fixed development target is
+`40% non_surge / 30% 2_3x / 20% 3_10x / 10% 10x_plus`, with Binary F1 as the
+selection metric. Binary precision/recall and magnitude macro-F1/accuracy remain
+diagnostics. Sampling never duplicates a case to fill a short stratum; shortages
+fall back to other eligible cases when available and the snapshot records the
+actual per-class counts.
+
+The default per-round screening set contains 20 cases:
+
+- one globally fixed, durable eight-case Anchor target of `3/2/2/1`; and
+- one round-specific twelve-case Rotating target of `5/4/2/1`.
+
+All Plans in one round use the exact same screening snapshot. The sampling unit
+is `(company_id, prediction_time)`, represented by `case_id`, and at most one
+case per company is selected across the Anchor, Rotating, and Promotion sets in
+one round by default. The Anchor is initialized once and reused across rounds.
+Rotating sampling uses `base_seed + round_id`.
+
+After screening, candidates are ranked by Binary F1. The top two candidates by
+default share one additional 20-case stratified Promotion snapshot, disjoint
+from screening, and run only those additional cases. Their final metrics are
+recomputed from the combined 40 predictions; stage metrics are never averaged.
+Non-promoted records remain explicitly marked `screening`, while promoted
+records are marked `promotion`. When configured, the historical Binary-F1
+champion is rerun on the same screening cases as a paired baseline but does not
+consume a candidate promotion slot or create a duplicate archive member.
+
+Evaluation sampling is frozen below the evolution workspace:
+
+```text
+evaluation/
+  anchor.json
+  round_001/
+    screening.json
+    promotion.json
+    champion.json
+```
+
+Snapshots contain their deterministic snapshot id, seed, target and actual
+label counts, and ordered case ids. Existing snapshots are loaded before any
+sampling. A missing or changed case referenced by a durable snapshot is an
+error, not a reason to resample. Per-Plan archive records persist the evaluation
+stage, total case count, all case ids, Anchor/Rotating/Promotion ids, referenced
+snapshot ids, and the metrics calculated over their complete saved predictions.
+
 ## Two-Stage Prediction and Labels
 
 Stage 1 predicts whether the fixed future horizon reaches at least 2x:
@@ -196,10 +245,10 @@ The saved output also contains qualitative confidence, key reasons, and
 uncertainties. Numeric probability is not required. Continuous
 `realized_max_multiple` remains the underlying truth.
 
-Stage 1 metrics are precision, recall, and binary F1. Stage 2 metrics are
-magnitude accuracy and macro-F1 over true surge cases; a Stage-1 false negative
-counts as a missed magnitude prediction. Binary F1 is the initial Plan fitness.
-PR-AUC and weighted composite objectives are deferred.
+Prediction Stage 1 metrics are precision, recall, and binary F1. Prediction
+Stage 2 metrics are magnitude accuracy and macro-F1 over true surge cases; a
+Stage-1 false negative counts as a missed magnitude prediction. Binary F1 is the
+initial Plan fitness. PR-AUC and weighted composite objectives are deferred.
 
 ## Label-Revealed Reflection
 

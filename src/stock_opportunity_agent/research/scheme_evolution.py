@@ -1058,6 +1058,533 @@ class EvolutionDataset:
                     )
 
 
+EVALUATION_LABELS = ("non_surge", "2_3x", "3_10x", "10x_plus")
+DEFAULT_EVALUATION_LABEL_RATIOS = {
+    "non_surge": 0.40,
+    "2_3x": 0.30,
+    "3_10x": 0.20,
+    "10x_plus": 0.10,
+}
+DEFAULT_EVALUATION_SECONDARY_METRICS = (
+    "binary_precision",
+    "binary_recall",
+    "magnitude_macro_f1",
+    "magnitude_accuracy",
+)
+
+
+@dataclass(frozen=True)
+class PlanEvaluationConfig:
+    """Fixed low-cost Fast-loop evaluation contract."""
+
+    label_ratios: Mapping[str, float] = field(
+        default_factory=lambda: dict(DEFAULT_EVALUATION_LABEL_RATIOS)
+    )
+    anchor_enabled: bool = True
+    anchor_size: int = 8
+    screening_total_cases: int = 20
+    promotion_enabled: bool = True
+    promotion_top_n: int = 2
+    promotion_additional_cases: int = 20
+    primary_metric: str = "binary_f1"
+    secondary_metrics: tuple[str, ...] = DEFAULT_EVALUATION_SECONDARY_METRICS
+    max_cases_per_company_per_round: int = 1
+    rerun_champion: bool = True
+    base_seed: int = 42
+
+    def __post_init__(self) -> None:
+        ratios = {str(key): float(value) for key, value in self.label_ratios.items()}
+        if set(ratios) != set(EVALUATION_LABELS):
+            raise ValidationError("evaluation label ratios must name all four labels")
+        if any(not math.isfinite(value) or value < 0 for value in ratios.values()):
+            raise ValidationError(
+                "evaluation label ratios must be finite and non-negative"
+            )
+        if sum(ratios.values()) <= 0:
+            raise ValidationError(
+                "evaluation label ratios must have positive total weight"
+            )
+        if self.anchor_size < 0 or self.screening_total_cases < 1:
+            raise ValidationError("evaluation Anchor/screening sizes are invalid")
+        if self.anchor_enabled and self.anchor_size > self.screening_total_cases:
+            raise ValidationError("evaluation Anchor cannot exceed screening size")
+        if self.promotion_top_n < 1 or self.promotion_additional_cases < 1:
+            raise ValidationError("evaluation Promotion sizes must be positive")
+        if self.primary_metric != "binary_f1":
+            raise ValidationError("Plan evolution primary metric must be binary_f1")
+        if self.max_cases_per_company_per_round < 1:
+            raise ValidationError("max cases per company per round must be positive")
+        object.__setattr__(self, "label_ratios", ratios)
+        object.__setattr__(
+            self,
+            "secondary_metrics",
+            tuple(str(item) for item in self.secondary_metrics),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "label_ratios": dict(self.label_ratios),
+            "anchor": {"enabled": self.anchor_enabled, "size": self.anchor_size},
+            "screening": {"total_cases": self.screening_total_cases},
+            "promotion": {
+                "enabled": self.promotion_enabled,
+                "top_n": self.promotion_top_n,
+                "additional_cases": self.promotion_additional_cases,
+            },
+            "primary_metric": self.primary_metric,
+            "secondary_metrics": list(self.secondary_metrics),
+            "max_cases_per_company_per_round": (
+                self.max_cases_per_company_per_round
+            ),
+            "rerun_champion": self.rerun_champion,
+            "base_seed": self.base_seed,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "PlanEvaluationConfig":
+        anchor = dict(data.get("anchor", {}))
+        screening = dict(data.get("screening", {}))
+        promotion = dict(data.get("promotion", {}))
+        return cls(
+            label_ratios=dict(
+                data.get("label_ratios", DEFAULT_EVALUATION_LABEL_RATIOS)
+            ),
+            anchor_enabled=bool(anchor.get("enabled", True)),
+            anchor_size=int(anchor.get("size", 8)),
+            screening_total_cases=int(screening.get("total_cases", 20)),
+            promotion_enabled=bool(promotion.get("enabled", True)),
+            promotion_top_n=int(promotion.get("top_n", 2)),
+            promotion_additional_cases=int(
+                promotion.get("additional_cases", 20)
+            ),
+            primary_metric=str(data.get("primary_metric", "binary_f1")),
+            secondary_metrics=tuple(
+                str(item)
+                for item in data.get(
+                    "secondary_metrics", DEFAULT_EVALUATION_SECONDARY_METRICS
+                )
+            ),
+            max_cases_per_company_per_round=int(
+                data.get("max_cases_per_company_per_round", 1)
+            ),
+            rerun_champion=bool(data.get("rerun_champion", True)),
+            base_seed=int(data.get("base_seed", 42)),
+        )
+
+
+def evaluation_label(case: EvolutionCase) -> str:
+    """Map one four-class outcome to the persisted evaluation label."""
+
+    if not case.ground_truth.is_surge:
+        return "non_surge"
+    return {
+        MagnitudeClass.TWO_TO_THREE: "2_3x",
+        MagnitudeClass.THREE_TO_TEN: "3_10x",
+        MagnitudeClass.TEN_PLUS: "10x_plus",
+    }[case.ground_truth.magnitude]
+
+
+def allocate_stratified_counts(
+    total_cases: int,
+    label_ratios: Mapping[str, float],
+) -> dict[str, int]:
+    """Allocate an integer total by largest remainder in stable label order."""
+
+    if total_cases < 0:
+        raise ValidationError("stratified sample size cannot be negative")
+    weights = {
+        label: float(label_ratios.get(label, 0.0))
+        for label in EVALUATION_LABELS
+    }
+    total_weight = sum(weights.values())
+    if total_weight <= 0:
+        raise ValidationError("stratified sampling requires positive label weights")
+    exact = {
+        label: total_cases * weights[label] / total_weight
+        for label in EVALUATION_LABELS
+    }
+    counts = {label: math.floor(exact[label]) for label in EVALUATION_LABELS}
+    remaining = total_cases - sum(counts.values())
+    order = sorted(
+        EVALUATION_LABELS,
+        key=lambda label: (
+            -(exact[label] - counts[label]),
+            EVALUATION_LABELS.index(label),
+        ),
+    )
+    for label in order[:remaining]:
+        counts[label] += 1
+    return counts
+
+
+def sample_stratified_cases(
+    pool: Iterable[EvolutionCase],
+    target_counts: Mapping[str, int],
+    exclude_case_ids: Iterable[str] | None = None,
+    exclude_company_ids: Iterable[str] | None = None,
+    seed: int | None = None,
+    *,
+    max_cases_per_company: int = 1,
+    initial_company_counts: Mapping[str, int] | None = None,
+) -> tuple[EvolutionCase, ...]:
+    """Sample without replacement, then gracefully backfill short strata."""
+
+    if set(target_counts) != set(EVALUATION_LABELS):
+        raise ValidationError("target counts must name all evaluation labels")
+    if any(int(value) < 0 for value in target_counts.values()):
+        raise ValidationError("target counts must be non-negative")
+    if max_cases_per_company < 1:
+        raise ValidationError("max cases per company must be positive")
+    excluded_cases = {str(item) for item in (exclude_case_ids or ())}
+    excluded_companies = {str(item) for item in (exclude_company_ids or ())}
+    company_counts = {
+        str(key): int(value) for key, value in (initial_company_counts or {}).items()
+    }
+    eligible = [
+        case
+        for case in pool
+        if case.case_id not in excluded_cases
+        and case.company_id not in excluded_companies
+    ]
+    if len({case.case_id for case in eligible}) != len(eligible):
+        raise ValidationError("stratified sampling pool contains duplicate case ids")
+    generator = random.Random(seed)
+    grouped = {label: [] for label in EVALUATION_LABELS}
+    for case in sorted(eligible, key=lambda item: item.case_id):
+        grouped[evaluation_label(case)].append(case)
+    for cases in grouped.values():
+        generator.shuffle(cases)
+
+    selected: list[EvolutionCase] = []
+    selected_ids: set[str] = set()
+
+    def take(case: EvolutionCase) -> bool:
+        count = company_counts.get(case.company_id, 0)
+        if count >= max_cases_per_company or case.case_id in selected_ids:
+            return False
+        selected.append(case)
+        selected_ids.add(case.case_id)
+        company_counts[case.company_id] = count + 1
+        return True
+
+    for label in EVALUATION_LABELS:
+        wanted = int(target_counts[label])
+        for case in grouped[label]:
+            selected_in_label = sum(
+                evaluation_label(item) == label for item in selected
+            )
+            if selected_in_label >= wanted:
+                break
+            take(case)
+
+    target_total = sum(int(value) for value in target_counts.values())
+    remainder = [case for case in eligible if case.case_id not in selected_ids]
+    generator.shuffle(remainder)
+    for case in remainder:
+        if len(selected) >= target_total:
+            break
+        take(case)
+    return tuple(selected)
+
+
+@dataclass(frozen=True)
+class EvaluationDatasetSnapshot:
+    """Immutable case-id snapshot for one evaluation stage."""
+
+    snapshot_id: str
+    stage: str
+    round_id: int | None
+    random_seed: int
+    target_counts: Mapping[str, int]
+    actual_counts: Mapping[str, int]
+    case_ids: tuple[str, ...]
+    anchor_case_ids: tuple[str, ...] = ()
+    rotating_case_ids: tuple[str, ...] = ()
+    promotion_case_ids: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "plan-evaluation-dataset-v1",
+            "snapshot_id": self.snapshot_id,
+            "stage": self.stage,
+            "round_id": self.round_id,
+            "random_seed": self.random_seed,
+            "target_counts": dict(self.target_counts),
+            "actual_counts": dict(self.actual_counts),
+            "case_ids": list(self.case_ids),
+            "anchor_case_ids": list(self.anchor_case_ids),
+            "rotating_case_ids": list(self.rotating_case_ids),
+            "promotion_case_ids": list(self.promotion_case_ids),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "EvaluationDatasetSnapshot":
+        if data.get("schema_version") != "plan-evaluation-dataset-v1":
+            raise ValidationError("unsupported evaluation dataset snapshot schema")
+        payload = dict(data)
+        snapshot_id = str(payload.pop("snapshot_id", ""))
+        if not snapshot_id or _canonical_hash(payload) != snapshot_id:
+            raise ValidationError("evaluation dataset snapshot hash mismatch")
+        return cls(
+            snapshot_id=snapshot_id,
+            stage=str(data["stage"]),
+            round_id=(
+                None if data.get("round_id") is None else int(data["round_id"])
+            ),
+            random_seed=int(data["random_seed"]),
+            target_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("target_counts", {})).items()
+            },
+            actual_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("actual_counts", {})).items()
+            },
+            case_ids=tuple(str(item) for item in data.get("case_ids", ())),
+            anchor_case_ids=tuple(
+                str(item) for item in data.get("anchor_case_ids", ())
+            ),
+            rotating_case_ids=tuple(
+                str(item) for item in data.get("rotating_case_ids", ())
+            ),
+            promotion_case_ids=tuple(
+                str(item) for item in data.get("promotion_case_ids", ())
+            ),
+        )
+
+
+class EvaluationDatasetManager:
+    """Create or load fixed Anchor and round-level evaluation snapshots."""
+
+    def __init__(
+        self,
+        root: str | Path,
+        pool: Iterable[EvolutionCase],
+        config: PlanEvaluationConfig = PlanEvaluationConfig(),
+    ) -> None:
+        self.root = Path(root)
+        self.root.mkdir(parents=True, exist_ok=True)
+        self.pool = tuple(pool)
+        self.config = config
+        self._cases_by_id = {case.case_id: case for case in self.pool}
+        if len(self._cases_by_id) != len(self.pool):
+            raise ValidationError("evaluation pool contains duplicate case ids")
+
+    def get_or_create_anchor_dataset(self) -> EvaluationDatasetSnapshot:
+        path = self.root / "anchor.json"
+        if path.exists():
+            return self._load_snapshot(path, expected_stage="anchor", round_id=None)
+        target = (
+            allocate_stratified_counts(
+                self.config.anchor_size, self.config.label_ratios
+            )
+            if self.config.anchor_enabled
+            else {label: 0 for label in EVALUATION_LABELS}
+        )
+        cases = sample_stratified_cases(
+            self.pool,
+            target,
+            seed=self.config.base_seed,
+            max_cases_per_company=self.config.max_cases_per_company_per_round,
+        )
+        return self._write_snapshot(
+            path,
+            stage="anchor",
+            round_id=None,
+            seed=self.config.base_seed,
+            target_counts=target,
+            cases=cases,
+            anchor_case_ids=tuple(case.case_id for case in cases),
+        )
+
+    def get_or_create_screening_dataset(
+        self, round_id: int
+    ) -> EvaluationDatasetSnapshot:
+        path = self._round_root(round_id) / "screening.json"
+        if path.exists():
+            return self._load_snapshot(
+                path, expected_stage="screening", round_id=round_id
+            )
+        anchor = self.get_or_create_anchor_dataset()
+        anchor_cases = self.resolve_cases(anchor.case_ids)
+        desired_total = allocate_stratified_counts(
+            self.config.screening_total_cases, self.config.label_ratios
+        )
+        anchor_actual = _count_evaluation_labels(anchor_cases)
+        rotating_target = {
+            label: max(0, desired_total[label] - anchor_actual[label])
+            for label in EVALUATION_LABELS
+        }
+        missing_total = max(
+            0, self.config.screening_total_cases - len(anchor_cases)
+        )
+        rotating_target = _resize_target_counts(
+            rotating_target, missing_total, self.config.label_ratios
+        )
+        company_counts = _count_companies(anchor_cases)
+        seed = self.config.base_seed + round_id
+        rotating = sample_stratified_cases(
+            self.pool,
+            rotating_target,
+            exclude_case_ids=anchor.case_ids,
+            seed=seed,
+            max_cases_per_company=self.config.max_cases_per_company_per_round,
+            initial_company_counts=company_counts,
+        )
+        cases = anchor_cases + rotating
+        return self._write_snapshot(
+            path,
+            stage="screening",
+            round_id=round_id,
+            seed=seed,
+            target_counts=desired_total,
+            cases=cases,
+            anchor_case_ids=anchor.case_ids,
+            rotating_case_ids=tuple(case.case_id for case in rotating),
+        )
+
+    def get_or_create_promotion_dataset(
+        self, round_id: int
+    ) -> EvaluationDatasetSnapshot:
+        path = self._round_root(round_id) / "promotion.json"
+        if path.exists():
+            return self._load_snapshot(
+                path, expected_stage="promotion", round_id=round_id
+            )
+        screening = self.get_or_create_screening_dataset(round_id)
+        screening_cases = self.resolve_cases(screening.case_ids)
+        target = allocate_stratified_counts(
+            self.config.promotion_additional_cases,
+            self.config.label_ratios,
+        )
+        seed = self.config.base_seed + round_id
+        promotion = sample_stratified_cases(
+            self.pool,
+            target,
+            exclude_case_ids=screening.case_ids,
+            seed=seed,
+            max_cases_per_company=self.config.max_cases_per_company_per_round,
+            initial_company_counts=_count_companies(screening_cases),
+        )
+        return self._write_snapshot(
+            path,
+            stage="promotion",
+            round_id=round_id,
+            seed=seed,
+            target_counts=target,
+            cases=promotion,
+            promotion_case_ids=tuple(case.case_id for case in promotion),
+        )
+
+    def resolve_cases(self, case_ids: Iterable[str]) -> tuple[EvolutionCase, ...]:
+        resolved: list[EvolutionCase] = []
+        for case_id in case_ids:
+            if case_id not in self._cases_by_id:
+                raise ValidationError(
+                    f"evaluation snapshot case is missing from approved pool: {case_id}"
+                )
+            resolved.append(self._cases_by_id[case_id])
+        return tuple(resolved)
+
+    def _round_root(self, round_id: int) -> Path:
+        if round_id < 1:
+            raise ValidationError("evaluation round id must be positive")
+        return self.root / f"round_{round_id:03d}"
+
+    def _load_snapshot(
+        self,
+        path: Path,
+        *,
+        expected_stage: str,
+        round_id: int | None,
+    ) -> EvaluationDatasetSnapshot:
+        snapshot = EvaluationDatasetSnapshot.from_dict(_read_json(path))
+        if snapshot.stage != expected_stage or snapshot.round_id != round_id:
+            raise ValidationError("evaluation dataset snapshot identity mismatch")
+        cases = self.resolve_cases(snapshot.case_ids)
+        if _count_evaluation_labels(cases) != dict(snapshot.actual_counts):
+            raise ValidationError("evaluation snapshot labels changed in approved pool")
+        return snapshot
+
+    def _write_snapshot(
+        self,
+        path: Path,
+        *,
+        stage: str,
+        round_id: int | None,
+        seed: int,
+        target_counts: Mapping[str, int],
+        cases: tuple[EvolutionCase, ...],
+        anchor_case_ids: tuple[str, ...] = (),
+        rotating_case_ids: tuple[str, ...] = (),
+        promotion_case_ids: tuple[str, ...] = (),
+    ) -> EvaluationDatasetSnapshot:
+        payload = {
+            "schema_version": "plan-evaluation-dataset-v1",
+            "stage": stage,
+            "round_id": round_id,
+            "random_seed": seed,
+            "target_counts": {
+                label: int(target_counts[label])
+                for label in EVALUATION_LABELS
+            },
+            "actual_counts": _count_evaluation_labels(cases),
+            "case_ids": [case.case_id for case in cases],
+            "anchor_case_ids": list(anchor_case_ids),
+            "rotating_case_ids": list(rotating_case_ids),
+            "promotion_case_ids": list(promotion_case_ids),
+        }
+        snapshot = EvaluationDatasetSnapshot.from_dict(
+            {**payload, "snapshot_id": _canonical_hash(payload)}
+        )
+        _write_or_verify_json(path, snapshot.to_dict())
+        return snapshot
+
+
+def _count_evaluation_labels(
+    cases: Iterable[EvolutionCase],
+) -> dict[str, int]:
+    counts = {label: 0 for label in EVALUATION_LABELS}
+    for case in cases:
+        counts[evaluation_label(case)] += 1
+    return counts
+
+
+def _count_companies(cases: Iterable[EvolutionCase]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for case in cases:
+        counts[case.company_id] = counts.get(case.company_id, 0) + 1
+    return counts
+
+
+def _resize_target_counts(
+    counts: Mapping[str, int],
+    total: int,
+    ratios: Mapping[str, float],
+) -> dict[str, int]:
+    result = {label: int(counts.get(label, 0)) for label in EVALUATION_LABELS}
+    while sum(result.values()) > total:
+        label = max(
+            EVALUATION_LABELS,
+            key=lambda item: (
+                result[item],
+                -EVALUATION_LABELS.index(item),
+            ),
+        )
+        result[label] -= 1
+    desired = allocate_stratified_counts(total, ratios)
+    while sum(result.values()) < total:
+        label = max(
+            EVALUATION_LABELS,
+            key=lambda item: (
+                desired[item] - result[item],
+                -EVALUATION_LABELS.index(item),
+            ),
+        )
+        result[label] += 1
+    return result
+
+
 @dataclass(frozen=True)
 class PlanReflection:
     """Plan-level Critic output over all trajectories and metrics."""
@@ -1115,6 +1642,69 @@ class PlanReflection:
 
 
 @dataclass(frozen=True)
+class PlanEvaluationSummary:
+    """Dataset lineage and completion stage for one Plan evaluation."""
+
+    evaluation_stage: str
+    n_cases: int
+    case_ids: tuple[str, ...]
+    anchor_case_ids: tuple[str, ...] = ()
+    rotating_case_ids: tuple[str, ...] = ()
+    promotion_case_ids: tuple[str, ...] = ()
+    dataset_snapshot_ids: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.evaluation_stage not in {"screening", "promotion"}:
+            raise ValidationError(
+                "Plan evaluation stage must be screening or promotion"
+            )
+        if self.n_cases < 1 or self.n_cases != len(self.case_ids):
+            raise ValidationError("Plan evaluation case count does not match case ids")
+        if len(set(self.case_ids)) != len(self.case_ids):
+            raise ValidationError("Plan evaluation case ids must be unique")
+        if self.evaluation_stage == "screening" and self.promotion_case_ids:
+            raise ValidationError("screening evaluation cannot include Promotion cases")
+        if not set(self.anchor_case_ids).issubset(self.case_ids):
+            raise ValidationError("Anchor case ids must belong to the evaluation")
+        if not set(self.rotating_case_ids).issubset(self.case_ids):
+            raise ValidationError("Rotating case ids must belong to the evaluation")
+        if not set(self.promotion_case_ids).issubset(self.case_ids):
+            raise ValidationError("Promotion case ids must belong to the evaluation")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "evaluation_stage": self.evaluation_stage,
+            "n_cases": self.n_cases,
+            "case_ids": list(self.case_ids),
+            "anchor_case_ids": list(self.anchor_case_ids),
+            "rotating_case_ids": list(self.rotating_case_ids),
+            "promotion_case_ids": list(self.promotion_case_ids),
+            "dataset_snapshot_ids": list(self.dataset_snapshot_ids),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "PlanEvaluationSummary":
+        case_ids = tuple(str(item) for item in data.get("case_ids", ()))
+        return cls(
+            evaluation_stage=str(data.get("evaluation_stage", "screening")),
+            n_cases=int(data.get("n_cases", len(case_ids))),
+            case_ids=case_ids,
+            anchor_case_ids=tuple(
+                str(item) for item in data.get("anchor_case_ids", ())
+            ),
+            rotating_case_ids=tuple(
+                str(item) for item in data.get("rotating_case_ids", ())
+            ),
+            promotion_case_ids=tuple(
+                str(item) for item in data.get("promotion_case_ids", ())
+            ),
+            dataset_snapshot_ids=tuple(
+                str(item) for item in data.get("dataset_snapshot_ids", ())
+            ),
+        )
+
+
+@dataclass(frozen=True)
 class PlanRecord:
     """Durable Plan Archive record P=(S,E,J,R,U,T)."""
 
@@ -1125,6 +1715,7 @@ class PlanRecord:
     reflection: PlanReflection
     signal_usage: Mapping[str, Mapping[str, int]]
     trajectories: tuple[ExecutionTrajectory, ...]
+    evaluation: PlanEvaluationSummary | None = None
 
     def __post_init__(self) -> None:
         if self.round_id < 1:
@@ -1143,6 +1734,20 @@ class PlanRecord:
             },
         )
         object.__setattr__(self, "trajectories", tuple(self.trajectories))
+        if self.evaluation is None:
+            object.__setattr__(
+                self,
+                "evaluation",
+                PlanEvaluationSummary(
+                    evaluation_stage="screening",
+                    n_cases=len(self.trajectories),
+                    case_ids=tuple(item.case_id for item in self.trajectories),
+                ),
+            )
+        elif self.evaluation.n_cases != len(self.trajectories):
+            raise ValidationError(
+                "Plan evaluation metadata must cover every saved trajectory"
+            )
 
     @property
     def plan_id(self) -> str:
@@ -1161,6 +1766,7 @@ class PlanRecord:
                 ref: dict(counts) for ref, counts in self.signal_usage.items()
             },
             "trajectories": [item.to_dict() for item in self.trajectories],
+            **self.evaluation.to_dict(),
         }
 
     @classmethod
@@ -1178,6 +1784,11 @@ class PlanRecord:
             trajectories=tuple(
                 ExecutionTrajectory.from_dict(item)
                 for item in data.get("trajectories", ())
+            ),
+            evaluation=(
+                PlanEvaluationSummary.from_dict(data)
+                if data.get("case_ids")
+                else None
             ),
         )
 
@@ -1724,12 +2335,14 @@ class EvolutionWorkspace:
         self.experiments_root = self.root / "experiments"
         self.meta_root = self.root / "meta"
         self.cache_root = self.root / "cache"
+        self.evaluation_root = self.root / "evaluation"
         self.trajectory_root = self.experiments_root / "trajectories"
         for path in (
             self.plans_root,
             self.experiments_root,
             self.meta_root,
             self.cache_root,
+            self.evaluation_root,
             self.trajectory_root,
         ):
             path.mkdir(parents=True, exist_ok=True)
@@ -2000,6 +2613,27 @@ class EvolutionWorkspace:
             },
         )
 
+    def stage_champion_evaluation(
+        self,
+        *,
+        round_id: int,
+        record: PlanRecord,
+    ) -> Path:
+        """Persist one paired historical-champion screening result."""
+
+        if round_id < 1 or record.round_id != round_id:
+            raise ValidationError("champion evaluation round identity mismatch")
+        path = self.evaluation_root / f"round_{round_id:03d}" / "champion.json"
+        _write_or_verify_json(
+            path,
+            {
+                "schema_version": "plan-champion-evaluation-v1",
+                "historical_plan_id": record.plan_id,
+                "record": record.to_dict(),
+            },
+        )
+        return path
+
     def restore_archive(self, *, expected_run_contract_hash: str | None = None) -> PlanArchive:
         """Load only Plans reachable from authoritative completed checkpoints."""
 
@@ -2062,6 +2696,39 @@ class PlanRoundResult:
     parents: tuple[InformationPlan, ...]
     records: tuple[PlanRecord, ...]
     meta_entry: RoundMetaEntry
+    champion_record: PlanRecord | None = None
+
+
+@dataclass(frozen=True)
+class PlanEvaluationResult:
+    """In-round predictions and metrics before durable PlanRecord creation."""
+
+    plan: InformationPlan
+    trajectories: tuple[ExecutionTrajectory, ...]
+    metrics: PlanMetrics
+
+
+def rank_and_select(
+    results: Iterable[PlanEvaluationResult],
+    *,
+    metric: str = "binary_f1",
+    top_n: int = 2,
+) -> tuple[PlanEvaluationResult, ...]:
+    """Rank evaluation results by one PlanMetrics field with stable ties."""
+
+    if top_n < 1:
+        raise ValidationError("promotion top_n must be positive")
+    if metric != "binary_f1":
+        raise ValidationError("Plan promotion metric must be binary_f1")
+    return tuple(
+        sorted(
+            tuple(results),
+            key=lambda item: (
+                -float(getattr(item.metrics, metric)),
+                item.plan.plan_id,
+            ),
+        )[:top_n]
+    )
 
 
 class PlanEvolutionEngine:
@@ -2086,6 +2753,7 @@ class PlanEvolutionEngine:
         random_k: int = 2,
         similarity_threshold: float = 0.9,
         rng: random.Random | None = None,
+        evaluation_config: PlanEvaluationConfig = PlanEvaluationConfig(),
         run_contract_hash: str = "",
         on_progress: ProgressCallback | None = None,
     ) -> None:
@@ -2109,6 +2777,7 @@ class PlanEvolutionEngine:
         self.random_k = random_k
         self.similarity_threshold = similarity_threshold
         self.rng = rng or random.Random()
+        self.evaluation_config = evaluation_config
         self.run_contract_hash = run_contract_hash
         self.on_progress = on_progress
         for committed_record in self.archive.records:
@@ -2125,12 +2794,25 @@ class PlanEvolutionEngine:
 
         if round_id != self.workspace.last_completed_round + 1:
             raise ValidationError("fast-loop round id does not follow committed state")
+        dataset_manager = EvaluationDatasetManager(
+            self.workspace.evaluation_root,
+            validation_cases,
+            self.evaluation_config,
+        )
+        screening_snapshot = dataset_manager.get_or_create_screening_dataset(
+            round_id
+        )
+        screening_cases = dataset_manager.resolve_cases(
+            screening_snapshot.case_ids
+        )
         _emit_progress(
             self.on_progress,
             "round_started",
             round_id=round_id,
             candidate_count=self.candidates_per_round,
             validation_case_count=len(validation_cases),
+            screening_case_count=len(screening_cases),
+            screening_snapshot_id=screening_snapshot.snapshot_id,
         )
         selection = self.archive.select_parents(
             top_k=self.top_k,
@@ -2151,6 +2833,47 @@ class PlanEvolutionEngine:
                 else []
             ),
         )
+        champion_record: PlanRecord | None = None
+        if self.evaluation_config.rerun_champion and self.archive.records:
+            historical_champion = sorted(
+                self.archive.records,
+                key=lambda record: (-record.metrics.binary_f1, record.plan_id),
+            )[0]
+            champion_trajectories = self.evaluator.evaluate(
+                historical_champion.plan,
+                screening_cases,
+                signal_snapshot,
+            )
+            champion_metrics = score_predictions(champion_trajectories)
+            champion_record = PlanRecord(
+                plan=historical_champion.plan,
+                round_id=round_id,
+                embedding=historical_champion.embedding,
+                metrics=champion_metrics,
+                reflection=PlanReflection(),
+                signal_usage=collect_signal_usage(champion_trajectories),
+                trajectories=champion_trajectories,
+                evaluation=PlanEvaluationSummary(
+                    evaluation_stage="screening",
+                    n_cases=len(screening_cases),
+                    case_ids=screening_snapshot.case_ids,
+                    anchor_case_ids=screening_snapshot.anchor_case_ids,
+                    rotating_case_ids=screening_snapshot.rotating_case_ids,
+                    dataset_snapshot_ids=(screening_snapshot.snapshot_id,),
+                ),
+            )
+            champion_path = self.workspace.stage_champion_evaluation(
+                round_id=round_id,
+                record=champion_record,
+            )
+            _emit_progress(
+                self.on_progress,
+                "champion_screening_scored",
+                round_id=round_id,
+                plan_id=champion_record.plan_id,
+                metrics=champion_metrics.to_dict(),
+                checkpoint_ref=str(champion_path),
+            )
         allowed_parent_ids = {plan.plan_id for plan in parents}
         candidate_plans: list[InformationPlan] = []
         for candidate_index in range(1, self.candidates_per_round + 1):
@@ -2213,7 +2936,7 @@ class PlanEvolutionEngine:
         if not candidate_plans:
             raise ValidationError("all candidate proposals were rejected")
 
-        records: list[PlanRecord] = []
+        screening_results: list[PlanEvaluationResult] = []
         for candidate_index, plan in enumerate(candidate_plans, start=1):
             _emit_progress(
                 self.on_progress,
@@ -2225,7 +2948,7 @@ class PlanEvolutionEngine:
             )
             trajectories = self.evaluator.evaluate(
                 plan,
-                validation_cases,
+                screening_cases,
                 signal_snapshot,
             )
             metrics = score_predictions(trajectories)
@@ -2238,21 +2961,103 @@ class PlanEvolutionEngine:
                 plan_id=plan.plan_id,
                 metrics=metrics.to_dict(),
                 trajectory_count=len(trajectories),
+                evaluation_stage="screening",
+                case_ids=list(screening_snapshot.case_ids),
             )
+            screening_results.append(
+                PlanEvaluationResult(
+                    plan=plan,
+                    trajectories=trajectories,
+                    metrics=metrics,
+                )
+            )
+
+        promoted_plan_ids: set[str] = set()
+        promotion_snapshot: EvaluationDatasetSnapshot | None = None
+        promotion_cases: tuple[EvolutionCase, ...] = ()
+        if self.evaluation_config.promotion_enabled:
+            promoted = rank_and_select(
+                screening_results,
+                metric=self.evaluation_config.primary_metric,
+                top_n=self.evaluation_config.promotion_top_n,
+            )
+            promoted_plan_ids = {item.plan.plan_id for item in promoted}
+            promotion_snapshot = dataset_manager.get_or_create_promotion_dataset(
+                round_id
+            )
+            promotion_cases = dataset_manager.resolve_cases(
+                promotion_snapshot.case_ids
+            )
+            _emit_progress(
+                self.on_progress,
+                "promotion_selected",
+                round_id=round_id,
+                plan_ids=sorted(promoted_plan_ids),
+                case_ids=list(promotion_snapshot.case_ids),
+                snapshot_id=promotion_snapshot.snapshot_id,
+            )
+
+        records: list[PlanRecord] = []
+        for result in screening_results:
+            trajectories = result.trajectories
+            metrics = result.metrics
+            evaluation_stage = "screening"
+            promotion_case_ids: tuple[str, ...] = ()
+            snapshot_ids = (screening_snapshot.snapshot_id,)
+            if result.plan.plan_id in promoted_plan_ids and promotion_cases:
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_promotion_started",
+                    round_id=round_id,
+                    plan_id=result.plan.plan_id,
+                    additional_case_count=len(promotion_cases),
+                )
+                additional = self.evaluator.evaluate(
+                    result.plan,
+                    promotion_cases,
+                    signal_snapshot,
+                )
+                trajectories = result.trajectories + additional
+                metrics = score_predictions(trajectories)
+                evaluation_stage = "promotion"
+                promotion_case_ids = promotion_snapshot.case_ids
+                snapshot_ids = (
+                    screening_snapshot.snapshot_id,
+                    promotion_snapshot.snapshot_id,
+                )
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_promotion_scored",
+                    round_id=round_id,
+                    plan_id=result.plan.plan_id,
+                    metrics=metrics.to_dict(),
+                    trajectory_count=len(trajectories),
+                )
             reflection = self.critic.critique(
-                plan=plan,
+                plan=result.plan,
                 trajectories=trajectories,
                 metrics=metrics,
             )
             records.append(
                 PlanRecord(
-                    plan=plan,
+                    plan=result.plan,
                     round_id=round_id,
-                    embedding=self.embedder.embed(plan),
+                    embedding=self.embedder.embed(result.plan),
                     metrics=metrics,
                     reflection=reflection,
                     signal_usage=collect_signal_usage(trajectories),
                     trajectories=trajectories,
+                    evaluation=PlanEvaluationSummary(
+                        evaluation_stage=evaluation_stage,
+                        n_cases=len(trajectories),
+                        case_ids=(
+                            screening_snapshot.case_ids + promotion_case_ids
+                        ),
+                        anchor_case_ids=screening_snapshot.anchor_case_ids,
+                        rotating_case_ids=screening_snapshot.rotating_case_ids,
+                        promotion_case_ids=promotion_case_ids,
+                        dataset_snapshot_ids=snapshot_ids,
+                    ),
                 )
             )
 
@@ -2320,6 +3125,7 @@ class PlanEvolutionEngine:
             parents=parents,
             records=record_tuple,
             meta_entry=meta_entry,
+            champion_record=champion_record,
         )
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:

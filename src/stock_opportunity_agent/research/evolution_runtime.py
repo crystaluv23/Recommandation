@@ -66,6 +66,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     InformationPlan,
     PlanMetrics,
     PlanArchive,
+    PlanEvaluationConfig,
     PlanEvolutionEngine,
     PlanMetaMemory,
     PlanRecord,
@@ -2593,6 +2594,9 @@ def run_bounded_evolution_cycle(
         llm_signal_runner=signal_runner,
         on_progress=emit,
     )
+    evaluation_limits = limits.get("evaluation", {})
+    if not isinstance(evaluation_limits, Mapping):
+        raise ValidationError("run contract evaluation limits must be an object")
     plan_engine = PlanEvolutionEngine(
         archive=archive,
         meta_memory=meta_memory,
@@ -2610,6 +2614,7 @@ def run_bounded_evolution_cycle(
         top_k=int(limits.get("top_k", 3)),
         random_k=int(limits.get("random_k", 2)),
         similarity_threshold=float(limits.get("similarity_threshold", 0.9)),
+        evaluation_config=PlanEvaluationConfig.from_dict(evaluation_limits),
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
