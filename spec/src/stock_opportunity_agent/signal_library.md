@@ -49,9 +49,9 @@ signals_candidates/<category>/<signal_id>/v<N>/...
 ```
 
 The source-controlled v1 seed catalog may be compact JSON, but workspace
-initialization must materialize this runtime structure. The first seed catalog
-contains 13 auditable definitions across financial, market, customers,
-management, orders, product, risk, and catalyst categories; 11 are enabled in
+initialization must materialize this runtime structure. The seed catalog
+contains 16 auditable definitions across financial, market, customers,
+management, orders, product, risk, and catalyst categories; 14 are enabled in
 the executable snapshot and two remain disabled.
 
 Seed and runtime manifests carry an explicit enabled status. Structurally
@@ -78,6 +78,41 @@ its registered deterministic function or LLM skill, supported source routing,
 and a fixture in the actual Raw Info schema. The enabled-only snapshot and audit
 hash are bound by the run contract. `market_cap` and `pilot_to_volume` remain
 disabled until reliable historical inputs and adapters exist.
+
+## Seed Hard-Signal Defaults
+
+The hard-signal seed is intentionally small. It supplies reproducible primitive
+measurements that complement, rather than replace, the LLM Signals and adaptive
+Information Plan. Three additional primitives cover material gaps in the
+original seed:
+
+- `operating_cash_flow_margin` divides the latest point-in-time operating cash
+  flow by revenue from the exact same reported duration. The default state is
+  positive at `>= 10%`, negative at `<= 0%`, and neutral between them. Missing
+  matched periods or non-positive revenue is `unavailable`. This is a
+  size-normalized cash-conversion proxy, not a complete accrual model; sector
+  differences and working-capital timing remain for the Plan to interpret.
+- `net_share_retirement_yoy` is `1 - current weighted-average shares / prior
+  comparable weighted-average shares`. Positive therefore means net share
+  retirement and negative means dilution. The default state is positive at
+  `>= 2%` retirement, negative at `<= -5%` (at least 5% dilution), and neutral
+  between them. The executor prefers comparison facts from the same filing so
+  stock-split restatements remain comparable, and otherwise fails closed when
+  it cannot form a valid year-over-year pair.
+- `price_momentum_126d` is the total return across the latest 126 intervals in
+  the chronological adjusted-close series. It requires 127 daily observations;
+  the name denotes trading observations, not an exact calendar-six-month
+  interval. The default state is positive at `>= 20%`, negative at `<= -20%`,
+  and neutral between them.
+
+These cutoffs are explicit, reviewable seed heuristics, not values claimed by
+the underlying empirical papers. A future promoted version may change them
+only through the normal candidate validation and exact-hash approval boundary.
+The cash-flow and issuance literature motivates the measurements, while the
+project vision's early-market-confirmation requirement motivates momentum. The
+system does not yet have a peer-relative execution context, so the momentum
+seed uses absolute return and leaves relative-strength comparison to the
+cross-sectional Plan/evaluation layer.
 
 ## Execution and Evidence
 

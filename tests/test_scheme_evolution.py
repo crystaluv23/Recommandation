@@ -428,13 +428,13 @@ class GenericAgentTests(TestCase):
 class SignalLibraryTests(TestCase):
     def _registry(self, directory: str) -> SignalRegistry:
         registry = SignalRegistry(Path(directory) / "signals")
-        self.assertEqual(registry.install_catalog(SEED_CATALOG), 11)
+        self.assertEqual(registry.install_catalog(SEED_CATALOG), 14)
         return registry
 
     def test_seed_catalog_progressive_disclosure_and_frozen_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
-            self.assertEqual(len(registry.list_signal_cards()), 11)
+            self.assertEqual(len(registry.list_signal_cards()), 14)
             self.assertIn("financial", registry.list_categories())
             cards = registry.search_signal_cards("customer")
             self.assertTrue(cards)

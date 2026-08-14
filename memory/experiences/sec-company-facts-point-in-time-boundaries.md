@@ -1,6 +1,6 @@
 # SEC Company Facts Point-in-Time Boundaries
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 

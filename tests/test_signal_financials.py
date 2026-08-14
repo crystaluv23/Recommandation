@@ -19,13 +19,25 @@ AS_OF = datetime(2025, 2, 1, tzinfo=timezone.utc)
 
 
 class SecFinancialSignalTests(TestCase):
-    def test_scoped_sec_api_drives_four_financial_signals_and_excludes_future(self) -> None:
+    def test_scoped_sec_api_drives_six_financial_signals_and_excludes_future(self) -> None:
         content = _scoped_company_facts_content()
         document = _document("sec_scoped", content)
         specs = (
             _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.4, 0.0),
             _spec("revenue_acceleration", "financial.revenue_acceleration", 0.2, -0.1),
             _spec("gross_margin_change", "financial.gross_margin_change", 0.05, -0.05),
+            _spec(
+                "operating_cash_flow_margin",
+                "financial.operating_cash_flow_margin",
+                0.1,
+                0.0,
+            ),
+            _spec(
+                "net_share_retirement_yoy",
+                "financial.net_share_retirement_yoy",
+                0.02,
+                -0.05,
+            ),
             _spec("cash_reserves", "financial.cash_reserves", 30.0, 10.0),
         )
         executor = SignalExecutor(_snapshot(specs), RawInfoStore(documents=(document,)))
@@ -36,7 +48,7 @@ class SecFinancialSignalTests(TestCase):
             as_of=AS_OF,
         )
 
-        self.assertEqual([item.value for item in batch.results], [SignalValue.POSITIVE] * 4)
+        self.assertEqual([item.value for item in batch.results], [SignalValue.POSITIVE] * 6)
         self.assertNotIn("999", " ".join(item.interpretation for item in batch.results))
         for result in batch.results:
             self.assertTrue(result.supporting_evidence)
@@ -71,6 +83,163 @@ class SecFinancialSignalTests(TestCase):
         self.assertTrue(
             all(item.exact_span in content for item in result.supporting_evidence)
         )
+
+    def test_share_retirement_prefers_split_comparable_same_filing_facts(self) -> None:
+        shares = [
+            _row("2023-01-01", "2023-12-31", 50.0, "2024-02-01"),
+            _row("2023-01-01", "2023-12-31", 120.0, "2025-01-20"),
+            _row("2024-01-01", "2024-12-31", 110.0, "2025-01-20"),
+        ]
+        content = json.dumps(
+            {
+                "cik": 1,
+                "facts": {
+                    "us-gaap": {
+                        "WeightedAverageNumberOfSharesOutstandingBasic": {
+                            "units": {"shares": shares}
+                        }
+                    }
+                },
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        spec = _spec(
+            "net_share_retirement_yoy",
+            "financial.net_share_retirement_yoy",
+            0.02,
+            -0.05,
+        )
+
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("shares", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertIn("0.0833333", result.interpretation)
+        cited = " ".join(item.exact_span for item in result.supporting_evidence)
+        self.assertIn('"filed":"2025-01-20"', cited)
+        self.assertNotIn('"val":50.0', cited)
+
+    def test_share_dilution_is_negative(self) -> None:
+        content = json.dumps(
+            {
+                "cik": 1,
+                "facts": {
+                    "us-gaap": {
+                        "WeightedAverageNumberOfSharesOutstandingBasic": {
+                            "units": {
+                                "shares": [
+                                    _row(
+                                        "2023-01-01",
+                                        "2023-12-31",
+                                        100.0,
+                                        "2025-01-20",
+                                    ),
+                                    _row(
+                                        "2024-01-01",
+                                        "2024-12-31",
+                                        110.0,
+                                        "2025-01-20",
+                                    ),
+                                ]
+                            }
+                        }
+                    }
+                },
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        spec = _spec(
+            "net_share_retirement_yoy",
+            "financial.net_share_retirement_yoy",
+            0.02,
+            -0.05,
+        )
+
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("dilution", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+
+        self.assertEqual(result.value, SignalValue.NEGATIVE)
+        self.assertEqual(result.interpretation, "net_share_retirement_yoy=-0.1")
+
+    def test_cash_flow_margin_requires_the_same_reported_duration(self) -> None:
+        facts = [
+            _accession_fact("Revenues", "2024-10-01", "2024-12-31", 100.0),
+            _accession_fact(
+                "NetCashProvidedByUsedInOperatingActivities",
+                "2024-01-01",
+                "2024-12-31",
+                50.0,
+            ),
+        ]
+        content = json.dumps(
+            {
+                "schema_version": "sec-company-facts-document-v1",
+                "cik": "1",
+                "accession_number": "fixture",
+                "filing_date": "2025-01-20",
+                "form": "10-K",
+                "facts": facts,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        spec = _spec(
+            "operating_cash_flow_margin",
+            "financial.operating_cash_flow_margin",
+            0.1,
+            0.0,
+        )
+
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("cash_flow", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertIn("Matching SEC", result.interpretation)
+
+    def test_price_momentum_uses_exact_observation_lookback_and_fails_closed(self) -> None:
+        spec = SignalSpec(
+            signal_id="price_momentum_126d",
+            version=1,
+            category="market",
+            description="Fixture price momentum.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            function="market.price_momentum_126d",
+            source_types=("market_data",),
+            parameters={
+                "lookback_observations": 126,
+                "positive_min": 0.2,
+                "negative_max": -0.2,
+            },
+        )
+        enough = _document(
+            "market_enough",
+            "Point-in-time chronological adjusted prices.",
+            "market_data",
+            metadata={"prices": list(range(100, 227))},
+        )
+        short = _document(
+            "market_short",
+            "Short point-in-time chronological adjusted prices.",
+            "market_data",
+            metadata={"prices": list(range(100, 226))},
+        )
+
+        positive = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(enough,))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        unavailable = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(short,))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+
+        self.assertEqual(positive.value, SignalValue.POSITIVE)
+        self.assertEqual(positive.interpretation, "price_momentum_126d=1.26")
+        self.assertEqual(unavailable.value, SignalValue.UNAVAILABLE)
+        self.assertIn("requires 127 observations", unavailable.interpretation)
 
     def test_unchanged_document_fingerprint_skips_repeat_then_oracle_growth_reexecutes(self) -> None:
         spec = SignalSpec(
@@ -135,7 +304,11 @@ def _snapshot(specs: tuple[SignalSpec, ...]) -> FrozenSignalRegistry:
 
 
 def _document(
-    document_id: str, content: str, source_type: str = "sec_company_facts"
+    document_id: str,
+    content: str,
+    source_type: str = "sec_company_facts",
+    *,
+    metadata: dict[str, object] | None = None,
 ) -> RawInfoDocument:
     return RawInfoDocument.create(
         document_id=document_id,
@@ -144,6 +317,7 @@ def _document(
         published_at=datetime(2025, 1, 20, tzinfo=timezone.utc),
         available_at=datetime(2025, 1, 20, tzinfo=timezone.utc),
         content=content,
+        metadata=metadata,
     )
 
 
@@ -174,6 +348,15 @@ def _scoped_company_facts_content() -> str:
         _row(None, "2023-12-31", 20.0, "2024-02-01"),
         _row(None, "2024-12-31", 40.0, "2025-01-20"),
     ]
+    operating_cash_flow = [
+        _row("2024-01-01", "2024-12-31", 30.0, "2025-01-20"),
+        _row("2025-01-01", "2025-12-31", 999.0, "2026-01-20"),
+    ]
+    shares = [
+        _row("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+        _row("2024-01-01", "2024-12-31", 90.0, "2025-01-20"),
+        _row("2025-01-01", "2025-12-31", 1.0, "2026-01-20"),
+    ]
     return json.dumps(
         {
             "cik": 1,
@@ -183,6 +366,12 @@ def _scoped_company_facts_content() -> str:
                     "GrossProfit": {"units": {"USD": gross}},
                     "CashAndCashEquivalentsAtCarryingValue": {
                         "units": {"USD": cash}
+                    },
+                    "NetCashProvidedByUsedInOperatingActivities": {
+                        "units": {"USD": operating_cash_flow}
+                    },
+                    "WeightedAverageNumberOfSharesOutstandingBasic": {
+                        "units": {"shares": shares}
                     },
                 }
             },

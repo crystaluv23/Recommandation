@@ -42,6 +42,32 @@
     },
     {
       "spec": {
+        "signal_id": "operating_cash_flow_margin",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."},
+        "execution": {"type": "deterministic", "function": "financial.operating_cash_flow_margin"},
+        "raw_retrieval": {"source_types": ["financials"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.1, "negative_max": 0.0}
+      },
+      "tests": [{"name": "cash-generative revenue", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":30}]}"}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "net_share_retirement_yoy",
+        "version": 1,
+        "category": "financial",
+        "definition": {"description": "Measure year-over-year net share retirement, with dilution represented as a negative value."},
+        "execution": {"type": "deterministic", "function": "financial.net_share_retirement_yoy"},
+        "raw_retrieval": {"source_types": ["financials"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"positive_min": 0.02, "negative_max": -0.05}
+      },
+      "tests": [{"name": "net share retirement", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":95}]}"}]}]
+    },
+    {
+      "spec": {
         "signal_id": "max_drawdown_1y",
         "version": 1,
         "category": "market",
@@ -52,6 +78,19 @@
         "parameters": {"positive_min": -0.2, "negative_max": -0.5}
       },
       "tests": [{"name": "contained drawdown", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "market_data", "available_at": "2025-01-20T00:00:00+00:00", "content": "Point-in-time adjusted prices.", "metadata": {"prices": [10, 12, 11, 13]}}]}]
+    },
+    {
+      "spec": {
+        "signal_id": "price_momentum_126d",
+        "version": 1,
+        "category": "market",
+        "definition": {"description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."},
+        "execution": {"type": "deterministic", "function": "market.price_momentum_126d"},
+        "raw_retrieval": {"source_types": ["market_data"]},
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"lookback_observations": 126, "positive_min": 0.2, "negative_max": -0.2}
+      },
+      "tests": [{"name": "positive intermediate momentum", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "market_data", "available_at": "2025-01-20T00:00:00+00:00", "content": "Point-in-time chronological adjusted prices.", "metadata": {"prices": [100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226]}}]}]
     },
     {
       "enabled": false,

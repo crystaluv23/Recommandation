@@ -1186,7 +1186,10 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
         "financial.revenue_growth_yoy": _revenue_growth_signal,
         "financial.revenue_acceleration": _revenue_acceleration_signal,
         "financial.gross_margin_change": _gross_margin_change_signal,
+        "financial.operating_cash_flow_margin": _operating_cash_flow_margin_signal,
+        "financial.net_share_retirement_yoy": _net_share_retirement_yoy_signal,
         "market.max_drawdown_1y": _max_drawdown_signal,
+        "market.price_momentum_126d": _price_momentum_signal,
         "financial.cash_reserves": _cash_reserves_signal,
         "news.negative_word_count": _negative_word_count_signal,
     }
@@ -1290,6 +1293,16 @@ _CASH_TAGS = (
     "CashAndCashEquivalentsAtCarryingValue",
     "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
 )
+_OPERATING_CASH_FLOW_TAGS = (
+    "NetCashProvidedByUsedInOperatingActivities",
+    "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
+    "CashFlowsFromUsedInOperatingActivities",
+)
+_SHARE_COUNT_TAGS = (
+    "WeightedAverageNumberOfSharesOutstandingBasic",
+    "WeightedAverageNumberOfDilutedSharesOutstanding",
+    "WeightedAverageNumberOfSharesOutstanding",
+)
 
 
 def _revenue_growth_signal(
@@ -1375,6 +1388,64 @@ def _gross_margin_change_signal(
         evidence=_fact_evidence(
             (current[2], current[3], previous[2], previous[3]), as_of
         ),
+    )
+
+
+def _operating_cash_flow_margin_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    facts = _sec_facts(documents, as_of)
+    revenues = _duration_series(facts, _REVENUE_TAGS)
+    operating_cash_flows = _duration_series(facts, _OPERATING_CASH_FLOW_TAGS)
+    cash_flow_by_period = {
+        (fact.start, fact.end): fact for fact in operating_cash_flows
+    }
+    ratios: list[tuple[str, float, _SecFact, _SecFact]] = []
+    for revenue in revenues:
+        cash_flow = cash_flow_by_period.get((revenue.start, revenue.end))
+        if cash_flow is not None and revenue.value > 0:
+            ratios.append(
+                (revenue.end, cash_flow.value / revenue.value, revenue, cash_flow)
+            )
+    ratios.sort(key=lambda item: item[0], reverse=True)
+    if not ratios:
+        return _unavailable_result(
+            spec,
+            "Matching SEC operating-cash-flow and positive-revenue periods were unavailable.",
+        )
+    latest = ratios[0]
+    return _numeric_result(
+        spec,
+        latest[1],
+        latest[2].document,
+        as_of,
+        label="operating_cash_flow_margin",
+        evidence=_fact_evidence((latest[2], latest[3]), as_of),
+    )
+
+
+def _net_share_retirement_yoy_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    pair = _latest_share_yoy_pair(_share_duration_series(_sec_facts(documents, as_of)))
+    if pair is None:
+        return _unavailable_result(
+            spec,
+            "Comparable point-in-time SEC weighted-average share periods were unavailable.",
+        )
+    current, previous = pair
+    value = 1.0 - (current.value / previous.value)
+    return _numeric_result(
+        spec,
+        value,
+        current.document,
+        as_of,
+        label="net_share_retirement_yoy",
+        evidence=_fact_evidence((current, previous), as_of),
     )
 
 
@@ -1536,6 +1607,67 @@ def _duration_series(
     return sorted(by_period.values(), key=lambda fact: fact.end, reverse=True)
 
 
+def _share_duration_series(facts: Iterable[_SecFact]) -> list[_SecFact]:
+    """Keep filing-scoped share contexts so split-restated pairs can be preferred."""
+
+    tag_priority = {tag: index for index, tag in enumerate(_SHARE_COUNT_TAGS)}
+    eligible = [
+        fact
+        for fact in facts
+        if fact.tag in tag_priority
+        and fact.start is not None
+        and fact.unit.casefold() == "shares"
+        and fact.value > 0
+    ]
+    by_context: dict[tuple[str, str, str, str], _SecFact] = {}
+    for fact in eligible:
+        key = (
+            fact.start or "",
+            fact.end,
+            fact.filed,
+            fact.document.document_id,
+        )
+        current = by_context.get(key)
+        if current is None or tag_priority[fact.tag] < tag_priority[current.tag]:
+            by_context[key] = fact
+    return sorted(
+        by_context.values(),
+        key=lambda fact: (fact.end, fact.filed, fact.document.document_id),
+        reverse=True,
+    )
+
+
+def _latest_share_yoy_pair(
+    series: list[_SecFact],
+) -> tuple[_SecFact, _SecFact] | None:
+    for current in series:
+        current_end = datetime.fromisoformat(current.end).date()
+        candidates = [
+            previous
+            for previous in series
+            if previous.tag == current.tag
+            and previous.end < current.end
+            and 330
+            <= (current_end - datetime.fromisoformat(previous.end).date()).days
+            <= 400
+            and _comparable_duration(current, previous)
+        ]
+        if not candidates:
+            continue
+        previous = max(
+            candidates,
+            key=lambda fact: (
+                fact.document.document_id == current.document.document_id,
+                fact.filed == current.filed,
+                fact.end,
+                fact.filed,
+                fact.document.document_id,
+            ),
+        )
+        return current, previous
+    return None
+
+
 def _comparable_duration(left: _SecFact, right: _SecFact) -> bool:
     if left.start is None or right.start is None:
         return False
@@ -1611,6 +1743,45 @@ def _max_drawdown_signal(
         peak = max(peak, price)
         drawdown = min(drawdown, (price / peak) - 1)
     return _numeric_result(spec, drawdown, document, as_of, label="max_drawdown_1y")
+
+
+def _price_momentum_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    found = _latest_metadata_value(documents, "prices")
+    if found is None:
+        return _unavailable_result(spec, "Raw Info did not contain a price series.")
+    values, document = found
+    if not isinstance(values, list) or not values:
+        raise ValidationError("market price metadata must be a non-empty list")
+    raw_lookback = spec.parameters.get("lookback_observations", 126)
+    if isinstance(raw_lookback, bool) or not isinstance(raw_lookback, int):
+        raise ValidationError("price momentum lookback_observations must be an integer")
+    if raw_lookback < 1:
+        raise ValidationError("price momentum lookback_observations must be positive")
+    if len(values) <= raw_lookback:
+        return _unavailable_result(
+            spec,
+            f"Price history requires {raw_lookback + 1} observations; received {len(values)}.",
+        )
+    window: list[float] = []
+    for raw in values[-(raw_lookback + 1) :]:
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+            raise ValidationError("market price metadata must be numeric")
+        price = float(raw)
+        if not math.isfinite(price) or price <= 0:
+            raise ValidationError("market price metadata must be finite and positive")
+        window.append(price)
+    momentum = window[-1] / window[0] - 1.0
+    return _numeric_result(
+        spec,
+        momentum,
+        document,
+        as_of,
+        label=f"price_momentum_{raw_lookback}d",
+    )
 
 
 def _negative_word_count_signal(
