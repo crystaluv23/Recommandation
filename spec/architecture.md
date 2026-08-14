@@ -67,8 +67,8 @@ cold start
 -> retain quality-diverse plans and compress completed-round lessons into FIFO meta-info
 -> periodically mine or repair candidate signals on label-visible discovery data
 -> execute candidate fixtures and validate leakage/evidence/version contracts
--> hold passing candidates for explicit human approval
--> promote only exact approved candidate hashes into the stable Signal Registry
+-> atomically promote every exact candidate hash that passes the fixed machine-validation contract
+-> expose the resulting stable Signal Registry to the next fast-loop group
 -> reserve the locked test for a later human-approved acceptance check
 
 daily
@@ -121,8 +121,8 @@ find winners from the most recent one-year historical window
 -> sample N new Information Plans from fixed proposer prior plus FIFO experimental meta-info
 -> every bounded group of plan rounds, mine or repair candidate Signals on discovery data
 -> execute candidate fixtures and validate schema, leakage, evidence traceability, and semantic uniqueness
--> record passing candidates as pending human approval
--> promote only exact human-approved candidate hashes before the next fast-loop group
+-> durably record the validated batch, then automatically promote every passing exact hash as one recoverable Registry transition
+-> start the next fast-loop group from the new Registry and the cumulative historical Plan Archive
 ```
 
 “Bounded proposal engine” applies to each atomic development round: candidate
@@ -137,7 +137,7 @@ cost ledger, and fail-closed preflight validation for every newly rendered
 request.
 
 An external evolution run is identified by a secret-free frozen run contract:
-dataset and split hash, stable Signal snapshot hash, global Raw Info oracle id,
+dataset and split hash, initial stable Signal snapshot hash, global Raw Info oracle id,
 fixed-prior hash, role/model and provider routing, exact code revision and Python
 runtime, runtime limits, attempt limit, and cumulative cost ceiling. The current
 contract evaluates every candidate on one shared, exact 20-case round snapshot
@@ -184,6 +184,15 @@ trajectories. Both Basic Info and Signals use one local-first resolver; Basic
 Info sends deterministic exact source spans to `H_init`, while Signals compute
 derived results from complete source documents.
 The stable Signal Registry is frozen throughout a group of fast-loop rounds.
+At its Slow-Loop boundary, a durably staged and fully validated candidate batch
+may advance it exactly once; the cycle marker records both input and output
+Registry version/hash. A restart completes that same transition idempotently
+before advancing the cycle pointer. The next group uses the output snapshot.
+The Plan Archive remains cumulative across these transitions: old Plans keep
+their original Binary F1 and are neither rerun nor normalized against the new
+Registry. Parent selection compares all eligible historical records by stored
+Binary F1 plus the fixed diversity rule. Registry identity remains provenance
+for the round that produced a score and never enters the score itself.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether
@@ -346,7 +355,7 @@ Reports are human-readable artifacts. Memory is structured state used by future 
 
 ### Meta-learning vs Self-modification
 
-Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. Low-risk parameter changes may be automated only after the architecture explicitly allows them; medium and high-risk changes require human approval.
+Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. The explicitly defined Slow-Loop Signal validator may automatically promote exact passing candidate hashes at a cycle boundary. Changing that validator, its gates, datasets, priors, score semantics, or promotion policy remains a framework change; medium and high-risk framework changes require human approval.
 
 ## Scoring Shape
 

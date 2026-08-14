@@ -33,6 +33,14 @@ Library: which reusable real-world concepts matter and how to extract them from
 the point-in-time Raw Info Store. The system evolves research strategy and
 cognitive tools, not one prediction prompt.
 
+The coupling is deliberately cumulative. After each Slow Loop, every candidate
+that passes the fixed machine-validation contract is atomically promoted into
+the local stable Signal Library. The next Fast Loop samples new Plans from that
+newest library plus the historical high-F1 Plan Archive. Historical Plans keep
+their original blind-evaluation F1 and are not replayed merely because the
+Signal Library changed; new Plans must displace them by producing better F1.
+Signal version/hash is therefore execution provenance, never a fitness term.
+
 The resulting information plan remains a proposal until it succeeds on
 label-hidden evolution validation and later passes a separately locked test.
 Only after the information layer reaches a stable validation plateau should the
@@ -104,7 +112,7 @@ These thresholds are starting defaults, not permanent beliefs.
 - Do not manage positions, leverage, stops, or brokerage actions.
 - Do not present LLM output as reliable financial prediction.
 - Do not learn only from winners; every historical study must include controls or failures when possible.
-- Do not let the system silently rewrite its own framework without experiment evidence and human confirmation.
+- Do not let the system silently rewrite its own framework without experiment evidence and human confirmation. Automatic Signal promotion is permitted only through the explicitly specified Slow-Loop validation and atomic transition contract; changing that contract is a framework change.
 - Do not let the fast loop mutate labels, dataset ownership, blind-prediction
   rules, fixed evolution priors, or Signal Registry versions.
 
@@ -151,7 +159,7 @@ The primary output is a watchlist and research cards. Recommendation states shou
 
 ### Review and Meta-learning
 
-The system must review recommendations, label errors, measure signal performance, and propose improvements. Meta-learning can suggest changes to weights, prompts, signals, data sources, and module design, but medium and high-risk changes require experiments and human approval.
+The system must review recommendations, label errors, measure signal performance, and propose improvements. Meta-learning can suggest changes to weights, prompts, data sources, and module design, but medium and high-risk framework changes require experiments and human approval. Signal candidates produced inside the approved historical-learning Slow Loop follow their separate fixed machine-validation and automatic-promotion contract.
 
 ## Success Criteria
 

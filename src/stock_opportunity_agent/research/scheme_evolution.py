@@ -2777,38 +2777,76 @@ class EvolutionWorkspace:
         *,
         run_contract_hash: str,
         target_plan_rounds: int,
+        initial_signal_registry_version: int,
+        initial_signal_registry_hash: str,
+        observed_signal_registry_version: int,
+        observed_signal_registry_hash: str,
     ) -> dict[str, Any]:
-        """Freeze or recover one Fast/Slow cycle under the exact run contract."""
+        """Freeze or recover one Fast/Slow cycle and its Registry boundary."""
 
-        if not run_contract_hash or target_plan_rounds < 1:
+        if (
+            not run_contract_hash
+            or target_plan_rounds < 1
+            or initial_signal_registry_version < 1
+            or observed_signal_registry_version < 1
+        ):
             raise ValidationError("cycle contract hash and round target are required")
         if self.cycle_state_path.exists():
             state = _read_json(self.cycle_state_path)
-            if state.get("schema_version") != "dual-loop-cycle-state-v1":
+            if state.get("schema_version") != "dual-loop-cycle-state-v2":
                 raise ValidationError("unsupported dual-loop cycle state schema")
             if state.get("run_contract_hash") != run_contract_hash:
                 raise ValidationError("cycle state run contract mismatch")
+            if (
+                int(state.get("initial_signal_registry_version", 0))
+                != initial_signal_registry_version
+                or state.get("initial_signal_registry_hash")
+                != initial_signal_registry_hash
+            ):
+                raise ValidationError("cycle state initial Signal Registry mismatch")
         else:
             state = {
-                "schema_version": "dual-loop-cycle-state-v1",
+                "schema_version": "dual-loop-cycle-state-v2",
                 "run_contract_hash": run_contract_hash,
+                "initial_signal_registry_version": initial_signal_registry_version,
+                "initial_signal_registry_hash": initial_signal_registry_hash,
+                "current_signal_registry_version": initial_signal_registry_version,
+                "current_signal_registry_hash": initial_signal_registry_hash,
                 "last_completed_cycle": 0,
                 "active_cycle": None,
             }
         active = state.get("active_cycle")
         resumed = isinstance(active, Mapping)
         if not resumed:
+            if (
+                int(state.get("current_signal_registry_version", 0))
+                != observed_signal_registry_version
+                or state.get("current_signal_registry_hash")
+                != observed_signal_registry_hash
+            ):
+                raise ValidationError(
+                    "stable Signal Registry differs from last committed cycle output"
+                )
             active = {
                 "cycle_id": int(state.get("last_completed_cycle", 0)) + 1,
                 "start_round": self.last_completed_round,
                 "target_plan_rounds": target_plan_rounds,
                 "completed_plan_rounds": 0,
                 "phase": "fast_loop",
+                "input_signal_registry_version": observed_signal_registry_version,
+                "input_signal_registry_hash": observed_signal_registry_hash,
             }
         else:
             active = dict(active)
             if int(active.get("target_plan_rounds", 0)) != target_plan_rounds:
                 raise ValidationError("active cycle round target mismatch")
+            if (
+                int(active.get("input_signal_registry_version", 0))
+                != int(state.get("current_signal_registry_version", 0))
+                or active.get("input_signal_registry_hash")
+                != state.get("current_signal_registry_hash")
+            ):
+                raise ValidationError("active cycle Signal input is not committed state")
         start_round = int(active.get("start_round", -1))
         completed = self.last_completed_round - start_round
         if completed < 0 or completed > target_plan_rounds:
@@ -2822,7 +2860,7 @@ class EvolutionWorkspace:
         return {**active, "resumed": resumed}
 
     def mark_cycle_phase(self, phase: str) -> None:
-        if phase not in {"fast_loop", "slow_loop"}:
+        if phase not in {"fast_loop", "slow_loop", "signal_transition"}:
             raise ValidationError("invalid dual-loop cycle phase")
         state = _read_json(self.cycle_state_path)
         active = state.get("active_cycle")
@@ -2836,6 +2874,65 @@ class EvolutionWorkspace:
         state["active_cycle"] = active
         _atomic_write_json(self.cycle_state_path, state)
 
+    def staged_slow_validation(self, cycle_id: int) -> dict[str, Any] | None:
+        path = self._slow_validation_path(cycle_id)
+        if not path.exists():
+            return None
+        payload = _read_json(path)
+        cycle_state = _read_json(self.cycle_state_path)
+        if (
+            payload.get("schema_version") != "dual-loop-slow-validation-v1"
+            or int(payload.get("cycle_id", 0)) != cycle_id
+            or payload.get("run_contract_hash")
+            != cycle_state.get("run_contract_hash")
+        ):
+            raise ValidationError("staged Slow-loop validation identity mismatch")
+        active = cycle_state.get("active_cycle")
+        validation = dict(payload.get("validation", {}))
+        if not isinstance(active, Mapping) or (
+            int(validation.get("input_registry_version", 0))
+            != int(active.get("input_signal_registry_version", 0))
+            or validation.get("input_registry_hash")
+            != active.get("input_signal_registry_hash")
+        ):
+            raise ValidationError("staged Slow validation Registry input mismatch")
+        return validation
+
+    def stage_slow_validation(
+        self,
+        *,
+        cycle_id: int,
+        validation: Mapping[str, Any],
+    ) -> Path:
+        path = self._slow_validation_path(cycle_id)
+        cycle_state = _read_json(self.cycle_state_path)
+        active = cycle_state.get("active_cycle")
+        if not isinstance(active, Mapping) or int(active.get("cycle_id", 0)) != cycle_id:
+            raise ValidationError("active dual-loop cycle identity mismatch")
+        if self.last_completed_round != (
+            int(active.get("start_round", -1))
+            + int(active.get("target_plan_rounds", 0))
+        ):
+            raise ValidationError("cannot stage Slow validation before all Fast rounds")
+        if (
+            int(validation.get("input_registry_version", 0))
+            != int(active.get("input_signal_registry_version", 0))
+            or validation.get("input_registry_hash")
+            != active.get("input_signal_registry_hash")
+        ):
+            raise ValidationError("Slow validation differs from cycle Registry input")
+        _write_or_verify_json(
+            path,
+            {
+                "schema_version": "dual-loop-slow-validation-v1",
+                "cycle_id": cycle_id,
+                "run_contract_hash": cycle_state.get("run_contract_hash"),
+                "validation": dict(validation),
+            },
+        )
+        self.mark_cycle_phase("signal_transition")
+        return path
+
     def staged_slow_result(self, cycle_id: int) -> dict[str, Any] | None:
         path = self._slow_result_path(cycle_id)
         if not path.exists():
@@ -2843,7 +2940,7 @@ class EvolutionWorkspace:
         payload = _read_json(path)
         cycle_state = _read_json(self.cycle_state_path)
         if (
-            payload.get("schema_version") != "dual-loop-slow-result-v1"
+            payload.get("schema_version") != "dual-loop-slow-result-v2"
             or int(payload.get("cycle_id", 0)) != cycle_id
             or payload.get("run_contract_hash")
             != cycle_state.get("run_contract_hash")
@@ -2859,10 +2956,20 @@ class EvolutionWorkspace:
     ) -> Path:
         path = self._slow_result_path(cycle_id)
         cycle_state = _read_json(self.cycle_state_path)
+        active = cycle_state.get("active_cycle")
+        if not isinstance(active, Mapping) or int(active.get("cycle_id", 0)) != cycle_id:
+            raise ValidationError("active dual-loop cycle identity mismatch")
+        if (
+            int(result.get("input_registry_version", 0))
+            != int(active.get("input_signal_registry_version", 0))
+            or result.get("input_registry_hash")
+            != active.get("input_signal_registry_hash")
+        ):
+            raise ValidationError("Slow result differs from cycle Registry input")
         _write_or_verify_json(
             path,
             {
-                "schema_version": "dual-loop-slow-result-v1",
+                "schema_version": "dual-loop-slow-result-v2",
                 "cycle_id": cycle_id,
                 "run_contract_hash": cycle_state.get("run_contract_hash"),
                 "result": dict(result),
@@ -2870,7 +2977,13 @@ class EvolutionWorkspace:
         )
         return path
 
-    def complete_cycle(self, *, cycle_id: int) -> None:
+    def complete_cycle(
+        self,
+        *,
+        cycle_id: int,
+        observed_signal_registry_version: int,
+        observed_signal_registry_hash: str,
+    ) -> None:
         """Advance the cycle pointer only after Fast rounds and Slow result exist."""
 
         state = _read_json(self.cycle_state_path)
@@ -2884,16 +2997,37 @@ class EvolutionWorkspace:
         slow_path = self._slow_result_path(cycle_id)
         if not slow_path.exists():
             raise ValidationError("cannot complete cycle without staged Slow result")
-        self.staged_slow_result(cycle_id)
+        slow_result = self.staged_slow_result(cycle_id)
+        if slow_result is None:
+            raise ValidationError("cannot complete cycle without staged Slow result")
+        if (
+            int(slow_result.get("output_registry_version", 0))
+            != observed_signal_registry_version
+            or slow_result.get("output_registry_hash")
+            != observed_signal_registry_hash
+        ):
+            raise ValidationError("stable Registry differs from staged Slow output")
         state.update(
             {
                 "last_completed_cycle": cycle_id,
                 "last_completed_round": self.last_completed_round,
                 "last_cycle_ref": str(slow_path),
+                "current_signal_registry_version": observed_signal_registry_version,
+                "current_signal_registry_hash": observed_signal_registry_hash,
                 "active_cycle": None,
             }
         )
         _atomic_write_json(self.cycle_state_path, state)
+
+    def _slow_validation_path(self, cycle_id: int) -> Path:
+        if cycle_id < 1:
+            raise ValidationError("cycle id must be positive")
+        return (
+            self.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_validation.json"
+        )
 
     def _slow_result_path(self, cycle_id: int) -> Path:
         if cycle_id < 1:
@@ -2911,6 +3045,7 @@ class EvolutionWorkspace:
         round_id: int,
         records: tuple[PlanRecord, ...],
         meta_entry: RoundMetaEntry,
+        signal_registry_version: int,
         signal_registry_hash: str,
         run_contract_hash: str = "",
     ) -> None:
@@ -2923,6 +3058,8 @@ class EvolutionWorkspace:
             )
         if not records or any(record.round_id != round_id for record in records):
             raise ValidationError("round commit requires records from the same round")
+        if signal_registry_version < 1:
+            raise ValidationError("round Signal Registry version must be positive")
         if meta_entry.round_id != round_id:
             raise ValidationError("round meta entry does not match committed round")
         plan_ids = [record.plan_id for record in records]
@@ -2947,6 +3084,7 @@ class EvolutionWorkspace:
                 "meta_ref": str(
                     self.meta_root / f"round-{round_id:04d}.json"
                 ),
+                "signal_registry_version": signal_registry_version,
                 "signal_registry_hash": signal_registry_hash,
                 "run_contract_hash": run_contract_hash,
             },
@@ -3530,6 +3668,7 @@ class PlanEvolutionEngine:
             round_id=round_id,
             records=record_tuple,
             meta_entry=meta_entry,
+            signal_registry_version=signal_snapshot.version,
             signal_registry_hash=signal_snapshot.registry_hash,
             run_contract_hash=self.run_contract_hash,
         )
@@ -3804,28 +3943,90 @@ class SignalCandidateValidator:
 
 
 @dataclass(frozen=True)
-class SlowLoopResult:
-    """Staged, validated, and promoted Signal slow-loop outcome."""
+class SlowLoopValidation:
+    """Durable Slow-loop decision staged before stable Registry mutation."""
 
     mined_candidates: tuple[str, ...]
     updated_candidates: tuple[str, ...]
-    promoted: tuple[str, ...]
-    validated_pending_approval: Mapping[str, str]
+    validated_candidates: Mapping[str, str]
     rejected: Mapping[str, tuple[str, ...]]
-    registry_version: int
+    input_registry_version: int
+    input_registry_hash: str
+    input_signal_refs: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "mined_candidates": list(self.mined_candidates),
             "updated_candidates": list(self.updated_candidates),
-            "promoted": list(self.promoted),
-            "validated_pending_approval": dict(
-                self.validated_pending_approval
-            ),
+            "validated_candidates": dict(self.validated_candidates),
             "rejected": {
                 ref: list(reasons) for ref, reasons in self.rejected.items()
             },
-            "registry_version": self.registry_version,
+            "input_registry_version": self.input_registry_version,
+            "input_registry_hash": self.input_registry_hash,
+            "input_signal_refs": list(self.input_signal_refs),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SlowLoopValidation":
+        return cls(
+            mined_candidates=tuple(
+                str(item) for item in data.get("mined_candidates", ())
+            ),
+            updated_candidates=tuple(
+                str(item) for item in data.get("updated_candidates", ())
+            ),
+            validated_candidates={
+                str(ref): str(candidate_hash)
+                for ref, candidate_hash in dict(
+                    data.get("validated_candidates", {})
+                ).items()
+            },
+            rejected={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(data.get("rejected", {})).items()
+            },
+            input_registry_version=int(data["input_registry_version"]),
+            input_registry_hash=str(data["input_registry_hash"]),
+            input_signal_refs=tuple(
+                str(item) for item in data.get("input_signal_refs", ())
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class SlowLoopResult:
+    """Validated and automatically promoted Signal slow-loop outcome."""
+
+    mined_candidates: tuple[str, ...]
+    updated_candidates: tuple[str, ...]
+    validated_candidates: Mapping[str, str]
+    promoted: tuple[str, ...]
+    rejected: Mapping[str, tuple[str, ...]]
+    input_registry_version: int
+    input_registry_hash: str
+    output_registry_version: int
+    output_registry_hash: str
+
+    @property
+    def registry_version(self) -> int:
+        """Compatibility alias for the committed output Registry version."""
+
+        return self.output_registry_version
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "mined_candidates": list(self.mined_candidates),
+            "updated_candidates": list(self.updated_candidates),
+            "validated_candidates": dict(self.validated_candidates),
+            "promoted": list(self.promoted),
+            "rejected": {
+                ref: list(reasons) for ref, reasons in self.rejected.items()
+            },
+            "input_registry_version": self.input_registry_version,
+            "input_registry_hash": self.input_registry_hash,
+            "output_registry_version": self.output_registry_version,
+            "output_registry_hash": self.output_registry_hash,
         }
 
     @classmethod
@@ -3837,18 +4038,28 @@ class SlowLoopResult:
             updated_candidates=tuple(
                 str(item) for item in data.get("updated_candidates", ())
             ),
-            promoted=tuple(str(item) for item in data.get("promoted", ())),
-            validated_pending_approval={
+            validated_candidates={
                 str(ref): str(candidate_hash)
                 for ref, candidate_hash in dict(
-                    data.get("validated_pending_approval", {})
+                    data.get(
+                        "validated_candidates",
+                        data.get("validated_pending_approval", {}),
+                    )
                 ).items()
             },
+            promoted=tuple(str(item) for item in data.get("promoted", ())),
             rejected={
                 str(ref): tuple(str(reason) for reason in reasons)
                 for ref, reasons in dict(data.get("rejected", {})).items()
             },
-            registry_version=int(data.get("registry_version", 0)),
+            input_registry_version=int(
+                data.get("input_registry_version", data.get("registry_version", 0))
+            ),
+            input_registry_hash=str(data.get("input_registry_hash", "")),
+            output_registry_version=int(
+                data.get("output_registry_version", data.get("registry_version", 0))
+            ),
+            output_registry_hash=str(data.get("output_registry_hash", "")),
         )
 
 
@@ -3889,8 +4100,56 @@ class SignalEvolutionEngine:
             forbidden_identity_terms=_discovery_identity_terms(discovery_cases),
         )
 
-    def run_cycle(self) -> SlowLoopResult:
-        """Stage all candidates, validate as a batch, then version-promote."""
+    def run_cycle(
+        self,
+        *,
+        cycle_id: int,
+        input_snapshot: FrozenSignalRegistry | None = None,
+    ) -> SlowLoopResult:
+        """Validate, durably stage, and automatically promote one Slow batch."""
+
+        staged = self.workspace.staged_slow_validation(cycle_id)
+        if staged is None:
+            if input_snapshot is None:
+                raise ValidationError("new Slow loop requires its input Signal snapshot")
+            validation = self._validate_cycle(input_snapshot)
+            self.workspace.stage_slow_validation(
+                cycle_id=cycle_id,
+                validation=validation.to_dict(),
+            )
+        else:
+            validation = SlowLoopValidation.from_dict(staged)
+        transition = self.registry.promote_validated_batch(
+            validation.validated_candidates,
+            transition_id=f"cycle-{cycle_id:04d}",
+            input_version=validation.input_registry_version,
+            input_hash=validation.input_registry_hash,
+            input_refs=validation.input_signal_refs,
+        )
+        return SlowLoopResult(
+            mined_candidates=validation.mined_candidates,
+            updated_candidates=validation.updated_candidates,
+            validated_candidates=validation.validated_candidates,
+            promoted=transition.promoted,
+            rejected=validation.rejected,
+            input_registry_version=transition.input_version,
+            input_registry_hash=transition.input_hash,
+            output_registry_version=transition.output_version,
+            output_registry_hash=transition.output_hash,
+        )
+
+    def _validate_cycle(
+        self,
+        input_snapshot: FrozenSignalRegistry,
+    ) -> SlowLoopValidation:
+        """Stage all candidates and return the exact pre-promotion decision."""
+
+        current = self.registry.freeze()
+        if (
+            current.version != input_snapshot.version
+            or current.registry_hash != input_snapshot.registry_hash
+        ):
+            raise ValidationError("Slow-loop input Signal snapshot changed")
 
         mined: list[str] = []
         updated: list[str] = []
@@ -3932,14 +4191,36 @@ class SignalEvolutionEngine:
             spec, skill = self.registry.load_candidate(signal_ref)
             tests = self.registry.load_candidate_tests(signal_ref)
             candidate_hash = self.registry.candidate_hash(signal_ref)
-            validation = self.validator.validate(spec, skill=skill, tests=tests)
-            validation = SignalCandidateValidation(
-                signal_ref=validation.signal_ref,
-                accepted=validation.accepted,
-                reasons=validation.reasons,
-                candidate_hash=candidate_hash,
-                executed_tests=validation.executed_tests,
-            )
+            try:
+                stable_ref = self.registry.latest_spec(spec.signal_id).ref
+            except ValidationError:
+                stable_ref = None
+            prior_validation = self.registry.load_candidate_validation(signal_ref)
+            if stable_ref == signal_ref:
+                validation = SignalCandidateValidation(
+                    signal_ref=signal_ref,
+                    accepted=False,
+                    reasons=("candidate version is already stable",),
+                    candidate_hash=candidate_hash,
+                )
+            elif prior_validation is not None:
+                validation = SignalCandidateValidation(
+                    signal_ref=signal_ref,
+                    accepted=bool(prior_validation.get("accepted")),
+                    reasons=tuple(
+                        str(item) for item in prior_validation.get("reasons", ())
+                    ),
+                    candidate_hash=candidate_hash,
+                )
+            else:
+                checked = self.validator.validate(spec, skill=skill, tests=tests)
+                validation = SignalCandidateValidation(
+                    signal_ref=checked.signal_ref,
+                    accepted=checked.accepted,
+                    reasons=checked.reasons,
+                    candidate_hash=candidate_hash,
+                    executed_tests=checked.executed_tests,
+                )
             semantic = _normalize_semantics(spec.description)
             prior_ref = semantic_seen.get(semantic)
             if validation.accepted and prior_ref is not None:
@@ -3954,12 +4235,13 @@ class SignalEvolutionEngine:
                 semantic_seen[semantic] = signal_ref
                 accepted_hashes[signal_ref] = candidate_hash
             validations[signal_ref] = validation
-            self.registry.record_candidate_validation(
-                signal_ref,
-                candidate_hash=candidate_hash,
-                accepted=validation.accepted,
-                reasons=validation.reasons,
-            )
+            if prior_validation is None and stable_ref != signal_ref:
+                self.registry.record_candidate_validation(
+                    signal_ref,
+                    candidate_hash=candidate_hash,
+                    accepted=validation.accepted,
+                    reasons=validation.reasons,
+                )
         rejected = dict(agent_failures)
         rejected.update(
             {
@@ -3968,52 +4250,14 @@ class SignalEvolutionEngine:
                 if not validation.accepted
             }
         )
-        return SlowLoopResult(
+        return SlowLoopValidation(
             mined_candidates=tuple(mined),
             updated_candidates=tuple(updated),
-            promoted=(),
-            validated_pending_approval=accepted_hashes,
+            validated_candidates=accepted_hashes,
             rejected=rejected,
-            registry_version=self.registry.version,
-        )
-
-    def promote_approved(
-        self,
-        pending: SlowLoopResult,
-        *,
-        approvals: Mapping[str, str],
-        approved_by: str,
-    ) -> SlowLoopResult:
-        """Promote only caller-selected refs whose reviewed hashes are exact."""
-
-        if not approvals:
-            raise ValidationError("promotion requires at least one explicit approval")
-        unknown = set(approvals) - set(pending.validated_pending_approval)
-        if unknown:
-            raise ValidationError(
-                "approval contains non-validated candidate refs: "
-                + ", ".join(sorted(unknown))
-            )
-        promoted: list[str] = []
-        for signal_ref, expected_hash in approvals.items():
-            if pending.validated_pending_approval[signal_ref] != expected_hash:
-                raise ValidationError("approval hash differs from validation result")
-        promoted_specs = self.registry.promote_approved_batch(
-            approvals,
-            approved_by=approved_by,
-        )
-        promoted.extend(spec.ref for spec in promoted_specs)
-        return SlowLoopResult(
-            mined_candidates=pending.mined_candidates,
-            updated_candidates=pending.updated_candidates,
-            promoted=tuple(promoted),
-            validated_pending_approval={
-                ref: value
-                for ref, value in pending.validated_pending_approval.items()
-                if ref not in approvals
-            },
-            rejected=pending.rejected,
-            registry_version=self.registry.version,
+            input_registry_version=input_snapshot.version,
+            input_registry_hash=input_snapshot.registry_hash,
+            input_signal_refs=tuple(spec.ref for spec in input_snapshot.specs),
         )
 
     def _agent_workspace(self) -> dict[str, Any]:
@@ -4308,7 +4552,7 @@ class DualLoopResult:
 
 
 class DualLoopEvolutionEngine:
-    """Run a finite Plan group, then allow one validated Signal version change."""
+    """Run a finite Plan group, then commit one validated Signal transition."""
 
     def __init__(
         self,
@@ -4329,21 +4573,39 @@ class DualLoopEvolutionEngine:
         self.plan_rounds_per_signal_cycle = plan_rounds_per_signal_cycle
         self.on_progress = on_progress
 
-    def run_cycle(self, *, completed_plan_rounds: int = 0) -> DualLoopResult:
-        """Resume remaining Fast rounds, then run one validation-only Slow loop."""
+    def run_cycle(
+        self,
+        *,
+        cycle_id: int,
+        completed_plan_rounds: int = 0,
+    ) -> DualLoopResult:
+        """Resume remaining Fast rounds, then automatically promote Slow output."""
 
         if not 0 <= completed_plan_rounds <= self.plan_rounds_per_signal_cycle:
             raise ValidationError("completed Fast-round count is outside cycle target")
 
-        snapshot = self.signal_registry.freeze()
+        staged_validation = self.signal_engine.workspace.staged_slow_validation(cycle_id)
+        if staged_validation is not None and (
+            completed_plan_rounds != self.plan_rounds_per_signal_cycle
+        ):
+            raise ValidationError("staged Slow validation exists before Fast completion")
+        snapshot = (
+            None if staged_validation is not None else self.signal_registry.freeze()
+        )
         rounds: list[PlanRoundResult] = []
         _emit_progress(
             self.on_progress,
             "fast_loop_started",
             completed_plan_rounds=completed_plan_rounds,
             target_plan_rounds=self.plan_rounds_per_signal_cycle,
-            signal_registry_hash=snapshot.registry_hash,
+            signal_registry_hash=(
+                str(staged_validation["input_registry_hash"])
+                if staged_validation is not None
+                else snapshot.registry_hash
+            ),
         )
+        if snapshot is None and completed_plan_rounds < self.plan_rounds_per_signal_cycle:
+            raise ValidationError("Fast-loop resume requires an input Signal snapshot")
         for _ in range(
             completed_plan_rounds,
             self.plan_rounds_per_signal_cycle,
@@ -4353,10 +4615,10 @@ class DualLoopEvolutionEngine:
                 self.plan_engine.run_round(
                     round_id=round_id,
                     validation_cases=self.dataset.evolution_validation,
-                    signal_snapshot=snapshot,
+                    signal_snapshot=snapshot,  # type: ignore[arg-type]
                 )
             )
-        if self.signal_registry.version != snapshot.version:
+        if snapshot is not None and self.signal_registry.version != snapshot.version:
             raise ValidationError("stable Signal definitions changed during fast loop")
         _emit_progress(
             self.on_progress,
@@ -4364,20 +4626,25 @@ class DualLoopEvolutionEngine:
             completed_plan_rounds=self.plan_rounds_per_signal_cycle,
             target_plan_rounds=self.plan_rounds_per_signal_cycle,
         )
-        signal_result = self.signal_engine.run_cycle()
+        signal_result = self.signal_engine.run_cycle(
+            cycle_id=cycle_id,
+            input_snapshot=snapshot,
+        )
         _emit_progress(
             self.on_progress,
             "slow_loop_completed",
             mined_candidates=list(signal_result.mined_candidates),
             updated_candidates=list(signal_result.updated_candidates),
-            validated_pending_approval=dict(
-                signal_result.validated_pending_approval
-            ),
+            validated_candidates=dict(signal_result.validated_candidates),
+            promoted=list(signal_result.promoted),
             rejected={
                 ref: list(reasons)
                 for ref, reasons in signal_result.rejected.items()
             },
-            registry_version=signal_result.registry_version,
+            input_registry_version=signal_result.input_registry_version,
+            input_registry_hash=signal_result.input_registry_hash,
+            output_registry_version=signal_result.output_registry_version,
+            output_registry_hash=signal_result.output_registry_hash,
         )
         return DualLoopResult(
             plan_rounds=tuple(rounds),

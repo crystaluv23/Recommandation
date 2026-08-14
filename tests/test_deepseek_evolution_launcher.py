@@ -32,7 +32,7 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertIn("default: 3", result.stdout)
         self.assertIn("--data-provider", result.stdout)
         self.assertIn("Locked Test stays sealed", result.stdout)
-        self.assertIn("never auto-promoted", result.stdout)
+        self.assertIn("auto-promote atomically", result.stdout)
 
     def test_new_rejects_any_existing_workspace_before_mutation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

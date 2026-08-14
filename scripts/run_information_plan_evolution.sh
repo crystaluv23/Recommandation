@@ -45,10 +45,10 @@ usage() {
     "                              required with --external and must match" \
     "" \
     "Safety:" \
-    "  new never performs external calls. It freezes a v3 contract and stops" \
+    "  new never performs external calls. It freezes a v4 contract and stops" \
     "  at the first exact-request approval boundary. Use resume with the printed" \
     "  contract hash to authorize execution. Locked Test stays sealed and Signal" \
-    "  candidates are never auto-promoted."
+    "  machine-validated Signal candidates auto-promote atomically at each cycle boundary."
 }
 
 fail() {
@@ -245,7 +245,7 @@ CONTRACT_INFO="$(
 )"
 CONTRACT_SCHEMA="${CONTRACT_INFO%% *}"
 CONTRACT_HASH="${CONTRACT_INFO#* }"
-[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v3" ] || fail "legacy contracts are read-only"
+[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v4" ] || fail "legacy contracts are read-only"
 
 RUN_ARGS=(
   run-loop

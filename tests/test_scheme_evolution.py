@@ -467,6 +467,60 @@ class SignalLibraryTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "empty stable Signal"):
                 registry.freeze()
 
+    def test_rejected_next_version_can_be_repaired_without_erasing_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = self._registry(directory)
+            rejected = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=2,
+                category="financial",
+                description="Rejected revenue-growth draft.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            registry.stage_candidate(
+                rejected,
+                tests=(candidate_growth_fixture(),),
+                origin="cycle-1-update",
+            )
+            rejected_hash = registry.candidate_hash(rejected.ref)
+            registry.record_candidate_validation(
+                rejected.ref,
+                candidate_hash=rejected_hash,
+                accepted=False,
+                reasons=("fixture failed",),
+            )
+            repaired = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=2,
+                category="financial",
+                description="Repaired point-in-time revenue growth.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+
+            registry.stage_candidate(
+                repaired,
+                tests=(candidate_growth_fixture(),),
+                origin="cycle-2-update",
+            )
+
+            active, _skill = registry.load_candidate(repaired.ref)
+            self.assertEqual(active, repaired)
+            archived = list(
+                (root / "signals_candidates" / ".rejected").glob(
+                    "financial/revenue_growth_yoy/v2/*/validation.json"
+                )
+            )
+            self.assertEqual(len(archived), 1)
+            self.assertEqual(
+                json.loads(archived[0].read_text(encoding="utf-8"))["candidate_hash"],
+                rejected_hash,
+            )
+
     def test_executor_uses_point_in_time_raw_info_and_tracks_observed_states(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
@@ -1009,6 +1063,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 round_id=1,
                 records=(record,),
                 meta_entry=meta,
+                signal_registry_version=1,
                 signal_registry_hash="registry-hash",
             )
             staged = make_record("plan_staged", 0.9, (0.0, 1.0), round_id=2)
@@ -1036,6 +1091,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                     round_id=1,
                     evidence_refs=("plan_committed",),
                 ),
+                signal_registry_version=1,
                 signal_registry_hash="registry-hash",
             )
             record_path = workspace.plans_root / "plan_committed" / "record.json"
@@ -1057,6 +1113,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                     round_id=1,
                     evidence_refs=("plan_committed",),
                 ),
+                signal_registry_version=1,
                 signal_registry_hash="registry-hash",
             )
             state = json.loads(workspace.state_path.read_text(encoding="utf-8"))
@@ -1086,6 +1143,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 round_id=1,
                 records=(record,),
                 meta_entry=meta,
+                signal_registry_version=1,
                 signal_registry_hash="registry-hash",
             )
             self.assertEqual(workspace.last_completed_round, 1)
@@ -1102,6 +1160,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                     round_id=1,
                     records=(record,),
                     meta_entry=meta,
+                    signal_registry_version=1,
                     signal_registry_hash="registry-hash",
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1125,6 +1184,10 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             started = workspace.start_or_resume_cycle(
                 run_contract_hash="contract-hash",
                 target_plan_rounds=2,
+                initial_signal_registry_version=1,
+                initial_signal_registry_hash="registry-hash-v1",
+                observed_signal_registry_version=1,
+                observed_signal_registry_hash="registry-hash-v1",
             )
             self.assertFalse(started["resumed"])
             self.assertEqual(started["completed_plan_rounds"], 0)
@@ -1157,12 +1220,17 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                         round_id=round_id,
                         evidence_refs=(plan_id,),
                     ),
+                    signal_registry_version=1,
                     signal_registry_hash="registry-hash",
                     run_contract_hash="contract-hash",
                 )
                 resumed = EvolutionWorkspace(directory).start_or_resume_cycle(
                     run_contract_hash="contract-hash",
                     target_plan_rounds=2,
+                    initial_signal_registry_version=1,
+                    initial_signal_registry_hash="registry-hash-v1",
+                    observed_signal_registry_version=1,
+                    observed_signal_registry_hash="registry-hash-v1",
                 )
                 self.assertEqual(resumed["completed_plan_rounds"], round_id)
 
@@ -1171,16 +1239,36 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 [event["event_type"] for event in workspace.load_events()],
                 ["cycle_started", "recovered_after_truncated_log"],
             )
+            validation = {
+                "mined_candidates": [],
+                "updated_candidates": [],
+                "validated_candidates": {},
+                "rejected": {},
+                "input_registry_version": 1,
+                "input_registry_hash": "registry-hash-v1",
+                "input_signal_refs": ["fixture:v1"],
+            }
+            workspace.stage_slow_validation(cycle_id=1, validation=validation)
+            result = {
+                **validation,
+                "promoted": [],
+                "output_registry_version": 1,
+                "output_registry_hash": "registry-hash-v1",
+            }
             staged = workspace.stage_slow_result(
                 cycle_id=1,
-                result={"registry_version": 1},
+                result=result,
             )
             self.assertTrue(staged.is_file())
             self.assertEqual(
                 workspace.staged_slow_result(1),
-                {"registry_version": 1},
+                result,
             )
-            workspace.complete_cycle(cycle_id=1)
+            workspace.complete_cycle(
+                cycle_id=1,
+                observed_signal_registry_version=1,
+                observed_signal_registry_hash="registry-hash-v1",
+            )
             self.assertEqual(workspace.last_completed_cycle, 1)
             self.assertIsNone(
                 json.loads(workspace.cycle_state_path.read_text())["active_cycle"]
@@ -1231,8 +1319,12 @@ class SyntheticPlanEvaluator:
     def __init__(self, *, include_signal: bool = True) -> None:
         self.include_signal = include_signal
         self.seen_company_ids: list[str] = []
+        self.seen_registry_refs: list[tuple[str, ...]] = []
 
     def evaluate(self, plan, cases, signal_registry):
+        self.seen_registry_refs.append(
+            tuple(spec.ref for spec in signal_registry.specs)
+        )
         rows = []
         for case in cases:
             self.seen_company_ids.append(case.company_id)
@@ -1611,7 +1703,7 @@ class SignalEvolutionTests(TestCase):
                 validator.validate(bad_update, skill=None, tests=()).accepted
             )
 
-    def test_slow_loop_validates_then_requires_exact_human_approval(self) -> None:
+    def test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
@@ -1674,24 +1766,54 @@ class SignalEvolutionTests(TestCase):
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
             )
-            result = engine.run_cycle()
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            committed = make_record(
+                "plan_before_signal_promotion",
+                0.8,
+                (1.0, 0.0),
+                round_id=1,
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(committed,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    evidence_refs=(committed.plan_id,),
+                ),
+                signal_registry_version=snapshot.version,
+                signal_registry_hash=snapshot.registry_hash,
+                run_contract_hash="contract-hash",
+            )
+            original_bump_version = registry.bump_version
+
+            def interrupt_before_version_commit():
+                registry.bump_version = original_bump_version
+                raise RuntimeError("simulated interruption before Registry version commit")
+
+            registry.bump_version = interrupt_before_version_commit
+            with self.assertRaisesRegex(RuntimeError, "simulated interruption"):
+                engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
+            self.assertEqual(registry.version, 1)
+            mining_request_count = len(mining_model.requests)
+            update_request_count = len(update_model.requests)
+
+            result = engine.run_cycle(cycle_id=1)
             self.assertEqual(
-                set(result.validated_pending_approval),
+                set(result.validated_candidates),
                 {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
             )
-            self.assertEqual(result.promoted, ())
-            self.assertEqual(result.registry_version, 1)
-            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
-            with self.assertRaisesRegex(ValidationError, "approval"):
-                registry.promote_candidate("revenue_growth_yoy:v2")
-            mismatched_approvals = dict(result.validated_pending_approval)
-            mismatched_approvals["revenue_growth_yoy:v2"] = "0" * 64
-            with self.assertRaisesRegex(ValidationError, "hash differs"):
-                engine.promote_approved(
-                    result,
-                    approvals=mismatched_approvals,
-                    approved_by="human-reviewer",
-                )
+            self.assertEqual(set(result.promoted), set(result.validated_candidates))
+            self.assertEqual(result.input_registry_version, 1)
+            self.assertEqual(result.output_registry_version, 2)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
             self.assertFalse(
                 (
                     root
@@ -1702,16 +1824,14 @@ class SignalEvolutionTests(TestCase):
                     / "approval.json"
                 ).exists()
             )
-            promoted = engine.promote_approved(
-                result,
-                approvals=result.validated_pending_approval,
-                approved_by="human-reviewer",
-            )
+            promoted = engine.run_cycle(cycle_id=1)
             self.assertEqual(
                 set(promoted.promoted),
                 {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
             )
             self.assertEqual(promoted.registry_version, 2)
+            self.assertEqual(len(mining_model.requests), mining_request_count)
+            self.assertEqual(len(update_model.requests), update_request_count)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
             self.assertTrue(
@@ -1750,9 +1870,9 @@ class SignalEvolutionTests(TestCase):
                 llm_signal_runner=None,
             )
 
-            result = engine.run_cycle()
+            result = engine._validate_cycle(registry.freeze())
 
-            self.assertEqual(result.validated_pending_approval, {})
+            self.assertEqual(result.validated_candidates, {})
             self.assertIn(
                 "candidate SignalSpec JSON is invalid",
                 str(mining_model.requests[1].observations[0].result),
@@ -1799,7 +1919,7 @@ class SignalEvolutionTests(TestCase):
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
             )
-            engine.run_cycle()
+            engine._validate_cycle(registry.freeze())
             for model in (mining_model, update_model):
                 serialized = json.dumps(model.requests[0].workspace)
                 self.assertNotIn("locked_company", serialized)
@@ -1824,6 +1944,15 @@ class DualLoopTests(TestCase):
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
             workspace = EvolutionWorkspace(root / "workspace")
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
             meta = PlanMetaMemory()
             proposer = CountingProposer()
             evaluator = SyntheticPlanEvaluator(include_signal=False)
@@ -1866,7 +1995,7 @@ class DualLoopTests(TestCase):
                 signal_registry=registry,
                 dataset=dataset,
                 plan_rounds_per_signal_cycle=1,
-            ).run_cycle()
+            ).run_cycle(cycle_id=1)
             self.assertEqual(len(result.plan_rounds), 1)
             self.assertEqual(result.signal_evolution.promoted, ())
             self.assertEqual(workspace.last_completed_round, 1)
@@ -1874,12 +2003,175 @@ class DualLoopTests(TestCase):
             self.assertEqual(len(set(evaluator.seen_company_ids)), 20)
             self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
 
+    def test_next_cycle_uses_promoted_registry_without_reevaluating_old_plans(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            initial = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=initial.version,
+                initial_signal_registry_hash=initial.registry_hash,
+                observed_signal_registry_version=initial.version,
+                observed_signal_registry_hash=initial.registry_hash,
+            )
+            meta = PlanMetaMemory()
+            proposer = CountingProposer()
+            evaluator = SyntheticPlanEvaluator(include_signal=False)
+            plan_engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=meta,
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+                run_contract_hash="contract-hash",
+            )
+            new_spec = SignalSpec(
+                signal_id="cross_cycle_growth_quality",
+                version=1,
+                category="financial",
+                description="Measure whether revenue growth spans disclosed segments.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            first_signal_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_case", 4.0),),
+                meta_memory=meta,
+                workspace=workspace,
+                mining_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [
+                            AgentTurn(
+                                tool_call=ToolCall(
+                                    "create_candidate_signal",
+                                    {
+                                        "spec": new_spec.to_dict(),
+                                        "tests": [candidate_growth_fixture()],
+                                    },
+                                )
+                            ),
+                            AgentTurn(final_output={"candidate_refs": []}),
+                        ]
+                    )
+                ),
+                update_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                llm_signal_runner=None,
+            )
+            dataset = EvolutionDataset(
+                discovery=(make_case("discovery_case", 4.0),),
+                evolution_validation=make_evaluation_pool(),
+                locked_test=(make_case("locked_company", 12.0),),
+            )
+            first = DualLoopEvolutionEngine(
+                plan_engine=plan_engine,
+                signal_engine=first_signal_engine,
+                signal_registry=registry,
+                dataset=dataset,
+                plan_rounds_per_signal_cycle=1,
+            ).run_cycle(cycle_id=1)
+            self.assertEqual(first.signal_evolution.promoted, (new_spec.ref,))
+            workspace.stage_slow_result(
+                cycle_id=1,
+                result=first.signal_evolution.to_dict(),
+            )
+            promoted_snapshot = registry.freeze()
+            workspace.complete_cycle(
+                cycle_id=1,
+                observed_signal_registry_version=promoted_snapshot.version,
+                observed_signal_registry_hash=promoted_snapshot.registry_hash,
+            )
+            old_record = plan_engine.archive.records[0]
+            old_f1 = old_record.metrics.binary_f1
+
+            second_cycle = workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=initial.version,
+                initial_signal_registry_hash=initial.registry_hash,
+                observed_signal_registry_version=promoted_snapshot.version,
+                observed_signal_registry_hash=promoted_snapshot.registry_hash,
+            )
+            second_signal_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_case", 4.0),),
+                meta_memory=meta,
+                workspace=workspace,
+                mining_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                update_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                llm_signal_runner=None,
+            )
+            second = DualLoopEvolutionEngine(
+                plan_engine=plan_engine,
+                signal_engine=second_signal_engine,
+                signal_registry=registry,
+                dataset=dataset,
+                plan_rounds_per_signal_cycle=1,
+            ).run_cycle(cycle_id=int(second_cycle["cycle_id"]))
+
+            self.assertNotIn(new_spec.ref, evaluator.seen_registry_refs[0])
+            self.assertIn(new_spec.ref, evaluator.seen_registry_refs[1])
+            self.assertEqual(len(evaluator.seen_registry_refs), 2)
+            self.assertEqual(len(evaluator.seen_company_ids), 40)
+            self.assertEqual(len(plan_engine.archive.records), 2)
+            self.assertEqual(old_record.metrics.binary_f1, old_f1)
+            self.assertIn(old_record.plan_id, proposer.calls[1]["parents"])
+            round_one_checkpoint = json.loads(
+                (
+                    workspace.experiments_root
+                    / "round-0001"
+                    / "checkpoint.json"
+                ).read_text(encoding="utf-8")
+            )
+            round_two_checkpoint = json.loads(
+                (
+                    workspace.experiments_root
+                    / "round-0002"
+                    / "checkpoint.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(round_one_checkpoint["signal_registry_version"], 1)
+            self.assertEqual(round_two_checkpoint["signal_registry_version"], 2)
+            self.assertEqual(second.signal_evolution.output_registry_version, 2)
+
     def test_dual_loop_resume_runs_only_remaining_fast_rounds(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
             workspace = EvolutionWorkspace(root / "workspace")
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=2,
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
             committed = make_record(
                 "plan_committed",
                 0.75,
@@ -1893,7 +2185,9 @@ class DualLoopTests(TestCase):
                     round_id=1,
                     evidence_refs=(committed.plan_id,),
                 ),
-                signal_registry_hash=registry.freeze().registry_hash,
+                signal_registry_version=registry.version,
+                signal_registry_hash=snapshot.registry_hash,
+                run_contract_hash="contract-hash",
             )
             meta = workspace.restore_meta()
             proposer = CountingProposer()
@@ -1938,7 +2232,7 @@ class DualLoopTests(TestCase):
                 signal_registry=registry,
                 dataset=dataset,
                 plan_rounds_per_signal_cycle=2,
-            ).run_cycle(completed_plan_rounds=1)
+            ).run_cycle(cycle_id=1, completed_plan_rounds=1)
 
             self.assertEqual([item.round_id for item in result.plan_rounds], [2])
             self.assertEqual(workspace.last_completed_round, 2)

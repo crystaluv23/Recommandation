@@ -1,6 +1,6 @@
 # Continuous Round Commit Marker
 
-visit_times: 15
+visit_times: 16
 
 ## Trigger
 
@@ -35,6 +35,13 @@ the pointer backward or infer completion from a directory listing. Derive an
 active cycle's remaining Fast rounds from the round pointer, then advance the
 cycle pointer only after an exact Slow result is durable. Keep debug JSONL
 events non-authoritative and tolerant of a truncated last line.
+
+When a Slow Loop mutates a versioned Registry, persist the exact validation
+batch before changing stable manifests. It must bind the input version/hash,
+input refs, and passing candidate hashes. Apply one cycle-identified idempotent
+transition, persist its output version/hash, and advance the cycle pointer last.
+The run contract may freeze the initial Registry, while committed cycle state,
+not that initial hash, owns subsequent Registry continuity.
 
 ## Limits
 

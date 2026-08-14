@@ -597,6 +597,18 @@ class SignalCapabilityAudit:
         }
 
 
+@dataclass(frozen=True)
+class SignalRegistryTransition:
+    """One exact, recoverable stable-Registry transition."""
+
+    transition_id: str
+    input_version: int
+    input_hash: str
+    output_version: int
+    output_hash: str
+    promoted: tuple[str, ...]
+
+
 class SignalRegistry:
     """File-backed progressive-disclosure Signal Registry."""
 
@@ -913,27 +925,62 @@ class SignalRegistry:
         )
         if version_dir.exists():
             existing = SignalSpec.from_dict(_read_json(version_dir / "spec.json"))
-            if existing != spec:
-                raise ValidationError(f"conflicting signal candidate: {spec.ref}")
             existing_skill_path = version_dir / "skill.md"
             existing_skill = (
                 existing_skill_path.read_text(encoding="utf-8").strip()
                 if existing_skill_path.exists()
                 else None
             )
-            if existing_skill != ((skill or "").strip() or None):
-                raise ValidationError(f"conflicting signal candidate skill: {spec.ref}")
-            if self.load_candidate_tests(spec.ref) != tuple(materialized_tests):
-                raise ValidationError(f"conflicting signal candidate tests: {spec.ref}")
-            if _read_json(version_dir / "candidate.json").get("origin") != origin:
-                raise ValidationError(f"conflicting signal candidate origin: {spec.ref}")
-            return spec.ref
+            existing_origin = str(
+                _read_json(version_dir / "candidate.json").get("origin", "")
+            )
+            exact_replay = (
+                existing == spec
+                and existing_skill == ((skill or "").strip() or None)
+                and self.load_candidate_tests(spec.ref) == tuple(materialized_tests)
+                and existing_origin == origin
+            )
+            if exact_replay:
+                return spec.ref
+            validation_path = version_dir / "validation.json"
+            validation = (
+                _read_json(validation_path) if validation_path.exists() else {}
+            )
+            if validation.get("status") != "rejected":
+                raise ValidationError(f"conflicting signal candidate: {spec.ref}")
+            candidate_hash = self.candidate_hash(spec.ref)
+            archive_identity = hashlib.sha256(
+                json.dumps(
+                    {
+                        "candidate_hash": candidate_hash,
+                        "origin": existing_origin,
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+            archive_dir = (
+                self.candidate_root
+                / ".rejected"
+                / existing.category
+                / existing.signal_id
+                / f"v{existing.version}"
+                / archive_identity
+            )
+            duplicate_index = 2
+            while archive_dir.exists():
+                archive_dir = archive_dir.with_name(
+                    f"{archive_identity}-{duplicate_index}"
+                )
+                duplicate_index += 1
+            archive_dir.parent.mkdir(parents=True, exist_ok=True)
+            os.replace(version_dir, archive_dir)
         version_dir.mkdir(parents=True)
         _atomic_write_json(version_dir / "spec.json", spec.to_dict())
         _atomic_write_json(version_dir / "tests.json", {"tests": materialized_tests})
         _atomic_write_json(version_dir / "candidate.json", {"origin": origin})
         if skill is not None:
-            (version_dir / "skill.md").write_text(skill.rstrip() + "\n", encoding="utf-8")
+            _write_or_verify_text(version_dir / "skill.md", skill.rstrip() + "\n")
         return spec.ref
 
     def load_candidate(self, signal_ref: str) -> tuple[SignalSpec, str | None]:
@@ -988,82 +1035,136 @@ class SignalRegistry:
                 "candidate_hash": candidate_hash,
                 "accepted": bool(accepted),
                 "status": (
-                    "validated_pending_human_approval" if accepted else "rejected"
+                    "validated_for_automatic_promotion" if accepted else "rejected"
                 ),
                 "reasons": [str(item) for item in reasons],
             },
         )
 
-    def approve_candidate(
+    def load_candidate_validation(
         self,
         signal_ref: str,
-        *,
-        expected_candidate_hash: str,
-        approved_by: str,
-    ) -> None:
-        """Record explicit human approval for one exact validated candidate."""
+    ) -> Mapping[str, Any] | None:
+        """Return an immutable prior validation for the active candidate draft."""
 
-        if not approved_by.strip():
-            raise ValidationError("signal approval requires reviewer identity")
-        current_hash = self.candidate_hash(signal_ref)
-        if expected_candidate_hash != current_hash:
-            raise ValidationError("approved candidate hash does not match staged content")
-        candidate_dir = self._candidate_spec_path(signal_ref).parent
-        validation = _read_json(candidate_dir / "validation.json")
-        if not validation.get("accepted") or validation.get("candidate_hash") != current_hash:
-            raise ValidationError("candidate requires matching successful validation")
-        _write_or_verify_json(
-            candidate_dir / "approval.json",
-            {
-                "signal_ref": signal_ref,
-                "candidate_hash": current_hash,
-                "approved_by": approved_by.strip(),
-                "decision": "approve_stable_signal_promotion",
-            },
-        )
+        path = self._candidate_spec_path(signal_ref).parent / "validation.json"
+        if not path.exists():
+            return None
+        validation = _read_json(path)
+        if validation.get("candidate_hash") != self.candidate_hash(signal_ref):
+            raise ValidationError("candidate validation hash differs from staged content")
+        return validation
 
-    def promote_candidate(self, signal_ref: str) -> SignalSpec:
-        """Promote one exact validated and human-approved immutable version."""
-
-        spec, skill = self.load_candidate(signal_ref)
-        candidate_dir = self._candidate_spec_path(signal_ref).parent
-        current_hash = self.candidate_hash(signal_ref)
-        approval = _read_json(candidate_dir / "approval.json")
-        if (
-            approval.get("decision") != "approve_stable_signal_promotion"
-            or approval.get("candidate_hash") != current_hash
-        ):
-            raise ValidationError("candidate lacks matching human approval")
-        tests_path = next(
-            iter(
-                self.candidate_root.glob(
-                    f"*/{spec.signal_id}/v{spec.version}/tests.json"
-                )
-            )
-        )
-        tests = _read_json(tests_path).get("tests", ())
-        self.register_stable(spec, skill=skill, tests=tests)
-        _atomic_write_json(
-            tests_path.parent / "promotion.json",
-            {"promoted": True, "stable_registry_version_before_bump": self.version},
-        )
-        return spec
-
-    def promote_approved_batch(
+    def promote_validated_batch(
         self,
-        approvals: Mapping[str, str],
+        validated_candidates: Mapping[str, str],
         *,
-        approved_by: str,
-    ) -> tuple[SignalSpec, ...]:
-        """Prevalidate then promote one exact human-approved batch."""
+        transition_id: str,
+        input_version: int,
+        input_hash: str,
+        input_refs: Iterable[str],
+    ) -> SignalRegistryTransition:
+        """Idempotently promote one durably staged machine-validated batch."""
 
-        if not approvals:
-            raise ValidationError("promotion requires at least one explicit approval")
-        if not approved_by.strip():
-            raise ValidationError("signal approval requires reviewer identity")
-        candidates: list[tuple[str, str, SignalSpec]] = []
+        _validate_id(transition_id, "Signal transition id")
+        ordered_candidates = tuple(sorted(validated_candidates.items()))
+        ordered_input_refs = tuple(str(item) for item in input_refs)
+        if len(set(ordered_input_refs)) != len(ordered_input_refs):
+            raise ValidationError("Signal transition input refs must be unique")
+        if input_version < 1 or not re.fullmatch(r"[0-9a-f]{64}", input_hash):
+            raise ValidationError("Signal transition input identity is invalid")
+        transition_path = self.root / ".transitions" / f"{transition_id}.json"
+        intent = {
+            "schema_version": "signal-registry-transition-v1",
+            "transition_id": transition_id,
+            "input_registry_version": input_version,
+            "input_registry_hash": input_hash,
+            "input_signal_refs": list(ordered_input_refs),
+            "validated_candidates": dict(ordered_candidates),
+        }
+        if transition_path.exists():
+            stored_transition = _read_json(transition_path)
+            for field, expected in intent.items():
+                if stored_transition.get(field) != expected:
+                    raise ValidationError("Signal transition replay identity mismatch")
+        else:
+            current = self.freeze()
+            if current.version != input_version or current.registry_hash != input_hash:
+                raise ValidationError(
+                    "stable Signal Registry differs before automatic promotion"
+                )
+            if tuple(spec.ref for spec in current.specs) != ordered_input_refs:
+                raise ValidationError("Signal transition input refs differ from snapshot")
+            self._validate_promotion_candidates(
+                ordered_candidates,
+                input_refs=ordered_input_refs,
+            )
+            _atomic_write_json(transition_path, {**intent, "status": "prepared"})
+
+        self._verify_transition_base(
+            input_version=input_version,
+            input_hash=input_hash,
+            input_refs=ordered_input_refs,
+            validated_candidates=ordered_candidates,
+        )
+        promoted_specs: list[SignalSpec] = []
+        for signal_ref, candidate_hash in ordered_candidates:
+            spec, skill = self.load_candidate(signal_ref)
+            if self.candidate_hash(signal_ref) != candidate_hash:
+                raise ValidationError(
+                    f"validated candidate changed before promotion: {signal_ref}"
+                )
+            self._materialize_candidate_version(spec, skill=skill)
+            promoted_specs.append(spec)
+
+        if ordered_candidates:
+            if self.version == input_version:
+                self.bump_version()
+            elif self.version != input_version + 1:
+                raise ValidationError("Signal Registry version advanced unexpectedly")
+        elif self.version != input_version:
+            raise ValidationError("empty Signal transition changed Registry version")
+        output = self.freeze()
+        for spec in promoted_specs:
+            candidate_dir = self._candidate_spec_path(spec.ref).parent
+            _write_or_verify_json(
+                candidate_dir / "promotion.json",
+                {
+                    "promoted": True,
+                    "mode": "automatic_after_machine_validation",
+                    "transition_id": transition_id,
+                    "output_registry_version": output.version,
+                    "output_registry_hash": output.registry_hash,
+                },
+            )
+        completed = {
+            **intent,
+            "status": "applied",
+            "output_registry_version": output.version,
+            "output_registry_hash": output.registry_hash,
+            "promoted": [spec.ref for spec in promoted_specs],
+        }
+        _atomic_write_json(transition_path, completed)
+        return SignalRegistryTransition(
+            transition_id=transition_id,
+            input_version=input_version,
+            input_hash=input_hash,
+            output_version=output.version,
+            output_hash=output.registry_hash,
+            promoted=tuple(spec.ref for spec in promoted_specs),
+        )
+
+    def _validate_promotion_candidates(
+        self,
+        candidates: tuple[tuple[str, str], ...],
+        *,
+        input_refs: tuple[str, ...],
+    ) -> None:
+        input_by_id = {
+            _parse_ref(signal_ref)[0]: signal_ref for signal_ref in input_refs
+        }
         seen_signal_ids: set[str] = set()
-        for signal_ref, expected_hash in approvals.items():
+        for signal_ref, expected_hash in candidates:
             spec, _skill = self.load_candidate(signal_ref)
             if spec.ref != signal_ref:
                 raise ValidationError("candidate ref differs from staged SignalSpec")
@@ -1072,39 +1173,151 @@ class SignalRegistry:
                     "promotion batch cannot contain multiple versions of one Signal"
                 )
             seen_signal_ids.add(spec.signal_id)
-            current_hash = self.candidate_hash(signal_ref)
-            if expected_hash != current_hash:
+            if self.candidate_hash(signal_ref) != expected_hash:
                 raise ValidationError(
-                    f"approved candidate hash does not match staged content: {signal_ref}"
+                    f"validated candidate hash does not match staged content: {signal_ref}"
                 )
-            candidate_dir = self._candidate_spec_path(signal_ref).parent
-            validation = _read_json(candidate_dir / "validation.json")
+            validation = _read_json(
+                self._candidate_spec_path(signal_ref).parent / "validation.json"
+            )
             if (
                 not validation.get("accepted")
-                or validation.get("candidate_hash") != current_hash
+                or validation.get("candidate_hash") != expected_hash
             ):
                 raise ValidationError(
                     f"candidate requires matching successful validation: {signal_ref}"
                 )
-            current = self._latest_spec_or_none(spec.signal_id)
-            if current is None and spec.version != 1:
+            self._audit_candidate_for_stable(spec, signal_ref=signal_ref)
+            prior_ref = input_by_id.get(spec.signal_id)
+            if prior_ref is None and spec.version != 1:
                 raise ValidationError("new signal must start at version 1")
-            if current is not None and spec.version != current.version + 1:
-                raise ValidationError("signal update must create exactly the next version")
-            candidates.append((signal_ref, current_hash, spec))
+            if prior_ref is not None:
+                prior = self.load_spec(prior_ref)
+                if spec.category != prior.category or spec.version != prior.version + 1:
+                    raise ValidationError(
+                        "signal update must preserve category and create exactly the next version"
+                    )
 
-        for signal_ref, candidate_hash, _spec in candidates:
-            self.approve_candidate(
-                signal_ref,
-                expected_candidate_hash=candidate_hash,
-                approved_by=approved_by,
+    def _audit_candidate_for_stable(
+        self,
+        spec: SignalSpec,
+        *,
+        signal_ref: str,
+    ) -> None:
+        tests = self.load_candidate_tests(signal_ref)
+        if not set(spec.source_types).intersection(_BUILTIN_ADAPTER_SOURCE_TYPES):
+            raise ValidationError(
+                f"candidate has no stable acquisition adapter: {signal_ref}"
             )
-        promoted = tuple(
-            self.promote_candidate(signal_ref)
-            for signal_ref, _candidate_hash, _spec in candidates
+        if not tests or any(not fixture.get("documents") for fixture in tests):
+            raise ValidationError(
+                f"candidate lacks a real-schema stable fixture: {signal_ref}"
+            )
+        if spec.execution_type is SignalExecutionType.DETERMINISTIC:
+            functions = default_deterministic_signal_functions()
+            if spec.function not in functions:
+                raise ValidationError(
+                    f"candidate deterministic function is not stable: {signal_ref}"
+                )
+            for index, fixture in enumerate(tests):
+                try:
+                    _audit_deterministic_fixture(spec, fixture, index=index)
+                except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                    raise ValidationError(
+                        f"candidate stable fixture failed: {signal_ref}: {exc}"
+                    ) from exc
+
+    def _verify_transition_base(
+        self,
+        *,
+        input_version: int,
+        input_hash: str,
+        input_refs: tuple[str, ...],
+        validated_candidates: tuple[tuple[str, str], ...],
+    ) -> None:
+        if self.version not in {input_version, input_version + 1}:
+            raise ValidationError("Signal transition Registry version is inconsistent")
+        if self._snapshot_from_refs(input_version, input_refs).registry_hash != input_hash:
+            raise ValidationError("Signal transition input snapshot changed")
+        input_by_id = {_parse_ref(ref)[0]: ref for ref in input_refs}
+        candidate_by_id = {
+            _parse_ref(ref)[0]: ref for ref, _candidate_hash in validated_candidates
+        }
+        current_by_id = {
+            card.signal_id: card.ref for card in self.list_signal_cards()
+        }
+        current_ids = set(current_by_id)
+        input_ids = set(input_by_id)
+        allowed_ids = input_ids | set(candidate_by_id)
+        if not input_ids.issubset(current_ids) or not current_ids.issubset(allowed_ids):
+            raise ValidationError("unrelated stable Signal mutation during transition")
+        for signal_id, current_ref in current_by_id.items():
+            allowed = {input_by_id.get(signal_id), candidate_by_id.get(signal_id)}
+            if current_ref not in allowed:
+                raise ValidationError("stable Signal changed outside transition batch")
+        self._validate_promotion_candidates(
+            validated_candidates,
+            input_refs=input_refs,
         )
-        self.bump_version()
-        return promoted
+
+    def _snapshot_from_refs(
+        self,
+        version: int,
+        signal_refs: tuple[str, ...],
+    ) -> FrozenSignalRegistry:
+        specs = tuple(self.load_spec(signal_ref) for signal_ref in signal_refs)
+        skills = {
+            spec.ref: skill
+            for spec in specs
+            if (skill := self.load_skill(spec.ref)) is not None
+        }
+        canonical = json.dumps(
+            {
+                "version": version,
+                "specs": [spec.to_dict() for spec in specs],
+                "skills": skills,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        return FrozenSignalRegistry(
+            version=version,
+            registry_hash=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
+            specs=specs,
+            skills=skills,
+        )
+
+    def _materialize_candidate_version(
+        self,
+        spec: SignalSpec,
+        *,
+        skill: str | None,
+    ) -> None:
+        candidate_dir = self._candidate_spec_path(spec.ref).parent
+        tests = _read_json(candidate_dir / "tests.json").get("tests", ())
+        signal_dir = self.root / spec.category / spec.signal_id
+        version_dir = signal_dir / "versions" / f"v{spec.version}"
+        version_dir.mkdir(parents=True, exist_ok=True)
+        _write_or_verify_json(version_dir / "spec.json", spec.to_dict())
+        _write_or_verify_json(version_dir / "tests.json", {"tests": list(tests)})
+        if skill is not None:
+            _write_or_verify_text(version_dir / "skill.md", skill.rstrip() + "\n")
+        if not (signal_dir / "stats.json").exists():
+            _atomic_write_json(signal_dir / "stats.json", SignalStats().to_dict())
+        manifest_path = signal_dir / "manifest.json"
+        expected_manifest = {
+            "signal_id": spec.signal_id,
+            "category": spec.category,
+            "stable_version": spec.version,
+        }
+        if manifest_path.exists():
+            manifest = _read_json(manifest_path)
+            stable_version = int(manifest["stable_version"])
+            if stable_version not in {spec.version - 1, spec.version}:
+                raise ValidationError("stable Signal manifest changed during promotion")
+            if manifest.get("signal_id") != spec.signal_id or manifest.get("category") != spec.category:
+                raise ValidationError("stable Signal manifest identity mismatch")
+        _atomic_write_json(manifest_path, expected_manifest)
 
     def _candidate_spec_path(self, signal_ref: str) -> Path:
         signal_id, version = _parse_ref(signal_ref)
@@ -2046,6 +2259,26 @@ def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
         with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
             json.dump(value, handle, sort_keys=True, indent=2)
             handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def _write_or_verify_text(path: Path, value: str) -> None:
+    """Write immutable UTF-8 text atomically or verify an exact replay."""
+
+    if path.exists():
+        if path.read_text(encoding="utf-8") != value:
+            raise ValidationError(f"conflicting immutable text artifact: {path}")
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(value)
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, path)

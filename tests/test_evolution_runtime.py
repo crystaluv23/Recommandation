@@ -103,8 +103,8 @@ def make_contract() -> EvolutionRunContract:
         dataset_manifest_hash=SHA_A,
         raw_info_oracle_id="raw-info-fixture",
         raw_info_inventory_hash=SHA_B,
-        signal_registry_version=1,
-        signal_registry_hash=SHA_C,
+        initial_signal_registry_version=1,
+        initial_signal_registry_hash=SHA_C,
         priors_hash=SHA_D,
         models={
             "judge": {
@@ -1254,8 +1254,20 @@ class RunControlTests(TestCase):
         value = contract.to_dict()
         self.assertTrue(value["data_acquisition"]["enabled"])
         self.assertNotIn("allow_external", value["data_acquisition"])
+        self.assertIn("initial_signal_registry_hash", value)
+        self.assertNotIn("signal_registry_hash", value)
         restored = EvolutionRunContract.from_dict(value)
         self.assertEqual(restored.data_acquisition, contract.data_acquisition)
+
+        legacy_v3 = {
+            **value,
+            "schema_version": "evolution-run-contract-v3",
+            "signal_registry_version": value["initial_signal_registry_version"],
+            "signal_registry_hash": value["initial_signal_registry_hash"],
+        }
+        legacy_v3.pop("initial_signal_registry_version")
+        legacy_v3.pop("initial_signal_registry_hash")
+        self.assertFalse(EvolutionRunContract.from_dict(legacy_v3).executable)
 
         legacy = {**value, "schema_version": "evolution-run-contract-v1"}
         legacy.pop("data_acquisition")

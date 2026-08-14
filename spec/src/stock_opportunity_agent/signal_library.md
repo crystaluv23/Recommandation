@@ -72,7 +72,7 @@ The Registry exposes:
 `freeze()` returns one immutable definition snapshot and hash. Stats may keep
 accumulating while frozen, but stable definitions and versions cannot change
 until the fast-loop group ends.
-Freezing an empty Registry is invalid: a v3 run must contain at least one
+Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 11 enabled definitions.
 
@@ -110,7 +110,8 @@ original seed:
 
 These cutoffs are explicit, reviewable seed heuristics, not values claimed by
 the underlying empirical papers. A future promoted version may change them
-only through the normal candidate validation and exact-hash approval boundary.
+only through the normal candidate validation and exact-hash automatic-promotion
+boundary.
 The cash-flow and issuance literature motivates the measurements, while the
 project vision's early-market-confirmation requirement motivates momentum. The
 system does not yet have a peer-relative execution context, so the momentum
@@ -179,21 +180,33 @@ can be promoted only after checks for:
 - semantic duplication against stable Signals; and
 - valid version progression for updates.
 
+Candidate drafts are immutable once validated. An exact replay reuses its saved
+validation. If a rejected `vNext` is later repaired, the rejected draft is moved
+under the candidate archive by its content/origin hash before the replacement
+draft occupies the active `vNext` path; this preserves audit history without
+permanently blocking that stable Signal from ever proposing the same next
+version. An already promoted ref returned by a later agent is ignored as
+already stable rather than revalidated or promoted twice.
+
 An update creates `vNext`; it never overwrites a stable version. Machine
-validation writes a candidate hash and a `pending_human_approval` result. A
-separate human approval artifact must name the reviewer and the exact candidate
-hash. `promote_candidate` fails closed without that approval or if spec, skill,
-or tests changed afterward. Approved promotions are applied as one batch, then
-the Registry version advances once.
+validation writes the exact candidate hash over spec, skill, and tests. The
+Slow-Loop orchestrator durably stages the complete validated batch before any
+stable file changes, then automatically promotes every passing exact hash.
+There is no separate per-candidate human approval step inside this loop.
+
 Before the first stable file is changed, the whole batch is prevalidated for
-unique Signal ids, exact hashes, successful validation, approval eligibility,
-and valid next-version progression. A later invalid item cannot leave an
-earlier item silently promoted with no Registry version bump.
+unique Signal ids, exact hashes, successful validation, and valid next-version
+progression. Promotion is identified by the cycle transition id and is
+idempotent: restart may reconcile an exact partially materialized version,
+advance the Registry version at most once, verify the output snapshot, and
+finish the same transition. A changed candidate, unrelated stable mutation, or
+invalid later item fails closed. Empty passing batches leave the version/hash
+unchanged.
 
 ## Testing
 
 Cover progressive disclosure, immutable version registration, frozen snapshot
 behavior, deterministic and LLM execution, exact evidence validation,
 unavailable state, observed-policy counts, candidate isolation, executable
-candidate fixtures, alias-aware leakage rejection, exact-hash approval, and
-versioned promotion.
+candidate fixtures, alias-aware leakage rejection, exact-hash automatic batch
+promotion, partial-transition recovery, and versioned promotion.

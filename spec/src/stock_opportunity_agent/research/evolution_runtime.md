@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - v3 fail-closed contract implemented
+Ready - v4 cumulative Signal-transition contract implemented
 
 ## Purpose
 
@@ -20,7 +20,7 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - dataset and reviewed split-manifest hashes;
 - global Raw Info oracle id and initial inventory hash (diagnostic identity
   only; later oracle growth is not evolutionary state);
-- stable Signal Registry version/hash;
+- initial stable Signal Registry version/hash;
 - fixed `H_R/H_P/H_E/H_U` hash;
 - role/model/provider/routing metadata;
 - code revision and Python runtime;
@@ -42,15 +42,17 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Only `evolution-run-contract-v3` may execute. Older frozen contracts remain
+Only `evolution-run-contract-v4` may execute. Older frozen contracts remain
 readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
-default. Before creating requests or execution artifacts, runtime verifies the
-exact Git revision, Python runtime, dataset hash, stable enabled-Signal snapshot,
-and oracle id. Evaluation snapshots are immutable recovery inputs under the run
-workspace. Their existence does not prove round completion or advance
-`state.json:last_completed_round`.
-For v3, both model roles, code/runtime identities, and every consumed limit are
+default. Before the first cycle creates requests or execution artifacts,
+runtime verifies the exact Git revision, Python runtime, dataset hash, initial
+enabled-Signal snapshot, and oracle id. On later cycles it verifies the current
+stable snapshot against the last committed cycle output, not against the
+initial contract snapshot. Evaluation snapshots are immutable recovery inputs
+under the run workspace. Their existence does not prove round completion or
+advance `state.json:last_completed_round`.
+For v4, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
@@ -152,14 +154,17 @@ them to an optional caller callback. An external request interrupted after its
 attempt reservation remains visibly `in_progress`; it is not silently retried
 or marked unused.
 
-One cycle freezes its start round and configured Fast-round count in
-`cycle_state.json`. Resume calculates remaining Fast work from the authoritative
-`state.json:last_completed_round`, not from files or printed output. The Slow
-result is written as an exact immutable artifact before the cycle pointer
-advances. The continuous CLI supervisor may start successive bounded cycles,
-but `Ctrl+C` stops at the current durable boundary without changing the frozen
-run contract, attempt ceiling, cost ceiling, dataset, Signal snapshot, or
-Locked Test posture.
+One cycle freezes its start round, configured Fast-round count, and input Signal
+Registry version/hash in `cycle_state.json`. Resume calculates remaining Fast
+work from the authoritative `state.json:last_completed_round`, not from files or
+printed output. Slow validation is written as an exact immutable artifact before
+Registry mutation. The exact transition is idempotently completed, the final
+Slow result records input/output version/hash, and only then may the cycle
+pointer advance and make that output the next cycle's input. The continuous CLI
+supervisor may start successive bounded cycles, but `Ctrl+C` stops at the
+current durable boundary without changing the frozen run contract, attempt
+ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
+recoverable in-progress Signal transition, never an untracked partial rollover.
 
 When no candidate is fitness-eligible, the runtime persists a deterministic
 round-rejection checkpoint and capability-gap aggregation, emits a paused
@@ -275,8 +280,9 @@ Cover secret-free canonical contracts, exact replay/conflict rejection,
 request hashing, predictor leakage scans, preview no-network behavior, exact
 cache reuse, durable attempt/cost reservation, stale in-progress attempt
 visibility, structured progress events, cycle-level remaining-round recovery,
-exact Slow-result staging, local artifact inventory, missing paths, and Locked
-Test sealing.
+exact Slow-validation and transition recovery, cumulative historical Plan
+selection across Registry versions without reevaluation, local artifact
+inventory, missing paths, and Locked Test sealing.
 Full-market expansion tests additionally cover fixed-date labels, incomplete
 issuer exclusion, CIK deduplication, deterministic weighted/diversity sampling,
 issuer-disjoint stratified splits, hashed official-source identity decisions,

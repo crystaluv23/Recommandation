@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - strict v3 evaluation and runtime repair implemented
+Ready - strict v4 cumulative dual-loop transition implemented
 
 ## Purpose
 
@@ -304,6 +304,9 @@ P_i = (S_i, E_i, J_i, R_i, U_i, T_i)
 Canonicalization captures bootstrap, hypothesis, reflection, adaptive search,
 and evidence-assembly behavior rather than raw whitespace. The default local
 embedder is deterministic and replaceable by an external embedding adapter.
+The committed round checkpoint also stores the Signal Registry version/hash
+used to produce those trajectories. That identity is provenance only: it does
+not change `J`, eligibility, or parent-selection weight.
 
 ## Parent Selection
 
@@ -314,6 +317,14 @@ Select quality plus diversity:
    below the fixed threshold;
 3. stop at Top-K; and
 4. add up to two random non-selected archive records for exploration.
+
+Selection ranges over the cumulative committed archive, including Plans scored
+under earlier Signal Registry versions. Their saved blind-evaluation metrics
+are immutable and are not recomputed after a Signal promotion. New candidates
+are sampled with the newest Registry and may gradually displace old Plans only
+by achieving higher Binary F1 under the normal diversity rule. This is
+system-level co-evolution, not a claim that F1 values isolate intrinsic Plan
+quality across changing research capabilities.
 
 Random exploration is deterministic per `(frozen parent-selection seed,
 round_id)`. A restart before the round commit therefore selects the same
@@ -389,11 +400,12 @@ orchestrator then executes the candidate's non-empty point-in-time fixtures
 through the real candidate executor and checks expected canonical state, schema,
 leakage (including discovery-case aliases and fixture data), evidence
 traceability, semantic duplication, and version progression. Passing candidates
-are recorded as `validated_pending_human_approval`; validation alone never
-changes the stable Registry. A separate approval command binds reviewer identity
-to the exact candidate hash (spec + skill + tests). Only those exact approved
-hashes may be promoted, and the Registry version advances once after the approved
-batch.
+are recorded by exact candidate hash (spec + skill + tests). The complete
+validation outcome is staged before stable mutation. The orchestrator then
+automatically promotes all passing hashes as one cycle-identified, recoverable
+batch and advances the Registry version once. Empty passing batches do not
+advance it. The next Fast Loop sees the resulting snapshot; the just-completed
+Fast Loop remains bound to its input snapshot.
 
 Both Slow agents have an explicit final-output contract:
 `{"candidate_refs":[...]}`. A non-empty ref must come from a successful candidate
@@ -448,11 +460,14 @@ record cannot enter parent selection.
 
 One Fast/Slow cycle has a second atomic `cycle_state.json` marker. It records the
 cycle id, starting committed round, fixed round target, current Fast/Slow phase,
-and last completed cycle under the frozen run-contract hash. After `Ctrl+C`, the
-supervisor derives completed Fast work from `last_completed_round`, runs only
-the remaining rounds, and reuses an exact staged Slow result before advancing
-the completed-cycle pointer. It never infers completion from candidate files or
-an event log.
+input Signal Registry version/hash, current committed output Registry
+version/hash, and last completed cycle under the frozen run-contract hash.
+After `Ctrl+C`, the supervisor derives completed Fast work from
+`last_completed_round`, runs only the remaining rounds, and reuses an exact
+staged Slow validation/transition/result before advancing the completed-cycle
+pointer. The validated-batch artifact is durable before Registry mutation; the
+final Slow result is durable before the cycle pointer. It never infers
+completion from individual candidate files or an event log.
 
 `experiments/trajectory.jsonl` is the append-only debug stream for lifecycle,
 request/cache, round, candidate, case, score, Top-K, Slow-loop, interruption,
@@ -481,17 +496,19 @@ does not widen the frozen attempt or cost ceilings.
 
 `scripts/run_information_plan_evolution.sh` is the stable operator-facing
 launcher. `new` requires an unused workspace, the global Raw Info oracle, and an
-already human-approved feasible dataset; it initializes and freezes one v3
+already human-approved feasible dataset; it initializes and freezes one v4
 contract, then stops at the first exact-request approval boundary without
 external execution. `resume` requires the same workspace/oracle/dataset and
 derives progress only from committed pointers. External execution is available
 only in `resume` mode with both `--external` and an acknowledgement equal to the
 stored contract hash. The launcher composes the Python CLI rather than
 implementing a second state machine. It never persists or prints a key, opens
-Locked Test, auto-promotes Signal candidates, infers completion from files, or
-bypasses request leakage, cost, attempt, dataset-feasibility, and contract-hash
-gates. The former DeepSeek-named shell is only a compatibility forwarder to this
-entry and carries no workspace, model, budget, or approval defaults.
+Locked Test, promotes an unvalidated or changed Signal candidate, infers
+completion from files, or bypasses request leakage, cost, attempt,
+dataset-feasibility, and contract-hash gates. Validated Signal auto-promotion is
+part of the bounded cycle state machine, not external-call authorization. The
+former DeepSeek-named shell is only a compatibility forwarder to this entry and
+carries no workspace, model, budget, or approval defaults.
 
 The stable cold-start default is two Fast rounds with three independently
 sampled candidates per round. A one-candidate round remains available as an
@@ -585,8 +602,8 @@ imputed.
 5. Independent candidate sampling, fast-loop evaluation, `H_R`, and FIFO meta.
 6. Observed-policy Signal state statistics.
 7. Generic-Agent Signal Mining into candidate storage.
-8. Generic-Agent Signal Update, executable validation, human approval, and
-   versioned promotion.
+8. Generic-Agent Signal Update, executable validation, recoverable automatic
+   batch promotion, and versioned transition.
 
 ## Testing
 
@@ -595,10 +612,12 @@ reflection, mandatory prediction persistence before label access, two-stage
 metric math, complete Plan records, quality-diverse selection, independent N
 proposal calls with distinct slot identities, grounded FIFO updates,
 observed-policy counts, candidate
-isolation, executable candidate fixtures, exact-hash human promotion checks,
+isolation, executable candidate fixtures, exact-hash automatic promotion checks,
 frozen fast-loop definitions, locked-test
 isolation, runtime budgets, authoritative completion pointer behavior, and one
 offline end-to-end dual-loop cycle. Recovery tests must additionally cover
 independent case-trajectory reuse, interrupt-after-round recovery with no extra
-Fast rounds, exact staged Slow-result recovery, append-only debug events, CLI
+Fast rounds, exact staged Slow-validation/transition/result recovery, a next
+cycle that uses the promoted Registry without reevaluating historical Plans,
+append-only debug events, CLI
 progress flushing, and dashboard filtering to committed pointers.

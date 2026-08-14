@@ -1177,8 +1177,8 @@ class EvolutionRunContract:
     dataset_manifest_hash: str
     raw_info_oracle_id: str
     raw_info_inventory_hash: str
-    signal_registry_version: int
-    signal_registry_hash: str
+    initial_signal_registry_version: int
+    initial_signal_registry_hash: str
     priors_hash: str
     models: Mapping[str, Mapping[str, Any]]
     code_revision: str
@@ -1188,7 +1188,7 @@ class EvolutionRunContract:
     max_total_cost: float
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
-    schema_version: str = "evolution-run-contract-v3"
+    schema_version: str = "evolution-run-contract-v4"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -1196,14 +1196,14 @@ class EvolutionRunContract:
         for name in (
             "dataset_manifest_hash",
             "raw_info_inventory_hash",
-            "signal_registry_hash",
+            "initial_signal_registry_hash",
             "priors_hash",
         ):
             value = str(getattr(self, name))
             if not re.fullmatch(r"[0-9a-f]{64}", value):
                 raise ValidationError(f"{name} must be a SHA-256 hex digest")
-        if self.signal_registry_version < 1:
-            raise ValidationError("signal registry version must be positive")
+        if self.initial_signal_registry_version < 1:
+            raise ValidationError("initial signal registry version must be positive")
         if not self.raw_info_oracle_id.strip():
             raise ValidationError("raw_info_oracle_id is required")
         if (
@@ -1227,25 +1227,31 @@ class EvolutionRunContract:
             "evolution-run-contract-v1",
             "evolution-run-contract-v2",
             "evolution-run-contract-v3",
+            "evolution-run-contract-v4",
         }:
             raise ValidationError("unsupported evolution run contract schema")
-        if self.schema_version == "evolution-run-contract-v3":
+        if self.schema_version in {
+            "evolution-run-contract-v3",
+            "evolution-run-contract-v4",
+        }:
+            schema_label = "v4" if self.schema_version.endswith("v4") else "v3"
             required_roles = {"judge", "proposer"}
             missing_roles = sorted(required_roles - set(self.models))
             if missing_roles:
                 raise ValidationError(
-                    "v3 contract is missing model roles: " + ", ".join(missing_roles)
+                    f"{schema_label} contract is missing model roles: "
+                    + ", ".join(missing_roles)
                 )
             for role in sorted(required_roles):
                 metadata = self.models[role]
                 for field in ("alias", "provider", "model"):
                     if not str(metadata.get(field, "")).strip():
                         raise ValidationError(
-                            f"v3 contract model role {role} is missing {field}"
+                            f"{schema_label} contract model role {role} is missing {field}"
                         )
             if not self.code_revision.strip() or not self.python_runtime.strip():
                 raise ValidationError(
-                    "v3 contract requires code revision and Python runtime"
+                    f"{schema_label} contract requires code revision and Python runtime"
                 )
             required_limits = {
                 "plan_rounds_per_signal_cycle",
@@ -1267,7 +1273,7 @@ class EvolutionRunContract:
             missing_limits = sorted(required_limits - set(self.limits))
             if missing_limits:
                 raise ValidationError(
-                    "v3 contract is missing runtime limits: "
+                    f"{schema_label} contract is missing runtime limits: "
                     + ", ".join(missing_limits)
                 )
 
@@ -1280,7 +1286,7 @@ class EvolutionRunContract:
                         f"at least {minimum}" if minimum is not None else "an integer"
                     )
                     raise ValidationError(
-                        f"v3 contract limit {name} must be {qualifier}"
+                        f"{schema_label} contract limit {name} must be {qualifier}"
                     )
                 return value
 
@@ -1292,7 +1298,7 @@ class EvolutionRunContract:
                     or not math.isfinite(float(value))
                 ):
                     raise ValidationError(
-                        f"v3 contract limit {name} must be finite numeric"
+                        f"{schema_label} contract limit {name} must be finite numeric"
                     )
                 return float(value)
 
@@ -1312,17 +1318,25 @@ class EvolutionRunContract:
             similarity = require_number("similarity_threshold")
             if not -1 < similarity <= 1:
                 raise ValidationError(
-                    "v3 contract similarity_threshold must be in (-1, 1]"
+                    f"{schema_label} contract similarity_threshold must be in (-1, 1]"
                 )
             if require_number("plan_proposal_temperature") != 1.0:
-                raise ValidationError("v3 contract proposer temperature must be 1.0")
+                raise ValidationError(
+                    f"{schema_label} contract proposer temperature must be 1.0"
+                )
             if require_number("judge_temperature") != 0.0:
-                raise ValidationError("v3 contract judge temperature must be 0.0")
+                raise ValidationError(
+                    f"{schema_label} contract judge temperature must be 0.0"
+                )
             if require_number("max_case_cost") <= 0:
-                raise ValidationError("v3 contract max_case_cost must be positive")
+                raise ValidationError(
+                    f"{schema_label} contract max_case_cost must be positive"
+                )
             evaluation = self.limits["evaluation"]
             if not isinstance(evaluation, Mapping):
-                raise ValidationError("v3 contract requires evaluation limits")
+                raise ValidationError(
+                    f"{schema_label} contract requires evaluation limits"
+                )
             evaluation_config = PlanEvaluationConfig.from_dict(evaluation)
             if (
                 evaluation_config.cases_per_round != 20
@@ -1330,10 +1344,12 @@ class EvolutionRunContract:
                 != {"non_surge": 8, "2_3x": 6, "3_10x": 4, "10x_plus": 2}
                 or evaluation_config.max_cases_per_company_per_round != 1
             ):
-                raise ValidationError("v3 contract requires exact 20-case 8/6/4/2 evaluation")
+                raise ValidationError(
+                    f"{schema_label} contract requires exact 20-case 8/6/4/2 evaluation"
+                )
             if dict(evaluation) != evaluation_config.to_dict():
                 raise ValidationError(
-                    "v3 contract evaluation limits must be complete and canonical"
+                    f"{schema_label} contract evaluation limits must be complete and canonical"
                 )
 
     def to_dict(self) -> dict[str, Any]:
@@ -1343,8 +1359,6 @@ class EvolutionRunContract:
             "created_at": self.created_at,
             "dataset_manifest_hash": self.dataset_manifest_hash,
             "raw_info_inventory_hash": self.raw_info_inventory_hash,
-            "signal_registry_version": self.signal_registry_version,
-            "signal_registry_hash": self.signal_registry_hash,
             "priors_hash": self.priors_hash,
             "models": {role: dict(value) for role, value in self.models.items()},
             "code_revision": self.code_revision,
@@ -1354,9 +1368,20 @@ class EvolutionRunContract:
             "max_total_cost": self.max_total_cost,
             "locked_test_accessed": False,
         }
+        if self.schema_version == "evolution-run-contract-v4":
+            value["initial_signal_registry_version"] = (
+                self.initial_signal_registry_version
+            )
+            value["initial_signal_registry_hash"] = self.initial_signal_registry_hash
+        else:
+            value["signal_registry_version"] = self.initial_signal_registry_version
+            value["signal_registry_hash"] = self.initial_signal_registry_hash
         if self.schema_version != "evolution-run-contract-v1":
             value["data_acquisition"] = self.data_acquisition.to_dict()
-        if self.schema_version == "evolution-run-contract-v3":
+        if self.schema_version in {
+            "evolution-run-contract-v3",
+            "evolution-run-contract-v4",
+        }:
             value["raw_info_oracle_id"] = self.raw_info_oracle_id
         return value
 
@@ -1366,9 +1391,9 @@ class EvolutionRunContract:
 
     @property
     def executable(self) -> bool:
-        """Only v3 contracts may advance evolution state."""
+        """Only v4 contracts may advance cumulative dual-loop state."""
 
-        return self.schema_version == "evolution-run-contract-v3"
+        return self.schema_version == "evolution-run-contract-v4"
 
     def freeze(self, path: str | Path) -> None:
         _write_or_verify_json(
@@ -1386,8 +1411,18 @@ class EvolutionRunContract:
                 value.get("raw_info_oracle_id", "legacy-workspace-raw-info")
             ),
             raw_info_inventory_hash=str(value["raw_info_inventory_hash"]),
-            signal_registry_version=int(value["signal_registry_version"]),
-            signal_registry_hash=str(value["signal_registry_hash"]),
+            initial_signal_registry_version=int(
+                value.get(
+                    "initial_signal_registry_version",
+                    value.get("signal_registry_version", 0),
+                )
+            ),
+            initial_signal_registry_hash=str(
+                value.get(
+                    "initial_signal_registry_hash",
+                    value.get("signal_registry_hash", ""),
+                )
+            ),
             priors_hash=str(value["priors_hash"]),
             models={
                 str(role): dict(metadata)
@@ -2784,7 +2819,7 @@ def run_bounded_evolution_cycle(
     environ: Mapping[str, str] | None = None,
     on_progress: ProgressCallback | None = None,
 ) -> DualLoopResult:
-    """Run/resume one frozen finite Fast group and one validation-only Slow cycle."""
+    """Run/resume one finite Fast group and one automatic Signal transition."""
 
     workspace_root = Path(workspace_path)
     if not contract.executable:
@@ -2819,11 +2854,6 @@ def run_bounded_evolution_cycle(
         candidate_root=workspace_root / "signals_candidates",
     )
     snapshot = registry.freeze()
-    if (
-        registry.version != contract.signal_registry_version
-        or snapshot.registry_hash != contract.signal_registry_hash
-    ):
-        raise ValidationError("stable Signal Registry differs from frozen run contract")
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
 
@@ -2833,6 +2863,10 @@ def run_bounded_evolution_cycle(
     cycle = evolution_workspace.start_or_resume_cycle(
         run_contract_hash=contract.contract_hash,
         target_plan_rounds=target_plan_rounds,
+        initial_signal_registry_version=contract.initial_signal_registry_version,
+        initial_signal_registry_hash=contract.initial_signal_registry_hash,
+        observed_signal_registry_version=snapshot.version,
+        observed_signal_registry_hash=snapshot.registry_hash,
     )
     cycle_id = int(cycle["cycle_id"])
 
@@ -2868,13 +2902,18 @@ def run_bounded_evolution_cycle(
         emit(
             {
                 "event_type": "slow_loop_result_reused",
-                "validated_pending_approval": dict(
-                    signal_result.validated_pending_approval
-                ),
-                "registry_version": signal_result.registry_version,
+                "validated_candidates": dict(signal_result.validated_candidates),
+                "promoted": list(signal_result.promoted),
+                "output_registry_version": signal_result.output_registry_version,
+                "output_registry_hash": signal_result.output_registry_hash,
             }
         )
-        evolution_workspace.complete_cycle(cycle_id=cycle_id)
+        current_snapshot = registry.freeze()
+        evolution_workspace.complete_cycle(
+            cycle_id=cycle_id,
+            observed_signal_registry_version=current_snapshot.version,
+            observed_signal_registry_hash=current_snapshot.registry_hash,
+        )
         emit(
             {
                 "event_type": "cycle_committed",
@@ -2883,6 +2922,13 @@ def run_bounded_evolution_cycle(
             }
         )
         return DualLoopResult(plan_rounds=(), signal_evolution=signal_result)
+
+    staged_validation = evolution_workspace.staged_slow_validation(cycle_id)
+    if staged_validation is None and (
+        snapshot.version != int(cycle["input_signal_registry_version"])
+        or snapshot.registry_hash != cycle["input_signal_registry_hash"]
+    ):
+        raise ValidationError("stable Signal Registry differs from active cycle input")
 
     ledger = ExternalAttemptLedger(
         workspace_root / "attempts.json",
@@ -3011,7 +3057,10 @@ def run_bounded_evolution_cycle(
         dataset=dataset,  # type: ignore[arg-type]
         plan_rounds_per_signal_cycle=int(limits["plan_rounds_per_signal_cycle"]),
         on_progress=emit,
-    ).run_cycle(completed_plan_rounds=completed_plan_rounds)
+    ).run_cycle(
+        cycle_id=cycle_id,
+        completed_plan_rounds=completed_plan_rounds,
+    )
     slow_result_path = evolution_workspace.stage_slow_result(
         cycle_id=cycle_id,
         result=result.signal_evolution.to_dict(),
@@ -3022,7 +3071,12 @@ def run_bounded_evolution_cycle(
             "slow_result_path": str(slow_result_path),
         }
     )
-    evolution_workspace.complete_cycle(cycle_id=cycle_id)
+    current_snapshot = registry.freeze()
+    evolution_workspace.complete_cycle(
+        cycle_id=cycle_id,
+        observed_signal_registry_version=current_snapshot.version,
+        observed_signal_registry_hash=current_snapshot.registry_hash,
+    )
     emit(
         {
             "event_type": "cycle_committed",
@@ -3040,8 +3094,8 @@ def build_run_contract(
     inventory: LocalEvolutionInventory,
     raw_info_oracle: RawInfoOracle,
     raw_info_inventory_hash: str,
-    signal_registry_version: int,
-    signal_registry_hash: str,
+    initial_signal_registry_version: int,
+    initial_signal_registry_hash: str,
     priors: Mapping[str, str],
     role_aliases: Mapping[str, str],
     project_root: str | Path,
@@ -3065,8 +3119,8 @@ def build_run_contract(
         dataset_manifest_hash=_sha256_file(manifest_path),
         raw_info_oracle_id=raw_info_oracle.oracle_id,
         raw_info_inventory_hash=raw_info_inventory_hash,
-        signal_registry_version=signal_registry_version,
-        signal_registry_hash=signal_registry_hash,
+        initial_signal_registry_version=initial_signal_registry_version,
+        initial_signal_registry_hash=initial_signal_registry_hash,
         priors_hash=_canonical_hash(dict(priors)),
         models=public_model_contract(role_aliases, environ=environ),
         code_revision=current_code_revision(project_root),

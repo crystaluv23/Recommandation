@@ -273,18 +273,6 @@ def build_parser() -> argparse.ArgumentParser:
         "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
     )
 
-    approve = subparsers.add_parser(
-        "approve-signals",
-        help="human-approve and promote exact validated Signal candidate hashes",
-    )
-    approve.add_argument("--workspace", type=Path, required=True)
-    approve.add_argument("--approved-by", required=True)
-    approve.add_argument(
-        "--candidate",
-        action="append",
-        required=True,
-        metavar="SIGNAL_REF=SHA256",
-    )
     return parser
 
 
@@ -461,38 +449,6 @@ def filter_local_prices(
     return summary.to_dict()
 
 
-def approve_signals(
-    *,
-    workspace_path: Path,
-    approved_by: str,
-    candidate_args: list[str],
-) -> dict[str, object]:
-    """Apply one explicit exact-hash human promotion batch."""
-
-    registry = SignalRegistry(
-        workspace_path / "signals",
-        candidate_root=workspace_path / "signals_candidates",
-    )
-    approvals: list[tuple[str, str]] = []
-    for value in candidate_args:
-        signal_ref, separator, candidate_hash = value.partition("=")
-        if not separator or len(candidate_hash) != 64:
-            raise ValidationError("--candidate must be SIGNAL_REF=SHA256")
-        approvals.append((signal_ref, candidate_hash))
-    if len({signal_ref for signal_ref, _hash in approvals}) != len(approvals):
-        raise ValidationError("--candidate refs must be unique")
-    promoted = registry.promote_approved_batch(
-        dict(approvals),
-        approved_by=approved_by,
-    )
-    return {
-        "workspace": str(workspace_path),
-        "approved_by": approved_by,
-        "promoted": [spec.ref for spec in promoted],
-        "registry_version": registry.version,
-    }
-
-
 def migrate_raw_info(
     *,
     workspace_path: Path,
@@ -637,8 +593,8 @@ def freeze_run(
             inventory=inventory,
             raw_info_oracle=oracle,
             raw_info_inventory_hash=raw_info_store.inventory_hash,
-            signal_registry_version=registry.version,
-            signal_registry_hash=snapshot.registry_hash,
+            initial_signal_registry_version=registry.version,
+            initial_signal_registry_hash=snapshot.registry_hash,
             priors={
                 "reflect_round": DEFAULT_EVOLUTION_PRIORS.reflect_round,
                 "propose_plan": DEFAULT_EVOLUTION_PRIORS.propose_plan,
@@ -683,7 +639,7 @@ def freeze_run(
         "dataset_manifest_hash": contract.dataset_manifest_hash,
         "raw_info_oracle_id": contract.raw_info_oracle_id,
         "raw_info_inventory_hash": contract.raw_info_inventory_hash,
-        "signal_registry_hash": contract.signal_registry_hash,
+        "initial_signal_registry_hash": contract.initial_signal_registry_hash,
         "models": contract.models,
         "max_external_attempts": contract.max_external_attempts,
         "max_total_cost": contract.max_total_cost,
@@ -793,11 +749,14 @@ def run_cycle_command(
         "status": "cycle_completed",
         "contract_hash": contract.contract_hash,
         "completed_plan_rounds": [item.round_id for item in result.plan_rounds],
-        "signal_candidates_pending_approval": dict(
-            result.signal_evolution.validated_pending_approval
+        "validated_signal_candidates": dict(
+            result.signal_evolution.validated_candidates
         ),
         "promoted_signals": list(result.signal_evolution.promoted),
-        "registry_version": result.signal_evolution.registry_version,
+        "input_registry_version": result.signal_evolution.input_registry_version,
+        "input_registry_hash": result.signal_evolution.input_registry_hash,
+        "output_registry_version": result.signal_evolution.output_registry_version,
+        "output_registry_hash": result.signal_evolution.output_registry_hash,
         "last_completed_round": workspace.last_completed_round,
         "last_completed_cycle": workspace.last_completed_cycle,
         "trajectory_path": str(workspace.trajectory_events_path),
@@ -954,8 +913,9 @@ def _print_progress(event: dict[str, object], *, stream=None) -> None:
         "slow_loop_result_staged",
     }:
         message = (
-            f"{event_type} · pending="
-            f"{event.get('validated_pending_approval', {})}"
+            f"{event_type} · validated="
+            f"{event.get('validated_candidates', {})} · "
+            f"promoted={event.get('promoted', [])}"
         )
     elif event_type in {"cycle_committed", "cycle_paused", "run_interrupted"}:
         message = (
@@ -1169,12 +1129,6 @@ def main() -> int:
                 acknowledged_contract_hash=args.acknowledge_contract_hash,
                 max_cycles=args.max_cycles,
                 on_progress=progress,
-            )
-        elif args.command == "approve-signals":
-            result = approve_signals(
-                workspace_path=args.workspace,
-                approved_by=args.approved_by,
-                candidate_args=args.candidate,
             )
         elif args.command == "refresh-dashboard":
             result = refresh_dashboard(args.dashboard_root)
