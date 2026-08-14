@@ -72,6 +72,9 @@ The Registry exposes:
 `freeze()` returns one immutable definition snapshot and hash. Stats may keep
 accumulating while frozen, but stable definitions and versions cannot change
 until the fast-loop group ends.
+Freezing an empty Registry is invalid: a v3 run must contain at least one
+enabled, capability-audited stable Signal and the normal seed initialization
+contains all 11 enabled definitions.
 
 Before freeze, `SignalCapabilityAudit` validates every enabled Signal against
 its registered deterministic function or LLM skill, supported source routing,
@@ -145,6 +148,12 @@ with no evidence rather than accepting or fabricating a citation. Provider and
 unexpected runtime failures still propagate so external-call recovery remains
 explicit.
 
+Required Signal-result objects and evidence-policy booleans are type-strict;
+missing coverage, string booleans, string-as-array evidence, and non-finite
+confidence values are rejected rather than normalized by generic Python
+coercion. The only conservative normalization remains the documented
+`state.value=unavailable` narrowing to unavailable coverage.
+
 ## Observed Policy Statistics
 
 For each canonical state maintain actual occurrence counts against `surge` and
@@ -176,6 +185,10 @@ separate human approval artifact must name the reviewer and the exact candidate
 hash. `promote_candidate` fails closed without that approval or if spec, skill,
 or tests changed afterward. Approved promotions are applied as one batch, then
 the Registry version advances once.
+Before the first stable file is changed, the whole batch is prevalidated for
+unique Signal ids, exact hashes, successful validation, approval eligibility,
+and valid next-version progression. A later invalid item cannot leave an
+earlier item silently promoted with no Registry version bump.
 
 ## Testing
 

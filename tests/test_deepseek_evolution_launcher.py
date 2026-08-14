@@ -28,8 +28,48 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertIn("resume [options]", result.stdout)
         self.assertIn("new never performs external calls", result.stdout)
         self.assertIn("--acknowledge-contract-hash", result.stdout)
+        self.assertIn("default: 2", result.stdout)
+        self.assertIn("default: 3", result.stdout)
+        self.assertIn("--data-provider", result.stdout)
         self.assertIn("Locked Test stays sealed", result.stdout)
         self.assertIn("never auto-promoted", result.stdout)
+
+    def test_new_rejects_any_existing_workspace_before_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            workspace.mkdir()
+            marker = workspace / "owner-data.txt"
+            marker.write_text("keep", encoding="utf-8")
+            approved = root / "approved.json"
+            approved.write_text("{}", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    "/bin/bash",
+                    str(SCRIPT),
+                    "new",
+                    "--workspace",
+                    str(workspace),
+                    "--raw-info-root",
+                    str(root / "raw-info"),
+                    "--approved-dataset",
+                    str(approved),
+                    "--run-id",
+                    "fixture",
+                    "--judge-model",
+                    "judge",
+                    "--evolution-model",
+                    "proposer",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("unused workspace", result.stderr)
+            self.assertEqual(marker.read_text(encoding="utf-8"), "keep")
 
     def test_new_rejects_external_authorization_before_workspace_mutation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -62,6 +102,39 @@ class InformationPlanEvolutionLauncherTests(TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("new is always zero-network", result.stderr)
+
+    def test_new_rejects_dormant_data_policy_options(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            approved = root / "approved.json"
+            approved.write_text("{}", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    "/bin/bash",
+                    str(SCRIPT),
+                    "new",
+                    "--workspace",
+                    str(root / "workspace"),
+                    "--raw-info-root",
+                    str(root / "raw-info"),
+                    "--approved-dataset",
+                    str(approved),
+                    "--run-id",
+                    "fixture",
+                    "--judge-model",
+                    "judge",
+                    "--evolution-model",
+                    "proposer",
+                    "--data-provider",
+                    "sec_edgar",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("data policy options require --data-external", result.stderr)
 
     def test_compatibility_script_only_forwards_to_stable_entry(self) -> None:
         source = COMPATIBILITY_SCRIPT.read_text(encoding="utf-8")

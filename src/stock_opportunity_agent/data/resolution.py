@@ -411,8 +411,51 @@ class DataAcquisitionPolicy:
     max_requests_per_run: int = 0
 
     def __post_init__(self) -> None:
-        if self.enabled and min(self.max_requests_per_cycle, self.max_requests_per_run) < 1:
-            raise ValidationError("enabled data acquisition requires positive limits")
+        if type(self.enabled) is not bool:
+            raise ValidationError("data acquisition enabled must be a boolean")
+        for name in (
+            "allowed_providers",
+            "allowed_capabilities",
+            "allowed_source_types",
+        ):
+            values = tuple(str(item).strip() for item in getattr(self, name))
+            if any(not item for item in values) or len(set(values)) != len(values):
+                raise ValidationError(
+                    f"data acquisition {name} must contain unique non-empty values"
+                )
+            object.__setattr__(self, name, values)
+        if type(self.max_requests_per_cycle) is not int or type(
+            self.max_requests_per_run
+        ) is not int:
+            raise ValidationError("data acquisition limits must be integers")
+        if self.enabled:
+            if min(self.max_requests_per_cycle, self.max_requests_per_run) < 1:
+                raise ValidationError(
+                    "enabled data acquisition requires positive limits"
+                )
+            if not all(
+                (
+                    self.allowed_providers,
+                    self.allowed_capabilities,
+                    self.allowed_source_types,
+                )
+            ):
+                raise ValidationError(
+                    "enabled data acquisition requires explicit provider, "
+                    "capability, and source-type allowlists"
+                )
+        elif any(
+            (
+                self.allowed_providers,
+                self.allowed_capabilities,
+                self.allowed_source_types,
+                self.max_requests_per_cycle,
+                self.max_requests_per_run,
+            )
+        ):
+            raise ValidationError(
+                "disabled data acquisition requires empty allowlists and zero limits"
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -426,11 +469,21 @@ class DataAcquisitionPolicy:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "DataAcquisitionPolicy":
+        enabled = data.get("enabled", False)
+        if type(enabled) is not bool:
+            raise ValidationError("data acquisition enabled must be a boolean")
+
+        def string_list(name: str) -> tuple[str, ...]:
+            value = data.get(name, ())
+            if not isinstance(value, (list, tuple)):
+                raise ValidationError(f"data acquisition {name} must be an array")
+            return tuple(str(item) for item in value)
+
         return cls(
-            enabled=bool(data.get("enabled", False)),
-            allowed_providers=tuple(str(item) for item in data.get("allowed_providers", ())),
-            allowed_capabilities=tuple(str(item) for item in data.get("allowed_capabilities", ())),
-            allowed_source_types=tuple(str(item) for item in data.get("allowed_source_types", ())),
+            enabled=enabled,
+            allowed_providers=string_list("allowed_providers"),
+            allowed_capabilities=string_list("allowed_capabilities"),
+            allowed_source_types=string_list("allowed_source_types"),
             max_requests_per_cycle=int(data.get("max_requests_per_cycle", 0)),
             max_requests_per_run=int(data.get("max_requests_per_run", 0)),
         )

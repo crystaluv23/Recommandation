@@ -460,6 +460,13 @@ class SignalLibraryTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "unknown frozen"):
                 snapshot.load_spec("revenue_growth_yoy:v2")
 
+    def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+
+            with self.assertRaisesRegex(ValidationError, "empty stable Signal"):
+                registry.freeze()
+
     def test_executor_uses_point_in_time_raw_info_and_tracks_observed_states(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
@@ -1016,6 +1023,55 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             self.assertEqual(
                 [entry.round_id for entry in workspace.restore_meta().entries],
                 [1],
+            )
+
+    def test_workspace_rejects_checkpoint_record_cross_link_corruption(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            record = make_record("plan_committed", 0.8, (1.0, 0.0), round_id=1)
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    evidence_refs=("plan_committed",),
+                ),
+                signal_registry_hash="registry-hash",
+            )
+            record_path = workspace.plans_root / "plan_committed" / "record.json"
+            payload = json.loads(record_path.read_text(encoding="utf-8"))
+            payload["round_id"] = 2
+            record_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            with self.assertRaisesRegex(ValidationError, "cross-links"):
+                workspace.restore_archive()
+
+    def test_workspace_accepts_equivalent_checkpoint_path_spelling(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            record = make_record("plan_committed", 0.8, (1.0, 0.0), round_id=1)
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    evidence_refs=("plan_committed",),
+                ),
+                signal_registry_hash="registry-hash",
+            )
+            state = json.loads(workspace.state_path.read_text(encoding="utf-8"))
+            checkpoint_path = Path(state["checkpoint_ref"])
+            state["checkpoint_ref"] = str(
+                checkpoint_path.parent
+                / ".."
+                / checkpoint_path.parent.name
+                / checkpoint_path.name
+            )
+            workspace.state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            self.assertEqual(
+                [item.plan_id for item in workspace.restore_archive().records],
+                ["plan_committed"],
             )
 
     def test_round_commit_reuses_only_exact_crash_staged_artifacts(self) -> None:
@@ -1628,6 +1684,24 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             with self.assertRaisesRegex(ValidationError, "approval"):
                 registry.promote_candidate("revenue_growth_yoy:v2")
+            mismatched_approvals = dict(result.validated_pending_approval)
+            mismatched_approvals["revenue_growth_yoy:v2"] = "0" * 64
+            with self.assertRaisesRegex(ValidationError, "hash differs"):
+                engine.promote_approved(
+                    result,
+                    approvals=mismatched_approvals,
+                    approved_by="human-reviewer",
+                )
+            self.assertFalse(
+                (
+                    root
+                    / "signals_candidates"
+                    / "financial"
+                    / "discovery_growth_quality"
+                    / "v1"
+                    / "approval.json"
+                ).exists()
+            )
             promoted = engine.promote_approved(
                 result,
                 approvals=result.validated_pending_approval,
@@ -1730,6 +1804,7 @@ class SignalEvolutionTests(TestCase):
                 serialized = json.dumps(model.requests[0].workspace)
                 self.assertNotIn("locked_company", serialized)
                 self.assertFalse(model.requests[0].workspace["locked_test_available"])
+                self.assertIn("capability_backlog", model.requests[0].workspace)
             with self.assertRaisesRegex(ValidationError, "after the Discovery"):
                 engine._search_raw_info_tool(
                     make_case("discovery_only", 3.0).case_id,

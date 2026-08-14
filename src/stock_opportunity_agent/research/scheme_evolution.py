@@ -63,6 +63,42 @@ _FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
 )
 
 
+def _json_string_array(
+    data: Mapping[str, Any],
+    field_name: str,
+    *,
+    required: bool = True,
+) -> tuple[str, ...]:
+    """Read one JSON string array without accepting strings as iterables."""
+
+    if field_name not in data:
+        if required:
+            raise ValidationError(f"{field_name} is required")
+        return ()
+    value = data[field_name]
+    if not isinstance(value, (list, tuple)):
+        raise ValidationError(f"{field_name} must be an array")
+    if any(not isinstance(item, str) for item in value):
+        raise ValidationError(f"{field_name} must contain only strings")
+    return tuple(value)
+
+
+def _json_boolean(value: Any, field_name: str) -> bool:
+    """Require a real JSON boolean rather than Python truthiness."""
+
+    if type(value) is not bool:
+        raise ValidationError(f"{field_name} must be a boolean")
+    return value
+
+
+def _same_artifact_path(reference: Any, expected: Path) -> bool:
+    """Compare durable artifact refs by resolved target, not path spelling."""
+
+    return isinstance(reference, str) and bool(reference) and (
+        Path(reference).resolve() == expected.resolve()
+    )
+
+
 class ResearchDecision(str, Enum):
     """Research Controller decision after initial reasoning or batch reflection."""
 
@@ -265,27 +301,34 @@ class ResearchState:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ResearchState":
+        required = {
+            "hypotheses",
+            "current_beliefs",
+            "supporting_evidence",
+            "contradictions",
+            "resolved_questions",
+            "open_questions",
+            "next_information_needs",
+            "decision",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "ResearchState is missing fields: " + ", ".join(missing)
+            )
+        if not isinstance(data["decision"], str):
+            raise ValidationError("ResearchState decision must be text")
         return cls(
-            hypotheses=tuple(str(item) for item in data.get("hypotheses", ())),
-            current_beliefs=tuple(
-                str(item) for item in data.get("current_beliefs", ())
+            hypotheses=_json_string_array(data, "hypotheses"),
+            current_beliefs=_json_string_array(data, "current_beliefs"),
+            supporting_evidence=_json_string_array(data, "supporting_evidence"),
+            contradictions=_json_string_array(data, "contradictions"),
+            resolved_questions=_json_string_array(data, "resolved_questions"),
+            open_questions=_json_string_array(data, "open_questions"),
+            next_information_needs=_json_string_array(
+                data, "next_information_needs"
             ),
-            supporting_evidence=tuple(
-                str(item) for item in data.get("supporting_evidence", ())
-            ),
-            contradictions=tuple(
-                str(item) for item in data.get("contradictions", ())
-            ),
-            resolved_questions=tuple(
-                str(item) for item in data.get("resolved_questions", ())
-            ),
-            open_questions=tuple(
-                str(item) for item in data.get("open_questions", ())
-            ),
-            next_information_needs=tuple(
-                str(item) for item in data.get("next_information_needs", ())
-            ),
-            decision=ResearchDecision(str(data.get("decision", "continue"))),
+            decision=ResearchDecision(data["decision"]),
         )
 
 
@@ -368,20 +411,39 @@ class BlindPrediction:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "BlindPrediction":
-        confidence = data.get("confidence", {})
-        confidence_value = (
-            confidence.get("level") if isinstance(confidence, Mapping) else confidence
-        )
+        required = {
+            "is_surge",
+            "magnitude",
+            "confidence",
+            "key_reasons",
+            "uncertainties",
+            "session_id",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "BlindPrediction is missing fields: " + ", ".join(missing)
+            )
+        confidence = data["confidence"]
+        if not isinstance(confidence, Mapping) or set(confidence) != {"level"}:
+            raise ValidationError(
+                "BlindPrediction confidence requires exactly a level field"
+            )
+        confidence_value = confidence["level"]
+        if not isinstance(confidence_value, str):
+            raise ValidationError("BlindPrediction confidence level must be text")
+        if not isinstance(data["session_id"], str):
+            raise ValidationError("BlindPrediction session_id must be text")
         magnitude = data.get("magnitude")
+        if magnitude is not None and not isinstance(magnitude, str):
+            raise ValidationError("BlindPrediction magnitude must be text or null")
         return cls(
-            is_surge=bool(data["is_surge"]),
+            is_surge=_json_boolean(data["is_surge"], "BlindPrediction is_surge"),
             magnitude=MagnitudeClass(str(magnitude)) if magnitude else None,
-            confidence=ConfidenceLevel(str(confidence_value)),
-            key_reasons=tuple(str(item) for item in data.get("key_reasons", ())),
-            uncertainties=tuple(
-                str(item) for item in data.get("uncertainties", ())
-            ),
-            session_id=str(data["session_id"]),
+            confidence=ConfidenceLevel(confidence_value),
+            key_reasons=_json_string_array(data, "key_reasons"),
+            uncertainties=_json_string_array(data, "uncertainties"),
+            session_id=data["session_id"],
         )
 
 
@@ -454,22 +516,37 @@ class PredictionSelfReflection:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PredictionSelfReflection":
-        outcome = dict(data.get("prediction_outcome", {}))
+        required = {
+            "prediction_outcome",
+            "why_prediction_failed",
+            "misleading_signals",
+            "ignored_evidence",
+            "missing_information",
+            "plan_issues",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "PredictionSelfReflection is missing fields: "
+                + ", ".join(missing)
+            )
+        outcome_value = data["prediction_outcome"]
+        if not isinstance(outcome_value, Mapping) or set(outcome_value) != {"correct"}:
+            raise ValidationError(
+                "prediction_outcome requires exactly a correct field"
+            )
         return cls(
-            correct=bool(outcome.get("correct", False)),
-            why_prediction_failed=tuple(
-                str(item) for item in data.get("why_prediction_failed", ())
+            correct=_json_boolean(
+                outcome_value["correct"],
+                "PredictionSelfReflection correct",
             ),
-            misleading_signals=tuple(
-                str(item) for item in data.get("misleading_signals", ())
+            why_prediction_failed=_json_string_array(
+                data, "why_prediction_failed"
             ),
-            ignored_evidence=tuple(
-                str(item) for item in data.get("ignored_evidence", ())
-            ),
-            missing_information=tuple(
-                str(item) for item in data.get("missing_information", ())
-            ),
-            plan_issues=tuple(str(item) for item in data.get("plan_issues", ())),
+            misleading_signals=_json_string_array(data, "misleading_signals"),
+            ignored_evidence=_json_string_array(data, "ignored_evidence"),
+            missing_information=_json_string_array(data, "missing_information"),
+            plan_issues=_json_string_array(data, "plan_issues"),
         )
 
 
@@ -1003,6 +1080,32 @@ class PlanMetrics:
     valid_case_count: int | None = None
 
     def __post_init__(self) -> None:
+        metric_values = (
+            self.binary_precision,
+            self.binary_recall,
+            self.binary_f1,
+            self.magnitude_accuracy,
+            self.magnitude_macro_f1,
+        )
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(float(value))
+            or not 0 <= value <= 1
+            for value in metric_values
+        ):
+            raise ValidationError("Plan metric values must be finite and in [0, 1]")
+        counts = (
+            self.true_positive,
+            self.false_positive,
+            self.true_negative,
+            self.false_negative,
+            self.sample_count,
+        )
+        if any(type(value) is not int or value < 0 for value in counts):
+            raise ValidationError("Plan metric counts must be non-negative integers")
+        if sum(counts[:4]) != self.sample_count:
+            raise ValidationError("Plan confusion counts must sum to sample_count")
         predicted = self.true_positive + self.false_positive
         if self.predicted_positive_count is None:
             object.__setattr__(self, "predicted_positive_count", predicted)
@@ -1057,13 +1160,14 @@ class PlanMetrics:
                     + int(confusion.get("false_positive", 0)),
                 )
             ),
-            precision_defined=bool(
+            precision_defined=_json_boolean(
                 data.get(
                     "precision_defined",
                     int(confusion.get("true_positive", 0))
                     + int(confusion.get("false_positive", 0))
                     > 0,
-                )
+                ),
+                "PlanMetrics precision_defined",
             ),
             valid_case_count=int(data.get("valid_case_count", data["sample_count"])),
         )
@@ -1172,7 +1276,9 @@ class FitnessEligibility:
     def from_dict(cls, data: Mapping[str, Any]) -> "FitnessEligibility":
         reasons = tuple(str(item) for item in data.get("reasons", ()))
         return cls(
-            eligible=bool(data.get("eligible", not reasons)),
+            eligible=_json_boolean(
+                data.get("eligible", not reasons), "fitness eligible"
+            ),
             reasons=reasons,
             expected_case_count=int(data.get("expected_case_count", 0)),
             valid_case_count=int(data.get("valid_case_count", 0)),
@@ -1400,9 +1506,15 @@ class PlanEvaluationConfig:
             )
         gate = dict(data["fitness_gate"])
         proposal = dict(data["proposal"])
-        if not gate.get("require_predicted_positive", False):
+        if not _json_boolean(
+            gate.get("require_predicted_positive", False),
+            "fitness require_predicted_positive",
+        ):
             raise ValidationError("v3 fitness requires at least one positive prediction")
-        if not gate.get("require_true_positive", False):
+        if not _json_boolean(
+            gate.get("require_true_positive", False),
+            "fitness require_true_positive",
+        ):
             raise ValidationError("v3 fitness requires at least one true positive")
         return cls(
             cases_per_round=int(data["cases_per_round"]),
@@ -1418,9 +1530,13 @@ class PlanEvaluationConfig:
                 data.get("max_cases_per_company_per_round", 1)
             ),
             base_seed=int(data.get("base_seed", 42)),
-            require_finalized=bool(gate.get("require_finalized", True)),
-            require_source_evidence=bool(
-                gate.get("require_source_evidence", True)
+            require_finalized=_json_boolean(
+                gate.get("require_finalized", True),
+                "fitness require_finalized",
+            ),
+            require_source_evidence=_json_boolean(
+                gate.get("require_source_evidence", True),
+                "fitness require_source_evidence",
             ),
             max_proposal_attempts_per_slot=int(
                 proposal.get("max_attempts_per_slot", 3)
@@ -1770,25 +1886,30 @@ class PlanReflection:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PlanReflection":
+        required = {
+            "successful_patterns",
+            "failed_patterns",
+            "repeated_failure_modes",
+            "misleading_signals",
+            "missing_information_needs",
+            "next_explorations",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "PlanReflection is missing fields: " + ", ".join(missing)
+            )
         return cls(
-            successful_patterns=tuple(
-                str(item) for item in data.get("successful_patterns", ())
+            successful_patterns=_json_string_array(data, "successful_patterns"),
+            failed_patterns=_json_string_array(data, "failed_patterns"),
+            repeated_failure_modes=_json_string_array(
+                data, "repeated_failure_modes"
             ),
-            failed_patterns=tuple(
-                str(item) for item in data.get("failed_patterns", ())
+            misleading_signals=_json_string_array(data, "misleading_signals"),
+            missing_information_needs=_json_string_array(
+                data, "missing_information_needs"
             ),
-            repeated_failure_modes=tuple(
-                str(item) for item in data.get("repeated_failure_modes", ())
-            ),
-            misleading_signals=tuple(
-                str(item) for item in data.get("misleading_signals", ())
-            ),
-            missing_information_needs=tuple(
-                str(item) for item in data.get("missing_information_needs", ())
-            ),
-            next_explorations=tuple(
-                str(item) for item in data.get("next_explorations", ())
-            ),
+            next_explorations=_json_string_array(data, "next_explorations"),
         )
 
 
@@ -1876,6 +1997,15 @@ class PlanRecord:
             raise ValidationError(
                 "Plan evaluation metadata must cover every saved trajectory"
             )
+        trajectory_case_ids = tuple(item.case_id for item in self.trajectories)
+        if set(self.evaluation.case_ids) != set(trajectory_case_ids):
+            raise ValidationError(
+                "Plan evaluation case ids differ from saved trajectories"
+            )
+        if self.metrics.sample_count != len(self.trajectories):
+            raise ValidationError(
+                "Plan metrics sample_count differs from saved trajectories"
+            )
         if self.fitness is None:
             object.__setattr__(
                 self,
@@ -1887,6 +2017,8 @@ class PlanRecord:
             )
         if self.metrics.predicted_positive_count != self.fitness.predicted_positive_count:
             raise ValidationError("Plan metrics and fitness predicted positives differ")
+        if self.fitness.expected_case_count != len(self.evaluation.case_ids):
+            raise ValidationError("Plan fitness expected case count is inconsistent")
 
     @property
     def plan_id(self) -> str:
@@ -2126,36 +2258,54 @@ class RoundMetaEntry:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RoundMetaEntry":
-        plan_level = dict(data.get("plan_level", {}))
-        prediction_errors = dict(data.get("prediction_errors", {}))
-        observations = dict(data.get("signal_observations", {}))
+        required = {
+            "round_id",
+            "plan_level",
+            "prediction_errors",
+            "signal_observations",
+            "search_implications",
+            "evidence_refs",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "RoundMetaEntry is missing fields: " + ", ".join(missing)
+            )
+        for field_name in (
+            "plan_level",
+            "prediction_errors",
+            "signal_observations",
+        ):
+            if not isinstance(data[field_name], Mapping):
+                raise ValidationError(f"RoundMetaEntry {field_name} must be an object")
+        plan_level = dict(data["plan_level"])
+        prediction_errors = dict(data["prediction_errors"])
+        observations = dict(data["signal_observations"])
+        if set(plan_level) != {"successful_patterns", "failed_patterns"}:
+            raise ValidationError("RoundMetaEntry plan_level fields are invalid")
+        if set(prediction_errors) != {"false_positive", "false_negative"}:
+            raise ValidationError("RoundMetaEntry prediction_errors fields are invalid")
+        if set(observations) != {"useful", "suspicious", "missing_capabilities"}:
+            raise ValidationError("RoundMetaEntry signal_observations fields are invalid")
         return cls(
             round_id=int(data["round_id"]),
-            successful_patterns=tuple(
-                str(item) for item in plan_level.get("successful_patterns", ())
+            successful_patterns=_json_string_array(
+                plan_level, "successful_patterns"
             ),
-            failed_patterns=tuple(
-                str(item) for item in plan_level.get("failed_patterns", ())
+            failed_patterns=_json_string_array(plan_level, "failed_patterns"),
+            false_positive_patterns=_json_string_array(
+                prediction_errors, "false_positive"
             ),
-            false_positive_patterns=tuple(
-                str(item) for item in prediction_errors.get("false_positive", ())
+            false_negative_patterns=_json_string_array(
+                prediction_errors, "false_negative"
             ),
-            false_negative_patterns=tuple(
-                str(item) for item in prediction_errors.get("false_negative", ())
+            useful_signals=_json_string_array(observations, "useful"),
+            suspicious_signals=_json_string_array(observations, "suspicious"),
+            missing_capabilities=_json_string_array(
+                observations, "missing_capabilities"
             ),
-            useful_signals=tuple(
-                str(item) for item in observations.get("useful", ())
-            ),
-            suspicious_signals=tuple(
-                str(item) for item in observations.get("suspicious", ())
-            ),
-            missing_capabilities=tuple(
-                str(item) for item in observations.get("missing_capabilities", ())
-            ),
-            search_implications=tuple(
-                str(item) for item in data.get("search_implications", ())
-            ),
-            evidence_refs=tuple(str(item) for item in data.get("evidence_refs", ())),
+            search_implications=_json_string_array(data, "search_implications"),
+            evidence_refs=_json_string_array(data, "evidence_refs"),
         )
 
 
@@ -2888,8 +3038,24 @@ class EvolutionWorkspace:
     def restore_archive(self, *, expected_run_contract_hash: str | None = None) -> PlanArchive:
         """Load only Plans reachable from authoritative completed checkpoints."""
 
+        state = _read_json(self.state_path)
+        last_completed_round = int(state.get("last_completed_round", 0))
+        if last_completed_round < 0:
+            raise ValidationError("completed round pointer cannot be negative")
+        if last_completed_round:
+            expected_last_checkpoint = (
+                self.experiments_root
+                / f"round-{last_completed_round:04d}"
+                / "checkpoint.json"
+            )
+            if not _same_artifact_path(
+                state.get("checkpoint_ref"), expected_last_checkpoint
+            ):
+                raise ValidationError(
+                    "state pointer checkpoint_ref differs from its completed round"
+                )
         records: list[PlanRecord] = []
-        for round_id in range(1, self.last_completed_round + 1):
+        for round_id in range(1, last_completed_round + 1):
             checkpoint = _read_json(
                 self.experiments_root
                 / f"round-{round_id:04d}"
@@ -2902,12 +3068,26 @@ class EvolutionWorkspace:
                 and checkpoint.get("run_contract_hash") != expected_run_contract_hash
             ):
                 raise ValidationError("round checkpoint run contract mismatch")
-            for plan_id in checkpoint.get("plan_ids", ()):
-                records.append(
-                    PlanRecord.from_dict(
-                        _read_json(self.plans_root / str(plan_id) / "record.json")
-                    )
+            plan_ids = checkpoint.get("plan_ids")
+            if (
+                not isinstance(plan_ids, list)
+                or not plan_ids
+                or any(not isinstance(item, str) or not item for item in plan_ids)
+                or len(set(plan_ids)) != len(plan_ids)
+            ):
+                raise ValidationError("round checkpoint Plan ids are invalid")
+            expected_meta_ref = self.meta_root / f"round-{round_id:04d}.json"
+            if not _same_artifact_path(checkpoint.get("meta_ref"), expected_meta_ref):
+                raise ValidationError("round checkpoint meta reference mismatch")
+            for plan_id in plan_ids:
+                record = PlanRecord.from_dict(
+                    _read_json(self.plans_root / plan_id / "record.json")
                 )
+                if record.plan_id != plan_id or record.round_id != round_id:
+                    raise ValidationError(
+                        "round checkpoint cross-links a different Plan record"
+                    )
+                records.append(record)
         return PlanArchive(records)
 
     def restore_meta(self, *, maxlen: int = 10) -> PlanMetaMemory:
@@ -3818,15 +3998,11 @@ class SignalEvolutionEngine:
         for signal_ref, expected_hash in approvals.items():
             if pending.validated_pending_approval[signal_ref] != expected_hash:
                 raise ValidationError("approval hash differs from validation result")
-            self.registry.approve_candidate(
-                signal_ref,
-                expected_candidate_hash=expected_hash,
-                approved_by=approved_by,
-            )
-            self.registry.promote_candidate(signal_ref)
-            promoted.append(signal_ref)
-        if promoted:
-            self.registry.bump_version()
+        promoted_specs = self.registry.promote_approved_batch(
+            approvals,
+            approved_by=approved_by,
+        )
+        promoted.extend(spec.ref for spec in promoted_specs)
         return SlowLoopResult(
             mined_candidates=pending.mined_candidates,
             updated_candidates=pending.updated_candidates,
@@ -3841,8 +4017,20 @@ class SignalEvolutionEngine:
         )
 
     def _agent_workspace(self) -> dict[str, Any]:
+        backlog_path = self.workspace.root / "capability_backlog.json"
+        capability_backlog = (
+            _read_json(backlog_path)
+            if backlog_path.exists()
+            else {
+                "schema_version": "capability-gap-report-v1",
+                "items": [],
+                "open_count": 0,
+                "resolved_count": 0,
+            }
+        )
         return {
             "meta_info": [entry.to_dict() for entry in self.meta_memory.entries],
+            "capability_backlog": capability_backlog,
             "signal_registry_version": self.registry.version,
             "last_completed_plan_round": self.workspace.last_completed_round,
             "dataset_role": "discovery",
@@ -4034,6 +4222,21 @@ class SignalEvolutionEngine:
 
     @staticmethod
     def _candidate_spec_from_tool(spec: Mapping[str, Any]) -> SignalSpec:
+        evidence_policy = spec.get("evidence_policy")
+        if not isinstance(evidence_policy, Mapping):
+            raise ValidationError(
+                "candidate SignalSpec evidence_policy must be an object"
+            )
+        required_policy = {
+            "require_source",
+            "require_timestamp",
+            "require_exact_span",
+        }
+        if set(evidence_policy) != required_policy:
+            raise ValidationError(
+                "candidate SignalSpec evidence_policy requires source, timestamp, "
+                "and exact-span fields"
+            )
         try:
             return SignalSpec.from_dict(dict(spec))
         except (KeyError, TypeError, ValueError) as exc:

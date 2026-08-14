@@ -16,6 +16,8 @@ from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
     ExactResponseCache,
     ExternalAttemptLedger,
+    ExternalBudgetExhausted,
+    ExternalExecutionNotReady,
     ExternalRequestPending,
     LLMBlindPredictor,
     LLMInformationPlanProposer,
@@ -741,6 +743,11 @@ class ConcreteRoleAdapterTests(TestCase):
             [
                 {
                     "hypotheses": ["commercialization may accelerate"],
+                    "current_beliefs": [],
+                    "supporting_evidence": [],
+                    "contradictions": [],
+                    "resolved_questions": [],
+                    "open_questions": [],
                     "next_information_needs": ["revenue growth"],
                     "decision": "continue",
                 }
@@ -796,6 +803,26 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertIn("validation_feedback", caller.calls[1]["payload"])
             self.assertIn("validation_feedback", caller.calls[3]["payload"])
 
+    def test_signal_selector_repairs_non_array_containers_without_crashing(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    {"categories": "financial"},
+                    {"categories": ["financial"]},
+                    {"signal_refs": "revenue_growth_yoy:v1"},
+                    {"signal_refs": ["revenue_growth_yoy:v1"]},
+                ]
+            )
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("revenue growth",), registry.freeze(), {}
+            )
+
+            self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
+            self.assertEqual(selection.usage.llm_calls, 4)
+
     def test_signal_selector_returns_empty_after_failed_category_repair(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -834,6 +861,28 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
         self.assertIn('"session_id"', str(caller.calls[0]["system_prompt"]))
+
+    def test_blind_predictor_repairs_string_boolean_instead_of_using_truthiness(self) -> None:
+        valid = {
+            "is_surge": False,
+            "magnitude": None,
+            "confidence": {"level": "low"},
+            "key_reasons": ["limited source-backed evidence"],
+            "uncertainties": [],
+            "session_id": "fixture-session",
+        }
+        caller = ScriptedRoleCaller([{**valid, "is_surge": "false"}, valid])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {"basic_info": {"industry": "fixture"}}
+        )
+
+        self.assertFalse(prediction.value.is_surge)
+        self.assertEqual(
+            caller.stages,
+            ["blind_predictor_predict", "blind_predictor_predict_correction"],
+        )
+        self.assertIn("validation_error", caller.calls[1]["payload"])
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1241,7 +1290,7 @@ class RunControlTests(TestCase):
             self.assertEqual(ledger.summary["in_progress"], 1)
             ledger.finalize(first, status="failed", actual_cost=0.0, error_type="Fixture")
             ledger.reserve(SHA_B, reserved_cost=0.2)
-            with self.assertRaisesRegex(ValidationError, "attempt ceiling"):
+            with self.assertRaisesRegex(ExternalBudgetExhausted, "attempt ceiling"):
                 ledger.reserve(SHA_C, reserved_cost=0.01)
 
     def test_structured_client_preflight_scans_and_never_calls_network(self) -> None:
@@ -1340,6 +1389,47 @@ class RunControlTests(TestCase):
             )
             self.assertEqual(value, {"ok": True})
             self.assertEqual(usage.llm_calls, 0)
+
+    def test_missing_api_key_is_control_plane_pause_without_attempt_reservation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: (_ for _ in ()).throw(
+                    AssertionError("client must not be built without readiness")
+                ),
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            ledger = ExternalAttemptLedger(
+                root / "attempts.json", max_attempts=2, max_total_cost=1.0
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ledger,
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={},
+            )
+
+            with self.assertRaisesRegex(
+                ExternalExecutionNotReady, "API key is unavailable"
+            ):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "anonymous evidence"},
+                    allow_outcomes=False,
+                )
+
+            self.assertEqual(ledger.summary["attempt_count"], 0)
 
     def test_structured_client_enforces_json_response_format_on_provider_call(self) -> None:
         class RecordingClient:

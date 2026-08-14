@@ -1471,14 +1471,23 @@ def current_code_revision(project_root: str | Path) -> str:
 
     root = Path(project_root)
     tracked = subprocess.run(
-        ["git", "diff", "--quiet"],
+        ["git", "diff", "--quiet", "--", "src", "scripts", "configs"],
         cwd=root,
         check=False,
     )
     if tracked.returncode != 0:
         raise ValidationError("freeze-run requires committed tracked project changes")
     staged = subprocess.run(
-        ["git", "diff", "--cached", "--quiet"],
+        [
+            "git",
+            "diff",
+            "--cached",
+            "--quiet",
+            "--",
+            "src",
+            "scripts",
+            "configs",
+        ],
         cwd=root,
         check=False,
     )
@@ -1535,6 +1544,30 @@ class ExternalRequestPending(EvolutionControlFlow):
         super().__init__(f"external request requires approval: {request_hash}")
         self.request_hash = request_hash
         self.request_path = request_path
+
+
+class ExternalExecutionPaused(EvolutionControlFlow):
+    """Control-plane pause that must never become candidate diagnostics."""
+
+    def __init__(self, status: str, message: str) -> None:
+        self.status = str(status)
+        self.message = str(message)
+        super().__init__(message)
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "status": self.status,
+            "reason": self.message,
+            "error_type": type(self).__name__,
+        }
+
+
+class ExternalExecutionNotReady(ExternalExecutionPaused):
+    """The frozen external boundary is not ready or not acknowledged."""
+
+
+class ExternalBudgetExhausted(ExternalExecutionPaused):
+    """The frozen attempt or cumulative cost ceiling cannot admit a request."""
 
 
 class ExactResponseCache:
@@ -1594,10 +1627,16 @@ class ExternalAttemptLedger:
         data = _read_json(self.path)
         attempts = list(data.get("attempts", ()))
         if len(attempts) >= self.max_attempts:
-            raise ValidationError("external attempt ceiling exhausted")
+            raise ExternalBudgetExhausted(
+                "external_attempt_ceiling_exhausted",
+                "external attempt ceiling exhausted",
+            )
         committed_cost = sum(float(item.get("reserved_cost", 0.0)) for item in attempts)
         if committed_cost + reserved_cost > self.max_total_cost + 1e-12:
-            raise ValidationError("external cumulative cost ceiling would be exceeded")
+            raise ExternalBudgetExhausted(
+                "external_cost_ceiling_exhausted",
+                "external cumulative cost ceiling would be exceeded",
+            )
         attempt_id = len(attempts) + 1
         attempts.append(
             {
@@ -1756,10 +1795,15 @@ class StructuredRoleClient:
             )
             raise ExternalRequestPending(request_hash, request_path)
         if self.acknowledged_contract_hash != self.contract.contract_hash:
-            raise ValidationError("external execution requires exact run-contract acknowledgement")
+            raise ExternalExecutionNotReady(
+                "external_acknowledgement_required",
+                "external execution requires exact run-contract acknowledgement",
+            )
         if not (self.environ or os.environ).get(self.registration.api_key_env_var):
-            raise ValidationError(
-                f"required API key is unavailable: {self.registration.api_key_env_var}"
+            raise ExternalExecutionNotReady(
+                "external_api_key_unavailable",
+                "required API key is unavailable: "
+                f"{self.registration.api_key_env_var}",
             )
 
         estimated_input_tokens = max(
@@ -1889,6 +1933,21 @@ def _output_contract(name: str, example: Mapping[str, Any]) -> str:
         "Replace example values with grounded values, keep the exact key names and "
         "JSON types, do not add wrapper keys, and do not use Markdown."
     )
+
+
+def _strict_string_list(
+    value: Mapping[str, Any],
+    field_name: str,
+) -> tuple[str, ...] | None:
+    """Return one JSON string array, or None for bounded role correction."""
+
+    raw = value.get(field_name)
+    if not isinstance(raw, list) or any(not isinstance(item, str) for item in raw):
+        return None
+    parsed = tuple(raw)
+    if not parsed or len(set(parsed)) != len(parsed):
+        return None
+    return parsed
 
 
 _RESEARCH_STATE_OUTPUT = _output_contract(
@@ -2274,10 +2333,11 @@ class LLMSignalRetrievalAgent:
                 allow_outcomes=False,
             )
             category_usage = category_usage + step_usage
-            selected_categories = tuple(
-                str(item) for item in category_value.get("categories", ())
-            )
-            if selected_categories and set(selected_categories).issubset(categories):
+            parsed_categories = _strict_string_list(category_value, "categories")
+            selected_categories = parsed_categories or ()
+            if parsed_categories is not None and set(parsed_categories).issubset(
+                categories
+            ):
                 break
         else:
             return AgentStep((), category_usage)
@@ -2319,10 +2379,9 @@ class LLMSignalRetrievalAgent:
                 allow_outcomes=False,
             )
             selection_usage = selection_usage + step_usage
-            refs = tuple(
-                str(item) for item in selection_value.get("signal_refs", ())
-            )
-            if refs and len(set(refs)) == len(refs) and set(refs).issubset(allowed):
+            parsed_refs = _strict_string_list(selection_value, "signal_refs")
+            refs = parsed_refs or ()
+            if parsed_refs is not None and set(parsed_refs).issubset(allowed):
                 break
         else:
             return AgentStep((), category_usage + selection_usage)
@@ -2730,6 +2789,11 @@ def run_bounded_evolution_cycle(
     workspace_root = Path(workspace_path)
     if not contract.executable:
         raise ValidationError("legacy_contract_read_only")
+    if allow_data_external and not contract.data_acquisition.enabled:
+        raise ExternalExecutionNotReady(
+            "data_acquisition_not_in_contract",
+            "source-data execution was requested but the frozen contract disabled it",
+        )
     dataset = load_approved_development_dataset(approved_dataset_manifest)
     if dataset.approved_manifest_hash != contract.dataset_manifest_hash:
         raise ValidationError("approved dataset differs from frozen run contract")

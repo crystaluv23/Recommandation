@@ -29,6 +29,7 @@ from stock_opportunity_agent.research.evolution_dashboard import (
 )
 from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
+    ExternalExecutionPaused,
     ExternalRequestPending,
     approve_dataset_proposal,
     build_run_contract,
@@ -214,10 +215,10 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--adjusted-prices", type=Path, default=DEFAULT_ADJUSTED_PRICES)
     freeze.add_argument("--judge-model", default="kimi-k3-together")
     freeze.add_argument("--evolution-model", default="openrouter-fusion")
-    freeze.add_argument("--plan-rounds", type=int, default=1)
-    freeze.add_argument("--candidates-per-round", type=int, default=1)
+    freeze.add_argument("--plan-rounds", type=int, default=2)
+    freeze.add_argument("--candidates-per-round", type=int, default=3)
     freeze.add_argument("--parent-selection-seed", type=int, default=42)
-    freeze.add_argument("--max-external-attempts", type=int, default=500)
+    freeze.add_argument("--max-external-attempts", type=int, default=2500)
     freeze.add_argument("--max-total-cost", type=float, default=100.0)
     freeze.add_argument(
         "--data-external",
@@ -476,23 +477,18 @@ def approve_signals(
     for value in candidate_args:
         signal_ref, separator, candidate_hash = value.partition("=")
         if not separator or len(candidate_hash) != 64:
-            raise ValueError("--candidate must be SIGNAL_REF=SHA256")
+            raise ValidationError("--candidate must be SIGNAL_REF=SHA256")
         approvals.append((signal_ref, candidate_hash))
-    promoted: list[str] = []
-    for signal_ref, candidate_hash in approvals:
-        registry.approve_candidate(
-            signal_ref,
-            expected_candidate_hash=candidate_hash,
-            approved_by=approved_by,
-        )
-        registry.promote_candidate(signal_ref)
-        promoted.append(signal_ref)
-    if promoted:
-        registry.bump_version()
+    if len({signal_ref for signal_ref, _hash in approvals}) != len(approvals):
+        raise ValidationError("--candidate refs must be unique")
+    promoted = registry.promote_approved_batch(
+        dict(approvals),
+        approved_by=approved_by,
+    )
     return {
         "workspace": str(workspace_path),
         "approved_by": approved_by,
-        "promoted": promoted,
+        "promoted": [spec.ref for spec in promoted],
         "registry_version": registry.version,
     }
 
@@ -745,6 +741,28 @@ def run_cycle_command(
             "status": "exact_request_pending_external_approval",
             "request_hash": pending.request_hash,
             "request_path": str(pending.request_path),
+            "contract_hash": contract.contract_hash,
+            "external_calls": 0,
+            "locked_test_accessed": False,
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": workspace.last_completed_cycle,
+            "trajectory_path": str(workspace.trajectory_events_path),
+        }
+    except ExternalExecutionPaused as paused:
+        workspace = EvolutionWorkspace(workspace_path)
+        pause_event = workspace.append_event(
+            "cycle_paused",
+            {
+                "reason": paused.status,
+                "message": paused.message,
+                "last_completed_round": workspace.last_completed_round,
+                "last_completed_cycle": workspace.last_completed_cycle,
+            },
+        )
+        if on_progress is not None:
+            on_progress(pause_event)
+        return {
+            **paused.to_dict(),
             "contract_hash": contract.contract_hash,
             "external_calls": 0,
             "locked_test_accessed": False,
@@ -1183,6 +1201,15 @@ def main() -> int:
             on_progress=progress,
         )
         exit_code = 75
+    except (ValidationError, ValueError) as exc:
+        result = {
+            "status": "validation_error",
+            "error_type": type(exc).__name__,
+            "message": str(exc),
+            "external_calls": 0,
+            "locked_test_accessed": False,
+        }
+        exit_code = 2
 
     if args.command in {"init", "status", "run-cycle", "run-loop"}:
         result.update(refresh_dashboard(args.dashboard_root))

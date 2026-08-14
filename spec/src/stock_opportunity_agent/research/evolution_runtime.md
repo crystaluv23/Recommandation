@@ -53,6 +53,10 @@ workspace. Their existence does not prove round completion or advance
 For v3, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
+Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
+check is scoped to runtime-bearing tracked paths (`src/`, `scripts/`, and
+`configs/`) plus untracked files under those paths; unrelated progress or memory
+notes do not make the executable HEAD unreproducible.
 
 ## External Request Boundary
 
@@ -110,6 +114,14 @@ Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source
 data is controlled independently; when disabled, a local resolver miss records
 `external_not_authorized` and performs no network I/O.
+An enabled data policy requires explicit non-empty provider, capability, and
+source-type allowlists plus positive per-cycle and whole-run ceilings. The
+operator must enable it once in the frozen contract and again for a resume
+invocation; a request to execute data calls outside the frozen policy fails
+explicitly rather than being silently ignored.
+A disabled data policy has empty allowlists and zero ceilings; partially filled
+but disabled policy data is rejected instead of being retained as ambiguous
+latent authorization.
 
 Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
 `H_analyse`. Runtime owns deterministic Plan ids and the exact selected-parent
@@ -123,6 +135,13 @@ the failed output and validation message. Unrepaired initialization/prediction
 failures terminate that candidate; non-fitness reflections degrade to explicit
 deterministic failure records. Exact transport responses remain in cache for
 audit, but a transport-cache hit is never treated as domain validation.
+
+Model outputs are type-strict at the role boundary. JSON booleans, arrays,
+objects, numbers, and required fields cannot be replaced by truthy strings,
+character-wise iterable coercion, or implicit coverage/state defaults. A
+malformed retrieval category/ref container receives the documented one
+correction and then returns no match; it never terminates the process with a raw
+container exception.
 
 ## Supervision, Interrupt, and Resume
 
@@ -146,6 +165,12 @@ When no candidate is fitness-eligible, the runtime persists a deterministic
 round-rejection checkpoint and capability-gap aggregation, emits a paused
 status, and leaves both authoritative pointers unchanged. Resuming the same
 immutable contract returns the same pause without repeating external calls.
+
+External readiness and exhaustion are not candidate outcomes. Missing API-key
+readiness, an absent/mismatched contract acknowledgement, and attempt/cost
+ceiling exhaustion propagate as structured control-plane pauses before any
+round rejection can be written. General contract validation failures are also
+rendered as structured CLI errors rather than uncaught tracebacks.
 
 ## Local Artifact Inventory
 

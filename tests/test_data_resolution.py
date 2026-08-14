@@ -23,6 +23,7 @@ from stock_opportunity_agent.data.resolution import (
     RawInfoRequest,
     aggregate_capability_gaps,
 )
+from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     SignalExecutionType,
@@ -77,6 +78,18 @@ class FailingAdapter(FakeAdapter):
 
 
 class EvidenceResolverTests(TestCase):
+    def test_enabled_policy_requires_explicit_allowlists_and_real_boolean(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "explicit provider"):
+            DataAcquisitionPolicy(
+                enabled=True,
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            )
+        with self.assertRaisesRegex(ValidationError, "must be a boolean"):
+            DataAcquisitionPolicy.from_dict({"enabled": "false"})
+        with self.assertRaisesRegex(ValidationError, "disabled data acquisition"):
+            DataAcquisitionPolicy(allowed_providers=("sec_edgar",))
+
     def test_company_facts_archives_full_response_but_exposes_only_as_of_subset(self) -> None:
         class Client:
             transport = None
@@ -102,6 +115,8 @@ class EvidenceResolverTests(TestCase):
         policy = DataAcquisitionPolicy(
             enabled=True,
             allowed_providers=("sec_edgar",),
+            allowed_capabilities=("financial_statements",),
+            allowed_source_types=("sec_company_facts",),
             max_requests_per_cycle=1,
             max_requests_per_run=1,
         )
@@ -220,6 +235,9 @@ class EvidenceResolverTests(TestCase):
 
         quota_policy = DataAcquisitionPolicy(
             enabled=True,
+            allowed_providers=("fake_news",),
+            allowed_capabilities=("news",),
+            allowed_source_types=("news",),
             max_requests_per_cycle=1,
             max_requests_per_run=1,
         )
@@ -277,7 +295,14 @@ class EvidenceResolverTests(TestCase):
         historical = EvidenceResolver(
             RawInfoStore(),
             adapters=(HistoricalUnavailableAdapter("vendor", ("company_profile",)),),
-            policy=quota_policy,
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("vendor",),
+                allowed_capabilities=("company_profile",),
+                allowed_source_types=("company_profile",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
         ).resolve(
             historical_request,
             company_id="issuer_1",

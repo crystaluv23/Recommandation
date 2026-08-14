@@ -81,6 +81,17 @@ class EvidencePolicy:
     require_timestamp: bool = True
     require_exact_span: bool = True
 
+    def __post_init__(self) -> None:
+        if any(
+            type(value) is not bool
+            for value in (
+                self.require_source,
+                self.require_timestamp,
+                self.require_exact_span,
+            )
+        ):
+            raise ValidationError("evidence policy fields must be booleans")
+
     def to_dict(self) -> dict[str, bool]:
         return {
             "require_source": self.require_source,
@@ -90,10 +101,16 @@ class EvidencePolicy:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "EvidencePolicy":
+        required = {"require_source", "require_timestamp", "require_exact_span"}
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "evidence policy is missing fields: " + ", ".join(missing)
+            )
         return cls(
-            require_source=bool(data.get("require_source", True)),
-            require_timestamp=bool(data.get("require_timestamp", True)),
-            require_exact_span=bool(data.get("require_exact_span", True)),
+            require_source=data["require_source"],
+            require_timestamp=data["require_timestamp"],
+            require_exact_span=data["require_exact_span"],
         )
 
 
@@ -263,8 +280,14 @@ class SignalResult:
             object.__setattr__(self, "value", SignalValue(self.value))
         if not isinstance(self.coverage, SignalCoverage):
             object.__setattr__(self, "coverage", SignalCoverage(self.coverage))
-        if not 0 <= self.confidence <= 1:
+        if (
+            isinstance(self.confidence, bool)
+            or not isinstance(self.confidence, (int, float))
+            or not math.isfinite(float(self.confidence))
+            or not 0 <= self.confidence <= 1
+        ):
             raise ValidationError("signal confidence must be between 0 and 1")
+        object.__setattr__(self, "confidence", float(self.confidence))
         if not self.interpretation.strip():
             raise ValidationError("signal interpretation must not be empty")
         if self.value is SignalValue.UNAVAILABLE:
@@ -294,29 +317,67 @@ class SignalResult:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalResult":
-        state = dict(data.get("state", {}))
-        interpretation = data.get("interpretation", {})
-        evidence = dict(data.get("evidence", {}))
-        status = dict(data.get("status", {}))
+        required = {
+            "signal_id",
+            "version",
+            "state",
+            "interpretation",
+            "evidence",
+            "status",
+        }
+        missing = sorted(required - set(data))
+        if missing:
+            raise ValidationError(
+                "SignalResult is missing fields: " + ", ".join(missing)
+            )
+        if not isinstance(data["state"], Mapping):
+            raise ValidationError("SignalResult state must be an object")
+        if not isinstance(data["interpretation"], Mapping):
+            raise ValidationError("SignalResult interpretation must be an object")
+        if not isinstance(data["evidence"], Mapping):
+            raise ValidationError("SignalResult evidence must be an object")
+        if not isinstance(data["status"], Mapping):
+            raise ValidationError("SignalResult status must be an object")
+        state = dict(data["state"])
+        interpretation = dict(data["interpretation"])
+        evidence = dict(data["evidence"])
+        status = dict(data["status"])
+        if set(state) != {"value", "confidence"}:
+            raise ValidationError(
+                "SignalResult state requires exactly value and confidence"
+            )
+        if "summary" not in interpretation or not isinstance(
+            interpretation["summary"], str
+        ):
+            raise ValidationError("SignalResult interpretation.summary must be text")
+        if set(evidence) != {"supporting", "counter"} or any(
+            not isinstance(evidence[name], list)
+            for name in ("supporting", "counter")
+        ):
+            raise ValidationError(
+                "SignalResult evidence requires supporting/counter arrays"
+            )
+        if set(status) != {"coverage"}:
+            raise ValidationError("SignalResult status requires exactly coverage")
+        if isinstance(state["confidence"], bool) or not isinstance(
+            state["confidence"], (int, float)
+        ):
+            raise ValidationError("SignalResult confidence must be numeric")
         return cls(
             signal_id=str(data["signal_id"]),
             version=int(data["version"]),
             value=SignalValue(str(state["value"])),
-            confidence=float(state["confidence"]),
-            interpretation=(
-                str(interpretation.get("summary", ""))
-                if isinstance(interpretation, Mapping)
-                else str(interpretation)
-            ),
+            confidence=state["confidence"],
+            interpretation=interpretation["summary"],
             supporting_evidence=tuple(
                 SignalEvidence.from_dict(item)
-                for item in evidence.get("supporting", ())
+                for item in evidence["supporting"]
             ),
             counter_evidence=tuple(
                 SignalEvidence.from_dict(item)
-                for item in evidence.get("counter", ())
+                for item in evidence["counter"]
             ),
-            coverage=SignalCoverage(str(status.get("coverage", "sufficient"))),
+            coverage=SignalCoverage(str(status["coverage"])),
         )
 
 
@@ -794,15 +855,16 @@ class SignalRegistry:
     def freeze(self) -> FrozenSignalRegistry:
         """Freeze all current stable definitions and LLM skill text."""
 
+        cards = self.list_signal_cards()
+        if not cards:
+            raise ValidationError("cannot freeze an empty stable Signal Registry")
         audit = self.audit_capabilities()
         if not audit.passed:
             raise ValidationError(
                 "Signal capability audit failed: "
                 + json.dumps(audit.to_dict(), sort_keys=True)
             )
-        specs = tuple(
-            self.load_spec(card.ref) for card in self.list_signal_cards()
-        )
+        specs = tuple(self.load_spec(card.ref) for card in cards)
         skills = {
             spec.ref: skill
             for spec in specs
@@ -986,6 +1048,63 @@ class SignalRegistry:
             {"promoted": True, "stable_registry_version_before_bump": self.version},
         )
         return spec
+
+    def promote_approved_batch(
+        self,
+        approvals: Mapping[str, str],
+        *,
+        approved_by: str,
+    ) -> tuple[SignalSpec, ...]:
+        """Prevalidate then promote one exact human-approved batch."""
+
+        if not approvals:
+            raise ValidationError("promotion requires at least one explicit approval")
+        if not approved_by.strip():
+            raise ValidationError("signal approval requires reviewer identity")
+        candidates: list[tuple[str, str, SignalSpec]] = []
+        seen_signal_ids: set[str] = set()
+        for signal_ref, expected_hash in approvals.items():
+            spec, _skill = self.load_candidate(signal_ref)
+            if spec.ref != signal_ref:
+                raise ValidationError("candidate ref differs from staged SignalSpec")
+            if spec.signal_id in seen_signal_ids:
+                raise ValidationError(
+                    "promotion batch cannot contain multiple versions of one Signal"
+                )
+            seen_signal_ids.add(spec.signal_id)
+            current_hash = self.candidate_hash(signal_ref)
+            if expected_hash != current_hash:
+                raise ValidationError(
+                    f"approved candidate hash does not match staged content: {signal_ref}"
+                )
+            candidate_dir = self._candidate_spec_path(signal_ref).parent
+            validation = _read_json(candidate_dir / "validation.json")
+            if (
+                not validation.get("accepted")
+                or validation.get("candidate_hash") != current_hash
+            ):
+                raise ValidationError(
+                    f"candidate requires matching successful validation: {signal_ref}"
+                )
+            current = self._latest_spec_or_none(spec.signal_id)
+            if current is None and spec.version != 1:
+                raise ValidationError("new signal must start at version 1")
+            if current is not None and spec.version != current.version + 1:
+                raise ValidationError("signal update must create exactly the next version")
+            candidates.append((signal_ref, current_hash, spec))
+
+        for signal_ref, candidate_hash, _spec in candidates:
+            self.approve_candidate(
+                signal_ref,
+                expected_candidate_hash=candidate_hash,
+                approved_by=approved_by,
+            )
+        promoted = tuple(
+            self.promote_candidate(signal_ref)
+            for signal_ref, _candidate_hash, _spec in candidates
+        )
+        self.bump_version()
+        return promoted
 
     def _candidate_spec_path(self, signal_ref: str) -> Path:
         signal_id, version = _parse_ref(signal_ref)

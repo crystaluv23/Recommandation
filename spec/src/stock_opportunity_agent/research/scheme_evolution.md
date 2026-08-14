@@ -91,6 +91,13 @@ global Raw Info oracle first, optionally performs separately authorized and
 bounded data acquisition, appends complete provider responses, and immediately
 re-queries. Unknown or unavailable capabilities produce structured DataGaps.
 
+All model-facing records enforce JSON types before domain construction. In
+particular booleans must be JSON booleans (the string `"false"` is invalid),
+list fields must be arrays rather than strings or objects, and required nested
+objects/fields cannot be filled by Python truthiness or iterable coercion.
+Malformed category/ref containers follow the same bounded correction path
+instead of escaping as `TypeError` or being interpreted character by character.
+
 Basic Info is an ordered `BasicInfoBundle` of exact original spans plus complete
 lineage. `H_init` receives each request's purpose and these literal spans; it
 does not receive a framework-generated summary. Signal Executor asks the same
@@ -405,6 +412,9 @@ trajectories, including DataGaps and stop reasons. The derived capability
 backlog is rebuilt from those durable trajectories while preserving the source
 types available from the current resolver, so the Slow loop receives the real
 Fast-loop capability gaps rather than an empty or accidentally reopened report.
+The complete derived backlog is part of each Slow agent workspace input; merely
+writing `capability_backlog.json` without exposing it to the agents does not
+satisfy this contract.
 
 ## Persistence and Completion
 
@@ -429,6 +439,12 @@ On restart, an already staged plan, meta record, or checkpoint is reused only
 when its canonical JSON exactly matches the artifact currently being committed;
 a mismatch fails closed. The pointer remains the last write. Exact external
 responses are separately reusable only under their exact request hash.
+Restore also verifies that every checkpoint Plan id resolves to a record with
+the same Plan id and round id, that checkpoint Plan ids are non-empty and
+unique, and that the state pointer's checkpoint reference resolves to its exact
+last round independent of an absolute-versus-relative path spelling. The same
+rule applies to checkpoint meta references. A self-consistent but cross-linked
+record cannot enter parent selection.
 
 One Fast/Slow cycle has a second atomic `cycle_state.json` marker. It records the
 cycle id, starting committed round, fixed round target, current Fast/Slow phase,
@@ -477,6 +493,21 @@ bypasses request leakage, cost, attempt, dataset-feasibility, and contract-hash
 gates. The former DeepSeek-named shell is only a compatibility forwarder to this
 entry and carries no workspace, model, budget, or approval defaults.
 
+The stable cold-start default is two Fast rounds with three independently
+sampled candidates per round. A one-candidate round remains available as an
+explicit low-cost diagnostic, but it is not the operator default because it
+provides no within-round quality comparison and makes a first-round TP miss too
+likely to halt the fitness-gated run.
+
+Source-data acquisition remains a separate two-step authorization in the stable
+launcher. `new` may freeze explicit non-empty provider/capability/source-type
+allowlists and positive request ceilings but still performs zero data calls;
+`resume` must additionally receive the data-external execution flag. Requesting
+runtime data execution when the frozen contract disabled it is an explicit
+pause/error, not a silently disabled resolver.
+Provider/capability/source-type or ceiling options without `--data-external`
+are rejected rather than frozen as dormant authorization.
+
 The CLI classifies exhausted transient transport failures (timeouts, connection
 errors, incomplete responses, HTTP 408/429, and HTTP 5xx) with a dedicated
 temporary-failure exit status. During the fixed wall-clock window, the launcher
@@ -514,6 +545,14 @@ ceiling before a call, then records completion or failure. An exact-response
 cache is keyed by canonical request hash and is evidence of reuse, not evidence
 of round completion. Dry-run and preflight perform no external calls. Locked
 Test remains sealed from all ordinary commands.
+
+Missing credentials, a missing/mismatched external acknowledgement, and
+exhausted attempt/cost ceilings are control-plane pauses. They propagate across
+case evaluation and both Slow agents, leave round/cycle pointers unchanged, and
+must never be persisted as Plan failure, Signal-agent schema failure, or
+`round_rejected`. The CLI returns a structured reason rather than a traceback.
+Only content/schema failures attributable to a bounded candidate may become
+candidate diagnostics.
 
 ## Local Point-in-Time Migration
 
