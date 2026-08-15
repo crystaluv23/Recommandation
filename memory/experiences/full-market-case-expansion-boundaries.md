@@ -1,6 +1,6 @@
 # Full-Market Case Expansion Boundaries
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 
@@ -12,9 +12,11 @@ changing expansion strata/dates, or acquiring data for an expanded case set.
 Do not turn a full-market price archive into more cases by merely increasing the
 old extreme-return winner/control/failure caps. Use shared predeclared calendar
 dates, recompute the active label independently at every date, deduplicate by
-issuer, and preserve issuer-disjoint ownership. Outcome-enriched sampling is a
-valid learning benchmark only when its bias is explicit; its class prevalence
-cannot be presented as live-market prevalence.
+issuer, and preserve issuer-disjoint ownership. When the Fast evaluator already
+imposes a fixed label mix per round, the master library should preserve every
+eligible issuer instead of applying a second outcome-enriched cap. A deliberately
+capped diagnostic proposal remains biased and its prevalence cannot be presented
+as live-market prevalence.
 
 The acquisition layer should never consume the label-aware selected/split
 artifacts. Emit a separate exact scope containing only company/CIK/ticker and
@@ -58,6 +60,13 @@ Separate 240-request SEC submissions, Company Facts, and news plans remain
 zero-network; the existing document archive still leaves 1,187 observations
 without point-in-time documents.
 
+The 2026-08-15 v8 correction removed that 240-issuer production default and
+included all 4,102 eligible issuers/20,510 cases before the issuer-stratified
+split. Evolution Validation consequently grew from 60 to 1,025 issuers. Its
+`10x_plus` cases still cover only six issuers, so a large overall pool does not
+eliminate rare-class reuse; run planning must disclose that capacity rather than
+claiming indefinite fresh sampling.
+
 ## How to Apply
 
 1. Fix calendar prediction dates before scanning outcomes.
@@ -65,7 +74,8 @@ without point-in-time documents.
 3. Reject any prediction before recorded IPO/listing date.
 4. Deduplicate by CIK when available; validate historical registrant/ticker and
    security type before dataset approval.
-5. Record available and selected outcome strata plus the enrichment weights.
+5. Include all eligible issuers by default and record identical available and
+   selected outcome strata; use an explicit cap only for bounded diagnostics.
 6. Split by issuer and stratum, never by individual case.
 7. Hand providers only a label-free, split-free acquisition scope.
 8. Keep API requests exact, cached, quota-bounded, and resumable.

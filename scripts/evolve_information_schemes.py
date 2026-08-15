@@ -178,7 +178,6 @@ def build_parser() -> argparse.ArgumentParser:
     prepare_expanded.add_argument(
         "--full-price-archive", type=Path, default=DEFAULT_FULL_PRICE_ARCHIVE
     )
-    prepare_expanded.add_argument("--target-issuers", type=int, default=240)
     prepare_expanded.add_argument(
         "--prediction-dates",
         nargs="+",
@@ -496,7 +495,6 @@ def prepare_expanded_dataset(
     workspace_path: Path,
     universe_path: Path,
     full_price_archive_path: Path,
-    target_issuers: int,
     prediction_dates: list[str] | tuple[str, ...],
     split_seed: str,
     identity_decisions_path: Path | None = None,
@@ -506,7 +504,6 @@ def prepare_expanded_dataset(
         full_price_archive_path=full_price_archive_path,
         output_root=workspace_path / "expanded_dataset_proposal",
         prediction_dates=[date.fromisoformat(value) for value in prediction_dates],
-        target_issuers=target_issuers,
         split_seed=split_seed,
         identity_decisions_path=identity_decisions_path,
     )
@@ -1068,7 +1065,6 @@ def main() -> int:
                 workspace_path=args.workspace,
                 universe_path=args.universe,
                 full_price_archive_path=args.full_price_archive,
-                target_issuers=args.target_issuers,
                 prediction_dates=args.prediction_dates,
                 split_seed=args.split_seed,
                 identity_decisions_path=args.identity_decisions,

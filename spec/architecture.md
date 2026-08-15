@@ -140,6 +140,12 @@ An external evolution run is identified by a secret-free frozen run contract:
 dataset and split hash, initial stable Signal snapshot hash, global Raw Info oracle id,
 fixed-prior hash, role/model and provider routing, exact code revision and Python
 runtime, runtime limits, attempt limit, and cumulative cost ceiling. The current
+full-market dataset path includes every identity-deduplicated issuer that passes
+the fixed price-window, listing-date, and reviewed identity-decision gates before
+the issuer-level Discovery/Evolution Validation/Locked Test split; it does not
+impose a fixed issuer cap or outcome-enrich the candidate pool. The proposal
+still requires historical identity and security-type review before approval.
+Outcome balancing belongs only to the per-round evaluation snapshot. The current
 contract evaluates every candidate on one shared, exact 20-case round snapshot
 with fixed `8/6/4/2` label counts and no Anchor, Promotion, or champion-rerun
 stage. Every external request is written and leakage-scanned before it is sent,

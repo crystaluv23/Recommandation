@@ -186,6 +186,15 @@ distinct from `company_id`; prediction artifacts, label closures, tool access,
 and statistics use `case_id`. Repeated as-of cases for one issuer must not cross
 dataset ownership boundaries, and no two observations may share a `case_id`.
 
+The full-market construction path includes every issuer that passes its
+price-window, listing-date, label, deduplication, and applied identity-decision
+gates before the issuer-level three-way split. It must not first cap the library
+or enrich it by outcome class. Historical identity and security-type review
+remain approval gates rather than silent construction assumptions. The resulting
+Evolution Validation share is the Fast-loop candidate pool. Its stored class
+prevalence is descriptive; the controlled fitness mix is imposed only when a
+round snapshot is sampled.
+
 ### Fast-loop evaluation sampling
 
 Information Plan evolution evaluates only within the human-approved Evolution
@@ -197,8 +206,10 @@ macro-F1/accuracy remain diagnostics. All Plans in one round use the same
 snapshot. The sampling unit is `(company_id, prediction_time)`, represented by
 `case_id`, and at most one case per company is selected per round.
 
-There is no fixed Anchor, Promotion stage, or champion rerun. Every round rotates
-all 20 cases. Within each label the deterministic order prefers cases with the
+There is no fixed Anchor, Promotion stage, or champion rerun. Every round
+deterministically pseudo-randomizes and rotates all 20 cases; ordinary execution
+does not use process-global nondeterministic randomness. Within each label the
+order prefers cases with the
 fewest prior selections, then the least recent selection, then a
 `base_seed + round_id + case_id` hash. A shortage in any exact label count or in
 distinct issuers fails preflight before any external request; the sampler never

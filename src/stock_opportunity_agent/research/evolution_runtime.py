@@ -257,6 +257,7 @@ class ExpandedDatasetProposalReport:
     universe_listing_count: int
     priced_symbol_count: int
     eligible_issuer_count: int
+    selection_mode: str
     selected_issuer_count: int
     case_count: int
     available_stratum_counts: Mapping[str, int]
@@ -269,12 +270,13 @@ class ExpandedDatasetProposalReport:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "expanded-evolution-dataset-proposal-report-v1",
+            "schema_version": "expanded-evolution-dataset-proposal-report-v2",
             "manifest_path": self.manifest_path,
             "manifest_hash": self.manifest_hash,
             "universe_listing_count": self.universe_listing_count,
             "priced_symbol_count": self.priced_symbol_count,
             "eligible_issuer_count": self.eligible_issuer_count,
+            "selection_mode": self.selection_mode,
             "selected_issuer_count": self.selected_issuer_count,
             "case_count": self.case_count,
             "available_stratum_counts": dict(self.available_stratum_counts),
@@ -786,21 +788,26 @@ def prepare_expanded_dataset_proposal(
     full_price_archive_path: str | Path,
     output_root: str | Path,
     prediction_dates: Iterable[date],
-    target_issuers: int = 240,
+    target_issuers: int | None = None,
     stratum_weights: Mapping[str, float] | None = None,
     split_seed: str = "expanded-information-plan-evolution-v1",
     identity_decisions_path: str | Path | None = None,
 ) -> ExpandedDatasetProposalReport:
-    """Build a zero-network fixed-date case-library proposal from local prices."""
+    """Build a zero-network fixed-date case-library proposal from local prices.
 
-    if target_issuers < 6:
+    All eligible deduplicated issuers are included by default. ``target_issuers``
+    remains available only for explicitly bounded fixture or diagnostic proposals.
+    """
+
+    if target_issuers is not None and target_issuers < 6:
         raise ValidationError("expanded dataset target_issuers must be at least 6")
+    if target_issuers is None and stratum_weights is not None:
+        raise ValidationError(
+            "expanded dataset stratum_weights require an explicit target_issuers cap"
+        )
     dates = tuple(sorted(set(prediction_dates)))
     if not dates:
         raise ValidationError("expanded dataset requires prediction dates")
-    weights = _validate_expansion_weights(
-        DEFAULT_EXPANSION_STRATUM_WEIGHTS if stratum_weights is None else stratum_weights
-    )
     universe_file = Path(universe_path)
     price_file = Path(full_price_archive_path)
     universe = _read_json(universe_file)
@@ -866,11 +873,6 @@ def prepare_expanded_dataset_proposal(
         seed=split_seed,
     )
     exclusions.extend(duplicate_exclusions)
-    if target_issuers > len(deduplicated):
-        raise ValidationError(
-            "expanded dataset target exceeds eligible deduplicated issuers"
-        )
-
     available_counts = {
         stratum: sum(
             candidate["selection_stratum"] == stratum
@@ -878,27 +880,47 @@ def prepare_expanded_dataset_proposal(
         )
         for stratum in EXPANSION_STRATUM_ORDER
     }
-    allocations = _allocate_expansion_strata(
-        available_counts,
-        target_issuers=target_issuers,
-        weights=weights,
-    )
-    selected: list[dict[str, Any]] = []
-    for stratum in EXPANSION_STRATUM_ORDER:
-        pool = [
-            candidate
-            for candidate in deduplicated
-            if candidate["selection_stratum"] == stratum
-        ]
-        selected.extend(
-            _select_diverse_expansion_issuers(
-                pool,
-                count=allocations[stratum],
-                seed=f"{split_seed}:{stratum}",
+    if not deduplicated:
+        raise ValidationError("expanded dataset has no eligible deduplicated issuers")
+    if target_issuers is None:
+        selection_mode = "all_eligible"
+        requested_issuer_cap = None
+        selection_weights: dict[str, float] | None = None
+        allocations = dict(available_counts)
+        selected = list(deduplicated)
+    else:
+        if target_issuers > len(deduplicated):
+            raise ValidationError(
+                "expanded dataset target exceeds eligible deduplicated issuers"
             )
+        selection_mode = "stratified_cap"
+        requested_issuer_cap = target_issuers
+        selection_weights = _validate_expansion_weights(
+            DEFAULT_EXPANSION_STRATUM_WEIGHTS
+            if stratum_weights is None
+            else stratum_weights
         )
+        allocations = _allocate_expansion_strata(
+            available_counts,
+            target_issuers=target_issuers,
+            weights=selection_weights,
+        )
+        selected = []
+        for stratum in EXPANSION_STRATUM_ORDER:
+            pool = [
+                candidate
+                for candidate in deduplicated
+                if candidate["selection_stratum"] == stratum
+            ]
+            selected.extend(
+                _select_diverse_expansion_issuers(
+                    pool,
+                    count=allocations[stratum],
+                    seed=f"{split_seed}:{stratum}",
+                )
+            )
     selected.sort(key=lambda item: str(item["company_id"]))
-    if len(selected) != target_issuers:
+    if len(selected) != sum(allocations.values()):
         raise ValidationError("expanded dataset selector returned wrong issuer count")
     split_candidates = _propose_expanded_issuer_splits(selected, seed=split_seed)
 
@@ -952,10 +974,11 @@ def prepare_expanded_dataset_proposal(
     _write_or_verify_json(
         selected_path,
         {
-            "schema_version": "expanded-case-selected-issuers-v1",
+            "schema_version": "expanded-case-selected-issuers-v2",
             "selection_seed": split_seed,
-            "target_issuer_count": target_issuers,
-            "selection_weights": weights,
+            "selection_mode": selection_mode,
+            "requested_issuer_cap": requested_issuer_cap,
+            "selection_weights": selection_weights,
             "selected_stratum_counts": allocations,
             "issuers": selected,
         },
@@ -1023,7 +1046,7 @@ def prepare_expanded_dataset_proposal(
         for stratum in EXPANSION_STRATUM_ORDER
     }
     manifest = {
-        "schema_version": "expanded-evolution-dataset-manifest-proposal-v1",
+        "schema_version": "expanded-evolution-dataset-manifest-proposal-v2",
         "approval_status": "proposal_only_pending_human_review",
         "approval_blockers": [
             "validate historical registrant/ticker identity for every selected issuer",
@@ -1058,17 +1081,25 @@ def prepare_expanded_dataset_proposal(
             "issuer_identity": "zero_padded_cik_else_symbol",
         },
         "selection": {
-            "target_issuer_count": target_issuers,
+            "mode": selection_mode,
+            "requested_issuer_cap": requested_issuer_cap,
             "available_issuer_count": len(deduplicated),
             "stratum_order": list(EXPANSION_STRATUM_ORDER),
             "stratum_definition": "maximum_realized_multiple_across_prediction_dates",
-            "weights": weights,
+            "weights": selection_weights,
             "available_stratum_counts": available_counts,
             "selected_stratum_counts": selected_counts,
-            "diversity_rotation": ["exchange", "ipo_age_bucket", "dollar_liquidity_bucket"],
+            "diversity_rotation": (
+                ["exchange", "ipo_age_bucket", "dollar_liquidity_bucket"]
+                if selection_mode == "stratified_cap"
+                else []
+            ),
             "seed": split_seed,
             "sampling_boundary": (
-                "Outcome and near-threshold strata are enriched for controlled learning; "
+                "All eligible deduplicated issuers are included before the issuer-level "
+                "split; controlled label balancing occurs only in Fast-loop round snapshots."
+                if selection_mode == "all_eligible"
+                else "An explicit diagnostic cap outcome-enriches the selected library; "
                 "unweighted metrics do not estimate live market prevalence or returns."
             ),
         },
@@ -1128,6 +1159,7 @@ def prepare_expanded_dataset_proposal(
         universe_listing_count=source_listing_count,
         priced_symbol_count=priced_symbol_count,
         eligible_issuer_count=len(deduplicated),
+        selection_mode=selection_mode,
         selected_issuer_count=len(selected),
         case_count=sum(split_case_counts.values()),
         available_stratum_counts=available_counts,

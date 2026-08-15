@@ -486,22 +486,19 @@ class LocalInventoryTests(TestCase):
                 full_price_archive_path=prices_path,
                 output_root=root / "proposal",
                 prediction_dates=[date(2025, 1, 10)],
-                target_issuers=15,
-                stratum_weights={key: 1.0 for key in (
-                    "below_1_5x",
-                    "near_surge_1_5_to_2x",
-                    "surge_2_to_3x",
-                    "surge_3_to_10x",
-                    "surge_10x_plus",
-                )},
                 split_seed="fixture-expansion",
             )
 
             self.assertEqual(report.universe_listing_count, 18)
             self.assertEqual(report.priced_symbol_count, 18)
             self.assertEqual(report.eligible_issuer_count, 15)
+            self.assertEqual(report.selection_mode, "all_eligible")
             self.assertEqual(report.selected_issuer_count, 15)
             self.assertEqual(report.case_count, 15)
+            self.assertEqual(
+                report.selected_stratum_counts,
+                report.available_stratum_counts,
+            )
             self.assertEqual(set(report.selected_stratum_counts.values()), {3})
             self.assertEqual(set(report.split_issuer_counts.values()), {5})
             self.assertEqual(set(report.split_surge_counts.values()), {3})
@@ -512,6 +509,9 @@ class LocalInventoryTests(TestCase):
             self.assertEqual(report.to_dict()["external_calls"], 0)
 
             manifest = json.loads(Path(report.manifest_path).read_text(encoding="utf-8"))
+            self.assertEqual(manifest["selection"]["mode"], "all_eligible")
+            self.assertIsNone(manifest["selection"]["requested_issuer_cap"])
+            self.assertIsNone(manifest["selection"]["weights"])
             self.assertTrue(manifest["approval_blockers"])
             acquisition_path = Path(
                 manifest["audit_artifacts"]["acquisition_scope"]["path"]
@@ -539,8 +539,6 @@ class LocalInventoryTests(TestCase):
                 full_price_archive_path=prices_path,
                 output_root=root / "proposal",
                 prediction_dates=[date(2025, 1, 10)],
-                target_issuers=15,
-                stratum_weights={key: 1.0 for key in report.selected_stratum_counts},
                 split_seed="fixture-expansion",
             )
             self.assertEqual(replay.to_dict(), report.to_dict())
@@ -606,6 +604,8 @@ class LocalInventoryTests(TestCase):
             )
             self.assertEqual(identity_report.universe_listing_count, 18)
             self.assertEqual(identity_report.eligible_issuer_count, 16)
+            self.assertEqual(identity_report.selection_mode, "stratified_cap")
+            self.assertEqual(identity_report.selected_issuer_count, 15)
             self.assertEqual(
                 identity_report.exclusion_reason_counts["identity_decision_exclude"],
                 1,

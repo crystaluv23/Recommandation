@@ -215,18 +215,23 @@ The expansion command must:
   identity;
 - classify issuers into `<1.5x`, `1.5-<2x`, `2-<3x`, `3-<10x`, and `10x+`
   maximum-multiple strata across the requested dates;
-- select deterministically from explicit stratum weights while rotating across
-  exchange, IPO-age, and point-in-time dollar-liquidity buckets;
+- include every eligible deduplicated issuer by default, preserving the
+  resulting natural stratum counts instead of applying a fixed issuer cap or
+  outcome-enrichment weights;
 - split by issuer and selection stratum so no issuer crosses Discovery,
   Evolution Validation, or Locked Test ownership; and
-- record source hashes, exact prediction dates, available/selected strata,
-  exclusions, selection weights, seed, and the known sampling-bias boundary.
+- record source hashes, exact prediction dates, selection mode,
+  available/selected strata, exclusions, seed, and the eligibility boundary.
 
 This is a label-aware retrospective dataset-construction step. Outcome labels
-may select a learnable benchmark, but they never enter Raw Info or prediction
-requests. Because positive and near-threshold strata are deliberately enriched,
-unweighted benchmark F1 is a controlled comparison metric, not an estimate of
-live market prevalence or expected returns.
+define strata and support issuer-stratified ownership, but they never select a
+smaller default library and never enter Raw Info or prediction requests. The
+Fast loop separately imposes its exact `8/6/4/2` round mix, so development F1 is
+still a controlled comparison metric rather than an estimate of live-market
+prevalence or expected returns. A direct library call may request an explicit
+smaller stratified cap for bounded fixtures or diagnostics, but the operator CLI
+does not expose that legacy production default and the proposal records the cap
+as `stratified_cap`.
 
 The command writes immutable proposal artifacts only. It performs no external
 calls, does not approve the proposal, and does not expose Locked Test to an
