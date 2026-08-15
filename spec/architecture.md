@@ -140,15 +140,20 @@ An external evolution run is identified by a secret-free frozen run contract:
 dataset and split hash, initial stable Signal snapshot hash, global Raw Info oracle id,
 fixed-prior hash, role/model and provider routing, exact code revision and Python
 runtime, runtime limits, attempt limit, and cumulative cost ceiling. The current
-full-market dataset path includes every identity-deduplicated issuer that passes
-the fixed price-window, listing-date, and reviewed identity-decision gates before
-the issuer-level Discovery/Evolution Validation/Locked Test split; it does not
-impose a fixed issuer cap or outcome-enrich the candidate pool. The proposal
-still requires historical identity and security-type review before approval.
-Outcome balancing belongs only to the per-round evaluation snapshot. The current
-contract evaluates every candidate on one shared, exact 20-case round snapshot
-with fixed `8/6/4/2` label counts and no Anchor, Promotion, or champion-rerun
-stage. Every external request is written and leakage-scanned before it is sent,
+full-market dataset path includes every identity-deduplicated issuer whose
+security identity passes the normal-operating-common-stock gate and that has at
+least one fixed-calendar case passing the case-level listing-date, price-window,
+liquidity, and adjusted-price-integrity gates before the issuer-level split; it
+does not impose a fixed issuer cap or outcome-enrich the rotating candidate pool. One
+separate fixed Anchor split is removed by issuer before the remaining companies
+are assigned to Discovery/Evolution Validation/Locked Test. Outcome balancing
+belongs only to the Anchor and per-round Random evaluation snapshots. The
+current contract evaluates every candidate on the same exact 24 cases: 16 fixed
+Anchor cases with `7/5/3/1` label counts plus 8 round-randomized cases with
+`3/2/2/1`, producing combined `10/7/5/2` counts. Anchor, Random, and Combined
+metrics are all retained; the selection score is Combined Binary F1 recomputed
+from the union confusion matrix, never an average of component F1s. There is no
+Promotion or champion-rerun stage. Every external request is written and leakage-scanned before it is sent,
 exact responses are keyed by the request hash, and every attempted call is
 reserved in a durable ledger before network I/O. Restart may reuse an exact
 response or an exact staged artifact, but it may not silently change the frozen

@@ -16,6 +16,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Protocol
 
+from stock_opportunity_agent.cases.selection import eligible_common_stock_listings
 from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.acquisition import (
     AlphaVantageNewsAdapter,
@@ -37,7 +38,7 @@ from stock_opportunity_agent.data.resolution import (
 )
 from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
 from stock_opportunity_agent.data.sources.catalog import DataCapability
-from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
+from stock_opportunity_agent.data.sources.core import SecurityListing, UrllibJsonTransport
 from stock_opportunity_agent.data.sources.massive import MassiveClient
 from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
 from stock_opportunity_agent.data.sources.state import (
@@ -66,6 +67,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     DEFAULT_EVOLUTION_PRIORS,
     DualLoopEvolutionEngine,
     DualLoopResult,
+    EVALUATION_LABELS,
     EvolutionCase,
     EvolutionControlFlow,
     EvolutionWorkspace,
@@ -132,6 +134,20 @@ DEFAULT_EXPANSION_STRATUM_WEIGHTS: dict[str, float] = {
     "surge_3_to_10x": 0.15,
     "surge_10x_plus": 0.05,
 }
+NORMAL_STOCK_EXCHANGES = frozenset({"NASDAQ", "NYSE", "NYSE MKT", "AMEX"})
+MIN_PRE_PREDICTION_DOLLAR_VOLUME = 1_000_000.0
+MAX_ADJUSTED_CLOSE_STEP_UP = 4.0
+MIN_ADJUSTED_CLOSE_STEP_DOWN = 0.25
+_NON_OPERATING_ISSUER_MARKERS = (
+    "acquisition",
+    "blank check",
+    "special purpose acquisition",
+    "spac",
+)
+_SPAC_SERIES_NAME = re.compile(
+    r"\b(?:corp(?:oration)?|holdings?)\s+(?:ii|iii|iv|v|vi|vii|viii|ix|x)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -782,6 +798,57 @@ def prepare_dataset_proposal(
     )
 
 
+def _load_anchor_case_spec(path: Path) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
+    payload = _read_json(path)
+    if payload.get("schema_version") != "information-plan-anchor-spec-v1":
+        raise ValidationError("unsupported Information Plan Anchor spec schema")
+    unhashed = dict(payload)
+    expected_hash = str(unhashed.pop("spec_hash", ""))
+    if not expected_hash or _canonical_hash(unhashed) != expected_hash:
+        raise ValidationError("Information Plan Anchor spec hash mismatch")
+    raw_cases = payload.get("positive_cases")
+    if not isinstance(raw_cases, list) or len(raw_cases) != 9:
+        raise ValidationError("Anchor spec requires exactly nine positive cases")
+    cases: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    label_counts = {label: 0 for label in EVALUATION_LABELS[1:]}
+    control_targets = 0
+    for raw in raw_cases:
+        if not isinstance(raw, Mapping):
+            raise ValidationError("Anchor positive case must be an object")
+        symbol = str(raw.get("symbol", "")).strip().upper()
+        prediction_date = str(raw.get("prediction_date", ""))
+        expected_label = str(raw.get("expected_label", ""))
+        try:
+            date.fromisoformat(prediction_date)
+        except ValueError as exc:
+            raise ValidationError("Anchor prediction date is invalid") from exc
+        if not symbol or (symbol, prediction_date) in seen:
+            raise ValidationError("Anchor positive symbol/date must be unique")
+        if expected_label not in label_counts:
+            raise ValidationError("Anchor positive label is invalid")
+        match_control = raw.get("match_control", False)
+        if type(match_control) is not bool:
+            raise ValidationError("Anchor match_control must be a JSON boolean")
+        control_targets += int(match_control)
+        label_counts[expected_label] += 1
+        seen.add((symbol, prediction_date))
+        cases.append(
+            {
+                "symbol": symbol,
+                "prediction_date": prediction_date,
+                "expected_label": expected_label,
+                "match_control": match_control,
+                "rationale": str(raw.get("rationale", "")).strip(),
+            }
+        )
+    if label_counts != {"2_3x": 5, "3_10x": 3, "10x_plus": 1}:
+        raise ValidationError("Anchor positive cases must have exact 5/3/1 counts")
+    if control_targets != 7:
+        raise ValidationError("Anchor spec requires exactly seven control targets")
+    return payload, tuple(cases)
+
+
 def prepare_expanded_dataset_proposal(
     *,
     universe_path: str | Path,
@@ -792,6 +859,7 @@ def prepare_expanded_dataset_proposal(
     stratum_weights: Mapping[str, float] | None = None,
     split_seed: str = "expanded-information-plan-evolution-v1",
     identity_decisions_path: str | Path | None = None,
+    anchor_cases_path: str | Path,
 ) -> ExpandedDatasetProposalReport:
     """Build a zero-network fixed-date case-library proposal from local prices.
 
@@ -808,6 +876,13 @@ def prepare_expanded_dataset_proposal(
     dates = tuple(sorted(set(prediction_dates)))
     if not dates:
         raise ValidationError("expanded dataset requires prediction dates")
+    anchor_path = Path(anchor_cases_path)
+    anchor_spec, positive_anchor_specs = _load_anchor_case_spec(anchor_path)
+    if not {
+        date.fromisoformat(item["prediction_date"])
+        for item in positive_anchor_specs
+    }.issubset(set(dates)):
+        raise ValidationError("Anchor dates must be included in prediction_dates")
     universe_file = Path(universe_path)
     price_file = Path(full_price_archive_path)
     universe = _read_json(universe_file)
@@ -860,36 +935,58 @@ def prepare_expanded_dataset_proposal(
             cik_update_count += 1
         active_listings[symbol] = resolved_listing
 
-    price_metadata, candidates, exclusions, priced_symbol_count = (
+    normal_listings, security_exclusions = _filter_normal_stock_listings(
+        active_listings
+    )
+    (
+        price_metadata,
+        candidates,
+        price_exclusions,
+        priced_symbol_count,
+        exact_anchor_candidates,
+    ) = (
         _stream_expansion_candidates(
             price_file,
-            listings=active_listings,
+            listings=normal_listings,
             prediction_dates=dates,
+            positive_anchor_specs=positive_anchor_specs,
         )
     )
+    exclusions = [*security_exclusions, *price_exclusions]
     exclusions.extend(identity_exclusions)
     deduplicated, duplicate_exclusions = _deduplicate_expansion_candidates(
         candidates,
         seed=split_seed,
     )
     exclusions.extend(duplicate_exclusions)
+    anchor_cases, anchor_company_ids = _resolve_anchor_cases(
+        positive_specs=positive_anchor_specs,
+        exact_candidates=exact_anchor_candidates,
+        candidates=deduplicated,
+        seed=f"{split_seed}:anchor-controls",
+    )
+    random_library_candidates = [
+        candidate
+        for candidate in deduplicated
+        if str(candidate["company_id"]) not in anchor_company_ids
+    ]
     available_counts = {
         stratum: sum(
             candidate["selection_stratum"] == stratum
-            for candidate in deduplicated
+            for candidate in random_library_candidates
         )
         for stratum in EXPANSION_STRATUM_ORDER
     }
-    if not deduplicated:
+    if not random_library_candidates:
         raise ValidationError("expanded dataset has no eligible deduplicated issuers")
     if target_issuers is None:
         selection_mode = "all_eligible"
         requested_issuer_cap = None
         selection_weights: dict[str, float] | None = None
         allocations = dict(available_counts)
-        selected = list(deduplicated)
+        selected = list(random_library_candidates)
     else:
-        if target_issuers > len(deduplicated):
+        if target_issuers > len(random_library_candidates):
             raise ValidationError(
                 "expanded dataset target exceeds eligible deduplicated issuers"
             )
@@ -909,7 +1006,7 @@ def prepare_expanded_dataset_proposal(
         for stratum in EXPANSION_STRATUM_ORDER:
             pool = [
                 candidate
-                for candidate in deduplicated
+                for candidate in random_library_candidates
                 if candidate["selection_stratum"] == stratum
             ]
             selected.extend(
@@ -931,6 +1028,7 @@ def prepare_expanded_dataset_proposal(
     source_inputs: dict[str, Any] = {
         "universe": universe_identity,
         "adjusted_prices": price_identity,
+        "anchor_spec": _artifact_file_identity(anchor_path),
     }
     if identity_artifact is not None:
         source_inputs["identity_decisions"] = identity_artifact
@@ -946,13 +1044,25 @@ def prepare_expanded_dataset_proposal(
     _write_or_verify_json(
         inventory_path,
         {
-            "schema_version": "expanded-case-candidate-inventory-v1",
+            "schema_version": "expanded-case-candidate-inventory-v2",
             "source_inventory_hash": source_inventory_hash,
             "prediction_dates": [value.isoformat() for value in dates],
-            "eligible_issuer_count": len(deduplicated),
+            "eligible_issuer_count": len(random_library_candidates)
+            + len(anchor_company_ids),
             "available_stratum_counts": available_counts,
+            "integrity_policy": {
+                "normal_stock_exchanges": sorted(NORMAL_STOCK_EXCHANGES),
+                "minimum_pre_prediction_average_dollar_volume": (
+                    MIN_PRE_PREDICTION_DOLLAR_VOLUME
+                ),
+                "maximum_adjusted_close_step_up": MAX_ADJUSTED_CLOSE_STEP_UP,
+                "minimum_adjusted_close_step_down": MIN_ADJUSTED_CLOSE_STEP_DOWN,
+                "resolved_cik_required": True,
+                "operating_common_stock_required": True,
+            },
+            "anchor_cases": anchor_cases,
             "candidates": sorted(
-                deduplicated,
+                random_library_candidates,
                 key=lambda item: (str(item["selection_stratum"]), str(item["company_id"])),
             ),
         },
@@ -983,6 +1093,27 @@ def prepare_expanded_dataset_proposal(
             "issuers": selected,
         },
     )
+    anchor_scope_companies: dict[str, dict[str, Any]] = {}
+    for case in anchor_cases:
+        symbol = str(case["label_provenance"]["source_symbol"])
+        listing = normal_listings[symbol]
+        company_id = str(case["company_id"])
+        anchor_scope_companies[company_id] = {
+            "company_id": company_id,
+            "cik": _normalized_cik(listing.get("cik")),
+            "symbol": symbol,
+            "company_name": str(listing.get("name") or symbol),
+        }
+    acquisition_companies = {
+        str(item["company_id"]): {
+            "company_id": item["company_id"],
+            "cik": item["cik"],
+            "symbol": item["symbol"],
+            "company_name": item["company_name"],
+        }
+        for item in selected
+    }
+    acquisition_companies.update(anchor_scope_companies)
     acquisition_scope_path = root / "acquisition_scope.json"
     _write_or_verify_json(
         acquisition_scope_path,
@@ -990,15 +1121,10 @@ def prepare_expanded_dataset_proposal(
             "schema_version": "expanded-case-acquisition-scope-v1",
             "source_inventory_hash": source_inventory_hash,
             "prediction_dates": [value.isoformat() for value in dates],
-            "company_count": len(selected),
+            "company_count": len(acquisition_companies),
             "companies": [
-                {
-                    "company_id": item["company_id"],
-                    "cik": item["cik"],
-                    "symbol": item["symbol"],
-                    "company_name": item["company_name"],
-                }
-                for item in selected
+                acquisition_companies[company_id]
+                for company_id in sorted(acquisition_companies)
             ],
             "outcome_fields_included": False,
             "split_ownership_included": False,
@@ -1009,6 +1135,28 @@ def prepare_expanded_dataset_proposal(
     split_case_counts: dict[str, int] = {}
     split_issuer_counts: dict[str, int] = {}
     split_surge_counts: dict[str, int] = {}
+    anchor_split_path = root / "anchor.json"
+    _write_or_verify_json(
+        anchor_split_path,
+        {
+            "schema_version": "evolution-dataset-split-v1",
+            "split": "anchor",
+            "case_count": len(anchor_cases),
+            "cases": anchor_cases,
+        },
+    )
+    split_case_counts["anchor"] = len(anchor_cases)
+    split_issuer_counts["anchor"] = len(anchor_company_ids)
+    split_surge_counts["anchor"] = sum(
+        bool(case["ground_truth"]["is_surge"]) for case in anchor_cases
+    )
+    artifacts["anchor"] = {
+        "path": str(anchor_split_path.resolve()),
+        "sha256": _sha256_file(anchor_split_path),
+        "case_count": len(anchor_cases),
+        "issuer_count": len(anchor_company_ids),
+        "surge_count": split_surge_counts["anchor"],
+    }
     for split_name, issuer_rows in split_candidates.items():
         cases = sorted(
             (
@@ -1046,12 +1194,9 @@ def prepare_expanded_dataset_proposal(
         for stratum in EXPANSION_STRATUM_ORDER
     }
     manifest = {
-        "schema_version": "expanded-evolution-dataset-manifest-proposal-v2",
+        "schema_version": "expanded-evolution-dataset-manifest-proposal-v3",
         "approval_status": "proposal_only_pending_human_review",
         "approval_blockers": [
-            "validate historical registrant/ticker identity for every selected issuer",
-            "resolve companies without CIK or record a reviewed exclusion",
-            "classify and review non-operating securities such as funds, notes, preferred shares, and SPACs",
             "acquire and audit point-in-time filings, profiles, news, and other required Raw Info",
             *(
                 ["human-review the exact applied identity-decision artifact"]
@@ -1063,6 +1208,7 @@ def prepare_expanded_dataset_proposal(
         "sources": {
             "clean_universe": universe_identity,
             "adjusted_prices": price_identity,
+            "anchor_spec": _artifact_file_identity(anchor_path),
             "identity_decisions": identity_artifact,
             "price_metadata": price_metadata,
         },
@@ -1074,18 +1220,45 @@ def prepare_expanded_dataset_proposal(
             "exclusion_count": len(identity_exclusions),
         },
         "case_generation": {
-            "kind": "shared_fixed_calendar_panel",
+            "kind": "shared_fixed_calendar_case_opportunities",
             "prediction_dates": [value.isoformat() for value in dates],
-            "required_cases_per_issuer": len(dates),
-            "eligibility": "complete_active_label_at_every_prediction_date",
-            "issuer_identity": "zero_padded_cik_else_symbol",
+            "maximum_cases_per_issuer": len(dates),
+            "eligibility": "each_case_independently_passes_point_in_time_normality_gate",
+            "issuer_retention": "at_least_one_eligible_case",
+            "issuer_identity": "required_zero_padded_cik",
+            "normal_stock_gate": {
+                "status": "machine_verified",
+                "supported_exchanges": sorted(NORMAL_STOCK_EXCHANGES),
+                "minimum_pre_prediction_average_dollar_volume": (
+                    MIN_PRE_PREDICTION_DOLLAR_VOLUME
+                ),
+                "adjusted_price_step_bounds": [
+                    MIN_ADJUSTED_CLOSE_STEP_DOWN,
+                    MAX_ADJUSTED_CLOSE_STEP_UP,
+                ],
+            },
+        },
+        "anchor_evaluation": {
+            "spec_id": str(anchor_spec["anchor_id"]),
+            "spec_hash": str(anchor_spec["spec_hash"]),
+            "case_count": len(anchor_cases),
+            "label_counts": {
+                label: sum(
+                    _serialized_evaluation_label(case) == label
+                    for case in anchor_cases
+                )
+                for label in EVALUATION_LABELS
+            },
+            "positive_selection": "reviewed_symbol_prediction_date",
+            "negative_selection": "deterministic_matched_controls",
+            "issuer_removed_before_other_splits": True,
         },
         "selection": {
             "mode": selection_mode,
             "requested_issuer_cap": requested_issuer_cap,
-            "available_issuer_count": len(deduplicated),
+            "available_issuer_count": len(random_library_candidates),
             "stratum_order": list(EXPANSION_STRATUM_ORDER),
-            "stratum_definition": "maximum_realized_multiple_across_prediction_dates",
+            "stratum_definition": "maximum_realized_multiple_across_eligible_prediction_dates",
             "weights": selection_weights,
             "available_stratum_counts": available_counts,
             "selected_stratum_counts": selected_counts,
@@ -1096,8 +1269,8 @@ def prepare_expanded_dataset_proposal(
             ),
             "seed": split_seed,
             "sampling_boundary": (
-                "All eligible deduplicated issuers are included before the issuer-level "
-                "split; controlled label balancing occurs only in Fast-loop round snapshots."
+                "All normal eligible non-Anchor issuers are included before the issuer-level "
+                "split; controlled label balancing occurs only in fixed Anchor and Fast-loop Random snapshots."
                 if selection_mode == "all_eligible"
                 else "An explicit diagnostic cap outcome-enriches the selected library; "
                 "unweighted metrics do not estimate live market prevalence or returns."
@@ -1106,6 +1279,10 @@ def prepare_expanded_dataset_proposal(
         "split_policy": {
             "unit": "issuer",
             "strata": "selection_stratum",
+            "anchor_issuers_assigned_first": True,
+            "minimum_validation_issuers_per_stratum": (
+                "two_when_at_least_four_are_available_otherwise_one"
+            ),
             "target_ratios": {
                 "discovery": 0.60,
                 "evolution_validation": 0.25,
@@ -1122,9 +1299,13 @@ def prepare_expanded_dataset_proposal(
         "counts": {
             "universe_listings": source_listing_count,
             "identity_eligible_universe_listings": len(active_listings),
+            "normal_stock_universe_listings": len(normal_listings),
             "priced_symbols": priced_symbol_count,
-            "eligible_issuers": len(deduplicated),
-            "selected_issuers": len(selected),
+            "eligible_issuers": len(random_library_candidates)
+            + len(anchor_company_ids),
+            "anchor_issuers": len(anchor_company_ids),
+            "random_library_issuers": len(random_library_candidates),
+            "selected_issuers": len(selected) + len(anchor_company_ids),
             "selected_cases": sum(split_case_counts.values()),
             "exclusion_records": len(exclusions),
         },
@@ -1145,6 +1326,7 @@ def prepare_expanded_dataset_proposal(
                 "path": str(acquisition_scope_path.resolve()),
                 "sha256": _sha256_file(acquisition_scope_path),
             },
+            "anchor_spec": _artifact_file_identity(anchor_path),
         },
         "artifacts": artifacts,
         "locked_test_sealed": True,
@@ -1158,9 +1340,9 @@ def prepare_expanded_dataset_proposal(
         manifest_hash=_sha256_file(manifest_path),
         universe_listing_count=source_listing_count,
         priced_symbol_count=priced_symbol_count,
-        eligible_issuer_count=len(deduplicated),
+        eligible_issuer_count=len(random_library_candidates) + len(anchor_company_ids),
         selection_mode=selection_mode,
-        selected_issuer_count=len(selected),
+        selected_issuer_count=len(selected) + len(anchor_company_ids),
         case_count=sum(split_case_counts.values()),
         available_stratum_counts=available_counts,
         selected_stratum_counts=selected_counts,
@@ -1188,6 +1370,7 @@ def approve_dataset_proposal(
     proposal = _read_json(proposal_path)
     if proposal.get("approval_status") != "proposal_only_pending_human_review":
         raise ValidationError("dataset proposal is not pending human review")
+    _validate_v5_dataset_proposal_for_approval(proposal)
     approved = {
         **proposal,
         "schema_version": "evolution-dataset-manifest-v1",
@@ -1198,6 +1381,72 @@ def approve_dataset_proposal(
     approved_path = proposal_path.with_name("dataset_manifest.approved.json")
     _write_or_verify_json(approved_path, approved)
     return approved_path
+
+
+def _validate_v5_dataset_proposal_for_approval(
+    proposal: Mapping[str, Any],
+) -> None:
+    if proposal.get("schema_version") != "expanded-evolution-dataset-manifest-proposal-v3":
+        raise ValidationError(
+            "v5 dataset approval requires an expanded proposal with Anchor"
+        )
+    generation = dict(proposal.get("case_generation", {}))
+    normal_gate = dict(generation.get("normal_stock_gate", {}))
+    if (
+        generation.get("eligibility")
+        != "each_case_independently_passes_point_in_time_normality_gate"
+        or normal_gate.get("status") != "machine_verified"
+    ):
+        raise ValidationError("v5 dataset proposal is missing the normal-stock gate")
+    artifacts = dict(proposal.get("artifacts", {}))
+    if (
+        proposal.get("locked_test_sealed") is not True
+        or proposal.get("locked_test_accessed") is not False
+    ):
+        raise ValidationError("v5 dataset proposal must keep Locked Test sealed")
+    loaded: dict[str, tuple[EvolutionCase, ...]] = {}
+    for split_name in (
+        "discovery",
+        "anchor",
+        "evolution_validation",
+        "locked_test",
+    ):
+        metadata = dict(artifacts.get(split_name, {}))
+        if not metadata:
+            raise ValidationError(
+                f"v5 dataset proposal is missing {split_name} split"
+            )
+        split_path = Path(str(metadata.get("path", "")))
+        if not split_path.is_file() or _sha256_file(split_path) != metadata.get(
+            "sha256"
+        ):
+            raise ValidationError(f"dataset split hash mismatch: {split_name}")
+        if split_name not in {"anchor", "evolution_validation"}:
+            continue
+        split = _read_json(split_path)
+        if split.get("split") != split_name:
+            raise ValidationError(f"dataset split identity mismatch: {split_name}")
+        rows = split.get("cases", ())
+        if not isinstance(rows, list):
+            raise ValidationError(f"dataset split cases are invalid: {split_name}")
+        if int(metadata.get("case_count", -1)) != len(rows):
+            raise ValidationError(f"dataset split case count mismatch: {split_name}")
+        loaded[split_name] = tuple(
+            EvolutionCase(
+                case_id=str(row["case_id"]),
+                company_id=str(row["company_id"]),
+                prediction_time=datetime.fromisoformat(str(row["prediction_time"])),
+                basic_info=dict(row["basic_info"]),
+                ground_truth=GroundTruth.from_dict(dict(row["ground_truth"])),
+            )
+            for row in rows
+        )
+    with tempfile.TemporaryDirectory() as directory:
+        EvaluationDatasetManager(
+            directory,
+            pool=loaded["evolution_validation"],
+            anchor_cases=loaded["anchor"],
+        )
 
 
 @dataclass(frozen=True)
@@ -1220,7 +1469,7 @@ class EvolutionRunContract:
     max_total_cost: float
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
-    schema_version: str = "evolution-run-contract-v4"
+    schema_version: str = "evolution-run-contract-v5"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -1260,13 +1509,11 @@ class EvolutionRunContract:
             "evolution-run-contract-v2",
             "evolution-run-contract-v3",
             "evolution-run-contract-v4",
+            "evolution-run-contract-v5",
         }:
             raise ValidationError("unsupported evolution run contract schema")
-        if self.schema_version in {
-            "evolution-run-contract-v3",
-            "evolution-run-contract-v4",
-        }:
-            schema_label = "v4" if self.schema_version.endswith("v4") else "v3"
+        if self.schema_version == "evolution-run-contract-v5":
+            schema_label = "v5"
             required_roles = {"judge", "proposer"}
             missing_roles = sorted(required_roles - set(self.models))
             if missing_roles:
@@ -1371,13 +1618,17 @@ class EvolutionRunContract:
                 )
             evaluation_config = PlanEvaluationConfig.from_dict(evaluation)
             if (
-                evaluation_config.cases_per_round != 20
+                evaluation_config.cases_per_round != 24
                 or dict(evaluation_config.label_counts)
-                != {"non_surge": 8, "2_3x": 6, "3_10x": 4, "10x_plus": 2}
+                != {"non_surge": 10, "2_3x": 7, "3_10x": 5, "10x_plus": 2}
+                or dict(evaluation_config.anchor_label_counts)
+                != {"non_surge": 7, "2_3x": 5, "3_10x": 3, "10x_plus": 1}
+                or dict(evaluation_config.random_label_counts)
+                != {"non_surge": 3, "2_3x": 2, "3_10x": 2, "10x_plus": 1}
                 or evaluation_config.max_cases_per_company_per_round != 1
             ):
                 raise ValidationError(
-                    f"{schema_label} contract requires exact 20-case 8/6/4/2 evaluation"
+                    f"{schema_label} contract requires exact 16-Anchor plus 8-Random evaluation"
                 )
             if dict(evaluation) != evaluation_config.to_dict():
                 raise ValidationError(
@@ -1400,7 +1651,10 @@ class EvolutionRunContract:
             "max_total_cost": self.max_total_cost,
             "locked_test_accessed": False,
         }
-        if self.schema_version == "evolution-run-contract-v4":
+        if self.schema_version in {
+            "evolution-run-contract-v4",
+            "evolution-run-contract-v5",
+        }:
             value["initial_signal_registry_version"] = (
                 self.initial_signal_registry_version
             )
@@ -1413,6 +1667,7 @@ class EvolutionRunContract:
         if self.schema_version in {
             "evolution-run-contract-v3",
             "evolution-run-contract-v4",
+            "evolution-run-contract-v5",
         }:
             value["raw_info_oracle_id"] = self.raw_info_oracle_id
         return value
@@ -1423,9 +1678,9 @@ class EvolutionRunContract:
 
     @property
     def executable(self) -> bool:
-        """Only v4 contracts may advance cumulative dual-loop state."""
+        """Only v5 contracts may advance the current dual-loop state."""
 
-        return self.schema_version == "evolution-run-contract-v4"
+        return self.schema_version == "evolution-run-contract-v5"
 
     def freeze(self, path: str | Path) -> None:
         _write_or_verify_json(
@@ -1488,6 +1743,7 @@ class ApprovedDevelopmentDataset:
     """Ordinary loop inputs with Locked Test represented only by a sealed hash."""
 
     discovery: tuple[EvolutionCase, ...]
+    anchor: tuple[EvolutionCase, ...]
     evolution_validation: tuple[EvolutionCase, ...]
     locked_test_hash: str
     approved_manifest_hash: str
@@ -1506,14 +1762,25 @@ def load_approved_development_dataset(
         raise ValidationError("development dataset does not seal Locked Test")
     artifacts = dict(manifest.get("artifacts", {}))
     loaded: dict[str, tuple[EvolutionCase, ...]] = {}
-    for split_name in ("discovery", "evolution_validation"):
+    for split_name in ("discovery", "anchor", "evolution_validation"):
+        if split_name not in artifacts:
+            raise ValidationError(
+                f"approved development dataset is missing {split_name} split"
+            )
         metadata = dict(artifacts[split_name])
         split_path = Path(str(metadata["path"]))
-        if _sha256_file(split_path) != metadata.get("sha256"):
+        if not split_path.is_file() or _sha256_file(split_path) != metadata.get(
+            "sha256"
+        ):
             raise ValidationError(f"dataset split hash mismatch: {split_name}")
         split = _read_json(split_path)
         if split.get("split") != split_name:
             raise ValidationError(f"dataset split identity mismatch: {split_name}")
+        rows = split.get("cases", ())
+        if not isinstance(rows, list) or int(
+            metadata.get("case_count", -1)
+        ) != len(rows):
+            raise ValidationError(f"dataset split case count mismatch: {split_name}")
         loaded[split_name] = tuple(
             EvolutionCase(
                 case_id=str(row["case_id"]),
@@ -1522,11 +1789,24 @@ def load_approved_development_dataset(
                 basic_info=dict(row["basic_info"]),
                 ground_truth=GroundTruth.from_dict(dict(row["ground_truth"])),
             )
-            for row in split.get("cases", ())
+            for row in rows
         )
+    company_sets = {
+        split_name: {case.company_id for case in cases}
+        for split_name, cases in loaded.items()
+    }
+    if (
+        company_sets["discovery"] & company_sets["anchor"]
+        or company_sets["discovery"] & company_sets["evolution_validation"]
+        or company_sets["anchor"] & company_sets["evolution_validation"]
+    ):
+        raise ValidationError("development dataset splits share issuer identities")
     locked_metadata = dict(artifacts["locked_test"])
+    if not re.fullmatch(r"[0-9a-f]{64}", str(locked_metadata.get("sha256", ""))):
+        raise ValidationError("Locked Test artifact hash is invalid")
     return ApprovedDevelopmentDataset(
         discovery=loaded["discovery"],
+        anchor=loaded["anchor"],
         evolution_validation=loaded["evolution_validation"],
         locked_test_hash=str(locked_metadata["sha256"]),
         approved_manifest_hash=_sha256_file(path),
@@ -2879,6 +3159,7 @@ def run_bounded_evolution_cycle(
     EvaluationDatasetManager(
         workspace_root / "evaluation",
         dataset.evolution_validation,
+        dataset.anchor,
         evaluation_config,
     ).validate_feasibility()
     registry = SignalRegistry(
@@ -3408,7 +3689,7 @@ def _default_priors_dict() -> dict[str, str]:
 
 def _dataset_identity_aliases(dataset: ApprovedDevelopmentDataset) -> tuple[str, ...]:
     aliases: set[str] = set()
-    for case in (*dataset.discovery, *dataset.evolution_validation):
+    for case in (*dataset.discovery, *dataset.anchor, *dataset.evolution_validation):
         for key in ("company_name", "ticker", "symbol", "identity_aliases"):
             value = case.basic_info.get(key)
             if isinstance(value, str):
@@ -3590,16 +3871,100 @@ def _parse_identity_date(value: Any, label: str) -> date:
         raise ValidationError(f"invalid expanded identity {label}: {value}") from exc
 
 
+def _filter_normal_stock_listings(
+    listings: Mapping[str, Mapping[str, Any]],
+) -> tuple[dict[str, dict[str, Any]], list[dict[str, str]]]:
+    normalized: list[SecurityListing] = []
+    parse_failures: dict[str, str] = {}
+    for symbol, listing in listings.items():
+        try:
+            retrieved_at = datetime.fromisoformat(
+                str(
+                    listing.get("retrieved_at")
+                    or datetime(1970, 1, 1, tzinfo=timezone.utc).isoformat()
+                )
+            )
+            ipo_date = (
+                date.fromisoformat(str(listing["ipo_date"]))
+                if listing.get("ipo_date")
+                else None
+            )
+            delisting_date = (
+                date.fromisoformat(str(listing["delisting_date"]))
+                if listing.get("delisting_date")
+                else None
+            )
+            normalized.append(
+                SecurityListing(
+                    symbol=symbol,
+                    name=str(listing.get("name") or symbol),
+                    exchange=str(listing.get("exchange") or ""),
+                    asset_type=str(listing.get("asset_type") or ""),
+                    status=str(listing.get("status") or ""),
+                    source=str(listing.get("source") or "unknown"),
+                    retrieved_at=retrieved_at,
+                    cik=_normalized_cik(listing.get("cik")),
+                    ipo_date=ipo_date,
+                    delisting_date=delisting_date,
+                )
+            )
+        except (TypeError, ValueError) as exc:
+            parse_failures[symbol] = type(exc).__name__
+    common_symbols = {
+        listing.symbol for listing in eligible_common_stock_listings(normalized)
+    }
+    accepted: dict[str, dict[str, Any]] = {}
+    exclusions: list[dict[str, str]] = []
+    for symbol, listing in listings.items():
+        reason: str | None = None
+        if symbol in parse_failures:
+            reason = "invalid_listing_metadata"
+        elif symbol not in common_symbols:
+            reason = "not_normal_common_stock"
+        elif _normalized_cik(listing.get("cik")) is None:
+            reason = "missing_reviewed_cik"
+        elif str(listing.get("exchange") or "").upper() not in NORMAL_STOCK_EXCHANGES:
+            reason = "unsupported_stock_exchange"
+        elif not listing.get("ipo_date"):
+            reason = "missing_listing_ipo_date"
+        elif _looks_like_non_operating_issuer(
+            str(listing.get("name") or "")
+        ):
+            reason = "non_operating_or_spac_issuer"
+        elif listing.get("delisting_date"):
+            reason = "delisted_security"
+        if reason is None:
+            accepted[symbol] = dict(listing)
+        else:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": _expansion_company_id(listing),
+                    "reason": reason,
+                }
+            )
+    return accepted, exclusions
+
+
+def _looks_like_non_operating_issuer(name: str) -> bool:
+    normalized = name.casefold()
+    return any(
+        marker in normalized for marker in _NON_OPERATING_ISSUER_MARKERS
+    ) or _SPAC_SERIES_NAME.search(name) is not None
+
+
 def _stream_expansion_candidates(
     path: Path,
     *,
     listings: Mapping[str, Mapping[str, Any]],
     prediction_dates: tuple[date, ...],
+    positive_anchor_specs: tuple[dict[str, Any], ...],
 ) -> tuple[
     dict[str, Any],
     list[dict[str, Any]],
     list[dict[str, str]],
     int,
+    dict[tuple[str, str], dict[str, Any]],
 ]:
     if not path.is_file():
         raise ValidationError(f"large local price archive is missing: {path}")
@@ -3607,6 +3972,10 @@ def _stream_expansion_candidates(
     metadata: dict[str, Any] = {}
     candidates: list[dict[str, Any]] = []
     exclusions: list[dict[str, str]] = []
+    exact_anchor_candidates: dict[tuple[str, str], dict[str, Any]] = {}
+    anchor_specs_by_symbol: dict[str, list[dict[str, Any]]] = {}
+    for spec in positive_anchor_specs:
+        anchor_specs_by_symbol.setdefault(str(spec["symbol"]), []).append(spec)
     seen_symbols: set[str] = set()
     priced_symbol_count = 0
     try:
@@ -3632,15 +4001,35 @@ def _stream_expansion_candidates(
                             raise ValidationError("large price archive bars must be a list")
                         if raw_bars:
                             priced_symbol_count += 1
-                        candidate, exclusion = _expansion_candidate(
+                        candidate, candidate_exclusions = _expansion_candidate(
                             listing,
                             raw_bars,
                             prediction_dates=prediction_dates,
                         )
                         if candidate is not None:
                             candidates.append(candidate)
-                        elif exclusion is not None:
-                            exclusions.append(exclusion)
+                        exclusions.extend(candidate_exclusions)
+                        for anchor_spec in anchor_specs_by_symbol.get(symbol, ()):
+                            anchor_date = date.fromisoformat(
+                                str(anchor_spec["prediction_date"])
+                            )
+                            exact_candidate, anchor_exclusions = _expansion_candidate(
+                                listing,
+                                raw_bars,
+                                prediction_dates=(anchor_date,),
+                            )
+                            key = (symbol, anchor_date.isoformat())
+                            if exact_candidate is not None:
+                                exact_anchor_candidates[key] = exact_candidate
+                            else:
+                                exclusions.extend(
+                                    {
+                                        **anchor_exclusion,
+                                        "reason": "anchor_"
+                                        + str(anchor_exclusion["reason"]),
+                                    }
+                                    for anchor_exclusion in anchor_exclusions
+                                )
                     if reader.peek() == ",":
                         reader.consume(",")
                     else:
@@ -3668,7 +4057,13 @@ def _stream_expansion_candidates(
                     "reason": "missing_price_history",
                 }
             )
-    return metadata, candidates, exclusions, priced_symbol_count
+    return (
+        metadata,
+        candidates,
+        exclusions,
+        priced_symbol_count,
+        exact_anchor_candidates,
+    )
 
 
 def _expansion_candidate(
@@ -3676,7 +4071,7 @@ def _expansion_candidate(
     raw_bars: list[Any],
     *,
     prediction_dates: tuple[date, ...],
-) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+) -> tuple[dict[str, Any] | None, list[dict[str, str]]]:
     symbol = str(listing["symbol"]).upper()
     company_id = _expansion_company_id(listing)
     ipo_date = str(listing.get("ipo_date") or "") or None
@@ -3684,38 +4079,90 @@ def _expansion_candidate(
         try:
             parsed_ipo_date = date.fromisoformat(ipo_date)
         except ValueError:
-            return None, {
-                "symbol": symbol,
-                "company_id": company_id,
-                "reason": "invalid_listing_ipo_date",
-            }
-        if prediction_dates[0] < parsed_ipo_date:
-            return None, {
-                "symbol": symbol,
-                "company_id": company_id,
-                "prediction_date": prediction_dates[0].isoformat(),
-                "ipo_date": ipo_date,
-                "reason": "prediction_before_listing_ipo_date",
-            }
+            return None, [
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "reason": "invalid_listing_ipo_date",
+                }
+            ]
     if not raw_bars:
-        return None, {
-            "symbol": symbol,
-            "company_id": company_id,
-            "reason": "empty_price_history",
-        }
+        return None, [
+            {
+                "symbol": symbol,
+                "company_id": company_id,
+                "reason": "empty_price_history",
+            }
+        ]
     labels: list[tuple[date, dict[str, Any]]] = []
+    liquidity_by_date: dict[date, float] = {}
+    exclusions: list[dict[str, str]] = []
     for prediction_date in prediction_dates:
+        if ipo_date and prediction_date < parsed_ipo_date:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "prediction_date": prediction_date.isoformat(),
+                    "ipo_date": ipo_date,
+                    "reason": "prediction_before_listing_ipo_date",
+                }
+            )
+            continue
+        integrity_reason = _adjusted_price_integrity_reason(
+            raw_bars, prediction_date
+        )
+        if integrity_reason is not None:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "prediction_date": prediction_date.isoformat(),
+                    "reason": integrity_reason,
+                }
+            )
+            continue
+        liquidity = _pre_prediction_average_dollar_volume(
+            raw_bars, prediction_date
+        )
+        if liquidity is None:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "prediction_date": prediction_date.isoformat(),
+                    "reason": "insufficient_pre_prediction_liquidity_history",
+                }
+            )
+            continue
+        if liquidity < MIN_PRE_PREDICTION_DOLLAR_VOLUME:
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "prediction_date": prediction_date.isoformat(),
+                    "reason": "below_minimum_pre_prediction_dollar_volume",
+                }
+            )
+            continue
         try:
             label = _six_month_smoothed_multiple(raw_bars, prediction_date)
         except (TypeError, ValueError, ValidationError) as exc:
-            return None, {
-                "symbol": symbol,
-                "company_id": company_id,
-                "prediction_date": prediction_date.isoformat(),
-                "reason": str(exc),
-            }
+            exclusions.append(
+                {
+                    "symbol": symbol,
+                    "company_id": company_id,
+                    "prediction_date": prediction_date.isoformat(),
+                    "reason": str(exc),
+                }
+            )
+            continue
         labels.append((prediction_date, label))
-    liquidity = _historical_dollar_liquidity(raw_bars, prediction_dates)
+        liquidity_by_date[prediction_date] = liquidity
+    if not labels:
+        return None, exclusions
+    liquidity_values = tuple(liquidity_by_date.values())
+    liquidity = sum(liquidity_values) / len(liquidity_values)
     company_name = str(listing.get("name") or symbol)
     cik = _normalized_cik(listing.get("cik"))
     exchange = str(listing.get("exchange") or "unknown").upper()
@@ -3723,9 +4170,10 @@ def _expansion_candidate(
     stratum = _expansion_stratum(max_multiple)
     diversity = {
         "exchange": exchange,
-        "ipo_age_bucket": _ipo_age_bucket(ipo_date, prediction_dates[0]),
+        "ipo_age_bucket": _ipo_age_bucket(ipo_date, labels[0][0]),
         "dollar_liquidity_bucket": _dollar_liquidity_bucket(liquidity),
         "pre_prediction_average_dollar_volume": liquidity,
+        "minimum_pre_prediction_average_dollar_volume": min(liquidity_values),
     }
     cases: list[dict[str, Any]] = []
     for prediction_date, label in labels:
@@ -3762,6 +4210,9 @@ def _expansion_candidate(
                     "future_peak_dates": label["future_peak_dates"],
                     "horizon_end": label["horizon_end"],
                     "source_symbol": symbol,
+                    "pre_prediction_average_dollar_volume": liquidity_by_date[
+                        prediction_date
+                    ],
                 },
             }
         )
@@ -3776,7 +4227,7 @@ def _expansion_candidate(
             "diversity": diversity,
             "cases": cases,
         },
-        None,
+        exclusions,
     )
 
 
@@ -3816,6 +4267,134 @@ def _deduplicate_expansion_candidates(
             }
         )
     return list(by_company.values()), exclusions
+
+
+def _serialized_evaluation_label(case: Mapping[str, Any]) -> str:
+    truth = dict(case["ground_truth"])
+    if not bool(truth["is_surge"]):
+        return "non_surge"
+    return {
+        "2-3x": "2_3x",
+        "3-10x": "3_10x",
+        "10x+": "10x_plus",
+    }[str(truth["magnitude"])]
+
+
+def _resolve_anchor_cases(
+    *,
+    positive_specs: tuple[dict[str, Any], ...],
+    exact_candidates: Mapping[tuple[str, str], dict[str, Any]],
+    candidates: Iterable[dict[str, Any]],
+    seed: str,
+) -> tuple[list[dict[str, Any]], set[str]]:
+    positives: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = []
+    used_companies: set[str] = set()
+    for spec in positive_specs:
+        key = (str(spec["symbol"]), str(spec["prediction_date"]))
+        candidate = exact_candidates.get(key)
+        if candidate is None:
+            raise ValidationError(
+                "approved positive Anchor case is unavailable: " + ":".join(key)
+            )
+        case = dict(candidate["cases"][0])
+        actual_label = _serialized_evaluation_label(case)
+        if actual_label != spec["expected_label"]:
+            raise ValidationError(
+                f"positive Anchor label mismatch for {key[0]}@{key[1]}: "
+                f"expected {spec['expected_label']}, got {actual_label}"
+            )
+        company_id = str(case["company_id"])
+        if company_id in used_companies:
+            raise ValidationError("positive Anchor cases must use distinct issuers")
+        used_companies.add(company_id)
+        positives.append((spec, candidate, case))
+
+    controls: list[dict[str, Any]] = []
+    candidate_rows = tuple(candidates)
+    for spec, _positive_candidate, positive_case in positives:
+        if not bool(spec["match_control"]):
+            continue
+        target_date = str(spec["prediction_date"])
+        target_exchange = str(positive_case["basic_info"].get("exchange") or "")
+        target_ipo_bucket = _ipo_age_bucket(
+            positive_case["basic_info"].get("ipo_date"),
+            date.fromisoformat(target_date),
+        )
+        target_liquidity = float(
+            positive_case["label_provenance"][
+                "pre_prediction_average_dollar_volume"
+            ]
+        )
+        options: list[tuple[tuple[Any, ...], dict[str, Any]]] = []
+        for candidate in candidate_rows:
+            company_id = str(candidate["company_id"])
+            if company_id in used_companies:
+                continue
+            for raw_case in candidate["cases"]:
+                if not str(raw_case["prediction_time"]).startswith(target_date):
+                    continue
+                if _serialized_evaluation_label(raw_case) != "non_surge":
+                    continue
+                case = dict(raw_case)
+                liquidity = float(
+                    case["label_provenance"][
+                        "pre_prediction_average_dollar_volume"
+                    ]
+                )
+                exchange = str(case["basic_info"].get("exchange") or "")
+                ipo_bucket = _ipo_age_bucket(
+                    case["basic_info"].get("ipo_date"),
+                    date.fromisoformat(target_date),
+                )
+                score = (
+                    int(
+                        _dollar_liquidity_bucket(liquidity)
+                        != _dollar_liquidity_bucket(target_liquidity)
+                    ),
+                    int(exchange != target_exchange),
+                    int(ipo_bucket != target_ipo_bucket),
+                    abs(math.log(liquidity) - math.log(target_liquidity)),
+                    hashlib.sha256(
+                        f"{seed}:{spec['symbol']}:{case['case_id']}".encode(
+                            "utf-8"
+                        )
+                    ).hexdigest(),
+                )
+                options.append((score, case))
+        if not options:
+            raise ValidationError(
+                f"no normal non-surge Anchor control for {spec['symbol']}@{target_date}"
+            )
+        _score, control = min(options, key=lambda item: item[0])
+        used_companies.add(str(control["company_id"]))
+        control["anchor_metadata"] = {
+            "role": "matched_non_surge_control",
+            "matched_positive_symbol": spec["symbol"],
+            "matching_fields": [
+                "prediction_date",
+                "dollar_liquidity_bucket",
+                "exchange",
+                "ipo_age_bucket",
+            ],
+        }
+        controls.append(control)
+
+    positive_cases: list[dict[str, Any]] = []
+    for spec, _candidate, case in positives:
+        case["anchor_metadata"] = {
+            "role": "reviewed_positive",
+            "symbol": spec["symbol"],
+            "expected_label": spec["expected_label"],
+            "rationale": spec["rationale"],
+        }
+        positive_cases.append(case)
+    anchor_cases = [*controls, *positive_cases]
+    counts = {label: 0 for label in EVALUATION_LABELS}
+    for case in anchor_cases:
+        counts[_serialized_evaluation_label(case)] += 1
+    if counts != {"non_surge": 7, "2_3x": 5, "3_10x": 3, "10x_plus": 1}:
+        raise ValidationError("resolved Anchor cases do not satisfy exact 7/5/3/1")
+    return anchor_cases, used_companies
 
 
 def _allocate_expansion_strata(
@@ -3934,6 +4513,9 @@ def _propose_expanded_issuer_splits(
             ).hexdigest(),
         )
         discovery_count, validation_count, _ = _three_way_counts(len(ordered))
+        if len(ordered) >= 4 and validation_count < 2:
+            discovery_count -= 1
+            validation_count += 1
         result["discovery"].extend(ordered[:discovery_count])
         result["evolution_validation"].extend(
             ordered[discovery_count : discovery_count + validation_count]
@@ -3972,8 +4554,8 @@ def _expansion_stratum(maximum_multiple: float) -> str:
     return "surge_10x_plus"
 
 
-def _historical_dollar_liquidity(
-    raw_bars: Iterable[Any], prediction_dates: tuple[date, ...]
+def _pre_prediction_average_dollar_volume(
+    raw_bars: Iterable[Any], prediction_date: date
 ) -> float | None:
     parsed: list[tuple[date, float]] = []
     for bar in raw_bars:
@@ -3984,20 +4566,45 @@ def _historical_dollar_liquidity(
         if adjusted_close is None or volume is None:
             continue
         value = float(adjusted_close) * float(volume)
-        if value >= 0:
+        if value > 0:
             parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
-    means: list[float] = []
-    for prediction_date in prediction_dates:
-        values = [value for bar_date, value in parsed if bar_date < prediction_date][-20:]
-        if values:
-            means.append(sum(values) / len(values))
-    if not means:
+    values = [value for bar_date, value in parsed if bar_date < prediction_date][-20:]
+    if len(values) < 15:
         return None
-    ordered = sorted(means)
-    midpoint = len(ordered) // 2
-    if len(ordered) % 2:
-        return ordered[midpoint]
-    return (ordered[midpoint - 1] + ordered[midpoint]) / 2
+    return sum(values) / len(values)
+
+
+def _adjusted_price_integrity_reason(
+    raw_bars: Iterable[Any], prediction_date: date
+) -> str | None:
+    parsed: list[tuple[date, float]] = []
+    for bar in raw_bars:
+        if not isinstance(bar, Mapping) or not bar.get("as_of_date"):
+            continue
+        adjusted_close = bar.get("adjusted_close")
+        if adjusted_close is None:
+            continue
+        value = float(adjusted_close)
+        if value <= 0 or not math.isfinite(value):
+            return "invalid_adjusted_price"
+        parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
+    parsed.sort(key=lambda item: item[0])
+    if len({bar_date for bar_date, _ in parsed}) != len(parsed):
+        return "duplicate_adjusted_price_date"
+    baseline = [item for item in parsed if item[0] < prediction_date][-10:]
+    future = [
+        item
+        for item in parsed
+        if prediction_date <= item[0] <= _add_months(prediction_date, 6)
+    ]
+    relevant = (*baseline, *future)
+    for (_prior_date, prior), (_current_date, current) in zip(
+        relevant, relevant[1:]
+    ):
+        ratio = current / prior
+        if ratio >= MAX_ADJUSTED_CLOSE_STEP_UP or ratio <= MIN_ADJUSTED_CLOSE_STEP_DOWN:
+            return "extreme_adjusted_price_discontinuity"
+    return None
 
 
 def _dollar_liquidity_bucket(value: float | None) -> str:

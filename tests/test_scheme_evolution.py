@@ -902,24 +902,28 @@ class PredictionMetricTests(TestCase):
 
 
 class EvaluationDatasetSamplingTests(TestCase):
-    def test_snapshots_have_exact_counts_and_rotate_without_anchors(self) -> None:
+    def test_snapshots_freeze_anchor_and_rotate_exact_random_cases(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "evaluation"
             pool = make_evaluation_pool()
+            anchors = make_anchor_pool()
             config = PlanEvaluationConfig()
-            manager = EvaluationDatasetManager(root, pool, config)
+            manager = EvaluationDatasetManager(root, pool, anchors, config)
 
             round_one = manager.get_or_create_round_dataset(1)
             round_two = manager.get_or_create_round_dataset(2)
 
             self.assertEqual(round_one.actual_counts, {
-                "non_surge": 8,
-                "2_3x": 6,
-                "3_10x": 4,
+                "non_surge": 10,
+                "2_3x": 7,
+                "3_10x": 5,
                 "10x_plus": 2,
             })
             self.assertEqual(round_two.actual_counts, round_one.actual_counts)
-            self.assertFalse(set(round_one.case_ids) & set(round_two.case_ids))
+            self.assertEqual(round_one.anchor_case_ids, round_two.anchor_case_ids)
+            self.assertFalse(
+                set(round_one.random_case_ids) & set(round_two.random_case_ids)
+            )
             all_round_cases = manager.resolve_cases(round_one.case_ids)
             self.assertEqual(
                 len({case.company_id for case in all_round_cases}),
@@ -927,9 +931,11 @@ class EvaluationDatasetSamplingTests(TestCase):
             )
             self.assertEqual(round_one.random_seed, 43)
             self.assertTrue((root / "round_001" / "snapshot.json").is_file())
-            self.assertFalse((root / "anchor.json").exists())
+            self.assertTrue((root / "anchor.json").is_file())
 
-            restarted = EvaluationDatasetManager(root, tuple(reversed(pool)), config)
+            restarted = EvaluationDatasetManager(
+                root, tuple(reversed(pool)), anchors, config
+            )
             reused = restarted.get_or_create_round_dataset(1)
             self.assertEqual(reused.snapshot_id, round_one.snapshot_id)
             self.assertEqual(reused.case_ids, round_one.case_ids)
@@ -938,9 +944,10 @@ class EvaluationDatasetSamplingTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "evaluation"
             pool = make_evaluation_pool()
-            manager = EvaluationDatasetManager(root, pool)
+            anchors = make_anchor_pool()
+            manager = EvaluationDatasetManager(root, pool, anchors)
             snapshot = manager.get_or_create_round_dataset(1)
-            original = manager.resolve_cases((snapshot.case_ids[0],))[0]
+            original = manager.resolve_cases((snapshot.random_case_ids[0],))[0]
             duplicate_company = EvolutionCase(
                 company_id=original.company_id,
                 prediction_time=NOW + timedelta(days=1),
@@ -949,7 +956,10 @@ class EvaluationDatasetSamplingTests(TestCase):
             )
             path = root / "round_001" / "snapshot.json"
             payload = json.loads(path.read_text(encoding="utf-8"))
-            payload["case_ids"][1] = duplicate_company.case_id
+            payload["random_case_ids"][1] = duplicate_company.case_id
+            payload["case_ids"][len(snapshot.anchor_case_ids) + 1] = (
+                duplicate_company.case_id
+            )
             unhashed = {key: value for key, value in payload.items() if key != "snapshot_id"}
             payload["snapshot_id"] = hashlib.sha256(
                 json.dumps(
@@ -960,7 +970,9 @@ class EvaluationDatasetSamplingTests(TestCase):
             ).hexdigest()
             path.write_text(json.dumps(payload), encoding="utf-8")
 
-            restarted = EvaluationDatasetManager(root, (*pool, duplicate_company))
+            restarted = EvaluationDatasetManager(
+                root, (*pool, duplicate_company), anchors
+            )
             with self.assertRaisesRegex(ValidationError, "sampling contract"):
                 restarted.get_or_create_round_dataset(1)
 
@@ -985,6 +997,7 @@ class EvaluationDatasetSamplingTests(TestCase):
                 EvaluationDatasetManager(
                     Path(directory),
                     (shared_one, shared_two, positive),
+                    make_anchor_pool(),
                     PlanEvaluationConfig(),
                 )
 
@@ -1435,6 +1448,7 @@ class PlanEvolutionEngineTests(TestCase):
             result = engine.run_round(
                 round_id=1,
                 validation_cases=make_evaluation_pool(),
+                anchor_cases=make_anchor_pool(),
                 signal_snapshot=registry.freeze(),
             )
 
@@ -1448,15 +1462,37 @@ class PlanEvolutionEngineTests(TestCase):
                 records["plan_child_3"].evaluation.evaluation_stage,
                 "round",
             )
-            self.assertEqual(records["plan_child_3"].evaluation.n_cases, 20)
+            self.assertEqual(records["plan_child_3"].evaluation.n_cases, 24)
             self.assertFalse(records["plan_child_3"].fitness.eligible)
             self.assertIn("no_positive_prediction", records["plan_child_3"].fitness.reasons)
             self.assertEqual(records["plan_child_3"].metrics.predicted_positive_count, 0)
             self.assertFalse(records["plan_child_3"].metrics.precision_defined)
             evaluated = records["plan_child_1"]
             self.assertEqual(evaluated.evaluation.evaluation_stage, "round")
-            self.assertEqual(evaluated.evaluation.n_cases, 20)
+            self.assertEqual(evaluated.evaluation.n_cases, 24)
             self.assertEqual(evaluated.metrics, score_predictions(evaluated.trajectories))
+            self.assertEqual(
+                set(evaluated.evaluation.metrics_by_cohort),
+                {"anchor", "random", "combined"},
+            )
+            self.assertEqual(
+                evaluated.evaluation.metrics_by_cohort["combined"],
+                evaluated.metrics,
+            )
+            anchor_metrics = score_predictions(evaluated.trajectories[:16])
+            random_metrics = score_predictions(evaluated.trajectories[16:])
+            self.assertEqual(
+                evaluated.evaluation.metrics_by_cohort["anchor"],
+                anchor_metrics,
+            )
+            self.assertEqual(
+                evaluated.evaluation.metrics_by_cohort["random"],
+                random_metrics,
+            )
+            self.assertNotEqual(
+                evaluated.metrics.binary_f1,
+                (anchor_metrics.binary_f1 + random_metrics.binary_f1) / 2,
+            )
             saved = json.loads(
                 (
                     workspace.plans_root
@@ -1465,7 +1501,7 @@ class PlanEvolutionEngineTests(TestCase):
                 ).read_text()
             )
             self.assertEqual(saved["evaluation_stage"], "round")
-            self.assertEqual(saved["n_cases"], 20)
+            self.assertEqual(saved["n_cases"], 24)
             self.assertEqual(len(saved["dataset_snapshot_ids"]), 1)
 
     def test_non_content_pause_is_not_converted_to_candidate_rejection(self) -> None:
@@ -1498,6 +1534,7 @@ class PlanEvolutionEngineTests(TestCase):
                 engine.run_round(
                     round_id=1,
                     validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1535,6 +1572,7 @@ class PlanEvolutionEngineTests(TestCase):
                 engine.run_round(
                     round_id=1,
                     validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1576,6 +1614,7 @@ class PlanEvolutionEngineTests(TestCase):
             result = engine.run_round(
                 round_id=1,
                 validation_cases=cases,
+                anchor_cases=make_anchor_pool(),
                 signal_snapshot=registry.freeze(),
             )
             self.assertEqual(len(proposer.calls), 2)
@@ -1594,7 +1633,7 @@ class PlanEvolutionEngineTests(TestCase):
                 self.assertEqual(record.metrics.binary_f1, 1.0)
                 self.assertTrue(record.reflection.successful_patterns)
                 self.assertIn("revenue_growth_yoy:v1", record.signal_usage)
-                self.assertEqual(len(record.trajectories), 20)
+                self.assertEqual(len(record.trajectories), 24)
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(workspace.restore_archive().records), 2)
             self.assertEqual(meta.entries[0].evidence_refs, ("plan_child_1", "plan_child_2"))
@@ -1612,8 +1651,8 @@ class PlanEvolutionEngineTests(TestCase):
             )
             self.assertIn("basic_info_requests", proposed["plan_summary"])
             stats = registry.load_stats("revenue_growth_yoy")
-            self.assertEqual(stats.retrieved, 40)
-            self.assertEqual(stats.executed, 40)
+            self.assertEqual(stats.retrieved, 48)
+            self.assertEqual(stats.executed, 48)
             PlanEvolutionEngine(
                 archive=workspace.restore_archive(),
                 meta_memory=workspace.restore_meta(),
@@ -1627,8 +1666,8 @@ class PlanEvolutionEngineTests(TestCase):
                 candidates_per_round=1,
             )
             reconciled = registry.load_stats("revenue_growth_yoy")
-            self.assertEqual(reconciled.retrieved, 40)
-            self.assertEqual(reconciled.executed, 40)
+            self.assertEqual(reconciled.retrieved, 48)
+            self.assertEqual(reconciled.executed, 48)
 
     def test_round_meta_cannot_cite_old_or_unrelated_experiment(self) -> None:
         class BadReflector(SimpleRoundReflector):
@@ -1655,6 +1694,7 @@ class PlanEvolutionEngineTests(TestCase):
                 engine.run_round(
                     round_id=1,
                     validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
                     signal_snapshot=registry.freeze(),
                 )
             self.assertEqual(workspace.last_completed_round, 0)
@@ -1986,6 +2026,7 @@ class DualLoopTests(TestCase):
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
+                anchor=make_anchor_pool(),
                 evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
@@ -1999,8 +2040,8 @@ class DualLoopTests(TestCase):
             self.assertEqual(len(result.plan_rounds), 1)
             self.assertEqual(result.signal_evolution.promoted, ())
             self.assertEqual(workspace.last_completed_round, 1)
-            self.assertEqual(len(evaluator.seen_company_ids), 20)
-            self.assertEqual(len(set(evaluator.seen_company_ids)), 20)
+            self.assertEqual(len(evaluator.seen_company_ids), 24)
+            self.assertEqual(len(set(evaluator.seen_company_ids)), 24)
             self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
 
     def test_next_cycle_uses_promoted_registry_without_reevaluating_old_plans(self) -> None:
@@ -2074,6 +2115,7 @@ class DualLoopTests(TestCase):
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
+                anchor=make_anchor_pool(),
                 evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
@@ -2135,7 +2177,7 @@ class DualLoopTests(TestCase):
             self.assertNotIn(new_spec.ref, evaluator.seen_registry_refs[0])
             self.assertIn(new_spec.ref, evaluator.seen_registry_refs[1])
             self.assertEqual(len(evaluator.seen_registry_refs), 2)
-            self.assertEqual(len(evaluator.seen_company_ids), 40)
+            self.assertEqual(len(evaluator.seen_company_ids), 48)
             self.assertEqual(len(plan_engine.archive.records), 2)
             self.assertEqual(old_record.metrics.binary_f1, old_f1)
             self.assertIn(old_record.plan_id, proposer.calls[1]["parents"])
@@ -2222,6 +2264,7 @@ class DualLoopTests(TestCase):
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
+                anchor=make_anchor_pool(),
                 evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
@@ -2241,7 +2284,7 @@ class DualLoopTests(TestCase):
             self.assertFalse(
                 (workspace.evaluation_root / "round_002" / "champion.json").exists()
             )
-            self.assertEqual(len(evaluator.seen_company_ids), 20)
+            self.assertEqual(len(evaluator.seen_company_ids), 24)
 
 
 def make_evaluation_pool() -> tuple[EvolutionCase, ...]:
@@ -2255,6 +2298,20 @@ def make_evaluation_pool() -> tuple[EvolutionCase, ...]:
     for label, count, multiple in label_inputs:
         for index in range(count):
             cases.append(make_case(f"{label}_{index:02d}", multiple))
+    return tuple(cases)
+
+
+def make_anchor_pool() -> tuple[EvolutionCase, ...]:
+    cases = []
+    label_inputs = (
+        ("non_surge", 7, 1.2),
+        ("2_3x", 5, 2.5),
+        ("3_10x", 3, 5.0),
+        ("10x_plus", 1, 12.0),
+    )
+    for label, count, multiple in label_inputs:
+        for index in range(count):
+            cases.append(make_case(f"anchor_{label}_{index:02d}", multiple))
     return tuple(cases)
 
 

@@ -1,0 +1,71 @@
+{
+  "schema_version": "information-plan-anchor-spec-v1",
+  "anchor_id": "information-plan-anchor-2026h1-v1",
+  "review_basis": "user-confirmed design on 2026-08-16; exact labels must be recomputed from the bound adjusted-price archive",
+  "positive_cases": [
+    {
+      "symbol": "CIEN",
+      "prediction_date": "2025-09-30",
+      "expected_label": "2_3x",
+      "match_control": true,
+      "rationale": "AI and cloud optical-network capacity transmission"
+    },
+    {
+      "symbol": "FTAI",
+      "prediction_date": "2025-07-31",
+      "expected_label": "2_3x",
+      "match_control": true,
+      "rationale": "aircraft-engine aftermarket scarcity and maintenance capacity"
+    },
+    {
+      "symbol": "ATI",
+      "prediction_date": "2025-09-30",
+      "expected_label": "2_3x",
+      "match_control": true,
+      "rationale": "aerospace and defense specialty-material demand"
+    },
+    {
+      "symbol": "NEM",
+      "prediction_date": "2025-07-31",
+      "expected_label": "2_3x",
+      "match_control": true,
+      "rationale": "gold-price transmission into free cash flow and capital return"
+    },
+    {
+      "symbol": "MP",
+      "prediction_date": "2025-03-31",
+      "expected_label": "2_3x",
+      "match_control": true,
+      "rationale": "critical-mineral localization and policy support"
+    },
+    {
+      "symbol": "SNDK",
+      "prediction_date": "2025-09-30",
+      "expected_label": "3_10x",
+      "match_control": false,
+      "rationale": "NAND supply-demand reversal and AI data-center storage"
+    },
+    {
+      "symbol": "MU",
+      "prediction_date": "2025-07-31",
+      "expected_label": "3_10x",
+      "match_control": false,
+      "rationale": "HBM and DRAM AI-memory cycle"
+    },
+    {
+      "symbol": "PRAX",
+      "prediction_date": "2025-09-30",
+      "expected_label": "3_10x",
+      "match_control": true,
+      "rationale": "pivotal clinical readout and filing expectation"
+    },
+    {
+      "symbol": "ONDS",
+      "prediction_date": "2025-05-30",
+      "expected_label": "10x_plus",
+      "match_control": true,
+      "rationale": "autonomous-system orders, backlog, and government demand"
+    }
+  ],
+  "spec_hash": "45425c21cdd72537a5d798698c6d24586ac43448d3bea21b2d9065ccf12c174b"
+}

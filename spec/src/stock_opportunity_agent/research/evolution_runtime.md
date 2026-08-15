@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - v4 cumulative Signal-transition contract implemented
+Ready - v5 Anchor/Random cumulative Signal-transition contract implemented
 
 ## Purpose
 
@@ -26,10 +26,10 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - code revision and Python runtime;
 - candidate/round/runtime limits, including a parent-selection seed used
   deterministically with each round id;
-- a mandatory Fast-loop evaluation contract containing 20 exact cases,
-  `8/6/4/2` label counts, primary and secondary metrics, the per-company cap,
-  deterministic rotation seed, fitness eligibility, and bounded proposal/
-  correction counts;
+- a mandatory Fast-loop evaluation contract containing 16 fixed Anchor cases
+  (`7/5/3/1`) plus 8 deterministic round-Random cases (`3/2/2/1`), primary and
+  secondary metrics, the cross-cohort per-company cap, deterministic rotation
+  seed, fitness eligibility, and bounded proposal/correction counts;
 - role sampling settings: Plan proposer temperature `1.0`, judge temperature
   `0.0`;
 - maximum external attempts and cumulative cost;
@@ -42,7 +42,7 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Only `evolution-run-contract-v4` may execute. Older frozen contracts remain
+Only `evolution-run-contract-v5` may execute. Older frozen contracts remain
 readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
 default. Before the first cycle creates requests or execution artifacts,
@@ -52,7 +52,7 @@ stable snapshot against the last committed cycle output, not against the
 initial contract snapshot. Evaluation snapshots are immutable recovery inputs
 under the run workspace. Their existence does not prove round completion or
 advance `state.json:last_completed_round`.
-For v4, both model roles, code/runtime identities, and every consumed limit are
+For v5, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
@@ -206,28 +206,39 @@ The expansion command must:
 
 - require an explicit list of shared calendar prediction dates and compute the
   active six-month five-day-smoothed label independently at every date;
-- require complete baseline and forward-price eligibility at every requested
-  date, rather than silently producing different case counts per issuer;
-- exclude a listing when any requested prediction date precedes its recorded
-  IPO/listing date, because pre-listing prices may belong to a reused ticker or
-  a different historical security identity;
+- evaluate baseline, forward-price, listing-date, liquidity, and adjusted-price
+  integrity independently at each requested date; record every failed date and
+  retain the issuer when at least one case is eligible;
+- exclude each case whose prediction date precedes the recorded IPO/listing
+  date, because pre-listing prices may belong to a reused ticker or a different
+  historical security identity;
 - deduplicate issuers by CIK when available and otherwise use a stable symbol
   identity;
+- reapply a fail-closed normal-stock gate after loading the saved universe:
+  resolved CIK, active common equity, supported US exchange, non-SPAC operating
+  issuer, at least `$1m` pre-prediction average daily dollar volume at every
+  admitted case date, and no extreme adjusted-price discontinuity over a label
+  window;
 - classify issuers into `<1.5x`, `1.5-<2x`, `2-<3x`, `3-<10x`, and `10x+`
   maximum-multiple strata across the requested dates;
 - include every eligible deduplicated issuer by default, preserving the
   resulting natural stratum counts instead of applying a fixed issuer cap or
   outcome-enrichment weights;
-- split by issuer and selection stratum so no issuer crosses Discovery,
-  Evolution Validation, or Locked Test ownership; and
+- materialize the reviewed positive Anchor symbol/date list, deterministically
+  match and freeze seven non-surge controls, remove every Anchor issuer, then
+  split the remainder by issuer and selection stratum so no issuer crosses
+  Anchor, Discovery, Evolution Validation, or Locked Test ownership; and
+- retain at least two Evolution Validation issuers in a stratum whenever four
+  or more eligible issuers exist, while retaining at least one Locked Test
+  issuer, so a rare Random label does not rotate dates from only one company;
 - record source hashes, exact prediction dates, selection mode,
   available/selected strata, exclusions, seed, and the eligibility boundary.
 
 This is a label-aware retrospective dataset-construction step. Outcome labels
 define strata and support issuer-stratified ownership, but they never select a
 smaller default library and never enter Raw Info or prediction requests. The
-Fast loop separately imposes its exact `8/6/4/2` round mix, so development F1 is
-still a controlled comparison metric rather than an estimate of live-market
+Fast loop separately imposes its exact Anchor `7/5/3/1` plus Random `3/2/2/1`
+mix, so development F1 is still a controlled comparison metric rather than an estimate of live-market
 prevalence or expected returns. A direct library call may request an explicit
 smaller stratified cap for bounded fixtures or diagnostics, but the operator CLI
 does not expose that legacy production default and the proposal records the cap
@@ -240,6 +251,13 @@ reviewed exact issuer manifest, never by indiscriminately fetching the full
 listed universe. It also emits a label-free acquisition scope containing only
 company/CIK/ticker identities and required as-of dates. Data backfill jobs may
 consume that scope without learning outcome strata or split ownership.
+
+The v5 approval command accepts only the expanded proposal schema with its
+machine-verified normal-stock gate. Before writing an approved manifest it
+rechecks the Anchor and Evolution Validation hashes and runs the exact
+`7/5/3/1` Anchor plus `3/2/2/1` Random feasibility preflight. A legacy or
+Anchor-free proposal can remain audit evidence but cannot acquire a misleading
+`human_approved` status under the current runtime.
 
 ### Historical Identity Decisions
 
@@ -289,6 +307,6 @@ exact Slow-validation and transition recovery, cumulative historical Plan
 selection across Registry versions without reevaluation, local artifact
 inventory, missing paths, and Locked Test sealing.
 Full-market expansion tests additionally cover fixed-date labels, incomplete
-issuer exclusion, CIK deduplication, deterministic weighted/diversity sampling,
+case exclusion with eligible-issuer retention, CIK deduplication, deterministic weighted/diversity sampling,
 issuer-disjoint stratified splits, hashed official-source identity decisions,
 date-bound CIK replacement/exclusion, immutable replay, and zero external calls.

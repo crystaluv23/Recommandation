@@ -1,6 +1,6 @@
 # Full-Market Case Expansion Boundaries
 
-visit_times: 5
+visit_times: 6
 
 ## Trigger
 
@@ -12,7 +12,10 @@ changing expansion strata/dates, or acquiring data for an expanded case set.
 Do not turn a full-market price archive into more cases by merely increasing the
 old extreme-return winner/control/failure caps. Use shared predeclared calendar
 dates, recompute the active label independently at every date, deduplicate by
-issuer, and preserve issuer-disjoint ownership. When the Fast evaluator already
+issuer, and preserve issuer-disjoint ownership. Apply listing-date, liquidity,
+label-window, and price-integrity eligibility per case: rejecting an entire
+issuer because one earlier date fails can silently empty the rare-class pool.
+When the Fast evaluator already
 imposes a fixed label mix per round, the master library should preserve every
 eligible issuer instead of applying a second outcome-enriched cap. A deliberately
 capped diagnostic proposal remains biased and its prevalence cannot be presented
@@ -67,16 +70,26 @@ split. Evolution Validation consequently grew from 60 to 1,025 issuers. Its
 eliminate rare-class reuse; run planning must disclose that capacity rather than
 claiming indefinite fresh sampling.
 
+The 2026-08-16 v12 proposal added a normal-stock gate and fixed 16-case Anchor.
+An initial rectangular all-dates gate left no non-Anchor `10x_plus` issuer;
+case-level eligibility instead retained 3,511 normal eligible issuers and 14,575
+cases while recording each rejected date. Five non-Anchor `10x_plus` issuers
+remained. A rare-stratum split safeguard assigned two of them to Evolution
+Validation, allowing Random rotation across companies while keeping Locked Test
+non-empty.
+
 ## How to Apply
 
 1. Fix calendar prediction dates before scanning outcomes.
-2. Require complete label eligibility at every date for a rectangular panel.
-3. Reject any prediction before recorded IPO/listing date.
+2. Evaluate every shared date independently; retain an issuer with at least one
+   eligible case and record rejected dates explicitly.
+3. Reject each prediction before the recorded IPO/listing date.
 4. Deduplicate by CIK when available; validate historical registrant/ticker and
    security type before dataset approval.
 5. Include all eligible issuers by default and record identical available and
    selected outcome strata; use an explicit cap only for bounded diagnostics.
-6. Split by issuer and stratum, never by individual case.
+6. Split by issuer and stratum, never by individual case; when capacity permits,
+   keep at least two rare-stratum issuers in Evolution Validation for rotation.
 7. Hand providers only a label-free, split-free acquisition scope.
 8. Keep API requests exact, cached, quota-bounded, and resumable.
 9. Derive SEC history files only from cached `filings.files` references, then

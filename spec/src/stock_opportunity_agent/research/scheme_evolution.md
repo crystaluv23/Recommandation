@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - strict v4 cumulative dual-loop transition implemented
+Ready - strict v5 Anchor/Random cumulative dual-loop transition implemented
 
 ## Purpose
 
@@ -186,57 +186,94 @@ distinct from `company_id`; prediction artifacts, label closures, tool access,
 and statistics use `case_id`. Repeated as-of cases for one issuer must not cross
 dataset ownership boundaries, and no two observations may share a `case_id`.
 
-The full-market construction path includes every issuer that passes its
-price-window, listing-date, label, deduplication, and applied identity-decision
-gates before the issuer-level three-way split. It must not first cap the library
-or enrich it by outcome class. Historical identity and security-type review
-remain approval gates rather than silent construction assumptions. The resulting
-Evolution Validation share is the Fast-loop candidate pool. Its stored class
-prevalence is descriptive; the controlled fitness mix is imposed only when a
-round snapshot is sampled.
+The full-market construction path includes every deduplicated issuer whose
+security identity passes the normal-operating-common-stock gate and that has at
+least one fixed-calendar case passing the price-window, listing-date, label,
+minimum-liquidity, and adjusted-price-integrity gates. It must not first cap the
+library or enrich it by outcome class. Eligibility is case-level: an issuer is
+not discarded merely because an earlier shared date predates its IPO or lacks
+enough liquidity, but that failing date never becomes a case. A case is admitted
+only when the listing
+is active common equity on NASDAQ/NYSE/NYSE MKT/AMEX, has a resolved CIK and a
+valid listing date, is not an exchange-traded product, preferred/debt/security
+variant, test symbol, SPAC/blank-check issuer, or other non-operating shell, has
+at least `$1m` average pre-prediction daily dollar volume for every admitted
+prediction date, and has no `>=4x` or `<=0.25x` consecutive adjusted-close jump
+from the baseline lookback through the six-month label horizon. The last rule is
+a conservative corporate-action/data-discontinuity gate; it may exclude a real
+event rather than silently admit a split/relisting artifact.
+
+The fixed Anchor issuers are assigned first and removed from all other ownership
+sets. Remaining eligible issuers are then split into Discovery, Evolution
+Validation, and Locked Test. A stratum with at least four eligible issuers gives
+Evolution Validation at least two issuer identities while keeping Locked Test
+non-empty; this is a rare-class rotation safeguard, not outcome enrichment.
+The resulting Evolution Validation share is the
+Fast-loop Random candidate pool. Its stored class prevalence is descriptive;
+controlled balancing occurs only in the frozen Anchor and per-round Random
+snapshots.
 
 ### Fast-loop evaluation sampling
 
-Information Plan evolution evaluates only within the human-approved Evolution
-Validation pool. It does not use the Locked Test and it does not try to mirror
-the extreme class imbalance of the live market. The fixed development target is
-exactly 20 cases per round: `8 non_surge / 6 2_3x / 4 3_10x / 2 10x_plus`, with
-Binary F1 as the selection metric. Binary precision/recall and magnitude
-macro-F1/accuracy remain diagnostics. All Plans in one round use the same
-snapshot. The sampling unit is `(company_id, prediction_time)`, represented by
-`case_id`, and at most one case per company is selected per round.
+Information Plan evolution uses one human-approved fixed Anchor split plus the
+human-approved Evolution Validation pool. It does not use the Locked Test and
+does not try to mirror the extreme class imbalance of the live market. Every
+round evaluates exactly 24 cases:
 
-There is no fixed Anchor, Promotion stage, or champion rerun. Every round
-deterministically pseudo-randomizes and rotates all 20 cases; ordinary execution
-does not use process-global nondeterministic randomness. Within each label the
-order prefers cases with the
-fewest prior selections, then the least recent selection, then a
+- Anchor 16: `7 non_surge / 5 2_3x / 3 3_10x / 1 10x_plus`;
+- Random 8: `3 non_surge / 2 2_3x / 2 3_10x / 1 10x_plus`; and
+- Combined 24: `10 non_surge / 7 2_3x / 5 3_10x / 2 10x_plus`.
+
+The nine positive Anchor cases are an explicitly reviewed symbol/date list.
+The seven negative Anchor cases are selected once during proposal creation from
+normal eligible non-surge cases by deterministic prediction-date and historical
+dollar-liquidity matching, then written into the immutable Anchor artifact.
+Changing any Anchor case creates a new dataset proposal/hash and a new run
+contract; an active workspace never resamples it.
+
+Every round deterministically pseudo-randomizes and rotates only the eight
+Random cases; ordinary execution does not use process-global nondeterministic
+randomness. Within each label the order prefers cases with the fewest prior
+Random selections, then the least recent selection, then a
 `base_seed + round_id + case_id` hash. A shortage in any exact label count or in
-distinct issuers fails preflight before any external request; the sampler never
-duplicates, silently backfills another label, or emits fewer than 20 cases.
+distinct issuers fails preflight before any external request. The sampler never
+duplicates, silently backfills another label, emits fewer than 24 combined
+cases, or selects an Anchor issuer into Random.
+
+Binary F1 is the parent-selection metric. Each Plan persists Anchor, Random, and
+Combined metrics. Combined precision, recall, F1, magnitude macro-F1, and
+accuracy are recomputed from all 24 saved predictions. In particular, Combined
+F1 is not `w_anchor * anchor_f1 + w_random * random_f1`; it is calculated from
+the combined TP/FP/FN counts. Anchor F1 is the stable cross-round reference,
+Random F1 diagnoses generalization/noise, and Combined F1 determines Top-K.
 
 Evaluation sampling is frozen below the evolution workspace:
 
 ```text
 evaluation/
+  anchor.json
   round_001/
     snapshot.json
 ```
 
-Snapshots contain their deterministic snapshot id, seed, target and actual
-label counts, and ordered case ids. Existing snapshots are loaded before any
-sampling. A missing or changed case referenced by a durable snapshot is an
-error, not a reason to resample. Per-Plan diagnostic records persist all case
-attempts and failure reasons. Fitness records additionally persist all 20 case
-ids, their snapshot id, metrics, evidence-coverage counts, predicted-positive
-count, and eligibility decision.
+`anchor.json` contains the exact approved 16 case ids, counts, and dataset-bound
+hash. Round snapshots reference that Anchor hash and contain the exact eight
+Random case ids, combined ordered case ids, seed, and target/actual counts for
+all three cohorts. Existing snapshots are loaded before any sampling. A missing
+or changed case referenced by a durable snapshot is an error, not a reason to
+resample. Per-Plan diagnostic records persist all case attempts and failure
+reasons. Fitness records additionally persist all 24 case ids, snapshot ids,
+the three metric groups, evidence-coverage counts, predicted-positive count,
+and eligibility decision.
+
 Loading revalidates the same invariants as creation: exact round and seed,
-target and actual `8/6/4/2` counts, unique case ids, and one distinct company per
-case. A self-consistent snapshot hash cannot weaken these evaluation rules.
+Anchor `7/5/3/1`, Random `3/2/2/1`, Combined `10/7/5/2`, unique case ids, one
+distinct company per case across both cohorts, and exact Anchor identity. A
+self-consistent snapshot hash cannot weaken these evaluation rules.
 
 ### Fitness eligibility
 
-Metrics are calculated only for a complete 20-case prediction set. Each case
+Metrics are calculated only for a complete 24-case prediction set. Each case
 must reach `finalize`, persist its prediction before label reveal, and contain at
 least one exact Basic Info span or one non-unavailable Signal result backed by
 validated source evidence. Incomplete or invalid candidates remain durable
@@ -507,7 +544,7 @@ does not widen the frozen attempt or cost ceilings.
 
 `scripts/run_information_plan_evolution.sh` is the stable operator-facing
 launcher. `new` requires an unused workspace, the global Raw Info oracle, and an
-already human-approved feasible dataset; it initializes and freezes one v4
+already human-approved feasible dataset; it initializes and freezes one v5
 contract, then stops at the first exact-request approval boundary without
 external execution. `resume` requires the same workspace/oracle/dataset and
 derives progress only from committed pointers. External execution is available

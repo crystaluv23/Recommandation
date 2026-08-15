@@ -1385,14 +1385,16 @@ class EvolutionCase:
 
 @dataclass(frozen=True)
 class EvolutionDataset:
-    """Issuer-disjoint Discovery, Evolution Validation, and Locked Test sets."""
+    """Issuer-disjoint Discovery, Anchor, Validation, and Locked Test sets."""
 
     discovery: tuple[EvolutionCase, ...]
+    anchor: tuple[EvolutionCase, ...]
     evolution_validation: tuple[EvolutionCase, ...]
     locked_test: tuple[EvolutionCase, ...]
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "discovery", tuple(self.discovery))
+        object.__setattr__(self, "anchor", tuple(self.anchor))
         object.__setattr__(
             self, "evolution_validation", tuple(self.evolution_validation)
         )
@@ -1401,6 +1403,7 @@ class EvolutionDataset:
         seen_case_ids: set[str] = set()
         for split_name, cases in (
             ("discovery", self.discovery),
+            ("anchor", self.anchor),
             ("evolution_validation", self.evolution_validation),
             ("locked_test", self.locked_test),
         ):
@@ -1418,10 +1421,22 @@ class EvolutionDataset:
 
 
 EVALUATION_LABELS = ("non_surge", "2_3x", "3_10x", "10x_plus")
+DEFAULT_ANCHOR_LABEL_COUNTS = {
+    "non_surge": 7,
+    "2_3x": 5,
+    "3_10x": 3,
+    "10x_plus": 1,
+}
+DEFAULT_RANDOM_LABEL_COUNTS = {
+    "non_surge": 3,
+    "2_3x": 2,
+    "3_10x": 2,
+    "10x_plus": 1,
+}
 DEFAULT_EVALUATION_LABEL_COUNTS = {
-    "non_surge": 8,
-    "2_3x": 6,
-    "3_10x": 4,
+    "non_surge": 10,
+    "2_3x": 7,
+    "3_10x": 5,
     "10x_plus": 2,
 }
 DEFAULT_EVALUATION_SECONDARY_METRICS = (
@@ -1434,11 +1449,19 @@ DEFAULT_EVALUATION_SECONDARY_METRICS = (
 
 @dataclass(frozen=True)
 class PlanEvaluationConfig:
-    """Exact one-stage Fast-loop evaluation and fitness contract."""
+    """Fixed-Anchor plus round-Random Fast-loop evaluation contract."""
 
-    cases_per_round: int = 20
+    cases_per_round: int = 24
     label_counts: Mapping[str, int] = field(
         default_factory=lambda: dict(DEFAULT_EVALUATION_LABEL_COUNTS)
+    )
+    anchor_cases: int = 16
+    anchor_label_counts: Mapping[str, int] = field(
+        default_factory=lambda: dict(DEFAULT_ANCHOR_LABEL_COUNTS)
+    )
+    random_cases: int = 8
+    random_label_counts: Mapping[str, int] = field(
+        default_factory=lambda: dict(DEFAULT_RANDOM_LABEL_COUNTS)
     )
     primary_metric: str = "binary_f1"
     secondary_metrics: tuple[str, ...] = DEFAULT_EVALUATION_SECONDARY_METRICS
@@ -1451,13 +1474,40 @@ class PlanEvaluationConfig:
 
     def __post_init__(self) -> None:
         counts = {str(key): int(value) for key, value in self.label_counts.items()}
-        if set(counts) != set(EVALUATION_LABELS):
-            raise ValidationError("evaluation label counts must name all four labels")
-        if any(value < 1 for value in counts.values()):
-            raise ValidationError("evaluation label counts must be positive")
+        anchor_counts = {
+            str(key): int(value) for key, value in self.anchor_label_counts.items()
+        }
+        random_counts = {
+            str(key): int(value) for key, value in self.random_label_counts.items()
+        }
+        if any(
+            set(group) != set(EVALUATION_LABELS)
+            for group in (counts, anchor_counts, random_counts)
+        ):
+            raise ValidationError("evaluation counts must name all four labels")
+        if any(
+            value < 1
+            for group in (counts, anchor_counts, random_counts)
+            for value in group.values()
+        ):
+            raise ValidationError("evaluation counts must be positive")
         if self.cases_per_round < 1 or sum(counts.values()) != self.cases_per_round:
             raise ValidationError(
                 "evaluation label counts must sum to cases_per_round"
+            )
+        if self.anchor_cases < 1 or sum(anchor_counts.values()) != self.anchor_cases:
+            raise ValidationError("Anchor counts must sum to anchor_cases")
+        if self.random_cases < 1 or sum(random_counts.values()) != self.random_cases:
+            raise ValidationError("Random counts must sum to random_cases")
+        if self.anchor_cases + self.random_cases != self.cases_per_round:
+            raise ValidationError("Anchor and Random sizes must sum to cases_per_round")
+        combined = {
+            label: anchor_counts[label] + random_counts[label]
+            for label in EVALUATION_LABELS
+        }
+        if counts != combined:
+            raise ValidationError(
+                "combined evaluation counts must equal Anchor plus Random counts"
             )
         if self.primary_metric != "binary_f1":
             raise ValidationError("Plan evolution primary metric must be binary_f1")
@@ -1466,8 +1516,10 @@ class PlanEvaluationConfig:
         if self.max_proposal_attempts_per_slot < 1:
             raise ValidationError("proposal attempts per slot must be positive")
         if self.max_structured_corrections != 1:
-            raise ValidationError("v3 requires exactly one structured correction")
+            raise ValidationError("v5 requires exactly one structured correction")
         object.__setattr__(self, "label_counts", counts)
+        object.__setattr__(self, "anchor_label_counts", anchor_counts)
+        object.__setattr__(self, "random_label_counts", random_counts)
         object.__setattr__(
             self,
             "secondary_metrics",
@@ -1478,6 +1530,14 @@ class PlanEvaluationConfig:
         return {
             "cases_per_round": self.cases_per_round,
             "label_counts": dict(self.label_counts),
+            "anchor": {
+                "case_count": self.anchor_cases,
+                "label_counts": dict(self.anchor_label_counts),
+            },
+            "random": {
+                "case_count": self.random_cases,
+                "label_counts": dict(self.random_label_counts),
+            },
             "primary_metric": self.primary_metric,
             "secondary_metrics": list(self.secondary_metrics),
             "max_cases_per_company_per_round": (
@@ -1498,27 +1558,40 @@ class PlanEvaluationConfig:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PlanEvaluationConfig":
-        required = {"cases_per_round", "label_counts", "fitness_gate", "proposal"}
+        required = {
+            "cases_per_round",
+            "label_counts",
+            "anchor",
+            "random",
+            "fitness_gate",
+            "proposal",
+        }
         missing = sorted(required - set(data))
         if missing:
             raise ValidationError(
-                "v3 evaluation contract is missing: " + ", ".join(missing)
+                "v5 evaluation contract is missing: " + ", ".join(missing)
             )
         gate = dict(data["fitness_gate"])
         proposal = dict(data["proposal"])
+        anchor = dict(data["anchor"])
+        random_group = dict(data["random"])
         if not _json_boolean(
             gate.get("require_predicted_positive", False),
             "fitness require_predicted_positive",
         ):
-            raise ValidationError("v3 fitness requires at least one positive prediction")
+            raise ValidationError("v5 fitness requires at least one positive prediction")
         if not _json_boolean(
             gate.get("require_true_positive", False),
             "fitness require_true_positive",
         ):
-            raise ValidationError("v3 fitness requires at least one true positive")
+            raise ValidationError("v5 fitness requires at least one true positive")
         return cls(
             cases_per_round=int(data["cases_per_round"]),
             label_counts=dict(data["label_counts"]),
+            anchor_cases=int(anchor["case_count"]),
+            anchor_label_counts=dict(anchor["label_counts"]),
+            random_cases=int(random_group["case_count"]),
+            random_label_counts=dict(random_group["label_counts"]),
             primary_metric=str(data.get("primary_metric", "binary_f1")),
             secondary_metrics=tuple(
                 str(item)
@@ -1589,30 +1662,44 @@ class EvaluationDatasetInfeasible(ValidationError):
 
 @dataclass(frozen=True)
 class EvaluationDatasetSnapshot:
-    """Immutable exact case-id snapshot shared by all Plans in one round."""
+    """Immutable Anchor plus Random case-id snapshot shared by one round."""
 
     snapshot_id: str
     round_id: int
     random_seed: int
+    anchor_snapshot_id: str
     target_counts: Mapping[str, int]
     actual_counts: Mapping[str, int]
+    anchor_target_counts: Mapping[str, int]
+    anchor_actual_counts: Mapping[str, int]
+    random_target_counts: Mapping[str, int]
+    random_actual_counts: Mapping[str, int]
+    anchor_case_ids: tuple[str, ...]
+    random_case_ids: tuple[str, ...]
     case_ids: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "plan-evaluation-dataset-v2",
+            "schema_version": "plan-evaluation-dataset-v3",
             "snapshot_id": self.snapshot_id,
             "stage": "round",
             "round_id": self.round_id,
             "random_seed": self.random_seed,
+            "anchor_snapshot_id": self.anchor_snapshot_id,
             "target_counts": dict(self.target_counts),
             "actual_counts": dict(self.actual_counts),
+            "anchor_target_counts": dict(self.anchor_target_counts),
+            "anchor_actual_counts": dict(self.anchor_actual_counts),
+            "random_target_counts": dict(self.random_target_counts),
+            "random_actual_counts": dict(self.random_actual_counts),
+            "anchor_case_ids": list(self.anchor_case_ids),
+            "random_case_ids": list(self.random_case_ids),
             "case_ids": list(self.case_ids),
         }
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "EvaluationDatasetSnapshot":
-        if data.get("schema_version") != "plan-evaluation-dataset-v2":
+        if data.get("schema_version") != "plan-evaluation-dataset-v3":
             raise ValidationError("unsupported evaluation dataset snapshot schema")
         payload = dict(data)
         snapshot_id = str(payload.pop("snapshot_id", ""))
@@ -1622,6 +1709,7 @@ class EvaluationDatasetSnapshot:
             snapshot_id=snapshot_id,
             round_id=int(data["round_id"]),
             random_seed=int(data["random_seed"]),
+            anchor_snapshot_id=str(data["anchor_snapshot_id"]),
             target_counts={
                 str(key): int(value)
                 for key, value in dict(data.get("target_counts", {})).items()
@@ -1630,33 +1718,63 @@ class EvaluationDatasetSnapshot:
                 str(key): int(value)
                 for key, value in dict(data.get("actual_counts", {})).items()
             },
+            anchor_target_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("anchor_target_counts", {})).items()
+            },
+            anchor_actual_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("anchor_actual_counts", {})).items()
+            },
+            random_target_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("random_target_counts", {})).items()
+            },
+            random_actual_counts={
+                str(key): int(value)
+                for key, value in dict(data.get("random_actual_counts", {})).items()
+            },
+            anchor_case_ids=tuple(
+                str(item) for item in data.get("anchor_case_ids", ())
+            ),
+            random_case_ids=tuple(
+                str(item) for item in data.get("random_case_ids", ())
+            ),
             case_ids=tuple(str(item) for item in data.get("case_ids", ())),
         )
 
 
 class EvaluationDatasetManager:
-    """Create exact, fully rotating round snapshots with deterministic fairness."""
+    """Freeze Anchor and create exact rotating Random round snapshots."""
 
     def __init__(
         self,
         root: str | Path,
         pool: Iterable[EvolutionCase],
+        anchor_cases: Iterable[EvolutionCase],
         config: PlanEvaluationConfig = PlanEvaluationConfig(),
     ) -> None:
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.pool = tuple(pool)
+        self.anchor_cases = tuple(anchor_cases)
         self.config = config
-        self._cases_by_id = {case.case_id: case for case in self.pool}
-        if len(self._cases_by_id) != len(self.pool):
+        all_cases = (*self.anchor_cases, *self.pool)
+        self._cases_by_id = {case.case_id: case for case in all_cases}
+        if len(self._cases_by_id) != len(all_cases):
             raise ValidationError("evaluation pool contains duplicate case ids")
+        anchor_companies = {case.company_id for case in self.anchor_cases}
+        if anchor_companies & {case.company_id for case in self.pool}:
+            raise ValidationError("Anchor issuers must be absent from Random pool")
         if self.config.max_cases_per_company_per_round != 1:
-            raise ValidationError("v3 evaluation requires one case per company")
+            raise ValidationError("v5 evaluation requires one case per company")
+        self.anchor_snapshot_id = self._write_or_load_anchor()
         self.validate_feasibility()
 
     def validate_feasibility(self) -> None:
         """Prove the exact quotas can be assigned to distinct companies."""
 
+        self._validate_anchor_cases()
         self._select_exact_cases(round_id=1, history={})
 
     def get_or_create_round_dataset(
@@ -1666,7 +1784,7 @@ class EvaluationDatasetManager:
         if path.exists():
             return self._load_snapshot(path, round_id=round_id)
         seed = self.config.base_seed + round_id
-        cases = self._select_exact_cases(
+        random_cases = self._select_exact_cases(
             round_id=round_id,
             history=self._selection_history(before_round=round_id),
         )
@@ -1674,7 +1792,7 @@ class EvaluationDatasetManager:
             path,
             round_id=round_id,
             seed=seed,
-            cases=cases,
+            random_cases=random_cases,
         )
 
     def _selection_history(
@@ -1686,7 +1804,7 @@ class EvaluationDatasetManager:
             if snapshot_round >= before_round:
                 continue
             snapshot = self._load_snapshot(path, round_id=snapshot_round)
-            for case_id in snapshot.case_ids:
+            for case_id in snapshot.random_case_ids:
                 count, _last = history.get(case_id, (0, 0))
                 history[case_id] = (count + 1, snapshot.round_id)
         return history
@@ -1730,7 +1848,7 @@ class EvaluationDatasetManager:
         slots = [
             (label, index)
             for label in EVALUATION_LABELS
-            for index in range(int(self.config.label_counts[label]))
+            for index in range(int(self.config.random_label_counts[label]))
         ]
         slots.sort(
             key=lambda slot: (
@@ -1755,7 +1873,7 @@ class EvaluationDatasetManager:
 
         if any(not assign(slot, set()) for slot in slots):
             raise EvaluationDatasetInfeasible(
-                expected_counts=self.config.label_counts,
+                expected_counts=self.config.random_label_counts,
                 available_counts=_count_evaluation_labels(self.pool),
                 available_companies=len({case.company_id for case in self.pool}),
             )
@@ -1763,15 +1881,46 @@ class EvaluationDatasetManager:
         selected = tuple(
             best_case[(label, slot_company[(label, index)])]
             for label in EVALUATION_LABELS
-            for index in range(int(self.config.label_counts[label]))
+            for index in range(int(self.config.random_label_counts[label]))
         )
         if (
-            len(selected) != self.config.cases_per_round
-            or _count_evaluation_labels(selected) != dict(self.config.label_counts)
+            len(selected) != self.config.random_cases
+            or _count_evaluation_labels(selected)
+            != dict(self.config.random_label_counts)
             or len({case.company_id for case in selected}) != len(selected)
         ):
-            raise ValidationError("exact evaluation matching produced invalid output")
+            raise ValidationError("exact Random evaluation matching produced invalid output")
         return selected
+
+    def _validate_anchor_cases(self) -> None:
+        if (
+            len(self.anchor_cases) != self.config.anchor_cases
+            or _count_evaluation_labels(self.anchor_cases)
+            != dict(self.config.anchor_label_counts)
+            or len({case.company_id for case in self.anchor_cases})
+            != len(self.anchor_cases)
+        ):
+            raise ValidationError("Anchor cases violate the fixed evaluation contract")
+
+    def _write_or_load_anchor(self) -> str:
+        self._validate_anchor_cases()
+        payload = {
+            "schema_version": "plan-evaluation-anchor-v1",
+            "stage": "anchor",
+            "target_counts": dict(self.config.anchor_label_counts),
+            "actual_counts": _count_evaluation_labels(self.anchor_cases),
+            "case_ids": [case.case_id for case in self.anchor_cases],
+        }
+        envelope = {**payload, "snapshot_id": _canonical_hash(payload)}
+        path = self.root / "anchor.json"
+        _write_or_verify_json(path, envelope)
+        stored = _read_json(path)
+        stored_id = str(stored.get("snapshot_id", ""))
+        unhashed = dict(stored)
+        unhashed.pop("snapshot_id", None)
+        if stored_id != _canonical_hash(unhashed) or stored != envelope:
+            raise ValidationError("Anchor snapshot identity mismatch")
+        return stored_id
 
     def resolve_cases(self, case_ids: Iterable[str]) -> tuple[EvolutionCase, ...]:
         resolved: list[EvolutionCase] = []
@@ -1804,10 +1953,24 @@ class EvaluationDatasetManager:
         }
         if (
             snapshot.random_seed != self.config.base_seed + round_id
+            or snapshot.anchor_snapshot_id != self.anchor_snapshot_id
             or dict(snapshot.target_counts) != expected_counts
             or _count_evaluation_labels(cases) != dict(snapshot.actual_counts)
             or dict(snapshot.actual_counts) != expected_counts
             or len(cases) != self.config.cases_per_round
+            or tuple(snapshot.anchor_case_ids)
+            != tuple(case.case_id for case in self.anchor_cases)
+            or dict(snapshot.anchor_target_counts)
+            != dict(self.config.anchor_label_counts)
+            or dict(snapshot.anchor_actual_counts)
+            != dict(self.config.anchor_label_counts)
+            or len(snapshot.random_case_ids) != self.config.random_cases
+            or dict(snapshot.random_target_counts)
+            != dict(self.config.random_label_counts)
+            or dict(snapshot.random_actual_counts)
+            != dict(self.config.random_label_counts)
+            or tuple(snapshot.case_ids)
+            != (*snapshot.anchor_case_ids, *snapshot.random_case_ids)
             or len(set(snapshot.case_ids)) != len(snapshot.case_ids)
             or len({case.company_id for case in cases}) != len(cases)
         ):
@@ -1822,18 +1985,26 @@ class EvaluationDatasetManager:
         *,
         round_id: int,
         seed: int,
-        cases: tuple[EvolutionCase, ...],
+        random_cases: tuple[EvolutionCase, ...],
     ) -> EvaluationDatasetSnapshot:
+        cases = (*self.anchor_cases, *random_cases)
         payload = {
-            "schema_version": "plan-evaluation-dataset-v2",
+            "schema_version": "plan-evaluation-dataset-v3",
             "stage": "round",
             "round_id": round_id,
             "random_seed": seed,
+            "anchor_snapshot_id": self.anchor_snapshot_id,
             "target_counts": {
                 label: int(self.config.label_counts[label])
                 for label in EVALUATION_LABELS
             },
             "actual_counts": _count_evaluation_labels(cases),
+            "anchor_target_counts": dict(self.config.anchor_label_counts),
+            "anchor_actual_counts": _count_evaluation_labels(self.anchor_cases),
+            "random_target_counts": dict(self.config.random_label_counts),
+            "random_actual_counts": _count_evaluation_labels(random_cases),
+            "anchor_case_ids": [case.case_id for case in self.anchor_cases],
+            "random_case_ids": [case.case_id for case in random_cases],
             "case_ids": [case.case_id for case in cases],
         }
         snapshot = EvaluationDatasetSnapshot.from_dict(
@@ -1921,6 +2092,7 @@ class PlanEvaluationSummary:
     n_cases: int
     case_ids: tuple[str, ...]
     dataset_snapshot_ids: tuple[str, ...] = ()
+    metrics_by_cohort: Mapping[str, PlanMetrics] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.evaluation_stage not in {"round", "legacy"}:
@@ -1929,6 +2101,12 @@ class PlanEvaluationSummary:
             raise ValidationError("Plan evaluation case count does not match case ids")
         if len(set(self.case_ids)) != len(self.case_ids):
             raise ValidationError("Plan evaluation case ids must be unique")
+        cohorts = {str(key): value for key, value in self.metrics_by_cohort.items()}
+        if cohorts and set(cohorts) != {"anchor", "random", "combined"}:
+            raise ValidationError(
+                "round cohort metrics must contain anchor, random, and combined"
+            )
+        object.__setattr__(self, "metrics_by_cohort", cohorts)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -1936,6 +2114,10 @@ class PlanEvaluationSummary:
             "n_cases": self.n_cases,
             "case_ids": list(self.case_ids),
             "dataset_snapshot_ids": list(self.dataset_snapshot_ids),
+            "metrics_by_cohort": {
+                cohort: metrics.to_dict()
+                for cohort, metrics in self.metrics_by_cohort.items()
+            },
         }
 
     @classmethod
@@ -1949,6 +2131,12 @@ class PlanEvaluationSummary:
             dataset_snapshot_ids=tuple(
                 str(item) for item in data.get("dataset_snapshot_ids", ())
             ),
+            metrics_by_cohort={
+                str(cohort): PlanMetrics.from_dict(dict(metrics))
+                for cohort, metrics in dict(
+                    data.get("metrics_by_cohort", {})
+                ).items()
+            },
         )
 
 
@@ -2006,6 +2194,9 @@ class PlanRecord:
             raise ValidationError(
                 "Plan metrics sample_count differs from saved trajectories"
             )
+        cohort_metrics = self.evaluation.metrics_by_cohort
+        if cohort_metrics and cohort_metrics["combined"] != self.metrics:
+            raise ValidationError("combined cohort metrics differ from Plan metrics")
         if self.fitness is None:
             object.__setattr__(
                 self,
@@ -3330,6 +3521,7 @@ class PlanEvaluationResult:
     plan: InformationPlan
     trajectories: tuple[ExecutionTrajectory, ...]
     metrics: PlanMetrics
+    metrics_by_cohort: Mapping[str, PlanMetrics]
     fitness: FitnessEligibility
 
 
@@ -3394,6 +3586,7 @@ class PlanEvolutionEngine:
         *,
         round_id: int,
         validation_cases: tuple[EvolutionCase, ...],
+        anchor_cases: tuple[EvolutionCase, ...],
         signal_snapshot: FrozenSignalRegistry,
     ) -> PlanRoundResult:
         """Sample N independent Plans, evaluate, critique, archive, and reflect."""
@@ -3411,6 +3604,7 @@ class PlanEvolutionEngine:
         dataset_manager = EvaluationDatasetManager(
             self.workspace.evaluation_root,
             validation_cases,
+            anchor_cases,
             self.evaluation_config,
         )
         round_snapshot = dataset_manager.get_or_create_round_dataset(round_id)
@@ -3580,6 +3774,33 @@ class PlanEvolutionEngine:
                     attempt_ref=str(attempt_path),
                 )
                 continue
+            trajectories_by_id = {
+                trajectory.case_id: trajectory for trajectory in attempt.trajectories
+            }
+            if set(trajectories_by_id) != set(round_snapshot.case_ids):
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_evaluation_rejected",
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    plan_id=plan.plan_id,
+                    reasons=list(fitness.reasons),
+                    attempt_ref=str(attempt_path),
+                )
+                continue
+            anchor_trajectories = tuple(
+                trajectories_by_id[case_id]
+                for case_id in round_snapshot.anchor_case_ids
+            )
+            random_trajectories = tuple(
+                trajectories_by_id[case_id]
+                for case_id in round_snapshot.random_case_ids
+            )
+            metrics_by_cohort = {
+                "anchor": score_predictions(anchor_trajectories),
+                "random": score_predictions(random_trajectories),
+                "combined": metrics,
+            }
             _emit_progress(
                 self.on_progress,
                 "candidate_scored" if fitness.eligible else "candidate_diagnostic_only",
@@ -3588,6 +3809,10 @@ class PlanEvolutionEngine:
                 candidate_count=len(candidate_plans),
                 plan_id=plan.plan_id,
                 metrics=metrics.to_dict(),
+                metrics_by_cohort={
+                    cohort: cohort_metrics.to_dict()
+                    for cohort, cohort_metrics in metrics_by_cohort.items()
+                },
                 fitness=fitness.to_dict(),
                 trajectory_count=len(attempt.trajectories),
                 evaluation_stage="round",
@@ -3599,6 +3824,7 @@ class PlanEvolutionEngine:
                     plan=plan,
                     trajectories=attempt.trajectories,
                     metrics=metrics,
+                    metrics_by_cohort=metrics_by_cohort,
                     fitness=fitness,
                 )
             )
@@ -3626,6 +3852,7 @@ class PlanEvolutionEngine:
                         n_cases=len(trajectories),
                         case_ids=round_snapshot.case_ids,
                         dataset_snapshot_ids=(round_snapshot.snapshot_id,),
+                        metrics_by_cohort=result.metrics_by_cohort,
                     ),
                     fitness=result.fitness,
                 )
@@ -4615,6 +4842,7 @@ class DualLoopEvolutionEngine:
                 self.plan_engine.run_round(
                     round_id=round_id,
                     validation_cases=self.dataset.evolution_validation,
+                    anchor_cases=self.dataset.anchor,
                     signal_snapshot=snapshot,  # type: ignore[arg-type]
                 )
             )

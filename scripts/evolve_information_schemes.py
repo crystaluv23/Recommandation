@@ -80,12 +80,13 @@ DEFAULT_CLEAN_UNIVERSE = (
 )
 DEFAULT_EVOLUTION_ROOT = PROJECT_ROOT / "runs" / "cold_start" / "evolution"
 DEFAULT_EXPANSION_PREDICTION_DATES = (
-    "2024-09-30",
-    "2024-12-31",
+    "2025-01-31",
     "2025-03-31",
-    "2025-06-30",
+    "2025-05-30",
+    "2025-07-31",
     "2025-09-30",
 )
+DEFAULT_ANCHOR_CASES = PROJECT_ROOT / "configs" / "information_plan_anchor_cases_v1.json"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -182,7 +183,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--prediction-dates",
         nargs="+",
         default=DEFAULT_EXPANSION_PREDICTION_DATES,
-        help="shared YYYY-MM-DD prediction dates; every selected issuer must support all dates",
+        help="shared YYYY-MM-DD case dates; each admitted case must pass its date-local gates",
     )
     prepare_expanded.add_argument(
         "--split-seed", default="expanded-information-plan-evolution-v1"
@@ -191,6 +192,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--identity-decisions",
         type=Path,
         help="optional hashed SEC-evidenced CIK corrections/exclusions for a new proposal",
+    )
+    prepare_expanded.add_argument(
+        "--anchor-cases", type=Path, default=DEFAULT_ANCHOR_CASES
     )
 
     approve_dataset = subparsers.add_parser(
@@ -498,6 +502,7 @@ def prepare_expanded_dataset(
     prediction_dates: list[str] | tuple[str, ...],
     split_seed: str,
     identity_decisions_path: Path | None = None,
+    anchor_cases_path: Path = DEFAULT_ANCHOR_CASES,
 ) -> dict[str, object]:
     report = prepare_expanded_dataset_proposal(
         universe_path=universe_path,
@@ -506,6 +511,7 @@ def prepare_expanded_dataset(
         prediction_dates=[date.fromisoformat(value) for value in prediction_dates],
         split_seed=split_seed,
         identity_decisions_path=identity_decisions_path,
+        anchor_cases_path=anchor_cases_path,
     )
     return report.to_dict()
 
@@ -540,6 +546,7 @@ def freeze_run(
     EvaluationDatasetManager(
         workspace_path / "evaluation",
         approved_dataset.evolution_validation,
+        approved_dataset.anchor,
         PlanEvaluationConfig(),
     ).validate_feasibility()
     contract_path = workspace_path / "run_contract.json"
@@ -1068,6 +1075,7 @@ def main() -> int:
                 prediction_dates=args.prediction_dates,
                 split_seed=args.split_seed,
                 identity_decisions_path=args.identity_decisions,
+                anchor_cases_path=args.anchor_cases,
             )
         elif args.command == "approve-dataset":
             approved_path = approve_dataset_proposal(

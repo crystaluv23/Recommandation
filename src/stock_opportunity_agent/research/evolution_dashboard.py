@@ -171,6 +171,7 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
                 "parent_genome_ids": record["parent_ids"],
                 "parent_ids": record["parent_ids"],
                 "metrics": record["metrics"],
+                "metrics_by_cohort": record["metrics_by_cohort"],
                 "plan_summary": record["plan_summary"],
                 "trajectory_count": record["trajectory_count"],
                 "stop_reason_counts": record["stop_reason_counts"],
@@ -209,6 +210,12 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
                     {
                         "plan_id": record["plan_id"],
                         "binary_f1": record["metrics"].get("binary_f1", 0.0),
+                        "anchor_binary_f1": dict(
+                            record["metrics_by_cohort"].get("anchor", {})
+                        ).get("binary_f1"),
+                        "random_binary_f1": dict(
+                            record["metrics_by_cohort"].get("random", {})
+                        ).get("binary_f1"),
                     }
                     for record in selected
                 ],
@@ -306,6 +313,13 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
         "parent_ids": [str(item) for item in record.get("parent_ids", ())],
         "embedding": [float(item) for item in embedding],
         "metrics": metrics,
+        "metrics_by_cohort": {
+            str(cohort): dict(cohort_metrics)
+            for cohort, cohort_metrics in dict(
+                record.get("metrics_by_cohort", {})
+            ).items()
+            if isinstance(cohort_metrics, Mapping)
+        },
         "plan_summary": {
             "basic_info_requests": request_summaries,
             "basic_info_fields": [str(item) for item in policy.get("fields", ())],
