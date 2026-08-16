@@ -310,6 +310,21 @@ for the active Information Plan evolution runtime. Provider token probabilities
 are optional reflection evidence only; missing logprobs cannot block a valid
 binary prediction, and Binary F1 remains the only Plan-selection fitness.
 
+The first corrected 48-case execution then showed why the prediction and score
+boundaries must remain separate: both independent Plans authored `NO` for every
+case under the literal 50% event-probability rule, including all 28 realized
+positive observations. That is a real decision-policy outcome, not permission
+to map the diagnostic score margin back into the prediction. Changing the
+threshold or allowing a diagnostic bootstrap round is an explicit framework
+choice and must not be hidden inside the probability adapter.
+
+The same execution exposed a batch-reflection scaling trap. Serializing complete
+24-case trajectories into the Plan critic repeated Raw Info and final contexts
+until one request exceeded 1.2 million tokens. Plan-level feedback should use a
+deterministic compact row with prediction, truth, token-confidence feedback,
+post-hoc reflection, and Signal states/counts; omit identities, Raw Info, literal
+spans, full research contexts, paths, and usage.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

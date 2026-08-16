@@ -212,6 +212,15 @@ a true positive case. The reflection role receives that fixed bit and may
 explain calibration or Plan failures, but model-authored disagreement cannot
 overwrite it.
 
+The Plan critic must not receive complete saved trajectories. Its request uses
+one deterministic compact row per case containing only an opaque case index,
+stop state, prediction, ground truth, decision-confidence feedback, post-hoc
+reflection, and compact Signal id/version/state/interpretation/status summaries
+with evidence counts. It excludes company/case identifiers, Basic Info, initial
+and final research context, literal evidence spans, prediction paths, and usage
+records. This preserves decision-calibration and Plan-failure evidence while
+preventing the 24-case batch from repeating Raw Info into a provider request.
+
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source
 data is controlled independently; when disabled, a local resolver miss records

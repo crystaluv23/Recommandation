@@ -1417,12 +1417,53 @@ class ConcreteRoleAdapterTests(TestCase):
             trajectories=(
                 Artifact(
                     {
+                        "case_id": "cik_0000000001:20250101",
+                        "company_id": "identity-must-not-reach-critic",
+                        "basic_info_bundle": {
+                            "exact_text": "raw-info-must-not-reach-critic"
+                        },
+                        "final_context": {
+                            "exact_span": "source-span-must-not-reach-critic"
+                        },
+                        "prediction": {
+                            "is_surge": True,
+                            "yes_token_probability": 0.7,
+                            "no_token_probability": 0.2,
+                            "decision_margin": 0.8,
+                        },
+                        "ground_truth": {
+                            "is_surge": True,
+                            "realized_max_multiple": 2.2,
+                        },
                         "decision_confidence_feedback": {
                             "true_decision": "YES",
                             "truth_label_token_probability": 0.7,
                             "pairwise_yes_probability": 0.8,
                             "truth_aligned_confidence": 0.8,
-                        }
+                        },
+                        "signal_rounds": [
+                            {
+                                "information_needs": ["growth durability"],
+                                "selected_signals": ["revenue_growth_yoy:v1"],
+                                "batch": {
+                                    "results": [
+                                        {
+                                            "signal_id": "revenue_growth_yoy",
+                                            "version": 1,
+                                            "state": {"value": "positive"},
+                                            "interpretation": {"summary": "accelerating"},
+                                            "status": {"coverage": "sufficient"},
+                                            "evidence": {
+                                                "supporting": [
+                                                    {"exact_span": "must be omitted"}
+                                                ],
+                                                "counter": [],
+                                            },
+                                        }
+                                    ]
+                                },
+                            }
+                        ],
                     }
                 ),
             ),
@@ -1440,6 +1481,21 @@ class ConcreteRoleAdapterTests(TestCase):
             ],
             0.8,
         )
+        self.assertEqual(trajectories[0]["case_index"], 1)
+        self.assertNotIn("case_id", trajectories[0])
+        self.assertNotIn("company_id", trajectories[0])
+        self.assertNotIn("basic_info_bundle", trajectories[0])
+        self.assertNotIn("final_context", trajectories[0])
+        self.assertEqual(
+            trajectories[0]["signal_rounds"][0]["signal_results"][0][
+                "evidence_counts"
+            ],
+            {"supporting": 1, "counter": 0},
+        )
+        rendered = json.dumps(trajectories)
+        self.assertNotIn("raw-info-must-not-reach-critic", rendered)
+        self.assertNotIn("source-span-must-not-reach-critic", rendered)
+        self.assertNotIn("must be omitted", rendered)
 
     def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
         caller = ScriptedRoleCaller(

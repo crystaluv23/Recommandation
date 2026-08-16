@@ -3654,6 +3654,66 @@ class LLMInformationPlanProposer:
         )
 
 
+def _plan_critic_trajectory(
+    item: Any,
+    *,
+    case_index: int,
+) -> dict[str, Any]:
+    """Return the outcome-aware critic view without repeated source context."""
+
+    data = dict(item.to_dict())
+    compact: dict[str, Any] = {"case_index": case_index}
+    for key in (
+        "stop_reason",
+        "termination_trigger",
+        "prediction",
+        "ground_truth",
+        "decision_confidence_feedback",
+        "self_reflection",
+    ):
+        if key in data:
+            compact[key] = data[key]
+
+    compact_rounds: list[dict[str, Any]] = []
+    for round_value in data.get("signal_rounds", ()):
+        if not isinstance(round_value, Mapping):
+            continue
+        batch = round_value.get("batch", {})
+        raw_results = batch.get("results", ()) if isinstance(batch, Mapping) else ()
+        signal_results: list[dict[str, Any]] = []
+        for result in raw_results:
+            if not isinstance(result, Mapping):
+                continue
+            compact_result = {
+                key: result[key]
+                for key in (
+                    "signal_id",
+                    "version",
+                    "state",
+                    "interpretation",
+                    "status",
+                )
+                if key in result
+            }
+            evidence = result.get("evidence")
+            if isinstance(evidence, Mapping):
+                compact_result["evidence_counts"] = {
+                    key: len(value) if isinstance(value, list) else 0
+                    for key in ("supporting", "counter")
+                    for value in (evidence.get(key),)
+                }
+            signal_results.append(compact_result)
+        compact_rounds.append(
+            {
+                "information_needs": list(round_value.get("information_needs", ())),
+                "selected_signals": list(round_value.get("selected_signals", ())),
+                "signal_results": signal_results,
+            }
+        )
+    compact["signal_rounds"] = compact_rounds
+    return compact
+
+
 class LLMPlanCritic:
     """Plan-level critic over the complete saved validation batch."""
 
@@ -3684,7 +3744,10 @@ class LLMPlanCritic:
                 payload={
                     "plan": plan.to_dict(),
                     "metrics": metrics.to_dict(),
-                    "trajectories": [item.to_dict() for item in trajectories],
+                    "trajectories": [
+                        _plan_critic_trajectory(item, case_index=index)
+                        for index, item in enumerate(trajectories, start=1)
+                    ],
                 },
                 parser=PlanReflection.from_dict,
                 allow_outcomes=True,

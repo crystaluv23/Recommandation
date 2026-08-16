@@ -383,6 +383,14 @@ present, as calibration evidence about correct, overconfident, or
 underconfident decisions. The framework, not the reflection model, computes the
 saved `prediction_outcome.correct` bit from the immutable prediction and truth.
 
+Plan-level reflection consumes a deterministic compact view of those saved
+trajectories rather than their complete Raw Info and research contexts. Each
+case row retains its prediction, truth-aligned probability feedback, post-hoc
+reflection, and compact Signal results, but uses only an opaque batch index and
+omits literal evidence spans, company/case identity, Basic Info, full research
+states, prediction paths, and usage. Thus probability feedback enriches the
+critic by a small bounded record rather than duplicating each Predictor input.
+
 ## Plan Archive
 
 Each `PlanRecord` stores:
