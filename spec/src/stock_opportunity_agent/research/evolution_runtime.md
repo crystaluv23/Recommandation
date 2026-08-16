@@ -124,6 +124,15 @@ every proposal call, including the first slot; provider responses that instead
 use evidence arrays under `H_*` are rejected and retained in the exact cache,
 not coerced into a bogus Plan.
 
+The proposal contract also states and validates the fixed market-backbone
+invariant from the Information Plan spec. A proposed `B` must contain a compact
+`market_data` request with at most a 60-day lookback and one document. The
+runtime rejects and corrects a proposal that omits it; it does not silently add
+or rewrite model-produced Plan content. This invariant prevents news-provider
+quota exhaustion or unavailable filings from making every otherwise complete
+case evidence-free, while leaving price-surge labels hidden and leaving Binary
+F1 unchanged.
+
 The Signal-result adapter also enforces the canonical unavailable-state
 invariant. If a provider returns `state.value=unavailable` with a looser
 coverage value, the boundary conservatively narrows coverage to `unavailable`;

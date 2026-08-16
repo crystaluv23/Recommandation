@@ -919,6 +919,13 @@ class ConcreteRoleAdapterTests(TestCase):
                                     "source_types": ["news"],
                                     "lookback_days": 180,
                                     "max_documents": 5,
+                                },
+                                {
+                                    "request_id": "recent_market_backbone",
+                                    "description": "Read recent market data.",
+                                    "source_types": ["market_data"],
+                                    "lookback_days": 45,
+                                    "max_documents": 1,
                                 }
                             ]
                         },
@@ -946,6 +953,63 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.stages,
             ["information_plan_propose", "information_plan_propose_correction"],
         )
+
+    def test_plan_proposer_corrects_missing_market_backbone(self) -> None:
+        missing = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "recent_news",
+                        "description": "Read recent company news.",
+                        "source_types": ["news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    }
+                ]
+            },
+            "H_init": "Form an initial source-backed hypothesis.",
+            "H_reflect": "Reflect over all returned Signal evidence.",
+            "H_analyse": "Make the final two-stage blind forecast.",
+        }
+        corrected = json.loads(json.dumps(missing))
+        corrected["B"]["requests"].append(
+            {
+                "request_id": "recent_market_backbone",
+                "description": "Read recent point-in-time price and volume.",
+                "source_types": ["market_data"],
+                "lookback_days": 45,
+                "max_documents": 1,
+            }
+        )
+        caller = ScriptedRoleCaller([missing, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(
+            plan.basic_info_policy.requests[-1].request_id,
+            "recent_market_backbone",
+        )
+        self.assertEqual(
+            [call["stage"] for call in caller.calls],
+            ["information_plan_propose", "information_plan_propose_correction"],
+        )
+        self.assertIn("market_data", str(caller.calls[0]["system_prompt"]))
+
+    def test_default_information_plan_has_compact_market_backbone(self) -> None:
+        request = default_information_plan().basic_info_policy.requests[-1]
+
+        self.assertEqual(request.source_types, ("market_data",))
+        self.assertEqual(request.lookback_days, 45)
+        self.assertEqual(request.max_documents, 1)
 
     def test_slow_agent_role_states_exact_final_output_contract(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1223,7 +1287,15 @@ class ConcreteRoleAdapterTests(TestCase):
                     },
                     "H_init": {
                         "basic_info_policy": {
-                            "fields": ["company_name", "ticker", "industry"]
+                            "requests": [
+                                {
+                                    "request_id": "recent_market_backbone",
+                                    "description": "Read recent point-in-time price and volume.",
+                                    "source_types": ["market_data"],
+                                    "lookback_days": 45,
+                                    "max_documents": 1,
+                                }
+                            ]
                         },
                         "initial_research_skill": "Form a falsifiable hypothesis.",
                     },
@@ -1240,7 +1312,15 @@ class ConcreteRoleAdapterTests(TestCase):
                     "plan_id": "plan_manual_v2_slot_2",
                     "parent_ids": ["another_invented_parent"],
                     "basic_info_policy": {
-                        "fields": ["company_name", "ticker", "industry"]
+                        "requests": [
+                            {
+                                "request_id": "recent_market_backbone",
+                                "description": "Read recent point-in-time price and volume.",
+                                "source_types": ["market_data"],
+                                "lookback_days": 45,
+                                "max_documents": 1,
+                            }
+                        ]
                     },
                     "initial_research_skill": "Test a distinct hypothesis.",
                     "reflection_skill": "Track disconfirming evidence first.",
@@ -1275,7 +1355,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(first.plan_id, "plan_r0001_c01")
         self.assertEqual(
             first.basic_info_policy.requests[-1].request_id,
-            "legacy_industry",
+            "recent_market_backbone",
         )
         self.assertEqual(first.parent_ids, ("plan_manual_v1",))
         self.assertEqual(caller.calls[0]["temperature"], 1.0)

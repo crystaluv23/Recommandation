@@ -2530,6 +2530,13 @@ _INFORMATION_PLAN_OUTPUT = _output_contract(
                     "lookback_days": 180,
                     "max_documents": 5,
                     "query": "regulatory customer financing product",
+                },
+                {
+                    "request_id": "recent_market_backbone",
+                    "description": "Recent point-in-time price and volume for early market confirmation",
+                    "source_types": ["market_data"],
+                    "lookback_days": 45,
+                    "max_documents": 1,
                 }
             ]
         },
@@ -2537,7 +2544,29 @@ _INFORMATION_PLAN_OUTPUT = _output_contract(
         "H_reflect": "complete reflection instructions",
         "H_analyse": "complete final analysis instructions",
     },
-) + " Do not return plan_id or parent_ids; runtime owns structural metadata."
+) + (
+    " Do not return plan_id or parent_ids; runtime owns structural metadata. "
+    "B must contain at least one compact market-backbone request whose "
+    "source_types includes market_data, whose lookback_days is at most 60, "
+    "and whose max_documents is 1."
+)
+
+
+def _validate_proposed_market_backbone(plan: InformationPlan) -> None:
+    """Require one compact point-in-time market request in an automatic Plan."""
+
+    valid = any(
+        "market_data" in request.source_types
+        and request.lookback_days is not None
+        and request.lookback_days <= 60
+        and request.max_documents == 1
+        for request in plan.basic_info_policy.requests
+    )
+    if not valid:
+        raise ValidationError(
+            "information_plan_propose must retain one compact market_data "
+            "request with lookback_days <= 60 and max_documents = 1"
+        )
 
 
 def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any:
@@ -3060,7 +3089,11 @@ class LLMInformationPlanProposer:
                     plan_id=plan_id,
                     parent_ids=parent_ids,
                 )
-                return _parse_role_output(stage, normalized, InformationPlan.from_dict)
+                plan = _parse_role_output(
+                    stage, normalized, InformationPlan.from_dict
+                )
+                _validate_proposed_market_backbone(plan)
+                return plan
             except ValidationError as exc:
                 failed_value = value
                 failure = exc

@@ -63,6 +63,14 @@ S = (B, H_init, H_reflect, H_analyse)
   `request_id`, information-purpose `description`, `source_types`, optional
   `lookback_days` and literal `query`, and `max_documents` up to ten. It does
   not define a fixed company-profile schema and cannot set `as_of`.
+- The fixed `H_P` proposal boundary requires every automatically proposed Plan
+  to retain one compact point-in-time market backbone request: canonical
+  `market_data`, a positive lookback no longer than 60 days, and one source
+  document. This gives every case recent price/volume evidence without exposing
+  the future label or letting one long price archive consume the Basic Info
+  budget. The remaining `B` requests and all three research skills remain
+  evolvable. Missing this backbone is a proposal-validation error with the same
+  single bounded correction as other malformed Plan content.
 - `H_init`: turns Basic Info into hypotheses and natural-language information
   needs, not hard-coded Signal ids.
 - `H_reflect`: consumes the complete current research state plus one whole

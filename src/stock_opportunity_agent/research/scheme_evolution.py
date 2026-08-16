@@ -4949,6 +4949,16 @@ def default_information_plan() -> InformationPlan:
                     lookback_days=730,
                     max_documents=2,
                 ),
+                RawInfoRequest(
+                    request_id="recent_market_backbone",
+                    description=(
+                        "Inspect the latest 45 days of point-in-time price and volume "
+                        "for early market confirmation or contradiction."
+                    ),
+                    source_types=("market_data",),
+                    lookback_days=45,
+                    max_documents=1,
+                ),
             )
         ),
         initial_research_skill=(
