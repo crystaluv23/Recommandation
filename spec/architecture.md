@@ -207,28 +207,16 @@ for the round that produced a score and never enters the score itself.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether
-the future fixed horizon reaches at least 2x through a fixed binary `YES`/`NO`
-decision: `YES` means the model estimates at least 50% probability for that
-exact adjusted-share-price outcome. A greedy structured Blind Predictor call
-authors this primary binary decision, its qualitative explanation, and its
-magnitude class. When the provider supports output-token log probabilities, a
-separate fixed score call requests exactly one canonical uppercase ASCII token,
-`YES` or `NO`, at temperature `1.0`. The runtime records the raw canonical-token
-probabilities plus `sigmoid(logp_yes - logp_no)` as optional reflection evidence;
-neither the sampled score token nor its derived margin may replace the primary
-binary decision or change fitness. The score call consumes a
-deterministic label-free condensation of the final research state and Signal
-results; it excludes repeated Raw Info text spans but retains the evolvable
-analysis prompt. Fixed label semantics override any conflict in that prompt, so
-`H_analyse` still influences the diagnostic score without being allowed to
-redefine the prediction target. These values are
-optional calibration evidence, and absent, sentinel, or incompatible provider
-metadata must degrade to null without blocking the ordinary greedy binary
-prediction. Stage 2 is evaluated only for the positive
-ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes. Binary F1
-remains the only Plan-selection fitness objective; token probabilities,
-precision, recall, magnitude accuracy, and magnitude macro-F1 are diagnostics
-and reflection evidence only.
+the future fixed horizon reaches at least 2x through a fixed four-way
+opportunity judgment. `likely` and `possible` map to the canonical positive
+prediction; `unlikely` and `insufficient_information` map to negative. A
+positive judgment means that the anonymous evidence supports an opportunity
+candidate for the exact adjusted-share-price outcome; it does not require the
+model to estimate more than 50% event probability. Stage 2 is evaluated only
+for the positive ground-truth population and uses `2-3x`, `3-10x`, and `10x+`
+classes. Binary F1 remains the only Plan-selection fitness objective; precision,
+recall, magnitude accuracy, magnitude macro-F1, qualitative confidence, and the
+four-way judgment remain diagnostics and reflection evidence only.
 
 After truth reveal, prediction correctness is computed by the framework from
 the immutable saved prediction and deterministic truth. A reflection model may

@@ -1603,13 +1603,6 @@ class EvolutionRunContract:
                 raise ValidationError(
                     f"{schema_label} contract proposer temperature must be 1.0"
                 )
-            if (
-                "predictor_score_temperature" in self.limits
-                and require_number("predictor_score_temperature") != 1.0
-            ):
-                raise ValidationError(
-                    f"{schema_label} contract predictor score temperature must be 1.0"
-                )
             if require_number("judge_temperature") != 0.0:
                 raise ValidationError(
                     f"{schema_label} contract judge temperature must be 0.0"
@@ -2693,83 +2686,6 @@ def _complete_json_with_invalid_value(
         )
 
 
-def _complete_json_with_optional_token_scores(
-    caller: JSONRoleCaller,
-    *,
-    stage: str,
-    system_prompt: str,
-    payload: Mapping[str, Any],
-    allow_outcomes: bool,
-    decision_field: str,
-    decision_tokens: tuple[str, str],
-    anonymous_aliases: Iterable[str] = (),
-) -> tuple[dict[str, Any], AgentUsage, DecisionTokenScores | None]:
-    """Request optional provider logprobs without making them a run dependency."""
-
-    scored_completion = getattr(caller, "complete_json_with_token_scores", None)
-    try:
-        if callable(scored_completion):
-            return scored_completion(
-                stage=stage,
-                system_prompt=system_prompt,
-                payload=payload,
-                allow_outcomes=allow_outcomes,
-                decision_field=decision_field,
-                decision_tokens=decision_tokens,
-                anonymous_aliases=anonymous_aliases,
-            )
-        value, usage = caller.complete_json(
-            stage=stage,
-            system_prompt=system_prompt,
-            payload=payload,
-            allow_outcomes=allow_outcomes,
-            anonymous_aliases=anonymous_aliases,
-        )
-        return value, usage, None
-    except StructuredOutputInvalid as exc:
-        return (
-            {
-                "invalid_structured_output": exc.raw_output[:12_000],
-                "validation_error": str(exc),
-            },
-            exc.usage,
-            None,
-        )
-
-
-def _complete_binary_token_scores(
-    caller: JSONRoleCaller,
-    *,
-    stage: str,
-    system_prompt: str,
-    payload: Mapping[str, Any],
-    allow_outcomes: bool,
-    decision_field: str,
-    decision_tokens: tuple[str, str],
-    anonymous_aliases: Iterable[str] = (),
-    temperature: float = 1.0,
-) -> tuple[AgentUsage, DecisionTokenScores | None]:
-    """Read a dedicated binary distribution or degrade without another call."""
-
-    completion = getattr(caller, "complete_binary_token_with_scores", None)
-    if not callable(completion):
-        return AgentUsage(), None
-    try:
-        _sampled_token, usage, scores = completion(
-            stage=stage,
-            system_prompt=system_prompt,
-            payload=payload,
-            allow_outcomes=allow_outcomes,
-            decision_field=decision_field,
-            decision_tokens=decision_tokens,
-            anonymous_aliases=anonymous_aliases,
-            temperature=temperature,
-        )
-        return usage, scores
-    except StructuredOutputInvalid as exc:
-        return exc.usage, None
-
-
 def _output_contract(name: str, example: Mapping[str, Any]) -> str:
     """Render one literal provider-facing JSON contract without Python names."""
 
@@ -2813,7 +2729,7 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
 _BLIND_PREDICTION_OUTPUT = _output_contract(
     "BlindPrediction",
     {
-        "decision": "NO",
+        "candidate_judgment": "unlikely",
         "magnitude": None,
         "confidence": {"level": "low"},
         "key_reasons": ["one source-grounded reason"],
@@ -2821,19 +2737,21 @@ _BLIND_PREDICTION_OUTPUT = _output_contract(
         "session_id": "anonymous-session-id",
     },
 ) + (
-    ' decision must be exactly "YES" or "NO". confidence.level must be "low", '
-    '"medium", or "high". For YES, magnitude must be "2-3x", "3-10x", '
-    'or "10x+"; for NO it must be null.'
+    ' candidate_judgment must be "likely", "possible", "unlikely", or '
+    '"insufficient_information". confidence.level must be "low", "medium", or '
+    '"high". For likely/possible, magnitude must be "2-3x", "3-10x", or '
+    '"10x+"; otherwise it must be null.'
 )
 
-def _blind_prediction_from_role(
-    data: Mapping[str, Any],
-    token_scores: DecisionTokenScores | None = None,
-) -> BlindPrediction:
-    """Map the fixed YES/NO role output plus optional provider token scores."""
+_POSITIVE_SURGE_JUDGMENTS = frozenset({"likely", "possible"})
+_NEGATIVE_SURGE_JUDGMENTS = frozenset({"unlikely", "insufficient_information"})
+
+
+def _blind_prediction_from_role(data: Mapping[str, Any]) -> BlindPrediction:
+    """Map the fixed four-way opportunity judgment to the canonical binary record."""
 
     required = {
-        "decision",
+        "candidate_judgment",
         "magnitude",
         "confidence",
         "key_reasons",
@@ -2849,26 +2767,22 @@ def _blind_prediction_from_role(
         if extra:
             details.append("unexpected fields: " + ", ".join(extra))
         raise ValidationError("BlindPrediction role output " + "; ".join(details))
-    decision = data["decision"]
-    if not isinstance(decision, str) or decision not in {"YES", "NO"}:
-        raise ValidationError("BlindPrediction decision must be YES or NO")
+    judgment = data["candidate_judgment"]
+    if not isinstance(judgment, str) or judgment not in (
+        _POSITIVE_SURGE_JUDGMENTS | _NEGATIVE_SURGE_JUDGMENTS
+    ):
+        raise ValidationError(
+            "BlindPrediction candidate_judgment must be likely, possible, "
+            "unlikely, or insufficient_information"
+        )
     return BlindPrediction.from_dict(
         {
-            "is_surge": decision == "YES",
+            "is_surge": judgment in _POSITIVE_SURGE_JUDGMENTS,
             "magnitude": data["magnitude"],
             "confidence": data["confidence"],
             "key_reasons": data["key_reasons"],
             "uncertainties": data["uncertainties"],
             "session_id": data["session_id"],
-            "yes_token_probability": (
-                token_scores.yes_token_probability if token_scores else None
-            ),
-            "no_token_probability": (
-                token_scores.no_token_probability if token_scores else None
-            ),
-            "decision_margin": (
-                token_scores.decision_margin if token_scores else None
-            ),
         }
     )
 
@@ -3001,15 +2915,9 @@ def _complete_parsed_role(
     parser: Any,
     allow_outcomes: bool,
     anonymous_aliases: Iterable[str] = (),
-    decision_field: str | None = None,
-    decision_tokens: tuple[str, str] | None = None,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
-    if (decision_field is None) != (decision_tokens is None):
-        raise ValidationError(
-            "decision field and decision tokens must be requested together"
-        )
     usage = AgentUsage()
     failed_output: Mapping[str, Any] | None = None
     failure: ValidationError | None = None
@@ -3021,33 +2929,16 @@ def _complete_parsed_role(
             request_payload["invalid_output"] = dict(failed_output or {})
             request_payload["validation_error"] = str(failure)
             prompt += " Correct the invalid output once; return the exact contract only."
-        token_scores = None
-        if decision_field is not None and decision_tokens is not None:
-            value, step_usage, token_scores = (
-                _complete_json_with_optional_token_scores(
-                    caller,
-                    stage=request_stage,
-                    system_prompt=prompt,
-                    payload=request_payload,
-                    allow_outcomes=allow_outcomes,
-                    decision_field=decision_field,
-                    decision_tokens=decision_tokens,
-                    anonymous_aliases=anonymous_aliases,
-                )
-            )
-        else:
-            value, step_usage = _complete_json_with_invalid_value(
-                caller,
-                stage=request_stage,
-                system_prompt=prompt,
-                payload=request_payload,
-                allow_outcomes=allow_outcomes,
-                anonymous_aliases=anonymous_aliases,
-            )
+        value, step_usage = _complete_json_with_invalid_value(
+            caller,
+            stage=request_stage,
+            system_prompt=prompt,
+            payload=request_payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+        )
         usage = usage + step_usage
         try:
-            if decision_field is not None:
-                return parser(value, token_scores), usage
             return _parse_role_output(request_stage, value, parser), usage
         except (KeyError, TypeError, ValueError) as exc:
             keys = ", ".join(sorted(str(key) for key in value))
@@ -3351,60 +3242,6 @@ class LLMSignalRetrievalAgent:
         return AgentStep(refs, category_usage + selection_usage)
 
 
-def _blind_predictor_score_context(
-    final_context: Mapping[str, Any],
-) -> dict[str, Any]:
-    """Condense finalized label-free research without repeating Raw Info spans."""
-
-    final_state = final_context.get("final_research_state")
-    signal_rounds = final_context.get("signal_rounds")
-    if not isinstance(final_state, Mapping) or not isinstance(signal_rounds, list):
-        return {"final_context": dict(final_context)}
-
-    compact_rounds: list[dict[str, Any]] = []
-    for round_value in signal_rounds:
-        if not isinstance(round_value, Mapping):
-            continue
-        compact_results: list[dict[str, Any]] = []
-        batch = round_value.get("batch")
-        results = batch.get("results") if isinstance(batch, Mapping) else None
-        if isinstance(results, list):
-            for result in results:
-                if not isinstance(result, Mapping):
-                    continue
-                compact_result = {
-                    key: result[key]
-                    for key in (
-                        "signal_id",
-                        "version",
-                        "state",
-                        "interpretation",
-                        "status",
-                    )
-                    if key in result
-                }
-                evidence = result.get("evidence")
-                if isinstance(evidence, Mapping):
-                    compact_result["evidence_counts"] = {
-                        key: len(value) if isinstance(value, list) else 0
-                        for key in ("supporting", "counter")
-                        for value in (evidence.get(key),)
-                    }
-                compact_results.append(compact_result)
-        compact_rounds.append(
-            {
-                "information_needs": list(round_value.get("information_needs", ())),
-                "selected_signals": list(round_value.get("selected_signals", ())),
-                "signal_results": compact_results,
-            }
-        )
-    return {
-        "analysis_prompt": final_context.get("analysis_prompt"),
-        "final_research_state": dict(final_state),
-        "signal_rounds": compact_rounds,
-    }
-
-
 class LLMBlindPredictor:
     """No-web two-stage Predictor plus explicitly post-hoc reflection adapter."""
 
@@ -3413,49 +3250,14 @@ class LLMBlindPredictor:
         caller: JSONRoleCaller,
         *,
         anonymous_aliases: Iterable[str] = (),
-        score_temperature: float = 1.0,
     ) -> None:
         registration = getattr(caller, "registration", None)
         if registration is not None and registration.web_tools_allowed:
             raise ValidationError("Blind Predictor model registration must be no-web")
         self.caller = caller
         self.anonymous_aliases = tuple(anonymous_aliases)
-        if score_temperature != 1.0:
-            raise ValidationError("Blind Predictor score temperature must be 1.0")
-        self.score_temperature = score_temperature
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
-        score_context = _blind_predictor_score_context(final_context)
-        score_usage, token_scores = _complete_binary_token_scores(
-            self.caller,
-            stage="blind_predictor_score",
-            system_prompt=(
-                "Using only the anonymous condensed final research state and Signal "
-                "summaries, forecast whether the "
-                "target security's adjusted share price reaches at least 2x over "
-                "the next six calendar months. The prediction-time baseline is the "
-                "mean adjusted close over the last five complete trading days, and "
-                "the future numerator is the maximum mean adjusted close over any "
-                "five complete consecutive trading days inside that horizon. This "
-                "is a stock-price repricing forecast under uncertainty, not a proof "
-                "task or a requirement that an operating metric doubles. Return "
-                "YES when you estimate at least 50% probability that this exact "
-                "adjusted-share-price outcome occurs; otherwise return NO. The "
-                "evaluation cases are outcome-stratified and do not represent the "
-                "live-market base rate, so do not choose NO merely because 2x moves "
-                "are rare in the broad market. Return exactly one ASCII uppercase "
-                "token: YES or NO. Do not add whitespace, punctuation, explanation, "
-                "Markdown, or any other casing or spelling. This fixed six-month "
-                "definition overrides any conflicting horizon in evolvable Plan "
-                "text. Do not use web tools."
-            ),
-            payload={"score_context": score_context},
-            allow_outcomes=False,
-            decision_field="decision",
-            decision_tokens=("YES", "NO"),
-            anonymous_aliases=self.anonymous_aliases,
-            temperature=self.score_temperature,
-        )
         prediction, usage = _complete_parsed_role(
             self.caller,
             stage="blind_predictor_predict",
@@ -3471,32 +3273,39 @@ class LLMBlindPredictor:
                 "use those measures only as evidence about possible share-price "
                 "repricing. This is a forecast under uncertainty, not a proof task. "
                 "Do not require a guarantee, certainty, or an explicit future price "
-                "target. Output decision=YES when, based on the supplied evidence, "
-                "you estimate at least a 50% probability that this exact adjusted-share-"
-                "price outcome occurs inside the horizon. Output decision=NO when the "
-                "estimated probability is below 50%. Express residual doubt through "
-                "confidence and uncertainties. Evidence may support YES without an "
-                "explicit future price target or complete valuation bridge, but the "
-                "estimated probability threshold still applies. These evaluation cases "
+                "target. Set is_surge=true when the supplied evidence makes the "
+                "security an evidence-backed likely or possible opportunity candidate "
+                "for the defined price outcome within the horizon, and express "
+                "residual doubt through confidence and uncertainties. Possible is a "
+                "screening judgment: it does not require a quantified valuation bridge "
+                "or a proven, concrete path to 2x. Source-backed expectation-changing "
+                "acceleration, a material catalyst, or early market confirmation can "
+                "support possible even when the exact financial impact remains "
+                "uncertain. Set is_surge=false when contrary evidence makes the outcome "
+                "unlikely, or when the packet lacks source-backed positive evidence; "
+                "do not set it false merely because certainty, a future price target, "
+                "or a complete valuation bridge is unavailable. These evaluation cases "
                 "are deliberately "
                 "outcome-stratified and do not represent the live-market base rate, "
-                "so do not choose NO merely because 2x moves are rare in the "
+                "so do not predict false merely because 2x moves are rare in the "
                 "broad market. Make the independent case-level decision from the "
-                "supplied evidence. This decision is the primary prediction. The "
-                "framework may attach optional YES/NO token-score metadata later "
-                "for reflection only; do not author those fields and do not defer "
-                "the decision to them. If YES choose 2-3x, 3-10x, or 10x+. If NO set "
-                "magnitude to null. The fixed six-month definition overrides any "
-                "conflicting horizon in the supplied evolvable analysis prompt. Do not use web "
-                "tools."
+                "supplied evidence. This is an opportunity-discovery classifier: "
+                "set is_surge=true when the security looks like a likely or possible "
+                "candidate for that exact 2x price outcome, even though doubling need "
+                "not be more than 50% probable. Set it false when the outcome looks "
+                "unlikely or the available evidence is insufficient to support a "
+                "source-backed positive candidate judgment. If true choose 2-3x, "
+                "3-10x, or 10x+. The fixed six-month definition overrides any "
+                "conflicting horizon in the supplied evolvable analysis prompt. Do "
+                "not use web tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
-            parser=lambda data: _blind_prediction_from_role(data, token_scores),
+            parser=_blind_prediction_from_role,
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )
-        return AgentStep(prediction, score_usage + usage)
+        return AgentStep(prediction, usage)
 
     def reflect(
         self,
@@ -3510,9 +3319,6 @@ class LLMBlindPredictor:
             anonymous_aliases=self.anonymous_aliases,
         )
         try:
-            confidence_feedback = original_prediction.confidence_feedback(
-                ground_truth
-            )
             framework_correct = (
                 original_prediction.is_surge == ground_truth.is_surge
                 and (
@@ -3527,12 +3333,7 @@ class LLMBlindPredictor:
                     "The saved prediction is immutable. Given its original anonymous "
                     "context and newly revealed truth, reflect on the prediction. "
                     "framework_prediction_correct is deterministic and immutable; "
-                    "copy it into prediction_outcome.correct and do not rejudge it. "
-                    "When decision_confidence_feedback is present, explicitly use its "
-                    "true-label token probability, pairwise YES probability, and "
-                    "truth-aligned confidence as calibration evidence in the relevant "
-                    "failure or Plan-issue text; do not use them to revise the saved "
-                    "decision."
+                    "copy it into prediction_outcome.correct and do not rejudge it."
                     + _PREDICTION_REFLECTION_OUTPUT
                 ),
                 payload={
@@ -3540,7 +3341,6 @@ class LLMBlindPredictor:
                     "original_prediction": original_prediction.to_dict(),
                     "revealed_ground_truth": ground_truth.to_dict(),
                     "framework_prediction_correct": framework_correct,
-                    "decision_confidence_feedback": confidence_feedback,
                 },
                 parser=PredictionSelfReflection.from_dict,
                 allow_outcomes=True,
@@ -3668,7 +3468,6 @@ def _plan_critic_trajectory(
         "termination_trigger",
         "prediction",
         "ground_truth",
-        "decision_confidence_feedback",
         "self_reflection",
     ):
         if key in data:
@@ -3732,13 +3531,9 @@ class LLMPlanCritic:
                 self.caller,
                 stage="plan_critic",
                 system_prompt=(
-                    "Ground the reflection only in the supplied batch. When trajectory "
-                    "decision_confidence_feedback is present, explicitly use the "
-                    "true-label token probability, pairwise YES probability, and "
-                    "truth-aligned confidence to identify correct calibration, "
-                    "overconfidence, or underconfidence in successful_patterns or "
-                    "failed_patterns. These values are reflection evidence only and "
-                    "must not replace the supplied Binary F1 fitness."
+                    "Ground the reflection only in the supplied batch. Use the saved "
+                    "predictions, revealed truths, post-hoc reflections, and compact "
+                    "Signal results to identify successful and failed Plan patterns."
                     + _PLAN_REFLECTION_OUTPUT
                 ),
                 payload={
@@ -4139,10 +3934,7 @@ def run_bounded_evolution_cycle(
         evidence_resolver=evidence_resolver,
         controller=LLMResearchController(judge_caller),
         signal_agent=LLMSignalRetrievalAgent(judge_caller),
-        predictor=LLMBlindPredictor(
-            judge_caller,
-            score_temperature=float(limits.get("predictor_score_temperature", 1.0)),
-        ),
+        predictor=LLMBlindPredictor(judge_caller),
         prediction_root=workspace_root / "predictions",
         trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,

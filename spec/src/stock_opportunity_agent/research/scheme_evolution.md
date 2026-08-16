@@ -319,46 +319,33 @@ bars makes the case ineligible. This implements the user's “上涨至少 1 倍
 price reaching at least `2x`; it does not classify `1x-<2x` as a surge and it
 does not reward an isolated one-day spike.
 
-The fixed Blind Predictor emits a binary Stage-1 `YES`/`NO` decision rather
-than a four-way qualitative judgment. `YES` means that, using only the
-anonymous as-of evidence, the model estimates at least 50% probability that
-the exact adjusted-share-price outcome reaches `2x` inside the fixed horizon;
-`NO` means below 50%. The threshold and output schema are fixed framework
-controls, not evolvable Plan content. False positives and false negatives are
-penalized by the same hidden-label precision, recall, and Binary F1; no class
-quota or case-level label is disclosed.
+The fixed Blind Predictor uses the product's opportunity-discovery decision
+boundary, not a price-oracle or proof boundary. It returns `likely`, `possible`,
+`unlikely`, or `insufficient_information`. The fixed adapter maps `likely` and
+`possible` to `is_surge=true`, and maps the other two judgments to false.
+`possible` means that anonymous as-of evidence supports a credible opportunity
+candidate for the exact `2x` price outcome; it does not assert more than 50%
+event probability. False positives and false negatives are penalized by the
+same hidden-label precision, recall, and Binary F1; no class quota or case-level
+label is disclosed.
 
-For a `NO` decision, Stage 2 is omitted. For `YES`, the Predictor must
-choose one magnitude class:
+For a negative judgment, Stage 2 is omitted. For a positive judgment, the
+Predictor must choose one magnitude class:
 
 ```text
 2-3x | 3-10x | 10x+
 ```
 
 The saved output also contains qualitative confidence, key reasons, and
-uncertainties. If the provider supports output-token log probabilities, a
-dedicated fixed call requests exactly one uppercase ASCII `YES` or `NO` token
-at temperature `1.0`. Its input is a deterministic label-free condensation of
-the final research state and Signal results; repeated Raw Info spans and the
-Basic Info bundle are omitted, while `H_analyse` remains present under the
-fixed framework semantics. It records the raw vocabulary probabilities of the two
-canonical tokens plus `decision_margin = sigmoid(logp_yes - logp_no)`, the
-pairwise YES-over-NO strength. A separate temperature-0 structured call authors
-the primary binary prediction and explanation. The score call's sampled token
-and pairwise strength are both ignored for decision and fitness purposes; any
-disagreement with the primary prediction is retained for later reflection.
-All three values are nullable together: an API without compatible
-token-logprob support, an absent canonical alternative, a provider sentinel,
-or an unparseable shape degrades to the ordinary greedy binary prediction with
-no numeric decision evidence and must not fail the prediction. Continuous
+uncertainties. Numeric probability is not required, and the active Predictor
+does not make a separate token-probability call. Continuous
 `realized_max_multiple` remains the underlying truth.
 
 Prediction Stage 1 metrics are precision, recall, and binary F1. Prediction
 Stage 2 metrics are magnitude accuracy and macro-F1 over true surge cases; a
 Stage-1 false negative counts as a missed magnitude prediction. Binary F1 is the
-only Plan-selection fitness. Token probability and decision margin are
-prediction-level reflection evidence only and never alter F1, Top-K, or parent
-selection. PR-AUC and weighted composite objectives are deferred.
+only Plan-selection fitness. PR-AUC and weighted composite objectives are
+deferred.
 
 ## Label-Revealed Reflection
 
@@ -373,23 +360,15 @@ After prediction persistence, the Predictor may see truth and return:
 
 This is usability feedback from the actual consumer of the Information Plan.
 It is stored separately from prediction-time uncertainty and cannot alter the
-already saved prediction. Post-hoc and Plan-level critics receive the optional
-token probabilities and decision margin in the saved prediction. After truth
-is revealed, feedback chooses `P(YES)` for a true YES case or `P(NO)` for a
-true NO case, and maps the pairwise value to `decision_margin` for true YES or
-`1 - decision_margin` for true NO. These two truth-aligned values are always
-better when closer to one. Critics are explicitly instructed to use them, when
-present, as calibration evidence about correct, overconfident, or
-underconfident decisions. The framework, not the reflection model, computes the
+already saved prediction. The framework, not the reflection model, computes the
 saved `prediction_outcome.correct` bit from the immutable prediction and truth.
 
 Plan-level reflection consumes a deterministic compact view of those saved
 trajectories rather than their complete Raw Info and research contexts. Each
-case row retains its prediction, truth-aligned probability feedback, post-hoc
-reflection, and compact Signal results, but uses only an opaque batch index and
+case row retains its prediction, post-hoc reflection, and compact Signal
+results, but uses only an opaque batch index and
 omits literal evidence spans, company/case identity, Basic Info, full research
-states, prediction paths, and usage. Thus probability feedback enriches the
-critic by a small bounded record rather than duplicating each Predictor input.
+states, prediction paths, and usage.
 
 ## Plan Archive
 

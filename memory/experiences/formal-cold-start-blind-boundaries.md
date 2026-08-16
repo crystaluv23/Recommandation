@@ -325,6 +325,23 @@ deterministic compact row with prediction, truth, token-confidence feedback,
 post-hoc reflection, and Signal states/counts; omit identities, Raw Info, literal
 spans, full research contexts, paths, and usage.
 
+## 2026-08-16 Four-Way Opportunity Boundary Restored
+
+The literal 50% binary decision produced `NO` for all 48 predictions across two
+independent Plans on the same 24-case evaluation set. The user therefore
+restored the last empirically non-degenerate interface: the provider returns
+`likely`, `possible`, `unlikely`, or `insufficient_information`, and the fixed
+adapter maps the first two to positive. The exact adjusted-price outcome label
+and Binary F1 remain unchanged. The dedicated binary token-score call and its
+probability/margin feedback are no longer part of the active Predictor.
+
+Do not interpret this as evidence that two output strings inherently cause
+collapse. The failure came from coupling `YES` to greater-than-50% probability
+for a rare exact event and removing the explicit `possible` screening bucket.
+Also audit the all-positive baseline on outcome-stratified batches: with 14
+positives among 24 cases it scores approximately `0.7368` positive-class F1, so
+a high F1 alone does not prove useful discrimination.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

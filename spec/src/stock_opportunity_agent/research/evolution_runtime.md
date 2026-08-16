@@ -109,22 +109,9 @@ existing candidate/role failure semantics apply; no parser exception may abort
 the whole round or advance a commit pointer.
 
 Temperature is part of the exact request hash. Information Plan proposal calls
-sample at `1.0`. A dedicated Blind Predictor score call also uses `1.0`, solely
-so provider log probabilities retain the model distribution instead of
-collapsing to a greedy `0/-9999` shape; the runtime adopts neither that call's
-sampled token nor its derived margin as the prediction. Prediction, explanation,
-research, reflection, Signal execution, and all other judge calls remain greedy
-(`0.0`). The runtime alters temperature only, leaving nucleus sampling at its
-provider default.
-
-The dedicated score request does not repeat the complete Raw Info bundle. It
-receives a deterministic label-free view containing the final research state
-and Signal id/version/state/interpretation/status plus evidence counts and the
-evolvable analysis prompt. Raw document spans and the Basic Info bundle are
-excluded. Fixed six-month semantics override conflicting Plan text, while
-retaining `H_analyse` here ensures that it still affects fitness. This keeps the frozen per-case token ceiling at `120000` without
-introducing another summarization model or changing the original full-context
-greedy explanation call.
+sample at `1.0`. Prediction, explanation, research, reflection, Signal
+execution, and all other judge calls remain greedy (`0.0`). The runtime alters
+temperature only, leaving nucleus sampling at its provider default.
 
 Every structured role prompt includes its literal accepted JSON field contract.
 The adapter validates and converts provider output at the role boundary before
@@ -161,50 +148,21 @@ repricing; none is itself the `2x` target. The prompt must not let a model rejec
 a price-surge hypothesis merely because an operating metric is not forecast to
 double. It must frame the output as a forecast under uncertainty rather than a
 proof obligation: an explicit future price target, certainty, or guarantee is
-not required. The provider-facing score output is a fixed single-token
-contract: exactly the uppercase ASCII token `YES` or `NO`, with no whitespace,
-punctuation, explanation, Markdown, or alternative casing. `YES` means the
-model estimates at least 50% probability that the exact price outcome occurs
-inside the horizon, and `NO` means below 50%. An ordinary temperature-0
-structured call independently supplies the primary binary decision, qualitative
-confidence, reasons, uncertainties, and magnitude. Positive decisions require a
-magnitude class, while negative decisions require null magnitude. The dedicated
-score call's sampled token and pairwise probability are diagnostic feedback only:
-they may disagree with the primary decision, but may neither overwrite it nor
-change Binary F1. If token scores are unavailable, the score call is skipped or
-discarded and the primary prediction remains valid with nullable score fields.
-The prompt also discloses that the evaluation set is
+not required. `candidate_judgment=likely` or `possible` means that the supplied
+evidence makes the security an evidence-backed opportunity candidate for the
+defined price outcome. `possible` is a screening judgment: it does not require
+more than 50% event probability, a quantified valuation bridge, or a proven
+path to `2x`; a source-backed combination such as expectation-changing
+acceleration, a material catalyst, or early market confirmation may qualify.
+`unlikely` and `insufficient_information` map to the canonical negative
+prediction. Positive judgments require a magnitude class, while negative
+judgments require null magnitude. The prompt also discloses that the evaluation set is
 outcome-stratified and not representative of the live-market base rate, but it
 does not disclose exact cohort counts, require a positive quota, or couple
-separate predictions. This threshold and schema are fixed framework semantics,
-not evolvable Plan content or case-outcome disclosure.
-
-For the dedicated Predictor score call only, the exact request may ask a
-provider that explicitly supports token log probabilities for up to 20
-alternatives at the canonical single-token output position. The runtime prefers
-the exact uppercase ASCII alternatives, never lets whitespace/case variants
-overwrite a canonical alternative, and rejects provider sentinel values as
-unavailable. It records
-`yes_token_probability = exp(logp_yes)`, `no_token_probability =
-exp(logp_no)`, and `decision_margin = sigmoid(logp_yes - logp_no)`. Provider
-metadata is never accepted from the model-authored JSON itself. All three
-values are optional and nullable together: a
-provider without declared support, missing logprob payload, absent canonical
-alternative token, sentinel value, or unparseable tokenization yields no
-numeric values while the valid binary prediction continues normally. These
-values are persisted in the blind
-prediction and trajectory and are included in post-hoc and Plan-critic inputs.
-They cannot change the saved prediction, the revealed truth, or the confusion
-matrix. A disagreement between the saved decision and the pairwise score is
-preserved as reflection evidence rather than deterministically reconciled.
-After label reveal, feedback deterministically chooses `P(YES)` for a true YES
-case or `P(NO)` for a true NO case as `truth_label_token_probability`, and
-similarly maps the pairwise value to `truth_aligned_confidence =
-decision_margin` for true YES or `1 - decision_margin` for true NO. Both
-feedback values therefore improve toward one for either class. Fixed critic
-prompts must explicitly use available values as calibration feedback, but
-Binary F1 remains the only Plan-selection fitness and none of these values may
-affect Top-K.
+separate predictions. The four-way schema and deterministic mapping are fixed
+framework semantics, not evolvable Plan content or case-outcome disclosure.
+The active Predictor makes no dedicated token-probability request and persists
+no `P(YES)` or decision-margin fields.
 
 After truth reveal, the framework computes `prediction_outcome.correct` from
 the immutable saved prediction and deterministic truth, including magnitude for

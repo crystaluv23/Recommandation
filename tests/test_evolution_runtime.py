@@ -166,7 +166,6 @@ def make_contract() -> EvolutionRunContract:
             "similarity_threshold": 0.9,
             "parent_selection_seed": 42,
             "plan_proposal_temperature": 1.0,
-            "predictor_score_temperature": 1.0,
             "judge_temperature": 0.0,
             "max_signal_rounds": 5,
             "max_signal_calls": 20,
@@ -1148,7 +1147,7 @@ class ConcreteRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
-                    "decision": "YES",
+                    "candidate_judgment": "possible",
                     "magnitude": "2-3x",
                     "confidence": {"level": "medium"},
                     "key_reasons": ["source-backed evidence"],
@@ -1162,24 +1161,27 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
-        self.assertIsNone(prediction.value.yes_token_probability)
-        self.assertIsNone(prediction.value.no_token_probability)
-        self.assertIsNone(prediction.value.decision_margin)
         prompt = str(caller.calls[0]["system_prompt"])
         self.assertIn('"session_id"', prompt)
         self.assertIn("adjusted share price", prompt)
         self.assertIn("last five complete trading days", prompt)
         self.assertIn("not a requirement that revenue", prompt)
         self.assertIn("forecast under uncertainty, not a proof task", prompt)
-        self.assertIn('decision must be exactly "YES" or "NO"', prompt)
-        self.assertIn("at least a 50% probability", prompt)
+        self.assertIn(
+            'candidate_judgment must be "likely", "possible", "unlikely", or',
+            prompt,
+        )
+        self.assertIn("Possible is a screening judgment", prompt)
+        self.assertIn("does not require a quantified valuation bridge", prompt)
+        self.assertIn("early market confirmation can support possible", prompt)
         self.assertIn("Do not require a guarantee", prompt)
         self.assertIn("outcome-stratified", prompt)
-        self.assertIn("do not choose NO merely because 2x moves are rare", prompt)
+        self.assertIn("do not predict false merely because 2x moves are rare", prompt)
+        self.assertIn("need not be more than 50% probable", prompt)
 
-    def test_blind_predictor_repairs_legacy_four_way_shape(self) -> None:
+    def test_blind_predictor_repairs_legacy_binary_shape(self) -> None:
         valid = {
-            "decision": "NO",
+            "candidate_judgment": "unlikely",
             "magnitude": None,
             "confidence": {"level": "low"},
             "key_reasons": ["limited source-backed evidence"],
@@ -1187,8 +1189,8 @@ class ConcreteRoleAdapterTests(TestCase):
             "session_id": "fixture-session",
         }
         legacy = dict(valid)
-        legacy.pop("decision")
-        legacy["candidate_judgment"] = "unlikely"
+        legacy.pop("candidate_judgment")
+        legacy["decision"] = "NO"
         caller = ScriptedRoleCaller([legacy, valid])
 
         prediction = LLMBlindPredictor(caller).predict(
@@ -1202,130 +1204,36 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("validation_error", caller.calls[1]["payload"])
 
-    def test_blind_predictor_maps_binary_decision_and_provider_scores(self) -> None:
-        class ScoredRoleCaller(ScriptedRoleCaller):
+    def test_blind_predictor_maps_four_way_candidate_judgment(self) -> None:
+        class FourWayRoleCaller(ScriptedRoleCaller):
             def complete_binary_token_with_scores(self, **kwargs):
-                self.stages.append(str(kwargs["stage"]))
-                self.calls.append(dict(kwargs))
-                return (
-                    "NO",
-                    AgentUsage(llm_calls=1, tokens=5, cost=0.01),
-                    DecisionTokenScores(0.72, 0.18, 0.8),
-                )
+                raise AssertionError("four-way Predictor must not request token scores")
 
-        caller = ScoredRoleCaller(
-            [
-                {
-                    "decision": "YES",
-                    "magnitude": "2-3x",
-                    "confidence": {"level": "medium"},
-                    "key_reasons": ["source-backed assessment"],
-                    "uncertainties": [],
-                    "session_id": "fixture-session",
-                }
-            ]
-        )
-
-        prediction = LLMBlindPredictor(caller).predict(
-            {"basic_info": {"industry": "fixture"}}
-        )
-
-        self.assertTrue(prediction.value.is_surge)
-        self.assertEqual(prediction.value.yes_token_probability, 0.72)
-        self.assertEqual(prediction.value.no_token_probability, 0.18)
-        self.assertEqual(prediction.value.decision_margin, 0.8)
-        self.assertEqual(
-            caller.stages,
-            ["blind_predictor_score", "blind_predictor_predict"],
-        )
-        self.assertEqual(caller.calls[0]["decision_field"], "decision")
-        self.assertEqual(caller.calls[0]["decision_tokens"], ("YES", "NO"))
-        self.assertEqual(caller.calls[0]["temperature"], 1.0)
-        self.assertIn("exactly one ASCII uppercase token", caller.calls[0]["system_prompt"])
-        self.assertNotIn("framework_decision", caller.calls[1]["payload"])
-
-    def test_blind_predictor_score_context_omits_raw_spans_and_plan_prompt(self) -> None:
-        compact = evolution_runtime_module._blind_predictor_score_context(
-            {
-                "analysis_prompt": "use a conflicting one-month horizon",
-                "basic_info": {"requests": [{"exact_text": "x" * 20_000}]},
-                "final_research_state": {
-                    "decision": "finalize",
-                    "supporting_evidence": ["condensed evidence"],
-                },
-                "signal_rounds": [
-                    {
-                        "information_needs": ["need"],
-                        "selected_signals": ["signal:v1"],
-                        "batch": {
-                            "results": [
-                                {
-                                    "signal_id": "signal",
-                                    "version": 1,
-                                    "state": {"value": "positive"},
-                                    "interpretation": {"summary": "summary"},
-                                    "status": {"coverage": "sufficient"},
-                                    "evidence": {
-                                        "supporting": [{"exact_span": "y" * 20_000}],
-                                        "counter": [],
-                                    },
-                                }
-                            ]
-                        },
-                    }
-                ],
-            }
-        )
-
-        rendered = json.dumps(compact)
-        self.assertNotIn("basic_info", compact)
-        self.assertEqual(
-            compact["analysis_prompt"], "use a conflicting one-month horizon"
-        )
-        self.assertNotIn("exact_text", rendered)
-        self.assertNotIn("exact_span", rendered)
-        self.assertEqual(
-            compact["signal_rounds"][0]["signal_results"][0]["evidence_counts"],
-            {"supporting": 1, "counter": 0},
-        )
-
-    def test_blind_predictor_does_not_override_decision_with_scores(self) -> None:
-        class ScoredRoleCaller(ScriptedRoleCaller):
-            def complete_binary_token_with_scores(self, **kwargs):
-                self.stages.append(str(kwargs["stage"]))
-                self.calls.append(dict(kwargs))
-                return (
-                    "YES",
-                    AgentUsage(llm_calls=1, tokens=5, cost=0.01),
-                    DecisionTokenScores(0.2, 0.7, 2 / 9),
-                )
-
-        yes_output = {
-            "decision": "YES",
-            "magnitude": "2-3x",
-            "confidence": {"level": "medium"},
-            "key_reasons": ["source-backed assessment"],
-            "uncertainties": [],
-            "session_id": "fixture-session",
+        expected = {
+            "likely": True,
+            "possible": True,
+            "unlikely": False,
+            "insufficient_information": False,
         }
-        caller = ScoredRoleCaller([yes_output])
-
-        prediction = LLMBlindPredictor(caller).predict(
-            {"basic_info": {"industry": "fixture"}}
-        )
-
-        self.assertTrue(prediction.value.is_surge)
-        self.assertEqual(prediction.value.yes_token_probability, 0.2)
-        self.assertEqual(prediction.value.no_token_probability, 0.7)
-        self.assertEqual(prediction.value.decision_margin, 2 / 9)
-        self.assertEqual(
-            caller.stages,
-            [
-                "blind_predictor_score",
-                "blind_predictor_predict",
-            ],
-        )
-        self.assertNotIn("framework_decision", caller.calls[1]["payload"])
+        for judgment, is_surge in expected.items():
+            with self.subTest(judgment=judgment):
+                caller = FourWayRoleCaller(
+                    [
+                        {
+                            "candidate_judgment": judgment,
+                            "magnitude": "2-3x" if is_surge else None,
+                            "confidence": {"level": "low"},
+                            "key_reasons": ["source-backed assessment"],
+                            "uncertainties": [],
+                            "session_id": "fixture-session",
+                        }
+                    ]
+                )
+                prediction = LLMBlindPredictor(caller).predict(
+                    {"basic_info": {"industry": "fixture"}}
+                )
+                self.assertEqual(prediction.value.is_surge, is_surge)
+                self.assertEqual(caller.stages, ["blind_predictor_predict"])
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1351,26 +1259,19 @@ class ConcreteRoleAdapterTests(TestCase):
                 key_reasons=("limited evidence",),
                 uncertainties=(),
                 session_id="anonymous-session",
-                yes_token_probability=0.2,
-                no_token_probability=0.7,
-                decision_margin=0.2,
             ),
             GroundTruth(1.2),
         )
 
         self.assertEqual(caller.calls[0]["anonymous_aliases"], ())
-        feedback = caller.calls[0]["payload"]["decision_confidence_feedback"]
-        self.assertEqual(feedback["pairwise_yes_probability"], 0.2)
-        self.assertEqual(feedback["truth_label_token_probability"], 0.7)
-        self.assertEqual(feedback["truth_aligned_confidence"], 0.8)
+        self.assertNotIn(
+            "decision_confidence_feedback", caller.calls[0]["payload"]
+        )
         self.assertTrue(reflection.value.correct)
         self.assertTrue(
             caller.calls[0]["payload"]["framework_prediction_correct"]
         )
-        self.assertIn(
-            "explicitly use its true-label token probability",
-            caller.calls[0]["system_prompt"],
-        )
+        self.assertNotIn("token probability", caller.calls[0]["system_prompt"])
 
     def test_posthoc_reflection_still_scans_original_context(self) -> None:
         predictor = LLMBlindPredictor(
@@ -1391,7 +1292,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 GroundTruth(1.2),
             )
 
-    def test_plan_critic_explicitly_receives_confidence_feedback(self) -> None:
+    def test_plan_critic_receives_compact_anonymous_trajectories(self) -> None:
         class Artifact:
             def __init__(self, value):
                 self.value = value
@@ -1402,7 +1303,7 @@ class ConcreteRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
-                    "successful_patterns": ["well calibrated YES"],
+                    "successful_patterns": ["well grounded judgment"],
                     "failed_patterns": [],
                     "repeated_failure_modes": [],
                     "misleading_signals": [],
@@ -1427,19 +1328,10 @@ class ConcreteRoleAdapterTests(TestCase):
                         },
                         "prediction": {
                             "is_surge": True,
-                            "yes_token_probability": 0.7,
-                            "no_token_probability": 0.2,
-                            "decision_margin": 0.8,
                         },
                         "ground_truth": {
                             "is_surge": True,
                             "realized_max_multiple": 2.2,
-                        },
-                        "decision_confidence_feedback": {
-                            "true_decision": "YES",
-                            "truth_label_token_probability": 0.7,
-                            "pairwise_yes_probability": 0.8,
-                            "truth_aligned_confidence": 0.8,
                         },
                         "signal_rounds": [
                             {
@@ -1470,17 +1362,14 @@ class ConcreteRoleAdapterTests(TestCase):
             metrics=Artifact({"binary_f1": 0.75}),
         )
 
-        self.assertEqual(reflection.successful_patterns, ("well calibrated YES",))
-        prompt = caller.calls[0]["system_prompt"]
-        self.assertIn("true-label token probability", prompt)
-        self.assertIn("must not replace the supplied Binary F1 fitness", prompt)
-        trajectories = caller.calls[0]["payload"]["trajectories"]
         self.assertEqual(
-            trajectories[0]["decision_confidence_feedback"][
-                "truth_aligned_confidence"
-            ],
-            0.8,
+            reflection.successful_patterns, ("well grounded judgment",)
         )
+        prompt = caller.calls[0]["system_prompt"]
+        self.assertIn("saved predictions", prompt)
+        self.assertNotIn("token probability", prompt)
+        trajectories = caller.calls[0]["payload"]["trajectories"]
+        self.assertNotIn("decision_confidence_feedback", trajectories[0])
         self.assertEqual(trajectories[0]["case_index"], 1)
         self.assertNotIn("case_id", trajectories[0])
         self.assertNotIn("company_id", trajectories[0])
