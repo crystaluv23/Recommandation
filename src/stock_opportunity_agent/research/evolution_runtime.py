@@ -3519,6 +3519,7 @@ def _build_evidence_resolver(
                 ]
             )
         alpha_key = env.get(config.alpha_vantage_api_key_env_var)
+        alpha_price_adapter: Any
         if alpha_key:
             alpha_news = AlphaVantageClient(
                 alpha_key,
@@ -3528,35 +3529,30 @@ def _build_evidence_resolver(
                 alpha_key,
                 transport=managed("alpha_vantage", DataCapability.PRICE_DAILY),
             )
-            adapters.extend(
-                [
-                    AlphaVantageNewsAdapter(alpha_news),
-                    HistoricalPriceAdapter(
-                        "alpha_vantage",
-                        lambda symbol, _start, _end: alpha_prices.daily_prices(
-                            symbol, outputsize="full"
-                        ),
-                        event_source=alpha_prices,
-                    ),
-                ]
+            adapters.append(AlphaVantageNewsAdapter(alpha_news))
+            alpha_price_adapter = HistoricalPriceAdapter(
+                "alpha_vantage",
+                lambda symbol, _start, _end: alpha_prices.daily_prices(
+                    symbol, outputsize="full"
+                ),
+                event_source=alpha_prices,
             )
         else:
-            adapters.extend(
-                [
-                    UnavailableProviderAdapter(
-                        "alpha_vantage",
-                        ("news", "company_news"),
-                        ("news",),
-                        f"{config.alpha_vantage_api_key_env_var} is not configured.",
-                    ),
-                    UnavailableProviderAdapter(
-                        "alpha_vantage",
-                        ("price_daily", "historical_price", "prices"),
-                        ("price_daily",),
-                        f"{config.alpha_vantage_api_key_env_var} is not configured.",
-                    ),
-                ]
+            adapters.append(
+                UnavailableProviderAdapter(
+                    "alpha_vantage",
+                    ("news", "company_news"),
+                    ("news",),
+                    f"{config.alpha_vantage_api_key_env_var} is not configured.",
+                )
             )
+            alpha_price_adapter = UnavailableProviderAdapter(
+                "alpha_vantage",
+                HistoricalPriceAdapter.source_types,
+                ("price_daily",),
+                f"{config.alpha_vantage_api_key_env_var} is not configured.",
+            )
+        unavailable_price_adapters: list[Any] = []
         massive_key = env.get(config.massive_api_key_env_var)
         if massive_key:
             massive = MassiveClient(
@@ -3573,10 +3569,10 @@ def _build_evidence_resolver(
                 )
             )
         else:
-            adapters.append(
+            unavailable_price_adapters.append(
                 UnavailableProviderAdapter(
                     "massive",
-                    ("price_daily", "historical_price", "prices"),
+                    HistoricalPriceAdapter.source_types,
                     ("price_daily",),
                     f"{config.massive_api_key_env_var} is not configured.",
                 )
@@ -3594,6 +3590,8 @@ def _build_evidence_resolver(
                 event_source=stooq,
             )
         )
+        adapters.append(alpha_price_adapter)
+        adapters.extend(unavailable_price_adapters)
     else:
         # Adapter descriptors are still present so a local miss is correctly
         # classified as unauthorized rather than as an unknown capability.

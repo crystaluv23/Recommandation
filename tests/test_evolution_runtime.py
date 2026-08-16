@@ -1459,6 +1459,44 @@ class RunControlTests(TestCase):
         self.assertFalse(restored_legacy.executable)
         self.assertTrue(contract.executable)
 
+    def test_runtime_orders_available_price_adapters_by_catalog_priority(self) -> None:
+        contract = EvolutionRunContract(
+            **{
+                **make_contract().__dict__,
+                "data_acquisition": DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("massive", "stooq", "alpha_vantage"),
+                    allowed_capabilities=("price_daily",),
+                    allowed_source_types=("market_data",),
+                    max_requests_per_cycle=10,
+                    max_requests_per_run=50,
+                ),
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            resolver = evolution_runtime_module._build_evidence_resolver(
+                Path(directory),
+                RawInfoStore(),
+                contract=contract,
+                allow_data_external=True,
+                environ={
+                    "MASSIVE_API_KEY": "massive-test-key",
+                    "STOOQ_API_KEY": "stooq-test-key",
+                    "ALPHA_VANTAGE_API_KEY": "alpha-test-key",
+                },
+                cycle_id=1,
+            )
+
+        price_providers = [
+            adapter.provider
+            for adapter in resolver.adapters
+            if "market_data" in adapter.source_types
+        ]
+        self.assertEqual(
+            price_providers,
+            ["massive", "stooq", "alpha_vantage"],
+        )
+
     def test_contract_freeze_is_exact_and_secret_free(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "run_contract.json"

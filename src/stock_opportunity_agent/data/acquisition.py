@@ -46,7 +46,12 @@ class SecCompanyFactsAdapter:
     """Materialize a historical as-of subset of SEC Company Facts raw JSON."""
 
     provider = "sec_edgar"
-    source_types = ("sec_company_facts", "company_facts", "financial_statements")
+    source_types = (
+        "sec_company_facts",
+        "company_facts",
+        "financial_statements",
+        "financials",
+    )
     capabilities = ("company_profile", "financial_statements")
 
     def __init__(self, client: Any) -> None:
@@ -228,7 +233,7 @@ class AlphaVantageNewsAdapter:
 class HistoricalPriceAdapter:
     """Materialize a complete requested historical OHLCV window."""
 
-    source_types = ("price_daily", "historical_price", "prices")
+    source_types = ("price_daily", "historical_price", "prices", "market_data")
     capabilities = ("price_daily",)
 
     def __init__(
@@ -254,10 +259,25 @@ class HistoricalPriceAdapter:
         symbol = _identity_value(identity, "ticker", "symbol")
         start = (as_of - timedelta(days=request.lookback_days or 365)).date()
         end = (as_of - timedelta(days=1)).date()
-        bars = [item for item in self.fetch(symbol, start, end) if item.as_of_date <= end]
+        bars = sorted(
+            (
+                item
+                for item in self.fetch(symbol, start, end)
+                if item.as_of_date <= end
+            ),
+            key=lambda item: item.as_of_date,
+        )
         if not bars:
             return AcquisitionResult()
         content = _canonical_json([_price_bar_dict(item) for item in bars])
+        prices = [
+            float(
+                item.adjusted_close
+                if item.adjusted_close is not None
+                else item.close
+            )
+            for item in bars
+        ]
         available = _midnight(max(item.as_of_date for item in bars) + timedelta(days=1))
         if available > as_of:
             available = as_of
@@ -274,6 +294,7 @@ class HistoricalPriceAdapter:
                 "symbol": symbol,
                 "start": start.isoformat(),
                 "end": end.isoformat(),
+                "prices": prices,
             },
         )
         return AcquisitionResult(

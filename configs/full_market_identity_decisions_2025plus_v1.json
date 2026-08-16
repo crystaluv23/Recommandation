@@ -1,6 +1,6 @@
 {
   "schema_version": "expanded-case-identity-decisions-v1",
-  "review_status": "agent_proposed_pending_human_review",
+  "review_status": "human_reviewed",
   "description": "Official-SEC identity corrections bounded to the mature 2025-plus full-market case dates.",
   "decision_count": 4,
   "decisions": [
@@ -69,5 +69,5 @@
       ]
     }
   ],
-  "decision_hash": "f26193cd93ee06589168bd10f986dbbf5e6e445cc5c8f824f8f72c1c7c47c9aa"
+  "decision_hash": "d5cfa5ce8d2c1a3a4a7929882949f79cc31d15b9850a0da45a370fe573ff6dd0"
 }

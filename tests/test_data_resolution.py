@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from unittest import TestCase
 
 from stock_opportunity_agent.data.acquisition import (
+    HistoricalPriceAdapter,
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
 )
+from stock_opportunity_agent.data.sources.core import PriceBar
 from stock_opportunity_agent.data.raw_info import (
     RawInfoDocument,
     RawInfoOracle,
@@ -146,6 +148,75 @@ class EvidenceResolverTests(TestCase):
         ]
         self.assertEqual(len(archived), 1)
         self.assertIn("2026-01-01", archived[0].content)
+
+    def test_stable_signal_source_aliases_route_and_materialize_price_metadata(self) -> None:
+        self.assertIn("financials", SecCompanyFactsAdapter.source_types)
+
+        bars = tuple(
+            PriceBar(
+                symbol="ISSUER",
+                as_of_date=date(2024, 7, 1) + timedelta(days=index),
+                open=100.0 + index,
+                high=101.0 + index,
+                low=99.0 + index,
+                close=100.0 + index,
+                volume=1_000,
+                source="massive",
+                retrieved_at=AS_OF,
+                adjusted_close=100.0 + index,
+            )
+            for index in range(130)
+        )
+        policy = DataAcquisitionPolicy(
+            enabled=True,
+            allowed_providers=("massive",),
+            allowed_capabilities=("price_daily",),
+            allowed_source_types=("market_data",),
+            max_requests_per_cycle=1,
+            max_requests_per_run=1,
+        )
+        store = RawInfoStore()
+        resolution = EvidenceResolver(
+            store,
+            adapters=(HistoricalPriceAdapter("massive", lambda *_: bars),),
+            policy=policy,
+        ).resolve(
+            RawInfoRequest(
+                "prices",
+                "Read point-in-time prices.",
+                ("market_data",),
+                lookback_days=365,
+            ),
+            company_id="issuer_1",
+            identity={"ticker": "ISSUER"},
+            as_of=AS_OF,
+        )
+
+        self.assertIsNone(resolution.gap)
+        materialized = store.load(resolution.documents[0].document_id, as_of=AS_OF)
+        self.assertEqual(materialized.source_type, "market_data")
+        self.assertEqual(len(materialized.metadata["prices"]), 130)
+        self.assertEqual(materialized.metadata["prices"][-1], 229.0)
+
+        spec = SignalSpec(
+            signal_id="price_momentum_126d",
+            version=1,
+            category="market",
+            description="Measure point-in-time price momentum.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("market_data",),
+            function="market.price_momentum_126d",
+            parameters={
+                "lookback_observations": 126,
+                "positive_min": 0.2,
+                "negative_max": -0.2,
+            },
+        )
+        snapshot = FrozenSignalRegistry(1, "a" * 64, (spec,), {})
+        result = SignalExecutor(snapshot, store).execute_batch(
+            (spec.ref,), company_id="issuer_1", as_of=AS_OF
+        )
+        self.assertEqual(result.results[0].value, SignalValue.POSITIVE)
 
     def test_exact_original_spans_are_deterministic_and_never_rewritten(self) -> None:
         first = document("news_old", "ordinary " * 300, available_at=AS_OF - timedelta(days=3))

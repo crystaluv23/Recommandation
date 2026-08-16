@@ -1,6 +1,6 @@
 # Historical News Backfill Boundaries
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

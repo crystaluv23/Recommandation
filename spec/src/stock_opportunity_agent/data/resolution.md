@@ -46,6 +46,16 @@ Unknown source types remain valid Information Plan content and yield
 separate from LLM authorization. Provider cache/ledger/quota behavior remains
 owned by data-source transports and is surfaced as resolution events/gaps.
 
+Adapter declarations must include the canonical source types used by the
+stable Signal Library, not only provider-facing aliases. In particular,
+`financials` must route to the point-in-time SEC Company Facts adapter and
+`market_data` must route to a historical daily-price adapter. Materialized
+market-data documents must retain the chronological adjusted-close series in
+`metadata.prices`, because deterministic market Signals consume that exact
+field. When several authorized price adapters are available, runtime ordering
+follows the source catalog: Massive first, Stooq second, and Alpha Vantage last;
+news continues to use Alpha Vantage.
+
 ## Exact Basic Info Context
 
 For Basic Info only, selected documents are split into 2,000-character spans
@@ -70,4 +80,5 @@ cases and yield `historical_data_unavailable`.
 
 Cover deterministic spans/budgets/ranking, exact-substring validation,
 local-hit no-acquisition, same-execution append/re-query, later reuse, every
-DataGap class, historical fail-closed behavior, and Signal document lineage.
+DataGap class, historical fail-closed behavior, canonical Signal source-type
+routing, materialized price metadata, and Signal document lineage.

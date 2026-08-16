@@ -33,6 +33,7 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertIn("--data-provider", result.stdout)
         self.assertIn("Locked Test stays sealed", result.stdout)
         self.assertIn("auto-promote atomically", result.stdout)
+        self.assertIn("v5 contract", result.stdout)
 
     def test_new_rejects_any_existing_workspace_before_mutation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -149,3 +150,5 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertNotIn("DEEPSEEK_API_KEY", source)
         self.assertNotIn("read -r -s", source)
         self.assertIn('ALLOW_EXTERNAL=0', source)
+        self.assertIn('CONTRACT_SCHEMA" = "evolution-run-contract-v5', source)
+        self.assertNotIn('CONTRACT_SCHEMA" = "evolution-run-contract-v4', source)

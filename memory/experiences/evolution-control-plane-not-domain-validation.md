@@ -1,6 +1,6 @@
 # Evolution Control Flow Is Not Domain Validation
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
@@ -26,6 +26,12 @@ dedicated control-flow exception that propagates to the CLI, records a
 structured pause, leaves committed pointers unchanged, and performs no request
 reservation when readiness is absent.
 
+The later v5 launch audit also found a duplicated shell-side contract-schema
+gate still accepting only v4 after the Python runtime had moved to v5. Stable
+launchers are part of the control plane: their executable schema check must
+advance with the runtime and carry a regression assertion, or a correct frozen
+contract becomes operationally impossible to resume.
+
 ## How to Apply
 
 Use separate exception families for orchestration control flow and domain
@@ -33,7 +39,9 @@ validation. Catch control-flow exceptions only at the run/cycle supervisor.
 Regression-test that they cross Fast evaluators, Generic Agents, candidate
 fixtures, and Slow agents unchanged; also assert that missing readiness does
 not reserve an external attempt and that budget exhaustion cannot write a
-round-rejection checkpoint.
+round-rejection checkpoint. When a contract schema changes, search every
+operator launcher for duplicated schema literals and test both the accepted
+current schema and rejection of the immediately retired schema.
 
 ## Limits
 
