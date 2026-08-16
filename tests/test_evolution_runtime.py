@@ -1094,7 +1094,11 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
-        self.assertIn('"session_id"', str(caller.calls[0]["system_prompt"]))
+        prompt = str(caller.calls[0]["system_prompt"])
+        self.assertIn('"session_id"', prompt)
+        self.assertIn("adjusted share price", prompt)
+        self.assertIn("last five complete trading days", prompt)
+        self.assertIn("not a requirement that revenue", prompt)
 
     def test_blind_predictor_repairs_string_boolean_instead_of_using_truthiness(self) -> None:
         valid = {

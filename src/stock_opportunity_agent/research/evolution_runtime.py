@@ -2856,9 +2856,16 @@ class LLMBlindPredictor:
             self.caller,
             stage="blind_predictor_predict",
             system_prompt=(
-                "Using only the anonymous supplied context, predict whether the next "
-                "six months reach at least 2x. If yes choose 2-3x, 3-10x, or 10x+. "
-                "Do not use web tools."
+                "Using only the anonymous supplied context, predict whether the "
+                "target security's adjusted share price reaches at least 2x over "
+                "the next six calendar months. The prediction-time baseline is the "
+                "mean adjusted close over the last five complete trading days, and "
+                "the future numerator is the maximum mean adjusted close over any "
+                "five complete consecutive trading days inside that horizon. This "
+                "is a stock-price repricing outcome, not a requirement that revenue, "
+                "earnings, users, production, or another operating metric doubles; "
+                "use those measures only as evidence about possible share-price "
+                "repricing. If yes choose 2-3x, 3-10x, or 10x+. Do not use web tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},

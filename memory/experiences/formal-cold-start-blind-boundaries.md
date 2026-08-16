@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 32
+visit_times: 33
 
 ## Trigger
 
@@ -252,6 +252,21 @@ brand shorthand, then scan that assembled context again before transmission.
 Do not scan every unrelated issuer alias in a full-market dataset. That rejects
 valid evidence without adding protection against disclosure of the current
 target.
+
+## 2026-08-16 Prediction-Unit Ambiguity Correction
+
+A paid v5 run completed a full 24-case Plan but predicted every case negative.
+The fixed prompt asked whether the next six months would "reach at least 2x"
+without naming the measured quantity. DeepSeek repeatedly treated that as a
+requirement for revenue, earnings, production, or another operating measure to
+double, while the frozen evaluator labels the target security's adjusted share
+price using five-trading-day mean windows.
+
+Blindness does not require hiding the label definition. State the exact
+prediction unit, horizon, and smoothing rule in the fixed no-web prompt, and
+state that operating measures are evidence about price repricing rather than
+the target variable itself. This repairs prompt/label alignment without
+revealing any case outcome or changing the evolvable Information Plan.
 
 ## How to Apply
 

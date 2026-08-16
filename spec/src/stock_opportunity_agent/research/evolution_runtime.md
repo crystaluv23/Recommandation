@@ -129,6 +129,17 @@ invariant. If a provider returns `state.value=unavailable` with a looser
 coverage value, the boundary conservatively narrows coverage to `unavailable`;
 it never promotes an unavailable state to partial or sufficient evidence.
 
+The fixed Blind Predictor prompt must state the Stage-1 unit as explicitly as
+the evaluator: `2x` means the target security's adjusted share-price outcome,
+using the prediction-time five-complete-trading-day adjusted-close mean as the
+baseline and the maximum five-complete-trading-day mean inside the following
+six calendar months as the future numerator. Revenue, earnings, users,
+production, and other operating measures are evidence about possible price
+repricing; none is itself the `2x` target. The prompt must not let a model reject
+a price-surge hypothesis merely because an operating metric is not forecast to
+double. This clarification is fixed evaluation semantics, not an evolvable Plan
+field, a changed label, or outcome disclosure.
+
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source
 data is controlled independently; when disabled, a local resolver miss records
