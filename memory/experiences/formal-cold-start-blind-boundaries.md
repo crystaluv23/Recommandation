@@ -277,6 +277,14 @@ credible path or dominant contrary evidence, and carry remaining doubt in the
 existing confidence and uncertainty fields. Do not repair this by disclosing
 class balance, forcing a positive quota, or changing completed predictions.
 
+If the evaluator deliberately uses an outcome-stratified case-control sample,
+the fixed classifier must also avoid importing the broad-market event rate as
+its hidden prior. Otherwise a rare-event stock prior can dominate every case
+and make an intentionally balanced F1 evaluation degenerate. Disclose only that
+the sample is stratified and not prevalence-representative; do not disclose
+exact class counts, force a class quota, share predictions across cases, or
+pretend the resulting F1 estimates live-market precision.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

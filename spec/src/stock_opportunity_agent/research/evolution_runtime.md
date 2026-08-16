@@ -143,8 +143,12 @@ guarantee of doubling is not required. `is_surge=true` means the supplied
 evidence supports a concrete, credible path to the defined price outcome;
 qualitative confidence and uncertainties carry residual doubt. `false` means
 no credible path is present or contrary evidence dominates. This clarification
-is fixed evaluation semantics, not an evolvable Plan field, a changed label, a
-hard-coded class balance, or outcome disclosure.
+must also disclose that the evaluation set is outcome-stratified and therefore
+does not carry the live-market base rate: the broad-market rarity of a `2x`
+move is not, by itself, case evidence for `false`. It must not disclose the
+exact cohort counts, require a positive quota, or couple separate predictions.
+This is fixed evaluation semantics, not an evolvable Plan field, a changed
+label, a hard-coded output balance, or case-outcome disclosure.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

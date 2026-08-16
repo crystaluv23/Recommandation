@@ -2871,8 +2871,12 @@ class LLMBlindPredictor:
                 "concrete, credible path to the defined price outcome within the "
                 "horizon, and express residual doubt through confidence and "
                 "uncertainties. Set is_surge=false when no credible path appears or "
-                "contrary evidence dominates. If true choose 2-3x, 3-10x, or 10x+. "
-                "Do not use web tools."
+                "contrary evidence dominates. These evaluation cases are deliberately "
+                "outcome-stratified and do not represent the live-market base rate, "
+                "so do not predict false merely because 2x moves are rare in the "
+                "broad market. Make the independent case-level decision from the "
+                "supplied evidence. If true choose 2-3x, 3-10x, or 10x+. Do not use "
+                "web tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
