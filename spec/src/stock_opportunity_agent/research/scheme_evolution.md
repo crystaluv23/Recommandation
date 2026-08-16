@@ -112,6 +112,14 @@ uncertainty, and revealed truth to produce post-hoc self-reflection.
 Before Predictor handoff, direct identity fields are removed and company id,
 current name/ticker, and the caller's source-derived alias inventory are masked
 recursively across Signal interpretations, evidence spans, and document refs.
+Composite formal names are split, terminal legal suffixes are removed, and a
+distinctive leading brand token is retained to derive ordinary references such
+as `Kinross Gold` and `Kinross` from
+`Kinross Gold Corp / KINROSS GOLD CORP`. The assembled context is then scanned
+again for this current case's expanded target aliases and fails closed before a
+Predictor request if any remain. Third-party companies, publishers, and source
+identities remain legitimate evidence: aliases from unrelated dataset cases are
+not target-identity leaks and must not be scanned at the Predictor boundary.
 The full unmasked trajectory remains inside the controlled experiment artifact;
 the blind context is the only Predictor input.
 
@@ -599,8 +607,11 @@ code revision, runtime limits, maximum attempts, and cumulative cost. API-key
 availability is recorded only as a boolean; secrets are never serialized.
 
 Every newly rendered request is persisted and recursively checked for outcome
-fields, future facts, company identity, and cross-case aliases before network
-I/O. Structured roles include the provider JSON-object response format in both
+fields and future facts before network I/O. Predictor requests additionally
+arrive through a current-case target-identity mask-and-scan boundary; they do not
+scan the full dataset alias inventory because legitimate third-party evidence
+can share names or short tickers with unrelated issuers. Structured roles
+include the provider JSON-object response format in both
 the persisted exact request and the provider call, so prompt compliance is not
 the only JSON boundary and the format setting participates in the cache hash.
 Every structured system message also explicitly requests one JSON object, as

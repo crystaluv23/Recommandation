@@ -611,6 +611,22 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_composite_formal_name_masks_natural_name_but_keeps_third_party(self) -> None:
+        masked = _mask_identity_values(
+            "UBS Boosts Kinross Gold’s (KGC) Price Target; Kinross later responded.",
+            ("KGC", "Kinross Gold Corp / KINROSS GOLD CORP"),
+        )
+
+        self.assertEqual(masked.count("[MASKED_COMPANY]"), 3)
+        self.assertNotIn("Kinross Gold", masked)
+        self.assertNotIn("Kinross", masked)
+        self.assertNotIn("KGC", masked)
+        self.assertIn("UBS Boosts", masked)
+        self.assertEqual(
+            _mask_identity_values("Company Inc reported.", ("Company Inc",)),
+            "[MASKED_COMPANY] reported.",
+        )
+
     def test_short_ticker_masking_is_case_sensitive(self) -> None:
         masked = _mask_identity_values(
             "low liquidity improved while LOW remained anonymous",

@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 31
+visit_times: 32
 
 ## Trigger
 
@@ -237,6 +237,21 @@ not an operator eyeball check. A readiness artifact may persist only a boolean
 for key availability, never credentials, and should calculate retry headroom
 from the largest per-request estimate so the recommended attempt cap remains
 inside the configured worst-case cost boundary.
+
+## 2026-08-16 Full-Market Alias Collision Correction
+
+A paid v5 Information Plan round rejected every candidate before its first
+prediction because a full-dataset alias scan treated legitimate third-party
+news text such as `UBS` and `S&P` as target-identity leakage. At the same time,
+the target's composite SEC name did not cover natural references such as
+`Kinross Gold` or `Kinross`.
+
+Predictor anonymity is case-local: expand and mask the current target's id,
+ticker, formal-name components, legal-suffix-stripped name, and distinctive
+brand shorthand, then scan that assembled context again before transmission.
+Do not scan every unrelated issuer alias in a full-market dataset. That rejects
+valid evidence without adding protection against disclosure of the current
+target.
 
 ## How to Apply
 

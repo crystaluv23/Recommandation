@@ -46,6 +46,34 @@ from stock_opportunity_agent.signal_library import (
 T = TypeVar("T")
 ProgressCallback = Callable[[Mapping[str, Any]], None]
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_.:-]*$")
+_IDENTITY_MASK_SENTINEL = "\ue000\ue001"
+_MASKED_IDENTITY_VALUE = "[MASKED_COMPANY]"
+_IDENTITY_NAME_SEPARATOR = re.compile(r"\s*(?:/|\||;|\n)\s*")
+_IDENTITY_LEGAL_SUFFIX = re.compile(
+    r"(?:[\s,]+(?:"
+    r"inc(?:orporated)?|corp(?:oration)?|co(?:mpany)?|ltd|limited|plc|llc|"
+    r"l\.?\s*p\.?|holdings?|group|n\.?\s*v\.?|s\.?\s*a\.?|"
+    r"a\.?\s*g\.?|s\.?\s*e\.?)"
+    r")\.?$",
+    re.IGNORECASE,
+)
+_GENERIC_IDENTITY_LEADING_WORDS = frozenset(
+    {
+        "advanced",
+        "american",
+        "bank",
+        "first",
+        "general",
+        "global",
+        "international",
+        "national",
+        "new",
+        "north",
+        "the",
+        "united",
+        "universal",
+    }
+)
 _FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
     {
         "ground_truth",
@@ -1033,7 +1061,9 @@ def _assemble_final_context(
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
     }
-    return _mask_identity_values(context, identity_aliases)
+    masked_context = _mask_identity_values(context, identity_aliases)
+    _assert_identity_values_masked(masked_context, identity_aliases)
+    return masked_context
 
 
 def _consume_model_step(
@@ -5029,11 +5059,7 @@ def _default_case_id(company_id: str, prediction_time: datetime) -> str:
 
 
 def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
-    normalized_aliases = sorted(
-        {alias.strip() for alias in aliases if alias and alias.strip()},
-        key=len,
-        reverse=True,
-    )
+    normalized_aliases = _identity_alias_variants(aliases)
 
     def mask(item: Any) -> Any:
         if isinstance(item, str):
@@ -5046,7 +5072,7 @@ def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
                     pattern = escaped
                 result = re.sub(
                     pattern,
-                    "[MASKED_COMPANY]",
+                    _IDENTITY_MASK_SENTINEL,
                     result,
                     flags=(
                         0
@@ -5054,7 +5080,7 @@ def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
                         else re.IGNORECASE
                     ),
                 )
-            return result
+            return result.replace(_IDENTITY_MASK_SENTINEL, _MASKED_IDENTITY_VALUE)
         if isinstance(item, list):
             return [mask(child) for child in item]
         if isinstance(item, tuple):
@@ -5064,6 +5090,83 @@ def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
         return item
 
     return mask(value)
+
+
+def _identity_alias_variants(aliases: Iterable[str]) -> tuple[str, ...]:
+    """Expand formal target identities into the names used by ordinary prose."""
+
+    variants: set[str] = set()
+    for raw_alias in aliases:
+        alias = " ".join(str(raw_alias or "").split()).strip()
+        if not alias:
+            continue
+        variants.add(alias)
+        for component in _IDENTITY_NAME_SEPARATOR.split(alias):
+            component = " ".join(component.split()).strip(" ,")
+            if not _is_meaningful_derived_identity_alias(component):
+                continue
+            variants.add(component)
+            natural_name = component
+            while True:
+                stripped = _IDENTITY_LEGAL_SUFFIX.sub("", natural_name).strip(" ,")
+                if stripped == natural_name:
+                    break
+                natural_name = stripped
+            if _is_meaningful_derived_identity_alias(natural_name):
+                variants.add(natural_name)
+                brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
+                brand_length = sum(
+                    character.isalnum() for character in brand
+                )
+                if (
+                    brand_length >= 5
+                    and brand.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
+                ):
+                    variants.add(brand)
+    return tuple(sorted(variants, key=lambda item: (-len(item), item.casefold(), item)))
+
+
+def _is_meaningful_derived_identity_alias(value: str) -> bool:
+    compact = "".join(character for character in value if character.isalnum())
+    if len(compact) >= 4:
+        return True
+    return len(compact) >= 2 and any(character.isdigit() for character in compact)
+
+
+def _assert_identity_values_masked(value: Any, aliases: Iterable[str]) -> None:
+    """Fail closed if the assembled Predictor context still names its target."""
+
+    normalized_aliases = _identity_alias_variants(aliases)
+
+    def visit(item: Any, path: str) -> None:
+        if isinstance(item, Mapping):
+            for key, child in item.items():
+                visit(child, f"{path}.{key}")
+            return
+        if isinstance(item, (list, tuple)):
+            for index, child in enumerate(item):
+                visit(child, f"{path}[{index}]")
+            return
+        if not isinstance(item, str):
+            return
+        anonymous_item = item.replace(_MASKED_IDENTITY_VALUE, "")
+        for alias in normalized_aliases:
+            escaped = re.escape(alias)
+            if alias[0].isalnum() and alias[-1].isalnum():
+                pattern = rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
+            else:
+                pattern = escaped
+            flags = (
+                0
+                if alias.isalnum() and alias.isupper() and len(alias) <= 5
+                else re.IGNORECASE
+            )
+            if re.search(pattern, anonymous_item, flags=flags):
+                raise ValidationError(
+                    f"target identity remained in anonymous context: {path}"
+                )
+
+    visit(value, "final_context")
 
 
 def _validate_id(value: str, name: str) -> None:

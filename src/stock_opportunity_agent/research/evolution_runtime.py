@@ -3287,7 +3287,6 @@ def run_bounded_evolution_cycle(
     evolution_workspace.refresh_capability_backlog(
         available_source_types=available_source_types
     )
-    aliases = _dataset_identity_aliases(dataset)
     runtime_limits = RuntimeLimits(
         max_signal_rounds=int(limits["max_signal_rounds"]),
         max_signal_calls=int(limits["max_signal_calls"]),
@@ -3305,10 +3304,7 @@ def run_bounded_evolution_cycle(
         evidence_resolver=evidence_resolver,
         controller=LLMResearchController(judge_caller),
         signal_agent=LLMSignalRetrievalAgent(judge_caller),
-        predictor=LLMBlindPredictor(
-            judge_caller,
-            anonymous_aliases=aliases,
-        ),
+        predictor=LLMBlindPredictor(judge_caller),
         prediction_root=workspace_root / "predictions",
         trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,
@@ -3680,18 +3676,6 @@ def _default_priors_dict() -> dict[str, str]:
         "mine_signal": DEFAULT_EVOLUTION_PRIORS.mine_signal,
         "update_signal": DEFAULT_EVOLUTION_PRIORS.update_signal,
     }
-
-
-def _dataset_identity_aliases(dataset: ApprovedDevelopmentDataset) -> tuple[str, ...]:
-    aliases: set[str] = set()
-    for case in (*dataset.discovery, *dataset.anchor, *dataset.evolution_validation):
-        for key in ("company_name", "ticker", "symbol", "identity_aliases"):
-            value = case.basic_info.get(key)
-            if isinstance(value, str):
-                aliases.add(value)
-            elif isinstance(value, (list, tuple)):
-                aliases.update(str(item) for item in value)
-    return tuple(sorted((item for item in aliases if item.strip()), key=len, reverse=True))
 
 
 def _add_months(value: date, months: int) -> date:

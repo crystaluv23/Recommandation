@@ -65,7 +65,8 @@ notes do not make the executable HEAD unreproducible.
 Every request is canonicalized and written under `requests/<hash>.json` before
 network I/O. Role-specific validation enforces:
 
-- Predictor calls contain neither identity aliases nor outcome fields;
+- Predictor calls contain neither the current target's identity aliases nor
+  outcome fields;
 - prediction-time controller, retrieval, and Signal calls contain no outcomes;
 - post-hoc reflection is the only Predictor stage allowed to receive truth;
 - judge registrations are no-web and retries stay at one; and
@@ -79,11 +80,18 @@ values as free identity text, because legitimate values such as confidence
 
 Free-text scanning preserves alias type. Company names are matched
 case-insensitively, while short uppercase ticker aliases are matched
-case-sensitively; internal lowercase company ids are not added as global
-free-text aliases. This still catches an explicit `AN`/`LOW` ticker leak but
-does not misclassify ordinary prose such as "an artifact" or "low liquidity".
-The current case's identity fields and aliases are independently stripped and
-masked before this defense-in-depth scan.
+case-sensitively. The current case's internal id, identity fields, source aliases,
+composite formal-name components, suffix-stripped natural company names, and
+distinctive leading brand tokens are independently stripped and masked before a
+defense-in-depth scan of the assembled context. This still catches an explicit
+`AN`/`LOW` ticker leak but does not misclassify ordinary prose such as "an
+artifact" or "low liquidity".
+
+Predictor anonymity is case-local. The runtime must not pass the full approved
+dataset's alias inventory into a case request scanner: broad market inventories
+contain ambiguous one-to-five-character tickers and names such as `UBS` that can
+also be legitimate third-party evidence in another company's news. Such a global
+scan rejects valid anonymous evidence without strengthening target anonymity.
 
 An attempt is reserved in `attempts.json` before the call. Reservation fails if
 the attempt count or cumulative conservative cost ceiling would be exceeded.
