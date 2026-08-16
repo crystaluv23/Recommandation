@@ -214,7 +214,11 @@ log probabilities, a fixed score call requests exactly one canonical uppercase
 ASCII token, `YES` or `NO`, at temperature `1.0`. The runtime records the raw
 canonical-token probabilities plus `sigmoid(logp_yes - logp_no)` and chooses
 the framework decision deterministically at the pairwise 50% boundary; the
-sampled token itself is not the decision. A separate greedy structured call may
+sampled token itself is not the decision. The score call consumes a
+deterministic label-free condensation of the final research state and Signal
+results; it excludes repeated Raw Info text spans but retains the evolvable
+analysis prompt. Fixed label semantics override any conflict in that prompt, so
+`H_analyse` still influences fitness without being allowed to redefine it. A separate greedy structured call may
 only explain that fixed decision and assign its magnitude. These values are
 optional calibration evidence, and absent, sentinel, or incompatible provider
 metadata must degrade to null without blocking the ordinary greedy binary
@@ -223,6 +227,10 @@ ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes. Binary F1
 remains the only Plan-selection fitness objective; token probabilities,
 precision, recall, magnitude accuracy, and magnitude macro-F1 are diagnostics
 and reflection evidence only.
+
+After truth reveal, prediction correctness is computed by the framework from
+the immutable saved prediction and deterministic truth. A reflection model may
+explain that result but may not author or contradict the correctness bit.
 
 Every prediction is durably handed to a prediction sink before the ground-truth
 provider can be called. The Predictor receives the label only afterward for

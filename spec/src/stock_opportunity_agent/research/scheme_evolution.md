@@ -338,7 +338,10 @@ choose one magnitude class:
 The saved output also contains qualitative confidence, key reasons, and
 uncertainties. If the provider supports output-token log probabilities, a
 dedicated fixed call requests exactly one uppercase ASCII `YES` or `NO` token
-at temperature `1.0`. It records the raw vocabulary probabilities of the two
+at temperature `1.0`. Its input is a deterministic label-free condensation of
+the final research state and Signal results; repeated Raw Info spans and the
+Basic Info bundle are omitted, while `H_analyse` remains present under the
+fixed framework semantics. It records the raw vocabulary probabilities of the two
 canonical tokens plus `decision_margin = sigmoid(logp_yes - logp_no)`, the
 pairwise YES-over-NO strength. The runtime derives the decision
 deterministically from that pairwise value at 50%; the sampled token is ignored,
@@ -376,7 +379,8 @@ true NO case, and maps the pairwise value to `decision_margin` for true YES or
 `1 - decision_margin` for true NO. These two truth-aligned values are always
 better when closer to one. Critics are explicitly instructed to use them, when
 present, as calibration evidence about correct, overconfident, or
-underconfident decisions.
+underconfident decisions. The framework, not the reflection model, computes the
+saved `prediction_outcome.correct` bit from the immutable prediction and truth.
 
 ## Plan Archive
 

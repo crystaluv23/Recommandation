@@ -116,10 +116,14 @@ sampled token. Prediction explanation, research, reflection, Signal execution,
 and all other judge calls remain greedy (`0.0`). The runtime alters temperature
 only, leaving nucleus sampling at its provider default.
 
-The frozen per-case token ceiling is `160000`. This accounts for the dedicated
-score call carrying the same label-free final context while retaining the
-existing call-count and dollar-cost ceilings; the former `120000` ceiling was
-below the observed 120950-token valid path and rejected completed first cases.
+The dedicated score request does not repeat the complete Raw Info bundle. It
+receives a deterministic label-free view containing the final research state
+and Signal id/version/state/interpretation/status plus evidence counts and the
+evolvable analysis prompt. Raw document spans and the Basic Info bundle are
+excluded. Fixed six-month semantics override conflicting Plan text, while
+retaining `H_analyse` here ensures that it still affects fitness. This keeps the frozen per-case token ceiling at `120000` without
+introducing another summarization model or changing the original full-context
+greedy explanation call.
 
 Every structured role prompt includes its literal accepted JSON field contract.
 The adapter validates and converts provider output at the role boundary before
@@ -198,6 +202,12 @@ feedback values therefore improve toward one for either class. Fixed critic
 prompts must explicitly use available values as calibration feedback, but
 Binary F1 remains the only Plan-selection fitness and none of these values may
 affect Top-K.
+
+After truth reveal, the framework computes `prediction_outcome.correct` from
+the immutable saved prediction and deterministic truth, including magnitude for
+a true positive case. The reflection role receives that fixed bit and may
+explain calibration or Plan failures, but model-authored disagreement cannot
+overwrite it.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

@@ -3351,6 +3351,60 @@ class LLMSignalRetrievalAgent:
         return AgentStep(refs, category_usage + selection_usage)
 
 
+def _blind_predictor_score_context(
+    final_context: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Condense finalized label-free research without repeating Raw Info spans."""
+
+    final_state = final_context.get("final_research_state")
+    signal_rounds = final_context.get("signal_rounds")
+    if not isinstance(final_state, Mapping) or not isinstance(signal_rounds, list):
+        return {"final_context": dict(final_context)}
+
+    compact_rounds: list[dict[str, Any]] = []
+    for round_value in signal_rounds:
+        if not isinstance(round_value, Mapping):
+            continue
+        compact_results: list[dict[str, Any]] = []
+        batch = round_value.get("batch")
+        results = batch.get("results") if isinstance(batch, Mapping) else None
+        if isinstance(results, list):
+            for result in results:
+                if not isinstance(result, Mapping):
+                    continue
+                compact_result = {
+                    key: result[key]
+                    for key in (
+                        "signal_id",
+                        "version",
+                        "state",
+                        "interpretation",
+                        "status",
+                    )
+                    if key in result
+                }
+                evidence = result.get("evidence")
+                if isinstance(evidence, Mapping):
+                    compact_result["evidence_counts"] = {
+                        key: len(value) if isinstance(value, list) else 0
+                        for key in ("supporting", "counter")
+                        for value in (evidence.get(key),)
+                    }
+                compact_results.append(compact_result)
+        compact_rounds.append(
+            {
+                "information_needs": list(round_value.get("information_needs", ())),
+                "selected_signals": list(round_value.get("selected_signals", ())),
+                "signal_results": compact_results,
+            }
+        )
+    return {
+        "analysis_prompt": final_context.get("analysis_prompt"),
+        "final_research_state": dict(final_state),
+        "signal_rounds": compact_rounds,
+    }
+
+
 class LLMBlindPredictor:
     """No-web two-stage Predictor plus explicitly post-hoc reflection adapter."""
 
@@ -3371,11 +3425,13 @@ class LLMBlindPredictor:
         self.score_temperature = score_temperature
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
+        score_context = _blind_predictor_score_context(final_context)
         score_usage, token_scores = _complete_binary_token_scores(
             self.caller,
             stage="blind_predictor_score",
             system_prompt=(
-                "Using only the anonymous supplied context, forecast whether the "
+                "Using only the anonymous condensed final research state and Signal "
+                "summaries, forecast whether the "
                 "target security's adjusted share price reaches at least 2x over "
                 "the next six calendar months. The prediction-time baseline is the "
                 "mean adjusted close over the last five complete trading days, and "
@@ -3389,9 +3445,11 @@ class LLMBlindPredictor:
                 "live-market base rate, so do not choose NO merely because 2x moves "
                 "are rare in the broad market. Return exactly one ASCII uppercase "
                 "token: YES or NO. Do not add whitespace, punctuation, explanation, "
-                "Markdown, or any other casing or spelling. Do not use web tools."
+                "Markdown, or any other casing or spelling. This fixed six-month "
+                "definition overrides any conflicting horizon in evolvable Plan "
+                "text. Do not use web tools."
             ),
-            payload={"final_context": dict(final_context)},
+            payload={"score_context": score_context},
             allow_outcomes=False,
             decision_field="decision",
             decision_tokens=("YES", "NO"),
@@ -3452,7 +3510,8 @@ class LLMBlindPredictor:
                 "distribution and is immutable: return exactly that decision and "
                 "explain it rather than deciding again. If YES choose 2-3x, 3-10x, "
                 "or 10x+. If NO set "
-                "magnitude to null. Do not use web "
+                "magnitude to null. The fixed six-month definition overrides any "
+                "conflicting horizon in the supplied evolvable analysis prompt. Do not use web "
                 "tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
@@ -3478,12 +3537,21 @@ class LLMBlindPredictor:
             confidence_feedback = original_prediction.confidence_feedback(
                 ground_truth
             )
+            framework_correct = (
+                original_prediction.is_surge == ground_truth.is_surge
+                and (
+                    not ground_truth.is_surge
+                    or original_prediction.magnitude is ground_truth.magnitude
+                )
+            )
             reflection, usage = _complete_parsed_role(
                 self.caller,
                 stage="blind_predictor_posthoc_reflect",
                 system_prompt=(
                     "The saved prediction is immutable. Given its original anonymous "
                     "context and newly revealed truth, reflect on the prediction. "
+                    "framework_prediction_correct is deterministic and immutable; "
+                    "copy it into prediction_outcome.correct and do not rejudge it. "
                     "When decision_confidence_feedback is present, explicitly use its "
                     "true-label token probability, pairwise YES probability, and "
                     "truth-aligned confidence as calibration evidence in the relevant "
@@ -3495,6 +3563,7 @@ class LLMBlindPredictor:
                     "original_context": dict(original_context),
                     "original_prediction": original_prediction.to_dict(),
                     "revealed_ground_truth": ground_truth.to_dict(),
+                    "framework_prediction_correct": framework_correct,
                     "decision_confidence_feedback": confidence_feedback,
                 },
                 parser=PredictionSelfReflection.from_dict,
@@ -3502,6 +3571,15 @@ class LLMBlindPredictor:
                 # Validated enums may equal short ticker aliases such as LOW.
                 anonymous_aliases=(),
             )
+            if reflection.correct != framework_correct:
+                reflection = PredictionSelfReflection(
+                    correct=framework_correct,
+                    why_prediction_failed=reflection.why_prediction_failed,
+                    misleading_signals=reflection.misleading_signals,
+                    ignored_evidence=reflection.ignored_evidence,
+                    missing_information=reflection.missing_information,
+                    plan_issues=reflection.plan_issues,
+                )
             return AgentStep(reflection, usage)
         except CandidateExecutionRejected as exc:
             correct = original_prediction.is_surge == ground_truth.is_surge and (

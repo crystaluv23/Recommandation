@@ -171,7 +171,7 @@ def make_contract() -> EvolutionRunContract:
             "max_signal_rounds": 5,
             "max_signal_calls": 20,
             "max_llm_calls": 40,
-            "max_tokens": 160_000,
+            "max_tokens": 120_000,
             "max_case_cost": 5.0,
             "max_agent_steps": 20,
             "evaluation": PlanEvaluationConfig().to_dict(),
@@ -1244,6 +1244,51 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("exactly one ASCII uppercase token", caller.calls[0]["system_prompt"])
         self.assertEqual(caller.calls[1]["payload"]["framework_decision"], "YES")
 
+    def test_blind_predictor_score_context_omits_raw_spans_and_plan_prompt(self) -> None:
+        compact = evolution_runtime_module._blind_predictor_score_context(
+            {
+                "analysis_prompt": "use a conflicting one-month horizon",
+                "basic_info": {"requests": [{"exact_text": "x" * 20_000}]},
+                "final_research_state": {
+                    "decision": "finalize",
+                    "supporting_evidence": ["condensed evidence"],
+                },
+                "signal_rounds": [
+                    {
+                        "information_needs": ["need"],
+                        "selected_signals": ["signal:v1"],
+                        "batch": {
+                            "results": [
+                                {
+                                    "signal_id": "signal",
+                                    "version": 1,
+                                    "state": {"value": "positive"},
+                                    "interpretation": {"summary": "summary"},
+                                    "status": {"coverage": "sufficient"},
+                                    "evidence": {
+                                        "supporting": [{"exact_span": "y" * 20_000}],
+                                        "counter": [],
+                                    },
+                                }
+                            ]
+                        },
+                    }
+                ],
+            }
+        )
+
+        rendered = json.dumps(compact)
+        self.assertNotIn("basic_info", compact)
+        self.assertEqual(
+            compact["analysis_prompt"], "use a conflicting one-month horizon"
+        )
+        self.assertNotIn("exact_text", rendered)
+        self.assertNotIn("exact_span", rendered)
+        self.assertEqual(
+            compact["signal_rounds"][0]["signal_results"][0]["evidence_counts"],
+            {"supporting": 1, "counter": 0},
+        )
+
     def test_blind_predictor_corrects_explanation_to_framework_decision(self) -> None:
         class ScoredRoleCaller(ScriptedRoleCaller):
             def complete_binary_token_with_scores(self, **kwargs):
@@ -1299,7 +1344,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         predictor = LLMBlindPredictor(caller, anonymous_aliases=("LOW",))
 
-        predictor.reflect(
+        reflection = predictor.reflect(
             {"summary": "anonymous evidence"},
             BlindPrediction(
                 is_surge=False,
@@ -1320,6 +1365,10 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(feedback["pairwise_yes_probability"], 0.2)
         self.assertEqual(feedback["truth_label_token_probability"], 0.7)
         self.assertEqual(feedback["truth_aligned_confidence"], 0.8)
+        self.assertTrue(reflection.value.correct)
+        self.assertTrue(
+            caller.calls[0]["payload"]["framework_prediction_correct"]
+        )
         self.assertIn(
             "explicitly use its true-label token probability",
             caller.calls[0]["system_prompt"],
