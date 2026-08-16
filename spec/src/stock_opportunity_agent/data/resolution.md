@@ -56,6 +56,13 @@ field. When several authorized price adapters are available, runtime ordering
 follows the source catalog: Massive first, Stooq second, and Alpha Vantage last;
 news continues to use Alpha Vantage.
 
+Adapter routing may deterministically recover the SEC identifier from a
+canonical `company_id` shaped as `cik_##########` when the label-free case
+identity does not repeat a separate `cik` field. This recovered value is passed
+only to acquisition adapters; it is not added to Basic Info or model context.
+An explicit `cik`/`CIK` identity remains authoritative for other company-id
+schemes.
+
 ## Exact Basic Info Context
 
 For Basic Info only, selected documents are split into 2,000-character spans
@@ -81,4 +88,5 @@ cases and yield `historical_data_unavailable`.
 Cover deterministic spans/budgets/ranking, exact-substring validation,
 local-hit no-acquisition, same-execution append/re-query, later reuse, every
 DataGap class, historical fail-closed behavior, canonical Signal source-type
-routing, materialized price metadata, and Signal document lineage.
+routing, canonical company-id CIK routing, materialized price metadata, and
+Signal document lineage.

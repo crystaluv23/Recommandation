@@ -21,6 +21,7 @@ CONTEXT_CHUNK_CHARS = 2_000
 CONTEXT_CHUNK_OVERLAP = 200
 MAX_BASIC_INFO_CONTEXT_CHARS = 48_000
 _TOKEN = re.compile(r"[A-Za-z0-9]+")
+_CANONICAL_CIK_COMPANY_ID = re.compile(r"^cik_(\d{10})$")
 
 
 class DataGapReason(str, Enum):
@@ -605,10 +606,13 @@ class EvidenceResolver:
                     )
                 )
                 try:
+                    adapter_identity = _adapter_routing_identity(
+                        company_id, identity
+                    )
                     result = adapter.acquire(
                         request,
                         company_id=company_id,
-                        identity=identity,
+                        identity=adapter_identity,
                         as_of=as_of,
                     )
                     events.extend(result.events)
@@ -694,7 +698,6 @@ class EvidenceResolver:
                 "No point-in-time documents matched the request.",
             ),
         )
-
     def resolve_basic_info(
         self,
         requests: Iterable[RawInfoRequest],
@@ -811,6 +814,20 @@ class EvidenceResolver:
         provider: str | None = None,
     ) -> DataGap:
         return DataGap(request.request_id, reason, message, request.source_types, provider)
+
+
+def _adapter_routing_identity(
+    company_id: str, identity: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Add a canonical CIK route without exposing it to model context."""
+
+    routed = dict(identity)
+    if any(str(routed.get(key) or "").strip() for key in ("cik", "CIK")):
+        return routed
+    match = _CANONICAL_CIK_COMPANY_ID.fullmatch(company_id)
+    if match is not None:
+        routed["cik"] = match.group(1)
+    return routed
 
 
 def _rank_documents(

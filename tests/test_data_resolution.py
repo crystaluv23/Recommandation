@@ -92,11 +92,14 @@ class EvidenceResolverTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "disabled data acquisition"):
             DataAcquisitionPolicy(allowed_providers=("sec_edgar",))
 
-    def test_company_facts_archives_full_response_but_exposes_only_as_of_subset(self) -> None:
+    def test_canonical_cik_routes_company_facts_and_archives_as_of_subset(self) -> None:
+        observed_ciks: list[str] = []
+
         class Client:
             transport = None
 
             def company_facts(self, cik):
+                observed_ciks.append(cik)
                 return {
                     "cik": cik,
                     "facts": {
@@ -132,17 +135,18 @@ class EvidenceResolverTests(TestCase):
             policy=policy,
         ).resolve(
             request,
-            company_id="issuer_1",
-            identity={"cik": "1234"},
+            company_id="cik_0000001234",
+            identity={},
             as_of=AS_OF,
         )
+        self.assertEqual(observed_ciks, ["0000001234"])
         scoped = store.load(resolution.documents[0].document_id, as_of=AS_OF)
         self.assertIn("2024-12-31", scoped.content)
         self.assertNotIn("2026-01-01", scoped.content)
         archived = [
             item
             for item in store.search(
-                "issuer_1", as_of=AS_OF + timedelta(days=1_000)
+                "cik_0000001234", as_of=AS_OF + timedelta(days=1_000)
             )
             if item.source_type == "sec_company_facts_raw_response"
         ]
