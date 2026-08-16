@@ -244,6 +244,15 @@ current durable boundary without changing the frozen run contract, attempt
 ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
 recoverable in-progress Signal transition, never an untracked partial rollover.
 
+The stable operator launcher treats Python exit status `75` as the only
+automatically recoverable process outcome. For an invocation-specific window
+that defaults to ten hours, it relaunches the same `run-loop` after bounded
+exponential delays from five to sixty seconds. Exhaustion of the wall-clock
+window returns the same temporary-failure status for later manual resume. Any
+other exit status, including `Ctrl+C` status `130`, propagates immediately.
+Relaunch never edits the contract or pointers and cannot bypass frozen attempt,
+cost, data-request, or Locked Test controls.
+
 When no candidate is fitness-eligible, the runtime persists a deterministic
 round-rejection checkpoint and capability-gap aggregation, emits a paused
 status, and leaves both authoritative pointers unchanged. Resuming the same

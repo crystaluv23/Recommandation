@@ -641,12 +641,16 @@ are rejected rather than frozen as dormant authorization.
 
 The CLI classifies exhausted transient transport failures (timeouts, connection
 errors, incomplete responses, HTTP 408/429, and HTTP 5xx) with a dedicated
-temporary-failure exit status. During the fixed wall-clock window, the launcher
-may restart the same exact `run-loop` only for that status, after a short bounded
-backoff. Every restart uses the same frozen contract and durable attempt ledger,
-so the existing attempt/cost ceilings still apply. Provider rejections, invalid
-model content, contract conflicts, and other deterministic failures remain
-terminal and are never converted into unattended retry loops.
+temporary-failure exit status. During an invocation-specific fixed wall-clock
+window, defaulting to ten hours, the launcher automatically restarts the same
+exact `run-loop` only for that status, using exponential backoff capped at one
+minute. Every restart uses the same frozen contract, exact cache, case
+checkpoints, and durable attempt ledger, so the existing attempt/cost ceilings
+still apply. The window and backoff are supervisor controls, not evolutionary
+state and not permission to mutate a frozen contract. `Ctrl+C`, provider
+rejections, invalid model content, contract conflicts, budget exhaustion, and
+other deterministic failures remain terminal and are never converted into
+unattended retry loops.
 
 The single human-facing entry remains
 `runs/cold_start/evolution/evolution_dashboard.html`. A read-only builder scans

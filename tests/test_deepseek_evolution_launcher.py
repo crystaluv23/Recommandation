@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -12,6 +14,85 @@ COMPATIBILITY_SCRIPT = ROOT / "scripts" / "run_deepseek_evolution.sh"
 
 
 class InformationPlanEvolutionLauncherTests(TestCase):
+    def _run_stubbed_resume(
+        self,
+        root: Path,
+        *,
+        retryable_failures: int,
+        final_status: int,
+        retry_window_hours: int = 1,
+    ) -> tuple[subprocess.CompletedProcess[str], int]:
+        workspace = root / "workspace"
+        workspace.mkdir()
+        (workspace / "run_contract.json").write_text(
+            json.dumps(
+                {
+                    "contract": {"schema_version": "evolution-run-contract-v5"},
+                    "contract_hash": "fixture-contract-hash",
+                }
+            ),
+            encoding="utf-8",
+        )
+        approved = root / "approved.json"
+        approved.write_text("{}", encoding="utf-8")
+        count_path = root / "invocation-count.txt"
+        stub = root / "python-stub.sh"
+        stub.write_text(
+            """#!/usr/bin/env bash
+set -u
+if [ "${1:-}" = "-c" ]; then
+  if [ "$#" -ge 3 ]; then
+    printf '%s\\n' 'evolution-run-contract-v5 fixture-contract-hash'
+  fi
+  exit 0
+fi
+count=0
+if [ -f "$STUB_COUNT_PATH" ]; then
+  count="$(<"$STUB_COUNT_PATH")"
+fi
+count=$((count + 1))
+printf '%s' "$count" > "$STUB_COUNT_PATH"
+if [ "$count" -le "$STUB_RETRYABLE_FAILURES" ]; then
+  exit 75
+fi
+exit "$STUB_FINAL_STATUS"
+""",
+            encoding="utf-8",
+        )
+        stub.chmod(0o755)
+        result = subprocess.run(
+            [
+                "/bin/bash",
+                str(SCRIPT),
+                "resume",
+                "--workspace",
+                str(workspace),
+                "--raw-info-root",
+                str(root / "raw-info"),
+                "--approved-dataset",
+                str(approved),
+                "--max-cycles",
+                "1",
+                "--retry-window-hours",
+                str(retry_window_hours),
+                "--retry-initial-backoff-seconds",
+                "0",
+                "--retry-max-backoff-seconds",
+                "0",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            env={
+                **os.environ,
+                "EVOLUTION_PYTHON": str(stub),
+                "STUB_COUNT_PATH": str(count_path),
+                "STUB_RETRYABLE_FAILURES": str(retryable_failures),
+                "STUB_FINAL_STATUS": str(final_status),
+            },
+        )
+        return result, int(count_path.read_text(encoding="utf-8"))
+
     def test_scripts_have_valid_bash_syntax(self) -> None:
         for script in (SCRIPT, COMPATIBILITY_SCRIPT):
             subprocess.run(["/bin/bash", "-n", str(script)], check=True)
@@ -31,6 +112,8 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertIn("default: 2", result.stdout)
         self.assertIn("default: 3", result.stdout)
         self.assertIn("--data-provider", result.stdout)
+        self.assertIn("--retry-window-hours", result.stdout)
+        self.assertIn("default: 10", result.stdout)
         self.assertIn("Locked Test stays sealed", result.stdout)
         self.assertIn("auto-promote atomically", result.stdout)
         self.assertIn("v5 contract", result.stdout)
@@ -152,3 +235,43 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         self.assertIn('ALLOW_EXTERNAL=0', source)
         self.assertIn('CONTRACT_SCHEMA" = "evolution-run-contract-v5', source)
         self.assertNotIn('CONTRACT_SCHEMA" = "evolution-run-contract-v4', source)
+
+    def test_resume_automatically_relaunches_only_retryable_exit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result, invocation_count = self._run_stubbed_resume(
+                Path(directory),
+                retryable_failures=2,
+                final_status=0,
+            )
+
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(invocation_count, 3)
+        self.assertEqual(result.stderr.count("Temporary transport failure"), 2)
+        self.assertIn("same frozen contract", result.stderr)
+
+    def test_resume_does_not_relaunch_non_retryable_or_interrupt_exit(self) -> None:
+        for final_status in (2, 130):
+            with self.subTest(final_status=final_status):
+                with tempfile.TemporaryDirectory() as directory:
+                    result, invocation_count = self._run_stubbed_resume(
+                        Path(directory),
+                        retryable_failures=0,
+                        final_status=final_status,
+                    )
+
+                self.assertEqual(result.returncode, final_status)
+                self.assertEqual(invocation_count, 1)
+                self.assertNotIn("Temporary transport failure", result.stderr)
+
+    def test_zero_retry_window_returns_first_retryable_exit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result, invocation_count = self._run_stubbed_resume(
+                Path(directory),
+                retryable_failures=100,
+                final_status=0,
+                retry_window_hours=0,
+            )
+
+        self.assertEqual(result.returncode, 75)
+        self.assertEqual(invocation_count, 1)
+        self.assertNotIn("Temporary transport failure", result.stderr)

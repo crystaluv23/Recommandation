@@ -136,6 +136,15 @@ with fixed model/provider/routing, packet corpus, per-round limits, a cumulative
 cost ledger, and fail-closed preflight validation for every newly rendered
 request.
 
+The operator launcher supervises retryable transport exits for a fixed
+wall-clock window, defaulting to ten hours. It restarts the same exact
+`run-loop` with bounded exponential backoff only after the dedicated temporary-
+failure exit status. Every restart retains the frozen contract, exact response
+cache, attempt/cost ledger, case checkpoints, and authoritative round/cycle
+pointers. Interrupts, invalid model content, contract drift, exhausted budgets,
+and all other deterministic failures remain terminal; this recovery window
+does not widen any frozen execution or data boundary.
+
 An external evolution run is identified by a secret-free frozen run contract:
 dataset and split hash, initial stable Signal snapshot hash, global Raw Info oracle id,
 fixed-prior hash, role/model and provider routing, exact code revision and Python

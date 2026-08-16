@@ -1,6 +1,6 @@
 # Continuous Round Commit Marker
 
-visit_times: 17
+visit_times: 18
 
 ## Trigger
 

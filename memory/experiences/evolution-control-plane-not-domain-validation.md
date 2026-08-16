@@ -1,6 +1,6 @@
 # Evolution Control Flow Is Not Domain Validation
 
-visit_times: 2
+visit_times: 3
 
 ## Trigger
 
@@ -41,6 +41,16 @@ operator pause nor valid role output. Persist and cost the paid response, keep
 it out of the valid cache, then route it through the role's already bounded
 structured correction. Repeated malformed output becomes a candidate/role
 failure and never a process-level traceback.
+
+## 2026-08-16 Process-Level Transport Recovery
+
+One HTTP request retry and one evolution-process restart are different safety
+boundaries. Keep exact provider calls single-attempt and durably reserved so an
+EOF after transmission remains visible. The stable operator launcher may then
+relaunch the same pointer-driven `run-loop` only when the CLI returns its
+dedicated temporary status. Bound that relaunch policy by wall-clock time,
+exponential backoff, and the unchanged frozen attempt/cost ceilings. Never
+restart `Ctrl+C`, validation, contract, provider-rejection, or budget exits.
 
 ## How to Apply
 

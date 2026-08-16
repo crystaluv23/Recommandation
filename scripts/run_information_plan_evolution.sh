@@ -39,6 +39,12 @@ usage() {
     "resume tuning options:" \
     "  --max-cycles N             cycles this invocation; 0 means until Ctrl+C" \
     "                              (default: 1)" \
+    "  --retry-window-hours N     auto-resume temporary transport failures" \
+    "                              for this many hours (default: 10; 0 disables)" \
+    "  --retry-initial-backoff-seconds N" \
+    "                              first retry delay (default: 5)" \
+    "  --retry-max-backoff-seconds N" \
+    "                              capped retry delay (default: 60)" \
     "  --external                 permit LLM calls under the frozen contract" \
     "  --data-external            permit calls allowed by the frozen data policy" \
     "  --acknowledge-contract-hash SHA256" \
@@ -80,6 +86,9 @@ PARENT_SELECTION_SEED=42
 MAX_EXTERNAL_ATTEMPTS=2500
 MAX_TOTAL_COST=100
 MAX_CYCLES=1
+RETRY_WINDOW_HOURS=10
+RETRY_INITIAL_BACKOFF_SECONDS=5
+RETRY_MAX_BACKOFF_SECONDS=60
 ALLOW_EXTERNAL=0
 ALLOW_DATA_EXTERNAL=0
 DATA_PROVIDERS=()
@@ -93,7 +102,7 @@ RESUME_ONLY_OPTION_SEEN=0
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --workspace|--raw-info-root|--approved-dataset|--run-id|--judge-model|--evolution-model|--plan-rounds|--candidates-per-round|--parent-selection-seed|--max-external-attempts|--max-total-cost|--max-data-requests-per-cycle|--max-data-requests-per-run|--max-cycles|--acknowledge-contract-hash)
+    --workspace|--raw-info-root|--approved-dataset|--run-id|--judge-model|--evolution-model|--plan-rounds|--candidates-per-round|--parent-selection-seed|--max-external-attempts|--max-total-cost|--max-data-requests-per-cycle|--max-data-requests-per-run|--max-cycles|--retry-window-hours|--retry-initial-backoff-seconds|--retry-max-backoff-seconds|--acknowledge-contract-hash)
       [ "$#" -ge 2 ] || fail "$1 requires a value"
       case "$1" in
         --workspace) WORKSPACE="$2" ;;
@@ -110,6 +119,9 @@ while [ "$#" -gt 0 ]; do
         --max-data-requests-per-cycle) MAX_DATA_REQUESTS_PER_CYCLE="$2"; NEW_ONLY_OPTION_SEEN=1 ;;
         --max-data-requests-per-run) MAX_DATA_REQUESTS_PER_RUN="$2"; NEW_ONLY_OPTION_SEEN=1 ;;
         --max-cycles) MAX_CYCLES="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
+        --retry-window-hours) RETRY_WINDOW_HOURS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
+        --retry-initial-backoff-seconds) RETRY_INITIAL_BACKOFF_SECONDS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
+        --retry-max-backoff-seconds) RETRY_MAX_BACKOFF_SECONDS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
         --acknowledge-contract-hash) ACKNOWLEDGED_CONTRACT_HASH="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
       esac
       shift 2
@@ -237,6 +249,10 @@ fi
 [ "$NEW_ONLY_OPTION_SEEN" -eq 0 ] || fail "resume uses frozen settings; new-only options cannot change them"
 [ -f "$CONTRACT_PATH" ] || fail "resume requires an existing frozen contract"
 [[ "$MAX_CYCLES" =~ ^[0-9]+$ ]] || fail "--max-cycles must be a non-negative integer"
+[[ "$RETRY_WINDOW_HOURS" =~ ^[0-9]+$ ]] || fail "--retry-window-hours must be a non-negative integer"
+[[ "$RETRY_INITIAL_BACKOFF_SECONDS" =~ ^[0-9]+$ ]] || fail "--retry-initial-backoff-seconds must be a non-negative integer"
+[[ "$RETRY_MAX_BACKOFF_SECONDS" =~ ^[0-9]+$ ]] || fail "--retry-max-backoff-seconds must be a non-negative integer"
+[ "$RETRY_MAX_BACKOFF_SECONDS" -ge "$RETRY_INITIAL_BACKOFF_SECONDS" ] || fail "--retry-max-backoff-seconds must be at least the initial backoff"
 [ "$ALLOW_EXTERNAL" -eq 1 ] || [ -z "$ACKNOWLEDGED_CONTRACT_HASH" ] || fail "--acknowledge-contract-hash requires --external"
 CONTRACT_INFO="$(
   "$PYTHON_BIN" -c \
@@ -264,4 +280,43 @@ if [ "$ALLOW_DATA_EXTERNAL" -eq 1 ]; then
 fi
 
 printf 'Resuming contract hash: %s\n' "$CONTRACT_HASH"
-run_cli "${RUN_ARGS[@]}"
+RETRY_STARTED_AT="$(date +%s)"
+RETRY_DEADLINE=$((RETRY_STARTED_AT + RETRY_WINDOW_HOURS * 3600))
+RETRY_DELAY="$RETRY_INITIAL_BACKOFF_SECONDS"
+RETRY_COUNT=0
+
+while true; do
+  set +e
+  run_cli "${RUN_ARGS[@]}"
+  RUN_STATUS=$?
+  set -e
+
+  if [ "$RUN_STATUS" -eq 0 ]; then
+    exit 0
+  fi
+  if [ "$RUN_STATUS" -ne 75 ] || [ "$RETRY_WINDOW_HOURS" -eq 0 ]; then
+    exit "$RUN_STATUS"
+  fi
+
+  RETRY_NOW="$(date +%s)"
+  RETRY_REMAINING=$((RETRY_DEADLINE - RETRY_NOW))
+  if [ "$RETRY_REMAINING" -le 0 ] || [ "$RETRY_DELAY" -ge "$RETRY_REMAINING" ]; then
+    printf 'Retry window exhausted after %s automatic resumes.\n' "$RETRY_COUNT" >&2
+    exit 75
+  fi
+
+  RETRY_COUNT=$((RETRY_COUNT + 1))
+  printf 'Temporary transport failure; auto-resume %s in %ss using the same frozen contract.\n' \
+    "$RETRY_COUNT" "$RETRY_DELAY" >&2
+  sleep "$RETRY_DELAY"
+  if [ "$RETRY_DELAY" -lt "$RETRY_MAX_BACKOFF_SECONDS" ]; then
+    if [ "$RETRY_DELAY" -eq 0 ]; then
+      RETRY_DELAY=1
+    else
+      RETRY_DELAY=$((RETRY_DELAY * 2))
+    fi
+    if [ "$RETRY_DELAY" -gt "$RETRY_MAX_BACKOFF_SECONDS" ]; then
+      RETRY_DELAY="$RETRY_MAX_BACKOFF_SECONDS"
+    fi
+  fi
+done
