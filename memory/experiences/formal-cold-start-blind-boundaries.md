@@ -268,6 +268,15 @@ state that operating measures are evidence about price repricing rather than
 the target variable itself. This repairs prompt/label alignment without
 revealing any case outcome or changing the evolvable Information Plan.
 
+The immediately following canary showed a second semantic trap: even after the
+unit was correct, the model rejected consecutive positive cases because the
+evidence did not "guarantee" or explicitly forecast a doubling. A historical
+blind classifier is a forecast under uncertainty, not a proof system. Define a
+positive as a concrete, credible path to the price outcome, keep negative for no
+credible path or dominant contrary evidence, and carry remaining doubt in the
+existing confidence and uncertainty fields. Do not repair this by disclosing
+class balance, forcing a positive quota, or changing completed predictions.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

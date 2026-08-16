@@ -137,8 +137,14 @@ six calendar months as the future numerator. Revenue, earnings, users,
 production, and other operating measures are evidence about possible price
 repricing; none is itself the `2x` target. The prompt must not let a model reject
 a price-surge hypothesis merely because an operating metric is not forecast to
-double. This clarification is fixed evaluation semantics, not an evolvable Plan
-field, a changed label, or outcome disclosure.
+double. It must also frame the output as a forecast under uncertainty rather
+than a proof obligation: an explicit future price target, certainty, or a
+guarantee of doubling is not required. `is_surge=true` means the supplied
+evidence supports a concrete, credible path to the defined price outcome;
+qualitative confidence and uncertainties carry residual doubt. `false` means
+no credible path is present or contrary evidence dominates. This clarification
+is fixed evaluation semantics, not an evolvable Plan field, a changed label, a
+hard-coded class balance, or outcome disclosure.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

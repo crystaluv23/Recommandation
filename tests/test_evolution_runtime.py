@@ -1099,6 +1099,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("adjusted share price", prompt)
         self.assertIn("last five complete trading days", prompt)
         self.assertIn("not a requirement that revenue", prompt)
+        self.assertIn("forecast under uncertainty, not a proof task", prompt)
+        self.assertIn("concrete, credible path", prompt)
+        self.assertIn("Do not require a guarantee", prompt)
 
     def test_blind_predictor_repairs_string_boolean_instead_of_using_truthiness(self) -> None:
         valid = {
