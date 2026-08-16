@@ -341,6 +341,13 @@ uncertainties. Numeric probability is not required, and the active Predictor
 does not make a separate token-probability call. Continuous
 `realized_max_multiple` remains the underlying truth.
 
+`BlindPrediction` durably stores the provider's original `candidate_judgment`
+alongside the derived `is_surge` value. The record is invalid unless `likely`
+or `possible` is paired with true and `unlikely` or
+`insufficient_information` is paired with false. Stage-2 gating and scoring
+read only the derived binary value; the original category remains auditable
+reflection evidence.
+
 Prediction Stage 1 metrics are precision, recall, and binary F1. Prediction
 Stage 2 metrics are magnitude accuracy and macro-F1 over true surge cases; a
 Stage-1 false negative counts as a missed magnitude prediction. Binary F1 is the
@@ -362,6 +369,29 @@ This is usability feedback from the actual consumer of the Information Plan.
 It is stored separately from prediction-time uncertainty and cannot alter the
 already saved prediction. The framework, not the reflection model, computes the
 saved `prediction_outcome.correct` bit from the immutable prediction and truth.
+
+The same label-reveal boundary also derives an immutable
+`candidate_judgment_feedback` object containing the saved four-way judgment,
+predicted and true binary labels, binary correctness, a fixed assessment class,
+and fixed explanatory text. Its eight cases are:
+
+- surge + `likely`: strong correct positive;
+- surge + `possible`: binary correct but conservative relative to the realized
+  outcome, without claiming the realization proves ex-ante calibration;
+- surge + `unlikely`: severe false negative;
+- surge + `insufficient_information`: false negative with an evidence-coverage
+  gap;
+- non-surge + `unlikely`: strong correct negative;
+- non-surge + `insufficient_information`: binary correct but still an evidence-
+  coverage gap;
+- non-surge + `possible`: false positive; and
+- non-surge + `likely`: severe overconfident false positive.
+
+This object is passed to case reflection and retained in the compact Plan-
+critic trajectory so those roles can reason about conservatism, overconfidence,
+and missing evidence. It is derived only after truth reveal, cannot mutate the
+saved prediction, and never contributes an ordinal distance, weight, or other
+term to Binary F1 or parent selection.
 
 Plan-level reflection consumes a deterministic compact view of those saved
 trajectories rather than their complete Raw Info and research contexts. Each

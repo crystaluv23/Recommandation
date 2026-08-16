@@ -164,6 +164,15 @@ framework semantics, not evolvable Plan content or case-outcome disclosure.
 The active Predictor makes no dedicated token-probability request and persists
 no `P(YES)` or decision-margin fields.
 
+The Predictor adapter must persist the exact four-way `candidate_judgment`
+alongside its binary projection and reject an inconsistent pair. Once truth is
+revealed, the framework derives the fixed eight-case
+`candidate_judgment_feedback`; both the post-hoc Predictor reflection and Plan
+critic must receive it explicitly. The roles may use it to diagnose conservative
+positive calls, overconfident mistakes, or evidence-coverage gaps, but they may
+not rewrite the saved judgment or treat one realized outcome as proof of an
+ex-ante probability category.
+
 After truth reveal, the framework computes `prediction_outcome.correct` from
 the immutable saved prediction and deterministic truth, including magnitude for
 a true positive case. The reflection role receives that fixed bit and may
@@ -172,12 +181,14 @@ overwrite it.
 
 The Plan critic must not receive complete saved trajectories. Its request uses
 one deterministic compact row per case containing only an opaque case index,
-stop state, prediction, ground truth, decision-confidence feedback, post-hoc
+stop state, prediction, ground truth, candidate-judgment feedback, post-hoc
 reflection, and compact Signal id/version/state/interpretation/status summaries
 with evidence counts. It excludes company/case identifiers, Basic Info, initial
 and final research context, literal evidence spans, prediction paths, and usage
 records. This preserves decision-calibration and Plan-failure evidence while
 preventing the 24-case batch from repeating Raw Info into a provider request.
+Candidate-judgment feedback remains reflection-only: fitness and cumulative
+Top-K selection continue to use Combined Binary F1 alone.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

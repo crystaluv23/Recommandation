@@ -41,6 +41,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
 )
 from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
+    CandidateJudgment,
     ConfidenceLevel,
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
@@ -1233,6 +1234,10 @@ class ConcreteRoleAdapterTests(TestCase):
                     {"basic_info": {"industry": "fixture"}}
                 )
                 self.assertEqual(prediction.value.is_surge, is_surge)
+                self.assertEqual(
+                    prediction.value.candidate_judgment.value,
+                    judgment,
+                )
                 self.assertEqual(caller.stages, ["blind_predictor_predict"])
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
@@ -1254,6 +1259,7 @@ class ConcreteRoleAdapterTests(TestCase):
             {"summary": "anonymous evidence"},
             BlindPrediction(
                 is_surge=False,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
                 magnitude=None,
                 confidence=ConfidenceLevel.LOW,
                 key_reasons=("limited evidence",),
@@ -1267,11 +1273,18 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn(
             "decision_confidence_feedback", caller.calls[0]["payload"]
         )
+        feedback = caller.calls[0]["payload"]["candidate_judgment_feedback"]
+        self.assertEqual(feedback["assessment"], "strong_correct_negative")
+        self.assertTrue(feedback["binary_correct"])
         self.assertTrue(reflection.value.correct)
         self.assertTrue(
             caller.calls[0]["payload"]["framework_prediction_correct"]
         )
         self.assertNotIn("token probability", caller.calls[0]["system_prompt"])
+        self.assertIn(
+            "candidate_judgment_feedback",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_posthoc_reflection_still_scans_original_context(self) -> None:
         predictor = LLMBlindPredictor(
@@ -1283,6 +1296,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 {"summary": "LEAKME disclosed"},
                 BlindPrediction(
                     is_surge=False,
+                    candidate_judgment=CandidateJudgment.UNLIKELY,
                     magnitude=None,
                     confidence=ConfidenceLevel.LOW,
                     key_reasons=("limited evidence",),
@@ -1328,10 +1342,19 @@ class ConcreteRoleAdapterTests(TestCase):
                         },
                         "prediction": {
                             "is_surge": True,
+                            "candidate_judgment": "possible",
                         },
                         "ground_truth": {
                             "is_surge": True,
                             "realized_max_multiple": 2.2,
+                        },
+                        "candidate_judgment_feedback": {
+                            "candidate_judgment": "possible",
+                            "predicted_binary_label": "surge",
+                            "true_binary_label": "surge",
+                            "binary_correct": True,
+                            "assessment": "correct_positive_conservative",
+                            "reflection_guidance": "inspect underweighted evidence",
                         },
                         "signal_rounds": [
                             {
@@ -1370,6 +1393,11 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("token probability", prompt)
         trajectories = caller.calls[0]["payload"]["trajectories"]
         self.assertNotIn("decision_confidence_feedback", trajectories[0])
+        self.assertEqual(
+            trajectories[0]["candidate_judgment_feedback"]["assessment"],
+            "correct_positive_conservative",
+        )
+        self.assertIn("Combined Binary F1", prompt)
         self.assertEqual(trajectories[0]["case_index"], 1)
         self.assertNotIn("case_id", trajectories[0])
         self.assertNotIn("company_id", trajectories[0])

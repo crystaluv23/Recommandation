@@ -90,6 +90,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimePlanEvaluator,
     SlowLoopResult,
     SignalEvolutionEngine,
+    candidate_judgment_feedback,
     default_information_plan,
 )
 from stock_opportunity_agent.signal_library import (
@@ -2778,6 +2779,7 @@ def _blind_prediction_from_role(data: Mapping[str, Any]) -> BlindPrediction:
     return BlindPrediction.from_dict(
         {
             "is_surge": judgment in _POSITIVE_SURGE_JUDGMENTS,
+            "candidate_judgment": judgment,
             "magnitude": data["magnitude"],
             "confidence": data["confidence"],
             "key_reasons": data["key_reasons"],
@@ -3326,6 +3328,10 @@ class LLMBlindPredictor:
                     or original_prediction.magnitude is ground_truth.magnitude
                 )
             )
+            judgment_feedback = candidate_judgment_feedback(
+                original_prediction,
+                ground_truth,
+            )
             reflection, usage = _complete_parsed_role(
                 self.caller,
                 stage="blind_predictor_posthoc_reflect",
@@ -3333,7 +3339,13 @@ class LLMBlindPredictor:
                     "The saved prediction is immutable. Given its original anonymous "
                     "context and newly revealed truth, reflect on the prediction. "
                     "framework_prediction_correct is deterministic and immutable; "
-                    "copy it into prediction_outcome.correct and do not rejudge it."
+                    "copy it into prediction_outcome.correct and do not rejudge it. "
+                    "Use candidate_judgment_feedback to distinguish binary errors, "
+                    "conservative but binary-correct calls, and evidence-coverage "
+                    "gaps; that feedback covers Stage 1 only, while framework "
+                    "correctness also checks magnitude for a true surge. Do not "
+                    "rewrite the saved four-way judgment or infer that "
+                    "one realized outcome proves an ex-ante probability category."
                     + _PREDICTION_REFLECTION_OUTPUT
                 ),
                 payload={
@@ -3341,6 +3353,7 @@ class LLMBlindPredictor:
                     "original_prediction": original_prediction.to_dict(),
                     "revealed_ground_truth": ground_truth.to_dict(),
                     "framework_prediction_correct": framework_correct,
+                    "candidate_judgment_feedback": judgment_feedback,
                 },
                 parser=PredictionSelfReflection.from_dict,
                 allow_outcomes=True,
@@ -3468,6 +3481,7 @@ def _plan_critic_trajectory(
         "termination_trigger",
         "prediction",
         "ground_truth",
+        "candidate_judgment_feedback",
         "self_reflection",
     ):
         if key in data:
@@ -3532,8 +3546,11 @@ class LLMPlanCritic:
                 stage="plan_critic",
                 system_prompt=(
                     "Ground the reflection only in the supplied batch. Use the saved "
-                    "predictions, revealed truths, post-hoc reflections, and compact "
-                    "Signal results to identify successful and failed Plan patterns."
+                    "predictions, revealed truths, deterministic candidate-judgment "
+                    "feedback, post-hoc reflections, and compact Signal results to "
+                    "identify successful and failed Plan patterns. Treat four-way "
+                    "feedback as diagnostic reflection evidence only; Combined "
+                    "Binary F1 remains the sole fitness and parent-selection score."
                     + _PLAN_REFLECTION_OUTPUT
                 ),
                 payload={

@@ -342,6 +342,21 @@ Also audit the all-positive baseline on outcome-stratified batches: with 14
 positives among 24 cases it scores approximately `0.7368` positive-class F1, so
 a high F1 alone does not prove useful discrimination.
 
+## 2026-08-16 Four-Way Feedback Must Survive Binary Projection
+
+Mapping a provider's four-way opportunity judgment directly into a durable
+boolean discards exactly the distinction needed for useful learning. Preserve
+both the original judgment and its deterministic binary projection, reject any
+mismatch, and let only the projection control Stage 2 and Binary F1.
+
+After label reveal, derive feedback from the framework's fixed eight
+judgment/truth combinations rather than asking an LLM to invent whether a call
+was conservative, overconfident, or evidence-limited. Feed that record to both
+case reflection and the compact Plan critic, but never add ordinal distance or
+four-way penalties to fitness. One realized surge can make `possible` binary-
+correct and conservative relative to the outcome; it cannot prove that
+`likely` was the calibrated ex-ante probability category.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

@@ -150,6 +150,21 @@ class ConfidenceLevel(str, Enum):
     HIGH = "high"
 
 
+class CandidateJudgment(str, Enum):
+    """Fixed four-way Stage-1 opportunity judgment."""
+
+    LIKELY = "likely"
+    POSSIBLE = "possible"
+    UNLIKELY = "unlikely"
+    INSUFFICIENT_INFORMATION = "insufficient_information"
+
+    @property
+    def is_positive(self) -> bool:
+        """Return the fixed binary projection used by Stage 2 and scoring."""
+
+        return self in (CandidateJudgment.LIKELY, CandidateJudgment.POSSIBLE)
+
+
 class RuntimeStopReason(str, Enum):
     """Why adaptive research stopped selecting more Signals."""
 
@@ -405,6 +420,7 @@ class BlindPrediction:
     """Saved label-free two-stage Predictor output."""
 
     is_surge: bool
+    candidate_judgment: CandidateJudgment
     magnitude: MagnitudeClass | None
     confidence: ConfidenceLevel
     key_reasons: tuple[str, ...]
@@ -412,6 +428,24 @@ class BlindPrediction:
     session_id: str
 
     def __post_init__(self) -> None:
+        if not isinstance(self.is_surge, bool):
+            raise ValidationError("BlindPrediction is_surge must be boolean")
+        if not isinstance(self.candidate_judgment, CandidateJudgment):
+            try:
+                object.__setattr__(
+                    self,
+                    "candidate_judgment",
+                    CandidateJudgment(self.candidate_judgment),
+                )
+            except (TypeError, ValueError) as exc:
+                raise ValidationError(
+                    "BlindPrediction candidate_judgment must be likely, possible, "
+                    "unlikely, or insufficient_information"
+                ) from exc
+        if self.is_surge is not self.candidate_judgment.is_positive:
+            raise ValidationError(
+                "BlindPrediction candidate_judgment does not match is_surge"
+            )
         if self.is_surge and self.magnitude is None:
             raise ValidationError("surge prediction requires magnitude class")
         if not self.is_surge and self.magnitude is not None:
@@ -430,6 +464,7 @@ class BlindPrediction:
     def to_dict(self) -> dict[str, Any]:
         return {
             "is_surge": self.is_surge,
+            "candidate_judgment": self.candidate_judgment.value,
             "magnitude": self.magnitude.value if self.magnitude else None,
             "confidence": {"level": self.confidence.value},
             "key_reasons": list(self.key_reasons),
@@ -441,6 +476,7 @@ class BlindPrediction:
     def from_dict(cls, data: Mapping[str, Any]) -> "BlindPrediction":
         required = {
             "is_surge",
+            "candidate_judgment",
             "magnitude",
             "confidence",
             "key_reasons",
@@ -462,11 +498,16 @@ class BlindPrediction:
             raise ValidationError("BlindPrediction confidence level must be text")
         if not isinstance(data["session_id"], str):
             raise ValidationError("BlindPrediction session_id must be text")
+        if not isinstance(data["candidate_judgment"], str):
+            raise ValidationError(
+                "BlindPrediction candidate_judgment must be text"
+            )
         magnitude = data.get("magnitude")
         if magnitude is not None and not isinstance(magnitude, str):
             raise ValidationError("BlindPrediction magnitude must be text or null")
         return cls(
             is_surge=_json_boolean(data["is_surge"], "BlindPrediction is_surge"),
+            candidate_judgment=data["candidate_judgment"],
             magnitude=MagnitudeClass(str(magnitude)) if magnitude else None,
             confidence=ConfidenceLevel(confidence_value),
             key_reasons=_json_string_array(data, "key_reasons"),
@@ -509,6 +550,77 @@ class GroundTruth:
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "GroundTruth":
         return cls(realized_max_multiple=float(data["realized_max_multiple"]))
+
+
+_CANDIDATE_JUDGMENT_FEEDBACK: Mapping[
+    tuple[CandidateJudgment, bool], tuple[str, str]
+] = {
+    (CandidateJudgment.LIKELY, True): (
+        "strong_correct_positive",
+        "The likely judgment was binary-correct for the realized surge; inspect "
+        "which source-backed positive evidence made the strong call work.",
+    ),
+    (CandidateJudgment.POSSIBLE, True): (
+        "correct_positive_conservative",
+        "The possible judgment was binary-correct but conservative relative to "
+        "the realized surge; inspect whether source-backed positive evidence was "
+        "underweighted. The realized outcome alone does not prove that likely was "
+        "the calibrated ex-ante category.",
+    ),
+    (CandidateJudgment.UNLIKELY, True): (
+        "severe_false_negative",
+        "The unlikely judgment missed a realized surge; identify contrary evidence "
+        "that was overweighted and positive evidence that was ignored.",
+    ),
+    (CandidateJudgment.INSUFFICIENT_INFORMATION, True): (
+        "false_negative_information_gap",
+        "The insufficient-information judgment missed a realized surge; identify "
+        "which point-in-time evidence was absent, not acquired, or not converted "
+        "into a usable Signal.",
+    ),
+    (CandidateJudgment.UNLIKELY, False): (
+        "strong_correct_negative",
+        "The unlikely judgment was binary-correct for the realized non-surge; "
+        "inspect which source-backed counter-evidence made the rejection work.",
+    ),
+    (CandidateJudgment.INSUFFICIENT_INFORMATION, False): (
+        "correct_negative_information_gap",
+        "The insufficient-information judgment was binary-correct for the realized "
+        "non-surge, but still exposes an evidence-coverage gap; improve acquisition "
+        "where possible without manufacturing certainty.",
+    ),
+    (CandidateJudgment.POSSIBLE, False): (
+        "false_positive",
+        "The possible judgment was a false positive; identify speculative or noisy "
+        "positive evidence and counter-evidence that should have constrained it.",
+    ),
+    (CandidateJudgment.LIKELY, False): (
+        "severe_overconfident_false_positive",
+        "The likely judgment was an overconfident false positive; identify the "
+        "unsupported inference or ignored counter-evidence behind the strong call.",
+    ),
+}
+
+
+def candidate_judgment_feedback(
+    prediction: BlindPrediction,
+    ground_truth: GroundTruth,
+) -> dict[str, Any]:
+    """Derive fixed label-revealed feedback without changing binary fitness."""
+
+    assessment, guidance = _CANDIDATE_JUDGMENT_FEEDBACK[
+        (prediction.candidate_judgment, ground_truth.is_surge)
+    ]
+    return {
+        "candidate_judgment": prediction.candidate_judgment.value,
+        "predicted_binary_label": (
+            "surge" if prediction.is_surge else "non_surge"
+        ),
+        "true_binary_label": "surge" if ground_truth.is_surge else "non_surge",
+        "binary_correct": prediction.is_surge == ground_truth.is_surge,
+        "assessment": assessment,
+        "reflection_guidance": guidance,
+    }
 
 
 @dataclass(frozen=True)
@@ -781,6 +893,10 @@ class ExecutionTrajectory:
             "prediction": self.prediction.to_dict(),
             "prediction_ref": self.prediction_ref,
             "ground_truth": self.ground_truth.to_dict(),
+            "candidate_judgment_feedback": candidate_judgment_feedback(
+                self.prediction,
+                self.ground_truth,
+            ),
             "self_reflection": self.self_reflection.to_dict(),
             "stop_reason": self.stop_reason.value,
             "termination_trigger": (
@@ -792,7 +908,7 @@ class ExecutionTrajectory:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ExecutionTrajectory":
-        return cls(
+        trajectory = cls(
             case_id=str(data.get("case_id", "")),
             company_id=str(data["company_id"]),
             prediction_time=datetime.fromisoformat(str(data["prediction_time"])),
@@ -819,6 +935,21 @@ class ExecutionTrajectory:
                 else None
             ),
         )
+        serialized_feedback = data.get("candidate_judgment_feedback")
+        if serialized_feedback is not None:
+            if not isinstance(serialized_feedback, Mapping):
+                raise ValidationError(
+                    "candidate_judgment_feedback must be an object"
+                )
+            expected_feedback = candidate_judgment_feedback(
+                trajectory.prediction,
+                trajectory.ground_truth,
+            )
+            if dict(serialized_feedback) != expected_feedback:
+                raise ValidationError(
+                    "candidate_judgment_feedback does not match prediction and truth"
+                )
+        return trajectory
 
 
 class RuntimeBudgetExceeded(ValidationError):

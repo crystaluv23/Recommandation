@@ -29,6 +29,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     DEFAULT_EVOLUTION_PRIORS,
     AgentStep,
     BlindPrediction,
+    CandidateJudgment,
     CandidateProposalRejected,
     ConfidenceLevel,
     DualLoopEvolutionEngine,
@@ -62,6 +63,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalCandidateValidator,
     SignalEvolutionEngine,
     SignalRound,
+    candidate_judgment_feedback,
     default_information_plan,
     execute_information_plan,
     score_predictions,
@@ -168,6 +170,11 @@ class FixedPredictor:
         return AgentStep(
             BlindPrediction(
                 is_surge=self.is_surge,
+                candidate_judgment=(
+                    CandidateJudgment.POSSIBLE
+                    if self.is_surge
+                    else CandidateJudgment.UNLIKELY
+                ),
                 magnitude=(MagnitudeClass.THREE_TO_TEN if self.is_surge else None),
                 confidence=ConfidenceLevel.MEDIUM,
                 key_reasons=("source-backed growth",),
@@ -900,6 +907,7 @@ class PredictionMetricTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "requires magnitude"):
             BlindPrediction(
                 is_surge=True,
+                candidate_judgment=CandidateJudgment.POSSIBLE,
                 magnitude=None,
                 confidence=ConfidenceLevel.LOW,
                 key_reasons=("reason",),
@@ -909,12 +917,138 @@ class PredictionMetricTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "cannot include magnitude"):
             BlindPrediction(
                 is_surge=False,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
                 magnitude=MagnitudeClass.TWO_TO_THREE,
                 confidence=ConfidenceLevel.LOW,
                 key_reasons=("reason",),
                 uncertainties=(),
                 session_id="s",
             )
+
+    def test_prediction_schema_rejects_four_way_binary_mismatch(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "does not match is_surge"):
+            BlindPrediction(
+                is_surge=False,
+                candidate_judgment=CandidateJudgment.POSSIBLE,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("reason",),
+                uncertainties=(),
+                session_id="s",
+            )
+
+    def test_candidate_judgment_feedback_covers_all_four_way_truth_pairs(self) -> None:
+        expected = {
+            (CandidateJudgment.LIKELY, True): "strong_correct_positive",
+            (CandidateJudgment.POSSIBLE, True): "correct_positive_conservative",
+            (CandidateJudgment.UNLIKELY, True): "severe_false_negative",
+            (
+                CandidateJudgment.INSUFFICIENT_INFORMATION,
+                True,
+            ): "false_negative_information_gap",
+            (CandidateJudgment.UNLIKELY, False): "strong_correct_negative",
+            (
+                CandidateJudgment.INSUFFICIENT_INFORMATION,
+                False,
+            ): "correct_negative_information_gap",
+            (CandidateJudgment.POSSIBLE, False): "false_positive",
+            (
+                CandidateJudgment.LIKELY,
+                False,
+            ): "severe_overconfident_false_positive",
+        }
+        for (judgment, true_is_surge), assessment in expected.items():
+            with self.subTest(judgment=judgment.value, truth=true_is_surge):
+                prediction = BlindPrediction(
+                    is_surge=judgment.is_positive,
+                    candidate_judgment=judgment,
+                    magnitude=(
+                        MagnitudeClass.TWO_TO_THREE
+                        if judgment.is_positive
+                        else None
+                    ),
+                    confidence=ConfidenceLevel.MEDIUM,
+                    key_reasons=("source-backed reason",),
+                    uncertainties=(),
+                    session_id="s",
+                )
+                feedback = candidate_judgment_feedback(
+                    prediction,
+                    GroundTruth(2.2 if true_is_surge else 1.2),
+                )
+                self.assertEqual(feedback["assessment"], assessment)
+                self.assertEqual(
+                    feedback["binary_correct"],
+                    judgment.is_positive == true_is_surge,
+                )
+
+    def test_trajectory_persists_and_validates_candidate_judgment_feedback(self) -> None:
+        trajectory = make_trajectory(
+            "feedback_case",
+            2.2,
+            True,
+            MagnitudeClass.TWO_TO_THREE,
+            candidate_judgment=CandidateJudgment.POSSIBLE,
+        )
+        serialized = trajectory.to_dict()
+
+        self.assertEqual(
+            serialized["prediction"]["candidate_judgment"],
+            "possible",
+        )
+        self.assertEqual(
+            serialized["candidate_judgment_feedback"]["assessment"],
+            "correct_positive_conservative",
+        )
+        self.assertEqual(
+            ExecutionTrajectory.from_dict(serialized).to_dict(),
+            serialized,
+        )
+
+        tampered = json.loads(json.dumps(serialized))
+        tampered["candidate_judgment_feedback"]["binary_correct"] = False
+        with self.assertRaisesRegex(ValidationError, "does not match"):
+            ExecutionTrajectory.from_dict(tampered)
+
+    def test_four_way_categories_do_not_change_binary_f1_semantics(self) -> None:
+        trajectories = (
+            make_trajectory(
+                "likely_true",
+                2.2,
+                True,
+                MagnitudeClass.TWO_TO_THREE,
+                candidate_judgment=CandidateJudgment.LIKELY,
+            ),
+            make_trajectory(
+                "possible_true",
+                2.2,
+                True,
+                MagnitudeClass.TWO_TO_THREE,
+                candidate_judgment=CandidateJudgment.POSSIBLE,
+            ),
+            make_trajectory(
+                "unlikely_false",
+                1.2,
+                False,
+                None,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
+            ),
+            make_trajectory(
+                "insufficient_false",
+                1.2,
+                False,
+                None,
+                candidate_judgment=CandidateJudgment.INSUFFICIENT_INFORMATION,
+            ),
+        )
+
+        metrics = score_predictions(trajectories)
+
+        self.assertEqual(metrics.binary_f1, 1.0)
+        self.assertEqual(
+            (metrics.true_positive, metrics.true_negative),
+            (2, 2),
+        )
 
 class EvaluationDatasetSamplingTests(TestCase):
     def test_snapshots_freeze_anchor_and_rotate_exact_random_cases(self) -> None:
@@ -2401,10 +2535,17 @@ def make_trajectory(
     *,
     signal_result: SignalResult | None = None,
     case_id: str | None = None,
+    candidate_judgment: CandidateJudgment | None = None,
 ) -> ExecutionTrajectory:
     truth = GroundTruth(multiple)
     prediction = BlindPrediction(
         is_surge=predicted_surge,
+        candidate_judgment=candidate_judgment
+        or (
+            CandidateJudgment.POSSIBLE
+            if predicted_surge
+            else CandidateJudgment.UNLIKELY
+        ),
         magnitude=predicted_magnitude,
         confidence=ConfidenceLevel.MEDIUM,
         key_reasons=("fixture reason",),

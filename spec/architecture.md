@@ -218,6 +218,20 @@ classes. Binary F1 remains the only Plan-selection fitness objective; precision,
 recall, magnitude accuracy, magnitude macro-F1, qualitative confidence, and the
 four-way judgment remain diagnostics and reflection evidence only.
 
+The durable blind prediction preserves both the original four-way judgment and
+its deterministic binary projection. These two fields must agree; persistence
+rejects any mismatch rather than guessing which value is authoritative. Only
+the binary projection controls Stage-2 gating and enters the confusion matrix.
+After truth reveal, the framework derives one deterministic
+`candidate_judgment_feedback` record from the saved four-way judgment and the
+binary truth. It distinguishes strong correct calls, conservative-but-binary-
+correct calls, evidence-coverage gaps, false positives, and false negatives.
+This outcome-aware record is supplied to Predictor self-reflection and the Plan
+critic, but it is never a score, ordinal penalty, probability-calibration claim,
+or Top-K input. In particular, one realized outcome cannot prove that `likely`
+was the calibrated ex-ante category; it can only identify what evidence the
+reflection should inspect.
+
 After truth reveal, prediction correctness is computed by the framework from
 the immutable saved prediction and deterministic truth. A reflection model may
 explain that result but may not author or contradict the correctness bit.
