@@ -1497,6 +1497,34 @@ class RunControlTests(TestCase):
             ["massive", "stooq", "alpha_vantage"],
         )
 
+    def test_frozen_data_policy_stays_disabled_without_invocation_authorization(self) -> None:
+        contract = EvolutionRunContract(
+            **{
+                **make_contract().__dict__,
+                "data_acquisition": DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("massive",),
+                    allowed_capabilities=("price_daily",),
+                    allowed_source_types=("market_data",),
+                    max_requests_per_cycle=10,
+                    max_requests_per_run=50,
+                ),
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            resolver = evolution_runtime_module._build_evidence_resolver(
+                Path(directory),
+                RawInfoStore(),
+                contract=contract,
+                allow_data_external=False,
+                environ={"MASSIVE_API_KEY": "massive-test-key"},
+                cycle_id=1,
+            )
+
+        self.assertFalse(resolver.policy.enabled)
+        self.assertEqual(resolver.policy.allowed_providers, ())
+        self.assertEqual(resolver.budget.run_requests, 0)
+
     def test_contract_freeze_is_exact_and_secret_free(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "run_contract.json"

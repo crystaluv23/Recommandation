@@ -3457,13 +3457,10 @@ def _build_evidence_resolver(
     """Build production adapters over the existing cache/ledger/quota boundary."""
 
     configured = contract.data_acquisition
-    effective_policy = DataAcquisitionPolicy(
-        enabled=configured.enabled and allow_data_external,
-        allowed_providers=configured.allowed_providers,
-        allowed_capabilities=configured.allowed_capabilities,
-        allowed_source_types=configured.allowed_source_types,
-        max_requests_per_cycle=configured.max_requests_per_cycle,
-        max_requests_per_run=configured.max_requests_per_run,
+    effective_policy = (
+        configured
+        if configured.enabled and allow_data_external
+        else DataAcquisitionPolicy()
     )
     adapters: list[Any] = []
     env = os.environ if environ is None else environ
