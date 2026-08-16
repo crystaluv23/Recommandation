@@ -155,6 +155,11 @@ Consistent with the product's fixed historical blind-assessment boundary,
 for the exact price outcome, not that doubling is proved or more than 50%
 probable. `unlikely` and `insufficient_information` map to false. Hidden-label
 precision and recall penalize an overly broad or narrow decision boundary.
+The provider-facing role output therefore requires the four-way
+`candidate_judgment` enum and the fixed adapter derives the canonical persisted
+`BlindPrediction.is_surge`; the model does not directly choose a boolean whose
+implicit uncertainty threshold can drift. Positive judgments still require a
+magnitude class, while negative judgments require null magnitude.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

@@ -293,6 +293,13 @@ into a price oracle, contradicts the product goal, and collapses rare-event
 recall. Precision/recall/F1 against the exact future-price label is what
 penalizes an overly broad or narrow candidate boundary.
 
+When a model still applies a hidden greater-than-50% threshold to a direct
+boolean, make the role output the explicit four-way judgment instead of adding
+more prose beside the boolean. Deterministically map `likely` and `possible` to
+the canonical positive record and `unlikely`/`insufficient_information` to
+negative at the fixed adapter boundary. This preserves outcome labels and
+metrics while making the intended opportunity threshold auditable.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

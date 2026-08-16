@@ -2404,7 +2404,7 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
 _BLIND_PREDICTION_OUTPUT = _output_contract(
     "BlindPrediction",
     {
-        "is_surge": False,
+        "candidate_judgment": "unlikely",
         "magnitude": None,
         "confidence": {"level": "low"},
         "key_reasons": ["one source-grounded reason"],
@@ -2412,9 +2412,54 @@ _BLIND_PREDICTION_OUTPUT = _output_contract(
         "session_id": "anonymous-session-id",
     },
 ) + (
-    ' confidence.level must be "low", "medium", or "high". When is_surge is '
-    'true, magnitude must be "2-3x", "3-10x", or "10x+"; otherwise it must be null.'
+    ' candidate_judgment must be "likely", "possible", "unlikely", or '
+    '"insufficient_information". confidence.level must be "low", "medium", or '
+    '"high". For likely/possible, magnitude must be "2-3x", "3-10x", or '
+    '"10x+"; otherwise it must be null.'
 )
+
+_POSITIVE_SURGE_JUDGMENTS = frozenset({"likely", "possible"})
+_NEGATIVE_SURGE_JUDGMENTS = frozenset({"unlikely", "insufficient_information"})
+
+
+def _blind_prediction_from_role(data: Mapping[str, Any]) -> BlindPrediction:
+    """Map the fixed four-way opportunity judgment to the canonical binary record."""
+
+    required = {
+        "candidate_judgment",
+        "magnitude",
+        "confidence",
+        "key_reasons",
+        "uncertainties",
+        "session_id",
+    }
+    missing = sorted(required - set(data))
+    extra = sorted(set(data) - required)
+    if missing or extra:
+        details = []
+        if missing:
+            details.append("missing fields: " + ", ".join(missing))
+        if extra:
+            details.append("unexpected fields: " + ", ".join(extra))
+        raise ValidationError("BlindPrediction role output " + "; ".join(details))
+    judgment = data["candidate_judgment"]
+    if not isinstance(judgment, str) or judgment not in (
+        _POSITIVE_SURGE_JUDGMENTS | _NEGATIVE_SURGE_JUDGMENTS
+    ):
+        raise ValidationError(
+            "BlindPrediction candidate_judgment must be likely, possible, "
+            "unlikely, or insufficient_information"
+        )
+    return BlindPrediction.from_dict(
+        {
+            "is_surge": judgment in _POSITIVE_SURGE_JUDGMENTS,
+            "magnitude": data["magnitude"],
+            "confidence": data["confidence"],
+            "key_reasons": data["key_reasons"],
+            "uncertainties": data["uncertainties"],
+            "session_id": data["session_id"],
+        }
+    )
 
 _PREDICTION_REFLECTION_OUTPUT = _output_contract(
     "PredictionSelfReflection",
@@ -2885,7 +2930,7 @@ class LLMBlindPredictor:
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
-            parser=BlindPrediction.from_dict,
+            parser=_blind_prediction_from_role,
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )

@@ -1080,7 +1080,7 @@ class ConcreteRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
-                    "is_surge": True,
+                    "candidate_judgment": "possible",
                     "magnitude": "2-3x",
                     "confidence": {"level": "medium"},
                     "key_reasons": ["source-backed evidence"],
@@ -1108,16 +1108,19 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("likely or possible candidate", prompt)
         self.assertIn("need not be more than 50% probable", prompt)
 
-    def test_blind_predictor_repairs_string_boolean_instead_of_using_truthiness(self) -> None:
+    def test_blind_predictor_repairs_legacy_boolean_shape(self) -> None:
         valid = {
-            "is_surge": False,
+            "candidate_judgment": "unlikely",
             "magnitude": None,
             "confidence": {"level": "low"},
             "key_reasons": ["limited source-backed evidence"],
             "uncertainties": [],
             "session_id": "fixture-session",
         }
-        caller = ScriptedRoleCaller([{**valid, "is_surge": "false"}, valid])
+        legacy = dict(valid)
+        legacy.pop("candidate_judgment")
+        legacy["is_surge"] = False
+        caller = ScriptedRoleCaller([legacy, valid])
 
         prediction = LLMBlindPredictor(caller).predict(
             {"basic_info": {"industry": "fixture"}}
@@ -1129,6 +1132,32 @@ class ConcreteRoleAdapterTests(TestCase):
             ["blind_predictor_predict", "blind_predictor_predict_correction"],
         )
         self.assertIn("validation_error", caller.calls[1]["payload"])
+
+    def test_blind_predictor_maps_four_way_candidate_judgment(self) -> None:
+        expected = {
+            "likely": True,
+            "possible": True,
+            "unlikely": False,
+            "insufficient_information": False,
+        }
+        for judgment, is_surge in expected.items():
+            with self.subTest(judgment=judgment):
+                caller = ScriptedRoleCaller(
+                    [
+                        {
+                            "candidate_judgment": judgment,
+                            "magnitude": "2-3x" if is_surge else None,
+                            "confidence": {"level": "low"},
+                            "key_reasons": ["source-backed assessment"],
+                            "uncertainties": [],
+                            "session_id": "fixture-session",
+                        }
+                    ]
+                )
+                prediction = LLMBlindPredictor(caller).predict(
+                    {"basic_info": {"industry": "fixture"}}
+                )
+                self.assertEqual(prediction.value.is_surge, is_surge)
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(
