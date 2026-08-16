@@ -1603,6 +1603,13 @@ class EvolutionRunContract:
                 raise ValidationError(
                     f"{schema_label} contract proposer temperature must be 1.0"
                 )
+            if (
+                "predictor_score_temperature" in self.limits
+                and require_number("predictor_score_temperature") != 1.0
+            ):
+                raise ValidationError(
+                    f"{schema_label} contract predictor score temperature must be 1.0"
+                )
             if require_number("judge_temperature") != 0.0:
                 raise ValidationError(
                     f"{schema_label} contract judge temperature must be 0.0"
@@ -2151,30 +2158,46 @@ def _extract_decision_token_scores(
     for entry in entries:
         if _normalized_binary_token(entry.get("token"), decision_tokens) != chosen:
             continue
-        try:
-            chosen_logprob = float(entry["logprob"])
-        except (KeyError, TypeError, ValueError):
-            continue
-        logprobs = {chosen: chosen_logprob}
+        exact_logprobs: dict[str, list[float]] = {
+            token: [] for token in decision_tokens
+        }
+        compatible_logprobs: dict[str, list[float]] = {
+            token: [] for token in decision_tokens
+        }
+
+        def collect(candidate: Mapping[str, Any]) -> None:
+            raw_token = candidate.get("token")
+            token = _normalized_binary_token(raw_token, decision_tokens)
+            if token is None:
+                return
+            try:
+                value = float(candidate["logprob"])
+            except (KeyError, TypeError, ValueError):
+                return
+            compatible_logprobs[token].append(value)
+            if raw_token == token:
+                exact_logprobs[token].append(value)
+
+        collect(entry)
         alternatives = entry.get("top_logprobs")
         if not isinstance(alternatives, list):
             continue
         for alternative in alternatives:
-            if not isinstance(alternative, Mapping):
-                continue
-            token = _normalized_binary_token(
-                alternative.get("token"), decision_tokens
-            )
-            if token is None:
-                continue
-            try:
-                logprobs[token] = float(alternative["logprob"])
-            except (KeyError, TypeError, ValueError):
-                continue
+            if isinstance(alternative, Mapping):
+                collect(alternative)
         yes_token, no_token = decision_tokens
+        logprobs: dict[str, float] = {}
+        for token in decision_tokens:
+            candidates = exact_logprobs[token] or compatible_logprobs[token]
+            if not candidates:
+                return None
+            logprobs[token] = max(candidates)
         if yes_token not in logprobs or no_token not in logprobs:
             return None
-        if any(not math.isfinite(value) for value in logprobs.values()):
+        if any(
+            not math.isfinite(value) or value <= -1000.0
+            for value in logprobs.values()
+        ):
             return None
         yes_probability = math.exp(logprobs[yes_token])
         no_probability = math.exp(logprobs[no_token])
@@ -2268,6 +2291,44 @@ class StructuredRoleClient:
             decision_tokens=decision_tokens,
         )
 
+    def complete_binary_token_with_scores(
+        self,
+        *,
+        stage: str,
+        system_prompt: str,
+        payload: Mapping[str, Any],
+        allow_outcomes: bool,
+        decision_field: str,
+        decision_tokens: tuple[str, str],
+        anonymous_aliases: Iterable[str] = (),
+        temperature: float = 1.0,
+    ) -> tuple[str, AgentUsage, "DecisionTokenScores | None"]:
+        """Return one exact binary token plus optional provider log probabilities."""
+
+        preview_client = self.registration.create_client(
+            ModelClientSettings(
+                preview_only=True,
+                temperature=temperature,
+                max_http_attempts=1,
+                environ=self.environ,
+            )
+        )
+        if not getattr(preview_client, "supports_token_logprobs", False):
+            return "", AgentUsage(), None
+        value, usage, scores = self._complete_json(
+            stage=stage,
+            system_prompt=system_prompt,
+            payload=payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+            max_output_tokens=4,
+            temperature=temperature,
+            decision_field=decision_field,
+            decision_tokens=decision_tokens,
+            binary_token_output=True,
+        )
+        return str(value[decision_field]), usage, scores
+
     def _complete_json(
         self,
         *,
@@ -2280,6 +2341,7 @@ class StructuredRoleClient:
         temperature: float = 0.0,
         decision_field: str | None = None,
         decision_tokens: tuple[str, str] | None = None,
+        binary_token_output: bool = False,
     ) -> tuple[dict[str, Any], AgentUsage, "DecisionTokenScores | None"]:
         """Persist and validate an exact request, then preview/cache/execute it."""
 
@@ -2295,13 +2357,22 @@ class StructuredRoleClient:
             or any(not token.strip() for token in decision_tokens)
         ):
             raise ValidationError("decision tokens must contain two unique values")
+        if binary_token_output and (
+            decision_field is None or decision_tokens is None
+        ):
+            raise ValidationError(
+                "binary token output requires a decision field and tokens"
+            )
         _scan_payload(
             payload,
             allow_outcomes=allow_outcomes,
             anonymous_aliases=anonymous_aliases,
         )
         structured_system_prompt = (
-            "Return exactly one JSON object and no non-JSON text. " + system_prompt
+            system_prompt
+            if binary_token_output
+            else "Return exactly one JSON object and no non-JSON text. "
+            + system_prompt
         )
         output_limit = max_output_tokens or self.registration.default_max_output_tokens
         request = {
@@ -2310,7 +2381,6 @@ class StructuredRoleClient:
             "stage": stage,
             "model": self.registration.to_public_dict(),
             "temperature": temperature,
-            "response_format": {"type": "json_object"},
             "max_http_attempts": 1,
             "max_output_tokens": output_limit,
             "messages": [
@@ -2321,6 +2391,13 @@ class StructuredRoleClient:
                 },
             ],
         }
+        if binary_token_output:
+            request["output_contract"] = {
+                "type": "single_binary_token",
+                "tokens": list(decision_tokens or ()),
+            }
+        else:
+            request["response_format"] = {"type": "json_object"}
         if decision_tokens is not None:
             request["token_logprobs"] = {
                 "decision_field": decision_field,
@@ -2410,7 +2487,8 @@ class StructuredRoleClient:
             ChatMessage("user", json.dumps(payload, sort_keys=True)),
         ]
         kwargs: dict[str, Any] = {"max_output_tokens": output_limit}
-        kwargs["response_format"] = {"type": "json_object"}
+        if not binary_token_output:
+            kwargs["response_format"] = {"type": "json_object"}
         if self.registration.default_reasoning_effort:
             kwargs["reasoning"] = {
                 "effort": self.registration.default_reasoning_effort
@@ -2448,7 +2526,14 @@ class StructuredRoleClient:
                 cost=actual_cost,
             )
             try:
-                parsed = _parse_json_object(response.output_text)
+                if binary_token_output:
+                    if response.output_text not in (decision_tokens or ()):
+                        raise ValidationError(
+                            "provider must return exactly one canonical binary token"
+                        )
+                    parsed = {str(decision_field): response.output_text}
+                else:
+                    parsed = _parse_json_object(response.output_text)
             except (json.JSONDecodeError, ValidationError) as exc:
                 failure_record = {
                     "request_hash": request_hash,
@@ -2650,6 +2735,39 @@ def _complete_json_with_optional_token_scores(
             exc.usage,
             None,
         )
+
+
+def _complete_binary_token_scores(
+    caller: JSONRoleCaller,
+    *,
+    stage: str,
+    system_prompt: str,
+    payload: Mapping[str, Any],
+    allow_outcomes: bool,
+    decision_field: str,
+    decision_tokens: tuple[str, str],
+    anonymous_aliases: Iterable[str] = (),
+    temperature: float = 1.0,
+) -> tuple[AgentUsage, DecisionTokenScores | None]:
+    """Read a dedicated binary distribution or degrade without another call."""
+
+    completion = getattr(caller, "complete_binary_token_with_scores", None)
+    if not callable(completion):
+        return AgentUsage(), None
+    try:
+        _sampled_token, usage, scores = completion(
+            stage=stage,
+            system_prompt=system_prompt,
+            payload=payload,
+            allow_outcomes=allow_outcomes,
+            decision_field=decision_field,
+            decision_tokens=decision_tokens,
+            anonymous_aliases=anonymous_aliases,
+            temperature=temperature,
+        )
+        return usage, scores
+    except StructuredOutputInvalid as exc:
+        return exc.usage, None
 
 
 def _output_contract(name: str, example: Mapping[str, Any]) -> str:
@@ -3241,14 +3359,68 @@ class LLMBlindPredictor:
         caller: JSONRoleCaller,
         *,
         anonymous_aliases: Iterable[str] = (),
+        score_temperature: float = 1.0,
     ) -> None:
         registration = getattr(caller, "registration", None)
         if registration is not None and registration.web_tools_allowed:
             raise ValidationError("Blind Predictor model registration must be no-web")
         self.caller = caller
         self.anonymous_aliases = tuple(anonymous_aliases)
+        if score_temperature != 1.0:
+            raise ValidationError("Blind Predictor score temperature must be 1.0")
+        self.score_temperature = score_temperature
 
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
+        score_usage, token_scores = _complete_binary_token_scores(
+            self.caller,
+            stage="blind_predictor_score",
+            system_prompt=(
+                "Using only the anonymous supplied context, forecast whether the "
+                "target security's adjusted share price reaches at least 2x over "
+                "the next six calendar months. The prediction-time baseline is the "
+                "mean adjusted close over the last five complete trading days, and "
+                "the future numerator is the maximum mean adjusted close over any "
+                "five complete consecutive trading days inside that horizon. This "
+                "is a stock-price repricing forecast under uncertainty, not a proof "
+                "task or a requirement that an operating metric doubles. Return "
+                "YES when you estimate at least 50% probability that this exact "
+                "adjusted-share-price outcome occurs; otherwise return NO. The "
+                "evaluation cases are outcome-stratified and do not represent the "
+                "live-market base rate, so do not choose NO merely because 2x moves "
+                "are rare in the broad market. Return exactly one ASCII uppercase "
+                "token: YES or NO. Do not add whitespace, punctuation, explanation, "
+                "Markdown, or any other casing or spelling. Do not use web tools."
+            ),
+            payload={"final_context": dict(final_context)},
+            allow_outcomes=False,
+            decision_field="decision",
+            decision_tokens=("YES", "NO"),
+            anonymous_aliases=self.anonymous_aliases,
+            temperature=self.score_temperature,
+        )
+        framework_decision = None
+        if token_scores is not None:
+            framework_decision = (
+                "YES" if token_scores.decision_margin >= 0.5 else "NO"
+            )
+        prediction_payload: dict[str, Any] = {
+            "final_context": dict(final_context)
+        }
+        if framework_decision is not None:
+            prediction_payload["framework_decision"] = framework_decision
+
+        def parse_prediction(data: Mapping[str, Any]) -> BlindPrediction:
+            prediction = _blind_prediction_from_role(data, token_scores)
+            emitted_decision = "YES" if prediction.is_surge else "NO"
+            if (
+                framework_decision is not None
+                and emitted_decision != framework_decision
+            ):
+                raise ValidationError(
+                    "BlindPrediction decision must match framework_decision"
+                )
+            return prediction
+
         prediction, usage = _complete_parsed_role(
             self.caller,
             stage="blind_predictor_predict",
@@ -3275,19 +3447,21 @@ class LLMBlindPredictor:
                 "outcome-stratified and do not represent the live-market base rate, "
                 "so do not choose NO merely because 2x moves are rare in the "
                 "broad market. Make the independent case-level decision from the "
-                "supplied evidence. If YES choose 2-3x, 3-10x, or 10x+. If NO set "
+                "supplied evidence. When framework_decision is supplied, it was "
+                "chosen deterministically from the dedicated canonical YES/NO "
+                "distribution and is immutable: return exactly that decision and "
+                "explain it rather than deciding again. If YES choose 2-3x, 3-10x, "
+                "or 10x+. If NO set "
                 "magnitude to null. Do not use web "
                 "tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
-            payload={"final_context": dict(final_context)},
-            parser=_blind_prediction_from_role,
+            payload=prediction_payload,
+            parser=parse_prediction,
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
-            decision_field="decision",
-            decision_tokens=("YES", "NO"),
         )
-        return AgentStep(prediction, usage)
+        return AgentStep(prediction, score_usage + usage)
 
     def reflect(
         self,
@@ -3848,7 +4022,10 @@ def run_bounded_evolution_cycle(
         evidence_resolver=evidence_resolver,
         controller=LLMResearchController(judge_caller),
         signal_agent=LLMSignalRetrievalAgent(judge_caller),
-        predictor=LLMBlindPredictor(judge_caller),
+        predictor=LLMBlindPredictor(
+            judge_caller,
+            score_temperature=float(limits.get("predictor_score_temperature", 1.0)),
+        ),
         prediction_root=workspace_root / "predictions",
         trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,

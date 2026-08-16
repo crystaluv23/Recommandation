@@ -336,14 +336,18 @@ choose one magnitude class:
 ```
 
 The saved output also contains qualitative confidence, key reasons, and
-uncertainties. If the provider supports output-token log probabilities, it
-additionally records the raw vocabulary probabilities of both the `YES` and
-`NO` tokens plus `decision_margin = sigmoid(logp_yes - logp_no)`, the pairwise
-YES-over-NO strength. All three values are nullable together: an API without
-compatible token-logprob support, an absent alternative token, or an
-unparseable provider shape degrades to no numeric decision evidence and must
-not fail the prediction. Continuous `realized_max_multiple` remains the
-underlying truth.
+uncertainties. If the provider supports output-token log probabilities, a
+dedicated fixed call requests exactly one uppercase ASCII `YES` or `NO` token
+at temperature `1.0`. It records the raw vocabulary probabilities of the two
+canonical tokens plus `decision_margin = sigmoid(logp_yes - logp_no)`, the
+pairwise YES-over-NO strength. The runtime derives the decision
+deterministically from that pairwise value at 50%; the sampled token is ignored,
+and a separate temperature-0 structured call must explain the fixed decision.
+All three values are nullable together: an API without compatible
+token-logprob support, an absent canonical alternative, a provider sentinel,
+or an unparseable shape degrades to the ordinary greedy binary prediction with
+no numeric decision evidence and must not fail the prediction. Continuous
+`realized_max_multiple` remains the underlying truth.
 
 Prediction Stage 1 metrics are precision, recall, and binary F1. Prediction
 Stage 2 metrics are magnitude accuracy and macro-F1 over true surge cases; a

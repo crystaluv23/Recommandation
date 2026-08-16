@@ -210,10 +210,15 @@ cannot be mutated by a candidate plan. Stage 1 predicts whether
 the future fixed horizon reaches at least 2x through a fixed binary `YES`/`NO`
 decision: `YES` means the model estimates at least 50% probability for that
 exact adjusted-share-price outcome. When the provider supports output-token
-log probabilities, the runtime records the raw `YES` and `NO` token
-probabilities plus `sigmoid(logp_yes - logp_no)` as optional calibration
-evidence; their
-absence must not block prediction. Stage 2 is evaluated only for the positive
+log probabilities, a fixed score call requests exactly one canonical uppercase
+ASCII token, `YES` or `NO`, at temperature `1.0`. The runtime records the raw
+canonical-token probabilities plus `sigmoid(logp_yes - logp_no)` and chooses
+the framework decision deterministically at the pairwise 50% boundary; the
+sampled token itself is not the decision. A separate greedy structured call may
+only explain that fixed decision and assign its magnitude. These values are
+optional calibration evidence, and absent, sentinel, or incompatible provider
+metadata must degrade to null without blocking the ordinary greedy binary
+prediction. Stage 2 is evaluated only for the positive
 ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes. Binary F1
 remains the only Plan-selection fitness objective; token probabilities,
 precision, recall, magnitude accuracy, and magnitude macro-F1 are diagnostics

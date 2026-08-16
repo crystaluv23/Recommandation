@@ -166,6 +166,7 @@ def make_contract() -> EvolutionRunContract:
             "similarity_threshold": 0.9,
             "parent_selection_seed": 42,
             "plan_proposal_temperature": 1.0,
+            "predictor_score_temperature": 1.0,
             "judge_temperature": 0.0,
             "max_signal_rounds": 5,
             "max_signal_calls": 20,
@@ -1203,11 +1204,11 @@ class ConcreteRoleAdapterTests(TestCase):
 
     def test_blind_predictor_maps_binary_decision_and_provider_scores(self) -> None:
         class ScoredRoleCaller(ScriptedRoleCaller):
-            def complete_json_with_token_scores(self, **kwargs):
+            def complete_binary_token_with_scores(self, **kwargs):
                 self.stages.append(str(kwargs["stage"]))
                 self.calls.append(dict(kwargs))
                 return (
-                    self.outputs.pop(0),
+                    "NO",
                     AgentUsage(llm_calls=1, tokens=5, cost=0.01),
                     DecisionTokenScores(0.72, 0.18, 0.8),
                 )
@@ -1233,8 +1234,55 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(prediction.value.yes_token_probability, 0.72)
         self.assertEqual(prediction.value.no_token_probability, 0.18)
         self.assertEqual(prediction.value.decision_margin, 0.8)
+        self.assertEqual(
+            caller.stages,
+            ["blind_predictor_score", "blind_predictor_predict"],
+        )
         self.assertEqual(caller.calls[0]["decision_field"], "decision")
         self.assertEqual(caller.calls[0]["decision_tokens"], ("YES", "NO"))
+        self.assertEqual(caller.calls[0]["temperature"], 1.0)
+        self.assertIn("exactly one ASCII uppercase token", caller.calls[0]["system_prompt"])
+        self.assertEqual(caller.calls[1]["payload"]["framework_decision"], "YES")
+
+    def test_blind_predictor_corrects_explanation_to_framework_decision(self) -> None:
+        class ScoredRoleCaller(ScriptedRoleCaller):
+            def complete_binary_token_with_scores(self, **kwargs):
+                self.stages.append(str(kwargs["stage"]))
+                self.calls.append(dict(kwargs))
+                return (
+                    "YES",
+                    AgentUsage(llm_calls=1, tokens=5, cost=0.01),
+                    DecisionTokenScores(0.2, 0.7, 2 / 9),
+                )
+
+        yes_output = {
+            "decision": "YES",
+            "magnitude": "2-3x",
+            "confidence": {"level": "medium"},
+            "key_reasons": ["source-backed assessment"],
+            "uncertainties": [],
+            "session_id": "fixture-session",
+        }
+        no_output = dict(yes_output)
+        no_output["decision"] = "NO"
+        no_output["magnitude"] = None
+        caller = ScoredRoleCaller([yes_output, no_output])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {"basic_info": {"industry": "fixture"}}
+        )
+
+        self.assertFalse(prediction.value.is_surge)
+        self.assertEqual(
+            caller.stages,
+            [
+                "blind_predictor_score",
+                "blind_predictor_predict",
+                "blind_predictor_predict_correction",
+            ],
+        )
+        self.assertEqual(caller.calls[1]["payload"]["framework_decision"], "NO")
+        self.assertIn("validation_error", caller.calls[2]["payload"])
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(
@@ -2149,6 +2197,121 @@ class RunControlTests(TestCase):
             self.assertEqual(cached_usage.llm_calls, 0)
             self.assertEqual(cached_scores, scores)
 
+    def test_structured_client_scores_exact_canonical_binary_token(self) -> None:
+        class RecordingClient:
+            supports_token_logprobs = True
+
+            def __init__(self) -> None:
+                self.kwargs: dict[str, object] = {}
+
+            def complete(self, _messages, **kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                self.kwargs = dict(kwargs)
+                return ChatResponse(
+                    response_id="response-binary-token",
+                    model="fixture-model",
+                    output_text="NO",
+                    raw={
+                        "choices": [
+                            {
+                                "logprobs": {
+                                    "content": [
+                                        {
+                                            "token": "NO",
+                                            "logprob": -0.2,
+                                            "top_logprobs": [
+                                                {"token": "NO", "logprob": -0.2},
+                                                {"token": "No", "logprob": -9999.0},
+                                                {"token": "YES", "logprob": -1.7},
+                                                {"token": "yes", "logprob": -9999.0},
+                                            ],
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "usage": {"prompt_tokens": 3, "completion_tokens": 1},
+                    },
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            recording_client = RecordingClient()
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: recording_client,
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            token, usage, scores = client.complete_binary_token_with_scores(
+                stage="blind_predictor_score",
+                system_prompt="Return exactly YES or NO.",
+                payload={"context": "anonymous evidence"},
+                allow_outcomes=False,
+                decision_field="decision",
+                decision_tokens=("YES", "NO"),
+                temperature=1.0,
+            )
+
+            self.assertEqual(token, "NO")
+            self.assertEqual(usage.llm_calls, 1)
+            self.assertIsNotNone(scores)
+            assert scores is not None
+            self.assertAlmostEqual(scores.yes_token_probability, math.exp(-1.7))
+            self.assertAlmostEqual(scores.no_token_probability, math.exp(-0.2))
+            self.assertAlmostEqual(
+                scores.decision_margin,
+                1.0 / (1.0 + math.exp(1.5)),
+            )
+            self.assertNotIn("response_format", recording_client.kwargs)
+
+    def test_binary_token_scores_reject_provider_sentinel(self) -> None:
+        raw = {
+            "choices": [
+                {
+                    "logprobs": {
+                        "content": [
+                            {
+                                "token": "NO",
+                                "logprob": 0.0,
+                                "top_logprobs": [
+                                    {"token": "NO", "logprob": 0.0},
+                                    {"token": "YES", "logprob": -9999.0},
+                                ],
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+
+        scores = evolution_runtime_module._extract_decision_token_scores(
+            raw,
+            parsed={"decision": "NO"},
+            decision_field="decision",
+            decision_tokens=("YES", "NO"),
+        )
+
+        self.assertIsNone(scores)
+
     def test_structured_client_degrades_when_provider_has_no_logprobs(self) -> None:
         class RecordingClient:
             def __init__(self) -> None:
@@ -2204,3 +2367,18 @@ class RunControlTests(TestCase):
             self.assertIsNone(scores)
             self.assertNotIn("logprobs", recording_client.kwargs)
             self.assertNotIn("top_logprobs", recording_client.kwargs)
+
+            token, binary_usage, binary_scores = (
+                client.complete_binary_token_with_scores(
+                    stage="blind_predictor_score",
+                    system_prompt="Return exactly YES or NO.",
+                    payload={"context": "anonymous evidence"},
+                    allow_outcomes=False,
+                    decision_field="decision",
+                    decision_tokens=("YES", "NO"),
+                    temperature=1.0,
+                )
+            )
+            self.assertEqual(token, "")
+            self.assertEqual(binary_usage.llm_calls, 0)
+            self.assertIsNone(binary_scores)

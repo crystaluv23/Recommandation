@@ -108,9 +108,12 @@ single structured-correction allowance. If the correction also fails, the
 existing candidate/role failure semantics apply; no parser exception may abort
 the whole round or advance a commit pointer.
 
-Temperature is part of the exact request hash. Only Information Plan proposal
-calls sample (`1.0`); prediction, research, reflection, Signal execution, and
-all other judge calls remain greedy (`0.0`). The runtime alters temperature
+Temperature is part of the exact request hash. Information Plan proposal calls
+sample at `1.0`. A dedicated Blind Predictor score call also uses `1.0`, solely
+so provider log probabilities retain the model distribution instead of
+collapsing to a greedy `0/-9999` shape; the runtime never adopts that call's
+sampled token. Prediction explanation, research, reflection, Signal execution,
+and all other judge calls remain greedy (`0.0`). The runtime alters temperature
 only, leaving nucleus sampling at its provider default.
 
 Every structured role prompt includes its literal accepted JSON field contract.
@@ -148,28 +151,39 @@ repricing; none is itself the `2x` target. The prompt must not let a model rejec
 a price-surge hypothesis merely because an operating metric is not forecast to
 double. It must frame the output as a forecast under uncertainty rather than a
 proof obligation: an explicit future price target, certainty, or guarantee is
-not required. The provider-facing role output requires the fixed binary
-`decision` enum. `YES` means the model estimates at least 50% probability that
-the exact price outcome occurs inside the horizon, and `NO` means below 50%.
-The fixed adapter maps this directly to persisted `BlindPrediction.is_surge`;
-positive decisions still require a magnitude class, while negative decisions
-require null magnitude. The prompt also discloses that the evaluation set is
+not required. The provider-facing score output is a fixed single-token
+contract: exactly the uppercase ASCII token `YES` or `NO`, with no whitespace,
+punctuation, explanation, Markdown, or alternative casing. `YES` means the
+model estimates at least 50% probability that the exact price outcome occurs
+inside the horizon, and `NO` means below 50%. When usable log probabilities are
+present, the adapter deterministically maps the pairwise `YES` probability at
+the 50% boundary to `BlindPrediction.is_surge`; it never uses the
+temperature-1 sampled token as the decision. A separate temperature-0
+structured call receives that framework decision as immutable input and
+returns the matching decision, qualitative confidence, reasons, uncertainties,
+and magnitude. Positive decisions require a magnitude class, while negative
+decisions require null magnitude. If token scores are unavailable, the score
+call is skipped or discarded and the ordinary temperature-0 structured call
+supplies the binary decision. The prompt also discloses that the evaluation set is
 outcome-stratified and not representative of the live-market base rate, but it
 does not disclose exact cohort counts, require a positive quota, or couple
 separate predictions. This threshold and schema are fixed framework semantics,
 not evolvable Plan content or case-outcome disclosure.
 
-For Predictor calls only, the exact request may ask a provider that explicitly
-supports token log probabilities for up to 20 alternatives at each output
-position. The runtime extracts the emitted `YES`/`NO` token log probability and
-the other binary token at that same position. It records
+For the dedicated Predictor score call only, the exact request may ask a
+provider that explicitly supports token log probabilities for up to 20
+alternatives at the canonical single-token output position. The runtime prefers
+the exact uppercase ASCII alternatives, never lets whitespace/case variants
+overwrite a canonical alternative, and rejects provider sentinel values as
+unavailable. It records
 `yes_token_probability = exp(logp_yes)`, `no_token_probability =
 exp(logp_no)`, and `decision_margin = sigmoid(logp_yes - logp_no)`. Provider
 metadata is never accepted from the model-authored JSON itself. All three
 values are optional and nullable together: a
-provider without declared support, missing logprob payload, absent alternative
-token, or unparseable tokenization yields no numeric values while the valid
-binary prediction continues normally. These values are persisted in the blind
+provider without declared support, missing logprob payload, absent canonical
+alternative token, sentinel value, or unparseable tokenization yields no
+numeric values while the valid binary prediction continues normally. These
+values are persisted in the blind
 prediction and trajectory and are included in post-hoc and Plan-critic inputs.
 After label reveal, feedback deterministically chooses `P(YES)` for a true YES
 case or `P(NO)` for a true NO case as `truth_label_token_probability`, and

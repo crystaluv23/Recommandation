@@ -615,6 +615,7 @@ def freeze_run(
                 "similarity_threshold": 0.9,
                 "parent_selection_seed": parent_selection_seed,
                 "plan_proposal_temperature": 1.0,
+                "predictor_score_temperature": 1.0,
                 "judge_temperature": 0.0,
                 "max_signal_rounds": 5,
                 "max_signal_calls": 20,
