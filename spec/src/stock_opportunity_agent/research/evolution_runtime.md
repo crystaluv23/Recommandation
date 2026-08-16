@@ -140,9 +140,15 @@ a price-surge hypothesis merely because an operating metric is not forecast to
 double. It must also frame the output as a forecast under uncertainty rather
 than a proof obligation: an explicit future price target, certainty, or a
 guarantee of doubling is not required. `is_surge=true` means the supplied
-evidence supports a concrete, credible path to the defined price outcome;
-qualitative confidence and uncertainties carry residual doubt. `false` means
-no credible path is present or contrary evidence dominates. This clarification
+evidence makes the security an evidence-backed `likely` or `possible`
+opportunity candidate for the defined price outcome; qualitative confidence
+and uncertainties carry residual doubt. `possible` is a screening judgment,
+not a demand for a quantified valuation bridge or a proven, concrete path to
+`2x`: a source-backed combination such as expectation-changing acceleration,
+a material catalyst, or early market confirmation may qualify even while its
+financial impact remains uncertain. `false` means contrary evidence makes the
+outcome unlikely, or the packet lacks source-backed positive evidence rather
+than merely lacking certainty or a price target. This clarification
 must also disclose that the evaluation set is outcome-stratified and therefore
 does not carry the live-market base rate: the broad-market rarity of a `2x`
 move is not, by itself, case evidence for `false`. It must not disclose the
