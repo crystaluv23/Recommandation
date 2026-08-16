@@ -26,6 +26,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     LLMSignalRetrievalAgent,
     StructuredLLMSignalRunner,
     StructuredAgentModel,
+    StructuredOutputInvalid,
     StructuredRoleClient,
     approve_dataset_proposal,
     filter_case_price_history,
@@ -895,6 +896,57 @@ class ScriptedRoleCaller:
 
 
 class ConcreteRoleAdapterTests(TestCase):
+    def test_plan_proposer_repairs_malformed_provider_json_once(self) -> None:
+        class MalformedThenValidCaller:
+            def __init__(self) -> None:
+                self.stages: list[str] = []
+
+            def complete_json(self, **kwargs):
+                self.stages.append(str(kwargs["stage"]))
+                if len(self.stages) == 1:
+                    raise StructuredOutputInvalid(
+                        "provider returned two JSON objects",
+                        '{"B":{}}\n{"extra":true}',
+                        AgentUsage(llm_calls=1, tokens=20, cost=0.01),
+                    )
+                return (
+                    {
+                        "B": {
+                            "requests": [
+                                {
+                                    "request_id": "recent_news",
+                                    "description": "Read recent company news.",
+                                    "source_types": ["news"],
+                                    "lookback_days": 180,
+                                    "max_documents": 5,
+                                }
+                            ]
+                        },
+                        "H_init": "Form an initial source-backed hypothesis.",
+                        "H_reflect": "Reflect over all returned Signal evidence.",
+                        "H_analyse": "Make the final two-stage blind forecast.",
+                    },
+                    AgentUsage(llm_calls=1, tokens=20, cost=0.01),
+                )
+
+        caller = MalformedThenValidCaller()
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=3,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed prior",
+        )
+
+        self.assertEqual(plan.plan_id, "plan_r0001_c01")
+        self.assertEqual(
+            caller.stages,
+            ["information_plan_propose", "information_plan_propose_correction"],
+        )
+
     def test_slow_agent_role_states_exact_final_output_contract(self) -> None:
         caller = ScriptedRoleCaller(
             [{"action": "final", "output": {"candidate_refs": []}}]
@@ -1406,6 +1458,61 @@ class ConcreteRoleAdapterTests(TestCase):
 
 
 class RunControlTests(TestCase):
+    def test_malformed_paid_json_is_audited_costed_and_not_cached(self) -> None:
+        class MalformedClient:
+            def complete(self, _messages, **_kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                return ChatResponse(
+                    response_id="response-malformed",
+                    model="fixture-model",
+                    output_text='{"ok":true}\n{"extra":false}',
+                    raw={"usage": {"input_tokens": 3, "output_tokens": 2}},
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: MalformedClient(),
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            ledger = ExternalAttemptLedger(
+                root / "attempts.json", max_attempts=2, max_total_cost=1.0
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ledger,
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            with self.assertRaisesRegex(StructuredOutputInvalid, "invalid structured"):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "anonymous evidence"},
+                    allow_outcomes=False,
+                )
+
+            attempt = json.loads((root / "attempts.json").read_text())["attempts"][0]
+            self.assertEqual(attempt["status"], "failed")
+            self.assertGreater(attempt["actual_cost"], 0)
+            failure_paths = tuple((root / "failed_responses").glob("*.json"))
+            self.assertEqual(len(failure_paths), 1)
+            failure = json.loads(failure_paths[0].read_text())
+            self.assertIn('{"extra":false}', failure["raw_output"])
+            self.assertEqual(tuple((root / "cache" / "responses").glob("*.json")), ())
+
     def test_v3_contract_rejects_missing_behavioral_defaults(self) -> None:
         contract = make_contract()
         incomplete_limits = dict(contract.limits)

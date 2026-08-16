@@ -1,6 +1,6 @@
 # Evolution Control Flow Is Not Domain Validation
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 
@@ -31,6 +31,16 @@ gate still accepting only v4 after the Python runtime had moved to v5. Stable
 launchers are part of the control plane: their executable schema check must
 advance with the runtime and carry a regression assertion, or a correct frozen
 contract becomes operationally impossible to resume.
+
+## 2026-08-16 Paid Structured-Output Failure
+
+A DeepSeek proposal returned more than one top-level JSON value. The provider
+call succeeded, but raw parsing raised `JSONDecodeError`, recorded zero cost,
+discarded the model text, and terminated the whole run. This is neither an
+operator pause nor valid role output. Persist and cost the paid response, keep
+it out of the valid cache, then route it through the role's already bounded
+structured correction. Repeated malformed output becomes a candidate/role
+failure and never a process-level traceback.
 
 ## How to Apply
 

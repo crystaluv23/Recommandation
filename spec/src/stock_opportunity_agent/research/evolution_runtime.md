@@ -99,6 +99,15 @@ Completion/failure updates the same durable entry. Exact responses live under
 `cache/responses/<request_hash>.json`; reuse requires the exact request hash and
 does not consume another attempt.
 
+A provider response that is not exactly one JSON object is a paid structured
+output failure, not a process-level crash. The runtime persists its raw model
+text and usage in a failure-only audit artifact, records the actual cost on the
+attempt ledger, and does not add it to the valid-response cache. Role adapters
+then treat the malformed text as invalid output under their already frozen
+single structured-correction allowance. If the correction also fails, the
+existing candidate/role failure semantics apply; no parser exception may abort
+the whole round or advance a commit pointer.
+
 Temperature is part of the exact request hash. Only Information Plan proposal
 calls sample (`1.0`); prediction, research, reflection, Signal execution, and
 all other judge calls remain greedy (`0.0`). The runtime alters temperature

@@ -1917,6 +1917,15 @@ class ExternalBudgetExhausted(ExternalExecutionPaused):
     """The frozen attempt or cumulative cost ceiling cannot admit a request."""
 
 
+class StructuredOutputInvalid(ValidationError):
+    """A paid provider response was not exactly one JSON object."""
+
+    def __init__(self, message: str, raw_output: str, usage: AgentUsage) -> None:
+        self.raw_output = str(raw_output)
+        self.usage = usage
+        super().__init__(message)
+
+
 class ExactResponseCache:
     """Exact response reuse keyed only by canonical request hash."""
 
@@ -2192,7 +2201,6 @@ class StructuredRoleClient:
             }
         try:
             response = client.complete(messages, **kwargs)
-            parsed = _parse_json_object(response.output_text)
             usage_data = response.raw.get("usage", {})
             input_tokens = int(usage_data.get("input_tokens", estimated_input_tokens))
             output_tokens = int(usage_data.get("output_tokens", 0))
@@ -2201,6 +2209,57 @@ class StructuredRoleClient:
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
             )
+            usage = AgentUsage(
+                llm_calls=1,
+                tokens=input_tokens + output_tokens,
+                cost=actual_cost,
+            )
+            try:
+                parsed = _parse_json_object(response.output_text)
+            except (json.JSONDecodeError, ValidationError) as exc:
+                failure_record = {
+                    "request_hash": request_hash,
+                    "attempt_id": attempt_id,
+                    "response_id": response.response_id,
+                    "model": response.model,
+                    "raw_output": response.output_text,
+                    "error_type": type(exc).__name__,
+                    "error": str(exc),
+                    "usage": {
+                        "input_tokens": input_tokens,
+                        "output_tokens": output_tokens,
+                        "cost": actual_cost,
+                    },
+                }
+                failure_path = (
+                    self.workspace
+                    / "failed_responses"
+                    / f"{attempt_id:06d}_{request_hash}.json"
+                )
+                _atomic_write_json(failure_path, failure_record)
+                response_hash = _canonical_hash(failure_record)
+                self.ledger.finalize(
+                    attempt_id,
+                    status="failed",
+                    actual_cost=actual_cost,
+                    response_hash=response_hash,
+                    error_type=type(exc).__name__,
+                )
+                _emit_runtime_progress(
+                    self.on_progress,
+                    "external_call_failed",
+                    stage=stage,
+                    model_alias=self.registration.alias,
+                    request_hash=request_hash,
+                    attempt_id=attempt_id,
+                    error_type=type(exc).__name__,
+                    failure_path=str(failure_path),
+                )
+                raise StructuredOutputInvalid(
+                    f"provider returned invalid structured output: {exc}",
+                    response.output_text,
+                    usage,
+                ) from exc
             response_record = {
                 "response_id": response.response_id,
                 "model": response.model,
@@ -2230,11 +2289,9 @@ class StructuredRoleClient:
                 output_tokens=output_tokens,
                 actual_cost=actual_cost,
             )
-            return parsed, AgentUsage(
-                llm_calls=1,
-                tokens=input_tokens + output_tokens,
-                cost=actual_cost,
-            )
+            return parsed, usage
+        except StructuredOutputInvalid:
+            raise
         except Exception as exc:
             self.ledger.finalize(
                 attempt_id,
@@ -2269,6 +2326,39 @@ class JSONRoleCaller(Protocol):
         temperature: float = 0.0,
     ) -> tuple[dict[str, Any], AgentUsage]:
         """Return one validated structured role response and usage."""
+
+
+def _complete_json_with_invalid_value(
+    caller: JSONRoleCaller,
+    *,
+    stage: str,
+    system_prompt: str,
+    payload: Mapping[str, Any],
+    allow_outcomes: bool,
+    anonymous_aliases: Iterable[str] = (),
+    max_output_tokens: int | None = None,
+    temperature: float = 0.0,
+) -> tuple[dict[str, Any], AgentUsage]:
+    """Turn malformed provider text into role-level correction input."""
+
+    try:
+        return caller.complete_json(
+            stage=stage,
+            system_prompt=system_prompt,
+            payload=payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+            max_output_tokens=max_output_tokens,
+            temperature=temperature,
+        )
+    except StructuredOutputInvalid as exc:
+        return (
+            {
+                "invalid_structured_output": exc.raw_output[:12_000],
+                "validation_error": str(exc),
+            },
+            exc.usage,
+        )
 
 
 def _output_contract(name: str, example: Mapping[str, Any]) -> str:
@@ -2440,7 +2530,8 @@ def _complete_parsed_role(
             request_payload["invalid_output"] = dict(failed_output or {})
             request_payload["validation_error"] = str(failure)
             prompt += " Correct the invalid output once; return the exact contract only."
-        value, step_usage = caller.complete_json(
+        value, step_usage = _complete_json_with_invalid_value(
+            caller,
             stage=request_stage,
             system_prompt=prompt,
             payload=request_payload,
@@ -2670,7 +2761,8 @@ class LLMSignalRetrievalAgent:
                     "The previous categories were empty or outside "
                     "available_categories. Return a non-empty subset only."
                 )
-            category_value, step_usage = self.caller.complete_json(
+            category_value, step_usage = _complete_json_with_invalid_value(
+                self.caller,
                 stage="signal_retrieval_categories",
                 system_prompt=(
                     "Choose only relevant category names for the information needs. "
@@ -2680,7 +2772,12 @@ class LLMSignalRetrievalAgent:
                 allow_outcomes=False,
             )
             category_usage = category_usage + step_usage
-            parsed_categories = _strict_string_list(category_value, "categories")
+            try:
+                parsed_categories = _strict_string_list(
+                    category_value, "categories"
+                )
+            except ValidationError:
+                parsed_categories = None
             selected_categories = parsed_categories or ()
             if parsed_categories is not None and set(parsed_categories).issubset(
                 categories
@@ -2716,7 +2813,8 @@ class LLMSignalRetrievalAgent:
                     "The previous signal_refs were empty, duplicated, or outside "
                     "the supplied signal_cards. Return a non-empty unique subset only."
                 )
-            selection_value, step_usage = self.caller.complete_json(
+            selection_value, step_usage = _complete_json_with_invalid_value(
+                self.caller,
                 stage="signal_retrieval_cards",
                 system_prompt=(
                     "Choose the smallest unique Signal batch that answers the needs. "
@@ -2726,7 +2824,10 @@ class LLMSignalRetrievalAgent:
                 allow_outcomes=False,
             )
             selection_usage = selection_usage + step_usage
-            parsed_refs = _strict_string_list(selection_value, "signal_refs")
+            try:
+                parsed_refs = _strict_string_list(selection_value, "signal_refs")
+            except ValidationError:
+                parsed_refs = None
             refs = parsed_refs or ()
             if parsed_refs is not None and set(parsed_refs).issubset(allowed):
                 break
@@ -2868,7 +2969,8 @@ class LLMInformationPlanProposer:
                 request_payload["invalid_output"] = dict(failed_value or {})
                 request_payload["validation_error"] = str(failure)
                 prompt += " Correct the invalid content once; return the exact contract only."
-            value, _usage = self.caller.complete_json(
+            value, _usage = _complete_json_with_invalid_value(
+                self.caller,
                 stage=stage,
                 system_prompt=prompt,
                 payload=request_payload,
@@ -3016,7 +3118,8 @@ class StructuredAgentModel(AgentModel):
                     "error": validation_error,
                     "required_action": "return one valid tool or final action",
                 }
-            value, call_usage = self.caller.complete_json(
+            value, call_usage = _complete_json_with_invalid_value(
+                self.caller,
                 stage=(self.stage if not attempt else f"{self.stage}_correction"),
                 system_prompt=system_prompt,
                 payload=payload,
@@ -3071,7 +3174,8 @@ class StructuredLLMSignalRunner:
             payload = dict(base_payload)
             if validation_feedback is not None:
                 payload["validation_feedback"] = validation_feedback
-            value, step_usage = self.caller.complete_json(
+            value, step_usage = _complete_json_with_invalid_value(
+                self.caller,
                 stage="llm_signal_execute",
                 system_prompt=(
                     "Apply the versioned extraction skill to only these point-in-time "
