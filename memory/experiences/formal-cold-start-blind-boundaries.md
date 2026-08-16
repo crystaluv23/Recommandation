@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 34
+visit_times: 35
 
 ## Trigger
 
@@ -299,6 +299,16 @@ more prose beside the boolean. Deterministically map `likely` and `possible` to
 the canonical positive record and `unlikely`/`insufficient_information` to
 negative at the fixed adapter boundary. This preserves outcome labels and
 metrics while making the intended opportunity threshold auditable.
+
+## 2026-08-16 Human-Approved Binary Calibration Change
+
+The user later explicitly replaced that opportunity-screening boundary with a
+fixed binary decision: `YES` means an estimated probability of at least 50% for
+the exact adjusted-share-price outcome, and `NO` means below 50%. This
+human-approved framework change supersedes the four-way recommendation above
+for the active Information Plan evolution runtime. Provider token probabilities
+are optional reflection evidence only; missing logprobs cannot block a valid
+binary prediction, and Binary F1 remains the only Plan-selection fitness.
 
 ## How to Apply
 

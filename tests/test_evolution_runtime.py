@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import tempfile
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -14,6 +15,7 @@ from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research import evolution_runtime as evolution_runtime_module
 from stock_opportunity_agent.research.evolution_runtime import (
+    DecisionTokenScores,
     EvolutionRunContract,
     ExactResponseCache,
     ExternalAttemptLedger,
@@ -22,6 +24,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     ExternalRequestPending,
     LLMBlindPredictor,
     LLMInformationPlanProposer,
+    LLMPlanCritic,
     LLMResearchController,
     LLMSignalRetrievalAgent,
     StructuredLLMSignalRunner,
@@ -1144,7 +1147,7 @@ class ConcreteRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
-                    "candidate_judgment": "possible",
+                    "decision": "YES",
                     "magnitude": "2-3x",
                     "confidence": {"level": "medium"},
                     "key_reasons": ["source-backed evidence"],
@@ -1158,26 +1161,24 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertTrue(prediction.value.is_surge)
         self.assertEqual(prediction.value.magnitude.value, "2-3x")
+        self.assertIsNone(prediction.value.yes_token_probability)
+        self.assertIsNone(prediction.value.no_token_probability)
+        self.assertIsNone(prediction.value.decision_margin)
         prompt = str(caller.calls[0]["system_prompt"])
         self.assertIn('"session_id"', prompt)
         self.assertIn("adjusted share price", prompt)
         self.assertIn("last five complete trading days", prompt)
         self.assertIn("not a requirement that revenue", prompt)
         self.assertIn("forecast under uncertainty, not a proof task", prompt)
-        self.assertIn("Possible is a screening judgment", prompt)
-        self.assertIn("does not require a quantified valuation bridge", prompt)
-        self.assertIn("early market confirmation can support possible", prompt)
-        self.assertIn("do not set it false merely because certainty", prompt)
+        self.assertIn('decision must be exactly "YES" or "NO"', prompt)
+        self.assertIn("at least a 50% probability", prompt)
         self.assertIn("Do not require a guarantee", prompt)
         self.assertIn("outcome-stratified", prompt)
-        self.assertIn("do not predict false merely because 2x moves are rare", prompt)
-        self.assertIn("opportunity-discovery classifier", prompt)
-        self.assertIn("likely or possible candidate", prompt)
-        self.assertIn("need not be more than 50% probable", prompt)
+        self.assertIn("do not choose NO merely because 2x moves are rare", prompt)
 
-    def test_blind_predictor_repairs_legacy_boolean_shape(self) -> None:
+    def test_blind_predictor_repairs_legacy_four_way_shape(self) -> None:
         valid = {
-            "candidate_judgment": "unlikely",
+            "decision": "NO",
             "magnitude": None,
             "confidence": {"level": "low"},
             "key_reasons": ["limited source-backed evidence"],
@@ -1185,8 +1186,8 @@ class ConcreteRoleAdapterTests(TestCase):
             "session_id": "fixture-session",
         }
         legacy = dict(valid)
-        legacy.pop("candidate_judgment")
-        legacy["is_surge"] = False
+        legacy.pop("decision")
+        legacy["candidate_judgment"] = "unlikely"
         caller = ScriptedRoleCaller([legacy, valid])
 
         prediction = LLMBlindPredictor(caller).predict(
@@ -1200,31 +1201,40 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("validation_error", caller.calls[1]["payload"])
 
-    def test_blind_predictor_maps_four_way_candidate_judgment(self) -> None:
-        expected = {
-            "likely": True,
-            "possible": True,
-            "unlikely": False,
-            "insufficient_information": False,
-        }
-        for judgment, is_surge in expected.items():
-            with self.subTest(judgment=judgment):
-                caller = ScriptedRoleCaller(
-                    [
-                        {
-                            "candidate_judgment": judgment,
-                            "magnitude": "2-3x" if is_surge else None,
-                            "confidence": {"level": "low"},
-                            "key_reasons": ["source-backed assessment"],
-                            "uncertainties": [],
-                            "session_id": "fixture-session",
-                        }
-                    ]
+    def test_blind_predictor_maps_binary_decision_and_provider_scores(self) -> None:
+        class ScoredRoleCaller(ScriptedRoleCaller):
+            def complete_json_with_token_scores(self, **kwargs):
+                self.stages.append(str(kwargs["stage"]))
+                self.calls.append(dict(kwargs))
+                return (
+                    self.outputs.pop(0),
+                    AgentUsage(llm_calls=1, tokens=5, cost=0.01),
+                    DecisionTokenScores(0.72, 0.18, 0.8),
                 )
-                prediction = LLMBlindPredictor(caller).predict(
-                    {"basic_info": {"industry": "fixture"}}
-                )
-                self.assertEqual(prediction.value.is_surge, is_surge)
+
+        caller = ScoredRoleCaller(
+            [
+                {
+                    "decision": "YES",
+                    "magnitude": "2-3x",
+                    "confidence": {"level": "medium"},
+                    "key_reasons": ["source-backed assessment"],
+                    "uncertainties": [],
+                    "session_id": "fixture-session",
+                }
+            ]
+        )
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {"basic_info": {"industry": "fixture"}}
+        )
+
+        self.assertTrue(prediction.value.is_surge)
+        self.assertEqual(prediction.value.yes_token_probability, 0.72)
+        self.assertEqual(prediction.value.no_token_probability, 0.18)
+        self.assertEqual(prediction.value.decision_margin, 0.8)
+        self.assertEqual(caller.calls[0]["decision_field"], "decision")
+        self.assertEqual(caller.calls[0]["decision_tokens"], ("YES", "NO"))
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1250,11 +1260,22 @@ class ConcreteRoleAdapterTests(TestCase):
                 key_reasons=("limited evidence",),
                 uncertainties=(),
                 session_id="anonymous-session",
+                yes_token_probability=0.2,
+                no_token_probability=0.7,
+                decision_margin=0.2,
             ),
             GroundTruth(1.2),
         )
 
         self.assertEqual(caller.calls[0]["anonymous_aliases"], ())
+        feedback = caller.calls[0]["payload"]["decision_confidence_feedback"]
+        self.assertEqual(feedback["pairwise_yes_probability"], 0.2)
+        self.assertEqual(feedback["truth_label_token_probability"], 0.7)
+        self.assertEqual(feedback["truth_aligned_confidence"], 0.8)
+        self.assertIn(
+            "explicitly use its true-label token probability",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_posthoc_reflection_still_scans_original_context(self) -> None:
         predictor = LLMBlindPredictor(
@@ -1274,6 +1295,56 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
                 GroundTruth(1.2),
             )
+
+    def test_plan_critic_explicitly_receives_confidence_feedback(self) -> None:
+        class Artifact:
+            def __init__(self, value):
+                self.value = value
+
+            def to_dict(self):
+                return self.value
+
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "successful_patterns": ["well calibrated YES"],
+                    "failed_patterns": [],
+                    "repeated_failure_modes": [],
+                    "misleading_signals": [],
+                    "missing_information_needs": [],
+                    "next_explorations": [],
+                }
+            ]
+        )
+
+        reflection = LLMPlanCritic(caller).critique(
+            plan=default_information_plan(),
+            trajectories=(
+                Artifact(
+                    {
+                        "decision_confidence_feedback": {
+                            "true_decision": "YES",
+                            "truth_label_token_probability": 0.7,
+                            "pairwise_yes_probability": 0.8,
+                            "truth_aligned_confidence": 0.8,
+                        }
+                    }
+                ),
+            ),
+            metrics=Artifact({"binary_f1": 0.75}),
+        )
+
+        self.assertEqual(reflection.successful_patterns, ("well calibrated YES",))
+        prompt = caller.calls[0]["system_prompt"]
+        self.assertIn("true-label token probability", prompt)
+        self.assertIn("must not replace the supplied Binary F1 fitness", prompt)
+        trajectories = caller.calls[0]["payload"]["trajectories"]
+        self.assertEqual(
+            trajectories[0]["decision_confidence_feedback"][
+                "truth_aligned_confidence"
+            ],
+            0.8,
+        )
 
     def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1977,3 +2048,159 @@ class RunControlTests(TestCase):
                 recording_client.kwargs["response_format"],
                 {"type": "json_object"},
             )
+
+    def test_structured_client_records_optional_binary_token_scores(self) -> None:
+        class RecordingClient:
+            supports_token_logprobs = True
+
+            def __init__(self) -> None:
+                self.kwargs: dict[str, object] = {}
+
+            def complete(self, _messages, **kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                self.kwargs = dict(kwargs)
+                return ChatResponse(
+                    response_id="response-logprobs",
+                    model="fixture-model",
+                    output_text='{"decision":"YES"}',
+                    raw={
+                        "choices": [
+                            {
+                                "logprobs": {
+                                    "content": [
+                                        {
+                                            "token": '"YES"',
+                                            "logprob": math.log(0.6),
+                                            "top_logprobs": [
+                                                {
+                                                    "token": '"YES"',
+                                                    "logprob": math.log(0.6),
+                                                },
+                                                {
+                                                    "token": '"NO"',
+                                                    "logprob": math.log(0.3),
+                                                },
+                                            ],
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "usage": {"prompt_tokens": 3, "completion_tokens": 2},
+                    },
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            recording_client = RecordingClient()
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: recording_client,
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            value, usage, scores = client.complete_json_with_token_scores(
+                stage="predict",
+                system_prompt="Return JSON.",
+                payload={"context": "anonymous evidence"},
+                allow_outcomes=False,
+                decision_field="decision",
+                decision_tokens=("YES", "NO"),
+            )
+
+            self.assertEqual(value, {"decision": "YES"})
+            self.assertEqual(usage.llm_calls, 1)
+            self.assertIsNotNone(scores)
+            assert scores is not None
+            self.assertAlmostEqual(scores.yes_token_probability, 0.6)
+            self.assertAlmostEqual(scores.no_token_probability, 0.3)
+            self.assertAlmostEqual(scores.decision_margin, 2 / 3)
+            self.assertTrue(recording_client.kwargs["logprobs"])
+            self.assertEqual(recording_client.kwargs["top_logprobs"], 20)
+
+            _value, cached_usage, cached_scores = (
+                client.complete_json_with_token_scores(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "anonymous evidence"},
+                    allow_outcomes=False,
+                    decision_field="decision",
+                    decision_tokens=("YES", "NO"),
+                )
+            )
+            self.assertEqual(cached_usage.llm_calls, 0)
+            self.assertEqual(cached_scores, scores)
+
+    def test_structured_client_degrades_when_provider_has_no_logprobs(self) -> None:
+        class RecordingClient:
+            def __init__(self) -> None:
+                self.kwargs: dict[str, object] = {}
+
+            def complete(self, _messages, **kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                self.kwargs = dict(kwargs)
+                return ChatResponse(
+                    response_id="response-no-logprobs",
+                    model="fixture-model",
+                    output_text='{"decision":"NO"}',
+                    raw={"usage": {"input_tokens": 3, "output_tokens": 2}},
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            recording_client = RecordingClient()
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: recording_client,
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            value, _usage, scores = client.complete_json_with_token_scores(
+                stage="predict",
+                system_prompt="Return JSON.",
+                payload={"context": "anonymous evidence"},
+                allow_outcomes=False,
+                decision_field="decision",
+                decision_tokens=("YES", "NO"),
+            )
+
+            self.assertEqual(value, {"decision": "NO"})
+            self.assertIsNone(scores)
+            self.assertNotIn("logprobs", recording_client.kwargs)
+            self.assertNotIn("top_logprobs", recording_client.kwargs)

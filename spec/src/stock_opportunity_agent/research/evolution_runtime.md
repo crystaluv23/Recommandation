@@ -146,35 +146,39 @@ six calendar months as the future numerator. Revenue, earnings, users,
 production, and other operating measures are evidence about possible price
 repricing; none is itself the `2x` target. The prompt must not let a model reject
 a price-surge hypothesis merely because an operating metric is not forecast to
-double. It must also frame the output as a forecast under uncertainty rather
-than a proof obligation: an explicit future price target, certainty, or a
-guarantee of doubling is not required. `is_surge=true` means the supplied
-evidence makes the security an evidence-backed `likely` or `possible`
-opportunity candidate for the defined price outcome; qualitative confidence
-and uncertainties carry residual doubt. `possible` is a screening judgment,
-not a demand for a quantified valuation bridge or a proven, concrete path to
-`2x`: a source-backed combination such as expectation-changing acceleration,
-a material catalyst, or early market confirmation may qualify even while its
-financial impact remains uncertain. `false` means contrary evidence makes the
-outcome unlikely, or the packet lacks source-backed positive evidence rather
-than merely lacking certainty or a price target. This clarification
-must also disclose that the evaluation set is outcome-stratified and therefore
-does not carry the live-market base rate: the broad-market rarity of a `2x`
-move is not, by itself, case evidence for `false`. It must not disclose the
-exact cohort counts, require a positive quota, or couple separate predictions.
-This is fixed evaluation semantics, not an evolvable Plan field, a changed
-label, a hard-coded output balance, or case-outcome disclosure.
+double. It must frame the output as a forecast under uncertainty rather than a
+proof obligation: an explicit future price target, certainty, or guarantee is
+not required. The provider-facing role output requires the fixed binary
+`decision` enum. `YES` means the model estimates at least 50% probability that
+the exact price outcome occurs inside the horizon, and `NO` means below 50%.
+The fixed adapter maps this directly to persisted `BlindPrediction.is_surge`;
+positive decisions still require a magnitude class, while negative decisions
+require null magnitude. The prompt also discloses that the evaluation set is
+outcome-stratified and not representative of the live-market base rate, but it
+does not disclose exact cohort counts, require a positive quota, or couple
+separate predictions. This threshold and schema are fixed framework semantics,
+not evolvable Plan content or case-outcome disclosure.
 
-Consistent with the product's fixed historical blind-assessment boundary,
-`is_surge=true` means the case looks like a `likely` or `possible` candidate
-for the exact price outcome, not that doubling is proved or more than 50%
-probable. `unlikely` and `insufficient_information` map to false. Hidden-label
-precision and recall penalize an overly broad or narrow decision boundary.
-The provider-facing role output therefore requires the four-way
-`candidate_judgment` enum and the fixed adapter derives the canonical persisted
-`BlindPrediction.is_surge`; the model does not directly choose a boolean whose
-implicit uncertainty threshold can drift. Positive judgments still require a
-magnitude class, while negative judgments require null magnitude.
+For Predictor calls only, the exact request may ask a provider that explicitly
+supports token log probabilities for up to 20 alternatives at each output
+position. The runtime extracts the emitted `YES`/`NO` token log probability and
+the other binary token at that same position. It records
+`yes_token_probability = exp(logp_yes)`, `no_token_probability =
+exp(logp_no)`, and `decision_margin = sigmoid(logp_yes - logp_no)`. Provider
+metadata is never accepted from the model-authored JSON itself. All three
+values are optional and nullable together: a
+provider without declared support, missing logprob payload, absent alternative
+token, or unparseable tokenization yields no numeric values while the valid
+binary prediction continues normally. These values are persisted in the blind
+prediction and trajectory and are included in post-hoc and Plan-critic inputs.
+After label reveal, feedback deterministically chooses `P(YES)` for a true YES
+case or `P(NO)` for a true NO case as `truth_label_token_probability`, and
+similarly maps the pairwise value to `truth_aligned_confidence =
+decision_margin` for true YES or `1 - decision_margin` for true NO. Both
+feedback values therefore improve toward one for either class. Fixed critic
+prompts must explicitly use available values as calibration feedback, but
+Binary F1 remains the only Plan-selection fitness and none of these values may
+affect Top-K.
 
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source

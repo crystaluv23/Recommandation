@@ -207,10 +207,17 @@ for the round that produced a score and never enters the score itself.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether
-the future fixed horizon reaches at least 2x. Stage 2 is evaluated only for the
-positive ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes.
-Binary F1 is the first fitness objective; precision, recall, magnitude accuracy,
-and magnitude macro-F1 remain visible diagnostics.
+the future fixed horizon reaches at least 2x through a fixed binary `YES`/`NO`
+decision: `YES` means the model estimates at least 50% probability for that
+exact adjusted-share-price outcome. When the provider supports output-token
+log probabilities, the runtime records the raw `YES` and `NO` token
+probabilities plus `sigmoid(logp_yes - logp_no)` as optional calibration
+evidence; their
+absence must not block prediction. Stage 2 is evaluated only for the positive
+ground-truth population and uses `2-3x`, `3-10x`, and `10x+` classes. Binary F1
+remains the only Plan-selection fitness objective; token probabilities,
+precision, recall, magnitude accuracy, and magnitude macro-F1 are diagnostics
+and reflection evidence only.
 
 Every prediction is durably handed to a prediction sink before the ground-truth
 provider can be called. The Predictor receives the label only afterward for

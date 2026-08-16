@@ -916,6 +916,63 @@ class PredictionMetricTests(TestCase):
                 session_id="s",
             )
 
+    def test_prediction_probability_feedback_aligns_both_truth_labels(self) -> None:
+        prediction = BlindPrediction(
+            is_surge=False,
+            magnitude=None,
+            confidence=ConfidenceLevel.MEDIUM,
+            key_reasons=("reason",),
+            uncertainties=(),
+            session_id="s",
+            yes_token_probability=0.2,
+            no_token_probability=0.7,
+            decision_margin=0.25,
+        )
+
+        no_feedback = prediction.confidence_feedback(GroundTruth(1.2))
+        yes_feedback = prediction.confidence_feedback(GroundTruth(2.2))
+
+        assert no_feedback is not None
+        assert yes_feedback is not None
+        self.assertEqual(no_feedback["truth_label_token_probability"], 0.7)
+        self.assertEqual(no_feedback["truth_aligned_confidence"], 0.75)
+        self.assertEqual(yes_feedback["truth_label_token_probability"], 0.2)
+        self.assertEqual(yes_feedback["truth_aligned_confidence"], 0.25)
+        self.assertEqual(BlindPrediction.from_dict(prediction.to_dict()), prediction)
+
+        with self.assertRaisesRegex(ValidationError, "must be present together"):
+            BlindPrediction(
+                is_surge=False,
+                magnitude=None,
+                confidence=ConfidenceLevel.MEDIUM,
+                key_reasons=("reason",),
+                uncertainties=(),
+                session_id="s",
+                yes_token_probability=0.2,
+            )
+
+    def test_token_probabilities_do_not_change_binary_f1(self) -> None:
+        trajectory = make_trajectory(
+            "case_probability",
+            2.5,
+            True,
+            MagnitudeClass.TWO_TO_THREE,
+        )
+        with_probabilities = replace(
+            trajectory,
+            prediction=replace(
+                trajectory.prediction,
+                yes_token_probability=0.6,
+                no_token_probability=0.3,
+                decision_margin=2 / 3,
+            ),
+        )
+
+        self.assertEqual(
+            score_predictions((trajectory,)),
+            score_predictions((with_probabilities,)),
+        )
+
 
 class EvaluationDatasetSamplingTests(TestCase):
     def test_snapshots_freeze_anchor_and_rotate_exact_random_cases(self) -> None:

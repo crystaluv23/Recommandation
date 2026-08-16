@@ -60,6 +60,47 @@ class DeepSeekResponsesClientTests(TestCase):
         self.assertEqual(payload["reasoning"], {"effort": "none"})
         self.assertNotIn("tools", payload)
 
+    def test_provider_uses_chat_completions_for_token_logprobs(self) -> None:
+        transport = FakeTransport(
+            {
+                "id": "chatcmpl_deepseek_1",
+                "model": "deepseek-v4-flash",
+                "choices": [
+                    {
+                        "message": {"role": "assistant", "content": '{"decision":"YES"}'},
+                        "logprobs": {"content": []},
+                    }
+                ],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 4},
+            }
+        )
+        client = create(
+            "deepseek",
+            environ={"DEEPSEEK_API_KEY": "test-key"},
+            transport=transport,
+        )
+
+        result = client.complete(
+            [
+                ChatMessage("system", "Return JSON."),
+                ChatMessage("user", "Evaluate this anonymous packet."),
+            ],
+            max_output_tokens=8000,
+            response_format={"type": "json_object"},
+            reasoning={"effort": "none"},
+            logprobs=True,
+            top_logprobs=20,
+        )
+
+        self.assertEqual(result.output_text, '{"decision":"YES"}')
+        url, _headers, payload = transport.calls[0]
+        self.assertEqual(url, "https://api.deepseek.com/chat/completions")
+        self.assertEqual(payload["response_format"], {"type": "json_object"})
+        self.assertEqual(payload["max_tokens"], 8000)
+        self.assertTrue(payload["logprobs"])
+        self.assertEqual(payload["top_logprobs"], 20)
+        self.assertEqual(payload["thinking"], {"type": "disabled"})
+
     def test_provider_and_model_are_auto_discovered_for_both_roles(self) -> None:
         self.assertIn("deepseek", registered())
         registration = get_model("deepseek-v4-flash")

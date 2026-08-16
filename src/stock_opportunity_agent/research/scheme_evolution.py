@@ -410,6 +410,9 @@ class BlindPrediction:
     key_reasons: tuple[str, ...]
     uncertainties: tuple[str, ...]
     session_id: str
+    yes_token_probability: float | None = None
+    no_token_probability: float | None = None
+    decision_margin: float | None = None
 
     def __post_init__(self) -> None:
         if self.is_surge and self.magnitude is None:
@@ -424,6 +427,32 @@ class BlindPrediction:
             raise ValidationError("blind prediction requires session_id")
         if not self.key_reasons:
             raise ValidationError("blind prediction requires key reasons")
+        probability_values = (
+            self.yes_token_probability,
+            self.no_token_probability,
+            self.decision_margin,
+        )
+        if any(value is None for value in probability_values) and any(
+            value is not None for value in probability_values
+        ):
+            raise ValidationError(
+                "YES/NO token probabilities and margin must be present together"
+            )
+        for name in (
+            "yes_token_probability",
+            "no_token_probability",
+            "decision_margin",
+        ):
+            value = getattr(self, name)
+            if value is not None and (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(float(value))
+                or not 0 <= float(value) <= 1
+            ):
+                raise ValidationError(f"{name} must be finite and in [0, 1]")
+            if value is not None:
+                object.__setattr__(self, name, float(value))
         object.__setattr__(self, "key_reasons", tuple(self.key_reasons))
         object.__setattr__(self, "uncertainties", tuple(self.uncertainties))
 
@@ -435,6 +464,38 @@ class BlindPrediction:
             "key_reasons": list(self.key_reasons),
             "uncertainties": list(self.uncertainties),
             "session_id": self.session_id,
+            "yes_token_probability": self.yes_token_probability,
+            "no_token_probability": self.no_token_probability,
+            "decision_margin": self.decision_margin,
+        }
+
+    def confidence_feedback(self, ground_truth: "GroundTruth") -> dict[str, Any] | None:
+        """Return label-revealed calibration context with one consistent direction."""
+
+        if (
+            self.decision_margin is None
+            or self.yes_token_probability is None
+            or self.no_token_probability is None
+        ):
+            return None
+        truth_token_probability = (
+            self.yes_token_probability
+            if ground_truth.is_surge
+            else self.no_token_probability
+        )
+        truth_aligned = (
+            self.decision_margin
+            if ground_truth.is_surge
+            else 1.0 - self.decision_margin
+        )
+        return {
+            "chosen_decision": "YES" if self.is_surge else "NO",
+            "true_decision": "YES" if ground_truth.is_surge else "NO",
+            "yes_token_probability": self.yes_token_probability,
+            "no_token_probability": self.no_token_probability,
+            "truth_label_token_probability": truth_token_probability,
+            "pairwise_yes_probability": self.decision_margin,
+            "truth_aligned_confidence": truth_aligned,
         }
 
     @classmethod
@@ -465,6 +526,9 @@ class BlindPrediction:
         magnitude = data.get("magnitude")
         if magnitude is not None and not isinstance(magnitude, str):
             raise ValidationError("BlindPrediction magnitude must be text or null")
+        yes_token_probability = data.get("yes_token_probability")
+        no_token_probability = data.get("no_token_probability")
+        decision_margin = data.get("decision_margin")
         return cls(
             is_surge=_json_boolean(data["is_surge"], "BlindPrediction is_surge"),
             magnitude=MagnitudeClass(str(magnitude)) if magnitude else None,
@@ -472,6 +536,9 @@ class BlindPrediction:
             key_reasons=_json_string_array(data, "key_reasons"),
             uncertainties=_json_string_array(data, "uncertainties"),
             session_id=data["session_id"],
+            yes_token_probability=yes_token_probability,
+            no_token_probability=no_token_probability,
+            decision_margin=decision_margin,
         )
 
 
@@ -769,7 +836,7 @@ class ExecutionTrajectory:
             )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "case_id": self.case_id,
             "company_id": self.company_id,
             "prediction_time": self.prediction_time.isoformat(),
@@ -788,6 +855,10 @@ class ExecutionTrajectory:
             ),
             "usage": self.usage.to_dict(),
         }
+        confidence_feedback = self.prediction.confidence_feedback(self.ground_truth)
+        if confidence_feedback is not None:
+            value["decision_confidence_feedback"] = confidence_feedback
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ExecutionTrajectory":
