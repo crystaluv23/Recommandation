@@ -620,7 +620,7 @@ def freeze_run(
                 "max_signal_rounds": 5,
                 "max_signal_calls": 20,
                 "max_llm_calls": 40,
-                "max_tokens": 120_000,
+                "max_tokens": 160_000,
                 "max_case_cost": 5.0,
                 "max_agent_steps": 20,
                 "evaluation": PlanEvaluationConfig().to_dict(),

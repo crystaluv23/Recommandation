@@ -116,6 +116,11 @@ sampled token. Prediction explanation, research, reflection, Signal execution,
 and all other judge calls remain greedy (`0.0`). The runtime alters temperature
 only, leaving nucleus sampling at its provider default.
 
+The frozen per-case token ceiling is `160000`. This accounts for the dedicated
+score call carrying the same label-free final context while retaining the
+existing call-count and dollar-cost ceilings; the former `120000` ceiling was
+below the observed 120950-token valid path and rejected completed first cases.
+
 Every structured role prompt includes its literal accepted JSON field contract.
 The adapter validates and converts provider output at the role boundary before
 domain construction; malformed shapes fail with a stage-specific
