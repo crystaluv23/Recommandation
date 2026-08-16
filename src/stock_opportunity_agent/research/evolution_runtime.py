@@ -2875,8 +2875,13 @@ class LLMBlindPredictor:
                 "outcome-stratified and do not represent the live-market base rate, "
                 "so do not predict false merely because 2x moves are rare in the "
                 "broad market. Make the independent case-level decision from the "
-                "supplied evidence. If true choose 2-3x, 3-10x, or 10x+. Do not use "
-                "web tools."
+                "supplied evidence. This is an opportunity-discovery classifier: "
+                "set is_surge=true when the security looks like a likely or possible "
+                "candidate for that exact 2x price outcome, even though doubling need "
+                "not be more than 50% probable. Set it false when the outcome looks "
+                "unlikely or the available evidence is insufficient to support a "
+                "credible path. If true choose 2-3x, 3-10x, or 10x+. Do not use web "
+                "tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},

@@ -150,6 +150,12 @@ exact cohort counts, require a positive quota, or couple separate predictions.
 This is fixed evaluation semantics, not an evolvable Plan field, a changed
 label, a hard-coded output balance, or case-outcome disclosure.
 
+Consistent with the product's fixed historical blind-assessment boundary,
+`is_surge=true` means the case looks like a `likely` or `possible` candidate
+for the exact price outcome, not that doubling is proved or more than 50%
+probable. `unlikely` and `insufficient_information` map to false. Hidden-label
+precision and recall penalize an overly broad or narrow decision boundary.
+
 Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source
 data is controlled independently; when disabled, a local resolver miss records

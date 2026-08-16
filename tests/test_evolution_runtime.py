@@ -1104,6 +1104,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("Do not require a guarantee", prompt)
         self.assertIn("outcome-stratified", prompt)
         self.assertIn("do not predict false merely because 2x moves are rare", prompt)
+        self.assertIn("opportunity-discovery classifier", prompt)
+        self.assertIn("likely or possible candidate", prompt)
+        self.assertIn("need not be more than 50% probable", prompt)
 
     def test_blind_predictor_repairs_string_boolean_instead_of_using_truthiness(self) -> None:
         valid = {

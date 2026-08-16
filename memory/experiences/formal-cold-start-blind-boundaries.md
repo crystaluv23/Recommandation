@@ -285,6 +285,14 @@ the sample is stratified and not prevalence-representative; do not disclose
 exact class counts, force a class quota, share predictions across cases, or
 pretend the resulting F1 estimates live-market precision.
 
+Finally, keep the product decision boundary distinct from the hidden outcome
+label. The realized label can remain an exact 2x adjusted-price event while the
+blind opportunity classifier maps both `likely` and `possible` surge candidates
+to its positive class. Requiring a greater-than-50% price forecast turns the LLM
+into a price oracle, contradicts the product goal, and collapses rare-event
+recall. Precision/recall/F1 against the exact future-price label is what
+penalizes an overly broad or narrow candidate boundary.
+
 ## How to Apply
 
 Before executing or modifying formal cold start:

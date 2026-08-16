@@ -311,6 +311,16 @@ bars makes the case ineligible. This implements the user's “上涨至少 1 倍
 price reaching at least `2x`; it does not classify `1x-<2x` as a surge and it
 does not reward an isolated one-day spike.
 
+The fixed Blind Predictor uses the product's opportunity-discovery decision
+boundary, not a price-oracle or proof boundary. It predicts `is_surge=true`
+when the anonymous as-of evidence makes the security look like a `likely` or
+`possible` candidate for that exact `2x` price outcome. It predicts `false`
+when the outcome looks `unlikely` or the available evidence is insufficient to
+support a credible path. `true` does not assert that doubling is more likely
+than every alternative or more than 50% probable. False positives and an overly
+broad candidate boundary are penalized by the same hidden-label precision,
+recall, and Binary F1; no class quota or case-level label is disclosed.
+
 If predicted false, Stage 2 is omitted. If predicted true, the Predictor must
 choose one magnitude class:
 
