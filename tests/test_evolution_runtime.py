@@ -1242,7 +1242,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(caller.calls[0]["decision_tokens"], ("YES", "NO"))
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
         self.assertIn("exactly one ASCII uppercase token", caller.calls[0]["system_prompt"])
-        self.assertEqual(caller.calls[1]["payload"]["framework_decision"], "YES")
+        self.assertNotIn("framework_decision", caller.calls[1]["payload"])
 
     def test_blind_predictor_score_context_omits_raw_spans_and_plan_prompt(self) -> None:
         compact = evolution_runtime_module._blind_predictor_score_context(
@@ -1289,7 +1289,7 @@ class ConcreteRoleAdapterTests(TestCase):
             {"supporting": 1, "counter": 0},
         )
 
-    def test_blind_predictor_corrects_explanation_to_framework_decision(self) -> None:
+    def test_blind_predictor_does_not_override_decision_with_scores(self) -> None:
         class ScoredRoleCaller(ScriptedRoleCaller):
             def complete_binary_token_with_scores(self, **kwargs):
                 self.stages.append(str(kwargs["stage"]))
@@ -1308,26 +1308,24 @@ class ConcreteRoleAdapterTests(TestCase):
             "uncertainties": [],
             "session_id": "fixture-session",
         }
-        no_output = dict(yes_output)
-        no_output["decision"] = "NO"
-        no_output["magnitude"] = None
-        caller = ScoredRoleCaller([yes_output, no_output])
+        caller = ScoredRoleCaller([yes_output])
 
         prediction = LLMBlindPredictor(caller).predict(
             {"basic_info": {"industry": "fixture"}}
         )
 
-        self.assertFalse(prediction.value.is_surge)
+        self.assertTrue(prediction.value.is_surge)
+        self.assertEqual(prediction.value.yes_token_probability, 0.2)
+        self.assertEqual(prediction.value.no_token_probability, 0.7)
+        self.assertEqual(prediction.value.decision_margin, 2 / 9)
         self.assertEqual(
             caller.stages,
             [
                 "blind_predictor_score",
                 "blind_predictor_predict",
-                "blind_predictor_predict_correction",
             ],
         )
-        self.assertEqual(caller.calls[1]["payload"]["framework_decision"], "NO")
-        self.assertIn("validation_error", caller.calls[2]["payload"])
+        self.assertNotIn("framework_decision", caller.calls[1]["payload"])
 
     def test_posthoc_reflection_does_not_rescan_low_confidence_as_ticker(self) -> None:
         caller = ScriptedRoleCaller(

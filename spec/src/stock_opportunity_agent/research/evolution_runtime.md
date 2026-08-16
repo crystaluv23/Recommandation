@@ -111,10 +111,11 @@ the whole round or advance a commit pointer.
 Temperature is part of the exact request hash. Information Plan proposal calls
 sample at `1.0`. A dedicated Blind Predictor score call also uses `1.0`, solely
 so provider log probabilities retain the model distribution instead of
-collapsing to a greedy `0/-9999` shape; the runtime never adopts that call's
-sampled token. Prediction explanation, research, reflection, Signal execution,
-and all other judge calls remain greedy (`0.0`). The runtime alters temperature
-only, leaving nucleus sampling at its provider default.
+collapsing to a greedy `0/-9999` shape; the runtime adopts neither that call's
+sampled token nor its derived margin as the prediction. Prediction, explanation,
+research, reflection, Signal execution, and all other judge calls remain greedy
+(`0.0`). The runtime alters temperature only, leaving nucleus sampling at its
+provider default.
 
 The dedicated score request does not repeat the complete Raw Info bundle. It
 receives a deterministic label-free view containing the final research state
@@ -164,16 +165,15 @@ not required. The provider-facing score output is a fixed single-token
 contract: exactly the uppercase ASCII token `YES` or `NO`, with no whitespace,
 punctuation, explanation, Markdown, or alternative casing. `YES` means the
 model estimates at least 50% probability that the exact price outcome occurs
-inside the horizon, and `NO` means below 50%. When usable log probabilities are
-present, the adapter deterministically maps the pairwise `YES` probability at
-the 50% boundary to `BlindPrediction.is_surge`; it never uses the
-temperature-1 sampled token as the decision. A separate temperature-0
-structured call receives that framework decision as immutable input and
-returns the matching decision, qualitative confidence, reasons, uncertainties,
-and magnitude. Positive decisions require a magnitude class, while negative
-decisions require null magnitude. If token scores are unavailable, the score
-call is skipped or discarded and the ordinary temperature-0 structured call
-supplies the binary decision. The prompt also discloses that the evaluation set is
+inside the horizon, and `NO` means below 50%. An ordinary temperature-0
+structured call independently supplies the primary binary decision, qualitative
+confidence, reasons, uncertainties, and magnitude. Positive decisions require a
+magnitude class, while negative decisions require null magnitude. The dedicated
+score call's sampled token and pairwise probability are diagnostic feedback only:
+they may disagree with the primary decision, but may neither overwrite it nor
+change Binary F1. If token scores are unavailable, the score call is skipped or
+discarded and the primary prediction remains valid with nullable score fields.
+The prompt also discloses that the evaluation set is
 outcome-stratified and not representative of the live-market base rate, but it
 does not disclose exact cohort counts, require a positive quota, or couple
 separate predictions. This threshold and schema are fixed framework semantics,
@@ -194,6 +194,9 @@ alternative token, sentinel value, or unparseable tokenization yields no
 numeric values while the valid binary prediction continues normally. These
 values are persisted in the blind
 prediction and trajectory and are included in post-hoc and Plan-critic inputs.
+They cannot change the saved prediction, the revealed truth, or the confusion
+matrix. A disagreement between the saved decision and the pairwise score is
+preserved as reflection evidence rather than deterministically reconciled.
 After label reveal, feedback deterministically chooses `P(YES)` for a true YES
 case or `P(NO)` for a true NO case as `truth_label_token_probability`, and
 similarly maps the pairwise value to `truth_aligned_confidence =

@@ -209,17 +209,19 @@ guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether
 the future fixed horizon reaches at least 2x through a fixed binary `YES`/`NO`
 decision: `YES` means the model estimates at least 50% probability for that
-exact adjusted-share-price outcome. When the provider supports output-token
-log probabilities, a fixed score call requests exactly one canonical uppercase
-ASCII token, `YES` or `NO`, at temperature `1.0`. The runtime records the raw
-canonical-token probabilities plus `sigmoid(logp_yes - logp_no)` and chooses
-the framework decision deterministically at the pairwise 50% boundary; the
-sampled token itself is not the decision. The score call consumes a
+exact adjusted-share-price outcome. A greedy structured Blind Predictor call
+authors this primary binary decision, its qualitative explanation, and its
+magnitude class. When the provider supports output-token log probabilities, a
+separate fixed score call requests exactly one canonical uppercase ASCII token,
+`YES` or `NO`, at temperature `1.0`. The runtime records the raw canonical-token
+probabilities plus `sigmoid(logp_yes - logp_no)` as optional reflection evidence;
+neither the sampled score token nor its derived margin may replace the primary
+binary decision or change fitness. The score call consumes a
 deterministic label-free condensation of the final research state and Signal
 results; it excludes repeated Raw Info text spans but retains the evolvable
 analysis prompt. Fixed label semantics override any conflict in that prompt, so
-`H_analyse` still influences fitness without being allowed to redefine it. A separate greedy structured call may
-only explain that fixed decision and assign its magnitude. These values are
+`H_analyse` still influences the diagnostic score without being allowed to
+redefine the prediction target. These values are
 optional calibration evidence, and absent, sentinel, or incompatible provider
 metadata must degrade to null without blocking the ordinary greedy binary
 prediction. Stage 2 is evaluated only for the positive

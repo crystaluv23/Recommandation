@@ -343,9 +343,10 @@ the final research state and Signal results; repeated Raw Info spans and the
 Basic Info bundle are omitted, while `H_analyse` remains present under the
 fixed framework semantics. It records the raw vocabulary probabilities of the two
 canonical tokens plus `decision_margin = sigmoid(logp_yes - logp_no)`, the
-pairwise YES-over-NO strength. The runtime derives the decision
-deterministically from that pairwise value at 50%; the sampled token is ignored,
-and a separate temperature-0 structured call must explain the fixed decision.
+pairwise YES-over-NO strength. A separate temperature-0 structured call authors
+the primary binary prediction and explanation. The score call's sampled token
+and pairwise strength are both ignored for decision and fitness purposes; any
+disagreement with the primary prediction is retained for later reflection.
 All three values are nullable together: an API without compatible
 token-logprob support, an absent canonical alternative, a provider sentinel,
 or an unparseable shape degrades to the ordinary greedy binary prediction with

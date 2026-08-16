@@ -3456,29 +3456,6 @@ class LLMBlindPredictor:
             anonymous_aliases=self.anonymous_aliases,
             temperature=self.score_temperature,
         )
-        framework_decision = None
-        if token_scores is not None:
-            framework_decision = (
-                "YES" if token_scores.decision_margin >= 0.5 else "NO"
-            )
-        prediction_payload: dict[str, Any] = {
-            "final_context": dict(final_context)
-        }
-        if framework_decision is not None:
-            prediction_payload["framework_decision"] = framework_decision
-
-        def parse_prediction(data: Mapping[str, Any]) -> BlindPrediction:
-            prediction = _blind_prediction_from_role(data, token_scores)
-            emitted_decision = "YES" if prediction.is_surge else "NO"
-            if (
-                framework_decision is not None
-                and emitted_decision != framework_decision
-            ):
-                raise ValidationError(
-                    "BlindPrediction decision must match framework_decision"
-                )
-            return prediction
-
         prediction, usage = _complete_parsed_role(
             self.caller,
             stage="blind_predictor_predict",
@@ -3505,18 +3482,17 @@ class LLMBlindPredictor:
                 "outcome-stratified and do not represent the live-market base rate, "
                 "so do not choose NO merely because 2x moves are rare in the "
                 "broad market. Make the independent case-level decision from the "
-                "supplied evidence. When framework_decision is supplied, it was "
-                "chosen deterministically from the dedicated canonical YES/NO "
-                "distribution and is immutable: return exactly that decision and "
-                "explain it rather than deciding again. If YES choose 2-3x, 3-10x, "
-                "or 10x+. If NO set "
+                "supplied evidence. This decision is the primary prediction. The "
+                "framework may attach optional YES/NO token-score metadata later "
+                "for reflection only; do not author those fields and do not defer "
+                "the decision to them. If YES choose 2-3x, 3-10x, or 10x+. If NO set "
                 "magnitude to null. The fixed six-month definition overrides any "
                 "conflicting horizon in the supplied evolvable analysis prompt. Do not use web "
                 "tools."
                 + _BLIND_PREDICTION_OUTPUT
             ),
-            payload=prediction_payload,
-            parser=parse_prediction,
+            payload={"final_context": dict(final_context)},
+            parser=lambda data: _blind_prediction_from_role(data, token_scores),
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
         )
