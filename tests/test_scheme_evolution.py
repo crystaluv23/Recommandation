@@ -1542,6 +1542,96 @@ class SimpleRoundReflector:
 
 
 class PlanEvolutionEngineTests(TestCase):
+    def test_historical_warm_start_replaces_manual_cold_start_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            proposer = CountingProposer()
+            base = default_information_plan()
+            historical = InformationPlan(
+                plan_id="historical_seed_fixture",
+                parent_ids=(),
+                basic_info_policy=base.basic_info_policy,
+                initial_research_skill=(
+                    f"{base.initial_research_skill} Historical warm start."
+                ),
+                reflection_skill=base.reflection_skill,
+                analysis_prompt=base.analysis_prompt,
+            )
+            events: list[Mapping[str, Any]] = []
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(base,),
+                warm_start_plans=(historical,),
+                candidates_per_round=1,
+                on_progress=events.append,
+            )
+
+            engine.run_round(
+                round_id=1,
+                validation_cases=make_evaluation_pool(),
+                anchor_cases=make_anchor_pool(),
+                signal_snapshot=registry.freeze(),
+            )
+
+            self.assertEqual(proposer.calls[0]["parents"], (historical.plan_id,))
+            parent_event = next(
+                item for item in events if item["event_type"] == "parents_selected"
+            )
+            self.assertEqual(parent_event["seed_parent_ids"], [historical.plan_id])
+
+    def test_current_top_k_displaces_historical_warm_start(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            current = make_record("current_plan", 1.0, (1.0, 0.0))
+            base = default_information_plan()
+            historical = InformationPlan(
+                plan_id="historical_seed_fixture",
+                parent_ids=(),
+                basic_info_policy=base.basic_info_policy,
+                initial_research_skill=(
+                    f"{base.initial_research_skill} Historical warm start."
+                ),
+                reflection_skill=base.reflection_skill,
+                analysis_prompt=base.analysis_prompt,
+            )
+            proposer = CountingProposer()
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive((current,)),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(base,),
+                warm_start_plans=(historical,),
+                candidates_per_round=1,
+                top_k=1,
+            )
+
+            engine.run_round(
+                round_id=1,
+                validation_cases=make_evaluation_pool(),
+                anchor_cases=make_anchor_pool(),
+                signal_snapshot=registry.freeze(),
+            )
+
+            self.assertEqual(proposer.calls[0]["parents"], (current.plan_id,))
+
     def test_one_stage_shares_exact_round_snapshot_and_keeps_diagnostics(self) -> None:
         class StageAwareEvaluator:
             def __init__(self) -> None:

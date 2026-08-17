@@ -26,6 +26,8 @@ One immutable, secret-free `EvolutionRunContract` binds:
 - code revision and Python runtime;
 - candidate/round/runtime limits, including a parent-selection seed used
   deterministically with each round id;
+- the canonical historical Plan Seed Pool manifest hash produced by automatic
+  committed-workspace discovery; an empty manifest is valid for the first run;
 - a mandatory Fast-loop evaluation contract containing 16 fixed Anchor cases
   (`7/5/3/1`) plus 8 deterministic round-Random cases (`3/2/2/1`), primary and
   secondary metrics, the cross-cohort per-company cap, deterministic rotation
@@ -47,7 +49,7 @@ readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
 default. Before the first cycle creates requests or execution artifacts,
 runtime verifies the exact Git revision, Python runtime, dataset hash, initial
-enabled-Signal snapshot, and oracle id. On later cycles it verifies the current
+enabled-Signal snapshot, historical Seed Pool manifest, and oracle id. On later cycles it verifies the current
 stable snapshot against the last committed cycle output, not against the
 initial contract snapshot. Evaluation snapshots are immutable recovery inputs
 under the run workspace. Their existence does not prove round completion or
@@ -59,6 +61,16 @@ Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
 check is scoped to runtime-bearing tracked paths (`src/`, `scripts/`, and
 `configs/`) plus untracked files under those paths; unrelated progress or memory
 notes do not make the executable HEAD unreproducible.
+
+Seed discovery is local, deterministic, and performs no model or provider
+calls. A first-ever evolution root produces a valid empty
+`seed_pool/manifest.json`. If a manifest was durably staged before the contract,
+freeze reuses and verifies it rather than rescanning newly completed history.
+Once the contract exists, resume requires the exact manifest hash and never
+mutates the pool. Source artifacts may later disappear without changing the
+snapshot because each selected Plan definition and all source hashes needed for
+audit are copied into the manifest; changing the local manifest itself fails
+closed before any external request.
 
 ## External Request Boundary
 

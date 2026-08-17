@@ -1,6 +1,6 @@
 # Continuous Round Commit Marker
 
-visit_times: 19
+visit_times: 20
 
 ## Trigger
 
@@ -42,6 +42,16 @@ input refs, and passing candidate hashes. Apply one cycle-identified idempotent
 transition, persist its output version/hash, and advance the cycle pointer last.
 The run contract may freeze the initial Registry, while committed cycle state,
 not that initial hash, owns subsequent Registry continuity.
+
+## Cross-workspace Warm Starts
+
+Historical Plans may seed a new workspace only when their records are reachable
+through the source workspace's committed round pointer and exact checkpoint.
+Snapshot the selected Plan definitions and aggregate provenance before freezing
+the new run contract, then bind the snapshot hash into that contract. Source
+metrics are selection evidence only: seeds are parent context, never imported
+Top-K records or fitness. Ignore staged attempts, tolerate an empty first-ever
+pool, and keep the resulting parent snapshot immutable across resume.
 
 ## Limits
 

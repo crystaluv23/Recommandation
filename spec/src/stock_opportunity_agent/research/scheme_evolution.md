@@ -457,6 +457,51 @@ still rejects repeated ids if sampling returns the same candidate. It
 participates in request identity but never becomes part of the candidate Plan.
 This is conditional sampling, not a claim of genetic crossover.
 
+### Cross-workspace historical Seed Pool
+
+Creating a new workspace automatically scans sibling evolution workspaces and
+freezes `seed_pool/manifest.json` before the run contract. Discovery recognizes
+only Plan records cross-linked from immutable checkpoints at or below each
+source `state.json:last_completed_round`; staged attempts, rejected rounds, and
+files beyond the pointer are never seed evidence. A source must keep Locked
+Test sealed and use the same approved dataset hash, canonical 16-Anchor plus
+8-Random evaluation contract, label definition, and binary fitness semantics.
+Artifacts from the superseded token-probability threshold experiment are
+incompatible even when their outer contract schema is v5.
+Malformed or incompatible source workspaces are skipped and counted in the
+manifest rather than weakening the new run's preflight.
+
+The framework canonicalizes only `(B,H_init,H_reflect,H_analyse)` to deduplicate
+Plan content and assigns a content-addressed seed id, so repeated round-local
+Plan ids cannot collide in the new workspace. The automatic policy is fixed:
+
+- historical capacity is two;
+- each source `run_id` is one independent run family until an explicit future
+  branch-family record exists, and contributes at most its best eligible Plan;
+- the first seed has the highest Combined Binary F1, with the weaker of Anchor
+  and Random F1, Random-case coverage, and stable ids used as tie breakers;
+- a second seed must come from another run family, reach at least 85% of the
+  first seed's F1, and have cosine similarity below `0.90`; among qualifying
+  Plans it prefers new Random case coverage, then lower similarity, then F1;
+- the pool may contain zero or one entry rather than filling capacity with an
+  incompatible, weak, same-run, or near-duplicate Plan.
+
+Each entry retains source workspace/run/contract/checkpoint/record hashes,
+source Plan id and round, cohort metrics, exact Random-case ids, embedding, and
+the cloned four-field Plan. It does not copy source trajectories into the new
+Plan Archive or expose company identities, Raw Info, or per-case labels to the
+proposer. The pool manifest is immutable and its canonical hash is stored in
+the new run contract. Resume loads and revalidates that exact snapshot; it does
+not rescan newly completed workspaces.
+
+Historical seeds fill only unoccupied quality-parent slots after the current
+workspace's committed Top-K has been selected, and only when they remain below
+the same similarity threshold against those current Plans. Random exploration
+records remain current-workspace archive records. The manual Plan is used when
+no current or historical parent exists. Historical seeds never receive current-
+workspace fitness, become champions, or enter round checkpoints; they disappear
+from parent input as current committed diverse Top-K Plans fill the slots.
+
 Legacy Plans containing `BasicInfoPolicy.fields` remain readable through a
 fixed compatibility mapping. New Plan artifacts write only `requests`.
 

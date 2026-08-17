@@ -35,7 +35,9 @@ from stock_opportunity_agent.research.evolution_runtime import (
     build_run_contract,
     filter_case_price_history,
     inventory_local_evolution_inputs,
+    HistoricalPlanSeedPool,
     load_approved_development_dataset,
+    load_or_create_historical_plan_seed_pool,
     migrate_legacy_raw_info,
     prepare_dataset_proposal,
     prepare_expanded_dataset_proposal,
@@ -341,6 +343,7 @@ def workspace_status(workspace_path: Path) -> dict[str, object]:
             contract.limits.get("similarity_threshold", 0.9)
         )
     else:
+        contract = None
         top_k = 3
         similarity_threshold = 0.9
     selected = archive.select_parents(
@@ -354,6 +357,12 @@ def workspace_status(workspace_path: Path) -> dict[str, object]:
         else {"last_completed_cycle": 0, "active_cycle": None}
     )
     events = workspace.load_events()
+    seed_pool_path = workspace_path / "seed_pool" / "manifest.json"
+    seed_pool = (
+        HistoricalPlanSeedPool.load_frozen(seed_pool_path)
+        if seed_pool_path.is_file()
+        else None
+    )
     return {
         "workspace": str(workspace.root),
         "last_completed_round": workspace.last_completed_round,
@@ -368,6 +377,21 @@ def workspace_status(workspace_path: Path) -> dict[str, object]:
             }
             for record in selected
         ],
+        "historical_seed_pool": {
+            "manifest_hash": seed_pool.manifest_hash if seed_pool else None,
+            "contract_bound": bool(
+                seed_pool
+                and contract
+                and contract.seed_pool_manifest_hash == seed_pool.manifest_hash
+            ),
+            "seed_count": len(seed_pool.entries) if seed_pool else 0,
+            "seed_ids": [entry.seed_id for entry in seed_pool.entries]
+            if seed_pool
+            else [],
+            "source_run_ids": [entry.source_run_id for entry in seed_pool.entries]
+            if seed_pool
+            else [],
+        },
         "trajectory_event_count": len(events),
         "interruption_count": sum(
             event.get("event_type") == "run_interrupted" for event in events
@@ -591,6 +615,15 @@ def freeze_run(
             candidate_root=workspace_path / "signals_candidates",
         )
         snapshot = registry.freeze()
+        evaluation_contract = PlanEvaluationConfig().to_dict()
+        dataset_manifest_hash = hashlib.sha256(
+            approved_dataset_path.read_bytes()
+        ).hexdigest()
+        seed_pool = load_or_create_historical_plan_seed_pool(
+            workspace=workspace_path,
+            dataset_manifest_hash=dataset_manifest_hash,
+            evaluation_contract=evaluation_contract,
+        )
         contract = build_run_contract(
             run_id=run_id,
             dataset_manifest_path=approved_dataset_path,
@@ -622,10 +655,11 @@ def freeze_run(
                 "max_tokens": 120_000,
                 "max_case_cost": 5.0,
                 "max_agent_steps": 20,
-                "evaluation": PlanEvaluationConfig().to_dict(),
+                "evaluation": evaluation_contract,
             },
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,
+            seed_pool_manifest_hash=seed_pool.manifest_hash,
             data_acquisition=DataAcquisitionPolicy(
                 enabled=data_external,
                 allowed_providers=data_providers,
@@ -636,6 +670,13 @@ def freeze_run(
             ),
         )
         contract.freeze(contract_path)
+    seed_pool = None
+    if contract.seed_pool_manifest_hash is not None:
+        seed_pool = HistoricalPlanSeedPool.load_frozen(
+            workspace_path / "seed_pool" / "manifest.json"
+        )
+        if seed_pool.manifest_hash != contract.seed_pool_manifest_hash:
+            raise ValueError("historical Plan seed pool differs from frozen contract")
     return {
         "run_contract": str(contract_path),
         "contract_hash": contract.contract_hash,
@@ -647,6 +688,13 @@ def freeze_run(
         "models": contract.models,
         "max_external_attempts": contract.max_external_attempts,
         "max_total_cost": contract.max_total_cost,
+        "historical_seed_pool": {
+            "manifest_hash": contract.seed_pool_manifest_hash,
+            "seed_count": len(seed_pool.entries) if seed_pool else 0,
+            "source_run_ids": [entry.source_run_id for entry in seed_pool.entries]
+            if seed_pool
+            else [],
+        },
         "data_acquisition": contract.data_acquisition.to_dict(),
         "locked_test_accessed": False,
         "external_calls": 0,

@@ -3702,6 +3702,7 @@ class PlanEvolutionEngine:
         round_reflector: RoundReflector,
         workspace: EvolutionWorkspace,
         seed_plans: tuple[InformationPlan, ...],
+        warm_start_plans: tuple[InformationPlan, ...] = (),
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         embedder: PlanEmbedder | None = None,
         candidates_per_round: int = 3,
@@ -3728,6 +3729,12 @@ class PlanEvolutionEngine:
         self.round_reflector = round_reflector
         self.workspace = workspace
         self.seed_plans = tuple(seed_plans)
+        self.warm_start_plans = tuple(warm_start_plans)
+        parent_seed_ids = [
+            plan.plan_id for plan in (*self.seed_plans, *self.warm_start_plans)
+        ]
+        if len(parent_seed_ids) != len(set(parent_seed_ids)):
+            raise ValidationError("plan evolution seed ids must be unique")
         self.priors = priors
         self.embedder = embedder or HashingPlanEmbedder()
         self.candidates_per_round = candidates_per_round
@@ -3790,16 +3797,35 @@ class PlanEvolutionEngine:
                 else self.rng
             ),
         )
-        parents = selection.plans or self.seed_plans
+        quality_parents = [record.plan for record in selection.top]
+        quality_embeddings = [record.embedding for record in selection.top]
+        selected_warm_start_plans: list[InformationPlan] = []
+        for plan in self.warm_start_plans:
+            if len(quality_parents) >= self.top_k:
+                break
+            embedding = self.embedder.embed(plan)
+            if all(
+                cosine_similarity(embedding, kept) < self.similarity_threshold
+                for kept in quality_embeddings
+            ):
+                quality_parents.append(plan)
+                quality_embeddings.append(embedding)
+                selected_warm_start_plans.append(plan)
+        if not quality_parents:
+            quality_parents.extend(self.seed_plans)
+        parents = tuple(quality_parents) + tuple(
+            record.plan for record in selection.random
+        )
         _emit_progress(
             self.on_progress,
             "parents_selected",
             round_id=round_id,
             top_parent_ids=[record.plan_id for record in selection.top],
             random_parent_ids=[record.plan_id for record in selection.random],
-            seed_parent_ids=(
+            seed_parent_ids=[plan.plan_id for plan in selected_warm_start_plans]
+            or (
                 [plan.plan_id for plan in self.seed_plans]
-                if not selection.plans
+                if not selection.top
                 else []
             ),
         )

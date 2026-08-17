@@ -73,7 +73,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionWorkspace,
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
+    FitnessEligibility,
     GroundTruth,
+    HashingPlanEmbedder,
     InformationPlan,
     PlanMetrics,
     PlanArchive,
@@ -91,6 +93,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SlowLoopResult,
     SignalEvolutionEngine,
     candidate_judgment_feedback,
+    cosine_similarity,
     default_information_plan,
 )
 from stock_opportunity_agent.signal_library import (
@@ -139,6 +142,10 @@ NORMAL_STOCK_EXCHANGES = frozenset({"NASDAQ", "NYSE", "NYSE MKT", "AMEX"})
 MIN_PRE_PREDICTION_DOLLAR_VOLUME = 1_000_000.0
 MAX_ADJUSTED_CLOSE_STEP_UP = 4.0
 MIN_ADJUSTED_CLOSE_STEP_DOWN = 0.25
+HISTORICAL_PLAN_SEED_CAPACITY = 2
+HISTORICAL_PLAN_SEED_QUALITY_RATIO = 0.85
+HISTORICAL_PLAN_SEED_SIMILARITY_THRESHOLD = 0.90
+HISTORICAL_PLAN_SEED_SCHEMA_VERSION = "historical-plan-seed-pool-v1"
 _NON_OPERATING_ISSUER_MARKERS = (
     "acquisition",
     "blank check",
@@ -1468,6 +1475,7 @@ class EvolutionRunContract:
     limits: Mapping[str, Any]
     max_external_attempts: int
     max_total_cost: float
+    seed_pool_manifest_hash: str | None = None
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
     schema_version: str = "evolution-run-contract-v5"
@@ -1484,6 +1492,12 @@ class EvolutionRunContract:
             value = str(getattr(self, name))
             if not re.fullmatch(r"[0-9a-f]{64}", value):
                 raise ValidationError(f"{name} must be a SHA-256 hex digest")
+        if self.seed_pool_manifest_hash is not None and not re.fullmatch(
+            r"[0-9a-f]{64}", self.seed_pool_manifest_hash
+        ):
+            raise ValidationError(
+                "seed_pool_manifest_hash must be a SHA-256 hex digest"
+            )
         if self.initial_signal_registry_version < 1:
             raise ValidationError("initial signal registry version must be positive")
         if not self.raw_info_oracle_id.strip():
@@ -1671,6 +1685,8 @@ class EvolutionRunContract:
             "evolution-run-contract-v5",
         }:
             value["raw_info_oracle_id"] = self.raw_info_oracle_id
+        if self.seed_pool_manifest_hash is not None:
+            value["seed_pool_manifest_hash"] = self.seed_pool_manifest_hash
         return value
 
     @property
@@ -1721,6 +1737,11 @@ class EvolutionRunContract:
             limits=dict(value["limits"]),
             max_external_attempts=int(value["max_external_attempts"]),
             max_total_cost=float(value["max_total_cost"]),
+            seed_pool_manifest_hash=(
+                str(value["seed_pool_manifest_hash"])
+                if value.get("seed_pool_manifest_hash") is not None
+                else None
+            ),
             locked_test_accessed=bool(value.get("locked_test_accessed", False)),
             data_acquisition=DataAcquisitionPolicy.from_dict(
                 dict(value.get("data_acquisition", {}))
@@ -1737,6 +1758,654 @@ class EvolutionRunContract:
         if envelope.get("contract_hash") != contract.contract_hash:
             raise ValidationError("frozen evolution run contract hash mismatch")
         return contract
+
+
+def historical_plan_seed_selection_policy() -> dict[str, Any]:
+    """Return the fixed, non-evolvable cross-workspace seed policy."""
+
+    return {
+        "capacity": HISTORICAL_PLAN_SEED_CAPACITY,
+        "max_per_source_run_family": 1,
+        "quality_ratio": HISTORICAL_PLAN_SEED_QUALITY_RATIO,
+        "similarity_threshold": HISTORICAL_PLAN_SEED_SIMILARITY_THRESHOLD,
+        "coverage_scope": "unique_random_case_ids",
+        "fitness_metric": "combined_binary_f1",
+    }
+
+
+@dataclass(frozen=True)
+class HistoricalPlanSeed:
+    """One content-addressed historical Plan used only as parent input."""
+
+    source_workspace: str
+    source_run_id: str
+    source_run_family_id: str
+    source_contract_hash: str
+    source_checkpoint_ref: str
+    source_record_hash: str
+    source_round_id: int
+    source_plan_id: str
+    plan_content_hash: str
+    plan: InformationPlan
+    embedding: tuple[float, ...]
+    metrics_by_cohort: Mapping[str, PlanMetrics]
+    random_case_ids: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        for name in (
+            "source_workspace",
+            "source_run_id",
+            "source_run_family_id",
+            "source_checkpoint_ref",
+            "source_plan_id",
+        ):
+            if not str(getattr(self, name)).strip():
+                raise ValidationError(f"historical Plan seed {name} is required")
+        for name in (
+            "source_contract_hash",
+            "source_record_hash",
+            "plan_content_hash",
+        ):
+            if not re.fullmatch(r"[0-9a-f]{64}", str(getattr(self, name))):
+                raise ValidationError(f"historical Plan seed {name} is invalid")
+        if self.source_round_id < 1:
+            raise ValidationError("historical Plan seed source round must be positive")
+        if self.plan.plan_id != self.source_plan_id:
+            raise ValidationError(
+                "historical Plan seed source Plan identity is inconsistent"
+            )
+        if _canonical_hash(self.plan.canonical_dict()) != self.plan_content_hash:
+            raise ValidationError("historical Plan seed content hash mismatch")
+        if not self.embedding or not all(math.isfinite(item) for item in self.embedding):
+            raise ValidationError("historical Plan seed embedding is invalid")
+        object.__setattr__(self, "embedding", tuple(float(item) for item in self.embedding))
+        cohort_metrics = {
+            str(name): metrics for name, metrics in self.metrics_by_cohort.items()
+        }
+        if set(cohort_metrics) != {"anchor", "random", "combined"}:
+            raise ValidationError("historical Plan seed cohort metrics are incomplete")
+        if (
+            cohort_metrics["anchor"].sample_count != 16
+            or cohort_metrics["random"].sample_count != 8
+            or cohort_metrics["combined"].sample_count != 24
+        ):
+            raise ValidationError("historical Plan seed cohort sizes are invalid")
+        object.__setattr__(self, "metrics_by_cohort", cohort_metrics)
+        random_case_ids = tuple(str(item) for item in self.random_case_ids)
+        if len(random_case_ids) != 8 or len(set(random_case_ids)) != 8:
+            raise ValidationError("historical Plan seed Random case ids are invalid")
+        object.__setattr__(self, "random_case_ids", random_case_ids)
+
+    @property
+    def seed_id(self) -> str:
+        return f"historical_seed_{self.plan_content_hash}"
+
+    @property
+    def binary_f1(self) -> float:
+        return self.metrics_by_cohort["combined"].binary_f1
+
+    @property
+    def minimum_cohort_f1(self) -> float:
+        return min(
+            self.metrics_by_cohort["anchor"].binary_f1,
+            self.metrics_by_cohort["random"].binary_f1,
+        )
+
+    @property
+    def parent_plan(self) -> InformationPlan:
+        return InformationPlan(
+            plan_id=self.seed_id,
+            parent_ids=(),
+            basic_info_policy=self.plan.basic_info_policy,
+            initial_research_skill=self.plan.initial_research_skill,
+            reflection_skill=self.plan.reflection_skill,
+            analysis_prompt=self.plan.analysis_prompt,
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "seed_id": self.seed_id,
+            "source_workspace": self.source_workspace,
+            "source_run_id": self.source_run_id,
+            "source_run_family_id": self.source_run_family_id,
+            "source_contract_hash": self.source_contract_hash,
+            "source_checkpoint_ref": self.source_checkpoint_ref,
+            "source_record_hash": self.source_record_hash,
+            "source_round_id": self.source_round_id,
+            "source_plan_id": self.source_plan_id,
+            "plan_content_hash": self.plan_content_hash,
+            "plan": self.plan.to_dict(),
+            "embedding": list(self.embedding),
+            "metrics_by_cohort": {
+                cohort: metrics.to_dict()
+                for cohort, metrics in self.metrics_by_cohort.items()
+            },
+            "random_case_ids": list(self.random_case_ids),
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "HistoricalPlanSeed":
+        seed = cls(
+            source_workspace=str(value["source_workspace"]),
+            source_run_id=str(value["source_run_id"]),
+            source_run_family_id=str(value["source_run_family_id"]),
+            source_contract_hash=str(value["source_contract_hash"]),
+            source_checkpoint_ref=str(value["source_checkpoint_ref"]),
+            source_record_hash=str(value["source_record_hash"]),
+            source_round_id=int(value["source_round_id"]),
+            source_plan_id=str(value["source_plan_id"]),
+            plan_content_hash=str(value["plan_content_hash"]),
+            plan=InformationPlan.from_dict(dict(value["plan"])),
+            embedding=tuple(float(item) for item in value.get("embedding", ())),
+            metrics_by_cohort={
+                str(cohort): PlanMetrics.from_dict(dict(metrics))
+                for cohort, metrics in dict(value["metrics_by_cohort"]).items()
+            },
+            random_case_ids=tuple(str(item) for item in value["random_case_ids"]),
+        )
+        if str(value.get("seed_id", "")) != seed.seed_id:
+            raise ValidationError("historical Plan seed id is invalid")
+        return seed
+
+
+@dataclass(frozen=True)
+class HistoricalPlanSeedPool:
+    """Immutable automatic warm-start snapshot for one new workspace."""
+
+    dataset_manifest_hash: str
+    evaluation_contract: Mapping[str, Any]
+    entries: tuple[HistoricalPlanSeed, ...] = ()
+    scanned_workspace_count: int = 0
+    compatible_workspace_count: int = 0
+    eligible_plan_count: int = 0
+    schema_version: str = HISTORICAL_PLAN_SEED_SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        if self.schema_version != HISTORICAL_PLAN_SEED_SCHEMA_VERSION:
+            raise ValidationError("unsupported historical Plan seed-pool schema")
+        if not re.fullmatch(r"[0-9a-f]{64}", self.dataset_manifest_hash):
+            raise ValidationError("historical Plan seed dataset hash is invalid")
+        evaluation = PlanEvaluationConfig.from_dict(self.evaluation_contract)
+        if dict(self.evaluation_contract) != evaluation.to_dict():
+            raise ValidationError(
+                "historical Plan seed evaluation contract is not canonical"
+            )
+        object.__setattr__(self, "evaluation_contract", evaluation.to_dict())
+        for name in (
+            "scanned_workspace_count",
+            "compatible_workspace_count",
+            "eligible_plan_count",
+        ):
+            value = getattr(self, name)
+            if type(value) is not int or value < 0:
+                raise ValidationError(f"historical Plan seed {name} is invalid")
+        entries = tuple(self.entries)
+        if len(entries) > HISTORICAL_PLAN_SEED_CAPACITY:
+            raise ValidationError("historical Plan seed pool exceeds capacity")
+        if len({entry.seed_id for entry in entries}) != len(entries):
+            raise ValidationError("historical Plan seed ids are not unique")
+        if len({entry.plan_content_hash for entry in entries}) != len(entries):
+            raise ValidationError("historical Plan seed content is duplicated")
+        if len({entry.source_run_family_id for entry in entries}) != len(entries):
+            raise ValidationError("historical Plan seed run families are duplicated")
+        if len(entries) == 2:
+            first, second = entries
+            if second.binary_f1 < (
+                first.binary_f1 * HISTORICAL_PLAN_SEED_QUALITY_RATIO
+            ):
+                raise ValidationError("historical Plan second seed is below quality floor")
+            if (
+                cosine_similarity(first.embedding, second.embedding)
+                >= HISTORICAL_PLAN_SEED_SIMILARITY_THRESHOLD
+            ):
+                raise ValidationError("historical Plan seeds are too similar")
+        object.__setattr__(self, "entries", entries)
+
+    @property
+    def plans(self) -> tuple[InformationPlan, ...]:
+        return tuple(entry.parent_plan for entry in self.entries)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "dataset_manifest_hash": self.dataset_manifest_hash,
+            "evaluation_contract": dict(self.evaluation_contract),
+            "selection_policy": historical_plan_seed_selection_policy(),
+            "scan_summary": {
+                "scanned_workspace_count": self.scanned_workspace_count,
+                "compatible_workspace_count": self.compatible_workspace_count,
+                "eligible_plan_count": self.eligible_plan_count,
+            },
+            "entries": [entry.to_dict() for entry in self.entries],
+        }
+
+    @property
+    def manifest_hash(self) -> str:
+        return _canonical_hash(self.to_dict())
+
+    def freeze(self, path: str | Path) -> None:
+        _write_or_verify_json(
+            Path(path),
+            {"manifest_hash": self.manifest_hash, "manifest": self.to_dict()},
+        )
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "HistoricalPlanSeedPool":
+        selection_policy = value.get("selection_policy")
+        evaluation_contract = value.get("evaluation_contract")
+        scan_summary = value.get("scan_summary")
+        entries = value.get("entries")
+        if not isinstance(selection_policy, Mapping) or dict(selection_policy) != (
+            historical_plan_seed_selection_policy()
+        ):
+            raise ValidationError("historical Plan seed selection policy changed")
+        if not isinstance(evaluation_contract, Mapping):
+            raise ValidationError("historical Plan seed evaluation contract is invalid")
+        if not isinstance(scan_summary, Mapping):
+            raise ValidationError("historical Plan seed scan summary is invalid")
+        if not isinstance(entries, list):
+            raise ValidationError("historical Plan seed entries must be an array")
+        if any(not isinstance(item, Mapping) for item in entries):
+            raise ValidationError("historical Plan seed entry is invalid")
+        scan = dict(scan_summary)
+        return cls(
+            dataset_manifest_hash=str(value["dataset_manifest_hash"]),
+            evaluation_contract=dict(evaluation_contract),
+            entries=tuple(
+                HistoricalPlanSeed.from_dict(dict(item))
+                for item in entries
+            ),
+            scanned_workspace_count=int(scan.get("scanned_workspace_count", 0)),
+            compatible_workspace_count=int(
+                scan.get("compatible_workspace_count", 0)
+            ),
+            eligible_plan_count=int(scan.get("eligible_plan_count", 0)),
+            schema_version=str(value["schema_version"]),
+        )
+
+    @classmethod
+    def load_frozen(cls, path: str | Path) -> "HistoricalPlanSeedPool":
+        envelope = _read_json(Path(path))
+        pool = cls.from_dict(dict(envelope["manifest"]))
+        if envelope.get("manifest_hash") != pool.manifest_hash:
+            raise ValidationError("historical Plan seed-pool hash mismatch")
+        return pool
+
+
+def _seed_candidate_quality_key(
+    candidate: HistoricalPlanSeed,
+) -> tuple[Any, ...]:
+    return (
+        -candidate.binary_f1,
+        -candidate.minimum_cohort_f1,
+        -len(candidate.random_case_ids),
+        candidate.source_run_family_id,
+        candidate.plan_content_hash,
+    )
+
+
+def _serialized_binary_confusion(
+    trajectories: Iterable[Mapping[str, Any]],
+    case_ids: Iterable[str],
+) -> tuple[int, int, int, int]:
+    wanted = set(case_ids)
+    rows = [item for item in trajectories if str(item.get("case_id", "")) in wanted]
+    if len(rows) != len(wanted) or len({str(item["case_id"]) for item in rows}) != len(
+        wanted
+    ):
+        raise ValidationError("historical Plan seed trajectories are incomplete")
+    confusion = [0, 0, 0, 0]
+    for row in rows:
+        prediction = row.get("prediction")
+        ground_truth = row.get("ground_truth")
+        if not isinstance(prediction, Mapping) or not isinstance(
+            ground_truth, Mapping
+        ):
+            raise ValidationError("historical Plan seed prediction rows are invalid")
+        predicted = prediction.get("is_surge")
+        truth = ground_truth.get("is_surge")
+        if type(predicted) is not bool or type(truth) is not bool:
+            raise ValidationError("historical Plan seed binary labels are invalid")
+        if any(
+            name in prediction
+            for name in (
+                "yes_token_probability",
+                "no_token_probability",
+                "decision_margin",
+            )
+        ):
+            raise ValidationError(
+                "superseded token-threshold predictions cannot seed current runs"
+            )
+        judgment = prediction.get("candidate_judgment")
+        if judgment is not None:
+            if judgment not in {
+                "likely",
+                "possible",
+                "unlikely",
+                "insufficient_information",
+            } or predicted != (judgment in {"likely", "possible"}):
+                raise ValidationError(
+                    "historical Plan seed four-way prediction mapping is invalid"
+                )
+        if predicted and truth:
+            confusion[0] += 1
+        elif predicted and not truth:
+            confusion[1] += 1
+        elif not predicted and not truth:
+            confusion[2] += 1
+        else:
+            confusion[3] += 1
+    return confusion[0], confusion[1], confusion[2], confusion[3]
+
+
+def _metrics_match_serialized_predictions(
+    metrics: PlanMetrics,
+    trajectories: Iterable[Mapping[str, Any]],
+    case_ids: Iterable[str],
+) -> bool:
+    confusion = _serialized_binary_confusion(trajectories, case_ids)
+    if confusion != (
+        metrics.true_positive,
+        metrics.false_positive,
+        metrics.true_negative,
+        metrics.false_negative,
+    ):
+        return False
+    true_positive, false_positive, _true_negative, false_negative = confusion
+    precision = (
+        true_positive / (true_positive + false_positive)
+        if true_positive + false_positive
+        else 0.0
+    )
+    recall = (
+        true_positive / (true_positive + false_negative)
+        if true_positive + false_negative
+        else 0.0
+    )
+    binary_f1 = (
+        2 * precision * recall / (precision + recall)
+        if precision + recall
+        else 0.0
+    )
+    return (
+        math.isclose(metrics.binary_precision, precision, abs_tol=1e-12)
+        and math.isclose(metrics.binary_recall, recall, abs_tol=1e-12)
+        and math.isclose(metrics.binary_f1, binary_f1, abs_tol=1e-12)
+    )
+
+
+def _select_historical_plan_seed_candidates(
+    candidates: Iterable[HistoricalPlanSeed],
+) -> tuple[HistoricalPlanSeed, ...]:
+    """Select one quality seed and one source/semantic/coverage-diverse seed."""
+
+    best_by_family: dict[str, HistoricalPlanSeed] = {}
+    for candidate in candidates:
+        current = best_by_family.get(candidate.source_run_family_id)
+        if current is None or _seed_candidate_quality_key(candidate) < (
+            _seed_candidate_quality_key(current)
+        ):
+            best_by_family[candidate.source_run_family_id] = candidate
+    best_by_content: dict[str, HistoricalPlanSeed] = {}
+    for candidate in best_by_family.values():
+        current = best_by_content.get(candidate.plan_content_hash)
+        if current is None or _seed_candidate_quality_key(candidate) < (
+            _seed_candidate_quality_key(current)
+        ):
+            best_by_content[candidate.plan_content_hash] = candidate
+    ranked = sorted(best_by_content.values(), key=_seed_candidate_quality_key)
+    if not ranked:
+        return ()
+    first = ranked[0]
+    second_candidates: list[tuple[tuple[Any, ...], HistoricalPlanSeed]] = []
+    first_random_ids = set(first.random_case_ids)
+    for candidate in ranked[1:]:
+        if candidate.source_run_family_id == first.source_run_family_id:
+            continue
+        if candidate.binary_f1 < (
+            first.binary_f1 * HISTORICAL_PLAN_SEED_QUALITY_RATIO
+        ):
+            continue
+        similarity = cosine_similarity(first.embedding, candidate.embedding)
+        if similarity >= HISTORICAL_PLAN_SEED_SIMILARITY_THRESHOLD:
+            continue
+        marginal_coverage = len(set(candidate.random_case_ids) - first_random_ids)
+        second_candidates.append(
+            (
+                (
+                    -marginal_coverage,
+                    similarity,
+                    -candidate.binary_f1,
+                    candidate.source_run_family_id,
+                    candidate.plan_content_hash,
+                ),
+                candidate,
+            )
+        )
+    if not second_candidates:
+        return (first,)
+    second_candidates.sort(key=lambda item: item[0])
+    return (first, second_candidates[0][1])
+
+
+def _committed_seed_candidates_from_workspace(
+    source_root: Path,
+    *,
+    search_root: Path,
+    dataset_manifest_hash: str,
+    evaluation_contract: Mapping[str, Any],
+) -> tuple[HistoricalPlanSeed, ...]:
+    contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
+    if (
+        contract.schema_version != "evolution-run-contract-v5"
+        or contract.locked_test_accessed
+        or contract.dataset_manifest_hash != dataset_manifest_hash
+        or dict(contract.limits.get("evaluation", {})) != dict(evaluation_contract)
+    ):
+        raise ValidationError("historical workspace is seed-incompatible")
+    state = _read_json(source_root / "state.json")
+    last_completed_round = int(state.get("last_completed_round", 0))
+    if last_completed_round < 1:
+        return ()
+    expected_last_checkpoint = (
+        source_root / "experiments" / f"round-{last_completed_round:04d}" / "checkpoint.json"
+    )
+    checkpoint_ref = state.get("checkpoint_ref")
+    if (
+        not isinstance(checkpoint_ref, str)
+        or Path(checkpoint_ref).resolve() != expected_last_checkpoint.resolve()
+    ):
+        raise ValidationError("historical workspace completed pointer is invalid")
+    candidates: list[HistoricalPlanSeed] = []
+    embedder = HashingPlanEmbedder()
+    for round_id in range(1, last_completed_round + 1):
+        checkpoint_path = (
+            source_root / "experiments" / f"round-{round_id:04d}" / "checkpoint.json"
+        )
+        checkpoint = _read_json(checkpoint_path)
+        if (
+            int(checkpoint.get("round_id", 0)) != round_id
+            or checkpoint.get("run_contract_hash") != contract.contract_hash
+        ):
+            raise ValidationError("historical workspace checkpoint is invalid")
+        plan_ids = checkpoint.get("plan_ids")
+        if (
+            not isinstance(plan_ids, list)
+            or not plan_ids
+            or any(not isinstance(item, str) or not item for item in plan_ids)
+            or len(set(plan_ids)) != len(plan_ids)
+        ):
+            raise ValidationError("historical workspace checkpoint Plan ids are invalid")
+        snapshot_path = source_root / "evaluation" / f"round_{round_id:03d}" / "snapshot.json"
+        snapshot = _read_json(snapshot_path)
+        case_ids = tuple(str(item) for item in snapshot.get("case_ids", ()))
+        anchor_case_ids = tuple(
+            str(item) for item in snapshot.get("anchor_case_ids", ())
+        )
+        random_case_ids = tuple(
+            str(item) for item in snapshot.get("random_case_ids", ())
+        )
+        if (
+            int(snapshot.get("round_id", 0)) != round_id
+            or len(case_ids) != 24
+            or len(set(case_ids)) != 24
+            or len(anchor_case_ids) != 16
+            or len(set(anchor_case_ids)) != 16
+            or len(random_case_ids) != 8
+            or len(set(random_case_ids)) != 8
+            or set(anchor_case_ids).intersection(random_case_ids)
+            or set(case_ids) != set(anchor_case_ids).union(random_case_ids)
+        ):
+            raise ValidationError("historical workspace evaluation snapshot is invalid")
+        snapshot_id = str(snapshot.get("snapshot_id", ""))
+        for plan_id in plan_ids:
+            record_path = source_root / "plans" / plan_id / "record.json"
+            raw_record = _read_json(record_path)
+            plan = InformationPlan.from_dict(dict(raw_record["plan"]))
+            metrics = PlanMetrics.from_dict(dict(raw_record["metrics"]))
+            cohort_metrics = {
+                str(cohort): PlanMetrics.from_dict(dict(value))
+                for cohort, value in dict(
+                    raw_record.get("metrics_by_cohort", {})
+                ).items()
+            }
+            fitness = FitnessEligibility.from_dict(dict(raw_record["fitness"]))
+            evaluation_case_ids = tuple(
+                str(item) for item in raw_record.get("case_ids", ())
+            )
+            dataset_snapshot_ids = tuple(
+                str(item) for item in raw_record.get("dataset_snapshot_ids", ())
+            )
+            serialized_trajectories = raw_record.get("trajectories", ())
+            if not isinstance(serialized_trajectories, list):
+                continue
+            trajectory_rows = tuple(
+                item for item in serialized_trajectories if isinstance(item, Mapping)
+            )
+            trajectory_case_ids = tuple(
+                str(item.get("case_id", ""))
+                for item in trajectory_rows
+            )
+            if (
+                str(raw_record.get("plan_id")) != plan_id
+                or plan.plan_id != plan_id
+                or int(raw_record.get("round_id", 0)) != round_id
+                or raw_record.get("evaluation_stage") != "round"
+                or int(raw_record.get("n_cases", 0)) != 24
+                or len(evaluation_case_ids) != 24
+                or set(evaluation_case_ids) != set(case_ids)
+                or len(trajectory_case_ids) != 24
+                or set(trajectory_case_ids) != set(case_ids)
+                or snapshot_id not in dataset_snapshot_ids
+                or set(cohort_metrics) != {"anchor", "random", "combined"}
+                or cohort_metrics["combined"] != metrics
+                or not _metrics_match_serialized_predictions(
+                    cohort_metrics["anchor"], trajectory_rows, anchor_case_ids
+                )
+                or not _metrics_match_serialized_predictions(
+                    cohort_metrics["random"], trajectory_rows, random_case_ids
+                )
+                or not _metrics_match_serialized_predictions(
+                    cohort_metrics["combined"], trajectory_rows, case_ids
+                )
+                or not fitness.eligible
+                or fitness.true_positive_count < 1
+            ):
+                continue
+            plan_content_hash = _canonical_hash(plan.canonical_dict())
+            try:
+                relative_workspace = str(source_root.relative_to(search_root))
+            except ValueError:
+                relative_workspace = source_root.name
+            candidates.append(
+                HistoricalPlanSeed(
+                    source_workspace=relative_workspace,
+                    source_run_id=contract.run_id,
+                    source_run_family_id=contract.run_id,
+                    source_contract_hash=contract.contract_hash,
+                    source_checkpoint_ref=str(checkpoint_path),
+                    source_record_hash=_canonical_hash(raw_record),
+                    source_round_id=round_id,
+                    source_plan_id=plan.plan_id,
+                    plan_content_hash=plan_content_hash,
+                    plan=plan,
+                    embedding=embedder.embed(plan),
+                    metrics_by_cohort=cohort_metrics,
+                    random_case_ids=random_case_ids,
+                )
+            )
+    return tuple(candidates)
+
+
+def build_historical_plan_seed_pool(
+    *,
+    search_root: str | Path,
+    target_workspace: str | Path,
+    dataset_manifest_hash: str,
+    evaluation_contract: Mapping[str, Any],
+) -> HistoricalPlanSeedPool:
+    """Discover eligible committed Plans without performing external calls."""
+
+    root = Path(search_root)
+    target = Path(target_workspace).resolve()
+    scanned = 0
+    compatible = 0
+    candidates: list[HistoricalPlanSeed] = []
+    if root.is_dir():
+        for contract_path in sorted(root.glob("*/run_contract.json")):
+            source_root = contract_path.parent
+            if source_root.resolve() == target:
+                continue
+            scanned += 1
+            try:
+                source_candidates = _committed_seed_candidates_from_workspace(
+                    source_root,
+                    search_root=root,
+                    dataset_manifest_hash=dataset_manifest_hash,
+                    evaluation_contract=evaluation_contract,
+                )
+            except (KeyError, OSError, TypeError, ValueError, ValidationError):
+                continue
+            compatible += 1
+            candidates.extend(source_candidates)
+    selected = _select_historical_plan_seed_candidates(candidates)
+    return HistoricalPlanSeedPool(
+        dataset_manifest_hash=dataset_manifest_hash,
+        evaluation_contract=dict(evaluation_contract),
+        entries=selected,
+        scanned_workspace_count=scanned,
+        compatible_workspace_count=compatible,
+        eligible_plan_count=len(candidates),
+    )
+
+
+def load_or_create_historical_plan_seed_pool(
+    *,
+    workspace: str | Path,
+    dataset_manifest_hash: str,
+    evaluation_contract: Mapping[str, Any],
+) -> HistoricalPlanSeedPool:
+    """Reuse an exact staged pool or deterministically discover and freeze one."""
+
+    workspace_root = Path(workspace)
+    manifest_path = workspace_root / "seed_pool" / "manifest.json"
+    if manifest_path.is_file():
+        pool = HistoricalPlanSeedPool.load_frozen(manifest_path)
+        if (
+            pool.dataset_manifest_hash != dataset_manifest_hash
+            or dict(pool.evaluation_contract) != dict(evaluation_contract)
+        ):
+            raise ValidationError("historical Plan seed pool conflicts with freeze scope")
+        return pool
+    pool = build_historical_plan_seed_pool(
+        search_root=workspace_root.parent,
+        target_workspace=workspace_root,
+        dataset_manifest_hash=dataset_manifest_hash,
+        evaluation_contract=evaluation_contract,
+    )
+    pool.freeze(manifest_path)
+    return pool
 
 
 @dataclass(frozen=True)
@@ -3809,6 +4478,20 @@ def run_bounded_evolution_cycle(
         dataset.anchor,
         evaluation_config,
     ).validate_feasibility()
+    historical_seed_plans: tuple[InformationPlan, ...] = ()
+    if contract.seed_pool_manifest_hash is not None:
+        seed_pool = HistoricalPlanSeedPool.load_frozen(
+            workspace_root / "seed_pool" / "manifest.json"
+        )
+        if (
+            seed_pool.manifest_hash != contract.seed_pool_manifest_hash
+            or seed_pool.dataset_manifest_hash != contract.dataset_manifest_hash
+            or dict(seed_pool.evaluation_contract) != evaluation_config.to_dict()
+        ):
+            raise ValidationError(
+                "historical Plan seed pool differs from frozen run contract"
+            )
+        historical_seed_plans = seed_pool.plans
     registry = SignalRegistry(
         workspace_root / "signals",
         candidate_root=workspace_root / "signals_candidates",
@@ -3971,6 +4654,7 @@ def run_bounded_evolution_cycle(
         round_reflector=LLMRoundReflector(judge_caller),
         workspace=evolution_workspace,
         seed_plans=(default_information_plan(),),
+        warm_start_plans=historical_seed_plans,
         candidates_per_round=int(limits["candidates_per_round"]),
         top_k=int(limits["top_k"]),
         random_k=int(limits["random_k"]),
@@ -4058,6 +4742,7 @@ def build_run_contract(
     limits: Mapping[str, Any],
     max_external_attempts: int,
     max_total_cost: float,
+    seed_pool_manifest_hash: str | None = None,
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy(),
     environ: Mapping[str, str] | None = None,
 ) -> EvolutionRunContract:
@@ -4084,6 +4769,7 @@ def build_run_contract(
         limits=dict(limits),
         max_external_attempts=max_external_attempts,
         max_total_cost=max_total_cost,
+        seed_pool_manifest_hash=seed_pool_manifest_hash,
         data_acquisition=data_acquisition,
     )
 

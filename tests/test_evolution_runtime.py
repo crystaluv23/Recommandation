@@ -22,6 +22,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     ExternalBudgetExhausted,
     ExternalExecutionNotReady,
     ExternalRequestPending,
+    HistoricalPlanSeedPool,
     LLMBlindPredictor,
     LLMInformationPlanProposer,
     LLMPlanCritic,
@@ -34,7 +35,9 @@ from stock_opportunity_agent.research.evolution_runtime import (
     approve_dataset_proposal,
     filter_case_price_history,
     inventory_local_evolution_inputs,
+    build_historical_plan_seed_pool,
     load_approved_development_dataset,
+    load_or_create_historical_plan_seed_pool,
     migrate_legacy_raw_info,
     prepare_dataset_proposal,
     prepare_expanded_dataset_proposal,
@@ -46,6 +49,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
     GroundTruth,
+    InformationPlan,
+    PlanMetrics,
     PlanEvaluationConfig,
     default_information_plan,
 )
@@ -1721,6 +1726,184 @@ class ConcreteRoleAdapterTests(TestCase):
 
 
 class RunControlTests(TestCase):
+    def _seed_candidate(
+        self,
+        *,
+        run_id: str,
+        suffix: str,
+        binary_f1: float,
+        embedding: tuple[float, ...],
+        random_prefix: str | None = None,
+    ):
+        base = default_information_plan()
+        plan = InformationPlan(
+            plan_id=f"source_{suffix}",
+            parent_ids=(),
+            basic_info_policy=base.basic_info_policy,
+            initial_research_skill=f"{base.initial_research_skill} {suffix}",
+            reflection_skill=base.reflection_skill,
+            analysis_prompt=base.analysis_prompt,
+        )
+
+        def metrics(sample_count: int) -> PlanMetrics:
+            return PlanMetrics(
+                binary_precision=binary_f1,
+                binary_recall=binary_f1,
+                binary_f1=binary_f1,
+                magnitude_accuracy=0.0,
+                magnitude_macro_f1=0.0,
+                true_positive=1,
+                false_positive=0,
+                true_negative=sample_count - 1,
+                false_negative=0,
+                sample_count=sample_count,
+            )
+
+        content_hash = evolution_runtime_module._canonical_hash(
+            plan.canonical_dict()
+        )
+        return evolution_runtime_module.HistoricalPlanSeed(
+            source_workspace=run_id,
+            source_run_id=run_id,
+            source_run_family_id=run_id,
+            source_contract_hash=SHA_A,
+            source_checkpoint_ref=f"{run_id}/checkpoint.json",
+            source_record_hash=SHA_B,
+            source_round_id=1,
+            source_plan_id=plan.plan_id,
+            plan_content_hash=content_hash,
+            plan=plan,
+            embedding=embedding,
+            metrics_by_cohort={
+                "anchor": metrics(16),
+                "random": metrics(8),
+                "combined": metrics(24),
+            },
+            random_case_ids=tuple(
+                f"{random_prefix or run_id}_random_{index}" for index in range(8)
+            ),
+        )
+
+    def test_historical_seed_selection_requires_source_and_semantic_diversity(self) -> None:
+        champion = self._seed_candidate(
+            run_id="run-a",
+            suffix="champion",
+            binary_f1=0.70,
+            embedding=(1.0, 0.0),
+        )
+        same_run = self._seed_candidate(
+            run_id="run-a",
+            suffix="same-run",
+            binary_f1=0.69,
+            embedding=(0.0, 1.0),
+        )
+        near_duplicate = self._seed_candidate(
+            run_id="run-c",
+            suffix="near-duplicate",
+            binary_f1=0.68,
+            embedding=(0.999, 0.01),
+        )
+        diverse = self._seed_candidate(
+            run_id="run-b",
+            suffix="diverse",
+            binary_f1=0.65,
+            embedding=(0.0, 1.0),
+        )
+
+        selected = evolution_runtime_module._select_historical_plan_seed_candidates(
+            (same_run, diverse, near_duplicate, champion)
+        )
+
+        self.assertEqual(
+            [item.source_plan_id for item in selected],
+            [champion.source_plan_id, diverse.source_plan_id],
+        )
+
+    def test_historical_seed_selection_underfills_below_quality_floor(self) -> None:
+        champion = self._seed_candidate(
+            run_id="run-a",
+            suffix="champion",
+            binary_f1=0.70,
+            embedding=(1.0, 0.0),
+        )
+        weak = self._seed_candidate(
+            run_id="run-b",
+            suffix="weak",
+            binary_f1=0.50,
+            embedding=(0.0, 1.0),
+        )
+
+        selected = evolution_runtime_module._select_historical_plan_seed_candidates(
+            (champion, weak)
+        )
+
+        self.assertEqual(selected, (champion,))
+
+    def test_first_workspace_freezes_empty_seed_pool_and_reuses_it(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "first-run"
+            pool = load_or_create_historical_plan_seed_pool(
+                workspace=workspace,
+                dataset_manifest_hash=SHA_A,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            self.assertEqual(pool.entries, ())
+            self.assertTrue((workspace / "seed_pool" / "manifest.json").is_file())
+
+            staged_source = Path(directory) / "staged-run"
+            staged_source.mkdir()
+            EvolutionRunContract(
+                **{**make_contract().__dict__, "run_id": "staged-run"}
+            ).freeze(staged_source / "run_contract.json")
+            write_json(staged_source / "state.json", {"last_completed_round": 0})
+            attempt = staged_source / "experiments" / "round-0001" / "attempts"
+            attempt.mkdir(parents=True)
+            write_json(attempt / "plan.json", {"metrics": {"binary_f1": 1.0}})
+
+            reused = load_or_create_historical_plan_seed_pool(
+                workspace=workspace,
+                dataset_manifest_hash=SHA_A,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            self.assertEqual(reused.manifest_hash, pool.manifest_hash)
+            self.assertEqual(reused.scanned_workspace_count, 0)
+
+            fresh = build_historical_plan_seed_pool(
+                search_root=Path(directory),
+                target_workspace=Path(directory) / "second-run",
+                dataset_manifest_hash=SHA_A,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            self.assertEqual(fresh.entries, ())
+            self.assertEqual(fresh.scanned_workspace_count, 1)
+            self.assertEqual(fresh.compatible_workspace_count, 1)
+
+    def test_historical_seed_pool_rejects_manifest_tampering(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.json"
+            pool = HistoricalPlanSeedPool(
+                dataset_manifest_hash=SHA_A,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            pool.freeze(path)
+            envelope = json.loads(path.read_text(encoding="utf-8"))
+            envelope["manifest"]["scan_summary"]["scanned_workspace_count"] = 1
+            write_json(path, envelope)
+            with self.assertRaisesRegex(ValidationError, "hash mismatch"):
+                HistoricalPlanSeedPool.load_frozen(path)
+
+    def test_contract_round_trips_seed_pool_manifest_hash(self) -> None:
+        contract = EvolutionRunContract(
+            **{**make_contract().__dict__, "seed_pool_manifest_hash": SHA_A}
+        )
+        value = contract.to_dict()
+        self.assertEqual(value["seed_pool_manifest_hash"], SHA_A)
+        self.assertEqual(
+            EvolutionRunContract.from_dict(value).seed_pool_manifest_hash,
+            SHA_A,
+        )
+        self.assertNotIn("seed_pool_manifest_hash", make_contract().to_dict())
+
     def test_malformed_paid_json_is_audited_costed_and_not_cached(self) -> None:
         class MalformedClient:
             def complete(self, _messages, **_kwargs):

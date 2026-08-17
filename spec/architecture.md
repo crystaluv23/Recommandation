@@ -213,6 +213,18 @@ their original Binary F1 and are neither rerun nor normalized against the new
 Registry. Parent selection compares all eligible historical records by stored
 Binary F1 plus the fixed diversity rule. Registry identity remains provenance
 for the round that produced a score and never enters the score itself.
+At the creation of a separate new workspace, the runtime may additionally
+build one deterministic cross-workspace historical Plan Seed Pool. It scans
+only records reachable from each source workspace's authoritative completed-
+round pointer, admits at most one quality Plan per independent source run
+family, and freezes at most two source-diverse, embedding-diverse Plan
+definitions plus their aggregate evaluation provenance. The Seed Pool is an
+immutable parent-input snapshot bound into the new run contract, not imported
+Plan Archive history: historical F1 selects seeds but is never represented as
+fitness earned in the new workspace. Current committed Top-K Plans take
+precedence and progressively replace warm-start seeds. If no compatible
+committed source run exists, the Seed Pool is validly empty and the manual Plan
+remains the cold-start fallback.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether
