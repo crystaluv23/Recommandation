@@ -199,6 +199,18 @@ with evidence counts. It excludes company/case identifiers, Basic Info, initial
 and final research context, literal evidence spans, prediction paths, and usage
 records. This preserves decision-calibration and Plan-failure evidence while
 preventing the 24-case batch from repeating Raw Info into a provider request.
+The same request includes deterministic comparisons against the candidate's
+actual parents: parent Plan content, aggregate cohort metrics, a structured
+Plan-field diff, an opaque source snapshot hash, and a same-snapshot flag.
+Confusion/F1/precision/recall deltas exist only when that flag is true. The
+round-reflection request receives the same comparisons keyed by new Plan id so
+cross-generation lessons can reach FIFO meta-info even though historical seeds
+never enter the current Plan Archive.
+Round reflection receives compact record summaries rather than serialized
+trajectories: Plan content, aggregate metrics, Plan-critic output, Signal-usage
+counts, fitness eligibility, and evaluation stage/count/snapshot/cohort
+metrics. It excludes embeddings, case ids, trajectories, Raw Info, research
+contexts, and per-case labels.
 Candidate-judgment feedback remains reflection-only: fitness and cumulative
 Top-K selection continue to use Combined Binary F1 alone.
 

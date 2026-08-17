@@ -2423,6 +2423,143 @@ class PlanRecord:
         )
 
 
+@dataclass(frozen=True)
+class ParentPlanReflectionEvidence:
+    """Anonymous aggregate evidence for comparing one actual parent to a child."""
+
+    plan: InformationPlan
+    source_scope: str
+    evaluation_snapshot_ids: tuple[str, ...] = ()
+    metrics_by_cohort: Mapping[str, PlanMetrics] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.source_scope not in {
+            "current_archive",
+            "historical_seed",
+            "manual_seed",
+        }:
+            raise ValidationError("parent reflection source scope is invalid")
+        snapshot_ids = tuple(str(item) for item in self.evaluation_snapshot_ids)
+        if any(not item for item in snapshot_ids) or len(set(snapshot_ids)) != len(
+            snapshot_ids
+        ):
+            raise ValidationError("parent reflection snapshot ids are invalid")
+        cohorts = {
+            str(cohort): metrics for cohort, metrics in self.metrics_by_cohort.items()
+        }
+        if cohorts and set(cohorts) != {"anchor", "random", "combined"}:
+            raise ValidationError(
+                "parent reflection metrics must contain every evaluation cohort"
+            )
+        object.__setattr__(self, "evaluation_snapshot_ids", snapshot_ids)
+        object.__setattr__(self, "metrics_by_cohort", cohorts)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "source_scope": self.source_scope,
+            "parent_plan": self.plan.to_dict(),
+            "evaluation_snapshot_ids": list(self.evaluation_snapshot_ids),
+            "metrics_by_cohort": {
+                cohort: metrics.to_dict()
+                for cohort, metrics in self.metrics_by_cohort.items()
+            },
+        }
+
+
+def build_parent_plan_comparison(
+    *,
+    parent: ParentPlanReflectionEvidence,
+    child_plan: InformationPlan,
+    child_metrics: PlanMetrics,
+    child_snapshot_id: str,
+) -> dict[str, Any]:
+    """Build a label-free Plan diff and only exactly comparable metric deltas."""
+
+    if parent.plan.plan_id not in child_plan.parent_ids:
+        raise ValidationError("parent comparison is outside child Plan lineage")
+    if not child_snapshot_id:
+        raise ValidationError("child evaluation snapshot id is required")
+    parent_requests = {
+        request.request_id: request
+        for request in parent.plan.basic_info_policy.requests
+    }
+    child_requests = {
+        request.request_id: request
+        for request in child_plan.basic_info_policy.requests
+    }
+    added = [
+        child_requests[request_id].to_dict()
+        for request_id in sorted(set(child_requests) - set(parent_requests))
+    ]
+    removed = [
+        parent_requests[request_id].to_dict()
+        for request_id in sorted(set(parent_requests) - set(child_requests))
+    ]
+    modified = [
+        {
+            "request_id": request_id,
+            "before": parent_requests[request_id].to_dict(),
+            "after": child_requests[request_id].to_dict(),
+        }
+        for request_id in sorted(set(parent_requests).intersection(child_requests))
+        if parent_requests[request_id].to_dict()
+        != child_requests[request_id].to_dict()
+    ]
+    text_changes = {
+        field_name: {
+            "before": str(getattr(parent.plan, field_name)),
+            "after": str(getattr(child_plan, field_name)),
+        }
+        for field_name in (
+            "initial_research_skill",
+            "reflection_skill",
+            "analysis_prompt",
+        )
+        if str(getattr(parent.plan, field_name))
+        != str(getattr(child_plan, field_name))
+    }
+    same_snapshot = parent.evaluation_snapshot_ids == (child_snapshot_id,)
+    parent_combined = parent.metrics_by_cohort.get("combined")
+    metric_delta: dict[str, Any] | None = None
+    if same_snapshot and parent_combined is not None:
+        metric_delta = {
+            "binary_f1": child_metrics.binary_f1 - parent_combined.binary_f1,
+            "binary_precision": (
+                child_metrics.binary_precision - parent_combined.binary_precision
+            ),
+            "binary_recall": (
+                child_metrics.binary_recall - parent_combined.binary_recall
+            ),
+            "confusion": {
+                "true_positive": (
+                    child_metrics.true_positive - parent_combined.true_positive
+                ),
+                "false_positive": (
+                    child_metrics.false_positive - parent_combined.false_positive
+                ),
+                "true_negative": (
+                    child_metrics.true_negative - parent_combined.true_negative
+                ),
+                "false_negative": (
+                    child_metrics.false_negative - parent_combined.false_negative
+                ),
+            },
+        }
+    return {
+        **parent.to_dict(),
+        "child_plan_id": child_plan.plan_id,
+        "child_evaluation_snapshot_id": child_snapshot_id,
+        "same_evaluation_snapshot": same_snapshot,
+        "plan_diff": {
+            "basic_info_requests_added": added,
+            "basic_info_requests_removed": removed,
+            "basic_info_requests_modified": modified,
+            "text_fields_changed": text_changes,
+        },
+        "metric_delta": metric_delta,
+    }
+
+
 class PlanEmbedder(Protocol):
     """Embeds a canonicalized Plan for diversity selection."""
 
@@ -2764,6 +2901,7 @@ class PlanCritic(Protocol):
         plan: InformationPlan,
         trajectories: tuple[ExecutionTrajectory, ...],
         metrics: PlanMetrics,
+        parent_comparisons: tuple[Mapping[str, Any], ...] = (),
     ) -> PlanReflection:
         """Return repeated strengths, failures, and next explorations."""
 
@@ -2777,6 +2915,9 @@ class RoundReflector(Protocol):
         round_id: int,
         records: tuple[PlanRecord, ...],
         prior: str,
+        parent_comparisons_by_plan_id: Mapping[
+            str, tuple[Mapping[str, Any], ...]
+        ] | None = None,
     ) -> RoundMetaEntry:
         """Return one grounded FIFO entry with record evidence refs."""
 
@@ -3703,6 +3844,9 @@ class PlanEvolutionEngine:
         workspace: EvolutionWorkspace,
         seed_plans: tuple[InformationPlan, ...],
         warm_start_plans: tuple[InformationPlan, ...] = (),
+        warm_start_parent_evidence: tuple[
+            ParentPlanReflectionEvidence, ...
+        ] = (),
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         embedder: PlanEmbedder | None = None,
         candidates_per_round: int = 3,
@@ -3730,11 +3874,28 @@ class PlanEvolutionEngine:
         self.workspace = workspace
         self.seed_plans = tuple(seed_plans)
         self.warm_start_plans = tuple(warm_start_plans)
+        self.warm_start_parent_evidence = {
+            item.plan.plan_id: item for item in warm_start_parent_evidence
+        }
         parent_seed_ids = [
             plan.plan_id for plan in (*self.seed_plans, *self.warm_start_plans)
         ]
         if len(parent_seed_ids) != len(set(parent_seed_ids)):
             raise ValidationError("plan evolution seed ids must be unique")
+        if len(self.warm_start_parent_evidence) != len(
+            tuple(warm_start_parent_evidence)
+        ) or set(self.warm_start_parent_evidence) - {
+            plan.plan_id for plan in self.warm_start_plans
+        }:
+            raise ValidationError("warm-start reflection evidence is inconsistent")
+        warm_plans_by_id = {
+            plan.plan_id: plan for plan in self.warm_start_plans
+        }
+        if any(
+            evidence.plan != warm_plans_by_id[plan_id]
+            for plan_id, evidence in self.warm_start_parent_evidence.items()
+        ):
+            raise ValidationError("warm-start reflection Plan content differs")
         self.priors = priors
         self.embedder = embedder or HashingPlanEmbedder()
         self.candidates_per_round = candidates_per_round
@@ -3799,6 +3960,15 @@ class PlanEvolutionEngine:
         )
         quality_parents = [record.plan for record in selection.top]
         quality_embeddings = [record.embedding for record in selection.top]
+        parent_evidence_by_id = {
+            record.plan_id: ParentPlanReflectionEvidence(
+                plan=record.plan,
+                source_scope="current_archive",
+                evaluation_snapshot_ids=record.evaluation.dataset_snapshot_ids,
+                metrics_by_cohort=record.evaluation.metrics_by_cohort,
+            )
+            for record in selection.records
+        }
         selected_warm_start_plans: list[InformationPlan] = []
         for plan in self.warm_start_plans:
             if len(quality_parents) >= self.top_k:
@@ -3811,8 +3981,24 @@ class PlanEvolutionEngine:
                 quality_parents.append(plan)
                 quality_embeddings.append(embedding)
                 selected_warm_start_plans.append(plan)
+                parent_evidence_by_id[plan.plan_id] = (
+                    self.warm_start_parent_evidence.get(plan.plan_id)
+                    or ParentPlanReflectionEvidence(
+                        plan=plan,
+                        source_scope="historical_seed",
+                    )
+                )
         if not quality_parents:
             quality_parents.extend(self.seed_plans)
+            parent_evidence_by_id.update(
+                {
+                    plan.plan_id: ParentPlanReflectionEvidence(
+                        plan=plan,
+                        source_scope="manual_seed",
+                    )
+                    for plan in self.seed_plans
+                }
+            )
         parents = tuple(quality_parents) + tuple(
             record.plan for record in selection.random
         )
@@ -4018,13 +4204,32 @@ class PlanEvolutionEngine:
             )
 
         records: list[PlanRecord] = []
+        parent_comparisons_by_plan_id: dict[
+            str, tuple[Mapping[str, Any], ...]
+        ] = {}
         for result in evaluation_results:
             trajectories = result.trajectories
             metrics = result.metrics
+            try:
+                comparisons = tuple(
+                    build_parent_plan_comparison(
+                        parent=parent_evidence_by_id[parent_id],
+                        child_plan=result.plan,
+                        child_metrics=metrics,
+                        child_snapshot_id=round_snapshot.snapshot_id,
+                    )
+                    for parent_id in result.plan.parent_ids
+                )
+            except KeyError as exc:
+                raise ValidationError(
+                    "candidate parent reflection evidence is missing"
+                ) from exc
+            parent_comparisons_by_plan_id[result.plan.plan_id] = comparisons
             reflection = self.critic.critique(
                 plan=result.plan,
                 trajectories=trajectories,
                 metrics=metrics,
+                parent_comparisons=comparisons,
             )
             records.append(
                 PlanRecord(
@@ -4069,6 +4274,7 @@ class PlanEvolutionEngine:
             round_id=round_id,
             records=record_tuple,
             prior=self.priors.reflect_round,
+            parent_comparisons_by_plan_id=parent_comparisons_by_plan_id,
         )
         expected_refs = {record.plan_id for record in record_tuple}
         if not set(meta_entry.evidence_refs).issubset(expected_refs):

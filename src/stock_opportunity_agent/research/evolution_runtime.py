@@ -82,6 +82,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanEvaluationConfig,
     PlanEvolutionEngine,
     PlanMetaMemory,
+    ParentPlanReflectionEvidence,
     PlanRecord,
     PlanReflection,
     ProgressCallback,
@@ -1790,6 +1791,7 @@ class HistoricalPlanSeed:
     embedding: tuple[float, ...]
     metrics_by_cohort: Mapping[str, PlanMetrics]
     random_case_ids: tuple[str, ...]
+    source_dataset_snapshot_id: str | None = None
 
     def __post_init__(self) -> None:
         for name in (
@@ -1835,6 +1837,12 @@ class HistoricalPlanSeed:
         if len(random_case_ids) != 8 or len(set(random_case_ids)) != 8:
             raise ValidationError("historical Plan seed Random case ids are invalid")
         object.__setattr__(self, "random_case_ids", random_case_ids)
+        if self.source_dataset_snapshot_id is not None and not re.fullmatch(
+            r"[0-9a-f]{64}", self.source_dataset_snapshot_id
+        ):
+            raise ValidationError(
+                "historical Plan seed evaluation snapshot id is invalid"
+            )
 
     @property
     def seed_id(self) -> str:
@@ -1863,7 +1871,7 @@ class HistoricalPlanSeed:
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "seed_id": self.seed_id,
             "source_workspace": self.source_workspace,
             "source_run_id": self.source_run_id,
@@ -1882,6 +1890,9 @@ class HistoricalPlanSeed:
             },
             "random_case_ids": list(self.random_case_ids),
         }
+        if self.source_dataset_snapshot_id is not None:
+            value["source_dataset_snapshot_id"] = self.source_dataset_snapshot_id
+        return value
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "HistoricalPlanSeed":
@@ -1902,6 +1913,11 @@ class HistoricalPlanSeed:
                 for cohort, metrics in dict(value["metrics_by_cohort"]).items()
             },
             random_case_ids=tuple(str(item) for item in value["random_case_ids"]),
+            source_dataset_snapshot_id=(
+                str(value["source_dataset_snapshot_id"])
+                if value.get("source_dataset_snapshot_id") is not None
+                else None
+            ),
         )
         if str(value.get("seed_id", "")) != seed.seed_id:
             raise ValidationError("historical Plan seed id is invalid")
@@ -2333,6 +2349,7 @@ def _committed_seed_candidates_from_workspace(
                     embedding=embedder.embed(plan),
                     metrics_by_cohort=cohort_metrics,
                     random_case_ids=random_case_ids,
+                    source_dataset_snapshot_id=snapshot_id,
                 )
             )
     return tuple(candidates)
@@ -4196,6 +4213,34 @@ def _plan_critic_trajectory(
     return compact
 
 
+def _round_reflection_record(record: PlanRecord) -> dict[str, Any]:
+    """Compact one record without trajectories, identities, or per-case labels."""
+
+    evaluation = record.evaluation
+    fitness = record.fitness
+    return {
+        "plan_id": record.plan_id,
+        "parent_ids": list(record.plan.parent_ids),
+        "round_id": record.round_id,
+        "plan": record.plan.to_dict(),
+        "metrics": record.metrics.to_dict(),
+        "reflection": record.reflection.to_dict(),
+        "signal_usage": {
+            ref: dict(counts) for ref, counts in record.signal_usage.items()
+        },
+        "fitness": fitness.to_dict(),
+        "evaluation": {
+            "evaluation_stage": evaluation.evaluation_stage,
+            "n_cases": evaluation.n_cases,
+            "dataset_snapshot_ids": list(evaluation.dataset_snapshot_ids),
+            "metrics_by_cohort": {
+                cohort: metrics.to_dict()
+                for cohort, metrics in evaluation.metrics_by_cohort.items()
+            },
+        },
+    }
+
+
 class LLMPlanCritic:
     """Plan-level critic over the complete saved validation batch."""
 
@@ -4208,6 +4253,7 @@ class LLMPlanCritic:
         plan: InformationPlan,
         trajectories: tuple[Any, ...],
         metrics: PlanMetrics,
+        parent_comparisons: tuple[Mapping[str, Any], ...] = (),
     ) -> PlanReflection:
         try:
             reflection, _usage = _complete_parsed_role(
@@ -4219,12 +4265,20 @@ class LLMPlanCritic:
                     "feedback, post-hoc reflections, and compact Signal results to "
                     "identify successful and failed Plan patterns. Treat four-way "
                     "feedback as diagnostic reflection evidence only; Combined "
-                    "Binary F1 remains the sole fitness and parent-selection score."
+                    "Binary F1 remains the sole fitness and parent-selection score. "
+                    "Use parent_comparisons to identify structural regressions or "
+                    "improvements. A metric_delta is valid only when "
+                    "same_evaluation_snapshot is true; otherwise compare Plan "
+                    "structure without claiming a causal metric effect. These "
+                    "comparisons are reflection evidence only."
                     + _PLAN_REFLECTION_OUTPUT
                 ),
                 payload={
                     "plan": plan.to_dict(),
                     "metrics": metrics.to_dict(),
+                    "parent_comparisons": [
+                        dict(item) for item in parent_comparisons
+                    ],
                     "trajectories": [
                         _plan_critic_trajectory(item, case_index=index)
                         for index, item in enumerate(trajectories, start=1)
@@ -4253,20 +4307,38 @@ class LLMRoundReflector:
         round_id: int,
         records: tuple[PlanRecord, ...],
         prior: str,
+        parent_comparisons_by_plan_id: Mapping[
+            str, tuple[Mapping[str, Any], ...]
+        ] | None = None,
     ) -> RoundMetaEntry:
+        comparisons = parent_comparisons_by_plan_id or {}
+        expected_plan_ids = {record.plan_id for record in records}
+        if set(comparisons) - expected_plan_ids:
+            raise ValidationError(
+                "round reflection parent comparisons cite an unknown Plan"
+            )
         try:
             reflection, _usage = _complete_parsed_role(
                 self.caller,
                 stage="round_reflect",
                 system_prompt=(
                     "Apply fixed H_R only to these new records; evidence_refs must cite "
-                    "supplied plan ids."
+                    "supplied plan ids. Use parent comparisons to identify structural "
+                    "regressions or improvements. A metric_delta is valid only when "
+                    "same_evaluation_snapshot is true; otherwise compare Plan "
+                    "structure without claiming a causal metric effect. Parent "
+                    "comparisons are reflection evidence only; Combined Binary F1 "
+                    "remains the sole fitness and parent-selection score."
                     + _ROUND_META_OUTPUT
                 ),
                 payload={
                     "round_id": round_id,
                     "fixed_prior": prior,
-                    "records": [item.to_dict() for item in records],
+                    "records": [_round_reflection_record(item) for item in records],
+                    "parent_comparisons_by_plan_id": {
+                        plan_id: [dict(item) for item in comparisons[plan_id]]
+                        for plan_id in sorted(comparisons)
+                    },
                 },
                 parser=RoundMetaEntry.from_dict,
                 allow_outcomes=True,
@@ -4479,6 +4551,9 @@ def run_bounded_evolution_cycle(
         evaluation_config,
     ).validate_feasibility()
     historical_seed_plans: tuple[InformationPlan, ...] = ()
+    historical_seed_parent_evidence: tuple[
+        ParentPlanReflectionEvidence, ...
+    ] = ()
     if contract.seed_pool_manifest_hash is not None:
         seed_pool = HistoricalPlanSeedPool.load_frozen(
             workspace_root / "seed_pool" / "manifest.json"
@@ -4492,6 +4567,19 @@ def run_bounded_evolution_cycle(
                 "historical Plan seed pool differs from frozen run contract"
             )
         historical_seed_plans = seed_pool.plans
+        historical_seed_parent_evidence = tuple(
+            ParentPlanReflectionEvidence(
+                plan=entry.parent_plan,
+                source_scope="historical_seed",
+                evaluation_snapshot_ids=(
+                    (entry.source_dataset_snapshot_id,)
+                    if entry.source_dataset_snapshot_id is not None
+                    else ()
+                ),
+                metrics_by_cohort=entry.metrics_by_cohort,
+            )
+            for entry in seed_pool.entries
+        )
     registry = SignalRegistry(
         workspace_root / "signals",
         candidate_root=workspace_root / "signals_candidates",
@@ -4655,6 +4743,7 @@ def run_bounded_evolution_cycle(
         workspace=evolution_workspace,
         seed_plans=(default_information_plan(),),
         warm_start_plans=historical_seed_plans,
+        warm_start_parent_evidence=historical_seed_parent_evidence,
         candidates_per_round=int(limits["candidates_per_round"]),
         top_k=int(limits["top_k"]),
         random_k=int(limits["random_k"]),

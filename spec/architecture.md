@@ -225,6 +225,15 @@ fitness earned in the new workspace. Current committed Top-K Plans take
 precedence and progressively replace warm-start seeds. If no compatible
 committed source run exists, the Seed Pool is validly empty and the manual Plan
 remains the cold-start fallback.
+Reflection receives a deterministic anonymous comparison for every actual
+parent of a new Plan. The comparison contains the parent Plan definition,
+aggregate Anchor/Random/Combined metrics when available, a structured
+parent-to-child Plan diff, and an exact-evaluation-snapshot comparability bit.
+Only an exactly shared snapshot may produce confusion/precision/recall/F1
+deltas; otherwise historical metrics remain contextual provenance. This
+comparison is reflection evidence only: it is unavailable to blind prediction,
+contains no case identities or per-case labels, and cannot change fitness,
+Top-K, or the immutable historical Seed Pool.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether

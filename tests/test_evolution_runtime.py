@@ -26,6 +26,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     LLMBlindPredictor,
     LLMInformationPlanProposer,
     LLMPlanCritic,
+    LLMRoundReflector,
     LLMResearchController,
     LLMSignalRetrievalAgent,
     StructuredLLMSignalRunner,
@@ -1388,6 +1389,24 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
             ),
             metrics=Artifact({"binary_f1": 0.75}),
+            parent_comparisons=(
+                {
+                    "source_scope": "historical_seed",
+                    "same_evaluation_snapshot": True,
+                    "plan_diff": {
+                        "basic_info_requests_removed": [
+                            {"request_id": "recent_annual_filing"}
+                        ]
+                    },
+                    "metric_delta": {
+                        "binary_f1": -0.19,
+                        "confusion": {
+                            "true_positive": -3,
+                            "false_negative": 3,
+                        },
+                    },
+                },
+            ),
         )
 
         self.assertEqual(
@@ -1403,6 +1422,16 @@ class ConcreteRoleAdapterTests(TestCase):
             "correct_positive_conservative",
         )
         self.assertIn("Combined Binary F1", prompt)
+        self.assertIn("same_evaluation_snapshot", prompt)
+        comparisons = caller.calls[0]["payload"]["parent_comparisons"]
+        self.assertEqual(
+            comparisons[0]["plan_diff"]["basic_info_requests_removed"][0][
+                "request_id"
+            ],
+            "recent_annual_filing",
+        )
+        self.assertNotIn("company_id", json.dumps(comparisons))
+        self.assertNotIn("ground_truth", json.dumps(comparisons))
         self.assertEqual(trajectories[0]["case_index"], 1)
         self.assertNotIn("case_id", trajectories[0])
         self.assertNotIn("company_id", trajectories[0])
@@ -1418,6 +1447,103 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("raw-info-must-not-reach-critic", rendered)
         self.assertNotIn("source-span-must-not-reach-critic", rendered)
         self.assertNotIn("must be omitted", rendered)
+
+    def test_round_reflector_receives_compact_records_and_parent_comparisons(
+        self,
+    ) -> None:
+        class Artifact:
+            def __init__(self, value):
+                self.value = value
+
+            def to_dict(self):
+                return self.value
+
+        class Evaluation:
+            evaluation_stage = "round"
+            n_cases = 24
+            dataset_snapshot_ids = (SHA_A,)
+            metrics_by_cohort = {
+                "combined": Artifact({"binary_f1": 0.5})
+            }
+
+        class Record:
+            plan_id = "child_plan"
+            round_id = 1
+            plan = InformationPlan(
+                plan_id=plan_id,
+                parent_ids=("historical_seed_parent",),
+                basic_info_policy=default_information_plan().basic_info_policy,
+                initial_research_skill="fixture init",
+                reflection_skill="fixture reflect",
+                analysis_prompt="fixture analyse",
+            )
+            metrics = Artifact({"binary_f1": 0.5})
+            reflection = Artifact({"failed_patterns": ["lost financial evidence"]})
+            signal_usage = {"revenue_growth_yoy:v1": {"retrieved": 24}}
+            fitness = Artifact({"eligible": True})
+            evaluation = Evaluation()
+
+            def to_dict(self):
+                return {
+                    "trajectories": [
+                        {
+                            "company_id": "identity-must-not-reach-round-reflector",
+                            "ground_truth": {"is_surge": True},
+                            "basic_info_bundle": "raw-info-must-not-reach-round-reflector",
+                        }
+                    ]
+                }
+
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "round_id": 1,
+                    "plan_level": {
+                        "successful_patterns": [],
+                        "failed_patterns": ["financial evidence was removed"],
+                    },
+                    "prediction_errors": {
+                        "false_positive": [],
+                        "false_negative": ["positive recall regressed"],
+                    },
+                    "signal_observations": {
+                        "useful": [],
+                        "suspicious": [],
+                        "missing_capabilities": [],
+                    },
+                    "search_implications": ["restore financial evidence"],
+                    "evidence_refs": ["child_plan"],
+                }
+            ]
+        )
+
+        result = LLMRoundReflector(caller).reflect(
+            round_id=1,
+            records=(Record(),),
+            prior="reflect over the round",
+            parent_comparisons_by_plan_id={
+                "child_plan": (
+                    {
+                        "same_evaluation_snapshot": True,
+                        "plan_diff": {
+                            "basic_info_requests_removed": [
+                                {"request_id": "recent_annual_filing"}
+                            ]
+                        },
+                        "metric_delta": {"binary_f1": -0.19},
+                    },
+                )
+            },
+        )
+
+        self.assertEqual(result.evidence_refs, ("child_plan",))
+        payload = caller.calls[0]["payload"]
+        self.assertIn("parent_comparisons_by_plan_id", payload)
+        self.assertNotIn("trajectories", payload["records"][0])
+        self.assertNotIn("case_ids", json.dumps(payload["records"]))
+        rendered = json.dumps(payload)
+        self.assertNotIn("identity-must-not-reach-round-reflector", rendered)
+        self.assertNotIn("raw-info-must-not-reach-round-reflector", rendered)
 
     def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1782,6 +1908,7 @@ class RunControlTests(TestCase):
             random_case_ids=tuple(
                 f"{random_prefix or run_id}_random_{index}" for index in range(8)
             ),
+            source_dataset_snapshot_id=SHA_C,
         )
 
     def test_historical_seed_selection_requires_source_and_semantic_diversity(self) -> None:

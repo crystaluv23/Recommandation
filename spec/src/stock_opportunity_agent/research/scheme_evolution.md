@@ -400,6 +400,23 @@ results, but uses only an opaque batch index and
 omits literal evidence spans, company/case identity, Basic Info, full research
 states, prediction paths, and usage.
 
+The Plan critic and round reflector also receive deterministic parent
+comparisons for the parents actually listed on each candidate Plan. Each
+comparison contains the complete parent Plan, aggregate cohort metrics when
+available, and a structured Plan diff: Basic Info requests added, removed, or
+modified plus changed `H_init`, `H_reflect`, and `H_analyse` fields. It contains
+no source trajectories, case ids, Raw Info, or per-case labels. The framework
+marks whether the parent and child used the exact same evaluation snapshot and
+computes metric/confusion deltas only in that case. When snapshots differ,
+parent metrics are context only and the comparison must not claim a causal
+improvement or regression. Parent comparison evidence can shape critic and FIFO
+meta reflection, but cannot rewrite predictions, metrics, fitness, archive
+membership, or parent selection.
+The round reflector receives only compact PlanRecord summaries: Plan content,
+aggregate metrics, Plan-critic output, Signal-usage counts, fitness, and compact
+evaluation lineage. It does not receive trajectories, case ids, Raw Info,
+research context, or per-case labels.
+
 ## Plan Archive
 
 Each `PlanRecord` stores:
@@ -487,8 +504,10 @@ Plan ids cannot collide in the new workspace. The automatic policy is fixed:
   incompatible, weak, same-run, or near-duplicate Plan.
 
 Each entry retains source workspace/run/contract/checkpoint/record hashes,
-source Plan id and round, cohort metrics, exact Random-case ids, embedding, and
-the cloned four-field Plan. It does not copy source trajectories into the new
+source Plan id and round, cohort metrics, exact Random-case ids, embedding, the
+opaque source evaluation snapshot hash, and the cloned four-field Plan. The
+snapshot hash lets reflection determine metric comparability without exposing
+cases. It does not copy source trajectories into the new
 Plan Archive or expose company identities, Raw Info, or per-case labels to the
 proposer. The pool manifest is immutable and its canonical hash is stored in
 the new run contract. Resume loads and revalidates that exact snapshot; it does

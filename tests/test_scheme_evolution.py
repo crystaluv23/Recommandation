@@ -28,6 +28,7 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     DEFAULT_EVOLUTION_PRIORS,
     AgentStep,
+    BasicInfoPolicy,
     BlindPrediction,
     CandidateJudgment,
     CandidateProposalRejected,
@@ -49,6 +50,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanEvolutionEngine,
     PlanMetaMemory,
     PlanMetrics,
+    ParentPlanReflectionEvidence,
     PlanRecord,
     PlanReflection,
     PredictionSelfReflection,
@@ -64,6 +66,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalEvolutionEngine,
     SignalRound,
     candidate_judgment_feedback,
+    build_parent_plan_comparison,
     default_information_plan,
     execute_information_plan,
     score_predictions,
@@ -1519,7 +1522,11 @@ class SyntheticPlanEvaluator:
 
 
 class SimpleCritic:
-    def critique(self, *, plan, trajectories, metrics):
+    def __init__(self) -> None:
+        self.parent_comparisons: list[tuple[Mapping[str, Any], ...]] = []
+
+    def critique(self, *, plan, trajectories, metrics, parent_comparisons=()):
+        self.parent_comparisons.append(parent_comparisons)
         return PlanReflection(
             successful_patterns=("correct binary separation",),
             next_explorations=("test contradiction-first reflection",),
@@ -1529,9 +1536,20 @@ class SimpleCritic:
 class SimpleRoundReflector:
     def __init__(self) -> None:
         self.calls: list[tuple[int, tuple[str, ...], str]] = []
+        self.parent_comparisons_by_plan_id: list[Mapping[str, Any]] = []
 
-    def reflect(self, *, round_id, records, prior):
+    def reflect(
+        self,
+        *,
+        round_id,
+        records,
+        prior,
+        parent_comparisons_by_plan_id=None,
+    ):
         self.calls.append((round_id, tuple(record.plan_id for record in records), prior))
+        self.parent_comparisons_by_plan_id.append(
+            parent_comparisons_by_plan_id or {}
+        )
         return RoundMetaEntry(
             round_id=round_id,
             successful_patterns=("correct binary separation",),
@@ -1542,6 +1560,80 @@ class SimpleRoundReflector:
 
 
 class PlanEvolutionEngineTests(TestCase):
+    def test_parent_comparison_only_deltas_metrics_on_exact_snapshot(self) -> None:
+        def metrics(tp: int, fp: int, tn: int, fn: int) -> PlanMetrics:
+            precision = tp / (tp + fp)
+            recall = tp / (tp + fn)
+            return PlanMetrics(
+                binary_precision=precision,
+                binary_recall=recall,
+                binary_f1=2 * precision * recall / (precision + recall),
+                magnitude_accuracy=0.0,
+                magnitude_macro_f1=0.0,
+                true_positive=tp,
+                false_positive=fp,
+                true_negative=tn,
+                false_negative=fn,
+                sample_count=tp + fp + tn + fn,
+            )
+
+        base = default_information_plan()
+        parent_plan = replace(base, plan_id="parent_plan")
+        child_plan = replace(
+            base,
+            plan_id="child_plan",
+            parent_ids=(parent_plan.plan_id,),
+            basic_info_policy=BasicInfoPolicy(
+                requests=tuple(
+                    request
+                    for request in base.basic_info_policy.requests
+                    if request.request_id
+                    in {"recent_company_news", "recent_market_backbone"}
+                )
+            ),
+        )
+        parent_metrics = metrics(8, 1, 9, 6)
+        child_metrics = metrics(5, 1, 9, 9)
+        snapshot_id = "a" * 64
+        evidence = ParentPlanReflectionEvidence(
+            plan=parent_plan,
+            source_scope="historical_seed",
+            evaluation_snapshot_ids=(snapshot_id,),
+            metrics_by_cohort={
+                "anchor": parent_metrics,
+                "random": parent_metrics,
+                "combined": parent_metrics,
+            },
+        )
+
+        comparison = build_parent_plan_comparison(
+            parent=evidence,
+            child_plan=child_plan,
+            child_metrics=child_metrics,
+            child_snapshot_id=snapshot_id,
+        )
+
+        self.assertTrue(comparison["same_evaluation_snapshot"])
+        self.assertEqual(comparison["metric_delta"]["confusion"]["true_positive"], -3)
+        self.assertEqual(comparison["metric_delta"]["confusion"]["false_negative"], 3)
+        removed_ids = {
+            item["request_id"]
+            for item in comparison["plan_diff"]["basic_info_requests_removed"]
+        }
+        self.assertEqual(
+            removed_ids,
+            {"recent_annual_filing", "reported_financial_facts"},
+        )
+
+        cross_snapshot = build_parent_plan_comparison(
+            parent=evidence,
+            child_plan=child_plan,
+            child_metrics=child_metrics,
+            child_snapshot_id="b" * 64,
+        )
+        self.assertFalse(cross_snapshot["same_evaluation_snapshot"])
+        self.assertIsNone(cross_snapshot["metric_delta"])
+
     def test_historical_warm_start_replaces_manual_cold_start_parent(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1561,17 +1653,56 @@ class PlanEvolutionEngineTests(TestCase):
                 analysis_prompt=base.analysis_prompt,
             )
             events: list[Mapping[str, Any]] = []
+            critic = SimpleCritic()
+            round_reflector = SimpleRoundReflector()
+            dataset_manager = EvaluationDatasetManager(
+                workspace.evaluation_root,
+                make_evaluation_pool(),
+                make_anchor_pool(),
+            )
+            snapshot = dataset_manager.get_or_create_round_dataset(1)
+            parent_trajectories = SyntheticPlanEvaluator().evaluate(
+                historical,
+                dataset_manager.resolve_cases(snapshot.case_ids),
+                registry.freeze(),
+            )
+            anchor_ids = set(snapshot.anchor_case_ids)
+            parent_metrics_by_cohort = {
+                "anchor": score_predictions(
+                    tuple(
+                        item
+                        for item in parent_trajectories
+                        if item.case_id in anchor_ids
+                    )
+                ),
+                "random": score_predictions(
+                    tuple(
+                        item
+                        for item in parent_trajectories
+                        if item.case_id not in anchor_ids
+                    )
+                ),
+                "combined": score_predictions(parent_trajectories),
+            }
             engine = PlanEvolutionEngine(
                 archive=PlanArchive(),
                 meta_memory=PlanMetaMemory(),
                 signal_registry=registry,
                 evaluator=SyntheticPlanEvaluator(),
                 proposer=proposer,
-                critic=SimpleCritic(),
-                round_reflector=SimpleRoundReflector(),
+                critic=critic,
+                round_reflector=round_reflector,
                 workspace=workspace,
                 seed_plans=(base,),
                 warm_start_plans=(historical,),
+                warm_start_parent_evidence=(
+                    ParentPlanReflectionEvidence(
+                        plan=historical,
+                        source_scope="historical_seed",
+                        evaluation_snapshot_ids=(snapshot.snapshot_id,),
+                        metrics_by_cohort=parent_metrics_by_cohort,
+                    ),
+                ),
                 candidates_per_round=1,
                 on_progress=events.append,
             )
@@ -1588,6 +1719,15 @@ class PlanEvolutionEngineTests(TestCase):
                 item for item in events if item["event_type"] == "parents_selected"
             )
             self.assertEqual(parent_event["seed_parent_ids"], [historical.plan_id])
+            comparison = critic.parent_comparisons[0][0]
+            self.assertTrue(comparison["same_evaluation_snapshot"])
+            self.assertIsNotNone(comparison["metric_delta"])
+            self.assertEqual(
+                round_reflector.parent_comparisons_by_plan_id[0][
+                    "plan_child_1"
+                ],
+                critic.parent_comparisons[0],
+            )
 
     def test_current_top_k_displaces_historical_warm_start(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1910,7 +2050,14 @@ class PlanEvolutionEngineTests(TestCase):
 
     def test_round_meta_cannot_cite_old_or_unrelated_experiment(self) -> None:
         class BadReflector(SimpleRoundReflector):
-            def reflect(self, *, round_id, records, prior):
+            def reflect(
+                self,
+                *,
+                round_id,
+                records,
+                prior,
+                parent_comparisons_by_plan_id=None,
+            ):
                 return RoundMetaEntry(round_id=round_id, evidence_refs=("old_plan",))
 
         with tempfile.TemporaryDirectory() as directory:
