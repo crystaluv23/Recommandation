@@ -236,9 +236,13 @@ Preflight and dry-run never perform network I/O. LLM external mode additionally
 requires an explicit acknowledgement equal to the frozen contract hash. Source
 data is controlled independently; when disabled, a local resolver miss records
 `external_not_authorized` and performs no network I/O.
-An enabled data policy requires explicit non-empty provider, capability, and
-source-type allowlists plus positive per-cycle and whole-run ceilings. The
-operator must enable it once in the frozen contract and again for a resume
+An enabled data policy requires non-empty provider, capability, and source-type
+authorization fields plus positive per-cycle and whole-run ceilings. The
+broad-research profile stores `*` as the sole value in each authorization field,
+meaning every historical adapter registered by the contract-bound code
+revision; it does not turn an unsupported source type into a synthetic result.
+A custom restrictive policy stores explicit names instead. The operator must
+enable either policy once in the frozen contract and again for a resume
 invocation; a request to execute data calls outside the frozen policy fails
 explicitly rather than being silently ignored.
 A disabled data policy has empty allowlists and zero ceilings; partially filled

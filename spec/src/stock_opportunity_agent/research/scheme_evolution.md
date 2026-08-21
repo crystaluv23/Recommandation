@@ -818,8 +818,11 @@ provides no within-round quality comparison and makes a first-round TP miss too
 likely to halt the fitness-gated run.
 
 Source-data acquisition remains a separate two-step authorization in the stable
-launcher. `new` may freeze explicit non-empty provider/capability/source-type
-allowlists and positive request ceilings but still performs zero data calls;
+launcher. `new --data-external` freezes the versioned broad-research Raw Info
+profile: wildcard provider/capability/source-type authorization for every
+historical adapter registered by the contract-bound code revision, plus
+positive request ceilings. Operators may instead supply a complete restrictive
+set of all three allowlists and both ceilings. `new` still performs zero data calls;
 `resume` must additionally receive the data-external execution flag. Requesting
 runtime data execution when the frozen contract disabled it is an explicit
 pause/error, not a silently disabled resolver.

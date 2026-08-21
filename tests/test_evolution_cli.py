@@ -22,6 +22,22 @@ SPEC.loader.exec_module(CLI)
 
 
 class EvolutionCliTests(TestCase):
+    def test_data_external_alone_resolves_to_broad_research_policy(self) -> None:
+        policy = CLI._resolve_data_acquisition_policy(
+            data_external=True,
+            data_providers=(),
+            data_capabilities=(),
+            data_source_types=(),
+            max_data_requests_per_cycle=0,
+            max_data_requests_per_run=0,
+        )
+
+        self.assertEqual(policy.allowed_providers, ("*",))
+        self.assertEqual(policy.allowed_capabilities, ("*",))
+        self.assertEqual(policy.allowed_source_types, ("*",))
+        self.assertEqual(policy.max_requests_per_cycle, 1_000)
+        self.assertEqual(policy.max_requests_per_run, 10_000)
+
     def test_progress_printer_exposes_plan_metrics_and_top_k(self) -> None:
         stream = io.StringIO()
         events = (

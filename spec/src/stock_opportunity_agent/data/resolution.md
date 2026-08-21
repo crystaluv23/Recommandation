@@ -69,6 +69,23 @@ for `financials`, and `price_daily` can satisfy `market_data`, provided the
 provider and capability are also explicitly authorized. Readiness never widens
 an allowlist or converts a disabled policy into authorization.
 
+The operator boundary exposes one versioned broad-research authorization
+profile for new evolution workspaces. Its wildcard policy authorizes every
+historical Raw Info adapter registered by the contract-bound code revision; it
+does not enumerate provider, capability, or source-type names. Consequently a
+future Signal cannot become unavailable merely because its semantic source
+type was omitted from today's authorization list. Local Raw Info of any source
+type remains readable under the normal point-in-time query. External retrieval
+still requires a registered adapter that declares support for the requested
+type; a missing adapter or genuine provider/history gap remains explicit.
+
+The profile freezes wildcard allowlists plus request ceilings into the run
+contract even though the operator selects it with the single
+`--data-external` flag. Custom restrictive allowlists remain available when
+every list and ceiling is supplied together. This convenience never authorizes
+current-only facts as historical evidence, future data, outcome labels, Locked
+Test, or LLM execution.
+
 Unknown source types remain valid Information Plan content and yield
 `adapter_missing`; they do not reject a candidate. Source-data authorization is
 separate from LLM authorization. Provider cache/ledger/quota behavior remains

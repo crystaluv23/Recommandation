@@ -220,6 +220,86 @@ exit "$STUB_FINAL_STATUS"
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("data policy options require --data-external", result.stderr)
 
+    def test_new_data_external_uses_broad_profile_without_manual_lists(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            approved = root / "approved.json"
+            approved.write_text("{}", encoding="utf-8")
+            log_path = root / "commands.log"
+            stub = root / "python-stub.sh"
+            stub.write_text(
+                """#!/usr/bin/env bash
+set -eu
+if [ "${1:-}" = "-c" ]; then
+  if [ "$#" -ge 3 ]; then
+    printf '%s\n' 'fixture-contract-hash'
+  fi
+  exit 0
+fi
+shift
+command_name="$1"
+shift
+printf '%s' "$command_name" >> "$STUB_LOG_PATH"
+printf ' %s' "$@" >> "$STUB_LOG_PATH"
+printf '\n' >> "$STUB_LOG_PATH"
+workspace=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--workspace" ]; then
+    workspace="$2"
+    shift 2
+  else
+    shift
+  fi
+done
+if [ "$command_name" = "init" ]; then
+  mkdir -p "$workspace"
+elif [ "$command_name" = "freeze-run" ]; then
+  mkdir -p "$workspace"
+  printf '%s\n' '{"contract":{"schema_version":"evolution-run-contract-v5"},"contract_hash":"fixture-contract-hash"}' > "$workspace/run_contract.json"
+fi
+""",
+                encoding="utf-8",
+            )
+            stub.chmod(0o755)
+            result = subprocess.run(
+                [
+                    "/bin/bash",
+                    str(SCRIPT),
+                    "new",
+                    "--workspace",
+                    str(workspace),
+                    "--raw-info-root",
+                    str(root / "raw-info"),
+                    "--approved-dataset",
+                    str(approved),
+                    "--run-id",
+                    "fixture",
+                    "--judge-model",
+                    "judge",
+                    "--evolution-model",
+                    "proposer",
+                    "--data-external",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                env={
+                    **os.environ,
+                    "EVOLUTION_PYTHON": str(stub),
+                    "STUB_LOG_PATH": str(log_path),
+                },
+            )
+            commands = log_path.read_text(encoding="utf-8")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        freeze = next(
+            line for line in commands.splitlines() if line.startswith("freeze-run ")
+        )
+        self.assertIn("--data-external", freeze)
+        self.assertNotIn("--data-provider", freeze)
+        self.assertNotIn("--max-data-requests-per-cycle", freeze)
+
     def test_compatibility_script_only_forwards_to_stable_entry(self) -> None:
         source = COMPATIBILITY_SCRIPT.read_text(encoding="utf-8")
 

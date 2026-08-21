@@ -13,7 +13,10 @@ from datetime import date
 from pathlib import Path
 
 from stock_opportunity_agent.data.raw_info import RawInfoOracle, RawInfoStore
-from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
+from stock_opportunity_agent.data.resolution import (
+    DataAcquisitionPolicy,
+    broad_research_data_policy_v1,
+)
 from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -541,6 +544,38 @@ def prepare_expanded_dataset(
     return report.to_dict()
 
 
+def _resolve_data_acquisition_policy(
+    *,
+    data_external: bool,
+    data_providers: tuple[str, ...],
+    data_capabilities: tuple[str, ...],
+    data_source_types: tuple[str, ...],
+    max_data_requests_per_cycle: int,
+    max_data_requests_per_run: int,
+) -> DataAcquisitionPolicy:
+    """Resolve the one-flag broad profile or one complete custom policy."""
+
+    custom_values = any(
+        (
+            data_providers,
+            data_capabilities,
+            data_source_types,
+            max_data_requests_per_cycle,
+            max_data_requests_per_run,
+        )
+    )
+    if data_external and not custom_values:
+        return broad_research_data_policy_v1()
+    return DataAcquisitionPolicy(
+        enabled=data_external,
+        allowed_providers=data_providers,
+        allowed_capabilities=data_capabilities,
+        allowed_source_types=data_source_types,
+        max_requests_per_cycle=max_data_requests_per_cycle,
+        max_requests_per_run=max_data_requests_per_run,
+    )
+
+
 def freeze_run(
     *,
     workspace_path: Path,
@@ -568,6 +603,14 @@ def freeze_run(
     oracle = RawInfoOracle.load_or_create(raw_info_root)
     raw_info_store = RawInfoStore(raw_info_root)
     approved_dataset = load_approved_development_dataset(approved_dataset_path)
+    requested_data_policy = _resolve_data_acquisition_policy(
+        data_external=data_external,
+        data_providers=data_providers,
+        data_capabilities=data_capabilities,
+        data_source_types=data_source_types,
+        max_data_requests_per_cycle=max_data_requests_per_cycle,
+        max_data_requests_per_run=max_data_requests_per_run,
+    )
     EvaluationDatasetManager(
         workspace_path / "evaluation",
         approved_dataset.evolution_validation,
@@ -594,15 +637,7 @@ def freeze_run(
             or contract.max_external_attempts != max_external_attempts
             or contract.max_total_cost != max_total_cost
             or contract.raw_info_oracle_id != oracle.oracle_id
-            or contract.data_acquisition
-            != DataAcquisitionPolicy(
-                enabled=data_external,
-                allowed_providers=data_providers,
-                allowed_capabilities=data_capabilities,
-                allowed_source_types=data_source_types,
-                max_requests_per_cycle=max_data_requests_per_cycle,
-                max_requests_per_run=max_data_requests_per_run,
-            )
+            or contract.data_acquisition != requested_data_policy
         ):
             raise ValueError("existing run contract conflicts with requested freeze scope")
     else:
@@ -661,14 +696,7 @@ def freeze_run(
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,
             seed_pool_manifest_hash=seed_pool.manifest_hash,
-            data_acquisition=DataAcquisitionPolicy(
-                enabled=data_external,
-                allowed_providers=data_providers,
-                allowed_capabilities=data_capabilities,
-                allowed_source_types=data_source_types,
-                max_requests_per_cycle=max_data_requests_per_cycle,
-                max_requests_per_run=max_data_requests_per_run,
-            ),
+            data_acquisition=requested_data_policy,
         )
         contract.freeze(contract_path)
     seed_pool = None

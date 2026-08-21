@@ -22,6 +22,12 @@ workspaces and does not widen an existing frozen run contract.
 - `SignalExecutor.prepare_inputs` is the shared Registry readiness and execution
   boundary. Semantic source aliases route stable specs to SEC facts, filings,
   Alpha Vantage news/transcripts, and historical prices.
+- New runs selected with `--data-external` freeze wildcard provider,
+  capability, and source-type authorization for every historical adapter in the
+  contract-bound code revision. The authorization layer therefore cannot make
+  a future Signal unavailable merely because today's type list omitted its
+  source. Unsupported adapters, genuine no-data results, and point-in-time
+  failures remain explicit.
 - Compatible acquisition failures are reused inside one resolver, generic SEC
   filing retrieval prefers core forms and continues past inaccessible objects,
   and Alpha Vantage transcripts are paired with earnings-history
@@ -33,6 +39,9 @@ workspaces and does not widen an existing frozen run contract.
   completion validators enforce the required workflow, successful candidate
   stage/test observations, bounded Raw Info views, and exact candidate refs.
   The model also receives one dynamic next required action after each turn.
+  Completion validates sampling before Raw Info inspection, every Update
+  diagnosis step after loading the exact spec, and testing after staging for
+  each exact returned ref.
 - Candidate promotion now requires paired `vCurrent`/`vNext` effectiveness on
   the same stratified cases in addition to schema/capability tests. A candidate
   must change at least one result, avoid a coverage regression, and improve the
@@ -68,6 +77,13 @@ total recorded cost `0.06864088`; later replays reused exact response/data
 caches. This is a one-case end-to-end smoke test, not a claim of 92.9% coverage
 over the complete evaluation population.
 
+After adding wildcard Raw Info authorization, the same complete Registry was
+applied again through a wildcard resolver contract
+`018b5d22826a213d142e5f6b8251703701398ba5a6d7d0a2c18b14adab54efa6`.
+It again resolved 14/14 inputs and returned 13/14 effective results. All LLM
+Signal outputs came from the prior exact response cache (`llm_calls=0`), so
+this rerun isolated resolver/authorization behavior from new model variation.
+
 SEC Company Facts and Massive prices succeeded. Direct SEC archive bodies
 returned HTTP 403 in this environment even with a bounded user-agent; the
 authorized Alpha Vantage transcript route supplied substantive LLM Signal
@@ -99,7 +115,8 @@ The Agent probe contract hash was
 
 Existing v1-v5 workspaces retain their frozen data authorization and code
 revision. They are audit history and are not silently widened. A fresh
-workspace must explicitly authorize the required provider/capability/source
-sets and configure credentials, including a compliant `SOA_SEC_USER_AGENT` for
-SEC. Provider denial remains an explicit DataGap; the new readiness and fallback
-logic prevents that denial from being mistaken for Signal quality.
+workspace can now freeze unrestricted registered-adapter access with the single
+`new --data-external` flag, then must repeat `--data-external` at resume time.
+Credentials, including a compliant `SOA_SEC_USER_AGENT` for SEC, remain
+necessary. Provider denial remains an explicit DataGap; the new readiness and
+fallback logic prevents that denial from being mistaken for Signal quality.

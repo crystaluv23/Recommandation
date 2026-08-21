@@ -20,6 +20,7 @@ MAX_DOCUMENTS_PER_REQUEST = 10
 CONTEXT_CHUNK_CHARS = 2_000
 CONTEXT_CHUNK_OVERLAP = 200
 MAX_BASIC_INFO_CONTEXT_CHARS = 48_000
+DATA_ACQUISITION_WILDCARD = "*"
 _TOKEN = re.compile(r"[A-Za-z0-9]+")
 _CANONICAL_CIK_COMPANY_ID = re.compile(r"^cik_(\d{10})$")
 
@@ -425,6 +426,12 @@ class DataAcquisitionPolicy:
                 raise ValidationError(
                     f"data acquisition {name} must contain unique non-empty values"
                 )
+            if DATA_ACQUISITION_WILDCARD in values and values != (
+                DATA_ACQUISITION_WILDCARD,
+            ):
+                raise ValidationError(
+                    f"data acquisition {name} wildcard must be the only value"
+                )
             object.__setattr__(self, name, values)
         if type(self.max_requests_per_cycle) is not int or type(
             self.max_requests_per_run
@@ -489,6 +496,23 @@ class DataAcquisitionPolicy:
             max_requests_per_cycle=int(data.get("max_requests_per_cycle", 0)),
             max_requests_per_run=int(data.get("max_requests_per_run", 0)),
         )
+
+
+BROAD_RESEARCH_DATA_MAX_REQUESTS_PER_CYCLE = 1_000
+BROAD_RESEARCH_DATA_MAX_REQUESTS_PER_RUN = 10_000
+
+
+def broad_research_data_policy_v1() -> DataAcquisitionPolicy:
+    """Return the explicit historical Raw Info authorization for new research runs."""
+
+    return DataAcquisitionPolicy(
+        enabled=True,
+        allowed_providers=(DATA_ACQUISITION_WILDCARD,),
+        allowed_capabilities=(DATA_ACQUISITION_WILDCARD,),
+        allowed_source_types=(DATA_ACQUISITION_WILDCARD,),
+        max_requests_per_cycle=BROAD_RESEARCH_DATA_MAX_REQUESTS_PER_CYCLE,
+        max_requests_per_run=BROAD_RESEARCH_DATA_MAX_REQUESTS_PER_RUN,
+    )
 
 
 @dataclass
@@ -858,9 +882,13 @@ class EvidenceResolver:
     ) -> bool:
         return (
             self._adapter_policy_authorized(adapter)
-            and source_types_compatible(
-                request.source_types,
-                self.policy.allowed_source_types,
+            and (
+                DATA_ACQUISITION_WILDCARD
+                in self.policy.allowed_source_types
+                or source_types_compatible(
+                    request.source_types,
+                    self.policy.allowed_source_types,
+                )
             )
         )
 
@@ -868,10 +896,14 @@ class EvidenceResolver:
         return (
             (
                 not self.policy.allowed_providers
+                or DATA_ACQUISITION_WILDCARD
+                in self.policy.allowed_providers
                 or adapter.provider in self.policy.allowed_providers
             )
             and (
                 not self.policy.allowed_source_types
+                or DATA_ACQUISITION_WILDCARD
+                in self.policy.allowed_source_types
                 or source_types_compatible(
                     adapter.source_types,
                     self.policy.allowed_source_types,
@@ -879,6 +911,8 @@ class EvidenceResolver:
             )
             and (
                 not self.policy.allowed_capabilities
+                or DATA_ACQUISITION_WILDCARD
+                in self.policy.allowed_capabilities
                 or bool(
                     set(adapter.capabilities).intersection(
                         self.policy.allowed_capabilities

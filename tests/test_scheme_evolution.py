@@ -23,6 +23,7 @@ from stock_opportunity_agent.llm.agent import (
     DomainTool,
     GenericAgent,
     ToolCall,
+    ToolObservation,
 )
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -2394,6 +2395,123 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
+    def test_signal_agent_completion_enforces_exact_workflow_order(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            positive = make_case("workflow_positive", 4.0)
+            control = make_case("workflow_control", 1.1)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(positive, control),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                update_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                llm_signal_runner=None,
+            )
+
+            valid_mining = (
+                ToolObservation("sample_discovery_cases", {}, []),
+                ToolObservation(
+                    "search_raw_info", {"case_id": positive.case_id}, {}
+                ),
+                ToolObservation(
+                    "search_raw_info", {"case_id": control.case_id}, {}
+                ),
+                ToolObservation("list_signal_cards", {}, []),
+                ToolObservation("load_signal_spec", {}, {}),
+            )
+            engine._validate_agent_completion("mining", (), valid_mining)
+
+            raw_before_sample = (
+                valid_mining[1],
+                valid_mining[0],
+                *valid_mining[2:],
+            )
+            with self.assertRaisesRegex(
+                ValidationError, "sample Discovery before inspecting Raw Info"
+            ):
+                engine._validate_agent_completion(
+                    "mining", (), raw_before_sample
+                )
+
+            update_with_early_usage = (
+                ToolObservation("query_signal_usage", {}, {}),
+                ToolObservation("load_signal_spec", {}, {}),
+                ToolObservation("query_signal_failure_cases", {}, {}),
+                ToolObservation("sample_discovery_cases", {}, []),
+                ToolObservation("search_raw_info", {}, {}),
+            )
+            with self.assertRaisesRegex(
+                ValidationError, "load spec, inspect statistics/failures"
+            ):
+                engine._validate_agent_completion(
+                    "update", (), update_with_early_usage
+                )
+
+    def test_signal_agent_completion_matches_test_order_to_each_returned_ref(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("workflow_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                update_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                llm_signal_runner=None,
+            )
+            signal_ref = "revenue_growth_yoy:v2"
+            observations = (
+                ToolObservation("load_signal_spec", {}, {}),
+                ToolObservation("query_signal_usage", {}, {}),
+                ToolObservation("query_signal_failure_cases", {}, {}),
+                ToolObservation("sample_discovery_cases", {}, []),
+                ToolObservation("search_raw_info", {}, {}),
+                ToolObservation(
+                    "run_signal_tests",
+                    {},
+                    {"signal_ref": signal_ref, "accepted": True},
+                ),
+                ToolObservation("clone_signal_version", {}, signal_ref),
+                ToolObservation(
+                    "run_signal_tests",
+                    {},
+                    {"signal_ref": "other_signal:v2", "accepted": True},
+                ),
+            )
+
+            with self.assertRaisesRegex(
+                ValidationError, "after staging that exact ref"
+            ):
+                engine._validate_agent_completion(
+                    "update", (signal_ref,), observations
+                )
+
     def test_mining_tool_rejects_existing_stable_signal_identity(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -6317,6 +6317,12 @@ class SignalEvolutionEngine:
                 issues.append(
                     "Mining Agent must inspect Raw Info for a matched control"
                 )
+            first_sample = min(samples, default=-1)
+            first_raw = min((index for index, _ in raw_searches), default=-1)
+            if not samples or not raw_searches or first_sample >= first_raw:
+                issues.append(
+                    "Mining Agent must sample Discovery before inspecting Raw Info"
+                )
             cards = sorted(
                 positions("list_signal_cards") + positions("search_signal_cards")
             )
@@ -6354,13 +6360,16 @@ class SignalEvolutionEngine:
                 diagnostic_end = -1
             else:
                 spec_index = min(required["load_signal_spec"])
-                diagnosis_end = max(
-                    min(required["query_signal_usage"]),
-                    min(required["query_signal_failure_cases"]),
-                )
+                usage_index = min(required["query_signal_usage"])
+                failure_index = min(required["query_signal_failure_cases"])
+                diagnosis_end = max(usage_index, failure_index)
                 sample_index = min(required["sample_discovery_cases"])
                 raw_index = min(required["search_raw_info"])
-                if not spec_index < diagnosis_end < sample_index < raw_index:
+                if not (
+                    spec_index < usage_index
+                    and spec_index < failure_index
+                    and diagnosis_end < sample_index < raw_index
+                ):
                     issues.append(
                         "Update Agent must load spec, inspect statistics/failures, "
                         "sample Discovery, then inspect Raw Info in that order"
@@ -6381,6 +6390,28 @@ class SignalEvolutionEngine:
                 issues.append(
                     f"{stage.title()} Agent must test the staged candidate before final output"
                 )
+            for signal_ref in refs:
+                ref_stage_indexes = [
+                    index
+                    for index, item in successful
+                    if item.name == stage_tool and str(item.result) == signal_ref
+                ]
+                ref_test_indexes = [
+                    index
+                    for index, item in successful
+                    if item.name == "run_signal_tests"
+                    and isinstance(item.result, Mapping)
+                    and item.result.get("accepted") is True
+                    and str(item.result.get("signal_ref")) == signal_ref
+                ]
+                if not any(
+                    stage_index < test_index
+                    for stage_index in ref_stage_indexes
+                    for test_index in ref_test_indexes
+                ):
+                    issues.append(
+                        f"{stage.title()} Agent must test {signal_ref} after staging that exact ref"
+                    )
         if issues:
             raise ValidationError("; ".join(_ordered_unique(issues)))
 

@@ -29,10 +29,10 @@ usage() {
     "  --parent-selection-seed N  deterministic exploration seed (default: 42)" \
     "  --max-external-attempts N  frozen LLM attempt ceiling (default: 2500)" \
     "  --max-total-cost USD       frozen cumulative cost ceiling (default: 100)" \
-    "  --data-external            enable a bounded data policy in the contract" \
-    "  --data-provider NAME       allowed provider; repeat as needed" \
-    "  --data-capability NAME     allowed capability; repeat as needed" \
-    "  --data-source-type NAME    allowed source type; repeat as needed" \
+    "  --data-external            freeze the broad historical Raw Info profile" \
+    "  --data-provider NAME       custom allowed provider; repeat as needed" \
+    "  --data-capability NAME     custom allowed capability; repeat as needed" \
+    "  --data-source-type NAME    custom allowed source type; repeat as needed" \
     "  --max-data-requests-per-cycle N" \
     "  --max-data-requests-per-run N" \
     "" \
@@ -194,13 +194,17 @@ if [ "$MODE" = "new" ]; then
   "$PYTHON_BIN" -c \
     'import math,sys; value=float(sys.argv[1]); raise SystemExit(0 if math.isfinite(value) and value > 0 else 1)' \
     "$MAX_TOTAL_COST" || fail "--max-total-cost must be positive"
-  if [ "$ALLOW_DATA_EXTERNAL" -eq 1 ]; then
-    [ "${#DATA_PROVIDERS[@]}" -gt 0 ] || fail "--data-external requires --data-provider"
-    [ "${#DATA_CAPABILITIES[@]}" -gt 0 ] || fail "--data-external requires --data-capability"
-    [ "${#DATA_SOURCE_TYPES[@]}" -gt 0 ] || fail "--data-external requires --data-source-type"
-    [[ "$MAX_DATA_REQUESTS_PER_CYCLE" =~ ^[1-9][0-9]*$ ]] || fail "--data-external requires a positive --max-data-requests-per-cycle"
-    [[ "$MAX_DATA_REQUESTS_PER_RUN" =~ ^[1-9][0-9]*$ ]] || fail "--data-external requires a positive --max-data-requests-per-run"
-  elif [ "${#DATA_PROVIDERS[@]}" -gt 0 ] || [ "${#DATA_CAPABILITIES[@]}" -gt 0 ] || [ "${#DATA_SOURCE_TYPES[@]}" -gt 0 ] || [ "$MAX_DATA_REQUESTS_PER_CYCLE" != "0" ] || [ "$MAX_DATA_REQUESTS_PER_RUN" != "0" ]; then
+  CUSTOM_DATA_POLICY=0
+  if [ "${#DATA_PROVIDERS[@]}" -gt 0 ] || [ "${#DATA_CAPABILITIES[@]}" -gt 0 ] || [ "${#DATA_SOURCE_TYPES[@]}" -gt 0 ] || [ "$MAX_DATA_REQUESTS_PER_CYCLE" != "0" ] || [ "$MAX_DATA_REQUESTS_PER_RUN" != "0" ]; then
+    CUSTOM_DATA_POLICY=1
+  fi
+  if [ "$ALLOW_DATA_EXTERNAL" -eq 1 ] && [ "$CUSTOM_DATA_POLICY" -eq 1 ]; then
+    [ "${#DATA_PROVIDERS[@]}" -gt 0 ] || fail "custom data policy requires --data-provider"
+    [ "${#DATA_CAPABILITIES[@]}" -gt 0 ] || fail "custom data policy requires --data-capability"
+    [ "${#DATA_SOURCE_TYPES[@]}" -gt 0 ] || fail "custom data policy requires --data-source-type"
+    [[ "$MAX_DATA_REQUESTS_PER_CYCLE" =~ ^[1-9][0-9]*$ ]] || fail "custom data policy requires a positive --max-data-requests-per-cycle"
+    [[ "$MAX_DATA_REQUESTS_PER_RUN" =~ ^[1-9][0-9]*$ ]] || fail "custom data policy requires a positive --max-data-requests-per-run"
+  elif [ "$ALLOW_DATA_EXTERNAL" -eq 0 ] && [ "$CUSTOM_DATA_POLICY" -eq 1 ]; then
     fail "data policy options require --data-external"
   fi
 
@@ -222,14 +226,16 @@ if [ "$MODE" = "new" ]; then
     --max-total-cost "$MAX_TOTAL_COST"
   )
   if [ "$ALLOW_DATA_EXTERNAL" -eq 1 ]; then
-    FREEZE_ARGS+=(
-      --data-external
-      --max-data-requests-per-cycle "$MAX_DATA_REQUESTS_PER_CYCLE"
-      --max-data-requests-per-run "$MAX_DATA_REQUESTS_PER_RUN"
-    )
-    for item in "${DATA_PROVIDERS[@]}"; do FREEZE_ARGS+=(--data-provider "$item"); done
-    for item in "${DATA_CAPABILITIES[@]}"; do FREEZE_ARGS+=(--data-capability "$item"); done
-    for item in "${DATA_SOURCE_TYPES[@]}"; do FREEZE_ARGS+=(--data-source-type "$item"); done
+    FREEZE_ARGS+=(--data-external)
+    if [ "$CUSTOM_DATA_POLICY" -eq 1 ]; then
+      FREEZE_ARGS+=(
+        --max-data-requests-per-cycle "$MAX_DATA_REQUESTS_PER_CYCLE"
+        --max-data-requests-per-run "$MAX_DATA_REQUESTS_PER_RUN"
+      )
+      for item in "${DATA_PROVIDERS[@]}"; do FREEZE_ARGS+=(--data-provider "$item"); done
+      for item in "${DATA_CAPABILITIES[@]}"; do FREEZE_ARGS+=(--data-capability "$item"); done
+      for item in "${DATA_SOURCE_TYPES[@]}"; do FREEZE_ARGS+=(--data-source-type "$item"); done
+    fi
   fi
   run_cli "${FREEZE_ARGS[@]}"
 

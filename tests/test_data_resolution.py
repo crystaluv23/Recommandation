@@ -27,6 +27,7 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
     aggregate_capability_gaps,
+    broad_research_data_policy_v1,
 )
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.signal_library import (
@@ -217,6 +218,61 @@ class EvidenceResolverTests(TestCase):
             DataAcquisitionPolicy.from_dict({"enabled": "false"})
         with self.assertRaisesRegex(ValidationError, "disabled data acquisition"):
             DataAcquisitionPolicy(allowed_providers=("sec_edgar",))
+        with self.assertRaisesRegex(ValidationError, "wildcard must be the only"):
+            DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("*", "sec_edgar"),
+                allowed_capabilities=("*",),
+                allowed_source_types=("*",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            )
+
+    def test_broad_research_policy_covers_every_historical_signal_route(self) -> None:
+        policy = broad_research_data_policy_v1()
+
+        self.assertTrue(policy.enabled)
+        self.assertEqual(policy.allowed_providers, ("*",))
+        self.assertEqual(policy.allowed_capabilities, ("*",))
+        self.assertEqual(policy.allowed_source_types, ("*",))
+        self.assertEqual(policy.max_requests_per_cycle, 1_000)
+        self.assertEqual(policy.max_requests_per_run, 10_000)
+
+    def test_broad_research_policy_accepts_a_future_registered_data_type(self) -> None:
+        class FutureAdapter:
+            provider = "future_provider"
+            source_types = ("satellite_imagery",)
+            capabilities = ("alternative_data",)
+
+            def acquire(self, request, **kwargs):
+                return AcquisitionResult(
+                    documents=(
+                        document(
+                            "future-source",
+                            "Point-in-time registered alternative evidence.",
+                            source_type="satellite_imagery",
+                        ),
+                    )
+                )
+
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(FutureAdapter(),),
+            policy=broad_research_data_policy_v1(),
+        )
+        resolution = resolver.resolve(
+            RawInfoRequest(
+                "future-signal",
+                "Read a newly registered source type.",
+                ("satellite_imagery",),
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(resolution.status, "resolved")
+        self.assertIn("satellite_imagery", resolver.available_source_types)
 
     def test_canonical_cik_routes_company_facts_and_archives_as_of_subset(self) -> None:
         observed_ciks: list[str] = []
