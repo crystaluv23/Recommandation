@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - v5 Anchor/Random cumulative Signal-transition contract implemented
+Ready - v5 additive-reflection and cumulative Signal-transition contract implemented
 
 ## Purpose
 
@@ -80,6 +80,10 @@ network I/O. Role-specific validation enforces:
 - Predictor calls contain neither the current target's identity aliases nor
   outcome fields;
 - prediction-time controller, retrieval, and Signal calls contain no outcomes;
+- the Information Plan proposer may receive only committed, anonymous,
+  label-revealed additive FIFO reflection entries; this role-specific exception
+  never admits company/case ids, Raw Info, literal evidence, research contexts,
+  or Locked Test content;
 - post-hoc reflection is the only Predictor stage allowed to receive truth;
 - judge registrations are no-web and retries stay at one; and
 - the request cites the frozen run-contract hash.
@@ -211,6 +215,14 @@ trajectories: Plan content, aggregate metrics, Plan-critic output, Signal-usage
 counts, fitness eligibility, and evaluation stage/count/snapshot/cohort
 metrics. It excludes embeddings, case ids, trajectories, Raw Info, research
 contexts, and per-case labels.
+After that call returns, the local runtime deterministically composes the final
+`RoundMetaEntry`: original anonymous case reflections first, exact Plan-critic
+and parent-comparison layers second, and the returned horizontal Round
+reflection third. Neither the Plan critic nor Round reflector is asked to
+reproduce an earlier layer. The proposer receives these complete committed FIFO
+entries with outcome scanning enabled only for this retrospective meta-learning
+role; request construction still fails closed on identity-bearing or source-
+context fields. Legacy horizontal-only entries remain valid inputs.
 Candidate-judgment feedback remains reflection-only: fitness and cumulative
 Top-K selection continue to use Combined Binary F1 alone.
 

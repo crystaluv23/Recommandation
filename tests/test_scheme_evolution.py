@@ -30,6 +30,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
     BasicInfoPolicy,
     BlindPrediction,
+    CaseReflectionEvidence,
     CandidateJudgment,
     CandidateProposalRejected,
     ConfidenceLevel,
@@ -49,6 +50,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanEvaluationAttempt,
     PlanEvolutionEngine,
     PlanMetaMemory,
+    PlanMetaReflection,
     PlanMetrics,
     ParentPlanReflectionEvidence,
     PlanRecord,
@@ -1332,16 +1334,71 @@ class PlanArchiveAndWorkspaceTests(TestCase):
 
     def test_meta_memory_is_fifo_and_requires_monotonic_grounded_entries(self) -> None:
         memory = PlanMetaMemory(maxlen=2)
+        plan_reflection = PlanMetaReflection.from_record(
+            make_record("plan_meta_fifo", 0.8, (1.0, 0.0))
+        )
         for round_id in (1, 2, 3):
             memory.append(
                 RoundMetaEntry(
                     round_id=round_id,
-                    evidence_refs=(f"plan_{round_id}",),
+                    plan_reflections=(plan_reflection,),
+                    evidence_refs=(plan_reflection.plan_id,),
                 )
             )
         self.assertEqual([entry.round_id for entry in memory.entries], [2, 3])
+        self.assertTrue(
+            all(
+                entry.plan_reflections == (plan_reflection,)
+                for entry in memory.entries
+            )
+        )
         with self.assertRaisesRegex(ValidationError, "monotonically"):
-            memory.append(RoundMetaEntry(round_id=3, evidence_refs=("plan_3",)))
+            memory.append(
+                RoundMetaEntry(
+                    round_id=3,
+                    evidence_refs=("plan_meta_fifo",),
+                )
+            )
+
+    def test_additive_round_meta_round_trips_and_reads_legacy_horizontal_only(
+        self,
+    ) -> None:
+        record = make_record("plan_meta_roundtrip", 0.8, (1.0, 0.0))
+        plan_reflection = PlanMetaReflection.from_record(record)
+        entry = RoundMetaEntry(
+            round_id=1,
+            successful_patterns=("preserve exact evidence",),
+            search_implications=("restore annual filings",),
+            evidence_refs=(record.plan_id,),
+        ).append_plan_reflections((plan_reflection,))
+
+        serialized = entry.to_dict()
+        restored = RoundMetaEntry.from_dict(serialized)
+
+        self.assertEqual(restored, entry)
+        self.assertEqual(
+            restored.plan_reflections[0].original_case_reflections[0].self_reflection,
+            record.trajectories[0].self_reflection,
+        )
+        self.assertEqual(
+            restored.plan_reflections[0].vertical_plan_reflection,
+            record.reflection,
+        )
+        rendered = json.dumps(serialized)
+        self.assertNotIn('"case_id"', rendered)
+        self.assertNotIn('"company_id"', rendered)
+        self.assertNotIn('"final_context"', rendered)
+        legacy = dict(serialized)
+        legacy.pop("plan_reflections")
+        self.assertEqual(
+            RoundMetaEntry.from_dict(legacy).plan_reflections,
+            (),
+        )
+
+        unsafe_case = plan_reflection.original_case_reflections[0].to_dict()
+        unsafe_case["company_id"] = "must-not-persist"
+        with self.assertRaisesRegex(ValidationError, "fields are invalid"):
+            CaseReflectionEvidence.from_dict(unsafe_case)
 
     def test_cycle_state_and_debug_events_resume_from_committed_round_pointer(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1728,6 +1785,17 @@ class PlanEvolutionEngineTests(TestCase):
                 ],
                 critic.parent_comparisons[0],
             )
+            committed_meta = workspace.restore_meta().entries[0]
+            self.assertEqual(
+                committed_meta.plan_reflections[0].parent_comparisons,
+                critic.parent_comparisons[0],
+            )
+            self.assertEqual(
+                committed_meta.plan_reflections[
+                    0
+                ].vertical_plan_reflection.successful_patterns,
+                ("correct binary separation",),
+            )
 
     def test_current_top_k_displaces_historical_warm_start(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -2016,6 +2084,22 @@ class PlanEvolutionEngineTests(TestCase):
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(workspace.restore_archive().records), 2)
             self.assertEqual(meta.entries[0].evidence_refs, ("plan_child_1", "plan_child_2"))
+            self.assertEqual(
+                tuple(
+                    item.plan_id for item in meta.entries[0].plan_reflections
+                ),
+                ("plan_child_1", "plan_child_2"),
+            )
+            for plan_reflection, record in zip(
+                meta.entries[0].plan_reflections,
+                result.records,
+            ):
+                self.assertEqual(len(plan_reflection.original_case_reflections), 24)
+                self.assertEqual(
+                    plan_reflection.vertical_plan_reflection,
+                    record.reflection,
+                )
+            self.assertEqual(workspace.restore_meta().entries, meta.entries)
             event_types = [event["event_type"] for event in progress_events]
             self.assertIn("candidate_proposed", event_types)
             self.assertIn("candidate_scored", event_types)

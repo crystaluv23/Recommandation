@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 38
+visit_times: 39
 
 ## Trigger
 

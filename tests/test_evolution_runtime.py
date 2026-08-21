@@ -45,14 +45,23 @@ from stock_opportunity_agent.research.evolution_runtime import (
 )
 from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
+    CaseReflectionEvidence,
     CandidateJudgment,
     ConfidenceLevel,
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
+    FitnessEligibility,
     GroundTruth,
     InformationPlan,
+    MagnitudeClass,
+    PlanMetaReflection,
     PlanMetrics,
     PlanEvaluationConfig,
+    PlanReflection,
+    PredictionSelfReflection,
+    RoundMetaEntry,
+    RuntimeStopReason,
+    candidate_judgment_feedback,
     default_information_plan,
 )
 from stock_opportunity_agent.signal_library import (
@@ -1537,6 +1546,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
         self.assertEqual(result.evidence_refs, ("child_plan",))
+        self.assertIn("horizontal insight", caller.calls[0]["system_prompt"])
         payload = caller.calls[0]["payload"]
         self.assertIn("parent_comparisons_by_plan_id", payload)
         self.assertNotIn("trajectories", payload["records"][0])
@@ -1655,6 +1665,129 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertNotIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
         self.assertEqual(second.plan_id, "plan_r0001_c02")
+
+    def test_plan_proposer_receives_complete_additive_outcome_aware_fifo_entry(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "basic_info_policy": {
+                        "requests": [
+                            {
+                                "request_id": "recent_market_backbone",
+                                "description": "Read recent price and volume.",
+                                "source_types": ["market_data"],
+                                "lookback_days": 45,
+                                "max_documents": 1,
+                            }
+                        ]
+                    },
+                    "initial_research_skill": "Test the preserved lesson.",
+                    "reflection_skill": "Inspect contradiction before finalizing.",
+                    "analysis_prompt": "Weigh supporting and counter evidence.",
+                }
+            ]
+        )
+        parent = default_information_plan()
+        metrics = PlanMetrics(
+            binary_precision=1.0,
+            binary_recall=1.0,
+            binary_f1=1.0,
+            magnitude_accuracy=1.0,
+            magnitude_macro_f1=1 / 3,
+            true_positive=1,
+            false_positive=0,
+            true_negative=0,
+            false_negative=0,
+            sample_count=1,
+        )
+        case_reflection = CaseReflectionEvidence(
+            case_index=1,
+            stop_reason=RuntimeStopReason.FINALIZED,
+            termination_trigger=None,
+            candidate_judgment_feedback=candidate_judgment_feedback(
+                BlindPrediction(
+                    is_surge=True,
+                    candidate_judgment=CandidateJudgment.POSSIBLE,
+                    magnitude=MagnitudeClass.TWO_TO_THREE,
+                    confidence=ConfidenceLevel.MEDIUM,
+                    key_reasons=("source-backed opportunity",),
+                    uncertainties=("magnitude remains uncertain",),
+                    session_id="anonymous-session",
+                ),
+                GroundTruth(2.2),
+            ),
+            self_reflection=PredictionSelfReflection(
+                correct=True,
+                ignored_evidence=("annual filing evidence was underweighted",),
+            ),
+        )
+        plan_reflection = PlanMetaReflection(
+            plan=parent,
+            metrics=metrics,
+            metrics_by_cohort={},
+            evaluation_snapshot_ids=(),
+            fitness=FitnessEligibility(
+                eligible=True,
+                reasons=(),
+                expected_case_count=1,
+                valid_case_count=1,
+                evidence_covered_count=1,
+                predicted_positive_count=1,
+                true_positive_count=1,
+            ),
+            signal_usage={},
+            original_case_reflections=(case_reflection,),
+            vertical_plan_reflection=PlanReflection(
+                next_explorations=("restore annual filing evidence",),
+            ),
+        )
+        meta_entry = RoundMetaEntry(
+            round_id=1,
+            plan_reflections=(plan_reflection,),
+            search_implications=("compare restored filing evidence",),
+            evidence_refs=(parent.plan_id,),
+        )
+
+        proposed = LLMInformationPlanProposer(caller).propose(
+            round_id=2,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(meta_entry,),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(proposed.plan_id, "plan_r0002_c01")
+        meta_payload = caller.calls[0]["payload"]["meta_info"][0]
+        original = meta_payload["plan_reflections"][0][
+            "original_case_reflections"
+        ][0]
+        self.assertEqual(
+            original["candidate_judgment_feedback"]["true_binary_label"],
+            "surge",
+        )
+        self.assertEqual(
+            original["self_reflection"]["ignored_evidence"],
+            ["annual filing evidence was underweighted"],
+        )
+        self.assertEqual(
+            meta_payload["plan_reflections"][0]["vertical_plan_reflection"][
+                "next_explorations"
+            ],
+            ["restore annual filing evidence"],
+        )
+        self.assertEqual(
+            meta_payload["search_implications"],
+            ["compare restored filing evidence"],
+        )
+        rendered = json.dumps(meta_payload)
+        self.assertNotIn('"case_id"', rendered)
+        self.assertNotIn('"company_id"', rendered)
+        self.assertIn("as a replacement", caller.calls[0]["system_prompt"])
 
     def test_plan_proposer_reports_invalid_shape_as_validation_error(self) -> None:
         proposer = LLMInformationPlanProposer(

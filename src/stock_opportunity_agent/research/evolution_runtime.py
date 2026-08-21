@@ -4072,6 +4072,38 @@ class LLMBlindPredictor:
             )
 
 
+_FORBIDDEN_ADDITIVE_META_KEYS = frozenset(
+    {
+        "basic_info_bundle",
+        "case_id",
+        "company_id",
+        "final_context",
+        "final_state",
+        "identity_aliases",
+        "initial_state",
+        "prediction_ref",
+        "raw_info",
+        "trajectories",
+    }
+)
+
+
+def _validate_additive_meta_payload(value: Any, *, path: str = "meta_info") -> None:
+    """Keep outcome-aware proposer memory free of identity and source context."""
+
+    if isinstance(value, Mapping):
+        for key, nested in value.items():
+            normalized = _normalize_field(str(key))
+            if normalized in _FORBIDDEN_ADDITIVE_META_KEYS:
+                raise ValidationError(
+                    f"forbidden context field in proposer meta-info: {path}.{key}"
+                )
+            _validate_additive_meta_payload(nested, path=f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _validate_additive_meta_payload(nested, path=f"{path}[{index}]")
+
+
 class LLMInformationPlanProposer:
     """Concrete fixed-H_P candidate proposer; it may change only four Plan fields."""
 
@@ -4093,10 +4125,12 @@ class LLMInformationPlanProposer:
         meta_info: tuple[RoundMetaEntry, ...],
         prior: str,
     ) -> InformationPlan:
+        meta_payload = [item.to_dict() for item in meta_info]
+        _validate_additive_meta_payload(meta_payload)
         payload: dict[str, Any] = {
             "fixed_prior": prior,
             "parents": [item.to_dict() for item in parents],
-            "meta_info": [item.to_dict() for item in meta_info],
+            "meta_info": meta_payload,
         }
         payload["proposal_slot"] = {
             "round_id": round_id,
@@ -4107,7 +4141,14 @@ class LLMInformationPlanProposer:
         system_prompt = (
             "Apply the fixed H_P prior. Return only evolvable Plan content: "
             "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
-            "retrieval plan, not a fixed company profile or computed Signal."
+            "retrieval plan, not a fixed company profile or computed Signal. "
+            "Meta-info is a committed retrospective FIFO. Within each entry, "
+            "original_case_reflections are preserved evidence, "
+            "vertical_plan_reflection adds cross-case and parent-child insight, "
+            "and the top-level fields add horizontal cross-Plan insight. Use all "
+            "layers without treating a later layer as a replacement for an earlier "
+            "one. Outcome-aware reflection may guide the new Plan, but never change "
+            "labels, metrics, or prediction semantics."
             + _INFORMATION_PLAN_OUTPUT
         )
         plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
@@ -4131,7 +4172,7 @@ class LLMInformationPlanProposer:
                 stage=stage,
                 system_prompt=prompt,
                 payload=request_payload,
-                allow_outcomes=False,
+                allow_outcomes=True,
                 temperature=self.temperature,
             )
             try:
@@ -4263,7 +4304,10 @@ class LLMPlanCritic:
                     "Ground the reflection only in the supplied batch. Use the saved "
                     "predictions, revealed truths, deterministic candidate-judgment "
                     "feedback, post-hoc reflections, and compact Signal results to "
-                    "identify successful and failed Plan patterns. Treat four-way "
+                    "identify successful and failed Plan patterns. Return only the "
+                    "vertical cross-case and parent-child layer: the runtime preserves "
+                    "every original post-hoc case reflection separately, so do not "
+                    "rewrite it or present this output as its replacement. Treat four-way "
                     "feedback as diagnostic reflection evidence only; Combined "
                     "Binary F1 remains the sole fitness and parent-selection score. "
                     "Use parent_comparisons to identify structural regressions or "
@@ -4323,7 +4367,10 @@ class LLMRoundReflector:
                 stage="round_reflect",
                 system_prompt=(
                     "Apply fixed H_R only to these new records; evidence_refs must cite "
-                    "supplied plan ids. Use parent comparisons to identify structural "
+                    "supplied plan ids. Return only horizontal insight across the newly "
+                    "sampled child Plans. The runtime separately preserves original case "
+                    "reflections and exact vertical Plan reflections; do not rewrite or "
+                    "replace those layers. Use parent comparisons to identify structural "
                     "regressions or improvements. A metric_delta is valid only when "
                     "same_evaluation_snapshot is true; otherwise compare Plan "
                     "structure without claiming a causal metric effect. Parent "

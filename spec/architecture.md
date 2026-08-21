@@ -64,7 +64,7 @@ cold start
 -> append source facts to the point-in-time Raw Info Store
 -> initialize a versioned Signal Registry with deterministic and LLM-driven signals
 -> execute adaptive Information Plans against label-hidden evolution validation
--> retain quality-diverse plans and compress completed-round lessons into FIFO meta-info
+-> retain quality-diverse plans and append layered completed-round reflection entries into FIFO meta-info
 -> periodically mine or repair candidate signals on label-visible discovery data
 -> execute candidate fixtures and validate leakage/evidence/version contracts
 -> atomically promote every exact candidate hash that passes the fixed machine-validation contract
@@ -234,6 +234,17 @@ deltas; otherwise historical metrics remain contextual provenance. This
 comparison is reflection evidence only: it is unavailable to blind prediction,
 contains no case identities or per-case labels, and cannot change fitness,
 Top-K, or the immutable historical Seed Pool.
+Each committed round contributes one additive FIFO meta-info entry. The entry
+retains, in order, every anonymous Predictor post-hoc case reflection, the exact
+Plan-critic reflection plus its deterministic parent-comparison evidence, and
+the Round reflector's horizontal comparison across the newly sampled Plans.
+Later layers append insight; they never summarize over, rewrite, or replace an
+earlier layer. The proposer may receive this retrospective outcome-aware entry
+only after the corresponding round commits. It contains no company/case
+identity, Raw Info, literal source evidence, or research context, and it is
+never available to blind Plan execution or prediction. Meta-info remains one
+fixed-length FIFO list: appending a completed round evicts only the oldest whole
+entry when capacity is exceeded.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether

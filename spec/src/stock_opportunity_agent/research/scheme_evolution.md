@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - strict v5 Anchor/Random cumulative dual-loop transition implemented
+Ready - additive reflection FIFO and strict v5 cumulative dual-loop implemented
 
 ## Purpose
 
@@ -417,6 +417,26 @@ aggregate metrics, Plan-critic output, Signal-usage counts, fitness, and compact
 evaluation lineage. It does not receive trajectories, case ids, Raw Info,
 research context, or per-case labels.
 
+Reflection persistence is additive rather than summary-overwrite:
+
+1. the original layer retains every Predictor-authored post-hoc reflection,
+   keyed only by its opaque within-Plan case index and accompanied by the fixed
+   four-way `candidate_judgment_feedback`, stop state, and no identity or source
+   context;
+2. the vertical Plan layer appends the exact Plan-critic output, Plan and
+   aggregate cohort metrics, Signal-usage counts, fitness, and the deterministic
+   comparisons against that child's actual parents; and
+3. the horizontal Round layer appends cross-child patterns, prediction-error
+   patterns, Signal observations, missing capabilities, and testable next
+   actions produced by fixed `H_R`.
+
+The runtime, not either reflection model, composes these layers. A Plan critic
+cannot replace original case reflection, and a Round reflector cannot replace
+either the original or vertical layer. The resulting complete layered object is
+the one round entry appended to meta-info. It remains retrospective reflection
+evidence only and cannot alter a saved prediction, truth, metric, fitness,
+archive membership, or Signal Registry.
+
 ## Plan Archive
 
 Each `PlanRecord` stores:
@@ -526,10 +546,27 @@ fixed compatibility mapping. New Plan artifacts write only `requests`.
 
 ## Plan Meta-Info and Fixed Priors
 
-One FIFO window, default length 10, stores structured `RoundMetaEntry` values:
-successful/failed plan patterns, false-positive/false-negative patterns, useful
-or suspicious Signals, missing capabilities, search implications, and evidence
-references.
+One FIFO window, default length 10, stores structured `RoundMetaEntry` values.
+It remains a list-like append-only sliding window: round ids must increase,
+append is the only mutation, and exceeding capacity removes the oldest whole
+entry. No separate archive-derived summary view replaces this list.
+
+Each entry contains:
+
+- `plan_reflections`: one `PlanMetaReflection` per newly evaluated Plan, with
+  exact anonymous original case reflections, exact vertical Plan reflection,
+  deterministic parent comparisons, Plan content, cohort metrics, fitness, and
+  Signal-usage aggregates; and
+- the existing round-level successful/failed patterns, false-positive/false-
+  negative patterns, useful/suspicious Signals, missing capabilities, search
+  implications, and evidence refs, now explicitly defined as the horizontal
+  layer.
+
+The proposer receives the complete ordered FIFO entries. This is an explicitly
+outcome-aware retrospective proposal input, but it contains no company id, case
+id, Raw Info, literal evidence spans, or full research context. Older
+pre-layered `RoundMetaEntry` artifacts remain readable as horizontal-only
+entries so committed history stays auditable.
 
 The only valid update is:
 
@@ -555,10 +592,12 @@ For each bounded round under one frozen Signal Registry snapshot:
 2. call the proposer independently N times;
 3. execute every candidate across evolution validation;
 4. score saved predictions;
-5. run the Plan-level critic;
+5. run the Plan-level critic and preserve its exact vertical layer beside the
+   original anonymous case reflections;
 6. embed and archive `S/E/J/R/U/T`;
 7. update observed-policy Signal statistics; and
-8. derive one grounded round meta entry and commit the round.
+8. derive the horizontal Round reflection, compose all three immutable layers
+   into one grounded meta entry, append it to FIFO, and commit the round.
 
 ## Slow Loop
 
@@ -801,6 +840,9 @@ isolation, executable candidate fixtures, exact-hash automatic promotion checks,
 frozen fast-loop definitions, locked-test
 isolation, runtime budgets, authoritative completion pointer behavior, and one
 offline end-to-end dual-loop cycle. Recovery tests must additionally cover
+legacy horizontal-only meta restoration, exact additive reflection round-trip,
+original/vertical/horizontal layer preservation, FIFO eviction by whole entry,
+identity-free proposer handoff of outcome-aware reflection memory,
 independent case-trajectory reuse, interrupt-after-round recovery with no extra
 Fast rounds, exact staged Slow-validation/transition/result recovery, a next
 cycle that uses the promoted Registry without reevaluating historical Plans,

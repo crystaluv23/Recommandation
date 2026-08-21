@@ -952,6 +952,145 @@ class ExecutionTrajectory:
         return trajectory
 
 
+@dataclass(frozen=True)
+class CaseReflectionEvidence:
+    """Anonymous original post-hoc reflection retained in round meta-info."""
+
+    case_index: int
+    stop_reason: RuntimeStopReason
+    termination_trigger: RuntimeStopReason | None
+    candidate_judgment_feedback: Mapping[str, Any]
+    self_reflection: PredictionSelfReflection
+
+    def __post_init__(self) -> None:
+        if self.case_index < 1:
+            raise ValidationError("case reflection index must be positive")
+        if not isinstance(self.stop_reason, RuntimeStopReason):
+            object.__setattr__(
+                self,
+                "stop_reason",
+                RuntimeStopReason(self.stop_reason),
+            )
+        if self.termination_trigger is not None and not isinstance(
+            self.termination_trigger, RuntimeStopReason
+        ):
+            object.__setattr__(
+                self,
+                "termination_trigger",
+                RuntimeStopReason(self.termination_trigger),
+            )
+        feedback = dict(self.candidate_judgment_feedback)
+        expected_fields = {
+            "candidate_judgment",
+            "predicted_binary_label",
+            "true_binary_label",
+            "binary_correct",
+            "assessment",
+            "reflection_guidance",
+        }
+        if set(feedback) != expected_fields:
+            raise ValidationError(
+                "case reflection candidate-judgment feedback fields are invalid"
+            )
+        try:
+            judgment = CandidateJudgment(str(feedback["candidate_judgment"]))
+        except ValueError:
+            raise ValidationError("case reflection candidate judgment is invalid")
+        predicted_is_surge = judgment in {
+            CandidateJudgment.LIKELY,
+            CandidateJudgment.POSSIBLE,
+        }
+        if feedback["predicted_binary_label"] not in {"surge", "non_surge"}:
+            raise ValidationError("case reflection predicted binary label is invalid")
+        if feedback["true_binary_label"] not in {"surge", "non_surge"}:
+            raise ValidationError("case reflection true binary label is invalid")
+        _json_boolean(feedback["binary_correct"], "case reflection binary_correct")
+        for field_name in ("assessment", "reflection_guidance"):
+            if not isinstance(feedback[field_name], str):
+                raise ValidationError(
+                    f"case reflection {field_name} must be a string"
+                )
+        true_is_surge = feedback["true_binary_label"] == "surge"
+        assessment, guidance = _CANDIDATE_JUDGMENT_FEEDBACK[
+            (judgment, true_is_surge)
+        ]
+        expected_feedback = {
+            "candidate_judgment": judgment.value,
+            "predicted_binary_label": (
+                "surge" if predicted_is_surge else "non_surge"
+            ),
+            "true_binary_label": "surge" if true_is_surge else "non_surge",
+            "binary_correct": predicted_is_surge == true_is_surge,
+            "assessment": assessment,
+            "reflection_guidance": guidance,
+        }
+        if feedback != expected_feedback:
+            raise ValidationError(
+                "case reflection feedback is not the deterministic four-way record"
+            )
+        object.__setattr__(self, "candidate_judgment_feedback", feedback)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_index": self.case_index,
+            "stop_reason": self.stop_reason.value,
+            "termination_trigger": (
+                self.termination_trigger.value if self.termination_trigger else None
+            ),
+            "candidate_judgment_feedback": dict(
+                self.candidate_judgment_feedback
+            ),
+            "self_reflection": self.self_reflection.to_dict(),
+        }
+
+    @classmethod
+    def from_trajectory(
+        cls,
+        trajectory: ExecutionTrajectory,
+        *,
+        case_index: int,
+    ) -> "CaseReflectionEvidence":
+        """Build the identity-free layer from one immutable trajectory."""
+
+        return cls(
+            case_index=case_index,
+            stop_reason=trajectory.stop_reason,
+            termination_trigger=trajectory.termination_trigger,
+            candidate_judgment_feedback=candidate_judgment_feedback(
+                trajectory.prediction,
+                trajectory.ground_truth,
+            ),
+            self_reflection=trajectory.self_reflection,
+        )
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "CaseReflectionEvidence":
+        required = {
+            "case_index",
+            "stop_reason",
+            "termination_trigger",
+            "candidate_judgment_feedback",
+            "self_reflection",
+        }
+        if set(data) != required:
+            raise ValidationError("case reflection evidence fields are invalid")
+        feedback = data["candidate_judgment_feedback"]
+        reflection = data["self_reflection"]
+        if not isinstance(feedback, Mapping) or not isinstance(reflection, Mapping):
+            raise ValidationError("case reflection evidence objects are invalid")
+        return cls(
+            case_index=int(data["case_index"]),
+            stop_reason=RuntimeStopReason(str(data["stop_reason"])),
+            termination_trigger=(
+                RuntimeStopReason(str(data["termination_trigger"]))
+                if data["termination_trigger"] is not None
+                else None
+            ),
+            candidate_judgment_feedback=dict(feedback),
+            self_reflection=PredictionSelfReflection.from_dict(dict(reflection)),
+        )
+
+
 class RuntimeBudgetExceeded(ValidationError):
     """Raised when a completed model step crosses a hard token or cost limit."""
 
@@ -2423,6 +2562,249 @@ class PlanRecord:
         )
 
 
+_FORBIDDEN_PLAN_META_KEYS = frozenset(
+    {
+        "basic_info_bundle",
+        "case_id",
+        "company_id",
+        "final_context",
+        "final_state",
+        "identity_aliases",
+        "initial_state",
+        "prediction_ref",
+        "raw_info",
+        "trajectories",
+    }
+)
+
+
+def _assert_plan_meta_context_free(value: Any, *, path: str = "plan_meta") -> None:
+    """Reject source/context-bearing fields from proposer-visible reflection."""
+
+    if isinstance(value, Mapping):
+        for key, nested in value.items():
+            normalized = re.sub(
+                r"[^a-z0-9]+", "_", str(key).casefold()
+            ).strip("_")
+            if normalized in _FORBIDDEN_PLAN_META_KEYS:
+                raise ValidationError(
+                    f"forbidden context field in Plan meta reflection: {path}.{key}"
+                )
+            _assert_plan_meta_context_free(nested, path=f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _assert_plan_meta_context_free(nested, path=f"{path}[{index}]")
+
+
+@dataclass(frozen=True)
+class PlanMetaReflection:
+    """Original case reflections plus the exact vertical Plan-critic layer."""
+
+    plan: InformationPlan
+    metrics: PlanMetrics
+    metrics_by_cohort: Mapping[str, PlanMetrics]
+    evaluation_snapshot_ids: tuple[str, ...]
+    fitness: FitnessEligibility
+    signal_usage: Mapping[str, Mapping[str, int]]
+    original_case_reflections: tuple[CaseReflectionEvidence, ...]
+    vertical_plan_reflection: PlanReflection
+    parent_comparisons: tuple[Mapping[str, Any], ...] = ()
+
+    def __post_init__(self) -> None:
+        cohorts = {
+            str(cohort): metrics
+            for cohort, metrics in self.metrics_by_cohort.items()
+        }
+        if cohorts and set(cohorts) != {"anchor", "random", "combined"}:
+            raise ValidationError(
+                "Plan meta reflection cohort metrics must contain all cohorts"
+            )
+        if cohorts and cohorts["combined"] != self.metrics:
+            raise ValidationError(
+                "Plan meta reflection combined metrics differ from metrics"
+            )
+        snapshot_ids = tuple(str(item) for item in self.evaluation_snapshot_ids)
+        if any(not item for item in snapshot_ids) or len(set(snapshot_ids)) != len(
+            snapshot_ids
+        ):
+            raise ValidationError("Plan meta reflection snapshot ids are invalid")
+        case_reflections = tuple(self.original_case_reflections)
+        if len(case_reflections) != self.metrics.sample_count:
+            raise ValidationError(
+                "Plan meta reflection must retain every original case reflection"
+            )
+        if tuple(item.case_index for item in case_reflections) != tuple(
+            range(1, len(case_reflections) + 1)
+        ):
+            raise ValidationError(
+                "Plan meta reflection case indexes must be consecutive and opaque"
+            )
+        if self.fitness.expected_case_count != len(case_reflections):
+            raise ValidationError(
+                "Plan meta reflection fitness count is inconsistent"
+            )
+        usage = {
+            str(ref): {str(key): int(value) for key, value in counts.items()}
+            for ref, counts in self.signal_usage.items()
+        }
+        comparisons = tuple(dict(item) for item in self.parent_comparisons)
+        for comparison in comparisons:
+            if comparison.get("child_plan_id") != self.plan.plan_id:
+                raise ValidationError(
+                    "Plan meta reflection parent comparison cites another child"
+                )
+            _assert_plan_meta_context_free(comparison)
+        object.__setattr__(self, "metrics_by_cohort", cohorts)
+        object.__setattr__(self, "evaluation_snapshot_ids", snapshot_ids)
+        object.__setattr__(self, "signal_usage", usage)
+        object.__setattr__(self, "original_case_reflections", case_reflections)
+        object.__setattr__(self, "parent_comparisons", comparisons)
+
+    @property
+    def plan_id(self) -> str:
+        return self.plan.plan_id
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "plan_id": self.plan_id,
+            "plan": self.plan.to_dict(),
+            "metrics": self.metrics.to_dict(),
+            "evaluation": {
+                "n_cases": len(self.original_case_reflections),
+                "dataset_snapshot_ids": list(self.evaluation_snapshot_ids),
+                "metrics_by_cohort": {
+                    cohort: metrics.to_dict()
+                    for cohort, metrics in self.metrics_by_cohort.items()
+                },
+            },
+            "fitness": self.fitness.to_dict(),
+            "signal_usage": {
+                ref: dict(counts) for ref, counts in self.signal_usage.items()
+            },
+            "original_case_reflections": [
+                item.to_dict() for item in self.original_case_reflections
+            ],
+            "vertical_plan_reflection": self.vertical_plan_reflection.to_dict(),
+            "parent_comparisons": [
+                dict(item) for item in self.parent_comparisons
+            ],
+        }
+
+    @classmethod
+    def from_record(
+        cls,
+        record: PlanRecord,
+        *,
+        parent_comparisons: tuple[Mapping[str, Any], ...] = (),
+    ) -> "PlanMetaReflection":
+        """Compose the immutable original and vertical layers for one Plan."""
+
+        return cls(
+            plan=record.plan,
+            metrics=record.metrics,
+            metrics_by_cohort=record.evaluation.metrics_by_cohort,
+            evaluation_snapshot_ids=record.evaluation.dataset_snapshot_ids,
+            fitness=record.fitness,
+            signal_usage=record.signal_usage,
+            original_case_reflections=tuple(
+                CaseReflectionEvidence.from_trajectory(
+                    trajectory,
+                    case_index=index,
+                )
+                for index, trajectory in enumerate(record.trajectories, start=1)
+            ),
+            vertical_plan_reflection=record.reflection,
+            parent_comparisons=parent_comparisons,
+        )
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "PlanMetaReflection":
+        required = {
+            "plan_id",
+            "plan",
+            "metrics",
+            "evaluation",
+            "fitness",
+            "signal_usage",
+            "original_case_reflections",
+            "vertical_plan_reflection",
+            "parent_comparisons",
+        }
+        if set(data) != required:
+            raise ValidationError("PlanMetaReflection fields are invalid")
+        for field_name in (
+            "plan",
+            "metrics",
+            "evaluation",
+            "fitness",
+            "signal_usage",
+            "vertical_plan_reflection",
+        ):
+            if not isinstance(data[field_name], Mapping):
+                raise ValidationError(
+                    f"PlanMetaReflection {field_name} must be an object"
+                )
+        plan = InformationPlan.from_dict(dict(data["plan"]))
+        if str(data["plan_id"]) != plan.plan_id:
+            raise ValidationError("PlanMetaReflection plan id is inconsistent")
+        evaluation = dict(data["evaluation"])
+        if set(evaluation) != {
+            "n_cases",
+            "dataset_snapshot_ids",
+            "metrics_by_cohort",
+        }:
+            raise ValidationError("PlanMetaReflection evaluation fields are invalid")
+        raw_cases = data["original_case_reflections"]
+        raw_comparisons = data["parent_comparisons"]
+        if not isinstance(raw_cases, (list, tuple)) or not isinstance(
+            raw_comparisons, (list, tuple)
+        ):
+            raise ValidationError("PlanMetaReflection arrays are invalid")
+        if any(not isinstance(item, Mapping) for item in raw_cases) or any(
+            not isinstance(item, Mapping) for item in raw_comparisons
+        ):
+            raise ValidationError("PlanMetaReflection arrays must contain objects")
+        if not isinstance(evaluation["metrics_by_cohort"], Mapping):
+            raise ValidationError(
+                "PlanMetaReflection cohort metrics must be an object"
+            )
+        signal_usage = dict(data["signal_usage"])
+        if any(not isinstance(value, Mapping) for value in signal_usage.values()):
+            raise ValidationError("PlanMetaReflection Signal usage is invalid")
+        result = cls(
+            plan=plan,
+            metrics=PlanMetrics.from_dict(dict(data["metrics"])),
+            metrics_by_cohort={
+                str(cohort): PlanMetrics.from_dict(dict(metrics))
+                for cohort, metrics in dict(
+                    evaluation["metrics_by_cohort"]
+                ).items()
+            },
+            evaluation_snapshot_ids=_json_string_array(
+                evaluation,
+                "dataset_snapshot_ids",
+            ),
+            fitness=FitnessEligibility.from_dict(dict(data["fitness"])),
+            signal_usage={
+                str(ref): {
+                    str(key): int(value) for key, value in dict(counts).items()
+                }
+                for ref, counts in signal_usage.items()
+            },
+            original_case_reflections=tuple(
+                CaseReflectionEvidence.from_dict(dict(item))
+                for item in raw_cases
+            ),
+            vertical_plan_reflection=PlanReflection.from_dict(
+                dict(data["vertical_plan_reflection"])
+            ),
+            parent_comparisons=tuple(dict(item) for item in raw_comparisons),
+        )
+        if int(evaluation["n_cases"]) != len(result.original_case_reflections):
+            raise ValidationError("PlanMetaReflection case count is inconsistent")
+        return result
+
+
 @dataclass(frozen=True)
 class ParentPlanReflectionEvidence:
     """Anonymous aggregate evidence for comparing one actual parent to a child."""
@@ -2695,9 +3077,10 @@ def cosine_similarity(left: Iterable[float], right: Iterable[float]) -> float:
 
 @dataclass(frozen=True)
 class RoundMetaEntry:
-    """One experiment-grounded compressed lesson for the FIFO window."""
+    """One additive original/vertical/horizontal reflection FIFO entry."""
 
     round_id: int
+    plan_reflections: tuple[PlanMetaReflection, ...] = ()
     successful_patterns: tuple[str, ...] = ()
     failed_patterns: tuple[str, ...] = ()
     false_positive_patterns: tuple[str, ...] = ()
@@ -2711,6 +3094,11 @@ class RoundMetaEntry:
     def __post_init__(self) -> None:
         if self.round_id < 1:
             raise ValidationError("meta entry round_id must be positive")
+        plan_reflections = tuple(self.plan_reflections)
+        plan_ids = tuple(item.plan_id for item in plan_reflections)
+        if len(set(plan_ids)) != len(plan_ids):
+            raise ValidationError("round meta Plan reflections must be unique")
+        object.__setattr__(self, "plan_reflections", plan_reflections)
         for name in (
             "successful_patterns",
             "failed_patterns",
@@ -2725,10 +3113,17 @@ class RoundMetaEntry:
             object.__setattr__(self, name, tuple(str(item) for item in getattr(self, name)))
         if not self.evidence_refs:
             raise ValidationError("round meta entry requires experiment evidence refs")
+        if plan_ids and not set(self.evidence_refs).issubset(set(plan_ids)):
+            raise ValidationError(
+                "round meta entry cites evidence outside new experiments"
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "round_id": self.round_id,
+            "plan_reflections": [
+                item.to_dict() for item in self.plan_reflections
+            ],
             "plan_level": {
                 "successful_patterns": list(self.successful_patterns),
                 "failed_patterns": list(self.failed_patterns),
@@ -2761,6 +3156,9 @@ class RoundMetaEntry:
             raise ValidationError(
                 "RoundMetaEntry is missing fields: " + ", ".join(missing)
             )
+        allowed = required | {"plan_reflections"}
+        if set(data) - allowed:
+            raise ValidationError("RoundMetaEntry contains unknown fields")
         for field_name in (
             "plan_level",
             "prediction_errors",
@@ -2777,8 +3175,17 @@ class RoundMetaEntry:
             raise ValidationError("RoundMetaEntry prediction_errors fields are invalid")
         if set(observations) != {"useful", "suspicious", "missing_capabilities"}:
             raise ValidationError("RoundMetaEntry signal_observations fields are invalid")
+        raw_plan_reflections = data.get("plan_reflections", ())
+        if not isinstance(raw_plan_reflections, (list, tuple)) or any(
+            not isinstance(item, Mapping) for item in raw_plan_reflections
+        ):
+            raise ValidationError("RoundMetaEntry plan_reflections must be objects")
         return cls(
             round_id=int(data["round_id"]),
+            plan_reflections=tuple(
+                PlanMetaReflection.from_dict(dict(item))
+                for item in raw_plan_reflections
+            ),
             successful_patterns=_json_string_array(
                 plan_level, "successful_patterns"
             ),
@@ -2796,6 +3203,31 @@ class RoundMetaEntry:
             ),
             search_implications=_json_string_array(data, "search_implications"),
             evidence_refs=_json_string_array(data, "evidence_refs"),
+        )
+
+    def append_plan_reflections(
+        self,
+        plan_reflections: Iterable[PlanMetaReflection],
+    ) -> "RoundMetaEntry":
+        """Return the completed entry without rewriting horizontal reflection."""
+
+        if self.plan_reflections:
+            raise ValidationError("round meta Plan reflections are already appended")
+        appended = tuple(plan_reflections)
+        if not appended:
+            raise ValidationError("round meta requires additive Plan reflections")
+        return RoundMetaEntry(
+            round_id=self.round_id,
+            plan_reflections=appended,
+            successful_patterns=self.successful_patterns,
+            failed_patterns=self.failed_patterns,
+            false_positive_patterns=self.false_positive_patterns,
+            false_negative_patterns=self.false_negative_patterns,
+            useful_signals=self.useful_signals,
+            suspicious_signals=self.suspicious_signals,
+            missing_capabilities=self.missing_capabilities,
+            search_implications=self.search_implications,
+            evidence_refs=self.evidence_refs,
         )
 
 
@@ -2848,14 +3280,15 @@ class EvolutionPriors:
 DEFAULT_EVOLUTION_PRIORS = EvolutionPriors(
     reflect_round=(
         "Reflect only on the supplied completed Information Plan experiments. "
-        "Compress repeated plan patterns, prediction errors, Signal observations, "
-        "missing capabilities, and testable search implications with evidence refs."
+        "Add horizontal cross-Plan patterns, prediction errors, Signal observations, "
+        "missing capabilities, and testable search implications with evidence refs. "
+        "Do not rewrite the preserved original case or vertical Plan layers."
     ),
     propose_plan=(
         "Propose one complete Information Plan S=(B,H_init,H_reflect,H_analyse). "
-        "Use the quality-diverse parents and FIFO experiment lessons, make an "
-        "attributable change, and never change labels, datasets, metrics, priors, "
-        "runtime guards, or the stable Signal Registry."
+        "Use the quality-diverse parents and every layer of the additive FIFO "
+        "experiment lessons, make an attributable change, and never change labels, "
+        "datasets, metrics, priors, runtime guards, or the stable Signal Registry."
     ),
     mine_signal=(
         "Use label-visible Discovery cases and point-in-time Raw Info to contrast "
@@ -4270,13 +4703,28 @@ class PlanEvolutionEngine:
                 "no_fitness_eligible_candidates",
                 str(checkpoint),
             )
-        meta_entry = self.round_reflector.reflect(
+        horizontal_meta_entry = self.round_reflector.reflect(
             round_id=round_id,
             records=record_tuple,
             prior=self.priors.reflect_round,
             parent_comparisons_by_plan_id=parent_comparisons_by_plan_id,
         )
+        if horizontal_meta_entry.round_id != round_id:
+            raise ValidationError("round reflector returned a different round id")
+        meta_entry = horizontal_meta_entry.append_plan_reflections(
+            PlanMetaReflection.from_record(
+                record,
+                parent_comparisons=parent_comparisons_by_plan_id[record.plan_id],
+            )
+            for record in record_tuple
+        )
         expected_refs = {record.plan_id for record in record_tuple}
+        if tuple(
+            item.plan_id for item in meta_entry.plan_reflections
+        ) != tuple(record.plan_id for record in record_tuple):
+            raise ValidationError(
+                "round meta entry must retain every new Plan reflection in order"
+            )
         if not set(meta_entry.evidence_refs).issubset(expected_refs):
             raise ValidationError("round meta entry cites evidence outside new experiments")
         _emit_progress(
