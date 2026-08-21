@@ -107,7 +107,8 @@ exit "$STUB_FINAL_STATUS"
 
         self.assertIn("new [options]", result.stdout)
         self.assertIn("resume [options]", result.stdout)
-        self.assertIn("new never performs external calls", result.stdout)
+        self.assertIn("new never performs LLM calls", result.stdout)
+        self.assertIn("it may prepare Raw Info", result.stdout)
         self.assertIn("--acknowledge-contract-hash", result.stdout)
         self.assertIn("default: 2", result.stdout)
         self.assertIn("default: 3", result.stdout)
@@ -185,7 +186,7 @@ exit "$STUB_FINAL_STATUS"
             )
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("new is always zero-network", result.stderr)
+        self.assertIn("new never accepts LLM external authorization", result.stderr)
 
     def test_new_rejects_dormant_data_policy_options(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -296,9 +297,13 @@ fi
         freeze = next(
             line for line in commands.splitlines() if line.startswith("freeze-run ")
         )
+        initial_run = next(
+            line for line in commands.splitlines() if line.startswith("run-cycle ")
+        )
         self.assertIn("--data-external", freeze)
         self.assertNotIn("--data-provider", freeze)
         self.assertNotIn("--max-data-requests-per-cycle", freeze)
+        self.assertIn("--data-external", initial_run)
 
     def test_compatibility_script_only_forwards_to_stable_entry(self) -> None:
         source = COMPATIBILITY_SCRIPT.read_text(encoding="utf-8")

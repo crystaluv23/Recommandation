@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -549,6 +550,42 @@ class EvidenceResolverTests(TestCase):
         model_context = bundle.to_model_context_dict()
         self.assertNotIn("events", model_context["requests"][0])
         self.assertNotIn("summary", str(model_context).casefold())
+
+    def test_cached_market_context_projects_rows_to_requested_lookback(self) -> None:
+        rows = [
+            {
+                "as_of_date": (AS_OF.date() - timedelta(days=offset)).isoformat(),
+                "adjusted_close": float(100 - offset),
+                "volume": 1_000 + offset,
+            }
+            for offset in range(90, -1, -1)
+        ]
+        raw = document(
+            "cached_market",
+            json.dumps(rows, sort_keys=True, separators=(",", ":")),
+            source_type="market_data",
+            available_at=AS_OF,
+        )
+        store = RawInfoStore(documents=(raw,))
+        request = RawInfoRequest(
+            request_id="recent_market",
+            description="Read recent market confirmation.",
+            source_types=("market_data",),
+            lookback_days=30,
+            max_documents=1,
+        )
+
+        resolution = EvidenceResolver(store).resolve_basic_info(
+            (request,), company_id="issuer_1", identity={}, as_of=AS_OF
+        ).requests[0]
+
+        context = "".join(span.exact_text for span in resolution.context_spans)
+        self.assertIn((AS_OF.date() - timedelta(days=30)).isoformat(), context)
+        self.assertIn(AS_OF.date().isoformat(), context)
+        self.assertNotIn((AS_OF.date() - timedelta(days=31)).isoformat(), context)
+        self.assertLess(len(context), len(raw.content) / 2)
+        for span in resolution.context_spans:
+            self.assertEqual(span.exact_text, raw.content[span.start : span.end])
 
     def test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution(self) -> None:
         cached = document("cached_news", "cached company news")

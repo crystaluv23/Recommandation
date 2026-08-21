@@ -51,8 +51,9 @@ usage() {
     "                              required with --external and must match" \
     "" \
     "Safety:" \
-    "  new never performs external calls. It freezes a v5 contract and stops" \
-    "  at the first exact-request approval boundary. Use resume with the printed" \
+    "  new never performs LLM calls. It freezes a v5 contract; with --data-external" \
+    "  it may prepare Raw Info under that policy, then stops at the first exact" \
+    "  LLM-request approval boundary. Use resume with the printed" \
     "  contract hash to authorize execution. Locked Test stays sealed and Signal" \
     "  machine-validated Signal candidates auto-promote atomically at each cycle boundary."
 }
@@ -185,7 +186,7 @@ if [ "$MODE" = "new" ]; then
   [ -n "$RUN_ID" ] || fail "new requires --run-id"
   [ -n "$JUDGE_MODEL" ] || fail "new requires --judge-model"
   [ -n "$EVOLUTION_MODEL" ] || fail "new requires --evolution-model"
-  [ "$RESUME_ONLY_OPTION_SEEN" -eq 0 ] || fail "new is always zero-network; resume-only options are not accepted"
+  [ "$RESUME_ONLY_OPTION_SEEN" -eq 0 ] || fail "new never accepts LLM external authorization; resume-only options are not accepted"
   [ ! -e "$WORKSPACE" ] || fail "new requires an unused workspace"
   [[ "$PLAN_ROUNDS" =~ ^[1-9][0-9]*$ ]] || fail "--plan-rounds must be a positive integer"
   [[ "$CANDIDATES_PER_ROUND" =~ ^[1-9][0-9]*$ ]] || fail "--candidates-per-round must be a positive integer"
@@ -245,10 +246,16 @@ if [ "$MODE" = "new" ]; then
       "$CONTRACT_PATH"
   )"
   printf 'Frozen contract hash: %s\n' "$CONTRACT_HASH"
-  run_cli run-cycle \
+  INITIAL_RUN_ARGS=(
+    run-cycle
     --workspace "$WORKSPACE" \
     --raw-info-root "$RAW_INFO_ROOT" \
     --approved-dataset "$APPROVED_DATASET"
+  )
+  if [ "$ALLOW_DATA_EXTERNAL" -eq 1 ]; then
+    INITIAL_RUN_ARGS+=(--data-external)
+  fi
+  run_cli "${INITIAL_RUN_ARGS[@]}"
   exit 0
 fi
 

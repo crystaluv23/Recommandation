@@ -146,6 +146,16 @@ documents rank by public availability descending. A request selects at most ten
 documents; a Plan has at most eight requests; one case has a 48,000-character
 span budget. An over-budget span is omitted in full, never truncated.
 
+For structured market-data documents, `lookback_days` applies to the dated
+observations exposed to Basic Info, not merely to the publication timestamp of
+the container document. A broader locally cached price document may satisfy a
+narrower request, but context selection must project it to observations inside
+the requested `[as_of - lookback_days, as_of]` window before chunking. This
+projection preserves literal source offsets and never rewrites or summarizes
+the selected rows. It prevents a short recent-market request from replaying an
+entire long-horizon document that was previously acquired for a momentum
+Signal.
+
 Every span stores document id/hash/availability, start/end offsets, and exact
 text. `exact_text` must equal `RawInfoDocument.content[start:end]`. No Basic
 Info summary, rewrite, or inferred structured conclusion is generated.
@@ -160,10 +170,11 @@ cases and yield `historical_data_unavailable`.
 ## Testing
 
 Cover deterministic spans/budgets/ranking, exact-substring validation,
-local-hit no-acquisition, same-execution append/re-query, later reuse, every
-DataGap class, historical fail-closed behavior, canonical Signal source-type
-routing, canonical company-id CIK routing, materialized price metadata, and
-Signal document lineage. Also cover fiscal-quarter transcript mapping,
-provider-reported availability filtering, ordered multi-provider fallback,
-fallback budget accounting, and final aggregate failure after every authorized
-adapter has been attempted.
+structured market-observation window projection, local-hit no-acquisition,
+same-execution append/re-query, later reuse, every DataGap class, historical
+fail-closed behavior, canonical Signal source-type routing, canonical
+company-id CIK routing, materialized price metadata, and Signal document
+lineage. Also cover fiscal-quarter transcript mapping, provider-reported
+availability filtering, ordered multi-provider fallback, fallback budget
+accounting, and final aggregate failure after every authorized adapter has been
+attempted.

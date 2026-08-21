@@ -798,8 +798,12 @@ does not widen the frozen attempt or cost ceilings.
 `scripts/run_information_plan_evolution.sh` is the stable operator-facing
 launcher. `new` requires an unused workspace, the global Raw Info oracle, and an
 already human-approved feasible dataset; it initializes and freezes one v5
-contract, then stops at the first exact-request approval boundary without
-external execution. `resume` requires the same workspace/oracle/dataset and
+contract, then stops at the first exact LLM-request approval boundary without
+LLM execution. When the operator explicitly supplies `--data-external`, the
+initial bounded run uses that independently frozen Raw Info authorization while
+preparing shared evaluation inputs; the flag must not be consumed only by
+contract creation and silently dropped before readiness. `resume` requires the
+same workspace/oracle/dataset and
 derives progress only from committed pointers. External execution is available
 only in `resume` mode with both `--external` and an acknowledgement equal to the
 stored contract hash. The launcher composes the Python CLI rather than
@@ -822,8 +826,9 @@ launcher. `new --data-external` freezes the versioned broad-research Raw Info
 profile: wildcard provider/capability/source-type authorization for every
 historical adapter registered by the contract-bound code revision, plus
 positive request ceilings. Operators may instead supply a complete restrictive
-set of all three allowlists and both ceilings. `new` still performs zero data calls;
-`resume` must additionally receive the data-external execution flag. Requesting
+set of all three allowlists and both ceilings. `new` performs zero data calls
+unless the operator supplied `--data-external`; `resume` must additionally
+receive the data-external execution flag. Requesting
 runtime data execution when the frozen contract disabled it is an explicit
 pause/error, not a silently disabled resolver.
 Provider/capability/source-type or ceiling options without `--data-external`

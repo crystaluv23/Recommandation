@@ -779,7 +779,14 @@ class EvidenceResolver:
 
         if documents:
             spans = (
-                tuple(_select_context_spans(documents, request, context_budget))
+                tuple(
+                    _select_context_spans(
+                        documents,
+                        request,
+                        context_budget,
+                        as_of=as_of,
+                    )
+                )
                 if include_context
                 else ()
             )
@@ -1061,11 +1068,19 @@ def _select_context_spans(
     documents: Iterable[RawInfoDocument],
     request: RawInfoRequest,
     budget: int,
+    *,
+    as_of: datetime,
 ) -> list[RawInfoContextSpan]:
     candidates: list[tuple[tuple[Any, ...], RawInfoContextSpan]] = []
     tokens = tuple(token.casefold() for token in _TOKEN.findall(request.query or ""))
     for document in documents:
-        for start, end in _chunk_ranges(len(document.content)):
+        window = _structured_market_context_window(document, request, as_of)
+        ranges = (
+            _chunk_ranges_between(*window)
+            if window is not None
+            else _chunk_ranges(len(document.content))
+        )
+        for start, end in ranges:
             text = document.content[start:end]
             hit_count = sum(text.casefold().count(token) for token in tokens)
             rank = (
@@ -1095,6 +1110,90 @@ def _select_context_spans(
         selected.append(span)
         used += len(span.exact_text)
     return selected
+
+
+def _structured_market_context_window(
+    document: RawInfoDocument,
+    request: RawInfoRequest,
+    as_of: datetime,
+) -> tuple[int, int] | None:
+    """Project a cached JSON price series to the request's observation window."""
+
+    if request.lookback_days is None or document.source_type.casefold() not in {
+        "historical_price",
+        "market_data",
+        "price_daily",
+        "prices",
+    }:
+        return None
+    rows = _json_array_rows_with_offsets(document.content)
+    if not rows:
+        return None
+    lower = (as_of - timedelta(days=request.lookback_days)).date()
+    upper = as_of.date()
+    eligible = [
+        (start, end)
+        for start, end, value in rows
+        if (observed := _market_observation_date(value)) is not None
+        and lower <= observed <= upper
+    ]
+    if not eligible:
+        return None
+    return eligible[0][0], eligible[-1][1]
+
+
+def _json_array_rows_with_offsets(
+    content: str,
+) -> list[tuple[int, int, Mapping[str, Any]]]:
+    """Decode a top-level JSON array while retaining each literal row offset."""
+
+    decoder = json.JSONDecoder()
+    index = 0
+    length = len(content)
+    while index < length and content[index].isspace():
+        index += 1
+    if index >= length or content[index] != "[":
+        return []
+    index += 1
+    rows: list[tuple[int, int, Mapping[str, Any]]] = []
+    while True:
+        while index < length and content[index].isspace():
+            index += 1
+        if index < length and content[index] == "]":
+            return rows
+        try:
+            value, end = decoder.raw_decode(content, index)
+        except json.JSONDecodeError:
+            return []
+        if not isinstance(value, Mapping):
+            return []
+        rows.append((index, end, value))
+        index = end
+        while index < length and content[index].isspace():
+            index += 1
+        if index < length and content[index] == ",":
+            index += 1
+            continue
+        if index < length and content[index] == "]":
+            return rows
+        return []
+
+
+def _market_observation_date(value: Mapping[str, Any]):
+    for key in ("as_of_date", "date"):
+        raw = value.get(key)
+        if raw is None:
+            continue
+        try:
+            return datetime.fromisoformat(str(raw).replace("Z", "+00:00")).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _chunk_ranges_between(start: int, end: int) -> Iterable[tuple[int, int]]:
+    for relative_start, relative_end in _chunk_ranges(end - start):
+        yield start + relative_start, start + relative_end
 
 
 def _chunk_ranges(length: int) -> Iterable[tuple[int, int]]:
