@@ -19,6 +19,7 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
     RawInfoResolution,
+    source_types_compatible,
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import ValidationError
@@ -41,6 +42,9 @@ _BUILTIN_ADAPTER_SOURCE_TYPES = frozenset(
         "10-q",
         "news",
         "company_news",
+        "earnings_call",
+        "transcript",
+        "earnings_transcript",
         "market_data",
         "historical_price",
         "price_daily",
@@ -431,6 +435,7 @@ class SignalCard:
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "signal_ref": self.ref,
             "signal_id": self.signal_id,
             "version": self.version,
             "category": self.category,
@@ -723,7 +728,7 @@ class SignalRegistry:
                 / "tests.json"
             )
             fixtures = tuple(_read_json(tests_path).get("tests", ()))
-            if not set(spec.source_types).intersection(available):
+            if not source_types_compatible(spec.source_types, available):
                 reasons.append("acquisition_adapter_missing")
             if not fixtures or any(
                 not isinstance(fixture, Mapping)
@@ -1022,6 +1027,8 @@ class SignalRegistry:
         candidate_hash: str,
         accepted: bool,
         reasons: Iterable[str],
+        contract_validation: Mapping[str, Any] | None = None,
+        effectiveness: Mapping[str, Any] | None = None,
     ) -> None:
         """Persist the machine result without changing the stable Registry."""
 
@@ -1031,6 +1038,7 @@ class SignalRegistry:
         _write_or_verify_json(
             path,
             {
+                "schema_version": "signal-candidate-validation-v2",
                 "signal_ref": signal_ref,
                 "candidate_hash": candidate_hash,
                 "accepted": bool(accepted),
@@ -1038,6 +1046,8 @@ class SignalRegistry:
                     "validated_for_automatic_promotion" if accepted else "rejected"
                 ),
                 "reasons": [str(item) for item in reasons],
+                "contract_validation": dict(contract_validation or {}),
+                "effectiveness": dict(effectiveness or {}),
             },
         )
 
@@ -1183,6 +1193,10 @@ class SignalRegistry:
             if (
                 not validation.get("accepted")
                 or validation.get("candidate_hash") != expected_hash
+                or validation.get("schema_version")
+                != "signal-candidate-validation-v2"
+                or dict(validation.get("effectiveness", {})).get("accepted")
+                is not True
             ):
                 raise ValidationError(
                     f"candidate requires matching successful validation: {signal_ref}"
@@ -1400,6 +1414,29 @@ class SignalExecutor:
             return bool(spec.function in self.deterministic_functions)
         return self.llm_runner is not None and bool((skill or "").strip())
 
+    def prepare_inputs(
+        self,
+        signal_refs: Iterable[str],
+        *,
+        company_id: str,
+        as_of: datetime,
+        identity: Mapping[str, Any] | None = None,
+    ) -> tuple[RawInfoResolution, ...]:
+        """Materialize exact Raw Info inputs for stable Signal refs."""
+
+        refs = tuple(signal_refs)
+        if len(set(refs)) != len(refs):
+            raise ValidationError("signal input preparation cannot contain duplicate refs")
+        return tuple(
+            self._resolve_input(
+                self.snapshot.load_spec(signal_ref),
+                company_id=company_id,
+                as_of=as_of,
+                identity=identity,
+            )
+            for signal_ref in refs
+        )
+
     def execute_batch(
         self,
         signal_refs: Iterable[str],
@@ -1421,16 +1458,11 @@ class SignalExecutor:
             raise ValidationError("signal batch cannot contain duplicate refs")
         for signal_ref in refs:
             spec = self.snapshot.load_spec(signal_ref)
-            resolution = self.resolver.resolve(
-                RawInfoRequest(
-                    request_id=f"signal:{spec.ref}",
-                    description=spec.description,
-                    source_types=spec.source_types,
-                    max_documents=10,
-                ),
+            resolution = self._resolve_input(
+                spec,
                 company_id=company_id,
-                identity=dict(identity or {}),
                 as_of=as_of,
+                identity=identity,
             )
             resolutions.append(resolution)
             documents = self.resolver.load_documents(resolution, as_of=as_of)
@@ -1480,6 +1512,26 @@ class SignalExecutor:
             resolutions=tuple(resolutions),
             document_fingerprints=fingerprints,
             skipped_unchanged_refs=tuple(skipped),
+        )
+
+    def _resolve_input(
+        self,
+        spec: SignalSpec,
+        *,
+        company_id: str,
+        as_of: datetime,
+        identity: Mapping[str, Any] | None,
+    ) -> RawInfoResolution:
+        return self.resolver.resolve(
+            RawInfoRequest(
+                request_id=f"signal:{spec.ref}",
+                description=spec.description,
+                source_types=spec.source_types,
+                max_documents=10,
+            ),
+            company_id=company_id,
+            identity=dict(identity or {}),
+            as_of=as_of,
         )
 
 

@@ -20,6 +20,7 @@ from stock_opportunity_agent.cases.selection import eligible_common_stock_listin
 from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.acquisition import (
     AlphaVantageNewsAdapter,
+    AlphaVantageTranscriptAdapter,
     HistoricalPriceAdapter,
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
@@ -56,6 +57,7 @@ from stock_opportunity_agent.llm.agent import (
     AgentUsage,
     GenericAgent,
     ToolCall,
+    ToolObservation,
 )
 from stock_opportunity_agent.llm.openai import ChatMessage
 from stock_opportunity_agent.models import ValidationError
@@ -4399,6 +4401,321 @@ class LLMRoundReflector:
             )
 
 
+def _signal_agent_workflow_progress(
+    stage: str,
+    request: AgentRequest,
+) -> dict[str, Any] | None:
+    contract = request.workspace.get("workflow_contract")
+    if not isinstance(contract, Mapping):
+        return None
+    agent_kind = str(contract.get("agent", ""))
+    if agent_kind not in {"mining", "update"}:
+        return None
+
+    successful = [
+        (index, item)
+        for index, item in enumerate(request.observations)
+        if not (
+            isinstance(item.result, Mapping) and item.result.get("error")
+        )
+    ]
+
+    def named(name: str) -> list[tuple[int, ToolObservation]]:
+        return [(index, item) for index, item in successful if item.name == name]
+
+    def tool_action(
+        name: str,
+        arguments: Mapping[str, Any],
+        reason: str,
+        completed: list[str],
+    ) -> dict[str, Any]:
+        return {
+            "agent": agent_kind,
+            "completed_steps": completed,
+            "next_required_action": {
+                "action": "tool",
+                "tool_name": name,
+                "arguments": dict(arguments),
+                "reason": reason,
+            },
+            "instruction": (
+                "Do this next action now. Do not repeat an already successful "
+                "tool unless the next action explicitly names it."
+            ),
+        }
+
+    completed: list[str] = []
+    categories = named("list_signal_categories")
+    cards = named("list_signal_cards") + named("search_signal_cards")
+    loaded_specs = named("load_signal_spec")
+    samples = named("sample_discovery_cases")
+    searches = named("search_raw_info")
+    if agent_kind == "mining":
+        if not samples:
+            return tool_action(
+                "sample_discovery_cases",
+                {"limit": 8},
+                "Start the mandatory label-stratified comparison.",
+                completed,
+            )
+        completed.append("sample_discovery_cases")
+        sample_rows = samples[-1][1].result
+        rows = sample_rows if isinstance(sample_rows, list) else []
+        searched_ids = {
+            str(item.arguments.get("case_id", "")) for _, item in searches
+        }
+
+        def target_case(is_surge: bool) -> Mapping[str, Any] | None:
+            for row in rows:
+                if not isinstance(row, Mapping):
+                    continue
+                truth = row.get("ground_truth")
+                if (
+                    isinstance(truth, Mapping)
+                    and truth.get("is_surge") is is_surge
+                    and str(row.get("case_id", "")) not in searched_ids
+                ):
+                    return row
+            return None
+
+        searched_truths = []
+        by_case = {
+            str(row.get("case_id", "")): row
+            for row in rows
+            if isinstance(row, Mapping)
+        }
+        for _, item in searches:
+            row = by_case.get(str(item.arguments.get("case_id", "")))
+            truth = row.get("ground_truth") if isinstance(row, Mapping) else None
+            if isinstance(truth, Mapping):
+                searched_truths.append(bool(truth.get("is_surge")))
+        for expected, label in ((True, "positive"), (False, "control")):
+            if expected not in searched_truths:
+                target = target_case(expected)
+                if target is not None:
+                    return tool_action(
+                        "search_raw_info",
+                        {
+                            "case_id": target["case_id"],
+                            "as_of": target["prediction_time"],
+                            "source_types": [
+                                "financials",
+                                "filing",
+                                "news",
+                                "market_data",
+                            ],
+                        },
+                        f"Inspect the required {label} Discovery case with explicit source_types.",
+                        completed,
+                    )
+        completed.append("positive_and_control_raw_info")
+        last_raw = max(index for index, _ in searches)
+        cards_after_raw = [(index, item) for index, item in cards if index > last_raw]
+        if not cards_after_raw:
+            if not categories:
+                return tool_action(
+                    "list_signal_categories",
+                    {},
+                    "Begin duplicate inspection after the Raw Info comparison.",
+                    completed,
+                )
+            category_rows = categories[-1][1].result
+            category = (
+                str(category_rows[0])
+                if isinstance(category_rows, list) and category_rows
+                else "market"
+            )
+            return tool_action(
+                "list_signal_cards",
+                {"category": category},
+                "Inspect compact stable cards only after the case comparison.",
+                completed,
+            )
+        completed.append("stable_signal_cards")
+        last_card = max(index for index, _ in cards_after_raw)
+        specs_after_cards = [
+            (index, item) for index, item in loaded_specs if index > last_card
+        ]
+        if not specs_after_cards:
+            card_rows = cards_after_raw[-1][1].result
+            exact_ref = None
+            if isinstance(card_rows, list):
+                exact_ref = next(
+                    (
+                        str(row.get("signal_ref"))
+                        for row in card_rows
+                        if isinstance(row, Mapping) and row.get("signal_ref")
+                    ),
+                    None,
+                )
+            if exact_ref is None:
+                return tool_action(
+                    "search_signal_cards",
+                    {"query": "closest candidate concept"},
+                    "Obtain a card containing an exact signal_ref.",
+                    completed,
+                )
+            return tool_action(
+                "load_signal_spec",
+                {"signal_ref": exact_ref},
+                "Load one exact stable spec for the mandatory duplicate check.",
+                completed,
+            )
+        completed.append("exact_stable_spec")
+        stage_calls = named("create_candidate_signal")
+    else:
+        if not loaded_specs:
+            if not cards:
+                if not categories:
+                    return tool_action(
+                        "list_signal_categories",
+                        {},
+                        "Find one stable Signal to diagnose.",
+                        completed,
+                    )
+                category_rows = categories[-1][1].result
+                category = (
+                    str(category_rows[0])
+                    if isinstance(category_rows, list) and category_rows
+                    else "market"
+                )
+                return tool_action(
+                    "list_signal_cards",
+                    {"category": category},
+                    "Obtain an exact stable signal_ref.",
+                    completed,
+                )
+            card_rows = cards[-1][1].result
+            exact_ref = next(
+                (
+                    str(row.get("signal_ref"))
+                    for row in card_rows
+                    if isinstance(row, Mapping) and row.get("signal_ref")
+                ),
+                "",
+            ) if isinstance(card_rows, list) else ""
+            return tool_action(
+                "load_signal_spec",
+                {"signal_ref": exact_ref},
+                "Load the exact ref from the card; do not synthesize a category-prefixed ref.",
+                completed,
+            )
+        completed.append("load_signal_spec")
+        spec = loaded_specs[-1][1].result
+        signal_id = str(spec.get("signal_id", "")) if isinstance(spec, Mapping) else ""
+        if not named("query_signal_usage"):
+            return tool_action(
+                "query_signal_usage",
+                {"signal_id": signal_id},
+                "Inspect observed-policy statistics before proposing an update.",
+                completed,
+            )
+        completed.append("query_signal_usage")
+        if not named("query_signal_failure_cases"):
+            return tool_action(
+                "query_signal_failure_cases",
+                {"signal_id": signal_id},
+                "Inspect structured committed failures before proposing an update.",
+                completed,
+            )
+        completed.append("query_signal_failure_cases")
+        if not samples:
+            return tool_action(
+                "sample_discovery_cases",
+                {"limit": 8},
+                "Choose an allowed label-visible case for Raw Info follow-up.",
+                completed,
+            )
+        completed.append("sample_discovery_cases")
+        sample_rows = samples[-1][1].result
+        rows = sample_rows if isinstance(sample_rows, list) else []
+        sample_index = samples[-1][0]
+        searches_after_sample = [
+            (index, item) for index, item in searches if index > sample_index
+        ]
+        if not searches_after_sample:
+            target = next((row for row in rows if isinstance(row, Mapping)), None)
+            retrieval = spec.get("raw_retrieval") if isinstance(spec, Mapping) else None
+            source_types = (
+                list(retrieval.get("source_types", ()))
+                if isinstance(retrieval, Mapping)
+                else ["news"]
+            )
+            if target is not None:
+                return tool_action(
+                    "search_raw_info",
+                    {
+                        "case_id": target["case_id"],
+                        "as_of": target["prediction_time"],
+                        "source_types": source_types,
+                    },
+                    "Inspect point-in-time Discovery evidence using the stable spec's source types.",
+                    completed,
+                )
+        completed.append("search_raw_info")
+        stage_calls = named("clone_signal_version")
+
+    successful_stages = [item for _, item in stage_calls]
+    test_results = {
+        str(item.result.get("signal_ref")): item.result.get("accepted") is True
+        for _, item in named("run_signal_tests")
+        if isinstance(item.result, Mapping) and item.result.get("signal_ref")
+    }
+    accepted_tests = {
+        str(item.result.get("signal_ref"))
+        for _, item in named("run_signal_tests")
+        if isinstance(item.result, Mapping) and item.result.get("accepted") is True
+    }
+    if successful_stages:
+        latest_ref = str(successful_stages[-1].result)
+        if latest_ref in test_results and not test_results[latest_ref]:
+            return {
+                "agent": agent_kind,
+                "completed_steps": completed,
+                "next_required_action": {
+                    "action": "final",
+                    "output": {"candidate_refs": []},
+                },
+                "instruction": (
+                    "The staged candidate failed run_signal_tests. Return the exact "
+                    "empty final output; never return the rejected ref."
+                ),
+            }
+        if latest_ref not in accepted_tests:
+            return tool_action(
+                "run_signal_tests",
+                {"signal_ref": latest_ref},
+                "Every returned candidate ref must first pass its real contract fixtures.",
+                completed,
+            )
+        completed.append("candidate_staged_and_tested")
+        final_refs = sorted(accepted_tests)
+        return {
+            "agent": agent_kind,
+            "completed_steps": completed,
+            "next_required_action": {
+                "action": "final",
+                "output": {"candidate_refs": final_refs},
+            },
+            "instruction": "Return this exact final shape now; do not repeat tools.",
+        }
+    return {
+        "agent": agent_kind,
+        "completed_steps": completed,
+        "next_required_action": {
+            "action": "decision",
+            "allowed": [
+                "stage one complete unique candidate, then run_signal_tests",
+                "return final with an empty candidate_refs list",
+            ],
+        },
+        "instruction": (
+            "Do not repeat completed tools. Stage only a justified candidate; "
+            "otherwise return the exact empty final output."
+        ),
+    }
+
+
 class StructuredAgentModel(AgentModel):
     """Concrete GenericAgent model adapter for Mining/Update tool loops."""
 
@@ -4425,7 +4742,12 @@ class StructuredAgentModel(AgentModel):
             "Return candidate refs only after a successful staging tool call; "
             "if no valid candidate was staged, return an empty candidate_refs "
             "list. Never return a diagnosis or proposed Signal directly as the "
-            "final output."
+            "final output. Follow each tool card's arguments_schema exactly; "
+            "do not invent fields, enum values, deterministic functions, or "
+            "candidate references. The workspace.workflow_contract is mandatory: "
+            "complete its required_order before final output, including when "
+            "candidate_refs is empty. When workflow_progress is present, perform "
+            "its next_required_action immediately and do not repeat completed_steps."
         )
         base_payload = {
                 "task_prompt": request.prompt,
@@ -4440,13 +4762,18 @@ class StructuredAgentModel(AgentModel):
                     for item in request.observations
                 ],
         }
+        workflow_progress = _signal_agent_workflow_progress(self.stage, request)
+        if workflow_progress is not None:
+            base_payload["workflow_progress"] = workflow_progress
         usage = AgentUsage()
         validation_error = ""
+        invalid_output = ""
         for attempt in range(2):
             payload = dict(base_payload)
             if attempt:
                 payload["validation_feedback"] = {
                     "error": validation_error,
+                    "received_output": invalid_output,
                     "required_action": "return one valid tool or final action",
                 }
             value, call_usage = _complete_json_with_invalid_value(
@@ -4457,6 +4784,15 @@ class StructuredAgentModel(AgentModel):
                 allow_outcomes=self.allow_outcomes,
             )
             usage = usage + call_usage
+            if "invalid_structured_output" in value:
+                validation_error = str(
+                    value.get(
+                        "validation_error",
+                        "provider output was not one valid JSON object",
+                    )
+                )
+                invalid_output = str(value.get("invalid_structured_output", ""))
+                continue
             action = value.get("action")
             if action == "tool" and isinstance(value.get("arguments", {}), Mapping):
                 tool_name = str(value.get("tool_name", "")).strip()
@@ -4469,12 +4805,15 @@ class StructuredAgentModel(AgentModel):
                         usage=usage,
                     )
                 validation_error = "tool_name must not be empty"
+                invalid_output = json.dumps(value, sort_keys=True)
                 continue
             if action == "final" and "output" in value:
                 return AgentTurn(final_output=value.get("output"), usage=usage)
             validation_error = "unknown or incomplete Generic Agent action"
+            invalid_output = json.dumps(value, sort_keys=True)
         raise ValidationError(
-            "Generic Agent action remained invalid after one correction"
+            "Generic Agent action remained invalid after one correction: "
+            + validation_error
         )
 
 
@@ -4520,6 +4859,9 @@ class StructuredLLMSignalRunner:
             )
             usage = usage + step_usage
             normalized = _normalize_signal_result_output(value)
+            normalized = _canonicalize_unique_case_only_spans(
+                normalized, documents
+            )
             try:
                 result = _parse_role_output(
                     "llm_signal_execute", normalized, SignalResult.from_dict
@@ -4531,8 +4873,9 @@ class StructuredLLMSignalRunner:
                     "validation_error": last_validation_error,
                     "failed_output": normalized,
                     "required_action": (
-                        "Return corrected JSON grounded only in literal input-document "
-                        "spans, or return unavailable with empty evidence."
+                        "Return corrected JSON grounded only in case-sensitive literal "
+                        "input-document spans copied verbatim, or return unavailable "
+                        "with empty evidence."
                     ),
                 }
                 continue
@@ -4552,6 +4895,37 @@ class StructuredLLMSignalRunner:
             ),
             usage,
         )
+
+
+def _canonicalize_unique_case_only_spans(
+    value: Mapping[str, Any],
+    documents: tuple[RawInfoDocument, ...],
+) -> dict[str, Any]:
+    """Copy unique case-only citation matches from their exact source document."""
+
+    normalized = json.loads(json.dumps(value))
+    evidence = normalized.get("evidence")
+    if not isinstance(evidence, Mapping):
+        return normalized
+    documents_by_id = {item.document_id: item for item in documents}
+    for group in ("supporting", "counter"):
+        entries = evidence.get(group, ())
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, Mapping):
+                continue
+            document = documents_by_id.get(str(entry.get("document_id", "")))
+            span = str(entry.get("exact_span", ""))
+            if document is None or not span or span in document.content:
+                continue
+            lowered_content = document.content.lower()
+            lowered_span = span.lower()
+            if lowered_content.count(lowered_span) != 1:
+                continue
+            start = lowered_content.index(lowered_span)
+            entry["exact_span"] = document.content[start : start + len(span)]
+    return normalized
 
 
 def run_bounded_evolution_cycle(
@@ -4744,11 +5118,7 @@ def run_bounded_evolution_cycle(
         environ=environ,
         cycle_id=cycle_id,
     )
-    available_source_types = {
-        source_type
-        for adapter in evidence_resolver.adapters
-        for source_type in adapter.source_types
-    }
+    available_source_types = set(evidence_resolver.available_source_types)
     evolution_workspace.refresh_capability_backlog(
         available_source_types=available_source_types
     )
@@ -4774,6 +5144,7 @@ def run_bounded_evolution_cycle(
         trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,
         llm_signal_runner=signal_runner,
+        signal_readiness_snapshot=snapshot,
         on_progress=emit,
     )
     plan_engine = PlanEvolutionEngine(
@@ -4825,6 +5196,7 @@ def run_bounded_evolution_cycle(
             )
         ),
         llm_signal_runner=signal_runner,
+        evidence_resolver=evidence_resolver,
         max_agent_steps=int(limits["max_agent_steps"]),
     )
     result = DualLoopEvolutionEngine(
@@ -4992,7 +5364,16 @@ def _build_evidence_resolver(
                 alpha_key,
                 transport=managed("alpha_vantage", DataCapability.PRICE_DAILY),
             )
-            adapters.append(AlphaVantageNewsAdapter(alpha_news))
+            alpha_transcripts = AlphaVantageClient(
+                alpha_key,
+                transport=managed("alpha_vantage", DataCapability.TRANSCRIPTS),
+            )
+            adapters.extend(
+                [
+                    AlphaVantageNewsAdapter(alpha_news),
+                    AlphaVantageTranscriptAdapter(alpha_transcripts),
+                ]
+            )
             alpha_price_adapter = HistoricalPriceAdapter(
                 "alpha_vantage",
                 lambda symbol, _start, _end: alpha_prices.daily_prices(
@@ -5006,6 +5387,14 @@ def _build_evidence_resolver(
                     "alpha_vantage",
                     ("news", "company_news"),
                     ("news",),
+                    f"{config.alpha_vantage_api_key_env_var} is not configured.",
+                )
+            )
+            adapters.append(
+                UnavailableProviderAdapter(
+                    "alpha_vantage",
+                    AlphaVantageTranscriptAdapter.source_types,
+                    AlphaVantageTranscriptAdapter.capabilities,
                     f"{config.alpha_vantage_api_key_env_var} is not configured.",
                 )
             )
@@ -5059,6 +5448,7 @@ def _build_evidence_resolver(
                 SecCompanyFactsAdapter(None),
                 SecFilingAdapter(None),
                 AlphaVantageNewsAdapter(None),
+                AlphaVantageTranscriptAdapter(None),
                 HistoricalPriceAdapter("massive", lambda *_: ()),
             ]
         )

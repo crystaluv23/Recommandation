@@ -34,6 +34,11 @@ Use the source catalog as the canonical free/free-key capability manifest:
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.
+- Historical transcript materialization pairs the transcript response with the
+  same provider's earnings history: annual and quarterly fiscal-period ends
+  determine the requested fiscal `YYYYQn`, while `reportedDate` supplies the
+  public-date anchor. Date-only reports become usable on the next UTC day; a
+  quarter without an unambiguous fiscal mapping is not emitted.
 - Historical company-news backfills may call Alpha Vantage with an exact ticker,
   UTC `time_from`/`time_to`, sort order, and limit. A 1,000-row response is a
   saturation signal, not proof of complete coverage; stored Raw Info contains

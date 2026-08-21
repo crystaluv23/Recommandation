@@ -74,7 +74,7 @@ class AgentRequest:
     """Immutable view supplied to the model for each bounded step."""
 
     prompt: str
-    tool_cards: tuple[Mapping[str, str], ...]
+    tool_cards: tuple[Mapping[str, Any], ...]
     workspace: Mapping[str, Any]
     observations: tuple[ToolObservation, ...]
 
@@ -93,21 +93,76 @@ class DomainTool:
     name: str
     description: str
     function: Callable[..., Any] = field(repr=False, compare=False)
+    arguments_schema: Mapping[str, Any] | None = None
+    examples: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
         if not self.name.strip() or not self.description.strip():
             raise ValidationError("domain tool name and description are required")
         if self.name in {"ls", "cat", "rm", "shell", "exec"}:
             raise ValidationError("raw filesystem and shell tools are not allowed")
+        if self.arguments_schema is not None:
+            object.__setattr__(self, "arguments_schema", dict(self.arguments_schema))
+        object.__setattr__(
+            self,
+            "examples",
+            tuple(dict(example) for example in self.examples),
+        )
 
-    def card(self) -> Mapping[str, str]:
+    def card(self) -> Mapping[str, Any]:
         """Return the prompt-safe progressive-disclosure card."""
 
-        return {
+        card: dict[str, Any] = {
             "name": self.name,
             "description": self.description,
             "arguments": str(inspect.signature(self.function)),
         }
+        card["arguments_schema"] = (
+            dict(self.arguments_schema)
+            if self.arguments_schema is not None
+            else _signature_arguments_schema(self.function)
+        )
+        if self.examples:
+            card["examples"] = [dict(example) for example in self.examples]
+        return card
+
+
+def _signature_arguments_schema(function: Callable[..., Any]) -> dict[str, Any]:
+    signature = inspect.signature(function)
+    properties: dict[str, Any] = {}
+    required: list[str] = []
+    for name, parameter in signature.parameters.items():
+        annotation = parameter.annotation
+        properties[name] = {
+            "python_type": (
+                "any" if annotation is inspect.Parameter.empty else str(annotation)
+            )
+        }
+        if parameter.default is inspect.Parameter.empty:
+            required.append(name)
+        else:
+            properties[name]["default"] = parameter.default
+    return {
+        "type": "object",
+        "required": required,
+        "properties": properties,
+        "additionalProperties": False,
+    }
+
+
+class AgentRunError(ValidationError):
+    """Bounded agent failure carrying the complete tool trajectory."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        observations: tuple[ToolObservation, ...],
+        usage: AgentUsage,
+    ) -> None:
+        self.observations = tuple(observations)
+        self.usage = usage
+        super().__init__(message)
 
 
 @dataclass(frozen=True)
@@ -132,7 +187,11 @@ class GenericAgent:
         tools: tuple[DomainTool, ...] | list[DomainTool],
         workspace: Mapping[str, Any],
         output_schema: Callable[[Any], T],
+        completion_validator: (
+            Callable[[T, tuple[ToolObservation, ...]], None] | None
+        ) = None,
         max_steps: int,
+        max_output_corrections: int = 1,
     ) -> AgentRunResult[T]:
         """Run until structured output or a fixed step limit is reached."""
 
@@ -140,6 +199,8 @@ class GenericAgent:
             raise ValidationError("agent prompt must not be empty")
         if max_steps < 1:
             raise ValidationError("agent max_steps must be positive")
+        if max_output_corrections < 0:
+            raise ValidationError("agent max_output_corrections cannot be negative")
         tool_by_name = {tool.name: tool for tool in tools}
         if len(tool_by_name) != len(tools):
             raise ValidationError("domain tool names must be unique")
@@ -151,22 +212,34 @@ class GenericAgent:
         safe_workspace = dict(workspace)
 
         for _ in range(max_steps):
-            turn = self.model.respond(
-                AgentRequest(
-                    prompt=prompt,
-                    tool_cards=cards,
-                    workspace=safe_workspace,
-                    observations=tuple(observations),
+            try:
+                turn = self.model.respond(
+                    AgentRequest(
+                        prompt=prompt,
+                        tool_cards=cards,
+                        workspace=safe_workspace,
+                        observations=tuple(observations),
+                    )
                 )
-            )
+            except ValidationError as exc:
+                raise AgentRunError(
+                    str(exc),
+                    observations=tuple(observations),
+                    usage=usage,
+                ) from exc
             usage = usage + turn.usage
             if turn.final_output is not None:
                 try:
                     value = output_schema(turn.final_output)
+                    if completion_validator is not None:
+                        completion_validator(value, tuple(observations))
                 except ValidationError as exc:
-                    if output_corrections >= 1:
-                        raise ValidationError(
-                            "agent final output remained invalid after one correction"
+                    if output_corrections >= max_output_corrections:
+                        raise AgentRunError(
+                            "agent final output remained invalid after "
+                            f"{max_output_corrections} corrections",
+                            observations=tuple(observations),
+                            usage=usage,
                         ) from exc
                     output_corrections += 1
                     observations.append(
@@ -189,10 +262,18 @@ class GenericAgent:
             assert turn.tool_call is not None
             try:
                 tool = tool_by_name[turn.tool_call.name]
-            except KeyError as exc:
-                raise ValidationError(
-                    f"agent requested ungranted tool: {turn.tool_call.name}"
-                ) from exc
+            except KeyError:
+                observations.append(
+                    ToolObservation(
+                        name=turn.tool_call.name,
+                        arguments=dict(turn.tool_call.arguments),
+                        result={
+                            "error": "ungranted_tool",
+                            "granted_tools": sorted(tool_by_name),
+                        },
+                    )
+                )
+                continue
             arguments = dict(turn.tool_call.arguments)
             try:
                 inspect.signature(tool.function).bind(**arguments)
@@ -230,4 +311,14 @@ class GenericAgent:
                 )
             )
 
-        raise ValidationError("generic agent exhausted max_steps without final output")
+        last_error = ""
+        if observations and isinstance(observations[-1].result, Mapping):
+            last_error = str(observations[-1].result.get("error", ""))
+        message = "generic agent exhausted max_steps without final output"
+        if last_error:
+            message += f": {last_error}"
+        raise AgentRunError(
+            message,
+            observations=tuple(observations),
+            usage=usage,
+        )

@@ -432,13 +432,22 @@ The final watchlist should pass through a review gate that checks evidence, cont
 
 LLM research consumes prepared packets and retrieved documents. It should not become the data source of record. If a web or model search finds relevant facts, the facts should be stored with source metadata before influencing repeatable scoring.
 
+The Signal Library declares data needs; it does not query providers directly.
+One shared Raw Info resolver must translate each stable `SignalSpec` into a
+point-in-time request, reuse or acquire authorized documents, and return the
+exact lineage consumed by the Signal executor. A run must establish broad
+Signal-input readiness before spending calls on Plan evaluation; repeatedly
+turning a satisfiable request into `unavailable` is an interface failure, not a
+valid error-handling strategy. Authorization, provider ceilings, and
+point-in-time rules remain unchanged by readiness preparation.
+
 ### Memory vs Reports
 
 Reports are human-readable artifacts. Memory is structured state used by future runs. A report without memory is not enough; a memory record without source links is not auditable.
 
 ### Meta-learning vs Self-modification
 
-Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. The explicitly defined Slow-Loop Signal validator may automatically promote exact passing candidate hashes at a cycle boundary. Changing that validator, its gates, datasets, priors, score semantics, or promotion policy remains a framework change; medium and high-risk framework changes require human approval.
+Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. The explicitly defined Slow-Loop Signal validator may automatically promote exact passing candidate hashes at a cycle boundary only after both executable contract validation and a fixed paired effectiveness gate. Changing that validator, its gates, datasets, priors, score semantics, or promotion policy remains a framework change; medium and high-risk framework changes require human approval.
 
 ## Scoring Shape
 

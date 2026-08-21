@@ -3,12 +3,15 @@ from __future__ import annotations
 import tempfile
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import TestCase
 
 from stock_opportunity_agent.data.acquisition import (
+    AlphaVantageTranscriptAdapter,
     HistoricalPriceAdapter,
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
+    SecFilingAdapter,
 )
 from stock_opportunity_agent.data.sources.core import PriceBar
 from stock_opportunity_agent.data.raw_info import (
@@ -80,6 +83,129 @@ class FailingAdapter(FakeAdapter):
 
 
 class EvidenceResolverTests(TestCase):
+    def test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports(
+        self,
+    ) -> None:
+        calls: list[str] = []
+
+        class Client:
+            transport = None
+
+            def earnings(self, symbol):
+                self.symbol = symbol
+                return {
+                    "symbol": symbol,
+                    "annualEarnings": [
+                        {"fiscalDateEnding": "2024-01-31"},
+                        {"fiscalDateEnding": "2025-01-31"},
+                    ],
+                    "quarterlyEarnings": [
+                        {
+                            "fiscalDateEnding": "2024-04-30",
+                            "reportedDate": "2024-05-16",
+                        },
+                        {
+                            "fiscalDateEnding": "2024-07-31",
+                            "reportedDate": "2024-08-15",
+                        },
+                        {
+                            "fiscalDateEnding": "2024-10-31",
+                            "reportedDate": "2024-11-19",
+                        },
+                        {
+                            "fiscalDateEnding": "2025-01-31",
+                            "reportedDate": "2025-02-20",
+                        },
+                    ],
+                }
+
+            def earnings_call_transcript(self, symbol, quarter):
+                calls.append(quarter)
+                return {
+                    "symbol": symbol,
+                    "quarter": quarter,
+                    "transcript": [
+                        {
+                            "speaker": "CEO",
+                            "content": f"Substantive management remarks for {quarter}.",
+                        }
+                    ],
+                }
+
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(AlphaVantageTranscriptAdapter(Client()),),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("alpha_vantage",),
+                allowed_capabilities=("transcripts",),
+                allowed_source_types=("transcript",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+        resolution = resolver.resolve(
+            RawInfoRequest(
+                "calls",
+                "Read recent earnings calls.",
+                ("earnings_call",),
+                lookback_days=365,
+                max_documents=2,
+            ),
+            company_id="issuer_1",
+            identity={"ticker": "WMT"},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(calls, ["2025Q3", "2025Q2"])
+        self.assertEqual(resolution.status, "resolved")
+        loaded = resolver.load_documents(resolution, as_of=AS_OF)
+        self.assertEqual(
+            [item.metadata["quarter"] for item in loaded],
+            ["2025Q3", "2025Q2"],
+        )
+        self.assertEqual(
+            loaded[0].available_at,
+            datetime(2024, 11, 20, tzinfo=timezone.utc),
+        )
+        self.assertIn("earnings_call", resolver.available_source_types)
+
+    def test_compatible_signal_requests_reuse_one_acquisition_failure(self) -> None:
+        adapter = FailingAdapter(DataGapReason.PROVIDER_ERROR)
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("fake_news",),
+                allowed_capabilities=("news",),
+                allowed_source_types=("news",),
+                max_requests_per_cycle=2,
+                max_requests_per_run=2,
+            ),
+        )
+
+        first = resolver.resolve(
+            RawInfoRequest("signal:one", "Read news.", ("news",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        second = resolver.resolve(
+            RawInfoRequest("signal:two", "Read compatible news.", ("news",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(adapter.calls, 1)
+        self.assertEqual(first.gap.reason, DataGapReason.PROVIDER_ERROR)
+        self.assertEqual(second.gap.reason, DataGapReason.PROVIDER_ERROR)
+        self.assertIn(
+            "acquisition_failure_reused",
+            [event.kind for event in second.events],
+        )
+
     def test_enabled_policy_requires_explicit_allowlists_and_real_boolean(self) -> None:
         with self.assertRaisesRegex(ValidationError, "explicit provider"):
             DataAcquisitionPolicy(
@@ -152,6 +278,117 @@ class EvidenceResolverTests(TestCase):
         ]
         self.assertEqual(len(archived), 1)
         self.assertIn("2026-01-01", archived[0].content)
+
+    def test_source_alias_authorization_matches_signal_request_semantics(self) -> None:
+        class Client:
+            transport = None
+
+            def company_facts(self, cik):
+                return {
+                    "cik": cik,
+                    "facts": {
+                        "us-gaap": {
+                            "Revenue": {
+                                "units": {
+                                    "USD": [
+                                        {"filed": "2025-01-10", "val": 10}
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                }
+
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(SecCompanyFactsAdapter(Client()),),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("sec_edgar",),
+                allowed_capabilities=("financial_statements",),
+                allowed_source_types=("sec_company_facts",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+
+        resolution = resolver.resolve(
+            RawInfoRequest(
+                "signal:revenue_growth_yoy:v1",
+                "Measure revenue growth.",
+                ("financials",),
+            ),
+            company_id="cik_0000001234",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(resolution.status, "resolved")
+        self.assertIn("financials", resolver.available_source_types)
+
+    def test_generic_filing_request_prefers_core_forms_and_skips_failed_body(self) -> None:
+        attempted: list[str] = []
+
+        class Client:
+            transport = None
+
+            def recent_filings_as_of(self, cik, as_of_date):
+                def filing(form, accession, day):
+                    return SimpleNamespace(
+                        form=form,
+                        accession_number=accession,
+                        filing_date=day,
+                        accepted_at=None,
+                        source_url=f"https://example.test/{accession}",
+                    )
+
+                return [
+                    filing("SD", "sd", date(2025, 1, 14)),
+                    filing("4", "four", date(2025, 1, 13)),
+                    filing("8-K", "bad-8k", date(2025, 1, 12)),
+                    filing("10-Q", "good-10q", date(2025, 1, 11)),
+                    filing("10-K", "good-10k", date(2025, 1, 10)),
+                ]
+
+            def filing_document_text(self, filing):
+                attempted.append(filing.form)
+                if filing.accession_number == "bad-8k":
+                    raise RuntimeError("one archive object is unavailable")
+                return f"{filing.form} point-in-time body"
+
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(SecFilingAdapter(Client()),),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("sec_edgar",),
+                allowed_capabilities=("filing_documents",),
+                allowed_source_types=("filing",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+        resolution = resolver.resolve(
+            RawInfoRequest(
+                "filings",
+                "Read decision-relevant filings.",
+                ("filing",),
+                max_documents=2,
+            ),
+            company_id="cik_0000001234",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(attempted, ["8-K", "10-Q", "10-K"])
+        self.assertEqual(resolution.status, "resolved")
+        self.assertEqual(
+            [
+                resolver.store.load(item.document_id, as_of=AS_OF).metadata["form"]
+                for item in resolution.documents
+            ],
+            ["10-Q", "10-K"],
+        )
 
     def test_stable_signal_source_aliases_route_and_materialize_price_metadata(self) -> None:
         self.assertIn("financials", SecCompanyFactsAdapter.source_types)
@@ -363,7 +600,12 @@ class EvidenceResolverTests(TestCase):
             DataGapReason.PROVIDER_NO_DATA,
         )
         self.assertEqual(
-            quota.resolve(request, company_id="issuer_1", identity={}, as_of=AS_OF).gap.reason,
+            quota.resolve(
+                request,
+                company_id="issuer_1",
+                identity={},
+                as_of=AS_OF + timedelta(days=1),
+            ).gap.reason,
             DataGapReason.QUOTA_DEFERRED,
         )
 
@@ -515,3 +757,15 @@ class EvidenceResolverTests(TestCase):
             (trajectory,), available_source_types=("news",)
         )
         self.assertEqual(resolved["items"][0]["status"], "resolved")
+
+        trajectory["basic_info_bundle"]["requests"][0]["data_gap"].update(
+            {
+                "reason": "external_not_authorized",
+                "source_types": ["financials"],
+                "provider": "sec_edgar",
+            }
+        )
+        reauthorized = aggregate_capability_gaps(
+            (trajectory,), available_source_types=("sec_company_facts",)
+        )
+        self.assertEqual(reauthorized["items"][0]["status"], "resolved")

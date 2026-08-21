@@ -626,20 +626,62 @@ For each bounded round under one frozen Signal Registry snapshot:
 After a configured number of fast rounds, unfreeze definitions and run two
 Generic Agents.
 
-Signal Mining receives `H_E`, current meta-info, Signal cards, label-visible
-Discovery cases, and Raw Info tools. It performs contrastive case analysis and
-stages new candidate Signal specs.
+Signal Mining receives `H_E`, current meta-info, Signal cards, a deterministic
+issuer-distinct and label-stratified sample of label-visible Discovery cases,
+and Raw Info tools backed by the shared resolver. It performs contrastive case
+analysis and stages new candidate Signal specs. Every compact card exposes its
+exact stable `signal_ref`; the agent must not synthesize a ref from category or
+display fields.
+
+Agent-facing Raw Info is progressively disclosed: search returns at most a
+1,200-character head/tail preview per document plus identity, hash, timestamps,
+scalar metadata, and full content length; `load_raw_document` returns at most a
+6,000-character preview for one authorized Discovery document. Full bodies and
+large price metadata never repeat in every tool-loop prompt. This prompt bound
+does not alter the Raw Info store or SignalExecutor, which still load and
+validate the complete immutable documents.
 
 Signal Update receives `H_U`, current meta-info, stable Signal stats, committed
-Plan experiments, failure trajectories, and version-cloning tools. It stages
-`vNext` candidates and cannot overwrite stable files.
+Plan experiments, failure trajectories, a label-stratified Discovery sampler,
+and version-cloning tools. It stages `vNext` candidates and cannot overwrite
+stable files. The sampler supplies an allowed point-in-time case for Raw Info
+follow-up instead of inviting the agent to search evaluation-case identities.
 
-Both agents receive domain tools only. All candidates are staged first; the
-orchestrator then executes the candidate's non-empty point-in-time fixtures
-through the real candidate executor and checks expected canonical state, schema,
-leakage (including discovery-case aliases and fixture data), evidence
-traceability, semantic duplication, and version progression. Passing candidates
-are recorded by exact candidate hash (spec + skill + tests). The complete
+Both agents receive domain tools only. Tool cards contain an explicit argument
+schema, canonical `SignalSpec` shape, executable-fixture shape, enums,
+registered deterministic functions, and valid examples; a Python signature or
+short prose description alone is not a sufficient contract. Mining must inspect
+Discovery evidence, stage a complete candidate, run candidate contract tests,
+and return only the successfully staged ref. Update must first load the exact
+stable spec and structured failure cases, preserve `signal_id`, category,
+execution type, and deterministic function, create exactly `vNext`, run tests,
+and return only the staged ref. A new deterministic formula is a code-reviewed
+framework change; an agent may use only functions already registered by the
+runtime.
+
+All candidates are staged first. The orchestrator then executes each
+candidate's non-empty point-in-time fixtures through the real candidate
+executor and checks expected canonical state, schema, leakage (including
+discovery-case aliases and fixture data), evidence traceability, semantic
+duplication, and version progression. Ambiguous common-word ticker aliases do
+not trigger identity leakage solely by ordinary prose use. Contract success
+means only "well formed and executable".
+
+Before automatic promotion, the orchestrator runs a separate paired
+effectiveness gate over a fixed, issuer-distinct, label-stratified Discovery
+sample and a frozen local Raw Info snapshot. `vCurrent` and `vNext` receive the
+same cases, prediction times, identity routing fields, model settings, and Raw
+Info corpus. The audit records availability, decisive-state count, directional
+correct count, and directional wrong count. An update must retain availability,
+not reduce correct states, not increase wrong states, and strictly improve at
+least one of those quantities. A new Signal must meet the minimum availability
+and decisive-support floors and have more correct than wrong decisive states.
+Insufficient paired evidence fails closed. This is a Signal-level promotion
+safeguard, not a claim of downstream Plan-F1 causality; downstream impact is
+observed only in later Fast rounds.
+
+Passing candidates are recorded by exact candidate hash (spec + skill + tests)
+together with the versioned contract and effectiveness audits. The complete
 validation outcome is staged before stable mutation. The orchestrator then
 automatically promotes all passing hashes as one cycle-identified, recoverable
 batch and advances the Registry version once. Empty passing batches do not
@@ -648,12 +690,32 @@ Fast Loop remains bound to its input snapshot.
 
 Both Slow agents have an explicit final-output contract:
 `{"candidate_refs":[...]}`. A non-empty ref must come from a successful candidate
-staging tool call; otherwise the agent returns an empty list. Diagnosis or a
-proposed Signal object is not itself a valid final result. Schema and tool
-validation errors may be repaired only within the frozen agent-step bound.
+staging tool call and a successful `run_signal_tests` result; otherwise the
+agent returns an empty list. The runtime validates the mandatory tool workflow
+before accepting even an empty final result: Mining must compare positive and
+control Discovery Raw Info before card/spec duplicate inspection, while Update
+must load the exact ref, inspect usage and structured failures, sample an
+allowed Discovery case, and search its Raw Info in order. This completion gate
+turns premature or invented output into precise bounded correction feedback.
+The same ordered checklist is sent as a machine-readable
+`workspace.workflow_contract`; up to four final-output corrections may be used
+inside the existing frozen step limit, without increasing the external-call or
+cost ceilings. Every model turn also receives controller-derived
+`workflow_progress` with completed steps and one exact next required action;
+successful tools are not suggested again. A rejected candidate test advances
+to an exact empty final result rather than looping on the same test or returning
+the rejected ref.
+Mining cannot stage an existing stable `signal_id`; existing identities belong
+to Update and must use exact `vNext`. Diagnosis or a proposed Signal object is
+not itself a valid final result. Schema and tool validation errors may be
+repaired only within the frozen agent-step bound.
 Missing required candidate fields, invalid enums, and other `SignalSpec`
 deserialization failures are exposed to the agent as domain validation feedback;
 they never escape as raw parser exceptions and are never filled with defaults.
+Malformed outer JSON is corrected with its exact parser message and bounded raw
+output, not replaced by a generic "unknown action" message. Granted-tool,
+argument, output, and validation failures remain in the durable Slow-loop agent
+audit even when the agent later returns an empty candidate list.
 External-approval pauses and other orchestration control-flow exceptions are not
 domain validation feedback: every Fast evaluator, Generic Agent tool boundary,
 candidate fixture, and Slow agent propagates them unchanged to the CLI.

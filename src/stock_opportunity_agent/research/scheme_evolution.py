@@ -27,6 +27,7 @@ from stock_opportunity_agent.llm.agent import (
     AgentUsage,
     DomainTool,
     GenericAgent,
+    ToolObservation,
 )
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.signal_library import (
@@ -72,6 +73,30 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
         "the",
         "united",
         "universal",
+    }
+)
+_AMBIGUOUS_SHORT_IDENTITY_TERMS = frozenset(
+    {
+        "all",
+        "and",
+        "any",
+        "are",
+        "can",
+        "for",
+        "its",
+        "new",
+        "not",
+        "now",
+        "one",
+        "our",
+        "out",
+        "see",
+        "the",
+        "two",
+        "use",
+        "was",
+        "who",
+        "you",
     }
 )
 _FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
@@ -3453,14 +3478,23 @@ DEFAULT_EVOLUTION_PRIORS = EvolutionPriors(
         "datasets, metrics, priors, runtime guards, or the stable Signal Registry."
     ),
     mine_signal=(
-        "Use label-visible Discovery cases and point-in-time Raw Info to contrast "
-        "positive cases with matched controls, identify a repeated missing capability, "
-        "check the stable Registry, and stage an evidence-traceable candidate Signal."
+        "Follow this workflow exactly: sample issuer-distinct label-stratified "
+        "Discovery cases; inspect point-in-time Raw Info for positive cases and "
+        "matched controls; check Signal cards and exact stable specs for duplicates; "
+        "stage one complete evidence-traceable candidate with non-empty executable "
+        "fixtures; run its contract tests; then return only successfully staged and "
+        "tested candidate refs. Use only registered deterministic functions. If no "
+        "candidate passes, return an empty candidate_refs list."
     ),
     update_signal=(
-        "Use committed experiments, actual trajectories, observed-policy statistics, "
-        "and Raw Info to diagnose a stable Signal failure and stage an auditable "
-        "vNext candidate without overwriting the stable version."
+        "Follow this workflow exactly: load one exact stable SignalSpec; inspect its "
+        "observed-policy statistics and structured committed failure cases; sample "
+        "label-stratified Discovery cases and inspect their point-in-time Raw Info; "
+        "clone exactly vNext while preserving signal_id, "
+        "category, execution type, and deterministic function; provide non-empty "
+        "executable fixtures; run its contract tests; then return only successfully "
+        "staged and tested candidate refs. Never invent a deterministic function. "
+        "If no candidate passes, return an empty candidate_refs list."
     ),
 )
 
@@ -3545,8 +3579,12 @@ class RuntimePlanEvaluator:
         limits: RuntimeLimits = RuntimeLimits(),
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
         llm_signal_runner: LLMSignalRunner | None = None,
+        signal_readiness_snapshot: FrozenSignalRegistry | None = None,
+        minimum_signal_readiness: float = 0.8,
         on_progress: ProgressCallback | None = None,
     ) -> None:
+        if not 0 < minimum_signal_readiness <= 1:
+            raise ValidationError("minimum Signal readiness must be in (0, 1]")
         self.raw_info_store = raw_info_store
         self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.controller = controller
@@ -3563,6 +3601,8 @@ class RuntimePlanEvaluator:
         self.limits = limits
         self.deterministic_functions = deterministic_functions
         self.llm_signal_runner = llm_signal_runner
+        self.signal_readiness_snapshot = signal_readiness_snapshot
+        self.minimum_signal_readiness = minimum_signal_readiness
         self.on_progress = on_progress
 
     def check_case_readiness(
@@ -3586,6 +3626,68 @@ class RuntimePlanEvaluator:
             as_of=case.prediction_time,
         )
         if resolution.status == "resolved":
+            signal_resolutions: tuple[RawInfoResolution, ...] = ()
+            if self.signal_readiness_snapshot is not None:
+                executor = SignalExecutor(
+                    self.signal_readiness_snapshot,
+                    self.raw_info_store,
+                    resolver=self.evidence_resolver,
+                    deterministic_functions=self.deterministic_functions,
+                    llm_runner=self.llm_signal_runner,
+                )
+                signal_resolutions = executor.prepare_inputs(
+                    (
+                        spec.ref
+                        for spec in self.signal_readiness_snapshot.specs
+                    ),
+                    company_id=case.company_id,
+                    as_of=case.prediction_time,
+                    identity=case.basic_info,
+                )
+                ready_count = sum(
+                    item.status == "resolved" for item in signal_resolutions
+                )
+                total_count = len(signal_resolutions)
+                ready_fraction = (
+                    ready_count / total_count if total_count else 1.0
+                )
+                if ready_fraction < self.minimum_signal_readiness:
+                    failed = tuple(
+                        item for item in signal_resolutions
+                        if item.status != "resolved"
+                    )
+                    failed_reasons = {
+                        str(event.details.get("reason", ""))
+                        for item in failed
+                        for event in item.events
+                        if event.kind == "acquisition_failed"
+                    }
+                    result = EvaluationCaseReadiness(
+                        case.case_id,
+                        False,
+                        (
+                            "signal_data_readiness_below_threshold:"
+                            f"{ready_count}/{total_count}"
+                        ),
+                        retryable="provider_error" in failed_reasons,
+                    )
+                    _emit_progress(
+                        self.on_progress,
+                        "evaluation_case_signal_data_unavailable",
+                        **result.to_dict(),
+                        minimum_signal_readiness=self.minimum_signal_readiness,
+                        ready_signal_count=ready_count,
+                        total_signal_count=total_count,
+                        unready_signals={
+                            item.request.request_id.removeprefix("signal:"): (
+                                item.gap.reason.value
+                                if item.gap is not None
+                                else "no_matching_documents"
+                            )
+                            for item in failed
+                        },
+                    )
+                    return result
             result = EvaluationCaseReadiness(case.case_id, True)
             _emit_progress(
                 self.on_progress,
@@ -3593,6 +3695,10 @@ class RuntimePlanEvaluator:
                 case_id=case.case_id,
                 document_count=len(resolution.documents),
                 appended_document_count=len(resolution.appended_documents),
+                ready_signal_count=sum(
+                    item.status == "resolved" for item in signal_resolutions
+                ),
+                total_signal_count=len(signal_resolutions),
             )
             return result
         failed_reasons = {
@@ -5182,6 +5288,16 @@ class SignalCandidateValidator:
             reasons.append("new signal must start at version 1")
         if current is not None and spec.version != current.version + 1:
             reasons.append("update must use exactly the next stable version")
+        if current is not None and spec.category != current.category:
+            reasons.append("update must preserve the stable category")
+        if current is not None and spec.execution_type is not current.execution_type:
+            reasons.append("update must preserve the stable execution type")
+        if (
+            current is not None
+            and current.execution_type is SignalExecutionType.DETERMINISTIC
+            and spec.function != current.function
+        ):
+            reasons.append("deterministic update must preserve the registered function")
         if spec.execution_type is SignalExecutionType.DETERMINISTIC:
             if spec.function not in self.deterministic_functions:
                 reasons.append("deterministic function is not registered")
@@ -5208,8 +5324,15 @@ class SignalCandidateValidator:
             if phrase in serialized:
                 reasons.append(f"obvious leakage phrase: {phrase}")
         for identity in self.forbidden_identity_terms:
+            normalized_identity = identity.casefold()
+            if (
+                len(normalized_identity) == 3
+                and normalized_identity.isalpha()
+                and normalized_identity in _AMBIGUOUS_SHORT_IDENTITY_TERMS
+            ):
+                continue
             if re.search(
-                rf"(?<![a-z0-9]){re.escape(identity.casefold())}(?![a-z0-9])",
+                rf"(?<![a-z0-9]){re.escape(normalized_identity)}(?![a-z0-9])",
                 serialized,
             ):
                 reasons.append(f"discovery identity leaked into candidate: {identity}")
@@ -5315,6 +5438,263 @@ class SignalCandidateValidator:
 
 
 @dataclass(frozen=True)
+class SignalCandidateEffectiveness:
+    """Paired Signal-level evidence required after contract validation."""
+
+    signal_ref: str
+    current_ref: str | None
+    accepted: bool
+    reasons: tuple[str, ...]
+    case_ids: tuple[str, ...]
+    candidate_available: int
+    candidate_decisive: int
+    candidate_correct: int
+    candidate_wrong: int
+    current_available: int = 0
+    current_decisive: int = 0
+    current_correct: int = 0
+    current_wrong: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "signal-candidate-effectiveness-v1",
+            "signal_ref": self.signal_ref,
+            "current_ref": self.current_ref,
+            "accepted": self.accepted,
+            "reasons": list(self.reasons),
+            "case_ids": list(self.case_ids),
+            "candidate": {
+                "available": self.candidate_available,
+                "decisive": self.candidate_decisive,
+                "directional_correct": self.candidate_correct,
+                "directional_wrong": self.candidate_wrong,
+            },
+            "current": {
+                "available": self.current_available,
+                "decisive": self.current_decisive,
+                "directional_correct": self.current_correct,
+                "directional_wrong": self.current_wrong,
+            },
+        }
+
+
+class SignalCandidateEffectivenessEvaluator:
+    """Compare candidate and stable Signal behavior on one frozen sample."""
+
+    def __init__(
+        self,
+        registry: SignalRegistry,
+        *,
+        raw_info_store: RawInfoStore,
+        discovery_cases: tuple[EvolutionCase, ...],
+        llm_runner: LLMSignalRunner | None,
+        deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
+        case_limit: int = 8,
+        minimum_cases: int = 4,
+    ) -> None:
+        if case_limit < 1 or minimum_cases < 1 or minimum_cases > case_limit:
+            raise ValidationError("Signal effectiveness case limits are invalid")
+        self.registry = registry
+        self.raw_info_store = raw_info_store
+        self.discovery_cases = tuple(discovery_cases)
+        self.llm_runner = llm_runner
+        self.deterministic_functions = dict(deterministic_functions or {})
+        self.case_limit = case_limit
+        self.minimum_cases = minimum_cases
+
+    def evaluate(
+        self,
+        spec: SignalSpec,
+        *,
+        skill: str | None,
+    ) -> SignalCandidateEffectiveness:
+        cases = _sample_signal_discovery_cases(
+            self.discovery_cases,
+            limit=self.case_limit,
+        )
+        case_ids = tuple(case.case_id for case in cases)
+        try:
+            current = self.registry.latest_spec(spec.signal_id)
+        except ValidationError:
+            current = None
+        if len(cases) < self.minimum_cases:
+            return SignalCandidateEffectiveness(
+                signal_ref=spec.ref,
+                current_ref=(current.ref if current is not None else None),
+                accepted=False,
+                reasons=(
+                    "paired effectiveness requires at least "
+                    f"{self.minimum_cases} Discovery cases",
+                ),
+                case_ids=case_ids,
+                candidate_available=0,
+                candidate_decisive=0,
+                candidate_correct=0,
+                candidate_wrong=0,
+            )
+
+        frozen_store = RawInfoStore(documents=self.raw_info_store.documents)
+        candidate_hash = hashlib.sha256(
+            json.dumps(
+                {"spec": spec.to_dict(), "skill": skill or ""},
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest()
+        candidate_executor = SignalExecutor(
+            FrozenSignalRegistry(
+                version=0,
+                registry_hash=candidate_hash,
+                specs=(spec,),
+                skills=({spec.ref: skill} if skill is not None else {}),
+            ),
+            frozen_store,
+            deterministic_functions=self.deterministic_functions,
+            llm_runner=self.llm_runner,
+        )
+        current_executor = (
+            SignalExecutor(
+                self.registry.freeze(),
+                frozen_store,
+                deterministic_functions=self.deterministic_functions,
+                llm_runner=self.llm_runner,
+            )
+            if current is not None
+            else None
+        )
+        candidate_values: list[tuple[SignalValue, bool]] = []
+        current_values: list[tuple[SignalValue, bool]] = []
+        try:
+            for case in cases:
+                candidate_result = candidate_executor.execute_batch(
+                    (spec.ref,),
+                    company_id=case.company_id,
+                    as_of=case.prediction_time,
+                    identity=case.basic_info,
+                ).results[0]
+                candidate_values.append(
+                    (candidate_result.value, case.ground_truth.is_surge)
+                )
+                if current is not None and current_executor is not None:
+                    current_result = current_executor.execute_batch(
+                        (current.ref,),
+                        company_id=case.company_id,
+                        as_of=case.prediction_time,
+                        identity=case.basic_info,
+                    ).results[0]
+                    current_values.append(
+                        (current_result.value, case.ground_truth.is_surge)
+                    )
+        except (ValidationError, KeyError, TypeError, ValueError) as exc:
+            return SignalCandidateEffectiveness(
+                signal_ref=spec.ref,
+                current_ref=(current.ref if current is not None else None),
+                accepted=False,
+                reasons=("paired effectiveness execution failed: " + str(exc),),
+                case_ids=case_ids,
+                candidate_available=0,
+                candidate_decisive=0,
+                candidate_correct=0,
+                candidate_wrong=0,
+            )
+
+        candidate_counts = _signal_effectiveness_counts(candidate_values)
+        current_counts = _signal_effectiveness_counts(current_values)
+        reasons: list[str] = []
+        if candidate_counts[0] < self.minimum_cases:
+            reasons.append(
+                "candidate availability is below paired minimum: "
+                f"{candidate_counts[0]}/{self.minimum_cases}"
+            )
+        decisive_floor = min(2, self.minimum_cases)
+        if candidate_counts[1] < decisive_floor:
+            reasons.append(
+                "candidate decisive support is below paired minimum: "
+                f"{candidate_counts[1]}/{decisive_floor}"
+            )
+        if current is None:
+            if candidate_counts[2] <= candidate_counts[3]:
+                reasons.append(
+                    "new candidate lacks positive directional evidence over controls"
+                )
+        else:
+            labels = (
+                (0, "availability"),
+                (2, "directional correct count"),
+            )
+            for index, label in labels:
+                if candidate_counts[index] < current_counts[index]:
+                    reasons.append(f"candidate reduces {label}")
+            if candidate_counts[3] > current_counts[3]:
+                reasons.append("candidate increases directional wrong count")
+            if not (
+                candidate_counts[0] > current_counts[0]
+                or candidate_counts[2] > current_counts[2]
+                or candidate_counts[3] < current_counts[3]
+            ):
+                reasons.append("candidate shows no strict paired effectiveness gain")
+        return SignalCandidateEffectiveness(
+            signal_ref=spec.ref,
+            current_ref=(current.ref if current is not None else None),
+            accepted=not reasons,
+            reasons=tuple(reasons),
+            case_ids=case_ids,
+            candidate_available=candidate_counts[0],
+            candidate_decisive=candidate_counts[1],
+            candidate_correct=candidate_counts[2],
+            candidate_wrong=candidate_counts[3],
+            current_available=current_counts[0],
+            current_decisive=current_counts[1],
+            current_correct=current_counts[2],
+            current_wrong=current_counts[3],
+        )
+
+
+def _signal_effectiveness_counts(
+    values: Iterable[tuple[SignalValue, bool]],
+) -> tuple[int, int, int, int]:
+    available = decisive = correct = wrong = 0
+    for value, is_surge in values:
+        if value is not SignalValue.UNAVAILABLE:
+            available += 1
+        if value not in (SignalValue.POSITIVE, SignalValue.NEGATIVE):
+            continue
+        decisive += 1
+        if (value is SignalValue.POSITIVE) == is_surge:
+            correct += 1
+        else:
+            wrong += 1
+    return available, decisive, correct, wrong
+
+
+def _agent_audit(
+    status: str,
+    observations: Iterable[ToolObservation],
+    usage: AgentUsage,
+    *,
+    candidate_refs: Iterable[str] = (),
+    error: str = "",
+) -> dict[str, Any]:
+    """Serialize one complete bounded Generic-Agent trajectory."""
+
+    value = {
+        "status": status,
+        "candidate_refs": [str(item) for item in candidate_refs],
+        "observations": [
+            {
+                "name": item.name,
+                "arguments": dict(item.arguments),
+                "result": item.result,
+            }
+            for item in observations
+        ],
+        "usage": _usage_to_dict(usage),
+    }
+    if error:
+        value["error"] = error
+    return value
+
+
+@dataclass(frozen=True)
 class SlowLoopValidation:
     """Durable Slow-loop decision staged before stable Registry mutation."""
 
@@ -5325,6 +5705,10 @@ class SlowLoopValidation:
     input_registry_version: int
     input_registry_hash: str
     input_signal_refs: tuple[str, ...]
+    candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
+        default_factory=dict
+    )
+    agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -5337,6 +5721,13 @@ class SlowLoopValidation:
             "input_registry_version": self.input_registry_version,
             "input_registry_hash": self.input_registry_hash,
             "input_signal_refs": list(self.input_signal_refs),
+            "candidate_effectiveness": {
+                ref: dict(value)
+                for ref, value in self.candidate_effectiveness.items()
+            },
+            "agent_audits": {
+                name: dict(value) for name, value in self.agent_audits.items()
+            },
         }
 
     @classmethod
@@ -5363,6 +5754,16 @@ class SlowLoopValidation:
             input_signal_refs=tuple(
                 str(item) for item in data.get("input_signal_refs", ())
             ),
+            candidate_effectiveness={
+                str(ref): dict(value)
+                for ref, value in dict(
+                    data.get("candidate_effectiveness", {})
+                ).items()
+            },
+            agent_audits={
+                str(name): dict(value)
+                for name, value in dict(data.get("agent_audits", {})).items()
+            },
         )
 
 
@@ -5379,6 +5780,10 @@ class SlowLoopResult:
     input_registry_hash: str
     output_registry_version: int
     output_registry_hash: str
+    candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
+        default_factory=dict
+    )
+    agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
 
     @property
     def registry_version(self) -> int:
@@ -5399,6 +5804,13 @@ class SlowLoopResult:
             "input_registry_hash": self.input_registry_hash,
             "output_registry_version": self.output_registry_version,
             "output_registry_hash": self.output_registry_hash,
+            "candidate_effectiveness": {
+                ref: dict(value)
+                for ref, value in self.candidate_effectiveness.items()
+            },
+            "agent_audits": {
+                name: dict(value) for name, value in self.agent_audits.items()
+            },
         }
 
     @classmethod
@@ -5432,6 +5844,16 @@ class SlowLoopResult:
                 data.get("output_registry_version", data.get("registry_version", 0))
             ),
             output_registry_hash=str(data.get("output_registry_hash", "")),
+            candidate_effectiveness={
+                str(ref): dict(value)
+                for ref, value in dict(
+                    data.get("candidate_effectiveness", {})
+                ).items()
+            },
+            agent_audits={
+                str(name): dict(value)
+                for name, value in dict(data.get("agent_audits", {})).items()
+            },
         )
 
 
@@ -5449,9 +5871,13 @@ class SignalEvolutionEngine:
         mining_agent: GenericAgent,
         update_agent: GenericAgent,
         llm_signal_runner: LLMSignalRunner | None,
+        evidence_resolver: EvidenceResolver | None = None,
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         max_agent_steps: int = 20,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
+        effectiveness_case_limit: int = 8,
+        effectiveness_minimum_cases: int = 4,
+        enforce_agent_workflow: bool = True,
     ) -> None:
         if not discovery_cases:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
@@ -5463,13 +5889,24 @@ class SignalEvolutionEngine:
         self.mining_agent = mining_agent
         self.update_agent = update_agent
         self.llm_signal_runner = llm_signal_runner
+        self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.priors = priors
         self.max_agent_steps = max_agent_steps
+        self.enforce_agent_workflow = enforce_agent_workflow
         self.validator = SignalCandidateValidator(
             registry,
             llm_runner=llm_signal_runner,
             deterministic_functions=deterministic_functions,
             forbidden_identity_terms=_discovery_identity_terms(discovery_cases),
+        )
+        self.effectiveness_evaluator = SignalCandidateEffectivenessEvaluator(
+            registry,
+            raw_info_store=raw_info_store,
+            discovery_cases=discovery_cases,
+            llm_runner=llm_signal_runner,
+            deterministic_functions=deterministic_functions,
+            case_limit=effectiveness_case_limit,
+            minimum_cases=effectiveness_minimum_cases,
         )
 
     def run_cycle(
@@ -5508,6 +5945,8 @@ class SignalEvolutionEngine:
             input_registry_hash=transition.input_hash,
             output_registry_version=transition.output_version,
             output_registry_hash=transition.output_hash,
+            candidate_effectiveness=validation.candidate_effectiveness,
+            agent_audits=validation.agent_audits,
         )
 
     def _validate_cycle(
@@ -5528,37 +5967,75 @@ class SignalEvolutionEngine:
         mining_tools = self._mining_tools(mined)
         update_tools = self._update_tools(updated)
         agent_failures: dict[str, tuple[str, ...]] = {}
+        agent_audits: dict[str, Mapping[str, Any]] = {}
         try:
             mining_result = self.mining_agent.run(
                 prompt=self.priors.mine_signal,
                 tools=mining_tools,
-                workspace=self._agent_workspace(),
+                workspace=self._agent_workspace("mining"),
                 output_schema=_candidate_refs_schema,
+                completion_validator=lambda refs, observations: (
+                    self._validate_agent_completion(
+                        "mining", refs, observations
+                    )
+                ),
                 max_steps=self.max_agent_steps,
+                max_output_corrections=4,
             )
             mined = _ordered_unique([*mined, *mining_result.value])
+            agent_audits["mining_agent"] = _agent_audit(
+                "completed",
+                mining_result.observations,
+                mining_result.usage,
+                candidate_refs=mining_result.value,
+            )
         except ValidationError as exc:
             agent_failures["slow_loop:mining_agent"] = (
                 "structured_output_failed: " + str(exc),
+            )
+            agent_audits["mining_agent"] = _agent_audit(
+                "failed",
+                tuple(getattr(exc, "observations", ())),
+                getattr(exc, "usage", AgentUsage()),
+                error=str(exc),
             )
         try:
             update_result = self.update_agent.run(
                 prompt=self.priors.update_signal,
                 tools=update_tools,
-                workspace=self._agent_workspace(),
+                workspace=self._agent_workspace("update"),
                 output_schema=_candidate_refs_schema,
+                completion_validator=lambda refs, observations: (
+                    self._validate_agent_completion(
+                        "update", refs, observations
+                    )
+                ),
                 max_steps=self.max_agent_steps,
+                max_output_corrections=4,
             )
             updated = _ordered_unique([*updated, *update_result.value])
+            agent_audits["update_agent"] = _agent_audit(
+                "completed",
+                update_result.observations,
+                update_result.usage,
+                candidate_refs=update_result.value,
+            )
         except ValidationError as exc:
             agent_failures["slow_loop:update_agent"] = (
                 "structured_output_failed: " + str(exc),
+            )
+            agent_audits["update_agent"] = _agent_audit(
+                "failed",
+                tuple(getattr(exc, "observations", ())),
+                getattr(exc, "usage", AgentUsage()),
+                error=str(exc),
             )
         all_refs = _ordered_unique([*mined, *updated])
 
         validations: dict[str, SignalCandidateValidation] = {}
         accepted_hashes: dict[str, str] = {}
         semantic_seen: dict[str, str] = {}
+        effectiveness_by_ref: dict[str, Mapping[str, Any]] = {}
         for signal_ref in all_refs:
             spec, skill = self.registry.load_candidate(signal_ref)
             tests = self.registry.load_candidate_tests(signal_ref)
@@ -5568,6 +6045,13 @@ class SignalEvolutionEngine:
             except ValidationError:
                 stable_ref = None
             prior_validation = self.registry.load_candidate_validation(signal_ref)
+            reusable_prior = (
+                prior_validation is not None
+                and prior_validation.get("schema_version")
+                == "signal-candidate-validation-v2"
+                and isinstance(prior_validation.get("effectiveness"), Mapping)
+            )
+            contract_validation: Mapping[str, Any]
             if stable_ref == signal_ref:
                 validation = SignalCandidateValidation(
                     signal_ref=signal_ref,
@@ -5575,7 +6059,18 @@ class SignalEvolutionEngine:
                     reasons=("candidate version is already stable",),
                     candidate_hash=candidate_hash,
                 )
-            elif prior_validation is not None:
+                effectiveness = {
+                    "accepted": False,
+                    "status": "not_run",
+                    "reasons": ["candidate version is already stable"],
+                }
+                contract_validation = {
+                    "accepted": False,
+                    "reasons": ["candidate version is already stable"],
+                    "executed_tests": 0,
+                }
+            elif reusable_prior:
+                assert prior_validation is not None
                 validation = SignalCandidateValidation(
                     signal_ref=signal_ref,
                     accepted=bool(prior_validation.get("accepted")),
@@ -5584,35 +6079,74 @@ class SignalEvolutionEngine:
                     ),
                     candidate_hash=candidate_hash,
                 )
+                effectiveness = dict(prior_validation["effectiveness"])
+                contract_validation = dict(
+                    prior_validation.get("contract_validation", {})
+                )
             else:
                 checked = self.validator.validate(spec, skill=skill, tests=tests)
+                contract_validation = {
+                    "accepted": checked.accepted,
+                    "reasons": list(checked.reasons),
+                    "executed_tests": checked.executed_tests,
+                }
+                if checked.accepted:
+                    paired = self.effectiveness_evaluator.evaluate(
+                        spec,
+                        skill=skill,
+                    )
+                    effectiveness = paired.to_dict()
+                    reasons = paired.reasons
+                    accepted = paired.accepted
+                else:
+                    effectiveness = {
+                        "schema_version": "signal-candidate-effectiveness-v1",
+                        "signal_ref": signal_ref,
+                        "accepted": False,
+                        "status": "not_run",
+                        "reasons": ["contract validation failed"],
+                    }
+                    reasons = checked.reasons
+                    accepted = False
                 validation = SignalCandidateValidation(
                     signal_ref=checked.signal_ref,
-                    accepted=checked.accepted,
-                    reasons=checked.reasons,
+                    accepted=accepted,
+                    reasons=tuple(reasons),
                     candidate_hash=candidate_hash,
                     executed_tests=checked.executed_tests,
                 )
+            effectiveness_by_ref[signal_ref] = effectiveness
             semantic = _normalize_semantics(spec.description)
             prior_ref = semantic_seen.get(semantic)
             if validation.accepted and prior_ref is not None:
+                duplicate_reason = f"semantic duplicate of candidate {prior_ref}"
                 validation = SignalCandidateValidation(
                     signal_ref=signal_ref,
                     accepted=False,
-                    reasons=(f"semantic duplicate of candidate {prior_ref}",),
+                    reasons=(duplicate_reason,),
                     candidate_hash=candidate_hash,
                     executed_tests=validation.executed_tests,
                 )
+                contract_validation = {
+                    **dict(contract_validation),
+                    "accepted": False,
+                    "reasons": [
+                        *list(contract_validation.get("reasons", ())),
+                        duplicate_reason,
+                    ],
+                }
             if validation.accepted:
                 semantic_seen[semantic] = signal_ref
                 accepted_hashes[signal_ref] = candidate_hash
             validations[signal_ref] = validation
-            if prior_validation is None and stable_ref != signal_ref:
+            if not reusable_prior and stable_ref != signal_ref:
                 self.registry.record_candidate_validation(
                     signal_ref,
                     candidate_hash=candidate_hash,
                     accepted=validation.accepted,
                     reasons=validation.reasons,
+                    contract_validation=contract_validation,
+                    effectiveness=effectiveness,
                 )
         rejected = dict(agent_failures)
         rejected.update(
@@ -5630,9 +6164,13 @@ class SignalEvolutionEngine:
             input_registry_version=input_snapshot.version,
             input_registry_hash=input_snapshot.registry_hash,
             input_signal_refs=tuple(spec.ref for spec in input_snapshot.specs),
+            candidate_effectiveness=effectiveness_by_ref,
+            agent_audits=agent_audits,
         )
 
-    def _agent_workspace(self) -> dict[str, Any]:
+    def _agent_workspace(self, agent_kind: str) -> dict[str, Any]:
+        if agent_kind not in {"mining", "update"}:
+            raise ValidationError("unknown Signal Agent workflow")
         backlog_path = self.workspace.root / "capability_backlog.json"
         capability_backlog = (
             _read_json(backlog_path)
@@ -5651,7 +6189,410 @@ class SignalEvolutionEngine:
             "last_completed_plan_round": self.workspace.last_completed_round,
             "dataset_role": "discovery",
             "locked_test_available": False,
+            "available_raw_source_types": list(
+                self.evidence_resolver.available_source_types
+            ),
+            "registered_deterministic_functions": sorted(
+                self.validator.deterministic_functions
+            ),
+            "candidate_contract": {
+                "fixtures_required": True,
+                "paired_effectiveness_required": True,
+                "update_preserves": [
+                    "signal_id",
+                    "category",
+                    "execution.type",
+                    "execution.function when deterministic",
+                ],
+            },
+            "workflow_contract": (
+                {
+                    "agent": "mining",
+                    "required_order": [
+                        "sample_discovery_cases",
+                        "search_raw_info for at least one positive and one control",
+                        "list/search_signal_cards",
+                        "load_signal_spec",
+                        "create_candidate_signal when justified",
+                        "run_signal_tests for every returned ref",
+                        "final",
+                    ],
+                    "final_rule": (
+                        "candidate_refs must be the subset successfully staged and "
+                        "accepted by run_signal_tests; empty still requires diagnosis"
+                    ),
+                }
+                if agent_kind == "mining"
+                else {
+                    "agent": "update",
+                    "required_order": [
+                        "load_signal_spec",
+                        "query_signal_usage and query_signal_failure_cases",
+                        "sample_discovery_cases",
+                        "search_raw_info",
+                        "clone_signal_version when justified",
+                        "run_signal_tests for every returned ref",
+                        "final",
+                    ],
+                    "final_rule": (
+                        "candidate_refs must be the subset successfully staged and "
+                        "accepted by run_signal_tests; empty still requires diagnosis"
+                    ),
+                }
+            ),
         }
+
+    def _validate_agent_completion(
+        self,
+        stage: str,
+        refs: tuple[str, ...],
+        observations: tuple[ToolObservation, ...],
+    ) -> None:
+        """Reject invented refs and, in production, incomplete tool workflows."""
+
+        issues: list[str] = []
+        stage_tool = (
+            "create_candidate_signal" if stage == "mining" else "clone_signal_version"
+        )
+        staged = {
+            str(item.result)
+            for item in observations
+            if item.name == stage_tool and not _tool_observation_failed(item)
+        }
+        tested = {
+            str(item.result.get("signal_ref"))
+            for item in observations
+            if item.name == "run_signal_tests"
+            and isinstance(item.result, Mapping)
+            and item.result.get("accepted") is True
+        }
+        unstaged = sorted(set(refs) - staged)
+        untested = sorted(set(refs) - tested)
+        if unstaged:
+            issues.append(
+                "final candidate_refs were not returned by a successful staging tool: "
+                + ", ".join(unstaged)
+            )
+        if untested:
+            issues.append(
+                "final candidate_refs did not pass run_signal_tests: "
+                + ", ".join(untested)
+            )
+        if not self.enforce_agent_workflow:
+            if issues:
+                raise ValidationError("; ".join(issues))
+            return
+        successful = [
+            (index, item)
+            for index, item in enumerate(observations)
+            if not _tool_observation_failed(item)
+        ]
+
+        def positions(name: str) -> list[int]:
+            return [index for index, item in successful if item.name == name]
+
+        if stage == "mining":
+            samples = positions("sample_discovery_cases")
+            raw_searches = [
+                (index, item)
+                for index, item in successful
+                if item.name == "search_raw_info"
+            ]
+            if not samples:
+                issues.append(
+                    "Mining Agent must call sample_discovery_cases before final output"
+                )
+            cases = {case.case_id: case for case in self.discovery_cases}
+            searched_cases = [
+                cases.get(str(item.arguments.get("case_id", "")))
+                for _, item in raw_searches
+            ]
+            if not any(case and case.ground_truth.is_surge for case in searched_cases):
+                issues.append(
+                    "Mining Agent must inspect Raw Info for a positive Discovery case"
+                )
+            if not any(
+                case and not case.ground_truth.is_surge for case in searched_cases
+            ):
+                issues.append(
+                    "Mining Agent must inspect Raw Info for a matched control"
+                )
+            cards = sorted(
+                positions("list_signal_cards") + positions("search_signal_cards")
+            )
+            specs = positions("load_signal_spec")
+            last_raw = max((index for index, _ in raw_searches), default=-1)
+            cards_after_raw = [index for index in cards if index > last_raw]
+            if not raw_searches or not cards_after_raw:
+                issues.append(
+                    "Mining Agent must check stable Signal cards after Raw Info comparison"
+                )
+            last_card = max(cards_after_raw, default=-1)
+            specs_after_cards = [index for index in specs if index > last_card]
+            if not cards_after_raw or not specs_after_cards:
+                issues.append(
+                    "Mining Agent must load an exact stable SignalSpec for duplicate checking"
+                )
+            diagnostic_end = max(specs_after_cards, default=-1)
+        else:
+            required = {
+                "load_signal_spec": positions("load_signal_spec"),
+                "query_signal_usage": positions("query_signal_usage"),
+                "query_signal_failure_cases": positions(
+                    "query_signal_failure_cases"
+                ),
+                "sample_discovery_cases": positions("sample_discovery_cases"),
+                "search_raw_info": positions("search_raw_info"),
+            }
+            missing = [name for name, indexes in required.items() if not indexes]
+            if missing:
+                issues.append(
+                    "Update Agent workflow is incomplete; missing successful tools: "
+                    + ", ".join(missing)
+                )
+            if missing:
+                diagnostic_end = -1
+            else:
+                spec_index = min(required["load_signal_spec"])
+                diagnosis_end = max(
+                    min(required["query_signal_usage"]),
+                    min(required["query_signal_failure_cases"]),
+                )
+                sample_index = min(required["sample_discovery_cases"])
+                raw_index = min(required["search_raw_info"])
+                if not spec_index < diagnosis_end < sample_index < raw_index:
+                    issues.append(
+                        "Update Agent must load spec, inspect statistics/failures, "
+                        "sample Discovery, then inspect Raw Info in that order"
+                    )
+                diagnostic_end = raw_index
+        if refs:
+            stage_indexes = positions(stage_tool)
+            test_indexes = positions("run_signal_tests")
+            if not stage_indexes or min(stage_indexes) <= diagnostic_end:
+                issues.append(
+                    f"{stage.title()} Agent must stage only after completing diagnosis"
+                )
+            if (
+                not test_indexes
+                or not stage_indexes
+                or max(test_indexes) <= min(stage_indexes)
+            ):
+                issues.append(
+                    f"{stage.title()} Agent must test the staged candidate before final output"
+                )
+        if issues:
+            raise ValidationError("; ".join(_ordered_unique(issues)))
+
+    def _candidate_arguments_schema(self, *, clone: bool) -> dict[str, Any]:
+        registered_functions = sorted(self.validator.deterministic_functions)
+        schema: dict[str, Any] = {
+            "type": "object",
+            "required": ["spec", "tests"],
+            "additionalProperties": False,
+            "properties": {
+                "spec": {
+                    "type": "object",
+                    "required": [
+                        "signal_id",
+                        "version",
+                        "category",
+                        "definition",
+                        "schema",
+                        "execution",
+                        "raw_retrieval",
+                        "evidence_policy",
+                        "parameters",
+                    ],
+                    "additionalProperties": False,
+                    "properties": {
+                        "signal_id": {"type": "string"},
+                        "version": {"type": "integer", "minimum": 1},
+                        "category": {"type": "string"},
+                        "definition": {
+                            "type": "object",
+                            "required": ["description"],
+                            "properties": {"description": {"type": "string"}},
+                            "additionalProperties": False,
+                        },
+                        "schema": {
+                            "const": {
+                                "value": {
+                                    "type": "categorical",
+                                    "values": [
+                                        "positive",
+                                        "neutral",
+                                        "negative",
+                                        "unavailable",
+                                    ],
+                                },
+                                "confidence": {"type": "float"},
+                            }
+                        },
+                        "execution": {
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "required": ["type", "function"],
+                                    "properties": {
+                                        "type": {"const": "deterministic"},
+                                        "function": {
+                                            "enum": registered_functions,
+                                        },
+                                    },
+                                    "additionalProperties": False,
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["type", "skill_file"],
+                                    "properties": {
+                                        "type": {"const": "llm"},
+                                        "skill_file": {"type": "string"},
+                                    },
+                                    "additionalProperties": False,
+                                },
+                            ]
+                        },
+                        "raw_retrieval": {
+                            "type": "object",
+                            "required": ["source_types"],
+                            "properties": {
+                                "source_types": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {"type": "string"},
+                                }
+                            },
+                            "additionalProperties": False,
+                        },
+                        "evidence_policy": {
+                            "const": {
+                                "require_source": True,
+                                "require_timestamp": True,
+                                "require_exact_span": True,
+                            }
+                        },
+                        "parameters": {"type": "object"},
+                    },
+                },
+                "skill": {"type": ["string", "null"]},
+                "tests": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "as_of", "expected", "documents"],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "as_of": {
+                                "type": "string",
+                                "description": "timezone-aware ISO-8601 timestamp",
+                            },
+                            "company_id": {"type": "string"},
+                            "expected": {
+                                "enum": [
+                                    "positive",
+                                    "neutral",
+                                    "negative",
+                                    "unavailable",
+                                ]
+                            },
+                            "documents": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "object",
+                                    "required": [
+                                        "document_id",
+                                        "source_type",
+                                        "published_at",
+                                        "available_at",
+                                        "content",
+                                    ],
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            "constraints": [
+                "deterministic execution cannot include skill",
+                "LLM execution requires non-empty skill",
+                "fixture source_type must be declared by raw_retrieval",
+            ],
+        }
+        if clone:
+            schema["required"] = ["signal_ref", "spec", "tests"]
+            schema["properties"] = {
+                "signal_ref": {"type": "string", "description": "exact stable ref"},
+                **schema["properties"],
+            }
+            schema["constraints"] = [
+                *schema["constraints"],
+                "spec must preserve signal_id, category, execution type, and deterministic function",
+                "spec.version must equal stable version plus one",
+            ]
+        return schema
+
+    @staticmethod
+    def _candidate_arguments_example(*, clone: bool) -> dict[str, Any]:
+        spec = {
+            "signal_id": "guidance_quality",
+            "version": 2 if clone else 1,
+            "category": "management",
+            "definition": {
+                "description": "Judge whether point-in-time guidance materially strengthens."
+            },
+            "schema": {
+                "value": {
+                    "type": "categorical",
+                    "values": [
+                        "positive",
+                        "neutral",
+                        "negative",
+                        "unavailable",
+                    ],
+                },
+                "confidence": {"type": "float"},
+            },
+            "execution": {
+                "type": "llm",
+                "skill_file": "skills/guidance_quality.md",
+            },
+            "raw_retrieval": {"source_types": ["filing"]},
+            "evidence_policy": {
+                "require_source": True,
+                "require_timestamp": True,
+                "require_exact_span": True,
+            },
+            "parameters": {},
+        }
+        example = {
+            "spec": spec,
+            "skill": (
+                "Classify only explicit point-in-time guidance changes and cite an exact span."
+            ),
+            "tests": [
+                {
+                    "name": "raised guidance",
+                    "as_of": "2025-01-15T12:00:00+00:00",
+                    "company_id": "candidate_fixture",
+                    "expected": "positive",
+                    "documents": [
+                        {
+                            "document_id": "guidance_fixture",
+                            "source_type": "filing",
+                            "published_at": "2025-01-10T12:00:00+00:00",
+                            "available_at": "2025-01-10T12:00:00+00:00",
+                            "content": "Management raised full-year revenue guidance.",
+                        }
+                    ],
+                }
+            ],
+        }
+        if clone:
+            return {"signal_ref": "guidance_quality:v1", **example}
+        return example
 
     def _mining_tools(self, collected: list[str]) -> list[DomainTool]:
         return [
@@ -5683,15 +6624,18 @@ class SignalEvolutionEngine:
             ),
             DomainTool(
                 "sample_discovery_cases",
-                "Read label-visible Discovery cases for contrastive analysis.",
-                lambda limit=10: [
+                "Read a deterministic issuer-distinct, label-stratified Discovery sample.",
+                lambda limit=8: [
                     case.to_discovery_dict()
-                    for case in self.discovery_cases[: int(limit)]
+                    for case in _sample_signal_discovery_cases(
+                        self.discovery_cases,
+                        limit=min(int(limit), 32),
+                    )
                 ],
             ),
             DomainTool(
                 "search_raw_info",
-                "Search point-in-time Raw Info for one exact Discovery case.",
+                "Search point-in-time Raw Info and return bounded document cards for one exact Discovery case.",
                 self._search_raw_info_tool,
             ),
             DomainTool(
@@ -5701,7 +6645,7 @@ class SignalEvolutionEngine:
             ),
             DomainTool(
                 "create_candidate_signal",
-                "Stage one complete candidate SignalSpec outside the stable Registry.",
+                "Stage one complete candidate outside stable state; use the exact schema and non-empty fixtures.",
                 lambda spec, skill=None, tests=(): self._stage_from_tool(
                     spec=spec,
                     skill=skill,
@@ -5709,6 +6653,13 @@ class SignalEvolutionEngine:
                     origin="mining",
                     collected=collected,
                 ),
+                arguments_schema=self._candidate_arguments_schema(clone=False),
+                examples=(self._candidate_arguments_example(clone=False),),
+            ),
+            DomainTool(
+                "run_signal_tests",
+                "Run local contract and fixture checks; paired effectiveness is a later orchestrator gate.",
+                self._run_signal_tests_tool,
             ),
         ]
 
@@ -5746,17 +6697,33 @@ class SignalEvolutionEngine:
             ),
             DomainTool(
                 "query_signal_failure_cases",
-                "Find committed Predictor reflections that name a misleading Signal.",
+                "Find committed incorrect trajectories where the exact Signal was executed; prose naming is optional.",
                 self._query_signal_failure_cases,
             ),
             DomainTool(
+                "sample_discovery_cases",
+                "Read a deterministic issuer-distinct, label-stratified Discovery sample for point-in-time follow-up.",
+                lambda limit=8: [
+                    case.to_discovery_dict()
+                    for case in _sample_signal_discovery_cases(
+                        self.discovery_cases,
+                        limit=min(int(limit), 32),
+                    )
+                ],
+            ),
+            DomainTool(
                 "search_raw_info",
-                "Search point-in-time Raw Info for one exact Discovery case.",
+                "Search point-in-time Raw Info and return bounded document cards for one exact Discovery case.",
                 self._search_raw_info_tool,
             ),
             DomainTool(
+                "load_raw_document",
+                "Load one bounded point-in-time document excerpt under one exact Discovery case cutoff.",
+                self._load_discovery_raw_document,
+            ),
+            DomainTool(
                 "clone_signal_version",
-                "Stage one complete vNext SignalSpec without overwriting stable files.",
+                "Stage exact vNext while preserving stable identity, category, execution type, and deterministic function.",
                 lambda signal_ref, spec, skill=None, tests=(): self._clone_from_tool(
                     signal_ref=signal_ref,
                     spec=spec,
@@ -5764,6 +6731,8 @@ class SignalEvolutionEngine:
                     tests=tests,
                     collected=collected,
                 ),
+                arguments_schema=self._candidate_arguments_schema(clone=True),
+                examples=(self._candidate_arguments_example(clone=True),),
             ),
             DomainTool(
                 "run_signal_tests",
@@ -5778,7 +6747,7 @@ class SignalEvolutionEngine:
         as_of: str,
         source_types: list[str] | None = None,
         query: str | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> dict[str, Any]:
         cases_by_id = {case.case_id: case for case in self.discovery_cases}
         if case_id not in cases_by_id:
             raise ValidationError("Signal Agent may search only exact Discovery cases")
@@ -5789,15 +6758,33 @@ class SignalEvolutionEngine:
             raise ValidationError(
                 "Signal Agent cannot search after the Discovery prediction time"
             )
-        return [
-            document.to_dict()
-            for document in self.raw_info_store.search(
-                case.company_id,
-                as_of=requested_as_of,
-                source_types=source_types,
-                query=query,
+        if not source_types:
+            raise ValidationError(
+                "Signal Agent Raw Info search requires explicit source_types"
             )
-        ]
+        resolution = self.evidence_resolver.resolve(
+            RawInfoRequest(
+                request_id=f"signal_agent:{case.case_id}",
+                description="Inspect point-in-time Discovery evidence for Signal evolution.",
+                source_types=tuple(str(item) for item in source_types),
+                max_documents=10,
+                query=query,
+            ),
+            company_id=case.company_id,
+            identity=case.basic_info,
+            as_of=requested_as_of,
+        )
+        return {
+            "status": resolution.status,
+            "documents": [
+                _agent_raw_document_view(document, max_content_chars=1_200)
+                for document in self.evidence_resolver.load_documents(
+                    resolution,
+                    as_of=requested_as_of,
+                )
+            ],
+            "resolution": resolution.to_dict(),
+        }
 
     def _load_discovery_raw_document(
         self, case_id: str, document_id: str
@@ -5812,10 +6799,11 @@ class SignalEvolutionEngine:
             ) from exc
         if document.company_id != case.company_id:
             raise ValidationError("raw document belongs to a different Discovery case")
-        return self.raw_info_store.load(
+        loaded = self.raw_info_store.load(
             document.document_id,
             as_of=case.prediction_time,
-        ).to_dict()
+        )
+        return _agent_raw_document_view(loaded, max_content_chars=6_000)
 
     def _stage_from_tool(
         self,
@@ -5827,6 +6815,16 @@ class SignalEvolutionEngine:
         collected: list[str],
     ) -> str:
         candidate = self._candidate_spec_from_tool(spec)
+        if origin == "mining":
+            try:
+                stable = self.registry.latest_spec(candidate.signal_id)
+            except ValidationError:
+                stable = None
+            if stable is not None:
+                raise ValidationError(
+                    "mined candidate duplicates stable Signal identity "
+                    f"{stable.ref}; use the Update Agent for vNext"
+                )
         signal_ref = self.registry.stage_candidate(
             candidate,
             skill=skill,
@@ -5875,6 +6873,17 @@ class SignalEvolutionEngine:
             raise ValidationError("cloned Signal must preserve signal_id")
         if candidate.version != stable.version + 1:
             raise ValidationError("cloned Signal must use vNext")
+        if candidate.category != stable.category:
+            raise ValidationError("cloned Signal must preserve category")
+        if candidate.execution_type is not stable.execution_type:
+            raise ValidationError("cloned Signal must preserve execution type")
+        if (
+            stable.execution_type is SignalExecutionType.DETERMINISTIC
+            and candidate.function != stable.function
+        ):
+            raise ValidationError(
+                "cloned deterministic Signal must preserve its registered function"
+            )
         if skill is None and candidate.execution_type is SignalExecutionType.LLM:
             skill = self.registry.load_skill(stable.ref)
         return self._stage_from_tool(
@@ -5900,18 +6909,44 @@ class SignalEvolutionEngine:
 
     def _query_signal_failure_cases(self, signal_id: str) -> list[dict[str, Any]]:
         failures: list[dict[str, Any]] = []
+        requested_id = str(signal_id).split(":v", 1)[0]
         for record in self.workspace.restore_archive().records:
             for trajectory in record.trajectories:
-                if signal_id in trajectory.self_reflection.misleading_signals:
-                    failures.append(
-                        {
-                            "plan_id": record.plan_id,
-                            "company_id": trajectory.company_id,
-                            "prediction": trajectory.prediction.to_dict(),
-                            "ground_truth": trajectory.ground_truth.to_dict(),
-                            "self_reflection": trajectory.self_reflection.to_dict(),
-                        }
-                    )
+                matched_results = [
+                    result
+                    for signal_round in trajectory.signal_rounds
+                    for result in signal_round.batch.results
+                    if result.signal_id == requested_id
+                ]
+                reflection_text = " ".join(
+                    trajectory.self_reflection.misleading_signals
+                ).casefold()
+                explicitly_named = requested_id.casefold() in reflection_text
+                if not matched_results or (
+                    trajectory.self_reflection.correct and not explicitly_named
+                ):
+                    continue
+                failures.append(
+                    {
+                        "plan_id": record.plan_id,
+                        "case_id": trajectory.case_id,
+                        "company_id": trajectory.company_id,
+                        "matched_signal_refs": [
+                            result.ref for result in matched_results
+                        ],
+                        "signal_results": [
+                            result.to_dict() for result in matched_results
+                        ],
+                        "prediction": trajectory.prediction.to_dict(),
+                        "ground_truth": trajectory.ground_truth.to_dict(),
+                        "self_reflection": trajectory.self_reflection.to_dict(),
+                        "match_reason": (
+                            "reflection_named_signal"
+                            if explicitly_named
+                            else "incorrect_prediction_with_signal_used"
+                        ),
+                    }
+                )
         return failures
 
 
@@ -6104,6 +7139,53 @@ def _candidate_refs_schema(value: Any) -> tuple[str, ...]:
     return parsed
 
 
+def _tool_observation_failed(observation: ToolObservation) -> bool:
+    return isinstance(observation.result, Mapping) and bool(
+        observation.result.get("error")
+    )
+
+
+def _agent_raw_document_view(
+    document: RawInfoDocument,
+    *,
+    max_content_chars: int,
+) -> dict[str, Any]:
+    """Return a bounded prompt view while the executor keeps the full document."""
+
+    if max_content_chars < 200:
+        raise ValidationError("Agent Raw Info preview bound is too small")
+    content = document.content
+    truncated = len(content) > max_content_chars
+    if truncated:
+        head_chars = max_content_chars // 2
+        tail_chars = max_content_chars - head_chars
+        excerpt = (
+            content[:head_chars]
+            + "\n...[bounded Raw Info preview]...\n"
+            + content[-tail_chars:]
+        )
+    else:
+        excerpt = content
+    compact_metadata = {
+        str(key): (value[:500] if isinstance(value, str) else value)
+        for key, value in document.metadata.items()
+        if isinstance(value, (str, int, float, bool)) or value is None
+    }
+    return {
+        "document_id": document.document_id,
+        "company_id": document.company_id,
+        "source_type": document.source_type,
+        "published_at": document.published_at.isoformat(),
+        "available_at": document.available_at.isoformat(),
+        "content_hash": document.content_hash,
+        "content_length": len(content),
+        "content_excerpt": excerpt,
+        "content_truncated": truncated,
+        "metadata": compact_metadata,
+        "metadata_keys": sorted(document.metadata),
+    }
+
+
 def _ordered_unique(values: Iterable[str]) -> list[str]:
     seen: set[str] = set()
     result: list[str] = []
@@ -6175,6 +7257,43 @@ def _discovery_identity_terms(cases: Iterable[EvolutionCase]) -> tuple[str, ...]
             elif isinstance(value, Iterable) and not isinstance(value, Mapping):
                 terms.update(str(item) for item in value)
     return tuple(sorted((item for item in terms if item.strip()), key=len, reverse=True))
+
+
+def _sample_signal_discovery_cases(
+    cases: Iterable[EvolutionCase], *, limit: int
+) -> tuple[EvolutionCase, ...]:
+    """Return a deterministic issuer-distinct four-label round-robin sample."""
+
+    if limit < 1:
+        raise ValidationError("Discovery sample limit must be positive")
+    buckets = {
+        label: sorted(
+            (case for case in cases if evaluation_label(case) == label),
+            key=lambda case: case.case_id,
+        )
+        for label in EVALUATION_LABELS
+    }
+    selected: list[EvolutionCase] = []
+    seen_companies: set[str] = set()
+    offsets = {label: 0 for label in EVALUATION_LABELS}
+    while len(selected) < limit:
+        advanced = False
+        for label in EVALUATION_LABELS:
+            bucket = buckets[label]
+            while offsets[label] < len(bucket):
+                case = bucket[offsets[label]]
+                offsets[label] += 1
+                if case.company_id in seen_companies:
+                    continue
+                selected.append(case)
+                seen_companies.add(case.company_id)
+                advanced = True
+                break
+            if len(selected) >= limit:
+                break
+        if not advanced:
+            break
+    return tuple(selected)
 
 
 def _default_case_id(company_id: str, prediction_time: datetime) -> str:

@@ -43,6 +43,32 @@ RawInfoRequest
 -> resolved documents or DataGap
 ```
 
+## Signal Input Boundary
+
+`SignalExecutor.prepare_inputs` is the only Signal-to-Raw-Info preparation
+interface. For every selected stable ref it converts the immutable
+`SignalSpec.raw_retrieval` declaration into a `RawInfoRequest`, resolves that
+request through this module, and returns the complete `RawInfoResolution`.
+Execution consumes only the documents referenced by that resolution. Signal
+functions and LLM skills never query a provider, mutate Raw Info, or invent a
+replacement value.
+
+Before Plan proposals, production evaluation calls the same interface for the
+complete frozen Signal Registry. Requests are local-first and deduplicate in
+practice through the append-only oracle: the first financial, filing, news, or
+market request may acquire data, while later compatible Signals reuse it. At
+least 80% of the frozen stable refs must resolve for each evaluation case before
+that case is admitted. Falling below that threshold is a shared data-readiness
+pause, not Plan fitness and not a sequence of tolerated `unavailable` results.
+Individual Signals may still return `unavailable` when an authorized provider
+has no point-in-time data or the retrieved document lacks the required fact.
+
+Source-type aliases are semantic at both local lookup and authorization. For
+example, an allowlist entry for `sec_company_facts` can satisfy a Signal asking
+for `financials`, and `price_daily` can satisfy `market_data`, provided the
+provider and capability are also explicitly authorized. Readiness never widens
+an allowlist or converts a disabled policy into authorization.
+
 Unknown source types remain valid Information Plan content and yield
 `adapter_missing`; they do not reject a candidate. Source-data authorization is
 separate from LLM authorization. Provider cache/ledger/quota behavior remains
@@ -61,6 +87,31 @@ point-in-time result that still does not satisfy the request advances to the
 next authorized adapter while budget remains. A final DataGap records the
 failed provider attempts; one provider's miss must not suppress a later
 authorized fallback.
+
+Within one resolver lifetime, compatible requests for the same provider,
+semantic route, company, cutoff, lookback, and document limit reuse the first
+bounded acquisition failure. The later Signal records an
+`acquisition_failure_reused` event and does not spend another provider request;
+different cases, cutoffs, routes, or request bounds remain independent.
+
+A generic SEC `filing` request prefers decision-relevant `10-K`, `10-Q`, and
+`8-K` bodies over ownership, conflict-minerals, and other administrative forms.
+The filing adapter keeps trying later eligible core filings until it has
+materialized the requested count, under a fixed three-object fallback margin;
+one inaccessible archive object cannot mask the rest of the bounded filing
+set. If every attempted eligible body fails, the request remains a provider
+error rather than being represented as an empty filing document.
+
+An Alpha Vantage transcript request pairs the historical transcript endpoint
+with the provider's earnings-history metadata. The adapter derives the exact
+fiscal `YYYYQn` label from quarterly and annual fiscal-period ends, selects only
+quarters whose provider-reported `reportedDate` is before the case cutoff, and
+uses the next UTC day as `available_at` because the endpoint supplies a date but
+not an intraday publication time. The transcript response must repeat the
+requested symbol and quarter and contain substantive turns. The complete
+provider JSON is stored as Raw Info; a missing or ambiguous fiscal-period/date
+mapping remains unavailable rather than borrowing the case date or current
+retrieval time.
 
 Adapter routing may deterministically recover the SEC identifier from a
 canonical `company_id` shaped as `cik_##########` when the label-free case
@@ -95,6 +146,7 @@ Cover deterministic spans/budgets/ranking, exact-substring validation,
 local-hit no-acquisition, same-execution append/re-query, later reuse, every
 DataGap class, historical fail-closed behavior, canonical Signal source-type
 routing, canonical company-id CIK routing, materialized price metadata, and
-Signal document lineage. Also cover ordered multi-provider fallback, fallback
-budget accounting, and final aggregate failure after every authorized adapter
-has been attempted.
+Signal document lineage. Also cover fiscal-quarter transcript mapping,
+provider-reported availability filtering, ordered multi-provider fallback,
+fallback budget accounting, and final aggregate failure after every authorized
+adapter has been attempted.

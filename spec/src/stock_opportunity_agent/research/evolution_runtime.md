@@ -153,6 +153,12 @@ The Signal-result adapter also enforces the canonical unavailable-state
 invariant. If a provider returns `state.value=unavailable` with a looser
 coverage value, the boundary conservatively narrows coverage to `unavailable`;
 it never promotes an unavailable state to partial or sufficient evidence.
+Before validation, a cited span whose only mismatch is character case may be
+canonicalized to the source text only when it has exactly one case-insensitive
+match inside the cited document. The adapter copies that complete substring
+from Raw Info; it never fuzzy-matches, changes the document id, or resolves an
+ambiguous match. Every other exact-span failure uses the normal single model
+correction and strict validator.
 
 The fixed Blind Predictor prompt must state the Stage-1 unit as explicitly as
 the evaluator: `2x` means the target security's adjusted share-price outcome,
@@ -239,14 +245,18 @@ A disabled data policy has empty allowlists and zero ceilings; partially filled
 but disabled policy data is rejected instead of being retained as ambiguous
 latent authorization.
 
-At execution time, before Plan proposals, the runtime materializes the fixed
-label-free market backbone needed by the evaluation evidence gate. Local Raw
-Info is always reused first. On a miss, authorized price adapters are tried in
-frozen catalog order within the same source-data ceilings. A new Random
-snapshot may skip unavailable candidates while preserving its exact label and
-issuer constraints; the fixed Anchor and an existing snapshot remain
-immutable. The readiness call receives no ground truth, cohort name, or Locked
-Test content.
+At execution time, before Plan proposals, the runtime materializes both the
+fixed label-free market backbone needed by the evaluation evidence gate and the
+inputs declared by the complete frozen Signal Registry. It uses
+`SignalExecutor.prepare_inputs`, so readiness and later Signal execution share
+the exact request construction, alias matching, authorization, acquisition,
+append, re-query, and lineage path. Local Raw Info is always reused first. On a
+miss, authorized adapters are tried in frozen catalog order within the same
+source-data ceilings. A case is ready only when the market backbone and at
+least 80% of stable Signal refs resolve. A new Random snapshot may skip
+unavailable candidates while preserving its exact label and issuer constraints;
+the fixed Anchor and an existing snapshot remain immutable. The readiness call
+receives no ground truth, cohort name, or Locked Test content.
 
 Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
 `H_analyse`. Runtime owns deterministic Plan ids and the exact selected-parent

@@ -8,7 +8,11 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest import TestCase
 
-from stock_opportunity_agent.llm.agent import AgentRequest, AgentUsage
+from stock_opportunity_agent.llm.agent import (
+    AgentRequest,
+    AgentUsage,
+    ToolObservation,
+)
 from stock_opportunity_agent.llm import RegisteredModel
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
@@ -1055,6 +1059,96 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn('"candidate_refs": ["candidate_signal:v1"]', system_prompt)
         self.assertIn("successful staging tool call", system_prompt)
 
+    def test_slow_agent_receives_dynamic_next_required_workflow_action(self) -> None:
+        caller = ScriptedRoleCaller(
+            [{"action": "final", "output": {"candidate_refs": []}}]
+        )
+        model = StructuredAgentModel(
+            caller,
+            stage="signal_update_agent",
+            allow_outcomes=True,
+            final_output_example={"candidate_refs": ["candidate_signal:v2"]},
+        )
+
+        model.respond(
+            AgentRequest(
+                prompt="Update one candidate.",
+                tool_cards=(),
+                workspace={"workflow_contract": {"agent": "update"}},
+                observations=(
+                    ToolObservation(
+                        "list_signal_categories", {}, ["market"]
+                    ),
+                    ToolObservation(
+                        "list_signal_cards",
+                        {"category": "market"},
+                        [{"signal_ref": "price_momentum_126d:v1"}],
+                    ),
+                    ToolObservation(
+                        "load_signal_spec",
+                        {"signal_ref": "price_momentum_126d:v1"},
+                        {
+                            "signal_id": "price_momentum_126d",
+                            "raw_retrieval": {"source_types": ["market_data"]},
+                        },
+                    ),
+                ),
+            )
+        )
+
+        progress = caller.calls[0]["payload"]["workflow_progress"]
+        self.assertEqual(
+            progress["next_required_action"],
+            {
+                "action": "tool",
+                "tool_name": "query_signal_usage",
+                "arguments": {"signal_id": "price_momentum_126d"},
+                "reason": (
+                    "Inspect observed-policy statistics before proposing an update."
+                ),
+            },
+        )
+
+    def test_slow_agent_correction_preserves_exact_json_parser_feedback(self) -> None:
+        class InvalidThenValidCaller:
+            def __init__(self) -> None:
+                self.calls = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                if len(self.calls) == 1:
+                    raise StructuredOutputInvalid(
+                        "JSONDecodeError: extra data at line 1 column 20",
+                        '{"action":"final"}}',
+                        AgentUsage(llm_calls=1, tokens=9),
+                    )
+                return (
+                    {"action": "final", "output": {"candidate_refs": []}},
+                    AgentUsage(llm_calls=1, tokens=7),
+                )
+
+        caller = InvalidThenValidCaller()
+        model = StructuredAgentModel(
+            caller,
+            stage="signal_update_agent",
+            allow_outcomes=True,
+            final_output_example={"candidate_refs": ["candidate_signal:v2"]},
+        )
+
+        turn = model.respond(
+            AgentRequest(
+                prompt="Update one candidate.",
+                tool_cards=(),
+                workspace={},
+                observations=(),
+            )
+        )
+
+        self.assertEqual(turn.final_output, {"candidate_refs": []})
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("extra data", feedback["error"])
+        self.assertEqual(feedback["received_output"], '{"action":"final"}}')
+
     def test_controller_and_progressive_signal_selector_use_structured_roles(self) -> None:
         controller_caller = ScriptedRoleCaller(
             [
@@ -1932,6 +2026,58 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(usage.llm_calls, 2)
         self.assertAlmostEqual(usage.cost, 0.02)
 
+    def test_llm_signal_runner_canonicalizes_unique_case_only_span(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-1",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="The customer entered volume deployment.",
+        )
+        value = {
+            "signal_id": "pilot_to_volume",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "The pilot reached volume deployment."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": "filing-1",
+                        "exact_span": "the customer entered volume deployment.",
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        caller = ScriptedRoleCaller([value])
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Extract only source-grounded transitions.",
+            as_of,
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            result.supporting_evidence[0].exact_span,
+            "The customer entered volume deployment.",
+        )
+        self.assertEqual(usage.llm_calls, 1)
+
     def test_llm_signal_runner_falls_back_unavailable_after_failed_repair(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         document = RawInfoDocument.create(
@@ -2308,6 +2454,40 @@ class RunControlTests(TestCase):
         self.assertEqual(
             price_providers,
             ["massive", "stooq", "alpha_vantage"],
+        )
+
+    def test_runtime_exposes_authorized_transcript_adapter(self) -> None:
+        contract = EvolutionRunContract(
+            **{
+                **make_contract().__dict__,
+                "data_acquisition": DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("alpha_vantage",),
+                    allowed_capabilities=("transcripts",),
+                    allowed_source_types=("earnings_call",),
+                    max_requests_per_cycle=10,
+                    max_requests_per_run=50,
+                ),
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            resolver = evolution_runtime_module._build_evidence_resolver(
+                Path(directory),
+                RawInfoStore(),
+                contract=contract,
+                allow_data_external=True,
+                environ={"ALPHA_VANTAGE_API_KEY": "alpha-test-key"},
+                cycle_id=1,
+            )
+
+        self.assertIn("earnings_call", resolver.available_source_types)
+        self.assertIn(
+            "alpha_vantage",
+            [
+                adapter.provider
+                for adapter in resolver.adapters
+                if "earnings_call" in adapter.source_types
+            ],
         )
 
     def test_frozen_data_policy_stays_disabled_without_invocation_authorization(self) -> None:

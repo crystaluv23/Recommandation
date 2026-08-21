@@ -239,9 +239,10 @@ def aggregate_capability_gaps(
     items: list[dict[str, Any]] = []
     for key in sorted(grouped):
         item = grouped[key]
-        resolved = item["reason"] == DataGapReason.ADAPTER_MISSING.value and bool(
-            {value.casefold() for value in item["source_types"]} & available
-        )
+        resolved = item["reason"] in {
+            DataGapReason.ADAPTER_MISSING.value,
+            DataGapReason.EXTERNAL_NOT_AUTHORIZED.value,
+        } and source_types_compatible(item["source_types"], available)
         items.append(
             {
                 **item,
@@ -551,6 +552,9 @@ class EvidenceResolver:
         self.adapters = tuple(adapters)
         self.policy = policy
         self.budget = budget or DataAcquisitionBudget()
+        self._acquisition_failures: dict[
+            tuple[str, str, str, str, int | None, int], DataGapReason
+        ] = {}
 
     def resolve(
         self,
@@ -600,6 +604,25 @@ class EvidenceResolver:
                     adapter_identity = _adapter_routing_identity(company_id, identity)
                     failures: list[tuple[str, DataGapReason]] = []
                     for adapter in authorized_adapters:
+                        failure_key = _acquisition_failure_key(
+                            adapter,
+                            request,
+                            company_id=company_id,
+                            as_of=as_of,
+                        )
+                        reused_failure = self._acquisition_failures.get(failure_key)
+                        if reused_failure is not None:
+                            failures.append((adapter.provider, reused_failure))
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_failure_reused",
+                                    {
+                                        "provider": adapter.provider,
+                                        "reason": reused_failure.value,
+                                    },
+                                )
+                            )
+                            continue
                         if self._budget_exhausted():
                             failures.append(
                                 (adapter.provider, DataGapReason.QUOTA_DEFERRED)
@@ -673,6 +696,7 @@ class EvidenceResolver:
                                 else DataGapReason.NO_MATCHING_DOCUMENTS
                             )
                             failures.append((adapter.provider, reason))
+                            self._acquisition_failures[failure_key] = reason
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -684,6 +708,7 @@ class EvidenceResolver:
                             )
                         except AcquisitionFailure as exc:
                             failures.append((adapter.provider, exc.reason))
+                            self._acquisition_failures[failure_key] = exc.reason
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -704,6 +729,7 @@ class EvidenceResolver:
                                 )
                             )
                             failures.append((adapter.provider, reason))
+                            self._acquisition_failures[failure_key] = reason
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -791,6 +817,20 @@ class EvidenceResolver:
             for item in resolution.documents
         )
 
+    @property
+    def available_source_types(self) -> tuple[str, ...]:
+        """Return locally present or explicitly authorized source types."""
+
+        available = {document.source_type for document in self.store.documents}
+        if self.policy.enabled:
+            for adapter in self.adapters:
+                if (
+                    getattr(adapter, "available", True)
+                    and self._adapter_policy_authorized(adapter)
+                ):
+                    available.update(adapter.source_types)
+        return tuple(sorted(available))
+
     def _local_documents(
         self, request: RawInfoRequest, *, company_id: str, as_of: datetime
     ) -> list[RawInfoDocument]:
@@ -807,16 +847,24 @@ class EvidenceResolver:
     def _select_adapters(
         self, request: RawInfoRequest
     ) -> tuple[AcquisitionAdapter, ...]:
-        requested = set(request.source_types)
         return tuple(
             adapter
             for adapter in self.adapters
-            if requested.intersection(adapter.source_types)
+            if source_types_compatible(request.source_types, adapter.source_types)
         )
 
     def _adapter_authorized(
         self, adapter: AcquisitionAdapter, request: RawInfoRequest
     ) -> bool:
+        return (
+            self._adapter_policy_authorized(adapter)
+            and source_types_compatible(
+                request.source_types,
+                self.policy.allowed_source_types,
+            )
+        )
+
+    def _adapter_policy_authorized(self, adapter: AcquisitionAdapter) -> bool:
         return (
             (
                 not self.policy.allowed_providers
@@ -824,11 +872,18 @@ class EvidenceResolver:
             )
             and (
                 not self.policy.allowed_source_types
-                or bool(set(request.source_types).intersection(self.policy.allowed_source_types))
+                or source_types_compatible(
+                    adapter.source_types,
+                    self.policy.allowed_source_types,
+                )
             )
             and (
                 not self.policy.allowed_capabilities
-                or bool(set(adapter.capabilities).intersection(self.policy.allowed_capabilities))
+                or bool(
+                    set(adapter.capabilities).intersection(
+                        self.policy.allowed_capabilities
+                    )
+                )
             )
         )
 
@@ -909,18 +964,63 @@ def _matches_source_type(
             str(document.metadata.get(key, "")) for key in ("form", "title")
         ).casefold()
         return any(form in searchable for form in requested.intersection({"10-k", "10-q", "8-k"}))
-    aliases = {
-        "news": {"company_news"},
-        "company_news": {"news"},
-        "price_daily": {"market_data", "historical_price", "prices"},
-        "historical_price": {"market_data", "price_daily", "prices"},
-        "prices": {"market_data", "price_daily", "historical_price"},
-        "sec_company_facts": {"company_facts", "financial_statements"},
-        "company_facts": {"sec_company_facts", "financial_statements"},
-        "financial_statements": {"sec_company_facts", "company_facts", "financials"},
-        "financials": {"sec_company_facts", "company_facts", "financial_statements"},
-    }
-    return any(actual in aliases.get(item, set()) for item in requested)
+    return source_types_compatible((actual,), requested)
+
+
+_SOURCE_TYPE_FAMILIES = (
+    frozenset({"news", "company_news"}),
+    frozenset({"earnings_call", "transcript", "earnings_transcript"}),
+    frozenset({"price_daily", "market_data", "historical_price", "prices"}),
+    frozenset(
+        {
+            "sec_company_facts",
+            "company_facts",
+            "financial_statements",
+            "financials",
+        }
+    ),
+    frozenset({"filing", "sec_filing", "filing_body", "10-k", "10-q", "8-k"}),
+)
+
+
+def source_types_compatible(
+    left: Iterable[str], right: Iterable[str]
+) -> bool:
+    """Return whether two source declarations share one semantic route."""
+
+    left_values = {str(item).casefold() for item in left}
+    right_values = {str(item).casefold() for item in right}
+    if left_values.intersection(right_values):
+        return True
+    return any(
+        bool(left_values.intersection(family))
+        and bool(right_values.intersection(family))
+        for family in _SOURCE_TYPE_FAMILIES
+    )
+
+
+def _acquisition_failure_key(
+    adapter: AcquisitionAdapter,
+    request: RawInfoRequest,
+    *,
+    company_id: str,
+    as_of: datetime,
+) -> tuple[str, str, str, str, int | None, int]:
+    adapter_types = {str(item).casefold() for item in adapter.source_types}
+    requested_types = {str(item).casefold() for item in request.source_types}
+    route = "|".join(sorted(adapter_types.intersection(requested_types)))
+    for index, family in enumerate(_SOURCE_TYPE_FAMILIES):
+        if adapter_types.intersection(family) and requested_types.intersection(family):
+            route = f"family:{index}"
+            break
+    return (
+        str(adapter.provider),
+        route,
+        company_id,
+        as_of.isoformat(),
+        request.lookback_days,
+        request.max_documents,
+    )
 
 
 def _select_context_spans(
