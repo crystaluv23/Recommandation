@@ -264,9 +264,15 @@ receives no ground truth, cohort name, or Locked Test content.
 
 Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
 `H_analyse`. Runtime owns deterministic Plan ids and the exact selected-parent
-lineage; provider-supplied ids are ignored. One correction request may repair
-malformed content. An unrepaired candidate is rejected as a bounded event
-without committing a partial round.
+lineage; provider-supplied ids are ignored. The provider receives an explicit
+constraint that its four-field content must not exactly copy a selected parent,
+plus a deterministic change focus keyed by proposal attempt. Exact-parent
+content is validated inside the proposer adapter, so it receives the same one
+correction request with the failed output and precise validation message as
+malformed content. The outer candidate-attempt loop remains a separate bounded
+sampling layer; it must not retry an exact duplicate without explaining the
+required change. An unrepaired candidate is rejected as a bounded event without
+committing a partial round.
 
 Each candidate slot may make at most three independently hashed proposal
 attempts. Every structured runtime role receives at most one correction with

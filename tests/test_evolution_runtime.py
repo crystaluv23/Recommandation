@@ -1760,6 +1760,43 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
         self.assertEqual(second.plan_id, "plan_r0001_c02")
 
+    def test_plan_proposer_repairs_exact_parent_copy_with_change_focus(self) -> None:
+        parent = default_information_plan()
+        duplicate = {
+            "B": parent.basic_info_policy.to_dict(),
+            "H_init": parent.initial_research_skill,
+            "H_reflect": parent.reflection_skill,
+            "H_analyse": parent.analysis_prompt,
+        }
+        repaired = json.loads(json.dumps(duplicate))
+        repaired["H_reflect"] = (
+            "Test the strongest disconfirming evidence before resolving uncertainty."
+        )
+        caller = ScriptedRoleCaller([duplicate, repaired])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=2,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(plan.reflection_skill, repaired["H_reflect"])
+        self.assertEqual(
+            caller.stages,
+            ["information_plan_propose", "information_plan_propose_correction"],
+        )
+        constraints = caller.calls[0]["payload"]["proposal_constraints"]
+        self.assertTrue(constraints["must_differ_from_every_parent"])
+        self.assertIn("H_reflect", constraints["required_change_focus"])
+        correction = caller.calls[1]["payload"]
+        self.assertIn("exactly duplicates", correction["validation_error"])
+        self.assertEqual(correction["invalid_output"], duplicate)
+
     def test_plan_proposer_receives_complete_additive_outcome_aware_fifo_entry(
         self,
     ) -> None:

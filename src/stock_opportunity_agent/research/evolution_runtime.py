@@ -4171,6 +4171,20 @@ class LLMInformationPlanProposer:
             "parents": [item.to_dict() for item in parents],
             "meta_info": meta_payload,
         }
+        change_focuses = (
+            "Change at least one Basic Info request or H_init instruction while "
+            "retaining one compliant market backbone.",
+            "Change H_reflect to test a different falsifier, counter-evidence "
+            "order, or uncertainty-reduction step.",
+            "Change H_analyse to use a different evidence-weighting or decision "
+            "rule without changing prediction semantics.",
+        )
+        payload["proposal_constraints"] = {
+            "must_differ_from_every_parent": True,
+            "required_change_focus": change_focuses[
+                (proposal_attempt - 1) % len(change_focuses)
+            ],
+        }
         payload["proposal_slot"] = {
             "round_id": round_id,
             "candidate_index": candidate_index,
@@ -4187,11 +4201,17 @@ class LLMInformationPlanProposer:
             "and the top-level fields add horizontal cross-Plan insight. Use all "
             "layers without treating a later layer as a replacement for an earlier "
             "one. Outcome-aware reflection may guide the new Plan, but never change "
-            "labels, metrics, or prediction semantics."
+            "labels, metrics, or prediction semantics. Copying a selected parent's "
+            "four evolvable fields verbatim is invalid. Apply the supplied "
+            "proposal_constraints.required_change_focus through an actual content "
+            "change while retaining the full four-field Plan contract."
             + _INFORMATION_PLAN_OUTPUT
         )
         plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
         parent_ids = tuple(item.plan_id for item in parents)
+        parent_content_hashes = {
+            _canonical_hash(item.canonical_dict()) for item in parents
+        }
         failed_value: Mapping[str, Any] | None = None
         failure: ValidationError | None = None
         for attempt in range(2):
@@ -4224,6 +4244,12 @@ class LLMInformationPlanProposer:
                     stage, normalized, InformationPlan.from_dict
                 )
                 _validate_proposed_market_backbone(plan)
+                if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
+                    raise ValidationError(
+                        "candidate Plan exactly duplicates a selected parent; apply "
+                        "proposal_constraints.required_change_focus and change at "
+                        "least one of B, H_init, H_reflect, or H_analyse"
+                    )
                 return plan
             except ValidationError as exc:
                 failed_value = value

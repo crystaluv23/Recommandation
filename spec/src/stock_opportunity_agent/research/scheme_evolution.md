@@ -508,13 +508,15 @@ fixed `H_P`. It is called independently N times. Every call also receives a
 non-evolvable proposal slot (`round_id` and candidate index/count). Runtime
 assigns the Plan id deterministically from the slot and copies parent ids from
 the selected parents actually sent to the prompt. Model-supplied structural ids
-are ignored. Malformed four-field content receives one bounded correction; a
-second failure records `candidate_proposal_rejected` and leaves no partially
-committed round. The proposer uses frozen temperature `1.0` sampling; anonymous blind
-judging stays at temperature `0.0`. The slot prevents exact-cache collapse and
-still rejects repeated ids if sampling returns the same candidate. It
-participates in request identity but never becomes part of the candidate Plan.
-This is conditional sampling, not a claim of genetic crossover.
+are ignored. The call explicitly requires a real four-field delta from every
+selected parent and gives each bounded proposal attempt a deterministic change
+focus. Malformed content or an exact parent copy receives one correction with
+the invalid output and validation reason before the outer attempt can reject
+it. The proposer uses frozen temperature `1.0` sampling; anonymous blind judging
+stays at temperature `0.0`. The slot prevents exact-cache collapse and still
+rejects repeated ids if sampling returns the same candidate. It participates in
+request identity but never becomes part of the candidate Plan. This is
+conditional sampling, not a claim of genetic crossover.
 
 ### Cross-workspace historical Seed Pool
 

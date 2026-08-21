@@ -1,6 +1,6 @@
 # Formal Cold Start Blind-Boundary Drift
 
-visit_times: 39
+visit_times: 40
 
 ## Trigger
 
@@ -356,6 +356,23 @@ case reflection and the compact Plan critic, but never add ordinal distance or
 four-way penalties to fitness. One realized surge can make `possible` binary-
 correct and conservative relative to the outcome; it cannot prove that
 `likely` was the calibrated ex-ante probability category.
+
+## 2026-08-22 Duplicate Proposal Feedback Boundary
+
+A paid DeepSeek run returned the selected historical parent verbatim for all
+three Information Plan proposal attempts. The engine correctly rejected each
+canonical duplicate, but that check lived outside the proposer adapter, so the
+next request changed only the numeric attempt slot and never told the model why
+its valid JSON was unusable. Sampling retries are not a substitute for domain
+feedback.
+
+Validate exact-parent equality inside the proposer's bounded correction loop so
+the model receives its failed four-field output and the precise duplicate
+reason. Give successive outer attempts distinct, deterministic change focuses
+while preserving the same Plan schema, parent lineage, prediction semantics,
+and evaluation data. Keep archive/accepted-candidate deduplication in the engine;
+only the selected-parent comparison belongs inside the proposer because that is
+the content the role can actually see and repair.
 
 ## How to Apply
 
