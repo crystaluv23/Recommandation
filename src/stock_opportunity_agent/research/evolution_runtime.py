@@ -3567,7 +3567,9 @@ _SIGNAL_RESULT_OUTPUT = _output_contract(
     ' state.value must be "positive", "neutral", "negative", or "unavailable"; '
     'status.coverage must be "sufficient", "partial", or "unavailable". Each '
     'evidence item must contain document_id, exact_span, and ISO-8601 timestamp. '
-    'When state.value is "unavailable", status.coverage must also be "unavailable".'
+    'When state.value is "unavailable", status.coverage must also be "unavailable" '
+    'and both evidence arrays must be empty. Any non-unavailable value requires at '
+    'least one literal evidence item.'
 )
 
 _INFORMATION_PLAN_OUTPUT = _output_contract(
@@ -5004,6 +5006,14 @@ class StructuredLLMSignalRunner:
             payload = dict(base_payload)
             if validation_feedback is not None:
                 payload["validation_feedback"] = validation_feedback
+            correction_instruction = (
+                " This is the only correction attempt. Do not repeat failed_output. "
+                "Apply validation_feedback.required_action exactly; when no literal "
+                "citation supports the conclusion, set state.value and "
+                "status.coverage to unavailable and keep both evidence arrays empty."
+                if validation_feedback is not None
+                else ""
+            )
             value, step_usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage="llm_signal_execute",
@@ -5016,6 +5026,7 @@ class StructuredLLMSignalRunner:
                     "with no evidence. Complete documents remain local and will validate "
                     "every returned citation. When validation_feedback is supplied, "
                     "correct the failed JSON output."
+                    + correction_instruction
                     + _SIGNAL_RESULT_OUTPUT
                 ),
                 payload=payload,
@@ -5037,9 +5048,12 @@ class StructuredLLMSignalRunner:
                     "validation_error": last_validation_error,
                     "failed_output": normalized,
                     "required_action": (
-                        "Return corrected JSON grounded only in case-sensitive literal "
-                        "input-document spans copied verbatim, or return unavailable "
-                        "with empty evidence."
+                        "Do not repeat failed_output. Return corrected JSON grounded only "
+                        "in case-sensitive literal input-document spans copied verbatim. "
+                        "Fix or remove the evidence item identified by group/index in "
+                        "validation_error. If no valid literal citation remains, set "
+                        "state.value and status.coverage to unavailable and return both "
+                        "evidence arrays empty."
                     ),
                 }
                 continue

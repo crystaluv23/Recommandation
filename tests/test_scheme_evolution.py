@@ -80,6 +80,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
+    SignalCoverage,
     SignalEvidence,
     SignalExecutionType,
     SignalExecutor,
@@ -482,6 +483,24 @@ class SignalLibraryTests(TestCase):
         registry = SignalRegistry(Path(directory) / "signals")
         self.assertEqual(registry.install_catalog(SEED_CATALOG), 14)
         return registry
+
+    def test_unavailable_signal_result_rejects_placeholder_evidence(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "cannot carry evidence"):
+            SignalResult(
+                signal_id="customer_concentration",
+                version=1,
+                value=SignalValue.UNAVAILABLE,
+                confidence=0.5,
+                interpretation="No relevant concentration disclosure was visible.",
+                supporting_evidence=(
+                    SignalEvidence(
+                        document_id="filing-1",
+                        exact_span="Routine filing cover-page text.",
+                        timestamp=NOW,
+                    ),
+                ),
+                coverage=SignalCoverage.UNAVAILABLE,
+            )
 
     def test_seed_catalog_progressive_disclosure_and_frozen_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -7,8 +7,8 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 11 | Avoid coupling reusable providers to the first consumer module. |
-| Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 39 | Restate the execution contract, exact prediction unit, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
-| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 46 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
+| Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 40 | Restate the execution contract, exact prediction unit, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
+| Running Python tests, project scripts, formal cold-start pipelines, or validation commands | [`experiences/python-runtime-for-tests.md`](experiences/python-runtime-for-tests.md) | 48 | Use the project-compatible Python 3.11+ runtime instead of system Python. |
 | Comparing paired blind-LLM information plans or interpreting small confidence deltas | [`experiences/paired-llm-comparison-noise.md`](experiences/paired-llm-comparison-noise.md) | 10 | Reuse responses for identical packet hashes and separate model sampling noise from information lift. |
 | Changing continuous self-evolution persistence, resume, branching, or dashboard history | [`experiences/continuous-round-commit-marker.md`](experiences/continuous-round-commit-marker.md) | 25 | Treat round/cycle pointers as authoritative; case artifacts are exact checkpoints and debug events never prove completion. |
 | Changing additive case/Plan/Round reflection or Plan FIFO meta-info | [`experiences/additive-reflection-fifo.md`](experiences/additive-reflection-fifo.md) | 0 | Preserve original, vertical, and horizontal layers in one whole FIFO entry; outcome-aware proposer memory never enters blind prediction. |
@@ -18,6 +18,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Expanding the historical case library from a full-market price archive | [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md) | 8 | Preserve all eligible issuers by default, balance only round snapshots, reject pre-IPO identity conflicts, and emit a label-free acquisition scope. |
 | Acquiring historical company news or interpreting provider coverage | [`experiences/historical-news-backfill-boundaries.md`](experiences/historical-news-backfill-boundaries.md) | 2 | Preserve publication-time availability, title/summary scope, quota resume, and explicit provider-limit saturation. |
 | Materializing historical SEC Company Facts | [`experiences/sec-company-facts-point-in-time-boundaries.md`](experiences/sec-company-facts-point-in-time-boundaries.md) | 1 | Group facts by accession, use conservative availability, and never infer registrant CIK from the accession prefix. |
+| Auditing or changing SignalResult evidence validation and LLM Signal correction | [`experiences/signal-result-evidence-invariants.md`](experiences/signal-result-evidence-invariants.md) | 0 | Validate unavailable/evidence coherence before early returns and distinguish semantic unavailable from parser/validator failure. |
 
 ## Experience Index
 
@@ -33,6 +34,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 - [`experiences/full-market-case-expansion-boundaries.md`](experiences/full-market-case-expansion-boundaries.md): full-market case expansion needs fixed dates, issuer/security identity gates, explicit sampling-bias disclosure, and a label-free handoff to data acquisition.
 - [`experiences/historical-news-backfill-boundaries.md`](experiences/historical-news-backfill-boundaries.md): historical provider news needs exact label-free windows, publication-time availability, append-only summaries, quota-aware resume, and explicit saturation gaps.
 - [`experiences/sec-company-facts-point-in-time-boundaries.md`](experiences/sec-company-facts-point-in-time-boundaries.md): current Company Facts responses must be decomposed by historical accession and cannot use accession prefixes as registrant identity.
+- [`experiences/signal-result-evidence-invariants.md`](experiences/signal-result-evidence-invariants.md): unavailable Signals cannot retain placeholder evidence; audit literal, point-in-time, fingerprint-bound citations separately from semantic data absence.
 
 ## Consultation Protocol
 

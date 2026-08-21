@@ -2059,9 +2059,67 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value, SignalValue.POSITIVE)
         self.assertEqual(len(caller.calls), 2)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("exact span", feedback["validation_error"])
+        self.assertIn("supporting evidence[0] exact span", feedback["validation_error"])
         self.assertEqual(usage.llm_calls, 2)
         self.assertAlmostEqual(usage.cost, 0.02)
+
+    def test_llm_signal_runner_repairs_unavailable_with_placeholder_evidence(
+        self,
+    ) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-1",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="Routine filing cover-page text.",
+        )
+        invalid_result = {
+            "signal_id": "pilot_to_volume",
+            "version": 1,
+            "state": {"value": "unavailable", "confidence": 0.5},
+            "interpretation": {"summary": "No usable source evidence."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": "filing-1",
+                        "exact_span": "Routine filing cover-page text.",
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "unavailable"},
+        }
+        corrected = json.loads(json.dumps(invalid_result))
+        corrected["evidence"]["supporting"] = []
+        caller = ScriptedRoleCaller([invalid_result, corrected])
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Extract only source-grounded transitions.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(result.supporting_evidence, ())
+        self.assertEqual(len(caller.calls), 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("cannot carry evidence", feedback["validation_error"])
+        self.assertIn("Do not repeat failed_output", feedback["required_action"])
+        self.assertIn("only correction attempt", caller.calls[1]["system_prompt"])
+        self.assertEqual(usage.llm_calls, 2)
 
     def test_llm_signal_runner_canonicalizes_unique_case_only_span(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)

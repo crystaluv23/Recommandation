@@ -136,18 +136,25 @@ fact rows used in the calculation.
 When evidence policy requires it, each non-unavailable result must cite a
 document in the actual input set, the cited timestamp cannot exceed the as-of
 time, and the exact span must literally occur in the cited document.
+An `unavailable` result must carry neither supporting nor counter-evidence:
+`unavailable` means the visible inputs did not support a canonical conclusion,
+not a weaker conclusion accompanied by irrelevant placeholder citations. The
+model/parser boundary rejects this combination and sends the exact invariant
+failure through the one bounded correction path.
 Aggregate deterministic Signals cite every input document that contributed to
 the aggregate, using a span containing a matched term when the result depends on
 literal term counts; they do not cite an unrelated first document merely
 because it was present in the batch.
 
-An LLM Signal result that fails schema, identity, source, timestamp, or exact-
-span validation receives at most one corrective model call with the validation
-feedback and failed output. The correction is subject to the same strict
-validator. If it also fails, execution returns a canonical `unavailable` result
-with no evidence rather than accepting or fabricating a citation. Provider and
-unexpected runtime failures still propagate so external-call recovery remains
-explicit.
+An LLM Signal result that fails schema, identity, unavailable/evidence
+coherence, source, timestamp, or exact-span validation receives at most one
+corrective model call with the validation feedback and failed output. Feedback
+identifies the exact evidence group/index when one citation failed, and states
+the deterministic repair for an evidence-free available state. The correction
+is subject to the same strict validator. If it also fails, execution returns a
+canonical `unavailable` result with no evidence rather than accepting or
+fabricating a citation. Provider and unexpected runtime failures still
+propagate so external-call recovery remains explicit.
 
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or

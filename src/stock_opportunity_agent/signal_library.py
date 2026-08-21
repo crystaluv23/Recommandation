@@ -294,13 +294,17 @@ class SignalResult:
         object.__setattr__(self, "confidence", float(self.confidence))
         if not self.interpretation.strip():
             raise ValidationError("signal interpretation must not be empty")
+        supporting_evidence = tuple(self.supporting_evidence)
+        counter_evidence = tuple(self.counter_evidence)
+        object.__setattr__(self, "supporting_evidence", supporting_evidence)
+        object.__setattr__(self, "counter_evidence", counter_evidence)
         if self.value is SignalValue.UNAVAILABLE:
             if self.coverage is not SignalCoverage.UNAVAILABLE:
                 raise ValidationError("unavailable signal requires unavailable coverage")
+            if supporting_evidence or counter_evidence:
+                raise ValidationError("unavailable signal result cannot carry evidence")
         elif self.coverage is SignalCoverage.UNAVAILABLE:
             raise ValidationError("available signal cannot use unavailable coverage")
-        object.__setattr__(self, "supporting_evidence", tuple(self.supporting_evidence))
-        object.__setattr__(self, "counter_evidence", tuple(self.counter_evidence))
 
     @property
     def ref(self) -> str:
@@ -1548,19 +1552,37 @@ def validate_signal_result(
         raise ValidationError("signal result identity does not match SignalSpec")
     if result.value is SignalValue.UNAVAILABLE:
         return
+    evidence_groups = (
+        ("supporting", result.supporting_evidence),
+        ("counter", result.counter_evidence),
+    )
     evidence = result.supporting_evidence + result.counter_evidence
     if spec.evidence_policy.require_source and not evidence:
-        raise ValidationError("available signal result requires source evidence")
+        raise ValidationError(
+            f"available signal result ({result.value.value}) requires source evidence; "
+            "return unavailable with empty evidence when no literal citation supports it"
+        )
     documents_by_id = {document.document_id: document for document in documents}
-    for item in evidence:
-        try:
-            document = documents_by_id[item.document_id]
-        except KeyError as exc:
-            raise ValidationError("signal evidence cites a document outside its inputs") from exc
-        if document.available_at > as_of or item.timestamp > as_of:
-            raise ValidationError("signal evidence timestamp exceeds prediction time")
-        if spec.evidence_policy.require_exact_span and item.exact_span not in document.content:
-            raise ValidationError("signal evidence exact span is not in cited document")
+    for group, group_evidence in evidence_groups:
+        for index, item in enumerate(group_evidence):
+            location = f"signal {group} evidence[{index}]"
+            try:
+                document = documents_by_id[item.document_id]
+            except KeyError as exc:
+                raise ValidationError(
+                    f"{location} cites a document outside its inputs: {item.document_id}"
+                ) from exc
+            if document.available_at > as_of or item.timestamp > as_of:
+                raise ValidationError(
+                    f"{location} timestamp exceeds prediction time: {item.document_id}"
+                )
+            if (
+                spec.evidence_policy.require_exact_span
+                and item.exact_span not in document.content
+            ):
+                raise ValidationError(
+                    f"{location} exact span is not in cited document: {item.document_id}"
+                )
 
 
 def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFunction]:
