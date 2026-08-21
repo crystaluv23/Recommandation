@@ -239,6 +239,15 @@ A disabled data policy has empty allowlists and zero ceilings; partially filled
 but disabled policy data is rejected instead of being retained as ambiguous
 latent authorization.
 
+At execution time, before Plan proposals, the runtime materializes the fixed
+label-free market backbone needed by the evaluation evidence gate. Local Raw
+Info is always reused first. On a miss, authorized price adapters are tried in
+frozen catalog order within the same source-data ceilings. A new Random
+snapshot may skip unavailable candidates while preserving its exact label and
+issuer constraints; the fixed Anchor and an existing snapshot remain
+immutable. The readiness call receives no ground truth, cohort name, or Locked
+Test content.
+
 Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
 `H_analyse`. Runtime owns deterministic Plan ids and the exact selected-parent
 lineage; provider-supplied ids are ignored. One correction request may repair
@@ -288,6 +297,14 @@ window returns the same temporary-failure status for later manual resume. Any
 other exit status, including `Ctrl+C` status `130`, propagates immediately.
 Relaunch never edits the contract or pointers and cannot bypass frozen attempt,
 cost, data-request, or Locked Test controls.
+
+A shared evaluation-data failure is a control-plane condition, not candidate
+validation. It is detected before Plan calls whenever possible and is persisted
+as a non-authoritative shared-data pause diagnostic rather than an immutable
+round rejection. If every attempted provider failed transiently, it exits with
+status `75`; deterministic Anchor or ready-capacity infeasibility exits
+terminally with its exact unavailable cases/reasons. In neither case may the
+CLI return success or advance round/cycle pointers.
 
 When no candidate is fitness-eligible, the runtime persists a deterministic
 round-rejection checkpoint and capability-gap aggregation, emits a paused

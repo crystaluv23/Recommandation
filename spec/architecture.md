@@ -172,6 +172,13 @@ LLM authorization and source-data acquisition authorization are independent.
 The latter freezes allowed providers, capabilities/source types, and per-cycle
 and whole-run request ceilings. A disabled data boundary performs no network
 I/O and records an `external_not_authorized` DataGap after a local miss.
+Before Plan proposals, one label-free market-backbone readiness gate reuses or
+materializes shared point-in-time evidence for the fixed Anchor and prospective
+Random cases. Data adapters fall through in frozen provider order. Unavailable
+prospective Random cases may be skipped before their snapshot is finalized,
+but fixed Anchor cases and existing snapshots are never substituted. Shared
+data failure is an orchestration pause, not Plan fitness or a permanent round
+rejection.
 
 Owned mainly by `cases`, `data`, `research`, `signals`, and `memory`.
 

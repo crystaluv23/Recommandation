@@ -569,8 +569,8 @@ class EvidenceResolver:
         appended: list[RawInfoDocumentRef] = []
         gap: DataGap | None = None
         if not documents:
-            adapter = self._select_adapter(request)
-            if adapter is None:
+            matching_adapters = self._select_adapters(request)
+            if not matching_adapters:
                 gap = self._gap(
                     request,
                     DataGapReason.ADAPTER_MISSING,
@@ -581,96 +581,151 @@ class EvidenceResolver:
                     request,
                     DataGapReason.EXTERNAL_NOT_AUTHORIZED,
                     "Source-data external acquisition is not authorized.",
-                    provider=adapter.provider,
-                )
-            elif not self._adapter_authorized(adapter, request):
-                gap = self._gap(
-                    request,
-                    DataGapReason.EXTERNAL_NOT_AUTHORIZED,
-                    "The provider or capability is outside the frozen data authorization.",
-                    provider=adapter.provider,
-                )
-            elif self._budget_exhausted():
-                gap = self._gap(
-                    request,
-                    DataGapReason.QUOTA_DEFERRED,
-                    "The frozen source-data request ceiling was reached.",
-                    provider=adapter.provider,
+                    provider=matching_adapters[0].provider,
                 )
             else:
-                self.budget.reserve(request, adapter.provider)
-                events.append(
-                    ResolutionEvent(
-                        "acquisition_started",
-                        {"provider": adapter.provider, "request_id": request.request_id},
-                    )
+                authorized_adapters = tuple(
+                    adapter
+                    for adapter in matching_adapters
+                    if self._adapter_authorized(adapter, request)
                 )
-                try:
-                    adapter_identity = _adapter_routing_identity(
-                        company_id, identity
-                    )
-                    result = adapter.acquire(
-                        request,
-                        company_id=company_id,
-                        identity=adapter_identity,
-                        as_of=as_of,
-                    )
-                    events.extend(result.events)
-                    for document in result.documents:
-                        if document.company_id != company_id:
-                            raise AcquisitionFailure(
-                                DataGapReason.MATERIALIZATION_FAILED,
-                                "Adapter returned a document for a different company.",
-                            )
-                        if self.store.append(document):
-                            appended.append(RawInfoDocumentRef.from_document(document))
-                    events.append(
-                        ResolutionEvent(
-                            "acquisition_completed",
-                            {
-                                "provider": adapter.provider,
-                                "returned_documents": len(result.documents),
-                                "appended_documents": len(appended),
-                            },
-                        )
-                    )
-                    documents = self._local_documents(
-                        request, company_id=company_id, as_of=as_of
-                    )
-                    events.append(self._local_event(request, documents, phase="after_acquisition"))
-                    if not result.documents:
-                        gap = self._gap(
-                            request,
-                            DataGapReason.PROVIDER_NO_DATA,
-                            "The provider returned no point-in-time documents.",
-                            provider=adapter.provider,
-                        )
-                except AcquisitionFailure as exc:
-                    gap = self._gap(request, exc.reason, str(exc), provider=adapter.provider)
-                    events.append(
-                        ResolutionEvent(
-                            "acquisition_failed",
-                            {"provider": adapter.provider, "reason": exc.reason.value},
-                        )
-                    )
-                except Exception as exc:  # provider boundary: retain type, not secrets
-                    reason = (
-                        DataGapReason.QUOTA_DEFERRED
-                        if type(exc).__name__ == "DataQuotaDeferred"
-                        else DataGapReason.PROVIDER_ERROR
-                    )
+                if not authorized_adapters:
                     gap = self._gap(
                         request,
-                        reason,
-                        f"{type(exc).__name__}: {exc}",
-                        provider=adapter.provider,
+                        DataGapReason.EXTERNAL_NOT_AUTHORIZED,
+                        "The providers or capabilities are outside the frozen data authorization.",
+                        provider=matching_adapters[0].provider,
                     )
-                    events.append(
-                        ResolutionEvent(
-                            "acquisition_failed",
-                            {"provider": adapter.provider, "reason": reason.value},
+                else:
+                    adapter_identity = _adapter_routing_identity(company_id, identity)
+                    failures: list[tuple[str, DataGapReason]] = []
+                    for adapter in authorized_adapters:
+                        if self._budget_exhausted():
+                            failures.append(
+                                (adapter.provider, DataGapReason.QUOTA_DEFERRED)
+                            )
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_failed",
+                                    {
+                                        "provider": adapter.provider,
+                                        "reason": DataGapReason.QUOTA_DEFERRED.value,
+                                    },
+                                )
+                            )
+                            break
+                        self.budget.reserve(request, adapter.provider)
+                        events.append(
+                            ResolutionEvent(
+                                "acquisition_started",
+                                {
+                                    "provider": adapter.provider,
+                                    "request_id": request.request_id,
+                                },
+                            )
                         )
-                    )
+                        try:
+                            result = adapter.acquire(
+                                request,
+                                company_id=company_id,
+                                identity=adapter_identity,
+                                as_of=as_of,
+                            )
+                            events.extend(result.events)
+                            if any(
+                                document.company_id != company_id
+                                for document in result.documents
+                            ):
+                                raise AcquisitionFailure(
+                                    DataGapReason.MATERIALIZATION_FAILED,
+                                    "Adapter returned a document for a different company.",
+                                )
+                            appended_count = 0
+                            for document in result.documents:
+                                if self.store.append(document):
+                                    appended.append(
+                                        RawInfoDocumentRef.from_document(document)
+                                    )
+                                    appended_count += 1
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_completed",
+                                    {
+                                        "provider": adapter.provider,
+                                        "returned_documents": len(result.documents),
+                                        "appended_documents": appended_count,
+                                    },
+                                )
+                            )
+                            documents = self._local_documents(
+                                request, company_id=company_id, as_of=as_of
+                            )
+                            events.append(
+                                self._local_event(
+                                    request, documents, phase="after_acquisition"
+                                )
+                            )
+                            if documents:
+                                break
+                            reason = (
+                                DataGapReason.PROVIDER_NO_DATA
+                                if not result.documents
+                                else DataGapReason.NO_MATCHING_DOCUMENTS
+                            )
+                            failures.append((adapter.provider, reason))
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_failed",
+                                    {
+                                        "provider": adapter.provider,
+                                        "reason": reason.value,
+                                    },
+                                )
+                            )
+                        except AcquisitionFailure as exc:
+                            failures.append((adapter.provider, exc.reason))
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_failed",
+                                    {
+                                        "provider": adapter.provider,
+                                        "reason": exc.reason.value,
+                                    },
+                                )
+                            )
+                        except Exception as exc:  # provider boundary: retain type, not secrets
+                            reason = (
+                                DataGapReason.QUOTA_DEFERRED
+                                if type(exc).__name__ == "DataQuotaDeferred"
+                                else (
+                                    DataGapReason.PROVIDER_NO_DATA
+                                    if "returned no daily prices" in str(exc).casefold()
+                                    else DataGapReason.PROVIDER_ERROR
+                                )
+                            )
+                            failures.append((adapter.provider, reason))
+                            events.append(
+                                ResolutionEvent(
+                                    "acquisition_failed",
+                                    {
+                                        "provider": adapter.provider,
+                                        "reason": reason.value,
+                                    },
+                                )
+                            )
+                    if not documents and failures:
+                        provider, reason = failures[-1]
+                        attempts = ", ".join(
+                            f"{name}:{failure.value}"
+                            for name, failure in failures
+                        )
+                        gap = self._gap(
+                            request,
+                            reason,
+                            "Authorized acquisition adapters did not resolve the "
+                            f"request ({attempts}).",
+                            provider=provider,
+                        )
 
         if documents:
             spans = (
@@ -749,19 +804,15 @@ class EvidenceResolver:
             documents = [item for item in documents if item.published_at >= lower]
         return _rank_documents(documents, request)[: request.max_documents]
 
-    def _select_adapter(self, request: RawInfoRequest) -> AcquisitionAdapter | None:
+    def _select_adapters(
+        self, request: RawInfoRequest
+    ) -> tuple[AcquisitionAdapter, ...]:
         requested = set(request.source_types)
-        matches = tuple(
+        return tuple(
             adapter
             for adapter in self.adapters
             if requested.intersection(adapter.source_types)
         )
-        if self.policy.enabled:
-            return next(
-                (item for item in matches if self._adapter_authorized(item, request)),
-                matches[0] if matches else None,
-            )
-        return matches[0] if matches else None
 
     def _adapter_authorized(
         self, adapter: AcquisitionAdapter, request: RawInfoRequest

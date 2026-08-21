@@ -35,6 +35,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     CandidateProposalRejected,
     ConfidenceLevel,
     DualLoopEvolutionEngine,
+    EvaluationCaseReadiness,
     EvaluationDatasetManager,
     EvaluationDatasetInfeasible,
     EvolutionCase,
@@ -64,6 +65,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimeStopReason,
     RuntimeUsage,
     RoundPaused,
+    SharedEvaluationDataUnavailable,
     SignalCandidateValidator,
     SignalEvolutionEngine,
     SignalRound,
@@ -1094,6 +1096,40 @@ class EvaluationDatasetSamplingTests(TestCase):
             self.assertEqual(reused.snapshot_id, round_one.snapshot_id)
             self.assertEqual(reused.case_ids, round_one.case_ids)
 
+    def test_new_random_snapshot_skips_unready_case_without_changing_quotas(self) -> None:
+        pool = make_evaluation_pool()
+        anchors = make_anchor_pool()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            baseline = EvaluationDatasetManager(
+                root / "baseline", pool, anchors
+            ).get_or_create_round_dataset(1)
+            blocked_case_id = baseline.random_case_ids[0]
+            checked: list[str] = []
+
+            def readiness(case: EvolutionCase) -> EvaluationCaseReadiness:
+                checked.append(case.case_id)
+                if case.case_id == blocked_case_id:
+                    return EvaluationCaseReadiness(
+                        case.case_id, False, "provider_no_data"
+                    )
+                return EvaluationCaseReadiness(case.case_id, True)
+
+            snapshot = EvaluationDatasetManager(
+                root / "ready",
+                pool,
+                anchors,
+                case_readiness=readiness,
+            ).get_or_create_round_dataset(1)
+
+            self.assertNotIn(blocked_case_id, snapshot.random_case_ids)
+            self.assertIn(blocked_case_id, checked)
+            self.assertEqual(
+                dict(snapshot.random_actual_counts),
+                dict(PlanEvaluationConfig().random_label_counts),
+            )
+            self.assertEqual(len(snapshot.case_ids), 24)
+
     def test_hash_valid_snapshot_cannot_reuse_one_company(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "evaluation"
@@ -2029,6 +2065,101 @@ class PlanEvolutionEngineTests(TestCase):
                 ),
                 6,
             )
+
+    def test_shared_anchor_data_pause_precedes_plan_calls_and_is_not_rejection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            proposer = CountingProposer()
+            anchors = make_anchor_pool()
+            blocked_case_id = anchors[0].case_id
+
+            def readiness(case: EvolutionCase) -> EvaluationCaseReadiness:
+                if case.case_id == blocked_case_id:
+                    return EvaluationCaseReadiness(
+                        case.case_id,
+                        False,
+                        "provider_error",
+                        retryable=True,
+                    )
+                return EvaluationCaseReadiness(case.case_id, True)
+
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+                case_readiness=readiness,
+            )
+
+            with self.assertRaises(SharedEvaluationDataUnavailable) as context:
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=make_evaluation_pool(),
+                    anchor_cases=anchors,
+                    signal_snapshot=registry.freeze(),
+                )
+
+            self.assertTrue(context.exception.retryable)
+            self.assertEqual(proposer.calls, [])
+            round_root = workspace.experiments_root / "round-0001"
+            self.assertTrue((round_root / "shared-data-pause.json").is_file())
+            self.assertFalse((round_root / "rejected.json").exists())
+            self.assertEqual(workspace.last_completed_round, 0)
+
+    def test_common_post_evaluation_evidence_gap_is_not_plan_rejection(self) -> None:
+        class OneSharedGapEvaluator(SyntheticPlanEvaluator):
+            def evaluate(self, plan, cases, signal_registry):
+                rows = super().evaluate(plan, cases, signal_registry)
+                return (
+                    *rows[:-1],
+                    replace(
+                        rows[-1],
+                        basic_info={"requests": []},
+                        signal_rounds=(),
+                    ),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            critic = SimpleCritic()
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=OneSharedGapEvaluator(),
+                proposer=CountingProposer(),
+                critic=critic,
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=2,
+            )
+
+            with self.assertRaises(SharedEvaluationDataUnavailable) as context:
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
+                    signal_snapshot=registry.freeze(),
+                )
+
+            self.assertFalse(context.exception.retryable)
+            self.assertEqual(len(context.exception.case_reasons), 1)
+            self.assertEqual(critic.parent_comparisons, [])
+            round_root = workspace.experiments_root / "round-0001"
+            self.assertTrue((round_root / "shared-data-pause.json").is_file())
+            self.assertFalse((round_root / "rejected.json").exists())
+            self.assertEqual(workspace.last_completed_round, 0)
 
     def test_fast_loop_calls_proposer_independently_and_commits_s_e_j_r_u_t(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

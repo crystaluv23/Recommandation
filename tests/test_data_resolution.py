@@ -290,6 +290,45 @@ class EvidenceResolverTests(TestCase):
         self.assertEqual(second.documents[0].document_id, "fetched_news")
         self.assertEqual(adapter.calls, 1)
 
+    def test_provider_miss_falls_through_to_next_authorized_adapter(self) -> None:
+        first = FailingAdapter(DataGapReason.PROVIDER_NO_DATA)
+        first.provider = "primary_news"
+        second = FakeAdapter(
+            AcquisitionResult((document("fallback_news", "fallback evidence"),))
+        )
+        second.provider = "secondary_news"
+        policy = DataAcquisitionPolicy(
+            enabled=True,
+            allowed_providers=("primary_news", "secondary_news"),
+            allowed_capabilities=("news",),
+            allowed_source_types=("news",),
+            max_requests_per_cycle=2,
+            max_requests_per_run=2,
+        )
+
+        resolution = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(first, second),
+            policy=policy,
+        ).resolve(
+            RawInfoRequest("news", "Read news.", ("news",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(resolution.status, "resolved")
+        self.assertEqual(resolution.documents[0].document_id, "fallback_news")
+        self.assertEqual((first.calls, second.calls), (1, 1))
+        self.assertEqual(
+            [
+                event.details["provider"]
+                for event in resolution.events
+                if event.kind == "acquisition_started"
+            ],
+            ["primary_news", "secondary_news"],
+        )
+
     def test_unknown_unauthorized_quota_provider_and_historical_gaps(self) -> None:
         request = RawInfoRequest("news", "Read news.", ("news",))
         unknown = EvidenceResolver(RawInfoStore()).resolve(

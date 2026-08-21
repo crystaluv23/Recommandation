@@ -35,9 +35,11 @@ Supported DataGap reasons are `adapter_missing`, `missing_identifier`,
 RawInfoRequest
 -> point-in-time local RawInfoStore query
 -> local hit: reuse
--> miss: choose an authorized adapter within request ceilings
+-> miss: enumerate authorized adapters in deterministic catalog order
+-> call one adapter within request ceilings
 -> append complete returned RawInfoDocument records
 -> immediately repeat the same local query
+-> still unresolved: try the next authorized adapter
 -> resolved documents or DataGap
 ```
 
@@ -54,7 +56,11 @@ market-data documents must retain the chronological adjusted-close series in
 `metadata.prices`, because deterministic market Signals consume that exact
 field. When several authorized price adapters are available, runtime ordering
 follows the source catalog: Massive first, Stooq second, and Alpha Vantage last;
-news continues to use Alpha Vantage.
+news continues to use Alpha Vantage. A provider error, empty response, or
+point-in-time result that still does not satisfy the request advances to the
+next authorized adapter while budget remains. A final DataGap records the
+failed provider attempts; one provider's miss must not suppress a later
+authorized fallback.
 
 Adapter routing may deterministically recover the SEC identifier from a
 canonical `company_id` shaped as `cik_##########` when the label-free case
@@ -89,4 +95,6 @@ Cover deterministic spans/budgets/ranking, exact-substring validation,
 local-hit no-acquisition, same-execution append/re-query, later reuse, every
 DataGap class, historical fail-closed behavior, canonical Signal source-type
 routing, canonical company-id CIK routing, materialized price metadata, and
-Signal document lineage.
+Signal document lineage. Also cover ordered multi-provider fallback, fallback
+budget accounting, and final aggregate failure after every authorized adapter
+has been attempted.

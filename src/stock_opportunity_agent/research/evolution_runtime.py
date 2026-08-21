@@ -4798,6 +4798,7 @@ def run_bounded_evolution_cycle(
         parent_selection_seed=int(limits["parent_selection_seed"]),
         capability_source_types=available_source_types,
         evaluation_config=evaluation_config,
+        case_readiness=evaluator.check_case_readiness,
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
@@ -5014,31 +5015,28 @@ def _build_evidence_resolver(
                 ("price_daily",),
                 f"{config.alpha_vantage_api_key_env_var} is not configured.",
             )
-        unavailable_price_adapters: list[Any] = []
         massive_key = env.get(config.massive_api_key_env_var)
+        massive_price_adapter: Any
         if massive_key:
             massive = MassiveClient(
                 massive_key,
                 transport=managed("massive", DataCapability.PRICE_DAILY),
             )
-            adapters.append(
-                HistoricalPriceAdapter(
-                    "massive",
-                    lambda symbol, start, end: massive.daily_prices(
-                        symbol, start_date=start, end_date=end
-                    ),
-                    event_source=massive,
-                )
+            massive_price_adapter = HistoricalPriceAdapter(
+                "massive",
+                lambda symbol, start, end: massive.daily_prices(
+                    symbol, start_date=start, end_date=end
+                ),
+                event_source=massive,
             )
         else:
-            unavailable_price_adapters.append(
-                UnavailableProviderAdapter(
-                    "massive",
-                    HistoricalPriceAdapter.source_types,
-                    ("price_daily",),
-                    f"{config.massive_api_key_env_var} is not configured.",
-                )
+            massive_price_adapter = UnavailableProviderAdapter(
+                "massive",
+                HistoricalPriceAdapter.source_types,
+                ("price_daily",),
+                f"{config.massive_api_key_env_var} is not configured.",
             )
+        adapters.append(massive_price_adapter)
         stooq = StooqClient(
             api_key=env.get(config.stooq_api_key_env_var),
             transport=managed("stooq", DataCapability.PRICE_DAILY),
@@ -5053,7 +5051,6 @@ def _build_evidence_resolver(
             )
         )
         adapters.append(alpha_price_adapter)
-        adapters.extend(unavailable_price_adapters)
     else:
         # Adapter descriptors are still present so a local miss is correctly
         # classified as unauthorized rather than as an unknown capability.

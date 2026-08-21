@@ -256,6 +256,18 @@ distinct issuers fails preflight before any external request. The sampler never
 duplicates, silently backfills another label, emits fewer than 24 combined
 cases, or selects an Anchor issuer into Random.
 
+Before a new round snapshot is finalized or any Plan proposal/evaluation call
+is made, the runtime applies one fixed, label-free shared-evidence readiness
+gate. It resolves the mandatory 60-day `market_data` backbone locally first and
+then through every authorized price adapter in catalog order. Fixed Anchor
+cases cannot be substituted: an unavailable Anchor pauses before Plan work.
+For a not-yet-frozen Random snapshot, the sampler skips an unavailable
+case/company and continues through the same deterministic per-label rotation
+order until the exact `3/2/2/1` quotas and cross-company constraint are met.
+The acquisition request sees only routing identity and as-of time, never the
+case label or split. An already persisted round snapshot remains immutable; it
+is readiness-checked but never silently resampled.
+
 Binary F1 is the parent-selection metric. Each Plan persists Anchor, Random, and
 Combined metrics. Combined precision, recall, F1, magnitude macro-F1, and
 accuracy are recomputed from all 24 saved predictions. In particular, Combined
@@ -301,6 +313,16 @@ or has `TP=0`. Such records retain their confusion matrix and an explicit
 them as parents. If every candidate in a round is ineligible, the workspace
 writes `round_rejected` plus a capability-gap report and pauses without
 advancing `state.json` or `cycle_state.json`.
+
+Shared input readiness is not Plan fitness. If the pre-evaluation gate cannot
+assemble an exact ready snapshot, or a defense-in-depth check finds the same
+source-evidence-missing case across every candidate, the workspace writes a
+replaceable shared-data pause diagnostic and leaves the round uncommitted. It
+must not write `round_rejected`, blame every Plan, or make resume immediately
+replay a permanent rejection. A transient provider failure propagates as the
+dedicated retryable process status used by the bounded supervisor; a
+deterministic Anchor/capacity failure remains an explicit operator-visible
+pause.
 
 ## Two-Stage Prediction and Labels
 
@@ -847,4 +869,8 @@ independent case-trajectory reuse, interrupt-after-round recovery with no extra
 Fast rounds, exact staged Slow-validation/transition/result recovery, a next
 cycle that uses the promoted Registry without reevaluating historical Plans,
 append-only debug events, CLI
-progress flushing, and dashboard filtering to committed pointers.
+progress flushing, and dashboard filtering to committed pointers. Dataset/data
+recovery tests must prove that an unavailable Random case is replaced before
+snapshot finalization, fixed Anchor identity is never substituted, a shared
+source gap cannot create `round_rejected`, and a retryable shared-data pause
+uses the supervisor's temporary-failure exit status.

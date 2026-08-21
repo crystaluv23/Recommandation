@@ -185,3 +185,45 @@ class EvolutionCliTests(TestCase):
                 workspace / "experiments" / "trajectory.jsonl"
             ).read_text(encoding="utf-8")
             self.assertIn("retryable_external_error", events)
+
+    def test_main_returns_nonzero_for_retryable_shared_evaluation_data(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            stdout = io.StringIO()
+            argv = [
+                str(SCRIPT_PATH),
+                "run-loop",
+                "--workspace",
+                str(workspace),
+                "--raw-info-root",
+                str(root / "raw_info"),
+                "--approved-dataset",
+                str(root / "approved.json"),
+                "--dashboard-root",
+                str(root / "dashboard"),
+            ]
+            unavailable = CLI.SharedEvaluationDataUnavailable(
+                4,
+                {"case_pdc": "provider_error"},
+                retryable=True,
+                checkpoint_ref="shared-data-pause.json",
+            )
+            with (
+                patch.object(sys, "argv", argv),
+                patch.object(
+                    CLI,
+                    "run_loop_command",
+                    side_effect=unavailable,
+                ),
+                redirect_stdout(stdout),
+            ):
+                exit_code = CLI.main()
+
+            payload = json.loads(stdout.getvalue())
+            self.assertEqual(exit_code, 75)
+            self.assertEqual(
+                payload["status"], "shared_evaluation_data_unavailable"
+            )
+            self.assertEqual(payload["case_reasons"], {"case_pdc": "provider_error"})
+            self.assertEqual(payload["last_completed_round"], 0)

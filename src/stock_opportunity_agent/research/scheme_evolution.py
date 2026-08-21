@@ -1123,6 +1123,44 @@ class RoundPaused(EvolutionControlFlow):
         super().__init__(f"round {round_id} paused: {reason}")
 
 
+class SharedEvaluationDataUnavailable(EvolutionControlFlow):
+    """Shared point-in-time inputs cannot currently support one exact round."""
+
+    def __init__(
+        self,
+        round_id: int,
+        case_reasons: Mapping[str, str],
+        *,
+        retryable: bool,
+        checkpoint_ref: str = "",
+    ) -> None:
+        self.round_id = int(round_id)
+        self.case_reasons = {
+            str(case_id): str(reason)
+            for case_id, reason in case_reasons.items()
+        }
+        self.retryable = bool(retryable)
+        self.checkpoint_ref = str(checkpoint_ref)
+        super().__init__(
+            f"round {round_id} shared evaluation data unavailable: "
+            + ", ".join(
+                f"{case_id}={reason}"
+                for case_id, reason in self.case_reasons.items()
+            )
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return the secret-free process-control payload."""
+
+        return {
+            "status": "shared_evaluation_data_unavailable",
+            "round_id": self.round_id,
+            "case_reasons": dict(self.case_reasons),
+            "retryable": self.retryable,
+            "checkpoint_ref": self.checkpoint_ref,
+        }
+
+
 def execute_information_plan(
     *,
     plan: InformationPlan,
@@ -1648,6 +1686,29 @@ def _trajectory_has_source_evidence(trajectory: ExecutionTrajectory) -> bool:
     )
 
 
+def _shared_missing_source_case_ids(
+    attempts: Iterable[PlanEvaluationAttempt],
+) -> tuple[str, ...]:
+    """Find evidence-free cases shared by every complete candidate attempt."""
+
+    values = tuple(attempts)
+    if not values or any(
+        attempt.metrics is None
+        or "missing_source_evidence" not in attempt.fitness.reasons
+        for attempt in values
+    ):
+        return ()
+    missing_sets = [
+        {
+            trajectory.case_id
+            for trajectory in attempt.trajectories
+            if not _trajectory_has_source_evidence(trajectory)
+        }
+        for attempt in values
+    ]
+    return tuple(sorted(set.intersection(*missing_sets)))
+
+
 def _safe_ratio(numerator: float, denominator: float) -> float:
     return 0.0 if denominator == 0 else numerator / denominator
 
@@ -1681,6 +1742,33 @@ class EvolutionCase:
             "prediction_time": self.prediction_time.isoformat(),
             "basic_info": dict(self.basic_info),
             "ground_truth": self.ground_truth.to_dict(),
+        }
+
+
+@dataclass(frozen=True)
+class EvaluationCaseReadiness:
+    """Label-free readiness result for one prospective evaluation case."""
+
+    case_id: str
+    ready: bool
+    reason: str = ""
+    retryable: bool = False
+
+    def __post_init__(self) -> None:
+        _validate_id(self.case_id, "readiness case_id")
+        if type(self.ready) is not bool or type(self.retryable) is not bool:
+            raise ValidationError("evaluation readiness flags must be booleans")
+        if self.ready and (self.reason or self.retryable):
+            raise ValidationError("ready evaluation case cannot carry a failure")
+        if not self.ready and not self.reason.strip():
+            raise ValidationError("unready evaluation case requires a reason")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_id": self.case_id,
+            "ready": self.ready,
+            "reason": self.reason,
+            "retryable": self.retryable,
         }
 
 
@@ -2054,12 +2142,16 @@ class EvaluationDatasetManager:
         pool: Iterable[EvolutionCase],
         anchor_cases: Iterable[EvolutionCase],
         config: PlanEvaluationConfig = PlanEvaluationConfig(),
+        case_readiness: Callable[[EvolutionCase], EvaluationCaseReadiness]
+        | None = None,
     ) -> None:
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.pool = tuple(pool)
         self.anchor_cases = tuple(anchor_cases)
         self.config = config
+        self.case_readiness = case_readiness
+        self._readiness_cache: dict[str, EvaluationCaseReadiness] = {}
         all_cases = (*self.anchor_cases, *self.pool)
         self._cases_by_id = {case.case_id: case for case in all_cases}
         if len(self._cases_by_id) != len(all_cases):
@@ -2076,18 +2168,24 @@ class EvaluationDatasetManager:
         """Prove the exact quotas can be assigned to distinct companies."""
 
         self._validate_anchor_cases()
-        self._select_exact_cases(round_id=1, history={})
+        self._select_exact_cases(round_id=1, history={}, require_ready=False)
 
     def get_or_create_round_dataset(
         self, round_id: int
     ) -> EvaluationDatasetSnapshot:
         path = self._round_root(round_id) / "snapshot.json"
         if path.exists():
-            return self._load_snapshot(path, round_id=round_id)
+            snapshot = self._load_snapshot(path, round_id=round_id)
+            self._require_cases_ready(
+                self.resolve_cases(snapshot.case_ids), round_id=round_id
+            )
+            return snapshot
+        self._require_cases_ready(self.anchor_cases, round_id=round_id)
         seed = self.config.base_seed + round_id
         random_cases = self._select_exact_cases(
             round_id=round_id,
             history=self._selection_history(before_round=round_id),
+            require_ready=True,
         )
         return self._write_snapshot(
             path,
@@ -2115,6 +2213,7 @@ class EvaluationDatasetManager:
         *,
         round_id: int,
         history: Mapping[str, tuple[int, int]],
+        require_ready: bool,
     ) -> tuple[EvolutionCase, ...]:
         by_label_company: dict[str, dict[str, list[EvolutionCase]]] = {
             label: {} for label in EVALUATION_LABELS
@@ -2135,9 +2234,12 @@ class EvaluationDatasetManager:
 
         company_order: dict[str, list[str]] = {}
         best_case: dict[tuple[str, str], EvolutionCase] = {}
+        ordered_cases: dict[tuple[str, str], tuple[EvolutionCase, ...]] = {}
         for label, companies in by_label_company.items():
             for company_id, cases in companies.items():
-                best_case[(label, company_id)] = min(cases, key=case_key)
+                ordered = tuple(sorted(cases, key=case_key))
+                ordered_cases[(label, company_id)] = ordered
+                best_case[(label, company_id)] = ordered[0]
             company_order[label] = sorted(
                 companies,
                 key=lambda company_id: (
@@ -2145,6 +2247,16 @@ class EvaluationDatasetManager:
                     company_id,
                 ),
             )
+
+        def selected_case(
+            label: str, company_id: str
+        ) -> EvolutionCase | None:
+            if not require_ready or self.case_readiness is None:
+                return best_case[(label, company_id)]
+            for case in ordered_cases[(label, company_id)]:
+                if self._readiness_for(case).ready:
+                    return case
+            return None
 
         slots = [
             (label, index)
@@ -2165,6 +2277,8 @@ class EvaluationDatasetManager:
             for company_id in company_order[label]:
                 if company_id in seen:
                     continue
+                if selected_case(label, company_id) is None:
+                    continue
                 seen.add(company_id)
                 prior = matched_company.get(company_id)
                 if prior is None or assign(prior, seen):
@@ -2173,6 +2287,13 @@ class EvaluationDatasetManager:
             return False
 
         if any(not assign(slot, set()) for slot in slots):
+            failed_readiness = tuple(
+                result
+                for result in self._readiness_cache.values()
+                if not result.ready
+            )
+            if require_ready and failed_readiness:
+                self._raise_shared_unavailable(round_id, failed_readiness)
             raise EvaluationDatasetInfeasible(
                 expected_counts=self.config.random_label_counts,
                 available_counts=_count_evaluation_labels(self.pool),
@@ -2180,18 +2301,59 @@ class EvaluationDatasetManager:
             )
         slot_company = {slot: company for company, slot in matched_company.items()}
         selected = tuple(
-            best_case[(label, slot_company[(label, index)])]
+            selected_case(label, slot_company[(label, index)])
             for label in EVALUATION_LABELS
             for index in range(int(self.config.random_label_counts[label]))
         )
+        if any(case is None for case in selected):
+            raise ValidationError(
+                "exact Random evaluation matching selected an unready case"
+            )
+        selected_cases = tuple(case for case in selected if case is not None)
         if (
-            len(selected) != self.config.random_cases
-            or _count_evaluation_labels(selected)
+            len(selected_cases) != self.config.random_cases
+            or _count_evaluation_labels(selected_cases)
             != dict(self.config.random_label_counts)
-            or len({case.company_id for case in selected}) != len(selected)
+            or len({case.company_id for case in selected_cases})
+            != len(selected_cases)
         ):
             raise ValidationError("exact Random evaluation matching produced invalid output")
-        return selected
+        return selected_cases
+
+    def _readiness_for(self, case: EvolutionCase) -> EvaluationCaseReadiness:
+        cached = self._readiness_cache.get(case.case_id)
+        if cached is not None:
+            return cached
+        if self.case_readiness is None:
+            result = EvaluationCaseReadiness(case.case_id, True)
+        else:
+            result = self.case_readiness(case)
+            if result.case_id != case.case_id:
+                raise ValidationError("evaluation readiness case identity mismatch")
+        self._readiness_cache[case.case_id] = result
+        return result
+
+    def _require_cases_ready(
+        self, cases: Iterable[EvolutionCase], *, round_id: int
+    ) -> None:
+        failures = tuple(
+            result
+            for result in (self._readiness_for(case) for case in cases)
+            if not result.ready
+        )
+        if failures:
+            self._raise_shared_unavailable(round_id, failures)
+
+    @staticmethod
+    def _raise_shared_unavailable(
+        round_id: int, failures: Iterable[EvaluationCaseReadiness]
+    ) -> None:
+        values = tuple(failures)
+        raise SharedEvaluationDataUnavailable(
+            round_id,
+            {item.case_id: item.reason for item in values},
+            retryable=any(item.retryable for item in values),
+        )
 
     def _validate_anchor_cases(self) -> None:
         if (
@@ -3403,6 +3565,65 @@ class RuntimePlanEvaluator:
         self.llm_signal_runner = llm_signal_runner
         self.on_progress = on_progress
 
+    def check_case_readiness(
+        self, case: EvolutionCase
+    ) -> EvaluationCaseReadiness:
+        """Materialize the fixed label-free market backbone before Plan work."""
+
+        resolution = self.evidence_resolver.resolve(
+            RawInfoRequest(
+                request_id="fixed_evaluation_market_backbone",
+                description=(
+                    "Read the point-in-time daily market backbone required by "
+                    "the fixed evaluation evidence gate."
+                ),
+                source_types=("market_data",),
+                lookback_days=60,
+                max_documents=1,
+            ),
+            company_id=case.company_id,
+            identity=case.basic_info,
+            as_of=case.prediction_time,
+        )
+        if resolution.status == "resolved":
+            result = EvaluationCaseReadiness(case.case_id, True)
+            _emit_progress(
+                self.on_progress,
+                "evaluation_case_data_ready",
+                case_id=case.case_id,
+                document_count=len(resolution.documents),
+                appended_document_count=len(resolution.appended_documents),
+            )
+            return result
+        failed_reasons = {
+            str(event.details.get("reason", ""))
+            for event in resolution.events
+            if event.kind == "acquisition_failed"
+        }
+        reason = (
+            resolution.gap.reason.value
+            if resolution.gap is not None
+            else "no_matching_documents"
+        )
+        result = EvaluationCaseReadiness(
+            case.case_id,
+            False,
+            reason,
+            retryable="provider_error" in failed_reasons,
+        )
+        _emit_progress(
+            self.on_progress,
+            "evaluation_case_data_unavailable",
+            **result.to_dict(),
+            provider=(resolution.gap.provider if resolution.gap else None),
+            attempted_providers=[
+                str(event.details.get("provider", ""))
+                for event in resolution.events
+                if event.kind == "acquisition_started"
+            ],
+        )
+        return result
+
     def evaluate(
         self,
         plan: InformationPlan,
@@ -4096,6 +4317,37 @@ class EvolutionWorkspace:
         _write_or_verify_json(path, payload)
         return path
 
+    def stage_shared_data_pause(
+        self,
+        *,
+        round_id: int,
+        case_reasons: Mapping[str, str],
+        retryable: bool,
+    ) -> Path:
+        """Persist a replaceable diagnostic without committing or rejecting."""
+
+        if round_id != self.last_completed_round + 1:
+            raise ValidationError("shared-data pause does not follow committed state")
+        path = (
+            self.experiments_root
+            / f"round-{round_id:04d}"
+            / "shared-data-pause.json"
+        )
+        _atomic_write_json(
+            path,
+            {
+                "schema_version": "plan-round-shared-data-pause-v1",
+                "round_id": round_id,
+                "case_reasons": {
+                    str(case_id): str(reason)
+                    for case_id, reason in case_reasons.items()
+                },
+                "retryable": bool(retryable),
+                "last_completed_round": self.last_completed_round,
+            },
+        )
+        return path
+
     def load_round_rejection(self, round_id: int) -> dict[str, Any] | None:
         path = self.experiments_root / f"round-{round_id:04d}" / "rejected.json"
         return _read_json(path) if path.exists() else None
@@ -4290,6 +4542,8 @@ class PlanEvolutionEngine:
         parent_selection_seed: int | None = None,
         capability_source_types: Iterable[str] = (),
         evaluation_config: PlanEvaluationConfig = PlanEvaluationConfig(),
+        case_readiness: Callable[[EvolutionCase], EvaluationCaseReadiness]
+        | None = None,
         run_contract_hash: str = "",
         on_progress: ProgressCallback | None = None,
     ) -> None:
@@ -4339,6 +4593,7 @@ class PlanEvolutionEngine:
         self.parent_selection_seed = parent_selection_seed
         self.capability_source_types = tuple(capability_source_types)
         self.evaluation_config = evaluation_config
+        self.case_readiness = case_readiness
         self.run_contract_hash = run_contract_hash
         self.on_progress = on_progress
         for committed_record in self.archive.records:
@@ -4369,8 +4624,30 @@ class PlanEvolutionEngine:
             validation_cases,
             anchor_cases,
             self.evaluation_config,
+            case_readiness=self.case_readiness,
         )
-        round_snapshot = dataset_manager.get_or_create_round_dataset(round_id)
+        try:
+            round_snapshot = dataset_manager.get_or_create_round_dataset(round_id)
+        except SharedEvaluationDataUnavailable as unavailable:
+            checkpoint = self.workspace.stage_shared_data_pause(
+                round_id=round_id,
+                case_reasons=unavailable.case_reasons,
+                retryable=unavailable.retryable,
+            )
+            _emit_progress(
+                self.on_progress,
+                "shared_evaluation_data_unavailable",
+                round_id=round_id,
+                case_reasons=dict(unavailable.case_reasons),
+                retryable=unavailable.retryable,
+                checkpoint_ref=str(checkpoint),
+            )
+            raise SharedEvaluationDataUnavailable(
+                round_id,
+                unavailable.case_reasons,
+                retryable=unavailable.retryable,
+                checkpoint_ref=str(checkpoint),
+            ) from unavailable
         round_cases = dataset_manager.resolve_cases(round_snapshot.case_ids)
         _emit_progress(
             self.on_progress,
@@ -4634,6 +4911,32 @@ class PlanEvolutionEngine:
                     metrics_by_cohort=metrics_by_cohort,
                     fitness=fitness,
                 )
+            )
+
+        shared_missing_case_ids = _shared_missing_source_case_ids(attempts)
+        if shared_missing_case_ids:
+            case_reasons = {
+                case_id: "missing_source_evidence_after_readiness"
+                for case_id in shared_missing_case_ids
+            }
+            checkpoint = self.workspace.stage_shared_data_pause(
+                round_id=round_id,
+                case_reasons=case_reasons,
+                retryable=False,
+            )
+            _emit_progress(
+                self.on_progress,
+                "shared_evaluation_data_unavailable",
+                round_id=round_id,
+                case_reasons=case_reasons,
+                retryable=False,
+                checkpoint_ref=str(checkpoint),
+            )
+            raise SharedEvaluationDataUnavailable(
+                round_id,
+                case_reasons,
+                retryable=False,
+                checkpoint_ref=str(checkpoint),
             )
 
         records: list[PlanRecord] = []
