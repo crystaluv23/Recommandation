@@ -149,6 +149,21 @@ with no evidence rather than accepting or fabricating a citation. Provider and
 unexpected runtime failures still propagate so external-call recovery remains
 explicit.
 
+Complete Raw Info documents remain the local lineage, fingerprint, and final
+evidence-validation boundary; they are not copied into an LLM Signal request or
+into `SignalResult`. Before an LLM Signal executes, the runtime deterministically
+projects its resolved documents into literal source windows using the Signal
+description and versioned skill. The model-facing payload contains only minimal
+document lineage plus `start`, `end`, and `exact_text` for those windows. It is
+capped at 24,000 source characters per Signal execution, uses 2,000-character
+windows with 200-character overlap, and selects the best matching window from
+each resolved document before filling the remaining budget by relevance. The
+projection is an execution context, not a claim that omitted text is absent;
+when the visible windows cannot support a conclusion, the LLM Signal must return
+`unavailable`. Returned evidence is still validated against the complete local
+documents, so a bounded request cannot weaken source identity, point-in-time, or
+literal-span guarantees.
+
 Required Signal-result objects and evidence-policy booleans are type-strict;
 missing coverage, string booleans, string-as-array evidence, and non-finite
 confidence values are rejected rather than normalized by generic Python
@@ -206,7 +221,8 @@ unchanged.
 ## Testing
 
 Cover progressive disclosure, immutable version registration, frozen snapshot
-behavior, deterministic and LLM execution, exact evidence validation,
-unavailable state, observed-policy counts, candidate isolation, executable
-candidate fixtures, alias-aware leakage rejection, exact-hash automatic batch
-promotion, partial-transition recovery, and versioned promotion.
+behavior, deterministic and LLM execution, bounded exact-window LLM context,
+exact evidence validation against complete Raw Info, unavailable state,
+observed-policy counts, candidate isolation, executable candidate fixtures,
+alias-aware leakage rejection, exact-hash automatic batch promotion,
+partial-transition recovery, and versioned promotion.

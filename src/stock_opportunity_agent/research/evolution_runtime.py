@@ -141,6 +141,43 @@ DEFAULT_EXPANSION_STRATUM_WEIGHTS: dict[str, float] = {
     "surge_3_to_10x": 0.15,
     "surge_10x_plus": 0.05,
 }
+
+MAX_LLM_SIGNAL_CONTEXT_CHARS = 24_000
+LLM_SIGNAL_CONTEXT_CHUNK_CHARS = 2_000
+LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP = 200
+_LLM_SIGNAL_QUERY_STOP_WORDS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "are",
+        "as",
+        "at",
+        "be",
+        "by",
+        "for",
+        "from",
+        "if",
+        "in",
+        "into",
+        "is",
+        "it",
+        "not",
+        "of",
+        "on",
+        "only",
+        "or",
+        "return",
+        "signal",
+        "source",
+        "the",
+        "these",
+        "this",
+        "to",
+        "use",
+        "with",
+    }
+)
 NORMAL_STOCK_EXCHANGES = frozenset({"NASDAQ", "NYSE", "NYSE MKT", "AMEX"})
 MIN_PRE_PREDICTION_DOLLAR_VOLUME = 1_000_000.0
 MAX_ADJUSTED_CLOSE_STEP_UP = 4.0
@@ -4817,6 +4854,97 @@ class StructuredAgentModel(AgentModel):
         )
 
 
+def _project_llm_signal_documents(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    skill: str,
+) -> list[dict[str, Any]]:
+    """Project complete Raw Info into bounded, exact model-facing source spans."""
+
+    query_terms = tuple(
+        sorted(
+            {
+                token.casefold()
+                for token in re.findall(
+                    r"[A-Za-z0-9]+", f"{spec.description}\n{skill}"
+                )
+                if len(token) >= 3
+                and token.casefold() not in _LLM_SIGNAL_QUERY_STOP_WORDS
+            }
+        )
+    )
+    candidates_by_document: dict[
+        str,
+        list[tuple[tuple[Any, ...], RawInfoDocument, int, int, str]],
+    ] = {}
+    step = LLM_SIGNAL_CONTEXT_CHUNK_CHARS - LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP
+    for document in documents:
+        candidates: list[
+            tuple[tuple[Any, ...], RawInfoDocument, int, int, str]
+        ] = []
+        start = 0
+        while start < len(document.content):
+            end = min(start + LLM_SIGNAL_CONTEXT_CHUNK_CHARS, len(document.content))
+            exact_text = document.content[start:end]
+            lowered = exact_text.casefold()
+            matched_terms = sum(term in lowered for term in query_terms)
+            capped_hits = sum(min(lowered.count(term), 3) for term in query_terms)
+            rank = (
+                -matched_terms,
+                -capped_hits,
+                -document.available_at.timestamp(),
+                document.document_id,
+                start,
+            )
+            candidates.append((rank, document, start, end, exact_text))
+            if end == len(document.content):
+                break
+            start += step
+        candidates_by_document[document.document_id] = sorted(
+            candidates, key=lambda item: item[0]
+        )
+
+    primary = sorted(
+        (items[0] for items in candidates_by_document.values() if items),
+        key=lambda item: item[0],
+    )
+    remaining = sorted(
+        (
+            candidate
+            for items in candidates_by_document.values()
+            for candidate in items[1:]
+        ),
+        key=lambda item: item[0],
+    )
+    selected: dict[str, list[dict[str, Any]]] = {}
+    used = 0
+    for _rank, document, start, end, exact_text in (*primary, *remaining):
+        if used + len(exact_text) > MAX_LLM_SIGNAL_CONTEXT_CHARS:
+            continue
+        selected.setdefault(document.document_id, []).append(
+            {"start": start, "end": end, "exact_text": exact_text}
+        )
+        used += len(exact_text)
+
+    payload: list[dict[str, Any]] = []
+    for document in documents:
+        spans = selected.get(document.document_id)
+        if not spans:
+            continue
+        payload.append(
+            {
+                "document_id": document.document_id,
+                "content_hash": document.content_hash,
+                "source_type": document.source_type,
+                "published_at": document.published_at.isoformat(),
+                "available_at": document.available_at.isoformat(),
+                "source_characters": len(document.content),
+                "context_spans": sorted(spans, key=lambda item: int(item["start"])),
+            }
+        )
+    return payload
+
+
 class StructuredLLMSignalRunner:
     """No-label extraction-skill runner for one Signal and its exact documents."""
 
@@ -4834,7 +4962,13 @@ class StructuredLLMSignalRunner:
             "signal_spec": spec.to_dict(),
             "skill": skill,
             "as_of": as_of.isoformat(),
-            "documents": [item.to_dict() for item in documents],
+            "documents": _project_llm_signal_documents(spec, documents, skill),
+            "context_contract": {
+                "kind": "bounded_literal_raw_info_spans",
+                "max_source_characters": MAX_LLM_SIGNAL_CONTEXT_CHARS,
+                "complete_documents_retained_locally": True,
+                "omitted_text_may_contain_additional_evidence": True,
+            },
         }
         usage = AgentUsage()
         validation_feedback: dict[str, Any] | None = None
@@ -4848,10 +4982,14 @@ class StructuredLLMSignalRunner:
                 self.caller,
                 stage="llm_signal_execute",
                 system_prompt=(
-                    "Apply the versioned extraction skill to only these point-in-time "
-                    "documents and use literal evidence spans. If an exact literal "
-                    "span cannot be cited, return unavailable with no evidence. When "
-                    "validation_feedback is supplied, correct the failed JSON output."
+                    "Apply the versioned extraction skill only to the bounded literal "
+                    "context_spans supplied from point-in-time Raw Info. Cite an "
+                    "exact_text substring from a visible context span and its "
+                    "document_id; never infer that omitted source text is absent. If "
+                    "the visible spans cannot support a conclusion, return unavailable "
+                    "with no evidence. Complete documents remain local and will validate "
+                    "every returned citation. When validation_feedback is supplied, "
+                    "correct the failed JSON output."
                     + _SIGNAL_RESULT_OUTPUT
                 ),
                 payload=payload,

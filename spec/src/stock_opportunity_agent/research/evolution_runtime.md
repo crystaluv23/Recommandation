@@ -275,6 +275,13 @@ failures terminate that candidate; non-fitness reflections degrade to explicit
 deterministic failure records. Exact transport responses remain in cache for
 audit, but a transport-cache hit is never treated as domain validation.
 
+LLM Signal execution does not serialize its complete resolved Raw Info
+documents into the provider request. It receives the Signal Library's bounded
+literal-window projection with document hashes and source offsets; complete
+documents remain local for request fingerprints and strict validation of the
+returned evidence. `SignalResult` carries only the canonical conclusion,
+interpretation, and source evidence rather than duplicating Raw Info.
+
 Model outputs are type-strict at the role boundary. JSON booleans, arrays,
 objects, numbers, and required fields cannot be replaced by truthy strings,
 character-wise iterable coercion, or implicit coverage/state defaults. A

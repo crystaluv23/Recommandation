@@ -2078,6 +2078,91 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(usage.llm_calls, 1)
 
+    def test_llm_signal_runner_projects_large_raw_info_to_exact_bounded_spans(
+        self,
+    ) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        target = "The customer entered repeatable scaled volume deployment."
+        first = RawInfoDocument.create(
+            document_id="filing-large",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content=("Routine governance disclosure. " * 8_000) + target,
+        )
+        second = RawInfoDocument.create(
+            document_id="announcement-large",
+            company_id="issuer-1",
+            source_type="company_announcement",
+            published_at=as_of,
+            available_at=as_of,
+            content="Certification roadmap update. " * 8_000,
+        )
+        value = {
+            "signal_id": "pilot_to_volume",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "Commercial deployment is evidenced."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": "filing-large",
+                        "exact_span": target,
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        caller = ScriptedRoleCaller([value])
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing", "company_announcement"),
+            skill_file="pilot_to_volume.md",
+        )
+
+        result, _usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (first, second),
+            "Find repeatable scaled sales and volume deployment evidence.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        payload = caller.calls[0]["payload"]
+        projected = payload["documents"]
+        self.assertEqual(
+            {item["document_id"] for item in projected},
+            {"filing-large", "announcement-large"},
+        )
+        self.assertLess(len(json.dumps(payload)), 40_000)
+        self.assertLessEqual(
+            sum(
+                len(span["exact_text"])
+                for item in projected
+                for span in item["context_spans"]
+            ),
+            evolution_runtime_module.MAX_LLM_SIGNAL_CONTEXT_CHARS,
+        )
+        originals = {first.document_id: first, second.document_id: second}
+        visible_text = ""
+        for item in projected:
+            self.assertNotIn("content", item)
+            self.assertNotIn("metadata", item)
+            source = originals[item["document_id"]]
+            for span in item["context_spans"]:
+                self.assertEqual(
+                    span["exact_text"], source.content[span["start"] : span["end"]]
+                )
+                visible_text += span["exact_text"]
+        self.assertIn(target, visible_text)
+
     def test_llm_signal_runner_falls_back_unavailable_after_failed_repair(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         document = RawInfoDocument.create(
