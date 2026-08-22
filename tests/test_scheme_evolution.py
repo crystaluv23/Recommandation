@@ -762,13 +762,29 @@ class InformationPlanRuntimeTests(TestCase):
 
     def test_short_ticker_masking_is_case_sensitive(self) -> None:
         masked = _mask_identity_values(
-            "low liquidity improved while LOW remained anonymous",
+            (
+                "low liquidity improved while LOW remained anonymous; "
+                "https://www.low.com/LOW-news"
+            ),
             ("LOW",),
         )
         self.assertEqual(
             masked,
-            "low liquidity improved while [MASKED_COMPANY] remained anonymous",
+            (
+                "low liquidity improved while [MASKED_COMPANY] remained anonymous; "
+                "https://www.[MASKED_COMPANY].com/[MASKED_COMPANY]-news"
+            ),
         )
+
+    def test_formal_name_masks_short_uppercase_brand_and_url_alias(self) -> None:
+        masked = _mask_identity_values(
+            "AAR signed an agreement at https://www.aar.com/aar-update.",
+            ("AIR", "AAR Corp / AAR CORP"),
+        )
+
+        self.assertEqual(masked.count("[MASKED_COMPANY]"), 3)
+        self.assertNotIn("AAR", masked)
+        self.assertNotIn("aar", masked)
 
     def test_legacy_basic_info_fields_read_but_new_artifacts_write_requests(self) -> None:
         policy = type(default_information_plan().basic_info_policy).from_dict(

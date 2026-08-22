@@ -4662,7 +4662,7 @@ _SIGNAL_MINING_HYPOTHESES_OUTPUT = _output_contract(
                 "statement": "Explicit material order confirmation precedes repricing.",
                 "applicability": "Companies with project or customer order disclosure.",
                 "expected_positive_pattern": "Positive cases show confirmed material orders more often than controls.",
-                "source_types": ["news", "filings"],
+                "source_types": ["news", "filing"],
                 "query": "material order contract customer award",
                 "falsifiers": ["The pattern is equally common in controls."],
                 "lookback_days": 365,
@@ -4728,6 +4728,9 @@ class LLMSignalMiningModel(SignalMiningModel):
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
         limit = int(dict(payload.get("limits", {})).get("hypothesis_limit", 3))
+        allowed_source_types = {
+            str(item) for item in payload.get("available_raw_source_types", ())
+        }
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
             if set(value) != {"hypotheses"} or not isinstance(
@@ -4744,6 +4747,19 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise ValidationError(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
             if len({item.hypothesis_id for item in items}) != len(items):
                 raise ValidationError("Signal Mining H1 hypothesis ids must be unique")
+            unsupported = sorted(
+                {
+                    source_type
+                    for item in items
+                    for source_type in item.source_types
+                    if source_type not in allowed_source_types
+                }
+            )
+            if unsupported:
+                raise ValidationError(
+                    "Signal Mining H1 source_types must use exact supplied values; "
+                    "unsupported: " + ", ".join(unsupported)
+                )
             return items
 
         value, usage = _complete_parsed_role(
@@ -4752,7 +4768,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             system_prompt=(
                 "Propose a small portfolio of falsifiable, reusable Signal hypotheses. "
                 "Use meta/backlog gaps and stable cards, prefer observable point-in-time "
-                "differences, and do not select companies or restate an existing Signal."
+                "differences, and do not select companies or restate an existing Signal. "
+                "Every source_types item must exactly equal one value from "
+                "available_raw_source_types; never pluralize or invent an alias."
                 + _SIGNAL_MINING_HYPOTHESES_OUTPUT
             ),
             payload=payload,

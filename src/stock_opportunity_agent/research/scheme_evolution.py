@@ -7029,10 +7029,12 @@ class SignalEvolutionEngine:
                 as_of=case.prediction_time,
             ),
         }
+        masked_info = dict(_mask_identity_values(safe_info, aliases))
+        _assert_identity_values_masked(masked_info, aliases)
         return {
             "case_ref": case_ref,
             "prediction_year": case.prediction_time.year,
-            **dict(_mask_identity_values(safe_info, aliases)),
+            **masked_info,
             "raw_info_coverage": {
                 "document_count": len(documents),
                 "source_types": sorted({item.source_type for item in documents}),
@@ -7114,6 +7116,7 @@ class SignalEvolutionEngine:
                     "content_truncated": view["content_truncated"],
                 }
             )
+        _assert_identity_values_masked(evidence, aliases)
         packet: dict[str, Any] = {
             "case_ref": case_ref,
             "prediction_time": case.prediction_time.isoformat(),
@@ -8434,6 +8437,22 @@ def _default_case_id(company_id: str, prediction_time: datetime) -> str:
 def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
     normalized_aliases = _identity_alias_variants(aliases)
 
+    def mask_url(match: re.Match[str]) -> str:
+        result = match.group(0)
+        for alias in normalized_aliases:
+            escaped = re.escape(alias)
+            if alias[0].isalnum() and alias[-1].isalnum():
+                pattern = rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
+            else:
+                pattern = escaped
+            result = re.sub(
+                pattern,
+                _IDENTITY_MASK_SENTINEL,
+                result,
+                flags=re.IGNORECASE,
+            )
+        return result
+
     def mask(item: Any) -> Any:
         if isinstance(item, str):
             result = item
@@ -8453,6 +8472,12 @@ def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
                         else re.IGNORECASE
                     ),
                 )
+            result = re.sub(
+                r"https?://[^\s\"\\]+",
+                mask_url,
+                result,
+                flags=re.IGNORECASE,
+            )
             return result.replace(_IDENTITY_MASK_SENTINEL, _MASKED_IDENTITY_VALUE)
         if isinstance(item, list):
             return [mask(child) for child in item]
@@ -8487,15 +8512,13 @@ def _identity_alias_variants(aliases: Iterable[str]) -> tuple[str, ...]:
                 natural_name = stripped
             if _is_meaningful_derived_identity_alias(natural_name):
                 variants.add(natural_name)
-                brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
-                brand_length = sum(
-                    character.isalnum() for character in brand
-                )
-                if (
-                    brand_length >= 5
-                    and brand.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
-                ):
-                    variants.add(brand)
+            brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
+            brand_length = sum(character.isalnum() for character in brand)
+            if (
+                (brand_length >= 5 or (brand_length >= 3 and brand.isupper()))
+                and brand.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
+            ):
+                variants.add(brand)
     return tuple(sorted(variants, key=lambda item: (-len(item), item.casefold(), item)))
 
 
@@ -8538,6 +8561,15 @@ def _assert_identity_values_masked(value: Any, aliases: Iterable[str]) -> None:
                 raise ValidationError(
                     f"target identity remained in anonymous context: {path}"
                 )
+            for url_match in re.finditer(
+                r"https?://[^\s\"\\]+",
+                anonymous_item,
+                flags=re.IGNORECASE,
+            ):
+                if re.search(pattern, url_match.group(0), flags=re.IGNORECASE):
+                    raise ValidationError(
+                        f"target identity remained in anonymous context URL: {path}"
+                    )
 
     visit(value, "final_context")
 

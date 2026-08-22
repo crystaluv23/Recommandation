@@ -162,6 +162,14 @@ semantics are identical to the other structured roles. The controller—not the
 model—resolves case refs, performs positive/control feasibility, queries Raw
 Info, stages candidates, executes fixtures, and selects issuer-disjoint
 effectiveness cases.
+H1 validates every proposed source type against the exact supplied
+`available_raw_source_types` enumeration at the role boundary; aliases or
+pluralizations receive the existing one bounded correction rather than becoming
+a silently refined hypothesis.
+All H2/H3/E1 Discovery material is identity-masked before leaving the local
+controller. Short ticker-like aliases remain case-sensitive in ordinary prose
+to avoid masking common words, but are matched case-insensitively inside URLs;
+short all-uppercase brands derived from a formal company name are masked too.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

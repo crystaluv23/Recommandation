@@ -1075,7 +1075,21 @@ class ConcreteRoleAdapterTests(TestCase):
                             "statement": "Confirmed orders precede repricing.",
                             "applicability": "Project-driven companies.",
                             "expected_positive_pattern": "Positive cases confirm more orders.",
-                            "source_types": ["news"],
+                            "source_types": ["filings"],
+                            "query": "material order",
+                            "falsifiers": ["Controls confirm orders equally often."],
+                            "lookback_days": 365,
+                        }
+                    ]
+                },
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "order_confirmation",
+                            "statement": "Confirmed orders precede repricing.",
+                            "applicability": "Project-driven companies.",
+                            "expected_positive_pattern": "Positive cases confirm more orders.",
+                            "source_types": ["filing"],
                             "query": "material order",
                             "falsifiers": ["Controls confirm orders equally often."],
                             "lookback_days": 365,
@@ -1095,7 +1109,11 @@ class ConcreteRoleAdapterTests(TestCase):
         model = LLMSignalMiningModel(caller, creative_temperature=1.0)
 
         hypotheses = model.propose_hypotheses(
-            {"limits": {"hypothesis_limit": 3}, "meta_info": []}
+            {
+                "limits": {"hypothesis_limit": 3},
+                "meta_info": [],
+                "available_raw_source_types": ["news", "filing"],
+            }
         )
         rankings = model.rank_cases(
             {
@@ -1114,11 +1132,17 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_case_ranking"],
+            [
+                "signal_mining_hypotheses",
+                "signal_mining_hypotheses_correction",
+                "signal_mining_case_ranking",
+            ],
         )
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
-        self.assertEqual(caller.calls[1]["temperature"], 0.0)
-        self.assertFalse(caller.calls[1]["allow_outcomes"])
+        self.assertEqual(caller.calls[1]["temperature"], 1.0)
+        self.assertIn("validation_error", caller.calls[1]["payload"])
+        self.assertEqual(caller.calls[2]["temperature"], 0.0)
+        self.assertFalse(caller.calls[2]["allow_outcomes"])
 
     def test_slow_agent_receives_dynamic_next_required_workflow_action(self) -> None:
         caller = ScriptedRoleCaller(
