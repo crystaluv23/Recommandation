@@ -49,9 +49,23 @@ Every model turn reports LLM calls, token count, and cost when known. `max_steps
 is mandatory and positive. Task-specific runtimes add their own call, token,
 cost, and research-round limits.
 
+## Structured Role Transport Contract
+
+Structured single-role calls serialize their user payload once as canonical
+UTF-8 JSON (`sort_keys`, compact separators, Unicode preserved) and reuse that
+exact string in both the durable role request and the provider message. For
+registered production providers, preview builds the complete secret-free HTTP
+payload through the same provider method used by execution. The request
+artifact stores the exact canonical body text, byte length, and SHA-256; before
+network execution the runtime rebuilds it and fails closed on any byte drift.
+The HTTP transport sends the same canonical bytes. Request hashing, cost
+estimation, audit replay, and network transmission therefore share one byte
+identity rather than merely equivalent JSON objects.
+
 ## Invariants
 
 - Provider secrets never enter prompts, workspaces, observations, or artifacts.
+- Persisted production wire bodies contain no authorization headers or secrets.
 - A judge role is no-web and receives no validation label or future outcome.
 - A web-enabled proposer or mining agent never receives locked-test records.
 - Final structured output is passed through the supplied schema validator.

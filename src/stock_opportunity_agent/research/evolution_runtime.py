@@ -51,7 +51,7 @@ from stock_opportunity_agent.data.sources.state import (
 from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import ModelClientSettings, RegisteredModel, get_model
 from stock_opportunity_agent.llm.agent import AgentUsage
-from stock_opportunity_agent.llm.openai import ChatMessage
+from stock_opportunity_agent.llm.openai import ChatMessage, PreparedJsonRequest
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
@@ -2931,6 +2931,31 @@ def _extract_decision_token_scores(
     return None
 
 
+_WIRE_AUDITED_PROVIDERS = frozenset({"deepseek", "openai", "openrouter"})
+
+
+def _prepare_wire_record(
+    client: Any,
+    messages: list[ChatMessage],
+    kwargs: Mapping[str, Any],
+) -> dict[str, Any] | None:
+    """Build one secret-free exact provider body when the client supports it."""
+
+    prepare = getattr(client, "prepare_request", None)
+    if not callable(prepare):
+        return None
+    prepared = prepare(messages, **dict(kwargs))
+    if not isinstance(prepared, PreparedJsonRequest):
+        raise ValidationError("provider prepare_request returned an invalid value")
+    body = prepared.body
+    return {
+        "url": prepared.url,
+        "body_utf8": body.decode("utf-8"),
+        "body_bytes": len(body),
+        "body_sha256": prepared.body_sha256,
+    }
+
+
 class StructuredRoleClient:
     """Registered JSON role client guarded by request disclosure/cache/ledger."""
 
@@ -3093,6 +3118,45 @@ class StructuredRoleClient:
             + system_prompt
         )
         output_limit = max_output_tokens or self.registration.default_max_output_tokens
+        payload_text = json.dumps(
+            payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        messages = [
+            ChatMessage("system", structured_system_prompt),
+            ChatMessage("user", payload_text),
+        ]
+        kwargs: dict[str, Any] = {"max_output_tokens": output_limit}
+        if not binary_token_output:
+            kwargs["response_format"] = {"type": "json_object"}
+        if self.registration.default_reasoning_effort:
+            kwargs["reasoning"] = {
+                "effort": self.registration.default_reasoning_effort
+            }
+
+        preview_client = None
+        supports_token_logprobs = False
+        wire_request = None
+        if self.registration.provider in _WIRE_AUDITED_PROVIDERS:
+            preview_client = self.registration.create_client(
+                ModelClientSettings(
+                    preview_only=True,
+                    temperature=temperature,
+                    max_http_attempts=1,
+                    environ=self.environ,
+                )
+            )
+            supports_token_logprobs = bool(
+                decision_tokens is not None
+                and getattr(preview_client, "supports_token_logprobs", False)
+            )
+            if supports_token_logprobs:
+                kwargs["logprobs"] = True
+                kwargs["top_logprobs"] = 20
+            wire_request = _prepare_wire_record(preview_client, messages, kwargs)
+
         request = {
             "schema_version": "evolution-exact-request-v1",
             "contract_hash": self.contract.contract_hash,
@@ -3102,13 +3166,12 @@ class StructuredRoleClient:
             "max_http_attempts": 1,
             "max_output_tokens": output_limit,
             "messages": [
-                {"role": "system", "content": structured_system_prompt},
-                {
-                    "role": "user",
-                    "content": json.dumps(payload, sort_keys=True, separators=(",", ":")),
-                },
+                {"role": message.role, "content": message.content}
+                for message in messages
             ],
         }
+        if wire_request is not None:
+            request["wire_request"] = wire_request
         if binary_token_output:
             request["output_contract"] = {
                 "type": "single_binary_token",
@@ -3173,9 +3236,51 @@ class StructuredRoleClient:
                 f"{self.registration.api_key_env_var}",
             )
 
+        client = self.registration.create_client(
+            ModelClientSettings(
+                preview_only=False,
+                temperature=temperature,
+                max_http_attempts=1,
+                environ=self.environ,
+            )
+        )
+        actual_supports_token_logprobs = bool(
+            decision_tokens is not None
+            and getattr(client, "supports_token_logprobs", False)
+        )
+        if self.registration.provider not in _WIRE_AUDITED_PROVIDERS:
+            supports_token_logprobs = actual_supports_token_logprobs
+            if supports_token_logprobs:
+                kwargs["logprobs"] = True
+                kwargs["top_logprobs"] = 20
+        elif actual_supports_token_logprobs != supports_token_logprobs:
+            raise ExternalExecutionNotReady(
+                "wire_request_drift",
+                "provider token-logprob capability changed after request preview",
+            )
+        if wire_request is not None:
+            actual_wire_request = _prepare_wire_record(client, messages, kwargs)
+            if actual_wire_request != wire_request:
+                raise ExternalExecutionNotReady(
+                    "wire_request_drift",
+                    "provider request bytes changed after exact request approval",
+                )
+
+        estimated_input_bytes = (
+            int(wire_request["body_bytes"])
+            if wire_request is not None
+            else len(
+                json.dumps(
+                    request["messages"],
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            )
+        )
         estimated_input_tokens = max(
             1,
-            len(json.dumps(request["messages"], ensure_ascii=False).encode("utf-8")),
+            estimated_input_bytes,
         )
         reserved_cost = _model_cost(
             self.registration,
@@ -3192,32 +3297,6 @@ class StructuredRoleClient:
             attempt_id=attempt_id,
             reserved_cost=reserved_cost,
         )
-        client = self.registration.create_client(
-            ModelClientSettings(
-                preview_only=False,
-                temperature=temperature,
-                max_http_attempts=1,
-                environ=self.environ,
-            )
-        )
-        messages = [
-            ChatMessage("system", structured_system_prompt),
-            ChatMessage("user", json.dumps(payload, sort_keys=True)),
-        ]
-        kwargs: dict[str, Any] = {"max_output_tokens": output_limit}
-        if not binary_token_output:
-            kwargs["response_format"] = {"type": "json_object"}
-        if self.registration.default_reasoning_effort:
-            kwargs["reasoning"] = {
-                "effort": self.registration.default_reasoning_effort
-            }
-        supports_token_logprobs = bool(
-            decision_tokens is not None
-            and getattr(client, "supports_token_logprobs", False)
-        )
-        if supports_token_logprobs:
-            kwargs["logprobs"] = True
-            kwargs["top_logprobs"] = 20
         try:
             response = client.complete(messages, **kwargs)
             usage_data = response.raw.get("usage", {})
@@ -3906,7 +3985,6 @@ class LLMSignalRetrievalAgent:
         if not cards:
             return AgentStep((), AgentUsage())
 
-        selection_usage = AgentUsage()
         selection_payload: dict[str, Any] = {
             "information_needs": list(information_needs),
             "signal_cards": cards,
@@ -3919,66 +3997,55 @@ class LLMSignalRetrievalAgent:
                 for ref, value in (prior_signal_results or {}).items()
             },
         }
-        for attempt in range(2):
-            if attempt:
-                selection_payload["validation_feedback"] = (
-                    "selections must be one JSON array. Each item must contain exactly "
-                    "signal_ref, reason_code, selection_reason, "
-                    "applicability_hypothesis, expected_role, and context_tags. Refs "
-                    "must be unique and drawn only from signal_cards. An empty array "
-                    "is valid when no supplied Signal answers the information needs."
-                )
-            selection_value, step_usage = _complete_json_with_invalid_value(
-                self.caller,
-                stage="signal_retrieval_cards",
-                system_prompt=(
-                    "Choose the smallest unique batch from the supplied unexecuted "
-                    "Signal cards that answers the information needs. Previously "
-                    "executed Signals are omitted and must not be reconstructed. If "
-                    "none of the supplied cards adds useful evidence, return "
-                    "{\"selections\": []}. Otherwise return selections whose items "
-                    "contain exactly: signal_ref; reason_code (answer_need, "
-                    "confirm_hypothesis, test_contradiction, assess_applicability, "
-                    "or combine_evidence); a <=240 character selection_reason; a "
-                    "<=240 character applicability_hypothesis; expected_role "
-                    "(primary, confirmation, contradiction, or coverage); and up "
-                    "to four context_tags chosen only from: general, "
-                    "comparable_financials, sparse_evidence, filing_rich, news_rich, "
-                    "transcript_available, market_data_only, pre_revenue, "
-                    "early_commercialization, scaling, mature_operations, "
-                    "project_driven, recurring_revenue, customer_concentrated, "
-                    "capital_intensive, cyclical, regulated, biotechnology, "
-                    "healthcare, software, semiconductors, hardware, industrial, "
-                    "energy, materials, consumer, financials, real_estate, "
-                    "communications, small_cap, mid_cap, large_cap, high_volatility, "
-                    "or catalyst_window."
-                ),
-                payload=selection_payload,
-                allow_outcomes=False,
+
+        def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
+            if set(value) != {"selections"} or not isinstance(
+                value.get("selections"), list
+            ):
+                raise ValidationError("selection output requires selections array")
+            raw_selections = value["selections"]
+            if any(not isinstance(item, Mapping) for item in raw_selections):
+                raise ValidationError("every selection must be an object")
+            parsed = tuple(
+                SignalSelectionDecision.from_dict(item) for item in raw_selections
             )
-            selection_usage = selection_usage + step_usage
-            try:
-                if set(selection_value) != {"selections"} or not isinstance(
-                    selection_value["selections"], list
-                ):
-                    raise ValidationError("selection output requires selections array")
-                raw_selections = selection_value["selections"]
-                if any(not isinstance(item, Mapping) for item in raw_selections):
-                    raise ValidationError("every selection must be an object")
-                parsed = tuple(
-                    SignalSelectionDecision.from_dict(item)
-                    for item in raw_selections
-                )
-                parsed_refs = tuple(item.signal_ref for item in parsed)
-                if len(set(parsed_refs)) != len(parsed_refs):
-                    raise ValidationError("selection refs must be unique")
-                if not set(parsed_refs).issubset(allowed):
-                    raise ValidationError("selection ref is outside supplied cards")
-            except (KeyError, TypeError, ValidationError):
-                parsed = None
-            if parsed is not None:
-                return AgentStep(parsed, selection_usage)
-        return AgentStep((), selection_usage)
+            parsed_refs = tuple(item.signal_ref for item in parsed)
+            if len(set(parsed_refs)) != len(parsed_refs):
+                raise ValidationError("selection refs must be unique")
+            if not set(parsed_refs).issubset(allowed):
+                raise ValidationError("selection ref is outside supplied cards")
+            return parsed
+
+        selected, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_retrieval_cards",
+            system_prompt=(
+                "Choose the smallest unique batch from the supplied unexecuted "
+                "Signal cards that answers the information needs. Previously "
+                "executed Signals are omitted and must not be reconstructed. If "
+                "none of the supplied cards adds useful evidence, return "
+                "{\"selections\": []}. Otherwise return selections whose items "
+                "contain exactly: signal_ref; reason_code (answer_need, "
+                "confirm_hypothesis, test_contradiction, assess_applicability, "
+                "or combine_evidence); a <=240 character selection_reason; a "
+                "<=240 character applicability_hypothesis; expected_role "
+                "(primary, confirmation, contradiction, or coverage); and up "
+                "to four context_tags chosen only from: general, "
+                "comparable_financials, sparse_evidence, filing_rich, news_rich, "
+                "transcript_available, market_data_only, pre_revenue, "
+                "early_commercialization, scaling, mature_operations, "
+                "project_driven, recurring_revenue, customer_concentrated, "
+                "capital_intensive, cyclical, regulated, biotechnology, "
+                "healthcare, software, semiconductors, hardware, industrial, "
+                "energy, materials, consumer, financials, real_estate, "
+                "communications, small_cap, mid_cap, large_cap, high_volatility, "
+                "or catalyst_window."
+            ),
+            payload=selection_payload,
+            parser=parse,
+            allow_outcomes=False,
+        )
+        return AgentStep(selected, usage)
 
 
 class LLMBlindPredictor:
@@ -4012,29 +4079,31 @@ class LLMBlindPredictor:
                 "use those measures only as evidence about possible share-price "
                 "repricing. This is a forecast under uncertainty, not a proof task. "
                 "Do not require a guarantee, certainty, or an explicit future price "
-                "target. Set is_surge=true when the supplied evidence makes the "
-                "security an evidence-backed likely or possible opportunity candidate "
+                "target. Return candidate_judgment=likely or possible when the supplied "
+                "evidence makes the security an evidence-backed opportunity candidate "
                 "for the defined price outcome within the horizon, and express "
                 "residual doubt through confidence and uncertainties. Possible is a "
                 "screening judgment: it does not require a quantified valuation bridge "
                 "or a proven, concrete path to 2x. Source-backed expectation-changing "
                 "acceleration, a material catalyst, or early market confirmation can "
                 "support possible even when the exact financial impact remains "
-                "uncertain. Set is_surge=false when contrary evidence makes the outcome "
-                "unlikely, or when the packet lacks source-backed positive evidence; "
-                "do not set it false merely because certainty, a future price target, "
+                "uncertain. Return candidate_judgment=unlikely when contrary evidence "
+                "makes the outcome unlikely, or candidate_judgment="
+                "insufficient_information when the packet lacks source-backed positive "
+                "evidence; do not choose a negative judgment merely because certainty, "
+                "a future price target, "
                 "or a complete valuation bridge is unavailable. These evaluation cases "
                 "are deliberately "
                 "outcome-stratified and do not represent the live-market base rate, "
                 "so do not predict false merely because 2x moves are rare in the "
                 "broad market. Make the independent case-level decision from the "
                 "supplied evidence. This is an opportunity-discovery classifier: "
-                "set is_surge=true when the security looks like a likely or possible "
-                "candidate for that exact 2x price outcome, even though doubling need "
-                "not be more than 50% probable. Set it false when the outcome looks "
-                "unlikely or the available evidence is insufficient to support a "
-                "source-backed positive candidate judgment. If true choose 2-3x, "
-                "3-10x, or 10x+. The fixed six-month definition overrides any "
+                "choose likely or possible when the security looks like a candidate "
+                "for that exact 2x price outcome, even though doubling need not be more "
+                "than 50% probable. Choose unlikely or insufficient_information when "
+                "the corresponding negative condition applies. For likely or possible, "
+                "choose magnitude 2-3x, 3-10x, or 10x+; otherwise magnitude must be "
+                "null. The fixed six-month definition overrides any "
                 "conflicting horizon in the supplied evolvable analysis prompt. Do "
                 "not use web tools."
                 + _BLIND_PREDICTION_OUTPUT

@@ -12,6 +12,7 @@ from stock_opportunity_agent.llm.openai import (
     ChatResponse,
     HttpTransport,
     OpenAIChatClient,
+    PreparedJsonRequest,
     UrllibTransport,
     _require_str,
 )
@@ -27,6 +28,28 @@ class DeepSeekResponsesClient(OpenAIChatClient):
     """Responses client pinned to DeepSeek's OpenAI-compatible endpoint."""
 
     supports_token_logprobs = True
+
+    def prepare_request(
+        self,
+        messages: list[ChatMessage],
+        *,
+        logprobs: bool = False,
+        top_logprobs: int | None = None,
+        **kwargs: Any,
+    ) -> PreparedJsonRequest:
+        """Build the exact Responses or Chat request selected by this adapter."""
+
+        reasoning = kwargs.get("reasoning")
+        if isinstance(reasoning, Mapping):
+            effort = reasoning.get("effort")
+            kwargs["reasoning"] = {"effort": effort} if effort else None
+        if logprobs:
+            return self._prepare_chat_with_logprobs(
+                messages,
+                top_logprobs=top_logprobs,
+                **kwargs,
+            )
+        return super().prepare_request(messages, **kwargs)
 
     def complete(
         self,
@@ -62,6 +85,45 @@ class DeepSeekResponsesClient(OpenAIChatClient):
     ) -> ChatResponse:
         """Call DeepSeek's documented Chat Completions logprob boundary."""
 
+        prepared = self._prepare_chat_with_logprobs(
+            messages,
+            top_logprobs=top_logprobs,
+            max_output_tokens=max_output_tokens,
+            response_format=response_format,
+            reasoning=reasoning,
+        )
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+        raw = self.transport.post_json(
+            prepared.url,
+            headers,
+            prepared.payload,
+        )
+        choices = raw.get("choices")
+        if not isinstance(choices, list) or not choices:
+            raise ValidationError("DeepSeek chat response requires choices")
+        first = choices[0]
+        if not isinstance(first, Mapping) or not isinstance(first.get("message"), Mapping):
+            raise ValidationError("DeepSeek chat response requires a message")
+        output_text = _require_str(first["message"], "content")
+        return ChatResponse(
+            response_id=_require_str(raw, "id"),
+            model=_require_str(raw, "model"),
+            output_text=output_text,
+            raw=dict(raw),
+        )
+
+    def _prepare_chat_with_logprobs(
+        self,
+        messages: list[ChatMessage],
+        *,
+        top_logprobs: int | None,
+        max_output_tokens: int | None = None,
+        response_format: Mapping[str, Any] | None = None,
+        reasoning: Mapping[str, Any] | None = None,
+        **_unused: Any,
+    ) -> PreparedJsonRequest:
+        """Build DeepSeek's exact Chat Completions logprob request."""
+
         if not messages:
             raise ValidationError("messages must not be empty")
         if top_logprobs is None or not 1 <= top_logprobs <= 20:
@@ -85,24 +147,9 @@ class DeepSeekResponsesClient(OpenAIChatClient):
         if isinstance(reasoning, Mapping) and reasoning.get("effort") == "none":
             payload["thinking"] = {"type": "disabled"}
 
-        headers = {"Authorization": f"Bearer {self.api_key}"}
-        raw = self.transport.post_json(
+        return PreparedJsonRequest(
             f"{self.base_url}/chat/completions",
-            headers,
             payload,
-        )
-        choices = raw.get("choices")
-        if not isinstance(choices, list) or not choices:
-            raise ValidationError("DeepSeek chat response requires choices")
-        first = choices[0]
-        if not isinstance(first, Mapping) or not isinstance(first.get("message"), Mapping):
-            raise ValidationError("DeepSeek chat response requires a message")
-        output_text = _require_str(first["message"], "content")
-        return ChatResponse(
-            response_id=_require_str(raw, "id"),
-            model=_require_str(raw, "model"),
-            output_text=output_text,
-            raw=dict(raw),
         )
 
 

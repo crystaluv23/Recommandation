@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -44,7 +45,7 @@ class UrllibTransport:
         self.retry_backoff_seconds = retry_backoff_seconds
 
     def post_json(self, url: str, headers: Mapping[str, str], payload: Mapping[str, Any]) -> dict[str, Any]:
-        body = json.dumps(payload).encode("utf-8")
+        body = canonical_json_bytes(payload)
         req = request.Request(
             url,
             data=body,
@@ -132,6 +133,38 @@ class ChatResponse:
     raw: dict[str, Any]
 
 
+def canonical_json_bytes(payload: Mapping[str, Any]) -> bytes:
+    """Encode one provider body deterministically for audit and transport."""
+
+    return json.dumps(
+        dict(payload),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+@dataclass(frozen=True)
+class PreparedJsonRequest:
+    """Secret-free provider endpoint and exact canonical JSON body."""
+
+    url: str
+    payload: Mapping[str, Any]
+
+    def __post_init__(self) -> None:
+        if not self.url.strip():
+            raise ValidationError("prepared request URL must not be empty")
+        object.__setattr__(self, "payload", dict(self.payload))
+
+    @property
+    def body(self) -> bytes:
+        return canonical_json_bytes(self.payload)
+
+    @property
+    def body_sha256(self) -> str:
+        return hashlib.sha256(self.body).hexdigest()
+
+
 class OpenAIChatClient:
     """Tiny ChatGPT/OpenAI Responses API client.
 
@@ -183,7 +216,7 @@ class OpenAIChatClient:
             transport=transport,
         )
 
-    def complete(
+    def prepare_request(
         self,
         messages: list[ChatMessage],
         *,
@@ -193,8 +226,8 @@ class OpenAIChatClient:
         tool_choice: str | Mapping[str, Any] | None = None,
         include: list[str] | None = None,
         reasoning: Mapping[str, Any] | None = None,
-    ) -> ChatResponse:
-        """Send messages to the OpenAI Responses API and return assistant text."""
+    ) -> PreparedJsonRequest:
+        """Build the exact secret-free OpenAI Responses request."""
 
         if not messages:
             raise ValidationError("messages must not be empty")
@@ -218,8 +251,36 @@ class OpenAIChatClient:
         if reasoning is not None:
             payload["reasoning"] = dict(reasoning)
 
+        return PreparedJsonRequest(f"{self.base_url}/responses", payload)
+
+    def complete(
+        self,
+        messages: list[ChatMessage],
+        *,
+        max_output_tokens: int | None = None,
+        response_format: Mapping[str, Any] | None = None,
+        tools: list[Mapping[str, Any]] | None = None,
+        tool_choice: str | Mapping[str, Any] | None = None,
+        include: list[str] | None = None,
+        reasoning: Mapping[str, Any] | None = None,
+    ) -> ChatResponse:
+        """Send messages to the OpenAI Responses API and return assistant text."""
+
+        prepared = self.prepare_request(
+            messages,
+            max_output_tokens=max_output_tokens,
+            response_format=response_format,
+            tools=tools,
+            tool_choice=tool_choice,
+            include=include,
+            reasoning=reasoning,
+        )
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        raw = self.transport.post_json(f"{self.base_url}/responses", headers, payload)
+        raw = self.transport.post_json(
+            prepared.url,
+            headers,
+            prepared.payload,
+        )
         return ChatResponse(
             response_id=_require_str(raw, "id"),
             model=_require_str(raw, "model"),

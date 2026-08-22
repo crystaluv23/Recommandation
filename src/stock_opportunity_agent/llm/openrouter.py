@@ -12,6 +12,7 @@ from stock_opportunity_agent.llm.openai import (
     ChatResponse,
     HttpTransport,
     OpenAIChatClient,
+    PreparedJsonRequest,
     UrllibTransport,
     _extract_output_text,
     _require_str,
@@ -86,7 +87,7 @@ class OpenRouterChatClient(OpenAIChatClient):
             transport=transport,
         )
 
-    def complete(
+    def prepare_request(
         self,
         messages: list[ChatMessage],
         *,
@@ -97,8 +98,8 @@ class OpenRouterChatClient(OpenAIChatClient):
         include: list[str] | None = None,
         plugins: list[Mapping[str, Any]] | None = None,
         reasoning: Mapping[str, Any] | None = None,
-    ) -> ChatResponse:
-        """Send messages through OpenRouter and return normalized text."""
+    ) -> PreparedJsonRequest:
+        """Build the exact secret-free OpenRouter Responses request."""
 
         if not messages:
             raise ValidationError("messages must not be empty")
@@ -134,12 +135,42 @@ class OpenRouterChatClient(OpenAIChatClient):
                 "allow_fallbacks": self.provider_allow_fallbacks,
             }
 
+        return PreparedJsonRequest(f"{self.base_url}/responses", payload)
+
+    def complete(
+        self,
+        messages: list[ChatMessage],
+        *,
+        max_output_tokens: int | None = None,
+        response_format: Mapping[str, Any] | None = None,
+        tools: list[Mapping[str, Any]] | None = None,
+        tool_choice: str | Mapping[str, Any] | None = None,
+        include: list[str] | None = None,
+        plugins: list[Mapping[str, Any]] | None = None,
+        reasoning: Mapping[str, Any] | None = None,
+    ) -> ChatResponse:
+        """Send messages through OpenRouter and return normalized text."""
+
+        prepared = self.prepare_request(
+            messages,
+            max_output_tokens=max_output_tokens,
+            response_format=response_format,
+            tools=tools,
+            tool_choice=tool_choice,
+            include=include,
+            plugins=plugins,
+            reasoning=reasoning,
+        )
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "HTTP-Referer": self.app_referer,
             "X-Title": self.app_title,
         }
-        raw = self.transport.post_json(f"{self.base_url}/responses", headers, payload)
+        raw = self.transport.post_json(
+            prepared.url,
+            headers,
+            prepared.payload,
+        )
         return ChatResponse(
             response_id=_require_str(raw, "id"),
             model=_require_str(raw, "model"),

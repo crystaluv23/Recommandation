@@ -20,6 +20,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Materializing historical SEC Company Facts | [`experiences/sec-company-facts-point-in-time-boundaries.md`](experiences/sec-company-facts-point-in-time-boundaries.md) | 1 | Group facts by accession, use conservative availability, and never infer registrant CIK from the accession prefix. |
 | Auditing or changing SignalResult evidence validation and LLM Signal correction | [`experiences/signal-result-evidence-invariants.md`](experiences/signal-result-evidence-invariants.md) | 1 | Validate unavailable/evidence coherence before early returns and distinguish semantic unavailable from parser/validator failure. |
 | Changing Signal learning events, learned profiles, or Fast-cycle profile recovery | [`experiences/signal-learning-profile-cycle-freeze.md`](experiences/signal-learning-profile-cycle-freeze.md) | 1 | Separate Plan selection events from deduplicated observations and freeze dynamic profiles at the cycle-start committed-round cutoff. |
+| Changing structured role correction, explicit empty results, or exact provider request auditing | [`experiences/structured-role-boundary-exactness.md`](experiences/structured-role-boundary-exactness.md) | 0 | Keep domain empty distinct from invalid output and make prompt, parser, persisted body, provider builder, and HTTP bytes one contract. |
 
 ## Experience Index
 
@@ -37,6 +38,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 - [`experiences/sec-company-facts-point-in-time-boundaries.md`](experiences/sec-company-facts-point-in-time-boundaries.md): current Company Facts responses must be decomposed by historical accession and cannot use accession prefixes as registrant identity.
 - [`experiences/signal-result-evidence-invariants.md`](experiences/signal-result-evidence-invariants.md): unavailable Signals cannot retain placeholder evidence; audit literal, point-in-time, fingerprint-bound citations separately from semantic data absence.
 - [`experiences/signal-learning-profile-cycle-freeze.md`](experiences/signal-learning-profile-cycle-freeze.md): version-bound Signal learning must preserve Plan-specific reasons, deduplicate case/input efficacy, and freeze dynamic profiles at the Fast-cycle start for restart equivalence.
+- [`experiences/structured-role-boundary-exactness.md`](experiences/structured-role-boundary-exactness.md): only schema-valid empty results mean no-match; production role request preview, approval, hashing, and HTTP transport must share exact canonical bytes.
 
 ## Consultation Protocol
 

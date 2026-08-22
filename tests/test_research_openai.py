@@ -35,6 +35,11 @@ class IncompleteReadResponse:
         raise IncompleteRead(b"{")
 
 
+class JsonResponse(IncompleteReadResponse):
+    def read(self):
+        return b'{"ok":true}'
+
+
 class OpenAIChatClientTests(TestCase):
     def test_client_uses_responses_api_payload_and_extracts_text(self) -> None:
         transport = FakeTransport(
@@ -127,3 +132,23 @@ class OpenAIChatClientTests(TestCase):
                 UrllibTransport(max_attempts=1).post_json("https://api.example.test/responses", {}, {"ok": True})
 
         self.assertIn("incomplete or invalid", str(context.exception))
+
+    def test_urllib_transport_sends_canonical_utf8_json_bytes(self) -> None:
+        captured = []
+
+        def urlopen(request, *, timeout):
+            captured.append((request, timeout))
+            return JsonResponse()
+
+        with patch("stock_opportunity_agent.llm.openai.request.urlopen", urlopen):
+            result = UrllibTransport(max_attempts=1).post_json(
+                "https://api.example.test/responses",
+                {},
+                {"z": "匿名证据", "a": 1},
+            )
+
+        self.assertEqual(result, {"ok": True})
+        self.assertEqual(
+            captured[0][0].data,
+            '{"a":1,"z":"匿名证据"}'.encode("utf-8"),
+        )

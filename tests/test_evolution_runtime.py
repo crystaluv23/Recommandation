@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from stock_opportunity_agent.llm.agent import AgentUsage
-from stock_opportunity_agent.llm import RegisteredModel
+from stock_opportunity_agent.llm import RegisteredModel, get_model
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
 from stock_opportunity_agent.models import ValidationError
@@ -47,6 +47,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
 from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     CaseReflectionEvidence,
+    CandidateExecutionRejected,
     CandidateJudgment,
     ConfidenceLevel,
     EvaluationDatasetInfeasible,
@@ -1263,7 +1264,35 @@ class ConcreteRoleAdapterTests(TestCase):
                 ("revenue_growth_yoy:v1",),
             )
             self.assertEqual(selection.usage.llm_calls, 2)
-            self.assertIn("validation_feedback", caller.calls[1]["payload"])
+            self.assertIn("validation_error", caller.calls[1]["payload"])
+
+    def test_signal_selector_fails_closed_after_invalid_correction(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    signal_selection("unknown:v1"),
+                    {"selections": "still-not-an-array"},
+                ]
+            )
+
+            with self.assertRaisesRegex(
+                CandidateExecutionRejected,
+                "failed validation after one correction",
+            ) as context:
+                LLMSignalRetrievalAgent(caller).select(
+                    ("revenue growth",), registry.freeze(), {}
+                )
+
+            self.assertEqual(context.exception.usage.llm_calls, 2)
+            self.assertEqual(
+                caller.stages,
+                [
+                    "signal_retrieval_cards",
+                    "signal_retrieval_cards_correction",
+                ],
+            )
 
     def test_signal_selector_repairs_non_array_containers_without_crashing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1474,6 +1503,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("outcome-stratified", prompt)
         self.assertIn("do not predict false merely because 2x moves are rare", prompt)
         self.assertIn("need not be more than 50% probable", prompt)
+        self.assertNotIn("is_surge", prompt)
 
     def test_blind_predictor_repairs_legacy_binary_shape(self) -> None:
         valid = {
@@ -3008,6 +3038,105 @@ class RunControlTests(TestCase):
             )
             self.assertEqual(value, {"ok": True})
             self.assertEqual(usage.llm_calls, 0)
+
+    def test_structured_client_persists_canonical_production_wire_body(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client = StructuredRoleClient(
+                registration=get_model("deepseek-v4-flash"),
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=False,
+                environ={},
+            )
+            payload = {"nested": {"b": 2, "a": 1}, "context": "匿名证据"}
+
+            try:
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload=payload,
+                    allow_outcomes=False,
+                )
+            except ExternalRequestPending as pending:
+                envelope = json.loads(pending.request_path.read_text(encoding="utf-8"))
+            else:
+                self.fail("preview should persist an exact production wire request")
+
+            request = envelope["request"]
+            wire = request["wire_request"]
+            body = wire["body_utf8"].encode("utf-8")
+            self.assertEqual(wire["body_bytes"], len(body))
+            self.assertEqual(wire["body_sha256"], hashlib.sha256(body).hexdigest())
+            provider_payload = json.loads(wire["body_utf8"])
+            provider_user_text = provider_payload["input"][1]["content"][0]["text"]
+            self.assertEqual(provider_user_text, request["messages"][1]["content"])
+            self.assertEqual(
+                provider_user_text,
+                '{"context":"匿名证据","nested":{"a":1,"b":2}}',
+            )
+
+    def test_structured_client_rejects_wire_drift_before_attempt_reservation(self) -> None:
+        from stock_opportunity_agent.llm.openai import PreparedJsonRequest
+
+        class DriftClient:
+            def __init__(self, marker: str) -> None:
+                self.marker = marker
+
+            def prepare_request(self, messages, **kwargs):
+                return PreparedJsonRequest(
+                    "https://api.example.test/responses",
+                    {
+                        "marker": self.marker,
+                        "messages": [message.content for message in messages],
+                        "kwargs": dict(kwargs),
+                    },
+                )
+
+            def complete(self, _messages, **_kwargs):
+                raise AssertionError("wire drift must fail before network execution")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registration = RegisteredModel(
+                alias="drifting-provider",
+                provider="openai",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline drift fixture",
+                client_factory=lambda settings: DriftClient(
+                    "preview" if settings.preview_only else "actual"
+                ),
+            )
+            ledger = ExternalAttemptLedger(
+                root / "attempts.json", max_attempts=2, max_total_cost=1.0
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ledger,
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            with self.assertRaisesRegex(
+                ExternalExecutionNotReady,
+                "request bytes changed",
+            ):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "anonymous evidence"},
+                    allow_outcomes=False,
+                )
+
+            self.assertEqual(ledger.summary["attempt_count"], 0)
 
     def test_missing_api_key_is_control_plane_pause_without_attempt_reservation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

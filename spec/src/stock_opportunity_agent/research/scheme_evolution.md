@@ -95,8 +95,10 @@ specs remain executor-only disclosure after selection. An empty `signal_refs`
 array is a valid `no_signal_match` result when no remaining card can answer the
 need and consumes no correction call. A malformed container, duplicate ref, or
 ref outside the supplied cards receives at most one correction call with the
-exact allowed set. If the correction remains invalid, the agent returns an
-empty selection; it never guesses a category or Signal on the model's behalf.
+exact allowed set. If the correction remains invalid, the agent raises a
+usage-bearing candidate-execution rejection; it must never convert model/schema
+failure into `no_signal_match` or guess a category or Signal on the model's
+behalf.
 
 An `EvidenceResolver` serves both bootstrap and Signal paths. It queries the
 global Raw Info oracle first, optionally performs separately authorized and
@@ -352,6 +354,8 @@ The fixed Blind Predictor uses the product's opportunity-discovery decision
 boundary, not a price-oracle or proof boundary. It returns `likely`, `possible`,
 `unlikely`, or `insufficient_information`. The fixed adapter maps `likely` and
 `possible` to `is_surge=true`, and maps the other two judgments to false.
+The provider-facing schema and prompt request only `candidate_judgment`; they do
+not request or permit a separate `is_surge` field.
 `possible` means that anonymous as-of evidence supports a credible opportunity
 candidate for the exact `2x` price outcome; it does not assert more than 50%
 event probability. False positives and false negatives are penalized by the
