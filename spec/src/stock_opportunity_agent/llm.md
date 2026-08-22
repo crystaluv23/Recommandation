@@ -67,7 +67,10 @@ decision: `no_change`, `defer`, or `update`. `update` must include the complete
 cannot carry a candidate. One bounded correction may repair malformed JSON,
 but the role cannot select a target, retrieve arbitrary cases, inspect the
 issuer-disjoint holdout, stage a candidate, run tests, or promote it. If local
-target or induction requirements are not met, the role is not called.
+target or induction requirements are not met, the role is not called. The
+orchestrator may invoke this single-target role independently for at most three
+locally ranked targets in one Slow cycle; failures and usage are isolated per
+target and there is no multi-target prompt.
 
 ## Testing
 

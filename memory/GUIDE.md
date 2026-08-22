@@ -19,7 +19,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Acquiring historical company news or interpreting provider coverage | [`experiences/historical-news-backfill-boundaries.md`](experiences/historical-news-backfill-boundaries.md) | 2 | Preserve publication-time availability, title/summary scope, quota resume, and explicit provider-limit saturation. |
 | Materializing historical SEC Company Facts | [`experiences/sec-company-facts-point-in-time-boundaries.md`](experiences/sec-company-facts-point-in-time-boundaries.md) | 1 | Group facts by accession, use conservative availability, and never infer registrant CIK from the accession prefix. |
 | Auditing or changing SignalResult evidence validation and LLM Signal correction | [`experiences/signal-result-evidence-invariants.md`](experiences/signal-result-evidence-invariants.md) | 1 | Validate unavailable/evidence coherence before early returns and distinguish semantic unavailable from parser/validator failure. |
-| Changing Signal learning events, learned profiles, or Fast-cycle profile recovery | [`experiences/signal-learning-profile-cycle-freeze.md`](experiences/signal-learning-profile-cycle-freeze.md) | 0 | Separate Plan selection events from deduplicated observations and freeze dynamic profiles at the cycle-start committed-round cutoff. |
+| Changing Signal learning events, learned profiles, or Fast-cycle profile recovery | [`experiences/signal-learning-profile-cycle-freeze.md`](experiences/signal-learning-profile-cycle-freeze.md) | 1 | Separate Plan selection events from deduplicated observations and freeze dynamic profiles at the cycle-start committed-round cutoff. |
 
 ## Experience Index
 

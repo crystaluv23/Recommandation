@@ -5976,6 +5976,9 @@ class SignalUpdateModel(Protocol):
         """Return no_change, defer, or a complete vNext candidate."""
 
 
+_SIGNAL_UPDATE_TARGET_LIMIT = 3
+
+
 @dataclass(frozen=True)
 class SignalCandidateEffectiveness:
     """Paired Signal-level evidence required after contract validation."""
@@ -6614,7 +6617,8 @@ class SignalEvolutionEngine:
                 "structured_output_failed: " + str(exc),
             )
             agent_audits["update_pipeline"] = {
-                "schema_version": "signal-update-audit-v1",
+                "schema_version": "signal-update-audit-v2",
+                "cycle_id": cycle_id,
                 "status": "failed",
                 "error": str(exc),
                 "usage": _usage_to_dict(
@@ -6776,21 +6780,120 @@ class SignalEvolutionEngine:
         )
 
     def _run_signal_update(self, *, cycle_id: int) -> dict[str, Any]:
-        """Run the locally targeted, issuer-split, one-role Update pipeline."""
+        """Run a bounded portfolio of independent single-target Updates."""
 
-        target = self._select_signal_update_target()
+        targets = self._select_signal_update_targets()
         base_audit: dict[str, Any] = {
-            "schema_version": "signal-update-audit-v1",
+            "schema_version": "signal-update-audit-v2",
+            "cycle_id": cycle_id,
+            "status": "completed",
+            "model_called": False,
+            "model_target_count": 0,
+            "model_usage": _usage_to_dict(AgentUsage()),
+            "target_limit": _SIGNAL_UPDATE_TARGET_LIMIT,
+            "target_count": len(targets),
+            "candidate_refs": [],
+            "targets": [],
+        }
+        if not targets:
+            return self._signal_update_output(
+                audit={**base_audit, "disposition": "no_actionable_target"}
+            )
+
+        cases = _sample_signal_discovery_cases(
+            self.discovery_cases,
+            limit=self.effectiveness_evaluator.case_limit + 4,
+        )
+        executor = SignalExecutor(
+            self.registry.freeze(),
+            self.raw_info_store,
+            resolver=self.evidence_resolver,
+            deterministic_functions=self.validator.deterministic_functions,
+            llm_runner=self.llm_signal_runner,
+        )
+        candidate_refs: list[str] = []
+        induction_case_ids: dict[str, tuple[str, ...]] = {}
+        validation_case_ids: dict[str, tuple[str, ...]] = {}
+        failures: dict[str, tuple[str, ...]] = {}
+        target_audits: list[dict[str, Any]] = []
+        for target in targets:
+            signal_ref = str(target["signal_ref"])
+            try:
+                output = self._run_one_signal_update(
+                    cycle_id=cycle_id,
+                    target=target,
+                    cases=cases,
+                    executor=executor,
+                )
+            except ValidationError as exc:
+                failures[f"update:{signal_ref}"] = (
+                    "structured_output_failed: " + str(exc),
+                )
+                target_audits.append(
+                    {
+                        "schema_version": "signal-update-target-audit-v1",
+                        "cycle_id": cycle_id,
+                        "status": "failed",
+                        "model_called": bool(
+                            getattr(exc, "usage", AgentUsage()).llm_calls
+                        ),
+                        "target": dict(target),
+                        "issue_fingerprint": _canonical_hash(target),
+                        "error": str(exc),
+                        "usage": _usage_to_dict(
+                            getattr(exc, "usage", AgentUsage())
+                        ),
+                    }
+                )
+                continue
+            candidate_refs.extend(output["candidate_refs"])
+            induction_case_ids.update(output["induction_case_ids"])
+            validation_case_ids.update(output["validation_case_ids"])
+            failures.update(output["failures"])
+            target_audits.append(dict(output["audit"]))
+
+        model_usage = AgentUsage()
+        for item in target_audits:
+            raw_usage = item.get("model_usage", item.get("usage", {}))
+            if isinstance(raw_usage, Mapping):
+                model_usage = model_usage + _usage_from_dict(dict(raw_usage))
+        model_target_count = sum(
+            bool(item.get("model_called")) for item in target_audits
+        )
+        aggregate_audit = {
+            **base_audit,
+            "disposition": "portfolio_completed",
+            "model_called": model_target_count > 0,
+            "model_target_count": model_target_count,
+            "model_usage": _usage_to_dict(model_usage),
+            "candidate_refs": list(candidate_refs),
+            "targets": target_audits,
+        }
+        return self._signal_update_output(
+            candidate_refs=candidate_refs,
+            induction_case_ids=induction_case_ids,
+            validation_case_ids=validation_case_ids,
+            failures=failures,
+            audit=aggregate_audit,
+        )
+
+    def _run_one_signal_update(
+        self,
+        *,
+        cycle_id: int,
+        target: Mapping[str, Any],
+        cases: tuple[EvolutionCase, ...],
+        executor: SignalExecutor,
+    ) -> dict[str, Any]:
+        """Run one issuer-split Update without affecting sibling targets."""
+
+        base_audit: dict[str, Any] = {
+            "schema_version": "signal-update-target-audit-v1",
             "cycle_id": cycle_id,
             "status": "completed",
             "model_called": False,
             "candidate_refs": [],
         }
-        if target is None:
-            return self._signal_update_output(
-                audit={**base_audit, "disposition": "no_actionable_target"}
-            )
-
         signal_ref = str(target["signal_ref"])
         issue_fingerprint = _canonical_hash(target)
         base_audit.update(
@@ -6835,18 +6938,6 @@ class SignalEvolutionEngine:
 
         spec = self.registry.load_spec(signal_ref)
         skill = self.registry.load_skill(signal_ref)
-        sample_limit = self.effectiveness_evaluator.case_limit + 4
-        cases = _sample_signal_discovery_cases(
-            self.discovery_cases,
-            limit=sample_limit,
-        )
-        executor = SignalExecutor(
-            self.registry.freeze(),
-            self.raw_info_store,
-            resolver=self.evidence_resolver,
-            deterministic_functions=self.validator.deterministic_functions,
-            llm_runner=self.llm_signal_runner,
-        )
         classified: dict[str, list[tuple[EvolutionCase, SignalResult]]] = {
             "wrong": [],
             "correct": [],
@@ -6960,7 +7051,11 @@ class SignalEvolutionEngine:
         step = self.update_model.update(payload)
         decision = step.value
         if decision.signal_ref != signal_ref:
-            raise ValidationError("Signal Update decision changed the local target ref")
+            raise CandidateExecutionRejected(
+                "signal_update_decision",
+                "Signal Update decision changed the local target ref",
+                step.usage,
+            )
         audit = {
             **base_audit,
             "model_called": True,
@@ -6974,10 +7069,17 @@ class SignalEvolutionEngine:
         if decision.disposition != "update":
             return self._signal_update_output(audit=audit)
         assert decision.candidate is not None
-        staged_ref = self._stage_update_candidate(
-            signal_ref=signal_ref,
-            candidate=decision.candidate,
-        )
+        try:
+            staged_ref = self._stage_update_candidate(
+                signal_ref=signal_ref,
+                candidate=decision.candidate,
+            )
+        except ValidationError as exc:
+            raise CandidateExecutionRejected(
+                "signal_update_candidate",
+                str(exc),
+                step.usage,
+            ) from exc
         audit["candidate_refs"] = [staged_ref]
         audit["staged_ref"] = staged_ref
         return self._signal_update_output(
@@ -6991,7 +7093,13 @@ class SignalEvolutionEngine:
             audit=audit,
         )
 
-    def _select_signal_update_target(self) -> dict[str, Any] | None:
+    def _select_signal_update_targets(
+        self,
+        *,
+        limit: int = _SIGNAL_UPDATE_TARGET_LIMIT,
+    ) -> tuple[dict[str, Any], ...]:
+        if limit < 1:
+            raise ValidationError("Signal Update target limit must be positive")
         targets: list[tuple[int, str, dict[str, Any]]] = []
         for card in self.registry.list_signal_cards():
             profile = dict(card.learned_profile)
@@ -7032,9 +7140,8 @@ class SignalEvolutionEngine:
                 )[:3],
             }
             targets.append((score, card.ref, target))
-        if not targets:
-            return None
-        return max(targets, key=lambda item: (item[0], item[1]))[2]
+        ranked = sorted(targets, key=lambda item: (-item[0], item[1]))
+        return tuple(item[2] for item in ranked[:limit])
 
     def _prior_signal_update(
         self, issue_fingerprint: str
@@ -7054,11 +7161,17 @@ class SignalEvolutionEngine:
             if not isinstance(audits, Mapping):
                 continue
             audit = audits.get("update_pipeline", {})
-            if (
-                isinstance(audit, Mapping)
-                and audit.get("issue_fingerprint") == issue_fingerprint
-            ):
-                return audit
+            if not isinstance(audit, Mapping):
+                continue
+            candidates = [audit]
+            target_audits = audit.get("targets", ())
+            if isinstance(target_audits, list):
+                candidates.extend(
+                    item for item in target_audits if isinstance(item, Mapping)
+                )
+            for candidate in candidates:
+                if candidate.get("issue_fingerprint") == issue_fingerprint:
+                    return candidate
         return None
 
     def _stage_update_candidate(

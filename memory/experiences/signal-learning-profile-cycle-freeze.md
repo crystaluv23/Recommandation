@@ -1,6 +1,6 @@
 # Signal Learning Profile Cycle Freeze
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

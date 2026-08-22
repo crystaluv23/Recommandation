@@ -683,12 +683,12 @@ compact and immutable; complete documents remain the local lineage and final
 Signal-execution boundary.
 
 Signal Update begins locally, not with `H_U`. The controller scans exact-version
-learning profiles and selects at most one actionable target only after repeated
-distinct observations show an explicit-attribution, directionality, or
-availability problem. If no target crosses that floor, Update records
-`no_actionable_target` and makes zero model calls. A fingerprint over the
-target version and supporting learning state prevents an unchanged issue from
-being proposed repeatedly.
+learning profiles and selects at most three distinct actionable targets by
+evidence priority, only after repeated distinct observations show an
+explicit-attribution, directionality, or availability problem. If no target
+crosses that floor, Update records `no_actionable_target` and makes zero model
+calls. A fingerprint over each target version and supporting learning state
+prevents an unchanged issue from being proposed repeatedly.
 
 For a selected target, local code executes `vCurrent` on a deterministic,
 issuer-distinct Discovery sample and partitions it before model invocation.
@@ -699,12 +699,19 @@ bounded anonymous evidence packets, and the local audit records the split.
 Insufficient induction support yields a durable `defer` without calling the
 model.
 
-One `H_U` call then returns exactly one of `no_change`, `defer`, or `update`.
-Only `update` carries a complete candidate `vNext` with fixtures. The
-controller preserves Signal identity, category, execution type, evidence
-policy, description, and deterministic function; stages the candidate; runs
-the normal contract/fixture checks; and evaluates it only on the issuer-disjoint
-holdout. The model cannot see holdout results or promote its own output.
+For each locally prepared target, one `H_U` call returns exactly one of
+`no_change`, `defer`, or `update`; a Slow cycle therefore makes at most three
+Update semantic calls. Only `update` carries a complete candidate `vNext` with
+fixtures. Targets are audited and recovered independently, so one target's
+invalid output, deferral, or insufficient evidence does not discard another
+target's candidate. The controller preserves Signal identity, category,
+execution type, evidence policy, description, and deterministic function;
+stages the candidate; runs the normal contract/fixture checks; and evaluates it
+only on the issuer-disjoint holdout. The model cannot see holdout results or
+promote its own output. The durable `signal-update-audit-v2` portfolio records
+the target limit, selected-target count, aggregate model usage, and ordered
+per-target `signal-update-target-audit-v1` entries so retries can reconcile each
+issue fingerprint independently.
 
 Mining role calls receive literal structured-output contracts for hypotheses,
 rankings, signatures, decisions, canonical `SignalSpec`, executable fixtures,

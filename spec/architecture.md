@@ -225,10 +225,13 @@ may advance it exactly once; the cycle marker records both input and output
 Registry version/hash. A restart completes that same transition idempotently
 before advancing the cycle pointer. The next group uses the output snapshot.
 Signal Update is locally triggered only when repeated ledger evidence identifies
-an actionable exact version. Local code selects issuer-disjoint induction and
-holdout cases, exposes only induction evidence to one bounded semantic update
-call, and keeps contract, fixture, and paired holdout decisions outside the
-model. No actionable target means no Signal-Update model call.
+an actionable exact version. One Slow cycle selects at most three distinct
+targets by evidence priority. Local code independently selects issuer-disjoint
+induction and holdout cases for each target, exposes only that target's induction
+evidence to one bounded semantic update call, and keeps contract, fixture, and
+paired holdout decisions outside the model. One target's deferral or failure does
+not block the other targets. No actionable target means no Signal-Update model
+call.
 The Plan Archive remains cumulative across these transitions: old Plans keep
 their original Binary F1 and are neither rerun nor normalized against the new
 Registry. Parent selection compares all eligible historical records by stored

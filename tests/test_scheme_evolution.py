@@ -2732,6 +2732,230 @@ class SignalEvolutionTests(TestCase):
             self.assertFalse(result["audit"]["model_called"])
             self.assertEqual(update_model.requests, [])
 
+    def test_signal_update_processes_top_three_actionable_targets(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            fixture = candidate_growth_fixture()
+            signal_refs: list[str] = []
+            for suffix in ("a", "b", "c", "d"):
+                spec = SignalSpec(
+                    signal_id=f"update_signal_{suffix}",
+                    version=1,
+                    category="fundamental",
+                    description=f"Revenue growth threshold variant {suffix}.",
+                    execution_type=SignalExecutionType.DETERMINISTIC,
+                    source_types=("financials",),
+                    function="financial.revenue_growth_yoy",
+                    parameters={"positive_min": 0.2, "negative_max": 0.0},
+                )
+                registry.register_stable(spec, tests=(fixture,))
+                signal_refs.append(spec.ref)
+                for index in range(2):
+                    registry.record_learning_event(
+                        SignalLearningEvent(
+                            event_id=f"{suffix}-wrong-event-{index}",
+                            observation_key=f"{suffix}-wrong-observation-{index}",
+                            signal_ref=spec.ref,
+                            round_id=1,
+                            plan_id=f"plan-{suffix}-{index}",
+                            case_id=f"fast-case-{suffix}-{index}",
+                            company_id=f"fast-issuer-{suffix}-{index}",
+                            prediction_time=NOW.isoformat(),
+                            selection={
+                                "signal_ref": spec.ref,
+                                "reason_code": "answer_need",
+                                "selection_reason": "Test reported revenue growth.",
+                                "applicability_hypothesis": (
+                                    "Annual periods are comparable."
+                                ),
+                                "expected_role": "primary",
+                                "context_tags": ["comparable_financials"],
+                            },
+                            result_value=SignalValue.POSITIVE,
+                            coverage=SignalCoverage.SUFFICIENT,
+                            document_fingerprint=(f"hash-{suffix}-{index}",),
+                            is_surge=False,
+                            realized_max_multiple=1.2,
+                            prediction_correct=False,
+                        )
+                    )
+
+            cases = tuple(
+                [make_case(f"portfolio_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"portfolio_control_{index}", 1.1) for index in range(4)]
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"portfolio_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            update_model = NoChangeUpdateModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=update_model,
+                llm_signal_runner=None,
+            )
+
+            result = engine._run_signal_update(cycle_id=1)
+
+            self.assertEqual(result["candidate_refs"], ())
+            self.assertEqual(len(update_model.requests), 3, result["audit"])
+            self.assertEqual(
+                [request["target"]["signal_ref"] for request in update_model.requests],
+                signal_refs[:3],
+            )
+            audit = result["audit"]
+            self.assertEqual(audit["schema_version"], "signal-update-audit-v2")
+            self.assertEqual(audit["target_limit"], 3)
+            self.assertEqual(audit["target_count"], 3)
+            self.assertEqual(audit["model_target_count"], 3)
+            self.assertEqual(audit["model_usage"]["llm_calls"], 3)
+            self.assertEqual(len(audit["targets"]), 3)
+            self.assertTrue(all(item["model_called"] for item in audit["targets"]))
+
+    def test_signal_update_isolates_one_target_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("workflow_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            targets = tuple(
+                {
+                    "signal_ref": f"test_signal_{index}:v1",
+                    "problem_type": "repeated_directional_wrong",
+                    "support": {"directional_wrong": 2},
+                    "recurring_contexts": [],
+                }
+                for index in range(3)
+            )
+            attempted: list[str] = []
+            engine._select_signal_update_targets = lambda: targets
+
+            def run_one(*, cycle_id, target, cases, executor):
+                attempted.append(target["signal_ref"])
+                if len(attempted) == 1:
+                    raise ValidationError("first target failed")
+                return engine._signal_update_output(
+                    audit={
+                        "schema_version": "signal-update-target-audit-v1",
+                        "cycle_id": cycle_id,
+                        "status": "completed",
+                        "model_called": False,
+                        "target": dict(target),
+                        "issue_fingerprint": "a" * 64,
+                        "disposition": "defer",
+                    }
+                )
+
+            engine._run_one_signal_update = run_one
+
+            result = engine._run_signal_update(cycle_id=1)
+
+            self.assertEqual(attempted, [item["signal_ref"] for item in targets])
+            self.assertIn("update:test_signal_0:v1", result["failures"])
+            self.assertEqual(
+                [item["status"] for item in result["audit"]["targets"]],
+                ["failed", "completed", "completed"],
+            )
+
+    def test_signal_update_finds_prior_target_audits_in_v1_and_v2(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("workflow_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            cycles = workspace.experiments_root / "cycles"
+            legacy_dir = cycles / "cycle-0001"
+            legacy_dir.mkdir(parents=True)
+            (legacy_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "agent_audits": {
+                                "update_pipeline": {
+                                    "schema_version": "signal-update-audit-v1",
+                                    "issue_fingerprint": "legacy-fingerprint",
+                                    "disposition": "defer",
+                                }
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            portfolio_dir = cycles / "cycle-0002"
+            portfolio_dir.mkdir(parents=True)
+            (portfolio_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "agent_audits": {
+                                "update_pipeline": {
+                                    "schema_version": "signal-update-audit-v2",
+                                    "targets": [
+                                        {
+                                            "schema_version": (
+                                                "signal-update-target-audit-v1"
+                                            ),
+                                            "issue_fingerprint": (
+                                                "portfolio-fingerprint"
+                                            ),
+                                            "disposition": "defer",
+                                        }
+                                    ],
+                                }
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                engine._prior_signal_update("legacy-fingerprint")["disposition"],
+                "defer",
+            )
+            self.assertEqual(
+                engine._prior_signal_update("portfolio-fingerprint")["disposition"],
+                "defer",
+            )
+
     def test_signal_update_uses_one_induction_call_and_local_holdout_gate(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2861,10 +3085,14 @@ class SignalEvolutionTests(TestCase):
             for case in cases:
                 self.assertNotIn(case.company_id, request_json)
             update_audit = result.agent_audits["update_pipeline"]
+            self.assertEqual(update_audit["target_count"], 1)
+            target_audit = update_audit["targets"][0]
             induction_ids = set(
-                update_audit["local_selection"]["induction_case_ids"]
+                target_audit["local_selection"]["induction_case_ids"]
             )
-            holdout_ids = set(update_audit["local_selection"]["holdout_case_ids"])
+            holdout_ids = set(
+                target_audit["local_selection"]["holdout_case_ids"]
+            )
             self.assertFalse(induction_ids & holdout_ids)
             self.assertTrue(update_audit["model_called"])
             effectiveness = result.candidate_effectiveness[updated.ref]
