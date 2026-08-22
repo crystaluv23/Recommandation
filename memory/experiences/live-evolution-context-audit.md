@@ -45,3 +45,13 @@ soft Signals, scans both incoming and accepted retrospective values for identity
 fixed-semantics drift, and requires semantically usable H2 profiles before H2/H3.
 Old v1-v5 workspaces remain immutable audit evidence; only a newly frozen v6 contract
 may advance pointers after its exact hash is authorized.
+
+## Live validation addendum (2026-08-23)
+
+Structured literal refs need actionable correction errors, not only strict local
+validation. A real controller can cite a correct contiguous SEC literal under an
+adjacent projection chunk id, use ellipses between two market rows, or concatenate
+non-contiguous facts. Canonicalize only when the literal has exactly one occurrence
+across all visible projections. Otherwise identify the precise evidence index and
+matching projection ids, explicitly forbid non-contiguous/reordered/paraphrased text,
+allow one correction, and then fail closed without advancing the round pointer.

@@ -3673,7 +3673,14 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
         "next_information_needs": ["one natural-language need"],
         "decision": "continue",
     },
-) + ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+) + (
+    ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+    " Every basic_info evidence exact_text must be one contiguous literal substring "
+    "copied byte-for-byte from exactly one supplied projection. Never use ellipses, "
+    "join non-contiguous fragments, reorder JSON fields, or paraphrase exact_text. "
+    "Use the projection_id containing that literal; omit evidence that cannot be "
+    "quoted exactly."
+)
 
 _FINAL_RESEARCH_STATE_OUTPUT = _output_contract(
     "FinalResearchState",
@@ -4190,7 +4197,12 @@ def _validate_research_state_refs(
 
     if any(not isinstance(item, ResearchEvidenceRef) for item in state.supporting_evidence):
         raise ValidationError("active v6 ResearchState evidence must use tagged refs")
-    refs = tuple(item for item in state.supporting_evidence if isinstance(item, ResearchEvidenceRef))
+    refs = tuple(
+        item
+        for item in state.supporting_evidence
+        if isinstance(item, ResearchEvidenceRef)
+    )
+    normalized_refs = list(refs)
     previous = {
         _research_evidence_key(item)
         for item in (previous_state.supporting_evidence if previous_state else ())
@@ -4198,7 +4210,7 @@ def _validate_research_state_refs(
     }
     projection_texts = _basic_projection_texts(basic_info or {})
     results = {item.ref: item for item in (batch.results if batch else ())}
-    for item in refs:
+    for index, item in enumerate(refs):
         key = _research_evidence_key(item)
         if phase == "finalize":
             if key not in previous:
@@ -4210,13 +4222,39 @@ def _validate_research_state_refs(
                     raise ValidationError("reflect cannot introduce a new Basic Info ref")
                 continue
             projection = projection_texts.get(str(item.projection_id))
-            if projection is None:
-                raise ValidationError("ResearchState cited an unknown Basic Info projection")
-            if projection.count(str(item.exact_text)) != 1:
-                raise ValidationError(
-                    "Basic Info evidence exact_text must map uniquely inside its projection"
+            exact_text = str(item.exact_text)
+            if projection is not None and projection.count(exact_text) == 1:
+                continue
+            matches = [
+                projection_id
+                for projection_id, candidate in projection_texts.items()
+                if candidate.count(exact_text) == 1
+            ]
+            occurrence_count = sum(
+                candidate.count(exact_text) for candidate in projection_texts.values()
+            )
+            if len(matches) == 1 and occurrence_count == 1:
+                normalized_refs[index] = ResearchEvidenceRef(
+                    kind="basic_info",
+                    claim=item.claim,
+                    projection_id=matches[0],
+                    exact_text=exact_text,
                 )
-            continue
+                continue
+            if projection is None:
+                raise ValidationError(
+                    f"supporting_evidence[{index}] cited unknown Basic Info projection "
+                    f"{item.projection_id!r}; matching_projection_ids={matches}. Use the "
+                    "single projection containing the exact contiguous literal or remove "
+                    "this evidence item"
+                )
+            raise ValidationError(
+                f"supporting_evidence[{index}] basic_info exact_text is not one "
+                f"contiguous literal substring unique to projection "
+                f"{item.projection_id!r}; matching_projection_ids={matches}. Copy one "
+                "byte-for-byte span without ellipses, JSON-field reordering, "
+                "non-contiguous joins, or paraphrase, or remove this evidence item"
+            )
         if key in previous:
             continue
         result = results.get(str(item.signal_ref))
@@ -4229,7 +4267,11 @@ def _validate_research_state_refs(
         )
         if int(item.evidence_index or 0) >= len(evidence):
             raise ValidationError("ResearchState cited an unknown Signal evidence index")
-    return state
+    if tuple(normalized_refs) == refs:
+        return state
+    value = state.to_dict()
+    value["supporting_evidence"] = [item.to_dict() for item in normalized_refs]
+    return ResearchState.from_dict(value)
 
 
 class LLMResearchController:
@@ -4280,7 +4322,10 @@ class LLMResearchController:
             stage="research_controller_reflect",
             system_prompt=(
                 "Apply H_reflect once to the complete Signal batch. Return one "
-                "ResearchState JSON object with continue/finalize decision."
+                "ResearchState JSON object with continue/finalize decision. Retain "
+                "prior Basic Info evidence refs byte-for-byte. A new Signal evidence "
+                "ref must use kind=signal, a signal_ref from the current batch, "
+                "evidence_group=supporting or counter, and the zero-based evidence_index."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),

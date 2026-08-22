@@ -1,6 +1,6 @@
 # Status
 
-Current v6 verification (2026-08-23): 342 repository tests and repository lint pass with the bundled Python 3.12 runtime. The implementation is locally ready; paid end-to-end validation remains paused until the newly created v6 contract hash receives explicit authorization. This supersedes older test-count and active-contract notes retained below as historical handoff evidence.
+Current v6 verification (2026-08-23): 343 repository tests and repository lint pass with the bundled Python 3.12 runtime. The first authorized v6 run correctly preserved `0/0` pointers after all candidates exposed the same Basic-Info literal-citation correction gap; unique cross-projection literals are now canonicalized locally, while ellipses, non-contiguous joins, JSON reordering, ambiguity, and no-match receive index-specific one-shot correction and then fail closed. Paid revalidation requires the next exact v6 contract hash. This supersedes older test-count and active-contract notes retained below as historical handoff evidence.
 
 | Area | Spec | Code | Status | Notes |
 | --- | --- | --- | --- | --- |

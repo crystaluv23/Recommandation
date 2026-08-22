@@ -2608,7 +2608,7 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertTrue(all(len(item.context_tags) <= 4 for item in selected))
             self.assertTrue(all(len(set(item.context_tags)) == len(item.context_tags) for item in selected))
 
-    def test_v6_initialize_repairs_unknown_basic_projection_reference(self) -> None:
+    def test_v6_initialize_canonicalizes_unique_basic_projection_reference(self) -> None:
         def state(projection_id: str) -> dict[str, Any]:
             return {
                 "hypotheses": ["growth may accelerate"],
@@ -2628,7 +2628,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 "decision": "continue",
             }
 
-        caller = ScriptedRoleCaller([state("projection_unknown"), state("projection_ok")])
+        caller = ScriptedRoleCaller([state("projection_unknown")])
         basic_info = {
             "requests": [
                 {
@@ -2646,11 +2646,66 @@ class ConcreteRoleAdapterTests(TestCase):
             default_information_plan(), basic_info
         )
 
-        self.assertEqual(len(caller.calls), 2)
-        self.assertIn("unknown Basic Info projection", caller.calls[1]["payload"]["validation_error"])
+        self.assertEqual(len(caller.calls), 1)
         self.assertEqual(
             initialized.value.to_dict()["supporting_evidence"][0]["projection_id"],
             "projection_ok",
+        )
+
+    def test_v6_initialize_corrects_non_contiguous_basic_literal_once(self) -> None:
+        def state(exact_text: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["growth may accelerate"],
+                "current_beliefs": [],
+                "supporting_evidence": [
+                    {
+                        "kind": "basic_info",
+                        "claim": "Revenue increased.",
+                        "projection_id": "projection_market",
+                        "exact_text": exact_text,
+                    }
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["confirm customer demand"],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [
+                state('{"close":21.46}...{"close":24.37}'),
+                state('{"close":21.46}'),
+            ]
+        )
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": "projection_market",
+                            "exact_text": (
+                                '[{"close":21.46},{"close":22.00},'
+                                '{"close":24.37}]'
+                            ),
+                        }
+                    ]
+                }
+            ]
+        }
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(caller.calls), 2)
+        correction_error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("supporting_evidence[0]", correction_error)
+        self.assertIn("contiguous literal substring", correction_error)
+        self.assertIn("without ellipses", correction_error)
+        self.assertEqual(
+            initialized.value.to_dict()["supporting_evidence"][0]["exact_text"],
+            '{"close":21.46}',
         )
 
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:

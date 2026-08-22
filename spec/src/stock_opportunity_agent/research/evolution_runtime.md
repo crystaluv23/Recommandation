@@ -347,6 +347,13 @@ failures terminate that candidate; non-fitness reflections degrade to explicit
 deterministic failure records. Exact transport responses remain in cache for
 audit, but a transport-cache hit is never treated as domain validation.
 
+For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
+literal from one supplied projection: it may not use ellipses, join distant rows,
+reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly once
+across the visible projection set is deterministically assigned to that projection;
+otherwise correction feedback names the exact `supporting_evidence[index]`, supplied
+projection, and matching projection ids before the candidate fails closed.
+
 LLM Signal execution does not serialize its complete resolved Raw Info
 documents into the provider request. It receives the Signal Library's bounded
 literal-window projection with document hashes and source offsets; complete

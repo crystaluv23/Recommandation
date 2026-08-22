@@ -141,7 +141,11 @@ than free strings. A Basic-Info reference carries
 create only references into the current Basic-Info projection. Reflect may
 retain existing references or add references into the current Signal batch.
 Finalize may retain existing references only. Projection citations must map
-uniquely to an original Raw Info span; ambiguity or no mapping fails closed.
+uniquely to an original Raw Info span. If `exact_text` has exactly one contiguous
+match across the current projections, local code canonicalizes a mismatched
+projection id without another model call. Ellipses, paraphrase, reordered JSON,
+non-contiguous joins, ambiguity, or no match receive one index-specific correction
+and then fail closed.
 Legacy string evidence remains readable only in v1-v5 artifacts.
 
 Blind Predictor consumes only the assembled label-free context. The same
