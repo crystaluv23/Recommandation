@@ -3682,6 +3682,33 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "quoted exactly."
 )
 
+_REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
+    "ReflectedResearchState",
+    {
+        "hypotheses": ["one falsifiable hypothesis"],
+        "current_beliefs": [],
+        "supporting_evidence": [
+            {
+                "kind": "signal",
+                "claim": "one evidence-backed claim",
+                "signal_ref": "signal_id:version from the current batch",
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+            }
+        ],
+        "contradictions": [],
+        "resolved_questions": [],
+        "open_questions": [],
+        "next_information_needs": ["one natural-language need"],
+        "decision": "continue",
+    },
+) + (
+    ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+    " Retain prior Basic Info refs using their basic_info shape. New signal refs must "
+    "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
+    "add projection_id, exact_text, document_id, or other keys."
+)
+
 _FINAL_RESEARCH_STATE_OUTPUT = _output_contract(
     "FinalResearchState",
     {
@@ -4166,6 +4193,34 @@ def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
     return normalized
 
 
+def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Drop only redundant legacy citation fields from complete Signal refs."""
+
+    normalized = dict(value)
+    evidence = normalized.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return normalized
+    required = (
+        "kind",
+        "claim",
+        "signal_ref",
+        "evidence_group",
+        "evidence_index",
+    )
+    normalized_evidence: list[Any] = []
+    for item in evidence:
+        if (
+            isinstance(item, Mapping)
+            and item.get("kind") == "signal"
+            and set(required).issubset(item)
+        ):
+            normalized_evidence.append({key: item[key] for key in required})
+        else:
+            normalized_evidence.append(item)
+    normalized["supporting_evidence"] = normalized_evidence
+    return normalized
+
+
 def _basic_projection_texts(basic_info: Mapping[str, Any]) -> dict[str, str]:
     projections: dict[str, str] = {}
     for request in basic_info.get("requests", ()):
@@ -4182,7 +4237,20 @@ def _basic_projection_texts(basic_info: Mapping[str, Any]) -> dict[str, str]:
 
 
 def _research_evidence_key(item: ResearchEvidenceRef) -> str:
-    return json.dumps(item.to_dict(), sort_keys=True, separators=(",", ":"))
+    if item.kind == "basic_info":
+        value = {
+            "kind": item.kind,
+            "projection_id": item.projection_id,
+            "exact_text": item.exact_text,
+        }
+    else:
+        value = {
+            "kind": item.kind,
+            "signal_ref": item.signal_ref,
+            "evidence_group": item.evidence_group,
+            "evidence_index": item.evidence_index,
+        }
+    return json.dumps(value, sort_keys=True, separators=(",", ":"))
 
 
 def _validate_research_state_refs(
@@ -4259,7 +4327,26 @@ def _validate_research_state_refs(
             continue
         result = results.get(str(item.signal_ref))
         if result is None:
-            raise ValidationError("ResearchState cited a Signal outside the current batch")
+            signal_id_matches = [
+                candidate
+                for candidate in results.values()
+                if candidate.signal_id == str(item.signal_ref)
+            ]
+            if len(signal_id_matches) == 1:
+                result = signal_id_matches[0]
+                normalized_refs[index] = ResearchEvidenceRef(
+                    kind="signal",
+                    claim=item.claim,
+                    signal_ref=result.ref,
+                    evidence_group=item.evidence_group,
+                    evidence_index=item.evidence_index,
+                )
+            else:
+                raise ValidationError(
+                    f"supporting_evidence[{index}] cited Signal "
+                    f"{item.signal_ref!r} outside the current batch; use one exact "
+                    "signal_ref supplied by signal_batch"
+                )
         evidence = (
             result.supporting_evidence
             if item.evidence_group == "supporting"
@@ -4301,7 +4388,7 @@ class LLMResearchController:
                 "basic_info": dict(basic_info),
             },
             parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(value),
+                ResearchState.from_dict(_normalize_research_state_output(value)),
                 phase="initialize",
                 basic_info=basic_info,
             ),
@@ -4323,19 +4410,23 @@ class LLMResearchController:
             system_prompt=(
                 "Apply H_reflect once to the complete Signal batch. Return one "
                 "ResearchState JSON object with continue/finalize decision. Retain "
-                "prior Basic Info evidence refs byte-for-byte. A new Signal evidence "
-                "ref must use kind=signal, a signal_ref from the current batch, "
+                "the provenance fields of prior Basic Info evidence refs byte-for-byte; "
+                "the claim may be restated. A new Signal evidence ref must use "
+                "kind=signal, a signal_ref from the current batch, "
                 "evidence_group=supporting or counter, and the zero-based evidence_index."
                 + _UNTRUSTED_DATA_INSTRUCTION
-                + _RESEARCH_STATE_OUTPUT
+                + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
             payload={
                 "reflection_skill": plan.reflection_skill,
                 "research_state": state.to_dict(),
-                "signal_batch": [item.to_dict() for item in batch.results],
+                "signal_batch": [
+                    {**item.to_dict(), "signal_ref": item.ref}
+                    for item in batch.results
+                ],
             },
             parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(value),
+                ResearchState.from_dict(_normalize_research_state_output(value)),
                 phase="reflect",
                 previous_state=state,
                 batch=batch,
@@ -4368,7 +4459,7 @@ class LLMResearchController:
                 "termination_trigger": str(getattr(reason, "value", reason)),
             },
             parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(value),
+                ResearchState.from_dict(_normalize_research_state_output(value)),
                 phase="finalize",
                 previous_state=state,
             ),

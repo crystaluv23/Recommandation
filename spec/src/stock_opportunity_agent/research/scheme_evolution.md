@@ -140,12 +140,22 @@ than free strings. A Basic-Info reference carries
 `signal_ref + supporting|counter + evidence_index + claim`. Initialize may
 create only references into the current Basic-Info projection. Reflect may
 retain existing references or add references into the current Signal batch.
-Finalize may retain existing references only. Projection citations must map
+Finalize may retain existing provenance only; it may restate `claim`, which is
+interpretation rather than source identity. Basic provenance is
+`projection_id + exact_text`; Signal provenance is
+`signal_ref + supporting|counter + evidence_index`. Projection citations must map
 uniquely to an original Raw Info span. If `exact_text` has exactly one contiguous
 match across the current projections, local code canonicalizes a mismatched
 projection id without another model call. Ellipses, paraphrase, reordered JSON,
 non-contiguous joins, ambiguity, or no match receive one index-specific correction
 and then fail closed.
+When a reflect response supplies every canonical Signal-ref field but also copies
+legacy `projection_id`/`exact_text` fields, local code drops only those redundant
+fields before validating the canonical ref against the current batch. Missing or
+invalid canonical fields still consume the one correction and then fail closed.
+The model-facing batch explicitly supplies the versioned `signal_ref`. If a response
+returns only an unversioned `signal_id`, local code expands it only when exactly one
+current-batch result matches; absent or ambiguous ids remain invalid.
 Legacy string evidence remains readable only in v1-v5 artifacts.
 
 Blind Predictor consumes only the assembled label-free context. The same

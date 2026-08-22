@@ -55,3 +55,11 @@ non-contiguous facts. Canonicalize only when the literal has exactly one occurre
 across all visible projections. Otherwise identify the precise evidence index and
 matching projection ids, explicitly forbid non-contiguous/reordered/paraphrased text,
 allow one correction, and then fail closed without advancing the round pointer.
+
+Evidence-transition equality must compare provenance, not explanatory wording. A
+real finalize response may restate `claim` while preserving the exact Basic or
+Signal source tuple; rejecting that as new evidence is stricter than the design.
+Likewise, if a role is required to return a versioned `signal_ref`, the current batch
+must expose that exact field. Local code may remove redundant legacy citation keys or
+expand an unversioned id only when every canonical field is present and one current
+batch result matches; it must never guess across versions or batches.

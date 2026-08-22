@@ -67,6 +67,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanReflection,
     PredictionSelfReflection,
     ResearchDecision,
+    ResearchEvidenceRef,
     ResearchState,
     RoundMetaEntry,
     RuntimeStopReason,
@@ -1462,9 +1463,11 @@ class ConcreteRoleAdapterTests(TestCase):
                 {
                     "kind": "signal",
                     "claim": "Management materially raised guidance.",
-                    "signal_ref": "guidance_acceleration:v1",
+                    "signal_ref": "guidance_acceleration",
                     "evidence_group": "supporting",
                     "evidence_index": 0,
+                    "projection_id": document.document_id,
+                    "exact_text": document.content,
                 }
             ],
             "contradictions": [],
@@ -1522,6 +1525,59 @@ class ConcreteRoleAdapterTests(TestCase):
                 document.content,
             )
             self.assertEqual(reflected.value.decision, ResearchDecision.FINALIZE)
+            self.assertEqual(
+                set(reflected.value.to_dict()["supporting_evidence"][0]),
+                {
+                    "kind",
+                    "claim",
+                    "signal_ref",
+                    "evidence_group",
+                    "evidence_index",
+                },
+            )
+            self.assertEqual(
+                reflected.value.to_dict()["supporting_evidence"][0]["signal_ref"],
+                "guidance_acceleration:v1",
+            )
+            self.assertEqual(
+                controller_caller.calls[0]["payload"]["signal_batch"][0][
+                    "signal_ref"
+                ],
+                "guidance_acceleration:v1",
+            )
+
+    def test_finalize_allows_claim_restatement_for_existing_provenance(self) -> None:
+        previous = ResearchState(
+            hypotheses=("growth may accelerate",),
+            supporting_evidence=(
+                ResearchEvidenceRef(
+                    kind="basic_info",
+                    claim="Liquidity is strong.",
+                    projection_id="projection_cash",
+                    exact_text="$1.1 billion in cash",
+                ),
+            ),
+            next_information_needs=("confirm execution",),
+        )
+        final_output = previous.to_dict()
+        final_output["supporting_evidence"][0]["claim"] = (
+            "Liquidity supports operating execution."
+        )
+        final_output["next_information_needs"] = []
+        final_output["decision"] = "finalize"
+        caller = ScriptedRoleCaller([final_output])
+
+        finalized = LLMResearchController(caller).finalize(
+            default_information_plan(),
+            previous,
+            RuntimeStopReason.NO_SIGNAL_MATCH,
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            finalized.value.supporting_evidence[0].claim,
+            "Liquidity supports operating execution.",
+        )
 
     def test_blind_predictor_parses_two_stage_schema(self) -> None:
         caller = ScriptedRoleCaller(

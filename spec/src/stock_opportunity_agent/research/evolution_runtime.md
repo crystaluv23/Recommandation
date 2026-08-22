@@ -353,6 +353,15 @@ reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly o
 across the visible projection set is deterministically assigned to that projection;
 otherwise correction feedback names the exact `supporting_evidence[index]`, supplied
 projection, and matching projection ids before the candidate fails closed.
+Evidence-transition identity is source provenance, not the mutable explanatory
+`claim`: reflect/finalize may restate a claim only while preserving the Basic or
+Signal provenance tuple. The reflect contract uses a dedicated Signal-ref example.
+A complete canonical Signal ref carrying redundant legacy citation fields is reduced
+locally to its five canonical keys before current-batch validation; local code never
+invents a missing Signal ref, evidence group, or index.
+Every model-facing Signal-batch row includes its exact versioned `signal_ref` in
+addition to durable `signal_id` and `version`. An unversioned returned id is expanded
+only when it uniquely identifies one result in that current batch.
 
 LLM Signal execution does not serialize its complete resolved Raw Info
 documents into the provider request. It receives the Signal Library's bounded
