@@ -1,6 +1,6 @@
 # Additive Reflection in Fixed FIFO Meta-Info
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 

@@ -1,6 +1,6 @@
 # Shared Evaluation Data Is Not Plan Fitness
 
-visit_times: 2
+visit_times: 3
 
 ## Trigger
 

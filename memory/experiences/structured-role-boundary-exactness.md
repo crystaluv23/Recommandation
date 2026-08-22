@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
