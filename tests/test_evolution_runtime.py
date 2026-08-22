@@ -8,11 +8,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest import TestCase
 
-from stock_opportunity_agent.llm.agent import (
-    AgentRequest,
-    AgentUsage,
-    ToolObservation,
-)
+from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
@@ -34,8 +30,8 @@ from stock_opportunity_agent.research.evolution_runtime import (
     LLMRoundReflector,
     LLMResearchController,
     LLMSignalRetrievalAgent,
+    LLMSignalUpdateModel,
     StructuredLLMSignalRunner,
-    StructuredAgentModel,
     StructuredOutputInvalid,
     StructuredRoleClient,
     approve_dataset_proposal,
@@ -86,6 +82,21 @@ SHA_B = "b" * 64
 SHA_C = "c" * 64
 SHA_D = "d" * 64
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def signal_selection(signal_ref: str) -> dict[str, Any]:
+    return {
+        "selections": [
+            {
+                "signal_ref": signal_ref,
+                "reason_code": "answer_need",
+                "selection_reason": "Answer the current information need.",
+                "applicability_hypothesis": "The supplied evidence is applicable.",
+                "expected_role": "primary",
+                "context_tags": ["general"],
+            }
+        ]
+    }
 
 
 def write_json(path: Path, value: object) -> None:
@@ -1038,30 +1049,32 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(request.lookback_days, 45)
         self.assertEqual(request.max_documents, 1)
 
-    def test_update_agent_role_states_exact_final_output_contract(self) -> None:
+    def test_signal_update_role_returns_one_exact_semantic_decision(self) -> None:
         caller = ScriptedRoleCaller(
-            [{"action": "final", "output": {"candidate_refs": []}}]
+            [
+                {
+                    "signal_ref": "revenue_growth_yoy:v1",
+                    "disposition": "defer",
+                    "problem_type": "routing_applicability_unclear",
+                    "rationale": ["The evidence does not isolate a Signal defect."],
+                    "candidate": None,
+                }
+            ]
         )
-        model = StructuredAgentModel(
-            caller,
-            stage="signal_update_agent",
-            allow_outcomes=True,
-            final_output_example={"candidate_refs": ["candidate_signal:v1"]},
+        model = LLMSignalUpdateModel(caller)
+
+        step = model.update(
+            {
+                "target": {"signal_ref": "revenue_growth_yoy:v1"},
+                "induction_cases": [],
+                "candidate_contract": {},
+            }
         )
 
-        turn = model.respond(
-            AgentRequest(
-                prompt="Update one candidate.",
-                tool_cards=(),
-                workspace={},
-                observations=(),
-            )
-        )
-
-        self.assertEqual(turn.final_output, {"candidate_refs": []})
+        self.assertEqual(step.value.disposition, "defer")
         system_prompt = str(caller.calls[0]["system_prompt"])
-        self.assertIn('"candidate_refs": ["candidate_signal:v1"]', system_prompt)
-        self.assertIn("successful staging tool call", system_prompt)
+        self.assertIn("routing/applicability mistake", system_prompt)
+        self.assertIn('"no_change"', system_prompt)
 
     def test_signal_mining_roles_parse_hypotheses_and_rank_only_allowed_refs(
         self,
@@ -1144,95 +1157,41 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(caller.calls[2]["temperature"], 0.0)
         self.assertFalse(caller.calls[2]["allow_outcomes"])
 
-    def test_slow_agent_receives_dynamic_next_required_workflow_action(self) -> None:
+    def test_signal_update_role_repairs_wrong_target_once(self) -> None:
         caller = ScriptedRoleCaller(
-            [{"action": "final", "output": {"candidate_refs": []}}]
-        )
-        model = StructuredAgentModel(
-            caller,
-            stage="signal_update_agent",
-            allow_outcomes=True,
-            final_output_example={"candidate_refs": ["candidate_signal:v2"]},
-        )
-
-        model.respond(
-            AgentRequest(
-                prompt="Update one candidate.",
-                tool_cards=(),
-                workspace={"workflow_contract": {"agent": "update"}},
-                observations=(
-                    ToolObservation(
-                        "list_signal_categories", {}, ["market"]
-                    ),
-                    ToolObservation(
-                        "list_signal_cards",
-                        {"category": "market"},
-                        [{"signal_ref": "price_momentum_126d:v1"}],
-                    ),
-                    ToolObservation(
-                        "load_signal_spec",
-                        {"signal_ref": "price_momentum_126d:v1"},
-                        {
-                            "signal_id": "price_momentum_126d",
-                            "raw_retrieval": {"source_types": ["market_data"]},
-                        },
-                    ),
-                ),
-            )
+            [
+                {
+                    "signal_ref": "other_signal:v1",
+                    "disposition": "no_change",
+                    "problem_type": "routing",
+                    "rationale": ["No definition change is justified."],
+                    "candidate": None,
+                },
+                {
+                    "signal_ref": "price_momentum_126d:v1",
+                    "disposition": "no_change",
+                    "problem_type": "routing",
+                    "rationale": ["The observed issue belongs to Plan routing."],
+                    "candidate": None,
+                },
+            ]
         )
 
-        progress = caller.calls[0]["payload"]["workflow_progress"]
-        self.assertEqual(
-            progress["next_required_action"],
+        step = LLMSignalUpdateModel(caller).update(
             {
-                "action": "tool",
-                "tool_name": "query_signal_usage",
-                "arguments": {"signal_id": "price_momentum_126d"},
-                "reason": (
-                    "Inspect observed-policy statistics before proposing an update."
-                ),
-            },
+                "target": {"signal_ref": "price_momentum_126d:v1"},
+                "induction_cases": [],
+                "candidate_contract": {},
+            }
         )
 
-    def test_slow_agent_correction_preserves_exact_json_parser_feedback(self) -> None:
-        class InvalidThenValidCaller:
-            def __init__(self) -> None:
-                self.calls = []
-
-            def complete_json(self, **kwargs):
-                self.calls.append(kwargs)
-                if len(self.calls) == 1:
-                    raise StructuredOutputInvalid(
-                        "JSONDecodeError: extra data at line 1 column 20",
-                        '{"action":"final"}}',
-                        AgentUsage(llm_calls=1, tokens=9),
-                    )
-                return (
-                    {"action": "final", "output": {"candidate_refs": []}},
-                    AgentUsage(llm_calls=1, tokens=7),
-                )
-
-        caller = InvalidThenValidCaller()
-        model = StructuredAgentModel(
-            caller,
-            stage="signal_update_agent",
-            allow_outcomes=True,
-            final_output_example={"candidate_refs": ["candidate_signal:v2"]},
+        self.assertEqual(step.value.signal_ref, "price_momentum_126d:v1")
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(
+            caller.stages,
+            ["signal_update_decision", "signal_update_decision_correction"],
         )
-
-        turn = model.respond(
-            AgentRequest(
-                prompt="Update one candidate.",
-                tool_cards=(),
-                workspace={},
-                observations=(),
-            )
-        )
-
-        self.assertEqual(turn.final_output, {"candidate_refs": []})
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("extra data", feedback["error"])
-        self.assertEqual(feedback["received_output"], '{"action":"final"}}')
+        self.assertIn("validation_error", caller.calls[1]["payload"])
 
     def test_controller_and_progressive_signal_selector_use_structured_roles(self) -> None:
         controller_caller = ScriptedRoleCaller(
@@ -1264,13 +1223,16 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             selector_caller = ScriptedRoleCaller(
                 [
-                    {"signal_refs": ["revenue_growth_yoy:v1"]},
+                    signal_selection("revenue_growth_yoy:v1"),
                 ]
             )
             selection = LLMSignalRetrievalAgent(selector_caller).select(
                 ("revenue growth",), registry.freeze(), {}
             )
-            self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
+            self.assertEqual(
+                tuple(item.signal_ref for item in selection.value),
+                ("revenue_growth_yoy:v1",),
+            )
             self.assertEqual(
                 selector_caller.stages,
                 ["signal_retrieval_cards"],
@@ -1278,6 +1240,8 @@ class ConcreteRoleAdapterTests(TestCase):
             cards = selector_caller.calls[0]["payload"]["signal_cards"]
             self.assertEqual(len(cards), 14)
             self.assertIn("category", cards[0])
+            self.assertIn("learned_profile", cards[0])
+            self.assertNotIn("case_id", json.dumps(cards[0]["learned_profile"]))
 
     def test_signal_selector_repairs_invalid_refs_once(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1285,8 +1249,8 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             caller = ScriptedRoleCaller(
                 [
-                    {"signal_refs": ["unknown:v1"]},
-                    {"signal_refs": ["revenue_growth_yoy:v1"]},
+                    signal_selection("unknown:v1"),
+                    signal_selection("revenue_growth_yoy:v1"),
                 ]
             )
 
@@ -1294,7 +1258,10 @@ class ConcreteRoleAdapterTests(TestCase):
                 ("revenue growth",), registry.freeze(), {}
             )
 
-            self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
+            self.assertEqual(
+                tuple(item.signal_ref for item in selection.value),
+                ("revenue_growth_yoy:v1",),
+            )
             self.assertEqual(selection.usage.llm_calls, 2)
             self.assertIn("validation_feedback", caller.calls[1]["payload"])
 
@@ -1304,8 +1271,8 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             caller = ScriptedRoleCaller(
                 [
-                    {"signal_refs": "revenue_growth_yoy:v1"},
-                    {"signal_refs": ["revenue_growth_yoy:v1"]},
+                    {"selections": "revenue_growth_yoy:v1"},
+                    signal_selection("revenue_growth_yoy:v1"),
                 ]
             )
 
@@ -1313,14 +1280,17 @@ class ConcreteRoleAdapterTests(TestCase):
                 ("revenue growth",), registry.freeze(), {}
             )
 
-            self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
+            self.assertEqual(
+                tuple(item.signal_ref for item in selection.value),
+                ("revenue_growth_yoy:v1",),
+            )
             self.assertEqual(selection.usage.llm_calls, 2)
 
     def test_signal_selector_accepts_empty_no_match_without_correction(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
-            caller = ScriptedRoleCaller([{"signal_refs": []}])
+            caller = ScriptedRoleCaller([{"selections": []}])
 
             selection = LLMSignalRetrievalAgent(caller).select(
                 ("unmatched need",), registry.freeze(), {}
@@ -1337,7 +1307,7 @@ class ConcreteRoleAdapterTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
-            caller = ScriptedRoleCaller([{"signal_refs": []}])
+            caller = ScriptedRoleCaller([{"selections": []}])
             prior_result = {
                 "signal_id": "cash_reserves",
                 "version": 1,
@@ -1425,7 +1395,7 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             snapshot = registry.freeze()
             selector_caller = ScriptedRoleCaller(
-                [{"signal_refs": ["guidance_acceleration:v1"]}]
+                [signal_selection("guidance_acceleration:v1")]
             )
             signal_caller = ScriptedRoleCaller([signal_output])
             controller_caller = ScriptedRoleCaller([reflected_state])
@@ -1442,7 +1412,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 RawInfoStore(documents=(document,)),
                 llm_runner=StructuredLLMSignalRunner(signal_caller),
             ).execute_batch(
-                selected.value,
+                tuple(item.signal_ref for item in selected.value),
                 company_id="issuer-1",
                 as_of=as_of,
             )

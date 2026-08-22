@@ -23,7 +23,6 @@ from stock_opportunity_agent.llm.agent import (
     DomainTool,
     GenericAgent,
     ToolCall,
-    ToolObservation,
 )
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -74,6 +73,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalMiningHypothesis,
     SignalMiningSignature,
     SignalRound,
+    SignalSelectionDecision,
+    SignalUpdateDecision,
     candidate_judgment_feedback,
     build_parent_plan_comparison,
     default_information_plan,
@@ -87,6 +88,7 @@ from stock_opportunity_agent.signal_library import (
     SignalEvidence,
     SignalExecutionType,
     SignalExecutor,
+    SignalLearningEvent,
     SignalRegistry,
     SignalResult,
     SignalSpec,
@@ -226,9 +228,45 @@ class OneSignalSelector:
     ):
         self.needs = tuple(information_needs)
         return AgentStep(
-            ("revenue_growth_yoy:v1",),
+            (
+                SignalSelectionDecision(
+                    signal_ref="revenue_growth_yoy:v1",
+                    reason_code="answer_need",
+                    selection_reason="Measure the requested revenue growth.",
+                    applicability_hypothesis="Comparable annual financial periods exist.",
+                    expected_role="primary",
+                    context_tags=("comparable_financials",),
+                ),
+            ),
             AgentUsage(llm_calls=1, tokens=10, cost=0.005),
         )
+
+
+class NoChangeUpdateModel:
+    def __init__(self) -> None:
+        self.requests: list[Mapping[str, Any]] = []
+
+    def update(self, payload):
+        self.requests.append(payload)
+        return AgentStep(
+            SignalUpdateDecision(
+                signal_ref=str(payload["target"]["signal_ref"]),
+                disposition="no_change",
+                problem_type="routing_applicability",
+                rationale=("The induction evidence does not isolate a defect.",),
+            ),
+            AgentUsage(llm_calls=1),
+        )
+
+
+class ScriptedUpdateModel:
+    def __init__(self, decision: SignalUpdateDecision) -> None:
+        self.decision = decision
+        self.requests: list[Mapping[str, Any]] = []
+
+    def update(self, payload):
+        self.requests.append(payload)
+        return AgentStep(self.decision, AgentUsage(llm_calls=1))
 
 
 class FixedPredictor:
@@ -1005,7 +1043,18 @@ class InformationPlanRuntimeTests(TestCase):
                 eligible = tuple(eligible_signal_refs or ())
                 self.eligible_calls.append(eligible)
                 if "revenue_growth_yoy:v1" in eligible:
-                    return AgentStep(("revenue_growth_yoy:v1",), AgentUsage())
+                    return AgentStep(
+                        (
+                            SignalSelectionDecision(
+                                signal_ref="revenue_growth_yoy:v1",
+                                reason_code="answer_need",
+                                selection_reason="Answer the remaining evidence need.",
+                                applicability_hypothesis="Comparable financial facts exist.",
+                                expected_role="primary",
+                            ),
+                        ),
+                        AgentUsage(),
+                    )
                 return AgentStep((), AgentUsage())
 
         with tempfile.TemporaryDirectory() as directory:
@@ -2632,11 +2681,7 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=mining_model,
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
             )
             result = engine._run_signal_mining(cycle_id=1)
@@ -2664,13 +2709,12 @@ class SignalEvolutionTests(TestCase):
                 ),
             )
 
-    def test_signal_agent_completion_matches_test_order_to_each_returned_ref(
-        self,
-    ) -> None:
+    def test_signal_update_makes_zero_calls_without_actionable_learning(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
+            update_model = NoChangeUpdateModel()
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
@@ -2678,39 +2722,157 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=EmptyMiningModel(),
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=update_model,
                 llm_signal_runner=None,
             )
-            signal_ref = "revenue_growth_yoy:v2"
-            observations = (
-                ToolObservation("load_signal_spec", {}, {}),
-                ToolObservation("query_signal_usage", {}, {}),
-                ToolObservation("query_signal_failure_cases", {}, {}),
-                ToolObservation("sample_discovery_cases", {}, []),
-                ToolObservation("search_raw_info", {}, {}),
-                ToolObservation(
-                    "run_signal_tests",
-                    {},
-                    {"signal_ref": signal_ref, "accepted": True},
+            result = engine._run_signal_update(cycle_id=1)
+
+            self.assertEqual(result["candidate_refs"], ())
+            self.assertEqual(result["audit"]["disposition"], "no_actionable_target")
+            self.assertFalse(result["audit"]["model_called"])
+            self.assertEqual(update_model.requests, [])
+
+    def test_signal_update_uses_one_induction_call_and_local_holdout_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            stable = registry.load_spec("revenue_growth_yoy:v1")
+            for index in range(2):
+                registry.record_learning_event(
+                    SignalLearningEvent(
+                        event_id=f"wrong-event-{index}",
+                        observation_key=f"wrong-observation-{index}",
+                        signal_ref=stable.ref,
+                        round_id=1,
+                        plan_id=f"plan-{index}",
+                        case_id=f"fast-case-{index}",
+                        company_id=f"fast-issuer-{index}",
+                        prediction_time=NOW.isoformat(),
+                        selection={
+                            "signal_ref": stable.ref,
+                            "reason_code": "answer_need",
+                            "selection_reason": "Test reported revenue growth.",
+                            "applicability_hypothesis": "Annual periods are comparable.",
+                            "expected_role": "primary",
+                            "context_tags": ["comparable_financials"],
+                        },
+                        result_value=SignalValue.POSITIVE,
+                        coverage=SignalCoverage.SUFFICIENT,
+                        document_fingerprint=(f"hash-{index}",),
+                        is_surge=False,
+                        realized_max_multiple=1.2,
+                        prediction_correct=False,
+                    )
+                )
+
+            cases = tuple(
+                [make_case(f"update_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"update_control_{index}", 1.1) for index in range(4)]
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"update_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                130.0 if case.ground_truth.is_surge else 125.0,
+                                "2025-01-10",
+                            ),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            updated = replace(
+                stable,
+                version=2,
+                parameters={"positive_min": 0.28, "negative_max": 0.0},
+            )
+            fixture = candidate_growth_fixture()
+            fixture["documents"][0]["content"] = sec_company_facts_content(
+                ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                ("2024-01-01", "2024-12-31", 130.0, "2025-01-10"),
+            )
+            update_model = ScriptedUpdateModel(
+                SignalUpdateDecision(
+                    signal_ref=stable.ref,
+                    disposition="update",
+                    problem_type="threshold_false_positives",
+                    rationale=("The current threshold is repeatedly too permissive.",),
+                    candidate={
+                        "signal_ref": stable.ref,
+                        "spec": updated.to_dict(),
+                        "skill": None,
+                        "tests": [fixture],
+                    },
+                )
+            )
+            workspace = EvolutionWorkspace(root / "workspace")
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=update_model,
+                llm_signal_runner=None,
+            )
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            committed = make_record(
+                "update_target_round",
+                0.5,
+                (1.0, 0.0),
+                round_id=1,
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(committed,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    evidence_refs=(committed.plan_id,),
                 ),
-                ToolObservation("clone_signal_version", {}, signal_ref),
-                ToolObservation(
-                    "run_signal_tests",
-                    {},
-                    {"signal_ref": "other_signal:v2", "accepted": True},
-                ),
+                signal_registry_version=snapshot.version,
+                signal_registry_hash=snapshot.registry_hash,
+                run_contract_hash="contract-hash",
             )
 
-            with self.assertRaisesRegex(
-                ValidationError, "after staging that exact ref"
-            ):
-                engine._validate_agent_completion(
-                    "update", (signal_ref,), observations
-                )
+            result = engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
+
+            self.assertEqual(result.promoted, (updated.ref,))
+            self.assertEqual(len(update_model.requests), 1)
+            request_json = json.dumps(update_model.requests[0])
+            for case in cases:
+                self.assertNotIn(case.company_id, request_json)
+            update_audit = result.agent_audits["update_pipeline"]
+            induction_ids = set(
+                update_audit["local_selection"]["induction_case_ids"]
+            )
+            holdout_ids = set(update_audit["local_selection"]["holdout_case_ids"])
+            self.assertFalse(induction_ids & holdout_ids)
+            self.assertTrue(update_audit["model_called"])
+            effectiveness = result.candidate_effectiveness[updated.ref]
+            self.assertEqual(effectiveness["disposition"], "promoted")
+            self.assertLess(
+                effectiveness["candidate"]["directional_wrong"],
+                effectiveness["current"]["directional_wrong"],
+            )
 
     def test_mining_tool_rejects_existing_stable_signal_identity(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -2724,13 +2886,8 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=EmptyMiningModel(),
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
 
             with self.assertRaisesRegex(
@@ -2952,16 +3109,6 @@ class SignalEvolutionTests(TestCase):
                 source_types=("financials",),
                 parameters={"positive_min": 0.10, "negative_max": 0.0},
             )
-            updated_spec = SignalSpec(
-                signal_id="revenue_growth_yoy",
-                version=2,
-                category="financial",
-                description="Measure point-in-time revenue growth with explicit comparable-period checks.",
-                execution_type=SignalExecutionType.DETERMINISTIC,
-                function="financial.revenue_growth_yoy",
-                source_types=("financials",),
-                parameters={"positive_min": 0.10, "negative_max": 0.0},
-            )
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="broad_growth",
                 statement="Point-in-time revenue acceleration separates winners.",
@@ -2990,21 +3137,6 @@ class SignalEvolutionTests(TestCase):
                         },
                     ),
                 ),
-            )
-            update_model = ScriptedAgentModel(
-                [
-                    AgentTurn(
-                        tool_call=ToolCall(
-                            "clone_signal_version",
-                            {
-                                "signal_ref": "revenue_growth_yoy:v1",
-                                "spec": updated_spec.to_dict(),
-                                "tests": [candidate_growth_fixture()],
-                            },
-                        )
-                    ),
-                    AgentTurn(final_output={"candidate_refs": []}),
-                ]
             )
             discovery_cases = tuple(
                 [
@@ -3044,9 +3176,8 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=workspace,
                 mining_model=mining_model,
-                update_agent=GenericAgent(update_model),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
             snapshot = registry.freeze()
             workspace.start_or_resume_cycle(
@@ -3085,26 +3216,20 @@ class SignalEvolutionTests(TestCase):
                 engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
             self.assertEqual(registry.version, 1)
             mining_request_count = len(mining_model.requests)
-            update_request_count = len(update_model.requests)
 
             result = engine.run_cycle(cycle_id=1)
             self.assertEqual(
                 set(result.validated_candidates),
-                {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
+                {"discovery_growth_quality:v1"},
             )
             self.assertEqual(set(result.promoted), set(result.validated_candidates))
             self.assertEqual(
                 result.agent_audits["mining_pipeline"]["track"],
                 "hypothesis",
             )
-            self.assertTrue(
-                result.candidate_effectiveness[
-                    "revenue_growth_yoy:v2"
-                ]["accepted"]
-            )
             self.assertEqual(result.input_registry_version, 1)
             self.assertEqual(result.output_registry_version, 2)
-            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertFalse(
                 (
                     root
@@ -3118,16 +3243,12 @@ class SignalEvolutionTests(TestCase):
             promoted = engine.run_cycle(cycle_id=1)
             self.assertEqual(
                 set(promoted.promoted),
-                {"discovery_growth_quality:v1", "revenue_growth_yoy:v2"},
+                {"discovery_growth_quality:v1"},
             )
             self.assertEqual(promoted.registry_version, 2)
             self.assertEqual(len(mining_model.requests), mining_request_count)
-            self.assertEqual(len(update_model.requests), update_request_count)
-            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 2)
+            self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
-            self.assertTrue(
-                (root / "signals_candidates" / "financial" / "revenue_growth_yoy" / "v2").exists()
-            )
 
     def test_mining_controller_rejects_malformed_candidate_spec_locally(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -3161,9 +3282,6 @@ class SignalEvolutionTests(TestCase):
                     ),
                 ),
             )
-            update_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
             positive = make_case("discovery_positive", 4.0)
             control = make_case("discovery_control", 1.1)
             raw_store = RawInfoStore(
@@ -3186,9 +3304,8 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=mining_model,
-                update_agent=GenericAgent(update_model),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
 
             result = engine._validate_cycle(registry.freeze())
@@ -3245,11 +3362,7 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=mining_model,
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
             )
 
@@ -3266,83 +3379,73 @@ class SignalEvolutionTests(TestCase):
                 ("The extracted pattern needs more cases.",),
             )
 
-    def test_signal_failure_query_uses_executed_refs_not_free_form_prose(self) -> None:
+    def test_signal_learning_keeps_plan_reasons_but_dedupes_effectiveness(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
-            workspace = EvolutionWorkspace(root / "workspace")
-            snapshot = registry.freeze()
-            signal_result = SignalResult(
-                signal_id="revenue_growth_yoy",
-                version=1,
-                value=SignalValue.POSITIVE,
-                confidence=1.0,
-                interpretation="fixture",
-            )
-            trajectory = make_trajectory(
-                "failure_case",
-                4.0,
-                False,
-                None,
-                signal_result=signal_result,
-            )
-            record = replace(
-                make_record("failure_plan", 0.0, (1.0, 0.0)),
-                trajectories=(trajectory,),
-                metrics=score_predictions((trajectory,)),
-                evaluation=None,
-                fitness=None,
-            )
-            workspace.commit_round(
-                round_id=1,
-                records=(record,),
-                meta_entry=RoundMetaEntry(
-                    round_id=1,
-                    evidence_refs=(record.plan_id,),
-                ),
-                signal_registry_version=snapshot.version,
-                signal_registry_hash=snapshot.registry_hash,
-            )
-            engine = SignalEvolutionEngine(
-                registry=registry,
-                raw_info_store=RawInfoStore(),
-                discovery_cases=(make_case("discovery_case", 4.0),),
-                meta_memory=PlanMetaMemory(),
-                workspace=workspace,
-                mining_model=EmptyMiningModel(),
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
+            for index, reason in enumerate(("test growth", "confirm growth"), start=1):
+                registry.record_learning_event(
+                    SignalLearningEvent(
+                        event_id=f"event-{index}",
+                        observation_key="same-case-input",
+                        signal_ref="revenue_growth_yoy:v1",
+                        round_id=1,
+                        plan_id=f"plan-{index}",
+                        case_id="case-1",
+                        company_id="issuer-1",
+                        prediction_time=NOW.isoformat(),
+                        selection={
+                            "signal_ref": "revenue_growth_yoy:v1",
+                            "reason_code": "answer_need",
+                            "selection_reason": reason,
+                            "applicability_hypothesis": "Comparable periods exist.",
+                            "expected_role": "primary",
+                            "context_tags": ["comparable_financials"],
+                        },
+                        result_value=SignalValue.POSITIVE,
+                        coverage=SignalCoverage.SUFFICIENT,
+                        document_fingerprint=("doc-hash",),
+                        is_surge=True,
+                        realized_max_multiple=3.0,
+                        prediction_correct=True,
                     )
-                ),
-                llm_signal_runner=None,
-                enforce_agent_workflow=False,
-            )
+                )
 
-            failures = engine._query_signal_failure_cases(
-                "revenue_growth_yoy:v1"
-            )
-
-            self.assertEqual(len(failures), 1)
+            events = registry.load_learning_events("revenue_growth_yoy:v1")
+            profile = registry.load_learning_profile("revenue_growth_yoy:v1")
+            self.assertEqual(len(events), 2)
             self.assertEqual(
-                failures[0]["matched_signal_refs"],
-                ["revenue_growth_yoy:v1"],
+                {event.selection["selection_reason"] for event in events},
+                {"test growth", "confirm growth"},
             )
+            self.assertEqual(profile["selection_events"], 2)
+            self.assertEqual(profile["unique_observations"], 1)
+            self.assertNotIn("test growth", json.dumps(profile))
+            self.assertNotIn("plan-1", json.dumps(profile))
+            self.assertNotIn("case-1", json.dumps(profile))
             self.assertEqual(
-                failures[0]["match_reason"],
-                "incorrect_prediction_with_signal_used",
+                profile["state_outcome_matrix"]["positive"]["surge"], 1
+            )
+            cycle_start = registry.freeze(learning_round_cutoff=0)
+            resumed_same_cycle = registry.freeze(learning_round_cutoff=0)
+            next_cycle = registry.freeze(learning_round_cutoff=1)
+            self.assertEqual(cycle_start.learning_hash, resumed_same_cycle.learning_hash)
+            self.assertNotEqual(cycle_start.learning_hash, next_cycle.learning_hash)
+            self.assertEqual(
+                cycle_start.learned_profiles["revenue_growth_yoy:v1"][
+                    "unique_observations"
+                ],
+                0,
             )
 
-    def test_slow_loop_agents_cannot_access_locked_test(self) -> None:
+    def test_slow_loop_context_cannot_access_locked_test(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
             mining_model = EmptyMiningModel()
-            update_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
+            update_model = NoChangeUpdateModel()
             raw_store = RawInfoStore(
                 documents=(
                     RawInfoDocument.create(
@@ -3370,41 +3473,20 @@ class SignalEvolutionTests(TestCase):
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=mining_model,
-                update_agent=GenericAgent(update_model),
+                update_model=update_model,
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
-            engine._validate_cycle(registry.freeze())
+            validation = engine._validate_cycle(registry.freeze())
             mining_workspace = mining_model.requests[0]
-            update_workspace = update_model.requests[0].workspace
-            for workspace_view in (mining_workspace, update_workspace):
-                serialized = json.dumps(workspace_view)
-                self.assertNotIn("locked_company", serialized)
-                self.assertFalse(workspace_view["locked_test_available"])
-                self.assertIn("capability_backlog", workspace_view)
-            search_view = engine._search_raw_info_tool(
-                make_case("discovery_only", 3.0).case_id,
-                NOW.isoformat(),
-                source_types=["news"],
-            )["documents"][0]
-            self.assertNotIn("content", search_view)
-            self.assertTrue(search_view["content_truncated"])
-            self.assertLess(len(search_view["content_excerpt"]), 1_300)
-            loaded_view = engine._load_discovery_raw_document(
-                make_case("discovery_only", 3.0).case_id,
-                "discovery_doc",
+            serialized = json.dumps(mining_workspace)
+            self.assertNotIn("locked_company", serialized)
+            self.assertFalse(mining_workspace["locked_test_available"])
+            self.assertIn("capability_backlog", mining_workspace)
+            self.assertEqual(update_model.requests, [])
+            self.assertEqual(
+                validation.agent_audits["update_pipeline"]["disposition"],
+                "no_actionable_target",
             )
-            self.assertLess(len(loaded_view["content_excerpt"]), 6_100)
-            with self.assertRaisesRegex(ValidationError, "after the Discovery"):
-                engine._search_raw_info_tool(
-                    make_case("discovery_only", 3.0).case_id,
-                    (NOW + timedelta(days=1)).isoformat(),
-                )
-            with self.assertRaisesRegex(ValidationError, "Discovery case"):
-                engine._load_discovery_raw_document(
-                    make_case("discovery_only", 3.0).case_id,
-                    "locked_doc",
-                )
 
 
 class DualLoopTests(TestCase):
@@ -3439,9 +3521,6 @@ class DualLoopTests(TestCase):
                 candidates_per_round=1,
             )
             mining_model = EmptyMiningModel()
-            update_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
             signal_engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
@@ -3449,9 +3528,8 @@ class DualLoopTests(TestCase):
                 meta_memory=meta,
                 workspace=workspace,
                 mining_model=mining_model,
-                update_agent=GenericAgent(update_model),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
@@ -3579,13 +3657,8 @@ class DualLoopTests(TestCase):
                         ),
                     ),
                 ),
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
             dataset = EvolutionDataset(
                 discovery=discovery_cases,
@@ -3629,13 +3702,8 @@ class DualLoopTests(TestCase):
                 meta_memory=meta,
                 workspace=workspace,
                 mining_model=EmptyMiningModel(),
-                update_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
             second = DualLoopEvolutionEngine(
                 plan_engine=plan_engine,
@@ -3718,9 +3786,6 @@ class DualLoopTests(TestCase):
                 candidates_per_round=1,
             )
             mining_model = EmptyMiningModel()
-            update_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
             signal_engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
@@ -3728,9 +3793,8 @@ class DualLoopTests(TestCase):
                 meta_memory=meta,
                 workspace=workspace,
                 mining_model=mining_model,
-                update_agent=GenericAgent(update_model),
+                update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                enforce_agent_workflow=False,
             )
             dataset = EvolutionDataset(
                 discovery=(make_case("discovery_case", 4.0),),
@@ -3881,7 +3945,16 @@ def make_trajectory(
         signal_rounds = (
             SignalRound(
                 information_needs=("fixture need",),
-                selected_signals=(signal_result.ref,),
+                selections=(
+                    SignalSelectionDecision(
+                        signal_ref=signal_result.ref,
+                        reason_code="answer_need",
+                        selection_reason="Exercise the fixture Signal.",
+                        applicability_hypothesis="The fixture supplies compatible inputs.",
+                        expected_role="primary",
+                        context_tags=("general",),
+                    ),
+                ),
                 batch=SignalBatchResult(
                     results=(signal_result,),
                     signal_calls=1,

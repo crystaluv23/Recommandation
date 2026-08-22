@@ -211,10 +211,24 @@ trajectories. Both Basic Info and Signals use one local-first resolver; Basic
 Info sends deterministic exact source spans to `H_init`, while Signals compute
 derived results from complete source documents.
 The stable Signal Registry is frozen throughout a group of fast-loop rounds.
+Every committed Fast trajectory also contributes to a version-bound,
+append-only Signal learning ledger. The ledger keeps the Plan's explicit
+selection reason, the executed state, the realized outcome, and post-hoc
+reflection attribution separate: selecting a Signal is evidence about routing,
+not proof that the Signal caused the prediction. Multiple Plans may retain
+their distinct reasons for the same case/input, while effectiveness summaries
+deduplicate that observation. A bounded, identity-free learned profile is
+frozen beside the definitions and may guide later Signal selection; the full
+ledger never enters blind model context.
 At its Slow-Loop boundary, a durably staged and fully validated candidate batch
 may advance it exactly once; the cycle marker records both input and output
 Registry version/hash. A restart completes that same transition idempotently
 before advancing the cycle pointer. The next group uses the output snapshot.
+Signal Update is locally triggered only when repeated ledger evidence identifies
+an actionable exact version. Local code selects issuer-disjoint induction and
+holdout cases, exposes only induction evidence to one bounded semantic update
+call, and keeps contract, fixture, and paired holdout decisions outside the
+model. No actionable target means no Signal-Update model call.
 The Plan Archive remains cumulative across these transitions: old Plans keep
 their original Binary F1 and are neither rerun nor normalized against the new
 Registry. Parent selection compares all eligible historical records by stored

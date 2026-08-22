@@ -7,8 +7,9 @@ Started
 ## Purpose
 
 Keep reusable model/provider adapters and the generic tool-calling runtime at a
-top-level capability boundary. Research, Signal mining, and Signal updating may
-share the harness without creating task-specific agent classes.
+top-level capability boundary. Research roles may share the harness. Signal
+Mining and Signal Update use narrow structured role adapters because local code,
+not a free-form tool loop, owns sampling, label disclosure, staging, and gates.
 
 ## Generic Agent Contract
 
@@ -56,6 +57,17 @@ cost, and research-round limits.
 - Final structured output is passed through the supplied schema validator.
 - The harness itself cannot promote a Plan or Signal; domain orchestration owns
   validation and promotion.
+
+## Signal Update Role
+
+The Update role receives one exact stable Signal, its bounded learned profile,
+and locally selected label-visible induction packets. It makes one semantic
+decision: `no_change`, `defer`, or `update`. `update` must include the complete
+`vNext` spec, skill when required, and executable fixtures; the other decisions
+cannot carry a candidate. One bounded correction may repair malformed JSON,
+but the role cannot select a target, retrieve arbitrary cases, inspect the
+issuer-disjoint holdout, stage a candidate, run tests, or promote it. If local
+target or induction requirements are not met, the role is not called.
 
 ## Testing
 

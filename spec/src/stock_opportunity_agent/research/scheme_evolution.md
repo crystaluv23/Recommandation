@@ -154,8 +154,10 @@ token hits deterministically; non-query requests rank by recency. Selected
 spans are never partially truncated and must remain literal Raw Info substrings.
 
 The prediction sink is mandatory and runs before the ground-truth provider is
-called. A trajectory preserves Basic Info, every need, selected Signal ref,
-Signal result, evidence, local resolution query, API/cache result, appended
+called. A trajectory preserves Basic Info, every need, each selected Signal ref
+with its reason code, short reason, applicability hypothesis, expected role,
+and coarse context tags, Signal result, evidence, local resolution query,
+API/cache result, appended
 document ref, DataGap, Signal-consumed document id/hash, reflection state, final
 context, prediction, ground truth, self-reflection, usage, and stop reason. Each completed case trajectory
 is also written independently under
@@ -624,15 +626,16 @@ For each bounded round under one frozen Signal Registry snapshot:
 5. run the Plan-level critic and preserve its exact vertical layer beside the
    original anonymous case reflections;
 6. embed and archive `S/E/J/R/U/T`;
-7. update observed-policy Signal statistics; and
+7. reconcile version-bound Signal selection/result/outcome learning events and
+   their bounded profiles from committed trajectories; and
 8. derive the horizontal Round reflection, compose all three immutable layers
    into one grounded meta entry, append it to FIFO, and commit the round.
 
 ## Slow Loop
 
 After a configured number of fast rounds, unfreeze definitions and run one
-locally orchestrated Signal Mining pipeline plus the existing Signal Update
-Generic Agent. Mining is not a free-form tool loop: each model call has one
+locally orchestrated Signal Mining pipeline plus one locally triggered Signal
+Update pipeline. Neither is a free-form tool loop: each model call has one
 bounded semantic job, and the controller owns sampling, label disclosure, Raw
 Info retrieval, candidate staging, testing, and validation.
 
@@ -679,21 +682,36 @@ same bounded `RawInfoRequest` for every compared case. Model-facing evidence is
 compact and immutable; complete documents remain the local lineage and final
 Signal-execution boundary.
 
-Signal Update receives `H_U`, current meta-info, stable Signal stats, committed
-Plan experiments, failure trajectories, a label-stratified Discovery sampler,
-and version-cloning tools. It stages `vNext` candidates and cannot overwrite
-stable files. The sampler supplies an allowed point-in-time case for Raw Info
-follow-up instead of inviting the agent to search evaluation-case identities.
+Signal Update begins locally, not with `H_U`. The controller scans exact-version
+learning profiles and selects at most one actionable target only after repeated
+distinct observations show an explicit-attribution, directionality, or
+availability problem. If no target crosses that floor, Update records
+`no_actionable_target` and makes zero model calls. A fingerprint over the
+target version and supporting learning state prevents an unchanged issue from
+being proposed repeatedly.
+
+For a selected target, local code executes `vCurrent` on a deterministic,
+issuer-distinct Discovery sample and partitions it before model invocation.
+Induction contains both counterexamples and successful/neutral boundaries when
+available; holdout issuers are reserved and never enter the Update request.
+Point-in-time Raw Info is retrieved through the normal resolver, masked into
+bounded anonymous evidence packets, and the local audit records the split.
+Insufficient induction support yields a durable `defer` without calling the
+model.
+
+One `H_U` call then returns exactly one of `no_change`, `defer`, or `update`.
+Only `update` carries a complete candidate `vNext` with fixtures. The
+controller preserves Signal identity, category, execution type, evidence
+policy, description, and deterministic function; stages the candidate; runs
+the normal contract/fixture checks; and evaluates it only on the issuer-disjoint
+holdout. The model cannot see holdout results or promote its own output.
 
 Mining role calls receive literal structured-output contracts for hypotheses,
 rankings, signatures, decisions, canonical `SignalSpec`, executable fixtures,
-enums, and registered deterministic functions. Update tool cards retain their
-explicit argument schemas and examples. Update must first load the exact stable
-spec and structured failure cases, preserve `signal_id`, category, execution
-type, and deterministic function, create exactly `vNext`, run tests, and return
-only the staged ref. A new deterministic formula is a code-reviewed framework
-change; Mining or Update may use only functions already registered by the
-runtime.
+enums, and registered deterministic functions. Update has one literal decision
+and candidate contract; it has no domain tools. A new deterministic formula is
+a code-reviewed framework change; Mining or Update may use only functions
+already registered by the runtime.
 
 All candidates are staged first. The orchestrator then executes each
 candidate's non-empty point-in-time fixtures through the real candidate
@@ -740,25 +758,25 @@ correction. H2 may reference only supplied hypothesis/case refs; H3/E2 may
 reference only supplied hypotheses/signatures and may return only complete
 candidate drafts. The controller records every stage request/usage, local
 selection, Raw Info resolution summary, decision, staged candidate ref, and
-provisional/refined/rejected disposition in the Slow-loop audit. Update retains
-the explicit final contract `{"candidate_refs":[...]}` and its mandatory tool
-workflow. A non-empty Update ref must come from successful staging and
-`run_signal_tests` for that exact ref.
+provisional/refined/rejected disposition in the Slow-loop audit. Update records
+the exact target fingerprint, local target/induction decision, single role
+request/usage, returned disposition, staged ref if any, and later local
+validation disposition.
 
 Mining cannot stage an existing stable `signal_id`; existing identities belong
 to Update and must use exact `vNext`. Diagnosis or a proposed Signal object is
-not itself a valid final result. Schema and tool validation errors may be
-repaired only within the frozen stage/tool bounds.
+not itself a valid candidate. Structured role errors may be repaired only by
+the one frozen correction boundary; local staging/validation errors do not
+become another model call.
 Missing required candidate fields, invalid enums, and other `SignalSpec`
 deserialization failures are exposed to the agent as domain validation feedback;
 they never escape as raw parser exceptions and are never filled with defaults.
 Malformed outer JSON is corrected with its exact parser message and bounded raw
-output, not replaced by a generic "unknown action" message. Granted-tool,
-argument, output, and validation failures remain in the durable Slow-loop agent
-audit even when the agent later returns an empty candidate list.
+output, not replaced by a generic "unknown action" message. Role output and
+local validation failures remain in the durable Slow-loop audit.
 External-approval pauses and other orchestration control-flow exceptions are not
-domain validation feedback: every Fast evaluator, Generic Agent tool boundary,
-candidate fixture, and Slow agent propagates them unchanged to the CLI.
+domain validation feedback: every Fast evaluator, structured Slow role,
+candidate fixture, and local controller propagates them unchanged to the CLI.
 
 Every durable Plan evaluation attempt contains its complete serialized case
 trajectories, including DataGaps and stop reasons. The derived capability
@@ -941,7 +959,8 @@ imputed.
 ## V1 Non-Goals
 
 - Shapley credit or trajectory counterfactuals;
-- learned Signal routing or stopping;
+- autonomous Signal routing or stopping policies beyond the bounded learned
+  profile supplied to the existing selector;
 - Signal interaction graphs;
 - automatic optimization of `H_R/H_P/H_E/H_U`;
 - meta-meta evolution;
@@ -956,10 +975,10 @@ imputed.
 3. Two-stage evaluation, label reveal, self-reflection, and trajectories.
 4. Plan Archive, embedding, diverse Top-K, and random exploration parents.
 5. Independent candidate sampling, fast-loop evaluation, `H_R`, and FIFO meta.
-6. Observed-policy Signal state statistics.
-7. Generic-Agent Signal Mining into candidate storage.
-8. Generic-Agent Signal Update, executable validation, recoverable automatic
-   batch promotion, and versioned transition.
+6. Version-bound Signal learning and observed-policy compatibility statistics.
+7. Locally orchestrated dual-track Signal Mining into candidate storage.
+8. Locally triggered one-call Signal Update, executable validation, recoverable
+   automatic batch promotion, and versioned transition.
 
 ## Testing
 

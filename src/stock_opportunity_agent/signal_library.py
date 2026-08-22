@@ -29,6 +29,44 @@ _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_:-]*$")
 _FORBIDDEN_SOURCE_TYPES = frozenset(
     {"ground_truth", "outcome_label", "future_price", "future_return"}
 )
+SIGNAL_CONTEXT_TAGS = frozenset(
+    {
+        "general",
+        "comparable_financials",
+        "sparse_evidence",
+        "filing_rich",
+        "news_rich",
+        "transcript_available",
+        "market_data_only",
+        "pre_revenue",
+        "early_commercialization",
+        "scaling",
+        "mature_operations",
+        "project_driven",
+        "recurring_revenue",
+        "customer_concentrated",
+        "capital_intensive",
+        "cyclical",
+        "regulated",
+        "biotechnology",
+        "healthcare",
+        "software",
+        "semiconductors",
+        "hardware",
+        "industrial",
+        "energy",
+        "materials",
+        "consumer",
+        "financials",
+        "real_estate",
+        "communications",
+        "small_cap",
+        "mid_cap",
+        "large_cap",
+        "high_volatility",
+        "catalyst_window",
+    }
+)
 _BUILTIN_ADAPTER_SOURCE_TYPES = frozenset(
     {
         "financials",
@@ -431,7 +469,10 @@ class SignalCard:
     category: str
     description: str
     execution_type: SignalExecutionType
-    positive_surge_rate: float | None
+    learned_profile: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "learned_profile", dict(self.learned_profile))
 
     @property
     def ref(self) -> str:
@@ -445,7 +486,7 @@ class SignalCard:
             "category": self.category,
             "description": self.description,
             "execution_type": self.execution_type.value,
-            "positive_surge_rate": self.positive_surge_rate,
+            "learned_profile": dict(self.learned_profile),
         }
 
 
@@ -565,6 +606,137 @@ class SignalStats:
 
 
 @dataclass(frozen=True)
+class SignalLearningEvent:
+    """One committed Plan selection joined to result and revealed outcome."""
+
+    event_id: str
+    observation_key: str
+    signal_ref: str
+    round_id: int
+    plan_id: str
+    case_id: str
+    company_id: str
+    prediction_time: str
+    selection: Mapping[str, Any]
+    result_value: SignalValue
+    coverage: SignalCoverage
+    document_fingerprint: tuple[str, ...]
+    is_surge: bool
+    realized_max_multiple: float
+    prediction_correct: bool
+    reflection_attribution: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        for value, name in (
+            (self.event_id, "event_id"),
+            (self.observation_key, "observation_key"),
+            (self.plan_id, "plan_id"),
+            (self.case_id, "case_id"),
+            (self.company_id, "company_id"),
+        ):
+            if not str(value).strip():
+                raise ValidationError(f"Signal learning {name} must not be empty")
+        _parse_ref(self.signal_ref)
+        if self.round_id < 1:
+            raise ValidationError("Signal learning round_id must be positive")
+        if not math.isfinite(self.realized_max_multiple):
+            raise ValidationError(
+                "Signal learning realized_max_multiple must be finite"
+            )
+        selection = dict(self.selection)
+        required_selection = {
+            "signal_ref",
+            "reason_code",
+            "selection_reason",
+            "applicability_hypothesis",
+            "expected_role",
+            "context_tags",
+        }
+        if set(selection) != required_selection:
+            raise ValidationError("Signal learning selection shape is invalid")
+        if selection["signal_ref"] != self.signal_ref:
+            raise ValidationError("Signal learning selection ref mismatch")
+        if not isinstance(selection["context_tags"], (list, tuple)) or isinstance(
+            selection["context_tags"], str
+        ):
+            raise ValidationError("Signal learning context_tags must be an array")
+        if any(
+            str(item) not in SIGNAL_CONTEXT_TAGS
+            for item in selection["context_tags"]
+        ):
+            raise ValidationError("Signal learning context tag is not allowed")
+        object.__setattr__(self, "selection", selection)
+        object.__setattr__(
+            self,
+            "document_fingerprint",
+            tuple(str(item) for item in self.document_fingerprint),
+        )
+        object.__setattr__(
+            self,
+            "reflection_attribution",
+            tuple(str(item) for item in self.reflection_attribution),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "signal-learning-event-v1",
+            "event_id": self.event_id,
+            "observation_key": self.observation_key,
+            "signal_ref": self.signal_ref,
+            "round_id": self.round_id,
+            "plan_id": self.plan_id,
+            "case_id": self.case_id,
+            "company_id": self.company_id,
+            "prediction_time": self.prediction_time,
+            "selection": dict(self.selection),
+            "result": {
+                "value": self.result_value.value,
+                "coverage": self.coverage.value,
+                "document_fingerprint": list(self.document_fingerprint),
+            },
+            "outcome": {
+                "is_surge": self.is_surge,
+                "realized_max_multiple": self.realized_max_multiple,
+                "prediction_correct": self.prediction_correct,
+            },
+            "reflection_attribution": list(self.reflection_attribution),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalLearningEvent":
+        if data.get("schema_version") != "signal-learning-event-v1":
+            raise ValidationError("unsupported Signal learning event schema")
+        result = dict(data.get("result", {}))
+        outcome = dict(data.get("outcome", {}))
+        if type(outcome.get("is_surge")) is not bool or type(
+            outcome.get("prediction_correct")
+        ) is not bool:
+            raise ValidationError("Signal learning outcome booleans are invalid")
+        return cls(
+            event_id=str(data["event_id"]),
+            observation_key=str(data["observation_key"]),
+            signal_ref=str(data["signal_ref"]),
+            round_id=int(data["round_id"]),
+            plan_id=str(data["plan_id"]),
+            case_id=str(data["case_id"]),
+            company_id=str(data["company_id"]),
+            prediction_time=str(data["prediction_time"]),
+            selection=dict(data.get("selection", {})),
+            result_value=SignalValue(str(result["value"])),
+            coverage=SignalCoverage(str(result["coverage"])),
+            document_fingerprint=tuple(
+                str(item) for item in result.get("document_fingerprint", ())
+            ),
+            is_surge=outcome["is_surge"],
+            realized_max_multiple=float(outcome["realized_max_multiple"]),
+            prediction_correct=outcome["prediction_correct"],
+            reflection_attribution=tuple(
+                str(item) for item in data.get("reflection_attribution", ())
+            ),
+        )
+
+
+@dataclass(frozen=True)
 class FrozenSignalRegistry:
     """Immutable definitions and skills used throughout one fast-loop group."""
 
@@ -572,10 +744,20 @@ class FrozenSignalRegistry:
     registry_hash: str
     specs: tuple[SignalSpec, ...]
     skills: Mapping[str, str]
+    learned_profiles: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
+    learning_hash: str = ""
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "specs", tuple(self.specs))
         object.__setattr__(self, "skills", dict(self.skills))
+        object.__setattr__(
+            self,
+            "learned_profiles",
+            {
+                str(ref): dict(profile)
+                for ref, profile in self.learned_profiles.items()
+            },
+        )
 
     def load_spec(self, signal_ref: str) -> SignalSpec:
         for spec in self.specs:
@@ -776,7 +958,6 @@ class SignalRegistry:
             spec = self.load_spec(
                 f"{manifest['signal_id']}:v{int(manifest['stable_version'])}"
             )
-            stats = self.load_stats(spec.signal_id)
             cards.append(
                 SignalCard(
                     signal_id=spec.signal_id,
@@ -784,7 +965,7 @@ class SignalRegistry:
                     category=spec.category,
                     description=spec.description,
                     execution_type=spec.execution_type,
-                    positive_surge_rate=stats.surge_rate(SignalValue.POSITIVE),
+                    learned_profile=self.load_learning_profile(spec.ref),
                 )
             )
         return tuple(sorted(cards, key=lambda card: (card.category, card.signal_id)))
@@ -873,8 +1054,105 @@ class SignalRegistry:
             self._save_stats(result.signal_id, stats)
         return recorded
 
-    def freeze(self) -> FrozenSignalRegistry:
-        """Freeze all current stable definitions and LLM skill text."""
+    def load_learning_events(
+        self, signal_ref: str
+    ) -> tuple[SignalLearningEvent, ...]:
+        """Load the append-only committed learning stream for one exact version."""
+
+        self.load_spec(signal_ref)
+        path = self._learning_dir(signal_ref) / "events.jsonl"
+        if not path.exists():
+            return ()
+        events: list[SignalLearningEvent] = []
+        for line_number, line in enumerate(
+            path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if not line.strip():
+                continue
+            try:
+                event = SignalLearningEvent.from_dict(json.loads(line))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+                raise ValidationError(
+                    f"invalid Signal learning event at {path}:{line_number}"
+                ) from exc
+            if event.signal_ref != signal_ref:
+                raise ValidationError("Signal learning event path/ref mismatch")
+            events.append(event)
+        if len({event.event_id for event in events}) != len(events):
+            raise ValidationError("duplicate Signal learning event ids on disk")
+        return tuple(events)
+
+    def load_learning_profile(self, signal_ref: str) -> dict[str, Any]:
+        """Load the rebuildable identity-free profile for one exact version."""
+
+        self.load_spec(signal_ref)
+        path = self._learning_dir(signal_ref) / "profile.json"
+        if not path.exists():
+            return _build_signal_learning_profile(signal_ref, ())
+        profile = _read_json(path)
+        if (
+            profile.get("schema_version") != "signal-learning-profile-v1"
+            or profile.get("signal_ref") != signal_ref
+        ):
+            raise ValidationError("Signal learning profile path/ref mismatch")
+        return profile
+
+    def record_learning_event(self, event: SignalLearningEvent) -> bool:
+        """Append one event idempotently and atomically rebuild its compact profile."""
+
+        return self.record_learning_events((event,)) == 1
+
+    def record_learning_events(
+        self, events: Iterable[SignalLearningEvent]
+    ) -> int:
+        """Append a committed batch, rebuilding each affected profile only once."""
+
+        grouped: dict[str, list[SignalLearningEvent]] = {}
+        for event in events:
+            self.load_spec(event.signal_ref)
+            grouped.setdefault(event.signal_ref, []).append(event)
+        recorded = 0
+        for signal_ref, new_events in grouped.items():
+            learning_dir = self._learning_dir(signal_ref)
+            learning_dir.mkdir(parents=True, exist_ok=True)
+            existing = list(self.load_learning_events(signal_ref))
+            known_ids = {item.event_id for item in existing}
+            missing: list[SignalLearningEvent] = []
+            for event in new_events:
+                if event.event_id in known_ids:
+                    continue
+                known_ids.add(event.event_id)
+                missing.append(event)
+            if not missing:
+                continue
+            path = learning_dir / "events.jsonl"
+            with path.open("a", encoding="utf-8") as handle:
+                for event in missing:
+                    handle.write(
+                        json.dumps(
+                            event.to_dict(),
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        )
+                        + "\n"
+                    )
+                handle.flush()
+                os.fsync(handle.fileno())
+            existing.extend(missing)
+            _atomic_write_json(
+                learning_dir / "profile.json",
+                _build_signal_learning_profile(signal_ref, existing),
+            )
+            recorded += len(missing)
+        return recorded
+
+    def freeze(
+        self, *, learning_round_cutoff: int | None = None
+    ) -> FrozenSignalRegistry:
+        """Freeze definitions plus profiles committed by an optional round cutoff."""
+
+        if learning_round_cutoff is not None and learning_round_cutoff < 0:
+            raise ValidationError("Signal learning round cutoff cannot be negative")
 
         cards = self.list_signal_cards()
         if not cards:
@@ -900,11 +1178,34 @@ class SignalRegistry:
             sort_keys=True,
             separators=(",", ":"),
         )
+        learned_profiles = {}
+        for spec in specs:
+            if learning_round_cutoff is None:
+                profile = self.load_learning_profile(spec.ref)
+            else:
+                profile = _build_signal_learning_profile(
+                    spec.ref,
+                    (
+                        event
+                        for event in self.load_learning_events(spec.ref)
+                        if event.round_id <= learning_round_cutoff
+                    ),
+                )
+            learned_profiles[spec.ref] = profile
+        learning_canonical = json.dumps(
+            learned_profiles,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
         return FrozenSignalRegistry(
             version=self.version,
             registry_hash=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
             specs=specs,
             skills=skills,
+            learned_profiles=learned_profiles,
+            learning_hash=hashlib.sha256(
+                learning_canonical.encode("utf-8")
+            ).hexdigest(),
         )
 
     def stage_candidate(
@@ -1368,6 +1669,15 @@ class SignalRegistry:
         if len(matches) != 1:
             raise ValidationError(f"unknown or ambiguous signal id: {signal_id}")
         return matches[0]
+
+    def _learning_dir(self, signal_ref: str) -> Path:
+        signal_id, version = _parse_ref(signal_ref)
+        return (
+            self._manifest_for(signal_id).parent
+            / "versions"
+            / f"v{version}"
+            / "learning"
+        )
 
     def _save_stats(self, signal_id: str, stats: SignalStats) -> None:
         manifest_path = self._manifest_for(signal_id)
@@ -2303,6 +2613,152 @@ def _latest_metadata_value(
         if key in document.metadata:
             return document.metadata[key], document
     return None
+
+
+def _build_signal_learning_profile(
+    signal_ref: str,
+    events: Iterable[SignalLearningEvent],
+) -> dict[str, Any]:
+    """Derive one bounded identity-free observational profile."""
+
+    materialized = tuple(events)
+    observations: dict[str, SignalLearningEvent] = {}
+    for event in materialized:
+        if event.signal_ref != signal_ref:
+            raise ValidationError("cannot mix Signal refs in one learning profile")
+        prior = observations.get(event.observation_key)
+        if prior is not None and (
+            prior.result_value is not event.result_value
+            or prior.coverage is not event.coverage
+            or prior.is_surge != event.is_surge
+            or prior.company_id != event.company_id
+            or prior.document_fingerprint != event.document_fingerprint
+        ):
+            raise ValidationError("conflicting duplicate Signal learning observation")
+        observations.setdefault(event.observation_key, event)
+
+    matrix = {
+        value.value: {"surge": 0, "non_surge": 0}
+        for value in SignalValue
+    }
+    directional_correct = 0
+    directional_wrong = 0
+    unavailable = 0
+    unavailable_with_inputs = 0
+    for event in observations.values():
+        outcome = "surge" if event.is_surge else "non_surge"
+        matrix[event.result_value.value][outcome] += 1
+        unavailable += int(event.result_value is SignalValue.UNAVAILABLE)
+        unavailable_with_inputs += int(
+            event.result_value is SignalValue.UNAVAILABLE
+            and bool(event.document_fingerprint)
+        )
+        if event.result_value is SignalValue.POSITIVE:
+            directional_correct += int(event.is_surge)
+            directional_wrong += int(not event.is_surge)
+        elif event.result_value is SignalValue.NEGATIVE:
+            directional_correct += int(not event.is_surge)
+            directional_wrong += int(event.is_surge)
+
+    tag_observations: dict[str, set[str]] = {}
+    tag_issuers: dict[str, set[str]] = {}
+    tag_positive_surge: dict[str, list[int]] = {}
+    reason_counts: dict[str, int] = {}
+    for event in materialized:
+        reason_code = str(event.selection.get("reason_code", "unspecified"))[:40]
+        reason_counts[reason_code] = reason_counts.get(reason_code, 0) + 1
+        for raw_tag in event.selection.get("context_tags", ()):
+            tag = _learning_token(str(raw_tag))
+            if not tag:
+                continue
+            tag_observations.setdefault(tag, set()).add(event.observation_key)
+            tag_issuers.setdefault(tag, set()).add(event.company_id)
+    for tag, observation_ids in tag_observations.items():
+        positive = 0
+        positive_surge = 0
+        for observation_id in observation_ids:
+            event = observations[observation_id]
+            if event.result_value is SignalValue.POSITIVE:
+                positive += 1
+                positive_surge += int(event.is_surge)
+        tag_positive_surge[tag] = [positive, positive_surge]
+
+    patterns: list[dict[str, Any]] = []
+    ordered_tags = sorted(
+        tag_observations,
+        key=lambda tag: (-len(tag_observations[tag]), tag),
+    )
+    for tag in ordered_tags:
+        observation_count = len(tag_observations[tag])
+        issuer_count = len(tag_issuers[tag])
+        if observation_count < 2 or issuer_count < 2:
+            continue
+        positive, positive_surge = tag_positive_surge[tag]
+        patterns.append(
+            {
+                "context_tag": tag,
+                "observations": observation_count,
+                "issuers": issuer_count,
+                "positive_surge_rate": (
+                    positive_surge / positive if positive else None
+                ),
+            }
+        )
+        if len(patterns) == 3:
+            break
+
+    unique_count = len(observations)
+    if unique_count < 2:
+        confidence = "insufficient"
+    elif unique_count < 4:
+        confidence = "sparse"
+    elif unique_count < 8:
+        confidence = "emerging"
+    else:
+        confidence = "repeated"
+    attribution_observations = {
+        "misleading": set(),
+        "ignored": set(),
+        "other": set(),
+    }
+    for event in materialized:
+        for item in event.reflection_attribution:
+            key = item if item in attribution_observations else "other"
+            attribution_observations[key].add(event.observation_key)
+    attribution = {
+        key: len(observation_ids)
+        for key, observation_ids in attribution_observations.items()
+    }
+
+    return {
+        "schema_version": "signal-learning-profile-v1",
+        "signal_ref": signal_ref,
+        "confidence": confidence,
+        "selection_events": len(materialized),
+        "unique_observations": unique_count,
+        "unique_issuers": len({event.company_id for event in observations.values()}),
+        "state_outcome_matrix": matrix,
+        "directional": {
+            "correct": directional_correct,
+            "wrong": directional_wrong,
+            "unavailable": unavailable,
+            "unavailable_with_inputs": unavailable_with_inputs,
+            "unavailable_without_inputs": unavailable - unavailable_with_inputs,
+        },
+        "reflection_attribution": attribution,
+        "selection_reason_codes": [
+            {"reason_code": reason, "count": count}
+            for reason, count in sorted(
+                reason_counts.items(), key=lambda item: (-item[1], item[0])
+            )[:3]
+        ],
+        "recurring_contexts": patterns,
+    }
+
+
+def _learning_token(value: str) -> str:
+    normalized = re.sub(r"[^a-z0-9_:-]+", "_", value.casefold()).strip("_")
+    return normalized[:48]
 
 
 def _parse_ref(signal_ref: str) -> tuple[str, int]:

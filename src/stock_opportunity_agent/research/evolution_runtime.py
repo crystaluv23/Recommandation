@@ -50,15 +50,7 @@ from stock_opportunity_agent.data.sources.state import (
 )
 from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import ModelClientSettings, RegisteredModel, get_model
-from stock_opportunity_agent.llm.agent import (
-    AgentModel,
-    AgentRequest,
-    AgentTurn,
-    AgentUsage,
-    GenericAgent,
-    ToolCall,
-    ToolObservation,
-)
+from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import ChatMessage
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -98,6 +90,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalMiningHypothesis,
     SignalMiningModel,
     SignalMiningSignature,
+    SignalSelectionDecision,
+    SignalUpdateDecision,
+    SignalUpdateModel,
     SignalEvolutionEngine,
     candidate_judgment_feedback,
     cosine_similarity,
@@ -3883,7 +3878,7 @@ class LLMSignalRetrievalAgent:
         prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
         prior_signal_results: Mapping[str, Mapping[str, Any]] | None = None,
         eligible_signal_refs: tuple[str, ...] | None = None,
-    ) -> AgentStep[tuple[str, ...]]:
+    ) -> AgentStep[tuple[SignalSelectionDecision, ...]]:
         registry_refs = tuple(spec.ref for spec in signal_registry.specs)
         allowed_refs = (
             registry_refs
@@ -3901,6 +3896,9 @@ class LLMSignalRetrievalAgent:
                 "category": spec.category,
                 "description": spec.description,
                 "execution_type": spec.execution_type.value,
+                "learned_profile": dict(
+                    signal_registry.learned_profiles.get(spec.ref, {})
+                ),
             }
             for spec in signal_registry.specs
             if spec.ref in allowed
@@ -3924,9 +3922,11 @@ class LLMSignalRetrievalAgent:
         for attempt in range(2):
             if attempt:
                 selection_payload["validation_feedback"] = (
-                    "signal_refs must be one JSON string array with unique refs drawn "
-                    "only from signal_cards. An empty array is valid when no supplied "
-                    "unexecuted Signal can answer the information needs."
+                    "selections must be one JSON array. Each item must contain exactly "
+                    "signal_ref, reason_code, selection_reason, "
+                    "applicability_hypothesis, expected_role, and context_tags. Refs "
+                    "must be unique and drawn only from signal_cards. An empty array "
+                    "is valid when no supplied Signal answers the information needs."
                 )
             selection_value, step_usage = _complete_json_with_invalid_value(
                 self.caller,
@@ -3936,23 +3936,48 @@ class LLMSignalRetrievalAgent:
                     "Signal cards that answers the information needs. Previously "
                     "executed Signals are omitted and must not be reconstructed. If "
                     "none of the supplied cards adds useful evidence, return "
-                    "{\"signal_refs\": []}; otherwise return "
-                    "{\"signal_refs\": [\"exact supplied ref\"]}."
+                    "{\"selections\": []}. Otherwise return selections whose items "
+                    "contain exactly: signal_ref; reason_code (answer_need, "
+                    "confirm_hypothesis, test_contradiction, assess_applicability, "
+                    "or combine_evidence); a <=240 character selection_reason; a "
+                    "<=240 character applicability_hypothesis; expected_role "
+                    "(primary, confirmation, contradiction, or coverage); and up "
+                    "to four context_tags chosen only from: general, "
+                    "comparable_financials, sparse_evidence, filing_rich, news_rich, "
+                    "transcript_available, market_data_only, pre_revenue, "
+                    "early_commercialization, scaling, mature_operations, "
+                    "project_driven, recurring_revenue, customer_concentrated, "
+                    "capital_intensive, cyclical, regulated, biotechnology, "
+                    "healthcare, software, semiconductors, hardware, industrial, "
+                    "energy, materials, consumer, financials, real_estate, "
+                    "communications, small_cap, mid_cap, large_cap, high_volatility, "
+                    "or catalyst_window."
                 ),
                 payload=selection_payload,
                 allow_outcomes=False,
             )
             selection_usage = selection_usage + step_usage
             try:
-                parsed_refs = _strict_string_list(
-                    selection_value,
-                    "signal_refs",
-                    allow_empty=True,
+                if set(selection_value) != {"selections"} or not isinstance(
+                    selection_value["selections"], list
+                ):
+                    raise ValidationError("selection output requires selections array")
+                raw_selections = selection_value["selections"]
+                if any(not isinstance(item, Mapping) for item in raw_selections):
+                    raise ValidationError("every selection must be an object")
+                parsed = tuple(
+                    SignalSelectionDecision.from_dict(item)
+                    for item in raw_selections
                 )
-            except ValidationError:
-                parsed_refs = None
-            if parsed_refs is not None and set(parsed_refs).issubset(allowed):
-                return AgentStep(parsed_refs, selection_usage)
+                parsed_refs = tuple(item.signal_ref for item in parsed)
+                if len(set(parsed_refs)) != len(parsed_refs):
+                    raise ValidationError("selection refs must be unique")
+                if not set(parsed_refs).issubset(allowed):
+                    raise ValidationError("selection ref is outside supplied cards")
+            except (KeyError, TypeError, ValidationError):
+                parsed = None
+            if parsed is not None:
+                return AgentStep(parsed, selection_usage)
         return AgentStep((), selection_usage)
 
 
@@ -4299,6 +4324,11 @@ def _plan_critic_trajectory(
             {
                 "information_needs": list(round_value.get("information_needs", ())),
                 "selected_signals": list(round_value.get("selected_signals", ())),
+                "selections": [
+                    dict(item)
+                    for item in round_value.get("selections", ())
+                    if isinstance(item, Mapping)
+                ],
                 "signal_results": signal_results,
             }
         )
@@ -4451,208 +4481,6 @@ class LLMRoundReflector:
             )
 
 
-def _signal_agent_workflow_progress(
-    stage: str,
-    request: AgentRequest,
-) -> dict[str, Any] | None:
-    contract = request.workspace.get("workflow_contract")
-    if not isinstance(contract, Mapping):
-        return None
-    agent_kind = str(contract.get("agent", ""))
-    if agent_kind != "update":
-        return None
-
-    successful = [
-        (index, item)
-        for index, item in enumerate(request.observations)
-        if not (
-            isinstance(item.result, Mapping) and item.result.get("error")
-        )
-    ]
-
-    def named(name: str) -> list[tuple[int, ToolObservation]]:
-        return [(index, item) for index, item in successful if item.name == name]
-
-    def tool_action(
-        name: str,
-        arguments: Mapping[str, Any],
-        reason: str,
-        completed: list[str],
-    ) -> dict[str, Any]:
-        return {
-            "agent": agent_kind,
-            "completed_steps": completed,
-            "next_required_action": {
-                "action": "tool",
-                "tool_name": name,
-                "arguments": dict(arguments),
-                "reason": reason,
-            },
-            "instruction": (
-                "Do this next action now. Do not repeat an already successful "
-                "tool unless the next action explicitly names it."
-            ),
-        }
-
-    completed: list[str] = []
-    categories = named("list_signal_categories")
-    cards = named("list_signal_cards") + named("search_signal_cards")
-    loaded_specs = named("load_signal_spec")
-    samples = named("sample_discovery_cases")
-    searches = named("search_raw_info")
-    if agent_kind == "update":
-        if not loaded_specs:
-            if not cards:
-                if not categories:
-                    return tool_action(
-                        "list_signal_categories",
-                        {},
-                        "Find one stable Signal to diagnose.",
-                        completed,
-                    )
-                category_rows = categories[-1][1].result
-                category = (
-                    str(category_rows[0])
-                    if isinstance(category_rows, list) and category_rows
-                    else "market"
-                )
-                return tool_action(
-                    "list_signal_cards",
-                    {"category": category},
-                    "Obtain an exact stable signal_ref.",
-                    completed,
-                )
-            card_rows = cards[-1][1].result
-            exact_ref = next(
-                (
-                    str(row.get("signal_ref"))
-                    for row in card_rows
-                    if isinstance(row, Mapping) and row.get("signal_ref")
-                ),
-                "",
-            ) if isinstance(card_rows, list) else ""
-            return tool_action(
-                "load_signal_spec",
-                {"signal_ref": exact_ref},
-                "Load the exact ref from the card; do not synthesize a category-prefixed ref.",
-                completed,
-            )
-        completed.append("load_signal_spec")
-        spec = loaded_specs[-1][1].result
-        signal_id = str(spec.get("signal_id", "")) if isinstance(spec, Mapping) else ""
-        if not named("query_signal_usage"):
-            return tool_action(
-                "query_signal_usage",
-                {"signal_id": signal_id},
-                "Inspect observed-policy statistics before proposing an update.",
-                completed,
-            )
-        completed.append("query_signal_usage")
-        if not named("query_signal_failure_cases"):
-            return tool_action(
-                "query_signal_failure_cases",
-                {"signal_id": signal_id},
-                "Inspect structured committed failures before proposing an update.",
-                completed,
-            )
-        completed.append("query_signal_failure_cases")
-        if not samples:
-            return tool_action(
-                "sample_discovery_cases",
-                {"limit": 8},
-                "Choose an allowed label-visible case for Raw Info follow-up.",
-                completed,
-            )
-        completed.append("sample_discovery_cases")
-        sample_rows = samples[-1][1].result
-        rows = sample_rows if isinstance(sample_rows, list) else []
-        sample_index = samples[-1][0]
-        searches_after_sample = [
-            (index, item) for index, item in searches if index > sample_index
-        ]
-        if not searches_after_sample:
-            target = next((row for row in rows if isinstance(row, Mapping)), None)
-            retrieval = spec.get("raw_retrieval") if isinstance(spec, Mapping) else None
-            source_types = (
-                list(retrieval.get("source_types", ()))
-                if isinstance(retrieval, Mapping)
-                else ["news"]
-            )
-            if target is not None:
-                return tool_action(
-                    "search_raw_info",
-                    {
-                        "case_id": target["case_id"],
-                        "as_of": target["prediction_time"],
-                        "source_types": source_types,
-                    },
-                    "Inspect point-in-time Discovery evidence using the stable spec's source types.",
-                    completed,
-                )
-        completed.append("search_raw_info")
-        stage_calls = named("clone_signal_version")
-
-    successful_stages = [item for _, item in stage_calls]
-    test_results = {
-        str(item.result.get("signal_ref")): item.result.get("accepted") is True
-        for _, item in named("run_signal_tests")
-        if isinstance(item.result, Mapping) and item.result.get("signal_ref")
-    }
-    accepted_tests = {
-        str(item.result.get("signal_ref"))
-        for _, item in named("run_signal_tests")
-        if isinstance(item.result, Mapping) and item.result.get("accepted") is True
-    }
-    if successful_stages:
-        latest_ref = str(successful_stages[-1].result)
-        if latest_ref in test_results and not test_results[latest_ref]:
-            return {
-                "agent": agent_kind,
-                "completed_steps": completed,
-                "next_required_action": {
-                    "action": "final",
-                    "output": {"candidate_refs": []},
-                },
-                "instruction": (
-                    "The staged candidate failed run_signal_tests. Return the exact "
-                    "empty final output; never return the rejected ref."
-                ),
-            }
-        if latest_ref not in accepted_tests:
-            return tool_action(
-                "run_signal_tests",
-                {"signal_ref": latest_ref},
-                "Every returned candidate ref must first pass its real contract fixtures.",
-                completed,
-            )
-        completed.append("candidate_staged_and_tested")
-        final_refs = sorted(accepted_tests)
-        return {
-            "agent": agent_kind,
-            "completed_steps": completed,
-            "next_required_action": {
-                "action": "final",
-                "output": {"candidate_refs": final_refs},
-            },
-            "instruction": "Return this exact final shape now; do not repeat tools.",
-        }
-    return {
-        "agent": agent_kind,
-        "completed_steps": completed,
-        "next_required_action": {
-            "action": "decision",
-            "allowed": [
-                "stage one complete unique candidate, then run_signal_tests",
-                "return final with an empty candidate_refs list",
-            ],
-        },
-        "instruction": (
-            "Do not repeat completed tools. Stage only a justified candidate; "
-            "otherwise return the exact empty final output."
-        ),
-    }
-
-
 _SIGNAL_MINING_HYPOTHESES_OUTPUT = _output_contract(
     "SignalMiningHypotheses",
     {
@@ -4713,6 +4541,64 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = _output_contract(
         ]
     },
 ) + " Return one signature for every supplied case_ref and do not infer outcomes."
+
+_SIGNAL_UPDATE_OUTPUT = _output_contract(
+    "SignalUpdateDecision",
+    {
+        "signal_ref": "exact_signal:v1",
+        "disposition": "defer",
+        "problem_type": "routing_applicability_unclear",
+        "rationale": ["Induction evidence does not isolate a Signal defect."],
+        "candidate": None,
+    },
+) + (
+    ' disposition must be "no_change", "defer", or "update". Only update may '
+    "carry a candidate, which must contain exactly signal_ref, spec, skill, and "
+    "tests under candidate_contract."
+)
+
+
+class LLMSignalUpdateModel(SignalUpdateModel):
+    """One semantic update decision after local target and induction selection."""
+
+    def __init__(self, caller: JSONRoleCaller) -> None:
+        self.caller = caller
+
+    def update(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[SignalUpdateDecision]:
+        target = payload.get("target", {})
+        if not isinstance(target, Mapping) or not target.get("signal_ref"):
+            raise ValidationError("Signal Update requires one local target")
+        target_ref = str(target["signal_ref"])
+
+        def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
+            decision = SignalUpdateDecision.from_dict(value)
+            if decision.signal_ref != target_ref:
+                raise ValidationError("Signal Update must preserve target signal_ref")
+            return decision
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_update_decision",
+            system_prompt=(
+                "Diagnose one exact stable Signal from its observational learned "
+                "profile and locally selected label-visible induction evidence. "
+                "First distinguish a routing/applicability mistake from a defect in "
+                "the Signal definition or extraction. Return no_change when the "
+                "stable Signal should remain as-is, defer when evidence is still "
+                "insufficient, or update with one complete vNext candidate. Never "
+                "infer or discuss the hidden holdout, choose another Signal, or "
+                "claim that Plan selection proves causal efficacy. Preserve the "
+                "static semantic identity required by candidate_contract."
+                + _SIGNAL_UPDATE_OUTPUT
+            ),
+            payload=payload,
+            parser=parse,
+            allow_outcomes=True,
+            temperature=0.0,
+        )
+        return AgentStep(value, usage)
 
 
 class LLMSignalMiningModel(SignalMiningModel):
@@ -4963,107 +4849,6 @@ class LLMSignalMiningModel(SignalMiningModel):
 
 def _raise_mining_shape(message: str) -> Any:
     raise ValidationError(message)
-
-
-class StructuredAgentModel(AgentModel):
-    """Concrete GenericAgent model adapter retained for the Update tool loop."""
-
-    def __init__(
-        self,
-        caller: JSONRoleCaller,
-        *,
-        stage: str,
-        allow_outcomes: bool,
-        final_output_example: Mapping[str, Any],
-    ) -> None:
-        self.caller = caller
-        self.stage = stage
-        self.allow_outcomes = allow_outcomes
-        self.final_output_example = dict(final_output_example)
-
-    def respond(self, request: AgentRequest) -> AgentTurn:
-        system_prompt = (
-            "Use only the named domain tools. Return either "
-            "{\"action\":\"tool\",\"tool_name\":...,\"arguments\":{...}} "
-            "or {\"action\":\"final\",\"output\":...}. The final output "
-            "must be an object shaped exactly like "
-            f"{json.dumps(self.final_output_example, sort_keys=True)}. "
-            "Return candidate refs only after a successful staging tool call; "
-            "if no valid candidate was staged, return an empty candidate_refs "
-            "list. Never return a diagnosis or proposed Signal directly as the "
-            "final output. Follow each tool card's arguments_schema exactly; "
-            "do not invent fields, enum values, deterministic functions, or "
-            "candidate references. The workspace.workflow_contract is mandatory: "
-            "complete its required_order before final output, including when "
-            "candidate_refs is empty. When workflow_progress is present, perform "
-            "its next_required_action immediately and do not repeat completed_steps."
-        )
-        base_payload = {
-                "task_prompt": request.prompt,
-                "tool_cards": list(request.tool_cards),
-                "workspace": dict(request.workspace),
-                "observations": [
-                    {
-                        "name": item.name,
-                        "arguments": dict(item.arguments),
-                        "result": item.result,
-                    }
-                    for item in request.observations
-                ],
-        }
-        workflow_progress = _signal_agent_workflow_progress(self.stage, request)
-        if workflow_progress is not None:
-            base_payload["workflow_progress"] = workflow_progress
-        usage = AgentUsage()
-        validation_error = ""
-        invalid_output = ""
-        for attempt in range(2):
-            payload = dict(base_payload)
-            if attempt:
-                payload["validation_feedback"] = {
-                    "error": validation_error,
-                    "received_output": invalid_output,
-                    "required_action": "return one valid tool or final action",
-                }
-            value, call_usage = _complete_json_with_invalid_value(
-                self.caller,
-                stage=(self.stage if not attempt else f"{self.stage}_correction"),
-                system_prompt=system_prompt,
-                payload=payload,
-                allow_outcomes=self.allow_outcomes,
-            )
-            usage = usage + call_usage
-            if "invalid_structured_output" in value:
-                validation_error = str(
-                    value.get(
-                        "validation_error",
-                        "provider output was not one valid JSON object",
-                    )
-                )
-                invalid_output = str(value.get("invalid_structured_output", ""))
-                continue
-            action = value.get("action")
-            if action == "tool" and isinstance(value.get("arguments", {}), Mapping):
-                tool_name = str(value.get("tool_name", "")).strip()
-                if tool_name:
-                    return AgentTurn(
-                        tool_call=ToolCall(
-                            tool_name,
-                            dict(value.get("arguments", {})),
-                        ),
-                        usage=usage,
-                    )
-                validation_error = "tool_name must not be empty"
-                invalid_output = json.dumps(value, sort_keys=True)
-                continue
-            if action == "final" and "output" in value:
-                return AgentTurn(final_output=value.get("output"), usage=usage)
-            validation_error = "unknown or incomplete Generic Agent action"
-            invalid_output = json.dumps(value, sort_keys=True)
-        raise ValidationError(
-            "Generic Agent action remained invalid after one correction: "
-            + validation_error
-        )
 
 
 def _project_llm_signal_documents(
@@ -5545,17 +5330,9 @@ def run_bounded_evolution_cycle(
             evolution_caller,
             creative_temperature=float(limits["plan_proposal_temperature"]),
         ),
-        update_agent=GenericAgent(
-            StructuredAgentModel(
-                evolution_caller,
-                stage="signal_update_agent",
-                allow_outcomes=True,
-                final_output_example={"candidate_refs": ["candidate_signal:v2"]},
-            )
-        ),
+        update_model=LLMSignalUpdateModel(evolution_caller),
         llm_signal_runner=signal_runner,
         evidence_resolver=evidence_resolver,
-        max_agent_steps=int(limits["max_agent_steps"]),
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,

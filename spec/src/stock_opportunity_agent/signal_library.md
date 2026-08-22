@@ -45,6 +45,9 @@ signals/<category>/<signal_id>/
     spec.json
     skill.md          # required for LLM Signals
     tests.json
+    learning/
+      events.jsonl    # append-only committed Fast observations
+      profile.json    # rebuildable bounded routing summary
 signals_candidates/<category>/<signal_id>/v<N>/...
 ```
 
@@ -65,8 +68,8 @@ does not structurally disable an otherwise executable Signal.
 The Registry exposes:
 
 1. category names;
-2. compact Signal cards with current version, type, description, and observed
-   policy statistics; and
+2. compact Signal cards with current version, type, description, and one
+   bounded learned routing profile; and
 3. full versioned `SignalSpec` only when selected.
 
 Progressive disclosure is an information boundary, not a requirement for one
@@ -76,9 +79,13 @@ already executed in the same case trajectory. Category remains card metadata;
 the executor alone loads the selected full specs. No eligible card or a valid
 empty selection terminates retrieval without an additional model call.
 
-`freeze()` returns one immutable definition snapshot and hash. Stats may keep
-accumulating while frozen, but stable definitions and versions cannot change
-until the fast-loop group ends.
+`freeze()` returns one immutable definition snapshot/hash plus a separately
+hashed snapshot of the current learned profiles. Definitions and learned
+profiles therefore have distinct identities: observations do not create a new
+stable Signal version, but changing a profile changes the exact Fast execution
+input and prevents stale trajectory reuse. Stats and learning events may keep
+accumulating after a snapshot is frozen; that Fast group continues to see its
+original profile snapshot, and stable definitions cannot change until it ends.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 11 enabled definitions.
@@ -190,17 +197,37 @@ confidence values are rejected rather than normalized by generic Python
 coercion. The only conservative normalization remains the documented
 `state.value=unavailable` narrowing to unavailable coverage.
 
-## Observed Policy Statistics
+## Version-Bound Learning Ledger
 
-For each canonical state maintain actual occurrence counts against `surge` and
-`non-surge`, plus retrieval, execution, unavailable, token, and latency/cost
-totals when known. The statistic is explicitly observational under the current
-adaptive retrieval policy; it is not causal credit and does not count mere Plan
-membership as a Signal occurrence.
+Every valid Signal selection returns the exact ref, a bounded reason code, a
+short selection reason, an applicability hypothesis, an expected role, and
+up to four coarse context tags from a fixed identity-free taxonomy covering
+evidence coverage, company stage/business shape, sector, size, volatility, and
+catalyst timing. The selected Signal is then executed unless a hard
+contract, authorization, point-in-time, or runtime guard rejects it. An
+unchanged `(signal_ref, input fingerprint)` may reuse the executor's existing
+no-op cache; that is still a recorded selection, not an omitted decision.
 
-Every occurrence uses a stable observation id derived from Plan, case,
-research round, result position, and Signal version. Reconciliation after
-restore is idempotent so a committed trajectory cannot be counted twice.
+After the round commit pointer advances, each exact Signal version receives an
+append-only event for every Plan selection. The event records the reason and
+coarse context, result/coverage and document fingerprint, realized outcome,
+prediction correctness, and whether post-hoc reflection explicitly attributed
+the Signal. A stable event id makes restore reconciliation idempotent.
+`observation_key = (case_id, signal_ref, input fingerprint)` deduplicates the
+state/outcome effectiveness matrix across Plans, while each Plan's selection
+reason remains in the raw event stream. No event from an uncommitted round may
+enter this ledger.
+
+`profile.json` is a deterministic derivative of those events for one exact
+version. It contains only bounded counts, confidence, the complete
+positive/neutral/negative/unavailable by surge/non-surge matrix, explicit
+attribution counts, unavailable-with-input versus missing-input counts, and at
+most a few recurring context patterns supported by
+multiple observations and issuers. It contains no company/case/Plan identity,
+literal evidence, or free-form reflection. It uses observational language and
+does not claim causal Signal credit. Full events stay local for audit and Slow
+Update. The older per-Signal aggregate `stats.json` remains an audit/cost
+compatibility view and is not the selector's learned signature.
 
 ## Candidate and Promotion Boundary
 
@@ -223,7 +250,8 @@ permanently blocking that stable Signal from ever proposing the same next
 version. An already promoted ref returned by a later agent is ignored as
 already stable rather than revalidated or promoted twice.
 
-An update creates `vNext`; it never overwrites a stable version. Machine
+An update creates `vNext`; it never overwrites a stable version or edits the
+old version's learning history. Machine
 validation writes the exact candidate hash over spec, skill, and tests. The
 Slow-Loop orchestrator durably stages the complete validated batch before any
 stable file changes, then automatically promotes every passing exact hash.
@@ -260,6 +288,8 @@ from the Discovery pool without reusing an induction issuer.
 Cover progressive disclosure, immutable version registration, frozen snapshot
 behavior, deterministic and LLM execution, bounded exact-window LLM context,
 exact evidence validation against complete Raw Info, unavailable state,
-observed-policy counts, candidate isolation, executable candidate fixtures,
+version-bound append-only learning, cross-Plan observation deduplication,
+identity-free bounded profiles, observed-policy compatibility counts,
+candidate isolation, executable candidate fixtures,
 alias-aware leakage rejection, exact-hash automatic batch promotion,
 partial-transition recovery, and versioned promotion.
