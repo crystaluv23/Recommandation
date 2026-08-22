@@ -2582,9 +2582,28 @@ class SignalEvolutionTests(TestCase):
                 query="material order",
                 falsifiers=("Controls disclose the same pattern.",),
             )
+            second_hypothesis = replace(
+                hypothesis,
+                hypothesis_id="commercialization_confirmation",
+            )
+            deferred_hypothesis = replace(
+                hypothesis,
+                hypothesis_id="guidance_confirmation",
+            )
             mining_model = ScriptedMiningModel(
-                hypotheses=(hypothesis,),
-                rankings={"order_confirmation": ("case-001", "case-002")},
+                hypotheses=(
+                    hypothesis,
+                    second_hypothesis,
+                    deferred_hypothesis,
+                ),
+                rankings={
+                    item.hypothesis_id: ("case-001", "case-002")
+                    for item in (
+                        hypothesis,
+                        second_hypothesis,
+                        deferred_hypothesis,
+                    )
+                },
                 decisions=(
                     SignalMiningDecision(
                         hypothesis_id="order_confirmation",
@@ -2638,6 +2657,12 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("Winner Corp", json.dumps(contrast_cases))
             self.assertEqual(result["candidate_refs"], ())
             self.assertIn("order_confirmation", result["refined_hypotheses"])
+            self.assertEqual(
+                result["refined_hypotheses"]["guidance_confirmation"],
+                (
+                    "deferred because the per-cycle evidence contrast budget was reached",
+                ),
+            )
 
     def test_signal_agent_completion_matches_test_order_to_each_returned_ref(
         self,

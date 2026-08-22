@@ -6639,6 +6639,11 @@ class SignalEvolutionEngine:
         hypothesis_by_id = {item.hypothesis_id: item for item in hypotheses}
         selections: list[dict[str, Any]] = []
         for hypothesis in hypotheses:
+            if len(selections) >= config.selected_hypothesis_limit:
+                refined[hypothesis.hypothesis_id] = (
+                    "deferred because the per-cycle evidence contrast budget was reached",
+                )
+                continue
             selected = self._select_mining_cases(
                 rankings[hypothesis.hypothesis_id],
                 case_by_ref=case_by_ref,
@@ -6654,8 +6659,6 @@ class SignalEvolutionEngine:
                     **selected,
                 }
             )
-            if len(selections) >= config.selected_hypothesis_limit:
-                break
         audit["local_selection"] = [
             {
                 "hypothesis_id": item["hypothesis"].hypothesis_id,

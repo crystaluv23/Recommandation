@@ -166,6 +166,10 @@ H1 validates every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming
 a silently refined hypothesis.
+If more feasible H1 hypotheses remain than the H3 per-cycle contrast budget,
+the local controller records the untested reserve hypotheses as explicitly
+deferred refined work so the next cycle sees them instead of silently dropping
+them.
 All H2/H3/E1 Discovery material is identity-masked before leaving the local
 controller. Short ticker-like aliases remain case-sensitive in ordinary prose
 to avoid masking common words, but are matched case-insensitively inside URLs;
