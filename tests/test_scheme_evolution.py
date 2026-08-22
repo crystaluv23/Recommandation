@@ -71,6 +71,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalEvolutionEngine,
     SignalMiningDecision,
     SignalMiningHypothesis,
+    SignalMiningConfig,
     SignalMiningSignature,
     SignalRound,
     SignalSelectionDecision,
@@ -81,6 +82,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     execute_information_plan,
     score_predictions,
     _mask_identity_values,
+    _filter_h3_documents,
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
@@ -1488,6 +1490,27 @@ class EvaluationDatasetSamplingTests(TestCase):
 
 
 class PlanArchiveAndWorkspaceTests(TestCase):
+    def test_meta_model_view_keeps_every_round_aggregate_under_48k(self) -> None:
+        memory = PlanMetaMemory(
+            entries=tuple(
+                RoundMetaEntry(
+                    round_id=round_id,
+                    successful_patterns=("x" * 10_000,),
+                    failed_patterns=("y" * 10_000,),
+                    search_implications=("z" * 10_000,),
+                    evidence_refs=(f"plan_{round_id}",),
+                )
+                for round_id in range(1, 11)
+            )
+        )
+
+        view = memory.model_view()
+
+        self.assertEqual([item["round_id"] for item in view], list(range(1, 11)))
+        self.assertLessEqual(
+            len(json.dumps(view, ensure_ascii=False, sort_keys=True)), 48_000
+        )
+
     def test_durable_attempt_trajectories_feed_capability_backlog(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = EvolutionWorkspace(directory)
@@ -2597,6 +2620,105 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
+    def test_h2_profile_readiness_shortage_skips_h2_and_h3(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                replace(
+                    make_case(f"profile_case_{index}", 4.0 if index < 8 else 1.1),
+                    basic_info={
+                        "company_name": f"Profile Company {index}",
+                        "ticker": f"P{index:02d}",
+                    },
+                )
+                for index in range(16)
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="profile_gap",
+                statement="Business profile separates outcomes.",
+                applicability="Operating issuers.",
+                expected_positive_pattern="Positive cases show a distinct profile.",
+                source_types=("news",),
+                query="guidance",
+                falsifiers=("Controls show the same profile.",),
+            )
+            model = ScriptedMiningModel(hypotheses=(hypothesis,))
+            raw_store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="profile-news",
+                        company_id=cases[0].company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Routine market update without a business profile.",
+                    ),
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(len(model.requests), 1)
+            self.assertEqual(
+                result["audit"]["status"], "insufficient_h2_profile_readiness"
+            )
+            self.assertEqual(result["audit"]["h2_profile_readiness"]["ready"], 0)
+            self.assertEqual(result["candidate_refs"], ())
+
+    def test_h3_news_requires_visible_issuer_and_query_relevance(self) -> None:
+        case = replace(
+            make_case("news_target", 4.0),
+            basic_info={
+                "company_name": "Target Systems Corp",
+                "ticker": "TGTS",
+                "industry": "Hardware",
+            },
+        )
+        relevant = RawInfoDocument.create(
+            document_id="relevant-news",
+            company_id=case.company_id,
+            source_type="news",
+            published_at=NOW,
+            available_at=NOW,
+            content="Target Systems Corp raised full-year guidance.",
+        )
+        metadata_only = RawInfoDocument.create(
+            document_id="metadata-only-news",
+            company_id=case.company_id,
+            source_type="news",
+            published_at=NOW,
+            available_at=NOW,
+            content="Another issuer announced an unrelated product launch.",
+            metadata={"associated_ticker": "TGTS", "title": "Market update"},
+        )
+
+        kept, filtered = _filter_h3_documents(
+            (relevant, metadata_only), case=case, query="guidance"
+        )
+
+        self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
+        self.assertEqual(
+            filtered,
+            [
+                {
+                    "document_id": "metadata-only-news",
+                    "reason": "missing_strong_issuer_match",
+                }
+            ],
+        )
+
     def test_mining_ranks_identity_and_label_hidden_briefs_then_overlays_labels(
         self,
     ) -> None:
@@ -2683,6 +2805,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                mining_config=fixture_mining_config(2),
             )
             result = engine._run_signal_mining(cycle_id=1)
 
@@ -2694,10 +2817,15 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("CTRL", ranking_json)
             self.assertNotIn("ground_truth", ranking_json)
             self.assertNotIn('"label"', ranking_json)
-            contrast_cases = mining_model.requests[2]["comparisons"][0]["cases"]
+            contrast_cases = mining_model.requests[2]["evidence_packets"]
             self.assertEqual(
                 {item["label"] for item in contrast_cases},
                 {"positive", "control"},
+            )
+            self.assertTrue(
+                mining_model.requests[2]["comparisons"][0][
+                    "evidence_packet_refs"
+                ]
             )
             self.assertNotIn("Winner Corp", json.dumps(contrast_cases))
             self.assertEqual(result["candidate_refs"], ())
@@ -3406,6 +3534,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(discovery_cases)),
             )
             snapshot = registry.freeze()
             workspace.start_or_resume_cycle(
@@ -3534,6 +3663,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                mining_config=fixture_mining_config(2),
             )
 
             result = engine._validate_cycle(registry.freeze())
@@ -3592,6 +3722,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
             )
 
             result = engine._run_signal_mining(cycle_id=3)
@@ -3887,6 +4018,7 @@ class DualLoopTests(TestCase):
                 ),
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(discovery_cases)),
             )
             dataset = EvolutionDataset(
                 discovery=discovery_cases,
@@ -4087,6 +4219,20 @@ def make_case(company_id: str, multiple: float) -> EvolutionCase:
             "industry": "fixture",
         },
         ground_truth=GroundTruth(multiple),
+    )
+
+
+def fixture_mining_config(case_count: int) -> SignalMiningConfig:
+    """Use production logic with fixture-sized H2 readiness thresholds."""
+
+    per_class = max(1, case_count // 2)
+    return SignalMiningConfig(
+        case_pool_limit=case_count,
+        h2_profile_scan_limit=case_count,
+        h2_min_ready_issuers=case_count,
+        h2_min_ready_per_class=per_class,
+        induction_cases_per_class=min(2, per_class),
+        validation_cases_per_class=min(2, max(1, per_class - 1)),
     )
 
 

@@ -51,7 +51,7 @@ usage() {
     "                              required with --external and must match" \
     "" \
     "Safety:" \
-    "  new never performs LLM calls. It freezes a v5 contract; with --data-external" \
+    "  new never performs LLM calls. It freezes a v6 contract; with --data-external" \
     "  it may prepare Raw Info under that policy, then stops at the first exact" \
     "  LLM-request approval boundary. Use resume with the printed" \
     "  contract hash to authorize execution. Locked Test stays sealed and Signal" \
@@ -274,7 +274,7 @@ CONTRACT_INFO="$(
 )"
 CONTRACT_SCHEMA="${CONTRACT_INFO%% *}"
 CONTRACT_HASH="${CONTRACT_INFO#* }"
-[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v5" ] || fail "legacy contracts are read-only"
+[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v6" ] || fail "legacy contracts are read-only"
 
 RUN_ARGS=(
   run-loop

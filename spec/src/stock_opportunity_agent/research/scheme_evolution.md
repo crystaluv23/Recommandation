@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - additive reflection FIFO and strict v5 cumulative dual-loop implemented
+Ready - bounded-context v6 cumulative dual-loop specified
 
 ## Purpose
 
@@ -76,8 +76,11 @@ S = (B, H_init, H_reflect, H_analyse)
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`.
-- `H_analyse`: assembles Basic Info, important Signal results, counter-evidence,
-  and final state into the label-free Predictor context.
+- `H_analyse`: supplies only evidence-organization and weighting instructions
+  for assembling Basic Info, important Signal results, counter-evidence, and
+  final state into the label-free Predictor context. It cannot calculate event
+  probabilities, classify a Signal as the final answer, change the fixed
+  horizon/label/four-way judgment, or itself generate a prediction.
 
 The retrieval path is therefore created at runtime. Candidate Plans may change
 only these four fields plus their own id and parent references.
@@ -99,6 +102,14 @@ exact allowed set. If the correction remains invalid, the agent raises a
 usage-bearing candidate-execution rejection; it must never convert model/schema
 failure into `no_signal_match` or guess a category or Signal on the model's
 behalf.
+For non-semantic formatting only, runtime deterministically deduplicates refs,
+trims reason/applicability strings to 240 characters, normalizes/deduplicates
+valid context tags to four, and preserves model order while trimming a batch to
+four Signals of which no more than two may be LLM Signals. Unknown refs,
+missing fields, invalid enums, and invalid tag values remain semantic failures
+with the single correction boundary. Zero-observation routing profiles are
+omitted per card; one top-level statement defines the absent profile as “no
+committed observations.”
 
 An `EvidenceResolver` serves both bootstrap and Signal paths. It queries the
 global Raw Info oracle first, optionally performs separately authorized and
@@ -114,11 +125,24 @@ as `TypeError` or being interpreted character by character. The selection role
 must not force a non-empty answer after the eligible card set is exhausted.
 
 Basic Info is an ordered `BasicInfoBundle` of exact original spans plus complete
-lineage. `H_init` receives each request's purpose and these literal spans; it
-does not receive a framework-generated summary. Signal Executor asks the same
+lineage. The complete bundle remains durable. `H_init` receives each request's
+purpose and a deterministic model projection capped at 32,000 normalized
+characters: SEC HTML becomes readable text and repetitive per-row market
+metadata is removed. Each projected span has a stable projection id and raw
+offset mapping; it is a view, not a summary or new source. Signal Executor asks the same
 resolver for complete point-in-time documents and then runs deterministic
 functions or LLM extraction skills. Signal results remain derived trajectory
 records and are never appended to Raw Info.
+
+In v6, `ResearchState.supporting_evidence` contains tagged references rather
+than free strings. A Basic-Info reference carries
+`projection_id + exact_text + claim`; a Signal reference carries
+`signal_ref + supporting|counter + evidence_index + claim`. Initialize may
+create only references into the current Basic-Info projection. Reflect may
+retain existing references or add references into the current Signal batch.
+Finalize may retain existing references only. Projection citations must map
+uniquely to an original Raw Info span; ambiguity or no mapping fails closed.
+Legacy string evidence remains readable only in v1-v5 artifacts.
 
 Blind Predictor consumes only the assembled label-free context. The same
 Predictor adapter later receives its saved original context, saved prediction,
@@ -150,8 +174,9 @@ Company routing identity -> B -> resolve Raw Info -> exact-span Basic InfoBundle
 -> complete ExecutionTrajectory
 ```
 
-Exact Basic Info spans use fixed 2,000-character chunks with 200-character
-overlap and a 48,000-character per-case budget. Query requests rank literal
+Exact durable Basic Info spans use fixed 2,000-character chunks with 200-character
+overlap and a 48,000-character per-case budget. The model projection is capped
+at 32,000 normalized characters. Query requests rank literal
 token hits deterministically; non-query requests rank by recency. Selected
 spans are never partially truncated and must remain literal Raw Info substrings.
 
@@ -187,6 +212,14 @@ Runtime engineering guards are fixed framework controls:
 - maximum LLM calls;
 - maximum tokens; and
 - maximum cost.
+
+Each Signal round additionally admits at most four selected Signals and at most
+two LLM Signals. Routing and adaptive research stop normally when the remaining
+budget would invade the fixed 36,000-token finalize/Predictor reserve. Every
+external request reserves canonical UTF-8 request bytes plus its frozen output
+ceiling before any attempt or network action; post-call overflow is not a valid
+budget boundary. The terminal controller uses a dedicated output example with
+`decision=finalize` and empty `next_information_needs`.
 
 They prevent infinite or unexpectedly expensive execution and are not Plan
 research logic. When a guard or an empty/repeated Signal selection prevents the
@@ -432,6 +465,8 @@ case row retains its prediction, post-hoc reflection, and compact Signal
 results, but uses only an opaque batch index and
 omits literal evidence spans, company/case identity, Basic Info, full research
 states, prediction paths, and usage.
+Before the critic request, the compact trajectory is value-masked and rescanned
+against the full alias inventory of all 24 cases in the round.
 
 The Plan critic and round reflector also receive deterministic parent
 comparisons for the parents actually listed on each candidate Plan. Each
@@ -538,8 +573,10 @@ source `state.json:last_completed_round`; staged attempts, rejected rounds, and
 files beyond the pointer are never seed evidence. A source must keep Locked
 Test sealed and use the same approved dataset hash, canonical 16-Anchor plus
 8-Random evaluation contract, label definition, and binary fitness semantics.
-Artifacts from the superseded token-probability threshold experiment are
-incompatible even when their outer contract schema is v5.
+Only committed Plans whose source contract has the exact v6 Predictor-semantics
+hash, dataset hash, and evaluation-contract identity are eligible. All v1-v5
+Plans and artifacts from the superseded token-probability threshold experiment
+remain read-only audit evidence and are never active parents.
 Malformed or incompatible source workspaces are skipped and counted in the
 manifest rather than weakening the new run's preflight.
 
@@ -585,6 +622,13 @@ One FIFO window, default length 10, stores structured `RoundMetaEntry` values.
 It remains a list-like append-only sliding window: round ids must increase,
 append is the only mutation, and exceeding capacity removes the oldest whole
 entry. No separate archive-derived summary view replaces this list.
+
+Durable entries continue to retain the complete original, vertical, and
+horizontal layers. Model-facing meta is a deterministic derived view capped at
+48,000 characters across the FIFO: every round retains aggregate information;
+the original layer becomes assessment counts plus bounded representative
+samples; vertical/horizontal lists are bounded; and newer entries receive
+representative detail first. Compact views never replace the durable entries.
 
 Each entry contains:
 
@@ -650,10 +694,18 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    falsifiable hypotheses. Each hypothesis declares its applicability,
    expected winner/control difference, required source types, bounded query,
    and falsifiers; it does not name companies.
-2. `H2 label-hidden ranking`: rank controller-issued opaque `case_ref` values
-   for every hypothesis from bounded point-in-time company briefs. Briefs may
-   contain business description, industry, exchange, coarse size/listing-age
-   buckets, and Raw Info coverage, but never company/ticker identity or outcome.
+2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
+   and rank controller-issued opaque `case_ref` values for every hypothesis from
+   bounded point-in-time company briefs. Briefs may contain a business
+   description or Item 1 business excerpt, industry, sector, exchange, coarse
+   size/listing-age buckets, and Raw Info coverage, but never company/ticker
+   identity or outcome. A brief is ready only when at least one of business
+   description/excerpt, industry, or sector exists. The target remains 32; H2
+   is not called with fewer than 16 ready issuers or with fewer than four
+   locally hidden positive and four control issuers. Retryable provider failure
+   creates a control-plane pause. Deterministic shortage records
+   `insufficient_h2_profile_readiness` without calling H2/H3 and is not a
+   hypothesis failure.
 3. `local feasibility`: reveal labels only inside the controller, require at
    least one issuer-distinct positive and one control, reserve later relevant
    cases for validation, and select at most two feasible hypotheses. An
@@ -661,7 +713,12 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
 4. `H3 contrast`: retrieve exact point-in-time Raw Info for the selected cases,
    then ask the model to support, refine, or reject each hypothesis and, when
    supported, return a complete candidate Signal plus fixtures. The controller
-   stages and tests the candidate locally.
+   stages and tests the candidate locally. Unique evidence packets live once at
+   the top level, keyed by `(case, source_types, query, lookback)`; comparisons
+   reference packet ids. News packets require a strong company-name or ticker
+   match in title/body plus hypothesis-query relevance. Ticker-association
+   metadata alone is filtered and audited; directly issuer-routed SEC, market,
+   and facts sources retain their trusted routing.
 
 Exploration-driven cycles execute:
 
@@ -866,7 +923,7 @@ does not widen the frozen attempt or cost ceilings.
 
 `scripts/run_information_plan_evolution.sh` is the stable operator-facing
 launcher. `new` requires an unused workspace, the global Raw Info oracle, and an
-already human-approved feasible dataset; it initializes and freezes one v5
+already human-approved feasible dataset; it initializes and freezes one v6
 contract, then stops at the first exact LLM-request approval boundary without
 LLM execution. When the operator explicitly supplies `--data-external`, the
 initial bounded run uses that independently frozen Raw Info authorization while

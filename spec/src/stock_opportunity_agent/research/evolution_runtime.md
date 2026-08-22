@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready - v5 additive-reflection and cumulative Signal-transition contract implemented
+Ready - v6 bounded-context, evidence-reference, and cumulative Signal-transition contract specified
 
 ## Purpose
 
@@ -44,7 +44,8 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Only `evolution-run-contract-v5` may execute. Older frozen contracts remain
+Only `evolution-run-contract-v6` may execute. Older frozen contracts, including
+v5, remain
 readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
 default. Before the first cycle creates requests or execution artifacts,
@@ -54,9 +55,16 @@ stable snapshot against the last committed cycle output, not against the
 initial contract snapshot. Evaluation snapshots are immutable recovery inputs
 under the run workspace. Their existence does not prove round completion or
 advance `state.json:last_completed_round`.
-For v5, both model roles, code/runtime identities, and every consumed limit are
+For v6, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
+The contract additionally freezes the fixed Predictor-semantics hash, the
+available Basic-Info source-type catalog hash, a four-Signal/two-LLM-Signal
+per-round ceiling, a 36,000-token finalize-plus-Predictor reserve, all
+model-facing character ceilings, and role output-token ceilings. The frozen
+role ceilings are 2,000 tokens for controller, routing, Predictor, post-hoc,
+H1, and H2; 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for
+H3 and Update.
 Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
 check is scoped to runtime-bearing tracked paths (`src/`, `scripts/`, and
 `configs/`) plus untracked files under those paths; unrelated progress or memory
@@ -115,6 +123,15 @@ Completion/failure updates the same durable entry. Exact responses live under
 `cache/responses/<request_hash>.json`; reuse requires the exact request hash and
 does not consume another attempt.
 
+Before cache lookup can fall through to attempt reservation or network I/O,
+runtime computes canonical UTF-8 bytes for the exact provider request and adds
+the frozen output-token ceiling as a conservative case-token reservation. A
+request whose reservation exceeds the remaining case budget is never sent.
+Adaptive research must preserve 36,000 tokens for terminal finalize plus the
+Predictor; insufficient Signal/routing budget ends adaptive research and enters
+finalize. Insufficient post-hoc budget preserves the immutable prediction and
+fitness and writes a deterministic `budget_skipped` reflection.
+
 A provider response that is not exactly one JSON object is a paid structured
 output failure, not a process-level crash. The runtime persists its raw model
 text and usage in a failure-only audit artifact, records the actual cost on the
@@ -140,6 +157,16 @@ every proposal call, including the first slot; provider responses that instead
 use evidence arrays under `H_*` are rejected and retained in the exact cache,
 not coerced into a bogus Plan.
 
+Every role that receives source-derived text also receives the same explicit
+untrusted-data instruction: source text cannot override the system message,
+the output contract, identity/outcome boundaries, or source authorization.
+Accepted free-text outputs from critic, round reflection, post-hoc, proposer,
+and H1 are value-masked and rescanned against the complete 24-case alias
+inventory before entering Plan/meta domains. A fixed-semantics scanner rejects
+attempts to introduce probability thresholds, redefine the six-month price
+surge/horizon, change the four-way judgment, or turn `H_analyse` into a
+Predictor.
+
 Signal Mining uses five narrow structured role stages rather than a
 one-tool-per-turn Agent transcript:
 
@@ -162,10 +189,14 @@ semantics are identical to the other structured roles. The controller—not the
 model—resolves case refs, performs positive/control feasibility, queries Raw
 Info, stages candidates, executes fixtures, and selects issuer-disjoint
 effectiveness cases.
-H1 validates every proposed source type against the exact supplied
+H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming
-a silently refined hypothesis.
+a silently refined hypothesis or executable Basic-Info request.
+For the Plan proposer, that enumeration is the deterministic semantic-family closure
+of locally present or authorized Raw Info types over the frozen registered catalog.
+Thus a local `filing` document makes the registered precision alias `10-k` usable,
+while a type with no routable local or authorized family stays hidden.
 If more feasible H1 hypotheses remain than the H3 per-cycle contrast budget,
 the local controller records the untested reserve hypotheses as explicitly
 deferred refined work so the next cycle sees them instead of silently dropping

@@ -11,7 +11,11 @@ from unittest import TestCase
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel, get_model
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
-from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
+from stock_opportunity_agent.data.resolution import (
+    DataAcquisitionPolicy,
+    EvidenceResolver,
+    RawInfoRequest,
+)
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research import evolution_runtime as evolution_runtime_module
 from stock_opportunity_agent.research.evolution_runtime import (
@@ -48,6 +52,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     CaseReflectionEvidence,
     CandidateExecutionRejected,
+    CandidateProposalRejected,
     CandidateJudgment,
     ConfidenceLevel,
     EvaluationDatasetInfeasible,
@@ -65,10 +70,13 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ResearchState,
     RoundMetaEntry,
     RuntimeStopReason,
+    RuntimeBudgetExceeded,
+    project_basic_info_bundle,
     candidate_judgment_feedback,
     default_information_plan,
 )
 from stock_opportunity_agent.signal_library import (
+    LLMSignalBatchInput,
     SignalCoverage,
     SignalExecutor,
     SignalExecutionType,
@@ -205,8 +213,28 @@ def make_contract() -> EvolutionRunContract:
             "judge_temperature": 0.0,
             "max_signal_rounds": 5,
             "max_signal_calls": 20,
+            "max_signals_per_round": 4,
+            "max_llm_signals_per_round": 2,
             "max_llm_calls": 40,
             "max_tokens": 120_000,
+            "finalization_token_reserve": 36_000,
+            "basic_info_context_chars": 32_000,
+            "signal_batch_context_chars": 32_000,
+            "posthoc_context_chars": 24_000,
+            "meta_context_chars": 48_000,
+            "role_output_tokens": {
+                "controller": 2_000,
+                "routing": 2_000,
+                "predictor": 2_000,
+                "posthoc": 2_000,
+                "h1": 2_000,
+                "h2": 2_000,
+                "proposer": 4_000,
+                "critic": 4_000,
+                "signal_batch": 4_000,
+                "h3": 8_000,
+                "update": 8_000,
+            },
             "max_case_cost": 5.0,
             "max_agent_steps": 20,
             "evaluation": PlanEvaluationConfig().to_dict(),
@@ -1044,11 +1072,27 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("market_data", str(caller.calls[0]["system_prompt"]))
 
     def test_default_information_plan_has_compact_market_backbone(self) -> None:
-        request = default_information_plan().basic_info_policy.requests[-1]
+        plan = default_information_plan()
+        request = plan.basic_info_policy.requests[-1]
 
         self.assertEqual(request.source_types, ("market_data",))
         self.assertEqual(request.lookback_days, 45)
         self.assertEqual(request.max_documents, 1)
+        model_catalog = set(
+            evolution_runtime_module._model_available_source_types(
+                ("filing", "financials", "market_data", "news")
+            )
+        )
+        self.assertTrue(
+            {
+                source_type
+                for item in plan.basic_info_policy.requests
+                for source_type in item.source_types
+            }.issubset(model_catalog)
+        )
+        self.assertIn("10-k", model_catalog)
+        self.assertIn("sec_company_facts", model_catalog)
+        self.assertNotIn("earnings_call", model_catalog)
 
     def test_signal_update_role_returns_one_exact_semantic_decision(self) -> None:
         caller = ScriptedRoleCaller(
@@ -1241,8 +1285,11 @@ class ConcreteRoleAdapterTests(TestCase):
             cards = selector_caller.calls[0]["payload"]["signal_cards"]
             self.assertEqual(len(cards), 14)
             self.assertIn("category", cards[0])
-            self.assertIn("learned_profile", cards[0])
-            self.assertNotIn("case_id", json.dumps(cards[0]["learned_profile"]))
+            self.assertNotIn("learned_profile", cards[0])
+            self.assertEqual(
+                selector_caller.calls[0]["payload"]["learned_profile_default"],
+                "no committed observations",
+            )
 
     def test_signal_selector_repairs_invalid_refs_once(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1411,7 +1458,15 @@ class ConcreteRoleAdapterTests(TestCase):
         reflected_state = {
             "hypotheses": ["guidance is accelerating"],
             "current_beliefs": ["the source supports acceleration"],
-            "supporting_evidence": [document.content],
+            "supporting_evidence": [
+                {
+                    "kind": "signal",
+                    "claim": "Management materially raised guidance.",
+                    "signal_ref": "guidance_acceleration:v1",
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                }
+            ],
             "contradictions": [],
             "resolved_questions": ["did management raise guidance"],
             "open_questions": [],
@@ -1455,7 +1510,7 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
             self.assertEqual(selector_caller.stages, ["signal_retrieval_cards"])
-            self.assertEqual(signal_caller.stages, ["llm_signal_execute"])
+            self.assertEqual(signal_caller.stages, ["llm_signal_batch_execute"])
             self.assertEqual(
                 controller_caller.stages,
                 ["research_controller_reflect"],
@@ -2110,25 +2165,22 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(proposed.plan_id, "plan_r0002_c01")
         meta_payload = caller.calls[0]["payload"]["meta_info"][0]
-        original = meta_payload["plan_reflections"][0][
-            "original_case_reflections"
+        original = meta_payload["representative_details"][0][
+            "representative_cases"
         ][0]
-        self.assertEqual(
-            original["candidate_judgment_feedback"]["true_binary_label"],
-            "surge",
-        )
+        self.assertEqual(original["assessment"], "correct_positive_conservative")
         self.assertEqual(
             original["self_reflection"]["ignored_evidence"],
             ["annual filing evidence was underweighted"],
         )
         self.assertEqual(
-            meta_payload["plan_reflections"][0]["vertical_plan_reflection"][
+            meta_payload["representative_details"][0]["vertical"][
                 "next_explorations"
             ],
             ["restore annual filing evidence"],
         )
         self.assertEqual(
-            meta_payload["search_implications"],
+            meta_payload["aggregate"]["search_implications"],
             ["compare restored filing evidence"],
         )
         rendered = json.dumps(meta_payload)
@@ -2274,7 +2326,7 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(result.value, SignalValue.POSITIVE)
         self.assertEqual(len(caller.calls), 2)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("supporting evidence[0] exact span", feedback["validation_error"])
         self.assertEqual(usage.llm_calls, 2)
         self.assertAlmostEqual(usage.cost, 0.02)
@@ -2331,9 +2383,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value, SignalValue.UNAVAILABLE)
         self.assertEqual(result.supporting_evidence, ())
         self.assertEqual(len(caller.calls), 2)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("cannot carry evidence", feedback["validation_error"])
-        self.assertIn("Do not repeat failed_output", feedback["required_action"])
+        self.assertIn("corrected result", feedback["required_action"])
         self.assertIn("only correction attempt", caller.calls[1]["system_prompt"])
         self.assertEqual(usage.llm_calls, 2)
 
@@ -2447,31 +2499,19 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(result.value, SignalValue.POSITIVE)
         payload = caller.calls[0]["payload"]
-        projected = payload["documents"]
-        self.assertEqual(
-            {item["document_id"] for item in projected},
-            {"filing-large", "announcement-large"},
-        )
-        self.assertLess(len(json.dumps(payload)), 40_000)
+        projected = payload["source_projection"]
+        self.assertIn("filing-large", {item["document_id"] for item in projected})
+        self.assertLess(len(json.dumps(payload)), 48_000)
         self.assertLessEqual(
-            sum(
-                len(span["exact_text"])
-                for item in projected
-                for span in item["context_spans"]
-            ),
+            sum(len(item["exact_text"]) for item in projected),
             evolution_runtime_module.MAX_LLM_SIGNAL_CONTEXT_CHARS,
         )
-        originals = {first.document_id: first, second.document_id: second}
         visible_text = ""
         for item in projected:
             self.assertNotIn("content", item)
             self.assertNotIn("metadata", item)
-            source = originals[item["document_id"]]
-            for span in item["context_spans"]:
-                self.assertEqual(
-                    span["exact_text"], source.content[span["start"] : span["end"]]
-                )
-                visible_text += span["exact_text"]
+            self.assertIn("projection_id", item)
+            visible_text += item["exact_text"]
         self.assertIn(target, visible_text)
 
     def test_llm_signal_runner_falls_back_unavailable_after_failed_repair(self) -> None:
@@ -2524,6 +2564,368 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.supporting_evidence, ())
         self.assertIn("failed strict validation", result.interpretation)
         self.assertEqual(usage.llm_calls, 2)
+
+    def test_v6_routing_normalizes_format_and_caps_four_with_two_llm(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            snapshot = registry.freeze()
+            raw = []
+            for spec in snapshot.specs:
+                raw.append(
+                    {
+                        "signal_ref": spec.ref,
+                        "reason_code": "answer_need",
+                        "selection_reason": "x" * 400,
+                        "applicability_hypothesis": "y" * 400,
+                        "expected_role": "primary",
+                        "context_tags": [
+                            "News Rich",
+                            "news_rich",
+                            "General",
+                            "Scaling",
+                            "Small Cap",
+                        ],
+                    }
+                )
+            caller = ScriptedRoleCaller([{"selections": raw}])
+
+            selected = LLMSignalRetrievalAgent(caller).select(
+                ("inspect everything",), snapshot, {}
+            ).value
+
+            self.assertLessEqual(len(selected), 4)
+            by_ref = {spec.ref: spec for spec in snapshot.specs}
+            self.assertLessEqual(
+                sum(
+                    by_ref[item.signal_ref].execution_type
+                    is SignalExecutionType.LLM
+                    for item in selected
+                ),
+                2,
+            )
+            self.assertTrue(all(len(item.selection_reason) == 240 for item in selected))
+            self.assertTrue(all(len(item.context_tags) <= 4 for item in selected))
+            self.assertTrue(all(len(set(item.context_tags)) == len(item.context_tags) for item in selected))
+
+    def test_v6_initialize_repairs_unknown_basic_projection_reference(self) -> None:
+        def state(projection_id: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["growth may accelerate"],
+                "current_beliefs": [],
+                "supporting_evidence": [
+                    {
+                        "kind": "basic_info",
+                        "claim": "Revenue guidance increased.",
+                        "projection_id": projection_id,
+                        "exact_text": "guidance increased",
+                    }
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["confirm customer demand"],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller([state("projection_unknown"), state("projection_ok")])
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": "projection_ok",
+                            "exact_text": "Management said guidance increased this year.",
+                        }
+                    ]
+                }
+            ]
+        }
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(caller.calls), 2)
+        self.assertIn("unknown Basic Info projection", caller.calls[1]["payload"]["validation_error"])
+        self.assertEqual(
+            initialized.value.to_dict()["supporting_evidence"][0]["projection_id"],
+            "projection_ok",
+        )
+
+    def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        filing = RawInfoDocument.create(
+            document_id="filing-html",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="<html><body><h1>Item 1</h1><p>Useful business text.</p></body></html>",
+        )
+        market = RawInfoDocument.create(
+            document_id="market-json",
+            company_id="issuer-1",
+            source_type="market_data",
+            published_at=as_of,
+            available_at=as_of,
+            content=(
+                '[{"symbol":"AAA","source":"fixture","retrieved_at":'
+                '"2025-01-01T00:00:00Z","close":12.5}]'
+            ),
+        )
+        resolver = EvidenceResolver(RawInfoStore(documents=(filing, market)))
+        bundle = resolver.resolve_basic_info(
+            (
+                RawInfoRequest("filing", "business", ("filing",), max_documents=1),
+                RawInfoRequest("market", "market", ("market_data",), max_documents=1),
+            ),
+            company_id="issuer-1",
+            identity={},
+            as_of=as_of,
+        )
+
+        model_view, audit = project_basic_info_bundle(bundle)
+        rendered = json.dumps(model_view)
+        self.assertNotIn("<html", rendered)
+        self.assertNotIn("<body", rendered)
+        self.assertNotIn("retrieved_at", rendered)
+        self.assertNotIn('"symbol"', rendered)
+        self.assertTrue(audit["entries"])
+        self.assertTrue(all(item["raw_offset_runs"] for item in audit["entries"]))
+        self.assertLessEqual(
+            sum(
+                len(span["exact_text"])
+                for request in model_view["requests"]
+                for span in request["projections"]
+            ),
+            32_000,
+        )
+
+    def test_two_soft_signals_share_one_projection_call_and_map_to_raw(self) -> None:
+        class ProjectionBatchCaller:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, Any]] = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                projection = kwargs["payload"]["source_projection"][0]
+                first_ref, second_ref = kwargs["payload"]["requested_signal_refs"]
+                first_id, first_version = first_ref.split(":v")
+                second_id, second_version = second_ref.split(":v")
+                return (
+                    {
+                        "results": [
+                            {
+                                "signal_ref": first_ref,
+                                "result": {
+                                    "signal_id": first_id,
+                                    "version": int(first_version),
+                                    "state": {"value": "positive", "confidence": 0.8},
+                                    "interpretation": {"summary": "Guidance improved."},
+                                    "evidence": {
+                                        "supporting": [
+                                            {
+                                                "projection_id": projection["projection_id"],
+                                                "exact_text": "Management raised guidance.",
+                                            }
+                                        ],
+                                        "counter": [],
+                                    },
+                                    "status": {"coverage": "sufficient"},
+                                },
+                            },
+                            {
+                                "signal_ref": second_ref,
+                                "result": {
+                                    "signal_id": second_id,
+                                    "version": int(second_version),
+                                    "state": {"value": "unavailable", "confidence": 0.0},
+                                    "interpretation": {"summary": "No visible evidence."},
+                                    "evidence": {"supporting": [], "counter": []},
+                                    "status": {"coverage": "unavailable"},
+                                },
+                            },
+                        ]
+                    },
+                    AgentUsage(llm_calls=1, tokens=50, cost=0.01),
+                )
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-html",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="<p>Management <b>raised</b> guidance.</p>",
+        )
+        inputs = tuple(
+            LLMSignalBatchInput(
+                SignalSpec(
+                    signal_id=signal_id,
+                    version=1,
+                    category="catalysts",
+                    description="Inspect management guidance.",
+                    execution_type=SignalExecutionType.LLM,
+                    source_types=("filing",),
+                    skill_file=f"{signal_id}.md",
+                ),
+                (document,),
+                "Extract source-grounded guidance evidence.",
+            )
+            for signal_id in ("guidance_a", "guidance_b")
+        )
+        caller = ProjectionBatchCaller()
+
+        results, usage = StructuredLLMSignalRunner(caller).execute_many(inputs, as_of)
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(usage.llm_calls, 1)
+        self.assertEqual(set(results), {"guidance_a:v1", "guidance_b:v1"})
+        self.assertEqual(
+            results["guidance_a:v1"].supporting_evidence[0].exact_span,
+            "Management <b>raised</b> guidance.",
+        )
+        rendered = json.dumps(caller.calls[0]["payload"])
+        self.assertNotIn("<p>", rendered)
+        self.assertNotIn("<b>", rendered)
+        identities = [
+            (item["document_id"], item["content_hash"])
+            for item in caller.calls[0]["payload"]["source_projection"]
+        ]
+        self.assertEqual(len(identities), len(set(identities)))
+
+    def test_proposer_corrects_unsupported_source_then_rejects_stale_probability(self) -> None:
+        parent = default_information_plan()
+        unsupported = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "market",
+                        "description": "market",
+                        "source_types": ["market_data"],
+                        "lookback_days": 30,
+                        "max_documents": 1,
+                    },
+                    {
+                        "request_id": "unsupported",
+                        "description": "unsupported",
+                        "source_types": ["social_firehose"],
+                        "max_documents": 1,
+                    },
+                ]
+            },
+            "H_init": "form needs",
+            "H_reflect": "reflect on evidence",
+            "H_analyse": "organize evidence",
+        }
+        stale = json.loads(json.dumps(unsupported))
+        stale["B"]["requests"] = stale["B"]["requests"][:1]
+        stale["H_analyse"] = "Compute P(surge) and apply a 0.55 probability threshold."
+        caller = ScriptedRoleCaller([unsupported, stale])
+
+        with self.assertRaises(CandidateProposalRejected):
+            LLMInformationPlanProposer(
+                caller,
+                available_source_types=("market_data", "filing"),
+            ).propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                proposal_attempt=1,
+                forbidden_plan_ids=(),
+                parents=(parent,),
+                meta_info=(),
+                prior="fixed H_P",
+            )
+
+        self.assertEqual(len(caller.calls), 2)
+        self.assertIn("unsupported source types", caller.calls[1]["payload"]["validation_error"])
+        self.assertEqual(
+            caller.calls[0]["payload"]["available_source_types"],
+            ["filing", "market_data"],
+        )
+
+    def test_posthoc_uses_compact_view_not_full_original_context(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "prediction_outcome": {"correct": True},
+                    "why_prediction_failed": [],
+                    "misleading_signals": [],
+                    "ignored_evidence": [],
+                    "missing_information": [],
+                    "plan_issues": [],
+                }
+            ]
+        )
+        predictor = LLMBlindPredictor(caller)
+        prediction = BlindPrediction(
+            is_surge=False,
+            candidate_judgment=CandidateJudgment.UNLIKELY,
+            magnitude=None,
+            confidence=ConfidenceLevel.LOW,
+            key_reasons=("bounded evidence",),
+            uncertainties=(),
+            session_id="fixture",
+        )
+        original = {
+            "basic_info": {"requests": []},
+            "signal_rounds": [],
+            "final_research_state": ResearchState(
+                decision=ResearchDecision.FINALIZE
+            ).to_dict(),
+            "full_original_marker": "do-not-send-" + "x" * 30_000,
+        }
+
+        predictor.reflect(original, prediction, GroundTruth(1.1))
+
+        payload = caller.calls[0]["payload"]
+        self.assertIn("compact_context", payload)
+        self.assertNotIn("original_context", payload)
+        self.assertNotIn("do-not-send", json.dumps(payload))
+        self.assertLess(len(json.dumps(payload["compact_context"])), 24_000)
+
+    def test_critic_masks_identity_in_accepted_output_before_meta(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "successful_patterns": [],
+                    "failed_patterns": [],
+                    "repeated_failure_modes": [],
+                    "misleading_signals": [],
+                    "missing_information_needs": [
+                        "Research Acme Systems Corp customer concentration."
+                    ],
+                    "next_explorations": [],
+                }
+            ]
+        )
+        critic = LLMPlanCritic(caller)
+        critic.set_anonymous_aliases(("Acme Systems Corp", "Acme Systems"))
+        metrics = PlanMetrics(
+            binary_precision=1.0,
+            binary_recall=1.0,
+            binary_f1=1.0,
+            magnitude_accuracy=1.0,
+            magnitude_macro_f1=1.0,
+            true_positive=1,
+            false_positive=0,
+            true_negative=1,
+            false_negative=0,
+            sample_count=2,
+        )
+
+        reflection = critic.critique(
+            plan=default_information_plan(),
+            trajectories=(),
+            metrics=metrics,
+        )
+
+        rendered = json.dumps(reflection.to_dict())
+        self.assertNotIn("Acme", rendered)
+        self.assertIn("MASKED_COMPANY", rendered)
 
 
 class RunControlTests(TestCase):
@@ -3038,6 +3440,54 @@ class RunControlTests(TestCase):
             )
             self.assertEqual(value, {"ok": True})
             self.assertEqual(usage.llm_calls, 0)
+
+    def test_request_token_reservation_fails_before_attempt_and_network(self) -> None:
+        class NeverCompleteClient:
+            called = False
+
+            def complete(self, _messages, **_kwargs):
+                self.called = True
+                raise AssertionError("token preflight must run before network")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            transport = NeverCompleteClient()
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: transport,
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            ledger = ExternalAttemptLedger(
+                root / "attempts.json", max_attempts=2, max_total_cost=1.0
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ledger,
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            with self.assertRaisesRegex(RuntimeBudgetExceeded, "reservation"):
+                client.complete_json(
+                    stage="predict",
+                    system_prompt="Return JSON.",
+                    payload={"context": "x" * 1_000},
+                    allow_outcomes=False,
+                    max_output_tokens=2_000,
+                    max_request_tokens=10,
+                )
+
+            self.assertFalse(transport.called)
+            self.assertEqual(ledger.summary["attempt_count"], 0)
 
     def test_structured_client_persists_canonical_production_wire_body(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

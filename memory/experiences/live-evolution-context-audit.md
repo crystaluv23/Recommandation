@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 
@@ -34,3 +34,14 @@ Finally, verify that selection contexts contain enough information to perform th
 promised semantic job. A label-hidden Signal Mining ranker cannot rank hypothesis
 applicability when every company brief lacks business, industry, sector, and size
 fields, even if its JSON shape and anonymity checks pass.
+
+## Resolution (2026-08-23)
+
+The v6 remediation keeps complete Raw Info, trajectories, and additive three-layer
+meta durable while sending only bounded deterministic projections. It also treats
+request-byte plus output-ceiling reservation as pre-network control flow, validates
+tagged evidence transitions and projection-to-raw literal spans, batches at most two
+soft Signals, scans both incoming and accepted retrospective values for identity and
+fixed-semantics drift, and requires semantically usable H2 profiles before H2/H3.
+Old v1-v5 workspaces remain immutable audit evidence; only a newly frozen v6 contract
+may advance pointers after its exact hash is authorized.

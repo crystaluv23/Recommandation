@@ -72,6 +72,9 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
         "universal",
     }
 )
+_GENERIC_QUERY_WORDS = frozenset(
+    {"and", "for", "from", "the", "this", "with", "company", "business"}
+)
 _AMBIGUOUS_SHORT_IDENTITY_TERMS = frozenset(
     {
         "all",
@@ -111,6 +114,12 @@ _FORBIDDEN_BASIC_INFO_FIELDS = frozenset(
         "post_outcome",
     }
 )
+MAX_BASIC_INFO_MODEL_CHARS = 32_000
+_MODEL_VIEW_METADATA_FIELD = re.compile(
+    r'"(?:retrieved_at|source|symbol)"\s*:\s*(?:"(?:\\.|[^"\\])*"|null|true|false|-?\d+(?:\.\d+)?)\s*,?',
+    re.IGNORECASE,
+)
+_HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
 
 
 def _json_string_array(
@@ -133,12 +142,161 @@ def _json_string_array(
     return tuple(value)
 
 
+def _json_array(data: Mapping[str, Any], field_name: str) -> tuple[Any, ...]:
+    """Read one JSON array while preserving typed object elements."""
+
+    if field_name not in data:
+        raise ValidationError(f"{field_name} is required")
+    value = data[field_name]
+    if not isinstance(value, (list, tuple)):
+        raise ValidationError(f"{field_name} must be an array")
+    return tuple(value)
+
+
 def _json_boolean(value: Any, field_name: str) -> bool:
     """Require a real JSON boolean rather than Python truthiness."""
 
     if type(value) is not bool:
         raise ValidationError(f"{field_name} must be a boolean")
     return value
+
+
+def _normalized_projection_text(
+    raw_text: str,
+    *,
+    raw_offset: int = 0,
+    strip_market_metadata: bool = False,
+) -> tuple[str, tuple[tuple[int, int, int, int], ...]]:
+    """Return readable text plus compact projection-to-raw offset runs."""
+
+    removed: list[tuple[int, int]] = list(
+        (match.start(), match.end()) for match in _HTML_TAG.finditer(raw_text)
+    )
+    if strip_market_metadata:
+        removed.extend(
+            (match.start(), match.end())
+            for match in _MODEL_VIEW_METADATA_FIELD.finditer(raw_text)
+        )
+    removed.sort()
+    merged: list[tuple[int, int]] = []
+    for start, end in removed:
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], end))
+        else:
+            merged.append((start, end))
+
+    chars: list[tuple[str, int, int]] = []
+    cursor = 0
+    for start, end in merged:
+        for index in range(cursor, start):
+            chars.append((raw_text[index], raw_offset + index, raw_offset + index + 1))
+        chars.append((" ", raw_offset + start, raw_offset + end))
+        cursor = end
+    for index in range(cursor, len(raw_text)):
+        chars.append((raw_text[index], raw_offset + index, raw_offset + index + 1))
+
+    normalized: list[tuple[str, int, int]] = []
+    for character, start, end in chars:
+        if character.isspace():
+            if normalized and normalized[-1][0] == " ":
+                previous = normalized[-1]
+                normalized[-1] = (" ", previous[1], end)
+            elif normalized:
+                normalized.append((" ", start, end))
+        else:
+            normalized.append((character, start, end))
+    while normalized and normalized[-1][0] == " ":
+        normalized.pop()
+
+    text_value = "".join(item[0] for item in normalized)
+    runs: list[tuple[int, int, int, int]] = []
+    for projection_index, (_character, raw_start, raw_end) in enumerate(normalized):
+        if (
+            runs
+            and runs[-1][1] == projection_index
+            and runs[-1][3] == raw_start
+            and raw_end - raw_start == 1
+            and runs[-1][3] - runs[-1][2] == runs[-1][1] - runs[-1][0]
+        ):
+            previous = runs[-1]
+            runs[-1] = (previous[0], projection_index + 1, previous[2], raw_end)
+        else:
+            runs.append((projection_index, projection_index + 1, raw_start, raw_end))
+    return text_value, tuple(runs)
+
+
+def project_basic_info_bundle(
+    bundle: Any,
+    *,
+    max_chars: int = MAX_BASIC_INFO_MODEL_CHARS,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Build a bounded model view and durable projection lineage."""
+
+    remaining = max_chars
+    model_requests: list[dict[str, Any]] = []
+    audit_entries: list[dict[str, Any]] = []
+    for resolution in bundle.requests:
+        source_types = {item.casefold() for item in resolution.request.source_types}
+        model_spans: list[dict[str, Any]] = []
+        for span in resolution.context_spans:
+            if remaining <= 0:
+                break
+            projected, runs = _normalized_projection_text(
+                span.exact_text,
+                raw_offset=span.start,
+                strip_market_metadata=bool(
+                    source_types & {"market_data", "historical_price", "price_daily", "prices"}
+                ),
+            )
+            projected = projected[:remaining]
+            if not projected:
+                continue
+            clipped_runs = [
+                (start, min(end, len(projected)), raw_start, raw_end)
+                for start, end, raw_start, raw_end in runs
+                if start < len(projected)
+            ]
+            projection_id = "projection_" + hashlib.sha256(
+                json.dumps(
+                    [span.document_id, span.content_hash, span.start, span.end, projected],
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()[:24]
+            model_spans.append(
+                {
+                    "projection_id": projection_id,
+                    "document_id": span.document_id,
+                    "available_at": span.available_at.isoformat(),
+                    "exact_text": projected,
+                }
+            )
+            audit_entries.append(
+                {
+                    "projection_id": projection_id,
+                    "document_id": span.document_id,
+                    "content_hash": span.content_hash,
+                    "projection_text": projected,
+                    "raw_offset_runs": [list(item) for item in clipped_runs],
+                }
+            )
+            remaining -= len(projected)
+        model_requests.append(
+            {
+                "request": resolution.request.to_dict(),
+                "status": resolution.status,
+                "projections": model_spans,
+                "data_gap": resolution.gap.to_dict() if resolution.gap else None,
+            }
+        )
+    return (
+        {"requests": model_requests, "max_normalized_characters": max_chars},
+        {
+            "schema_version": "basic-info-model-projection-v1",
+            "max_normalized_characters": max_chars,
+            "entries": audit_entries,
+        },
+    )
 
 
 def _same_artifact_path(reference: Any, expected: Path) -> bool:
@@ -321,12 +479,102 @@ class InformationPlan:
 
 
 @dataclass(frozen=True)
+class ResearchEvidenceRef:
+    """One typed, locally verifiable evidence reference in active v6 research."""
+
+    kind: str
+    claim: str
+    projection_id: str | None = None
+    exact_text: str | None = None
+    signal_ref: str | None = None
+    evidence_group: str | None = None
+    evidence_index: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.kind not in {"basic_info", "signal"}:
+            raise ValidationError("research evidence kind must be basic_info or signal")
+        if not self.claim.strip() or len(self.claim) > 400:
+            raise ValidationError("research evidence claim must contain 1-400 characters")
+        if self.kind == "basic_info":
+            if (
+                not str(self.projection_id or "").strip()
+                or not str(self.exact_text or "").strip()
+                or self.signal_ref is not None
+                or self.evidence_group is not None
+                or self.evidence_index is not None
+            ):
+                raise ValidationError("basic_info evidence reference fields are invalid")
+        elif (
+            not str(self.signal_ref or "").strip()
+            or self.evidence_group not in {"supporting", "counter"}
+            or type(self.evidence_index) is not int
+            or self.evidence_index < 0
+            or self.projection_id is not None
+            or self.exact_text is not None
+        ):
+            raise ValidationError("signal evidence reference fields are invalid")
+
+    def to_dict(self) -> dict[str, Any]:
+        if self.kind == "basic_info":
+            return {
+                "kind": self.kind,
+                "claim": self.claim,
+                "projection_id": self.projection_id,
+                "exact_text": self.exact_text,
+            }
+        return {
+            "kind": self.kind,
+            "claim": self.claim,
+            "signal_ref": self.signal_ref,
+            "evidence_group": self.evidence_group,
+            "evidence_index": self.evidence_index,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "ResearchEvidenceRef":
+        kind = data.get("kind")
+        if kind == "basic_info":
+            required = {"kind", "claim", "projection_id", "exact_text"}
+            if set(data) != required or any(
+                not isinstance(data.get(name), str) for name in required
+            ):
+                raise ValidationError("basic_info evidence reference shape is invalid")
+            return cls(
+                kind=kind,
+                claim=str(data["claim"]),
+                projection_id=str(data["projection_id"]),
+                exact_text=str(data["exact_text"]),
+            )
+        if kind == "signal":
+            required = {
+                "kind",
+                "claim",
+                "signal_ref",
+                "evidence_group",
+                "evidence_index",
+            }
+            if set(data) != required or any(
+                not isinstance(data.get(name), str)
+                for name in ("kind", "claim", "signal_ref", "evidence_group")
+            ):
+                raise ValidationError("signal evidence reference shape is invalid")
+            return cls(
+                kind=kind,
+                claim=str(data["claim"]),
+                signal_ref=str(data["signal_ref"]),
+                evidence_group=str(data["evidence_group"]),
+                evidence_index=data["evidence_index"],
+            )
+        raise ValidationError("research evidence reference has unknown kind")
+
+
+@dataclass(frozen=True)
 class ResearchState:
     """Complete Controller state after initial reasoning or batch reflection."""
 
     hypotheses: tuple[str, ...] = ()
     current_beliefs: tuple[str, ...] = ()
-    supporting_evidence: tuple[str, ...] = ()
+    supporting_evidence: tuple[ResearchEvidenceRef | str, ...] = ()
     contradictions: tuple[str, ...] = ()
     resolved_questions: tuple[str, ...] = ()
     open_questions: tuple[str, ...] = ()
@@ -339,7 +587,6 @@ class ResearchState:
         for name in (
             "hypotheses",
             "current_beliefs",
-            "supporting_evidence",
             "contradictions",
             "resolved_questions",
             "open_questions",
@@ -349,6 +596,15 @@ class ResearchState:
             if any(not item.strip() for item in values):
                 raise ValidationError(f"research state {name} cannot contain blanks")
             object.__setattr__(self, name, values)
+        evidence: list[ResearchEvidenceRef | str] = []
+        for item in self.supporting_evidence:
+            if isinstance(item, ResearchEvidenceRef):
+                evidence.append(item)
+            elif isinstance(item, str) and item.strip():
+                evidence.append(item)
+            else:
+                raise ValidationError("research state supporting_evidence is invalid")
+        object.__setattr__(self, "supporting_evidence", tuple(evidence))
         if self.decision is ResearchDecision.CONTINUE and not self.next_information_needs:
             raise ValidationError("continuing research requires next information needs")
 
@@ -356,7 +612,10 @@ class ResearchState:
         return {
             "hypotheses": list(self.hypotheses),
             "current_beliefs": list(self.current_beliefs),
-            "supporting_evidence": list(self.supporting_evidence),
+            "supporting_evidence": [
+                item.to_dict() if isinstance(item, ResearchEvidenceRef) else item
+                for item in self.supporting_evidence
+            ],
             "contradictions": list(self.contradictions),
             "resolved_questions": list(self.resolved_questions),
             "open_questions": list(self.open_questions),
@@ -386,7 +645,12 @@ class ResearchState:
         return cls(
             hypotheses=_json_string_array(data, "hypotheses"),
             current_beliefs=_json_string_array(data, "current_beliefs"),
-            supporting_evidence=_json_string_array(data, "supporting_evidence"),
+            supporting_evidence=tuple(
+                ResearchEvidenceRef.from_dict(item)
+                if isinstance(item, Mapping)
+                else item
+                for item in _json_array(data, "supporting_evidence")
+            ),
             contradictions=_json_string_array(data, "contradictions"),
             resolved_questions=_json_string_array(data, "resolved_questions"),
             open_questions=_json_string_array(data, "open_questions"),
@@ -937,6 +1201,9 @@ class RuntimeLimits:
     max_llm_calls: int = 30
     max_tokens: int = 100_000
     max_cost: float = 20.0
+    max_signals_per_round: int = 4
+    max_llm_signals_per_round: int = 2
+    finalization_token_reserve: int = 36_000
 
     def __post_init__(self) -> None:
         if min(
@@ -944,10 +1211,17 @@ class RuntimeLimits:
             self.max_signal_calls,
             self.max_llm_calls,
             self.max_tokens,
+            self.max_signals_per_round,
+            self.max_llm_signals_per_round,
+            self.finalization_token_reserve,
         ) < 1:
             raise ValidationError("runtime count and token limits must be positive")
         if self.max_llm_calls < 3:
             raise ValidationError("runtime requires at least three LLM calls")
+        if self.max_llm_signals_per_round > self.max_signals_per_round:
+            raise ValidationError("LLM Signal round cap cannot exceed total Signal cap")
+        if self.finalization_token_reserve >= self.max_tokens:
+            raise ValidationError("finalization token reserve must be below max_tokens")
         if self.max_cost <= 0:
             raise ValidationError("runtime max_cost must be positive")
 
@@ -958,6 +1232,9 @@ class RuntimeLimits:
             "max_llm_calls": self.max_llm_calls,
             "max_tokens": self.max_tokens,
             "max_cost": self.max_cost,
+            "max_signals_per_round": self.max_signals_per_round,
+            "max_llm_signals_per_round": self.max_llm_signals_per_round,
+            "finalization_token_reserve": self.finalization_token_reserve,
         }
 
 
@@ -1004,6 +1281,7 @@ class ExecutionTrajectory:
     usage: RuntimeUsage
     case_id: str = ""
     termination_trigger: RuntimeStopReason | None = None
+    basic_info_projection: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         _validate_id(self.company_id, "company_id")
@@ -1015,6 +1293,7 @@ class ExecutionTrajectory:
         if not self.prediction_ref.strip():
             raise ValidationError("execution trajectory requires persisted prediction ref")
         object.__setattr__(self, "basic_info", dict(self.basic_info))
+        object.__setattr__(self, "basic_info_projection", dict(self.basic_info_projection))
         object.__setattr__(self, "signal_rounds", tuple(self.signal_rounds))
         object.__setattr__(self, "final_context", dict(self.final_context))
         if not isinstance(self.stop_reason, RuntimeStopReason):
@@ -1034,6 +1313,7 @@ class ExecutionTrajectory:
             "company_id": self.company_id,
             "prediction_time": self.prediction_time.isoformat(),
             "basic_info_bundle": dict(self.basic_info),
+            "basic_info_projection": dict(self.basic_info_projection),
             "initial_state": self.initial_state.to_dict(),
             "signal_rounds": [item.to_dict() for item in self.signal_rounds],
             "final_state": self.final_state.to_dict(),
@@ -1063,6 +1343,7 @@ class ExecutionTrajectory:
             basic_info=dict(
                 data.get("basic_info_bundle", data.get("basic_info", {}))
             ),
+            basic_info_projection=dict(data.get("basic_info_projection", {})),
             initial_state=ResearchState.from_dict(dict(data["initial_state"])),
             signal_rounds=tuple(
                 SignalRound.from_dict(item) for item in data.get("signal_rounds", ())
@@ -1339,7 +1620,7 @@ def execute_information_plan(
         identity=company_basic_source,
         as_of=prediction_time,
     )
-    basic_info = basic_info_bundle.to_model_context_dict()
+    basic_info, basic_info_projection = project_basic_info_bundle(basic_info_bundle)
     source_aliases = company_basic_source.get("identity_aliases", ())
     if isinstance(source_aliases, str):
         source_aliases = (source_aliases,)
@@ -1352,6 +1633,7 @@ def execute_information_plan(
         ),
     )
     model_usage = AgentUsage()
+    _set_request_token_budget(controller, limits.max_tokens)
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
     initial_state = initial_step.value
@@ -1373,6 +1655,9 @@ def execute_information_plan(
         if model_usage.llm_calls + 4 > limits.max_llm_calls:
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
+        if model_usage.tokens >= limits.max_tokens - limits.finalization_token_reserve:
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            break
 
         eligible_signal_refs = tuple(
             spec.ref
@@ -1383,15 +1668,39 @@ def execute_information_plan(
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break
 
-        selection_step = signal_agent.select(
-            state.next_information_needs,
-            signal_registry,
-            signal_fingerprints,
-            prior_signal_results,
-            eligible_signal_refs=eligible_signal_refs,
+        _set_request_token_budget(
+            signal_agent,
+            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
         )
+        try:
+            selection_step = signal_agent.select(
+                state.next_information_needs,
+                signal_registry,
+                signal_fingerprints,
+                prior_signal_results,
+                eligible_signal_refs=eligible_signal_refs,
+            )
+        except RuntimeBudgetExceeded:
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            break
         model_usage = _consume_model_step(model_usage, selection_step.usage, limits)
         selections = tuple(selection_step.value)
+        bounded_selections: list[SignalSelectionDecision] = []
+        llm_count = 0
+        specs_by_ref = {spec.ref: spec for spec in signal_registry.specs}
+        for selection in selections:
+            spec = specs_by_ref.get(selection.signal_ref)
+            if spec is None:
+                bounded_selections.append(selection)
+                continue
+            if spec.execution_type is SignalExecutionType.LLM:
+                if llm_count >= limits.max_llm_signals_per_round:
+                    continue
+                llm_count += 1
+            bounded_selections.append(selection)
+            if len(bounded_selections) >= limits.max_signals_per_round:
+                break
+        selections = tuple(bounded_selections)
         selected = tuple(item.signal_ref for item in selections)
         _assert_identity_values_masked(
             [list(item.context_tags) for item in selections],
@@ -1409,13 +1718,21 @@ def execute_information_plan(
         remaining_calls = limits.max_signal_calls - signal_calls
         selected = selected[:remaining_calls]
         selections = selections[:remaining_calls]
-        batch = signal_executor.execute_batch(
-            selected,
-            company_id=company_id,
-            as_of=prediction_time,
-            identity=company_basic_source,
-            prior_fingerprints=signal_fingerprints,
+        _set_request_token_budget(
+            signal_executor.llm_runner,
+            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
         )
+        try:
+            batch = signal_executor.execute_batch(
+                selected,
+                company_id=company_id,
+                as_of=prediction_time,
+                identity=company_basic_source,
+                prior_fingerprints=signal_fingerprints,
+            )
+        except RuntimeBudgetExceeded:
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            break
         signal_fingerprints.update(batch.document_fingerprints)
         prior_signal_results.update(
             {result.ref: result.to_dict() for result in batch.results}
@@ -1435,7 +1752,15 @@ def execute_information_plan(
         if not batch.results:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break
-        reflection_step = controller.reflect(plan, state, batch)
+        _set_request_token_budget(
+            controller,
+            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
+        )
+        try:
+            reflection_step = controller.reflect(plan, state, batch)
+        except RuntimeBudgetExceeded:
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
         state = reflection_step.value
         if state.decision is ResearchDecision.FINALIZE:
@@ -1445,6 +1770,9 @@ def execute_information_plan(
         if termination_trigger is None:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
         try:
+            _set_request_token_budget(
+                controller, limits.max_tokens - model_usage.tokens
+            )
             terminal_step = controller.finalize(
                 plan,
                 state,
@@ -1474,6 +1802,7 @@ def execute_information_plan(
         state=state,
         rounds=rounds,
     )
+    _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
     model_usage = _consume_model_step(model_usage, prediction_step.usage, limits)
     prediction = prediction_step.value
@@ -1487,8 +1816,24 @@ def execute_information_plan(
         raise ValidationError("prediction sink must return a durable reference")
 
     ground_truth = ground_truth_provider(company_id)
-    reflection_step = predictor.reflect(final_context, prediction, ground_truth)
-    model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
+    _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
+    try:
+        reflection_step = predictor.reflect(final_context, prediction, ground_truth)
+        model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
+    except RuntimeBudgetExceeded:
+        reflection_step = AgentStep(
+            PredictionSelfReflection(
+                correct=(
+                    prediction.is_surge == ground_truth.is_surge
+                    and (
+                        not ground_truth.is_surge
+                        or prediction.magnitude is ground_truth.magnitude
+                    )
+                ),
+                plan_issues=("budget_skipped",),
+            ),
+            AgentUsage(),
+        )
 
     return ExecutionTrajectory(
         case_id=resolved_case_id,
@@ -1505,12 +1850,41 @@ def execute_information_plan(
         self_reflection=reflection_step.value,
         stop_reason=stop_reason,
         termination_trigger=termination_trigger,
+        basic_info_projection=basic_info_projection,
         usage=RuntimeUsage(
             signal_rounds=len(rounds),
             signal_calls=signal_calls,
             model=model_usage,
         ),
     )
+
+
+def _set_request_token_budget(component: Any, remaining: int) -> None:
+    """Set an optional exact-request preflight budget on concrete v6 adapters."""
+
+    setter = getattr(component, "set_request_token_budget", None)
+    if callable(setter):
+        setter(max(0, int(remaining)))
+
+
+def _case_identity_alias_inventory(cases: Iterable[EvolutionCase]) -> tuple[str, ...]:
+    """Collect every explicit identity alias for one local evaluation batch."""
+
+    aliases: list[str] = []
+    for case in cases:
+        aliases.extend((case.case_id, case.company_id))
+        for key in ("company_name", "ticker", "symbol", "name"):
+            value = case.basic_info.get(key)
+            if isinstance(value, str) and value.strip():
+                aliases.append(value)
+        raw_aliases = case.basic_info.get("identity_aliases", ())
+        if isinstance(raw_aliases, str):
+            raw_aliases = (raw_aliases,)
+        if isinstance(raw_aliases, (list, tuple)):
+            aliases.extend(
+                item for item in raw_aliases if isinstance(item, str) and item.strip()
+            )
+    return tuple(dict.fromkeys(aliases))
 
 
 def _assemble_final_context(
@@ -3588,6 +3962,90 @@ class PlanMetaMemory:
         self._entries.append(entry)
         self._entries = self._entries[-self.maxlen :]
 
+    def model_view(self, *, max_chars: int = 48_000) -> tuple[Mapping[str, Any], ...]:
+        """Derive a bounded FIFO view while retaining one aggregate per round."""
+
+        def compact_strings(
+            values: Iterable[Any], *, count: int = 3, chars: int = 160
+        ) -> list[str]:
+            return [str(item)[:chars] for item in tuple(values)[:count]]
+
+        def compact_reflection(value: Mapping[str, Any]) -> dict[str, Any]:
+            return {
+                str(key): compact_strings(items, chars=240)
+                if isinstance(items, (list, tuple))
+                else items
+                for key, items in value.items()
+            }
+
+        bases: list[dict[str, Any]] = []
+        for entry in self._entries:
+            assessment_counts: dict[str, int] = {}
+            for plan in entry.plan_reflections:
+                for case in plan.original_case_reflections:
+                    assessment = str(
+                        case.candidate_judgment_feedback.get("assessment", "unknown")
+                    )
+                    assessment_counts[assessment] = assessment_counts.get(assessment, 0) + 1
+            bases.append(
+                {
+                    "round_id": entry.round_id,
+                    "aggregate": {
+                        "plan_count": len(entry.plan_reflections),
+                        "evidence_refs": compact_strings(entry.evidence_refs, chars=80),
+                        "assessment_counts": dict(sorted(assessment_counts.items())),
+                        "successful_patterns": compact_strings(entry.successful_patterns),
+                        "failed_patterns": compact_strings(entry.failed_patterns),
+                        "false_positive_patterns": compact_strings(entry.false_positive_patterns),
+                        "false_negative_patterns": compact_strings(entry.false_negative_patterns),
+                        "useful_signals": compact_strings(entry.useful_signals),
+                        "suspicious_signals": compact_strings(entry.suspicious_signals),
+                        "missing_capabilities": compact_strings(entry.missing_capabilities),
+                        "search_implications": compact_strings(entry.search_implications),
+                    },
+                    "representative_details": [],
+                }
+            )
+        if len(json.dumps(bases, ensure_ascii=False, sort_keys=True)) > max_chars:
+            raise ValidationError("round aggregate meta view exceeds fixed context limit")
+
+        by_round = {int(item["round_id"]): item for item in bases}
+        for entry in reversed(self._entries):
+            details = by_round[entry.round_id]["representative_details"]
+            for plan in reversed(entry.plan_reflections):
+                representatives: list[dict[str, Any]] = []
+                seen_assessments: set[str] = set()
+                for case in plan.original_case_reflections:
+                    assessment = str(
+                        case.candidate_judgment_feedback.get("assessment", "unknown")
+                    )
+                    if assessment in seen_assessments or len(representatives) == 3:
+                        continue
+                    seen_assessments.add(assessment)
+                    representatives.append(
+                        {
+                            "assessment": assessment,
+                            "stop_reason": case.stop_reason.value,
+                            "self_reflection": compact_reflection(
+                                case.self_reflection.to_dict()
+                            ),
+                        }
+                    )
+                candidate = {
+                    "plan_id": plan.plan_id,
+                    "metrics": plan.metrics.to_dict(),
+                    "fitness": plan.fitness.to_dict(),
+                    "vertical": compact_reflection(
+                        plan.vertical_plan_reflection.to_dict()
+                    ),
+                    "representative_cases": representatives,
+                }
+                details.append(candidate)
+                if len(json.dumps(bases, ensure_ascii=False, sort_keys=True)) > max_chars:
+                    details.pop()
+                    break
+        return tuple(bases)
+
 
 @dataclass(frozen=True)
 class EvolutionPriors:
@@ -4903,6 +5361,11 @@ class PlanEvolutionEngine:
                 checkpoint_ref=str(checkpoint),
             ) from unavailable
         round_cases = dataset_manager.resolve_cases(round_snapshot.case_ids)
+        round_aliases = _case_identity_alias_inventory(round_cases)
+        for role in (self.proposer, self.critic, self.round_reflector):
+            setter = getattr(role, "set_anonymous_aliases", None)
+            if callable(setter):
+                setter(round_aliases)
         _emit_progress(
             self.on_progress,
             "round_started",
@@ -5673,6 +6136,9 @@ class SignalMiningConfig:
     hypothesis_limit: int = 3
     selected_hypothesis_limit: int = 2
     case_pool_limit: int = 32
+    h2_profile_scan_limit: int = 96
+    h2_min_ready_issuers: int = 16
+    h2_min_ready_per_class: int = 4
     induction_cases_per_class: int = 2
     validation_cases_per_class: int = 2
     exploration_interval: int = 3
@@ -5684,6 +6150,9 @@ class SignalMiningConfig:
             "hypothesis_limit",
             "selected_hypothesis_limit",
             "case_pool_limit",
+            "h2_profile_scan_limit",
+            "h2_min_ready_issuers",
+            "h2_min_ready_per_class",
             "induction_cases_per_class",
             "validation_cases_per_class",
             "exploration_interval",
@@ -5696,6 +6165,10 @@ class SignalMiningConfig:
             raise ValidationError(
                 "selected Signal Mining hypotheses cannot exceed the portfolio limit"
             )
+        if self.h2_profile_scan_limit < self.case_pool_limit:
+            raise ValidationError("H2 profile scan limit must cover the target pool")
+        if self.h2_min_ready_issuers > self.case_pool_limit:
+            raise ValidationError("H2 minimum ready issuers exceeds the target pool")
         if self.evidence_documents_per_case > 10:
             raise ValidationError(
                 "Signal Mining evidence_documents_per_case cannot exceed 10"
@@ -5706,6 +6179,9 @@ class SignalMiningConfig:
             "hypothesis_limit": self.hypothesis_limit,
             "selected_hypothesis_limit": self.selected_hypothesis_limit,
             "case_pool_limit": self.case_pool_limit,
+            "h2_profile_scan_limit": self.h2_profile_scan_limit,
+            "h2_min_ready_issuers": self.h2_min_ready_issuers,
+            "h2_min_ready_per_class": self.h2_min_ready_per_class,
             "induction_cases_per_class": self.induction_cases_per_class,
             "validation_cases_per_class": self.validation_cases_per_class,
             "exploration_interval": self.exploration_interval,
@@ -6504,6 +6980,11 @@ class SignalEvolutionEngine:
         self.workspace = workspace
         self.mining_model = mining_model
         self.update_model = update_model
+        discovery_aliases = _case_identity_alias_inventory(discovery_cases)
+        for role in (self.mining_model, self.update_model):
+            setter = getattr(role, "set_anonymous_aliases", None)
+            if callable(setter):
+                setter(discovery_aliases)
         self.llm_signal_runner = llm_signal_runner
         self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.priors = priors
@@ -7307,14 +7788,67 @@ class SignalEvolutionEngine:
             }
             return self._mining_output(audit=audit, refined=refined)
 
-        case_pairs = self._mining_case_universe(limit=config.case_pool_limit)
+        scanned_pairs = self._mining_case_universe(limit=config.h2_profile_scan_limit)
+        ready_rows: list[tuple[str, EvolutionCase, dict[str, Any]]] = []
+        profile_audit: list[dict[str, Any]] = []
+        for case_ref, case in scanned_pairs:
+            brief = self._mining_case_brief(case_ref, case)
+            profile_audit.append(
+                {
+                    "case_ref": case_ref,
+                    "ready": bool(brief.pop("_profile_ready", False)),
+                    "profile_resolution": brief.pop("_profile_resolution", None),
+                }
+            )
+            if profile_audit[-1]["ready"]:
+                ready_rows.append((case_ref, case, brief))
+        positives = [item for item in ready_rows if item[1].ground_truth.is_surge]
+        controls = [item for item in ready_rows if not item[1].ground_truth.is_surge]
+        if (
+            len(ready_rows) < config.h2_min_ready_issuers
+            or len(positives) < config.h2_min_ready_per_class
+            or len(controls) < config.h2_min_ready_per_class
+        ):
+            reason = "insufficient_h2_profile_readiness"
+            for hypothesis in hypotheses:
+                refined[hypothesis.hypothesis_id] = (reason,)
+            audit["status"] = reason
+            audit["h2_profile_readiness"] = {
+                "scanned": len(scanned_pairs),
+                "ready": len(ready_rows),
+                "positive_ready": len(positives),
+                "control_ready": len(controls),
+                "minimum_ready": config.h2_min_ready_issuers,
+                "minimum_per_class": config.h2_min_ready_per_class,
+                "cases": profile_audit,
+            }
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {
+                key: list(value) for key, value in refined.items()
+            }
+            return self._mining_output(audit=audit, refined=refined)
+        mandatory_refs = {
+            item[0]
+            for item in (
+                *positives[: config.h2_min_ready_per_class],
+                *controls[: config.h2_min_ready_per_class],
+            )
+        }
+        selected_ready = [item for item in ready_rows if item[0] in mandatory_refs]
+        selected_ready.extend(
+            item
+            for item in ready_rows
+            if item[0] not in mandatory_refs
+        )
+        selected_ready = selected_ready[: config.case_pool_limit]
+        case_pairs = tuple((ref, case) for ref, case, _brief in selected_ready)
+        briefs_by_ref = {ref: brief for ref, _case, brief in selected_ready}
         ranking_step = self.mining_model.rank_cases(
             {
                 "track": "hypothesis",
                 "hypotheses": [item.to_dict() for item in hypotheses],
                 "case_briefs": [
-                    self._mining_case_brief(case_ref, case)
-                    for case_ref, case in case_pairs
+                    briefs_by_ref[case_ref] for case_ref, _case in case_pairs
                 ],
                 "rules": {
                     "labels_hidden": True,
@@ -7344,9 +7878,14 @@ class SignalEvolutionEngine:
         audit["stages"]["H2"] = {
             "rankings": {key: list(value) for key, value in rankings.items()},
             "case_briefs": [
-                self._mining_case_brief(case_ref, case)
-                for case_ref, case in case_pairs
+                briefs_by_ref[case_ref] for case_ref, _case in case_pairs
             ],
+            "profile_readiness": {
+                "scanned": len(scanned_pairs),
+                "ready": len(ready_rows),
+                "selected": len(case_pairs),
+                "cases": profile_audit,
+            },
             "usage": _usage_to_dict(ranking_step.usage),
         }
 
@@ -7389,31 +7928,47 @@ class SignalEvolutionEngine:
             return self._mining_output(audit=audit, refined=refined)
 
         contrast_packets: list[dict[str, Any]] = []
+        evidence_packets_by_key: dict[tuple[Any, ...], dict[str, Any]] = {}
         resolution_audit: list[dict[str, Any]] = []
         for selection in selections:
             hypothesis = selection["hypothesis"]
-            cases_payload: list[dict[str, Any]] = []
+            packet_refs: list[str] = []
             for case_ref in selection["induction_refs"]:
                 case = case_by_ref[case_ref]
-                packet, resolution = self._mining_evidence_packet(
+                packet_key = (
                     case_ref,
-                    case,
-                    source_types=hypothesis.source_types,
-                    query=hypothesis.query,
-                    lookback_days=hypothesis.lookback_days,
-                    reveal_label=True,
+                    tuple(hypothesis.source_types),
+                    hypothesis.query,
+                    hypothesis.lookback_days,
                 )
-                cases_payload.append(packet)
-                resolution_audit.append(resolution)
+                if packet_key not in evidence_packets_by_key:
+                    packet, resolution = self._mining_evidence_packet(
+                        case_ref,
+                        case,
+                        source_types=hypothesis.source_types,
+                        query=hypothesis.query,
+                        lookback_days=hypothesis.lookback_days,
+                        reveal_label=True,
+                    )
+                    packet_ref = "packet_" + hashlib.sha256(
+                        json.dumps(packet_key, sort_keys=True).encode("utf-8")
+                    ).hexdigest()[:20]
+                    evidence_packets_by_key[packet_key] = {
+                        "packet_ref": packet_ref,
+                        **packet,
+                    }
+                    resolution_audit.append({"packet_ref": packet_ref, **resolution})
+                packet_refs.append(evidence_packets_by_key[packet_key]["packet_ref"])
             contrast_packets.append(
                 {
                     "hypothesis": hypothesis.to_dict(),
-                    "cases": cases_payload,
+                    "evidence_packet_refs": packet_refs,
                 }
             )
         decisions_step = self.mining_model.contrast(
             {
                 "track": "hypothesis",
+                "evidence_packets": list(evidence_packets_by_key.values()),
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
@@ -7699,7 +8254,7 @@ class SignalEvolutionEngine:
         )
         return {
             "cycle_id": cycle_id,
-            "meta_info": [entry.to_dict() for entry in self.meta_memory.entries],
+            "meta_info": list(self.meta_memory.model_view()),
             "capability_backlog": capability_backlog,
             "stable_signal_cards": cards,
             "prior_slow_work": prior_work,
@@ -7734,6 +8289,51 @@ class SignalEvolutionEngine:
             and document.available_at <= case.prediction_time
         )
         profile = _point_in_time_profile_fields(case.basic_info, documents)
+        profile_resolution: dict[str, Any] | None = None
+        if not any(
+            profile.get(name)
+            for name in ("business_description", "industry", "sector")
+        ):
+            resolution = self.evidence_resolver.resolve(
+                RawInfoRequest(
+                    request_id=f"signal_mining_profile:{case_ref}",
+                    description="Latest point-in-time annual filing business profile.",
+                    source_types=("10-k", "filing", "sec_filing"),
+                    lookback_days=730,
+                    max_documents=1,
+                    query="item 1 business",
+                ),
+                company_id=case.company_id,
+                identity=case.basic_info,
+                as_of=case.prediction_time,
+            )
+            if resolution.gap is not None and resolution.gap.reason.value in {
+                "provider_error",
+                "quota_deferred",
+                "materialization_failed",
+            }:
+                raise EvolutionControlFlow(
+                    "temporary_h2_profile_provider_failure: "
+                    + resolution.gap.reason.value
+                )
+            acquired = self.evidence_resolver.load_documents(
+                resolution, as_of=case.prediction_time
+            )
+            documents = tuple({item.document_id: item for item in (*documents, *acquired)}.values())
+            profile = _point_in_time_profile_fields(case.basic_info, documents)
+            profile_resolution = {
+                "status": resolution.status,
+                "data_gap": resolution.gap.to_dict() if resolution.gap else None,
+                "document_count": len(acquired),
+            }
+        if not profile.get("business_description"):
+            excerpt = _item1_business_excerpt(documents)
+            if excerpt:
+                profile["business_description"] = excerpt
+        profile_ready = any(
+            profile.get(name)
+            for name in ("business_description", "industry", "sector")
+        )
         safe_info = {
             "business_description": profile.get("business_description")
             or "unavailable",
@@ -7756,6 +8356,8 @@ class SignalEvolutionEngine:
                 "document_count": len(documents),
                 "source_types": sorted({item.source_type for item in documents}),
             },
+            "_profile_ready": profile_ready,
+            "_profile_resolution": profile_resolution,
         }
 
     def _select_mining_cases(
@@ -7816,6 +8418,11 @@ class SignalEvolutionEngine:
             resolution,
             as_of=case.prediction_time,
         )
+        documents, filtered_documents = _filter_h3_documents(
+            documents,
+            case=case,
+            query=query,
+        )
         aliases = _discovery_identity_terms((case,))
         evidence = []
         for index, document in enumerate(documents, start=1):
@@ -7850,6 +8457,7 @@ class SignalEvolutionEngine:
             "requested_source_types": list(source_types),
             "document_count": len(documents),
             "document_hashes": [item.content_hash for item in documents],
+            "filtered_documents": filtered_documents,
             "as_of": case.prediction_time.isoformat(),
         }
 
@@ -8438,8 +9046,11 @@ def default_information_plan() -> InformationPlan:
             "information needs; finalize only when the surge thesis is decidable."
         ),
         analysis_prompt=(
-            "Weigh source-backed supporting and counter evidence, distinguish real "
-            "commercial adoption from narrative, and make the two-stage blind forecast."
+            "Organize and weight source-backed supporting and counter evidence for the "
+            "fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish "
+            "real commercial adoption from narrative and expose uncertainty; do not "
+            "calculate probabilities, classify the final answer, alter the four-way "
+            "judgment, or generate the prediction."
         ),
     )
 
@@ -8695,6 +9306,104 @@ def _point_in_time_profile_fields(
             if canonical in output:
                 break
     return output
+
+
+def _item1_business_excerpt(
+    documents: Iterable[RawInfoDocument],
+) -> str | None:
+    """Extract a bounded readable Item 1 business excerpt from an as-of filing."""
+
+    for document in sorted(
+        documents,
+        key=lambda item: (item.available_at, item.document_id),
+        reverse=True,
+    ):
+        if document.source_type.casefold() not in {
+            "10-k",
+            "filing",
+            "filing_body",
+            "sec_filing",
+        }:
+            continue
+        text_value, _runs = _normalized_projection_text(document.content)
+        match = re.search(
+            r"\bitem\s+1[.\s:-]+business\b(?P<body>.*?)(?=\bitem\s+1a[.\s:-]+risk\s+factors\b|\bitem\s+2[.\s:-]+properties\b|$)",
+            text_value,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if match is None:
+            continue
+        excerpt = " ".join(match.group("body").split())[:800]
+        if excerpt:
+            return excerpt
+    return None
+
+
+def _filter_h3_documents(
+    documents: Iterable[RawInfoDocument],
+    *,
+    case: EvolutionCase,
+    query: str | None,
+) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, str]]]:
+    """Keep issuer-routed sources and require strong issuer/query news relevance."""
+
+    explicit_aliases: list[str] = []
+    for key in ("company_name", "name", "ticker", "symbol"):
+        value = case.basic_info.get(key)
+        if isinstance(value, str) and value.strip():
+            explicit_aliases.append(value.strip())
+    raw_aliases = case.basic_info.get("identity_aliases", ())
+    if isinstance(raw_aliases, str):
+        raw_aliases = (raw_aliases,)
+    if isinstance(raw_aliases, (list, tuple)):
+        explicit_aliases.extend(
+            item.strip()
+            for item in raw_aliases
+            if isinstance(item, str) and item.strip()
+        )
+    strong_aliases = _identity_alias_variants(explicit_aliases)
+    query_terms = {
+        token.casefold()
+        for token in re.findall(r"[A-Za-z0-9]+", query or "")
+        if len(token) >= 3 and token.casefold() not in _GENERIC_QUERY_WORDS
+    }
+    kept: list[RawInfoDocument] = []
+    filtered: list[dict[str, str]] = []
+    for document in documents:
+        if "news" not in document.source_type.casefold():
+            kept.append(document)
+            continue
+        title = str(document.metadata.get("title", ""))
+        visible_text = f"{title}\n{document.content}"
+        issuer_match = any(
+            re.search(
+                rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])",
+                visible_text,
+                flags=(
+                    0
+                    if alias.isalnum() and alias.isupper() and len(alias) <= 5
+                    else re.IGNORECASE
+                ),
+            )
+            for alias in strong_aliases
+        )
+        relevance_match = not query_terms or any(
+            term in visible_text.casefold() for term in query_terms
+        )
+        if issuer_match and relevance_match:
+            kept.append(document)
+            continue
+        filtered.append(
+            {
+                "document_id": document.document_id,
+                "reason": (
+                    "missing_strong_issuer_match"
+                    if not issuer_match
+                    else "hypothesis_query_irrelevant"
+                ),
+            }
+        )
+    return tuple(kept), filtered
 
 
 def _nested_profile_mappings(value: Any, *, depth: int) -> list[Mapping[str, Any]]:

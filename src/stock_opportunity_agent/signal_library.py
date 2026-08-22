@@ -1689,6 +1689,15 @@ DeterministicSignalFunction = Callable[
 ]
 
 
+@dataclass(frozen=True)
+class LLMSignalBatchInput:
+    """One independently versioned Signal inside a shared model call."""
+
+    spec: SignalSpec
+    documents: tuple[RawInfoDocument, ...]
+    skill: str
+
+
 class LLMSignalRunner(Protocol):
     """No-label adapter for one versioned extraction skill."""
 
@@ -1700,6 +1709,13 @@ class LLMSignalRunner(Protocol):
         as_of: datetime,
     ) -> tuple[SignalResult, AgentUsage]:
         """Return a structured evidence-backed result and usage."""
+
+    def execute_many(
+        self,
+        inputs: tuple[LLMSignalBatchInput, ...],
+        as_of: datetime,
+    ) -> tuple[Mapping[str, SignalResult], AgentUsage]:
+        """Return independently keyed results from one shared bounded call."""
 
 
 class SignalExecutor:
@@ -1762,11 +1778,12 @@ class SignalExecutor:
     ) -> SignalBatchResult:
         """Execute every selected Signal and validate literal evidence."""
 
-        results: list[SignalResult] = []
+        results_by_ref: dict[str, SignalResult] = {}
         resolutions: list[RawInfoResolution] = []
         fingerprints: dict[str, tuple[str, ...]] = {}
         skipped: list[str] = []
         usage = AgentUsage()
+        llm_inputs: list[LLMSignalBatchInput] = []
         refs = tuple(signal_refs)
         if len(set(refs)) != len(refs):
             raise ValidationError("signal batch cannot contain duplicate refs")
@@ -1813,14 +1830,43 @@ class SignalExecutor:
                 skill = self.snapshot.skills.get(spec.ref, "")
                 if not skill.strip():
                     raise ValidationError(f"frozen LLM skill is missing: {spec.ref}")
-                result, signal_usage = self.llm_runner.execute(
-                    spec, documents, skill, as_of
-                )
-                usage = usage + signal_usage
+                llm_inputs.append(LLMSignalBatchInput(spec, documents, skill))
+                continue
             validate_signal_result(spec, result, documents, as_of=as_of)
-            results.append(result)
+            results_by_ref[spec.ref] = result
+        if llm_inputs:
+            execute_many = getattr(self.llm_runner, "execute_many", None)
+            if callable(execute_many):
+                llm_results, signal_usage = execute_many(tuple(llm_inputs), as_of)
+                usage = usage + signal_usage
+                for item in llm_inputs:
+                    result = llm_results.get(item.spec.ref)
+                    if result is None:
+                        result = SignalResult(
+                            signal_id=item.spec.signal_id,
+                            version=item.spec.version,
+                            value=SignalValue.UNAVAILABLE,
+                            confidence=0.0,
+                            interpretation="LLM Signal batch omitted this result.",
+                            coverage=SignalCoverage.UNAVAILABLE,
+                        )
+                    validate_signal_result(
+                        item.spec, result, item.documents, as_of=as_of
+                    )
+                    results_by_ref[item.spec.ref] = result
+            else:
+                for item in llm_inputs:
+                    result, signal_usage = self.llm_runner.execute(
+                        item.spec, item.documents, item.skill, as_of
+                    )
+                    usage = usage + signal_usage
+                    validate_signal_result(
+                        item.spec, result, item.documents, as_of=as_of
+                    )
+                    results_by_ref[item.spec.ref] = result
+        results = tuple(results_by_ref[ref] for ref in refs if ref in results_by_ref)
         return SignalBatchResult(
-            results=tuple(results),
+            results=results,
             signal_calls=len(results),
             usage=usage,
             resolutions=tuple(resolutions),

@@ -179,17 +179,19 @@ propagate so external-call recovery remains explicit.
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or
 into `SignalResult`. Before an LLM Signal executes, the runtime deterministically
-projects its resolved documents into literal source windows using the Signal
-description and versioned skill. The model-facing payload contains only minimal
-document lineage plus `start`, `end`, and `exact_text` for those windows. It is
-capped at 24,000 source characters per Signal execution, uses 2,000-character
-windows with 200-character overlap, and selects the best matching window from
-each resolved document before filling the remaining budget by relevance. The
-projection is an execution context, not a claim that omitted text is absent;
-when the visible windows cannot support a conclusion, the LLM Signal must return
-`unavailable`. Returned evidence is still validated against the complete local
-documents, so a bounded request cannot weaken source identity, point-in-time, or
-literal-span guarantees.
+projects its resolved documents into normalized readable text with stable
+projection ids and raw-offset mappings. SEC HTML tags and repetitive per-row
+market `retrieved_at/source/symbol` fields are absent from the model view while
+the unmodified original remains durable. At most two selected LLM Signals in
+one routing batch share one deduplicated projection capped at 32,000 source
+characters and one structured call. Results remain separately keyed, parsed,
+validated, learned, and versioned. A bad result degrades only that Signal to
+`unavailable` after the single correction boundary. Model evidence cites a
+projection id and literal projected text; local code requires a unique mapping
+back to an original Raw Info span and stores the original literal span in
+`SignalEvidence`. The projection is an execution context, not a claim that
+omitted text is absent; ambiguity, absence, or insufficient visible evidence
+fails closed.
 
 Required Signal-result objects and evidence-policy booleans are type-strict;
 missing coverage, string booleans, string-as-array evidence, and non-finite
