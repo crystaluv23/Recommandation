@@ -29,6 +29,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     HistoricalPlanSeedPool,
     LLMBlindPredictor,
     LLMInformationPlanProposer,
+    LLMSignalMiningModel,
     LLMPlanCritic,
     LLMRoundReflector,
     LLMResearchController,
@@ -1037,20 +1038,20 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(request.lookback_days, 45)
         self.assertEqual(request.max_documents, 1)
 
-    def test_slow_agent_role_states_exact_final_output_contract(self) -> None:
+    def test_update_agent_role_states_exact_final_output_contract(self) -> None:
         caller = ScriptedRoleCaller(
             [{"action": "final", "output": {"candidate_refs": []}}]
         )
         model = StructuredAgentModel(
             caller,
-            stage="signal_mining_agent",
+            stage="signal_update_agent",
             allow_outcomes=True,
             final_output_example={"candidate_refs": ["candidate_signal:v1"]},
         )
 
         turn = model.respond(
             AgentRequest(
-                prompt="Mine one candidate.",
+                prompt="Update one candidate.",
                 tool_cards=(),
                 workspace={},
                 observations=(),
@@ -1061,6 +1062,63 @@ class ConcreteRoleAdapterTests(TestCase):
         system_prompt = str(caller.calls[0]["system_prompt"])
         self.assertIn('"candidate_refs": ["candidate_signal:v1"]', system_prompt)
         self.assertIn("successful staging tool call", system_prompt)
+
+    def test_signal_mining_roles_parse_hypotheses_and_rank_only_allowed_refs(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "order_confirmation",
+                            "statement": "Confirmed orders precede repricing.",
+                            "applicability": "Project-driven companies.",
+                            "expected_positive_pattern": "Positive cases confirm more orders.",
+                            "source_types": ["news"],
+                            "query": "material order",
+                            "falsifiers": ["Controls confirm orders equally often."],
+                            "lookback_days": 365,
+                        }
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "order_confirmation",
+                            "case_refs": ["case-002", "case-001"],
+                        }
+                    ]
+                },
+            ]
+        )
+        model = LLMSignalMiningModel(caller, creative_temperature=1.0)
+
+        hypotheses = model.propose_hypotheses(
+            {"limits": {"hypothesis_limit": 3}, "meta_info": []}
+        )
+        rankings = model.rank_cases(
+            {
+                "hypotheses": [item.to_dict() for item in hypotheses.value],
+                "case_briefs": [
+                    {"case_ref": "case-001", "industry": "hardware"},
+                    {"case_ref": "case-002", "industry": "hardware"},
+                ],
+            }
+        )
+
+        self.assertEqual(hypotheses.value[0].hypothesis_id, "order_confirmation")
+        self.assertEqual(
+            rankings.value["order_confirmation"],
+            ("case-002", "case-001"),
+        )
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_case_ranking"],
+        )
+        self.assertEqual(caller.calls[0]["temperature"], 1.0)
+        self.assertEqual(caller.calls[1]["temperature"], 0.0)
+        self.assertFalse(caller.calls[1]["allow_outcomes"])
 
     def test_slow_agent_receives_dynamic_next_required_workflow_action(self) -> None:
         caller = ScriptedRoleCaller(

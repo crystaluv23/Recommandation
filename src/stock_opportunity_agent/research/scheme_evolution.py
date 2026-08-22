@@ -5453,12 +5453,247 @@ class SignalCandidateValidator:
 
 
 @dataclass(frozen=True)
+class SignalMiningConfig:
+    """Bounded local orchestration limits for the two Mining tracks."""
+
+    hypothesis_limit: int = 3
+    selected_hypothesis_limit: int = 2
+    case_pool_limit: int = 32
+    induction_cases_per_class: int = 2
+    validation_cases_per_class: int = 2
+    exploration_interval: int = 3
+    evidence_documents_per_case: int = 4
+    evidence_lookback_days: int = 365
+
+    def __post_init__(self) -> None:
+        positive_fields = (
+            "hypothesis_limit",
+            "selected_hypothesis_limit",
+            "case_pool_limit",
+            "induction_cases_per_class",
+            "validation_cases_per_class",
+            "exploration_interval",
+            "evidence_documents_per_case",
+            "evidence_lookback_days",
+        )
+        if any(getattr(self, name) < 1 for name in positive_fields):
+            raise ValidationError("Signal Mining limits must be positive")
+        if self.selected_hypothesis_limit > self.hypothesis_limit:
+            raise ValidationError(
+                "selected Signal Mining hypotheses cannot exceed the portfolio limit"
+            )
+        if self.evidence_documents_per_case > 10:
+            raise ValidationError(
+                "Signal Mining evidence_documents_per_case cannot exceed 10"
+            )
+
+    def to_dict(self) -> dict[str, int]:
+        return {
+            "hypothesis_limit": self.hypothesis_limit,
+            "selected_hypothesis_limit": self.selected_hypothesis_limit,
+            "case_pool_limit": self.case_pool_limit,
+            "induction_cases_per_class": self.induction_cases_per_class,
+            "validation_cases_per_class": self.validation_cases_per_class,
+            "exploration_interval": self.exploration_interval,
+            "evidence_documents_per_case": self.evidence_documents_per_case,
+            "evidence_lookback_days": self.evidence_lookback_days,
+        }
+
+
+@dataclass(frozen=True)
+class SignalMiningHypothesis:
+    """One falsifiable, company-agnostic Signal Mining hypothesis."""
+
+    hypothesis_id: str
+    statement: str
+    applicability: str
+    expected_positive_pattern: str
+    source_types: tuple[str, ...]
+    query: str
+    falsifiers: tuple[str, ...]
+    lookback_days: int = 365
+
+    def __post_init__(self) -> None:
+        _validate_id(self.hypothesis_id, "mining hypothesis_id")
+        text_fields = (
+            self.statement,
+            self.applicability,
+            self.expected_positive_pattern,
+            self.query,
+        )
+        if any(not value.strip() for value in text_fields):
+            raise ValidationError("Signal Mining hypothesis text cannot be empty")
+        if not self.source_types or any(not item.strip() for item in self.source_types):
+            raise ValidationError("Signal Mining hypothesis requires source_types")
+        if len(set(self.source_types)) != len(self.source_types):
+            raise ValidationError("Signal Mining hypothesis source_types must be unique")
+        if not self.falsifiers or any(not item.strip() for item in self.falsifiers):
+            raise ValidationError("Signal Mining hypothesis requires falsifiers")
+        if self.lookback_days < 1 or self.lookback_days > 1825:
+            raise ValidationError("Signal Mining lookback_days must be in [1, 1825]")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "hypothesis_id": self.hypothesis_id,
+            "statement": self.statement,
+            "applicability": self.applicability,
+            "expected_positive_pattern": self.expected_positive_pattern,
+            "source_types": list(self.source_types),
+            "query": self.query,
+            "falsifiers": list(self.falsifiers),
+            "lookback_days": self.lookback_days,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningHypothesis":
+        required = {
+            "hypothesis_id",
+            "statement",
+            "applicability",
+            "expected_positive_pattern",
+            "source_types",
+            "query",
+            "falsifiers",
+            "lookback_days",
+        }
+        if set(data) != required:
+            raise ValidationError(
+                "Signal Mining hypothesis requires exactly: "
+                + ", ".join(sorted(required))
+            )
+        return cls(
+            hypothesis_id=str(data["hypothesis_id"]),
+            statement=str(data["statement"]),
+            applicability=str(data["applicability"]),
+            expected_positive_pattern=str(data["expected_positive_pattern"]),
+            source_types=_json_string_array(data, "source_types"),
+            query=str(data["query"]),
+            falsifiers=_json_string_array(data, "falsifiers"),
+            lookback_days=int(data["lookback_days"]),
+        )
+
+
+@dataclass(frozen=True)
+class SignalMiningDecision:
+    """A label-revealed contrast decision with an optional complete draft."""
+
+    hypothesis_id: str
+    disposition: str
+    rationale: tuple[str, ...]
+    candidate: Mapping[str, Any] | None = None
+
+    def __post_init__(self) -> None:
+        _validate_id(self.hypothesis_id, "mining decision hypothesis_id")
+        if self.disposition not in {"supported", "refine", "rejected"}:
+            raise ValidationError("Mining disposition must be supported, refine, or rejected")
+        if not self.rationale or any(not item.strip() for item in self.rationale):
+            raise ValidationError("Mining decision requires rationale")
+        if self.disposition == "supported" and not isinstance(self.candidate, Mapping):
+            raise ValidationError("supported Mining decision requires a candidate")
+        if self.disposition != "supported" and self.candidate is not None:
+            raise ValidationError("only a supported Mining decision may carry a candidate")
+        if self.candidate is not None:
+            object.__setattr__(self, "candidate", dict(self.candidate))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "hypothesis_id": self.hypothesis_id,
+            "disposition": self.disposition,
+            "rationale": list(self.rationale),
+            "candidate": (dict(self.candidate) if self.candidate is not None else None),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningDecision":
+        required = {"hypothesis_id", "disposition", "rationale", "candidate"}
+        if set(data) != required:
+            raise ValidationError(
+                "Signal Mining decision requires exactly: "
+                + ", ".join(sorted(required))
+            )
+        raw_candidate = data["candidate"]
+        if raw_candidate is not None and not isinstance(raw_candidate, Mapping):
+            raise ValidationError("Mining candidate must be an object or null")
+        return cls(
+            hypothesis_id=str(data["hypothesis_id"]),
+            disposition=str(data["disposition"]),
+            rationale=_json_string_array(data, "rationale"),
+            candidate=(dict(raw_candidate) if raw_candidate is not None else None),
+        )
+
+
+@dataclass(frozen=True)
+class SignalMiningSignature:
+    """One outcome-hidden observable signature extracted from Raw Info."""
+
+    case_ref: str
+    observations: tuple[str, ...]
+    evidence_gaps: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        _validate_id(self.case_ref, "mining signature case_ref")
+        if not self.observations or any(not item.strip() for item in self.observations):
+            raise ValidationError("Mining signature requires observations")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_ref": self.case_ref,
+            "observations": list(self.observations),
+            "evidence_gaps": list(self.evidence_gaps),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningSignature":
+        required = {"case_ref", "observations", "evidence_gaps"}
+        if set(data) != required:
+            raise ValidationError(
+                "Signal Mining signature requires exactly: "
+                + ", ".join(sorted(required))
+            )
+        return cls(
+            case_ref=str(data["case_ref"]),
+            observations=_json_string_array(data, "observations"),
+            evidence_gaps=_json_string_array(data, "evidence_gaps", required=False),
+        )
+
+
+class SignalMiningModel(Protocol):
+    """Five narrow structured roles used by the local Mining controller."""
+
+    def propose_hypotheses(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
+        """Return a bounded hypothesis portfolio."""
+
+    def rank_cases(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[Mapping[str, tuple[str, ...]]]:
+        """Rank allowed opaque case refs without labels or identities."""
+
+    def contrast(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        """Contrast exact positive/control evidence."""
+
+    def extract_exploration(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningSignature, ...]]:
+        """Extract outcome-hidden case signatures."""
+
+    def discover_exploration(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        """Discover label-associated candidates from frozen signatures."""
+
+
+@dataclass(frozen=True)
 class SignalCandidateEffectiveness:
     """Paired Signal-level evidence required after contract validation."""
 
     signal_ref: str
     current_ref: str | None
     accepted: bool
+    disposition: str
     reasons: tuple[str, ...]
     case_ids: tuple[str, ...]
     candidate_available: int
@@ -5470,12 +5705,21 @@ class SignalCandidateEffectiveness:
     current_correct: int = 0
     current_wrong: int = 0
 
+    def __post_init__(self) -> None:
+        if self.disposition not in {"promoted", "provisional", "rejected"}:
+            raise ValidationError("invalid Signal candidate effectiveness disposition")
+        if self.accepted != (self.disposition == "promoted"):
+            raise ValidationError(
+                "accepted Signal effectiveness must match promoted disposition"
+            )
+
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "signal-candidate-effectiveness-v1",
+            "schema_version": "signal-candidate-effectiveness-v2",
             "signal_ref": self.signal_ref,
             "current_ref": self.current_ref,
             "accepted": self.accepted,
+            "disposition": self.disposition,
             "reasons": list(self.reasons),
             "case_ids": list(self.case_ids),
             "candidate": {
@@ -5522,11 +5766,46 @@ class SignalCandidateEffectivenessEvaluator:
         spec: SignalSpec,
         *,
         skill: str | None,
+        preferred_case_ids: Iterable[str] = (),
+        excluded_case_ids: Iterable[str] = (),
+        induction_supported: bool = False,
     ) -> SignalCandidateEffectiveness:
-        cases = _sample_signal_discovery_cases(
-            self.discovery_cases,
-            limit=self.case_limit,
+        case_by_id = {case.case_id: case for case in self.discovery_cases}
+        excluded_companies = {
+            case_by_id[case_id].company_id
+            for case_id in excluded_case_ids
+            if case_id in case_by_id
+        }
+        eligible = tuple(
+            case
+            for case in self.discovery_cases
+            if case.company_id not in excluded_companies
         )
+        preferred: list[EvolutionCase] = []
+        seen_companies: set[str] = set()
+        for case_id in preferred_case_ids:
+            case = case_by_id.get(str(case_id))
+            if (
+                case is None
+                or case.company_id in excluded_companies
+                or case.company_id in seen_companies
+            ):
+                continue
+            preferred.append(case)
+            seen_companies.add(case.company_id)
+            if len(preferred) >= self.case_limit:
+                break
+        for case in _sample_signal_discovery_cases(
+            eligible,
+            limit=self.case_limit,
+        ):
+            if len(preferred) >= self.case_limit:
+                break
+            if case.company_id in seen_companies:
+                continue
+            preferred.append(case)
+            seen_companies.add(case.company_id)
+        cases = tuple(preferred)
         case_ids = tuple(case.case_id for case in cases)
         try:
             current = self.registry.latest_spec(spec.signal_id)
@@ -5537,6 +5816,7 @@ class SignalCandidateEffectivenessEvaluator:
                 signal_ref=spec.ref,
                 current_ref=(current.ref if current is not None else None),
                 accepted=False,
+                disposition=("provisional" if induction_supported else "rejected"),
                 reasons=(
                     "paired effectiveness requires at least "
                     f"{self.minimum_cases} Discovery cases",
@@ -5604,6 +5884,7 @@ class SignalCandidateEffectivenessEvaluator:
                 signal_ref=spec.ref,
                 current_ref=(current.ref if current is not None else None),
                 accepted=False,
+                disposition="rejected",
                 reasons=("paired effectiveness execution failed: " + str(exc),),
                 case_ids=case_ids,
                 candidate_available=0,
@@ -5614,21 +5895,25 @@ class SignalCandidateEffectivenessEvaluator:
 
         candidate_counts = _signal_effectiveness_counts(candidate_values)
         current_counts = _signal_effectiveness_counts(current_values)
-        reasons: list[str] = []
+        insufficient_reasons: list[str] = []
         if candidate_counts[0] < self.minimum_cases:
-            reasons.append(
+            insufficient_reasons.append(
                 "candidate availability is below paired minimum: "
                 f"{candidate_counts[0]}/{self.minimum_cases}"
             )
         decisive_floor = min(2, self.minimum_cases)
         if candidate_counts[1] < decisive_floor:
-            reasons.append(
+            insufficient_reasons.append(
                 "candidate decisive support is below paired minimum: "
                 f"{candidate_counts[1]}/{decisive_floor}"
             )
+        rejection_reasons: list[str] = []
         if current is None:
-            if candidate_counts[2] <= candidate_counts[3]:
-                reasons.append(
+            if (
+                candidate_counts[1] >= decisive_floor
+                and candidate_counts[2] <= candidate_counts[3]
+            ):
+                rejection_reasons.append(
                     "new candidate lacks positive directional evidence over controls"
                 )
         else:
@@ -5638,19 +5923,31 @@ class SignalCandidateEffectivenessEvaluator:
             )
             for index, label in labels:
                 if candidate_counts[index] < current_counts[index]:
-                    reasons.append(f"candidate reduces {label}")
+                    rejection_reasons.append(f"candidate reduces {label}")
             if candidate_counts[3] > current_counts[3]:
-                reasons.append("candidate increases directional wrong count")
-            if not (
+                rejection_reasons.append("candidate increases directional wrong count")
+            if not insufficient_reasons and not (
                 candidate_counts[0] > current_counts[0]
                 or candidate_counts[2] > current_counts[2]
                 or candidate_counts[3] < current_counts[3]
             ):
-                reasons.append("candidate shows no strict paired effectiveness gain")
+                rejection_reasons.append(
+                    "candidate shows no strict paired effectiveness gain"
+                )
+        if rejection_reasons:
+            disposition = "rejected"
+            reasons = rejection_reasons + insufficient_reasons
+        elif insufficient_reasons:
+            disposition = "provisional" if induction_supported else "rejected"
+            reasons = insufficient_reasons
+        else:
+            disposition = "promoted"
+            reasons = []
         return SignalCandidateEffectiveness(
             signal_ref=spec.ref,
             current_ref=(current.ref if current is not None else None),
-            accepted=not reasons,
+            accepted=disposition == "promoted",
+            disposition=disposition,
             reasons=tuple(reasons),
             case_ids=case_ids,
             candidate_available=candidate_counts[0],
@@ -5716,7 +6013,9 @@ class SlowLoopValidation:
     mined_candidates: tuple[str, ...]
     updated_candidates: tuple[str, ...]
     validated_candidates: Mapping[str, str]
+    provisional_candidates: Mapping[str, tuple[str, ...]]
     rejected: Mapping[str, tuple[str, ...]]
+    refined_hypotheses: Mapping[str, tuple[str, ...]]
     input_registry_version: int
     input_registry_hash: str
     input_signal_refs: tuple[str, ...]
@@ -5730,8 +6029,16 @@ class SlowLoopValidation:
             "mined_candidates": list(self.mined_candidates),
             "updated_candidates": list(self.updated_candidates),
             "validated_candidates": dict(self.validated_candidates),
+            "provisional_candidates": {
+                ref: list(reasons)
+                for ref, reasons in self.provisional_candidates.items()
+            },
             "rejected": {
                 ref: list(reasons) for ref, reasons in self.rejected.items()
+            },
+            "refined_hypotheses": {
+                ref: list(reasons)
+                for ref, reasons in self.refined_hypotheses.items()
             },
             "input_registry_version": self.input_registry_version,
             "input_registry_hash": self.input_registry_hash,
@@ -5760,9 +6067,19 @@ class SlowLoopValidation:
                     data.get("validated_candidates", {})
                 ).items()
             },
+            provisional_candidates={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(
+                    data.get("provisional_candidates", {})
+                ).items()
+            },
             rejected={
                 str(ref): tuple(str(reason) for reason in reasons)
                 for ref, reasons in dict(data.get("rejected", {})).items()
+            },
+            refined_hypotheses={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(data.get("refined_hypotheses", {})).items()
             },
             input_registry_version=int(data["input_registry_version"]),
             input_registry_hash=str(data["input_registry_hash"]),
@@ -5790,7 +6107,9 @@ class SlowLoopResult:
     updated_candidates: tuple[str, ...]
     validated_candidates: Mapping[str, str]
     promoted: tuple[str, ...]
+    provisional_candidates: Mapping[str, tuple[str, ...]]
     rejected: Mapping[str, tuple[str, ...]]
+    refined_hypotheses: Mapping[str, tuple[str, ...]]
     input_registry_version: int
     input_registry_hash: str
     output_registry_version: int
@@ -5812,8 +6131,16 @@ class SlowLoopResult:
             "updated_candidates": list(self.updated_candidates),
             "validated_candidates": dict(self.validated_candidates),
             "promoted": list(self.promoted),
+            "provisional_candidates": {
+                ref: list(reasons)
+                for ref, reasons in self.provisional_candidates.items()
+            },
             "rejected": {
                 ref: list(reasons) for ref, reasons in self.rejected.items()
+            },
+            "refined_hypotheses": {
+                ref: list(reasons)
+                for ref, reasons in self.refined_hypotheses.items()
             },
             "input_registry_version": self.input_registry_version,
             "input_registry_hash": self.input_registry_hash,
@@ -5847,9 +6174,19 @@ class SlowLoopResult:
                 ).items()
             },
             promoted=tuple(str(item) for item in data.get("promoted", ())),
+            provisional_candidates={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(
+                    data.get("provisional_candidates", {})
+                ).items()
+            },
             rejected={
                 str(ref): tuple(str(reason) for reason in reasons)
                 for ref, reasons in dict(data.get("rejected", {})).items()
+            },
+            refined_hypotheses={
+                str(ref): tuple(str(reason) for reason in reasons)
+                for ref, reasons in dict(data.get("refined_hypotheses", {})).items()
             },
             input_registry_version=int(
                 data.get("input_registry_version", data.get("registry_version", 0))
@@ -5873,7 +6210,7 @@ class SlowLoopResult:
 
 
 class SignalEvolutionEngine:
-    """Generic-Agent Signal Mining and Signal Update Slow Loop."""
+    """Locally orchestrated Signal Mining and Generic-Agent Signal Update."""
 
     def __init__(
         self,
@@ -5883,7 +6220,7 @@ class SignalEvolutionEngine:
         discovery_cases: tuple[EvolutionCase, ...],
         meta_memory: PlanMetaMemory,
         workspace: EvolutionWorkspace,
-        mining_agent: GenericAgent,
+        mining_model: SignalMiningModel,
         update_agent: GenericAgent,
         llm_signal_runner: LLMSignalRunner | None,
         evidence_resolver: EvidenceResolver | None = None,
@@ -5893,6 +6230,7 @@ class SignalEvolutionEngine:
         effectiveness_case_limit: int = 8,
         effectiveness_minimum_cases: int = 4,
         enforce_agent_workflow: bool = True,
+        mining_config: SignalMiningConfig = SignalMiningConfig(),
     ) -> None:
         if not discovery_cases:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
@@ -5901,13 +6239,14 @@ class SignalEvolutionEngine:
         self.discovery_cases = discovery_cases
         self.meta_memory = meta_memory
         self.workspace = workspace
-        self.mining_agent = mining_agent
+        self.mining_model = mining_model
         self.update_agent = update_agent
         self.llm_signal_runner = llm_signal_runner
         self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.priors = priors
         self.max_agent_steps = max_agent_steps
         self.enforce_agent_workflow = enforce_agent_workflow
+        self.mining_config = mining_config
         self.validator = SignalCandidateValidator(
             registry,
             llm_runner=llm_signal_runner,
@@ -5936,7 +6275,7 @@ class SignalEvolutionEngine:
         if staged is None:
             if input_snapshot is None:
                 raise ValidationError("new Slow loop requires its input Signal snapshot")
-            validation = self._validate_cycle(input_snapshot)
+            validation = self._validate_cycle(input_snapshot, cycle_id=cycle_id)
             self.workspace.stage_slow_validation(
                 cycle_id=cycle_id,
                 validation=validation.to_dict(),
@@ -5955,7 +6294,9 @@ class SignalEvolutionEngine:
             updated_candidates=validation.updated_candidates,
             validated_candidates=validation.validated_candidates,
             promoted=transition.promoted,
+            provisional_candidates=validation.provisional_candidates,
             rejected=validation.rejected,
+            refined_hypotheses=validation.refined_hypotheses,
             input_registry_version=transition.input_version,
             input_registry_hash=transition.input_hash,
             output_registry_version=transition.output_version,
@@ -5967,6 +6308,8 @@ class SignalEvolutionEngine:
     def _validate_cycle(
         self,
         input_snapshot: FrozenSignalRegistry,
+        *,
+        cycle_id: int = 1,
     ) -> SlowLoopValidation:
         """Stage all candidates and return the exact pre-promotion decision."""
 
@@ -5979,41 +6322,29 @@ class SignalEvolutionEngine:
 
         mined: list[str] = []
         updated: list[str] = []
-        mining_tools = self._mining_tools(mined)
         update_tools = self._update_tools(updated)
         agent_failures: dict[str, tuple[str, ...]] = {}
         agent_audits: dict[str, Mapping[str, Any]] = {}
+        induction_case_ids: dict[str, tuple[str, ...]] = {}
+        validation_case_ids: dict[str, tuple[str, ...]] = {}
+        refined_hypotheses: dict[str, tuple[str, ...]] = {}
         try:
-            mining_result = self.mining_agent.run(
-                prompt=self.priors.mine_signal,
-                tools=mining_tools,
-                workspace=self._agent_workspace("mining"),
-                output_schema=_candidate_refs_schema,
-                completion_validator=lambda refs, observations: (
-                    self._validate_agent_completion(
-                        "mining", refs, observations
-                    )
-                ),
-                max_steps=self.max_agent_steps,
-                max_output_corrections=4,
-            )
-            mined = _ordered_unique([*mined, *mining_result.value])
-            agent_audits["mining_agent"] = _agent_audit(
-                "completed",
-                mining_result.observations,
-                mining_result.usage,
-                candidate_refs=mining_result.value,
-            )
+            mining_output = self._run_signal_mining(cycle_id=cycle_id)
+            mined = list(mining_output["candidate_refs"])
+            induction_case_ids = dict(mining_output["induction_case_ids"])
+            validation_case_ids = dict(mining_output["validation_case_ids"])
+            refined_hypotheses = dict(mining_output["refined_hypotheses"])
+            agent_failures.update(dict(mining_output["failures"]))
+            agent_audits["mining_pipeline"] = dict(mining_output["audit"])
         except ValidationError as exc:
-            agent_failures["slow_loop:mining_agent"] = (
+            agent_failures["slow_loop:mining_pipeline"] = (
                 "structured_output_failed: " + str(exc),
             )
-            agent_audits["mining_agent"] = _agent_audit(
-                "failed",
-                tuple(getattr(exc, "observations", ())),
-                getattr(exc, "usage", AgentUsage()),
-                error=str(exc),
-            )
+            agent_audits["mining_pipeline"] = {
+                "status": "failed",
+                "error": str(exc),
+                "usage": _usage_to_dict(getattr(exc, "usage", AgentUsage())),
+            }
         try:
             update_result = self.update_agent.run(
                 prompt=self.priors.update_signal,
@@ -6065,6 +6396,8 @@ class SignalEvolutionEngine:
                 and prior_validation.get("schema_version")
                 == "signal-candidate-validation-v2"
                 and isinstance(prior_validation.get("effectiveness"), Mapping)
+                and dict(prior_validation["effectiveness"]).get("disposition")
+                != "provisional"
             )
             contract_validation: Mapping[str, Any]
             if stable_ref == signal_ref:
@@ -6076,6 +6409,7 @@ class SignalEvolutionEngine:
                 )
                 effectiveness = {
                     "accepted": False,
+                    "disposition": "rejected",
                     "status": "not_run",
                     "reasons": ["candidate version is already stable"],
                 }
@@ -6109,15 +6443,19 @@ class SignalEvolutionEngine:
                     paired = self.effectiveness_evaluator.evaluate(
                         spec,
                         skill=skill,
+                        preferred_case_ids=validation_case_ids.get(signal_ref, ()),
+                        excluded_case_ids=induction_case_ids.get(signal_ref, ()),
+                        induction_supported=signal_ref in induction_case_ids,
                     )
                     effectiveness = paired.to_dict()
                     reasons = paired.reasons
                     accepted = paired.accepted
                 else:
                     effectiveness = {
-                        "schema_version": "signal-candidate-effectiveness-v1",
+                        "schema_version": "signal-candidate-effectiveness-v2",
                         "signal_ref": signal_ref,
                         "accepted": False,
+                        "disposition": "rejected",
                         "status": "not_run",
                         "reasons": ["contract validation failed"],
                     }
@@ -6164,18 +6502,27 @@ class SignalEvolutionEngine:
                     effectiveness=effectiveness,
                 )
         rejected = dict(agent_failures)
+        provisional = {
+            signal_ref: tuple(
+                str(reason) for reason in effectiveness.get("reasons", ())
+            )
+            for signal_ref, effectiveness in effectiveness_by_ref.items()
+            if effectiveness.get("disposition") == "provisional"
+        }
         rejected.update(
             {
                 signal_ref: validation.reasons
                 for signal_ref, validation in validations.items()
-                if not validation.accepted
+                if not validation.accepted and signal_ref not in provisional
             }
         )
         return SlowLoopValidation(
             mined_candidates=tuple(mined),
             updated_candidates=tuple(updated),
             validated_candidates=accepted_hashes,
+            provisional_candidates=provisional,
             rejected=rejected,
+            refined_hypotheses=refined_hypotheses,
             input_registry_version=input_snapshot.version,
             input_registry_hash=input_snapshot.registry_hash,
             input_signal_refs=tuple(spec.ref for spec in input_snapshot.specs),
@@ -6183,9 +6530,741 @@ class SignalEvolutionEngine:
             agent_audits=agent_audits,
         )
 
+    def _run_signal_mining(self, *, cycle_id: int) -> dict[str, Any]:
+        """Run one bounded Mining track while local code owns every data boundary."""
+
+        if cycle_id < 1:
+            raise ValidationError("Signal Mining cycle id must be positive")
+        mode = (
+            "exploration"
+            if cycle_id % self.mining_config.exploration_interval == 0
+            else "hypothesis"
+        )
+        if mode == "exploration":
+            return self._run_exploration_mining(cycle_id=cycle_id)
+        return self._run_hypothesis_mining(cycle_id=cycle_id)
+
+    def _run_hypothesis_mining(self, *, cycle_id: int) -> dict[str, Any]:
+        config = self.mining_config
+        context = self._mining_context(cycle_id=cycle_id)
+        hypotheses_step = self.mining_model.propose_hypotheses(
+            {
+                "track": "hypothesis",
+                "limits": config.to_dict(),
+                **context,
+            }
+        )
+        if len(hypotheses_step.value) > config.hypothesis_limit:
+            raise ValidationError(
+                "Signal Mining hypothesis portfolio exceeds the configured limit"
+            )
+        hypotheses: list[SignalMiningHypothesis] = []
+        refined: dict[str, tuple[str, ...]] = {}
+        available_sources = set(self.evidence_resolver.available_source_types)
+        seen_ids: set[str] = set()
+        for hypothesis in hypotheses_step.value:
+            if hypothesis.hypothesis_id in seen_ids:
+                raise ValidationError("Signal Mining hypothesis ids must be unique")
+            seen_ids.add(hypothesis.hypothesis_id)
+            unsupported = sorted(set(hypothesis.source_types) - available_sources)
+            if unsupported:
+                refined[hypothesis.hypothesis_id] = (
+                    "required source types are unavailable: " + ", ".join(unsupported),
+                )
+                continue
+            hypotheses.append(hypothesis)
+        audit: dict[str, Any] = {
+            "schema_version": "signal-mining-audit-v1",
+            "status": "completed",
+            "cycle_id": cycle_id,
+            "track": "hypothesis",
+            "limits": config.to_dict(),
+            "stages": {
+                "H1": {
+                    "hypotheses": [item.to_dict() for item in hypotheses_step.value],
+                    "usage": _usage_to_dict(hypotheses_step.usage),
+                }
+            },
+        }
+        if not hypotheses:
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {
+                key: list(value) for key, value in refined.items()
+            }
+            return self._mining_output(audit=audit, refined=refined)
+
+        case_pairs = self._mining_case_universe(limit=config.case_pool_limit)
+        ranking_step = self.mining_model.rank_cases(
+            {
+                "track": "hypothesis",
+                "hypotheses": [item.to_dict() for item in hypotheses],
+                "case_briefs": [
+                    self._mining_case_brief(case_ref, case)
+                    for case_ref, case in case_pairs
+                ],
+                "rules": {
+                    "labels_hidden": True,
+                    "identities_hidden": True,
+                    "rank_only_supplied_case_refs": True,
+                },
+            }
+        )
+        allowed_refs = {case_ref for case_ref, _case in case_pairs}
+        case_by_ref = dict(case_pairs)
+        hypothesis_ids = {item.hypothesis_id for item in hypotheses}
+        if set(ranking_step.value) != hypothesis_ids:
+            raise ValidationError(
+                "Signal Mining ranking must cover every supplied hypothesis exactly once"
+            )
+        rankings: dict[str, tuple[str, ...]] = {}
+        for hypothesis_id, case_refs in ranking_step.value.items():
+            parsed = tuple(str(item) for item in case_refs)
+            if not parsed or len(set(parsed)) != len(parsed):
+                raise ValidationError("Signal Mining case ranking must be non-empty and unique")
+            unknown = sorted(set(parsed) - allowed_refs)
+            if unknown:
+                raise ValidationError(
+                    "Signal Mining ranking used unknown case refs: " + ", ".join(unknown)
+                )
+            rankings[hypothesis_id] = parsed
+        audit["stages"]["H2"] = {
+            "rankings": {key: list(value) for key, value in rankings.items()},
+            "case_briefs": [
+                self._mining_case_brief(case_ref, case)
+                for case_ref, case in case_pairs
+            ],
+            "usage": _usage_to_dict(ranking_step.usage),
+        }
+
+        hypothesis_by_id = {item.hypothesis_id: item for item in hypotheses}
+        selections: list[dict[str, Any]] = []
+        for hypothesis in hypotheses:
+            selected = self._select_mining_cases(
+                rankings[hypothesis.hypothesis_id],
+                case_by_ref=case_by_ref,
+            )
+            if selected is None:
+                refined[hypothesis.hypothesis_id] = (
+                    "label-hidden ranking did not contain both positive and control cases",
+                )
+                continue
+            selections.append(
+                {
+                    "hypothesis": hypothesis,
+                    **selected,
+                }
+            )
+            if len(selections) >= config.selected_hypothesis_limit:
+                break
+        audit["local_selection"] = [
+            {
+                "hypothesis_id": item["hypothesis"].hypothesis_id,
+                "induction_case_refs": list(item["induction_refs"]),
+                "validation_case_refs": list(item["validation_refs"]),
+            }
+            for item in selections
+        ]
+        if not selections:
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {
+                key: list(value) for key, value in refined.items()
+            }
+            return self._mining_output(audit=audit, refined=refined)
+
+        contrast_packets: list[dict[str, Any]] = []
+        resolution_audit: list[dict[str, Any]] = []
+        for selection in selections:
+            hypothesis = selection["hypothesis"]
+            cases_payload: list[dict[str, Any]] = []
+            for case_ref in selection["induction_refs"]:
+                case = case_by_ref[case_ref]
+                packet, resolution = self._mining_evidence_packet(
+                    case_ref,
+                    case,
+                    source_types=hypothesis.source_types,
+                    query=hypothesis.query,
+                    lookback_days=hypothesis.lookback_days,
+                    reveal_label=True,
+                )
+                cases_payload.append(packet)
+                resolution_audit.append(resolution)
+            contrast_packets.append(
+                {
+                    "hypothesis": hypothesis.to_dict(),
+                    "cases": cases_payload,
+                }
+            )
+        decisions_step = self.mining_model.contrast(
+            {
+                "track": "hypothesis",
+                "comparisons": contrast_packets,
+                "candidate_contract": self._mining_candidate_contract(),
+                "rules": {
+                    "decisions": ["supported", "refine", "rejected"],
+                    "candidate_only_when_supported": True,
+                },
+            }
+        )
+        allowed_hypotheses = {
+            item["hypothesis"].hypothesis_id for item in selections
+        }
+        decisions = self._validate_mining_decisions(
+            decisions_step.value,
+            allowed_hypothesis_ids=allowed_hypotheses,
+        )
+        for missing_id in sorted(
+            allowed_hypotheses - {item.hypothesis_id for item in decisions}
+        ):
+            refined[missing_id] = ("contrast returned no decision",)
+        audit["stages"]["H3"] = {
+            "decisions": [item.to_dict() for item in decisions],
+            "resolutions": resolution_audit,
+            "usage": _usage_to_dict(decisions_step.usage),
+        }
+        selection_by_id = {
+            item["hypothesis"].hypothesis_id: item for item in selections
+        }
+        staged = self._stage_mining_decisions(
+            decisions,
+            selection_by_id=selection_by_id,
+            case_by_ref=case_by_ref,
+            refined=refined,
+        )
+        audit["candidate_refs"] = list(staged["candidate_refs"])
+        audit["staging"] = list(staged["staging"])
+        audit["refined_hypotheses"] = {
+            key: list(value) for key, value in refined.items()
+        }
+        return self._mining_output(
+            audit=audit,
+            refined=refined,
+            **staged,
+        )
+
+    def _run_exploration_mining(self, *, cycle_id: int) -> dict[str, Any]:
+        config = self.mining_config
+        required_per_class = (
+            config.induction_cases_per_class
+            + config.validation_cases_per_class
+        )
+        cases = _sample_binary_discovery_cases(
+            self.discovery_cases,
+            per_class=required_per_class,
+        )
+        case_pairs = tuple(
+            (f"case-{index:03d}", case)
+            for index, case in enumerate(cases, start=1)
+        )
+        case_by_ref = dict(case_pairs)
+        selected = self._select_mining_cases(
+            tuple(case_by_ref),
+            case_by_ref=case_by_ref,
+        )
+        if selected is None:
+            audit = {
+                "schema_version": "signal-mining-audit-v1",
+                "status": "completed",
+                "cycle_id": cycle_id,
+                "track": "exploration",
+                "limits": config.to_dict(),
+                "stages": {},
+                "candidate_refs": [],
+                "refined_hypotheses": {
+                    "exploration_sampling": [
+                        "Discovery pool lacks both positive and control cases"
+                    ]
+                },
+            }
+            return self._mining_output(
+                audit=audit,
+                refined={
+                    "exploration_sampling": (
+                        "Discovery pool lacks both positive and control cases",
+                    )
+                },
+            )
+        priority = ("news", "filings", "financials", "transcripts", "market_data")
+        available = set(self.evidence_resolver.available_source_types)
+        source_types = tuple(item for item in priority if item in available)
+        if not source_types:
+            source_types = tuple(sorted(available))
+        evidence_packets: list[dict[str, Any]] = []
+        resolution_audit: list[dict[str, Any]] = []
+        for case_ref in selected["induction_refs"]:
+            packet, resolution = self._mining_evidence_packet(
+                case_ref,
+                case_by_ref[case_ref],
+                source_types=source_types,
+                query=None,
+                lookback_days=config.evidence_lookback_days,
+                reveal_label=False,
+            )
+            evidence_packets.append(packet)
+            resolution_audit.append(resolution)
+        extraction_step = self.mining_model.extract_exploration(
+            {
+                "track": "exploration",
+                "cases": evidence_packets,
+                "rules": {
+                    "labels_hidden": True,
+                    "identities_hidden": True,
+                    "describe_only_observable_patterns": True,
+                },
+            }
+        )
+        expected_refs = set(selected["induction_refs"])
+        signatures = extraction_step.value
+        signature_refs = {item.case_ref for item in signatures}
+        if signature_refs != expected_refs or len(signatures) != len(expected_refs):
+            raise ValidationError(
+                "exploration extraction must return one signature per supplied case_ref"
+            )
+        revealed = [
+            {
+                **signature.to_dict(),
+                "label": (
+                    "positive"
+                    if case_by_ref[signature.case_ref].ground_truth.is_surge
+                    else "control"
+                ),
+            }
+            for signature in signatures
+        ]
+        discovery_step = self.mining_model.discover_exploration(
+            {
+                "track": "exploration",
+                "signatures": revealed,
+                "candidate_contract": self._mining_candidate_contract(),
+                "rules": {
+                    "candidate_only_for_repeated_observable_pattern": True,
+                    "decisions": ["supported", "refine", "rejected"],
+                },
+            }
+        )
+        decisions = self._validate_mining_decisions(
+            discovery_step.value,
+            allowed_hypothesis_ids=None,
+        )
+        refined: dict[str, tuple[str, ...]] = {}
+        selection_by_id = {
+            item.hypothesis_id: {
+                "induction_refs": selected["induction_refs"],
+                "validation_refs": selected["validation_refs"],
+            }
+            for item in decisions
+        }
+        staged = self._stage_mining_decisions(
+            decisions,
+            selection_by_id=selection_by_id,
+            case_by_ref=case_by_ref,
+            refined=refined,
+        )
+        audit = {
+            "schema_version": "signal-mining-audit-v1",
+            "status": "completed",
+            "cycle_id": cycle_id,
+            "track": "exploration",
+            "limits": config.to_dict(),
+            "local_selection": {
+                "induction_case_refs": list(selected["induction_refs"]),
+                "validation_case_refs": list(selected["validation_refs"]),
+            },
+            "stages": {
+                "E1": {
+                    "signatures": [item.to_dict() for item in signatures],
+                    "resolutions": resolution_audit,
+                    "usage": _usage_to_dict(extraction_step.usage),
+                },
+                "E2": {
+                    "decisions": [item.to_dict() for item in decisions],
+                    "usage": _usage_to_dict(discovery_step.usage),
+                },
+            },
+            "candidate_refs": list(staged["candidate_refs"]),
+            "staging": list(staged["staging"]),
+            "refined_hypotheses": {
+                key: list(value) for key, value in refined.items()
+            },
+        }
+        return self._mining_output(
+            audit=audit,
+            refined=refined,
+            **staged,
+        )
+
+    def _mining_output(
+        self,
+        *,
+        audit: Mapping[str, Any],
+        refined: Mapping[str, tuple[str, ...]],
+        candidate_refs: Iterable[str] = (),
+        induction_case_ids: Mapping[str, tuple[str, ...]] | None = None,
+        validation_case_ids: Mapping[str, tuple[str, ...]] | None = None,
+        failures: Mapping[str, tuple[str, ...]] | None = None,
+        staging: Iterable[Mapping[str, Any]] = (),
+    ) -> dict[str, Any]:
+        del staging
+        return {
+            "candidate_refs": tuple(candidate_refs),
+            "induction_case_ids": dict(induction_case_ids or {}),
+            "validation_case_ids": dict(validation_case_ids or {}),
+            "refined_hypotheses": dict(refined),
+            "failures": dict(failures or {}),
+            "audit": dict(audit),
+        }
+
+    def _mining_context(self, *, cycle_id: int) -> dict[str, Any]:
+        prior_work: list[dict[str, Any]] = []
+        for path in sorted(
+            (self.workspace.experiments_root / "cycles").glob(
+                "cycle-*/slow_loop_validation.json"
+            )
+        )[-3:]:
+            payload = _read_json(path)
+            validation = payload.get("validation", {})
+            if not isinstance(validation, Mapping):
+                continue
+            provisional_rows = []
+            for signal_ref, reasons in dict(
+                validation.get("provisional_candidates", {})
+            ).items():
+                try:
+                    spec, _skill = self.registry.load_candidate(str(signal_ref))
+                except ValidationError:
+                    continue
+                provisional_rows.append(
+                    {
+                        "signal_ref": str(signal_ref),
+                        "description": spec.description,
+                        "source_types": list(spec.source_types),
+                        "reasons": list(reasons),
+                    }
+                )
+            audit = dict(validation.get("agent_audits", {})).get(
+                "mining_pipeline", {}
+            )
+            h1_rows = (
+                dict(dict(audit).get("stages", {}))
+                .get("H1", {})
+                .get("hypotheses", [])
+                if isinstance(audit, Mapping)
+                else []
+            )
+            refined_ids = set(
+                dict(validation.get("refined_hypotheses", {}))
+            )
+            prior_work.append(
+                {
+                    "provisional_candidates": provisional_rows,
+                    "refined_hypotheses": [
+                        dict(item)
+                        for item in h1_rows
+                        if isinstance(item, Mapping)
+                        and item.get("hypothesis_id") in refined_ids
+                    ],
+                }
+            )
+        cards = [
+            card.to_dict()
+            for category in self.registry.list_categories()
+            for card in self.registry.list_signal_cards(category)
+        ]
+        backlog_path = self.workspace.root / "capability_backlog.json"
+        capability_backlog = (
+            _read_json(backlog_path)
+            if backlog_path.exists()
+            else {
+                "schema_version": "capability-gap-report-v1",
+                "items": [],
+                "open_count": 0,
+                "resolved_count": 0,
+            }
+        )
+        return {
+            "cycle_id": cycle_id,
+            "meta_info": [entry.to_dict() for entry in self.meta_memory.entries],
+            "capability_backlog": capability_backlog,
+            "stable_signal_cards": cards,
+            "prior_slow_work": prior_work,
+            "available_raw_source_types": list(
+                self.evidence_resolver.available_source_types
+            ),
+            "registered_deterministic_functions": sorted(
+                self.validator.deterministic_functions
+            ),
+            "locked_test_available": False,
+        }
+
+    def _mining_case_universe(
+        self, *, limit: int
+    ) -> tuple[tuple[str, EvolutionCase], ...]:
+        return tuple(
+            (f"case-{index:03d}", case)
+            for index, case in enumerate(
+                _sample_signal_discovery_cases(self.discovery_cases, limit=limit),
+                start=1,
+            )
+        )
+
+    def _mining_case_brief(
+        self, case_ref: str, case: EvolutionCase
+    ) -> dict[str, Any]:
+        aliases = _discovery_identity_terms((case,))
+        documents = tuple(
+            document
+            for document in self.raw_info_store.documents
+            if document.company_id == case.company_id
+            and document.available_at <= case.prediction_time
+        )
+        profile = _point_in_time_profile_fields(case.basic_info, documents)
+        safe_info = {
+            "business_description": profile.get("business_description")
+            or "unavailable",
+            "industry": profile.get("industry") or "unavailable",
+            "sector": profile.get("sector") or "unavailable",
+            "exchange": profile.get("exchange") or "unavailable",
+            "market_cap_bucket": _market_cap_bucket(profile.get("market_cap")),
+            "listing_age_bucket": _listing_age_bucket(
+                profile.get("listing_date"),
+                as_of=case.prediction_time,
+            ),
+        }
+        return {
+            "case_ref": case_ref,
+            "prediction_year": case.prediction_time.year,
+            **dict(_mask_identity_values(safe_info, aliases)),
+            "raw_info_coverage": {
+                "document_count": len(documents),
+                "source_types": sorted({item.source_type for item in documents}),
+            },
+        }
+
+    def _select_mining_cases(
+        self,
+        ranked_refs: Iterable[str],
+        *,
+        case_by_ref: Mapping[str, EvolutionCase],
+    ) -> dict[str, tuple[str, ...]] | None:
+        positives: list[str] = []
+        controls: list[str] = []
+        seen_companies: set[str] = set()
+        for case_ref in ranked_refs:
+            case = case_by_ref[case_ref]
+            if case.company_id in seen_companies:
+                continue
+            seen_companies.add(case.company_id)
+            target = positives if case.ground_truth.is_surge else controls
+            target.append(case_ref)
+        induction_count = self.mining_config.induction_cases_per_class
+        validation_count = self.mining_config.validation_cases_per_class
+        if not positives or not controls:
+            return None
+        induction = tuple(
+            [*positives[:induction_count], *controls[:induction_count]]
+        )
+        validation = tuple(
+            [
+                *positives[induction_count : induction_count + validation_count],
+                *controls[induction_count : induction_count + validation_count],
+            ]
+        )
+        return {"induction_refs": induction, "validation_refs": validation}
+
+    def _mining_evidence_packet(
+        self,
+        case_ref: str,
+        case: EvolutionCase,
+        *,
+        source_types: tuple[str, ...],
+        query: str | None,
+        lookback_days: int,
+        reveal_label: bool,
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        resolution = self.evidence_resolver.resolve(
+            RawInfoRequest(
+                request_id=f"signal_mining:{case_ref}",
+                description="Exact point-in-time evidence for Signal Mining comparison.",
+                source_types=source_types,
+                lookback_days=lookback_days,
+                max_documents=self.mining_config.evidence_documents_per_case,
+                query=query,
+            ),
+            company_id=case.company_id,
+            identity=case.basic_info,
+            as_of=case.prediction_time,
+        )
+        documents = self.evidence_resolver.load_documents(
+            resolution,
+            as_of=case.prediction_time,
+        )
+        aliases = _discovery_identity_terms((case,))
+        evidence = []
+        for index, document in enumerate(documents, start=1):
+            view = _agent_raw_document_view(document, max_content_chars=1_200)
+            evidence.append(
+                {
+                    "document_ref": f"document-{index:02d}",
+                    "source_type": view["source_type"],
+                    "published_at": view["published_at"],
+                    "available_at": view["available_at"],
+                    "content_hash": view["content_hash"],
+                    "content_excerpt": _mask_identity_values(
+                        view["content_excerpt"], aliases
+                    ),
+                    "content_truncated": view["content_truncated"],
+                }
+            )
+        packet: dict[str, Any] = {
+            "case_ref": case_ref,
+            "prediction_time": case.prediction_time.isoformat(),
+            "evidence": evidence,
+            "resolution_status": resolution.status,
+        }
+        if reveal_label:
+            packet["label"] = (
+                "positive" if case.ground_truth.is_surge else "control"
+            )
+        return packet, {
+            "case_ref": case_ref,
+            "status": resolution.status,
+            "requested_source_types": list(source_types),
+            "document_count": len(documents),
+            "document_hashes": [item.content_hash for item in documents],
+            "as_of": case.prediction_time.isoformat(),
+        }
+
+    def _mining_candidate_contract(self) -> dict[str, Any]:
+        return {
+            "arguments_schema": self._candidate_arguments_schema(clone=False),
+            "example": self._candidate_arguments_example(clone=False),
+            "constraints": [
+                "new signal_id only; existing stable identities belong to Update",
+                "non-empty point-in-time fixtures required",
+                "candidate text and fixtures must not contain Discovery identities or labels",
+            ],
+        }
+
+    @staticmethod
+    def _validate_mining_decisions(
+        decisions: Iterable[SignalMiningDecision],
+        *,
+        allowed_hypothesis_ids: set[str] | None,
+    ) -> tuple[SignalMiningDecision, ...]:
+        values = tuple(decisions)
+        ids = [item.hypothesis_id for item in values]
+        if len(set(ids)) != len(ids):
+            raise ValidationError("Signal Mining decisions must have unique hypothesis ids")
+        if allowed_hypothesis_ids is not None:
+            unknown = sorted(set(ids) - allowed_hypothesis_ids)
+            if unknown:
+                raise ValidationError(
+                    "Signal Mining decisions used unknown hypotheses: "
+                    + ", ".join(unknown)
+                )
+        return values
+
+    def _stage_mining_decisions(
+        self,
+        decisions: Iterable[SignalMiningDecision],
+        *,
+        selection_by_id: Mapping[str, Mapping[str, Any]],
+        case_by_ref: Mapping[str, EvolutionCase],
+        refined: dict[str, tuple[str, ...]],
+    ) -> dict[str, Any]:
+        candidate_refs: list[str] = []
+        induction_case_ids: dict[str, tuple[str, ...]] = {}
+        validation_case_ids: dict[str, tuple[str, ...]] = {}
+        failures: dict[str, tuple[str, ...]] = {}
+        staging: list[dict[str, Any]] = []
+        for decision in decisions:
+            if decision.disposition != "supported":
+                if decision.disposition == "refine":
+                    refined[decision.hypothesis_id] = decision.rationale
+                staging.append(
+                    {
+                        "hypothesis_id": decision.hypothesis_id,
+                        "status": decision.disposition,
+                        "reasons": list(decision.rationale),
+                    }
+                )
+                continue
+            candidate = dict(decision.candidate or {})
+            if set(candidate) != {"spec", "skill", "tests"}:
+                failures[f"slow_loop:mining_stage:{decision.hypothesis_id}"] = (
+                    "supported candidate requires exactly spec, skill, and tests",
+                )
+                continue
+            tests = candidate["tests"]
+            if not isinstance(tests, list):
+                failures[f"slow_loop:mining_stage:{decision.hypothesis_id}"] = (
+                    "candidate tests must be an array",
+                )
+                continue
+            try:
+                signal_ref = self._stage_from_tool(
+                    spec=candidate["spec"],
+                    skill=(
+                        str(candidate["skill"])
+                        if candidate["skill"] is not None
+                        else None
+                    ),
+                    tests=tests,
+                    origin=f"mining:{decision.hypothesis_id}",
+                    collected=candidate_refs,
+                )
+                contract = self._run_signal_tests_tool(signal_ref)
+                if not contract["accepted"]:
+                    candidate_refs.remove(signal_ref)
+                    failures[signal_ref] = tuple(
+                        str(reason) for reason in contract["reasons"]
+                    )
+                    staging.append(
+                        {
+                            "hypothesis_id": decision.hypothesis_id,
+                            "signal_ref": signal_ref,
+                            "status": "contract_rejected",
+                            "reasons": list(contract["reasons"]),
+                        }
+                    )
+                    continue
+                selection = selection_by_id[decision.hypothesis_id]
+                induction_case_ids[signal_ref] = tuple(
+                    case_by_ref[case_ref].case_id
+                    for case_ref in selection["induction_refs"]
+                )
+                validation_case_ids[signal_ref] = tuple(
+                    case_by_ref[case_ref].case_id
+                    for case_ref in selection["validation_refs"]
+                )
+                staging.append(
+                    {
+                        "hypothesis_id": decision.hypothesis_id,
+                        "signal_ref": signal_ref,
+                        "status": "contract_accepted",
+                    }
+                )
+            except ValidationError as exc:
+                failures[f"slow_loop:mining_stage:{decision.hypothesis_id}"] = (
+                    str(exc),
+                )
+                staging.append(
+                    {
+                        "hypothesis_id": decision.hypothesis_id,
+                        "status": "staging_failed",
+                        "reasons": [str(exc)],
+                    }
+                )
+        return {
+            "candidate_refs": tuple(candidate_refs),
+            "induction_case_ids": induction_case_ids,
+            "validation_case_ids": validation_case_ids,
+            "failures": failures,
+            "staging": tuple(staging),
+        }
+
     def _agent_workspace(self, agent_kind: str) -> dict[str, Any]:
-        if agent_kind not in {"mining", "update"}:
-            raise ValidationError("unknown Signal Agent workflow")
+        if agent_kind != "update":
+            raise ValidationError("only Signal Update uses the Generic Agent workspace")
         backlog_path = self.workspace.root / "capability_backlog.json"
         capability_backlog = (
             _read_json(backlog_path)
@@ -6220,41 +7299,22 @@ class SignalEvolutionEngine:
                     "execution.function when deterministic",
                 ],
             },
-            "workflow_contract": (
-                {
-                    "agent": "mining",
-                    "required_order": [
-                        "sample_discovery_cases",
-                        "search_raw_info for at least one positive and one control",
-                        "list/search_signal_cards",
-                        "load_signal_spec",
-                        "create_candidate_signal when justified",
-                        "run_signal_tests for every returned ref",
-                        "final",
-                    ],
-                    "final_rule": (
-                        "candidate_refs must be the subset successfully staged and "
-                        "accepted by run_signal_tests; empty still requires diagnosis"
-                    ),
-                }
-                if agent_kind == "mining"
-                else {
-                    "agent": "update",
-                    "required_order": [
-                        "load_signal_spec",
-                        "query_signal_usage and query_signal_failure_cases",
-                        "sample_discovery_cases",
-                        "search_raw_info",
-                        "clone_signal_version when justified",
-                        "run_signal_tests for every returned ref",
-                        "final",
-                    ],
-                    "final_rule": (
-                        "candidate_refs must be the subset successfully staged and "
-                        "accepted by run_signal_tests; empty still requires diagnosis"
-                    ),
-                }
-            ),
+            "workflow_contract": {
+                "agent": "update",
+                "required_order": [
+                    "load_signal_spec",
+                    "query_signal_usage and query_signal_failure_cases",
+                    "sample_discovery_cases",
+                    "search_raw_info",
+                    "clone_signal_version when justified",
+                    "run_signal_tests for every returned ref",
+                    "final",
+                ],
+                "final_rule": (
+                    "candidate_refs must be the subset successfully staged and "
+                    "accepted by run_signal_tests; empty still requires diagnosis"
+                ),
+            },
         }
 
     def _validate_agent_completion(
@@ -6266,9 +7326,9 @@ class SignalEvolutionEngine:
         """Reject invented refs and, in production, incomplete tool workflows."""
 
         issues: list[str] = []
-        stage_tool = (
-            "create_candidate_signal" if stage == "mining" else "clone_signal_version"
-        )
+        if stage != "update":
+            raise ValidationError("Generic Agent completion applies only to Signal Update")
+        stage_tool = "clone_signal_version"
         staged = {
             str(item.result)
             for item in observations
@@ -6306,90 +7366,38 @@ class SignalEvolutionEngine:
         def positions(name: str) -> list[int]:
             return [index for index, item in successful if item.name == name]
 
-        if stage == "mining":
-            samples = positions("sample_discovery_cases")
-            raw_searches = [
-                (index, item)
-                for index, item in successful
-                if item.name == "search_raw_info"
-            ]
-            if not samples:
-                issues.append(
-                    "Mining Agent must call sample_discovery_cases before final output"
-                )
-            cases = {case.case_id: case for case in self.discovery_cases}
-            searched_cases = [
-                cases.get(str(item.arguments.get("case_id", "")))
-                for _, item in raw_searches
-            ]
-            if not any(case and case.ground_truth.is_surge for case in searched_cases):
-                issues.append(
-                    "Mining Agent must inspect Raw Info for a positive Discovery case"
-                )
-            if not any(
-                case and not case.ground_truth.is_surge for case in searched_cases
+        required = {
+            "load_signal_spec": positions("load_signal_spec"),
+            "query_signal_usage": positions("query_signal_usage"),
+            "query_signal_failure_cases": positions("query_signal_failure_cases"),
+            "sample_discovery_cases": positions("sample_discovery_cases"),
+            "search_raw_info": positions("search_raw_info"),
+        }
+        missing = [name for name, indexes in required.items() if not indexes]
+        if missing:
+            issues.append(
+                "Update Agent workflow is incomplete; missing successful tools: "
+                + ", ".join(missing)
+            )
+        if missing:
+            diagnostic_end = -1
+        else:
+            spec_index = min(required["load_signal_spec"])
+            usage_index = min(required["query_signal_usage"])
+            failure_index = min(required["query_signal_failure_cases"])
+            diagnosis_end = max(usage_index, failure_index)
+            sample_index = min(required["sample_discovery_cases"])
+            raw_index = min(required["search_raw_info"])
+            if not (
+                spec_index < usage_index
+                and spec_index < failure_index
+                and diagnosis_end < sample_index < raw_index
             ):
                 issues.append(
-                    "Mining Agent must inspect Raw Info for a matched control"
+                    "Update Agent must load spec, inspect statistics/failures, "
+                    "sample Discovery, then inspect Raw Info in that order"
                 )
-            first_sample = min(samples, default=-1)
-            first_raw = min((index for index, _ in raw_searches), default=-1)
-            if not samples or not raw_searches or first_sample >= first_raw:
-                issues.append(
-                    "Mining Agent must sample Discovery before inspecting Raw Info"
-                )
-            cards = sorted(
-                positions("list_signal_cards") + positions("search_signal_cards")
-            )
-            specs = positions("load_signal_spec")
-            last_raw = max((index for index, _ in raw_searches), default=-1)
-            cards_after_raw = [index for index in cards if index > last_raw]
-            if not raw_searches or not cards_after_raw:
-                issues.append(
-                    "Mining Agent must check stable Signal cards after Raw Info comparison"
-                )
-            last_card = max(cards_after_raw, default=-1)
-            specs_after_cards = [index for index in specs if index > last_card]
-            if not cards_after_raw or not specs_after_cards:
-                issues.append(
-                    "Mining Agent must load an exact stable SignalSpec for duplicate checking"
-                )
-            diagnostic_end = max(specs_after_cards, default=-1)
-        else:
-            required = {
-                "load_signal_spec": positions("load_signal_spec"),
-                "query_signal_usage": positions("query_signal_usage"),
-                "query_signal_failure_cases": positions(
-                    "query_signal_failure_cases"
-                ),
-                "sample_discovery_cases": positions("sample_discovery_cases"),
-                "search_raw_info": positions("search_raw_info"),
-            }
-            missing = [name for name, indexes in required.items() if not indexes]
-            if missing:
-                issues.append(
-                    "Update Agent workflow is incomplete; missing successful tools: "
-                    + ", ".join(missing)
-                )
-            if missing:
-                diagnostic_end = -1
-            else:
-                spec_index = min(required["load_signal_spec"])
-                usage_index = min(required["query_signal_usage"])
-                failure_index = min(required["query_signal_failure_cases"])
-                diagnosis_end = max(usage_index, failure_index)
-                sample_index = min(required["sample_discovery_cases"])
-                raw_index = min(required["search_raw_info"])
-                if not (
-                    spec_index < usage_index
-                    and spec_index < failure_index
-                    and diagnosis_end < sample_index < raw_index
-                ):
-                    issues.append(
-                        "Update Agent must load spec, inspect statistics/failures, "
-                        "sample Discovery, then inspect Raw Info in that order"
-                    )
-                diagnostic_end = raw_index
+            diagnostic_end = raw_index
         if refs:
             stage_indexes = positions(stage_tool)
             test_indexes = positions("run_signal_tests")
@@ -6640,75 +7648,6 @@ class SignalEvolutionEngine:
             return {"signal_ref": "guidance_quality:v1", **example}
         return example
 
-    def _mining_tools(self, collected: list[str]) -> list[DomainTool]:
-        return [
-            DomainTool(
-                "list_signal_categories",
-                "List stable Signal categories without loading full specs.",
-                lambda: list(self.registry.list_categories()),
-            ),
-            DomainTool(
-                "list_signal_cards",
-                "List compact Signal cards for one category.",
-                lambda category: [
-                    card.to_dict()
-                    for card in self.registry.list_signal_cards(str(category))
-                ],
-            ),
-            DomainTool(
-                "search_signal_cards",
-                "Search compact Signal cards by a natural-language query.",
-                lambda query: [
-                    card.to_dict()
-                    for card in self.registry.search_signal_cards(str(query))
-                ],
-            ),
-            DomainTool(
-                "load_signal_spec",
-                "Load one exact stable SignalSpec after card-level inspection.",
-                lambda signal_ref: self.registry.load_spec(str(signal_ref)).to_dict(),
-            ),
-            DomainTool(
-                "sample_discovery_cases",
-                "Read a deterministic issuer-distinct, label-stratified Discovery sample.",
-                lambda limit=8: [
-                    case.to_discovery_dict()
-                    for case in _sample_signal_discovery_cases(
-                        self.discovery_cases,
-                        limit=min(int(limit), 32),
-                    )
-                ],
-            ),
-            DomainTool(
-                "search_raw_info",
-                "Search point-in-time Raw Info and return bounded document cards for one exact Discovery case.",
-                self._search_raw_info_tool,
-            ),
-            DomainTool(
-                "load_raw_document",
-                "Load one document under one exact Discovery case cutoff.",
-                self._load_discovery_raw_document,
-            ),
-            DomainTool(
-                "create_candidate_signal",
-                "Stage one complete candidate outside stable state; use the exact schema and non-empty fixtures.",
-                lambda spec, skill=None, tests=(): self._stage_from_tool(
-                    spec=spec,
-                    skill=skill,
-                    tests=tests,
-                    origin="mining",
-                    collected=collected,
-                ),
-                arguments_schema=self._candidate_arguments_schema(clone=False),
-                examples=(self._candidate_arguments_example(clone=False),),
-            ),
-            DomainTool(
-                "run_signal_tests",
-                "Run local contract and fixture checks; paired effectiveness is a later orchestrator gate.",
-                self._run_signal_tests_tool,
-            ),
-        ]
-
     def _update_tools(self, collected: list[str]) -> list[DomainTool]:
         return [
             DomainTool(
@@ -6861,7 +7800,7 @@ class SignalEvolutionEngine:
         collected: list[str],
     ) -> str:
         candidate = self._candidate_spec_from_tool(spec)
-        if origin == "mining":
+        if origin == "mining" or origin.startswith("mining:"):
             try:
                 stable = self.registry.latest_spec(candidate.signal_id)
             except ValidationError:
@@ -7340,6 +8279,150 @@ def _sample_signal_discovery_cases(
         if not advanced:
             break
     return tuple(selected)
+
+
+def _sample_binary_discovery_cases(
+    cases: Iterable[EvolutionCase], *, per_class: int
+) -> tuple[EvolutionCase, ...]:
+    """Return deterministic issuer-distinct positive/control cases in equal counts."""
+
+    if per_class < 1:
+        raise ValidationError("binary Discovery sample size must be positive")
+    positives = sorted(
+        (case for case in cases if case.ground_truth.is_surge),
+        key=lambda case: case.case_id,
+    )
+    controls = sorted(
+        (case for case in cases if not case.ground_truth.is_surge),
+        key=lambda case: case.case_id,
+    )
+    selected: list[EvolutionCase] = []
+    seen_companies: set[str] = set()
+    for bucket in (positives, controls):
+        count = 0
+        for case in bucket:
+            if case.company_id in seen_companies:
+                continue
+            selected.append(case)
+            seen_companies.add(case.company_id)
+            count += 1
+            if count >= per_class:
+                break
+    return tuple(selected)
+
+
+def _market_cap_bucket(value: Any) -> str:
+    """Coarsen optional market cap without fabricating missing precision."""
+
+    try:
+        market_cap = float(value)
+    except (TypeError, ValueError):
+        return "unavailable"
+    if not math.isfinite(market_cap) or market_cap < 0:
+        return "unavailable"
+    if market_cap < 300_000_000:
+        return "micro"
+    if market_cap < 2_000_000_000:
+        return "small"
+    if market_cap < 10_000_000_000:
+        return "mid"
+    return "large"
+
+
+def _point_in_time_profile_fields(
+    basic_info: Mapping[str, Any],
+    documents: Iterable[RawInfoDocument],
+) -> dict[str, Any]:
+    """Extract a small outcome-free company profile from already local as-of data."""
+
+    aliases = {
+        "business_description": (
+            "business_description",
+            "company_description",
+            "description",
+            "long_business_summary",
+            "business_summary",
+        ),
+        "industry": ("industry", "industry_name"),
+        "sector": ("sector", "sector_name"),
+        "exchange": ("exchange", "primary_exchange", "exchange_name"),
+        "market_cap": ("market_cap", "market_capitalization", "marketcap"),
+        "listing_date": ("ipo_date", "listing_date", "list_date"),
+    }
+    sources: list[Mapping[str, Any]] = [basic_info]
+    for document in documents:
+        sources.append(document.metadata)
+        stripped = document.content.lstrip()
+        if len(document.content) > 100_000 or not stripped.startswith(("{", "[")):
+            continue
+        try:
+            parsed = json.loads(document.content)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        sources.extend(_nested_profile_mappings(parsed, depth=0))
+    output: dict[str, Any] = {}
+    for canonical, accepted_keys in aliases.items():
+        for source in sources:
+            normalized = {str(key).casefold(): value for key, value in source.items()}
+            value = next(
+                (
+                    normalized[key]
+                    for key in accepted_keys
+                    if key in normalized and normalized[key] not in (None, "")
+                ),
+                None,
+            )
+            if value is None:
+                continue
+            if canonical == "business_description" and isinstance(value, str):
+                output[canonical] = " ".join(value.split())[:800]
+            elif isinstance(value, (str, int, float)):
+                output[canonical] = value
+            if canonical in output:
+                break
+    return output
+
+
+def _nested_profile_mappings(value: Any, *, depth: int) -> list[Mapping[str, Any]]:
+    """Bound traversal of common JSON profile wrappers without schema guessing."""
+
+    if depth > 3:
+        return []
+    if isinstance(value, Mapping):
+        rows: list[Mapping[str, Any]] = [value]
+        for child in value.values():
+            if isinstance(child, (Mapping, list)):
+                rows.extend(_nested_profile_mappings(child, depth=depth + 1))
+        return rows
+    if isinstance(value, list):
+        rows = []
+        for child in value[:10]:
+            if isinstance(child, (Mapping, list)):
+                rows.extend(_nested_profile_mappings(child, depth=depth + 1))
+        return rows
+    return []
+
+
+def _listing_age_bucket(value: Any, *, as_of: datetime) -> str:
+    """Coarsen optional listing date into a label-free applicability feature."""
+
+    if not isinstance(value, str) or not value.strip():
+        return "unavailable"
+    try:
+        listed = datetime.fromisoformat(value).date()
+    except ValueError:
+        try:
+            listed = datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            return "unavailable"
+    years = max(0.0, (as_of.date() - listed).days / 365.25)
+    if years < 1:
+        return "under_1y"
+    if years < 5:
+        return "1_5y"
+    if years < 10:
+        return "5_10y"
+    return "over_10y"
 
 
 def _default_case_id(company_id: str, prediction_time: datetime) -> str:

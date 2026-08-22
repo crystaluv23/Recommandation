@@ -70,6 +70,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalCandidateEffectivenessEvaluator,
     SignalCandidateValidator,
     SignalEvolutionEngine,
+    SignalMiningDecision,
+    SignalMiningHypothesis,
+    SignalMiningSignature,
     SignalRound,
     candidate_judgment_feedback,
     build_parent_plan_comparison,
@@ -106,6 +109,63 @@ class ScriptedAgentModel:
         if not self.turns:
             raise AssertionError("scripted agent ran out of turns")
         return self.turns.pop(0)
+
+
+class EmptyMiningModel:
+    def __init__(self) -> None:
+        self.requests: list[Mapping[str, Any]] = []
+
+    def propose_hypotheses(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep((), AgentUsage(llm_calls=1))
+
+    def rank_cases(self, payload):
+        raise AssertionError("empty Mining model must stop after H1")
+
+    def contrast(self, payload):
+        raise AssertionError("empty Mining model must stop after H1")
+
+    def extract_exploration(self, payload):
+        raise AssertionError("empty Mining model is not configured for exploration")
+
+    def discover_exploration(self, payload):
+        raise AssertionError("empty Mining model is not configured for exploration")
+
+
+class ScriptedMiningModel(EmptyMiningModel):
+    def __init__(
+        self,
+        *,
+        hypotheses=(),
+        rankings=None,
+        decisions=(),
+        signatures=(),
+    ) -> None:
+        super().__init__()
+        self.hypotheses = tuple(hypotheses)
+        self.rankings = dict(rankings or {})
+        self.decisions = tuple(decisions)
+        self.signatures = tuple(signatures)
+
+    def propose_hypotheses(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep(self.hypotheses, AgentUsage(llm_calls=1))
+
+    def rank_cases(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep(self.rankings, AgentUsage(llm_calls=1))
+
+    def contrast(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep(self.decisions, AgentUsage(llm_calls=1))
+
+    def extract_exploration(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep(self.signatures, AgentUsage(llm_calls=1))
+
+    def discover_exploration(self, payload):
+        self.requests.append(dict(payload))
+        return AgentStep(self.decisions, AgentUsage(llm_calls=1))
 
 
 class OneBatchController:
@@ -2472,24 +2532,71 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
-    def test_signal_agent_completion_enforces_exact_workflow_order(self) -> None:
+    def test_mining_ranks_identity_and_label_hidden_briefs_then_overlays_labels(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
-            positive = make_case("workflow_positive", 4.0)
-            control = make_case("workflow_control", 1.1)
+            positive = replace(
+                make_case("workflow_positive", 4.0),
+                basic_info={
+                    "ticker": "WINR",
+                    "company_name": "Winner Corp",
+                    "business_description": "Winner Corp builds optical systems.",
+                    "industry": "Hardware",
+                },
+            )
+            control = replace(
+                make_case("workflow_control", 1.1),
+                basic_info={
+                    "ticker": "CTRL",
+                    "company_name": "Control Corp",
+                    "business_description": "Control Corp builds optical systems.",
+                    "industry": "Hardware",
+                },
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="order_confirmation",
+                statement="Material order confirmation precedes repricing.",
+                applicability="Project-driven hardware companies.",
+                expected_positive_pattern="Positive cases disclose confirmed orders.",
+                source_types=("news",),
+                query="material order",
+                falsifiers=("Controls disclose the same pattern.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                rankings={"order_confirmation": ("case-001", "case-002")},
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="order_confirmation",
+                        disposition="refine",
+                        rationale=("Two cases are not enough to draft a Signal.",),
+                    ),
+                ),
+            )
+            raw_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"workflow_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=f"{case.basic_info['company_name']} reported a material order.",
+                    )
+                    for index, case in enumerate((positive, control))
+                )
+            )
             engine = SignalEvolutionEngine(
                 registry=registry,
-                raw_info_store=RawInfoStore(),
+                raw_info_store=raw_store,
                 discovery_cases=(positive, control),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                mining_model=mining_model,
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
                         [AgentTurn(final_output={"candidate_refs": []})]
@@ -2497,45 +2604,24 @@ class SignalEvolutionTests(TestCase):
                 ),
                 llm_signal_runner=None,
             )
+            result = engine._run_signal_mining(cycle_id=1)
 
-            valid_mining = (
-                ToolObservation("sample_discovery_cases", {}, []),
-                ToolObservation(
-                    "search_raw_info", {"case_id": positive.case_id}, {}
-                ),
-                ToolObservation(
-                    "search_raw_info", {"case_id": control.case_id}, {}
-                ),
-                ToolObservation("list_signal_cards", {}, []),
-                ToolObservation("load_signal_spec", {}, {}),
+            ranking_payload = mining_model.requests[1]
+            ranking_json = json.dumps(ranking_payload)
+            self.assertNotIn("Winner Corp", ranking_json)
+            self.assertNotIn("Control Corp", ranking_json)
+            self.assertNotIn("WINR", ranking_json)
+            self.assertNotIn("CTRL", ranking_json)
+            self.assertNotIn("ground_truth", ranking_json)
+            self.assertNotIn('"label"', ranking_json)
+            contrast_cases = mining_model.requests[2]["comparisons"][0]["cases"]
+            self.assertEqual(
+                {item["label"] for item in contrast_cases},
+                {"positive", "control"},
             )
-            engine._validate_agent_completion("mining", (), valid_mining)
-
-            raw_before_sample = (
-                valid_mining[1],
-                valid_mining[0],
-                *valid_mining[2:],
-            )
-            with self.assertRaisesRegex(
-                ValidationError, "sample Discovery before inspecting Raw Info"
-            ):
-                engine._validate_agent_completion(
-                    "mining", (), raw_before_sample
-                )
-
-            update_with_early_usage = (
-                ToolObservation("query_signal_usage", {}, {}),
-                ToolObservation("load_signal_spec", {}, {}),
-                ToolObservation("query_signal_failure_cases", {}, {}),
-                ToolObservation("sample_discovery_cases", {}, []),
-                ToolObservation("search_raw_info", {}, {}),
-            )
-            with self.assertRaisesRegex(
-                ValidationError, "load spec, inspect statistics/failures"
-            ):
-                engine._validate_agent_completion(
-                    "update", (), update_with_early_usage
-                )
+            self.assertNotIn("Winner Corp", json.dumps(contrast_cases))
+            self.assertEqual(result["candidate_refs"], ())
+            self.assertIn("order_confirmation", result["refined_hypotheses"])
 
     def test_signal_agent_completion_matches_test_order_to_each_returned_ref(
         self,
@@ -2550,11 +2636,7 @@ class SignalEvolutionTests(TestCase):
                 discovery_cases=(make_case("workflow_case", 4.0),),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                mining_model=EmptyMiningModel(),
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
                         [AgentTurn(final_output={"candidate_refs": []})]
@@ -2600,11 +2682,7 @@ class SignalEvolutionTests(TestCase):
                 discovery_cases=(make_case("discovery_case", 4.0),),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                mining_model=EmptyMiningModel(),
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
                         [AgentTurn(final_output={"candidate_refs": []})]
@@ -2736,6 +2814,87 @@ class SignalEvolutionTests(TestCase):
                 " ".join(result.reasons),
             )
 
+    def test_effectiveness_excludes_induction_and_marks_sparse_support_provisional(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            induction = (
+                make_case("induction_positive", 4.0),
+                make_case("induction_control", 1.1),
+            )
+            validation = (
+                make_case("validation_positive", 4.0),
+                make_case("validation_control", 1.1),
+            )
+            cases = (*induction, *validation)
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"independent_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                125.0 if case.ground_truth.is_surge else 90.0,
+                                "2025-01-10",
+                            ),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            candidate = SignalSpec(
+                signal_id="independent_growth_direction",
+                version=1,
+                category="financial",
+                description="Classify comparable revenue growth direction.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            evaluator = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                llm_runner=None,
+                case_limit=2,
+                minimum_cases=2,
+            )
+
+            accepted = evaluator.evaluate(
+                candidate,
+                skill=None,
+                preferred_case_ids=tuple(case.case_id for case in validation),
+                excluded_case_ids=tuple(case.case_id for case in induction),
+                induction_supported=True,
+            )
+            provisional = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=induction,
+                llm_runner=None,
+                case_limit=2,
+                minimum_cases=2,
+            ).evaluate(
+                candidate,
+                skill=None,
+                excluded_case_ids=tuple(case.case_id for case in induction),
+                induction_supported=True,
+            )
+
+            self.assertTrue(accepted.accepted)
+            self.assertEqual(accepted.disposition, "promoted")
+            self.assertEqual(set(accepted.case_ids), {case.case_id for case in validation})
+            self.assertEqual(provisional.disposition, "provisional")
+            self.assertFalse(provisional.accepted)
+
     def test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -2750,6 +2909,7 @@ class SignalEvolutionTests(TestCase):
                 execution_type=SignalExecutionType.DETERMINISTIC,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
+                parameters={"positive_min": 0.10, "negative_max": 0.0},
             )
             updated_spec = SignalSpec(
                 signal_id="revenue_growth_yoy",
@@ -2761,19 +2921,34 @@ class SignalEvolutionTests(TestCase):
                 source_types=("financials",),
                 parameters={"positive_min": 0.10, "negative_max": 0.0},
             )
-            mining_model = ScriptedAgentModel(
-                [
-                    AgentTurn(
-                        tool_call=ToolCall(
-                            "create_candidate_signal",
-                            {
-                                "spec": new_spec.to_dict(),
-                                "tests": [candidate_growth_fixture()],
-                            },
-                        )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="broad_growth",
+                statement="Point-in-time revenue acceleration separates winners.",
+                applicability="Companies with comparable financial periods.",
+                expected_positive_pattern="Positive cases show stronger growth.",
+                source_types=("financials",),
+                query="revenue",
+                falsifiers=("Controls show the same growth.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                rankings={
+                    "broad_growth": tuple(
+                        f"case-{index:03d}" for index in range(1, 9)
+                    )
+                },
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="broad_growth",
+                        disposition="supported",
+                        rationale=("Positive and control cases separate consistently.",),
+                        candidate={
+                            "spec": new_spec.to_dict(),
+                            "skill": None,
+                            "tests": [candidate_growth_fixture()],
+                        },
                     ),
-                    AgentTurn(final_output={"candidate_refs": []}),
-                ]
+                ),
             )
             update_model = ScriptedAgentModel(
                 [
@@ -2791,8 +2966,14 @@ class SignalEvolutionTests(TestCase):
                 ]
             )
             discovery_cases = tuple(
-                make_case(f"discovery_positive_{index}", 4.0)
-                for index in range(4)
+                [
+                    make_case(f"discovery_positive_{index}", 4.0)
+                    for index in range(4)
+                ]
+                + [
+                    make_case(f"discovery_control_{index}", 1.1)
+                    for index in range(4)
+                ]
             )
             raw_store = RawInfoStore(
                 documents=tuple(
@@ -2804,7 +2985,12 @@ class SignalEvolutionTests(TestCase):
                         available_at=NOW,
                         content=sec_company_facts_content(
                             ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
-                            ("2024-01-01", "2024-12-31", 115.0, "2025-01-10"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                115.0 if case.ground_truth.is_surge else 90.0,
+                                "2025-01-10",
+                            ),
                         ),
                     )
                     for index, case in enumerate(discovery_cases)
@@ -2816,7 +3002,7 @@ class SignalEvolutionTests(TestCase):
                 discovery_cases=discovery_cases,
                 meta_memory=PlanMetaMemory(),
                 workspace=workspace,
-                mining_agent=GenericAgent(mining_model),
+                mining_model=mining_model,
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,
@@ -2867,8 +3053,8 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(set(result.promoted), set(result.validated_candidates))
             self.assertEqual(
-                result.agent_audits["mining_agent"]["observations"][0]["name"],
-                "create_candidate_signal",
+                result.agent_audits["mining_pipeline"]["track"],
+                "hypothesis",
             )
             self.assertTrue(
                 result.candidate_effectiveness[
@@ -2902,34 +3088,63 @@ class SignalEvolutionTests(TestCase):
                 (root / "signals_candidates" / "financial" / "revenue_growth_yoy" / "v2").exists()
             )
 
-    def test_slow_agent_can_repair_malformed_candidate_spec(self) -> None:
+    def test_mining_controller_rejects_malformed_candidate_spec_locally(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
             invalid_spec = registry.load_spec("guidance_acceleration:v1").to_dict()
             invalid_spec["execution"].pop("type")
-            mining_model = ScriptedAgentModel(
-                [
-                    AgentTurn(
-                        tool_call=ToolCall(
-                            "create_candidate_signal",
-                            {"spec": invalid_spec, "tests": []},
-                        )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="guidance_change",
+                statement="Explicit guidance changes separate winners.",
+                applicability="Companies issuing guidance.",
+                expected_positive_pattern="Positive cases raise guidance.",
+                source_types=("news",),
+                query="guidance",
+                falsifiers=("Controls raise guidance equally often.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                rankings={"guidance_change": ("case-001", "case-002")},
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="guidance_change",
+                        disposition="supported",
+                        rationale=("The small sample separates.",),
+                        candidate={
+                            "spec": invalid_spec,
+                            "skill": None,
+                            "tests": [],
+                        },
                     ),
-                    AgentTurn(final_output={"candidate_refs": []}),
-                ]
+                ),
             )
             update_model = ScriptedAgentModel(
                 [AgentTurn(final_output={"candidate_refs": []})]
             )
+            positive = make_case("discovery_positive", 4.0)
+            control = make_case("discovery_control", 1.1)
+            raw_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"guidance_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Management changed guidance.",
+                    )
+                    for index, case in enumerate((positive, control))
+                )
+            )
             engine = SignalEvolutionEngine(
                 registry=registry,
-                raw_info_store=RawInfoStore(),
-                discovery_cases=(make_case("discovery_positive", 4.0),),
+                raw_info_store=raw_store,
+                discovery_cases=(positive, control),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
-                mining_agent=GenericAgent(mining_model),
+                mining_model=mining_model,
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,
@@ -2940,7 +3155,74 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(result.validated_candidates, {})
             self.assertIn(
                 "candidate SignalSpec JSON is invalid",
-                str(mining_model.requests[1].observations[0].result),
+                str(result.rejected["slow_loop:mining_stage:guidance_change"]),
+            )
+
+    def test_exploration_freezes_label_hidden_signatures_before_reveal(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"explore_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"explore_control_{index}", 1.1) for index in range(4)]
+            )
+            induction_refs = ("case-001", "case-002", "case-005", "case-006")
+            mining_model = ScriptedMiningModel(
+                signatures=tuple(
+                    SignalMiningSignature(
+                        case_ref=case_ref,
+                        observations=("A bounded observable event is present.",),
+                    )
+                    for case_ref in induction_refs
+                ),
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="exploration_pattern",
+                        disposition="refine",
+                        rationale=("The extracted pattern needs more cases.",),
+                    ),
+                ),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"exploration_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="A bounded observable event was reported.",
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_agent=GenericAgent(
+                    ScriptedAgentModel(
+                        [AgentTurn(final_output={"candidate_refs": []})]
+                    )
+                ),
+                llm_signal_runner=None,
+            )
+
+            result = engine._run_signal_mining(cycle_id=3)
+
+            e1_payload, e2_payload = mining_model.requests
+            self.assertNotIn('"label"', json.dumps(e1_payload))
+            self.assertEqual(
+                {item["label"] for item in e2_payload["signatures"]},
+                {"positive", "control"},
+            )
+            self.assertEqual(
+                result["refined_hypotheses"]["exploration_pattern"],
+                ("The extracted pattern needs more cases.",),
             )
 
     def test_signal_failure_query_uses_executed_refs_not_free_form_prose(self) -> None:
@@ -2987,11 +3269,7 @@ class SignalEvolutionTests(TestCase):
                 discovery_cases=(make_case("discovery_case", 4.0),),
                 meta_memory=PlanMetaMemory(),
                 workspace=workspace,
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                mining_model=EmptyMiningModel(),
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
                         [AgentTurn(final_output={"candidate_refs": []})]
@@ -3020,9 +3298,7 @@ class SignalEvolutionTests(TestCase):
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
-            mining_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
+            mining_model = EmptyMiningModel()
             update_model = ScriptedAgentModel(
                 [AgentTurn(final_output={"candidate_refs": []})]
             )
@@ -3052,17 +3328,19 @@ class SignalEvolutionTests(TestCase):
                 discovery_cases=(make_case("discovery_only", 3.0),),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
-                mining_agent=GenericAgent(mining_model),
+                mining_model=mining_model,
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,
             )
             engine._validate_cycle(registry.freeze())
-            for model in (mining_model, update_model):
-                serialized = json.dumps(model.requests[0].workspace)
+            mining_workspace = mining_model.requests[0]
+            update_workspace = update_model.requests[0].workspace
+            for workspace_view in (mining_workspace, update_workspace):
+                serialized = json.dumps(workspace_view)
                 self.assertNotIn("locked_company", serialized)
-                self.assertFalse(model.requests[0].workspace["locked_test_available"])
-                self.assertIn("capability_backlog", model.requests[0].workspace)
+                self.assertFalse(workspace_view["locked_test_available"])
+                self.assertIn("capability_backlog", workspace_view)
             search_view = engine._search_raw_info_tool(
                 make_case("discovery_only", 3.0).case_id,
                 NOW.isoformat(),
@@ -3119,9 +3397,7 @@ class DualLoopTests(TestCase):
                 seed_plans=(default_information_plan(),),
                 candidates_per_round=1,
             )
-            mining_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
+            mining_model = EmptyMiningModel()
             update_model = ScriptedAgentModel(
                 [AgentTurn(final_output={"candidate_refs": []})]
             )
@@ -3131,7 +3407,7 @@ class DualLoopTests(TestCase):
                 discovery_cases=(make_case("discovery_case", 4.0),),
                 meta_memory=meta,
                 workspace=workspace,
-                mining_agent=GenericAgent(mining_model),
+                mining_model=mining_model,
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,
@@ -3154,7 +3430,7 @@ class DualLoopTests(TestCase):
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(evaluator.seen_company_ids), 24)
             self.assertEqual(len(set(evaluator.seen_company_ids)), 24)
-            self.assertNotIn("locked_company", json.dumps(mining_model.requests[0].workspace))
+            self.assertNotIn("locked_company", json.dumps(mining_model.requests[0]))
 
     def test_next_cycle_uses_promoted_registry_without_reevaluating_old_plans(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -3196,43 +3472,71 @@ class DualLoopTests(TestCase):
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
-            discovery_case = make_case("discovery_case", 4.0)
+            discovery_cases = tuple(
+                [
+                    make_case(f"discovery_positive_{index}", 4.0)
+                    for index in range(4)
+                ]
+                + [
+                    make_case(f"discovery_control_{index}", 1.1)
+                    for index in range(4)
+                ]
+            )
             signal_store = RawInfoStore(
-                documents=(
+                documents=tuple(
                     RawInfoDocument.create(
-                        document_id="cross_cycle_financial",
-                        company_id=discovery_case.company_id,
+                        document_id=f"cross_cycle_financial_{index}",
+                        company_id=case.company_id,
                         source_type="financials",
                         published_at=NOW,
                         available_at=NOW,
                         content=sec_company_facts_content(
                             ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
-                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                125.0 if case.ground_truth.is_surge else 90.0,
+                                "2025-01-10",
+                            ),
                         ),
-                    ),
+                    )
+                    for index, case in enumerate(discovery_cases)
                 )
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="cross_cycle_growth",
+                statement="Revenue growth direction separates winners.",
+                applicability="Companies with comparable financial periods.",
+                expected_positive_pattern="Positive cases have stronger growth.",
+                source_types=("financials",),
+                query="revenue",
+                falsifiers=("Controls have indistinguishable growth.",),
             )
             first_signal_engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=signal_store,
-                discovery_cases=(discovery_case,),
+                discovery_cases=discovery_cases,
                 meta_memory=meta,
                 workspace=workspace,
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [
-                            AgentTurn(
-                                tool_call=ToolCall(
-                                    "create_candidate_signal",
-                                    {
-                                        "spec": new_spec.to_dict(),
-                                        "tests": [candidate_growth_fixture()],
-                                    },
-                                )
-                            ),
-                            AgentTurn(final_output={"candidate_refs": []}),
-                        ]
-                    )
+                mining_model=ScriptedMiningModel(
+                    hypotheses=(hypothesis,),
+                    rankings={
+                        "cross_cycle_growth": tuple(
+                            f"case-{index:03d}" for index in range(1, 9)
+                        )
+                    },
+                    decisions=(
+                        SignalMiningDecision(
+                            hypothesis_id="cross_cycle_growth",
+                            disposition="supported",
+                            rationale=("Positive and control cases separate.",),
+                            candidate={
+                                "spec": new_spec.to_dict(),
+                                "skill": None,
+                                "tests": [candidate_growth_fixture()],
+                            },
+                        ),
+                    ),
                 ),
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
@@ -3241,11 +3545,9 @@ class DualLoopTests(TestCase):
                 ),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,
-                effectiveness_case_limit=1,
-                effectiveness_minimum_cases=1,
             )
             dataset = EvolutionDataset(
-                discovery=(make_case("discovery_case", 4.0),),
+                discovery=discovery_cases,
                 anchor=make_anchor_pool(),
                 evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
@@ -3285,11 +3587,7 @@ class DualLoopTests(TestCase):
                 discovery_cases=(make_case("discovery_case", 4.0),),
                 meta_memory=meta,
                 workspace=workspace,
-                mining_agent=GenericAgent(
-                    ScriptedAgentModel(
-                        [AgentTurn(final_output={"candidate_refs": []})]
-                    )
-                ),
+                mining_model=EmptyMiningModel(),
                 update_agent=GenericAgent(
                     ScriptedAgentModel(
                         [AgentTurn(final_output={"candidate_refs": []})]
@@ -3378,9 +3676,7 @@ class DualLoopTests(TestCase):
                 seed_plans=(default_information_plan(),),
                 candidates_per_round=1,
             )
-            mining_model = ScriptedAgentModel(
-                [AgentTurn(final_output={"candidate_refs": []})]
-            )
+            mining_model = EmptyMiningModel()
             update_model = ScriptedAgentModel(
                 [AgentTurn(final_output={"candidate_refs": []})]
             )
@@ -3390,7 +3686,7 @@ class DualLoopTests(TestCase):
                 discovery_cases=(make_case("discovery_case", 4.0),),
                 meta_memory=meta,
                 workspace=workspace,
-                mining_agent=GenericAgent(mining_model),
+                mining_model=mining_model,
                 update_agent=GenericAgent(update_model),
                 llm_signal_runner=None,
                 enforce_agent_workflow=False,

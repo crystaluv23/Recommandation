@@ -630,23 +630,54 @@ For each bounded round under one frozen Signal Registry snapshot:
 
 ## Slow Loop
 
-After a configured number of fast rounds, unfreeze definitions and run two
-Generic Agents.
+After a configured number of fast rounds, unfreeze definitions and run one
+locally orchestrated Signal Mining pipeline plus the existing Signal Update
+Generic Agent. Mining is not a free-form tool loop: each model call has one
+bounded semantic job, and the controller owns sampling, label disclosure, Raw
+Info retrieval, candidate staging, testing, and validation.
 
-Signal Mining receives `H_E`, current meta-info, Signal cards, a deterministic
-issuer-distinct and label-stratified sample of label-visible Discovery cases,
-and Raw Info tools backed by the shared resolver. It performs contrastive case
-analysis and stages new candidate Signal specs. Every compact card exposes its
-exact stable `signal_ref`; the agent must not synthesize a ref from category or
-display fields.
+Mining alternates between two tracks. Hypothesis-driven cycles execute:
 
-Agent-facing Raw Info is progressively disclosed: search returns at most a
-1,200-character head/tail preview per document plus identity, hash, timestamps,
-scalar metadata, and full content length; `load_raw_document` returns at most a
-6,000-character preview for one authorized Discovery document. Full bodies and
-large price metadata never repeat in every tool-loop prompt. This prompt bound
-does not alter the Raw Info store or SignalExecutor, which still load and
-validate the complete immutable documents.
+1. `H1 hypothesis portfolio`: from current meta-info, capability backlog,
+   provisional/refined work, and stable Signal cards, propose at most three
+   falsifiable hypotheses. Each hypothesis declares its applicability,
+   expected winner/control difference, required source types, bounded query,
+   and falsifiers; it does not name companies.
+2. `H2 label-hidden ranking`: rank controller-issued opaque `case_ref` values
+   for every hypothesis from bounded point-in-time company briefs. Briefs may
+   contain business description, industry, exchange, coarse size/listing-age
+   buckets, and Raw Info coverage, but never company/ticker identity or outcome.
+3. `local feasibility`: reveal labels only inside the controller, require at
+   least one issuer-distinct positive and one control, reserve later relevant
+   cases for validation, and select at most two feasible hypotheses. An
+   infeasible hypothesis becomes refined work rather than a model failure.
+4. `H3 contrast`: retrieve exact point-in-time Raw Info for the selected cases,
+   then ask the model to support, refine, or reject each hypothesis and, when
+   supported, return a complete candidate Signal plus fixtures. The controller
+   stages and tests the candidate locally.
+
+Exploration-driven cycles execute:
+
+1. the controller selects a diverse issuer-distinct, label-stratified sample,
+   reserves independent validation cases, and retrieves exact point-in-time Raw
+   Info;
+2. `E1 label-hidden extraction` describes recurring observable case signatures
+   without outcomes; and
+3. `E2 label-revealed discovery` contrasts those frozen signatures with their
+   labels and may return supported candidates, refined patterns, or rejection.
+
+Exploration is a bounded source of new hypotheses, not a separate promotion
+path. The default cadence runs it periodically while hypothesis-driven cycles
+exploit accumulated meta-memory. Both tracks use the same candidate contract
+and stable promotion gate.
+
+The Raw Info module remains an exact retrieval boundary. A model never emits a
+free-form ticker for the controller to search: it ranks only allowed opaque
+`case_ref` values from the supplied brief universe. The controller resolves
+those refs to Discovery cases, checks point-in-time feasibility, and issues the
+same bounded `RawInfoRequest` for every compared case. Model-facing evidence is
+compact and immutable; complete documents remain the local lineage and final
+Signal-execution boundary.
 
 Signal Update receives `H_U`, current meta-info, stable Signal stats, committed
 Plan experiments, failure trajectories, a label-stratified Discovery sampler,
@@ -654,16 +685,14 @@ and version-cloning tools. It stages `vNext` candidates and cannot overwrite
 stable files. The sampler supplies an allowed point-in-time case for Raw Info
 follow-up instead of inviting the agent to search evaluation-case identities.
 
-Both agents receive domain tools only. Tool cards contain an explicit argument
-schema, canonical `SignalSpec` shape, executable-fixture shape, enums,
-registered deterministic functions, and valid examples; a Python signature or
-short prose description alone is not a sufficient contract. Mining must inspect
-Discovery evidence, stage a complete candidate, run candidate contract tests,
-and return only the successfully staged ref. Update must first load the exact
-stable spec and structured failure cases, preserve `signal_id`, category,
-execution type, and deterministic function, create exactly `vNext`, run tests,
-and return only the staged ref. A new deterministic formula is a code-reviewed
-framework change; an agent may use only functions already registered by the
+Mining role calls receive literal structured-output contracts for hypotheses,
+rankings, signatures, decisions, canonical `SignalSpec`, executable fixtures,
+enums, and registered deterministic functions. Update tool cards retain their
+explicit argument schemas and examples. Update must first load the exact stable
+spec and structured failure cases, preserve `signal_id`, category, execution
+type, and deterministic function, create exactly `vNext`, run tests, and return
+only the staged ref. A new deterministic formula is a code-reviewed framework
+change; Mining or Update may use only functions already registered by the
 runtime.
 
 All candidates are staged first. The orchestrator then executes each
@@ -675,17 +704,28 @@ not trigger identity leakage solely by ordinary prose use. Contract success
 means only "well formed and executable".
 
 Before automatic promotion, the orchestrator runs a separate paired
-effectiveness gate over a fixed, issuer-distinct, label-stratified Discovery
-sample and a frozen local Raw Info snapshot. `vCurrent` and `vNext` receive the
-same cases, prediction times, identity routing fields, model settings, and Raw
-Info corpus. The audit records availability, decisive-state count, directional
-correct count, and directional wrong count. An update must retain availability,
-not reduce correct states, not increase wrong states, and strictly improve at
-least one of those quantities. A new Signal must meet the minimum availability
-and decisive-support floors and have more correct than wrong decisive states.
-Insufficient paired evidence fails closed. This is a Signal-level promotion
-safeguard, not a claim of downstream Plan-F1 causality; downstream impact is
-observed only in later Fast rounds.
+effectiveness gate over issuer-distinct, label-stratified Discovery cases from a
+frozen local Raw Info snapshot. Cases used to induce or contrast the candidate
+are excluded. For hypothesis-driven candidates, the gate first consumes later
+unused relevant cases from the label-hidden ranking, then fills any remaining
+slots deterministically from the Discovery pool. `vCurrent` and `vNext` receive
+the same cases, prediction times, identity routing fields, model settings, and
+Raw Info corpus. The audit records availability, decisive-state count,
+directional correct count, and directional wrong count. An update must retain
+availability, not reduce correct states, not increase wrong states, and strictly
+improve at least one of those quantities. A new Signal must meet the minimum
+availability and decisive-support floors and have more correct than wrong
+decisive states.
+
+A contract-valid candidate with directional induction support but too few
+independent usable/decisive cases is `provisional`: it is persisted for later
+re-ranking or evidence accumulation but is not promoted. A candidate with
+enough independent evidence that fails directionality, regression, or strict
+gain is `rejected`. Only a candidate satisfying the unchanged effectiveness
+gate is `promoted`. Thus a sparse Raw Info sample does not erase a plausible
+idea, while lack of evidence still fails closed at the stable Registry boundary.
+This is a Signal-level safeguard, not a claim of downstream Plan-F1 causality;
+downstream impact is observed only in later Fast rounds.
 
 Passing candidates are recorded by exact candidate hash (spec + skill + tests)
 together with the versioned contract and effectiveness audits. The complete
@@ -695,27 +735,20 @@ batch and advances the Registry version once. Empty passing batches do not
 advance it. The next Fast Loop sees the resulting snapshot; the just-completed
 Fast Loop remains bound to its input snapshot.
 
-Both Slow agents have an explicit final-output contract:
-`{"candidate_refs":[...]}`. A non-empty ref must come from a successful candidate
-staging tool call and a successful `run_signal_tests` result; otherwise the
-agent returns an empty list. The runtime validates the mandatory tool workflow
-before accepting even an empty final result: Mining must compare positive and
-control Discovery Raw Info before card/spec duplicate inspection, while Update
-must load the exact ref, inspect usage and structured failures, sample an
-allowed Discovery case, and search its Raw Info in order. This completion gate
-turns premature or invented output into precise bounded correction feedback.
-The same ordered checklist is sent as a machine-readable
-`workspace.workflow_contract`; up to four final-output corrections may be used
-inside the existing frozen step limit, without increasing the external-call or
-cost ceilings. Every model turn also receives controller-derived
-`workflow_progress` with completed steps and one exact next required action;
-successful tools are not suggested again. A rejected candidate test advances
-to an exact empty final result rather than looping on the same test or returning
-the rejected ref.
+Each Mining stage has its own explicit JSON contract and at most one structured
+correction. H2 may reference only supplied hypothesis/case refs; H3/E2 may
+reference only supplied hypotheses/signatures and may return only complete
+candidate drafts. The controller records every stage request/usage, local
+selection, Raw Info resolution summary, decision, staged candidate ref, and
+provisional/refined/rejected disposition in the Slow-loop audit. Update retains
+the explicit final contract `{"candidate_refs":[...]}` and its mandatory tool
+workflow. A non-empty Update ref must come from successful staging and
+`run_signal_tests` for that exact ref.
+
 Mining cannot stage an existing stable `signal_id`; existing identities belong
 to Update and must use exact `vNext`. Diagnosis or a proposed Signal object is
 not itself a valid final result. Schema and tool validation errors may be
-repaired only within the frozen agent-step bound.
+repaired only within the frozen stage/tool bounds.
 Missing required candidate fields, invalid enums, and other `SignalSpec`
 deserialization failures are exposed to the agent as domain validation feedback;
 they never escape as raw parser exceptions and are never filled with defaults.

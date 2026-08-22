@@ -140,6 +140,29 @@ every proposal call, including the first slot; provider responses that instead
 use evidence arrays under `H_*` are rejected and retained in the exact cache,
 not coerced into a bogus Plan.
 
+Signal Mining uses five narrow structured role stages rather than a
+one-tool-per-turn Agent transcript:
+
+- `signal_mining_hypotheses` proposes a portfolio of no more than three
+  falsifiable hypotheses from bounded meta/backlog/Registry context;
+- `signal_mining_case_ranking` ranks only allowed opaque case refs from
+  label-hidden, identity-hidden company briefs for all hypotheses in one call;
+- `signal_mining_contrast` supports/refines/rejects at most two locally feasible
+  hypotheses from exact point-in-time positive/control evidence;
+- `signal_mining_exploration_extract` creates label-hidden observable signatures
+  for a locally selected diverse case batch; and
+- `signal_mining_exploration_discover` reveals labels only beside those frozen
+  signatures and emits supported candidates or refined patterns.
+
+All stages use literal key/type contracts and one bounded correction. Creative
+hypothesis/discovery calls sample at the run-contract proposal temperature;
+ranking, extraction, and evidence contrast remain greedy. Exact request caching,
+ledger charging, outcome/identity disclosure checks, and external-approval
+semantics are identical to the other structured roles. The controller—not the
+model—resolves case refs, performs positive/control feasibility, queries Raw
+Info, stages candidates, executes fixtures, and selects issuer-disjoint
+effectiveness cases.
+
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact
 `market_data` request with at most a 60-day lookback and one document. The

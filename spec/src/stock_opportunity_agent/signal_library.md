@@ -238,6 +238,23 @@ finish the same transition. A changed candidate, unrelated stable mutation, or
 invalid later item fails closed. Empty passing batches leave the version/hash
 unchanged.
 
+Candidate validation has three durable dispositions. `promoted` means both the
+candidate contract and the independent paired effectiveness gate pass.
+`provisional` means the contract passes and induction evidence is directionally
+supportive, but independent point-in-time availability or decisive support is
+below the existing promotion floor; the draft remains isolated under
+`signals_candidates/` and may be re-ranked or re-evaluated in a later Slow
+cycle. `rejected` means the contract fails, independent evidence contradicts
+the expected direction, or an update regresses/fails to improve once evidence
+is sufficient. Provisional never mutates the stable Registry and never weakens
+the promotion threshold.
+
+The effectiveness audit records induction case refs separately from evaluation
+case refs. The two sets must be issuer-disjoint. Case relevance ranking is
+label-hidden; local code overlays outcomes, reserves later unused relevant cases
+for evaluation, and may deterministically fill the remaining evaluation slots
+from the Discovery pool without reusing an induction issuer.
+
 ## Testing
 
 Cover progressive disclosure, immutable version registration, frozen snapshot

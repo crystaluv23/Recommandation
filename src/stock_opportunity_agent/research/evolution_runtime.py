@@ -94,6 +94,10 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimeLimits,
     RuntimePlanEvaluator,
     SlowLoopResult,
+    SignalMiningDecision,
+    SignalMiningHypothesis,
+    SignalMiningModel,
+    SignalMiningSignature,
     SignalEvolutionEngine,
     candidate_judgment_feedback,
     cosine_similarity,
@@ -3646,6 +3650,7 @@ def _complete_parsed_role(
     parser: Any,
     allow_outcomes: bool,
     anonymous_aliases: Iterable[str] = (),
+    temperature: float = 0.0,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
@@ -3667,6 +3672,7 @@ def _complete_parsed_role(
             payload=request_payload,
             allow_outcomes=allow_outcomes,
             anonymous_aliases=anonymous_aliases,
+            temperature=temperature,
         )
         usage = usage + step_usage
         try:
@@ -4453,7 +4459,7 @@ def _signal_agent_workflow_progress(
     if not isinstance(contract, Mapping):
         return None
     agent_kind = str(contract.get("agent", ""))
-    if agent_kind not in {"mining", "update"}:
+    if agent_kind != "update":
         return None
 
     successful = [
@@ -4494,120 +4500,7 @@ def _signal_agent_workflow_progress(
     loaded_specs = named("load_signal_spec")
     samples = named("sample_discovery_cases")
     searches = named("search_raw_info")
-    if agent_kind == "mining":
-        if not samples:
-            return tool_action(
-                "sample_discovery_cases",
-                {"limit": 8},
-                "Start the mandatory label-stratified comparison.",
-                completed,
-            )
-        completed.append("sample_discovery_cases")
-        sample_rows = samples[-1][1].result
-        rows = sample_rows if isinstance(sample_rows, list) else []
-        searched_ids = {
-            str(item.arguments.get("case_id", "")) for _, item in searches
-        }
-
-        def target_case(is_surge: bool) -> Mapping[str, Any] | None:
-            for row in rows:
-                if not isinstance(row, Mapping):
-                    continue
-                truth = row.get("ground_truth")
-                if (
-                    isinstance(truth, Mapping)
-                    and truth.get("is_surge") is is_surge
-                    and str(row.get("case_id", "")) not in searched_ids
-                ):
-                    return row
-            return None
-
-        searched_truths = []
-        by_case = {
-            str(row.get("case_id", "")): row
-            for row in rows
-            if isinstance(row, Mapping)
-        }
-        for _, item in searches:
-            row = by_case.get(str(item.arguments.get("case_id", "")))
-            truth = row.get("ground_truth") if isinstance(row, Mapping) else None
-            if isinstance(truth, Mapping):
-                searched_truths.append(bool(truth.get("is_surge")))
-        for expected, label in ((True, "positive"), (False, "control")):
-            if expected not in searched_truths:
-                target = target_case(expected)
-                if target is not None:
-                    return tool_action(
-                        "search_raw_info",
-                        {
-                            "case_id": target["case_id"],
-                            "as_of": target["prediction_time"],
-                            "source_types": [
-                                "financials",
-                                "filing",
-                                "news",
-                                "market_data",
-                            ],
-                        },
-                        f"Inspect the required {label} Discovery case with explicit source_types.",
-                        completed,
-                    )
-        completed.append("positive_and_control_raw_info")
-        last_raw = max(index for index, _ in searches)
-        cards_after_raw = [(index, item) for index, item in cards if index > last_raw]
-        if not cards_after_raw:
-            if not categories:
-                return tool_action(
-                    "list_signal_categories",
-                    {},
-                    "Begin duplicate inspection after the Raw Info comparison.",
-                    completed,
-                )
-            category_rows = categories[-1][1].result
-            category = (
-                str(category_rows[0])
-                if isinstance(category_rows, list) and category_rows
-                else "market"
-            )
-            return tool_action(
-                "list_signal_cards",
-                {"category": category},
-                "Inspect compact stable cards only after the case comparison.",
-                completed,
-            )
-        completed.append("stable_signal_cards")
-        last_card = max(index for index, _ in cards_after_raw)
-        specs_after_cards = [
-            (index, item) for index, item in loaded_specs if index > last_card
-        ]
-        if not specs_after_cards:
-            card_rows = cards_after_raw[-1][1].result
-            exact_ref = None
-            if isinstance(card_rows, list):
-                exact_ref = next(
-                    (
-                        str(row.get("signal_ref"))
-                        for row in card_rows
-                        if isinstance(row, Mapping) and row.get("signal_ref")
-                    ),
-                    None,
-                )
-            if exact_ref is None:
-                return tool_action(
-                    "search_signal_cards",
-                    {"query": "closest candidate concept"},
-                    "Obtain a card containing an exact signal_ref.",
-                    completed,
-                )
-            return tool_action(
-                "load_signal_spec",
-                {"signal_ref": exact_ref},
-                "Load one exact stable spec for the mandatory duplicate check.",
-                completed,
-            )
-        completed.append("exact_stable_spec")
-        stage_calls = named("create_candidate_signal")
-    else:
+    if agent_kind == "update":
         if not loaded_specs:
             if not cards:
                 if not categories:
@@ -4760,8 +4653,302 @@ def _signal_agent_workflow_progress(
     }
 
 
+_SIGNAL_MINING_HYPOTHESES_OUTPUT = _output_contract(
+    "SignalMiningHypotheses",
+    {
+        "hypotheses": [
+            {
+                "hypothesis_id": "large_order_confirmation",
+                "statement": "Explicit material order confirmation precedes repricing.",
+                "applicability": "Companies with project or customer order disclosure.",
+                "expected_positive_pattern": "Positive cases show confirmed material orders more often than controls.",
+                "source_types": ["news", "filings"],
+                "query": "material order contract customer award",
+                "falsifiers": ["The pattern is equally common in controls."],
+                "lookback_days": 365,
+            }
+        ]
+    },
+) + " Return zero to the supplied hypothesis_limit items and never name a company."
+
+_SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
+    "SignalMiningRankings",
+    {
+        "rankings": [
+            {
+                "hypothesis_id": "large_order_confirmation",
+                "case_refs": ["case-001", "case-002"],
+            }
+        ]
+    },
+) + " Return every supplied hypothesis exactly once and only supplied case_ref values."
+
+_SIGNAL_MINING_DECISIONS_OUTPUT = _output_contract(
+    "SignalMiningDecisions",
+    {
+        "decisions": [
+            {
+                "hypothesis_id": "large_order_confirmation",
+                "disposition": "refine",
+                "rationale": ["The visible evidence does not separate the groups."],
+                "candidate": None,
+            }
+        ]
+    },
+) + (
+    ' disposition must be "supported", "refine", or "rejected". Only supported '
+    "may carry a candidate object, which must contain exactly spec, skill, and tests "
+    "under the supplied candidate_contract; otherwise candidate must be null."
+)
+
+_SIGNAL_MINING_SIGNATURES_OUTPUT = _output_contract(
+    "SignalMiningSignatures",
+    {
+        "signatures": [
+            {
+                "case_ref": "case-001",
+                "observations": ["An expectation-changing event is explicitly confirmed."],
+                "evidence_gaps": [],
+            }
+        ]
+    },
+) + " Return one signature for every supplied case_ref and do not infer outcomes."
+
+
+class LLMSignalMiningModel(SignalMiningModel):
+    """Concrete five-role adapter for locally orchestrated Signal Mining."""
+
+    def __init__(self, caller: JSONRoleCaller, *, creative_temperature: float = 1.0):
+        if not 0 <= creative_temperature <= 1:
+            raise ValidationError("Signal Mining creative temperature must be in [0, 1]")
+        self.caller = caller
+        self.creative_temperature = creative_temperature
+
+    def propose_hypotheses(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
+        limit = int(dict(payload.get("limits", {})).get("hypothesis_limit", 3))
+
+        def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
+            if set(value) != {"hypotheses"} or not isinstance(
+                value.get("hypotheses"), list
+            ):
+                raise ValidationError("Signal Mining H1 requires a hypotheses array")
+            items = tuple(
+                SignalMiningHypothesis.from_dict(item)
+                if isinstance(item, Mapping)
+                else (_raise_mining_shape("H1 hypothesis must be an object"))
+                for item in value["hypotheses"]
+            )
+            if len(items) > limit:
+                raise ValidationError(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
+            if len({item.hypothesis_id for item in items}) != len(items):
+                raise ValidationError("Signal Mining H1 hypothesis ids must be unique")
+            return items
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_mining_hypotheses",
+            system_prompt=(
+                "Propose a small portfolio of falsifiable, reusable Signal hypotheses. "
+                "Use meta/backlog gaps and stable cards, prefer observable point-in-time "
+                "differences, and do not select companies or restate an existing Signal."
+                + _SIGNAL_MINING_HYPOTHESES_OUTPUT
+            ),
+            payload=payload,
+            parser=parse,
+            allow_outcomes=True,
+            temperature=self.creative_temperature,
+        )
+        return AgentStep(value, usage)
+
+    def rank_cases(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[Mapping[str, tuple[str, ...]]]:
+        hypotheses = payload.get("hypotheses", ())
+        case_briefs = payload.get("case_briefs", ())
+        allowed_hypotheses = {
+            str(item["hypothesis_id"])
+            for item in hypotheses
+            if isinstance(item, Mapping) and "hypothesis_id" in item
+        }
+        allowed_cases = {
+            str(item["case_ref"])
+            for item in case_briefs
+            if isinstance(item, Mapping) and "case_ref" in item
+        }
+
+        def parse(value: Mapping[str, Any]) -> Mapping[str, tuple[str, ...]]:
+            if set(value) != {"rankings"} or not isinstance(
+                value.get("rankings"), list
+            ):
+                raise ValidationError("Signal Mining H2 requires a rankings array")
+            rankings: dict[str, tuple[str, ...]] = {}
+            for raw in value["rankings"]:
+                if not isinstance(raw, Mapping) or set(raw) != {
+                    "hypothesis_id",
+                    "case_refs",
+                }:
+                    raise ValidationError(
+                        "each Signal Mining H2 ranking requires hypothesis_id and case_refs"
+                    )
+                hypothesis_id = str(raw["hypothesis_id"])
+                refs = _strict_string_list(raw, "case_refs")
+                if refs is None:
+                    raise ValidationError("Signal Mining H2 case_refs must be unique strings")
+                if hypothesis_id in rankings:
+                    raise ValidationError("Signal Mining H2 repeated a hypothesis")
+                rankings[hypothesis_id] = refs
+            if set(rankings) != allowed_hypotheses:
+                raise ValidationError("Signal Mining H2 must rank every supplied hypothesis")
+            unknown = sorted(
+                {case_ref for refs in rankings.values() for case_ref in refs}
+                - allowed_cases
+            )
+            if unknown:
+                raise ValidationError(
+                    "Signal Mining H2 used unknown case refs: " + ", ".join(unknown)
+                )
+            return rankings
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_mining_case_ranking",
+            system_prompt=(
+                "Rank the anonymous company briefs by applicability to each hypothesis. "
+                "Outcomes and identities are hidden. Use only supplied opaque refs and "
+                "rank all hypotheses in this single call."
+                + _SIGNAL_MINING_RANKING_OUTPUT
+            ),
+            payload=payload,
+            parser=parse,
+            allow_outcomes=False,
+        )
+        return AgentStep(value, usage)
+
+    def contrast(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        allowed = {
+            str(item["hypothesis"]["hypothesis_id"])
+            for item in payload.get("comparisons", ())
+            if isinstance(item, Mapping)
+            and isinstance(item.get("hypothesis"), Mapping)
+            and "hypothesis_id" in item["hypothesis"]
+        }
+        return self._decisions(
+            stage="signal_mining_contrast",
+            payload=payload,
+            allowed_hypothesis_ids=allowed,
+            prompt=(
+                "Contrast the supplied exact point-in-time positive and control evidence. "
+                "Support only a repeated observable difference, refine an underspecified "
+                "idea, or reject a contradicted one. A supported draft must be a complete "
+                "new Signal with executable fixtures."
+            ),
+            temperature=0.0,
+        )
+
+    def extract_exploration(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningSignature, ...]]:
+        allowed = {
+            str(item["case_ref"])
+            for item in payload.get("cases", ())
+            if isinstance(item, Mapping) and "case_ref" in item
+        }
+
+        def parse(value: Mapping[str, Any]) -> tuple[SignalMiningSignature, ...]:
+            if set(value) != {"signatures"} or not isinstance(
+                value.get("signatures"), list
+            ):
+                raise ValidationError("Signal Mining E1 requires a signatures array")
+            items = tuple(
+                SignalMiningSignature.from_dict(item)
+                if isinstance(item, Mapping)
+                else (_raise_mining_shape("E1 signature must be an object"))
+                for item in value["signatures"]
+            )
+            if {item.case_ref for item in items} != allowed or len(items) != len(allowed):
+                raise ValidationError(
+                    "Signal Mining E1 must return one signature for every case_ref"
+                )
+            return items
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_mining_exploration_extract",
+            system_prompt=(
+                "Describe only recurring, executable observations in the anonymous "
+                "point-in-time evidence. Labels are hidden; do not predict or infer them."
+                + _SIGNAL_MINING_SIGNATURES_OUTPUT
+            ),
+            payload=payload,
+            parser=parse,
+            allow_outcomes=False,
+        )
+        return AgentStep(value, usage)
+
+    def discover_exploration(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        return self._decisions(
+            stage="signal_mining_exploration_discover",
+            payload=payload,
+            allowed_hypothesis_ids=None,
+            prompt=(
+                "Compare labels only against the frozen outcome-hidden signatures. "
+                "Propose a reusable new Signal only for a repeated observable difference; "
+                "otherwise preserve a refined pattern or reject it."
+            ),
+            temperature=self.creative_temperature,
+        )
+
+    def _decisions(
+        self,
+        *,
+        stage: str,
+        payload: Mapping[str, Any],
+        allowed_hypothesis_ids: set[str] | None,
+        prompt: str,
+        temperature: float,
+    ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        def parse(value: Mapping[str, Any]) -> tuple[SignalMiningDecision, ...]:
+            if set(value) != {"decisions"} or not isinstance(
+                value.get("decisions"), list
+            ):
+                raise ValidationError(f"{stage} requires a decisions array")
+            items = tuple(
+                SignalMiningDecision.from_dict(item)
+                if isinstance(item, Mapping)
+                else (_raise_mining_shape("Mining decision must be an object"))
+                for item in value["decisions"]
+            )
+            ids = [item.hypothesis_id for item in items]
+            if len(set(ids)) != len(ids):
+                raise ValidationError("Signal Mining decisions must use unique ids")
+            if allowed_hypothesis_ids is not None and not set(ids) <= allowed_hypothesis_ids:
+                raise ValidationError("Signal Mining decision used an unknown hypothesis")
+            return items
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage=stage,
+            system_prompt=prompt + _SIGNAL_MINING_DECISIONS_OUTPUT,
+            payload=payload,
+            parser=parse,
+            allow_outcomes=True,
+            temperature=temperature,
+        )
+        return AgentStep(value, usage)
+
+
+def _raise_mining_shape(message: str) -> Any:
+    raise ValidationError(message)
+
+
 class StructuredAgentModel(AgentModel):
-    """Concrete GenericAgent model adapter for Mining/Update tool loops."""
+    """Concrete GenericAgent model adapter retained for the Update tool loop."""
 
     def __init__(
         self,
@@ -5336,13 +5523,9 @@ def run_bounded_evolution_cycle(
         discovery_cases=dataset.discovery,
         meta_memory=meta_memory,
         workspace=evolution_workspace,
-        mining_agent=GenericAgent(
-            StructuredAgentModel(
-                evolution_caller,
-                stage="signal_mining_agent",
-                allow_outcomes=True,
-                final_output_example={"candidate_refs": ["candidate_signal:v1"]},
-            )
+        mining_model=LLMSignalMiningModel(
+            evolution_caller,
+            creative_temperature=float(limits["plan_proposal_temperature"]),
         ),
         update_agent=GenericAgent(
             StructuredAgentModel(
