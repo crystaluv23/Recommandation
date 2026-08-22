@@ -290,10 +290,12 @@ interpretation, and source evidence rather than duplicating Raw Info.
 
 Model outputs are type-strict at the role boundary. JSON booleans, arrays,
 objects, numbers, and required fields cannot be replaced by truthy strings,
-character-wise iterable coercion, or implicit coverage/state defaults. A
-malformed retrieval category/ref container receives the documented one
-correction and then returns no match; it never terminates the process with a raw
-container exception.
+character-wise iterable coercion, or implicit coverage/state defaults. Signal
+retrieval excludes refs already executed in the same case before one compact-card
+selection request. An empty ref array is a valid no-new-Signal result; a
+malformed, duplicated, or out-of-card ref container receives the documented one
+correction and then returns no match. Neither path terminates the process with a
+raw container exception.
 
 ## Supervision, Interrupt, and Resume
 

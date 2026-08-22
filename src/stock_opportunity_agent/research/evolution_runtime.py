@@ -3426,6 +3426,8 @@ def _output_contract(name: str, example: Mapping[str, Any]) -> str:
 def _strict_string_list(
     value: Mapping[str, Any],
     field_name: str,
+    *,
+    allow_empty: bool = False,
 ) -> tuple[str, ...] | None:
     """Return one JSON string array, or None for bounded role correction."""
 
@@ -3433,7 +3435,7 @@ def _strict_string_list(
     if not isinstance(raw, list) or any(not isinstance(item, str) for item in raw):
         return None
     parsed = tuple(raw)
-    if not parsed or len(set(parsed)) != len(parsed):
+    if (not parsed and not allow_empty) or len(set(parsed)) != len(parsed):
         return None
     return parsed
 
@@ -3863,7 +3865,7 @@ class LLMResearchController:
 
 
 class LLMSignalRetrievalAgent:
-    """Two-step progressive category/card selector for one frozen Registry."""
+    """One-step selector over unexecuted compact cards in one frozen Registry."""
 
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
@@ -3874,13 +3876,36 @@ class LLMSignalRetrievalAgent:
         signal_registry: FrozenSignalRegistry,
         prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
         prior_signal_results: Mapping[str, Mapping[str, Any]] | None = None,
+        eligible_signal_refs: tuple[str, ...] | None = None,
     ) -> AgentStep[tuple[str, ...]]:
-        categories = sorted({spec.category for spec in signal_registry.specs})
-        category_usage = AgentUsage()
-        selected_categories: tuple[str, ...] = ()
-        category_payload: dict[str, Any] = {
+        registry_refs = tuple(spec.ref for spec in signal_registry.specs)
+        allowed_refs = (
+            registry_refs
+            if eligible_signal_refs is None
+            else tuple(eligible_signal_refs)
+        )
+        if len(set(allowed_refs)) != len(allowed_refs):
+            raise ValidationError("eligible Signal refs must be unique")
+        if not set(allowed_refs).issubset(registry_refs):
+            raise ValidationError("eligible Signal refs must belong to the Registry")
+        allowed = set(allowed_refs)
+        cards = [
+            {
+                "signal_ref": spec.ref,
+                "category": spec.category,
+                "description": spec.description,
+                "execution_type": spec.execution_type.value,
+            }
+            for spec in signal_registry.specs
+            if spec.ref in allowed
+        ]
+        if not cards:
+            return AgentStep((), AgentUsage())
+
+        selection_usage = AgentUsage()
+        selection_payload: dict[str, Any] = {
             "information_needs": list(information_needs),
-            "available_categories": categories,
+            "signal_cards": cards,
             "previous_signal_document_fingerprints": {
                 ref: list(value)
                 for ref, value in prior_signal_fingerprints.items()
@@ -3892,83 +3917,37 @@ class LLMSignalRetrievalAgent:
         }
         for attempt in range(2):
             if attempt:
-                category_payload["validation_feedback"] = (
-                    "The previous categories were empty or outside "
-                    "available_categories. Return a non-empty subset only."
-                )
-            category_value, step_usage = _complete_json_with_invalid_value(
-                self.caller,
-                stage="signal_retrieval_categories",
-                system_prompt=(
-                    "Choose only relevant category names for the information needs. "
-                    "Return {\"categories\": [...]}."
-                ),
-                payload=category_payload,
-                allow_outcomes=False,
-            )
-            category_usage = category_usage + step_usage
-            try:
-                parsed_categories = _strict_string_list(
-                    category_value, "categories"
-                )
-            except ValidationError:
-                parsed_categories = None
-            selected_categories = parsed_categories or ()
-            if parsed_categories is not None and set(parsed_categories).issubset(
-                categories
-            ):
-                break
-        else:
-            return AgentStep((), category_usage)
-
-        cards = [
-            {
-                "signal_ref": spec.ref,
-                "category": spec.category,
-                "description": spec.description,
-                "execution_type": spec.execution_type.value,
-            }
-            for spec in signal_registry.specs
-            if spec.category in selected_categories
-        ]
-        selection_usage = AgentUsage()
-        refs: tuple[str, ...] = ()
-        selection_payload: dict[str, Any] = {
-            "information_needs": list(information_needs),
-            "signal_cards": cards,
-            "previous_signal_document_fingerprints": {
-                ref: list(value)
-                for ref, value in prior_signal_fingerprints.items()
-            },
-        }
-        allowed = {card["signal_ref"] for card in cards}
-        for attempt in range(2):
-            if attempt:
                 selection_payload["validation_feedback"] = (
-                    "The previous signal_refs were empty, duplicated, or outside "
-                    "the supplied signal_cards. Return a non-empty unique subset only."
+                    "signal_refs must be one JSON string array with unique refs drawn "
+                    "only from signal_cards. An empty array is valid when no supplied "
+                    "unexecuted Signal can answer the information needs."
                 )
             selection_value, step_usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage="signal_retrieval_cards",
                 system_prompt=(
-                    "Choose the smallest unique Signal batch that answers the needs. "
-                    "Return {\"signal_refs\": [...]}."
+                    "Choose the smallest unique batch from the supplied unexecuted "
+                    "Signal cards that answers the information needs. Previously "
+                    "executed Signals are omitted and must not be reconstructed. If "
+                    "none of the supplied cards adds useful evidence, return "
+                    "{\"signal_refs\": []}; otherwise return "
+                    "{\"signal_refs\": [\"exact supplied ref\"]}."
                 ),
                 payload=selection_payload,
                 allow_outcomes=False,
             )
             selection_usage = selection_usage + step_usage
             try:
-                parsed_refs = _strict_string_list(selection_value, "signal_refs")
+                parsed_refs = _strict_string_list(
+                    selection_value,
+                    "signal_refs",
+                    allow_empty=True,
+                )
             except ValidationError:
                 parsed_refs = None
-            refs = parsed_refs or ()
             if parsed_refs is not None and set(parsed_refs).issubset(allowed):
-                break
-        else:
-            return AgentStep((), category_usage + selection_usage)
-        return AgentStep(refs, category_usage + selection_usage)
+                return AgentStep(parsed_refs, selection_usage)
+        return AgentStep((), selection_usage)
 
 
 class LLMBlindPredictor:

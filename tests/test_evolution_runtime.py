@@ -63,6 +63,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanEvaluationConfig,
     PlanReflection,
     PredictionSelfReflection,
+    ResearchDecision,
+    ResearchState,
     RoundMetaEntry,
     RuntimeStopReason,
     candidate_judgment_feedback,
@@ -70,6 +72,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.signal_library import (
     SignalCoverage,
+    SignalExecutor,
     SignalExecutionType,
     SignalRegistry,
     SignalSpec,
@@ -1179,7 +1182,6 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             selector_caller = ScriptedRoleCaller(
                 [
-                    {"categories": ["financial"]},
                     {"signal_refs": ["revenue_growth_yoy:v1"]},
                 ]
             )
@@ -1189,17 +1191,18 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
             self.assertEqual(
                 selector_caller.stages,
-                ["signal_retrieval_categories", "signal_retrieval_cards"],
+                ["signal_retrieval_cards"],
             )
+            cards = selector_caller.calls[0]["payload"]["signal_cards"]
+            self.assertEqual(len(cards), 14)
+            self.assertIn("category", cards[0])
 
-    def test_signal_selector_repairs_invalid_categories_and_refs_once(self) -> None:
+    def test_signal_selector_repairs_invalid_refs_once(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             caller = ScriptedRoleCaller(
                 [
-                    {"categories": ["unknown"]},
-                    {"categories": ["financial"]},
                     {"signal_refs": ["unknown:v1"]},
                     {"signal_refs": ["revenue_growth_yoy:v1"]},
                 ]
@@ -1210,9 +1213,8 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
             self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
-            self.assertEqual(selection.usage.llm_calls, 4)
+            self.assertEqual(selection.usage.llm_calls, 2)
             self.assertIn("validation_feedback", caller.calls[1]["payload"])
-            self.assertIn("validation_feedback", caller.calls[3]["payload"])
 
     def test_signal_selector_repairs_non_array_containers_without_crashing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1220,8 +1222,6 @@ class ConcreteRoleAdapterTests(TestCase):
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             caller = ScriptedRoleCaller(
                 [
-                    {"categories": "financial"},
-                    {"categories": ["financial"]},
                     {"signal_refs": "revenue_growth_yoy:v1"},
                     {"signal_refs": ["revenue_growth_yoy:v1"]},
                 ]
@@ -1232,26 +1232,160 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
             self.assertEqual(selection.value, ("revenue_growth_yoy:v1",))
-            self.assertEqual(selection.usage.llm_calls, 4)
+            self.assertEqual(selection.usage.llm_calls, 2)
 
-    def test_signal_selector_returns_empty_after_failed_category_repair(self) -> None:
+    def test_signal_selector_accepts_empty_no_match_without_correction(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
-            caller = ScriptedRoleCaller(
-                [{"categories": []}, {"categories": ["unknown"]}]
-            )
+            caller = ScriptedRoleCaller([{"signal_refs": []}])
 
             selection = LLMSignalRetrievalAgent(caller).select(
                 ("unmatched need",), registry.freeze(), {}
             )
 
             self.assertEqual(selection.value, ())
-            self.assertEqual(selection.usage.llm_calls, 2)
+            self.assertEqual(selection.usage.llm_calls, 1)
             self.assertEqual(
                 caller.stages,
-                ["signal_retrieval_categories", "signal_retrieval_categories"],
+                ["signal_retrieval_cards"],
             )
+
+    def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller([{"signal_refs": []}])
+            prior_result = {
+                "signal_id": "cash_reserves",
+                "version": 1,
+                "state": {"value": "positive", "confidence": 0.8},
+            }
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("revenue growth",),
+                registry.freeze(),
+                {"cash_reserves:v1": ("doc:hash",)},
+                {"cash_reserves:v1": prior_result},
+                ("revenue_growth_yoy:v1",),
+            )
+
+            self.assertEqual(selection.value, ())
+            self.assertEqual(selection.usage.llm_calls, 1)
+            payload = caller.calls[0]["payload"]
+            self.assertEqual(
+                [card["signal_ref"] for card in payload["signal_cards"]],
+                ["revenue_growth_yoy:v1"],
+            )
+            self.assertEqual(
+                payload["previous_signal_results"]["cash_reserves:v1"],
+                prior_result,
+            )
+
+    def test_signal_selector_skips_model_when_no_eligible_cards_remain(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller([])
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("anything new",),
+                registry.freeze(),
+                {},
+                {},
+                (),
+            )
+
+            self.assertEqual(selection.value, ())
+            self.assertEqual(selection.usage.llm_calls, 0)
+            self.assertEqual(caller.stages, [])
+
+    def test_soft_signal_apply_chain_retrieves_executes_and_reflects_once(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="filing-guidance-1",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="Management raised full-year revenue guidance to 40 percent growth.",
+        )
+        signal_output = {
+            "signal_id": "guidance_acceleration",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.9},
+            "interpretation": {"summary": "Management materially raised guidance."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": document.document_id,
+                        "exact_span": document.content,
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        reflected_state = {
+            "hypotheses": ["guidance is accelerating"],
+            "current_beliefs": ["the source supports acceleration"],
+            "supporting_evidence": [document.content],
+            "contradictions": [],
+            "resolved_questions": ["did management raise guidance"],
+            "open_questions": [],
+            "next_information_needs": [],
+            "decision": "finalize",
+        }
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            snapshot = registry.freeze()
+            selector_caller = ScriptedRoleCaller(
+                [{"signal_refs": ["guidance_acceleration:v1"]}]
+            )
+            signal_caller = ScriptedRoleCaller([signal_output])
+            controller_caller = ScriptedRoleCaller([reflected_state])
+
+            selected = LLMSignalRetrievalAgent(selector_caller).select(
+                ("did management raise guidance",),
+                snapshot,
+                {},
+                {},
+                ("guidance_acceleration:v1",),
+            )
+            batch = SignalExecutor(
+                snapshot,
+                RawInfoStore(documents=(document,)),
+                llm_runner=StructuredLLMSignalRunner(signal_caller),
+            ).execute_batch(
+                selected.value,
+                company_id="issuer-1",
+                as_of=as_of,
+            )
+            reflected = LLMResearchController(controller_caller).reflect(
+                default_information_plan(),
+                ResearchState(
+                    hypotheses=("guidance may be accelerating",),
+                    next_information_needs=("did management raise guidance",),
+                ),
+                batch,
+            )
+
+            self.assertEqual(selector_caller.stages, ["signal_retrieval_cards"])
+            self.assertEqual(signal_caller.stages, ["llm_signal_execute"])
+            self.assertEqual(
+                controller_caller.stages,
+                ["research_controller_reflect"],
+            )
+            self.assertEqual(batch.signal_calls, 1)
+            self.assertEqual(batch.results[0].value, SignalValue.POSITIVE)
+            self.assertEqual(
+                batch.results[0].supporting_evidence[0].exact_span,
+                document.content,
+            )
+            self.assertEqual(reflected.value.decision, ResearchDecision.FINALIZE)
 
     def test_blind_predictor_parses_two_stage_schema(self) -> None:
         caller = ScriptedRoleCaller(

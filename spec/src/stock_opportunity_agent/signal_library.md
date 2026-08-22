@@ -69,6 +69,13 @@ The Registry exposes:
    policy statistics; and
 3. full versioned `SignalSpec` only when selected.
 
+Progressive disclosure is an information boundary, not a requirement for one
+provider call per level. The current small Registry supplies all eligible
+compact cards in one Signal-selection call after deterministically omitting refs
+already executed in the same case trajectory. Category remains card metadata;
+the executor alone loads the selected full specs. No eligible card or a valid
+empty selection terminates retrieval without an additional model call.
+
 `freeze()` returns one immutable definition snapshot and hash. Stats may keep
 accumulating while frozen, but stable definitions and versions cannot change
 until the fast-loop group ends.
@@ -132,6 +139,12 @@ be executed again. Financial deterministic Signals parse both scoped SEC
 Company Facts API JSON and accession-scoped
 `sec-company-facts-document-v1`; derived evidence cites the exact serialized
 fact rows used in the calculation.
+
+The adaptive Information-Plan runtime treats the prepared Raw Info view as
+fixed for one case trajectory and therefore removes already executed refs before
+its next selection request. The executor keeps fingerprint-based no-op behavior
+as a second correctness boundary and for direct callers whose Raw Info view may
+change between batches.
 
 When evidence policy requires it, each non-unavailable result must cite a
 document in the actual input set, the cited timestamp cannot exceed the as-of

@@ -88,11 +88,15 @@ Research Controller answers: “What information is needed next?” It owns
 `H_init` and `H_reflect`.
 
 Signal Retrieval Agent answers: “Which existing Signals can answer that need?”
-It progressively browses categories, Signal cards, then full specs, and may
-select a batch. Unknown, empty, or duplicate category/ref selections receive at
-most one correction call with the exact allowed set. If the correction remains
-invalid, the agent returns an empty selection and the runtime records
-`no_signal_match`; it never guesses a category or Signal on the model's behalf.
+For the current compact Registry, the runtime deterministically removes refs
+already executed in the same case trajectory, then supplies every remaining
+compact Signal card, including its category, in one selection request. Full
+specs remain executor-only disclosure after selection. An empty `signal_refs`
+array is a valid `no_signal_match` result when no remaining card can answer the
+need and consumes no correction call. A malformed container, duplicate ref, or
+ref outside the supplied cards receives at most one correction call with the
+exact allowed set. If the correction remains invalid, the agent returns an
+empty selection; it never guesses a category or Signal on the model's behalf.
 
 An `EvidenceResolver` serves both bootstrap and Signal paths. It queries the
 global Raw Info oracle first, optionally performs separately authorized and
@@ -103,8 +107,9 @@ All model-facing records enforce JSON types before domain construction. In
 particular booleans must be JSON booleans (the string `"false"` is invalid),
 list fields must be arrays rather than strings or objects, and required nested
 objects/fields cannot be filled by Python truthiness or iterable coercion.
-Malformed category/ref containers follow the same bounded correction path
-instead of escaping as `TypeError` or being interpreted character by character.
+Malformed ref containers follow the bounded correction path instead of escaping
+as `TypeError` or being interpreted character by character. The selection role
+must not force a non-empty answer after the eligible card set is exhausted.
 
 Basic Info is an ordered `BasicInfoBundle` of exact original spans plus complete
 lineage. `H_init` receives each request's purpose and these literal spans; it

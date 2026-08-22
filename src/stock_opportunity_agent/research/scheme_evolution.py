@@ -436,8 +436,9 @@ class SignalRetrievalAgent(Protocol):
         signal_registry: FrozenSignalRegistry,
         prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
         prior_signal_results: Mapping[str, Mapping[str, Any]],
+        eligible_signal_refs: tuple[str, ...] | None = None,
     ) -> AgentStep[tuple[str, ...]]:
-        """Return a unique Signal batch after progressive disclosure."""
+        """Return a unique batch from the supplied unexecuted Signal refs."""
 
 
 @dataclass(frozen=True)
@@ -1251,16 +1252,30 @@ def execute_information_plan(
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
 
+        eligible_signal_refs = tuple(
+            spec.ref
+            for spec in signal_registry.specs
+            if spec.ref not in signal_fingerprints
+        )
+        if not eligible_signal_refs:
+            termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
+            break
+
         selection_step = signal_agent.select(
             state.next_information_needs,
             signal_registry,
             signal_fingerprints,
             prior_signal_results,
+            eligible_signal_refs=eligible_signal_refs,
         )
         model_usage = _consume_model_step(model_usage, selection_step.usage, limits)
         selected = tuple(selection_step.value)
         if len(set(selected)) != len(selected):
             raise ValidationError("Signal Retrieval Agent returned duplicate refs")
+        if not set(selected).issubset(eligible_signal_refs):
+            raise ValidationError(
+                "Signal Retrieval Agent returned an already executed or unknown ref"
+            )
         if not selected:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break

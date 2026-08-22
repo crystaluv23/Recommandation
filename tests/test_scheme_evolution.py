@@ -162,6 +162,7 @@ class OneSignalSelector:
         signal_registry,
         prior_signal_fingerprints=None,
         prior_signal_results=None,
+        eligible_signal_refs=None,
     ):
         self.needs = tuple(information_needs)
         return AgentStep(
@@ -904,6 +905,63 @@ class InformationPlanRuntimeTests(TestCase):
             )
             self.assertEqual(len(trajectory.signal_rounds), 1)
             self.assertEqual(persisted, ["done"])
+
+    def test_runtime_omits_executed_refs_before_next_signal_selection(self) -> None:
+        class LoopingController(OneBatchController):
+            def reflect(self, plan, state, batch):
+                return AgentStep(
+                    ResearchState(next_information_needs=("find new evidence",)),
+                    AgentUsage(llm_calls=1),
+                )
+
+        class EligibleSelector:
+            def __init__(self) -> None:
+                self.eligible_calls: list[tuple[str, ...]] = []
+
+            def select(
+                self,
+                information_needs,
+                signal_registry,
+                prior_signal_fingerprints=None,
+                prior_signal_results=None,
+                eligible_signal_refs=None,
+            ):
+                eligible = tuple(eligible_signal_refs or ())
+                self.eligible_calls.append(eligible)
+                if "revenue_growth_yoy:v1" in eligible:
+                    return AgentStep(("revenue_growth_yoy:v1",), AgentUsage())
+                return AgentStep((), AgentUsage())
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            selector = EligibleSelector()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=LoopingController(),
+                signal_agent=selector,
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(
+                    max_signal_rounds=5,
+                    max_signal_calls=5,
+                    max_llm_calls=10,
+                ),
+            )
+
+            self.assertEqual(len(trajectory.signal_rounds), 1)
+            self.assertEqual(
+                trajectory.termination_trigger,
+                RuntimeStopReason.NO_SIGNAL_MATCH,
+            )
+            self.assertIn("revenue_growth_yoy:v1", selector.eligible_calls[0])
+            self.assertNotIn("revenue_growth_yoy:v1", selector.eligible_calls[1])
+            self.assertFalse(trajectory.signal_rounds[0].batch.skipped_unchanged_refs)
 
     def test_repeated_issuer_cases_keep_distinct_truths_and_prediction_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
