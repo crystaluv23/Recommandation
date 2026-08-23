@@ -1,0 +1,17 @@
+{
+  "source_workspace": "deepseek-v6-context-remediation-20260823-v6",
+  "request_hash": "337e09191d032a4b1910268be36cb8bf2bfd788943debab2b3930c13e8ff3b2a",
+  "failure": {
+    "required_tokens": 80152,
+    "remaining_case_tokens": 53016,
+    "wire_body_bytes": 78152,
+    "output_ceiling": 2000
+  },
+  "original_context_characters": {
+    "final_context": 61310,
+    "basic_info": 42693,
+    "signal_rounds": 15087,
+    "final_research_state": 3128,
+    "analysis_prompt": 327
+  }
+}

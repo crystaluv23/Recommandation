@@ -224,6 +224,7 @@ def make_contract() -> EvolutionRunContract:
             "finalization_token_reserve": 36_000,
             "basic_info_context_chars": 32_000,
             "signal_batch_context_chars": 32_000,
+            "predictor_context_bytes": 24_000,
             "posthoc_context_chars": 24_000,
             "meta_context_chars": 48_000,
             "role_output_tokens": {
@@ -3768,6 +3769,70 @@ class RunControlTests(TestCase):
 
             self.assertFalse(transport.called)
             self.assertEqual(ledger.summary["attempt_count"], 0)
+
+    def test_predictor_context_byte_cap_fits_terminal_reserve_on_exact_wire(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "evolution_runtime"
+                / "v6_predictor_terminal_reserve_overflow.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertGreater(fixture["failure"]["required_tokens"], 36_000)
+        compact_context = {
+            "context_contract": {
+                "kind": "bounded_prediction_projection",
+                "max_utf8_bytes": 24_000,
+                "complete_trajectory_retained_locally": True,
+            },
+            "basic_info": {"source_index": [], "data_gaps": []},
+            "signal_rounds": [],
+            "cited_signal_evidence": [],
+            "final_research_state": ResearchState(
+                decision=ResearchDecision.FINALIZE
+            ).to_dict(),
+            "analysis_prompt": "a" * 20_000,
+        }
+        self.assertLessEqual(
+            len(
+                json.dumps(
+                    compact_context,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ),
+            24_000,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client = StructuredRoleClient(
+                registration=get_model("deepseek-v4-flash"),
+                contract=make_contract(),
+                workspace=root,
+                ledger=ExternalAttemptLedger(
+                    root / "attempts.json", max_attempts=2, max_total_cost=1.0
+                ),
+                allow_external=False,
+                environ={},
+            )
+            predictor = LLMBlindPredictor(client)
+            predictor.set_request_token_budget(36_000)
+
+            with self.assertRaises(ExternalRequestPending) as pending:
+                predictor.predict(compact_context)
+
+            request = json.loads(
+                pending.exception.request_path.read_text(encoding="utf-8")
+            )["request"]
+            self.assertLessEqual(
+                request["wire_request"]["body_bytes"]
+                + request["max_output_tokens"],
+                36_000,
+            )
 
     def test_structured_client_persists_canonical_production_wire_body(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

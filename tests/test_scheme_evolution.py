@@ -58,6 +58,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanReflection,
     PredictionSelfReflection,
     ResearchDecision,
+    ResearchEvidenceRef,
     ResearchState,
     RoundMetaEntry,
     RuntimeLimits,
@@ -81,11 +82,14 @@ from stock_opportunity_agent.research.scheme_evolution import (
     default_information_plan,
     execute_information_plan,
     score_predictions,
+    MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
+    _assemble_final_context,
     _mask_identity_values,
     _filter_h3_documents,
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
+    SignalBatchResult,
     SignalCoverage,
     SignalEvidence,
     SignalExecutionType,
@@ -984,6 +988,119 @@ class InformationPlanRuntimeTests(TestCase):
             )
             self.assertIn("usage", trajectory.signal_rounds[0].to_dict()["batch"])
             self.assertEqual(predictor.reflection_truths, [GroundTruth(4.0)])
+
+    def test_predictor_projection_omits_repeated_full_basic_and_signal_evidence(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "evolution_runtime"
+                / "v6_predictor_terminal_reserve_overflow.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertEqual(fixture["failure"]["required_tokens"], 80_152)
+        basic_info = {
+            "max_normalized_characters": 32_000,
+            "requests": [
+                {
+                    "request": {
+                        "request_id": "annual_filing",
+                        "source_types": ["10-k"],
+                    },
+                    "status": "resolved",
+                    "data_gap": None,
+                    "projections": [
+                        {
+                            "projection_id": "projection_large",
+                            "exact_text": "full-basic-marker-" + "x" * 31_000,
+                        }
+                    ],
+                }
+            ],
+        }
+        timestamp = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        rounds = []
+        for round_index in range(5):
+            results = []
+            for result_index in range(4):
+                signal_id = f"signal_{round_index}_{result_index}"
+                results.append(
+                    SignalResult(
+                        signal_id=signal_id,
+                        version=1,
+                        value=SignalValue.POSITIVE,
+                        confidence=0.8,
+                        interpretation=(
+                            f"{signal_id} compact interpretation " + "i" * 240
+                        ),
+                        supporting_evidence=(
+                            SignalEvidence(
+                                document_id=f"document_{signal_id}",
+                                exact_span="signal-evidence-marker-" + "e" * 240,
+                                timestamp=timestamp,
+                            ),
+                        ),
+                    )
+                )
+            rounds.append(
+                SignalRound(
+                    information_needs=(f"need {round_index}",),
+                    selections=tuple(
+                        SignalSelectionDecision.legacy(result.ref)
+                        for result in results
+                    ),
+                    batch=SignalBatchResult(
+                        results=tuple(results), signal_calls=len(results)
+                    ),
+                )
+            )
+        state = ResearchState(
+            supporting_evidence=(
+                ResearchEvidenceRef(
+                    kind="basic_info",
+                    claim="The filing contains one relevant literal.",
+                    projection_id="projection_large",
+                    exact_text="full-basic-marker-",
+                ),
+                ResearchEvidenceRef(
+                    kind="signal",
+                    claim="The first Signal supports the hypothesis.",
+                    signal_ref="signal_0_0:v1",
+                    evidence_group="supporting",
+                    evidence_index=0,
+                ),
+            ),
+            decision=ResearchDecision.FINALIZE,
+        )
+
+        context = _assemble_final_context(
+            plan=default_information_plan(),
+            company_id="issuer-fixture",
+            additional_identity_aliases=(),
+            basic_info=basic_info,
+            state=state,
+            rounds=tuple(rounds),
+        )
+
+        serialized = json.dumps(
+            context, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        )
+        self.assertLessEqual(
+            len(serialized.encode("utf-8")), MAX_PREDICTOR_CONTEXT_UTF8_BYTES
+        )
+        self.assertNotIn("full-basic-marker-" + "x" * 100, serialized)
+        self.assertEqual(
+            context["basic_info"]["source_index"][0]["projection_ids"],
+            ["projection_large"],
+        )
+        self.assertNotIn(
+            "evidence", context["signal_rounds"][0]["batch"]["results"][0]
+        )
+        self.assertEqual(
+            context["cited_signal_evidence"][0]["evidence"]["exact_span"],
+            "signal-evidence-marker-" + "e" * 240,
+        )
 
     def test_runtime_stops_at_fixed_round_guard(self) -> None:
         class LoopingController(OneBatchController):

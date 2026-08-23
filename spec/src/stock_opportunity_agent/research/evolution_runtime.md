@@ -132,6 +132,16 @@ Predictor; insufficient Signal/routing budget ends adaptive research and enters
 finalize. Insufficient post-hoc budget preserves the immutable prediction and
 fitness and writes a deterministic `budget_skipped` reflection.
 
+The v6 contract additionally freezes `predictor_context_bytes=24000`. Predictor
+assembly removes repeated full Basic projections and full per-round Signal evidence:
+it sends a Basic source/DataGap index, the complete final ResearchState, compact
+Signal state/interpretation/coverage rows, and exact material only for final-state
+Signal citation tuples. Complete source bundles and rounds remain in the local
+trajectory. The compact payload is measured after anonymity masking with canonical
+UTF-8 JSON and must fit its byte ceiling before provider request construction. This
+keeps the byte-for-token preflight conservative and makes the 36,000 terminal reserve
+internally consistent; no tokenizer approximation or post-call overflow is allowed.
+
 A provider response that is not exactly one JSON object is a paid structured
 output failure, not a process-level crash. The runtime persists its raw model
 text and usage in a failure-only audit artifact, records the actual cost on the

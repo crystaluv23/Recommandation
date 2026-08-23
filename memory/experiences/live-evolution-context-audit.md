@@ -72,3 +72,12 @@ missing/unexpected fields; do not duplicate that array in another prompt block o
 reconstruct a missing literal locally. Strict-but-generic feedback can make a model
 repeat the same error and reject otherwise viable candidates without strengthening
 the evidence boundary.
+
+Token reserves and context ceilings must use compatible units. If request preflight
+conservatively counts each canonical wire byte as one token, a 36k terminal reserve
+cannot cover a Predictor packet that repeats a 32k-character Basic projection plus
+all Signal rounds and JSON escaping. Keep the conservative preflight; derive a
+separate Predictor projection that sends source/DataGap coverage, the final state,
+compact Signal conclusions, and only cited Signal evidence. Measure the anonymized
+canonical payload in UTF-8 bytes and freeze that ceiling in the run contract while
+retaining complete Basic Info and trajectories locally.

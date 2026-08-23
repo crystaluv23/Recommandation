@@ -1779,6 +1779,7 @@ class EvolutionRunContract:
                     "finalization_token_reserve": 36_000,
                     "basic_info_context_chars": 32_000,
                     "signal_batch_context_chars": 32_000,
+                    "predictor_context_bytes": 24_000,
                     "posthoc_context_chars": 24_000,
                     "meta_context_chars": 48_000,
                     "role_output_tokens": ROLE_OUTPUT_TOKEN_LIMITS,

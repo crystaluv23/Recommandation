@@ -43,6 +43,7 @@ from stock_opportunity_agent.signal_library import (
 
 T = TypeVar("T")
 ProgressCallback = Callable[[Mapping[str, Any]], None]
+MAX_PREDICTOR_CONTEXT_UTF8_BYTES = 24_000
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_.:-]*$")
 _IDENTITY_MASK_SENTINEL = "\ue000\ue001"
 _MASKED_IDENTITY_VALUE = "[MASKED_COMPANY]"
@@ -1906,16 +1907,130 @@ def _assemble_final_context(
             if key in identity_keys and value is not None
         ),
     ]
+    source_index: list[dict[str, Any]] = []
+    data_gaps: list[dict[str, Any]] = []
+    for row in basic_info.get("requests", ()):
+        if not isinstance(row, Mapping):
+            continue
+        request = row.get("request", {})
+        projections = row.get("projections", ())
+        source_index.append(
+            {
+                "request_id": (
+                    request.get("request_id")
+                    if isinstance(request, Mapping)
+                    else None
+                ),
+                "source_types": (
+                    list(request.get("source_types", ()))
+                    if isinstance(request, Mapping)
+                    else []
+                ),
+                "status": row.get("status"),
+                "projection_ids": [
+                    item.get("projection_id")
+                    for item in projections
+                    if isinstance(item, Mapping)
+                    and isinstance(item.get("projection_id"), str)
+                ],
+            }
+        )
+        if isinstance(row.get("data_gap"), Mapping):
+            data_gaps.append(dict(row["data_gap"]))
+
+    round_rows = tuple(rounds)
+    signal_results = {
+        result.ref: result
+        for round_row in round_rows
+        for result in round_row.batch.results
+    }
+    signal_rounds = [
+        {
+            "selected_signals": list(round_row.selected_signals),
+            "batch": {
+                "results": [
+                    {
+                        "signal_ref": result.ref,
+                        "state": result.to_dict()["state"],
+                        "interpretation": result.to_dict()["interpretation"],
+                        "status": result.to_dict()["status"],
+                    }
+                    for result in round_row.batch.results
+                ],
+                "signal_calls": round_row.batch.signal_calls,
+            },
+        }
+        for round_row in round_rows
+    ]
+    cited_signal_evidence: list[dict[str, Any]] = []
+    seen_signal_evidence: set[tuple[str, str, int]] = set()
+    for evidence_ref in state.supporting_evidence:
+        if (
+            not isinstance(evidence_ref, ResearchEvidenceRef)
+            or evidence_ref.kind != "signal"
+        ):
+            continue
+        key = (
+            str(evidence_ref.signal_ref),
+            str(evidence_ref.evidence_group),
+            int(evidence_ref.evidence_index or 0),
+        )
+        if key in seen_signal_evidence:
+            continue
+        result = signal_results.get(key[0])
+        if result is None:
+            raise RuntimeBudgetExceeded(
+                f"Predictor projection cannot resolve cited Signal {key[0]!r}"
+            )
+        evidence_rows = (
+            result.supporting_evidence
+            if key[1] == "supporting"
+            else result.counter_evidence
+        )
+        if key[2] >= len(evidence_rows):
+            raise RuntimeBudgetExceeded(
+                "Predictor projection cannot resolve cited Signal evidence index"
+            )
+        cited_signal_evidence.append(
+            {
+                "signal_ref": key[0],
+                "evidence_group": key[1],
+                "evidence_index": key[2],
+                "evidence": evidence_rows[key[2]].to_dict(),
+            }
+        )
+        seen_signal_evidence.add(key)
+
     context = {
-        "basic_info": {
-            key: value for key, value in basic_info.items() if key not in identity_keys
+        "context_contract": {
+            "kind": "bounded_prediction_projection",
+            "max_utf8_bytes": MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
+            "complete_trajectory_retained_locally": True,
         },
-        "signal_rounds": [item.to_model_context_dict() for item in rounds],
+        "basic_info": {
+            "source_index": source_index,
+            "data_gaps": data_gaps,
+        },
+        "signal_rounds": signal_rounds,
+        "cited_signal_evidence": cited_signal_evidence,
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
     }
     masked_context = _mask_identity_values(context, identity_aliases)
     _assert_identity_values_masked(masked_context, identity_aliases)
+    context_bytes = len(
+        json.dumps(
+            masked_context,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    )
+    if context_bytes > MAX_PREDICTOR_CONTEXT_UTF8_BYTES:
+        raise RuntimeBudgetExceeded(
+            "compact Predictor context exceeds frozen UTF-8 byte ceiling: "
+            f"required={context_bytes}, limit={MAX_PREDICTOR_CONTEXT_UTF8_BYTES}"
+        )
     return masked_context
 
 

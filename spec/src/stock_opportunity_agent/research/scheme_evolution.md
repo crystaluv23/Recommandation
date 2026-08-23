@@ -176,6 +176,18 @@ Legacy string evidence remains readable only in v1-v5 artifacts.
 Blind Predictor consumes only the assembled label-free context. The same
 Predictor adapter later receives its saved original context, saved prediction,
 uncertainty, and revealed truth to produce post-hoc self-reflection.
+The Predictor packet is a separate deterministic projection capped at 24,000
+canonical UTF-8 payload bytes so its exact wire request plus the 2,000-token output
+ceiling fits inside the frozen 36,000-token terminal reserve even under the
+byte-for-token conservative preflight. It does not repeat complete Basic projections
+or full Signal evidence arrays. Instead it contains the Basic request/source/DataGap
+index, the complete final ResearchState, compact state/interpretation/coverage for
+each executed Signal, and exact evidence material only for Signal tuples cited by
+the final state. Basic literals are already carried by their tagged final-state refs.
+Complete Basic Info, Signal rounds, lineage, and Raw Info remain durable locally.
+If the deterministic projection cannot fit without dropping these semantic layers,
+the case fails before a Predictor attempt; runtime never weakens the byte-level
+preflight or silently truncates cited provenance.
 
 Before Predictor handoff, direct identity fields are removed and company id,
 current name/ticker, and the caller's source-derived alias inventory are masked
