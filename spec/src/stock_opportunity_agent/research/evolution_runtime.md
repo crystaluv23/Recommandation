@@ -412,6 +412,9 @@ issuer target whose terms should be researched. For structured market JSON, it
 must cite a complete visible row rather than constructing a shorter object from
 selected fields.
 
+The evaluation-boundary reminder also forbids asking for the fixed baseline date
+or baseline price: those are runtime-owned definition inputs, not issuer evidence.
+
 For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
 literal from one supplied projection: it may not use ellipses, join distant rows,
 reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly once
@@ -432,6 +435,10 @@ For Basic refs, reflect may restate a claim while preserving the provenance tupl
 because the exact literal remains present in the ref and can be revalidated. For a
 new current-batch Signal ref, every numeric quantity in the claim must occur in the
 union of exact Signal evidence items referenced by refs carrying that same claim.
+For a deterministic Signal, a claim may instead copy the exact canonical numeric
+form from `interpretation.summary`; local validation treats that validated derived
+record plus the cited source evidence as support. Rounded percentages, converted
+units, and new raw quantities absent from both remain invalid.
 A retained Signal ref from an earlier batch must preserve its prior claim byte-for-byte:
 the backing batch is no longer in the model-facing context, so allowing an unsupported
 restatement would erase or invent the upstream finding. Missing quantities or a changed

@@ -164,7 +164,8 @@ records and are never appended to Raw Info.
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask
 for issuer-specific evidence that bears on its feasibility, but must not ask for
-the "terms" or "definition" of that fixed outcome. When a market projection is
+the "terms", "definition", baseline date, or baseline price of that fixed outcome;
+those are runtime-owned evaluation inputs. When a market projection is
 structured as JSON rows, a Basic-Info citation must copy one complete visible row,
 including every field between its braces; constructing a shorter JSON object from
 selected fields is a non-literal citation and follows the correction path.

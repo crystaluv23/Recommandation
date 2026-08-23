@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 from unittest import TestCase
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
@@ -16,9 +17,61 @@ from stock_opportunity_agent.signal_library import (
 
 
 AS_OF = datetime(2025, 2, 1, tzinfo=timezone.utc)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/signal_financials/"
+                "v18_wynn_revenue_alias_and_staleness.json"
+            ).read_text()
+        )
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        specs = (
+            _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, 0.0),
+            _spec(
+                "operating_cash_flow_margin",
+                "financial.operating_cash_flow_margin",
+                0.1,
+                0.0,
+            ),
+        )
+
+        def execute(payload: object) -> tuple:
+            document = _document(
+                "wynn-facts",
+                json.dumps(payload, sort_keys=True, separators=(",", ":")),
+            )
+            return SignalExecutor(
+                _snapshot(specs), RawInfoStore(documents=(document,))
+            ).execute_batch(
+                tuple(spec.ref for spec in specs),
+                company_id="issuer_1",
+                as_of=as_of,
+            ).results
+
+        current = execute(fixture["current_payload"])
+        self.assertEqual(current[0].interpretation, "revenue_growth_yoy=-0.0872356")
+        self.assertEqual(
+            current[1].interpretation, "operating_cash_flow_margin=0.0786722"
+        )
+        cited = " ".join(
+            evidence.exact_span
+            for result in current
+            for evidence in result.supporting_evidence
+        )
+        self.assertIn('"end":"2025-03-31"', cited)
+        self.assertNotIn('"end":"2018-12-31"', cited)
+
+        stale = execute(fixture["stale_payload"])
+        self.assertEqual(
+            tuple(result.value for result in stale),
+            (SignalValue.UNAVAILABLE, SignalValue.UNAVAILABLE),
+        )
+        self.assertTrue(all("stale" in result.interpretation for result in stale))
     def test_scoped_sec_api_drives_six_financial_signals_and_excludes_future(self) -> None:
         content = _scoped_company_facts_content()
         document = _document("sec_scoped", content)

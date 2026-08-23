@@ -4432,6 +4432,19 @@ _CLAIM_QUANTITY_SCALES = {
     "tn": Decimal(1_000_000_000_000),
     "trillion": Decimal(1_000_000_000_000),
 }
+_CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS = frozenset(
+    {
+        "cash_reserves",
+        "gross_margin_change",
+        "max_drawdown_1y",
+        "negative_word_count",
+        "net_share_retirement_yoy",
+        "operating_cash_flow_margin",
+        "price_momentum_126d",
+        "revenue_acceleration",
+        "revenue_growth_yoy",
+    }
+)
 
 
 def _normalized_claim_quantities(text_value: str) -> set[str]:
@@ -4520,8 +4533,10 @@ def _validate_signal_claim_quantities(
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all referenced Signal evidence items with the same "
-                f"claim: {missing}. Cite every required Signal evidence item with "
-                "the same claim or narrow the claim to the referenced literal"
+                f"claim: {missing}. Copy the exact canonical numeric form from a "
+                "deterministic Signal interpretation, cite every required Signal "
+                "evidence item with the same claim, or narrow the claim; do not "
+                "round or convert the supplied values"
             )
 
 
@@ -4647,9 +4662,15 @@ def _validate_research_state_refs(
                 f"{valid_indices} for that signal_ref and group. Use one exact tuple "
                 "from signal_evidence_ref_catalog or remove this evidence item"
             )
-        signal_claim_literals.setdefault(item.claim, []).append(
+        claim_literals = signal_claim_literals.setdefault(item.claim, [])
+        claim_literals.append(
             (index, evidence[int(item.evidence_index or 0)].exact_span)
         )
+        if (
+            result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
+            and result.interpretation.startswith(result.signal_id + "=")
+        ):
+            claim_literals.append((index, result.interpretation))
     _validate_basic_claim_quantities(tuple(normalized_refs))
     _validate_signal_claim_quantities(signal_claim_literals)
     if tuple(normalized_refs) == refs:
@@ -4681,7 +4702,8 @@ class LLMResearchController:
                 "six-month adjusted-share-price doubling outcome is the evaluation "
                 "definition, not an issuer statement or target. Ask only for "
                 "issuer-specific evidence bearing on its feasibility; never ask for "
-                "the terms or definition of the evaluation outcome."
+                "the terms, definition, baseline date, or baseline price of the "
+                "evaluation outcome; runtime owns those inputs."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
@@ -4722,6 +4744,9 @@ class LLMResearchController:
                 "Use only an exact tuple listed by signal_evidence_ref_catalog. Every "
                 "numeric quantity in a new Signal claim must occur in the union of the "
                 "exact Signal evidence items referenced by refs with that same claim. "
+                "For a deterministic Signal interpretation shaped metric=value, you "
+                "may copy that exact numeric form into the claim; do not round it, "
+                "convert it to a percentage, or add approximate raw values. "
                 "Copy a retained Signal ref's prior claim byte-for-byte because its "
                 "backing batch is no longer visible."
                 + _UNTRUSTED_DATA_INSTRUCTION

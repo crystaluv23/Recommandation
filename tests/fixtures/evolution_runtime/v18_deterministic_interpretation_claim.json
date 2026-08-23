@@ -1,0 +1,6 @@
+{
+  "evidence_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":1700397000}",
+  "exact_claim": "The canonical result is revenue_growth_yoy=-0.0872356.",
+  "interpretation": "revenue_growth_yoy=-0.0872356",
+  "rounded_claim": "Revenue declined approximately 8.7 percent year over year."
+}

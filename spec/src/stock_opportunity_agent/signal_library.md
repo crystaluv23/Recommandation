@@ -147,6 +147,15 @@ Company Facts API JSON and accession-scoped
 `sec-company-facts-document-v1`; derived evidence cites the exact serialized
 fact rows used in the calculation.
 
+Revenue aliases include both `RevenueFromContractWithCustomerExcludingAssessedTax`
+and `RevenueFromContractWithCustomerIncludingAssessedTax`; a company changing
+between those standard concepts must not make a current case fall back to an older
+legacy `Revenues` fact. For every duration/balance financial primitive, the newest
+fact used as the current period must end no more than 550 calendar days before the
+case as-of date. This accommodates one annual reporting cycle plus filing lag and a
+bounded buffer while making an otherwise valid but years-old concept `unavailable`.
+Older comparison periods may still support a fresh current year-over-year result.
+
 The adaptive Information-Plan runtime treats the prepared Raw Info view as
 fixed for one case trajectory and therefore removes already executed refs before
 its next selection request. The executor keeps fingerprint-based no-op behavior
@@ -165,6 +174,13 @@ Aggregate deterministic Signals cite every input document that contributed to
 the aggregate, using a span containing a matched term when the result depends on
 literal term counts; they do not cite an unrelated first document merely
 because it was present in the batch.
+
+A deterministic Signal's canonical `interpretation` is a locally computed,
+validated derived record rather than source prose. Downstream ResearchState claims
+may quote a numeric value from that interpretation only byte-for-byte (for example,
+`revenue_growth_yoy=-0.087244`); the Signal ref and one valid source-evidence index
+then preserve the calculation's provenance. The role may not round it, convert it
+to a percentage, or introduce raw input quantities absent from the cited evidence.
 
 An LLM Signal result that fails schema, identity, unavailable/evidence
 coherence, source, timestamp, or exact-span validation receives at most one

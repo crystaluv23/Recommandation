@@ -2047,10 +2047,12 @@ class _SecFact:
 
 _REVENUE_TAGS = (
     "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "RevenueFromContractWithCustomerIncludingAssessedTax",
     "Revenues",
     "SalesRevenueNet",
     "Revenue",
 )
+_MAX_SEC_CURRENT_PERIOD_AGE_DAYS = 550
 _CASH_TAGS = (
     "CashAndCashEquivalentsAtCarryingValue",
     "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
@@ -2077,6 +2079,10 @@ def _revenue_growth_signal(
     if pair is None or pair[1].value == 0:
         return _unavailable_result(spec, "Comparable SEC revenue periods were unavailable.")
     current, previous = pair
+    if not _current_sec_fact_is_fresh(spec, current, as_of):
+        return _unavailable_result(
+            spec, f"Latest supported SEC revenue period ended {current.end} and is stale."
+        )
     value = current.value / previous.value - 1.0
     return _numeric_result(
         spec,
@@ -2098,6 +2104,11 @@ def _revenue_acceleration_signal(
     if len(pairs) < 2:
         return _unavailable_result(spec, "Two comparable SEC revenue growth periods were unavailable.")
     current_pair = pairs[0]
+    if not _current_sec_fact_is_fresh(spec, current_pair[0], as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest supported SEC revenue period ended {current_pair[0].end} and is stale.",
+        )
     prior_pair = next(
         (pair for pair in pairs[1:] if pair[0].end < current_pair[0].end),
         None,
@@ -2135,6 +2146,11 @@ def _gross_margin_change_signal(
     if len(margins) < 2:
         return _unavailable_result(spec, "Comparable SEC gross-margin periods were unavailable.")
     current = margins[0]
+    if not _current_sec_fact_is_fresh(spec, current[2], as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest matched SEC gross-margin period ended {current[2].end} and is stale.",
+        )
     previous = next(
         (item for item in margins[1:] if _comparable_duration(current[2], item[2])),
         None,
@@ -2178,6 +2194,11 @@ def _operating_cash_flow_margin_signal(
             "Matching SEC operating-cash-flow and positive-revenue periods were unavailable.",
         )
     latest = ratios[0]
+    if not _current_sec_fact_is_fresh(spec, latest[2], as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest matched SEC operating-cash-flow period ended {latest[2].end} and is stale.",
+        )
     return _numeric_result(
         spec,
         latest[1],
@@ -2200,6 +2221,11 @@ def _net_share_retirement_yoy_signal(
             "Comparable point-in-time SEC weighted-average share periods were unavailable.",
         )
     current, previous = pair
+    if not _current_sec_fact_is_fresh(spec, current, as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest comparable SEC share period ended {current.end} and is stale.",
+        )
     value = 1.0 - (current.value / previous.value)
     return _numeric_result(
         spec,
@@ -2224,6 +2250,10 @@ def _cash_reserves_signal(
     if not facts:
         return _unavailable_result(spec, "Point-in-time SEC cash balance was unavailable.")
     latest = max(facts, key=lambda fact: (fact.end, fact.filed, fact.document.document_id))
+    if not _current_sec_fact_is_fresh(spec, latest, as_of):
+        return _unavailable_result(
+            spec, f"Latest SEC cash balance ended {latest.end} and is stale."
+        )
     return _numeric_result(
         spec,
         latest.value,
@@ -2397,6 +2427,20 @@ def _share_duration_series(facts: Iterable[_SecFact]) -> list[_SecFact]:
         key=lambda fact: (fact.end, fact.filed, fact.document.document_id),
         reverse=True,
     )
+
+
+def _current_sec_fact_is_fresh(
+    spec: SignalSpec, fact: _SecFact, as_of: datetime
+) -> bool:
+    """Require a bounded current SEC period while allowing older comparatives."""
+
+    raw_limit = spec.parameters.get(
+        "max_period_age_days", _MAX_SEC_CURRENT_PERIOD_AGE_DAYS
+    )
+    if isinstance(raw_limit, bool) or not isinstance(raw_limit, int) or raw_limit < 1:
+        raise ValidationError("max_period_age_days must be a positive integer")
+    period_end = datetime.fromisoformat(fact.end).date()
+    return (as_of.date() - period_end).days <= raw_limit
 
 
 def _latest_share_yoy_pair(

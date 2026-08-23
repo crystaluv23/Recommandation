@@ -241,3 +241,21 @@ terms. Tags were designed as locally normalized coarse hints: discard unknown st
 deduplicate, and cap them. Preserve correction and rejection for wrong Signal refs,
 missing fields, invalid reason/role enums, or malformed tag containers, which can
 change execution semantics rather than merely losing an optional hint.
+
+## Current-period addendum (2026-08-23)
+
+Point-in-time legality does not imply decision-time relevance. An SEC Company Facts
+document fetched and available in 2025 can still contain decades of old facts; if a
+company migrated from `Revenues` to
+`RevenueFromContractWithCustomerIncludingAssessedTax`, an incomplete concept alias
+list can silently label 2018 as “latest.” Inspect actual fact end dates in Signal
+evidence, support both assessed-tax revenue concepts, and require the current period
+to be within a bounded reporting-age window. Old comparison periods may remain valid
+only behind a fresh current period.
+
+Derived deterministic metrics also need an honest downstream citation path. Raw fact
+rows cannot literally contain a computed growth rate, so requiring every reflected
+number to occur only in raw evidence makes the useful Signal output impossible to
+state. Permit the exact validated `metric=value` interpretation through its Signal
+ref, while rejecting rounded percentages, unit conversions, and extra source values.
+This preserves both the computation and the raw evidence boundary.

@@ -3323,6 +3323,7 @@ class ConcreteRoleAdapterTests(TestCase):
         initial_prompt = caller.calls[0]["system_prompt"]
         correction_prompt = caller.calls[1]["system_prompt"]
         self.assertIn("evaluation definition, not an issuer statement", initial_prompt)
+        self.assertIn("baseline date, or baseline price", initial_prompt)
         self.assertIn("complete visible row", initial_prompt)
         self.assertIn("Returning the same rejected content", correction_prompt)
         self.assertIn(
@@ -3648,6 +3649,75 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn(
             "Every numeric quantity in a new Signal claim",
             caller.calls[0]["system_prompt"],
+        )
+
+    def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v18_deterministic_interpretation_claim.json"
+            ).read_text()
+        )
+        timestamp = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        result = SignalResult(
+            signal_id="revenue_growth_yoy",
+            version=1,
+            value=SignalValue.NEGATIVE,
+            confidence=1.0,
+            interpretation=fixture["interpretation"],
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="wynn-facts",
+                    exact_span=fixture["evidence_span"],
+                    timestamp=timestamp,
+                ),
+            ),
+        )
+
+        def reflection(claim: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Recent revenue may be weakening."],
+                "current_beliefs": [claim],
+                "supporting_evidence": [
+                    {
+                        "kind": "signal",
+                        "claim": claim,
+                        "signal_ref": "revenue_growth_yoy:v1",
+                        "evidence_group": "supporting",
+                        "evidence_index": 0,
+                    }
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["Check a current catalyst."],
+                "decision": "continue",
+            }
+
+        exact_caller = ScriptedRoleCaller([reflection(fixture["exact_claim"])])
+        reflected = LLMResearchController(exact_caller).reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=("Check revenue.",)),
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+        self.assertEqual(
+            reflected.value.supporting_evidence[0].claim, fixture["exact_claim"]
+        )
+        self.assertIn("do not round it", exact_caller.calls[0]["system_prompt"])
+
+        rounded_caller = ScriptedRoleCaller(
+            [reflection(fixture["rounded_claim"]), reflection(fixture["rounded_claim"])]
+        )
+        with self.assertRaises(CandidateExecutionRejected):
+            LLMResearchController(rounded_caller).reflect(
+                default_information_plan(),
+                ResearchState(next_information_needs=("Check revenue.",)),
+                SignalBatchResult(results=(result,), signal_calls=1),
+            )
+        self.assertIn(
+            "do not round or convert",
+            rounded_caller.calls[1]["payload"]["validation_error"],
         )
 
     def test_v12_reflect_preserves_retained_signal_claim_without_old_batch(self) -> None:

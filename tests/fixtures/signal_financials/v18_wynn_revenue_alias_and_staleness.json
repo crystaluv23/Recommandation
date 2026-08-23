@@ -1,0 +1,55 @@
+{
+  "current_payload": {
+    "cik": 1174922,
+    "facts": {
+      "us-gaap": {
+        "NetCashProvidedByUsedInOperatingActivities": {
+          "units": {
+            "USD": [
+              {"accn":"0001174922-25-000084","end":"2024-03-31","filed":"2025-05-06","form":"10-Q","fp":"Q1","frame":"CY2024Q1","fy":2025,"start":"2024-01-01","val":315094000},
+              {"accn":"0001174922-25-000084","end":"2025-03-31","filed":"2025-05-06","form":"10-Q","fp":"Q1","fy":2025,"start":"2025-01-01","val":133774000}
+            ]
+          }
+        },
+        "RevenueFromContractWithCustomerIncludingAssessedTax": {
+          "units": {
+            "USD": [
+              {"accn":"0001174922-25-000084","end":"2024-03-31","filed":"2025-05-06","form":"10-Q","fp":"Q1","frame":"CY2024Q1","fy":2025,"start":"2024-01-01","val":1862909000},
+              {"accn":"0001174922-25-000084","end":"2025-03-31","filed":"2025-05-06","form":"10-Q","fp":"Q1","fy":2025,"start":"2025-01-01","val":1700397000}
+            ]
+          }
+        },
+        "Revenues": {
+          "units": {
+            "USD": [
+              {"accn":"0001174922-19-000021","end":"2017-12-31","filed":"2019-02-28","form":"10-K","fp":"FY","frame":"CY2017","fy":2018,"start":"2017-01-01","val":6070160000},
+              {"accn":"0001174922-19-000021","end":"2018-12-31","filed":"2019-02-28","form":"10-K","fp":"FY","frame":"CY2018","fy":2018,"start":"2018-01-01","val":6717660000}
+            ]
+          }
+        }
+      }
+    }
+  },
+  "stale_payload": {
+    "cik": 1174922,
+    "facts": {
+      "us-gaap": {
+        "NetCashProvidedByUsedInOperatingActivities": {
+          "units": {
+            "USD": [
+              {"accn":"0001174922-20-000024","end":"2018-12-31","filed":"2020-02-28","form":"10-K","fp":"FY","fy":2019,"start":"2018-01-01","val":961489000}
+            ]
+          }
+        },
+        "Revenues": {
+          "units": {
+            "USD": [
+              {"accn":"0001174922-19-000021","end":"2017-12-31","filed":"2019-02-28","form":"10-K","fp":"FY","frame":"CY2017","fy":2018,"start":"2017-01-01","val":6070160000},
+              {"accn":"0001174922-19-000021","end":"2018-12-31","filed":"2019-02-28","form":"10-K","fp":"FY","frame":"CY2018","fy":2018,"start":"2018-01-01","val":6717660000}
+            ]
+          }
+        }
+      }
+    }
+  }
+}
