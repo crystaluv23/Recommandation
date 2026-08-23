@@ -193,3 +193,14 @@ locally repairable provenance only when the unchanged quote has exactly one occu
 across the entire visible lineage; then map through that unique projection and still
 apply edge checks. A correction call is wasteful and can destroy valid evidence when
 the quote itself is already uniquely verifiable.
+
+Quantitative literal gates need exact unit equivalence, not only digit equality. Model
+prose may express a raw SEC integer as an exact billion value; treat the unscaled token
+and exact Decimal-scaled value as alternatives for an explicit unit, with no tolerance
+or rounding. Keep the unscaled alternative because a table literal may carry the number
+while its unit header is outside the quoted span.
+
+Fixed-semantics scanners must also distinguish replacing a threshold from describing the
+frozen one. A correct post-hoc explanation that evidence stayed below the doubling
+threshold is learning, not semantic drift. Match affirmative set/use/change actions or
+numeric replacements rather than the bare noun.

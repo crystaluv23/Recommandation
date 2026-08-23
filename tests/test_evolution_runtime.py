@@ -2434,6 +2434,32 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(plan.analysis_prompt, analysis_prompt)
             self.assertEqual(caller.stages, ["information_plan_propose"])
 
+    def test_v14_fixed_threshold_reference_is_not_a_semantics_redefinition(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v14_fixed_threshold_reference.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        for text_value in fixture["allowed"]:
+            with self.subTest(allowed=text_value):
+                self.assertEqual(
+                    evolution_runtime_module._reject_fixed_semantics_redefinition(
+                        {"decision_drivers": [text_value]}
+                    ),
+                    {"decision_drivers": [text_value]},
+                )
+        for text_value in fixture["rejected"]:
+            with self.subTest(rejected=text_value):
+                with self.assertRaisesRegex(
+                    ValidationError, "redefine fixed Predictor semantics"
+                ):
+                    evolution_runtime_module._reject_fixed_semantics_redefinition(
+                        {"decision_drivers": [text_value]}
+                    )
+
     def test_v10_proposer_corrects_change_outside_required_focus(self) -> None:
         fixture = json.loads(
             (
@@ -3388,6 +3414,68 @@ class ConcreteRoleAdapterTests(TestCase):
             default_information_plan(), market_info
         )
         self.assertEqual(len(market_state.value.supporting_evidence), 2)
+
+    def test_v14_basic_claim_accepts_exact_explicit_unit_scaling(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v14_scaled_financial_claim.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        def output(claim: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Cash generation may be improving."],
+                "current_beliefs": [claim],
+                "supporting_evidence": [
+                    {
+                        "kind": "basic_info",
+                        "claim": claim,
+                        "projection_id": f"projection_financial_{index}",
+                        "exact_text": exact_text,
+                    }
+                    for index, exact_text in enumerate(fixture["exact_texts"])
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["Confirm cash-flow durability."],
+                "decision": "continue",
+            }
+
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": f"projection_financial_{index}",
+                            "exact_text": exact_text,
+                        }
+                        for index, exact_text in enumerate(fixture["exact_texts"])
+                    ]
+                }
+            ]
+        }
+        valid_caller = ScriptedRoleCaller([output(fixture["claim"])])
+
+        state = LLMResearchController(valid_caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(state.value.supporting_evidence), 2)
+        self.assertEqual(valid_caller.stages, ["research_controller_initialize"])
+
+        invalid = output(fixture["unsupported_claim"])
+        invalid_caller = ScriptedRoleCaller([invalid, invalid])
+        with self.assertRaises(CandidateExecutionRejected):
+            LLMResearchController(invalid_caller).initialize(
+                default_information_plan(), basic_info
+            )
+        self.assertIn(
+            "1605400000",
+            invalid_caller.calls[1]["payload"]["validation_error"],
+        )
 
     def test_v12_reflect_rejects_signal_claim_quantities_absent_from_evidence(self) -> None:
         fixture = json.loads(

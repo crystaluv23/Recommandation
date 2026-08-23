@@ -1,0 +1,8 @@
+{
+  "claim": "Kinross's operating cash flow increased from $1.6053 billion in 2023 to $2.4464 billion in 2024",
+  "exact_texts": [
+    "\"end\":\"2023-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2023\",\"fy\":2024,\"start\":\"2023-01-01\",\"val\":1605300000",
+    "\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2446400000"
+  ],
+  "unsupported_claim": "Kinross's operating cash flow increased from $1.6054 billion in 2023 to $2.4464 billion in 2024"
+}

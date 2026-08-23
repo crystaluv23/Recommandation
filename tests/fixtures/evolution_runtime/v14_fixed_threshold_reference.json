@@ -1,0 +1,11 @@
+{
+  "allowed": [
+    "The cited price target implied only about 11% upside, far below the doubling threshold.",
+    "The evidence did not cross the fixed 2x cutoff."
+  ],
+  "rejected": [
+    "Use a new threshold of 0.55 for positive predictions.",
+    "Change the cutoff based on confidence.",
+    "Compute P(surge) and apply a 0.55 probability threshold."
+  ]
+}

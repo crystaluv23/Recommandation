@@ -318,3 +318,25 @@ fail-closed，literal 不做任何修改，resolved projection 仍接受 edge-fr
 `decision_drivers`；后续第二次 H_reflect 对先前 `commercialization_status` ref 的
 claim 逐字保留。Predictor/post-hoc 的 Basic source index 也已非空。Slow 角色仍未
 到达。
+
+## v14 精确单位等价与 fixed-threshold 描述
+
+v14 合同 hash 为
+`31d04773743c66dd50812c1d22dccf6055931de1e6f225552f1d0862abfc59d4`。
+主动停止时 14 reserved attempts（13 completed、1 interrupted）、两次真实 SEC
+fetch，指针 `0/0`。已结 cost `$0.02004632`，保守 reservation `$0.01425900`；
+下一合同剩余 726 attempts、`$18.83341920`、947 provider requests。
+
+c01 首 case 的 Basic financial projection 原样包含 `val=1605300000` 和
+`val=2446400000`，initialize claim 合理写成 `$1.6053 billion` 和
+`$2.4464 billion`。旧 quantity gate 只比较字符化数字，纠错反馈仍无法让模型改变
+正确表述，最终错误淘汰整个 candidate。当前对每个带显式单位的 token 建立原值与
+精确 Decimal 缩放值的等价组；literal 命中任一个即满足。这样
+`2,521,793 thousand` 仍可由 raw `2,521,793` literal 支持，`1.6053 billion`
+也可由 `1605300000` 支持；不做 tolerance、rounding 或隐含单位猜测。
+
+c02 的 post-hoc 初次输出已经含两条具体 decision drivers，其中“$27 相对 $24.37
+约 11%，far below the doubling threshold”是在正确使用固定 2x 定义，旧 scanner 却
+因裸 `threshold` 单词触发纠错。当前允许 bare fixed-threshold/cutoff 描述；只有
+set/use/adopt/change/adjust 等肯定动作、显式 numeric replacement、probability/odds
+仍被拒绝。纠错没有改变分析结论，证明原调用是纯 token 浪费。

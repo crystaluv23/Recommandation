@@ -387,6 +387,10 @@ same one correction request with the failed output and precise validation messag
 as malformed content. Fixed-semantics scanning distinguishes explicit prohibitions
 such as “without calculating probabilities” from affirmative probability/threshold
 instructions and returns the matched prohibited phrase in correction feedback. The
+literal words `threshold` and `cutoff` are not violations by themselves: retrospective
+prose may explain that evidence stayed below the fixed doubling threshold. They are
+rejected only when paired with an instruction to set/use/change a threshold or an
+explicit replacement numeric threshold; probability/odds instructions remain blocked. The
 outer candidate-attempt loop remains a separate bounded sampling layer; it must not
 retry an exact duplicate without explaining the required change. An unrepaired
 candidate is rejected as a bounded event without committing a partial round.
@@ -406,7 +410,10 @@ otherwise correction feedback names the exact `supporting_evidence[index]`, supp
 projection, and matching projection ids before the candidate fails closed.
 Each Basic evidence claim must also be quantitatively supported by the literal refs
 carrying that same claim: every numeric quantity in the claim must occur, after local
-format normalization, in the union of those exact texts. A claim spanning two market
+format normalization, in the union of those exact texts. Normalization includes exact
+decimal scaling for an explicit adjacent thousand/million/billion/trillion word or
+standard `k/m/mm/b/bn/t/tn` suffix, so `$1.6053 billion` is equivalent to raw
+`1605300000`; it performs no rounding, tolerance, or inferred unit conversion. A claim spanning two market
 endpoints may use two refs with the same claim; a lone beginning-balance literal cannot
 support a beginning-to-ending decrease. Missing quantities receive one actionable
 correction rather than being accepted merely because some literal exists.

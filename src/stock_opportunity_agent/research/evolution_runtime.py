@@ -13,6 +13,7 @@ import tempfile
 from calendar import monthrange
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Protocol
 
@@ -4048,7 +4049,10 @@ def _validate_proposal_change_focus(
 
 
 _FIXED_SEMANTICS_REDEFINITION = re.compile(
-    r"(?:p\s*\(|probabilit(?:y|ies)|odds|threshold|cutoff|"
+    r"(?:p\s*\(|probabilit(?:y|ies)|odds|"
+    r"(?:set|apply|use|adopt|change|raise|lower|adjust|redefine)"
+    r".{0,40}(?:threshold|cutoff)|"
+    r"(?:threshold|cutoff)\s*(?:of|at|to|=)\s*[-+]?\d|"
     r"three[- ]month|twelve[- ]month|one[- ]year|"
     r"redefine.{0,40}(?:surge|horizon|label|judg)|"
     r"final\s+signal\s+classif|generate\s+(?:the\s+)?prediction)",
@@ -4402,28 +4406,72 @@ def _signal_evidence_ref_catalog(batch: SignalBatchResult) -> list[dict[str, Any
     ]
 
 
-_CLAIM_QUANTITY = re.compile(r"(?<![A-Za-z0-9])[-+]?\d[\d,]*(?:\.\d+)?")
+_CLAIM_QUANTITY = re.compile(
+    r"(?<![A-Za-z0-9])(?P<number>[-+]?\d[\d,]*(?:\.\d+)?)"
+    r"(?:\s*(?P<unit>trillion|billion|million|thousand|mm|bn|tn|k|m|b|t)"
+    r"(?![A-Za-z]))?",
+    re.IGNORECASE,
+)
+_CLAIM_QUANTITY_SCALES = {
+    "k": Decimal(1_000),
+    "thousand": Decimal(1_000),
+    "m": Decimal(1_000_000),
+    "mm": Decimal(1_000_000),
+    "million": Decimal(1_000_000),
+    "b": Decimal(1_000_000_000),
+    "bn": Decimal(1_000_000_000),
+    "billion": Decimal(1_000_000_000),
+    "t": Decimal(1_000_000_000_000),
+    "tn": Decimal(1_000_000_000_000),
+    "trillion": Decimal(1_000_000_000_000),
+}
 
 
 def _normalized_claim_quantities(text_value: str) -> set[str]:
     """Normalize numeric claim tokens for a conservative literal-support gate."""
 
-    values: set[str] = set()
+    return {
+        value
+        for group in _normalized_claim_quantity_groups(text_value)
+        for value in group
+    }
+
+
+def _normalized_claim_quantity_groups(text_value: str) -> tuple[frozenset[str], ...]:
+    """Return exact raw/scaled alternatives for each numeric token."""
+
+    groups: list[frozenset[str]] = []
     for match in _CLAIM_QUANTITY.finditer(text_value):
-        value = match.group(0).replace(",", "")
-        sign = ""
-        if value[:1] in {"+", "-"}:
-            sign, value = value[0], value[1:]
+        number = Decimal(match.group("number").replace(",", ""))
+        raw_value = format(number, "f")
+        if "." in raw_value:
+            raw_value = raw_value.rstrip("0").rstrip(".")
+        if raw_value.startswith("-0") and Decimal(raw_value) == 0:
+            raw_value = "0"
+        values = {raw_value}
+        unit = match.group("unit")
+        if unit:
+            number *= _CLAIM_QUANTITY_SCALES[unit.casefold()]
+        value = format(number, "f")
         if "." in value:
-            integer, fraction = value.split(".", 1)
-            fraction = fraction.rstrip("0")
-            value = integer.lstrip("0") or "0"
-            if fraction:
-                value += "." + fraction
-        else:
-            value = value.lstrip("0") or "0"
-        values.add(sign + value)
-    return values
+            value = value.rstrip("0").rstrip(".")
+        if value.startswith("-0") and Decimal(value) == 0:
+            value = "0"
+        values.add(value)
+        groups.append(frozenset(values))
+    return tuple(groups)
+
+
+def _missing_claim_quantity_groups(
+    claim: str, cited_quantities: set[str]
+) -> list[str]:
+    """Describe claim quantity groups with no exact cited equivalent."""
+
+    return [
+        "|".join(sorted(group, key=lambda value: (len(value), value)))
+        for group in _normalized_claim_quantity_groups(claim)
+        if group.isdisjoint(cited_quantities)
+    ]
 
 
 def _validate_basic_claim_quantities(
@@ -4439,7 +4487,7 @@ def _validate_basic_claim_quantities(
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
-        missing = sorted(_normalized_claim_quantities(claim) - cited_quantities)
+        missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
             index = items[0][0]
             raise ValidationError(
@@ -4459,7 +4507,7 @@ def _validate_signal_claim_quantities(
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
-        missing = sorted(_normalized_claim_quantities(claim) - cited_quantities)
+        missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
             index = items[0][0]
             raise ValidationError(
