@@ -390,6 +390,12 @@ reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly o
 across the visible projection set is deterministically assigned to that projection;
 otherwise correction feedback names the exact `supporting_evidence[index]`, supplied
 projection, and matching projection ids before the candidate fails closed.
+Each Basic evidence claim must also be quantitatively supported by the literal refs
+carrying that same claim: every numeric quantity in the claim must occur, after local
+format normalization, in the union of those exact texts. A claim spanning two market
+endpoints may use two refs with the same claim; a lone beginning-balance literal cannot
+support a beginning-to-ending decrease. Missing quantities receive one actionable
+correction rather than being accepted merely because some literal exists.
 Evidence-transition identity is source provenance, not the mutable explanatory
 `claim`: reflect may restate a claim only while preserving the Basic or Signal
 provenance tuple; deterministic terminal closure does not restate it. The reflect

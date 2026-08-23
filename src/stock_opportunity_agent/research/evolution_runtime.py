@@ -3685,7 +3685,9 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "copied byte-for-byte from exactly one supplied projection. Never use ellipses, "
     "join non-contiguous fragments, reorder JSON fields, or paraphrase exact_text. "
     "Use the projection_id containing that literal; omit evidence that cannot be "
-    "quoted exactly."
+    "quoted exactly. Every numeric quantity in one claim must occur in the union of "
+    "exact_text literals attached to that same claim; use multiple refs for a "
+    "multi-span claim or narrow the claim."
 )
 
 _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
@@ -3712,7 +3714,8 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     ' Decision must be "continue" or "finalize"; continue requires at least one need.'
     " Retain prior Basic Info refs using their basic_info shape. New signal refs must "
     "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
-    "add projection_id, exact_text, document_id, or other keys."
+    "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
+    "claims remain subject to the same numeric-quantity support rule."
 )
 
 _BLIND_PREDICTION_OUTPUT = _output_contract(
@@ -4370,6 +4373,54 @@ def _signal_evidence_ref_catalog(batch: SignalBatchResult) -> list[dict[str, Any
     ]
 
 
+_CLAIM_QUANTITY = re.compile(r"(?<![A-Za-z0-9])[-+]?\d[\d,]*(?:\.\d+)?")
+
+
+def _normalized_claim_quantities(text_value: str) -> set[str]:
+    """Normalize numeric claim tokens for a conservative literal-support gate."""
+
+    values: set[str] = set()
+    for match in _CLAIM_QUANTITY.finditer(text_value):
+        value = match.group(0).replace(",", "")
+        sign = ""
+        if value[:1] in {"+", "-"}:
+            sign, value = value[0], value[1:]
+        if "." in value:
+            integer, fraction = value.split(".", 1)
+            fraction = fraction.rstrip("0")
+            value = integer.lstrip("0") or "0"
+            if fraction:
+                value += "." + fraction
+        else:
+            value = value.lstrip("0") or "0"
+        values.add(sign + value)
+    return values
+
+
+def _validate_basic_claim_quantities(
+    refs: tuple[ResearchEvidenceRef, ...],
+) -> None:
+    """Require each Basic claim's quantities across its cited literal group."""
+
+    grouped: dict[str, list[tuple[int, str]]] = {}
+    for index, item in enumerate(refs):
+        if item.kind == "basic_info":
+            grouped.setdefault(item.claim, []).append((index, str(item.exact_text)))
+    for claim, items in grouped.items():
+        cited_quantities: set[str] = set()
+        for _index, exact_text in items:
+            cited_quantities.update(_normalized_claim_quantities(exact_text))
+        missing = sorted(_normalized_claim_quantities(claim) - cited_quantities)
+        if missing:
+            index = items[0][0]
+            raise ValidationError(
+                f"supporting_evidence[{index}] claim contains numeric quantities "
+                f"absent from all Basic exact_text refs with the same claim: {missing}. "
+                "Add one exact literal ref for every quantity, split the multi-span "
+                "claim across refs with the same claim, or narrow the claim"
+            )
+
+
 def _validate_research_state_refs(
     state: ResearchState,
     *,
@@ -4478,6 +4529,7 @@ def _validate_research_state_refs(
                 f"{valid_indices} for that signal_ref and group. Use one exact tuple "
                 "from signal_evidence_ref_catalog or remove this evidence item"
             )
+    _validate_basic_claim_quantities(tuple(normalized_refs))
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()

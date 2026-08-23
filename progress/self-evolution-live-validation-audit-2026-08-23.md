@@ -232,3 +232,32 @@ fixture。provider usage 另兼容 Responses 的
 `input_tokens_details.cached_tokens`，并由总 input 确定性计算 miss；预算仍按全 miss
 冻结。下一版合同只能使用新增授权的剩余额度：793 attempts、`$18.93009424` 和
 956 个真实 provider requests。
+
+## v11 SEC projection 与 evidence claim 缺陷
+
+v11 合同 hash 为
+`b94f7a56f75505757afb344ab714dcd1207937a6af8abb353dbdebd1e1502893`。
+第一个 case 已用 7 个模型调用完成，证明确定性 terminal closure 正常工作；真实
+usage 也首次证明缓存命中：三个 proposer 均为 1,024/1,047 input tokens 命中，
+一个 soft-Signal batch 为 9,984/10,036 命中。第二个 case 后主动停止，v11 共
+14 attempts（13 completed、1 retryable transport failure）和 3 个真实 SEC fetch，
+已结 cost `$0.01337168`，权威指针仍为 `0/0`。
+
+实际 attempt 10 的 `quarterly_filings` model view 有 19 个 projection、10,064
+字符、12 个 HTML/XBRL tag 和 7 个 `style=` 片段。根因不是 tag regex 完全缺失，
+而是 resolver 先按每 2,000 个 raw HTML 字符切块和 query 排序，导致 span 从 tag
+attribute 中间开始或结束；随后只删除完整 `<...>` 的 projection 无法恢复边界，
+而 query hit 又会被 XBRL attribute 干扰。当前 resolver 对 filing markup 先在完整
+document 上移除 tags、规范化空白并按 readable text 排序/分窗，再把窗口映射回
+raw start/end；durable span 仍严格等于原始 Raw Info literal。projection 额外移除
+旧边界 fragment 并解码单字符 HTML entity。
+
+同一 response 还把“cash 从 2,521,793 降至 2,165,476”绑定到只含 beginning
+balance 的 literal。另一个市场趋势 claim 合法使用两个 refs 分别承载起终点，因此
+不能简单要求每个单 ref 包含全部数量。新 gate 按相同 claim 聚合 Basic refs，并
+要求 claim 的每个规范化 numeric quantity 在这些 literal 的并集中出现；缺量进入
+一次 actionable correction。对 attempt 10 原始输入的精确本地 replay 从 22,610
+降到 17,548 Basic chars，quarterly projection 从 19 条降到 4 条，tags、`style=`、
+XBRL fragment、HTML entity 均为 0，且保留现金、经营现金流、capex 和债务段落。
+v11 artifacts 保持只读；下一合同剩余 779 attempts、`$18.91672256`、953 provider
+requests。

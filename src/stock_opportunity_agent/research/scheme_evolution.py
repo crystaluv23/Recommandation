@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import html
 import json
 import math
 import os
@@ -122,6 +123,13 @@ _MODEL_VIEW_METADATA_FIELD = re.compile(
     re.IGNORECASE,
 )
 _HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
+_HTML_PREFIX_FRAGMENT = re.compile(
+    r"(?:\b(?:style|class|id|name|contextref|unitref|dimension|colspan|rowspan|scale)\s*=|"
+    r"(?:font|background|border|padding|text-align)[-a-z]*\s*:|"
+    r"(?:xbrli|xbrldi|ix|us-gaap|dei):|\b\d+(?:\.\d+)?pt\s*[\"']?)",
+    re.IGNORECASE,
+)
+_HTML_SUFFIX_FRAGMENT = re.compile(r"^</?[A-Za-z][\w:.-]*(?:\s|$)")
 _URL_VALUE = re.compile(r"https?://[^\s\"\\]+", re.IGNORECASE)
 
 
@@ -175,6 +183,16 @@ def _normalized_projection_text(
     removed: list[tuple[int, int]] = list(
         (match.start(), match.end()) for match in _HTML_TAG.finditer(raw_text)
     )
+    first_close = raw_text.find(">")
+    first_open = raw_text.find("<")
+    if first_close >= 0 and (first_open < 0 or first_close < first_open):
+        prefix = raw_text[:first_close]
+        if _HTML_PREFIX_FRAGMENT.search(prefix):
+            removed.append((0, first_close + 1))
+    last_open = raw_text.rfind("<")
+    last_close = raw_text.rfind(">")
+    if last_open > last_close and _HTML_SUFFIX_FRAGMENT.match(raw_text[last_open:]):
+        removed.append((last_open, len(raw_text)))
     if strip_market_metadata:
         removed.extend(
             (match.start(), match.end())
@@ -197,6 +215,32 @@ def _normalized_projection_text(
         cursor = end
     for index in range(cursor, len(raw_text)):
         chars.append((raw_text[index], raw_offset + index, raw_offset + index + 1))
+
+    decoded_chars: list[tuple[str, int, int]] = []
+    index = 0
+    while index < len(chars):
+        character, start, end = chars[index]
+        if character == "&":
+            for candidate_end in range(index + 1, min(len(chars), index + 16)):
+                if chars[candidate_end][0] != ";":
+                    continue
+                candidate = "".join(
+                    item[0] for item in chars[index : candidate_end + 1]
+                )
+                decoded = html.unescape(candidate)
+                if len(decoded) == 1 and decoded != candidate:
+                    decoded_chars.append(
+                        (decoded, start, chars[candidate_end][2])
+                    )
+                    index = candidate_end + 1
+                    break
+            else:
+                decoded_chars.append((character, start, end))
+                index += 1
+            continue
+        decoded_chars.append((character, start, end))
+        index += 1
+    chars = decoded_chars
 
     normalized: list[tuple[str, int, int]] = []
     for character, start, end in chars:

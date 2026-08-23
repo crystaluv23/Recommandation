@@ -22,6 +22,10 @@ CONTEXT_CHUNK_OVERLAP = 200
 MAX_BASIC_INFO_CONTEXT_CHARS = 48_000
 DATA_ACQUISITION_WILDCARD = "*"
 _TOKEN = re.compile(r"[A-Za-z0-9]+")
+_HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
+_MARKUP_SOURCE_TYPES = frozenset(
+    {"10-k", "10-q", "filing", "filing_body", "sec_filing"}
+)
 _CANONICAL_CIK_COMPANY_ID = re.compile(r"^cik_(\d{10})$")
 _IDENTITY_NAME_SEPARATOR = re.compile(r"\s*(?:/|\||;|\n)\s*")
 _IDENTITY_LEGAL_SUFFIX = re.compile(
@@ -1269,14 +1273,30 @@ def _select_context_spans(
     tokens = tuple(token.casefold() for token in _TOKEN.findall(request.query or ""))
     for document in documents:
         market_ranges = _structured_market_context_ranges(document, request, as_of)
-        ranges = (
-            market_ranges
-            if market_ranges is not None
-            else _chunk_ranges(len(document.content))
+        markup_windows = (
+            _markup_context_windows(document.content)
+            if market_ranges is None
+            and document.source_type.casefold() in _MARKUP_SOURCE_TYPES
+            and _HTML_TAG.search(document.content)
+            else None
         )
-        for start, end in ranges:
+        windows = (
+            ((start, end, document.content[start:end]) for start, end in market_ranges)
+            if market_ranges is not None
+            else (
+                markup_windows
+                if markup_windows is not None
+                else (
+                    (start, end, document.content[start:end])
+                    for start, end in _chunk_ranges(len(document.content))
+                )
+            )
+        )
+        for start, end, rank_text in windows:
             text = document.content[start:end]
-            hit_count = sum(text.casefold().count(token) for token in tokens)
+            hit_count = sum(
+                rank_text.casefold().count(token) for token in tokens
+            )
             rank = (
                 -hit_count,
                 -document.available_at.timestamp(),
@@ -1304,6 +1324,56 @@ def _select_context_spans(
         selected.append(span)
         used += len(span.exact_text)
     return selected
+
+
+def _markup_context_windows(
+    raw_text: str,
+) -> tuple[tuple[int, int, str], ...]:
+    """Choose readable markup windows while retaining exact raw boundaries."""
+
+    visible: list[str] = []
+    origins: list[tuple[int, int]] = []
+
+    def append(character: str, start: int, end: int) -> None:
+        if character.isspace():
+            if visible and visible[-1] != " ":
+                visible.append(" ")
+                origins.append((start, end))
+            return
+        visible.append(character)
+        origins.append((start, end))
+
+    cursor = 0
+    for match in _HTML_TAG.finditer(raw_text):
+        for index in range(cursor, match.start()):
+            append(raw_text[index], index, index + 1)
+        append(" ", match.start(), match.end())
+        cursor = match.end()
+    for index in range(cursor, len(raw_text)):
+        append(raw_text[index], index, index + 1)
+    while visible and visible[-1] == " ":
+        visible.pop()
+        origins.pop()
+    if not visible:
+        return ()
+
+    text_value = "".join(visible)
+    windows: list[tuple[int, int, str]] = []
+    for start, end in _chunk_ranges(len(text_value)):
+        while start < end and visible[start] == " ":
+            start += 1
+        while end > start and visible[end - 1] == " ":
+            end -= 1
+        if start == end:
+            continue
+        windows.append(
+            (
+                origins[start][0],
+                origins[end - 1][1],
+                text_value[start:end],
+            )
+        )
+    return tuple(windows)
 
 
 def _structured_market_context_ranges(

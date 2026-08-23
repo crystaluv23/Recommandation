@@ -149,12 +149,19 @@ from both Basic Info and Signal resolution, and the resolution events record the
 filtered document ids. This check does not apply to directly issuer-routed SEC,
 market, facts, or transcript sources.
 
-For Basic Info only, selected documents are split into 2,000-character spans
-with 200-character overlap. Query ranking uses literal case-insensitive token
-hit count, then public availability, then document id. Without a query,
-documents rank by public availability descending. A request selects at most ten
-documents; a Plan has at most eight requests; one case has a 48,000-character
-span budget. An over-budget span is omitted in full, never truncated.
+For Basic Info only, plain-text selected documents are split into 2,000-character
+spans with 200-character overlap. Query ranking uses literal case-insensitive token
+hit count, then public availability, then document id. For SEC/filing markup, tag
+removal and whitespace normalization happen over the complete document before query
+ranking and chunk boundaries are chosen; each readable-text window is then mapped
+back to a raw start/end range. The persisted `RawInfoContextSpan` remains an exact
+literal raw substring, while model projection receives complete removable tags rather
+than fragments beginning inside an HTML/XBRL attribute. Model projection also decodes
+single-character HTML entities with raw-span lineage, so repeated non-breaking-space
+and apostrophe encodings do not consume context as opaque markup. Without a query, documents
+rank by public availability descending. A request selects at most ten documents; a
+Plan has at most eight requests; one case has a 48,000-character raw-span budget. An
+over-budget span is omitted in full, never truncated.
 
 For structured market-data documents, `lookback_days` applies to the dated
 observations exposed to Basic Info, not merely to the publication timestamp of

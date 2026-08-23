@@ -551,6 +551,43 @@ class EvidenceResolverTests(TestCase):
         self.assertNotIn("events", model_context["requests"][0])
         self.assertNotIn("summary", str(model_context).casefold())
 
+    def test_filing_markup_uses_readable_query_windows_with_raw_lineage(self) -> None:
+        raw = document(
+            "quarterly_markup",
+            (
+                '<html><body><table><td style="'
+                + ("color:#000000;" * 180)
+                + '">Cash flow debt liquidity improved.</td>'
+                "<td><xbrli:unit id=\"usd\">Operating cash flow remained positive."
+                "</xbrli:unit></td></table></body></html>"
+            ),
+            source_type="10-q",
+        )
+        store = RawInfoStore(documents=(raw,))
+
+        resolution = EvidenceResolver(store).resolve_basic_info(
+            (
+                RawInfoRequest(
+                    "quarterly",
+                    "Read cash flow and debt.",
+                    ("10-q",),
+                    query="cash flow debt liquidity",
+                    max_documents=1,
+                ),
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        ).requests[0]
+
+        self.assertTrue(resolution.context_spans)
+        self.assertIn("Cash flow debt liquidity", resolution.context_spans[0].exact_text)
+        for span in resolution.context_spans:
+            self.assertEqual(span.exact_text, raw.content[span.start : span.end])
+            self.assertFalse(span.exact_text.startswith("style="))
+            before_start = raw.content[: span.start]
+            self.assertLessEqual(before_start.rfind("<"), before_start.rfind(">"))
+
     def test_provider_ticker_news_requires_visible_issuer_match(self) -> None:
         target = document(
             "news_target",

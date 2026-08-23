@@ -1,0 +1,26 @@
+{
+  "entity_text": "Cash &#160; Company&#8217;s liquidity",
+  "markup_fragments": [
+    "style=\"color:#000000;font-family:'Times New Roman',sans-serif;font-size:9pt;font-weight:700;line-height:100%\">( 2,375 ) Cash, cash equivalents and restricted cash",
+    ";font-size:10pt;font-weight:700;line-height:120%\">Note 3 - Cash, Cash Equivalents and Restricted Cash <span style=\"color:#000000\"",
+    "gaap:DebtInstrumentInterestRateStatedPercentage\" scale=\"-2\" id=\"f-516\">4.875 5.5 <xbrli:unit id"
+  ],
+  "multi_span_market_claim": {
+    "claim": "Kinross Gold's stock price increased from $19.38 on August 18, 2025 to $24.37 on September 29, 2025.",
+    "exact_texts": [
+      "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\"}",
+      "{\"adjusted_close\":24.37,\"as_of_date\":\"2025-09-29\"}"
+    ]
+  },
+  "source": {
+    "attempt_ids": [
+      4,
+      10
+    ],
+    "run_id": "deepseek-v6-context-remediation-20260823-v11"
+  },
+  "unsupported_cash_claim": {
+    "claim": "Cash and cash equivalents decreased from $2,521,793 thousand at the beginning of the period to $2,165,476 thousand at the end of the period.",
+    "exact_text": "Balance, beginning of period 2,521,793 &#160;"
+  }
+}

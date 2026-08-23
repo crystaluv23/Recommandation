@@ -153,3 +153,19 @@ a `B/H_init` attempt that changes only `H_analyse` destroys attribution even tho
 not an exact clone. Provider usage schemas also vary across compatible endpoints; accept
 both direct cache-hit fields and a validated nested cached-input count, while continuing
 to budget every input token as a miss.
+
+## Projection-order addendum (2026-08-23)
+
+Stripping HTML after raw fixed-width chunking is insufficient. A chunk can start inside
+`style=` or end inside an XBRL tag, and raw-token query ranking can prefer attributes
+over readable facts. For filing markup, normalize the complete document for ranking and
+window boundaries first, then map each readable window back to exact raw offsets. Keep
+the raw span literal and derive the model view with complete-tag removal and entity
+decoding. Verify the exact failed request, not just a balanced synthetic HTML fixture.
+
+Literal existence is also weaker than claim support. A model can cite a beginning cash
+balance while claiming a beginning-to-ending decline. A local quantitative entailment
+gate can remain deterministic by grouping Basic refs with the same claim and requiring
+every normalized numeric quantity in the claim to occur in the union of their exact
+literals. This permits a legitimate two-endpoint market claim while rejecting an
+unsupported composite fact without pretending to solve general semantic entailment.

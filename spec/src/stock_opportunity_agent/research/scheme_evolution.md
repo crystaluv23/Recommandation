@@ -72,7 +72,9 @@ S = (B, H_init, H_reflect, H_analyse)
   evolvable. Missing this backbone is a proposal-validation error with the same
   single bounded correction as other malformed Plan content.
 - `H_init`: turns Basic Info into hypotheses and natural-language information
-  needs, not hard-coded Signal ids.
+  needs, not hard-coded Signal ids. Every numeric quantity in a supporting claim
+  must be present in the union of exact Basic literals attached to that same claim;
+  multi-span facts use multiple refs instead of an unsupported composite claim.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`.

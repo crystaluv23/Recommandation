@@ -74,6 +74,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RoundMetaEntry,
     RuntimeStopReason,
     RuntimeBudgetExceeded,
+    _normalized_projection_text,
     project_basic_info_bundle,
     candidate_judgment_feedback,
     default_information_plan,
@@ -3166,7 +3167,23 @@ class ConcreteRoleAdapterTests(TestCase):
                 separators=(",", ":"),
             ),
         )
-        resolver = EvidenceResolver(RawInfoStore(documents=(filing, market)))
+        quarterly = RawInfoDocument.create(
+            document_id="quarterly-long-tag",
+            company_id="issuer-1",
+            source_type="10-q",
+            published_at=as_of,
+            available_at=as_of,
+            content=(
+                '<html><body><table><td style="'
+                + ("color:#000000;" * 180)
+                + '">Cash flow debt liquidity improved to 2,165,476.</td>'
+                "<td><xbrli:unit id=\"usd\">Readable filing evidence.</xbrli:unit>"
+                "</td></table></body></html>"
+            ),
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(documents=(filing, market, quarterly))
+        )
         bundle = resolver.resolve_basic_info(
             (
                 RawInfoRequest("filing", "business", ("filing",), max_documents=1),
@@ -3175,6 +3192,13 @@ class ConcreteRoleAdapterTests(TestCase):
                     "market",
                     ("market_data",),
                     lookback_days=45,
+                    max_documents=1,
+                ),
+                RawInfoRequest(
+                    "quarterly",
+                    "cash flow debt liquidity",
+                    ("10-q",),
+                    query="cash flow debt liquidity",
                     max_documents=1,
                 ),
             ),
@@ -3191,6 +3215,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn('"symbol"', rendered)
         self.assertNotIn('"source"', rendered)
         self.assertNotIn("08:41:17.052061", rendered)
+        self.assertNotIn("style=", rendered)
+        self.assertNotIn("<xbrli", rendered)
+        self.assertIn("Cash flow debt liquidity improved", rendered)
         self.assertTrue(audit["entries"])
         self.assertTrue(all(item["raw_offset_runs"] for item in audit["entries"]))
         self.assertLessEqual(
@@ -3201,6 +3228,119 @@ class ConcreteRoleAdapterTests(TestCase):
             ),
             32_000,
         )
+
+    def test_v11_markup_fragments_are_removed_from_model_projection(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v11_basic_markup_and_claim_support.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        for fragment in fixture["markup_fragments"]:
+            normalized, _runs = _normalized_projection_text(fragment)
+            self.assertNotIn("style=", normalized)
+            self.assertNotIn("scale=", normalized)
+            self.assertNotIn("<", normalized)
+            self.assertNotIn(">", normalized)
+        entity_text, _runs = _normalized_projection_text(fixture["entity_text"])
+        self.assertEqual(entity_text, "Cash Company’s liquidity")
+
+    def test_v11_basic_claim_requires_all_quantities_across_literal_refs(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v11_basic_markup_and_claim_support.json"
+            ).read_text(encoding="utf-8")
+        )
+        cash = fixture["unsupported_cash_claim"]
+        ending_text = "Balance, end of period 2,165,476 &#160;"
+        invalid = {
+            "hypotheses": ["liquidity may be tightening"],
+            "current_beliefs": [],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": cash["claim"],
+                    "projection_id": "projection_beginning",
+                    "exact_text": cash["exact_text"],
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["confirm ending liquidity"],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["supporting_evidence"].append(
+            {
+                "kind": "basic_info",
+                "claim": cash["claim"],
+                "projection_id": "projection_ending",
+                "exact_text": ending_text,
+            }
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": "projection_beginning",
+                            "exact_text": cash["exact_text"],
+                        },
+                        {
+                            "projection_id": "projection_ending",
+                            "exact_text": ending_text,
+                        },
+                    ]
+                }
+            ]
+        }
+
+        state = LLMResearchController(caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(state.value.supporting_evidence), 2)
+        self.assertIn(
+            "numeric quantities",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertIn("2165476", caller.calls[1]["payload"]["validation_error"])
+
+        market = fixture["multi_span_market_claim"]
+        market_output = json.loads(json.dumps(corrected))
+        market_output["supporting_evidence"] = [
+            {
+                "kind": "basic_info",
+                "claim": market["claim"],
+                "projection_id": f"projection_market_{index}",
+                "exact_text": exact_text,
+            }
+            for index, exact_text in enumerate(market["exact_texts"])
+        ]
+        market_caller = ScriptedRoleCaller([market_output])
+        market_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": f"projection_market_{index}",
+                            "exact_text": exact_text,
+                        }
+                        for index, exact_text in enumerate(market["exact_texts"])
+                    ]
+                }
+            ]
+        }
+        market_state = LLMResearchController(market_caller).initialize(
+            default_information_plan(), market_info
+        )
+        self.assertEqual(len(market_state.value.supporting_evidence), 2)
 
     def test_two_soft_signals_share_one_projection_call_and_map_to_raw(self) -> None:
         class ProjectionBatchCaller:
