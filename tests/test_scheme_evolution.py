@@ -861,6 +861,19 @@ class InformationPlanRuntimeTests(TestCase):
         self.assertNotIn("AAR", masked)
         self.assertNotIn("aar", masked)
 
+    def test_formal_name_masks_four_letter_brand_inside_property_name(self) -> None:
+        masked = _mask_identity_values(
+            (
+                "Wynn Mayfair supports the planned Wynn Al Marjan Island opening; "
+                "WYNN remains the target ticker."
+            ),
+            ("WYNN", "Wynn Resorts, Limited"),
+        )
+
+        self.assertEqual(masked.count("[MASKED_COMPANY]"), 3)
+        self.assertNotIn("Wynn", masked)
+        self.assertNotIn("WYNN", masked)
+
     def test_legacy_basic_info_fields_read_but_new_artifacts_write_requests(self) -> None:
         policy = type(default_information_plan().basic_info_policy).from_dict(
             {"fields": ["industry", "business_description"]}

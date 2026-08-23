@@ -1062,6 +1062,7 @@ class PredictionSelfReflection:
     """Post-hoc usability feedback produced only after label reveal."""
 
     correct: bool
+    decision_drivers: tuple[str, ...] = ()
     why_prediction_failed: tuple[str, ...] = ()
     misleading_signals: tuple[str, ...] = ()
     ignored_evidence: tuple[str, ...] = ()
@@ -1070,6 +1071,7 @@ class PredictionSelfReflection:
 
     def __post_init__(self) -> None:
         for name in (
+            "decision_drivers",
             "why_prediction_failed",
             "misleading_signals",
             "ignored_evidence",
@@ -1081,6 +1083,7 @@ class PredictionSelfReflection:
     def to_dict(self) -> dict[str, Any]:
         return {
             "prediction_outcome": {"correct": self.correct},
+            "decision_drivers": list(self.decision_drivers),
             "why_prediction_failed": list(self.why_prediction_failed),
             "misleading_signals": list(self.misleading_signals),
             "ignored_evidence": list(self.ignored_evidence),
@@ -1113,6 +1116,11 @@ class PredictionSelfReflection:
             correct=_json_boolean(
                 outcome_value["correct"],
                 "PredictionSelfReflection correct",
+            ),
+            decision_drivers=(
+                _json_string_array(data, "decision_drivers")
+                if "decision_drivers" in data
+                else ()
             ),
             why_prediction_failed=_json_string_array(
                 data, "why_prediction_failed"
@@ -9694,7 +9702,7 @@ def _identity_alias_variants(aliases: Iterable[str]) -> tuple[str, ...]:
             brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
             brand_length = sum(character.isalnum() for character in brand)
             if (
-                (brand_length >= 5 or (brand_length >= 3 and brand.isupper()))
+                (brand_length >= 4 or (brand_length >= 3 and brand.isupper()))
                 and brand.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
             ):
                 variants.add(brand)

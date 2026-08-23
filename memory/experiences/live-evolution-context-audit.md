@@ -169,3 +169,20 @@ gate can remain deterministic by grouping Basic refs with the same claim and req
 every normalized numeric quantity in the claim to occur in the union of their exact
 literals. This permits a legitimate two-endpoint market claim while rejecting an
 unsupported composite fact without pretending to solve general semantic entailment.
+
+## Cross-layer preservation addendum (2026-08-23)
+
+A structured Signal ref proves provenance identity, not that a downstream claim is
+entailed by the referenced literal. Validate quantitative claims against the exact
+Signal evidence when the ref is introduced; after that batch leaves the visible
+context, keep the retained Signal claim immutable. Also reject citations touching an
+internal fixed-window edge, because overlap may contain the complete clause while an
+edge fragment such as `$1,` invites a plausible but false completion.
+
+Audit compact views against the structure actually handed between layers. A post-hoc
+compactor written for the raw Basic bundle silently emitted an empty source index when
+its real input was already the Predictor projection. Correct predictions need positive
+learning too: require a concrete decision driver rather than accepting an all-empty
+failure-shaped reflection. Finally, identity tests must cover target brands embedded in
+product/property names; four-letter brands can be distinctive even when short tickers
+remain case-sensitive.

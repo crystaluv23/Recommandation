@@ -110,6 +110,10 @@ distinctive leading brand tokens are independently stripped and masked before a
 defense-in-depth scan of the assembled context. This still catches an explicit
 `AN`/`LOW` ticker leak but does not misclassify ordinary prose such as "an
 artifact" or "low liquidity".
+Distinctive non-generic leading brands of four or more alphanumeric characters are
+included, so a four-letter brand reused inside a target-branded property or product
+name cannot survive merely because the ticker matcher is intentionally case-sensitive.
+Three-character leading brands remain eligible only when uppercase.
 
 Predictor anonymity is case-local. The runtime must not pass the full approved
 dataset's alias inventory into a case request scanner: broad market inventories
@@ -150,6 +154,11 @@ trajectory. The compact payload is measured after anonymity masking with canonic
 UTF-8 JSON and must fit its byte ceiling before provider request construction. This
 keeps the byte-for-token preflight conservative and makes the 36,000 terminal reserve
 internally consistent; no tokenizer approximation or post-call overflow is allowed.
+Post-hoc compaction consumes that already-compact Predictor view directly: it preserves
+the Basic `source_index` and `data_gaps`, final state, and compact Signal results while
+omitting complete Basic projections and the full original Predictor context. It must
+not reinterpret the Predictor `source_index` as a pre-projection Basic `requests`
+bundle and silently emit an empty index.
 
 A provider response that is not exactly one JSON object is a paid structured
 output failure, not a process-level crash. The runtime persists its raw model
@@ -290,6 +299,11 @@ the immutable saved prediction and deterministic truth, including magnitude for
 a true positive case. The reflection role receives that fixed bit and may
 explain calibration or Plan failures, but model-authored disagreement cannot
 overwrite it.
+For a framework-correct case, the accepted post-hoc output must preserve at least one
+specific `decision_drivers` item explaining which supplied evidence or counter-evidence
+made the saved judgment work. An otherwise all-empty correct reflection receives the
+bounded correction instead of entering the original case layer and later allowing a
+generic vertical or horizontal summary to substitute for the case-level reason.
 
 The Plan critic must not receive complete saved trajectories. Its request uses
 one deterministic compact row per case containing only an opaque case index,
@@ -396,9 +410,16 @@ format normalization, in the union of those exact texts. A claim spanning two ma
 endpoints may use two refs with the same claim; a lone beginning-balance literal cannot
 support a beginning-to-ending decrease. Missing quantities receive one actionable
 correction rather than being accepted merely because some literal exists.
-Evidence-transition identity is source provenance, not the mutable explanatory
-`claim`: reflect may restate a claim only while preserving the Basic or Signal
-provenance tuple; deterministic terminal closure does not restate it. The reflect
+Evidence-transition identity is source provenance, not the explanatory `claim`.
+For Basic refs, reflect may restate a claim while preserving the provenance tuple
+because the exact literal remains present in the ref and can be revalidated. For a
+new current-batch Signal ref, every numeric quantity in the claim must occur in the
+union of exact Signal evidence items referenced by refs carrying that same claim.
+A retained Signal ref from an earlier batch must preserve its prior claim byte-for-byte:
+the backing batch is no longer in the model-facing context, so allowing an unsupported
+restatement would erase or invent the upstream finding. Missing quantities or a changed
+retained Signal claim receive the same single actionable correction as other evidence
+violations. Deterministic terminal closure does not restate any claim. The reflect
 contract uses a dedicated Signal-ref example.
 A complete canonical Signal ref carrying redundant legacy citation fields is reduced
 locally to its five canonical keys before current-batch validation; local code never
@@ -418,8 +439,10 @@ indexed inventory for previously accepted refs and is not duplicated into anothe
 context block. Tagged-ref shape validation occurs before domain construction and
 names the exact output index, missing fields, unexpected fields, and expected Basic
 or Signal field set. A retained Basic ref must copy its prior `projection_id` and
-`exact_text` byte-for-byte while only `claim` may change; correction may instead
-remove it. Missing provenance is never inferred locally.
+`exact_text` byte-for-byte while only `claim` may change. A retained Signal ref must
+copy its prior `claim`, `signal_ref`, `evidence_group`, and `evidence_index`
+byte-for-byte. Correction may instead remove either ref. Missing provenance is never
+inferred locally.
 
 LLM Signal execution does not serialize its complete resolved Raw Info
 documents into the provider request. It receives the Signal Library's bounded
@@ -427,6 +450,12 @@ literal-window projection with document hashes and source offsets; complete
 documents remain local for request fingerprints and strict validation of the
 returned evidence. `SignalResult` carries only the canonical conclusion,
 interpretation, and source evidence rather than duplicating Raw Info.
+Because fixed-width overlapping windows can begin or end inside a sentence, number,
+or JSON transcript field, a model citation may not touch a projection edge when that
+edge is not also the normalized source-document edge. The neighboring overlap remains
+available for a complete clause; an edge-fragment citation receives one correction
+and otherwise fails closed. This prevents a literal ending in values such as `$1,`
+from being accepted and later completed by reflection as an invented quantity.
 The shared one/two-Signal role uses one dedicated batch output example and no
 single-`SignalResult` "return exactly" example. Its outer row copies the supplied
 versioned `signal_ref`; its inner `result.signal_id` copies the matching

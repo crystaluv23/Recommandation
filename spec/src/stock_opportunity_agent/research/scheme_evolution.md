@@ -191,6 +191,13 @@ Legacy string evidence remains readable only in v1-v5 artifacts.
 Blind Predictor consumes only the assembled label-free context. The same
 Predictor adapter later receives its saved original context, saved prediction,
 uncertainty, and revealed truth to produce post-hoc self-reflection.
+`PredictionSelfReflection` retains `decision_drivers` in addition to failure,
+misleading-Signal, ignored-evidence, missing-information, and Plan-issue fields.
+When the immutable framework judgment is correct, at least one concrete
+source-backed decision driver is required; an all-empty “nothing failed” object is
+not useful original-layer learning and receives one correction. Older read-only
+artifacts without this field deserialize it as empty, while every new artifact writes
+the field explicitly.
 The Predictor packet is a separate deterministic projection capped at 24,000
 canonical UTF-8 payload bytes so its exact wire request plus the 2,000-token output
 ceiling fits inside the frozen 36,000-token terminal reserve even under the

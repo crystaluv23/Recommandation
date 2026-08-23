@@ -261,3 +261,38 @@ balance 的 literal。另一个市场趋势 claim 合法使用两个 refs 分别
 XBRL fragment、HTML entity 均为 0，且保留现金、经营现金流、capex 和债务段落。
 v11 artifacts 保持只读；下一合同剩余 779 attempts、`$18.91672256`、953 provider
 requests。
+
+## v12 Signal-to-reflection、post-hoc 与四字母品牌边界
+
+v12 合同 hash 为
+`f0ebb65dc79fb3974c35255a84015774aec079d563e3aac42764fe922b28e1a4`。
+在 23 个已预留 attempts（22 completed、1 interrupted reservation）和两个真实
+SEC fetch 后主动停止，权威指针仍为 `0/0`。已结 cost `$0.02041956`，另保守保留
+中断 reservation `$0.00283612`；下一合同剩余 756 attempts、`$18.89346688`、
+951 个真实 provider requests。
+
+逐字检查第一个 case 的 Signal batch 与 H_reflect 证明，结构化 ref 只能保证“引了
+哪一条”，不能保证 claim 没有改写证据。`commercialization_status:v1` 的 index 0
+literal 是 Paracatu 585,000 oz 和 Tasiast 119,000 oz，reflection 却写成公司 Q2
+513,000 oz、margin 超过 `$2,200`；`guidance_acceleration:v1` 的 literal 在窗口边界
+停在 `all-in sustaining cost of $1,`，reflection 又写成 `$1,400`。同一请求中另一
+overlap projection 的完整原句实际是 `$1,500`。v13 起，Signal evidence 触及非
+document 的 projection 起止边界会先纠错；新 Signal claim 的所有数字必须出现在
+同 claim refs 的 exact evidence 并集；旧 batch 的 Signal ref 因 backing text 已不在
+当前 context，其 claim 必须逐字保留。这样既不复制旧 batch，又不会让下游 summary
+覆盖上游根因。
+
+第一、二、三 case 的真实 post-hoc 都在 framework-correct 时返回六个空诊断数组。
+同时其 `basic_info_source_index` 为空，尽管本地 prediction artifact 已有两条 compact
+source-index row。根因是 post-hoc compactor 期待原始 `basic_info.requests`，实际收到
+的是 Predictor 的 `basic_info.source_index/data_gaps`。当前直接保留 compact index，
+不恢复完整原文；`PredictionSelfReflection` 新增向后兼容的 `decision_drivers`，新写
+artifact 显式持久化，framework-correct 输出至少一条具体 source-backed driver，
+避免空 original layer 被 critic/round 的泛化表述替代。
+
+第二个 Predictor 与 post-hoc wire body 还各含 8 次 `Wynn`，来自 `Wynn Mayfair`
+与 `Wynn Al Marjan Island`；正式公司名已被掩码，但四字符 leading brand 因原阈值
+为五字符而漏过。当前将非 generic leading brand 阈值降为四字符，三字符仍只接受
+uppercase；真实 Wynn 片段回归验证品牌、branded property 与 ticker 全部被 mask。
+本轮到达的 proposer/initialize/routing/Signal batch/reflect/Predictor/post-hoc 均已检查；
+H1/H2/H3/Update 仍未到达，不能标为 live-verified。

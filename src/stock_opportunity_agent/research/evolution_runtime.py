@@ -3783,6 +3783,7 @@ _PREDICTION_REFLECTION_OUTPUT = _output_contract(
     "PredictionSelfReflection",
     {
         "prediction_outcome": {"correct": False},
+        "decision_drivers": [],
         "why_prediction_failed": [],
         "misleading_signals": [],
         "ignored_evidence": [],
@@ -3790,6 +3791,23 @@ _PREDICTION_REFLECTION_OUTPUT = _output_contract(
         "plan_issues": [],
     },
 )
+
+
+def _prediction_reflection_from_role(
+    value: Mapping[str, Any], *, framework_correct: bool
+) -> PredictionSelfReflection:
+    """Validate that correct cases retain concrete original-layer learning."""
+
+    reflection = PredictionSelfReflection.from_dict(
+        _reject_fixed_semantics_redefinition(value)
+    )
+    if framework_correct and not reflection.decision_drivers:
+        raise ValidationError(
+            "a framework-correct post-hoc reflection requires at least one specific "
+            "source-backed decision_drivers item; do not return an all-empty correct "
+            "reflection"
+        )
+    return reflection
 
 MAX_POSTHOC_MODEL_CHARS = 24_000
 _UNTRUSTED_DATA_INSTRUCTION = (
@@ -3833,28 +3851,39 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
     source_index: list[dict[str, Any]] = []
     data_gaps: list[dict[str, Any]] = []
     if isinstance(basic, Mapping):
-        for request_row in basic.get("requests", ()):
-            if not isinstance(request_row, Mapping):
-                continue
-            request = request_row.get("request", {})
-            projections = request_row.get("projections", ())
-            source_index.append(
-                {
-                    "request_id": request.get("request_id")
-                    if isinstance(request, Mapping)
-                    else None,
-                    "source_types": request.get("source_types", [])
-                    if isinstance(request, Mapping)
-                    else [],
-                    "projection_ids": [
-                        item.get("projection_id")
-                        for item in projections
-                        if isinstance(item, Mapping)
-                    ],
-                }
+        compact_source_index = basic.get("source_index")
+        if isinstance(compact_source_index, list):
+            source_index.extend(
+                dict(item) for item in compact_source_index if isinstance(item, Mapping)
             )
-            if isinstance(request_row.get("data_gap"), Mapping):
-                data_gaps.append(dict(request_row["data_gap"]))
+            compact_data_gaps = basic.get("data_gaps", ())
+            if isinstance(compact_data_gaps, list):
+                data_gaps.extend(
+                    dict(item) for item in compact_data_gaps if isinstance(item, Mapping)
+                )
+        else:
+            for request_row in basic.get("requests", ()):
+                if not isinstance(request_row, Mapping):
+                    continue
+                request = request_row.get("request", {})
+                projections = request_row.get("projections", ())
+                source_index.append(
+                    {
+                        "request_id": request.get("request_id")
+                        if isinstance(request, Mapping)
+                        else None,
+                        "source_types": request.get("source_types", [])
+                        if isinstance(request, Mapping)
+                        else [],
+                        "projection_ids": [
+                            item.get("projection_id")
+                            for item in projections
+                            if isinstance(item, Mapping)
+                        ],
+                    }
+                )
+                if isinstance(request_row.get("data_gap"), Mapping):
+                    data_gaps.append(dict(request_row["data_gap"]))
     signal_results: list[dict[str, Any]] = []
     for round_row in original_context.get("signal_rounds", ()):
         if not isinstance(round_row, Mapping):
@@ -4421,6 +4450,26 @@ def _validate_basic_claim_quantities(
             )
 
 
+def _validate_signal_claim_quantities(
+    grouped: Mapping[str, list[tuple[int, str]]],
+) -> None:
+    """Require each new Signal claim's quantities in its cited evidence items."""
+
+    for claim, items in grouped.items():
+        cited_quantities: set[str] = set()
+        for _index, exact_text in items:
+            cited_quantities.update(_normalized_claim_quantities(exact_text))
+        missing = sorted(_normalized_claim_quantities(claim) - cited_quantities)
+        if missing:
+            index = items[0][0]
+            raise ValidationError(
+                f"supporting_evidence[{index}] claim contains numeric quantities "
+                f"absent from all referenced Signal evidence items with the same "
+                f"claim: {missing}. Cite every required Signal evidence item with "
+                "the same claim or narrow the claim to the referenced literal"
+            )
+
+
 def _validate_research_state_refs(
     state: ResearchState,
     *,
@@ -4444,8 +4493,14 @@ def _validate_research_state_refs(
         for item in (previous_state.supporting_evidence if previous_state else ())
         if isinstance(item, ResearchEvidenceRef)
     }
+    previous_refs = {
+        _research_evidence_key(item): item
+        for item in (previous_state.supporting_evidence if previous_state else ())
+        if isinstance(item, ResearchEvidenceRef)
+    }
     projection_texts = _basic_projection_texts(basic_info or {})
     results = {item.ref: item for item in (batch.results if batch else ())}
+    signal_claim_literals: dict[str, list[tuple[int, str]]] = {}
     for index, item in enumerate(refs):
         key = _research_evidence_key(item)
         if phase == "finalize":
@@ -4492,6 +4547,14 @@ def _validate_research_state_refs(
                 "non-contiguous joins, or paraphrase, or remove this evidence item"
             )
         if key in previous:
+            prior = previous_refs[key]
+            if item.claim != prior.claim:
+                raise ValidationError(
+                    f"supporting_evidence[{index}] retained Signal claim changed from "
+                    f"{prior.claim!r} to {item.claim!r}. Copy the prior claim "
+                    "byte-for-byte or remove this evidence item; its backing Signal "
+                    "batch is no longer visible"
+                )
             continue
         result = results.get(str(item.signal_ref))
         if result is None:
@@ -4529,7 +4592,11 @@ def _validate_research_state_refs(
                 f"{valid_indices} for that signal_ref and group. Use one exact tuple "
                 "from signal_evidence_ref_catalog or remove this evidence item"
             )
+        signal_claim_literals.setdefault(item.claim, []).append(
+            (index, evidence[int(item.evidence_index or 0)].exact_span)
+        )
     _validate_basic_claim_quantities(tuple(normalized_refs))
+    _validate_signal_claim_quantities(signal_claim_literals)
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()
@@ -4593,7 +4660,11 @@ class LLMResearchController:
                 "A new Signal evidence ref must use "
                 "kind=signal, a signal_ref from the current batch, "
                 "evidence_group=supporting or counter, and the zero-based evidence_index. "
-                "Use only an exact tuple listed by signal_evidence_ref_catalog."
+                "Use only an exact tuple listed by signal_evidence_ref_catalog. Every "
+                "numeric quantity in a new Signal claim must occur in the union of the "
+                "exact Signal evidence items referenced by refs with that same claim. "
+                "Copy a retained Signal ref's prior claim byte-for-byte because its "
+                "backing batch is no longer visible."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
@@ -4907,7 +4978,10 @@ class LLMBlindPredictor:
                     "gaps; that feedback covers Stage 1 only, while framework "
                     "correctness also checks magnitude for a true surge. Do not "
                     "rewrite the saved four-way judgment or infer that "
-                    "one realized outcome proves an ex-ante probability category."
+                    "one realized outcome proves an ex-ante probability category. "
+                    "When framework_prediction_correct is true, decision_drivers must "
+                    "name at least one specific supplied evidence or counter-evidence "
+                    "reason that made the saved judgment work."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _PREDICTION_REFLECTION_OUTPUT
                 ),
@@ -4918,8 +4992,8 @@ class LLMBlindPredictor:
                     "framework_prediction_correct": framework_correct,
                     "candidate_judgment_feedback": judgment_feedback,
                 },
-                parser=lambda value: PredictionSelfReflection.from_dict(
-                    _reject_fixed_semantics_redefinition(value)
+                parser=lambda value: _prediction_reflection_from_role(
+                    value, framework_correct=framework_correct
                 ),
                 allow_outcomes=True,
                 # Validated enums may equal short ticker aliases such as LOW.
@@ -4931,6 +5005,7 @@ class LLMBlindPredictor:
             if reflection.correct != framework_correct:
                 reflection = PredictionSelfReflection(
                     correct=framework_correct,
+                    decision_drivers=reflection.decision_drivers,
                     why_prediction_failed=reflection.why_prediction_failed,
                     misleading_signals=reflection.misleading_signals,
                     ignored_evidence=reflection.ignored_evidence,
@@ -5901,6 +5976,9 @@ class _SignalProjectionLineage:
     document: RawInfoDocument
     projection_text: str
     raw_offset_runs: tuple[tuple[int, int, int, int], ...]
+    normalized_start: int
+    normalized_end: int
+    normalized_source_length: int
 
 
 def _shared_llm_signal_projection(
@@ -6008,6 +6086,9 @@ def _shared_llm_signal_projection(
             document=document,
             projection_text=text_value,
             raw_offset_runs=clipped_runs,
+            normalized_start=start,
+            normalized_end=end,
+            normalized_source_length=len(normalized),
         )
         used += len(text_value)
         used_documents.add(document.document_id)
@@ -6060,6 +6141,18 @@ def _map_projected_signal_evidence(
                 raise ValidationError("Signal projection evidence must map uniquely")
             projection_start = projection.projection_text.index(exact_text)
             projection_end = projection_start + len(exact_text)
+            if (
+                projection_start == 0
+                and projection.normalized_start > 0
+            ) or (
+                projection_end == len(projection.projection_text)
+                and projection.normalized_end < projection.normalized_source_length
+            ):
+                raise ValidationError(
+                    "Signal projection evidence touches an internal projection edge; "
+                    "cite one complete literal from an overlapping projection or "
+                    "return unavailable"
+                )
             overlaps = [
                 run
                 for run in projection.raw_offset_runs
@@ -6162,7 +6255,9 @@ class StructuredLLMSignalRunner:
                     "shared bounded point-in-time source_projection. Each evidence "
                     "item inside a nested result must use projection_id and "
                     "exact_text copied from one visible projection; runtime maps it to "
-                    "the original raw span. Never infer omitted source text is absent. "
+                    "the original raw span. Do not cite text that starts or ends at an "
+                    "internal projection edge; use the overlapping projection containing "
+                    "the complete clause. Never infer omitted source text is absent. "
                     "Return unavailable with no evidence when visible text is insufficient."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + correction_instruction

@@ -1,0 +1,111 @@
+{
+  "guidance_source": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+  "guidance_truncated_projection": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,",
+  "predictor_basic_info": {
+    "data_gaps": [],
+    "source_index": [
+      {
+        "projection_ids": [
+          "projection_106a7c08bdff66aeb4147035"
+        ],
+        "request_id": "recent_company_news",
+        "source_types": [
+          "company_news"
+        ],
+        "status": "resolved"
+      },
+      {
+        "projection_ids": [
+          "projection_8b0ddd2e660ef461ec3f6dc6"
+        ],
+        "request_id": "recent_market_backbone",
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved"
+      }
+    ]
+  },
+  "signal_results": [
+    {
+      "signal_id": "commercialization_status",
+      "version": 1,
+      "value": "positive",
+      "confidence": 0.9,
+      "interpretation": "The company is producing and selling gold ounces.",
+      "supporting_exact_span": "Paracatu remains on track to meet its guidance, producing 585,000 ounces at a cost of sales of $1,025 per ounce. At Tasiast, we delivered budgeted production in the second quarter, producing 119,000 ounces at a cost of sales of $843 per ounce. Tasiast remains on track to meet its production guidance of 500,000 ounces at a target cost of sales of $860 per ounce for the year."
+    },
+    {
+      "signal_id": "guidance_acceleration",
+      "version": 1,
+      "value": "neutral",
+      "confidence": 0.8,
+      "interpretation": "The company reaffirmed rather than raised guidance.",
+      "supporting_exact_span": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,"
+    }
+  ],
+  "invalid_reflection": {
+    "hypotheses": [
+      "The operating outlook remains uncertain."
+    ],
+    "current_beliefs": [
+      "The company produced 513,000 gold equivalent ounces in Q2 2025 with record margins of over $2,200 per ounce.",
+      "The company reaffirmed full-year guidance of 2 million ounces at cost of sales of $1,120 per ounce and all-in sustaining cost of $1,400 per ounce."
+    ],
+    "supporting_evidence": [
+      {
+        "kind": "signal",
+        "claim": "The company produced 513,000 gold equivalent ounces in Q2 2025 with record margins of over $2,200 per ounce.",
+        "signal_ref": "commercialization_status:v1",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "The company reaffirmed full-year guidance of 2 million ounces at cost of sales of $1,120 per ounce and all-in sustaining cost of $1,400 per ounce.",
+        "signal_ref": "guidance_acceleration:v1",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      }
+    ],
+    "contradictions": [],
+    "resolved_questions": [],
+    "open_questions": [],
+    "next_information_needs": [
+      "Confirm the production outlook."
+    ],
+    "decision": "continue"
+  },
+  "corrected_reflection": {
+    "hypotheses": [
+      "The operating outlook remains uncertain."
+    ],
+    "current_beliefs": [
+      "Paracatu and Tasiast achieved budgeted production.",
+      "The company reaffirmed rather than raised full-year guidance."
+    ],
+    "supporting_evidence": [
+      {
+        "kind": "signal",
+        "claim": "Paracatu and Tasiast achieved budgeted production.",
+        "signal_ref": "commercialization_status:v1",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "The company remains on track to produce 2 million ounces at a cost of sales of $1,120 per ounce.",
+        "signal_ref": "guidance_acceleration:v1",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      }
+    ],
+    "contradictions": [],
+    "resolved_questions": [],
+    "open_questions": [],
+    "next_information_needs": [
+      "Confirm the production outlook."
+    ],
+    "decision": "continue"
+  }
+}

@@ -1610,7 +1610,7 @@ class ConcreteRoleAdapterTests(TestCase):
         timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
         evidence = SignalEvidence(
             document_id="market-data-1",
-            exact_span='[{"adjusted_close":9.36}]',
+            exact_span="price_momentum_126d=0.951161; max_drawdown_1y=-0.16",
             timestamp=timestamp,
         )
         batch = SignalBatchResult(
@@ -1894,6 +1894,9 @@ class ConcreteRoleAdapterTests(TestCase):
             [
                 {
                     "prediction_outcome": {"correct": False},
+                    "decision_drivers": [
+                        "Limited supplied evidence supported the negative judgment."
+                    ],
                     "why_prediction_failed": [],
                     "misleading_signals": [],
                     "ignored_evidence": [],
@@ -1954,6 +1957,50 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
                 GroundTruth(1.2),
             )
+
+    def test_v12_correct_posthoc_requires_specific_decision_driver(self) -> None:
+        empty = {
+            "prediction_outcome": {"correct": True},
+            "decision_drivers": [],
+            "why_prediction_failed": [],
+            "misleading_signals": [],
+            "ignored_evidence": [],
+            "missing_information": [],
+            "plan_issues": [],
+        }
+        corrected = json.loads(json.dumps(empty))
+        corrected["decision_drivers"] = [
+            "No expectation-changing catalyst was present in the supplied evidence."
+        ]
+        caller = ScriptedRoleCaller([empty, corrected])
+        predictor = LLMBlindPredictor(caller)
+
+        reflection = predictor.reflect(
+            {"summary": "No expectation-changing catalyst was present."},
+            BlindPrediction(
+                is_surge=False,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("no catalyst",),
+                uncertainties=(),
+                session_id="anonymous-session",
+            ),
+            GroundTruth(1.2),
+        )
+
+        self.assertEqual(
+            caller.stages,
+            [
+                "blind_predictor_posthoc_reflect",
+                "blind_predictor_posthoc_reflect_correction",
+            ],
+        )
+        self.assertIn(
+            "all-empty correct reflection",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertEqual(reflection.value.decision_drivers, tuple(corrected["decision_drivers"]))
 
     def test_plan_critic_receives_compact_anonymous_trajectories(self) -> None:
         class Artifact:
@@ -3342,6 +3389,156 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(len(market_state.value.supporting_evidence), 2)
 
+    def test_v12_reflect_rejects_signal_claim_quantities_absent_from_evidence(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v12_reflect_signal_claim_support.json"
+            ).read_text(encoding="utf-8")
+        )
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        results = tuple(
+            SignalResult(
+                signal_id=item["signal_id"],
+                version=item["version"],
+                value=SignalValue(item["value"]),
+                confidence=item["confidence"],
+                interpretation=item["interpretation"],
+                supporting_evidence=(
+                    SignalEvidence(
+                        document_id=f"{item['signal_id']}-document",
+                        exact_span=item["supporting_exact_span"],
+                        timestamp=timestamp,
+                    ),
+                ),
+            )
+            for item in fixture["signal_results"]
+        )
+        caller = ScriptedRoleCaller(
+            [fixture["invalid_reflection"], fixture["corrected_reflection"]]
+        )
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=("Confirm the production outlook.",)),
+            SignalBatchResult(results=results, signal_calls=2),
+        )
+
+        error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("referenced Signal evidence", error)
+        self.assertIn("513000", error)
+        self.assertIn("2200", error)
+        self.assertEqual(len(reflected.value.supporting_evidence), 2)
+        self.assertIn(
+            "Every numeric quantity in a new Signal claim",
+            caller.calls[0]["system_prompt"],
+        )
+
+    def test_v12_reflect_preserves_retained_signal_claim_without_old_batch(self) -> None:
+        prior_claim = "Management reaffirmed rather than raised guidance."
+        prior_ref = ResearchEvidenceRef(
+            kind="signal",
+            claim=prior_claim,
+            signal_ref="guidance_acceleration:v1",
+            evidence_group="supporting",
+            evidence_index=0,
+        )
+        previous = ResearchState(
+            hypotheses=("Guidance is not accelerating.",),
+            supporting_evidence=(prior_ref,),
+            next_information_needs=("Check a separate risk.",),
+        )
+        invalid = previous.to_dict()
+        invalid["supporting_evidence"][0]["claim"] = (
+            "Management raised guidance materially."
+        )
+        corrected = previous.to_dict()
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(), signal_calls=0),
+        )
+
+        error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("retained Signal claim changed", error)
+        self.assertIn("backing Signal batch is no longer visible", error)
+        self.assertEqual(reflected.value.supporting_evidence[0].claim, prior_claim)
+
+    def test_v12_signal_evidence_rejects_internal_projection_edge_fragment(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v12_reflect_signal_claim_support.json"
+            ).read_text(encoding="utf-8")
+        )
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        prefix = "Earlier transcript context. "
+        projection_text = prefix + fixture["guidance_truncated_projection"]
+        raw_prefix = "x" * 100
+        document = RawInfoDocument.create(
+            document_id="guidance-transcript",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=raw_prefix + projection_text + "500 per ounce. Later context.",
+        )
+        lineage = evolution_runtime_module._SignalProjectionLineage(
+            document=document,
+            projection_text=projection_text,
+            raw_offset_runs=((0, len(projection_text), 100, 100 + len(projection_text)),),
+            normalized_start=100,
+            normalized_end=100 + len(projection_text),
+            normalized_source_length=len(document.content),
+        )
+        result = {
+            "evidence": {
+                "supporting": [
+                    {
+                        "projection_id": "projection_truncated",
+                        "exact_text": fixture["guidance_truncated_projection"],
+                    }
+                ],
+                "counter": [],
+            }
+        }
+
+        with self.assertRaisesRegex(
+            ValidationError, "touches an internal projection edge"
+        ):
+            evolution_runtime_module._map_projected_signal_evidence(
+                result, {"projection_truncated": lineage}
+            )
+
+    def test_v12_posthoc_preserves_predictor_basic_source_index(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v12_reflect_signal_claim_support.json"
+            ).read_text(encoding="utf-8")
+        )
+        original_context = {
+            "basic_info": fixture["predictor_basic_info"],
+            "final_research_state": fixture["corrected_reflection"],
+            "signal_rounds": [],
+        }
+
+        compact = evolution_runtime_module._compact_posthoc_context(original_context)
+
+        self.assertEqual(
+            compact["basic_info_source_index"],
+            fixture["predictor_basic_info"]["source_index"],
+        )
+        self.assertEqual(compact["data_gaps"], [])
+        serialized = json.dumps(compact, ensure_ascii=False)
+        self.assertNotIn("source_projection", serialized)
+        self.assertNotIn("guidance_source", serialized)
+
     def test_two_soft_signals_share_one_projection_call_and_map_to_raw(self) -> None:
         class ProjectionBatchCaller:
             def __init__(self) -> None:
@@ -3492,6 +3689,9 @@ class ConcreteRoleAdapterTests(TestCase):
             [
                 {
                     "prediction_outcome": {"correct": True},
+                    "decision_drivers": [
+                        "The bounded evidence supported the negative judgment."
+                    ],
                     "why_prediction_failed": [],
                     "misleading_signals": [],
                     "ignored_evidence": [],
