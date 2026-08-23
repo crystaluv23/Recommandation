@@ -224,23 +224,33 @@ to literal/index/quantity validation. For locally validated deterministic numeri
 Signals, the model row uses the exact canonical `metric=value` interpretation in
 place of a potentially truncated raw JSON evidence excerpt; the indexed canonical
 evidence remains local and is still required for the ref.
-When a `continue` reflection adds at least one current-batch Signal evidence ref,
-returning the previous `next_information_needs` array unchanged is not an adaptive
-state update. The single correction must narrow or replace the answered portion,
-classify questions as resolved/open as appropriate, or finalize. A changed need must
-reflect the new evidence rather than being a cosmetic paraphrase. If no new Signal
-evidence is adopted, retaining the same need remains valid so another eligible
-Signal can answer it.
-When the number of needs has not decreased, runtime also rejects a replacement
-that contains at least 90% of a prior need's normalized word set; appending a
-qualifier to the entire old question is not progress. A shorter need list may
-retain an unanswered prior need because removing other answered needs is a real
-transition. This deterministic guard does not infer which question was answered
-or rewrite research text.
+When a `continue` reflection adds a current-batch Signal evidence ref, it must not
+change an information need merely to demonstrate motion. If the batch did not answer
+a need, the role retains that need byte-for-byte. If the batch answered it fully or
+partly, the role removes or genuinely narrows it and classifies resolved/open
+questions consistently. This preserves useful evidence without forcing an invented
+resolution.
+When the number of needs has not decreased, runtime rejects any changed need that
+contains at least 90% of a prior need's normalized word set; appending a qualifier
+to the whole old question is not progress. Exact retention remains valid because it
+explicitly means “still unanswered.” A shorter list may likewise retain unanswered
+prior needs after removing answered ones.
+To catch an internally contradictory stale need without pretending to understand
+general evidence semantics, runtime compares only newly added resolved questions.
+If one contains the same ordered content phrase of at least three words as an exact
+retained need after question boilerplate/function words are removed, the need must
+be removed or narrowed. Signal-claim quantity errors and this directly decidable
+need-transition error are returned together in the one correction, so fixing the
+citation cannot reveal a second already-visible defect after correction is spent.
 Unavailable Signal rows in this and every other model-facing role use only the
 canonical coverage statement. They cannot be treated as evidence of absence,
 added as a belief, or used to resolve a question; their original interpretation
 remains local for audit.
+Runtime enforces that rule independently of need-text adaptation: a newly resolved
+question naming an unavailable Signal topic is invalid, as is a newly added belief
+that names that topic using absence, unknown, insufficient, or unavailable language.
+The same topic may remain in open questions or hypotheses because a data gap is a
+valid uncertainty, not a finding.
 The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,

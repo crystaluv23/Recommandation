@@ -3833,7 +3833,7 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.calls[0]["system_prompt"],
         )
 
-    def test_v20_reflect_compacts_signal_evidence_and_requires_progress(self) -> None:
+    def test_v20_reflect_compacts_signal_evidence_and_preserves_exact_need(self) -> None:
         fixture = json.loads(
             (
                 PROJECT_ROOT
@@ -3861,9 +3861,7 @@ class ConcreteRoleAdapterTests(TestCase):
             open_questions=("Did management change guidance?",),
             next_information_needs=(fixture["previous_need"],),
         )
-        caller = ScriptedRoleCaller(
-            [fixture["invalid_reflection"], fixture["corrected_reflection"]]
-        )
+        caller = ScriptedRoleCaller([fixture["invalid_reflection"]])
 
         reflected = LLMResearchController(caller).reflect(
             default_information_plan(),
@@ -3873,11 +3871,9 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(
             reflected.value.next_information_needs,
-            (fixture["narrowed_need"],),
+            (fixture["previous_need"],),
         )
-        error = caller.calls[1]["payload"]["validation_error"]
-        self.assertIn("next_information_needs unchanged", error)
-        self.assertIn("Do not cosmetically paraphrase", error)
+        self.assertEqual(caller.stages, ["research_controller_reflect"])
         model_evidence = caller.calls[0]["payload"]["signal_batch"][0][
             "evidence"
         ]["supporting"][0]
@@ -3896,6 +3892,26 @@ class ConcreteRoleAdapterTests(TestCase):
         ):
             self.assertNotIn(omitted, json.dumps(model_evidence))
         self.assertEqual(result.supporting_evidence[0].exact_span, canonical_span)
+
+        cosmetic = json.loads(json.dumps(fixture["invalid_reflection"]))
+        cosmetic["next_information_needs"] = [
+            fixture["previous_need"] + " given the available evidence"
+        ]
+        cosmetic_caller = ScriptedRoleCaller(
+            [cosmetic, fixture["corrected_reflection"]]
+        )
+        corrected = LLMResearchController(cosmetic_caller).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+        self.assertEqual(
+            corrected.value.next_information_needs,
+            (fixture["narrowed_need"],),
+        )
+        error = cosmetic_caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("cosmetically changed", error)
+        self.assertIn("Keep an unanswered need byte-for-byte", error)
 
         deterministic = SignalResult(
             signal_id="max_drawdown_1y",
@@ -3973,7 +3989,7 @@ class ConcreteRoleAdapterTests(TestCase):
 
         with self.assertRaisesRegex(
             CandidateExecutionRejected,
-            "cosmetically retained",
+            "cosmetically changed",
         ):
             LLMResearchController(caller).reflect(
                 default_information_plan(),
@@ -3995,7 +4011,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("not evidence of absence", caller.calls[0]["system_prompt"])
         self.assertIn(
-            "unchanged or cosmetically retained",
+            "treated an unavailable Signal as a finding",
             caller.calls[1]["payload"]["validation_error"],
         )
 
@@ -4012,6 +4028,69 @@ class ConcreteRoleAdapterTests(TestCase):
             "summary"
         ]
         self.assertIn("not evidence", posthoc_summary)
+
+    def test_v22_reflect_aggregates_quantity_and_stale_resolved_need(self) -> None:
+        result = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=0.8,
+            interpretation="Guidance was reaffirmed without an upward revision.",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="guidance-document",
+                    exact_span="Production and cost guidance was reaffirmed.",
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        prior_need = (
+            "What are the specific production and cost guidance figures and risks?"
+        )
+        previous = ResearchState(next_information_needs=(prior_need,))
+        invalid = {
+            "contradictions": [],
+            "current_beliefs": ["Management reaffirmed guidance."],
+            "decision": "continue",
+            "hypotheses": ["Execution now determines the thesis."],
+            "next_information_needs": [prior_need],
+            "open_questions": [],
+            "resolved_questions": [
+                "Management resolved the production and cost guidance outlook."
+            ],
+            "supporting_evidence": [
+                {
+                    "claim": "Management reaffirmed 2025 production and cost guidance.",
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "kind": "signal",
+                    "signal_ref": "guidance_acceleration:v1",
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["next_information_needs"] = [
+            "What operating disruption could prevent delivery?"
+        ]
+        corrected["supporting_evidence"][0]["claim"] = (
+            "Production and cost guidance was reaffirmed."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("numeric quantities", error)
+        self.assertIn("newly resolved a question", error)
+        self.assertIn("production cost guidance", error)
+        self.assertEqual(
+            reflected.value.next_information_needs,
+            ("What operating disruption could prevent delivery?",),
+        )
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:
         fixture = json.loads(

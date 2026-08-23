@@ -478,21 +478,37 @@ the complete canonical batch, so this token reduction cannot weaken literal,
 point-in-time, or provenance checks. A validated deterministic numeric Signal sends
 its exact canonical `metric=value` interpretation instead of a clipped raw JSON
 excerpt; H_reflect still cites the canonical local evidence index.
-After that validation, a `continue` response that adopts one or more new current-batch
-Signal refs must make a substantive research transition. An exactly unchanged
-`next_information_needs` array receives the one bounded correction with an explicit
-instruction to narrow/replace answered portions, update resolved/open questions, or
-finalize. No new adopted evidence means the same need may remain. Runtime never
-rewrites a need or infers that a question was answered.
-If the response does not reduce the need count, any new need containing at least
-90% of a prior need's normalized word set is also a cosmetic continuation and
-fails the same boundary. Thus the actual pattern “old question + given the absence
-of ...” cannot consume evidence while leaving research unchanged. Reducing the
-need count remains valid even when one still-open prior need is retained.
+After that validation, H_reflect must distinguish an answered need from an
+unanswered one instead of changing text merely because it adopted a new Signal ref.
+An unanswered prior need may remain only byte-for-byte; forcing it to change would
+invite a false resolution or a blurred paraphrase. An answered or partly answered
+need must be removed or narrowed, with `resolved_questions` / `open_questions`
+updated consistently. Runtime never rewrites a need or infers from evidence alone
+that it was answered.
+If the response does not reduce the need count, any changed need containing at least
+90% of a prior need's normalized word set is a cosmetic continuation and receives
+the one bounded correction. Thus the actual pattern “old question + given the
+absence of ...” cannot pretend to be progress; the role must either retain the exact
+unanswered question or make a genuinely narrower evidence-driven need.
+Runtime also rejects an internally stale exact need when a newly added resolved
+question contains the same ordered three-or-more-word content phrase after removing
+question boilerplate and function words. That narrow consistency check catches an
+actual response that newly resolved production-and-cost guidance while retaining the
+same production-and-cost-guidance need. It does not compare evidence semantics or
+force unrelated needs to change.
+Directly decidable Signal-claim quantity errors and this need-transition error are
+reported together before the one correction. Fixing a citation must not consume the
+only correction and reveal an already-visible stale/cosmetic need afterward.
 Every unavailable Signal is rendered to downstream models as a deterministic
 coverage-only statement, never its free-form original interpretation; the latter
 remains in the durable canonical result. Prompts explicitly forbid turning
 unavailable into evidence of absence, a new belief, or a resolved question.
+This is an independent local transition boundary rather than a side effect of the
+need-progress guard. For every unavailable current-batch Signal, runtime rejects a
+new `resolved_questions` item that names the Signal topic and rejects a new
+`current_beliefs` item that names the topic together with absence/unknown/unavailable
+language. Open questions and hypotheses may still name the missing capability; a
+coverage gap is allowed to remain an explicit research uncertainty.
 The already-supplied `research_state.supporting_evidence` array is the canonical
 indexed inventory for previously accepted refs and is not duplicated into another
 context block. Tagged-ref shape validation occurs before domain construction and

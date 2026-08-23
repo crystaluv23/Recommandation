@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 5
+visit_times: 6
 
 ## Trigger
 
@@ -259,3 +259,15 @@ number to occur only in raw evidence makes the useful Signal output impossible t
 state. Permit the exact validated `metric=value` interpretation through its Signal
 ref, while rejecting rounded percentages, unit conversions, and extra source values.
 This preserves both the computation and the raw evidence boundary.
+
+## Question-state addendum (2026-08-23)
+
+Adopting useful evidence does not prove that every active information need was
+answered. Forcing all need text to change can manufacture resolution or blur an
+unchanged question, while allowing every unchanged need can leave an answered topic
+stale. Preserve an unanswered need byte-for-byte, reject qualifier-only paraphrases,
+and separately reject a newly resolved same-topic question coexisting with the exact
+old need. Keep unavailable-to-belief/resolution validation independent of this rule;
+one guard must not accidentally provide the only protection for another semantic
+boundary. When both a citation defect and question-state defect are already locally
+decidable, surface both in the one bounded correction.

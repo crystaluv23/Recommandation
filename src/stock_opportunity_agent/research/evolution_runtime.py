@@ -4907,8 +4907,15 @@ def _validate_research_state_refs(
             and result.interpretation.startswith(result.signal_id + "=")
         ):
             claim_literals.append((index, result.interpretation))
-    _validate_basic_claim_quantities(tuple(normalized_refs))
-    _validate_signal_claim_quantities(signal_claim_literals)
+    validation_errors: list[str] = []
+    for validator, value in (
+        (_validate_basic_claim_quantities, tuple(normalized_refs)),
+        (_validate_signal_claim_quantities, signal_claim_literals),
+    ):
+        try:
+            validator(value)
+        except ValidationError as exc:
+            validation_errors.append(str(exc))
     adopted_new_signal_evidence = any(
         item.kind == "signal"
         and _research_evidence_key(item) not in previous
@@ -4919,21 +4926,44 @@ def _validate_research_state_refs(
         previous_state.next_information_needs if previous_state else (),
         state.next_information_needs,
     )
+    stale_resolved_needs = _stale_resolved_information_needs(
+        previous_state,
+        state,
+    )
+    unavailable_state_errors = _unavailable_signal_state_errors(
+        previous_state,
+        state,
+        batch,
+    )
+    if phase == "reflect" and unavailable_state_errors:
+        validation_errors.append(
+            "research_controller_reflect treated an unavailable Signal as a finding: "
+            f"{unavailable_state_errors}. Unavailable is coverage-only; remove the "
+            "new belief/resolution and keep the topic open if it still matters"
+        )
     if (
         phase == "reflect"
         and previous_state is not None
         and state.decision is ResearchDecision.CONTINUE
         and adopted_new_signal_evidence
-        and cosmetic_needs
     ):
-        raise ValidationError(
-            "research_controller_reflect adopted new current-batch Signal evidence "
-            "but returned next_information_needs unchanged or cosmetically retained: "
-            f"{cosmetic_needs}. Narrow or replace the answered portion, update "
-            "resolved/open questions as appropriate, or finalize. Do not append a "
-            "qualifier to the old need. Do not cosmetically paraphrase it; each "
-            "changed need must reflect the new evidence"
-        )
+        if cosmetic_needs:
+            validation_errors.append(
+                "research_controller_reflect adopted new current-batch Signal evidence "
+                "but cosmetically changed prior next_information_needs: "
+                f"{cosmetic_needs}. Keep an unanswered need byte-for-byte, or narrow/"
+                "replace the answered portion. Do not append a qualifier to the old "
+                "need"
+            )
+        if stale_resolved_needs:
+            validation_errors.append(
+                "research_controller_reflect newly resolved a question but retained "
+                "an exact matching next_information_need: "
+                f"{stale_resolved_needs}. Remove or narrow the answered need, or remove "
+                "the unsupported resolved question"
+            )
+    if validation_errors:
+        raise ValidationError("; ".join(validation_errors))
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()
@@ -4951,12 +4981,14 @@ def _cosmetically_retained_information_needs(
     previous: tuple[str, ...],
     current: tuple[str, ...],
 ) -> list[dict[str, Any]]:
-    """Identify full old needs hidden inside an equal-or-larger need list."""
+    """Identify changed old needs hidden inside an equal-or-larger need list."""
 
     if not previous or len(current) < len(previous):
         return []
     retained: list[dict[str, Any]] = []
     for prior_need in previous:
+        if prior_need in current:
+            continue
         prior_tokens = _normalized_need_tokens(prior_need)
         if not prior_tokens:
             continue
@@ -4973,6 +5005,135 @@ def _cosmetically_retained_information_needs(
                 )
                 break
     return retained
+
+
+_NEED_FUNCTION_WORDS = frozenset(
+    "a an and are as at be been being by could did do does for from has have how "
+    "if in is it of on or that the their this to was were what when which who why "
+    "will with would".split()
+)
+
+
+def _need_content_tokens(value: str) -> tuple[str, ...]:
+    """Return ordered content tokens for the narrow resolved-need check."""
+
+    return tuple(
+        token
+        for token in re.findall(r"[a-z0-9]+", value.casefold())
+        if token not in _NEED_FUNCTION_WORDS
+    )
+
+
+def _stale_resolved_information_needs(
+    previous: ResearchState | None,
+    current: ResearchState,
+) -> list[dict[str, Any]]:
+    """Find exact retained needs contradicted by a newly resolved same-topic question."""
+
+    if previous is None:
+        return []
+    newly_resolved = tuple(
+        item
+        for item in current.resolved_questions
+        if item not in previous.resolved_questions
+    )
+    if not newly_resolved:
+        return []
+    retained = set(previous.next_information_needs) & set(
+        current.next_information_needs
+    )
+    stale: list[dict[str, Any]] = []
+    for need in previous.next_information_needs:
+        if need not in retained:
+            continue
+        need_tokens = _need_content_tokens(need)
+        if len(need_tokens) < 3:
+            continue
+        need_phrases = tuple(
+            tuple(need_tokens[index : index + 3])
+            for index in range(len(need_tokens) - 2)
+        )
+        for resolved in newly_resolved:
+            resolved_tokens = _need_content_tokens(resolved)
+            resolved_phrases = {
+                tuple(resolved_tokens[index : index + 3])
+                for index in range(len(resolved_tokens) - 2)
+            }
+            matching_phrase = next(
+                (phrase for phrase in need_phrases if phrase in resolved_phrases),
+                None,
+            )
+            if matching_phrase is None:
+                continue
+            stale.append(
+                {
+                    "retained_need": need,
+                    "newly_resolved_question": resolved,
+                    "matching_content_phrase": " ".join(matching_phrase),
+                }
+            )
+            break
+    return stale
+
+
+_UNAVAILABLE_BELIEF_MARKERS = frozenset(
+    "absence absent insufficient lack lacks missing no none not undisclosed unknown "
+    "unavailable without zero".split()
+)
+
+
+def _unavailable_signal_state_errors(
+    previous: ResearchState | None,
+    current: ResearchState,
+    batch: SignalBatchResult | None,
+) -> list[dict[str, str]]:
+    """Reject belief/resolution claims derived from unavailable Signal topics."""
+
+    if previous is None or batch is None:
+        return []
+    new_beliefs = tuple(
+        item for item in current.current_beliefs if item not in previous.current_beliefs
+    )
+    newly_resolved = tuple(
+        item
+        for item in current.resolved_questions
+        if item not in previous.resolved_questions
+    )
+    errors: list[dict[str, str]] = []
+    for result in batch.results:
+        if not (
+            result.value is SignalValue.UNAVAILABLE
+            or result.coverage is SignalCoverage.UNAVAILABLE
+        ):
+            continue
+        topic_tokens = frozenset(
+            re.findall(r"[a-z0-9]+", result.signal_id.casefold())
+        )
+        if not topic_tokens:
+            continue
+        for item in newly_resolved:
+            tokens = frozenset(re.findall(r"[a-z0-9]+", item.casefold()))
+            if topic_tokens.issubset(tokens):
+                errors.append(
+                    {
+                        "field": "resolved_questions",
+                        "signal_ref": result.ref,
+                        "text": item,
+                    }
+                )
+        for item in new_beliefs:
+            tokens = frozenset(re.findall(r"[a-z0-9]+", item.casefold()))
+            if topic_tokens.issubset(tokens) and (
+                tokens & _UNAVAILABLE_BELIEF_MARKERS
+            ):
+                errors.append(
+                    {
+                        "field": "current_beliefs",
+                        "signal_ref": result.ref,
+                        "text": item,
+                    }
+                )
+    return errors
 
 
 class LLMResearchController:
@@ -5046,9 +5207,12 @@ class LLMResearchController:
                 "Copy a retained Signal ref's prior claim byte-for-byte because its "
                 "backing batch is no longer visible. If you adopt new current-batch "
                 "Signal evidence and continue, narrow or replace answered information "
-                "needs and update resolved/open questions; returning the prior needs "
-                "unchanged or embedding the full old need inside a longer sentence is "
-                "invalid. An unavailable Signal is only a coverage diagnostic: it is "
+                "needs and update resolved/open questions. Keep a need byte-for-byte "
+                "when the batch did not answer it; do not change text merely to show "
+                "motion. Embedding the full old need inside a longer sentence is "
+                "invalid, and a newly resolved question cannot coexist with an exact "
+                "retained same-topic need. An unavailable Signal is only a coverage "
+                "diagnostic: it is "
                 "not evidence of absence and cannot create a belief or resolve a question."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
