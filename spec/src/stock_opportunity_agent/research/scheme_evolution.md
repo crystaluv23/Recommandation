@@ -163,6 +163,14 @@ single correction message names the exact `supporting_evidence[index]`, returned
 `signal_ref`, group, index, and valid indices for that ref/group. The model must
 select an exact catalog tuple or remove the citation; runtime never clamps, swaps,
 or guesses an evidence index, and a still-invalid correction fails closed.
+The prior `research_state.supporting_evidence` array is itself the canonical,
+position-stable inventory for retained refs. Before constructing `ResearchState`,
+the role boundary validates each tagged-ref shape and reports the exact output index,
+missing fields, unexpected fields, and the four-key Basic or five-key Signal shape.
+For a malformed retained Basic ref, correction must copy `projection_id` and
+`exact_text` from an indexed prior ref byte-for-byte, may restate only `claim`, or
+remove the ref. Runtime does not reconstruct a missing literal or silently discard
+unexpected semantic fields.
 Legacy string evidence remains readable only in v1-v5 artifacts.
 
 Blind Predictor consumes only the assembled label-free context. The same

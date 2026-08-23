@@ -63,3 +63,12 @@ Likewise, if a role is required to return a versioned `signal_ref`, the current 
 must expose that exact field. Local code may remove redundant legacy citation keys or
 expand an unversioned id only when every canonical field is present and one current
 batch result matches; it must never guess across versions or batches.
+
+Bounded correction is only meaningful when feedback is executable. For Signal
+citations, expose the exact valid supporting/counter indices per versioned ref and
+name the invalid output item/ref/group/index. For retained Basic citations, use the
+already-supplied prior evidence array as the canonical indexed inventory and report
+missing/unexpected fields; do not duplicate that array in another prompt block or
+reconstruct a missing literal locally. Strict-but-generic feedback can make a model
+repeat the same error and reject otherwise viable candidates without strengthening
+the evidence boundary.

@@ -1642,6 +1642,79 @@ class ConcreteRoleAdapterTests(TestCase):
             ["research_controller_reflect", "research_controller_reflect_correction"],
         )
 
+    def test_reflect_correction_names_malformed_retained_basic_ref_fields(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "evolution_runtime"
+                / "v5_reflect_malformed_retained_basic_ref.json"
+            ).read_text(encoding="utf-8")
+        )
+        invalid_output = fixture["invalid_output"]
+        corrected_output = json.loads(json.dumps(invalid_output))
+        corrected_output["supporting_evidence"] = [fixture["prior_evidence_ref"]]
+        previous = ResearchState(
+            supporting_evidence=(
+                ResearchEvidenceRef.from_dict(fixture["prior_evidence_ref"]),
+            ),
+            next_information_needs=("clarify revenue",),
+        )
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="revenue_growth_yoy",
+                    version=1,
+                    value=SignalValue.UNAVAILABLE,
+                    confidence=0.0,
+                    interpretation="Revenue inputs are unavailable.",
+                    coverage=SignalCoverage.UNAVAILABLE,
+                ),
+                SignalResult(
+                    signal_id="operating_cash_flow_margin",
+                    version=1,
+                    value=SignalValue.UNAVAILABLE,
+                    confidence=0.0,
+                    interpretation="Cash-flow inputs are unavailable.",
+                    coverage=SignalCoverage.UNAVAILABLE,
+                ),
+            ),
+            signal_calls=2,
+        )
+        caller = ScriptedRoleCaller([invalid_output, corrected_output])
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(), previous, batch
+        )
+
+        correction_payload = caller.calls[1]["payload"]
+        error = correction_payload["validation_error"]
+        self.assertIn("supporting_evidence[0]", error)
+        self.assertIn("missing_fields=['exact_text']", error)
+        self.assertIn(
+            "unexpected_fields=['evidence_group', 'evidence_index']", error
+        )
+        self.assertIn("research_state.supporting_evidence", error)
+        self.assertEqual(
+            correction_payload["research_state"]["supporting_evidence"][0],
+            fixture["prior_evidence_ref"],
+        )
+        self.assertEqual(
+            reflected.value.supporting_evidence[0].exact_text,
+            fixture["prior_evidence_ref"]["exact_text"],
+        )
+
+        failing_caller = ScriptedRoleCaller([invalid_output, invalid_output])
+        with self.assertRaises(CandidateExecutionRejected):
+            LLMResearchController(failing_caller).reflect(
+                default_information_plan(), previous, batch
+            )
+        self.assertEqual(
+            failing_caller.stages,
+            ["research_controller_reflect", "research_controller_reflect_correction"],
+        )
+
     def test_finalize_allows_claim_restatement_for_existing_provenance(self) -> None:
         previous = ResearchState(
             hypotheses=("growth may accelerate",),

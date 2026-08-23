@@ -4194,29 +4194,76 @@ def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]:
-    """Drop only redundant legacy citation fields from complete Signal refs."""
+    """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
     normalized = dict(value)
     evidence = normalized.get("supporting_evidence")
     if not isinstance(evidence, list):
         return normalized
-    required = (
+    basic_fields = {"kind", "claim", "projection_id", "exact_text"}
+    signal_fields = {
         "kind",
         "claim",
         "signal_ref",
         "evidence_group",
         "evidence_index",
-    )
+    }
+    allowed_signal_legacy_fields = {"projection_id", "exact_text"}
     normalized_evidence: list[Any] = []
-    for item in evidence:
-        if (
-            isinstance(item, Mapping)
-            and item.get("kind") == "signal"
-            and set(required).issubset(item)
-        ):
-            normalized_evidence.append({key: item[key] for key in required})
-        else:
-            normalized_evidence.append(item)
+    for index, item in enumerate(evidence):
+        if not isinstance(item, Mapping):
+            raise ValidationError(
+                f"supporting_evidence[{index}] must be one tagged-ref JSON object"
+            )
+        fields = set(item)
+        kind = item.get("kind")
+        if kind == "basic_info":
+            missing = sorted(basic_fields - fields)
+            unexpected = sorted(fields - basic_fields)
+            non_string = sorted(
+                name
+                for name in basic_fields & fields
+                if not isinstance(item.get(name), str)
+            )
+            if missing or unexpected or non_string:
+                raise ValidationError(
+                    f"supporting_evidence[{index}] basic_info shape is invalid: "
+                    f"missing_fields={missing}, unexpected_fields={unexpected}, "
+                    f"non_string_fields={non_string}, expected_fields="
+                    f"{sorted(basic_fields)}. Copy projection_id and exact_text "
+                    "byte-for-byte from one indexed "
+                    "research_state.supporting_evidence Basic ref, restate only "
+                    "claim, or remove this evidence item"
+                )
+            normalized_evidence.append(dict(item))
+            continue
+        if kind == "signal":
+            missing = sorted(signal_fields - fields)
+            unexpected = sorted(
+                fields - signal_fields - allowed_signal_legacy_fields
+            )
+            non_string = sorted(
+                name
+                for name in {"kind", "claim", "signal_ref", "evidence_group"}
+                & fields
+                if not isinstance(item.get(name), str)
+            )
+            if missing or unexpected or non_string:
+                raise ValidationError(
+                    f"supporting_evidence[{index}] signal shape is invalid: "
+                    f"missing_fields={missing}, unexpected_fields={unexpected}, "
+                    f"non_string_fields={non_string}, expected_fields="
+                    f"{sorted(signal_fields)}. Use one exact tuple from "
+                    "signal_evidence_ref_catalog or remove this evidence item"
+                )
+            normalized_evidence.append(
+                {key: item[key] for key in signal_fields}
+            )
+            continue
+        raise ValidationError(
+            f"supporting_evidence[{index}] has unknown kind {kind!r}; "
+            "expected 'basic_info' or 'signal'"
+        )
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
 
@@ -4433,7 +4480,10 @@ class LLMResearchController:
                 "Apply H_reflect once to the complete Signal batch. Return one "
                 "ResearchState JSON object with continue/finalize decision. Retain "
                 "the provenance fields of prior Basic Info evidence refs byte-for-byte; "
-                "the claim may be restated. A new Signal evidence ref must use "
+                "the claim may be restated. For retained Basic refs, copy exactly "
+                "kind, claim, projection_id, and exact_text from the indexed "
+                "research_state.supporting_evidence item, changing only claim if needed. "
+                "A new Signal evidence ref must use "
                 "kind=signal, a signal_ref from the current batch, "
                 "evidence_group=supporting or counter, and the zero-based evidence_index. "
                 "Use only an exact tuple listed by signal_evidence_ref_catalog."

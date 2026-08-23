@@ -369,6 +369,13 @@ identify the precise `supporting_evidence[index]`, returned ref/group/index, and
 valid indices for that ref/group so the one correction is executable. The runtime
 does not repair semantic index mistakes locally; an index outside the frozen catalog
 continues to fail closed after the correction boundary.
+The already-supplied `research_state.supporting_evidence` array is the canonical
+indexed inventory for previously accepted refs and is not duplicated into another
+context block. Tagged-ref shape validation occurs before domain construction and
+names the exact output index, missing fields, unexpected fields, and expected Basic
+or Signal field set. A retained Basic ref must copy its prior `projection_id` and
+`exact_text` byte-for-byte while only `claim` may change; correction may instead
+remove it. Missing provenance is never inferred locally.
 
 LLM Signal execution does not serialize its complete resolved Raw Info
 documents into the provider request. It receives the Signal Library's bounded

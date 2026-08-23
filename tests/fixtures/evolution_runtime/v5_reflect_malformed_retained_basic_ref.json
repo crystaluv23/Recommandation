@@ -1,0 +1,35 @@
+{
+  "source_workspace": "deepseek-v6-context-remediation-20260823-v5",
+  "request_hash": "f4cfc56a2697220ae9f197c4f7044328bccf4377e7c1984de4aacfc2a9754f1a",
+  "correction_request_hash": "e94af9883cf5d46a74b2c22ede687baa4f21533bf6fbfc74ec63ead6b41de63a",
+  "prior_evidence_ref": {
+    "claim": "The filing contains XBRL data with revenue segment members and fiscal year periods.",
+    "exact_text": "enb:CommoditySalesRevenueMember 2024-01-01 2024-12-31",
+    "kind": "basic_info",
+    "projection_id": "projection_7e3a1f733e00c61c807a2d15"
+  },
+  "invalid_output": {
+    "contradictions": [],
+    "current_beliefs": [
+      "The filing contains revenue segment data but the selected financial Signals were unavailable."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Revenue-segment disclosures may reveal whether commercialization is accelerating."
+    ],
+    "next_information_needs": [
+      "What source-backed evidence clarifies the revenue trend?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "The filing contains XBRL data with revenue segment members and fiscal year periods.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "basic_info",
+        "projection_id": "projection_7e3a1f733e00c61c807a2d15"
+      }
+    ]
+  }
+}
