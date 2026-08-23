@@ -1,0 +1,7 @@
+{
+  "claim": "The adjusted close price was $19.38 on 2025-08-18.",
+  "invalid_exact_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\"}",
+  "projection_id": "projection_market",
+  "projection_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43, \"volume\":16600371},{\"adjusted_close\":18.7,\"as_of_date\":\"2025-08-19\",\"close\":18.7,\"high\":19.3,\"low\":18.65,\"open\":19.27, \"volume\":16389548}",
+  "valid_exact_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43, \"volume\":16600371}"
+}

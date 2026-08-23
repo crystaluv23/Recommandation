@@ -3207,6 +3207,72 @@ class ConcreteRoleAdapterTests(TestCase):
             '{"close":21.46}',
         )
 
+    def test_v15_initialize_explains_market_rows_and_requires_real_correction(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v15_initialize_market_citation.json"
+            ).read_text()
+        )
+
+        def state(exact_text: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["repricing depends on issuer-specific evidence"],
+                "current_beliefs": [],
+                "supporting_evidence": [
+                    {
+                        "kind": "basic_info",
+                        "claim": fixture["claim"],
+                        "projection_id": fixture["projection_id"],
+                        "exact_text": exact_text,
+                    }
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["confirm issuer-specific catalysts"],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [
+                state(fixture["invalid_exact_text"]),
+                state(fixture["valid_exact_text"]),
+            ]
+        )
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": fixture["projection_id"],
+                            "exact_text": fixture["projection_text"],
+                        }
+                    ]
+                }
+            ]
+        }
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(caller.calls), 2)
+        initial_prompt = caller.calls[0]["system_prompt"]
+        correction_prompt = caller.calls[1]["system_prompt"]
+        self.assertIn("evaluation definition, not an issuer statement", initial_prompt)
+        self.assertIn("complete visible row", initial_prompt)
+        self.assertIn("Returning the same rejected content", correction_prompt)
+        self.assertIn(
+            "contiguous literal substring",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].exact_text,
+            fixture["valid_exact_text"],
+        )
+
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         filing = RawInfoDocument.create(

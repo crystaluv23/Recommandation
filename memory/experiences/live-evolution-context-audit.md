@@ -204,3 +204,19 @@ Fixed-semantics scanners must also distinguish replacing a threshold from descri
 frozen one. A correct post-hoc explanation that evidence stayed below the doubling
 threshold is learning, not semantic drift. Match affirmative set/use/change actions or
 numeric replacements rather than the bare noun.
+
+## Citation-usability addendum (2026-08-23)
+
+An evidence contract can be correct while its model view still makes compliance
+needlessly unlikely. In actual initialization prompts, dense market JSON encouraged the
+model to construct a shorter object containing only `adjusted_close` and `as_of_date`;
+that was semantically faithful but not a contiguous literal. Keep the strict literal
+gate and tell the role to copy a complete visible row. If correction returns the same
+rejected provenance, make the required transition explicit—replace that item with a
+valid visible reference or remove it—rather than silently repairing or dropping it.
+
+Also separate evaluation semantics from issuer facts in the reasoning prompt. The fixed
+six-month doubling outcome is a label definition, not a company target whose "terms"
+need research. Without that sentence, a superficially sensible H_init can spend its one
+information need asking an unanswerable meta-question instead of seeking catalysts,
+financial capacity, market confirmation, or counter-evidence that bears on repricing.

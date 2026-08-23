@@ -151,6 +151,14 @@ resolver for complete point-in-time documents and then runs deterministic
 functions or LLM extraction skills. Signal results remain derived trajectory
 records and are never appended to Raw Info.
 
+The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
+not an issuer statement, contractual target, or missing source. `H_init` may ask
+for issuer-specific evidence that bears on its feasibility, but must not ask for
+the "terms" or "definition" of that fixed outcome. When a market projection is
+structured as JSON rows, a Basic-Info citation must copy one complete visible row,
+including every field between its braces; constructing a shorter JSON object from
+selected fields is a non-literal citation and follows the correction path.
+
 In v6, `ResearchState.supporting_evidence` contains tagged references rather
 than free strings. A Basic-Info reference carries
 `projection_id + exact_text + claim`; a Signal reference carries
@@ -166,6 +174,11 @@ match across the current projections, local code canonicalizes a mismatched
 projection id without another model call. Ellipses, paraphrase, reordered JSON,
 non-contiguous joins, ambiguity, or no match receive one index-specific correction
 and then fail closed.
+The correction instruction makes the required state transition explicit: each
+provenance item named by the validation error must be replaced by a valid visible
+reference or removed. Returning the same rejected provenance is not a correction.
+This remains a model correction followed by the same local evidence validator; the
+runtime never repairs, drops, or guesses an evidence reference on the model's behalf.
 When a reflect response supplies every canonical Signal-ref field but also copies
 legacy `projection_id`/`exact_text` fields, local code drops only those redundant
 fields before validating the canonical ref against the current batch. Missing or

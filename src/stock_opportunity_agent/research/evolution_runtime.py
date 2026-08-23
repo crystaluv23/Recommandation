@@ -3688,7 +3688,9 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "Use the projection_id containing that literal; omit evidence that cannot be "
     "quoted exactly. Every numeric quantity in one claim must occur in the union of "
     "exact_text literals attached to that same claim; use multiple refs for a "
-    "multi-span claim or narrow the claim."
+    "multi-span claim or narrow the claim. For structured market JSON, copy one "
+    "complete visible row including every field between its braces; never construct "
+    "a shorter JSON object from selected fields."
 )
 
 _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
@@ -4146,7 +4148,12 @@ def _complete_parsed_role(
         if attempt:
             request_payload["invalid_output"] = dict(failed_output or {})
             request_payload["validation_error"] = str(failure)
-            prompt += " Correct the invalid output once; return the exact contract only."
+            prompt += (
+                " Correct the invalid output once; return the exact contract only. "
+                "Every field or item named by validation_error must change to valid "
+                "content, or be removed when the contract permits omission. Returning "
+                "the same rejected content is not a correction."
+            )
         value, step_usage = _complete_json_with_invalid_value(
             caller,
             stage=request_stage,
@@ -4670,7 +4677,11 @@ class LLMResearchController:
             stage="research_controller_initialize",
             system_prompt=(
                 "Apply H_init to Basic Info only. Return one ResearchState JSON object; "
-                "information needs must be natural language, not Signal ids."
+                "information needs must be natural language, not Signal ids. The fixed "
+                "six-month adjusted-share-price doubling outcome is the evaluation "
+                "definition, not an issuer statement or target. Ask only for "
+                "issuer-specific evidence bearing on its feasibility; never ask for "
+                "the terms or definition of the evaluation outcome."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),

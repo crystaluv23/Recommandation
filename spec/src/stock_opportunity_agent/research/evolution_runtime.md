@@ -402,6 +402,16 @@ failures terminate that candidate; non-fitness reflections degrade to explicit
 deterministic failure records. Exact transport responses remain in cache for
 audit, but a transport-cache hit is never treated as domain validation.
 
+For ResearchState corrections, the role is told explicitly that every evidence
+provenance item named by `validation_error` must either change to a valid visible
+reference or be removed; an unchanged rejected item is not a correction. The
+runtime still validates the complete returned state and does not silently delete
+or synthesize evidence. `H_init` also receives a fixed boundary reminder that the
+six-month adjusted-price-doubling outcome is the evaluation definition, not an
+issuer target whose terms should be researched. For structured market JSON, it
+must cite a complete visible row rather than constructing a shorter object from
+selected fields.
+
 For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
 literal from one supplied projection: it may not use ellipses, join distant rows,
 reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly once
