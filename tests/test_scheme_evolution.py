@@ -639,6 +639,31 @@ class SignalLibraryTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "unknown frozen"):
                 snapshot.load_spec("revenue_growth_yoy:v2")
 
+    def test_v20_commercialization_signal_excludes_mature_operations(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "scheme_evolution"
+                / "v20_commercialization_mature_operations.json"
+            ).read_text()
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            card = next(
+                item
+                for item in registry.list_signal_cards()
+                if item.ref == fixture["signal_ref"]
+            )
+            skill = registry.load_skill(fixture["signal_ref"])
+
+        self.assertIn("mature operations", card.description)
+        self.assertIn("already mature mine", skill)
+        self.assertIn("return unavailable with empty evidence", skill)
+        self.assertEqual(fixture["actual_bad_output"]["state"]["value"], "positive")
+        self.assertEqual(fixture["expected_value"], "unavailable")
+
     def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

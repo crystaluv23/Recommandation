@@ -3436,6 +3436,45 @@ class ConcreteRoleAdapterTests(TestCase):
             fixture["valid_exact_text"],
         )
 
+    def test_v20_initialize_aggregates_shape_and_quantity_feedback(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v20_initialize_layered_feedback.json"
+            ).read_text(encoding="utf-8")
+        )
+        caller = ScriptedRoleCaller(
+            [fixture["invalid_output"], fixture["corrected_output"]]
+        )
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": fixture["projection_id"],
+                            "exact_text": fixture["projection_text"],
+                        }
+                    ]
+                }
+            ]
+        }
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(), basic_info
+        )
+
+        self.assertEqual(len(caller.calls), 2)
+        error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("unknown kind None", error)
+        self.assertIn("numeric quantities", error)
+        self.assertIn("42", error)
+        self.assertIn("2027", error)
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].claim,
+            fixture["corrected_claim"],
+        )
+
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         filing = RawInfoDocument.create(
@@ -3732,8 +3771,14 @@ class ConcreteRoleAdapterTests(TestCase):
             )
             for item in fixture["signal_results"]
         )
+        corrected_reflection = json.loads(
+            json.dumps(fixture["corrected_reflection"])
+        )
+        corrected_reflection["next_information_needs"] = [
+            "Check the remaining mine-disruption risk."
+        ]
         caller = ScriptedRoleCaller(
-            [fixture["invalid_reflection"], fixture["corrected_reflection"]]
+            [fixture["invalid_reflection"], corrected_reflection]
         )
 
         reflected = LLMResearchController(caller).reflect(
@@ -3750,6 +3795,110 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn(
             "Every numeric quantity in a new Signal claim",
             caller.calls[0]["system_prompt"],
+        )
+
+    def test_v20_reflect_compacts_signal_evidence_and_requires_progress(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v20_reflect_adaptive_progress.json"
+            ).read_text(encoding="utf-8")
+        )
+        canonical_span = fixture["canonical_evidence_prefix"] + (" detail" * 500)
+        result = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=0.8,
+            interpretation="Guidance was reaffirmed without an upward revision.",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="canonical-raw-document",
+                    exact_span=canonical_span,
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        previous = ResearchState(
+            hypotheses=("Guidance acceleration may support the thesis.",),
+            open_questions=("Did management change guidance?",),
+            next_information_needs=(fixture["previous_need"],),
+        )
+        caller = ScriptedRoleCaller(
+            [fixture["invalid_reflection"], fixture["corrected_reflection"]]
+        )
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        self.assertEqual(
+            reflected.value.next_information_needs,
+            (fixture["narrowed_need"],),
+        )
+        error = caller.calls[1]["payload"]["validation_error"]
+        self.assertIn("next_information_needs unchanged", error)
+        self.assertIn("Do not cosmetically paraphrase", error)
+        model_evidence = caller.calls[0]["payload"]["signal_batch"][0][
+            "evidence"
+        ]["supporting"][0]
+        self.assertEqual(model_evidence["evidence_index"], 0)
+        self.assertLessEqual(
+            len(model_evidence["model_evidence_text"]),
+            evolution_runtime_module.MAX_REFLECT_SIGNAL_EVIDENCE_CHARS,
+        )
+        for omitted in (
+            "document_id",
+            "exact_span",
+            "retrieved_at",
+            '"source"',
+            '"symbol"',
+            "<p>",
+        ):
+            self.assertNotIn(omitted, json.dumps(model_evidence))
+        self.assertEqual(result.supporting_evidence[0].exact_span, canonical_span)
+
+        deterministic = SignalResult(
+            signal_id="max_drawdown_1y",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=1.0,
+            interpretation="max_drawdown_1y=-0.16",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="canonical-market-document",
+                    exact_span=(
+                        '[{"adjusted_close":9.36,"retrieved_at":"later",'
+                        '"source":"massive","symbol":"KGC"}]'
+                    ),
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        deterministic_evidence = evolution_runtime_module._signal_batch_model_view(
+            SignalBatchResult(results=(deterministic,), signal_calls=1)
+        )[0]["evidence"]["supporting"][0]
+        self.assertEqual(
+            deterministic_evidence,
+            {
+                "evidence_index": 0,
+                "available_at": "2025-07-31T00:00:00+00:00",
+                "canonical_interpretation": "max_drawdown_1y=-0.16",
+            },
+        )
+
+        no_adoption = fixture["invalid_reflection"] | {"supporting_evidence": []}
+        unchanged = LLMResearchController(ScriptedRoleCaller([no_adoption])).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+        self.assertEqual(
+            unchanged.value.next_information_needs,
+            previous.next_information_needs,
         )
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:

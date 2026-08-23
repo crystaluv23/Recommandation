@@ -164,12 +164,12 @@
         "signal_id": "commercialization_status",
         "version": 1,
         "category": "product",
-        "definition": {"description": "Judge whether a technical milestone has become a sellable and repeatable commercial product."},
+        "definition": {"description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
-      "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Cite literal spans.",
+      "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.",
       "tests": [{"name": "technical demo only", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The product remains a laboratory demonstration."}]}]
     },
     {

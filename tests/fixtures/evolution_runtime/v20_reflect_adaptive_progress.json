@@ -1,0 +1,59 @@
+{
+  "canonical_evidence_prefix": "<p>Management reaffirmed production guidance without an upward revision.</p> {\"retrieved_at\":\"2026-08-16T05:55:40+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"adjusted_close\":24.37}",
+  "previous_need": "What are the specific production and cost guidance updates and risks?",
+  "narrowed_need": "What specific operating disruption could prevent the reaffirmed production guidance?",
+  "invalid_reflection": {
+    "contradictions": [],
+    "current_beliefs": [
+      "Management reaffirmed production guidance without an upward revision."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Execution risk, rather than guidance acceleration, now determines the thesis."
+    ],
+    "next_information_needs": [
+      "What are the specific production and cost guidance updates and risks?"
+    ],
+    "open_questions": [
+      "Which operating disruption could prevent delivery?"
+    ],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "Management reaffirmed production guidance without an upward revision.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v1"
+      }
+    ]
+  },
+  "corrected_reflection": {
+    "contradictions": [],
+    "current_beliefs": [
+      "Management reaffirmed production guidance without an upward revision."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Execution risk, rather than guidance acceleration, now determines the thesis."
+    ],
+    "next_information_needs": [
+      "What specific operating disruption could prevent the reaffirmed production guidance?"
+    ],
+    "open_questions": [
+      "Which operating disruption could prevent delivery?"
+    ],
+    "resolved_questions": [
+      "Whether management changed its production guidance."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "Management reaffirmed production guidance without an upward revision.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v1"
+      }
+    ]
+  }
+}

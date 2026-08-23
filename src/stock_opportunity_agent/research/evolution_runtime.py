@@ -4426,11 +4426,13 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
     }
     allowed_signal_legacy_fields = {"projection_id", "exact_text"}
     normalized_evidence: list[Any] = []
+    issues: list[str] = []
     for index, item in enumerate(evidence):
         if not isinstance(item, Mapping):
-            raise ValidationError(
+            issues.append(
                 f"supporting_evidence[{index}] must be one tagged-ref JSON object"
             )
+            continue
         fields = set(item)
         kind = item.get("kind")
         if kind == "basic_info":
@@ -4442,7 +4444,7 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
                 if not isinstance(item.get(name), str)
             )
             if missing or unexpected or non_string:
-                raise ValidationError(
+                issues.append(
                     f"supporting_evidence[{index}] basic_info shape is invalid: "
                     f"missing_fields={missing}, unexpected_fields={unexpected}, "
                     f"non_string_fields={non_string}, expected_fields="
@@ -4451,7 +4453,8 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
                     "research_state.supporting_evidence Basic ref, restate only "
                     "claim, or remove this evidence item"
                 )
-            normalized_evidence.append(dict(item))
+            else:
+                normalized_evidence.append(dict(item))
             continue
         if kind == "signal":
             missing = sorted(signal_fields - fields)
@@ -4465,23 +4468,57 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
                 if not isinstance(item.get(name), str)
             )
             if missing or unexpected or non_string:
-                raise ValidationError(
+                issues.append(
                     f"supporting_evidence[{index}] signal shape is invalid: "
                     f"missing_fields={missing}, unexpected_fields={unexpected}, "
                     f"non_string_fields={non_string}, expected_fields="
                     f"{sorted(signal_fields)}. Use one exact tuple from "
                     "signal_evidence_ref_catalog or remove this evidence item"
                 )
-            normalized_evidence.append(
-                {key: item[key] for key in signal_fields}
-            )
+            else:
+                normalized_evidence.append(
+                    {key: item[key] for key in signal_fields}
+                )
             continue
-        raise ValidationError(
+        issues.append(
             f"supporting_evidence[{index}] has unknown kind {kind!r}; "
             "expected 'basic_info' or 'signal'"
         )
+    issues.extend(_raw_basic_claim_quantity_issues(evidence))
+    if issues:
+        raise ValidationError("; ".join(issues))
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
+
+
+def _raw_basic_claim_quantity_issues(evidence: list[Any]) -> list[str]:
+    """Preflight decidable Basic quantity errors before tagged refs exist."""
+
+    grouped: dict[str, list[tuple[int, str]]] = {}
+    for index, item in enumerate(evidence):
+        if not isinstance(item, Mapping) or "signal_ref" in item:
+            continue
+        claim = item.get("claim")
+        exact_text = item.get("exact_text")
+        projection_id = item.get("projection_id")
+        if not all(isinstance(value, str) for value in (claim, exact_text, projection_id)):
+            continue
+        grouped.setdefault(str(claim), []).append((index, str(exact_text)))
+    issues: list[str] = []
+    for claim, items in grouped.items():
+        cited_quantities: set[str] = set()
+        for _index, exact_text in items:
+            cited_quantities.update(_normalized_claim_quantities(exact_text))
+        missing = _missing_claim_quantity_groups(claim, cited_quantities)
+        if missing:
+            issues.append(
+                f"supporting_evidence[{items[0][0]}] claim contains numeric "
+                "quantities absent from all Basic exact_text refs with the same "
+                f"claim: {missing}. Add one exact literal ref for every quantity, "
+                "split the multi-span claim across refs with the same claim, or "
+                "narrow the claim"
+            )
+    return issues
 
 
 def _basic_projection_texts(basic_info: Mapping[str, Any]) -> dict[str, str]:
@@ -4529,6 +4566,85 @@ def _signal_evidence_ref_catalog(batch: SignalBatchResult) -> list[dict[str, Any
         }
         for result in batch.results
     ]
+
+
+MAX_REFLECT_SIGNAL_EVIDENCE_CHARS = 1_200
+MAX_REFLECT_SIGNAL_BATCH_EVIDENCE_CHARS = 8_000
+_COMPACT_EVIDENCE_OMISSION = " ...[bounded evidence text omitted]... "
+
+
+def _compact_signal_evidence_text(text_value: str, *, max_chars: int) -> str:
+    """Return readable evidence text without exposing the canonical raw span."""
+
+    if max_chars <= 0:
+        return ""
+    normalized, _runs = _normalized_projection_text(
+        text_value,
+        strip_market_metadata=True,
+    )
+    if len(normalized) <= max_chars:
+        return normalized
+    if max_chars <= len(_COMPACT_EVIDENCE_OMISSION):
+        return normalized[:max_chars]
+    available = max_chars - len(_COMPACT_EVIDENCE_OMISSION)
+    head = (available * 2) // 3
+    tail = available - head
+    return (
+        normalized[:head]
+        + _COMPACT_EVIDENCE_OMISSION
+        + normalized[-tail:]
+    )
+
+
+def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
+    """Project canonical Signal results into one compact H_reflect-only view."""
+
+    remaining = MAX_REFLECT_SIGNAL_BATCH_EVIDENCE_CHARS
+    rows: list[dict[str, Any]] = []
+    for result in batch.results:
+        use_canonical_interpretation = (
+            result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
+            and result.interpretation.startswith(result.signal_id + "=")
+        )
+        evidence_view: dict[str, list[dict[str, Any]]] = {
+            "supporting": [],
+            "counter": [],
+        }
+        for group, evidence_items in (
+            ("supporting", result.supporting_evidence),
+            ("counter", result.counter_evidence),
+        ):
+            for index, evidence in enumerate(evidence_items):
+                evidence_row = {
+                    "evidence_index": index,
+                    "available_at": evidence.timestamp.isoformat(),
+                }
+                if use_canonical_interpretation:
+                    evidence_row["canonical_interpretation"] = result.interpretation
+                else:
+                    text_limit = min(MAX_REFLECT_SIGNAL_EVIDENCE_CHARS, remaining)
+                    compact_text = _compact_signal_evidence_text(
+                        evidence.exact_span,
+                        max_chars=text_limit,
+                    )
+                    remaining -= len(compact_text)
+                    evidence_row["model_evidence_text"] = compact_text
+                evidence_view[group].append(evidence_row)
+        rows.append(
+            {
+                "signal_ref": result.ref,
+                "signal_id": result.signal_id,
+                "version": result.version,
+                "state": {
+                    "value": result.value.value,
+                    "confidence": result.confidence,
+                },
+                "interpretation": {"summary": result.interpretation},
+                "evidence": evidence_view,
+                "status": {"coverage": result.coverage.value},
+            }
+        )
+    return rows
 
 
 _CLAIM_QUANTITY = re.compile(
@@ -4791,6 +4907,25 @@ def _validate_research_state_refs(
             claim_literals.append((index, result.interpretation))
     _validate_basic_claim_quantities(tuple(normalized_refs))
     _validate_signal_claim_quantities(signal_claim_literals)
+    if (
+        phase == "reflect"
+        and previous_state is not None
+        and state.decision is ResearchDecision.CONTINUE
+        and state.next_information_needs == previous_state.next_information_needs
+        and any(
+            item.kind == "signal"
+            and _research_evidence_key(item) not in previous
+            and str(item.signal_ref) in results
+            for item in normalized_refs
+        )
+    ):
+        raise ValidationError(
+            "research_controller_reflect adopted new current-batch Signal evidence "
+            "but returned next_information_needs unchanged. Narrow or replace the "
+            "answered portion, update resolved/open questions as appropriate, or "
+            "finalize. Do not cosmetically paraphrase a need; each changed need must "
+            "reflect the new evidence"
+        )
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()
@@ -4861,22 +4996,23 @@ class LLMResearchController:
                 "evidence_group=supporting or counter, and the zero-based evidence_index. "
                 "Use only an exact tuple listed by signal_evidence_ref_catalog. Every "
                 "numeric quantity in a new Signal claim must occur in the union of the "
-                "exact Signal evidence items referenced by refs with that same claim. "
+                "model_evidence_text items referenced by refs with that same claim; "
+                "runtime revalidates it against complete canonical evidence. "
                 "For a deterministic Signal interpretation shaped metric=value, you "
                 "may copy that exact numeric form into the claim; do not round it, "
                 "convert it to a percentage, or add approximate raw values. "
                 "Copy a retained Signal ref's prior claim byte-for-byte because its "
-                "backing batch is no longer visible."
+                "backing batch is no longer visible. If you adopt new current-batch "
+                "Signal evidence and continue, narrow or replace answered information "
+                "needs and update resolved/open questions; returning the prior needs "
+                "unchanged is invalid."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
             payload={
                 "reflection_skill": plan.reflection_skill,
                 "research_state": state.to_dict(),
-                "signal_batch": [
-                    {**item.to_dict(), "signal_ref": item.ref}
-                    for item in batch.results
-                ],
+                "signal_batch": _signal_batch_model_view(batch),
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
             },
             parser=lambda value: _validate_research_state_refs(

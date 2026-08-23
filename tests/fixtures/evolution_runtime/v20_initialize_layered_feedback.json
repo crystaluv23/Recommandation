@@ -1,0 +1,39 @@
+{
+  "projection_id": "projection_wynn_project",
+  "projection_text": "The project is making significant construction progress, with topping off expected in December.",
+  "invalid_claim": "Construction has reached the 42nd floor and the project will open in 2027.",
+  "corrected_claim": "The project is making significant construction progress, with topping off expected in December.",
+  "invalid_output": {
+    "contradictions": [],
+    "current_beliefs": ["The project is making significant construction progress."],
+    "decision": "continue",
+    "hypotheses": ["On-time construction could narrow the expectation gap."],
+    "next_information_needs": ["What milestone evidence would confirm the remaining construction schedule?"],
+    "open_questions": ["Whether the remaining schedule is on time."],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "Construction has reached the 42nd floor and the project will open in 2027.",
+        "exact_text": "The project is making significant construction progress, with topping off expected in December.",
+        "projection_id": "projection_wynn_project"
+      }
+    ]
+  },
+  "corrected_output": {
+    "contradictions": [],
+    "current_beliefs": ["The project is making significant construction progress."],
+    "decision": "continue",
+    "hypotheses": ["On-time construction could narrow the expectation gap."],
+    "next_information_needs": ["What milestone evidence would confirm the remaining construction schedule?"],
+    "open_questions": ["Whether the remaining schedule is on time."],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "The project is making significant construction progress, with topping off expected in December.",
+        "exact_text": "The project is making significant construction progress, with topping off expected in December.",
+        "kind": "basic_info",
+        "projection_id": "projection_wynn_project"
+      }
+    ]
+  }
+}

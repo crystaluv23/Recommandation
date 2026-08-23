@@ -213,10 +213,33 @@ single correction message names the exact `supporting_evidence[index]`, returned
 `signal_ref`, group, index, and valid indices for that ref/group. The model must
 select an exact catalog tuple or remove the citation; runtime never clamps, swaps,
 or guesses an evidence index, and a still-invalid correction fails closed.
+The model-facing `signal_batch` is a deterministic compact view, not the durable
+canonical `SignalResult`: it carries state, interpretation, stable evidence indices,
+timestamps, and normalized bounded evidence text. It omits document ids/hashes and
+never sends canonical Raw Info `exact_span` back to H_reflect. HTML and repetitive
+market `retrieved_at/source/symbol` fields are removed; each evidence text is capped
+at 1,200 characters and the batch evidence text at 8,000 characters. The complete
+canonical Signal batch remains in the local trajectory and is still the only input
+to literal/index/quantity validation. For locally validated deterministic numeric
+Signals, the model row uses the exact canonical `metric=value` interpretation in
+place of a potentially truncated raw JSON evidence excerpt; the indexed canonical
+evidence remains local and is still required for the ref.
+When a `continue` reflection adds at least one current-batch Signal evidence ref,
+returning the previous `next_information_needs` array unchanged is not an adaptive
+state update. The single correction must narrow or replace the answered portion,
+classify questions as resolved/open as appropriate, or finalize. A changed need must
+reflect the new evidence rather than being a cosmetic paraphrase. If no new Signal
+evidence is adopted, retaining the same need remains valid so another eligible
+Signal can answer it.
 The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,
 missing fields, unexpected fields, and the four-key Basic or five-key Signal shape.
+Because a role has only one correction, this pre-domain validation aggregates every
+tagged-ref shape error in the returned array and every Basic claim-quantity mismatch
+that is already decidable from its raw `claim + exact_text` fields. It must not make
+the model spend its sole correction on `kind` only and reveal an already-present
+unsupported quantity afterward.
 For a malformed retained Basic ref, correction must copy `projection_id` and
 `exact_text` from an indexed prior ref byte-for-byte, may restate only `claim`, or
 remove the ref. Runtime does not reconstruct a missing literal or silently discard

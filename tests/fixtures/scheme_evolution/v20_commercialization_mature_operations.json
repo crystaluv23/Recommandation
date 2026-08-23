@@ -1,0 +1,13 @@
+{
+  "signal_ref": "commercialization_status:v1",
+  "source_excerpt": "At Tasiast, we delivered budgeted production in the second quarter, producing 119,000 ounces at a cost of sales of $843 per ounce. Budgeted production was achieved through strong mill performance and recoveries.",
+  "actual_bad_output": {
+    "state": {
+      "confidence": 0.8,
+      "value": "positive"
+    },
+    "interpretation": "The company is delivering budgeted production at multiple sites, indicating that technical milestones have become commercial products with repeatable sales."
+  },
+  "expected_value": "unavailable",
+  "reason": "The evidence describes routine output from mature producing mines and no transition of a distinct previously non-commercial product or technology."
+}

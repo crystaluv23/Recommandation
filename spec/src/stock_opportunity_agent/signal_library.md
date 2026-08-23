@@ -192,6 +192,18 @@ canonical `unavailable` result with no evidence rather than accepting or
 fabricating a citation. Provider and unexpected runtime failures still
 propagate so external-call recovery remains explicit.
 
+LLM extraction skills also own an explicit applicability boundary. In
+particular, `commercialization_status` measures the transition of a previously
+non-commercial technical product or technology from demonstration/pilot into
+real delivery and repeatable sales. Ordinary output, throughput, cost, or
+guidance from an already mature mine, utility, financial institution, or
+established service is not a commercialization milestone and must produce
+`unavailable` for this Signal unless the visible source explicitly identifies a
+distinct previously non-commercial product or technology and its commercial
+transition. The compact routing card states the same boundary so the selector
+can avoid an irrelevant paid execution; the full skill remains the final
+semantic boundary if it is nevertheless selected.
+
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or
 into `SignalResult`. Before an LLM Signal executes, the runtime deterministically

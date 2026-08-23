@@ -28,6 +28,15 @@ content. Examples therefore need valid role semantics, an explicit do-not-copy
 boundary, and a local template/example-echo plus role-substance validator before
 the domain object is accepted.
 
+Schema-valid state can still be logically non-adaptive or semantically outside a
+skill's domain. If a reflection adopts new evidence but preserves the exact same
+open needs, validate the transition rather than accepting the snapshot fields in
+isolation. If one response has several independently decidable shape or literal
+support defects, aggregate them before spending the only correction. Extraction
+skills must state negative applicability boundaries as concretely as positive
+criteria; ordinary output from a mature operation is not evidence that a new
+technical product crossed into commercialization.
+
 ## Context
 
 The Signal selector once converted two invalid outputs into an empty selection,
@@ -47,6 +56,11 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 6. Compare exact secret-free provider body bytes before reserving an attempt.
 7. Make structured examples safe if copied, but reject exact example/template
    echoes and validate the field's intended domain actions before acceptance.
+8. Validate state transitions when new evidence should change the next action;
+   do not rely only on the next state's schema.
+9. Aggregate every locally decidable defect into the single correction message.
+10. Put explicit non-applicable cases in both the compact routing card and the
+    full extraction skill.
 
 ## Limits
 

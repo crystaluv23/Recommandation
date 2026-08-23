@@ -468,11 +468,30 @@ identify the precise `supporting_evidence[index]`, returned ref/group/index, and
 valid indices for that ref/group so the one correction is executable. The runtime
 does not repair semantic index mistakes locally; an index outside the frozen catalog
 continues to fail closed after the correction boundary.
+H_reflect does not receive canonical SignalEvidence objects. Runtime projects each
+current-batch result into a compact row containing state, interpretation, and indexed
+normalized evidence text; document identity/hash and raw `exact_span` stay local.
+Projection removes HTML and repetitive market `retrieved_at/source/symbol`, caps
+each evidence text at 1,200 characters, and caps all current-batch evidence text at
+8,000 characters. Evidence refs returned by the model are still validated against
+the complete canonical batch, so this token reduction cannot weaken literal,
+point-in-time, or provenance checks. A validated deterministic numeric Signal sends
+its exact canonical `metric=value` interpretation instead of a clipped raw JSON
+excerpt; H_reflect still cites the canonical local evidence index.
+After that validation, a `continue` response that adopts one or more new current-batch
+Signal refs must make a substantive research transition. An exactly unchanged
+`next_information_needs` array receives the one bounded correction with an explicit
+instruction to narrow/replace answered portions, update resolved/open questions, or
+finalize. No new adopted evidence means the same need may remain. Runtime never
+rewrites a need or infers that a question was answered.
 The already-supplied `research_state.supporting_evidence` array is the canonical
 indexed inventory for previously accepted refs and is not duplicated into another
 context block. Tagged-ref shape validation occurs before domain construction and
 names the exact output index, missing fields, unexpected fields, and expected Basic
-or Signal field set. A retained Basic ref must copy its prior `projection_id` and
+or Signal field set. The single correction feedback aggregates all array-item shape
+errors plus Basic claim-quantity mismatches that can be determined directly from
+the returned claim/literal fields; an already-visible second defect cannot be hidden
+until after the only correction is consumed. A retained Basic ref must copy its prior `projection_id` and
 `exact_text` byte-for-byte while only `claim` may change. A retained Signal ref must
 copy its prior `claim`, `signal_ref`, `evidence_group`, and `evidence_index`
 byte-for-byte. Correction may instead remove either ref. Missing provenance is never
