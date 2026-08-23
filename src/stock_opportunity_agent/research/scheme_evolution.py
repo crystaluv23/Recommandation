@@ -18,6 +18,7 @@ from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
     aggregate_capability_gaps,
+    document_has_strong_issuer_match,
     EvidenceResolver,
     MAX_BASIC_INFO_REQUESTS,
     RawInfoRequest,
@@ -4094,6 +4095,15 @@ class PlanMetaMemory:
                 for key, items in value.items()
             }
 
+        def reflection_detail_score(case: CaseReflectionEvidence) -> int:
+            value = case.self_reflection.to_dict()
+            return sum(
+                len(str(item))
+                for field_value in value.values()
+                if isinstance(field_value, (list, tuple))
+                for item in field_value
+            )
+
         bases: list[dict[str, Any]] = []
         for entry in self._entries:
             assessment_counts: dict[str, int] = {}
@@ -4129,24 +4139,37 @@ class PlanMetaMemory:
         for entry in reversed(self._entries):
             details = by_round[entry.round_id]["representative_details"]
             for plan in reversed(entry.plan_reflections):
-                representatives: list[dict[str, Any]] = []
-                seen_assessments: set[str] = set()
+                best_by_assessment: dict[
+                    str, tuple[int, int, CaseReflectionEvidence]
+                ] = {}
                 for case in plan.original_case_reflections:
                     assessment = str(
                         case.candidate_judgment_feedback.get("assessment", "unknown")
                     )
-                    if assessment in seen_assessments or len(representatives) == 3:
-                        continue
-                    seen_assessments.add(assessment)
-                    representatives.append(
-                        {
-                            "assessment": assessment,
-                            "stop_reason": case.stop_reason.value,
-                            "self_reflection": compact_reflection(
-                                case.self_reflection.to_dict()
-                            ),
-                        }
+                    candidate = (
+                        reflection_detail_score(case),
+                        case.case_index,
+                        case,
                     )
+                    current = best_by_assessment.get(assessment)
+                    if current is None or candidate[0] > current[0] or (
+                        candidate[0] == current[0] and candidate[1] < current[1]
+                    ):
+                        best_by_assessment[assessment] = candidate
+                representatives = [
+                    {
+                        "case_index": case.case_index,
+                        "assessment": assessment,
+                        "stop_reason": case.stop_reason.value,
+                        "self_reflection": compact_reflection(
+                            case.self_reflection.to_dict()
+                        ),
+                    }
+                    for assessment, (_score, _case_index, case) in sorted(
+                        best_by_assessment.items(),
+                        key=lambda item: (-item[1][0], item[1][1], item[0]),
+                    )[:6]
+                ]
                 candidate = {
                     "plan_id": plan.plan_id,
                     "metrics": plan.metrics.to_dict(),
@@ -9463,21 +9486,6 @@ def _filter_h3_documents(
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, str]]]:
     """Keep issuer-routed sources and require strong issuer/query news relevance."""
 
-    explicit_aliases: list[str] = []
-    for key in ("company_name", "name", "ticker", "symbol"):
-        value = case.basic_info.get(key)
-        if isinstance(value, str) and value.strip():
-            explicit_aliases.append(value.strip())
-    raw_aliases = case.basic_info.get("identity_aliases", ())
-    if isinstance(raw_aliases, str):
-        raw_aliases = (raw_aliases,)
-    if isinstance(raw_aliases, (list, tuple)):
-        explicit_aliases.extend(
-            item.strip()
-            for item in raw_aliases
-            if isinstance(item, str) and item.strip()
-        )
-    strong_aliases = _identity_alias_variants(explicit_aliases)
     query_terms = {
         token.casefold()
         for token in re.findall(r"[A-Za-z0-9]+", query or "")
@@ -9491,17 +9499,9 @@ def _filter_h3_documents(
             continue
         title = str(document.metadata.get("title", ""))
         visible_text = f"{title}\n{document.content}"
-        issuer_match = any(
-            re.search(
-                rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])",
-                visible_text,
-                flags=(
-                    0
-                    if alias.isalnum() and alias.isupper() and len(alias) <= 5
-                    else re.IGNORECASE
-                ),
-            )
-            for alias in strong_aliases
+        issuer_match = document_has_strong_issuer_match(
+            document,
+            case.basic_info,
         )
         relevance_match = not query_terms or any(
             term in visible_text.casefold() for term in query_terms

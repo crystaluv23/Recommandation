@@ -109,7 +109,11 @@ four Signals of which no more than two may be LLM Signals. Unknown refs,
 missing fields, invalid enums, and invalid tag values remain semantic failures
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
-committed observations.”
+committed observations.” Prior compact Signal conclusions may be supplied to
+help choose complementary evidence, but document fingerprints and content hashes
+remain local executor state. The selector cannot interpret those hashes, already
+executed refs are absent from its cards, and the executor independently enforces
+fingerprint no-op after selection.
 One shared soft-Signal call uses a batch-specific output contract. Each outer
 row returns the exact supplied versioned `signal_ref`, while the nested result
 returns the matching unversioned `signal_spec.signal_id` and integer version.
@@ -133,7 +137,11 @@ Basic Info is an ordered `BasicInfoBundle` of exact original spans plus complete
 lineage. The complete bundle remains durable. `H_init` receives each request's
 purpose and a deterministic model projection capped at 32,000 normalized
 characters: SEC HTML becomes readable text and repetitive per-row market
-metadata is removed. Each projected span has a stable projection id and raw
+metadata is removed. News associated with the issuer only through provider
+ticker metadata is filtered before this view; its visible title/body must name
+the issuer when the case identity supplies aliases. Structured market spans are
+row-aligned before normalization, so removed metadata cannot survive as a
+cross-chunk key or value fragment. Each projected span has a stable projection id and raw
 offset mapping; it is a view, not a summary or new source. Signal Executor asks the same
 resolver for complete point-in-time documents and then runs deterministic
 functions or LLM extraction skills. Signal results remain derived trajectory
@@ -537,7 +545,10 @@ membership, or parent selection.
 The round reflector receives only compact PlanRecord summaries: Plan content,
 aggregate metrics, Plan-critic output, Signal-usage counts, fitness, and compact
 evaluation lineage. It does not receive trajectories, case ids, Raw Info,
-research context, or per-case labels.
+research context, or per-case labels. With fewer than two newly completed Plan
+records there is no horizontal comparison to perform: local code emits an empty
+horizontal layer and makes no Round-reflector model call instead of restating the
+single vertical reflection.
 
 Reflection persistence is additive rather than summary-overwrite:
 
@@ -682,7 +693,12 @@ horizontal layers. Model-facing meta is a deterministic derived view capped at
 48,000 characters across the FIFO: every round retains aggregate information;
 the original layer becomes assessment counts plus bounded representative
 samples; vertical/horizontal lists are bounded; and newer entries receive
-representative detail first. Compact views never replace the durable entries.
+representative detail first. For each assessment class, representative selection
+chooses the most information-rich post-hoc reflection rather than the first case
+encountered, retains its opaque case index, and admits up to six distinct classes
+per Plan before the global 48,000-character bound is enforced. This prevents an
+early blank or validation-fallback reflection from hiding a later analyst-authored
+concrete root cause. Compact views never replace the durable entries.
 
 Each entry contains:
 

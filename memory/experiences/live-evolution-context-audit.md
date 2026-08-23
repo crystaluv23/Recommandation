@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 
@@ -98,3 +98,26 @@ outer refs and unversioned inner domain ids must be shown together in one batch 
 when identity validation fails, correction needs the returned and expected values for
 outer ref, inner id, and integer version. A generic “identity mismatch” lets a model
 repeat the same syntactically valid but semantically wrong id and doubles paid attempts.
+
+## Content-fidelity addendum (2026-08-23)
+
+An anonymity-clean context can still be semantically contaminated. Provider ticker
+association or company-id routing is not enough for company news: inspect visible
+title/body text for a strong issuer name or boundary-matched ticker before Basic Info,
+Signal, or H3 use. In one committed 24-case round, 23 of 107 news projections lacked
+the target issuer and one false-negative reflection converted four other companies'
+news into a learned “ignored commercialization” root cause that the critic and Round
+reflector repeated.
+
+Durable additive meta does not guarantee faithful model-facing meta. A compact view
+that takes the first case per assessment can select blank or validation-fallback
+reflections while hiding later concrete analyst diagnoses. Preserve every durable
+case, but choose bounded representatives by diagnostic content and keep an opaque
+case index for audit. Horizontal reflection also requires at least two new Plans;
+with one Plan it can only paraphrase the vertical critic, so use a deterministic
+zero-call horizontal layer.
+
+Finally, keep cryptographic fingerprints local unless a model can perform a semantic
+operation on them. The selector already receives only unexecuted cards, and the
+executor owns fingerprint no-op; replaying hundreds of opaque hashes in routing
+requests adds tokens without information.

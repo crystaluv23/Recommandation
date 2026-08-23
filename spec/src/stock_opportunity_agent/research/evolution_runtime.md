@@ -131,6 +131,10 @@ Adaptive research must preserve 36,000 tokens for terminal finalize plus the
 Predictor; insufficient Signal/routing budget ends adaptive research and enters
 finalize. Insufficient post-hoc budget preserves the immutable prediction and
 fitness and writes a deterministic `budget_skipped` reflection.
+Routing payloads never expose prior document fingerprints or content hashes. They
+carry only remaining compact cards and prior compact Signal conclusions needed for
+semantic complementarity; executed-ref removal and fingerprint no-op are local
+deterministic controls.
 
 The v6 contract additionally freezes `predictor_context_bytes=24000`. Predictor
 assembly removes repeated full Basic projections and full per-round Signal evidence:
@@ -301,7 +305,12 @@ Round reflection receives compact record summaries rather than serialized
 trajectories: Plan content, aggregate metrics, Plan-critic output, Signal-usage
 counts, fitness eligibility, and evaluation stage/count/snapshot/cohort
 metrics. It excludes embeddings, case ids, trajectories, Raw Info, research
-contexts, and per-case labels.
+contexts, and per-case labels. Horizontal reflection requires at least two newly
+completed child Plan records. If only one Plan survives the round, the runtime
+makes zero `H_R` calls and appends a deterministic empty horizontal layer with
+that Plan's evidence ref; the complete original and vertical layers still commit
+unchanged. This prevents a one-record role from merely paraphrasing the vertical
+critic as a fictitious cross-Plan pattern and saves the redundant request.
 After that call returns, the local runtime deterministically composes the final
 `RoundMetaEntry`: original anonymous case reflections first, exact Plan-critic
 and parent-comparison layers second, and the returned horizontal Round
@@ -309,7 +318,10 @@ reflection third. Neither the Plan critic nor Round reflector is asked to
 reproduce an earlier layer. The proposer receives these complete committed FIFO
 entries with outcome scanning enabled only for this retrospective meta-learning
 role; request construction still fails closed on identity-bearing or source-
-context fields. Legacy horizontal-only entries remain valid inputs.
+context fields. Its bounded original-layer samples choose the richest reflection
+within each assessment class, not the first occurrence, so concrete case-level
+failure attribution remains visible beside exact vertical and horizontal layers.
+Legacy horizontal-only entries remain valid inputs.
 Candidate-judgment feedback remains reflection-only: fitness and cumulative
 Top-K selection continue to use Combined Binary F1 alone.
 

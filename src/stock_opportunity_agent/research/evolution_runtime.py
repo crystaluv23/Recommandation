@@ -4611,10 +4611,6 @@ class LLMSignalRetrievalAgent:
         selection_payload: dict[str, Any] = {
             "information_needs": list(information_needs),
             "signal_cards": cards,
-            "previous_signal_document_fingerprints": {
-                ref: list(value)
-                for ref, value in prior_signal_fingerprints.items()
-            },
             "previous_signal_results": {
                 ref: dict(value)
                 for ref, value in (prior_signal_results or {}).items()
@@ -5276,6 +5272,11 @@ class LLMRoundReflector:
         if set(comparisons) - expected_plan_ids:
             raise ValidationError(
                 "round reflection parent comparisons cite an unknown Plan"
+            )
+        if len(records) < 2:
+            return RoundMetaEntry(
+                round_id=round_id,
+                evidence_refs=tuple(record.plan_id for record in records),
             )
         try:
             payload = {

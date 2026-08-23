@@ -5,8 +5,9 @@ import json
 import math
 import re
 import tempfile
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import TestCase, mock
 
 from stock_opportunity_agent.llm.agent import AgentUsage
@@ -1304,7 +1305,9 @@ class ConcreteRoleAdapterTests(TestCase):
                 ]
             )
             selection = LLMSignalRetrievalAgent(selector_caller).select(
-                ("revenue growth",), registry.freeze(), {}
+                ("revenue growth",),
+                registry.freeze(),
+                {"cash_reserves:v1": ("opaque-document-hash",)},
             )
             self.assertEqual(
                 tuple(item.signal_ref for item in selection.value),
@@ -1321,6 +1324,10 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(
                 selector_caller.calls[0]["payload"]["learned_profile_default"],
                 "no committed observations",
+            )
+            self.assertNotIn(
+                "previous_signal_document_fingerprints",
+                selector_caller.calls[0]["payload"],
             )
 
     def test_signal_selector_repairs_invalid_refs_once(self) -> None:
@@ -2094,21 +2101,23 @@ class ConcreteRoleAdapterTests(TestCase):
             }
 
         class Record:
-            plan_id = "child_plan"
             round_id = 1
-            plan = InformationPlan(
-                plan_id=plan_id,
-                parent_ids=("historical_seed_parent",),
-                basic_info_policy=default_information_plan().basic_info_policy,
-                initial_research_skill="fixture init",
-                reflection_skill="fixture reflect",
-                analysis_prompt="fixture analyse",
-            )
             metrics = Artifact({"binary_f1": 0.5})
             reflection = Artifact({"failed_patterns": ["lost financial evidence"]})
             signal_usage = {"revenue_growth_yoy:v1": {"retrieved": 24}}
             fitness = Artifact({"eligible": True})
             evaluation = Evaluation()
+
+            def __init__(self, plan_id):
+                self.plan_id = plan_id
+                self.plan = InformationPlan(
+                    plan_id=plan_id,
+                    parent_ids=("historical_seed_parent",),
+                    basic_info_policy=default_information_plan().basic_info_policy,
+                    initial_research_skill="fixture init",
+                    reflection_skill="fixture reflect",
+                    analysis_prompt="fixture analyse",
+                )
 
             def to_dict(self):
                 return {
@@ -2146,7 +2155,7 @@ class ConcreteRoleAdapterTests(TestCase):
 
         result = LLMRoundReflector(caller).reflect(
             round_id=1,
-            records=(Record(),),
+            records=(Record("child_plan"), Record("sibling_plan")),
             prior="reflect over the round",
             parent_comparisons_by_plan_id={
                 "child_plan": (
@@ -2172,6 +2181,22 @@ class ConcreteRoleAdapterTests(TestCase):
         rendered = json.dumps(payload)
         self.assertNotIn("identity-must-not-reach-round-reflector", rendered)
         self.assertNotIn("raw-info-must-not-reach-round-reflector", rendered)
+
+    def test_round_reflector_skips_single_record_horizontal_paraphrase(self) -> None:
+        record = SimpleNamespace(plan_id="only_plan")
+        caller = ScriptedRoleCaller([])
+
+        result = LLMRoundReflector(caller).reflect(
+            round_id=1,
+            records=(record,),
+            prior="reflect over the round",
+            parent_comparisons_by_plan_id={"only_plan": ()},
+        )
+
+        self.assertEqual(result.round_id, 1)
+        self.assertEqual(result.evidence_refs, ("only_plan",))
+        self.assertEqual(result.plan_reflections, ())
+        self.assertEqual(caller.calls, [])
 
     def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
         caller = ScriptedRoleCaller(
@@ -3038,16 +3063,34 @@ class ConcreteRoleAdapterTests(TestCase):
             source_type="market_data",
             published_at=as_of,
             available_at=as_of,
-            content=(
-                '[{"symbol":"AAA","source":"fixture","retrieved_at":'
-                '"2025-01-01T00:00:00Z","close":12.5}]'
+            content=json.dumps(
+                [
+                    {
+                        "adjusted_close": 12.5 + offset,
+                        "as_of_date": (as_of.date() - timedelta(days=offset)).isoformat(),
+                        "close": 12.5 + offset,
+                        "retrieved_at": "2026-08-16T08:41:17.052061+00:00",
+                        "source": "fixture",
+                        "symbol": "AAA",
+                        "volume": 1_000 + offset,
+                    }
+                    for offset in range(45, -1, -1)
+                ],
+                sort_keys=True,
+                separators=(",", ":"),
             ),
         )
         resolver = EvidenceResolver(RawInfoStore(documents=(filing, market)))
         bundle = resolver.resolve_basic_info(
             (
                 RawInfoRequest("filing", "business", ("filing",), max_documents=1),
-                RawInfoRequest("market", "market", ("market_data",), max_documents=1),
+                RawInfoRequest(
+                    "market",
+                    "market",
+                    ("market_data",),
+                    lookback_days=45,
+                    max_documents=1,
+                ),
             ),
             company_id="issuer-1",
             identity={},
@@ -3060,6 +3103,8 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("<body", rendered)
         self.assertNotIn("retrieved_at", rendered)
         self.assertNotIn('"symbol"', rendered)
+        self.assertNotIn('"source"', rendered)
+        self.assertNotIn("08:41:17.052061", rendered)
         self.assertTrue(audit["entries"])
         self.assertTrue(all(item["raw_offset_runs"] for item in audit["entries"]))
         self.assertLessEqual(

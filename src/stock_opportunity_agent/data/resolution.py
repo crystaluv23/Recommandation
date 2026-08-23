@@ -23,6 +23,32 @@ MAX_BASIC_INFO_CONTEXT_CHARS = 48_000
 DATA_ACQUISITION_WILDCARD = "*"
 _TOKEN = re.compile(r"[A-Za-z0-9]+")
 _CANONICAL_CIK_COMPANY_ID = re.compile(r"^cik_(\d{10})$")
+_IDENTITY_NAME_SEPARATOR = re.compile(r"\s*(?:/|\||;|\n)\s*")
+_IDENTITY_LEGAL_SUFFIX = re.compile(
+    r"(?:[\s,]+(?:"
+    r"inc(?:orporated)?|corp(?:oration)?|co(?:mpany)?|ltd|limited|plc|llc|"
+    r"l\.?\s*p\.?|holdings?|group|n\.?\s*v\.?|s\.?\s*a\.?|"
+    r"a\.?\s*g\.?|s\.?\s*e\.?)"
+    r")\.?$",
+    re.IGNORECASE,
+)
+_GENERIC_IDENTITY_LEADING_WORDS = frozenset(
+    {
+        "advanced",
+        "american",
+        "bank",
+        "first",
+        "general",
+        "global",
+        "international",
+        "national",
+        "new",
+        "north",
+        "the",
+        "united",
+        "universal",
+    }
+)
 
 
 class DataGapReason(str, Enum):
@@ -592,8 +618,21 @@ class EvidenceResolver:
     ) -> RawInfoResolution:
         """Resolve one request and optionally select exact Basic Info spans."""
 
-        documents = self._local_documents(request, company_id=company_id, as_of=as_of)
+        documents, filtered_news_ids = self._local_documents(
+            request,
+            company_id=company_id,
+            identity=identity,
+            as_of=as_of,
+        )
         events = [self._local_event(request, documents, phase="initial")]
+        if filtered_news_ids:
+            events.append(
+                self._news_filter_event(
+                    request,
+                    filtered_news_ids,
+                    phase="initial",
+                )
+            )
         appended: list[RawInfoDocumentRef] = []
         gap: DataGap | None = None
         if not documents:
@@ -704,14 +743,25 @@ class EvidenceResolver:
                                     },
                                 )
                             )
-                            documents = self._local_documents(
-                                request, company_id=company_id, as_of=as_of
+                            documents, filtered_news_ids = self._local_documents(
+                                request,
+                                company_id=company_id,
+                                identity=identity,
+                                as_of=as_of,
                             )
                             events.append(
                                 self._local_event(
                                     request, documents, phase="after_acquisition"
                                 )
                             )
+                            if filtered_news_ids:
+                                events.append(
+                                    self._news_filter_event(
+                                        request,
+                                        filtered_news_ids,
+                                        phase="after_acquisition",
+                                    )
+                                )
                             if documents:
                                 break
                             reason = (
@@ -863,8 +913,13 @@ class EvidenceResolver:
         return tuple(sorted(available))
 
     def _local_documents(
-        self, request: RawInfoRequest, *, company_id: str, as_of: datetime
-    ) -> list[RawInfoDocument]:
+        self,
+        request: RawInfoRequest,
+        *,
+        company_id: str,
+        identity: Mapping[str, Any],
+        as_of: datetime,
+    ) -> tuple[list[RawInfoDocument], tuple[str, ...]]:
         documents = [
             item
             for item in self.store.search(company_id, as_of=as_of)
@@ -873,7 +928,14 @@ class EvidenceResolver:
         if request.lookback_days is not None:
             lower = as_of - timedelta(days=request.lookback_days)
             documents = [item for item in documents if item.published_at >= lower]
-        return _rank_documents(documents, request)[: request.max_documents]
+        documents, filtered_news_ids = _filter_company_news_documents(
+            documents,
+            identity=identity,
+        )
+        return (
+            _rank_documents(documents, request)[: request.max_documents],
+            filtered_news_ids,
+        )
 
     def _select_adapters(
         self, request: RawInfoRequest
@@ -953,6 +1015,23 @@ class EvidenceResolver:
         )
 
     @staticmethod
+    def _news_filter_event(
+        request: RawInfoRequest,
+        document_ids: Iterable[str],
+        *,
+        phase: str,
+    ) -> ResolutionEvent:
+        return ResolutionEvent(
+            "news_documents_filtered",
+            {
+                "phase": phase,
+                "request_id": request.request_id,
+                "reason": "missing_strong_issuer_match",
+                "filtered_document_ids": sorted(set(document_ids)),
+            },
+        )
+
+    @staticmethod
     def _gap(
         request: RawInfoRequest,
         reason: DataGapReason,
@@ -987,6 +1066,121 @@ def _rank_documents(
         return (-hit_count, -document.available_at.timestamp(), document.document_id)
 
     return sorted(documents, key=key)
+
+
+def _filter_company_news_documents(
+    documents: Iterable[RawInfoDocument],
+    *,
+    identity: Mapping[str, Any],
+) -> tuple[list[RawInfoDocument], tuple[str, ...]]:
+    """Reject provider-associated news whose visible text never names the issuer."""
+
+    aliases = _issuer_relevance_aliases(identity)
+    if not aliases:
+        return list(documents), ()
+    kept: list[RawInfoDocument] = []
+    filtered: list[str] = []
+    for document in documents:
+        if document.source_type.casefold() not in {"news", "company_news"}:
+            kept.append(document)
+            continue
+        if document_has_strong_issuer_match(document, identity, aliases=aliases):
+            kept.append(document)
+        else:
+            filtered.append(document.document_id)
+    return kept, tuple(sorted(filtered))
+
+
+def document_has_strong_issuer_match(
+    document: RawInfoDocument,
+    identity: Mapping[str, Any],
+    *,
+    aliases: tuple[tuple[str, bool], ...] | None = None,
+) -> bool:
+    """Return whether visible title/body text names the routed issuer."""
+
+    resolved_aliases = aliases or _issuer_relevance_aliases(identity)
+    if not resolved_aliases:
+        return False
+    visible_text = f"{str(document.metadata.get('title', ''))}\n{document.content}"
+    return any(
+        re.search(
+            rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])",
+            visible_text,
+            flags=0 if ticker_like else re.IGNORECASE,
+        )
+        for alias, ticker_like in resolved_aliases
+    )
+
+
+def _issuer_relevance_aliases(
+    identity: Mapping[str, Any],
+) -> tuple[tuple[str, bool], ...]:
+    """Expand label-free routing identity into strong visible-text aliases."""
+
+    raw_aliases: list[tuple[str, bool]] = []
+    ticker_values = {
+        value.strip()
+        for key in ("ticker", "symbol")
+        for value in (identity.get(key),)
+        if isinstance(value, str) and value.strip()
+    }
+    for key in ("company_name", "name"):
+        value = identity.get(key)
+        if isinstance(value, str) and value.strip():
+            raw_aliases.append((value.strip(), False))
+    raw_aliases.extend((value, True) for value in ticker_values)
+    supplied = identity.get("identity_aliases", ())
+    if isinstance(supplied, str):
+        supplied = (supplied,)
+    if isinstance(supplied, (list, tuple)):
+        raw_aliases.extend(
+            (item.strip(), item.strip() in ticker_values)
+            for item in supplied
+            if isinstance(item, str) and item.strip()
+        )
+
+    variants: set[tuple[str, bool]] = set()
+    for raw_alias, ticker_like in raw_aliases:
+        alias = " ".join(raw_alias.split()).strip()
+        if not alias:
+            continue
+        variants.add((alias, ticker_like))
+        if ticker_like:
+            continue
+        for component in _IDENTITY_NAME_SEPARATOR.split(alias):
+            component = " ".join(component.split()).strip(" ,")
+            if not _meaningful_identity_alias(component):
+                continue
+            variants.add((component, False))
+            natural_name = component
+            while True:
+                stripped = _IDENTITY_LEGAL_SUFFIX.sub("", natural_name).strip(" ,")
+                if stripped == natural_name:
+                    break
+                natural_name = stripped
+            if _meaningful_identity_alias(natural_name):
+                variants.add((natural_name, False))
+            brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
+            brand_length = sum(character.isalnum() for character in brand)
+            if (
+                (brand_length >= 5 or (brand_length >= 3 and brand.isupper()))
+                and brand.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
+            ):
+                variants.add((brand, False))
+    return tuple(
+        sorted(
+            variants,
+            key=lambda item: (-len(item[0]), item[0].casefold(), item[0], item[1]),
+        )
+    )
+
+
+def _meaningful_identity_alias(value: str) -> bool:
+    compact = "".join(character for character in value if character.isalnum())
+    if len(compact) >= 4:
+        return True
+    return len(compact) >= 2 and any(character.isdigit() for character in compact)
 
 
 def _matches_source_type(
@@ -1074,10 +1268,10 @@ def _select_context_spans(
     candidates: list[tuple[tuple[Any, ...], RawInfoContextSpan]] = []
     tokens = tuple(token.casefold() for token in _TOKEN.findall(request.query or ""))
     for document in documents:
-        window = _structured_market_context_window(document, request, as_of)
+        market_ranges = _structured_market_context_ranges(document, request, as_of)
         ranges = (
-            _chunk_ranges_between(*window)
-            if window is not None
+            market_ranges
+            if market_ranges is not None
             else _chunk_ranges(len(document.content))
         )
         for start, end in ranges:
@@ -1112,12 +1306,12 @@ def _select_context_spans(
     return selected
 
 
-def _structured_market_context_window(
+def _structured_market_context_ranges(
     document: RawInfoDocument,
     request: RawInfoRequest,
     as_of: datetime,
-) -> tuple[int, int] | None:
-    """Project a cached JSON price series to the request's observation window."""
+) -> tuple[tuple[int, int], ...] | None:
+    """Return complete-row market chunks inside the requested observation window."""
 
     if request.lookback_days is None or document.source_type.casefold() not in {
         "historical_price",
@@ -1128,7 +1322,7 @@ def _structured_market_context_window(
         return None
     rows = _json_array_rows_with_offsets(document.content)
     if not rows:
-        return None
+        return ()
     lower = (as_of - timedelta(days=request.lookback_days)).date()
     upper = as_of.date()
     eligible = [
@@ -1138,8 +1332,18 @@ def _structured_market_context_window(
         and lower <= observed <= upper
     ]
     if not eligible:
-        return None
-    return eligible[0][0], eligible[-1][1]
+        return ()
+
+    grouped: list[tuple[int, int]] = []
+    group_start, group_end = eligible[0]
+    for start, end in eligible[1:]:
+        if end - group_start <= CONTEXT_CHUNK_CHARS:
+            group_end = end
+            continue
+        grouped.append((group_start, group_end))
+        group_start, group_end = start, end
+    grouped.append((group_start, group_end))
+    return tuple(grouped)
 
 
 def _json_array_rows_with_offsets(
@@ -1189,11 +1393,6 @@ def _market_observation_date(value: Mapping[str, Any]):
         except ValueError:
             continue
     return None
-
-
-def _chunk_ranges_between(start: int, end: int) -> Iterable[tuple[int, int]]:
-    for relative_start, relative_end in _chunk_ranges(end - start):
-        yield start + relative_start, start + relative_end
 
 
 def _chunk_ranges(length: int) -> Iterable[tuple[int, int]]:

@@ -551,6 +551,86 @@ class EvidenceResolverTests(TestCase):
         self.assertNotIn("events", model_context["requests"][0])
         self.assertNotIn("summary", str(model_context).casefold())
 
+    def test_provider_ticker_news_requires_visible_issuer_match(self) -> None:
+        target = document(
+            "news_target",
+            "Micron Technology announced HBM4 samples for customers.",
+        )
+        associated_only = document(
+            "news_wrong_company",
+            "ASP Isotopes began commercial Silicon-28 production.",
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(documents=(associated_only, target))
+        )
+        request = RawInfoRequest(
+            request_id="recent_company_news",
+            description="Read company-specific product news.",
+            source_types=("news",),
+            lookback_days=30,
+            max_documents=5,
+            query="product",
+        )
+
+        resolution = resolver.resolve_basic_info(
+            (request,),
+            company_id="issuer_1",
+            identity={
+                "company_name": "Micron Technology Inc / MICRON TECHNOLOGY INC",
+                "ticker": "MU",
+                "identity_aliases": [
+                    "MU",
+                    "Micron Technology Inc / MICRON TECHNOLOGY INC",
+                ],
+            },
+            as_of=AS_OF,
+        ).requests[0]
+
+        self.assertEqual(
+            [item.document_id for item in resolution.documents],
+            ["news_target"],
+        )
+        filter_event = next(
+            item
+            for item in resolution.events
+            if item.kind == "news_documents_filtered"
+        )
+        self.assertEqual(
+            filter_event.details["filtered_document_ids"],
+            ["news_wrong_company"],
+        )
+
+    def test_visible_issuer_match_is_case_insensitive_for_name_derived_brand(self) -> None:
+        target = document(
+            "news_target",
+            "Ciena announced that its CFO will present at an investor conference.",
+        )
+        resolver = EvidenceResolver(RawInfoStore(documents=(target,)))
+
+        resolution = resolver.resolve_basic_info(
+            (
+                RawInfoRequest(
+                    request_id="recent_company_news",
+                    description="Read company-specific news.",
+                    source_types=("news",),
+                    lookback_days=30,
+                    max_documents=5,
+                    query="conference",
+                ),
+            ),
+            company_id="issuer_1",
+            identity={
+                "company_name": "CIENA Corp / CIENA CORP",
+                "ticker": "CIEN",
+            },
+            as_of=AS_OF,
+        ).requests[0]
+
+        self.assertEqual(
+            [item.document_id for item in resolution.documents],
+            ["news_target"],
+        )
+
     def test_cached_market_context_projects_rows_to_requested_lookback(self) -> None:
         rows = [
             {

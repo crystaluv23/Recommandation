@@ -139,6 +139,16 @@ schemes.
 
 ## Exact Basic Info Context
 
+Company-scoped news is not trusted merely because a provider associated it with
+the requested ticker or the Raw Info document is stored under that company id.
+When the case supplies a company name/ticker alias inventory, a news document
+must contain at least one strong visible issuer-name or boundary-matched ticker
+reference in its title or body. Provider association metadata alone is
+insufficient. Non-matching documents remain immutable Raw Info but are excluded
+from both Basic Info and Signal resolution, and the resolution events record the
+filtered document ids. This check does not apply to directly issuer-routed SEC,
+market, facts, or transcript sources.
+
 For Basic Info only, selected documents are split into 2,000-character spans
 with 200-character overlap. Query ranking uses literal case-insensitive token
 hit count, then public availability, then document id. Without a query,
@@ -150,11 +160,13 @@ For structured market-data documents, `lookback_days` applies to the dated
 observations exposed to Basic Info, not merely to the publication timestamp of
 the container document. A broader locally cached price document may satisfy a
 narrower request, but context selection must project it to observations inside
-the requested `[as_of - lookback_days, as_of]` window before chunking. This
-projection preserves literal source offsets and never rewrites or summarizes
-the selected rows. It prevents a short recent-market request from replaying an
-entire long-horizon document that was previously acquired for a momentum
-Signal.
+the requested `[as_of - lookback_days, as_of]` window before chunking. Market
+chunks are grouped only at complete JSON-row boundaries and have no overlap, so
+model-view metadata removal never receives a field name in one chunk and its
+value in another. This projection preserves literal source offsets and never
+rewrites or summarizes the selected rows. It prevents a short recent-market
+request from replaying an entire long-horizon document that was previously
+acquired for a momentum Signal.
 
 Every span stores document id/hash/availability, start/end offsets, and exact
 text. `exact_text` must equal `RawInfoDocument.content[start:end]`. No Basic
@@ -170,7 +182,8 @@ cases and yield `historical_data_unavailable`.
 ## Testing
 
 Cover deterministic spans/budgets/ranking, exact-substring validation,
-structured market-observation window projection, local-hit no-acquisition,
+strong visible-issuer filtering for provider ticker news, structured
+market-observation window projection and row-boundary chunking, local-hit no-acquisition,
 same-execution append/re-query, later reuse, every DataGap class, historical
 fail-closed behavior, canonical Signal source-type routing, canonical
 company-id CIK routing, materialized price metadata, and Signal document

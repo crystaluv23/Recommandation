@@ -43,6 +43,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionDataset,
     EvolutionWorkspace,
     ExecutionTrajectory,
+    FitnessEligibility,
     GroundTruth,
     HashingPlanEmbedder,
     InformationPlan,
@@ -913,13 +914,16 @@ class InformationPlanRuntimeTests(TestCase):
             case = make_case("issuer_ready", 4.0)
 
             def raw(source_type: str) -> RawInfoDocument:
+                content = f"Point-in-time {source_type} evidence."
+                if source_type == "news":
+                    content = f"{case.company_id} disclosed point-in-time news evidence."
                 return RawInfoDocument.create(
                     document_id=f"ready_{source_type}",
                     company_id=case.company_id,
                     source_type=source_type,
                     published_at=NOW,
                     available_at=NOW,
-                    content=f"Point-in-time {source_type} evidence.",
+                    content=content,
                     metadata=(
                         {"prices": [100.0, 110.0]}
                         if source_type == "market_data"
@@ -1656,6 +1660,118 @@ class PlanArchiveAndWorkspaceTests(TestCase):
         self.assertEqual([item["round_id"] for item in view], list(range(1, 11)))
         self.assertLessEqual(
             len(json.dumps(view, ensure_ascii=False, sort_keys=True)), 48_000
+        )
+
+    def test_meta_model_view_selects_richest_reflection_per_assessment(self) -> None:
+        def prediction(judgment: CandidateJudgment) -> BlindPrediction:
+            positive = judgment in {
+                CandidateJudgment.LIKELY,
+                CandidateJudgment.POSSIBLE,
+            }
+            return BlindPrediction(
+                is_surge=positive,
+                candidate_judgment=judgment,
+                magnitude=(MagnitudeClass.TWO_TO_THREE if positive else None),
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("fixture",),
+                uncertainties=(),
+                session_id="anonymous-session",
+            )
+
+        false_negative = prediction(CandidateJudgment.UNLIKELY)
+        false_positive = prediction(CandidateJudgment.POSSIBLE)
+        correct_negative = prediction(CandidateJudgment.UNLIKELY)
+        reflections = (
+            CaseReflectionEvidence(
+                1,
+                RuntimeStopReason.FINALIZED,
+                None,
+                candidate_judgment_feedback(false_negative, GroundTruth(2.2)),
+                PredictionSelfReflection(correct=False),
+            ),
+            CaseReflectionEvidence(
+                2,
+                RuntimeStopReason.FINALIZED,
+                None,
+                candidate_judgment_feedback(false_negative, GroundTruth(2.2)),
+                PredictionSelfReflection(
+                    correct=False,
+                    why_prediction_failed=(
+                        "Concrete catalyst evidence was underweighted.",
+                    ),
+                    ignored_evidence=("Binding customer order was ignored.",),
+                ),
+            ),
+            CaseReflectionEvidence(
+                3,
+                RuntimeStopReason.FINALIZED,
+                None,
+                candidate_judgment_feedback(false_positive, GroundTruth(1.2)),
+                PredictionSelfReflection(
+                    correct=False,
+                    why_prediction_failed=("Narrative news was overweighted.",),
+                ),
+            ),
+            CaseReflectionEvidence(
+                4,
+                RuntimeStopReason.FINALIZED,
+                None,
+                candidate_judgment_feedback(correct_negative, GroundTruth(1.2)),
+                PredictionSelfReflection(
+                    correct=True,
+                    missing_information=("No forward guidance was available.",),
+                ),
+            ),
+        )
+        metrics = PlanMetrics(
+            binary_precision=0.0,
+            binary_recall=0.0,
+            binary_f1=0.0,
+            magnitude_accuracy=0.0,
+            magnitude_macro_f1=0.0,
+            true_positive=0,
+            false_positive=1,
+            true_negative=1,
+            false_negative=2,
+            sample_count=4,
+        )
+        plan_reflection = PlanMetaReflection(
+            plan=default_information_plan(),
+            metrics=metrics,
+            metrics_by_cohort={},
+            evaluation_snapshot_ids=(),
+            fitness=FitnessEligibility(
+                eligible=True,
+                reasons=(),
+                expected_case_count=4,
+                valid_case_count=4,
+                evidence_covered_count=4,
+                predicted_positive_count=1,
+                true_positive_count=0,
+            ),
+            signal_usage={},
+            original_case_reflections=reflections,
+            vertical_plan_reflection=PlanReflection(),
+        )
+        memory = PlanMetaMemory(
+            entries=(
+                RoundMetaEntry(
+                    round_id=1,
+                    plan_reflections=(plan_reflection,),
+                    evidence_refs=(plan_reflection.plan_id,),
+                ),
+            )
+        )
+
+        cases = memory.model_view()[0]["representative_details"][0][
+            "representative_cases"
+        ]
+        by_assessment = {item["assessment"]: item for item in cases}
+        severe = by_assessment["severe_false_negative"]
+        self.assertEqual(severe["case_index"], 2)
+        self.assertEqual(
+            severe["self_reflection"]["why_prediction_failed"],
+            ["Concrete catalyst evidence was underweighted."],
         )
 
     def test_durable_attempt_trajectories_feed_capability_backlog(self) -> None:
@@ -2865,6 +2981,33 @@ class SignalEvolutionTests(TestCase):
                 }
             ],
         )
+
+    def test_h3_visible_brand_from_uppercase_formal_name_is_case_insensitive(
+        self,
+    ) -> None:
+        case = replace(
+            make_case("news_target", 4.0),
+            basic_info={
+                "company_name": "CIENA Corp / CIENA CORP",
+                "ticker": "CIEN",
+                "industry": "Networking",
+            },
+        )
+        relevant = RawInfoDocument.create(
+            document_id="relevant-news",
+            company_id=case.company_id,
+            source_type="news",
+            published_at=NOW,
+            available_at=NOW,
+            content="Ciena raised full-year guidance for networking demand.",
+        )
+
+        kept, filtered = _filter_h3_documents(
+            (relevant,), case=case, query="guidance"
+        )
+
+        self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
+        self.assertEqual(filtered, [])
 
     def test_mining_ranks_identity_and_label_hidden_briefs_then_overlays_labels(
         self,
