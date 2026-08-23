@@ -582,8 +582,26 @@ Routing tags remain non-semantic hints. Runtime normalizes strings, deduplicates
 them, drops values outside the frozen tag vocabulary, and retains at most four in
 model order. A model copying a visible card category such as `catalysts`, `risks`,
 or `product` into `context_tags` therefore cannot reject an otherwise valid Signal
-selection. Wrong refs, missing fields, non-string tag containers, and invalid
+selection. A version-owned `routing_excluded_context_tags` list is the narrow
+exception: if the selector attaches one of those tags to that same Signal, its own
+applicability classification contradicts the visible card and receives the one
+correction. Runtime never infers the tag or chooses a replacement Signal. Wrong refs,
+missing fields, non-string tag containers, and invalid
 reason/role enums retain their correction/fail-closed behavior.
+
+Research initialization and compact routing also preserve provider-cache prefixes
+across their single correction. The initial and correction system prompts are
+byte-identical and always define an optional `validation_feedback`; the complete
+stable role payload sorts before that field, which is null initially and contains
+the failed output plus exact validator error only on correction. All evidence,
+skills, needs, cards, learned profiles, and prior results remain visible, and local
+validation is unchanged.
+
+An all-`unavailable` Signal batch remains a durable trajectory/coverage event but
+cannot change ResearchState under the coverage-only invariant. Execution therefore
+skips `H_reflect` for that batch, retains the exact prior state, and routes again over
+unexecuted cards within the existing guards. A mixed or available batch still calls
+`H_reflect`; the shortcut never fabricates finalization or suppresses batch usage.
 
 ## Supervision, Interrupt, and Resume
 

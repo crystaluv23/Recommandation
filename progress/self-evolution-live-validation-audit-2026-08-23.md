@@ -428,3 +428,55 @@ contract 启用 acquisition 而 invocation 不传 flag 时返回
 `data_external_approval_required`。后者不创建 `cycle_state.json` 或 evaluation 目录，
 因此 `external_not_authorized` 不再有机会影响 Random substitution。41 个 focused
 tests 与全量 387 tests 通过；下一合同额度不变，因为 v27 没有外部消耗。
+
+## v28 首 case fail-fast、纠错前缀与 coverage-only no-op
+
+v28 合同 hash 为
+`c9e1699fcf0461da4e9709454ba5046eac86d52b57c27d89588d68a97e3bf7e9`，
+绑定 revision `f1f118487f9ffa6d48e1f845b0b3593537bccde2`。本次按精确授权同时传入
+`--external` 与 `--data-external`，正常结束为 `round_rejected`：25 个 attempts
+全部 completed，合计 98,400 input / 9,075 output tokens、settled cost
+`$0.03263400`。Raw Info 全部本地命中且 provider error 发生在传输前，未创建
+`data_requests.jsonl`；权威 round/cycle 指针仍为 `0/0`，Registry v1/hash
+`58286d7d...a952d` 未变，Locked Test 保持 sealed。
+
+三个 proposer 各调用一次且全部通过本地 Plan validator；每个初始调用均为 1,127
+input tokens、1,024 cache-hit tokens。逐字输出没有复制旧 schema example，并按固定
+focus 实际改变 `B/H_init`。三个候选随后都在首个 case 持久化后由 candidate-level
+fail-fast 停止，最多避免其余 69 个 case evaluations：c01 为
+`budget_exhausted/continue`，3 条 pending needs、0 个 Signal round、6 次模型调用、
+29,457 tokens、`$0.00891408`；c02 为 `budget_exhausted/continue`，3 条 pending
+needs、2 个 Signal rounds、11 次调用、53,124 tokens、`$0.01612548`；c03 为
+`no_signal_match/continue`，1 条 pending need、0 个 Signal round、4 次调用、9,027
+tokens、`$0.00272300`。`rejected.json` 将三者保留为 diagnostic incomplete/unfinalized
+attempt，没有伪造 case failure 或 fitness。Slow H1/H2/H3/Update 未被触发。
+
+逐字 prompt/context/response 审计确认四个后续问题。第一，c01 H_init 初稿在只写
+“second quarter”/“full-year”的 exact text 上添加了不受支持的 `2025`，本地 literal
+gate 正确要求纠错；但初始 9,492 input 只有 384 cache hit，纠错 10,682 input 仍只有
+384 hit，因为 system prompt 被动态改写。第二，c01 routing 初稿对明确的 guidance
+need 返回空；`guidance_acceleration:v1` 可见 card 自带 version-owned `guidance`
+phrase，因此纠错本身正确，但纠错 1,228 input 仅 256 hit，原因同样是动态 system
+prompt 和排序靠前的失败字段。H_init 与 routing 现都使用逐字一致的 conditional
+system prompt，完整稳定 context 后只改变末尾 `validation_feedback`；严格 parser、
+失败输出和精确错误均保留，保守预算仍按 cache miss。
+
+第三，c02 第一批四个 Signals 全部为 canonical `unavailable`，随后 H_reflect 仍花费
+1,974 input / 791 output tokens、`$0.00099568`，其响应将 hypotheses、beliefs、needs、
+questions 和 Basic refs 全部逐字返回。该调用不可能在 coverage-only invariant 下形成
+合法状态变化。Runtime 现在持久化完整 batch/round/fingerprint/usage 后跳过全
+unavailable 的 H_reflect，以原状态继续检索未执行 cards；mixed/available batch 仍按
+原规则反思。第四，c02 第二次 routing 明确给
+`commercialization_status:v1` 标注 `mature_operations`，applicability text 也承认它
+只是成熟金矿普通运营，却仍选择该 Signal，触发一个 10,461-input soft batch，最终
+只能返回 unavailable。该 Signal 版本现在显式声明
+`routing_excluded_context_tags=[mature_operations]`；card 原样公开它，本地只在模型
+自己的 tag 与版本排除直接冲突时要求一次纠错，不推断 case tag、不替模型选 ref。
+
+c02 第二次 H_reflect 并非问题：commercialization unavailable 与本地
+`negative_word_count=0` 同批时，它只加入后者的确定性证据，未将 unavailable 变成
+absence，也逐字保留仍未回答的 needs。c03 对 analyst targets/earnings estimates 的
+空路由同样合理，因为剩余 cards 没有直接匹配；其 price-momentum-only Predictor
+positive 是 diagnostic false positive，不足以改变 Plan fitness。修复后 390 个全量
+测试通过；v28 消耗后下一合同的保守上限为 448 attempts、`$18.47861104` 和 921
+data requests。

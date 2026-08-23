@@ -644,12 +644,34 @@ class SignalLibraryTests(TestCase):
                 if item.ref == fixture["signal_ref"]
             )
             skill = registry.load_skill(fixture["signal_ref"])
+            spec = registry.load_spec(fixture["signal_ref"])
 
         self.assertIn("mature operations", card.description)
         self.assertIn("already mature mine", skill)
         self.assertIn("return unavailable with empty evidence", skill)
+        self.assertEqual(
+            spec.parameters["routing_excluded_context_tags"],
+            ["mature_operations"],
+        )
         self.assertEqual(fixture["actual_bad_output"]["state"]["value"], "positive")
         self.assertEqual(fixture["expected_value"], "unavailable")
+
+    def test_signal_routing_exclusions_require_unique_frozen_tags(self) -> None:
+        with self.assertRaisesRegex(
+            ValidationError, "routing_excluded_context_tags"
+        ):
+            SignalSpec(
+                signal_id="bad_routing_exclusion",
+                version=1,
+                category="product",
+                description="Reject invalid routing exclusions.",
+                execution_type=SignalExecutionType.LLM,
+                skill_file="skill.md",
+                source_types=("filing",),
+                parameters={
+                    "routing_excluded_context_tags": ["mature_operations", "unknown"]
+                },
+            )
 
     def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -925,8 +947,10 @@ class InformationPlanRuntimeTests(TestCase):
             source_type="financials",
             published_at=NOW - timedelta(days=2),
             available_at=NOW - timedelta(days=1),
-            content="Legacy Winner revenue grew 30 percent year over year.",
-            metadata={"revenue_growth_yoy": 0.30},
+            content=sec_company_facts_content(
+                ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                ("2024-01-01", "2024-12-31", 130.0, "2025-01-10"),
+            ),
         )
         return registry, RawInfoStore(documents=(document,))
 
@@ -1047,6 +1071,92 @@ class InformationPlanRuntimeTests(TestCase):
             )
             self.assertIn("usage", trajectory.signal_rounds[0].to_dict()["batch"])
             self.assertEqual(predictor.reflection_truths, [GroundTruth(4.0)])
+
+    def test_runtime_skips_reflection_for_all_unavailable_signal_batch(self) -> None:
+        class NoUnavailableReflectionController:
+            def __init__(self) -> None:
+                self.initial_state = ResearchState(
+                    hypotheses=("A catalyst may still exist.",),
+                    open_questions=("Which source can confirm the catalyst?",),
+                    next_information_needs=("Find catalyst evidence.",),
+                )
+                self.reflect_calls = 0
+
+            def initialize(self, plan, basic_info):
+                return AgentStep(
+                    self.initial_state,
+                    AgentUsage(llm_calls=1, tokens=20, cost=0.01),
+                )
+
+            def reflect(self, plan, state, batch):
+                self.reflect_calls += 1
+                raise AssertionError("all-unavailable batch must not call H_reflect")
+
+        class UnavailableThenEmptySelector:
+            def __init__(self) -> None:
+                self.eligible_calls: list[tuple[str, ...]] = []
+
+            def select(
+                self,
+                information_needs,
+                signal_registry,
+                prior_signal_fingerprints=None,
+                prior_signal_results=None,
+                eligible_signal_refs=None,
+            ):
+                eligible = tuple(eligible_signal_refs or ())
+                self.eligible_calls.append(eligible)
+                if len(self.eligible_calls) == 1:
+                    return AgentStep(
+                        (
+                            SignalSelectionDecision(
+                                signal_ref="revenue_growth_yoy:v1",
+                                reason_code="answer_need",
+                                selection_reason="Try comparable financial evidence.",
+                                applicability_hypothesis=(
+                                    "The source may contain comparable periods."
+                                ),
+                                expected_role="coverage",
+                            ),
+                        ),
+                        AgentUsage(llm_calls=1, tokens=10, cost=0.005),
+                    )
+                return AgentStep((), AgentUsage(llm_calls=1, tokens=5, cost=0.002))
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            snapshot = registry.freeze()
+            controller = NoUnavailableReflectionController()
+            selector = UnavailableThenEmptySelector()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="issuer_without_documents",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=snapshot,
+                signal_executor=SignalExecutor(
+                    snapshot, RawInfoStore(documents=())
+                ),
+                controller=controller,
+                signal_agent=selector,
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(max_llm_calls=10),
+            )
+
+        self.assertEqual(controller.reflect_calls, 0)
+        self.assertEqual(trajectory.final_state, controller.initial_state)
+        self.assertEqual(trajectory.termination_trigger, RuntimeStopReason.NO_SIGNAL_MATCH)
+        self.assertEqual(len(trajectory.signal_rounds), 1)
+        self.assertEqual(
+            trajectory.signal_rounds[0].batch.results[0].value,
+            SignalValue.UNAVAILABLE,
+        )
+        self.assertNotIn("revenue_growth_yoy:v1", selector.eligible_calls[1])
+        self.assertEqual(trajectory.usage.model.llm_calls, 5)
 
     def test_predictor_projection_omits_repeated_full_basic_and_signal_evidence(self) -> None:
         fixture = json.loads(
@@ -1379,8 +1489,10 @@ class InformationPlanRuntimeTests(TestCase):
                         source_type="financials",
                         published_at=NOW,
                         available_at=NOW,
-                        content="Revenue grew 25 percent.",
-                        metadata={"revenue_growth_yoy": 0.25},
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
                     ),
                 )
             )

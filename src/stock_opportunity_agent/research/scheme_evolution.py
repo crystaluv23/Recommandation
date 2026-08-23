@@ -1800,6 +1800,11 @@ def execute_information_plan(
         if not batch.results:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break
+        if all(
+            result.value is SignalValue.UNAVAILABLE
+            for result in batch.results
+        ):
+            continue
         _set_request_token_budget(
             controller,
             limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,

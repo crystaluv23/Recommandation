@@ -215,6 +215,21 @@ class SignalSpec:
             raise ValidationError(
                 "Signal routing_need_phrases must contain 1-8 non-empty strings"
             )
+        excluded_tags = parameters.get("routing_excluded_context_tags")
+        if excluded_tags is not None and (
+            not isinstance(excluded_tags, list)
+            or not excluded_tags
+            or len(excluded_tags) > 8
+            or any(
+                not isinstance(item, str) or item not in SIGNAL_CONTEXT_TAGS
+                for item in excluded_tags
+            )
+            or len(set(excluded_tags)) != len(excluded_tags)
+        ):
+            raise ValidationError(
+                "Signal routing_excluded_context_tags must contain 1-8 unique "
+                "frozen context tags"
+            )
         object.__setattr__(self, "source_types", tuple(self.source_types))
         object.__setattr__(self, "parameters", parameters)
 

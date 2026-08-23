@@ -204,6 +204,16 @@ transition. The compact routing card states the same boundary so the selector
 can avoid an irrelevant paid execution; the full skill remains the final
 semantic boundary if it is nevertheless selected.
 
+A Signal version may additionally declare a small
+`routing_excluded_context_tags` array inside `parameters`. Every value must come
+from the frozen routing-tag vocabulary. The compact card exposes these exclusions,
+and a selector output that attaches one of them to that same Signal is internally
+contradictory and receives the one bounded routing correction. Runtime does not
+infer a case tag, remove a tag to force acceptance, or choose another Signal; it
+acts only on the selector's own explicit classification plus the version-owned
+exclusion. `commercialization_status:v1` excludes `mature_operations`, matching
+its skill boundary without turning general routing tags into universal hard rules.
+
 `unavailable` is a coverage state, never evidence that the measured condition
 is absent. The complete model-returned interpretation remains durable in the
 canonical `SignalResult` for audit, but every downstream model-facing view

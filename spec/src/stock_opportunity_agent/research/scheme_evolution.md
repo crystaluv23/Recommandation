@@ -129,6 +129,13 @@ at four, and preserves model order while trimming a batch to four Signals of whi
 no more than two may be LLM Signals. Tag values are auxiliary routing metadata;
 visible card categories such as `catalysts`, `risks`, or `product` must not reject
 an otherwise valid selection merely because they are not context-tag enum values.
+The sole semantic exception is version-owned applicability: a Signal may expose
+`routing_excluded_context_tags`, and selecting that Signal while the selector itself
+attaches one of those tags is a direct contradiction that receives the one bounded
+correction. Runtime neither infers tags from case content nor substitutes another
+Signal. The correction must remove the incompatible selection, or return a genuinely
+different supported applicability classification; merely paying for a Signal whose
+own stated hypothesis says it is inapplicable is not allowed.
 Unknown refs, missing fields, and invalid reason/role enums remain semantic failures
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
@@ -176,6 +183,15 @@ user payload. The complete shared projection and every pending Signal spec/skill
 visible; this is provider-prefix reuse rather than context removal. Conservative
 pre-send budgeting still assumes a cache miss, while provider-reported cache usage is
 persisted for live verification.
+
+`H_init` and compact Signal routing use the same correction-prefix discipline.
+Each role's initial and correction calls have a byte-identical system prompt that
+always explains the optional `validation_feedback`. The initial user payload carries
+the complete stable role context plus `validation_feedback=null`; correction changes
+only that final field to the failed output and exact local error. No Basic projection,
+research skill, information need, card, learned profile, or prior Signal result is
+removed. This is provider-prefix reuse only; conservative request budgeting still
+assumes a cache miss and the same strict parser validates the corrected output.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask
@@ -258,6 +274,14 @@ question naming an unavailable Signal topic is invalid, as is a newly added beli
 that names that topic using absence, unknown, insufficient, or unavailable language.
 The same topic may remain in open questions or hypotheses because a data gap is a
 valid uncertainty, not a finding.
+When every result in one persisted Signal batch is canonical `unavailable`, runtime
+keeps the complete `SignalRound`, fingerprints, usage, and coverage diagnostics but
+does not call `H_reflect`: such a batch has no evidence that can support a belief,
+resolve a question, or change the ResearchState. The exact state remains unchanged
+and the controller proceeds to routing over the still-unexecuted cards, subject to
+the normal round/call/token guards. Mixed batches and every batch with at least one
+available result still receive exactly one `H_reflect` call. This optimization cannot
+turn missing coverage into finalization or hide Signal execution cost.
 The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,

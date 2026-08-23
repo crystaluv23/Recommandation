@@ -4239,25 +4239,40 @@ def _complete_parsed_role(
     max_output_tokens: int | None = None,
     max_request_tokens: int | None = None,
     sanitize_output_aliases: Iterable[str] = (),
+    stable_correction_prefix: bool = False,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
     usage = AgentUsage()
     failed_output: Mapping[str, Any] | None = None
     failure: ValidationError | None = None
+    correction_instruction = (
+        " If validation_feedback is non-null, correct the invalid output once; "
+        "return the exact contract only. Every field or item named by "
+        "validation_error must change to valid content, or be removed when the "
+        "contract permits omission. Returning the same rejected content is not "
+        "a correction."
+    )
     for attempt in range(2):
         request_payload = dict(payload)
         request_stage = stage if attempt == 0 else f"{stage}_correction"
-        prompt = system_prompt
+        prompt = (
+            system_prompt + correction_instruction
+            if stable_correction_prefix
+            else system_prompt
+        )
+        if stable_correction_prefix:
+            request_payload["validation_feedback"] = None
         if attempt:
-            request_payload["invalid_output"] = dict(failed_output or {})
-            request_payload["validation_error"] = str(failure)
-            prompt += (
-                " Correct the invalid output once; return the exact contract only. "
-                "Every field or item named by validation_error must change to valid "
-                "content, or be removed when the contract permits omission. Returning "
-                "the same rejected content is not a correction."
-            )
+            if stable_correction_prefix:
+                request_payload["validation_feedback"] = {
+                    "invalid_output": dict(failed_output or {}),
+                    "validation_error": str(failure),
+                }
+            else:
+                request_payload["invalid_output"] = dict(failed_output or {})
+                request_payload["validation_error"] = str(failure)
+                prompt += correction_instruction
         value, step_usage = _complete_json_with_invalid_value(
             caller,
             stage=request_stage,
@@ -5160,6 +5175,7 @@ class LLMResearchController:
             allow_outcomes=False,
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
+            stable_correction_prefix=True,
         )
         return AgentStep(state, usage)
 
@@ -5308,6 +5324,11 @@ class LLMSignalRetrievalAgent:
             routing_phrases = spec.parameters.get("routing_need_phrases", ())
             if routing_phrases:
                 card["routing_need_phrases"] = list(routing_phrases)
+            excluded_tags = spec.parameters.get(
+                "routing_excluded_context_tags", ()
+            )
+            if excluded_tags:
+                card["routing_excluded_context_tags"] = list(excluded_tags)
             cards.append(card)
         if not cards:
             return AgentStep((), AgentUsage())
@@ -5385,6 +5406,21 @@ class LLMSignalRetrievalAgent:
                     if len(tags) == 4:
                         break
                 spec = specs_by_ref[signal_ref]
+                excluded_tags = tuple(
+                    tag
+                    for tag in tags
+                    if tag
+                    in spec.parameters.get("routing_excluded_context_tags", ())
+                )
+                if excluded_tags:
+                    raise ValidationError(
+                        "Signal selection applicability contradicts a version-owned "
+                        f"routing exclusion: {signal_ref} cannot be selected with "
+                        f"context_tags={list(excluded_tags)}. Remove the incompatible "
+                        "selection, or return a genuinely different supported "
+                        "applicability classification; runtime will not choose a "
+                        "replacement Signal"
+                    )
                 if spec.execution_type.value == "llm":
                     if llm_count >= 2:
                         continue
@@ -5416,8 +5452,11 @@ class LLMSignalRetrievalAgent:
                 "{\"selections\": []}. Empty is invalid when an information need "
                 "repeats three or more consecutive normalized words from an "
                 "available signal_ref or contains a supplied routing_need_phrases "
-                "value; choose a non-empty answering batch in that case. Otherwise "
-                "return selections whose items "
+                "value; choose a non-empty answering batch in that case. A card's "
+                "routing_excluded_context_tags are version-owned hard "
+                "applicability exclusions: do not select that Signal when your own "
+                "context_tags contain one of them. For a non-empty answer, return "
+                "selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "
                 "confirm_hypothesis, test_contradiction, assess_applicability, "
                 "or combine_evidence); a <=240 character selection_reason; a "
@@ -5440,6 +5479,7 @@ class LLMSignalRetrievalAgent:
             allow_outcomes=False,
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
+            stable_correction_prefix=True,
         )
         return AgentStep(selected, usage)
 

@@ -325,3 +325,29 @@ Otherwise local resolver misses become `external_not_authorized`, which a
 label-free readiness sampler can mistakenly interpret as genuine no-data and
 use to replace Random cases. Inspect both external-call ledgers and the exact
 snapshot: zero network calls do not prove the preview was state-neutral.
+
+## Coverage-only no-op and applicability addendum (2026-08-23)
+
+Apply a semantic invariant before paying a reasoning role. When every result in an
+actual Signal batch was canonical `unavailable`, H_reflect received no usable evidence
+and returned the complete ResearchState byte-for-byte, consuming nearly three thousand
+tokens. Persist the batch, coverage, fingerprints, and usage, but keep the state exact
+and route among remaining cards without reflection. Do not extend this shortcut to a
+mixed batch: one available deterministic result can still justify a real update even
+when neighboring soft Signals are unavailable.
+
+An applicability description in a card is insufficient if routing can explicitly
+classify a case into the excluded context and select the Signal anyway. Let the Signal
+version own a small exclusion list from the existing context-tag vocabulary. Correct a
+selection only when the model's own tag directly conflicts with that visible list;
+never infer tags from issuer content, fuzzily classify the case, or choose a replacement
+Signal locally. This catches a mature-mine commercialization contradiction without
+turning all auxiliary tags into hard routing policy.
+
+The stable correction-prefix rule applies to compact control roles as well as large
+soft-Signal projections. H_init and Signal routing both lost most cache reuse because
+their correction changed the system prompt; routing also placed dynamic failure fields
+before part of its stable context. Use one conditional system prompt and one trailing
+null-or-object validation feedback field. Keep every Basic projection, skill, need,
+card, profile, prior result, rejected output, and validator error; cache optimization is
+request layout, not context deletion.

@@ -8,6 +8,7 @@ import tempfile
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any, Mapping
 from unittest import TestCase, mock
 
 from stock_opportunity_agent.llm.agent import AgentUsage
@@ -113,6 +114,16 @@ def signal_selection(signal_ref: str) -> dict[str, Any]:
             }
         ]
     }
+
+
+def validation_error(call: Mapping[str, Any]) -> str:
+    """Read validation feedback from stable-prefix and legacy role requests."""
+
+    payload = call["payload"]
+    feedback = payload.get("validation_feedback")
+    if isinstance(feedback, Mapping):
+        return str(feedback["validation_error"])
+    return str(payload["validation_error"])
 
 
 def write_json(path: Path, value: object) -> None:
@@ -1454,7 +1465,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 ("revenue_growth_yoy:v1",),
             )
             self.assertEqual(selection.usage.llm_calls, 2)
-            self.assertIn("validation_error", caller.calls[1]["payload"])
+            self.assertIn("outside supplied cards", validation_error(caller.calls[1]))
 
     def test_signal_selector_fails_closed_after_invalid_correction(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1550,7 +1561,7 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(selection.usage.llm_calls, 2)
             self.assertIn(
                 fixture["corrected_signal_ref"],
-                caller.calls[1]["payload"]["validation_error"],
+                validation_error(caller.calls[1]),
             )
             self.assertIn(
                 "Returning the same rejected content",
@@ -1590,8 +1601,83 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(guidance_card["routing_need_phrases"], ["guidance"])
         self.assertIn(
             "version-owned information-need phrase",
-            caller.calls[1]["payload"]["validation_error"],
+            validation_error(caller.calls[1]),
         )
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
+        stable_context = {
+            key: value
+            for key, value in caller.calls[0]["payload"].items()
+            if key != "validation_feedback"
+        }
+        self.assertEqual(
+            stable_context,
+            {
+                key: value
+                for key, value in caller.calls[1]["payload"].items()
+                if key != "validation_feedback"
+            },
+        )
+        stable_prefix = json.dumps(
+            stable_context, sort_keys=True, separators=(",", ":")
+        )[:-1] + ',"validation_feedback":'
+        for call in caller.calls:
+            rendered = json.dumps(
+                call["payload"], sort_keys=True, separators=(",", ":")
+            )
+            self.assertTrue(rendered.startswith(stable_prefix))
+
+    def test_signal_selector_corrects_version_owned_excluded_context_tag(self) -> None:
+        incompatible = signal_selection("commercialization_status:v1")
+        item = incompatible["selections"][0]
+        item["applicability_hypothesis"] = (
+            "This mature gold producer reflects ordinary operations."
+        )
+        item["context_tags"] = ["mature_operations", "materials"]
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([incompatible, {"selections": []}])
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("Clarify production status for the mature producer.",),
+                snapshot,
+                {},
+            )
+            applicable_caller = ScriptedRoleCaller(
+                [signal_selection("commercialization_status:v1")]
+            )
+            applicable = LLMSignalRetrievalAgent(applicable_caller).select(
+                ("Check a new product's commercial transition.",),
+                snapshot,
+                {},
+            )
+
+        self.assertEqual(selection.value, ())
+        self.assertEqual(selection.usage.llm_calls, 2)
+        card = next(
+            card
+            for card in caller.calls[0]["payload"]["available_signal_cards"]
+            if card["signal_ref"] == "commercialization_status:v1"
+        )
+        self.assertEqual(
+            card["routing_excluded_context_tags"], ["mature_operations"]
+        )
+        self.assertIn(
+            "version-owned routing exclusion", validation_error(caller.calls[1])
+        )
+        self.assertIn("mature_operations", validation_error(caller.calls[1]))
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+        self.assertEqual(
+            tuple(item.signal_ref for item in applicable.value),
+            ("commercialization_status:v1",),
+        )
+        self.assertEqual(applicable.usage.llm_calls, 1)
 
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -3407,7 +3493,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
         self.assertEqual(len(caller.calls), 2)
-        correction_error = caller.calls[1]["payload"]["validation_error"]
+        correction_error = validation_error(caller.calls[1])
         self.assertIn("supporting_evidence[0]", correction_error)
         self.assertIn("contiguous literal substring", correction_error)
         self.assertIn("without ellipses", correction_error)
@@ -3470,13 +3556,38 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(caller.calls), 2)
         initial_prompt = caller.calls[0]["system_prompt"]
         correction_prompt = caller.calls[1]["system_prompt"]
+        self.assertEqual(initial_prompt, correction_prompt)
+        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
+        self.assertEqual(
+            caller.calls[0]["payload"]["basic_info"],
+            caller.calls[1]["payload"]["basic_info"],
+        )
+        self.assertEqual(
+            caller.calls[0]["payload"]["initial_research_skill"],
+            caller.calls[1]["payload"]["initial_research_skill"],
+        )
+        stable_prefix = json.dumps(
+            {
+                "basic_info": caller.calls[0]["payload"]["basic_info"],
+                "initial_research_skill": caller.calls[0]["payload"][
+                    "initial_research_skill"
+                ],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )[:-1] + ',"validation_feedback":'
+        for call in caller.calls:
+            rendered = json.dumps(
+                call["payload"], sort_keys=True, separators=(",", ":")
+            )
+            self.assertTrue(rendered.startswith(stable_prefix))
         self.assertIn("evaluation definition, not an issuer statement", initial_prompt)
         self.assertIn("baseline date, or baseline price", initial_prompt)
         self.assertIn("complete visible row", initial_prompt)
         self.assertIn("Returning the same rejected content", correction_prompt)
         self.assertIn(
             "contiguous literal substring",
-            caller.calls[1]["payload"]["validation_error"],
+            validation_error(caller.calls[1]),
         )
         self.assertEqual(
             initialized.value.supporting_evidence[0].exact_text,
@@ -3512,7 +3623,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
         self.assertEqual(len(caller.calls), 2)
-        error = caller.calls[1]["payload"]["validation_error"]
+        error = validation_error(caller.calls[1])
         self.assertIn("unknown kind None", error)
         self.assertIn("numeric quantities", error)
         self.assertIn("42", error)
@@ -3696,9 +3807,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(state.value.supporting_evidence), 2)
         self.assertIn(
             "numeric quantities",
-            caller.calls[1]["payload"]["validation_error"],
+            validation_error(caller.calls[1]),
         )
-        self.assertIn("2165476", caller.calls[1]["payload"]["validation_error"])
+        self.assertIn("2165476", validation_error(caller.calls[1]))
 
         market = fixture["multi_span_market_claim"]
         market_output = json.loads(json.dumps(corrected))
@@ -3789,7 +3900,7 @@ class ConcreteRoleAdapterTests(TestCase):
             )
         self.assertIn(
             "1605400000",
-            invalid_caller.calls[1]["payload"]["validation_error"],
+            validation_error(invalid_caller.calls[1]),
         )
 
     def test_v12_reflect_rejects_signal_claim_quantities_absent_from_evidence(self) -> None:
