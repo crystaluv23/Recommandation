@@ -303,3 +303,15 @@ the unchanged projection. This preserves complete correction evidence and conser
 cache-miss budgeting while making the whole common prefix cache-eligible. Verify the
 canonical key order: a dynamic field sorted before the projection defeats the intended
 prefix even when the in-memory insertion order looks correct.
+
+## Fitness-impossible fail-fast addendum (2026-08-23)
+
+Preserving an incomplete state is necessary but not sufficient for token safety.
+Join each completed trajectory to the fixed fitness predicate before starting the
+next case. If one unfinalized trajectory makes the candidate permanently ineligible,
+persist its diagnostic prediction and exact state, then stop the candidate with the
+full expected case set and completed subset. Do not convert the condition into a
+fabricated execution failure, and apply the same check immediately after restart
+reuses the checkpoint. A configurable contract flag must not claim the finalized
+gate can be disabled when the scorer and parent-selection path enforce it
+unconditionally.

@@ -371,3 +371,35 @@ candidate；legacy echo 仍由本地 validator 拒绝。proposal initial/correct
 `stop_reason` 等于真实 guard，仍可产出 diagnostic prediction，但被
 `require_finalized` 排除。实际复现回归、81 个 focused tests、全量 384 tests 与
 repository lint 均通过；下一次外部运行必须绑定新的 committed revision。
+
+## v26 finalized gate 的 candidate 级 fail-fast
+
+v26 合同 hash 为
+`62b9a1fb538e5f891b90df4b78c9b0df0dd36a80f13014c2d91332e035ab6561`，
+绑定 revision `946e4287cb078a8dba654b45476005b9c391f4e4`。主动中止时 ledger
+保留 19 个 attempts：18 completed、1 个 interrupted reservation；已结 cost
+`$0.02212588`，保守 reservation `$0.00352100`。readiness 全部本地命中，data
+request 未增加；权威 round/cycle 指针仍为 `0/0`，Registry v1/hash
+`58286d7d...a952d` 未变，Locked Test 未访问。
+
+两个真实 proposer 候选验证了 v25 后的 prompt 修复：首个输出没有复制 schema-only
+contract，且按 `B/H_init` focus 实质修改 H_init；第二个初稿误用不支持的
+`press_release`，同一完整 context 加末尾 validation feedback 后纠正。两次
+initial/correction 的 system prompt 逐字一致，第二个 initial 的 cache hit 为
+1,024/1,127 input tokens，correction 为 1,024/1,520，证明稳定 prefix 已实际生效，
+而 correction 仍保留完整 invalid output 与精确错误。
+
+首个完整 case 又直接验证了 forced-stop fidelity：trajectory 保存
+`stop_reason=budget_exhausted`、`termination_trigger=budget_exhausted`、
+`decision=continue` 和四条 pending needs，Predictor 结果只作为 diagnostic；该 case
+使用 10 次模型调用、42,689 tokens。固定 `require_finalized` 因此已使 candidate c01
+永远不能进入 fitness/parent selection，但 evaluator 随即启动第 2 个 case，并在中止前
+又完成 routing 与 Signal batch、开始 H_reflect。继续剩余 23 cases 只会消费 tokens，
+不会增加任何晋级可能。
+
+当前 evaluator 在持久化新 trajectory 或重启复用 checkpoint 后立即检查同一固定
+finalized predicate；一旦失败，返回保留全量 expected case ids 与已完成 subset 的
+attempt，metrics 为 null，fitness 明确包含 `incomplete_case_set` 与
+`unfinalized_case`，不伪造 `CaseEvaluationFailure`。v5 contract 也不能再关闭
+`require_finalized`。31 个 focused tests 与全量 386 tests 已通过；Slow
+H1/H2/H3/Update 仍未到达，不能标为 live-verified。

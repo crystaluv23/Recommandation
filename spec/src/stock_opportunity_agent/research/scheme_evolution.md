@@ -385,6 +385,18 @@ excludes it from Plan fitness. Only an H_init/H_reflect state that itself return
 `decision=finalize` earns `stop_reason=finalized`; no separate terminal
 controller rewrite exists.
 
+`require_finalized` is a fixed Fast-loop fitness gate, not an optional runtime
+preference; a v5 evaluation contract that disables it is invalid. Once any case
+for a candidate completes with an unfinalized trajectory, that candidate is
+mathematically unable to enter fitness or parent selection. The evaluator must
+first persist the exact diagnostic trajectory and prediction, then stop the
+candidate immediately without evaluating its remaining cases. The resulting
+attempt keeps the full expected case-id set, the completed trajectory subset,
+no fabricated `CaseEvaluationFailure`, and therefore has no metrics plus the
+explicit `incomplete_case_set` and `unfinalized_case` fitness reasons. Restart
+applies the same fail-fast rule after reusing such a checkpoint; it must not
+spend calls replaying or advancing beyond a known-unfit candidate.
+
 ## Dataset Ownership
 
 `EvolutionDataset` has three issuer-disjoint sets:

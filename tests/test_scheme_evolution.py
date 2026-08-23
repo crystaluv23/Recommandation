@@ -1453,6 +1453,104 @@ class InformationPlanRuntimeTests(TestCase):
                     registry.freeze(),
                 )
 
+    def test_unfinalized_case_stops_candidate_and_restart_reuses_stop(self) -> None:
+        class LoopingController(OneBatchController):
+            def reflect(self, plan, state, batch):
+                return AgentStep(
+                    ResearchState(
+                        hypotheses=state.hypotheses,
+                        next_information_needs=("resolve remaining catalyst",),
+                    ),
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="shared_financials",
+                        company_id="shared_issuer",
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Revenue grew 25 percent.",
+                        metadata={"revenue_growth_yoy": 0.25},
+                    ),
+                )
+            )
+            cases = (
+                EvolutionCase(
+                    company_id="shared_issuer",
+                    prediction_time=NOW,
+                    basic_info={"company_name": "Shared One"},
+                    ground_truth=GroundTruth(4.0),
+                ),
+                EvolutionCase(
+                    company_id="shared_issuer",
+                    prediction_time=NOW + timedelta(days=1),
+                    basic_info={"company_name": "Shared Two"},
+                    ground_truth=GroundTruth(4.0),
+                ),
+            )
+            events = []
+            predictor = FixedPredictor()
+            attempt = RuntimePlanEvaluator(
+                raw_info_store=store,
+                controller=LoopingController(),
+                signal_agent=OneSignalSelector(),
+                predictor=predictor,
+                prediction_root=root / "predictions",
+                limits=RuntimeLimits(max_signal_rounds=1),
+                on_progress=events.append,
+            ).evaluate(default_information_plan(), cases, registry.freeze())
+
+            self.assertEqual(len(attempt.trajectories), 1)
+            self.assertEqual(attempt.failures, ())
+            self.assertIsNone(attempt.metrics)
+            self.assertEqual(
+                attempt.fitness.reasons,
+                ("incomplete_case_set", "unfinalized_case"),
+            )
+            self.assertEqual(
+                attempt.trajectories[0].stop_reason,
+                RuntimeStopReason.MAX_SIGNAL_ROUNDS,
+            )
+            self.assertEqual(
+                attempt.trajectories[0].final_state.decision,
+                ResearchDecision.CONTINUE,
+            )
+            self.assertEqual(len(predictor.reflection_truths), 1)
+            self.assertEqual(
+                [event["event_type"] for event in events],
+                [
+                    "case_started",
+                    "case_completed",
+                    "candidate_evaluation_stopped",
+                ],
+            )
+
+            resumed_events = []
+            resumed_predictor = FixedPredictor()
+            resumed = RuntimePlanEvaluator(
+                raw_info_store=store,
+                controller=LoopingController(),
+                signal_agent=OneSignalSelector(),
+                predictor=resumed_predictor,
+                prediction_root=root / "predictions",
+                limits=RuntimeLimits(max_signal_rounds=1),
+                on_progress=resumed_events.append,
+            ).evaluate(default_information_plan(), cases, registry.freeze())
+
+            self.assertEqual(resumed, attempt)
+            self.assertEqual(resumed_predictor.reflection_truths, [])
+            self.assertEqual(
+                [event["event_type"] for event in resumed_events],
+                ["case_trajectory_reused", "candidate_evaluation_stopped"],
+            )
+
 
 class PredictionMetricTests(TestCase):
     def test_ground_truth_thresholds_and_two_stage_metrics(self) -> None:
@@ -1631,6 +1729,15 @@ class PredictionMetricTests(TestCase):
         )
 
 class EvaluationDatasetSamplingTests(TestCase):
+    def test_evaluation_contract_cannot_disable_finalized_fitness_gate(self) -> None:
+        payload = PlanEvaluationConfig().to_dict()
+        payload["fitness_gate"]["require_finalized"] = False
+
+        with self.assertRaisesRegex(
+            ValidationError, "requires finalized trajectories"
+        ):
+            PlanEvaluationConfig.from_dict(payload)
+
     def test_snapshots_freeze_anchor_and_rotate_exact_random_cases(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "evaluation"

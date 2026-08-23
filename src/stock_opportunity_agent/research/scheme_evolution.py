@@ -2327,11 +2327,7 @@ def assess_fitness_eligibility(
     expected = tuple(str(item) for item in expected_case_ids)
     actual = tuple(row.case_id for row in rows)
     valid_rows = tuple(
-        row
-        for row in rows
-        if row.stop_reason is RuntimeStopReason.FINALIZED
-        and row.final_state.decision is ResearchDecision.FINALIZE
-        and bool(row.prediction_ref.strip())
+        row for row in rows if _trajectory_is_fitness_finalized(row)
     )
     evidence_covered = sum(_trajectory_has_source_evidence(row) for row in rows)
     predicted_positive = sum(row.prediction.is_surge for row in rows)
@@ -2357,6 +2353,14 @@ def assess_fitness_eligibility(
         evidence_covered_count=evidence_covered,
         predicted_positive_count=predicted_positive,
         true_positive_count=true_positive,
+    )
+
+
+def _trajectory_is_fitness_finalized(trajectory: ExecutionTrajectory) -> bool:
+    return (
+        trajectory.stop_reason is RuntimeStopReason.FINALIZED
+        and trajectory.final_state.decision is ResearchDecision.FINALIZE
+        and bool(trajectory.prediction_ref.strip())
     )
 
 
@@ -2595,6 +2599,8 @@ class PlanEvaluationConfig:
             raise ValidationError("proposal attempts per slot must be positive")
         if self.max_structured_corrections != 1:
             raise ValidationError("v5 requires exactly one structured correction")
+        if not self.require_finalized:
+            raise ValidationError("v5 fitness requires finalized trajectories")
         object.__setattr__(self, "label_counts", counts)
         object.__setattr__(self, "anchor_label_counts", anchor_counts)
         object.__setattr__(self, "random_label_counts", random_counts)
@@ -4508,6 +4514,7 @@ class RuntimePlanEvaluator:
     ) -> PlanEvaluationAttempt:
         if not cases:
             raise ValidationError("evolution validation cases must not be empty")
+        expected_case_ids = tuple(item.case_id for item in cases)
         executor = SignalExecutor(
             signal_registry,
             self.raw_info_store,
@@ -4516,6 +4523,28 @@ class RuntimePlanEvaluator:
             llm_runner=self.llm_signal_runner,
         )
         trajectories: list[ExecutionTrajectory] = []
+
+        def stop_after_unfinalized(
+            trajectory: ExecutionTrajectory,
+        ) -> PlanEvaluationAttempt | None:
+            if _trajectory_is_fitness_finalized(trajectory):
+                return None
+            _emit_progress(
+                self.on_progress,
+                "candidate_evaluation_stopped",
+                plan_id=plan.plan_id,
+                case_id=trajectory.case_id,
+                reason="unfinalized_case",
+                stop_reason=trajectory.stop_reason.value,
+                completed_case_count=len(trajectories),
+                expected_case_count=len(cases),
+            )
+            return PlanEvaluationAttempt(
+                plan=plan,
+                expected_case_ids=expected_case_ids,
+                trajectories=tuple(trajectories),
+            )
+
         for case_index, case in enumerate(cases, start=1):
             case_path = self.prediction_root / plan.plan_id / f"{case.case_id}.json"
             trajectory_path = (
@@ -4562,6 +4591,9 @@ class RuntimePlanEvaluator:
                     case_count=len(cases),
                     trajectory_path=str(trajectory_path),
                 )
+                stopped_attempt = stop_after_unfinalized(trajectory)
+                if stopped_attempt is not None:
+                    return stopped_attempt
                 continue
 
             _emit_progress(
@@ -4660,7 +4692,7 @@ class RuntimePlanEvaluator:
                 )
                 return PlanEvaluationAttempt(
                     plan=plan,
-                    expected_case_ids=tuple(item.case_id for item in cases),
+                    expected_case_ids=expected_case_ids,
                     trajectories=tuple(trajectories),
                     failures=(failure,),
                 )
@@ -4690,9 +4722,12 @@ class RuntimePlanEvaluator:
                 cost=trajectory.usage.model.cost,
                 trajectory_path=str(trajectory_path),
             )
+            stopped_attempt = stop_after_unfinalized(trajectory)
+            if stopped_attempt is not None:
+                return stopped_attempt
         return PlanEvaluationAttempt(
             plan=plan,
-            expected_case_ids=tuple(item.case_id for item in cases),
+            expected_case_ids=expected_case_ids,
             trajectories=tuple(trajectories),
         )
 
