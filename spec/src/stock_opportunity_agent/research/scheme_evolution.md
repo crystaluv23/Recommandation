@@ -115,9 +115,12 @@ failure into `no_signal_match` or guess a category or Signal on the model's
 behalf.
 For non-semantic formatting only, runtime deterministically deduplicates refs,
 trims reason/applicability strings to 240 characters, normalizes/deduplicates
-valid context tags to four, and preserves model order while trimming a batch to
-four Signals of which no more than two may be LLM Signals. Unknown refs,
-missing fields, invalid enums, and invalid tag values remain semantic failures
+context tags, drops values outside the frozen tag vocabulary, caps retained tags
+at four, and preserves model order while trimming a batch to four Signals of which
+no more than two may be LLM Signals. Tag values are auxiliary routing metadata;
+visible card categories such as `catalysts`, `risks`, or `product` must not reject
+an otherwise valid selection merely because they are not context-tag enum values.
+Unknown refs, missing fields, and invalid reason/role enums remain semantic failures
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
 committed observations.” Prior compact Signal conclusions may be supplied to

@@ -3142,6 +3142,32 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertTrue(all(len(item.context_tags) <= 4 for item in selected))
             self.assertTrue(all(len(set(item.context_tags)) == len(item.context_tags) for item in selected))
 
+    def test_v17_routing_drops_visible_categories_used_as_context_tags(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/v17_signal_category_tags.json"
+            ).read_text()
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller([fixture])
+
+            selected = LLMSignalRetrievalAgent(caller).select(
+                ("identify catalysts and risks",), registry.freeze(), {}
+            ).value
+
+            self.assertEqual(len(caller.calls), 1)
+            self.assertEqual(
+                tuple(item.signal_ref for item in selected),
+                ("financing_listing_action:v1",),
+            )
+            self.assertEqual(
+                selected[0].context_tags,
+                ("capital_intensive", "mature_operations", "large_cap"),
+            )
+
     def test_v6_initialize_canonicalizes_unique_basic_projection_reference(self) -> None:
         def state(projection_id: str) -> dict[str, Any]:
             return {

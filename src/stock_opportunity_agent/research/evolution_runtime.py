@@ -4907,7 +4907,7 @@ class LLMSignalRetrievalAgent:
                         r"[^a-z0-9_:-]+", "_", raw_tag.casefold()
                     ).strip("_")[:48]
                     if tag not in SIGNAL_CONTEXT_TAGS:
-                        raise ValidationError("Signal selection context tag is not allowed")
+                        continue
                     if tag not in tags:
                         tags.append(tag)
                     if len(tags) == 4:

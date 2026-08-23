@@ -499,6 +499,13 @@ malformed, duplicated, or out-of-card ref container receives the documented one
 correction and then raises a usage-bearing candidate rejection if still invalid.
 Neither path terminates the process with a raw container exception.
 
+Routing tags remain non-semantic hints. Runtime normalizes strings, deduplicates
+them, drops values outside the frozen tag vocabulary, and retains at most four in
+model order. A model copying a visible card category such as `catalysts`, `risks`,
+or `product` into `context_tags` therefore cannot reject an otherwise valid Signal
+selection. Wrong refs, missing fields, non-string tag containers, and invalid
+reason/role enums retain their correction/fail-closed behavior.
+
 ## Supervision, Interrupt, and Resume
 
 The runtime emits structured, secret-free progress events before and after

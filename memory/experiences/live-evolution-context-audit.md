@@ -231,3 +231,13 @@ contradiction gate before accepting empty: only an exact phrase of three or more
 consecutive normalized Signal-ref words in a need triggers one semantic correction.
 Do not expand this into fuzzy retrieval or locally choose the ref; an unmatched empty
 must remain a legitimate no-match result.
+
+## Auxiliary-tag addendum (2026-08-23)
+
+Do not let auxiliary routing metadata destroy a semantically useful selection. Signal
+cards expose categories, so a model may naturally copy `catalysts`, `risks`, or
+`product` into `context_tags` even when the narrower tag vocabulary uses different
+terms. Tags were designed as locally normalized coarse hints: discard unknown strings,
+deduplicate, and cap them. Preserve correction and rejection for wrong Signal refs,
+missing fields, invalid reason/role enums, or malformed tag containers, which can
+change execution semantics rather than merely losing an optional hint.

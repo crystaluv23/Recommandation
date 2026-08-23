@@ -1,0 +1,17 @@
+{
+  "selections": [
+    {
+      "applicability_hypothesis": "Recent financing or listing actions could act as catalysts or risks.",
+      "context_tags": [
+        "catalysts",
+        "capital_intensive",
+        "mature_operations",
+        "large_cap"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "selection_reason": "Assess whether financing, restructuring, or listing actions materially change runway or dilution.",
+      "signal_ref": "financing_listing_action:v1"
+    }
+  ]
+}
