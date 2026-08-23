@@ -138,3 +138,18 @@ without promoting untrusted content into the system role. Persist provider-repor
 cache hit/miss token counts, but keep pre-send token and cost gates conservatively priced
 as cache misses. Measure common prefixes by replaying real payload values, then verify
 actual hit rates only on the next live run.
+
+## Boundary-language addendum (2026-08-23)
+
+Guard scanners must distinguish an affirmative semantic change from prose that repeats
+the prohibition itself. A model saying “without calculating probabilities” is honoring
+the fixed boundary; substring detection that sees only “probabilities” wastes correction
+attempts and can reject the better Plan. Return the exact affirmative matched phrase so
+the one allowed correction is actionable.
+
+Likewise, a prompt-side exploration focus is not enforced merely because the whole Plan
+hash changed. Validate the named field group against every supplied parent after parsing:
+a `B/H_init` attempt that changes only `H_analyse` destroys attribution even though it is
+not an exact clone. Provider usage schemas also vary across compatible endpoints; accept
+both direct cache-hit fields and a validated nested cached-input count, while continuing
+to budget every input token as a miss.

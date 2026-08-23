@@ -2354,6 +2354,84 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("exactly duplicates", correction["validation_error"])
         self.assertEqual(correction["invalid_output"], duplicate)
 
+    def test_v10_proposer_allows_explicit_probability_prohibition(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v10_proposer_semantics_and_focus.json"
+            ).read_text(encoding="utf-8")
+        )
+        parent = default_information_plan()
+        for analysis_prompt in fixture["false_positive_analysis_prompts"]:
+            output = {
+                "B": parent.basic_info_policy.to_dict(),
+                "H_init": parent.initial_research_skill,
+                "H_reflect": parent.reflection_skill,
+                "H_analyse": analysis_prompt,
+            }
+            caller = ScriptedRoleCaller([output])
+
+            plan = LLMInformationPlanProposer(caller).propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                proposal_attempt=3,
+                forbidden_plan_ids=(),
+                parents=(parent,),
+                meta_info=(),
+                prior="fixed H_P",
+            )
+
+            self.assertEqual(plan.analysis_prompt, analysis_prompt)
+            self.assertEqual(caller.stages, ["information_plan_propose"])
+
+    def test_v10_proposer_corrects_change_outside_required_focus(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v10_proposer_semantics_and_focus.json"
+            ).read_text(encoding="utf-8")
+        )
+        unchanged = fixture["unchanged_focus_fields"]
+        parent = InformationPlan.from_dict(
+            {
+                "plan_id": "historical_parent",
+                "parent_ids": [],
+                "basic_info_policy": unchanged["B"],
+                "initial_research_skill": unchanged["H_init"],
+                "reflection_skill": default_information_plan().reflection_skill,
+                "analysis_prompt": fixture["parent_analysis_prompt"],
+            }
+        )
+        wrong_focus = {
+            "B": unchanged["B"],
+            "H_init": unchanged["H_init"],
+            "H_reflect": parent.reflection_skill,
+            "H_analyse": fixture["wrong_focus_analysis_prompt"],
+        }
+        corrected = json.loads(json.dumps(wrong_focus))
+        corrected["H_init"] += " Identify the strongest unsupported assumption."
+        caller = ScriptedRoleCaller([wrong_focus, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(plan.initial_research_skill, corrected["H_init"])
+        self.assertIn(
+            "B/H_init is unchanged",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+
     def test_plan_proposer_receives_complete_additive_outcome_aware_fifo_entry(
         self,
     ) -> None:
@@ -4184,6 +4262,21 @@ class RunControlTests(TestCase):
             )
             self.assertEqual(cached["usage"]["prompt_cache_hit_tokens"], 2)
             self.assertEqual(cached["usage"]["prompt_cache_miss_tokens"], 1)
+
+    def test_provider_usage_normalizes_responses_cached_tokens(self) -> None:
+        usage = evolution_runtime_module._provider_usage_record(
+            {
+                "input_tokens": 100,
+                "output_tokens": 5,
+                "input_tokens_details": {"cached_tokens": 64},
+            },
+            input_tokens=100,
+            output_tokens=5,
+            cost=0.01,
+        )
+
+        self.assertEqual(usage["prompt_cache_hit_tokens"], 64)
+        self.assertEqual(usage["prompt_cache_miss_tokens"], 36)
 
     def test_structured_client_records_optional_binary_token_scores(self) -> None:
         class RecordingClient:

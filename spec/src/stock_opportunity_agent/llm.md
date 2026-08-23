@@ -63,10 +63,12 @@ estimation, audit replay, and network transmission therefore share one byte
 identity rather than merely equivalent JSON objects.
 
 Provider usage persistence retains total input/output tokens plus optional
-provider-reported prompt-cache hit and miss tokens. The conservative request and
-campaign cost gates continue to reserve every input token at the frozen cache-miss
-ceiling; cache observations are optimization/audit evidence, not permission to
-weaken pre-send budgeting.
+provider-reported prompt-cache hit and miss tokens. It accepts either the direct
+Chat-compatible hit/miss fields or a Responses-compatible nested cached-input-token
+count; in the latter case miss tokens are the validated total input less cached input.
+The conservative request and campaign cost gates continue to reserve every input token
+at the frozen cache-miss ceiling; cache observations are optimization/audit evidence,
+not permission to weaken pre-send budgeting.
 
 ## Invariants
 

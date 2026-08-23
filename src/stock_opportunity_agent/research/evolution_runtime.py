@@ -3980,6 +3980,41 @@ def _validate_proposed_market_backbone(plan: InformationPlan) -> None:
         )
 
 
+def _validate_proposal_change_focus(
+    plan: InformationPlan,
+    parents: tuple[InformationPlan, ...],
+    *,
+    focus_index: int,
+) -> None:
+    """Require the deterministic proposal focus to change versus every parent."""
+
+    labels = ("B/H_init", "H_reflect", "H_analyse")
+    if focus_index not in range(len(labels)):
+        raise ValidationError("proposal change-focus index is invalid")
+
+    def signature(item: InformationPlan) -> Any:
+        if focus_index == 0:
+            return (
+                item.basic_info_policy.to_dict(),
+                item.initial_research_skill,
+            )
+        if focus_index == 1:
+            return item.reflection_skill
+        return item.analysis_prompt
+
+    unchanged_parent_ids = [
+        parent.plan_id
+        for parent in parents
+        if signature(plan) == signature(parent)
+    ]
+    if unchanged_parent_ids:
+        raise ValidationError(
+            "candidate did not apply proposal_constraints.required_change_focus: "
+            f"{labels[focus_index]} is unchanged from selected parent(s) "
+            + ", ".join(unchanged_parent_ids)
+        )
+
+
 _FIXED_SEMANTICS_REDEFINITION = re.compile(
     r"(?:p\s*\(|probabilit(?:y|ies)|odds|threshold|cutoff|"
     r"three[- ]month|twelve[- ]month|one[- ]year|"
@@ -4003,21 +4038,38 @@ def _reject_fixed_semantics_redefinition(value: Any) -> Any:
     """Reject retrospective/proposal prose that attempts to replace fixed semantics."""
 
     text_value = json.dumps(value, ensure_ascii=False, sort_keys=True)
-    if _fixed_semantics_violation(text_value):
-        raise ValidationError("role output attempts to redefine fixed Predictor semantics")
+    match = _fixed_semantics_match(text_value)
+    if match is not None:
+        raise ValidationError(
+            "role output attempts to redefine fixed Predictor semantics; "
+            f"matched prohibited phrase {match.group(0)!r}"
+        )
     return value
 
 
 def _fixed_semantics_violation(text_value: str) -> bool:
     """Allow explicit guardrails while rejecting affirmative semantic replacement."""
 
+    return _fixed_semantics_match(text_value) is not None
+
+
+def _fixed_semantics_match(text_value: str) -> re.Match[str] | None:
+    """Return an affirmative semantics violation after removing explicit guards."""
+
     scrubbed = re.sub(
-        r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
+        r"\bwithout\s+(?:calculating|computing|estimating|assigning)\s+"
+        r"(?:a\s+)?probabilit(?:y|ies)\b",
         "",
         text_value,
         flags=re.IGNORECASE,
     )
-    return _FIXED_SEMANTICS_REDEFINITION.search(scrubbed) is not None
+    scrubbed = re.sub(
+        r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
+        "",
+        scrubbed,
+        flags=re.IGNORECASE,
+    )
+    return _FIXED_SEMANTICS_REDEFINITION.search(scrubbed)
 
 
 def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any:
@@ -5040,6 +5092,11 @@ class LLMInformationPlanProposer:
                         "proposal_constraints.required_change_focus and change at "
                         "least one of B, H_init, H_reflect, or H_analyse"
                     )
+                _validate_proposal_change_focus(
+                    plan,
+                    parents,
+                    focus_index=(proposal_attempt - 1) % len(change_focuses),
+                )
                 return plan
             except ValidationError as exc:
                 failed_value = value
@@ -7811,6 +7868,17 @@ def _provider_usage_record(
         value = usage_data.get(key)
         if type(value) is int and value >= 0:
             record[key] = value
+    if "prompt_cache_hit_tokens" not in record:
+        details = usage_data.get("input_tokens_details")
+        cached_tokens = (
+            details.get("cached_tokens") if isinstance(details, Mapping) else None
+        )
+        if (
+            type(cached_tokens) is int
+            and 0 <= cached_tokens <= input_tokens
+        ):
+            record["prompt_cache_hit_tokens"] = cached_tokens
+            record["prompt_cache_miss_tokens"] = input_tokens - cached_tokens
     return record
 
 

@@ -628,9 +628,13 @@ assigns the Plan id deterministically from the slot and copies parent ids from
 the selected parents actually sent to the prompt. Model-supplied structural ids
 are ignored. The call explicitly requires a real four-field delta from every
 selected parent and gives each bounded proposal attempt a deterministic change
-focus. Malformed content or an exact parent copy receives one correction with
-the invalid output and validation reason before the outer attempt can reject
-it. The proposer uses frozen temperature `1.0` sampling; anonymous blind judging
+focus. Runtime verifies that the named field group differs from every selected
+parent; changing another field cannot satisfy that attempt's focus. Malformed
+content, an exact parent copy, or an ignored focus receives one correction with
+the invalid output and actionable validation reason before the outer attempt can
+reject it. Fixed-semantics scanning treats explicit negative guardrails as compliant
+and identifies the actual affirmative prohibited phrase when rejecting a redefinition.
+The proposer uses frozen temperature `1.0` sampling; anonymous blind judging
 stays at temperature `0.0`. The slot prevents exact-cache collapse and still
 rejects repeated ids if sampling returns the same candidate. It participates in
 request identity but never becomes part of the candidate Plan. This is

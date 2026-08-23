@@ -365,12 +365,17 @@ Information Plan proposal output contains only `B`, `H_init`, `H_reflect`, and
 lineage; provider-supplied ids are ignored. The provider receives an explicit
 constraint that its four-field content must not exactly copy a selected parent,
 plus a deterministic change focus keyed by proposal attempt. Exact-parent
-content is validated inside the proposer adapter, so it receives the same one
-correction request with the failed output and precise validation message as
-malformed content. The outer candidate-attempt loop remains a separate bounded
-sampling layer; it must not retry an exact duplicate without explaining the
-required change. An unrepaired candidate is rejected as a bounded event without
-committing a partial round.
+content is validated inside the proposer adapter. The change focus is an enforced
+content contract rather than prompt advice: a `B/H_init`, `H_reflect`, or `H_analyse`
+attempt must differ in that exact field group from every selected parent, and a
+change elsewhere cannot satisfy it. Exact copies and ignored focuses receive the
+same one correction request with the failed output and precise validation message
+as malformed content. Fixed-semantics scanning distinguishes explicit prohibitions
+such as “without calculating probabilities” from affirmative probability/threshold
+instructions and returns the matched prohibited phrase in correction feedback. The
+outer candidate-attempt loop remains a separate bounded sampling layer; it must not
+retry an exact duplicate without explaining the required change. An unrepaired
+candidate is rejected as a bounded event without committing a partial round.
 
 Each candidate slot may make at most three independently hashed proposal
 attempts. Every structured runtime role receives at most one correction with

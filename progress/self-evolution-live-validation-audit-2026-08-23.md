@@ -209,3 +209,26 @@ provider 报告的 `prompt_cache_hit_tokens` 和 `prompt_cache_miss_tokens`，�
 `information_needs` 在前，只共享 28 个字符，新 canonical payload 先发送
 `available_signal_cards`，共享前缀为 2,790 个字符，净增加 2,762 个字符。该数值只
 证明更大的可复用前缀；实际命中率必须在下一次真实运行中依据 provider usage 审计。
+
+## v10 续跑缺陷与停止点
+
+新增边界下冻结的 v10 合同 hash 为
+`010d3aa002f51772dddfdb4a3f6552aea517159364f984adba7c6518344f20db`。
+在 7 个 attempt（6 completed、1 interrupted reservation）和 2 个真实 SEC fetch 后
+主动停止，权威指针仍为 `0/0`。已结 LLM cost 为 `$0.00302092`，保守保留的中断
+reservation 为 `$0.003696`。
+
+逐字检查 proposer attempts 1/2 发现，两次 `H_analyse` 都明确写了
+“without calculating probabilities”，实际是在遵守固定 Predictor 边界；旧 scanner
+只消除了 `do not/never/must not/cannot` 后的文本，因而把其中的 `probabilities`
+误判为 affirmative redefinition。attempt 6 则收到必须改变 `B/H_init` 的 focus，却
+原样返回 parent 的 `B/H_init`、只改变 `H_analyse`，旧 runtime 因整体 hash 不同而
+错误接受。这会让三个 proposal focus 不可归因，属于流程语义缺陷而不是模型质量。
+
+当前修复把显式 probability prohibition 与 affirmative threshold 指令分开，拒绝时
+返回实际命中的 prohibited phrase；同时按 attempt focus 验证 `B/H_init`、
+`H_reflect` 或 `H_analyse` 对每个 parent 都确实变化。v10 的三个真实响应成为最小
+fixture。provider usage 另兼容 Responses 的
+`input_tokens_details.cached_tokens`，并由总 input 确定性计算 miss；预算仍按全 miss
+冻结。下一版合同只能使用新增授权的剩余额度：793 attempts、`$18.93009424` 和
+956 个真实 provider requests。
