@@ -340,3 +340,34 @@ c02 的 post-hoc 初次输出已经含两条具体 decision drivers，其中“$
 因裸 `threshold` 单词触发纠错。当前允许 bare fixed-threshold/cutoff 描述；只有
 set/use/adopt/change/adjust 等肯定动作、显式 numeric replacement、probability/odds
 仍被拒绝。纠错没有改变分析结论，证明原调用是纯 token 浪费。
+
+## v25 guard termination fidelity 与 proposer copy prior
+
+v25 合同 hash 为
+`8813c82dc9402852fa4525790683824f9ce1b6a56336ebc2096a281bc30a44f0`，
+绑定 revision `4a5be90f9f432c16ec88e6111d184e7e6fb3333a`。授权运行在第 2 个
+case 主动中止，共 29 个预留 attempts：28 completed、1 个 interrupted
+reservation；已结 cost `$0.03879764`，另保守保留 `$0.00463008`。Raw Info
+readiness 全部本地命中，没有新增 data request；权威 round/cycle 指针仍为 `0/0`，
+Locked Test 未访问。
+
+本轮逐字到达并检查 proposer、proposer correction、H_init、H_init correction、
+Signal routing、soft-Signal batch/correction、H_reflect、Predictor 和 post-hoc；Slow
+H1/H2/H3/Update 仍未到达。首个 proposer response 逐字复制 prompt 内三条完整 H_*
+示例，本地 semantic gate 正确纠错，但造成一次可避免调用；initial usage 为
+1,174 input / 183 output、1,152 cache hit，correction 为 1,449 / 386、768 hit。
+provider-facing Plan contract 现只给 exact keys/types/role substance，不再内嵌可复制
+candidate；legacy echo 仍由本地 validator 拒绝。proposal initial/correction 也改为
+同一 system prompt，稳定 `proposal_context` 后只改变末尾 validation feedback。
+
+更严重的是首个完整 case 的最后真实 H_reflect 明确返回 `decision=continue`，保留
+两个 open questions 和三条 next needs；紧随其后的 routing 又选择
+`order_quality:v1`、`customer_concentration:v1`、`revenue_acceleration:v1` 与
+`max_drawdown_1y:v1`。soft-Signal 请求因 terminal reserve 的保守 preflight 未发送，
+旧 runtime 随即把状态改成 `decision=finalize`、清空 next needs，并持久化
+`stop_reason=finalized` / `termination_trigger=budget_exhausted`。这不是模型完成，
+而是 control guard 被伪装成研究结论，会污染 Predictor 和 finalized fitness gate。
+当前 runtime 已删除 synthetic finalize：guard stop 原样保留最后 ResearchState，
+`stop_reason` 等于真实 guard，仍可产出 diagnostic prediction，但被
+`require_finalized` 排除。实际复现回归、81 个 focused tests、全量 384 tests 与
+repository lint 均通过；下一次外部运行必须绑定新的 committed revision。

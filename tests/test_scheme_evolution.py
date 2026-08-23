@@ -212,19 +212,6 @@ class OneBatchController:
             AgentUsage(llm_calls=1, tokens=20, cost=0.01),
         )
 
-    def finalize(self, plan, state, reason):
-        return AgentStep(
-            ResearchState(
-                hypotheses=state.hypotheses,
-                current_beliefs=state.current_beliefs,
-                supporting_evidence=state.supporting_evidence,
-                resolved_questions=state.resolved_questions,
-                decision=ResearchDecision.FINALIZE,
-            ),
-            AgentUsage(llm_calls=1, tokens=10, cost=0.005),
-        )
-
-
 class OneSignalSelector:
     def select(
         self,
@@ -1238,13 +1225,78 @@ class InformationPlanRuntimeTests(TestCase):
                     max_llm_calls=10,
                 ),
             )
-            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+            self.assertEqual(
+                trajectory.stop_reason,
+                RuntimeStopReason.MAX_SIGNAL_ROUNDS,
+            )
             self.assertEqual(
                 trajectory.termination_trigger,
                 RuntimeStopReason.MAX_SIGNAL_ROUNDS,
             )
+            self.assertEqual(
+                trajectory.final_state.decision,
+                ResearchDecision.CONTINUE,
+            )
+            self.assertEqual(
+                trajectory.final_state.next_information_needs,
+                ("repeat",),
+            )
             self.assertEqual(len(trajectory.signal_rounds), 1)
             self.assertEqual(persisted, ["done"])
+
+    def test_runtime_preserves_continue_state_at_budget_guard(self) -> None:
+        class LoopingController(OneBatchController):
+            def reflect(self, plan, state, batch):
+                return AgentStep(
+                    ResearchState(
+                        hypotheses=("growth remains unresolved",),
+                        open_questions=("confirm the next catalyst",),
+                        next_information_needs=("confirm the next catalyst",),
+                    ),
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=LoopingController(),
+                signal_agent=OneSignalSelector(),
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(
+                    max_signal_rounds=5,
+                    max_signal_calls=5,
+                    max_llm_calls=6,
+                ),
+            )
+
+            self.assertEqual(
+                trajectory.stop_reason,
+                RuntimeStopReason.BUDGET_EXHAUSTED,
+            )
+            self.assertEqual(
+                trajectory.termination_trigger,
+                RuntimeStopReason.BUDGET_EXHAUSTED,
+            )
+            self.assertEqual(
+                trajectory.final_state.decision,
+                ResearchDecision.CONTINUE,
+            )
+            self.assertEqual(
+                trajectory.final_state.next_information_needs,
+                ("confirm the next catalyst",),
+            )
+            self.assertEqual(
+                trajectory.final_state.open_questions,
+                ("confirm the next catalyst",),
+            )
 
     def test_runtime_omits_executed_refs_before_next_signal_selection(self) -> None:
         class LoopingController(OneBatchController):

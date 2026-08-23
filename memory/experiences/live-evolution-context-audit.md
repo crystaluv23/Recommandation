@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 6
+visit_times: 7
 
 ## Trigger
 
@@ -204,6 +204,26 @@ Fixed-semantics scanners must also distinguish replacing a threshold from descri
 frozen one. A correct post-hoc explanation that evidence stayed below the doubling
 threshold is learning, not semantic drift. Match affirmative set/use/change actions or
 numeric replacements rather than the bare noun.
+
+## Forced-stop fidelity addendum (2026-08-23)
+
+A runtime guard is control-plane evidence, not a research conclusion. In an actual
+v25 case, the last H_reflect response returned `decision=continue` with two open
+questions and three pending information needs, and the next routing response selected
+four unexecuted Signals. A conservative token preflight then stopped the batch, after
+which the old deterministic closure changed the state to `decision=finalize`, cleared
+the needs, and persisted `stop_reason=finalized` plus
+`termination_trigger=budget_exhausted`. That makes an incomplete trajectory look
+fitness-valid and changes the Predictor context without evidence. Preserve the exact
+last model-authored state, record the guard as the stop reason, allow a bounded
+diagnostic prediction, and let the existing finalized fitness gate exclude it.
+
+Provider-facing examples are also behavioral priors even when the prompt says not to
+copy them. The v25 proposer returned all three executable H_* example strings exactly,
+causing a preventable correction. Describe exact keys, types, and semantic requirements
+without embedding a complete candidate. Keep legacy-echo validation, and give initial
+and correction attempts one byte-identical system prompt plus a stable
+`proposal_context` prefix followed by null-or-object validation feedback.
 
 ## Citation-usability addendum (2026-08-23)
 

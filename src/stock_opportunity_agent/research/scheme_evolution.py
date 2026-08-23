@@ -727,14 +727,6 @@ class ResearchController(Protocol):
     ) -> AgentStep[ResearchState]:
         """Run H_reflect once over the complete Signal batch."""
 
-    def finalize(
-        self,
-        plan: InformationPlan,
-        state: ResearchState,
-        reason: RuntimeStopReason,
-    ) -> AgentStep[ResearchState]:
-        """Close the state deterministically when no more evidence can be added."""
-
 
 _SIGNAL_SELECTION_REASON_CODES = frozenset(
     {
@@ -1825,30 +1817,7 @@ def execute_information_plan(
     if state.decision is ResearchDecision.CONTINUE:
         if termination_trigger is None:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
-        try:
-            _set_request_token_budget(
-                controller, limits.max_tokens - model_usage.tokens
-            )
-            terminal_step = controller.finalize(
-                plan,
-                state,
-                termination_trigger,
-            )
-            model_usage = _consume_model_step(
-                model_usage, terminal_step.usage, limits
-            )
-            state = terminal_step.value
-        except (AttributeError, RuntimeBudgetExceeded) as exc:
-            raise CandidateExecutionRejected(
-                "research_controller_finalize",
-                f"terminal closure could not complete: {exc}",
-            ) from exc
-        if state.decision is not ResearchDecision.FINALIZE:
-            raise CandidateExecutionRejected(
-                "research_controller_finalize",
-                "terminal closure did not return finalize",
-            )
-        stop_reason = RuntimeStopReason.FINALIZED
+        stop_reason = termination_trigger
 
     final_context = _assemble_final_context(
         plan=plan,

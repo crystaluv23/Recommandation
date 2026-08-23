@@ -1154,20 +1154,43 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.stages,
             ["information_plan_propose", "information_plan_propose_correction"],
         )
+        initial = caller.calls[0]
         correction = caller.calls[1]
-        validation_error = correction["payload"]["validation_error"]
+        self.assertIsNone(initial["payload"]["validation_feedback"])
+        feedback = correction["payload"]["validation_feedback"]
+        validation_error = feedback["validation_error"]
         self.assertIn("H_init is a placeholder", validation_error)
         self.assertIn("H_reflect is a placeholder", validation_error)
         self.assertIn("H_analyse is a placeholder", validation_error)
+        self.assertEqual(feedback["invalid_output"], fixture["invalid_output"])
+        self.assertEqual(
+            initial["payload"]["proposal_context"],
+            correction["payload"]["proposal_context"],
+        )
+        self.assertEqual(initial["system_prompt"], correction["system_prompt"])
+        stable_prefix = json.dumps(
+            {"proposal_context": initial["payload"]["proposal_context"]},
+            sort_keys=True,
+            separators=(",", ":"),
+        )[:-1] + ',"validation_feedback":'
+        for call in (initial, correction):
+            rendered = json.dumps(
+                call["payload"], sort_keys=True, separators=(",", ":")
+            )
+            self.assertTrue(rendered.startswith(stable_prefix))
         self.assertIn(
-            "Returning the same rejected field is not a correction",
+            "returning the same rejected field is not a correction",
             correction["system_prompt"],
         )
         self.assertNotIn(
             "complete initialization instructions",
             caller.calls[0]["system_prompt"],
         )
-        example_skills = evolution_runtime_module._INFORMATION_PLAN_EXAMPLE_SKILLS
+        example_skills = (
+            evolution_runtime_module._LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS
+        )
+        for example in example_skills.values():
+            self.assertNotIn(example, initial["system_prompt"])
         example_echo = InformationPlan(
             plan_id="example_echo",
             parent_ids=(),
@@ -1905,38 +1928,6 @@ class ConcreteRoleAdapterTests(TestCase):
             ["research_controller_reflect", "research_controller_reflect_correction"],
         )
 
-    def test_finalize_preserves_analysis_without_an_llm_call(self) -> None:
-        previous = ResearchState(
-            hypotheses=("growth may accelerate",),
-            current_beliefs=("liquidity is adequate",),
-            supporting_evidence=(
-                ResearchEvidenceRef(
-                    kind="basic_info",
-                    claim="Liquidity is strong.",
-                    projection_id="projection_cash",
-                    exact_text="$1.1 billion in cash",
-                ),
-            ),
-            contradictions=("execution remains unconfirmed",),
-            resolved_questions=("balance-sheet capacity",),
-            open_questions=("confirm execution",),
-            next_information_needs=("confirm execution",),
-        )
-        caller = ScriptedRoleCaller([])
-
-        finalized = LLMResearchController(caller).finalize(
-            default_information_plan(),
-            previous,
-            RuntimeStopReason.NO_SIGNAL_MATCH,
-        )
-
-        self.assertEqual(caller.calls, [])
-        self.assertEqual(finalized.usage, AgentUsage())
-        expected = previous.to_dict()
-        expected["decision"] = "finalize"
-        expected["next_information_needs"] = []
-        self.assertEqual(finalized.value.to_dict(), expected)
-
     def test_blind_predictor_parses_two_stage_schema(self) -> None:
         caller = ScriptedRoleCaller(
             [
@@ -2501,10 +2492,11 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(first.parent_ids, ("plan_manual_v1",))
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
         self.assertIn(
-            '"B"', str(caller.calls[0]["system_prompt"])
+            "four top-level keys: B, H_init, H_reflect, and H_analyse",
+            str(caller.calls[0]["system_prompt"]),
         )
         self.assertEqual(
-            caller.calls[0]["payload"]["proposal_slot"],
+            caller.calls[0]["payload"]["proposal_context"]["proposal_slot"],
             {
                 "round_id": 1,
                 "candidate_index": 1,
@@ -2513,7 +2505,7 @@ class ConcreteRoleAdapterTests(TestCase):
             },
         )
         self.assertEqual(
-            caller.calls[1]["payload"]["proposal_slot"],
+            caller.calls[1]["payload"]["proposal_context"]["proposal_slot"],
             {
                 "round_id": 1,
                 "candidate_index": 2,
@@ -2522,7 +2514,8 @@ class ConcreteRoleAdapterTests(TestCase):
             },
         )
         self.assertIn(
-            '"B"', str(caller.calls[1]["system_prompt"])
+            "four top-level keys: B, H_init, H_reflect, and H_analyse",
+            str(caller.calls[1]["system_prompt"]),
         )
         self.assertNotIn("forbidden_plan_ids", str(caller.calls[1]["system_prompt"]))
         self.assertEqual(second.plan_id, "plan_r0001_c02")
@@ -2558,10 +2551,12 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.stages,
             ["information_plan_propose", "information_plan_propose_correction"],
         )
-        constraints = caller.calls[0]["payload"]["proposal_constraints"]
+        constraints = caller.calls[0]["payload"]["proposal_context"][
+            "proposal_constraints"
+        ]
         self.assertTrue(constraints["must_differ_from_every_parent"])
         self.assertIn("H_reflect", constraints["required_change_focus"])
-        correction = caller.calls[1]["payload"]
+        correction = caller.calls[1]["payload"]["validation_feedback"]
         self.assertIn("exactly duplicates", correction["validation_error"])
         self.assertEqual(correction["invalid_output"], duplicate)
 
@@ -2666,7 +2661,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(plan.initial_research_skill, corrected["H_init"])
         self.assertIn(
             "B/H_init is unchanged",
-            caller.calls[1]["payload"]["validation_error"],
+            caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
         )
 
     def test_plan_proposer_receives_complete_additive_outcome_aware_fifo_entry(
@@ -2774,7 +2769,9 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
         self.assertEqual(proposed.plan_id, "plan_r0002_c01")
-        meta_payload = caller.calls[0]["payload"]["meta_info"][0]
+        meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"][
+            0
+        ]
         original = meta_payload["representative_details"][0][
             "representative_cases"
         ][0]
@@ -4480,9 +4477,14 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
         self.assertEqual(len(caller.calls), 2)
-        self.assertIn("unsupported source types", caller.calls[1]["payload"]["validation_error"])
+        self.assertIn(
+            "unsupported source types",
+            caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
+        )
         self.assertEqual(
-            caller.calls[0]["payload"]["available_source_types"],
+            caller.calls[0]["payload"]["proposal_context"][
+                "available_source_types"
+            ],
             ["filing", "market_data"],
         )
 

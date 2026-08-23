@@ -374,13 +374,16 @@ system role.
 They prevent infinite or unexpectedly expensive execution and are not Plan
 research logic. When a guard or an empty/repeated Signal selection prevents the
 controller from finishing normally, no new evidence exists to justify another
-model rewrite. The runtime deterministically preserves every model-authored
-hypothesis, belief, evidence ref, contradiction, and resolved/open question,
-changes only `decision` to `finalize`, and clears `next_information_needs`.
-The local termination trigger remains separately durable. This prevents a
-redundant terminal role from erasing a hypothesis or falsely resolving an
-unanswered question. The case is valid only if this terminal state leads to a
-source-backed prediction that is durably saved.
+model rewrite. The runtime therefore preserves the complete last model-authored
+`ResearchState` byte-for-byte, including `decision=continue` and every pending
+`next_information_need`. It records the actual guard as both the stop reason and
+the durable termination trigger; it must never relabel the state as `finalize`
+or clear pending work. The fixed Predictor may still produce a durable bounded
+forecast from that explicitly incomplete state so the failure remains
+auditable, but `require_finalized` makes the trajectory diagnostic-only and
+excludes it from Plan fitness. Only an H_init/H_reflect state that itself returns
+`decision=finalize` earns `stop_reason=finalized`; no separate terminal
+controller rewrite exists.
 
 ## Dataset Ownership
 

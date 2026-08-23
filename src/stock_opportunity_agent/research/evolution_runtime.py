@@ -3967,7 +3967,7 @@ _SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
     'least one literal evidence item.'
 )
 
-_INFORMATION_PLAN_EXAMPLE_SKILLS = {
+_LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS = {
     "H_init": (
         "Form one evidence-backed hypothesis from Basic Info and list the smallest "
         "unresolved information needs or questions."
@@ -3984,33 +3984,16 @@ _INFORMATION_PLAN_EXAMPLE_SKILLS = {
 }
 
 
-_INFORMATION_PLAN_OUTPUT = _output_contract(
-    "InformationPlanContent",
-    {
-        "B": {
-            "requests": [
-                {
-                    "request_id": "recent_company_news",
-                    "description": "Recent company-specific news that may change expectations",
-                    "source_types": ["news"],
-                    "lookback_days": 180,
-                    "max_documents": 5,
-                    "query": "regulatory customer financing product",
-                },
-                {
-                    "request_id": "recent_market_backbone",
-                    "description": "Recent point-in-time price and volume for early market confirmation",
-                    "source_types": ["market_data"],
-                    "lookback_days": 45,
-                    "max_documents": 1,
-                }
-            ]
-        },
-        **_INFORMATION_PLAN_EXAMPLE_SKILLS,
-    },
-) + (
-    " The H_* values above are output-shape examples only: do not copy them. "
-    "Return your own executable role instructions. H_init must cover hypothesis "
+_INFORMATION_PLAN_OUTPUT = (
+    " Output contract for InformationPlanContent: return exactly one JSON object "
+    "with exactly four top-level keys: B, H_init, H_reflect, and H_analyse. "
+    "B must be an object with exactly one requests array containing one to eight "
+    "request objects. Every request requires string request_id and description, "
+    "a non-empty array of string source_types, and integer max_documents; optional "
+    "fields are positive-integer lookback_days and non-empty string query. H_init, "
+    "H_reflect, and H_analyse must each be a non-empty string containing your own "
+    "executable role instruction; do not use Markdown or return wrapper keys. "
+    "H_init must cover hypothesis "
     "formation and unresolved information needs/questions; H_reflect must cover "
     "evidence-based updating and continue/finalize or next-needs choice; H_analyse "
     "must cover evidence organization/weighting and counter-evidence or uncertainty."
@@ -4111,7 +4094,7 @@ def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
     }
     example_values = {
         key: " ".join(value.casefold().split())
-        for key, value in _INFORMATION_PLAN_EXAMPLE_SKILLS.items()
+        for key, value in _LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS.items()
     }
     issues: list[str] = []
     for field, text_value in values.items():
@@ -5237,20 +5220,6 @@ class LLMResearchController:
         )
         return AgentStep(reflected, usage)
 
-    def finalize(
-        self,
-        plan: InformationPlan,
-        state: ResearchState,
-        reason: Any,
-    ) -> AgentStep[ResearchState]:
-        """Close a no-new-evidence terminal state without rewriting its analysis."""
-
-        del plan, reason
-        value = state.to_dict()
-        value["decision"] = ResearchDecision.FINALIZE.value
-        value["next_information_needs"] = []
-        return AgentStep(ResearchState.from_dict(value), AgentUsage())
-
 
 def _explicit_signal_need_matches(
     information_needs: tuple[str, ...], specs: Iterable[SignalSpec]
@@ -5751,7 +5720,8 @@ class LLMInformationPlanProposer:
             "one. Outcome-aware reflection may guide the new Plan, but never change "
             "labels, metrics, or prediction semantics. Copying a selected parent's "
             "four evolvable fields verbatim is invalid. Apply the supplied "
-            "proposal_constraints.required_change_focus through an actual content "
+            "proposal_context.proposal_constraints.required_change_focus through "
+            "an actual content "
             "change while retaining the full four-field Plan contract."
             " Every B.source_types item must exactly equal a supplied "
             "available_source_types value. H_analyse may organize and weight evidence "
@@ -5759,6 +5729,11 @@ class LLMInformationPlanProposer:
             "change the horizon/label/four-way judgment, or generate a prediction."
             + _UNTRUSTED_DATA_INSTRUCTION
             + _INFORMATION_PLAN_OUTPUT
+            + " Read fixed prior, parents, meta-info, source types, constraints, "
+            "and slot metadata from proposal_context. validation_feedback is null "
+            "on the initial attempt. When it is an object, correct every field "
+            "named by validation_feedback.validation_error using the supplied "
+            "invalid_output; returning the same rejected field is not a correction."
         )
         plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
         parent_ids = tuple(item.plan_id for item in parents)
@@ -5773,21 +5748,21 @@ class LLMInformationPlanProposer:
                 if attempt == 0
                 else "information_plan_propose_correction"
             )
-            request_payload = dict(payload)
-            prompt = system_prompt
-            if attempt:
-                request_payload["invalid_output"] = dict(failed_value or {})
-                request_payload["validation_error"] = str(failure)
-                prompt += (
-                    " Correct the invalid content once; every field named by "
-                    "validation_error must change to valid executable content. "
-                    "Returning the same rejected field is not a correction. Return "
-                    "the exact contract only."
-                )
+            request_payload = {
+                "proposal_context": payload,
+                "validation_feedback": (
+                    {
+                        "invalid_output": dict(failed_value or {}),
+                        "validation_error": str(failure),
+                    }
+                    if attempt
+                    else None
+                ),
+            }
             value, _usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage=stage,
-                system_prompt=prompt,
+                system_prompt=system_prompt,
                 payload=request_payload,
                 allow_outcomes=True,
                 max_output_tokens=4_000,
