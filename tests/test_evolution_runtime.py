@@ -1534,6 +1534,42 @@ class ConcreteRoleAdapterTests(TestCase):
                 caller.calls[1]["system_prompt"],
             )
 
+    def test_v21_signal_selector_corrects_version_owned_guidance_empty(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/v21_empty_guidance_routing.json"
+            ).read_text(encoding="utf-8")
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    fixture["invalid_output"],
+                    signal_selection(fixture["corrected_signal_ref"]),
+                ]
+            )
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                tuple(fixture["information_needs"]), registry.freeze(), {}
+            )
+
+        self.assertEqual(
+            tuple(item.signal_ref for item in selection.value),
+            (fixture["corrected_signal_ref"],),
+        )
+        guidance_card = next(
+            item
+            for item in caller.calls[0]["payload"]["available_signal_cards"]
+            if item["signal_ref"] == fixture["corrected_signal_ref"]
+        )
+        self.assertEqual(guidance_card["routing_need_phrases"], ["guidance"])
+        self.assertIn(
+            "version-owned information-need phrase",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -3900,6 +3936,82 @@ class ConcreteRoleAdapterTests(TestCase):
             unchanged.value.next_information_needs,
             previous.next_information_needs,
         )
+
+    def test_v21_reflect_rejects_cosmetic_progress_and_hides_unavailable_claim(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v21_unavailable_cosmetic_reflect.json"
+            ).read_text(encoding="utf-8")
+        )
+        unavailable = SignalResult(
+            signal_id="customer_concentration",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.5,
+            interpretation=fixture["unsafe_unavailable_interpretation"],
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+        available = SignalResult(
+            signal_id="negative_word_count",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=1.0,
+            interpretation="negative_word_count=0",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="news-document",
+                    exact_span="No configured negative terms occurred.",
+                    timestamp=datetime(2025, 9, 24, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        caller = ScriptedRoleCaller(
+            [fixture["unchanged_output"], fixture["cosmetic_correction"]]
+        )
+
+        with self.assertRaisesRegex(
+            CandidateExecutionRejected,
+            "cosmetically retained",
+        ):
+            LLMResearchController(caller).reflect(
+                default_information_plan(),
+                ResearchState(
+                    open_questions=("Is customer concentration known?",),
+                    next_information_needs=(fixture["previous_need"],),
+                ),
+                SignalBatchResult(
+                    results=(unavailable, available), signal_calls=2
+                ),
+            )
+
+        unavailable_view = caller.calls[0]["payload"]["signal_batch"][0]
+        summary = unavailable_view["interpretation"]["summary"]
+        self.assertNotIn(fixture["unsafe_unavailable_interpretation"], summary)
+        self.assertIn("not evidence", summary)
+        self.assertEqual(
+            unavailable_view["evidence"], {"supporting": [], "counter": []}
+        )
+        self.assertIn("not evidence of absence", caller.calls[0]["system_prompt"])
+        self.assertIn(
+            "unchanged or cosmetically retained",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+
+        compact_posthoc = evolution_runtime_module._compact_posthoc_context(
+            {
+                "basic_info": {},
+                "final_research_state": {},
+                "signal_rounds": [
+                    {"batch": {"results": [unavailable.to_dict()]}}
+                ],
+            }
+        )
+        posthoc_summary = compact_posthoc["signal_results"][0]["interpretation"][
+            "summary"
+        ]
+        self.assertIn("not evidence", posthoc_summary)
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:
         fixture = json.loads(

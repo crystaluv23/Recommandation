@@ -1,0 +1,11 @@
+{
+  "source_workspace": "deepseek-v6-context-remediation-20260823-v21",
+  "information_needs": [
+    "What are the specific production and cost guidance updates for 2025-2027, and any risks to achieving the 2.0 million oz target?",
+    "What is the current gold price outlook and its sensitivity to earnings and cash flow?"
+  ],
+  "invalid_output": {
+    "selections": []
+  },
+  "corrected_signal_ref": "guidance_acceleration:v1"
+}

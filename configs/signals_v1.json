@@ -141,7 +141,8 @@
         "definition": {"description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"]},
-        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"routing_need_phrases": ["guidance"]}
       },
       "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.",
       "tests": [{"name": "generic optimism", "expected": "neutral", "documents": [{"source_type": "filing", "content": "Management remains optimistic but did not change guidance."}]}]

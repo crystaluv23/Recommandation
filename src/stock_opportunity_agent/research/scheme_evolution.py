@@ -40,6 +40,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
     default_deterministic_signal_functions,
+    signal_result_model_view,
 )
 
 
@@ -1998,6 +1999,10 @@ def _assemble_final_context(
         for round_row in round_rows
         for result in round_row.batch.results
     }
+    model_signal_results = {
+        ref: signal_result_model_view(result)
+        for ref, result in signal_results.items()
+    }
     signal_rounds = [
         {
             "selected_signals": list(round_row.selected_signals),
@@ -2005,9 +2010,11 @@ def _assemble_final_context(
                 "results": [
                     {
                         "signal_ref": result.ref,
-                        "state": result.to_dict()["state"],
-                        "interpretation": result.to_dict()["interpretation"],
-                        "status": result.to_dict()["status"],
+                        "state": model_signal_results[result.ref]["state"],
+                        "interpretation": model_signal_results[result.ref][
+                            "interpretation"
+                        ],
+                        "status": model_signal_results[result.ref]["status"],
                     }
                     for result in round_row.batch.results
                 ],
@@ -7693,7 +7700,9 @@ class SignalEvolutionEngine:
                 reveal_label=True,
             )
             aliases = _discovery_identity_terms((case,))
-            masked_result = _mask_identity_values(result.to_dict(), aliases)
+            masked_result = _mask_identity_values(
+                signal_result_model_view(result), aliases
+            )
             _assert_identity_values_masked(masked_result, aliases)
             packet["current_signal_result"] = masked_result
             induction_packets.append(packet)

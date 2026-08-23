@@ -231,6 +231,16 @@ classify questions as resolved/open as appropriate, or finalize. A changed need 
 reflect the new evidence rather than being a cosmetic paraphrase. If no new Signal
 evidence is adopted, retaining the same need remains valid so another eligible
 Signal can answer it.
+When the number of needs has not decreased, runtime also rejects a replacement
+that contains at least 90% of a prior need's normalized word set; appending a
+qualifier to the entire old question is not progress. A shorter need list may
+retain an unanswered prior need because removing other answered needs is a real
+transition. This deterministic guard does not infer which question was answered
+or rewrite research text.
+Unavailable Signal rows in this and every other model-facing role use only the
+canonical coverage statement. They cannot be treated as evidence of absence,
+added as a belief, or used to resolve a question; their original interpretation
+remains local for audit.
 The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,

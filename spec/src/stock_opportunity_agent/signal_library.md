@@ -204,6 +204,23 @@ transition. The compact routing card states the same boundary so the selector
 can avoid an irrelevant paid execution; the full skill remains the final
 semantic boundary if it is nevertheless selected.
 
+`unavailable` is a coverage state, never evidence that the measured condition
+is absent. The complete model-returned interpretation remains durable in the
+canonical `SignalResult` for audit, but every downstream model-facing view
+(routing history, H_reflect, Predictor/post-hoc, critic/meta, and Slow inputs)
+replaces it with one deterministic coverage statement: visible evidence was
+insufficient for a canonical conclusion and this is not evidence of absence.
+An unavailable Signal cannot create a supporting/counter claim or resolve a
+research question.
+
+A Signal version may declare a small `routing_need_phrases` string array inside
+`parameters`. These phrases are conservative direct matches, not fuzzy search
+terms. They are exposed on the compact card and used only to reject an empty
+selection once for model correction; runtime still never chooses the Signal.
+The seed `guidance_acceleration:v1` declares `guidance` because an explicit
+request for guidance updates is a direct match even though the versioned ref has
+only two semantic words. Unmatched empty selection remains valid.
+
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or
 into `SignalResult`. Before an LLM Signal executes, the runtime deterministically

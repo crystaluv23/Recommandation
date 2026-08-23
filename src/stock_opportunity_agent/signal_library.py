@@ -199,8 +199,24 @@ class SignalSpec:
             raise ValidationError(
                 "LLM signal requires skill_file and cannot use deterministic function"
             )
+        parameters = dict(self.parameters)
+        routing_phrases = parameters.get("routing_need_phrases")
+        if routing_phrases is not None and (
+            not isinstance(routing_phrases, list)
+            or not routing_phrases
+            or len(routing_phrases) > 8
+            or any(
+                not isinstance(item, str)
+                or not item.strip()
+                or len(item) > 80
+                for item in routing_phrases
+            )
+        ):
+            raise ValidationError(
+                "Signal routing_need_phrases must contain 1-8 non-empty strings"
+            )
         object.__setattr__(self, "source_types", tuple(self.source_types))
-        object.__setattr__(self, "parameters", dict(self.parameters))
+        object.__setattr__(self, "parameters", parameters)
 
     @property
     def ref(self) -> str:
@@ -425,6 +441,26 @@ class SignalResult:
             ),
             coverage=SignalCoverage(str(status["coverage"])),
         )
+
+
+UNAVAILABLE_SIGNAL_MODEL_SUMMARY = (
+    "Unavailable: visible evidence was insufficient for a canonical conclusion. "
+    "This is not evidence that the measured condition is absent."
+)
+
+
+def signal_result_model_view(
+    value: SignalResult | Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return a downstream-safe view while preserving the canonical artifact."""
+
+    result = value.to_dict() if isinstance(value, SignalResult) else dict(value)
+    state = result.get("state")
+    if isinstance(state, Mapping) and state.get("value") == SignalValue.UNAVAILABLE.value:
+        result["interpretation"] = {"summary": UNAVAILABLE_SIGNAL_MODEL_SUMMARY}
+        result["evidence"] = {"supporting": [], "counter": []}
+        result["status"] = {"coverage": SignalCoverage.UNAVAILABLE.value}
+    return result
 
 
 @dataclass(frozen=True)

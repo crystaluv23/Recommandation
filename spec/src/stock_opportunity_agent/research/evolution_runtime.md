@@ -484,6 +484,15 @@ Signal refs must make a substantive research transition. An exactly unchanged
 instruction to narrow/replace answered portions, update resolved/open questions, or
 finalize. No new adopted evidence means the same need may remain. Runtime never
 rewrites a need or infers that a question was answered.
+If the response does not reduce the need count, any new need containing at least
+90% of a prior need's normalized word set is also a cosmetic continuation and
+fails the same boundary. Thus the actual pattern “old question + given the absence
+of ...” cannot consume evidence while leaving research unchanged. Reducing the
+need count remains valid even when one still-open prior need is retained.
+Every unavailable Signal is rendered to downstream models as a deterministic
+coverage-only statement, never its free-form original interpretation; the latter
+remains in the durable canonical result. Prompts explicitly forbid turning
+unavailable into evidence of absence, a new belief, or a resolved question.
 The already-supplied `research_state.supporting_evidence` array is the canonical
 indexed inventory for previously accepted refs and is not duplicated into another
 context block. Tagged-ref shape validation occurs before domain construction and

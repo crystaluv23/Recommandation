@@ -115,6 +115,7 @@ from stock_opportunity_agent.signal_library import (
     SignalSpec,
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
+    signal_result_model_view,
     validate_signal_result,
 )
 
@@ -3896,7 +3897,7 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
             continue
         for result in batch.get("results", ()):
             if isinstance(result, Mapping):
-                signal_results.append(dict(result))
+                signal_results.append(signal_result_model_view(result))
     compact = {
         "final_research_state": original_context.get("final_research_state", {}),
         "signal_results": signal_results,
@@ -4602,6 +4603,7 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
     remaining = MAX_REFLECT_SIGNAL_BATCH_EVIDENCE_CHARS
     rows: list[dict[str, Any]] = []
     for result in batch.results:
+        model_result = signal_result_model_view(result)
         use_canonical_interpretation = (
             result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
             and result.interpretation.startswith(result.signal_id + "=")
@@ -4639,7 +4641,7 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
                     "value": result.value.value,
                     "confidence": result.confidence,
                 },
-                "interpretation": {"summary": result.interpretation},
+                "interpretation": model_result["interpretation"],
                 "evidence": evidence_view,
                 "status": {"coverage": result.coverage.value},
             }
@@ -4907,30 +4909,70 @@ def _validate_research_state_refs(
             claim_literals.append((index, result.interpretation))
     _validate_basic_claim_quantities(tuple(normalized_refs))
     _validate_signal_claim_quantities(signal_claim_literals)
+    adopted_new_signal_evidence = any(
+        item.kind == "signal"
+        and _research_evidence_key(item) not in previous
+        and str(item.signal_ref) in results
+        for item in normalized_refs
+    )
+    cosmetic_needs = _cosmetically_retained_information_needs(
+        previous_state.next_information_needs if previous_state else (),
+        state.next_information_needs,
+    )
     if (
         phase == "reflect"
         and previous_state is not None
         and state.decision is ResearchDecision.CONTINUE
-        and state.next_information_needs == previous_state.next_information_needs
-        and any(
-            item.kind == "signal"
-            and _research_evidence_key(item) not in previous
-            and str(item.signal_ref) in results
-            for item in normalized_refs
-        )
+        and adopted_new_signal_evidence
+        and cosmetic_needs
     ):
         raise ValidationError(
             "research_controller_reflect adopted new current-batch Signal evidence "
-            "but returned next_information_needs unchanged. Narrow or replace the "
-            "answered portion, update resolved/open questions as appropriate, or "
-            "finalize. Do not cosmetically paraphrase a need; each changed need must "
-            "reflect the new evidence"
+            "but returned next_information_needs unchanged or cosmetically retained: "
+            f"{cosmetic_needs}. Narrow or replace the answered portion, update "
+            "resolved/open questions as appropriate, or finalize. Do not append a "
+            "qualifier to the old need. Do not cosmetically paraphrase it; each "
+            "changed need must reflect the new evidence"
         )
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()
     value["supporting_evidence"] = [item.to_dict() for item in normalized_refs]
     return ResearchState.from_dict(value)
+
+
+def _normalized_need_tokens(value: str) -> frozenset[str]:
+    """Return stable word tokens for the narrow cosmetic-progress boundary."""
+
+    return frozenset(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
+def _cosmetically_retained_information_needs(
+    previous: tuple[str, ...],
+    current: tuple[str, ...],
+) -> list[dict[str, Any]]:
+    """Identify full old needs hidden inside an equal-or-larger need list."""
+
+    if not previous or len(current) < len(previous):
+        return []
+    retained: list[dict[str, Any]] = []
+    for prior_need in previous:
+        prior_tokens = _normalized_need_tokens(prior_need)
+        if not prior_tokens:
+            continue
+        for current_need in current:
+            overlap = len(prior_tokens & _normalized_need_tokens(current_need))
+            coverage = overlap / len(prior_tokens)
+            if coverage >= 0.9:
+                retained.append(
+                    {
+                        "prior_need": prior_need,
+                        "current_need": current_need,
+                        "prior_token_coverage": round(coverage, 6),
+                    }
+                )
+                break
+    return retained
 
 
 class LLMResearchController:
@@ -5005,7 +5047,9 @@ class LLMResearchController:
                 "backing batch is no longer visible. If you adopt new current-batch "
                 "Signal evidence and continue, narrow or replace answered information "
                 "needs and update resolved/open questions; returning the prior needs "
-                "unchanged is invalid."
+                "unchanged or embedding the full old need inside a longer sentence is "
+                "invalid. An unavailable Signal is only a coverage diagnostic: it is "
+                "not evidence of absence and cannot create a belief or resolve a question."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
@@ -5043,9 +5087,9 @@ class LLMResearchController:
 
 
 def _explicit_signal_need_matches(
-    information_needs: tuple[str, ...], signal_refs: Iterable[str]
+    information_needs: tuple[str, ...], specs: Iterable[SignalSpec]
 ) -> tuple[str, ...]:
-    """Find only exact three-word Signal-ref phrases repeated by a need."""
+    """Find version-owned exact need phrases without choosing a Signal locally."""
 
     normalized_needs = tuple(
         " "
@@ -5054,7 +5098,8 @@ def _explicit_signal_need_matches(
         for need in information_needs
     )
     matched: list[str] = []
-    for signal_ref in signal_refs:
+    for spec in specs:
+        signal_ref = spec.ref
         tokens = tuple(
             token
             for token in re.sub(
@@ -5062,13 +5107,22 @@ def _explicit_signal_need_matches(
             ).split()
             if token
         )
-        phrases = (
+        ref_phrases = (
             " " + " ".join(tokens[start:end]) + " "
             for size in range(len(tokens), 2, -1)
             for start in range(len(tokens) - size + 1)
             for end in (start + size,)
         )
-        if any(phrase in need for phrase in phrases for need in normalized_needs):
+        configured_phrases = tuple(
+            " " + re.sub(r"[^a-z0-9]+", " ", item.casefold()).strip() + " "
+            for item in spec.parameters.get("routing_need_phrases", ())
+            if isinstance(item, str) and item.strip()
+        )
+        if any(
+            phrase in need
+            for phrase in (*ref_phrases, *configured_phrases)
+            for need in normalized_needs
+        ):
             matched.append(signal_ref)
     return tuple(matched)
 
@@ -5116,6 +5170,9 @@ class LLMSignalRetrievalAgent:
             profile = dict(signal_registry.learned_profiles.get(spec.ref, {}))
             if int(profile.get("unique_observations", 0) or 0) > 0:
                 card["learned_profile"] = profile
+            routing_phrases = spec.parameters.get("routing_need_phrases", ())
+            if routing_phrases:
+                card["routing_need_phrases"] = list(routing_phrases)
             cards.append(card)
         if not cards:
             return AgentStep((), AgentUsage())
@@ -5124,14 +5181,15 @@ class LLMSignalRetrievalAgent:
             "available_signal_cards": cards,
             "information_needs": list(information_needs),
             "previous_signal_results": {
-                ref: dict(value)
+                ref: signal_result_model_view(value)
                 for ref, value in (prior_signal_results or {}).items()
             },
             "learned_profile_default": "no committed observations",
             "selection_caps": {"signals": 4, "llm_signals": 2},
         }
         explicit_empty_matches = _explicit_signal_need_matches(
-            information_needs, allowed_refs
+            information_needs,
+            (specs_by_ref[ref] for ref in allowed_refs),
         )
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
@@ -5144,8 +5202,8 @@ class LLMSignalRetrievalAgent:
                 raise ValidationError("every selection must be an object")
             if not raw_selections and explicit_empty_matches:
                 raise ValidationError(
-                    "empty Signal selection contradicts an exact three-or-more-word "
-                    "information-need match in the available Signal refs: "
+                    "empty Signal selection contradicts an exact version-owned "
+                    "information-need phrase in the available Signal cards: "
                     f"{list(explicit_empty_matches)}. Return a non-empty smallest "
                     "batch that answers the need; runtime will not choose a ref"
                 )
@@ -5222,8 +5280,9 @@ class LLMSignalRetrievalAgent:
                 "none of the supplied cards adds useful evidence, return "
                 "{\"selections\": []}. Empty is invalid when an information need "
                 "repeats three or more consecutive normalized words from an "
-                "available signal_ref; choose a non-empty answering batch in that "
-                "case. Otherwise return selections whose items "
+                "available signal_ref or contains a supplied routing_need_phrases "
+                "value; choose a non-empty answering batch in that case. Otherwise "
+                "return selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "
                 "confirm_hypothesis, test_contradiction, assess_applicability, "
                 "or combine_evidence); a <=240 character selection_reason; a "
@@ -5651,8 +5710,9 @@ def _plan_critic_trajectory(
         for result in raw_results:
             if not isinstance(result, Mapping):
                 continue
+            model_result = signal_result_model_view(result)
             compact_result = {
-                key: result[key]
+                key: model_result[key]
                 for key in (
                     "signal_id",
                     "version",
@@ -5660,9 +5720,9 @@ def _plan_critic_trajectory(
                     "interpretation",
                     "status",
                 )
-                if key in result
+                if key in model_result
             }
-            evidence = result.get("evidence")
+            evidence = model_result.get("evidence")
             if isinstance(evidence, Mapping):
                 compact_result["evidence_counts"] = {
                     key: len(value) if isinstance(value, list) else 0

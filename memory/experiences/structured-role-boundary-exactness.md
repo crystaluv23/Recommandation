@@ -37,6 +37,16 @@ skills must state negative applicability boundaries as concretely as positive
 criteria; ordinary output from a mature operation is not evidence that a new
 technical product crossed into commercialization.
 
+An unavailable model interpretation is unsafe downstream even when its enum and
+evidence arrays are valid: “no evidence found” is routinely shortened into “the
+condition is absent.” Keep the original interpretation only in the canonical
+artifact and give downstream roles one deterministic coverage-only statement.
+Transition checks should also compare normalized content, because appending a
+qualifier to an entire old question can evade exact equality without advancing
+research. When a compact card has a genuinely unambiguous direct need phrase,
+version it with the Signal and use it only to challenge an empty selection once;
+never turn that phrase into a local automatic selection.
+
 ## Context
 
 The Signal selector once converted two invalid outputs into an empty selection,
@@ -61,6 +71,11 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 9. Aggregate every locally decidable defect into the single correction message.
 10. Put explicit non-applicable cases in both the compact routing card and the
     full extraction skill.
+11. Canonicalize unavailable in every model-facing view while retaining the
+    original interpretation locally.
+12. Reject normalized full-question carryover, not only byte-identical state.
+13. Version conservative direct routing phrases and use them only for bounded
+    empty-result correction.
 
 ## Limits
 

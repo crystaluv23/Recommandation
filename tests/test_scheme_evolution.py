@@ -1174,6 +1174,41 @@ class InformationPlanRuntimeTests(TestCase):
             "signal-evidence-marker-" + "e" * 240,
         )
 
+    def test_predictor_projection_treats_unavailable_as_coverage_only(self) -> None:
+        unavailable = SignalResult(
+            signal_id="customer_concentration",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.5,
+            interpretation="No customer concentration was found.",
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+
+        context = _assemble_final_context(
+            plan=default_information_plan(),
+            company_id="issuer-fixture",
+            additional_identity_aliases=(),
+            basic_info={"requests": []},
+            state=ResearchState(decision=ResearchDecision.FINALIZE),
+            rounds=(
+                SignalRound(
+                    information_needs=("Is concentration known?",),
+                    selections=(
+                        SignalSelectionDecision.legacy(unavailable.ref),
+                    ),
+                    batch=SignalBatchResult(
+                        results=(unavailable,), signal_calls=1
+                    ),
+                ),
+            ),
+        )
+
+        summary = context["signal_rounds"][0]["batch"]["results"][0][
+            "interpretation"
+        ]["summary"]
+        self.assertNotIn("No customer concentration was found", summary)
+        self.assertIn("not evidence", summary)
+
     def test_runtime_stops_at_fixed_round_guard(self) -> None:
         class LoopingController(OneBatchController):
             def reflect(self, plan, state, batch):
