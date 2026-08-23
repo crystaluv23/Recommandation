@@ -2999,6 +2999,17 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(caller.calls), 2)
         feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("supporting evidence[0] exact span", feedback["validation_error"])
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+        initial_payload = json.dumps(
+            caller.calls[0]["payload"], sort_keys=True, separators=(",", ":")
+        )
+        correction_payload = json.dumps(
+            caller.calls[1]["payload"], sort_keys=True, separators=(",", ":")
+        )
+        self.assertTrue(correction_payload.startswith(initial_payload[:-1] + ","))
+        self.assertNotIn("validation_feedback", caller.calls[0]["payload"])
         self.assertEqual(usage.llm_calls, 2)
         self.assertAlmostEqual(usage.cost, 0.02)
 
@@ -3057,7 +3068,10 @@ class ConcreteRoleAdapterTests(TestCase):
         feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("cannot carry evidence", feedback["validation_error"])
         self.assertIn("corrected result", feedback["required_action"])
-        self.assertIn("only correction attempt", caller.calls[1]["system_prompt"])
+        self.assertIn("only correction attempt", caller.calls[0]["system_prompt"])
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
         self.assertEqual(usage.llm_calls, 2)
 
     def test_llm_signal_runner_canonicalizes_unique_case_only_span(self) -> None:
@@ -4335,7 +4349,7 @@ class ConcreteRoleAdapterTests(TestCase):
             def complete_json(self, **kwargs):
                 self.calls.append(kwargs)
                 projection = kwargs["payload"]["source_projection"][0]
-                first_ref, second_ref = kwargs["payload"]["requested_signal_refs"]
+                first_ref, second_ref = kwargs["payload"]["batch_signal_refs"]
                 first_id, first_version = first_ref.split(":v")
                 second_id, second_version = second_ref.split(":v")
                 return (

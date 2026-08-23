@@ -3952,8 +3952,10 @@ _SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
         ]
     },
 ) + (
-    " Return exactly one row for every requested_signal_refs item and no other row. "
-    "Each outer signal_ref must copy that complete versioned ref. Each nested "
+    " Without validation_feedback, return exactly one row for every "
+    "batch_signal_refs item. With validation_feedback, return exactly one corrected "
+    "row for every validation_feedback.signal_ref and no other row. Each outer "
+    "signal_ref must copy that complete versioned ref. Each nested "
     "result.signal_id must copy the matching signal_spec.signal_id without the "
     ":vN suffix, and result.version must copy signal_spec.version."
     ' state.value must be "positive", "neutral", "negative", or "unavailable"; '
@@ -6833,6 +6835,7 @@ class StructuredLLMSignalRunner:
             raise ValidationError("LLM Signal batch refs must be unique")
         documents, lineage = _shared_llm_signal_projection(inputs)
         base_payload = {
+            "batch_signal_refs": sorted(item.spec.ref for item in inputs),
             "signals": [
                 {"signal_ref": item.spec.ref, "signal_spec": item.spec.to_dict(), "skill": item.skill}
                 for item in inputs
@@ -6855,17 +6858,8 @@ class StructuredLLMSignalRunner:
 
         for attempt in range(2):
             payload = dict(base_payload)
-            payload["requested_signal_refs"] = sorted(pending)
             if validation_feedback:
                 payload["validation_feedback"] = validation_feedback
-            correction_instruction = (
-                " This is the only correction attempt. Do not repeat failed_output. "
-                "Apply validation_feedback.required_action exactly; when no literal "
-                "citation supports the conclusion, set state.value and "
-                "status.coverage to unavailable and keep both evidence arrays empty."
-                if attempt
-                else ""
-            )
             value, step_usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage=(
@@ -6881,9 +6875,13 @@ class StructuredLLMSignalRunner:
                     "the original raw span. Do not cite text that starts or ends at an "
                     "internal projection edge; use the overlapping projection containing "
                     "the complete clause. Never infer omitted source text is absent. "
-                    "Return unavailable with no evidence when visible text is insufficient."
+                    "Return unavailable with no evidence when visible text is insufficient. "
+                    "If optional validation_feedback is present, this is the only "
+                    "correction attempt: do not repeat failed_output and apply each "
+                    "required_action exactly. When no literal citation supports the "
+                    "corrected conclusion, set state.value and status.coverage to "
+                    "unavailable and keep both evidence arrays empty."
                     + _UNTRUSTED_DATA_INSTRUCTION
-                    + correction_instruction
                     + _SIGNAL_BATCH_RESULT_OUTPUT
                 ),
                 payload=payload,

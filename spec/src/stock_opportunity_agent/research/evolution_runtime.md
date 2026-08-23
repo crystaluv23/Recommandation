@@ -546,6 +546,13 @@ integer `signal_spec.version`. Identity validation feedback reports returned and
 expected values for all three fields and repeats that exact mapping in the one
 correction action. Runtime does not strip a version suffix or otherwise repair a
 semantic identity mismatch locally.
+The initial and correction calls use the exact same system prompt. That stable prompt
+always explains how a sole correction consumes the optional `validation_feedback`;
+the dynamic failed output, error, and required action are appended only after the
+unchanged shared `source_projection` in the user payload. This preserves the complete
+Signal specs, skills, projection coverage, and local validation boundary while making
+the large common request prefix eligible for provider caching. Pre-send token/cost
+reservation remains a cache miss, and actual hit/miss usage remains durable evidence.
 
 Model outputs are type-strict at the role boundary. JSON booleans, arrays,
 objects, numbers, and required fields cannot be replaced by truthy strings,

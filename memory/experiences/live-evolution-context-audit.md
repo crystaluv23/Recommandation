@@ -271,3 +271,15 @@ old need. Keep unavailable-to-belief/resolution validation independent of this r
 one guard must not accidentally provide the only protection for another semantic
 boundary. When both a citation defect and question-state defect are already locally
 decidable, surface both in the one bounded correction.
+
+## Correction-prefix addendum (2026-08-23)
+
+Before deleting correction context, compare the exact initial/correction wire prefix.
+A large shared projection may already be deduplicated within a batch yet still miss
+provider caching because dynamic correction text changes the earlier system message.
+Keep one conditional system prompt byte-identical across both attempts, keep stable
+batch identity fields before source data, and append dynamic validation feedback after
+the unchanged projection. This preserves complete correction evidence and conservative
+cache-miss budgeting while making the whole common prefix cache-eligible. Verify the
+canonical key order: a dynamic field sorted before the projection defeats the intended
+prefix even when the in-memory insertion order looks correct.

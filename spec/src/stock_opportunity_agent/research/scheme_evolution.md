@@ -169,6 +169,13 @@ offset mapping; it is a view, not a summary or new source. Signal Executor asks 
 resolver for complete point-in-time documents and then runs deterministic
 functions or LLM extraction skills. Signal results remain derived trajectory
 records and are never appended to Raw Info.
+One/two-LLM-Signal batching sends one shared bounded `source_projection`. If strict
+validation requires the sole correction, its system prompt is byte-identical to the
+initial call and the dynamic `validation_feedback` is appended only at the end of the
+user payload. The complete shared projection and every pending Signal spec/skill stay
+visible; this is provider-prefix reuse rather than context removal. Conservative
+pre-send budgeting still assumes a cache miss, while provider-reported cache usage is
+persisted for live verification.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask
