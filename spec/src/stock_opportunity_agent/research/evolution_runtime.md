@@ -357,6 +357,12 @@ A custom restrictive policy stores explicit names instead. The operator must
 enable either policy once in the frozen contract and again for a resume
 invocation; a request to execute data calls outside the frozen policy fails
 explicitly rather than being silently ignored.
+When the contract enables data acquisition but the current invocation omits
+that second authorization, the cycle pauses before creating or resuming an
+active cycle, sampling an evaluation snapshot, or resolving any case. It must
+never reinterpret `external_not_authorized` as evidence that a Random case
+lacks data and rotate the evaluation cohort. Contract-level authorization
+absence is control-plane state, not a label-free data-readiness observation.
 A disabled data policy has empty allowlists and zero ceilings; partially filled
 but disabled policy data is rejected instead of being retained as ambiguous
 latent authorization.

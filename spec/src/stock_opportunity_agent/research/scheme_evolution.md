@@ -476,6 +476,10 @@ cases cannot be substituted: an unavailable Anchor pauses before Plan work.
 For a not-yet-frozen Random snapshot, the sampler skips an unavailable
 case/company and continues through the same deterministic per-label rotation
 order until the exact `3/2/2/1` quotas and cross-company constraint are met.
+Only a readiness result produced under the invocation's frozen, explicitly
+enabled acquisition policy can justify that substitution. Missing invocation
+authorization pauses before sampling; `external_not_authorized` can never make
+one candidate appear data-ineligible or change the Random cohort.
 The acquisition request sees only routing identity and as-of time, never the
 case label or split. An already persisted round snapshot remains immutable; it
 is readiness-checked but never silently resampled.

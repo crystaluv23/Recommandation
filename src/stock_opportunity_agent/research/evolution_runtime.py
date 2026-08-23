@@ -7007,6 +7007,14 @@ def run_bounded_evolution_cycle(
             "data_acquisition_not_in_contract",
             "source-data execution was requested but the frozen contract disabled it",
         )
+    if contract.data_acquisition.enabled and not allow_data_external:
+        raise ExternalExecutionNotReady(
+            "data_external_approval_required",
+            (
+                "the frozen contract enables source-data acquisition; rerun with "
+                "--data-external before any cycle or evaluation snapshot can start"
+            ),
+        )
     dataset = load_approved_development_dataset(approved_dataset_manifest)
     if dataset.approved_manifest_hash != contract.dataset_manifest_hash:
         raise ValidationError("approved dataset differs from frozen run contract")

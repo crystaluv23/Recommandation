@@ -4960,6 +4960,40 @@ class RunControlTests(TestCase):
         self.assertEqual(resolver.policy.allowed_providers, ())
         self.assertEqual(resolver.budget.run_requests, 0)
 
+    def test_enabled_data_contract_pauses_before_snapshot_without_authorization(self) -> None:
+        contract = EvolutionRunContract(
+            **{
+                **make_contract().__dict__,
+                "data_acquisition": DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("massive",),
+                    allowed_capabilities=("price_daily",),
+                    allowed_source_types=("market_data",),
+                    max_requests_per_cycle=10,
+                    max_requests_per_run=50,
+                ),
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "workspace"
+
+            with self.assertRaises(ExternalExecutionNotReady) as context:
+                evolution_runtime_module.run_bounded_evolution_cycle(
+                    workspace_path=workspace,
+                    raw_info_root=Path(directory) / "raw-info",
+                    approved_dataset_manifest=Path(directory) / "dataset.json",
+                    contract=contract,
+                    allow_external=False,
+                    allow_data_external=False,
+                )
+
+            self.assertEqual(
+                context.exception.status,
+                "data_external_approval_required",
+            )
+            self.assertFalse((workspace / "cycle_state.json").exists())
+            self.assertFalse((workspace / "evaluation").exists())
+
     def test_contract_freeze_is_exact_and_secret_free(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "run_contract.json"

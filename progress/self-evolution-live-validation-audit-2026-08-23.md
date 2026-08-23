@@ -403,3 +403,28 @@ attempt，metrics 为 null，fitness 明确包含 `incomplete_case_set` 与
 `unfinalized_case`，不伪造 `CaseEvaluationFailure`。v5 contract 也不能再关闭
 `require_finalized`。31 个 focused tests 与全量 386 tests 已通过；Slow
 H1/H2/H3/Update 仍未到达，不能标为 live-verified。
+
+## v27 data authorization 不得改变 evaluation cohort
+
+v27 合同 hash 为
+`6fcba5165d1aa7ea933af6bc69e926ee11a3458e87981938b3dab3cb99a054f8`，
+绑定 revision `4b5a5c906b57110df16cec1e6cb7d057180fab3f`，冻结 473 attempts、
+`$18.51124504` 和 921 data requests。本地 preview 没有传 `--external` 或
+`--data-external`，因此没有任何 LLM/provider 发送；attempt ledger 为空，data-request
+ledger 不存在，指针仍为 `0/0`，Registry 与 Locked Test 均未变化。
+
+尽管没有 invocation-level data 授权，旧 runtime 仍启动 active cycle 并检查 case
+readiness。三个 prospective Random case 的五个 financial Signals 因 resolver policy
+被关闭而返回 `external_not_authorized`，ready count 仅 9/14；sampler 将它们当成
+确定性缺数，静默跳过并持久化了另一组 8 个 Random cases。之后才在 proposer
+`94e89cea...3034` 暂停。该 5,614-byte exact body 本身符合设计：schema-only system
+contract、一个 committed historical parent、空 meta-info、完整 source enum 和明确
+`B/H_init` focus，没有 issuer case、outcome 或 Locked Test 内容。但 cohort 已被
+“缺少授权”而非“授权后的数据可用性”改变，所以 v27 不能正式续跑。
+
+当前 control boundary 在 dataset load、active-cycle creation、snapshot sampling 和
+resolver construction 之前执行双向检查：contract 禁止 acquisition 时传 flag 仍报错；
+contract 启用 acquisition 而 invocation 不传 flag 时返回
+`data_external_approval_required`。后者不创建 `cycle_state.json` 或 evaluation 目录，
+因此 `external_not_authorized` 不再有机会影响 Random substitution。41 个 focused
+tests 与全量 387 tests 通过；下一合同额度不变，因为 v27 没有外部消耗。

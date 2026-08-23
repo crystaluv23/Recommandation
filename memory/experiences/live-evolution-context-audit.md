@@ -315,3 +315,13 @@ fabricated execution failure, and apply the same check immediately after restart
 reuses the checkpoint. A configurable contract flag must not claim the finalized
 gate can be disabled when the scorer and parent-selection path enforce it
 unconditionally.
+
+## Authorization-neutral sampling addendum (2026-08-23)
+
+Dry-run safety is not enough when control-plane posture can change durable
+research inputs. If a frozen contract enables acquisition but the invocation
+does not reauthorize it, pause before cycle creation and evaluation sampling.
+Otherwise local resolver misses become `external_not_authorized`, which a
+label-free readiness sampler can mistakenly interpret as genuine no-data and
+use to replace Random cases. Inspect both external-call ledgers and the exact
+snapshot: zero network calls do not prove the preview was state-neutral.
