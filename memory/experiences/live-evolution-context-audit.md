@@ -186,3 +186,10 @@ learning too: require a concrete decision driver rather than accepting an all-em
 failure-shaped reflection. Finally, identity tests must cover target brands embedded in
 product/property names; four-letter brands can be distinctive even when short tickers
 remain case-sensitive.
+
+When overlapping projections expose one complete clause and one truncated copy, a model
+may quote the complete clause but attach the neighboring projection id. Treat the id as
+locally repairable provenance only when the unchanged quote has exactly one occurrence
+across the entire visible lineage; then map through that unique projection and still
+apply edge checks. A correction call is wasteful and can destroy valid evidence when
+the quote itself is already uniquely verifiable.

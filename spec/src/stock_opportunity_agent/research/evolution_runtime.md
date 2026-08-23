@@ -456,6 +456,10 @@ edge is not also the normalized source-document edge. The neighboring overlap re
 available for a complete clause; an edge-fragment citation receives one correction
 and otherwise fails closed. This prevents a literal ending in values such as `$1,`
 from being accepted and later completed by reflection as an invented quantity.
+If a returned Signal quote is absent from its supplied projection id but occurs exactly
+once across all visible projections, runtime deterministically uses that unique
+projection for raw-span mapping, matching the Basic-ref rule. Zero or multiple visible
+matches remain semantic ambiguity and fail closed; runtime never edits the quote.
 The shared one/two-Signal role uses one dedicated batch output example and no
 single-`SignalResult` "return exactly" example. Its outer row copies the supplied
 versioned `signal_ref`; its inner `result.signal_id` copies the matching

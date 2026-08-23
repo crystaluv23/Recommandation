@@ -3514,6 +3514,68 @@ class ConcreteRoleAdapterTests(TestCase):
                 result, {"projection_truncated": lineage}
             )
 
+    def test_v13_signal_evidence_relocates_unique_quote_from_wrong_overlap(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v13_signal_projection_relocation.json"
+            ).read_text(encoding="utf-8")
+        )
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        unique_text = (
+            fixture["unique_projection_prefix"]
+            + fixture["exact_text"]
+            + fixture["unique_projection_suffix"]
+        )
+        document = RawInfoDocument.create(
+            document_id="guidance-transcript",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=unique_text,
+        )
+
+        def lineage(text_value: str, *, start: int, source_length: int):
+            return evolution_runtime_module._SignalProjectionLineage(
+                document=document,
+                projection_text=text_value,
+                raw_offset_runs=((0, len(text_value), 0, len(text_value)),),
+                normalized_start=start,
+                normalized_end=start + len(text_value),
+                normalized_source_length=source_length,
+            )
+
+        mapped = evolution_runtime_module._map_projected_signal_evidence(
+            {
+                "evidence": {
+                    "supporting": [
+                        {
+                            "projection_id": fixture["wrong_projection_id"],
+                            "exact_text": fixture["exact_text"],
+                        }
+                    ],
+                    "counter": [],
+                }
+            },
+            {
+                fixture["wrong_projection_id"]: lineage(
+                    fixture["wrong_projection_text"],
+                    start=100,
+                    source_length=100 + len(fixture["wrong_projection_text"]) + 50,
+                ),
+                fixture["unique_projection_id"]: lineage(
+                    unique_text, start=0, source_length=len(unique_text)
+                ),
+            },
+        )
+
+        self.assertIn(
+            fixture["exact_text"],
+            mapped["evidence"]["supporting"][0]["exact_span"],
+        )
+
     def test_v12_posthoc_preserves_predictor_basic_source_index(self) -> None:
         fixture = json.loads(
             (

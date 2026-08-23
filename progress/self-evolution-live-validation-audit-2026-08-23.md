@@ -296,3 +296,25 @@ artifact 显式持久化，framework-correct 输出至少一条具体 source-bac
 uppercase；真实 Wynn 片段回归验证品牌、branded property 与 ticker 全部被 mask。
 本轮到达的 proposer/initialize/routing/Signal batch/reflect/Predictor/post-hoc 均已检查；
 H1/H2/H3/Update 仍未到达，不能标为 live-verified。
+
+## v13 Signal projection id 唯一重定位
+
+v13 合同 hash 为
+`d2d5507e3235cc2177d650b59c1515c8fbadca2661dad71d083987e881df527c`。
+主动停止时共预留 16 attempts（15 completed、1 interrupted reservation），两次
+真实 SEC fetch，权威指针 `0/0`。已结 cost `$0.02110640`，保守 reservation
+`$0.00463596`；下一合同剩余 740 attempts、`$18.86772452`、949 provider requests。
+
+第一个 soft-Signal response 返回完整的 `$1,500` guidance 原句，却把它绑定到
+相邻 overlap 的 `projection_46292...`。精确检查显示该 quote 在指定 projection
+出现 0 次、在全部可见 projection 中总共出现 1 次，唯一匹配是
+`projection_a3f27...`；指定 projection 的尾部仍是 `$1,`。旧 mapper 因只检查指定
+id 而进入 correction，correction 又把 result 字段嵌进 evidence，导致本来可验证的
+guidance 被降为 unavailable。当前 mapper 在指定 id 不含 literal 时搜索完整可见
+lineage，仅总 occurrence=1 时使用唯一 projection 做 raw-span mapping；0 或多次仍
+fail-closed，literal 不做任何修改，resolved projection 仍接受 edge-fragment 检查。
+
+同一 case 还实证了 v12 两项修复：post-hoc 不再返回空对象，而是保留三条具体
+`decision_drivers`；后续第二次 H_reflect 对先前 `commercialization_status` ref 的
+claim 逐字保留。Predictor/post-hoc 的 Basic source index 也已非空。Slow 角色仍未
+到达。

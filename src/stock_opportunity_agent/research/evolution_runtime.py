@@ -6135,10 +6135,21 @@ def _map_projected_signal_evidence(
             if not isinstance(projection_id, str) or not isinstance(exact_text, str):
                 raise ValidationError("Signal evidence requires projection_id and exact_text")
             projection = lineage.get(projection_id)
-            if projection is None:
-                raise ValidationError("Signal evidence cited an unknown projection")
-            if not exact_text or projection.projection_text.count(exact_text) != 1:
+            if not exact_text:
                 raise ValidationError("Signal projection evidence must map uniquely")
+            if projection is None or projection.projection_text.count(exact_text) != 1:
+                matches = [
+                    candidate
+                    for candidate in lineage.values()
+                    if candidate.projection_text.count(exact_text) == 1
+                ]
+                occurrence_count = sum(
+                    candidate.projection_text.count(exact_text)
+                    for candidate in lineage.values()
+                )
+                if len(matches) != 1 or occurrence_count != 1:
+                    raise ValidationError("Signal projection evidence must map uniquely")
+                projection = matches[0]
             projection_start = projection.projection_text.index(exact_text)
             projection_end = projection_start + len(exact_text)
             if (
