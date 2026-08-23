@@ -156,6 +156,13 @@ invalid canonical fields still consume the one correction and then fail closed.
 The model-facing batch explicitly supplies the versioned `signal_ref`. If a response
 returns only an unversioned `signal_id`, local code expands it only when exactly one
 current-batch result matches; absent or ambiguous ids remain invalid.
+The reflect payload also carries a deterministic `signal_evidence_ref_catalog`
+listing, for every current-batch `signal_ref`, the exact valid zero-based
+`supporting` and `counter` evidence indices. When validation rejects an index, the
+single correction message names the exact `supporting_evidence[index]`, returned
+`signal_ref`, group, index, and valid indices for that ref/group. The model must
+select an exact catalog tuple or remove the citation; runtime never clamps, swaps,
+or guesses an evidence index, and a still-invalid correction fails closed.
 Legacy string evidence remains readable only in v1-v5 artifacts.
 
 Blind Predictor consumes only the assembled label-free context. The same

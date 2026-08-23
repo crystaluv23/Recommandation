@@ -362,6 +362,13 @@ invents a missing Signal ref, evidence group, or index.
 Every model-facing Signal-batch row includes its exact versioned `signal_ref` in
 addition to durable `signal_id` and `version`. An unversioned returned id is expanded
 only when it uniquely identifies one result in that current batch.
+The same reflect request includes a compact, deterministic
+`signal_evidence_ref_catalog`: one row per current-batch `signal_ref` with its exact
+valid zero-based `supporting` and `counter` indices. Index-validation feedback must
+identify the precise `supporting_evidence[index]`, returned ref/group/index, and the
+valid indices for that ref/group so the one correction is executable. The runtime
+does not repair semantic index mistakes locally; an index outside the frozen catalog
+continues to fail closed after the correction boundary.
 
 LLM Signal execution does not serialize its complete resolved Raw Info
 documents into the provider request. It receives the Signal Library's bounded

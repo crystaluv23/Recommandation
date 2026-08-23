@@ -4253,6 +4253,21 @@ def _research_evidence_key(item: ResearchEvidenceRef) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"))
 
 
+def _signal_evidence_ref_catalog(batch: SignalBatchResult) -> list[dict[str, Any]]:
+    """Expose the exact Signal evidence tuples visible to one reflect call."""
+
+    return [
+        {
+            "signal_ref": result.ref,
+            "supporting_evidence_indices": list(
+                range(len(result.supporting_evidence))
+            ),
+            "counter_evidence_indices": list(range(len(result.counter_evidence))),
+        }
+        for result in batch.results
+    ]
+
+
 def _validate_research_state_refs(
     state: ResearchState,
     *,
@@ -4353,7 +4368,14 @@ def _validate_research_state_refs(
             else result.counter_evidence
         )
         if int(item.evidence_index or 0) >= len(evidence):
-            raise ValidationError("ResearchState cited an unknown Signal evidence index")
+            valid_indices = list(range(len(evidence)))
+            raise ValidationError(
+                f"supporting_evidence[{index}] cited unavailable Signal evidence "
+                f"signal_ref={result.ref!r}, evidence_group={item.evidence_group!r}, "
+                f"evidence_index={item.evidence_index!r}; valid_evidence_indices="
+                f"{valid_indices} for that signal_ref and group. Use one exact tuple "
+                "from signal_evidence_ref_catalog or remove this evidence item"
+            )
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()
@@ -4413,7 +4435,8 @@ class LLMResearchController:
                 "the provenance fields of prior Basic Info evidence refs byte-for-byte; "
                 "the claim may be restated. A new Signal evidence ref must use "
                 "kind=signal, a signal_ref from the current batch, "
-                "evidence_group=supporting or counter, and the zero-based evidence_index."
+                "evidence_group=supporting or counter, and the zero-based evidence_index. "
+                "Use only an exact tuple listed by signal_evidence_ref_catalog."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
@@ -4424,6 +4447,7 @@ class LLMResearchController:
                     {**item.to_dict(), "signal_ref": item.ref}
                     for item in batch.results
                 ],
+                "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
             },
             parser=lambda value: _validate_research_state_refs(
                 ResearchState.from_dict(_normalize_research_state_output(value)),

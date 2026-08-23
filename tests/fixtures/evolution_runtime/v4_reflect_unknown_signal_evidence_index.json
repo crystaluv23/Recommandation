@@ -1,0 +1,39 @@
+{
+  "source_workspace": "deepseek-v6-context-remediation-20260823-v4",
+  "request_hash": "6f7b40b0e2cc2a28729a18069e5b5e48e6574e31eac971c46e833f101d04567c",
+  "correction_request_hash": "d126abb84c86a4ad597bb53cb84934ac45a5d9b85aeb6f908886065439dcab96",
+  "invalid_output": {
+    "contradictions": [],
+    "current_beliefs": [
+      "Kinross stock has positive 126-day price momentum of 0.951161",
+      "Kinross stock has a maximum 1-year drawdown of -0.16"
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Recent market confirmation may support continued repricing."
+    ],
+    "next_information_needs": [
+      "What operating evidence can confirm whether the repricing is sustainable?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [
+      "What is the recent price trend?"
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "Kinross stock has positive 126-day price momentum of 0.951161",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "price_momentum_126d:v1"
+      },
+      {
+        "claim": "Kinross stock has a maximum 1-year drawdown of -0.16",
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "kind": "signal",
+        "signal_ref": "max_drawdown_1y:v1"
+      }
+    ]
+  }
+}

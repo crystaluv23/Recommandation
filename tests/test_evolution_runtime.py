@@ -78,10 +78,13 @@ from stock_opportunity_agent.research.scheme_evolution import (
 )
 from stock_opportunity_agent.signal_library import (
     LLMSignalBatchInput,
+    SignalBatchResult,
     SignalCoverage,
+    SignalEvidence,
     SignalExecutor,
     SignalExecutionType,
     SignalRegistry,
+    SignalResult,
     SignalSpec,
     SignalValue,
 )
@@ -1545,6 +1548,99 @@ class ConcreteRoleAdapterTests(TestCase):
                 ],
                 "guidance_acceleration:v1",
             )
+
+    def test_reflect_correction_names_exact_valid_signal_evidence_indices(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "evolution_runtime"
+                / "v4_reflect_unknown_signal_evidence_index.json"
+            ).read_text(encoding="utf-8")
+        )
+        invalid_output = fixture["invalid_output"]
+        corrected_output = json.loads(json.dumps(invalid_output))
+        corrected_output["supporting_evidence"][1]["evidence_index"] = 0
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        evidence = SignalEvidence(
+            document_id="market-data-1",
+            exact_span='[{"adjusted_close":9.36}]',
+            timestamp=timestamp,
+        )
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="max_drawdown_1y",
+                    version=1,
+                    value=SignalValue.POSITIVE,
+                    confidence=1.0,
+                    interpretation="max_drawdown_1y=-0.16",
+                    supporting_evidence=(evidence,),
+                ),
+                SignalResult(
+                    signal_id="price_momentum_126d",
+                    version=1,
+                    value=SignalValue.POSITIVE,
+                    confidence=1.0,
+                    interpretation="price_momentum_126d=0.951161",
+                    supporting_evidence=(evidence,),
+                ),
+            ),
+            signal_calls=2,
+        )
+        caller = ScriptedRoleCaller([invalid_output, corrected_output])
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=("confirm sustainability",)),
+            batch,
+        )
+
+        expected_catalog = [
+            {
+                "signal_ref": "max_drawdown_1y:v1",
+                "supporting_evidence_indices": [0],
+                "counter_evidence_indices": [],
+            },
+            {
+                "signal_ref": "price_momentum_126d:v1",
+                "supporting_evidence_indices": [0],
+                "counter_evidence_indices": [],
+            },
+        ]
+        self.assertEqual(
+            caller.stages,
+            ["research_controller_reflect", "research_controller_reflect_correction"],
+        )
+        self.assertEqual(
+            caller.calls[0]["payload"]["signal_evidence_ref_catalog"],
+            expected_catalog,
+        )
+        correction_payload = caller.calls[1]["payload"]
+        self.assertEqual(
+            correction_payload["signal_evidence_ref_catalog"], expected_catalog
+        )
+        self.assertIn("supporting_evidence[1]", correction_payload["validation_error"])
+        self.assertIn("max_drawdown_1y:v1", correction_payload["validation_error"])
+        self.assertIn("evidence_index=1", correction_payload["validation_error"])
+        self.assertIn("valid_evidence_indices=[0]", correction_payload["validation_error"])
+        self.assertEqual(
+            reflected.value.supporting_evidence[1].evidence_index,
+            0,
+        )
+
+        failing_caller = ScriptedRoleCaller([invalid_output, invalid_output])
+        with self.assertRaises(CandidateExecutionRejected):
+            LLMResearchController(failing_caller).reflect(
+                default_information_plan(),
+                ResearchState(next_information_needs=("confirm sustainability",)),
+                batch,
+            )
+        self.assertEqual(
+            failing_caller.stages,
+            ["research_controller_reflect", "research_controller_reflect_correction"],
+        )
 
     def test_finalize_allows_claim_restatement_for_existing_provenance(self) -> None:
         previous = ResearchState(
