@@ -90,3 +90,11 @@ Preserve the complete recursive mask and independent scan, but compile the exact
 case-sensitive prose and case-insensitive URL matchers once per payload traversal and
 reuse them across leaves. Audit the last completed attempt plus provider ledger before
 diagnosing such a silent interval, and benchmark with the real inventory scale.
+
+Inspect the entire concatenated system prompt, not just its leading role-specific
+instruction. A batch role can correctly request a `results` wrapper and then append a
+generic single-result “return exactly” example that weakens or contradicts it. Versioned
+outer refs and unversioned inner domain ids must be shown together in one batch example;
+when identity validation fails, correction needs the returned and expected values for
+outer ref, inner id, and integer version. A generic “identity mismatch” lets a model
+repeat the same syntactically valid but semantically wrong id and doubles paid attempts.

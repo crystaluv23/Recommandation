@@ -398,6 +398,14 @@ literal-window projection with document hashes and source offsets; complete
 documents remain local for request fingerprints and strict validation of the
 returned evidence. `SignalResult` carries only the canonical conclusion,
 interpretation, and source evidence rather than duplicating Raw Info.
+The shared one/two-Signal role uses one dedicated batch output example and no
+single-`SignalResult` "return exactly" example. Its outer row copies the supplied
+versioned `signal_ref`; its inner `result.signal_id` copies the matching
+`signal_spec.signal_id` without the `:vN` suffix, and `result.version` copies the
+integer `signal_spec.version`. Identity validation feedback reports returned and
+expected values for all three fields and repeats that exact mapping in the one
+correction action. Runtime does not strip a version suffix or otherwise repair a
+semantic identity mismatch locally.
 
 Model outputs are type-strict at the role boundary. JSON booleans, arrays,
 objects, numbers, and required fields cannot be replaced by truthy strings,

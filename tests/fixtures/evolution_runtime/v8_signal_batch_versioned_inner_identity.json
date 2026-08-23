@@ -1,0 +1,20 @@
+{
+  "schema_version": "evolution-runtime-regression-fixture-v1",
+  "workspace": "deepseek-v6-context-remediation-20260823-v8",
+  "attempt_ids": [156, 157],
+  "stage": "llm_signal_batch_execute",
+  "signal_ref": "guidance_acceleration:v1",
+  "expected_signal_id": "guidance_acceleration",
+  "expected_version": 1,
+  "invalid_result": {
+    "signal_id": "guidance_acceleration:v1",
+    "version": 1,
+    "state": {"value": "unavailable", "confidence": 0.0},
+    "interpretation": {
+      "summary": "No explicit current-versus-prior management guidance was visible."
+    },
+    "evidence": {"supporting": [], "counter": []},
+    "status": {"coverage": "unavailable"}
+  },
+  "failure": "the batch prompt appended a contradictory single-result example and correction did not state the expected unversioned inner signal_id"
+}

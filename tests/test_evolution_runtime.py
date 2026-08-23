@@ -2528,6 +2528,67 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value, SignalValue.UNAVAILABLE)
         self.assertEqual(result.coverage, SignalCoverage.UNAVAILABLE)
 
+    def test_llm_signal_batch_repairs_versioned_inner_identity_with_exact_mapping(
+        self,
+    ) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v8_signal_batch_versioned_inner_identity.json"
+            ).read_text(encoding="utf-8")
+        )
+        invalid = {
+            "results": [
+                {
+                    "signal_ref": fixture["signal_ref"],
+                    "result": fixture["invalid_result"],
+                }
+            ]
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["results"][0]["result"]["signal_id"] = fixture[
+            "expected_signal_id"
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+        spec = SignalSpec(
+            signal_id=fixture["expected_signal_id"],
+            version=fixture["expected_version"],
+            category="management",
+            description="Detect explicit management-guidance acceleration.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="guidance_acceleration.md",
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (),
+            "Compare current with prior explicit guidance.",
+            datetime(2025, 9, 30, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(result.signal_id, fixture["expected_signal_id"])
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertIn(
+            "Output contract for SignalBatchResult",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertNotIn(
+            "Output contract for SignalResult:",
+            caller.calls[0]["system_prompt"],
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
+        self.assertEqual(
+            feedback["expected_result_identity"],
+            {
+                "signal_id": fixture["expected_signal_id"],
+                "version": fixture["expected_version"],
+            },
+        )
+        self.assertIn("without a version suffix", feedback["required_action"])
+        self.assertIn("returned result.signal_id", feedback["validation_error"])
+
     def test_llm_signal_runner_repairs_invalid_exact_span_once(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         document = RawInfoDocument.create(

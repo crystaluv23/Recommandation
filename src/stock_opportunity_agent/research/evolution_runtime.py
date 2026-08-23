@@ -3907,17 +3907,28 @@ _ROUND_META_OUTPUT = _output_contract(
     },
 )
 
-_SIGNAL_RESULT_OUTPUT = _output_contract(
-    "SignalResult",
+_SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
+    "SignalBatchResult",
     {
-        "signal_id": "requested_signal_id",
-        "version": 1,
-        "state": {"value": "neutral", "confidence": 0.5},
-        "interpretation": {"summary": "grounded interpretation"},
-        "evidence": {"supporting": [], "counter": []},
-        "status": {"coverage": "partial"},
+        "results": [
+            {
+                "signal_ref": "guidance_acceleration:v1",
+                "result": {
+                    "signal_id": "guidance_acceleration",
+                    "version": 1,
+                    "state": {"value": "neutral", "confidence": 0.5},
+                    "interpretation": {"summary": "grounded interpretation"},
+                    "evidence": {"supporting": [], "counter": []},
+                    "status": {"coverage": "partial"},
+                },
+            }
+        ]
     },
 ) + (
+    " Return exactly one row for every requested_signal_refs item and no other row. "
+    "Each outer signal_ref must copy that complete versioned ref. Each nested "
+    "result.signal_id must copy the matching signal_spec.signal_id without the "
+    ":vN suffix, and result.version must copy signal_spec.version."
     ' state.value must be "positive", "neutral", "negative", or "unavailable"; '
     'status.coverage must be "sufficient", "partial", or "unavailable". Each '
     'model-facing evidence item must contain projection_id and exact_text copied '
@@ -6070,15 +6081,14 @@ class StructuredLLMSignalRunner:
                 ),
                 system_prompt=(
                     "Apply each versioned extraction skill independently to the one "
-                    "shared bounded point-in-time source_projection. Return exactly "
-                    "{\"results\":[{\"signal_ref\":...,\"result\":SignalResult},...]}. "
-                    "Each evidence item inside SignalResult must use projection_id and "
+                    "shared bounded point-in-time source_projection. Each evidence "
+                    "item inside a nested result must use projection_id and "
                     "exact_text copied from one visible projection; runtime maps it to "
                     "the original raw span. Never infer omitted source text is absent. "
                     "Return unavailable with no evidence when visible text is insufficient."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + correction_instruction
-                    + _SIGNAL_RESULT_OUTPUT
+                    + _SIGNAL_BATCH_RESULT_OUTPUT
                 ),
                 payload=payload,
                 allow_outcomes=False,
@@ -6126,15 +6136,31 @@ class StructuredLLMSignalRunner:
                         item.spec, result, item.documents, as_of=as_of
                     )
                 except ValidationError as exc:
-                    last_errors[signal_ref] = str(exc)
+                    validation_error = str(exc)
+                    if "identity does not match SignalSpec" in validation_error:
+                        validation_error += (
+                            "; returned result.signal_id="
+                            f"{raw_result.get('signal_id')!r}, result.version="
+                            f"{raw_result.get('version')!r}; expected result.signal_id="
+                            f"{item.spec.signal_id!r}, result.version={item.spec.version}"
+                        )
+                    last_errors[signal_ref] = validation_error
                     validation_feedback.append(
                         {
                             "signal_ref": signal_ref,
-                            "validation_error": str(exc),
+                            "returned_signal_refs": sorted(row_by_ref),
+                            "expected_result_identity": {
+                                "signal_id": item.spec.signal_id,
+                                "version": item.spec.version,
+                            },
+                            "validation_error": validation_error,
                             "failed_output": dict(raw_result or {}),
                             "required_action": (
-                                "Return one corrected result grounded only in a unique "
-                                "visible projection quote, or unavailable with empty evidence."
+                                f"Return outer signal_ref exactly {signal_ref!r}; set nested "
+                                f"result.signal_id exactly {item.spec.signal_id!r} without "
+                                f"a version suffix and result.version exactly {item.spec.version}. "
+                                "Ground the corrected result only in one unique visible "
+                                "projection quote, or return unavailable with empty evidence."
                             ),
                         }
                     )

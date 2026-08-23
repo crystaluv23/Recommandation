@@ -110,6 +110,11 @@ missing fields, invalid enums, and invalid tag values remain semantic failures
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
 committed observations.”
+One shared soft-Signal call uses a batch-specific output contract. Each outer
+row returns the exact supplied versioned `signal_ref`, while the nested result
+returns the matching unversioned `signal_spec.signal_id` and integer version.
+The prompt contains no conflicting single-result example; identity correction
+names returned versus expected values and runtime never fixes the semantic id.
 
 An `EvidenceResolver` serves both bootstrap and Signal paths. It queries the
 global Raw Info oracle first, optionally performs separately authorized and
