@@ -215,6 +215,11 @@ All H2/H3/E1 Discovery material is identity-masked before leaving the local
 controller. Short ticker-like aliases remain case-sensitive in ordinary prose
 to avoid masking common words, but are matched case-insensitively inside URLs;
 short all-uppercase brands derived from a formal company name are masked too.
+Slow-loop full-Discovery-inventory boundaries compile each expanded alias matcher
+once per payload traversal and reuse it across every nested string. This is only a
+local performance rule: the recursive mask, case rules, URL handling, and separate
+post-mask full-inventory scan remain mandatory and complete before request
+reservation or send.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

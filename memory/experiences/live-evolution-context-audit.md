@@ -81,3 +81,12 @@ separate Predictor projection that sends source/DataGap coverage, the final stat
 compact Signal conclusions, and only cited Signal evidence. Measure the anonymized
 canonical payload in UTF-8 bytes and freeze that ceiling in the run contract while
 retaining complete Basic Info and trajectories locally.
+
+Privacy checks are also part of live control-flow performance. A full-market alias
+inventory can contain tens of thousands of expanded names; recompiling every alias
+for every nested string may leave one CPU saturated for minutes before a request is
+even reserved, which looks like a provider stall while consuming no ledger entries.
+Preserve the complete recursive mask and independent scan, but compile the exact
+case-sensitive prose and case-insensitive URL matchers once per payload traversal and
+reuse them across leaves. Audit the last completed attempt plus provider ledger before
+diagnosing such a silent interval, and benchmark with the real inventory scale.

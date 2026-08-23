@@ -3,12 +3,13 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+import re
 import tempfile
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from stock_opportunity_agent.data.raw_info import (
     RawInfoDocument,
@@ -788,6 +789,35 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_identity_mask_compiles_aliases_once_per_payload_traversal(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/v7_full_alias_scan_compile_thrash.json"
+            ).read_text(encoding="utf-8")
+        )
+        aliases = tuple(
+            f"Example Holdings {index} Corporation"
+            for index in range(min(int(fixture["raw_alias_count"]), 80))
+        )
+        leaf_count = min(int(fixture["discovery_case_count"]), 180)
+        real_compile = re.compile
+
+        def compile_count(value: object) -> int:
+            with mock.patch(
+                "stock_opportunity_agent.research.scheme_evolution.re.compile",
+                side_effect=real_compile,
+            ) as compile_mock:
+                _mask_identity_values(value, aliases)
+            return compile_mock.call_count
+
+        one_leaf = compile_count({"value": "ordinary reflection"})
+        many_leaves = compile_count(
+            {f"value_{index}": "ordinary reflection" for index in range(leaf_count)}
+        )
+
+        self.assertEqual(many_leaves, one_leaf)
+
     def test_composite_formal_name_masks_natural_name_but_keeps_third_party(self) -> None:
         masked = _mask_identity_values(
             "UBS Boosts Kinross Gold’s (KGC) Price Target; Kinross later responded.",

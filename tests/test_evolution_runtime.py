@@ -3,10 +3,11 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 import tempfile
 from datetime import date, datetime, timezone
 from pathlib import Path
-from unittest import TestCase
+from unittest import TestCase, mock
 
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm import RegisteredModel, get_model
@@ -247,6 +248,32 @@ def make_contract() -> EvolutionRunContract:
         max_external_attempts=2,
         max_total_cost=1.0,
     )
+
+
+class IdentityBoundaryPerformanceTests(TestCase):
+    def test_identity_scan_compiles_aliases_once_per_payload_traversal(self) -> None:
+        aliases = tuple(f"Example Holdings {index}" for index in range(80))
+        real_compile = re.compile
+
+        def compile_count(value: object) -> int:
+            with mock.patch.object(
+                evolution_runtime_module.re,
+                "compile",
+                side_effect=real_compile,
+            ) as compile_mock:
+                evolution_runtime_module._scan_payload(
+                    value,
+                    allow_outcomes=True,
+                    anonymous_aliases=aliases,
+                )
+            return compile_mock.call_count
+
+        one_leaf = compile_count({"value": "ordinary reflection"})
+        many_leaves = compile_count(
+            {f"value_{index}": "ordinary reflection" for index in range(180)}
+        )
+
+        self.assertEqual(many_leaves, one_leaf)
 
 
 class LocalInventoryTests(TestCase):

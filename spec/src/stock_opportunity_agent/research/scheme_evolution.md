@@ -508,6 +508,14 @@ omits literal evidence spans, company/case identity, Basic Info, full research
 states, prediction paths, and usage.
 Before the critic request, the compact trajectory is value-masked and rescanned
 against the full alias inventory of all 24 cases in the round.
+Every full-inventory mask-and-scan boundary derives its exact case-sensitive and
+case-insensitive alias matchers once per payload traversal and reuses them across
+all nested string values. Reuse is a local execution requirement, not a relaxation
+of the disclosure boundary: formal-name expansion, token boundaries, case-sensitive
+short tickers, case-insensitive URL matching, recursive masking, and the independent
+post-mask scan remain identical. The runtime must not recompile the same alias for
+each leaf string; identity validation completes before request reservation or send
+and consumes no LLM/provider budget.
 
 The Plan critic and round reflector also receive deterministic parent
 comparisons for the parents actually listed on each candidate Plan. Each

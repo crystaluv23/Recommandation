@@ -1,0 +1,13 @@
+{
+  "schema_version": "evolution-runtime-regression-fixture-v1",
+  "workspace": "deepseek-v6-context-remediation-20260823-v7",
+  "stage": "signal_mining_hypotheses_preflight",
+  "last_completed_attempt": 342,
+  "discovery_case_count": 8755,
+  "raw_alias_count": 15043,
+  "expanded_alias_count": 22960,
+  "observed_no_request_seconds": 442,
+  "process_cpu_percent": 100.0,
+  "provider_requests_during_stall": 0,
+  "failure": "identity mask and scan recompiled every alias for every nested string leaf"
+}
