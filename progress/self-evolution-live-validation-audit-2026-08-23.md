@@ -189,3 +189,23 @@ v4-v9 最大 wire body 分别为 65,693 / 67,645 / 63,936 / 134,899 / 52,617 /
 记录在同日 status/changelog；不会用新的外部 workspace 绕过已经耗尽的 800-attempt
 任务预算。若要实现最初的完整 `round=1/cycle=1` live 目标，需要用户另行扩大本次
 修复链的累计 attempt 预算；standing authorization 本身不等同于可重置额度。
+
+## 预算终止后的上下文续审
+
+对 v7-v9 的 56 个可读 `research_controller_finalize` 基础响应逐字段重放后发现，
+50 个没有改变 hypothesis、belief、evidence、contradiction、resolved/open question
+中的任何一项；剩余响应中出现了没有新证据却把 open question 移到 resolved、删除
+hypothesis/open question，以及仅改写 evidence claim 的情况。终止触发发生在
+`no_signal_match`、case budget 或最大 Signal round 之后，此时没有任何新 evidence
+进入 context，因此再让模型重写 ResearchState 没有信息论依据，且会损害前序推理
+保真度。当前实现改为确定性闭合：完整保留全部分析字段，只设置
+`decision=finalize` 并清空 `next_information_needs`。三个完整 24-case candidate 可
+因此少 72 个外部 attempt。
+
+DeepSeek prefix cache 的实际可观测性也补齐：response/cache/progress 现在持久化
+provider 报告的 `prompt_cache_hit_tokens` 和 `prompt_cache_miss_tokens`，而预发送
+预算仍把全部输入按 cache miss 保守计价。对 v7-v9 的 155 个真实 routing 基础请求
+重排回放后，最大相同卡片组有 60 个请求；旧 user payload 因动态
+`information_needs` 在前，只共享 28 个字符，新 canonical payload 先发送
+`available_signal_cards`，共享前缀为 2,790 个字符，净增加 2,762 个字符。该数值只
+证明更大的可复用前缀；实际命中率必须在下一次真实运行中依据 provider usage 审计。

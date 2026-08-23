@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 4
+visit_times: 5
 
 ## Trigger
 
@@ -121,3 +121,20 @@ Finally, keep cryptographic fingerprints local unless a model can perform a sema
 operation on them. The selector already receives only unexecuted cards, and the
 executor owns fingerprint no-op; replaying hundreds of opaque hashes in routing
 requests adds tokens without information.
+
+## Terminal-fidelity addendum (2026-08-23)
+
+A role should not exist merely because a phase name suggests one. When a local guard
+ends research after the last initialize/reflect response and no new evidence is
+available, an LLM finalize rewrite has no additional input from which to improve the
+state. Compare the actual field-level deltas: if most calls are no-ops and the few
+changes erase hypotheses or reclassify unanswered questions, close deterministically
+while preserving every analysis/provenance field. This saves attempts and, more
+importantly, prevents late ungrounded rewriting of a correct root cause.
+
+Provider prefix caching also needs evidence rather than assumptions. Place the largest
+semantically stable user-data object before case-dynamic values in canonical payloads,
+without promoting untrusted content into the system role. Persist provider-reported
+cache hit/miss token counts, but keep pre-send token and cost gates conservatively priced
+as cache misses. Measure common prefixes by replaying real payload values, then verify
+actual hit rates only on the next live run.

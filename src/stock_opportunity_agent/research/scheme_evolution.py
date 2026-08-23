@@ -688,7 +688,7 @@ class ResearchController(Protocol):
         state: ResearchState,
         reason: RuntimeStopReason,
     ) -> AgentStep[ResearchState]:
-        """Perform one bounded terminal reflection using available evidence."""
+        """Close the state deterministically when no more evidence can be added."""
 
 
 _SIGNAL_SELECTION_REASON_CODES = frozenset(
@@ -1788,12 +1788,12 @@ def execute_information_plan(
         except (AttributeError, RuntimeBudgetExceeded) as exc:
             raise CandidateExecutionRejected(
                 "research_controller_finalize",
-                f"terminal reflection could not complete: {exc}",
+                f"terminal closure could not complete: {exc}",
             ) from exc
         if state.decision is not ResearchDecision.FINALIZE:
             raise CandidateExecutionRejected(
                 "research_controller_finalize",
-                "terminal reflection did not return finalize",
+                "terminal closure did not return finalize",
             )
         stop_reason = RuntimeStopReason.FINALIZED
 

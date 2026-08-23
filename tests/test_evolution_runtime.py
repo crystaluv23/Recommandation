@@ -1317,17 +1317,23 @@ class ConcreteRoleAdapterTests(TestCase):
                 selector_caller.stages,
                 ["signal_retrieval_cards"],
             )
-            cards = selector_caller.calls[0]["payload"]["signal_cards"]
+            payload = selector_caller.calls[0]["payload"]
+            cards = payload["available_signal_cards"]
             self.assertEqual(len(cards), 14)
             self.assertIn("category", cards[0])
             self.assertNotIn("learned_profile", cards[0])
             self.assertEqual(
-                selector_caller.calls[0]["payload"]["learned_profile_default"],
+                payload["learned_profile_default"],
                 "no committed observations",
             )
             self.assertNotIn(
                 "previous_signal_document_fingerprints",
-                selector_caller.calls[0]["payload"],
+                payload,
+            )
+            self.assertTrue(
+                json.dumps(payload, sort_keys=True, separators=(",", ":")).startswith(
+                    '{"available_signal_cards":'
+                )
             )
 
     def test_signal_selector_repairs_invalid_refs_once(self) -> None:
@@ -1441,7 +1447,10 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(selection.usage.llm_calls, 1)
             payload = caller.calls[0]["payload"]
             self.assertEqual(
-                [card["signal_ref"] for card in payload["signal_cards"]],
+                [
+                    card["signal_ref"]
+                    for card in payload["available_signal_cards"]
+                ],
                 ["revenue_growth_yoy:v1"],
             )
             self.assertEqual(
@@ -1750,9 +1759,10 @@ class ConcreteRoleAdapterTests(TestCase):
             ["research_controller_reflect", "research_controller_reflect_correction"],
         )
 
-    def test_finalize_allows_claim_restatement_for_existing_provenance(self) -> None:
+    def test_finalize_preserves_analysis_without_an_llm_call(self) -> None:
         previous = ResearchState(
             hypotheses=("growth may accelerate",),
+            current_beliefs=("liquidity is adequate",),
             supporting_evidence=(
                 ResearchEvidenceRef(
                     kind="basic_info",
@@ -1761,15 +1771,12 @@ class ConcreteRoleAdapterTests(TestCase):
                     exact_text="$1.1 billion in cash",
                 ),
             ),
+            contradictions=("execution remains unconfirmed",),
+            resolved_questions=("balance-sheet capacity",),
+            open_questions=("confirm execution",),
             next_information_needs=("confirm execution",),
         )
-        final_output = previous.to_dict()
-        final_output["supporting_evidence"][0]["claim"] = (
-            "Liquidity supports operating execution."
-        )
-        final_output["next_information_needs"] = []
-        final_output["decision"] = "finalize"
-        caller = ScriptedRoleCaller([final_output])
+        caller = ScriptedRoleCaller([])
 
         finalized = LLMResearchController(caller).finalize(
             default_information_plan(),
@@ -1777,11 +1784,12 @@ class ConcreteRoleAdapterTests(TestCase):
             RuntimeStopReason.NO_SIGNAL_MATCH,
         )
 
-        self.assertEqual(len(caller.calls), 1)
-        self.assertEqual(
-            finalized.value.supporting_evidence[0].claim,
-            "Liquidity supports operating execution.",
-        )
+        self.assertEqual(caller.calls, [])
+        self.assertEqual(finalized.usage, AgentUsage())
+        expected = previous.to_dict()
+        expected["decision"] = "finalize"
+        expected["next_information_needs"] = []
+        self.assertEqual(finalized.value.to_dict(), expected)
 
     def test_blind_predictor_parses_two_stage_schema(self) -> None:
         caller = ScriptedRoleCaller(
@@ -4120,7 +4128,14 @@ class RunControlTests(TestCase):
                     response_id="response-1",
                     model="fixture-model",
                     output_text='{"ok":true}',
-                    raw={"usage": {"input_tokens": 3, "output_tokens": 2}},
+                    raw={
+                        "usage": {
+                            "input_tokens": 3,
+                            "output_tokens": 2,
+                            "prompt_cache_hit_tokens": 2,
+                            "prompt_cache_miss_tokens": 1,
+                        }
+                    },
                 )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -4162,6 +4177,13 @@ class RunControlTests(TestCase):
                 recording_client.kwargs["response_format"],
                 {"type": "json_object"},
             )
+            cached = json.loads(
+                next((root / "cache" / "responses").glob("*.json")).read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(cached["usage"]["prompt_cache_hit_tokens"], 2)
+            self.assertEqual(cached["usage"]["prompt_cache_miss_tokens"], 1)
 
     def test_structured_client_records_optional_binary_token_scores(self) -> None:
         class RecordingClient:

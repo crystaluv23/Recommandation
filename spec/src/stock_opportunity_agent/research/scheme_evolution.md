@@ -269,17 +269,24 @@ Runtime engineering guards are fixed framework controls:
 
 Each Signal round additionally admits at most four selected Signals and at most
 two LLM Signals. Routing and adaptive research stop normally when the remaining
-budget would invade the fixed 36,000-token finalize/Predictor reserve. Every
+budget would invade the fixed 36,000-token terminal/Predictor reserve. Every
 external request reserves canonical UTF-8 request bytes plus its frozen output
 ceiling before any attempt or network action; post-call overflow is not a valid
-budget boundary. The terminal controller uses a dedicated output example with
-`decision=finalize` and empty `next_information_needs`.
+budget boundary. Routing serializes the frozen available Signal cards before
+case-dynamic needs/results so DeepSeek's automatic prefix cache can reuse the
+largest semantically identical prefix without moving untrusted data into the
+system role.
 
 They prevent infinite or unexpectedly expensive execution and are not Plan
 research logic. When a guard or an empty/repeated Signal selection prevents the
-controller from finishing normally, the runtime allows one bounded terminal
-reflection. The case is valid only if that reflection returns `finalize` and a
-source-backed prediction is durably saved.
+controller from finishing normally, no new evidence exists to justify another
+model rewrite. The runtime deterministically preserves every model-authored
+hypothesis, belief, evidence ref, contradiction, and resolved/open question,
+changes only `decision` to `finalize`, and clears `next_information_needs`.
+The local termination trigger remains separately durable. This prevents a
+redundant terminal role from erasing a hypothesis or falsely resolving an
+unanswered question. The case is valid only if this terminal state leads to a
+source-backed prediction that is durably saved.
 
 ## Dataset Ownership
 

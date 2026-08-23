@@ -82,6 +82,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanReflection,
     ProgressCallback,
     PredictionSelfReflection,
+    ResearchDecision,
     ResearchState,
     ResearchEvidenceRef,
     RoundMetaEntry,
@@ -3454,6 +3455,12 @@ class StructuredRoleClient:
                 tokens=input_tokens + output_tokens,
                 cost=actual_cost,
             )
+            provider_usage = _provider_usage_record(
+                usage_data,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                cost=actual_cost,
+            )
             try:
                 if binary_token_output:
                     if response.output_text not in (decision_tokens or ()):
@@ -3472,11 +3479,7 @@ class StructuredRoleClient:
                     "raw_output": response.output_text,
                     "error_type": type(exc).__name__,
                     "error": str(exc),
-                    "usage": {
-                        "input_tokens": input_tokens,
-                        "output_tokens": output_tokens,
-                        "cost": actual_cost,
-                    },
+                    "usage": provider_usage,
                 }
                 failure_path = (
                     self.workspace
@@ -3521,11 +3524,7 @@ class StructuredRoleClient:
                 "response_id": response.response_id,
                 "model": response.model,
                 "json_output": parsed,
-                "usage": {
-                    "input_tokens": input_tokens,
-                    "output_tokens": output_tokens,
-                    "cost": actual_cost,
-                },
+                "usage": provider_usage,
             }
             if decision_tokens is not None:
                 response_record["decision_token_scores"] = (
@@ -3548,6 +3547,12 @@ class StructuredRoleClient:
                 attempt_id=attempt_id,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
+                prompt_cache_hit_tokens=provider_usage.get(
+                    "prompt_cache_hit_tokens"
+                ),
+                prompt_cache_miss_tokens=provider_usage.get(
+                    "prompt_cache_miss_tokens"
+                ),
                 actual_cost=actual_cost,
             )
             return parsed, usage, scores
@@ -3709,20 +3714,6 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
     "add projection_id, exact_text, document_id, or other keys."
 )
-
-_FINAL_RESEARCH_STATE_OUTPUT = _output_contract(
-    "FinalResearchState",
-    {
-        "hypotheses": [],
-        "current_beliefs": [],
-        "supporting_evidence": [],
-        "contradictions": [],
-        "resolved_questions": [],
-        "open_questions": [],
-        "next_information_needs": [],
-        "decision": "finalize",
-    },
-) + ' decision must be "finalize" and next_information_needs must be empty.'
 
 _BLIND_PREDICTION_OUTPUT = _output_contract(
     "BlindPrediction",
@@ -4529,36 +4520,13 @@ class LLMResearchController:
         state: ResearchState,
         reason: Any,
     ) -> AgentStep[ResearchState]:
-        finalized, usage = _complete_parsed_role(
-            self.caller,
-            stage="research_controller_finalize",
-            system_prompt=(
-                "Research cannot make another useful Signal call. Apply H_reflect "
-                "to the evidence already collected and return a final ResearchState. "
-                "The decision must be finalize and next_information_needs must be empty."
-                + _UNTRUSTED_DATA_INSTRUCTION
-                + _FINAL_RESEARCH_STATE_OUTPUT
-            ),
-            payload={
-                "reflection_skill": plan.reflection_skill,
-                "research_state": state.to_dict(),
-                "termination_trigger": str(getattr(reason, "value", reason)),
-            },
-            parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(_normalize_research_state_output(value)),
-                phase="finalize",
-                previous_state=state,
-            ),
-            allow_outcomes=False,
-            max_output_tokens=2_000,
-            max_request_tokens=self.request_token_budget,
-        )
-        if finalized.decision.value != "finalize":
-            raise CandidateExecutionRejected(
-                "research_controller_finalize",
-                "terminal reflection returned continue",
-            )
-        return AgentStep(finalized, usage)
+        """Close a no-new-evidence terminal state without rewriting its analysis."""
+
+        del plan, reason
+        value = state.to_dict()
+        value["decision"] = ResearchDecision.FINALIZE.value
+        value["next_information_needs"] = []
+        return AgentStep(ResearchState.from_dict(value), AgentUsage())
 
 
 class LLMSignalRetrievalAgent:
@@ -4609,8 +4577,8 @@ class LLMSignalRetrievalAgent:
             return AgentStep((), AgentUsage())
 
         selection_payload: dict[str, Any] = {
+            "available_signal_cards": cards,
             "information_needs": list(information_needs),
-            "signal_cards": cards,
             "previous_signal_results": {
                 ref: dict(value)
                 for ref, value in (prior_signal_results or {}).items()
@@ -7823,6 +7791,27 @@ def _model_cost(
         input_tokens * registration.default_input_cost_per_million_tokens
         + output_tokens * registration.default_output_cost_per_million_tokens
     ) / 1_000_000
+
+
+def _provider_usage_record(
+    usage_data: Mapping[str, Any],
+    *,
+    input_tokens: int,
+    output_tokens: int,
+    cost: float,
+) -> dict[str, int | float]:
+    """Keep provider cache observability without weakening conservative cost gates."""
+
+    record: dict[str, int | float] = {
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "cost": cost,
+    }
+    for key in ("prompt_cache_hit_tokens", "prompt_cache_miss_tokens"):
+        value = usage_data.get(key)
+        if type(value) is int and value >= 0:
+            record[key] = value
+    return record
 
 
 def _usage_from_cache(data: Mapping[str, Any]) -> AgentUsage:

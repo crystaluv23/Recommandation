@@ -60,7 +60,7 @@ mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 The contract additionally freezes the fixed Predictor-semantics hash, the
 available Basic-Info source-type catalog hash, a four-Signal/two-LLM-Signal
-per-round ceiling, a 36,000-token finalize-plus-Predictor reserve, all
+per-round ceiling, a 36,000-token terminal-plus-Predictor reserve, all
 model-facing character ceilings, and role output-token ceilings. The frozen
 role ceilings are 2,000 tokens for controller, routing, Predictor, post-hoc,
 H1, and H2; 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for
@@ -127,14 +127,19 @@ Before cache lookup can fall through to attempt reservation or network I/O,
 runtime computes canonical UTF-8 bytes for the exact provider request and adds
 the frozen output-token ceiling as a conservative case-token reservation. A
 request whose reservation exceeds the remaining case budget is never sent.
-Adaptive research must preserve 36,000 tokens for terminal finalize plus the
-Predictor; insufficient Signal/routing budget ends adaptive research and enters
-finalize. Insufficient post-hoc budget preserves the immutable prediction and
+Adaptive research must preserve 36,000 tokens for deterministic terminal closure
+plus the Predictor; insufficient Signal/routing budget ends adaptive research and
+locally freezes the current state as final without another model call. The closure
+preserves hypotheses, beliefs, evidence provenance, contradictions, and question
+classifications exactly; only `decision` and `next_information_needs` change.
+Insufficient post-hoc budget preserves the immutable prediction and
 fitness and writes a deterministic `budget_skipped` reflection.
 Routing payloads never expose prior document fingerprints or content hashes. They
 carry only remaining compact cards and prior compact Signal conclusions needed for
 semantic complementarity; executed-ref removal and fingerprint no-op are local
-deterministic controls.
+deterministic controls. The canonical model payload names and emits those frozen
+available cards first, before case-dynamic needs/results, to increase provider
+prefix-cache reuse while retaining them as untrusted user data.
 
 The v6 contract additionally freezes `predictor_context_bytes=24000`. Predictor
 assembly removes repeated full Basic projections and full per-round Signal evidence:
@@ -381,8 +386,9 @@ across the visible projection set is deterministically assigned to that projecti
 otherwise correction feedback names the exact `supporting_evidence[index]`, supplied
 projection, and matching projection ids before the candidate fails closed.
 Evidence-transition identity is source provenance, not the mutable explanatory
-`claim`: reflect/finalize may restate a claim only while preserving the Basic or
-Signal provenance tuple. The reflect contract uses a dedicated Signal-ref example.
+`claim`: reflect may restate a claim only while preserving the Basic or Signal
+provenance tuple; deterministic terminal closure does not restate it. The reflect
+contract uses a dedicated Signal-ref example.
 A complete canonical Signal ref carrying redundant legacy citation fields is reduced
 locally to its five canonical keys before current-batch validation; local code never
 invents a missing Signal ref, evidence group, or index.

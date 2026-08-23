@@ -62,6 +62,12 @@ The HTTP transport sends the same canonical bytes. Request hashing, cost
 estimation, audit replay, and network transmission therefore share one byte
 identity rather than merely equivalent JSON objects.
 
+Provider usage persistence retains total input/output tokens plus optional
+provider-reported prompt-cache hit and miss tokens. The conservative request and
+campaign cost gates continue to reserve every input token at the frozen cache-miss
+ceiling; cache observations are optimization/audit evidence, not permission to
+weaken pre-send budgeting.
+
 ## Invariants
 
 - Provider secrets never enter prompts, workspaces, observations, or artifacts.
