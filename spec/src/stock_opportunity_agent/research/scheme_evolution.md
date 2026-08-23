@@ -100,9 +100,16 @@ already executed in the same case trajectory, then supplies every remaining
 compact Signal card, including its category, in one selection request. Full
 specs remain executor-only disclosure after selection. An empty `signal_refs`
 array is a valid `no_signal_match` result when no remaining card can answer the
-need and consumes no correction call. A malformed container, duplicate ref, or
-ref outside the supplied cards receives at most one correction call with the
-exact allowed set. If the correction remains invalid, the agent raises a
+need and consumes no correction call. Before accepting empty, runtime performs
+one conservative semantic contradiction check: if an information need repeats
+at least three consecutive normalized words from an available `signal_ref`
+(for example, “operating cash flow”), empty receives the same one correction
+with the directly matching refs. This check does not select a Signal, require a
+particular matching ref, or use fuzzy/single-word similarity; any non-empty batch
+that answers the need remains the model's decision. A malformed container,
+duplicate ref, ref outside the supplied cards, or still-empty contradicted result
+receives at most one correction call with the exact allowed set. If the correction
+remains invalid, the agent raises a
 usage-bearing candidate-execution rejection; it must never convert model/schema
 failure into `no_signal_match` or guess a category or Signal on the model's
 behalf.

@@ -1425,6 +1425,41 @@ class ConcreteRoleAdapterTests(TestCase):
                 ["signal_retrieval_cards"],
             )
 
+    def test_v16_signal_selector_corrects_explicit_term_matched_empty(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/v16_empty_signal_routing.json"
+            ).read_text()
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    fixture["invalid_output"],
+                    signal_selection(fixture["corrected_signal_ref"]),
+                ]
+            )
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                tuple(fixture["information_needs"]), registry.freeze(), {}
+            )
+
+            self.assertEqual(
+                tuple(item.signal_ref for item in selection.value),
+                (fixture["corrected_signal_ref"],),
+            )
+            self.assertEqual(selection.usage.llm_calls, 2)
+            self.assertIn(
+                fixture["corrected_signal_ref"],
+                caller.calls[1]["payload"]["validation_error"],
+            )
+            self.assertIn(
+                "Returning the same rejected content",
+                caller.calls[1]["system_prompt"],
+            )
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

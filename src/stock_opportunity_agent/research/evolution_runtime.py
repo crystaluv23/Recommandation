@@ -4763,6 +4763,37 @@ class LLMResearchController:
         return AgentStep(ResearchState.from_dict(value), AgentUsage())
 
 
+def _explicit_signal_need_matches(
+    information_needs: tuple[str, ...], signal_refs: Iterable[str]
+) -> tuple[str, ...]:
+    """Find only exact three-word Signal-ref phrases repeated by a need."""
+
+    normalized_needs = tuple(
+        " "
+        + re.sub(r"[^a-z0-9]+", " ", need.casefold()).strip()
+        + " "
+        for need in information_needs
+    )
+    matched: list[str] = []
+    for signal_ref in signal_refs:
+        tokens = tuple(
+            token
+            for token in re.sub(
+                r"[^a-z0-9]+", " ", signal_ref.split(":", 1)[0].casefold()
+            ).split()
+            if token
+        )
+        phrases = (
+            " " + " ".join(tokens[start:end]) + " "
+            for size in range(len(tokens), 2, -1)
+            for start in range(len(tokens) - size + 1)
+            for end in (start + size,)
+        )
+        if any(phrase in need for phrase in phrases for need in normalized_needs):
+            matched.append(signal_ref)
+    return tuple(matched)
+
+
 class LLMSignalRetrievalAgent:
     """One-step selector over unexecuted compact cards in one frozen Registry."""
 
@@ -4820,6 +4851,9 @@ class LLMSignalRetrievalAgent:
             "learned_profile_default": "no committed observations",
             "selection_caps": {"signals": 4, "llm_signals": 2},
         }
+        explicit_empty_matches = _explicit_signal_need_matches(
+            information_needs, allowed_refs
+        )
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
             if set(value) != {"selections"} or not isinstance(
@@ -4829,6 +4863,13 @@ class LLMSignalRetrievalAgent:
             raw_selections = value["selections"]
             if any(not isinstance(item, Mapping) for item in raw_selections):
                 raise ValidationError("every selection must be an object")
+            if not raw_selections and explicit_empty_matches:
+                raise ValidationError(
+                    "empty Signal selection contradicts an exact three-or-more-word "
+                    "information-need match in the available Signal refs: "
+                    f"{list(explicit_empty_matches)}. Return a non-empty smallest "
+                    "batch that answers the need; runtime will not choose a ref"
+                )
             required = {
                 "signal_ref",
                 "reason_code",
@@ -4900,7 +4941,10 @@ class LLMSignalRetrievalAgent:
                 "Signal cards that answers the information needs. Previously "
                 "executed Signals are omitted and must not be reconstructed. If "
                 "none of the supplied cards adds useful evidence, return "
-                "{\"selections\": []}. Otherwise return selections whose items "
+                "{\"selections\": []}. Empty is invalid when an information need "
+                "repeats three or more consecutive normalized words from an "
+                "available signal_ref; choose a non-empty answering batch in that "
+                "case. Otherwise return selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "
                 "confirm_hypothesis, test_contradiction, assess_applicability, "
                 "or combine_evidence); a <=240 character selection_reason; a "

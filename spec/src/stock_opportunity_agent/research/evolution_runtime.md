@@ -491,9 +491,13 @@ objects, numbers, and required fields cannot be replaced by truthy strings,
 character-wise iterable coercion, or implicit coverage/state defaults. Signal
 retrieval excludes refs already executed in the same case before one compact-card
 selection request. An empty ref array is a valid no-new-Signal result; a
+conservative pre-acceptance check rejects empty once when a need contains an exact
+three-or-more-word phrase from an available normalized Signal ref. It reports the
+matching refs for model correction but never chooses one locally or applies fuzzy
+matching. An unmatched empty result remains valid with no correction. A
 malformed, duplicated, or out-of-card ref container receives the documented one
-correction and then returns no match. Neither path terminates the process with a
-raw container exception.
+correction and then raises a usage-bearing candidate rejection if still invalid.
+Neither path terminates the process with a raw container exception.
 
 ## Supervision, Interrupt, and Resume
 
