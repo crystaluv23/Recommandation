@@ -1030,9 +1030,18 @@ class ConcreteRoleAdapterTests(TestCase):
                                 }
                             ]
                         },
-                        "H_init": "Form an initial source-backed hypothesis.",
-                        "H_reflect": "Reflect over all returned Signal evidence.",
-                        "H_analyse": "Make the final two-stage blind forecast.",
+                        "H_init": (
+                            "Form an initial source-backed hypothesis and list "
+                            "unresolved information needs."
+                        ),
+                        "H_reflect": (
+                            "Reflect over all returned Signal evidence, then continue "
+                            "for the next need or finalize."
+                        ),
+                        "H_analyse": (
+                            "Organize and weigh supporting and counter evidence while "
+                            "preserving uncertainty."
+                        ),
                     },
                     AgentUsage(llm_calls=1, tokens=20, cost=0.01),
                 )
@@ -1068,9 +1077,18 @@ class ConcreteRoleAdapterTests(TestCase):
                     }
                 ]
             },
-            "H_init": "Form an initial source-backed hypothesis.",
-            "H_reflect": "Reflect over all returned Signal evidence.",
-            "H_analyse": "Make the final two-stage blind forecast.",
+            "H_init": (
+                "Form an initial source-backed hypothesis and list unresolved "
+                "information needs."
+            ),
+            "H_reflect": (
+                "Reflect over all returned Signal evidence, then continue for the "
+                "next need or finalize."
+            ),
+            "H_analyse": (
+                "Organize and weigh supporting and counter evidence while preserving "
+                "uncertainty."
+            ),
         }
         corrected = json.loads(json.dumps(missing))
         corrected["B"]["requests"].append(
@@ -1104,6 +1122,62 @@ class ConcreteRoleAdapterTests(TestCase):
             ["information_plan_propose", "information_plan_propose_correction"],
         )
         self.assertIn("market_data", str(caller.calls[0]["system_prompt"]))
+
+    def test_v19_plan_proposer_corrects_placeholder_example_echo(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests/fixtures/evolution_runtime/"
+                "v19_proposer_placeholder_echo.json"
+            ).read_text(encoding="utf-8")
+        )
+        caller = ScriptedRoleCaller(
+            [fixture["invalid_output"], fixture["corrected_output"]]
+        )
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=3,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(
+            plan.initial_research_skill,
+            fixture["corrected_output"]["H_init"],
+        )
+        self.assertEqual(
+            caller.stages,
+            ["information_plan_propose", "information_plan_propose_correction"],
+        )
+        correction = caller.calls[1]
+        validation_error = correction["payload"]["validation_error"]
+        self.assertIn("H_init is a placeholder", validation_error)
+        self.assertIn("H_reflect is a placeholder", validation_error)
+        self.assertIn("H_analyse is a placeholder", validation_error)
+        self.assertIn(
+            "Returning the same rejected field is not a correction",
+            correction["system_prompt"],
+        )
+        self.assertNotIn(
+            "complete initialization instructions",
+            caller.calls[0]["system_prompt"],
+        )
+        example_skills = evolution_runtime_module._INFORMATION_PLAN_EXAMPLE_SKILLS
+        example_echo = InformationPlan(
+            plan_id="example_echo",
+            parent_ids=(),
+            basic_info_policy=default_information_plan().basic_info_policy,
+            initial_research_skill=example_skills["H_init"],
+            reflection_skill=example_skills["H_reflect"],
+            analysis_prompt=example_skills["H_analyse"],
+        )
+        with self.assertRaisesRegex(ValidationError, "output-contract example echo"):
+            evolution_runtime_module._validate_proposed_plan_skills(example_echo)
 
     def test_default_information_plan_has_compact_market_backbone(self) -> None:
         plan = default_information_plan()
@@ -2311,13 +2385,22 @@ class ConcreteRoleAdapterTests(TestCase):
                                 }
                             ]
                         },
-                        "initial_research_skill": "Form a falsifiable hypothesis.",
+                        "initial_research_skill": (
+                            "Form a falsifiable hypothesis and list unresolved "
+                            "information needs."
+                        ),
                     },
                     "H_reflect": {
-                        "reflection_skill": "Track support and contradiction."
+                        "reflection_skill": (
+                            "Track support and contradiction, then continue for the "
+                            "next need or finalize."
+                        )
                     },
                     "H_analyse": {
-                        "analysis_prompt": "Weigh supporting and counter evidence."
+                        "analysis_prompt": (
+                            "Weigh supporting and counter evidence while exposing "
+                            "uncertainty."
+                        )
                     },
                     "fixed_prior": "echoed input",
                     "meta_info": [],
@@ -2336,9 +2419,17 @@ class ConcreteRoleAdapterTests(TestCase):
                             }
                         ]
                     },
-                    "initial_research_skill": "Test a distinct hypothesis.",
-                    "reflection_skill": "Track disconfirming evidence first.",
-                    "analysis_prompt": "Weigh both sides.",
+                    "initial_research_skill": (
+                        "Test a distinct hypothesis and list unresolved information "
+                        "needs."
+                    ),
+                    "reflection_skill": (
+                        "Track disconfirming evidence first, then continue for the "
+                        "next need or finalize."
+                    ),
+                    "analysis_prompt": (
+                        "Weigh counter evidence while preserving uncertainty."
+                    ),
                 },
             ]
         )
@@ -2410,7 +2501,8 @@ class ConcreteRoleAdapterTests(TestCase):
         }
         repaired = json.loads(json.dumps(duplicate))
         repaired["H_reflect"] = (
-            "Test the strongest disconfirming evidence before resolving uncertainty."
+            "Test the strongest disconfirming evidence, then continue for the next "
+            "need or finalize."
         )
         caller = ScriptedRoleCaller([duplicate, repaired])
 
@@ -2558,9 +2650,18 @@ class ConcreteRoleAdapterTests(TestCase):
                             }
                         ]
                     },
-                    "initial_research_skill": "Test the preserved lesson.",
-                    "reflection_skill": "Inspect contradiction before finalizing.",
-                    "analysis_prompt": "Weigh supporting and counter evidence.",
+                    "initial_research_skill": (
+                        "Test the preserved hypothesis and list unresolved "
+                        "information needs."
+                    ),
+                    "reflection_skill": (
+                        "Inspect contradiction before finalizing or continuing for "
+                        "the next need."
+                    ),
+                    "analysis_prompt": (
+                        "Weigh supporting and counter evidence while preserving "
+                        "uncertainty."
+                    ),
                 }
             ]
         )

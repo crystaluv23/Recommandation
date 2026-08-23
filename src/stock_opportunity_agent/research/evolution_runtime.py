@@ -3964,6 +3964,23 @@ _SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
     'least one literal evidence item.'
 )
 
+_INFORMATION_PLAN_EXAMPLE_SKILLS = {
+    "H_init": (
+        "Form one evidence-backed hypothesis from Basic Info and list the smallest "
+        "unresolved information needs or questions."
+    ),
+    "H_reflect": (
+        "Update support, contradictions, and unresolved questions from the complete "
+        "Signal batch; continue only for the smallest useful next need, otherwise "
+        "finalize."
+    ),
+    "H_analyse": (
+        "Organize and weight source-backed support and counter-evidence, preserving "
+        "uncertainty for the fixed Predictor."
+    ),
+}
+
+
 _INFORMATION_PLAN_OUTPUT = _output_contract(
     "InformationPlanContent",
     {
@@ -3986,11 +4003,14 @@ _INFORMATION_PLAN_OUTPUT = _output_contract(
                 }
             ]
         },
-        "H_init": "complete initialization instructions",
-        "H_reflect": "complete reflection instructions",
-        "H_analyse": "complete final analysis instructions",
+        **_INFORMATION_PLAN_EXAMPLE_SKILLS,
     },
 ) + (
+    " The H_* values above are output-shape examples only: do not copy them. "
+    "Return your own executable role instructions. H_init must cover hypothesis "
+    "formation and unresolved information needs/questions; H_reflect must cover "
+    "evidence-based updating and continue/finalize or next-needs choice; H_analyse "
+    "must cover evidence organization/weighting and counter-evidence or uncertainty."
     " Do not return plan_id or parent_ids; runtime owns structural metadata. "
     "B must contain at least one compact market-backbone request whose "
     "source_types includes market_data, whose lookback_days is at most 60, "
@@ -4012,6 +4032,104 @@ def _validate_proposed_market_backbone(plan: InformationPlan) -> None:
         raise ValidationError(
             "information_plan_propose must retain one compact market_data "
             "request with lookback_days <= 60 and max_documents = 1"
+        )
+
+
+_GENERIC_PLAN_INSTRUCTION = re.compile(
+    r"^(?:(?:please\s+)?(?:write|provide|complete|insert|replace|supply)\s+)?"
+    r"(?:(?:a|the)\s+)?(?:(?:complete|detailed|specific|concrete|full)\s+)*"
+    r"(?:initialization|initial\s+research|reflection|final\s+analysis|analysis|"
+    r"h[_ ]?init|h[_ ]?reflect|h[_ ]?analy[sz]e)\s+"
+    r"(?:instruction|instructions|prompt)(?:\s+here)?[.!]?$",
+    re.IGNORECASE,
+)
+
+
+_PLAN_SKILL_REQUIREMENTS: dict[str, tuple[tuple[re.Pattern[str], str], ...]] = {
+    "H_init": (
+        (
+            re.compile(r"\b(?:hypothes\w*|thesis)\b", re.IGNORECASE),
+            "hypothesis formation",
+        ),
+        (
+            re.compile(
+                r"\b(?:information\s+needs?|questions?|unresolved|uncertaint\w*|"
+                r"unknowns?|gaps?)\b",
+                re.IGNORECASE,
+            ),
+            "unresolved information needs/questions",
+        ),
+    ),
+    "H_reflect": (
+        (
+            re.compile(
+                r"\b(?:evidence|support\w*|counter\w*|contradict\w*|falsif\w*)\b",
+                re.IGNORECASE,
+            ),
+            "evidence-based belief updating",
+        ),
+        (
+            re.compile(
+                r"\b(?:continu\w*|finali[sz]\w*|next\s+(?:smallest\s+)?"
+                r"(?:set\s+of\s+)?(?:information\s+)?needs?|"
+                r"unresolved\s+questions?)\b",
+                re.IGNORECASE,
+            ),
+            "continue/finalize or next-needs decision",
+        ),
+    ),
+    "H_analyse": (
+        (
+            re.compile(
+                r"\b(?:organi[sz]\w*|weigh\w*|synthesi[sz]\w*|prioriti[sz]\w*|"
+                r"rank\w*|assess\w*)\b",
+                re.IGNORECASE,
+            ),
+            "evidence organization/weighting",
+        ),
+        (
+            re.compile(
+                r"\b(?:counter\w*|contradict\w*|uncertaint\w*|limitations?|risks?)\b",
+                re.IGNORECASE,
+            ),
+            "counter-evidence or uncertainty handling",
+        ),
+    ),
+}
+
+
+def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
+    """Reject output-template echoes and incomplete evolvable role instructions."""
+
+    values = {
+        "H_init": plan.initial_research_skill,
+        "H_reflect": plan.reflection_skill,
+        "H_analyse": plan.analysis_prompt,
+    }
+    example_values = {
+        key: " ".join(value.casefold().split())
+        for key, value in _INFORMATION_PLAN_EXAMPLE_SKILLS.items()
+    }
+    issues: list[str] = []
+    for field, text_value in values.items():
+        compact = " ".join(text_value.split())
+        if (
+            compact.casefold() == example_values[field]
+            or _GENERIC_PLAN_INSTRUCTION.fullmatch(compact)
+        ):
+            issues.append(f"{field} is a placeholder or output-contract example echo")
+            continue
+        missing = [
+            description
+            for pattern, description in _PLAN_SKILL_REQUIREMENTS[field]
+            if pattern.search(compact) is None
+        ]
+        if missing:
+            issues.append(f"{field} must explicitly cover " + " and ".join(missing))
+    if issues:
+        raise ValidationError(
+            "information_plan_propose returned non-executable Plan skills: "
+            + "; ".join(issues)
         )
 
 
@@ -5299,7 +5417,12 @@ class LLMInformationPlanProposer:
             if attempt:
                 request_payload["invalid_output"] = dict(failed_value or {})
                 request_payload["validation_error"] = str(failure)
-                prompt += " Correct the invalid content once; return the exact contract only."
+                prompt += (
+                    " Correct the invalid content once; every field named by "
+                    "validation_error must change to valid executable content. "
+                    "Returning the same rejected field is not a correction. Return "
+                    "the exact contract only."
+                )
             value, _usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage=stage,
@@ -5341,6 +5464,7 @@ class LLMInformationPlanProposer:
                         + ", ".join(unsupported)
                     )
                 _validate_fixed_plan_semantics(plan)
+                _validate_proposed_plan_skills(plan)
                 if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
                     raise ValidationError(
                         "candidate Plan exactly duplicates a selected parent; apply "

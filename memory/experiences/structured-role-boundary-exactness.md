@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 
@@ -21,6 +21,13 @@ text/length/hash, rebuild and compare it before attempt reservation, and send
 the same canonical bytes through transport. Semantically equivalent JSON is not
 sufficient for exact approval, cache identity, or request replay.
 
+An output-contract example is also executable prompt content. A placeholder in
+that example can be copied verbatim and pass a merely non-empty schema check;
+even a logically valid example can collapse exploration if accepted as candidate
+content. Examples therefore need valid role semantics, an explicit do-not-copy
+boundary, and a local template/example-echo plus role-substance validator before
+the domain object is accepted.
+
 ## Context
 
 The Signal selector once converted two invalid outputs into an empty selection,
@@ -38,6 +45,8 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 4. Serialize model payloads once with canonical Unicode-preserving JSON.
 5. Make provider `prepare_request` the single source for preview and execution.
 6. Compare exact secret-free provider body bytes before reserving an attempt.
+7. Make structured examples safe if copied, but reject exact example/template
+   echoes and validate the field's intended domain actions before acceptance.
 
 ## Limits
 

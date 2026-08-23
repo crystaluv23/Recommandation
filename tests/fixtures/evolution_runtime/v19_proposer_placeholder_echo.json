@@ -1,0 +1,50 @@
+{
+  "invalid_output": {
+    "B": {
+      "requests": [
+        {
+          "description": "Recent company-specific news that may change expectations",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "query": "regulatory customer financing product",
+          "request_id": "recent_company_news",
+          "source_types": ["news"]
+        },
+        {
+          "description": "Recent point-in-time price and volume for early market confirmation",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "recent_market_backbone",
+          "source_types": ["market_data"]
+        }
+      ]
+    },
+    "H_analyse": "complete final analysis instructions",
+    "H_init": "complete initialization instructions",
+    "H_reflect": "complete reflection instructions"
+  },
+  "corrected_output": {
+    "B": {
+      "requests": [
+        {
+          "description": "Recent company-specific news that may change expectations",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "query": "regulatory customer financing product",
+          "request_id": "recent_company_news",
+          "source_types": ["news"]
+        },
+        {
+          "description": "Recent point-in-time price and volume for early market confirmation",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "recent_market_backbone",
+          "source_types": ["market_data"]
+        }
+      ]
+    },
+    "H_analyse": "Organize and weight source-backed evidence while preserving counter-evidence and uncertainty.",
+    "H_init": "Form an evidence-backed hypothesis and identify the smallest unresolved information needs.",
+    "H_reflect": "Update support and contradictions from the full evidence batch, then continue for the next need or finalize."
+  }
+}

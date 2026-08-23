@@ -395,6 +395,16 @@ outer candidate-attempt loop remains a separate bounded sampling layer; it must 
 retry an exact duplicate without explaining the required change. An unrepaired
 candidate is rejected as a bounded event without committing a partial round.
 
+The proposer output contract uses complete, logically valid `H_*` examples rather
+than placeholder strings. Those examples remain examples, not candidate content:
+runtime rejects exact example echoes, legacy phrases such as `complete ...
+instructions`, and generic template wording. It also validates role substance:
+`H_init` covers hypotheses and unresolved needs/questions; `H_reflect` covers
+evidence-based updating and the next-needs/continue/finalize decision; and
+`H_analyse` covers evidence organization/weighting and counter-evidence or
+uncertainty. This semantic completeness gate runs before parent/focus comparison,
+uses the existing single correction, and names every field that must change.
+
 Each candidate slot may make at most three independently hashed proposal
 attempts. Every structured runtime role receives at most one correction with
 the failed output and validation message. Unrepaired initialization/prediction

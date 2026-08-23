@@ -86,6 +86,15 @@ S = (B, H_init, H_reflect, H_analyse)
   probabilities, classify a Signal as the final answer, change the fixed
   horizon/label/four-way judgment, or itself generate a prediction.
 
+Automatically proposed `H_*` values must be executable role instructions, not
+schema placeholders or descriptions that merely say to provide/complete an
+instruction. `H_init` must name hypothesis formation plus unresolved information
+needs/questions; `H_reflect` must name evidence-based belief updating plus the
+continue/finalize or next-need decision; and `H_analyse` must name evidence
+organization/weighting plus counter-evidence or uncertainty handling. Runtime
+rejects a copied output-contract example, placeholder-like wording, or a field
+missing its role semantics through the same single bounded proposal correction.
+
 The retrieval path is therefore created at runtime. Candidate Plans may change
 only these four fields plus their own id and parent references.
 
@@ -665,9 +674,12 @@ are ignored. The call explicitly requires a real four-field delta from every
 selected parent and gives each bounded proposal attempt a deterministic change
 focus. Runtime verifies that the named field group differs from every selected
 parent; changing another field cannot satisfy that attempt's focus. Malformed
-content, an exact parent copy, or an ignored focus receives one correction with
-the invalid output and actionable validation reason before the outer attempt can
-reject it. Fixed-semantics scanning treats explicit negative guardrails as compliant
+content, a placeholder/example echo, an incomplete `H_*` role instruction, an
+exact parent copy, or an ignored focus receives one correction with the invalid
+output and actionable validation reason before the outer attempt can reject it.
+The correction must change each field named by the validation error; returning
+the same rejected field is not a correction. Fixed-semantics scanning treats
+explicit negative guardrails as compliant
 and identifies the actual affirmative prohibited phrase when rejecting a redefinition.
 The proposer uses frozen temperature `1.0` sampling; anonymous blind judging
 stays at temperature `0.0`. The slot prevents exact-cache collapse and still
