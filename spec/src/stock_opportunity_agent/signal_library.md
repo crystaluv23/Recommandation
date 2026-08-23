@@ -76,7 +76,9 @@ Progressive disclosure is an information boundary, not a requirement for one
 provider call per level. The current small Registry supplies all eligible
 compact cards in one Signal-selection call after deterministically omitting refs
 already executed in the same case trajectory. Category remains card metadata;
-the executor alone loads the selected full specs. No eligible card or a valid
+the executor alone loads the selected full specs. The selection role may combine
+those cards with a bounded label-free ResearchState applicability view, but never
+with Basic/Signal literal source payloads or a full Signal spec. No eligible card or a valid
 empty selection terminates retrieval without an additional model call.
 
 `freeze()` returns one immutable definition snapshot/hash plus a separately

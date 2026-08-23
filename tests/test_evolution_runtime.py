@@ -1413,10 +1413,27 @@ class ConcreteRoleAdapterTests(TestCase):
                     signal_selection("revenue_growth_yoy:v1"),
                 ]
             )
+            routing_state = ResearchState(
+                hypotheses=("A mature operator may benefit from stronger pricing.",),
+                current_beliefs=("The issuer operates established mature mines.",),
+                supporting_evidence=(
+                    ResearchEvidenceRef(
+                        kind="basic_info",
+                        claim="The issuer operates established mature mines.",
+                        projection_id="projection_mature",
+                        exact_text="Literal mature-operation source text.",
+                    ),
+                ),
+                contradictions=("No pre-commercial product is currently evidenced.",),
+                resolved_questions=("The operating stage is established.",),
+                open_questions=("Can production grow further?",),
+                next_information_needs=("revenue growth",),
+            )
             selection = LLMSignalRetrievalAgent(selector_caller).select(
                 ("revenue growth",),
                 registry.freeze(),
                 {"cash_reserves:v1": ("opaque-document-hash",)},
+                research_state=routing_state,
             )
             self.assertEqual(
                 tuple(item.signal_ref for item in selection.value),
@@ -1438,6 +1455,28 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertNotIn(
                 "previous_signal_document_fingerprints",
                 payload,
+            )
+            self.assertEqual(
+                payload["research_context"],
+                {
+                    "hypotheses": list(routing_state.hypotheses),
+                    "current_beliefs": list(routing_state.current_beliefs),
+                    "contradictions": list(routing_state.contradictions),
+                    "resolved_questions": list(routing_state.resolved_questions),
+                    "open_questions": list(routing_state.open_questions),
+                    "evidence_claims": [
+                        "The issuer operates established mature mines."
+                    ],
+                },
+            )
+            self.assertNotIn("projection_mature", json.dumps(payload["research_context"]))
+            self.assertNotIn(
+                "Literal mature-operation source text.",
+                json.dumps(payload["research_context"]),
+            )
+            self.assertIn(
+                "use it only to test Signal applicability",
+                selector_caller.calls[0]["system_prompt"],
             )
             self.assertTrue(
                 json.dumps(payload, sort_keys=True, separators=(",", ":")).startswith(
@@ -3633,6 +3672,73 @@ class ConcreteRoleAdapterTests(TestCase):
             fixture["corrected_claim"],
         )
 
+    def test_v29_initialize_binds_quantitative_belief_to_exact_evidence_claim(self) -> None:
+        cash_text = (
+            "The company delivered record free cash flow in the second quarter "
+            "of almost $650 million."
+        )
+        market_text = '{"as_of_date":"2025-09-29","adjusted_close":24.37}'
+        cash_claim = "The company delivered almost $650 million of free cash flow in Q2."
+        unsupported_belief = (
+            "The company delivered almost $650 million of free cash flow in Q2 2025 "
+            "and expects net cash by Q3 2025."
+        )
+        invalid = {
+            "hypotheses": ["Cash generation may support the repricing thesis."],
+            "current_beliefs": [unsupported_belief],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": cash_claim,
+                    "projection_id": "projection_cash",
+                    "exact_text": cash_text,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": "The adjusted close was $24.37 on 2025-09-29.",
+                    "projection_id": "projection_market",
+                    "exact_text": market_text,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": ["Will cash generation persist?"],
+            "next_information_needs": ["Check the balance-sheet outlook."],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = [cash_claim]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_cash",
+                                "exact_text": cash_text,
+                            },
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": market_text,
+                            },
+                        ]
+                    }
+                ]
+            },
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("quantitative ResearchState assertions", error)
+        self.assertIn("numbers from unrelated claims do not count", error)
+        self.assertEqual(initialized.value.current_beliefs, (cash_claim,))
+        self.assertIn(
+            "must copy one accepted supporting_evidence claim byte-for-byte",
+            caller.calls[0]["system_prompt"],
+        )
+
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         filing = RawInfoDocument.create(
@@ -4343,6 +4449,23 @@ class ConcreteRoleAdapterTests(TestCase):
             normalized_end=100 + len(projection_text),
             normalized_source_length=len(document.content),
         )
+        overlap_start = lineage.normalized_end - 80
+        overlap_text = document.content[overlap_start:]
+        overlap_lineage = evolution_runtime_module._SignalProjectionLineage(
+            document=document,
+            projection_text=overlap_text,
+            raw_offset_runs=(
+                (
+                    0,
+                    len(overlap_text),
+                    overlap_start,
+                    len(document.content),
+                ),
+            ),
+            normalized_start=overlap_start,
+            normalized_end=len(document.content),
+            normalized_source_length=len(document.content),
+        )
         result = {
             "evidence": {
                 "supporting": [
@@ -4356,11 +4479,20 @@ class ConcreteRoleAdapterTests(TestCase):
         }
 
         with self.assertRaisesRegex(
-            ValidationError, "touches an internal projection edge"
-        ):
+            ValidationError, "touches internal projection edge"
+        ) as context:
             evolution_runtime_module._map_projected_signal_evidence(
-                result, {"projection_truncated": lineage}
+                result,
+                {
+                    "projection_truncated": lineage,
+                    "projection_overlap": overlap_lineage,
+                },
             )
+        error = str(context.exception)
+        self.assertIn("supporting evidence[0]", error)
+        self.assertIn("projection_truncated", error)
+        self.assertIn("edge=['end']", error)
+        self.assertIn("projection_overlap", error)
 
     def test_v13_signal_evidence_relocates_unique_quote_from_wrong_overlap(self) -> None:
         fixture = json.loads(

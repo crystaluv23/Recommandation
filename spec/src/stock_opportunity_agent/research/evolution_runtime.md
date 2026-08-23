@@ -451,6 +451,11 @@ standard `k/m/mm/b/bn/t/tn` suffix, so `$1.6053 billion` is equivalent to raw
 endpoints may use two refs with the same claim; a lone beginning-balance literal cannot
 support a beginning-to-ending decrease. Missing quantities receive one actionable
 correction rather than being accepted merely because some literal exists.
+Every numeric-bearing item in `current_beliefs` or `contradictions` must in turn copy
+one accepted evidence `claim` byte-for-byte. The role can attach several literal refs
+to that same claim for a real multi-span fact, split a composite assertion, or remove
+unsupported numeric detail. Runtime never treats a matching number from an unrelated
+claim as support. Hypotheses and question fields remain outside this assertion gate.
 Evidence-transition identity is source provenance, not the explanatory `claim`.
 For Basic refs, reflect may restate a claim while preserving the provenance tuple
 because the exact literal remains present in the ref and can be revalidated. For a
@@ -549,6 +554,11 @@ If a returned Signal quote is absent from its supplied projection id but occurs 
 once across all visible projections, runtime deterministically uses that unique
 projection for raw-span mapping, matching the Basic-ref rule. Zero or multiple visible
 matches remain semantic ambiguity and fail closed; runtime never edits the quote.
+For a quote touching an internal projection edge, validation feedback identifies the
+supporting/counter index, rejected projection id, start/end edge, and overlapping
+projection ids covering that source boundary. This makes the sole correction
+actionable while leaving the complete projections unchanged and retaining model
+responsibility for selecting one complete literal or returning unavailable.
 The shared one/two-Signal role uses one dedicated batch output example and no
 single-`SignalResult` "return exactly" example. Its outer row copies the supplied
 versioned `signal_ref`; its inner `result.signal_id` copies the matching
@@ -578,6 +588,14 @@ malformed, duplicated, or out-of-card ref container receives the documented one
 correction and then raises a usage-bearing candidate rejection if still invalid.
 Neither path terminates the process with a raw container exception.
 
+The selection request includes a bounded `research_context` built from the current
+ResearchState's hypotheses, beliefs, contradictions, resolved/open questions, and
+accepted evidence claims. It excludes evidence literals and provenance and carries no
+revealed outcome. The selector uses this context only for applicability and
+complementarity; the information needs remain the retrieval objective. This prevents
+the selector from inventing a company stage that the controller state already
+contradicts without duplicating the 32,000-character Basic projection.
+
 Routing tags remain non-semantic hints. Runtime normalizes strings, deduplicates
 them, drops values outside the frozen tag vocabulary, and retains at most four in
 model order. A model copying a visible card category such as `catalysts`, `risks`,
@@ -602,6 +620,18 @@ cannot change ResearchState under the coverage-only invariant. Execution therefo
 skips `H_reflect` for that batch, retains the exact prior state, and routes again over
 unexecuted cards within the existing guards. A mixed or available batch still calls
 `H_reflect`; the shortcut never fabricates finalization or suppresses batch usage.
+
+For a selected batch mixing deterministic and LLM Signals, deterministic execution
+runs first and the soft subgroup runs second; successful subgroup results are merged
+back into selector order before the ordinary whole-batch reflection. If the soft
+request cannot pass its exact pre-send reservation, the completed deterministic
+subgroup remains a durable partial round and can still receive reflection when it has
+usable evidence. The trajectory then records `budget_exhausted` and stays ineligible
+for fitness even if that bounded partial reflection returns `decision=finalize`.
+An initial preflight failure performs no attempt/network action. If the initial soft
+attempt completed but its correction preflight fails, runtime still counts that paid
+usage while accepting no invalid soft result. In both cases the selection remains
+auditable in the exact routing response and request-ready event.
 
 ## Supervision, Interrupt, and Resume
 

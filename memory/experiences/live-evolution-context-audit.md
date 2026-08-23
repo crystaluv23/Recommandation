@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 7
+visit_times: 8
 
 ## Trigger
 
@@ -351,3 +351,27 @@ before part of its stable context. Use one conditional system prompt and one tra
 null-or-object validation feedback field. Keep every Basic projection, skill, need,
 card, profile, prior result, rejected output, and validator error; cache optimization is
 request layout, not context deletion.
+
+## Cross-field and mixed-budget addendum (2026-08-24)
+
+Validating quantities only inside evidence claims does not ground the other structured
+state fields. A corrected H_init can narrow an invalid evidence claim while retaining
+an unsupported year, quarter, or forecast in `current_beliefs`; a number appearing in
+an unrelated market claim must not launder it. Bind every quantitative belief or
+contradiction to one byte-identical validated evidence claim, and let multi-span facts
+share that exact claim across refs.
+
+Applicability routing also needs accepted case context, not just the open question. A
+selector that sees only “growth projects” can invent an early-commercialization stage
+for a mature miner and spend a soft Signal call that the full source later rejects.
+Expose a bounded label-free ResearchState view with beliefs and evidence claims, never
+the full Basic projection or source literals.
+
+Finally, an exact pre-send budget stop late in a mixed Signal batch must not erase
+deterministic work already completed locally. Execute the deterministic subgroup first,
+then the soft subgroup, merge successful results into selector order, and preserve the
+partial deterministic round if the soft request cannot be reserved. The case remains
+`budget_exhausted` and fitness-ineligible; any paid initial soft usage before a blocked
+correction still counts. When a soft citation fails at an internal projection edge,
+name the evidence index, touched edge, and overlapping projection ids so the sole
+correction can choose a complete visible clause without local evidence synthesis.

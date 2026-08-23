@@ -63,6 +63,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ResearchEvidenceRef,
     ResearchState,
     RoundMetaEntry,
+    RuntimeBudgetExceeded,
     RuntimeLimits,
     RuntimePlanEvaluator,
     RuntimeStopReason,
@@ -220,6 +221,7 @@ class OneSignalSelector:
         prior_signal_fingerprints=None,
         prior_signal_results=None,
         eligible_signal_refs=None,
+        research_state=None,
     ):
         self.needs = tuple(information_needs)
         return AgentStep(
@@ -1103,6 +1105,7 @@ class InformationPlanRuntimeTests(TestCase):
                 prior_signal_fingerprints=None,
                 prior_signal_results=None,
                 eligible_signal_refs=None,
+                research_state=None,
             ):
                 eligible = tuple(eligible_signal_refs or ())
                 self.eligible_calls.append(eligible)
@@ -1157,6 +1160,134 @@ class InformationPlanRuntimeTests(TestCase):
         )
         self.assertNotIn("revenue_growth_yoy:v1", selector.eligible_calls[1])
         self.assertEqual(trajectory.usage.model.llm_calls, 5)
+
+    def test_runtime_preserves_deterministic_results_when_soft_preflight_stops(self) -> None:
+        class BudgetBlockedRunner:
+            def __init__(self) -> None:
+                self.calls = 0
+                self.request_token_budget = None
+
+            def set_request_token_budget(self, value):
+                self.request_token_budget = value
+
+            def execute_many(self, inputs, as_of):
+                self.calls += 1
+                raise RuntimeBudgetExceeded(
+                    "fixture soft correction cannot be reserved",
+                    usage=AgentUsage(llm_calls=1, tokens=7, cost=0.003),
+                )
+
+        class MixedSelector:
+            def select(
+                self,
+                information_needs,
+                signal_registry,
+                prior_signal_fingerprints=None,
+                prior_signal_results=None,
+                eligible_signal_refs=None,
+                research_state=None,
+            ):
+                return AgentStep(
+                    (
+                        SignalSelectionDecision(
+                            signal_ref="negative_word_count:v1",
+                            reason_code="answer_need",
+                            selection_reason="Check current negative news terms.",
+                            applicability_hypothesis="Current news is available.",
+                            expected_role="confirmation",
+                        ),
+                        SignalSelectionDecision(
+                            signal_ref="customer_concentration:v1",
+                            reason_code="answer_need",
+                            selection_reason="Check customer dependence.",
+                            applicability_hypothesis="A filing may disclose customers.",
+                            expected_role="primary",
+                        ),
+                    ),
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+        class PartialController:
+            def __init__(self) -> None:
+                self.reflected_refs: list[tuple[str, ...]] = []
+
+            def initialize(self, plan, basic_info):
+                return AgentStep(
+                    ResearchState(next_information_needs=("Check current risks.",)),
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+            def reflect(self, plan, state, batch):
+                self.reflected_refs.append(tuple(item.ref for item in batch.results))
+                return AgentStep(
+                    ResearchState(decision=ResearchDecision.FINALIZE),
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            runner = BudgetBlockedRunner()
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="current-news",
+                        company_id="winner_1",
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="The company reported an ordinary operating update.",
+                    ),
+                    RawInfoDocument.create(
+                        document_id="current-filing",
+                        company_id="winner_1",
+                        source_type="filing",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="One customer represented 72 percent of revenue.",
+                    ),
+                )
+            )
+            controller = PartialController()
+            snapshot = registry.freeze()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=snapshot,
+                signal_executor=SignalExecutor(
+                    snapshot,
+                    store,
+                    llm_runner=runner,
+                ),
+                controller=controller,
+                signal_agent=MixedSelector(),
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(max_llm_calls=10),
+            )
+
+        self.assertEqual(runner.calls, 1)
+        self.assertEqual(
+            controller.reflected_refs,
+            [("negative_word_count:v1",)],
+        )
+        self.assertEqual(len(trajectory.signal_rounds), 1)
+        self.assertEqual(
+            trajectory.signal_rounds[0].selected_signals,
+            ("negative_word_count:v1",),
+        )
+        self.assertEqual(trajectory.usage.signal_calls, 1)
+        self.assertEqual(trajectory.usage.model.tokens, 82)
+        self.assertEqual(trajectory.usage.model.llm_calls, 6)
+        self.assertEqual(trajectory.final_state.decision, ResearchDecision.FINALIZE)
+        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.BUDGET_EXHAUSTED)
+        self.assertEqual(
+            trajectory.termination_trigger,
+            RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
 
     def test_predictor_projection_omits_repeated_full_basic_and_signal_evidence(self) -> None:
         fixture = json.loads(
@@ -1427,6 +1558,7 @@ class InformationPlanRuntimeTests(TestCase):
                 prior_signal_fingerprints=None,
                 prior_signal_results=None,
                 eligible_signal_refs=None,
+                research_state=None,
             ):
                 eligible = tuple(eligible_signal_refs or ())
                 self.eligible_calls.append(eligible)

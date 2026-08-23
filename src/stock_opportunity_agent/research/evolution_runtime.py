@@ -3689,7 +3689,10 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "Use the projection_id containing that literal; omit evidence that cannot be "
     "quoted exactly. Every numeric quantity in one claim must occur in the union of "
     "exact_text literals attached to that same claim; use multiple refs for a "
-    "multi-span claim or narrow the claim. For structured market JSON, copy one "
+    "multi-span claim or narrow the claim. Every numeric-bearing current_beliefs or "
+    "contradictions item must copy one accepted supporting_evidence claim "
+    "byte-for-byte; split a composite assertion or remove unsupported numeric detail. "
+    "For structured market JSON, copy one "
     "complete visible row including every field between its braces; never construct "
     "a shorter JSON object from selected fields."
 )
@@ -3719,7 +3722,9 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     " Retain prior Basic Info refs using their basic_info shape. New signal refs must "
     "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
     "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
-    "claims remain subject to the same numeric-quantity support rule."
+    "claims remain subject to the same numeric-quantity support rule. Every "
+    "numeric-bearing current_beliefs or contradictions item must copy one accepted "
+    "supporting_evidence claim byte-for-byte."
 )
 
 _BLIND_PREDICTION_OUTPUT = _output_contract(
@@ -4776,6 +4781,31 @@ def _validate_signal_claim_quantities(
             )
 
 
+def _validate_assertive_state_claim_links(
+    state: ResearchState,
+    refs: tuple[ResearchEvidenceRef, ...],
+) -> None:
+    """Bind every quantitative state assertion to one exact evidence claim."""
+
+    accepted_claims = {item.claim for item in refs}
+    errors: list[str] = []
+    for field_name in ("current_beliefs", "contradictions"):
+        for index, item in enumerate(getattr(state, field_name)):
+            if not _normalized_claim_quantity_groups(item):
+                continue
+            if item in accepted_claims:
+                continue
+            errors.append(f"{field_name}[{index}]={item!r}")
+    if errors:
+        raise ValidationError(
+            "quantitative ResearchState assertions must copy one accepted "
+            "supporting_evidence claim byte-for-byte: "
+            f"{errors}. Attach every literal needed by that exact claim, split a "
+            "composite assertion into separately supported claims, or remove the "
+            "unsupported numeric detail; numbers from unrelated claims do not count"
+        )
+
+
 def _validate_research_state_refs(
     state: ResearchState,
     *,
@@ -4908,12 +4938,16 @@ def _validate_research_state_refs(
         ):
             claim_literals.append((index, result.interpretation))
     validation_errors: list[str] = []
-    for validator, value in (
-        (_validate_basic_claim_quantities, tuple(normalized_refs)),
-        (_validate_signal_claim_quantities, signal_claim_literals),
-    ):
+    validators = (
+        lambda: _validate_basic_claim_quantities(tuple(normalized_refs)),
+        lambda: _validate_signal_claim_quantities(signal_claim_literals),
+        lambda: _validate_assertive_state_claim_links(
+            state, tuple(normalized_refs)
+        ),
+    )
+    for validator in validators:
         try:
-            validator(value)
+            validator()
         except ValidationError as exc:
             validation_errors.append(str(exc))
     adopted_new_signal_evidence = any(
@@ -5278,6 +5312,37 @@ def _explicit_signal_need_matches(
     return tuple(matched)
 
 
+def _signal_routing_research_context(
+    state: ResearchState | None,
+) -> dict[str, list[str]]:
+    """Project ResearchState into a label-free applicability-only routing view."""
+
+    if state is None:
+        return {
+            "hypotheses": [],
+            "current_beliefs": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "evidence_claims": [],
+        }
+    evidence_claims = tuple(
+        dict.fromkeys(
+            item.claim
+            for item in state.supporting_evidence
+            if isinstance(item, ResearchEvidenceRef)
+        )
+    )
+    return {
+        "hypotheses": list(state.hypotheses),
+        "current_beliefs": list(state.current_beliefs),
+        "contradictions": list(state.contradictions),
+        "resolved_questions": list(state.resolved_questions),
+        "open_questions": list(state.open_questions),
+        "evidence_claims": list(evidence_claims),
+    }
+
+
 class LLMSignalRetrievalAgent:
     """One-step selector over unexecuted compact cards in one frozen Registry."""
 
@@ -5295,6 +5360,7 @@ class LLMSignalRetrievalAgent:
         prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
         prior_signal_results: Mapping[str, Mapping[str, Any]] | None = None,
         eligible_signal_refs: tuple[str, ...] | None = None,
+        research_state: ResearchState | None = None,
     ) -> AgentStep[tuple[SignalSelectionDecision, ...]]:
         registry_refs = tuple(spec.ref for spec in signal_registry.specs)
         allowed_refs = (
@@ -5336,6 +5402,7 @@ class LLMSignalRetrievalAgent:
         selection_payload: dict[str, Any] = {
             "available_signal_cards": cards,
             "information_needs": list(information_needs),
+            "research_context": _signal_routing_research_context(research_state),
             "previous_signal_results": {
                 ref: signal_result_model_view(value)
                 for ref, value in (prior_signal_results or {}).items()
@@ -5448,6 +5515,9 @@ class LLMSignalRetrievalAgent:
                 "Choose the smallest unique batch from the supplied unexecuted "
                 "Signal cards that answers the information needs. Previously "
                 "executed Signals are omitted and must not be reconstructed. If "
+                "research_context is present, use it only to test Signal "
+                "applicability and complementarity; it is accepted controller state, "
+                "not a new source, and contains no literal evidence. If "
                 "none of the supplied cards adds useful evidence, return "
                 "{\"selections\": []}. Empty is invalid when an information need "
                 "repeats three or more consecutive normalized words from an "
@@ -6752,7 +6822,7 @@ def _map_projected_signal_evidence(
         if not isinstance(entries, list):
             continue
         mapped_entries: list[dict[str, Any]] = []
-        for entry in entries:
+        for index, entry in enumerate(entries):
             if not isinstance(entry, Mapping):
                 mapped_entries.append(dict(entry) if isinstance(entry, Mapping) else {})
                 continue
@@ -6764,12 +6834,13 @@ def _map_projected_signal_evidence(
             if not isinstance(projection_id, str) or not isinstance(exact_text, str):
                 raise ValidationError("Signal evidence requires projection_id and exact_text")
             projection = lineage.get(projection_id)
+            resolved_projection_id = projection_id
             if not exact_text:
                 raise ValidationError("Signal projection evidence must map uniquely")
             if projection is None or projection.projection_text.count(exact_text) != 1:
                 matches = [
-                    candidate
-                    for candidate in lineage.values()
+                    (candidate_id, candidate)
+                    for candidate_id, candidate in lineage.items()
                     if candidate.projection_text.count(exact_text) == 1
                 ]
                 occurrence_count = sum(
@@ -6778,20 +6849,50 @@ def _map_projected_signal_evidence(
                 )
                 if len(matches) != 1 or occurrence_count != 1:
                     raise ValidationError("Signal projection evidence must map uniquely")
-                projection = matches[0]
+                resolved_projection_id, projection = matches[0]
             projection_start = projection.projection_text.index(exact_text)
             projection_end = projection_start + len(exact_text)
+            touched_edges: list[str] = []
             if (
                 projection_start == 0
                 and projection.normalized_start > 0
-            ) or (
+            ):
+                touched_edges.append("start")
+            if (
                 projection_end == len(projection.projection_text)
                 and projection.normalized_end < projection.normalized_source_length
             ):
+                touched_edges.append("end")
+            if touched_edges:
+                overlapping_projection_ids = sorted(
+                    candidate_id
+                    for candidate_id, candidate in lineage.items()
+                    if candidate_id != resolved_projection_id
+                    and candidate.document.document_id
+                    == projection.document.document_id
+                    and candidate.document.content_hash
+                    == projection.document.content_hash
+                    and (
+                        (
+                            "start" in touched_edges
+                            and candidate.normalized_start
+                            < projection.normalized_start
+                            < candidate.normalized_end
+                        )
+                        or (
+                            "end" in touched_edges
+                            and candidate.normalized_start
+                            < projection.normalized_end
+                            < candidate.normalized_end
+                        )
+                    )
+                )
                 raise ValidationError(
-                    "Signal projection evidence touches an internal projection edge; "
-                    "cite one complete literal from an overlapping projection or "
-                    "return unavailable"
+                    f"Signal {group} evidence[{index}] on projection "
+                    f"{resolved_projection_id!r} touches internal projection "
+                    f"edge={touched_edges}; overlapping_projection_ids="
+                    f"{overlapping_projection_ids}. Copy one complete literal from "
+                    "an overlapping projection or return unavailable"
                 )
             overlaps = [
                 run
@@ -6875,39 +6976,42 @@ class StructuredLLMSignalRunner:
             payload = dict(base_payload)
             if validation_feedback:
                 payload["validation_feedback"] = validation_feedback
-            value, step_usage = _complete_json_with_invalid_value(
-                self.caller,
-                stage=(
-                    "llm_signal_batch_execute"
-                    if attempt == 0
-                    else "llm_signal_batch_execute_correction"
-                ),
-                system_prompt=(
-                    "Apply each versioned extraction skill independently to the one "
-                    "shared bounded point-in-time source_projection. Each evidence "
-                    "item inside a nested result must use projection_id and "
-                    "exact_text copied from one visible projection; runtime maps it to "
-                    "the original raw span. Do not cite text that starts or ends at an "
-                    "internal projection edge; use the overlapping projection containing "
-                    "the complete clause. Never infer omitted source text is absent. "
-                    "Return unavailable with no evidence when visible text is insufficient. "
-                    "If optional validation_feedback is present, this is the only "
-                    "correction attempt: do not repeat failed_output and apply each "
-                    "required_action exactly. When no literal citation supports the "
-                    "corrected conclusion, set state.value and status.coverage to "
-                    "unavailable and keep both evidence arrays empty."
-                    + _UNTRUSTED_DATA_INSTRUCTION
-                    + _SIGNAL_BATCH_RESULT_OUTPUT
-                ),
-                payload=payload,
-                allow_outcomes=False,
-                max_output_tokens=4_000,
-                max_request_tokens=(
-                    self.request_token_budget - usage.tokens
-                    if self.request_token_budget is not None
-                    else None
-                ),
-            )
+            try:
+                value, step_usage = _complete_json_with_invalid_value(
+                    self.caller,
+                    stage=(
+                        "llm_signal_batch_execute"
+                        if attempt == 0
+                        else "llm_signal_batch_execute_correction"
+                    ),
+                    system_prompt=(
+                        "Apply each versioned extraction skill independently to the one "
+                        "shared bounded point-in-time source_projection. Each evidence "
+                        "item inside a nested result must use projection_id and "
+                        "exact_text copied from one visible projection; runtime maps it to "
+                        "the original raw span. Do not cite text that starts or ends at an "
+                        "internal projection edge; use the overlapping projection containing "
+                        "the complete clause. Never infer omitted source text is absent. "
+                        "Return unavailable with no evidence when visible text is insufficient. "
+                        "If optional validation_feedback is present, this is the only "
+                        "correction attempt: do not repeat failed_output and apply each "
+                        "required_action exactly. When no literal citation supports the "
+                        "corrected conclusion, set state.value and status.coverage to "
+                        "unavailable and keep both evidence arrays empty."
+                        + _UNTRUSTED_DATA_INSTRUCTION
+                        + _SIGNAL_BATCH_RESULT_OUTPUT
+                    ),
+                    payload=payload,
+                    allow_outcomes=False,
+                    max_output_tokens=4_000,
+                    max_request_tokens=(
+                        self.request_token_budget - usage.tokens
+                        if self.request_token_budget is not None
+                        else None
+                    ),
+                )
+            except RuntimeBudgetExceeded as exc:
+                raise RuntimeBudgetExceeded(str(exc), usage=usage + exc.usage) from exc
             usage = usage + step_usage
             rows = value.get("results")
             row_by_ref: dict[str, Mapping[str, Any]] = {}

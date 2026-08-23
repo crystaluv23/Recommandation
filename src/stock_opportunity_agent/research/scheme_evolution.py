@@ -838,8 +838,9 @@ class SignalRetrievalAgent(Protocol):
         prior_signal_fingerprints: Mapping[str, tuple[str, ...]],
         prior_signal_results: Mapping[str, Mapping[str, Any]],
         eligible_signal_refs: tuple[str, ...] | None = None,
+        research_state: ResearchState | None = None,
     ) -> AgentStep[tuple[SignalSelectionDecision, ...]]:
-        """Return a reasoned unique batch from supplied unexecuted Signal refs."""
+        """Return a reasoned unique batch using needs and bounded applicability state."""
 
 
 @dataclass(frozen=True)
@@ -1569,7 +1570,15 @@ class CaseReflectionEvidence:
 
 
 class RuntimeBudgetExceeded(ValidationError):
-    """Raised when a completed model step crosses a hard token or cost limit."""
+    """Raised when request preflight or completed usage reaches a hard limit."""
+
+    def __init__(
+        self,
+        message: str,
+        usage: AgentUsage = AgentUsage(),
+    ) -> None:
+        self.usage = usage
+        super().__init__(message)
 
 
 class EvolutionControlFlow(RuntimeError):
@@ -1727,6 +1736,7 @@ def execute_information_plan(
                 signal_fingerprints,
                 prior_signal_results,
                 eligible_signal_refs=eligible_signal_refs,
+                research_state=state,
             )
         except RuntimeBudgetExceeded:
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
@@ -1770,16 +1780,58 @@ def execute_information_plan(
             signal_executor.llm_runner,
             limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
         )
-        try:
-            batch = signal_executor.execute_batch(
-                selected,
-                company_id=company_id,
-                as_of=prediction_time,
-                identity=company_basic_source,
-                prior_fingerprints=signal_fingerprints,
+        deterministic_refs = tuple(
+            ref
+            for ref in selected
+            if specs_by_ref[ref].execution_type
+            is SignalExecutionType.DETERMINISTIC
+        )
+        llm_refs = tuple(
+            ref
+            for ref in selected
+            if specs_by_ref[ref].execution_type is SignalExecutionType.LLM
+        )
+        completed_batches: list[SignalBatchResult] = []
+        if deterministic_refs:
+            completed_batches.append(
+                signal_executor.execute_batch(
+                    deterministic_refs,
+                    company_id=company_id,
+                    as_of=prediction_time,
+                    identity=company_basic_source,
+                    prior_fingerprints=signal_fingerprints,
+                )
             )
-        except RuntimeBudgetExceeded:
-            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+        soft_budget_exhausted = False
+        if llm_refs:
+            completed_fingerprints = {
+                ref: fingerprint
+                for completed in completed_batches
+                for ref, fingerprint in completed.document_fingerprints.items()
+            }
+            try:
+                completed_batches.append(
+                    signal_executor.execute_batch(
+                        llm_refs,
+                        company_id=company_id,
+                        as_of=prediction_time,
+                        identity=company_basic_source,
+                        prior_fingerprints={
+                            **signal_fingerprints,
+                            **completed_fingerprints,
+                        },
+                    )
+                )
+            except RuntimeBudgetExceeded as exc:
+                model_usage = _consume_usage(model_usage, exc.usage, limits)
+                soft_budget_exhausted = True
+        batch = _merge_runtime_signal_batches(selected, completed_batches)
+        if not batch.results:
+            termination_trigger = (
+                RuntimeStopReason.BUDGET_EXHAUSTED
+                if soft_budget_exhausted
+                else RuntimeStopReason.NO_SIGNAL_MATCH
+            )
             break
         signal_fingerprints.update(batch.document_fingerprints)
         prior_signal_results.update(
@@ -1797,13 +1849,14 @@ def execute_information_plan(
                 batch=batch,
             )
         )
-        if not batch.results:
-            termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
-            break
         if all(
             result.value is SignalValue.UNAVAILABLE
             for result in batch.results
         ):
+            if soft_budget_exhausted:
+                termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+                stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
+                break
             continue
         _set_request_token_budget(
             controller,
@@ -1816,6 +1869,10 @@ def execute_information_plan(
             break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
         state = reflection_step.value
+        if soft_budget_exhausted:
+            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
+            break
         if state.decision is ResearchDecision.FINALIZE:
             stop_reason = RuntimeStopReason.FINALIZED
 
@@ -1895,6 +1952,43 @@ def _set_request_token_budget(component: Any, remaining: int) -> None:
     setter = getattr(component, "set_request_token_budget", None)
     if callable(setter):
         setter(max(0, int(remaining)))
+
+
+def _merge_runtime_signal_batches(
+    selected: tuple[str, ...],
+    batches: Iterable[SignalBatchResult],
+) -> SignalBatchResult:
+    """Merge successful deterministic/LLM subgroups back into selector order."""
+
+    rows = tuple(batches)
+    results_by_ref: dict[str, SignalResult] = {}
+    usage = AgentUsage()
+    resolutions: list[RawInfoResolution] = []
+    fingerprints: dict[str, tuple[str, ...]] = {}
+    skipped: list[str] = []
+    for batch in rows:
+        usage = usage + batch.usage
+        resolutions.extend(batch.resolutions)
+        fingerprints.update(batch.document_fingerprints)
+        skipped.extend(batch.skipped_unchanged_refs)
+        for result in batch.results:
+            if result.ref in results_by_ref:
+                raise ValidationError("runtime Signal subgroups returned duplicate refs")
+            results_by_ref[result.ref] = result
+    unexpected = set(results_by_ref) - set(selected)
+    if unexpected:
+        raise ValidationError(
+            f"runtime Signal subgroups returned unselected refs: {sorted(unexpected)}"
+        )
+    results = tuple(results_by_ref[ref] for ref in selected if ref in results_by_ref)
+    return SignalBatchResult(
+        results=results,
+        signal_calls=len(results),
+        usage=usage,
+        resolutions=tuple(resolutions),
+        document_fingerprints=fingerprints,
+        skipped_unchanged_refs=tuple(dict.fromkeys(skipped)),
+    )
 
 
 def _case_identity_alias_inventory(cases: Iterable[EvolutionCase]) -> tuple[str, ...]:

@@ -76,7 +76,11 @@ S = (B, H_init, H_reflect, H_analyse)
   must be present in the union of exact Basic literals attached to that same claim;
   explicit thousand/million/billion/trillion words and standard adjacent suffixes
   are compared by exact decimal scaling without tolerance or rounding. Multi-span
-  facts use multiple refs instead of an unsupported composite claim.
+  facts use multiple refs instead of an unsupported composite claim. A quantitative
+  assertion in `current_beliefs` or `contradictions` must also occur byte-for-byte as
+  the `claim` on its supporting evidence refs. This explicit link prevents a year or
+  amount from an unrelated claim from accidentally grounding the assertion; the role
+  may instead split the assertion or remove unsupported numeric detail.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`.
@@ -106,7 +110,13 @@ Research Controller answers: “What information is needed next?” It owns
 Signal Retrieval Agent answers: “Which existing Signals can answer that need?”
 For the current compact Registry, the runtime deterministically removes refs
 already executed in the same case trajectory, then supplies every remaining
-compact Signal card, including its category, in one selection request. Full
+compact Signal card, including its category, in one selection request. The selector
+also receives a bounded label-free applicability view of the current ResearchState:
+hypotheses, beliefs, contradictions, resolved/open questions, and accepted evidence
+claims, but no Basic/Signal literal evidence or provenance payload. Information needs
+alone are not enough to distinguish, for example, a mature operator from a genuinely
+pre-commercial product; the applicability view exists only to decide whether a card
+fits the current case and must not be treated as a new source. Full
 specs remain executor-only disclosure after selection. An empty `signal_refs`
 array is a valid `no_signal_match` result when no remaining card can answer the
 need and consumes no correction call. Before accepting empty, runtime performs
@@ -217,6 +227,11 @@ match across the current projections, local code canonicalizes a mismatched
 projection id without another model call. Ellipses, paraphrase, reordered JSON,
 non-contiguous joins, ambiguity, or no match receive one index-specific correction
 and then fail closed.
+When an LLM Signal quote touches an internal projection edge, correction feedback
+also names its evidence group/index, the rejected projection id, which edge was
+touched, and every overlapping projection id for the same source boundary. The full
+unchanged projections remain visible; the model must copy a complete clause from one
+of them or return unavailable. Runtime does not extend the quote or choose evidence.
 The correction instruction makes the required state transition explicit: each
 provenance item named by the validation error must be replaced by a valid visible
 reference or removed. Returning the same rejected provenance is not a correction.
@@ -296,6 +311,13 @@ For a malformed retained Basic ref, correction must copy `projection_id` and
 remove the ref. Runtime does not reconstruct a missing literal or silently discard
 unexpected semantic fields.
 Legacy string evidence remains readable only in v1-v5 artifacts.
+
+Every quantitative `current_beliefs` or `contradictions` item must be identical to
+at least one accepted `supporting_evidence.claim`. This rule is applied after the
+claim-to-literal or claim-to-Signal quantity checks, so an exact text match cannot
+launder unsupported numbers. Hypotheses and unresolved/resolved question text are
+not subject to this assertion rule because they may state counterfactual horizons or
+name a reporting period without asserting that it occurred.
 
 Blind Predictor consumes only the assembled label-free context. The same
 Predictor adapter later receives its saved original context, saved prediction,
@@ -394,6 +416,19 @@ budget boundary. Routing serializes the frozen available Signal cards before
 case-dynamic needs/results so DeepSeek's automatic prefix cache can reuse the
 largest semantically identical prefix without moving untrusted data into the
 system role.
+
+Inside a mixed deterministic/LLM selection, runtime executes the deterministic
+subgroup first and the at-most-two soft Signals second, then merges successful
+results back into the selector's order for one whole-batch reflection. This does
+not change the selector caps or create another routing call. If the soft request
+fails its conservative pre-send token reservation, already completed deterministic
+results are persisted as the executed portion of the round and may update state;
+the case still terminates as `budget_exhausted`, while the unexecuted soft selection
+remains visible in the exact routing request/response and request-ready audit event.
+Local results must not disappear merely because a later network request could not be
+reserved, and the partial round can never be relabeled `finalized` for fitness. If an
+initial soft attempt completed but its sole correction cannot be reserved, its paid
+usage remains counted even though no not-yet-valid soft result enters the partial batch.
 
 They prevent infinite or unexpectedly expensive execution and are not Plan
 research logic. When a guard or an empty/repeated Signal selection prevents the
