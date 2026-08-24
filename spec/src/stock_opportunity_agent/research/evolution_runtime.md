@@ -237,6 +237,11 @@ semantics are identical to the other structured roles. The controller—not the
 model—resolves case refs, performs positive/control feasibility, queries Raw
 Info, stages candidates, executes fixtures, and selects issuer-disjoint
 effectiveness cases.
+H1 card projection omits `learned_profile` only when its exact stable version has
+both zero `selection_events` and zero `unique_observations`; otherwise the full
+anonymous profile remains visible. This removes repeated empty matrices without
+discarding learned routing or effectiveness evidence, and never changes the
+Registry/frozen-snapshot artifact.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming

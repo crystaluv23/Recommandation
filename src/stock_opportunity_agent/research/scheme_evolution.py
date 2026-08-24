@@ -8631,7 +8631,7 @@ class SignalEvolutionEngine:
                 }
             )
         cards = [
-            card.to_dict()
+            self._mining_signal_card_view(card.to_dict())
             for category in self.registry.list_categories()
             for card in self.registry.list_signal_cards(category)
         ]
@@ -8661,6 +8661,21 @@ class SignalEvolutionEngine:
             ),
             "locked_test_available": False,
         }
+
+    @staticmethod
+    def _mining_signal_card_view(card: Mapping[str, Any]) -> dict[str, Any]:
+        """Omit an all-zero learned profile from the H1-only card projection."""
+
+        result = dict(card)
+        profile = result.get("learned_profile")
+        if not isinstance(profile, Mapping):
+            return result
+        if (
+            int(profile.get("selection_events", 0)) == 0
+            and int(profile.get("unique_observations", 0)) == 0
+        ):
+            result.pop("learned_profile", None)
+        return result
 
     def _mining_case_universe(
         self, *, limit: int

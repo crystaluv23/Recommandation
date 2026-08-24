@@ -987,7 +987,11 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    provisional/refined work, and stable Signal cards, propose at most three
    falsifiable hypotheses. Each hypothesis declares its applicability,
    expected winner/control difference, required source types, bounded query,
-   and falsifiers; it does not name companies.
+   and falsifiers; it does not name companies. A stable card whose exact version
+   has zero selection events and zero unique observations omits its otherwise
+   repetitive all-zero `learned_profile` from the H1 model view. Once either
+   count is nonzero, the complete anonymous learned profile is retained. The
+   Registry artifact and frozen snapshot remain complete in both cases.
 2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business

@@ -4670,11 +4670,39 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("locked_company", serialized)
             self.assertFalse(mining_workspace["locked_test_available"])
             self.assertIn("capability_backlog", mining_workspace)
+            self.assertTrue(
+                all(
+                    "learned_profile" not in card
+                    for card in mining_workspace["stable_signal_cards"]
+                )
+            )
+            self.assertTrue(
+                all(
+                    "learned_profile" in card.to_dict()
+                    for category in registry.list_categories()
+                    for card in registry.list_signal_cards(category)
+                )
+            )
             self.assertEqual(update_model.requests, [])
             self.assertEqual(
                 validation.agent_audits["update_pipeline"]["disposition"],
                 "no_actionable_target",
             )
+
+    def test_h1_card_projection_retains_nonempty_learned_profile(self) -> None:
+        card = {
+            "signal_ref": "revenue_growth_yoy:v1",
+            "learned_profile": {
+                "selection_events": 1,
+                "unique_observations": 0,
+                "directional": {"correct": 0, "wrong": 0},
+            },
+        }
+
+        view = SignalEvolutionEngine._mining_signal_card_view(card)
+
+        self.assertEqual(view, card)
+        self.assertIn("learned_profile", view)
 
 
 class DualLoopTests(TestCase):
