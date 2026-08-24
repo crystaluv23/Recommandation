@@ -955,6 +955,32 @@ Update pipeline. Neither is a free-form tool loop: each model call has one
 bounded semantic job, and the controller owns sampling, label disclosure, Raw
 Info retrieval, candidate staging, testing, and validation.
 
+Cold-start recovery may instead run one explicitly frozen `slow_bootstrap`
+single cycle with a zero Fast-round target. Freeze accepts one or more compatible
+rejected workspaces and creates an immutable bootstrap manifest. A source is
+compatible only when its approved dataset, fixed Predictor semantics,
+evaluation contract, sealed Locked-Test posture, and stable input Registry
+match the new workspace. The source rejection must be exactly the next round
+above its authoritative committed pointer. Runtime never treats that rejection
+as committed history.
+
+The manifest extracts only `next_information_needs` from trajectories whose
+pre-label terminal state is still `continue` and whose exact stop reason is
+`no_signal_match`. It masks the source case's complete identity-alias inventory,
+normalizes and aggregates duplicate needs, records counts rather than case ids,
+and binds every source contract and rejected-artifact hash. It excludes
+predictions, labels, post-hoc reflections, metrics, hypotheses, beliefs, literal
+evidence, and Plan definitions. The resulting `signal_need_items` are merged
+with ordinary data capability gaps and are supplied literally to H1 with their
+diagnostic-only meaning. A bootstrap with no such need is invalid rather than a
+generic label-aware mining shortcut.
+
+Bootstrap then follows the ordinary H1/H2/H3, Update, fixture/contract checks,
+paired effectiveness gate, durable validation, atomic Registry transition, and
+cycle-result recovery. It neither advances `state.json:last_completed_round`
+nor weakens any candidate gate. Its output can affect Plan research only when a
+fresh later Fast workspace freezes that promoted Registry snapshot.
+
 Mining alternates between two tracks. Hypothesis-driven cycles execute:
 
 1. `H1 hypothesis portfolio`: from current meta-info, capability backlog,
@@ -1119,9 +1145,12 @@ trajectories, including DataGaps and stop reasons. The derived capability
 backlog is rebuilt from those durable trajectories while preserving the source
 types available from the current resolver, so the Slow loop receives the real
 Fast-loop capability gaps rather than an empty or accidentally reopened report.
-The complete derived backlog is part of each Slow agent workspace input; merely
-writing `capability_backlog.json` without exposing it to the agents does not
-satisfy this contract.
+For ordinary cycles it contains data capability gaps. For an explicitly frozen
+bootstrap it additionally merges the manifest's identity-masked
+`signal_need_items`; local refresh cannot erase them. The complete derived
+backlog is part of each Slow agent workspace input; merely writing
+`capability_backlog.json` without exposing it to the agents does not satisfy
+this contract.
 
 ## Persistence and Completion
 
@@ -1157,6 +1186,8 @@ One Fast/Slow cycle has a second atomic `cycle_state.json` marker. It records th
 cycle id, starting committed round, fixed round target, current Fast/Slow phase,
 input Signal Registry version/hash, current committed output Registry
 version/hash, and last completed cycle under the frozen run-contract hash.
+It also records `cycle_mode`. Normal cycles require a positive Fast target;
+`slow_bootstrap` requires exactly zero and a contract-bound bootstrap manifest.
 After `Ctrl+C`, the supervisor derives completed Fast work from
 `last_completed_round`, runs only the remaining rounds, and reuses an exact
 staged Slow validation/transition/result before advancing the completed-cycle

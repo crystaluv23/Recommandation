@@ -968,6 +968,34 @@ class EvidenceResolverTests(TestCase):
         )
         self.assertEqual(resolved["items"][0]["status"], "resolved")
 
+        with_signal_need = aggregate_capability_gaps(
+            (),
+            signal_need_items=(
+                {
+                    "need": "  latest analyst estimate revisions  ",
+                    "occurrences": 2,
+                    "source_count": 2,
+                },
+            ),
+        )
+        self.assertEqual(
+            with_signal_need["schema_version"], "capability-gap-report-v2"
+        )
+        self.assertEqual(
+            with_signal_need["signal_need_items"],
+            [
+                {
+                    "kind": "unmatched_signal_need",
+                    "need": "latest analyst estimate revisions",
+                    "stop_reason": "no_signal_match",
+                    "occurrences": 2,
+                    "source_count": 2,
+                    "status": "open",
+                }
+            ],
+        )
+        self.assertEqual(with_signal_need["open_count"], 1)
+
         trajectory["basic_info_bundle"]["requests"][0]["data_gap"].update(
             {
                 "reason": "external_not_authorized",

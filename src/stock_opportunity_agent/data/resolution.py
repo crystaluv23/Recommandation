@@ -220,8 +220,9 @@ def aggregate_capability_gaps(
     trajectories: Iterable[Mapping[str, Any]],
     *,
     available_source_types: Iterable[str] = (),
+    signal_need_items: Iterable[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
-    """Build a deterministic backlog from persisted execution trajectories."""
+    """Build a deterministic data/Signal backlog from durable diagnostics."""
 
     available = {item.casefold() for item in available_source_types}
     grouped: dict[tuple[str, str, str, str], dict[str, Any]] = {}
@@ -281,10 +282,38 @@ def aggregate_capability_gaps(
                 "status": "resolved" if resolved else "open",
             }
         )
+    needs: list[dict[str, Any]] = []
+    seen_needs: set[str] = set()
+    for raw_item in sorted(
+        (dict(item) for item in signal_need_items),
+        key=lambda item: str(item.get("need", "")).casefold(),
+    ):
+        need = " ".join(str(raw_item.get("need", "")).split())
+        normalized = need.casefold()
+        if not need or normalized in seen_needs:
+            continue
+        seen_needs.add(normalized)
+        occurrences = int(raw_item.get("occurrences", 0))
+        source_count = int(raw_item.get("source_count", 0))
+        if occurrences < 1 or source_count < 1:
+            raise ValidationError("Signal-need backlog counts must be positive")
+        needs.append(
+            {
+                "kind": "unmatched_signal_need",
+                "need": need,
+                "stop_reason": "no_signal_match",
+                "occurrences": occurrences,
+                "source_count": source_count,
+                "status": "open",
+            }
+        )
     return {
-        "schema_version": "capability-gap-report-v1",
+        "schema_version": "capability-gap-report-v2",
         "items": items,
-        "open_count": sum(item["status"] == "open" for item in items),
+        "signal_need_items": needs,
+        "open_count": (
+            sum(item["status"] == "open" for item in items) + len(needs)
+        ),
         "resolved_count": sum(item["status"] == "resolved" for item in items),
     }
 

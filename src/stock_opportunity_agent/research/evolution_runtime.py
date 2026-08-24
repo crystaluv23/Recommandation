@@ -34,6 +34,7 @@ from stock_opportunity_agent.data.raw_info import (
     RawInfoStore,
 )
 from stock_opportunity_agent.data.resolution import (
+    aggregate_capability_gaps,
     DataAcquisitionBudget,
     DataAcquisitionPolicy,
     EvidenceResolver,
@@ -1592,9 +1593,11 @@ class EvolutionRunContract:
     predictor_semantics_hash: str = FIXED_PREDICTOR_SEMANTICS_HASH
     source_type_catalog_hash: str = REGISTERED_SOURCE_TYPE_CATALOG_HASH
     seed_pool_manifest_hash: str | None = None
+    cycle_mode: str = "fast_then_slow"
+    slow_bootstrap_manifest_hash: str | None = None
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
-    schema_version: str = "evolution-run-contract-v6"
+    schema_version: str = "evolution-run-contract-v7"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -1613,6 +1616,12 @@ class EvolutionRunContract:
         ):
             raise ValidationError(
                 "seed_pool_manifest_hash must be a SHA-256 hex digest"
+            )
+        if self.slow_bootstrap_manifest_hash is not None and not re.fullmatch(
+            r"[0-9a-f]{64}", self.slow_bootstrap_manifest_hash
+        ):
+            raise ValidationError(
+                "slow_bootstrap_manifest_hash must be a SHA-256 hex digest"
             )
         if self.initial_signal_registry_version < 1:
             raise ValidationError("initial signal registry version must be positive")
@@ -1642,11 +1651,13 @@ class EvolutionRunContract:
             "evolution-run-contract-v4",
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
         }:
             raise ValidationError("unsupported evolution run contract schema")
         if self.schema_version in {
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
         }:
             schema_label = self.schema_version.rsplit("v", 1)[-1]
             required_roles = {"judge", "proposer"}
@@ -1717,7 +1728,6 @@ class EvolutionRunContract:
                 return float(value)
 
             for name in (
-                "plan_rounds_per_signal_cycle",
                 "candidates_per_round",
                 "top_k",
                 "max_signal_rounds",
@@ -1727,6 +1737,25 @@ class EvolutionRunContract:
                 "max_agent_steps",
             ):
                 require_integer(name, minimum=1)
+            plan_rounds = require_integer(
+                "plan_rounds_per_signal_cycle", minimum=0
+            )
+            if self.schema_version == "evolution-run-contract-v7":
+                if self.cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
+                    raise ValidationError("v7 contract cycle_mode is invalid")
+                if self.cycle_mode == "fast_then_slow":
+                    if plan_rounds < 1 or self.slow_bootstrap_manifest_hash is not None:
+                        raise ValidationError(
+                            "v7 fast_then_slow requires positive Fast rounds and no bootstrap manifest"
+                        )
+                elif plan_rounds != 0 or self.slow_bootstrap_manifest_hash is None:
+                    raise ValidationError(
+                        "v7 slow_bootstrap requires zero Fast rounds and a bootstrap manifest"
+                    )
+            elif plan_rounds < 1:
+                raise ValidationError(
+                    f"{schema_label} contract limit plan_rounds_per_signal_cycle must be at least 1"
+                )
             require_integer("random_k", minimum=0)
             require_integer("parent_selection_seed")
             similarity = require_number("similarity_threshold")
@@ -1769,13 +1798,16 @@ class EvolutionRunContract:
                 raise ValidationError(
                     f"{schema_label} contract evaluation limits must be complete and canonical"
                 )
-            if self.schema_version == "evolution-run-contract-v6":
+            if self.schema_version in {
+                "evolution-run-contract-v6",
+                "evolution-run-contract-v7",
+            }:
                 for name, expected in (
                     ("predictor_semantics_hash", FIXED_PREDICTOR_SEMANTICS_HASH),
                     ("source_type_catalog_hash", REGISTERED_SOURCE_TYPE_CATALOG_HASH),
                 ):
                     if getattr(self, name) != expected:
-                        raise ValidationError(f"v6 contract {name} changed")
+                        raise ValidationError(f"{schema_label} contract {name} changed")
                 required_v6_limits = {
                     "max_signals_per_round": 4,
                     "max_llm_signals_per_round": 2,
@@ -1790,10 +1822,12 @@ class EvolutionRunContract:
                 for name, expected in required_v6_limits.items():
                     if self.limits.get(name) != expected:
                         raise ValidationError(
-                            f"v6 contract limit {name} must equal the frozen value"
+                            f"{schema_label} contract limit {name} must equal the frozen value"
                         )
                 if int(self.limits["max_tokens"]) <= 36_000:
-                    raise ValidationError("v6 max_tokens must exceed finalization reserve")
+                    raise ValidationError(
+                        f"{schema_label} max_tokens must exceed finalization reserve"
+                    )
 
     def to_dict(self) -> dict[str, Any]:
         value = {
@@ -1815,6 +1849,7 @@ class EvolutionRunContract:
             "evolution-run-contract-v4",
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
         }:
             value["initial_signal_registry_version"] = (
                 self.initial_signal_registry_version
@@ -1830,11 +1865,21 @@ class EvolutionRunContract:
             "evolution-run-contract-v4",
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
         }:
             value["raw_info_oracle_id"] = self.raw_info_oracle_id
-        if self.schema_version == "evolution-run-contract-v6":
+        if self.schema_version in {
+            "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
+        }:
             value["predictor_semantics_hash"] = self.predictor_semantics_hash
             value["source_type_catalog_hash"] = self.source_type_catalog_hash
+        if self.schema_version == "evolution-run-contract-v7":
+            value["cycle_mode"] = self.cycle_mode
+            if self.slow_bootstrap_manifest_hash is not None:
+                value["slow_bootstrap_manifest_hash"] = (
+                    self.slow_bootstrap_manifest_hash
+                )
         if self.seed_pool_manifest_hash is not None:
             value["seed_pool_manifest_hash"] = self.seed_pool_manifest_hash
         return value
@@ -1845,9 +1890,9 @@ class EvolutionRunContract:
 
     @property
     def executable(self) -> bool:
-        """Only v6 contracts may advance the current dual-loop state."""
+        """Only v7 contracts may advance the current dual-loop state."""
 
-        return self.schema_version == "evolution-run-contract-v6"
+        return self.schema_version == "evolution-run-contract-v7"
 
     def freeze(self, path: str | Path) -> None:
         _write_or_verify_json(
@@ -1896,6 +1941,12 @@ class EvolutionRunContract:
             seed_pool_manifest_hash=(
                 str(value["seed_pool_manifest_hash"])
                 if value.get("seed_pool_manifest_hash") is not None
+                else None
+            ),
+            cycle_mode=str(value.get("cycle_mode", "fast_then_slow")),
+            slow_bootstrap_manifest_hash=(
+                str(value["slow_bootstrap_manifest_hash"])
+                if value.get("slow_bootstrap_manifest_hash") is not None
                 else None
             ),
             locked_test_accessed=bool(value.get("locked_test_accessed", False)),
@@ -2374,7 +2425,8 @@ def _committed_seed_candidates_from_workspace(
 ) -> tuple[HistoricalPlanSeed, ...]:
     contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
     if (
-        contract.schema_version != "evolution-run-contract-v6"
+        contract.schema_version
+        not in {"evolution-run-contract-v6", "evolution-run-contract-v7"}
         or contract.locked_test_accessed
         or contract.predictor_semantics_hash != FIXED_PREDICTOR_SEMANTICS_HASH
         or contract.dataset_manifest_hash != dataset_manifest_hash
@@ -2659,6 +2711,214 @@ def load_approved_development_dataset(
         locked_test_hash=str(locked_metadata["sha256"]),
         approved_manifest_hash=_sha256_file(path),
     )
+
+
+def build_slow_bootstrap_manifest(
+    *,
+    workspace: str | Path,
+    source_workspaces: Iterable[str | Path],
+    dataset: ApprovedDevelopmentDataset,
+    signal_snapshot: FrozenSignalRegistry,
+    evaluation_contract: Mapping[str, Any],
+) -> str:
+    """Freeze identity-masked no-match needs from compatible rejected rounds."""
+
+    workspace_root = Path(workspace)
+    manifest_path = workspace_root / "slow_bootstrap" / "manifest.json"
+    sources = tuple(Path(item) for item in source_workspaces)
+    if not sources:
+        raise ValidationError("slow_bootstrap requires at least one source workspace")
+    cases = {
+        case.case_id: case
+        for case in (
+            *dataset.discovery,
+            *dataset.anchor,
+            *dataset.evolution_validation,
+        )
+    }
+    grouped: dict[str, dict[str, Any]] = {}
+    source_rows: list[dict[str, Any]] = []
+    for source_root in sources:
+        contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
+        if (
+            contract.schema_version not in {
+                "evolution-run-contract-v6",
+                "evolution-run-contract-v7",
+            }
+            or contract.cycle_mode != "fast_then_slow"
+            or contract.locked_test_accessed
+            or contract.dataset_manifest_hash != dataset.approved_manifest_hash
+            or contract.predictor_semantics_hash != FIXED_PREDICTOR_SEMANTICS_HASH
+            or dict(contract.limits.get("evaluation", {}))
+            != dict(evaluation_contract)
+        ):
+            raise ValidationError("slow-bootstrap source workspace is incompatible")
+        source_snapshot = SignalRegistry(
+            source_root / "signals",
+            candidate_root=source_root / "signals_candidates",
+        ).freeze()
+        if (
+            source_snapshot.version != signal_snapshot.version
+            or source_snapshot.registry_hash != signal_snapshot.registry_hash
+        ):
+            raise ValidationError(
+                "slow-bootstrap source Signal Registry differs from target input"
+            )
+        state = _read_json(source_root / "state.json")
+        last_completed_round = int(state.get("last_completed_round", 0))
+        rejected_round = last_completed_round + 1
+        rejected_path = (
+            source_root
+            / "experiments"
+            / f"round-{rejected_round:04d}"
+            / "rejected.json"
+        )
+        rejected = _read_json(rejected_path)
+        if (
+            rejected.get("schema_version") != "plan-round-rejected-v1"
+            or int(rejected.get("round_id", 0)) != rejected_round
+            or int(rejected.get("last_completed_round", -1))
+            != last_completed_round
+        ):
+            raise ValidationError("slow-bootstrap source rejection is not authoritative")
+        source_key = contract.contract_hash
+        extracted = 0
+        for attempt in rejected.get("attempts", ()):
+            if not isinstance(attempt, Mapping):
+                continue
+            for trajectory in attempt.get("trajectories", ()):
+                if not isinstance(trajectory, Mapping):
+                    continue
+                if (
+                    trajectory.get("stop_reason") != "no_signal_match"
+                    or trajectory.get("termination_trigger") != "no_signal_match"
+                ):
+                    continue
+                state_payload = trajectory.get("final_state", {})
+                if (
+                    not isinstance(state_payload, Mapping)
+                    or state_payload.get("decision") != "continue"
+                ):
+                    continue
+                case = cases.get(str(trajectory.get("case_id", "")))
+                if case is None:
+                    raise ValidationError(
+                        "slow-bootstrap trajectory case is outside the approved dataset"
+                    )
+                aliases: list[str] = [case.case_id, case.company_id]
+                for key in ("company_name", "ticker", "symbol", "name"):
+                    value = case.basic_info.get(key)
+                    if isinstance(value, str) and value.strip():
+                        aliases.append(value)
+                raw_aliases = case.basic_info.get("identity_aliases", ())
+                if isinstance(raw_aliases, str):
+                    raw_aliases = (raw_aliases,)
+                if isinstance(raw_aliases, (list, tuple)):
+                    aliases.extend(
+                        item
+                        for item in raw_aliases
+                        if isinstance(item, str) and item.strip()
+                    )
+                needs = state_payload.get("next_information_needs", ())
+                if not isinstance(needs, list):
+                    raise ValidationError(
+                        "slow-bootstrap next_information_needs must be an array"
+                    )
+                for raw_need in needs:
+                    if not isinstance(raw_need, str):
+                        raise ValidationError(
+                            "slow-bootstrap information need must be a string"
+                        )
+                    masked = str(_mask_identity_values(raw_need, aliases))
+                    need = " ".join(masked.split())
+                    if not need:
+                        continue
+                    normalized = need.casefold()
+                    row = grouped.setdefault(
+                        normalized,
+                        {
+                            "need": need,
+                            "occurrences": 0,
+                            "source_contract_hashes": set(),
+                        },
+                    )
+                    row["occurrences"] += 1
+                    row["source_contract_hashes"].add(source_key)
+                    extracted += 1
+        source_rows.append(
+            {
+                "run_id": contract.run_id,
+                "contract_hash": contract.contract_hash,
+                "rejected_round": rejected_round,
+                "rejected_hash": _sha256_file(rejected_path),
+                "extracted_need_count": extracted,
+            }
+        )
+    signal_need_items = [
+        {
+            "need": row["need"],
+            "occurrences": row["occurrences"],
+            "source_count": len(row["source_contract_hashes"]),
+        }
+        for _key, row in sorted(grouped.items())
+    ]
+    if not signal_need_items:
+        raise ValidationError(
+            "slow_bootstrap sources contain no eligible no_signal_match need"
+        )
+    backlog = aggregate_capability_gaps((), signal_need_items=signal_need_items)
+    manifest = {
+        "schema_version": "slow-bootstrap-manifest-v1",
+        "dataset_manifest_hash": dataset.approved_manifest_hash,
+        "predictor_semantics_hash": FIXED_PREDICTOR_SEMANTICS_HASH,
+        "evaluation_contract": dict(evaluation_contract),
+        "input_signal_registry_version": signal_snapshot.version,
+        "input_signal_registry_hash": signal_snapshot.registry_hash,
+        "sources": source_rows,
+        "capability_backlog_seed": backlog,
+    }
+    manifest_hash = _canonical_hash(manifest)
+    _write_or_verify_json(
+        manifest_path,
+        {"manifest_hash": manifest_hash, "manifest": manifest},
+    )
+    return manifest_hash
+
+
+def validate_slow_bootstrap_manifest(
+    *,
+    workspace: str | Path,
+    contract: EvolutionRunContract,
+    signal_snapshot: FrozenSignalRegistry,
+) -> Mapping[str, Any]:
+    """Verify the immutable Slow-bootstrap seed before cycle creation."""
+
+    path = Path(workspace) / "slow_bootstrap" / "manifest.json"
+    envelope = _read_json(path)
+    manifest = envelope.get("manifest", {})
+    if not isinstance(manifest, Mapping):
+        raise ValidationError("slow-bootstrap manifest body is invalid")
+    manifest_hash = _canonical_hash(manifest)
+    backlog = manifest.get("capability_backlog_seed", {})
+    if (
+        envelope.get("manifest_hash") != manifest_hash
+        or contract.slow_bootstrap_manifest_hash != manifest_hash
+        or manifest.get("schema_version") != "slow-bootstrap-manifest-v1"
+        or manifest.get("dataset_manifest_hash") != contract.dataset_manifest_hash
+        or manifest.get("predictor_semantics_hash")
+        != contract.predictor_semantics_hash
+        or dict(manifest.get("evaluation_contract", {}))
+        != dict(contract.limits.get("evaluation", {}))
+        or int(manifest.get("input_signal_registry_version", 0))
+        != signal_snapshot.version
+        or manifest.get("input_signal_registry_hash")
+        != signal_snapshot.registry_hash
+        or not isinstance(backlog, Mapping)
+        or backlog.get("schema_version") != "capability-gap-report-v2"
+        or not backlog.get("signal_need_items")
+    ):
+        raise ValidationError("slow-bootstrap manifest differs from frozen contract")
+    return manifest
 
 
 def current_code_revision(project_root: str | Path) -> str:
@@ -6449,6 +6709,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Propose a small portfolio of falsifiable, reusable Signal hypotheses. "
                 "Use meta/backlog gaps and stable cards, prefer observable point-in-time "
                 "differences, and do not select companies or restate an existing Signal. "
+                "capability_backlog.signal_need_items are identity-masked, label-hidden "
+                "needs that an actual Fast trajectory could not match to a stable Signal; "
+                "treat them as diagnostic demand, not as evidence that a candidate works. "
                 "Every source_types item must exactly equal one value from "
                 "available_raw_source_types; never pluralize or invent an alias."
                 + _UNTRUSTED_DATA_INSTRUCTION
@@ -7342,6 +7605,12 @@ def run_bounded_evolution_cycle(
         candidate_root=workspace_root / "signals_candidates",
     )
     snapshot = registry.freeze()
+    if contract.cycle_mode == "slow_bootstrap":
+        validate_slow_bootstrap_manifest(
+            workspace=workspace_root,
+            contract=contract,
+            signal_snapshot=snapshot,
+        )
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
 
@@ -7351,6 +7620,7 @@ def run_bounded_evolution_cycle(
     cycle = evolution_workspace.start_or_resume_cycle(
         run_contract_hash=contract.contract_hash,
         target_plan_rounds=target_plan_rounds,
+        cycle_mode=contract.cycle_mode,
         initial_signal_registry_version=contract.initial_signal_registry_version,
         initial_signal_registry_hash=contract.initial_signal_registry_hash,
         observed_signal_registry_version=snapshot.version,
@@ -7378,6 +7648,7 @@ def run_bounded_evolution_cycle(
             "start_round": int(cycle["start_round"]),
             "completed_plan_rounds": int(cycle["completed_plan_rounds"]),
             "target_plan_rounds": target_plan_rounds,
+            "cycle_mode": contract.cycle_mode,
             "phase": str(cycle["phase"]),
         }
     )
@@ -7535,6 +7806,7 @@ def run_bounded_evolution_cycle(
         signal_registry=registry,
         dataset=dataset,  # type: ignore[arg-type]
         plan_rounds_per_signal_cycle=int(limits["plan_rounds_per_signal_cycle"]),
+        cycle_mode=contract.cycle_mode,
         on_progress=emit,
     ).run_cycle(
         cycle_id=cycle_id,
@@ -7582,6 +7854,8 @@ def build_run_contract(
     max_external_attempts: int,
     max_total_cost: float,
     seed_pool_manifest_hash: str | None = None,
+    cycle_mode: str = "fast_then_slow",
+    slow_bootstrap_manifest_hash: str | None = None,
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy(),
     environ: Mapping[str, str] | None = None,
 ) -> EvolutionRunContract:
@@ -7609,6 +7883,8 @@ def build_run_contract(
         max_external_attempts=max_external_attempts,
         max_total_cost=max_total_cost,
         seed_pool_manifest_hash=seed_pool_manifest_hash,
+        cycle_mode=cycle_mode,
+        slow_bootstrap_manifest_hash=slow_bootstrap_manifest_hash,
         data_acquisition=data_acquisition,
     )
 

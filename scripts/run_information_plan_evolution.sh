@@ -29,6 +29,7 @@ usage() {
     "  --parent-selection-seed N  deterministic exploration seed (default: 42)" \
     "  --max-external-attempts N  frozen LLM attempt ceiling (default: 2500)" \
     "  --max-total-cost USD       frozen cumulative cost ceiling (default: 100)" \
+    "  --slow-bootstrap-from PATH freeze zero-Fast Slow recovery input; repeatable" \
     "  --data-external            freeze the broad historical Raw Info profile" \
     "  --data-provider NAME       custom allowed provider; repeat as needed" \
     "  --data-capability NAME     custom allowed capability; repeat as needed" \
@@ -51,7 +52,7 @@ usage() {
     "                              required with --external and must match" \
     "" \
     "Safety:" \
-    "  new never performs LLM calls. It freezes a v6 contract; with --data-external" \
+    "  new never performs LLM calls. It freezes a v7 contract; with --data-external" \
     "  it may prepare Raw Info under that policy, then stops at the first exact" \
     "  LLM-request approval boundary. Use resume with the printed" \
     "  contract hash to authorize execution. Locked Test stays sealed and Signal" \
@@ -95,6 +96,7 @@ ALLOW_DATA_EXTERNAL=0
 DATA_PROVIDERS=()
 DATA_CAPABILITIES=()
 DATA_SOURCE_TYPES=()
+SLOW_BOOTSTRAP_SOURCES=()
 MAX_DATA_REQUESTS_PER_CYCLE=0
 MAX_DATA_REQUESTS_PER_RUN=0
 ACKNOWLEDGED_CONTRACT_HASH=""
@@ -127,12 +129,13 @@ while [ "$#" -gt 0 ]; do
       esac
       shift 2
       ;;
-    --data-provider|--data-capability|--data-source-type)
+    --data-provider|--data-capability|--data-source-type|--slow-bootstrap-from)
       [ "$#" -ge 2 ] || fail "$1 requires a value"
       case "$1" in
         --data-provider) DATA_PROVIDERS+=("$2") ;;
         --data-capability) DATA_CAPABILITIES+=("$2") ;;
         --data-source-type) DATA_SOURCE_TYPES+=("$2") ;;
+        --slow-bootstrap-from) SLOW_BOOTSTRAP_SOURCES+=("$2") ;;
       esac
       NEW_ONLY_OPTION_SEEN=1
       shift 2
@@ -238,6 +241,11 @@ if [ "$MODE" = "new" ]; then
       for item in "${DATA_SOURCE_TYPES[@]}"; do FREEZE_ARGS+=(--data-source-type "$item"); done
     fi
   fi
+  if [ "${#SLOW_BOOTSTRAP_SOURCES[@]}" -gt 0 ]; then
+    for item in "${SLOW_BOOTSTRAP_SOURCES[@]}"; do
+      FREEZE_ARGS+=(--slow-bootstrap-from "$item")
+    done
+  fi
   run_cli "${FREEZE_ARGS[@]}"
 
   CONTRACT_HASH="$(
@@ -274,7 +282,7 @@ CONTRACT_INFO="$(
 )"
 CONTRACT_SCHEMA="${CONTRACT_INFO%% *}"
 CONTRACT_HASH="${CONTRACT_INFO#* }"
-[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v6" ] || fail "legacy contracts are read-only"
+[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v7" ] || fail "legacy contracts are read-only"
 
 RUN_ARGS=(
   run-loop

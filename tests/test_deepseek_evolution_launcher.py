@@ -27,7 +27,7 @@ class InformationPlanEvolutionLauncherTests(TestCase):
         (workspace / "run_contract.json").write_text(
             json.dumps(
                 {
-                    "contract": {"schema_version": "evolution-run-contract-v6"},
+                    "contract": {"schema_version": "evolution-run-contract-v7"},
                     "contract_hash": "fixture-contract-hash",
                 }
             ),
@@ -42,7 +42,7 @@ class InformationPlanEvolutionLauncherTests(TestCase):
 set -u
 if [ "${1:-}" = "-c" ]; then
   if [ "$#" -ge 3 ]; then
-    printf '%s\\n' 'evolution-run-contract-v6 fixture-contract-hash'
+    printf '%s\\n' 'evolution-run-contract-v7 fixture-contract-hash'
   fi
   exit 0
 fi
@@ -113,11 +113,12 @@ exit "$STUB_FINAL_STATUS"
         self.assertIn("default: 2", result.stdout)
         self.assertIn("default: 3", result.stdout)
         self.assertIn("--data-provider", result.stdout)
+        self.assertIn("--slow-bootstrap-from", result.stdout)
         self.assertIn("--retry-window-hours", result.stdout)
         self.assertIn("default: 10", result.stdout)
         self.assertIn("Locked Test stays sealed", result.stdout)
         self.assertIn("auto-promote atomically", result.stdout)
-        self.assertIn("v6 contract", result.stdout)
+        self.assertIn("v7 contract", result.stdout)
 
     def test_new_rejects_any_existing_workspace_before_mutation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -257,7 +258,7 @@ if [ "$command_name" = "init" ]; then
   mkdir -p "$workspace"
 elif [ "$command_name" = "freeze-run" ]; then
   mkdir -p "$workspace"
-  printf '%s\n' '{"contract":{"schema_version":"evolution-run-contract-v6"},"contract_hash":"fixture-contract-hash"}' > "$workspace/run_contract.json"
+  printf '%s\n' '{"contract":{"schema_version":"evolution-run-contract-v7"},"contract_hash":"fixture-contract-hash"}' > "$workspace/run_contract.json"
 fi
 """,
                 encoding="utf-8",
@@ -318,7 +319,7 @@ fi
         self.assertNotIn("DEEPSEEK_API_KEY", source)
         self.assertNotIn("read -r -s", source)
         self.assertIn('ALLOW_EXTERNAL=0', source)
-        self.assertIn('CONTRACT_SCHEMA" = "evolution-run-contract-v6', source)
+        self.assertIn('CONTRACT_SCHEMA" = "evolution-run-contract-v7', source)
         self.assertNotIn('CONTRACT_SCHEMA" = "evolution-run-contract-v4', source)
 
     def test_resume_automatically_relaunches_only_retryable_exit(self) -> None:

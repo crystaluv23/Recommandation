@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 9
+visit_times: 10
 
 ## Trigger
 
@@ -407,3 +407,21 @@ preserved the fixed boundary, but a bare ontology scanner rejected both and disc
 the proposal attempt. Remove only tightly shaped preservation phrases before checking
 for a replacement class list. Do not scrub arbitrary `without ...` clauses, which
 could hide an affirmative instruction later in the same sentence.
+
+## Slow-bootstrap addendum (2026-08-24)
+
+An ordered Fast-then-Slow loop can deadlock during cold start even when each role is
+locally correct. Repeated label-hidden Fast trajectories ended at `no_signal_match`,
+but the capability backlog aggregated only provider DataGaps; the missing Signal need
+therefore prevented Fast commit while Slow had no legal trigger or input from which to
+mine it. Do not fabricate a finalized Fast state, advance its pointer, or relabel a
+rejected Plan as learning history.
+
+Use an explicit, contract-frozen zero-Fast bootstrap instead. Its only cross-workspace
+input is an immutable aggregation of `continue + no_signal_match` information needs
+from the exact next rejected round. Mask the source case identity, retain counts rather
+than case ids, and bind source contract/rejection hashes plus the stable Registry.
+Exclude predictions, labels, post-hoc reflection, literal evidence, hypotheses, metrics,
+and Plan definitions. The exception changes only the Slow trigger: H1/H2/H3, Update,
+candidate execution, paired effectiveness, atomic promotion, and Locked Test remain the
+ordinary gates, and the rejected Fast round stays outside committed history.

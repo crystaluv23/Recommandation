@@ -37,6 +37,7 @@ from stock_opportunity_agent.research.evolution_runtime import (
     ExternalRequestPending,
     approve_dataset_proposal,
     build_run_contract,
+    build_slow_bootstrap_manifest,
     filter_case_price_history,
     inventory_local_evolution_inputs,
     HistoricalPlanSeedPool,
@@ -225,6 +226,16 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--judge-model", default="kimi-k3-together")
     freeze.add_argument("--evolution-model", default="openrouter-fusion")
     freeze.add_argument("--plan-rounds", type=int, default=2)
+    freeze.add_argument(
+        "--slow-bootstrap-from",
+        type=Path,
+        action="append",
+        default=[],
+        help=(
+            "freeze a zero-Fast Slow bootstrap from one compatible rejected "
+            "workspace; may be repeated"
+        ),
+    )
     freeze.add_argument("--candidates-per-round", type=int, default=3)
     freeze.add_argument("--parent-selection-seed", type=int, default=42)
     freeze.add_argument("--max-external-attempts", type=int, default=2500)
@@ -592,6 +603,7 @@ def freeze_run(
     parent_selection_seed: int,
     max_external_attempts: int,
     max_total_cost: float,
+    slow_bootstrap_sources: tuple[Path, ...] = (),
     data_external: bool = False,
     data_providers: tuple[str, ...] = (),
     data_capabilities: tuple[str, ...] = (),
@@ -611,6 +623,8 @@ def freeze_run(
         max_data_requests_per_cycle=max_data_requests_per_cycle,
         max_data_requests_per_run=max_data_requests_per_run,
     )
+    cycle_mode = "slow_bootstrap" if slow_bootstrap_sources else "fast_then_slow"
+    effective_plan_rounds = 0 if slow_bootstrap_sources else plan_rounds
     EvaluationDatasetManager(
         workspace_path / "evaluation",
         approved_dataset.evolution_validation,
@@ -629,7 +643,8 @@ def freeze_run(
             or contract.models["judge"]["alias"] != judge_model
             or contract.models["proposer"]["alias"] != evolution_model
             or int(contract.limits["plan_rounds_per_signal_cycle"])
-            != plan_rounds
+            != effective_plan_rounds
+            or contract.cycle_mode != cycle_mode
             or int(contract.limits["candidates_per_round"])
             != candidates_per_round
             or int(contract.limits["parent_selection_seed"])
@@ -660,6 +675,15 @@ def freeze_run(
             dataset_manifest_hash=dataset_manifest_hash,
             evaluation_contract=evaluation_contract,
         )
+        slow_bootstrap_manifest_hash = None
+        if slow_bootstrap_sources:
+            slow_bootstrap_manifest_hash = build_slow_bootstrap_manifest(
+                workspace=workspace_path,
+                source_workspaces=slow_bootstrap_sources,
+                dataset=approved_dataset,
+                signal_snapshot=snapshot,
+                evaluation_contract=evaluation_contract,
+            )
         contract = build_run_contract(
             run_id=run_id,
             dataset_manifest_path=approved_dataset_path,
@@ -677,7 +701,7 @@ def freeze_run(
             role_aliases={"judge": judge_model, "proposer": evolution_model},
             project_root=PROJECT_ROOT,
             limits={
-                "plan_rounds_per_signal_cycle": plan_rounds,
+                "plan_rounds_per_signal_cycle": effective_plan_rounds,
                 "candidates_per_round": candidates_per_round,
                 "top_k": 3,
                 "random_k": 2,
@@ -717,6 +741,8 @@ def freeze_run(
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,
             seed_pool_manifest_hash=seed_pool.manifest_hash,
+            cycle_mode=cycle_mode,
+            slow_bootstrap_manifest_hash=slow_bootstrap_manifest_hash,
             data_acquisition=requested_data_policy,
         )
         contract.freeze(contract_path)
@@ -738,6 +764,8 @@ def freeze_run(
         "models": contract.models,
         "max_external_attempts": contract.max_external_attempts,
         "max_total_cost": contract.max_total_cost,
+        "cycle_mode": contract.cycle_mode,
+        "slow_bootstrap_manifest_hash": contract.slow_bootstrap_manifest_hash,
         "historical_seed_pool": {
             "manifest_hash": contract.seed_pool_manifest_hash,
             "seed_count": len(seed_pool.entries) if seed_pool else 0,
@@ -1237,6 +1265,7 @@ def main() -> int:
                 parent_selection_seed=args.parent_selection_seed,
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
+                slow_bootstrap_sources=tuple(args.slow_bootstrap_from),
                 data_external=args.data_external,
                 data_providers=tuple(args.data_provider),
                 data_capabilities=tuple(args.data_capability),

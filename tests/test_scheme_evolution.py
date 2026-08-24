@@ -4641,6 +4641,70 @@ class SignalEvolutionTests(TestCase):
 
 
 class DualLoopTests(TestCase):
+    def test_slow_bootstrap_runs_no_fast_round_and_preserves_round_pointer(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=0,
+                cycle_mode="slow_bootstrap",
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            meta = PlanMetaMemory()
+            proposer = CountingProposer()
+            evaluator = SyntheticPlanEvaluator(include_signal=False)
+            plan_engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=meta,
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+            mining_model = EmptyMiningModel()
+            signal_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("discovery_case", 4.0),),
+                meta_memory=meta,
+                workspace=workspace,
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            dataset = EvolutionDataset(
+                discovery=(make_case("discovery_case", 4.0),),
+                anchor=make_anchor_pool(),
+                evolution_validation=make_evaluation_pool(),
+                locked_test=(make_case("locked_company", 12.0),),
+            )
+
+            result = DualLoopEvolutionEngine(
+                plan_engine=plan_engine,
+                signal_engine=signal_engine,
+                signal_registry=registry,
+                dataset=dataset,
+                plan_rounds_per_signal_cycle=0,
+                cycle_mode="slow_bootstrap",
+            ).run_cycle(cycle_id=1)
+
+            self.assertEqual(result.plan_rounds, ())
+            self.assertEqual(proposer.calls, [])
+            self.assertEqual(evaluator.seen_company_ids, [])
+            self.assertEqual(workspace.last_completed_round, 0)
+            self.assertEqual(len(mining_model.requests), 1)
+
     def test_offline_dual_loop_freezes_signals_then_runs_one_slow_cycle(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

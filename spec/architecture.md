@@ -224,6 +224,16 @@ At its Slow-Loop boundary, a durably staged and fully validated candidate batch
 may advance it exactly once; the cycle marker records both input and output
 Registry version/hash. A restart completes that same transition idempotently
 before advancing the cycle pointer. The next group uses the output snapshot.
+An explicitly frozen `slow_bootstrap` cycle is allowed only to break the
+cold-start dependency in which a rejected Fast diagnostic needs a Signal that
+does not yet exist. It has zero committed Fast rounds and reads an immutable
+manifest derived from rejected-round trajectories: only label-hidden
+`no_signal_match` information needs survive, issuer aliases are masked, and
+source contract/rejection hashes plus the exact input Registry are bound. The
+rejected Fast round remains outside history and parent selection. Bootstrap
+uses the unchanged H1/H2/H3, candidate executor, paired effectiveness gate,
+atomic transition, and Locked-Test boundary, then exposes any committed Registry
+output only to a fresh subsequent Fast run.
 Signal Update is locally triggered only when repeated ledger evidence identifies
 an actionable exact version. One Slow cycle selects at most three distinct
 targets by evidence priority. Local code independently selects issuer-disjoint
@@ -312,7 +322,10 @@ meta-info have committed. A candidate that lacks 20 valid evidence-backed
 predictions, predicts no positives, or has no true positive remains a diagnostic
 experiment and cannot enter parent selection. A round with no fitness-eligible
 candidate persists a rejection checkpoint and pauses without advancing either
-the round or cycle pointer. Each repeated issuer/as-of observation has its own
+the round or cycle pointer. Its pre-label `no_signal_match` needs may enter only
+the explicit, immutable, identity-masked Slow-bootstrap manifest described
+above; no prediction, truth, reflection, metric, or Plan fitness crosses that
+boundary. Each repeated issuer/as-of observation has its own
 stable `case_id`; company identity is never used as a case or prediction-file
 key. Files beyond the pointer are staged recovery inputs, not completed history;
 restart reuses them only when their canonical content exactly matches the

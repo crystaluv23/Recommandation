@@ -4946,6 +4946,7 @@ class EvolutionWorkspace:
         *,
         run_contract_hash: str,
         target_plan_rounds: int,
+        cycle_mode: str = "fast_then_slow",
         initial_signal_registry_version: int,
         initial_signal_registry_hash: str,
         observed_signal_registry_version: int,
@@ -4953,13 +4954,20 @@ class EvolutionWorkspace:
     ) -> dict[str, Any]:
         """Freeze or recover one Fast/Slow cycle and its Registry boundary."""
 
+        if cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
+            raise ValidationError("cycle mode is invalid")
         if (
             not run_contract_hash
-            or target_plan_rounds < 1
+            or target_plan_rounds < 0
             or initial_signal_registry_version < 1
             or observed_signal_registry_version < 1
         ):
             raise ValidationError("cycle contract hash and round target are required")
+        if (
+            (cycle_mode == "fast_then_slow" and target_plan_rounds < 1)
+            or (cycle_mode == "slow_bootstrap" and target_plan_rounds != 0)
+        ):
+            raise ValidationError("cycle mode and Fast-round target conflict")
         if self.cycle_state_path.exists():
             state = _read_json(self.cycle_state_path)
             if state.get("schema_version") != "dual-loop-cycle-state-v2":
@@ -4988,6 +4996,11 @@ class EvolutionWorkspace:
         resumed = isinstance(active, Mapping)
         if not resumed:
             if (
+                cycle_mode == "slow_bootstrap"
+                and int(state.get("last_completed_cycle", 0)) != 0
+            ):
+                raise ValidationError("slow_bootstrap contract is single-cycle")
+            if (
                 int(state.get("current_signal_registry_version", 0))
                 != observed_signal_registry_version
                 or state.get("current_signal_registry_hash")
@@ -5000,6 +5013,7 @@ class EvolutionWorkspace:
                 "cycle_id": int(state.get("last_completed_cycle", 0)) + 1,
                 "start_round": self.last_completed_round,
                 "target_plan_rounds": target_plan_rounds,
+                "cycle_mode": cycle_mode,
                 "completed_plan_rounds": 0,
                 "phase": "fast_loop",
                 "input_signal_registry_version": observed_signal_registry_version,
@@ -5009,6 +5023,8 @@ class EvolutionWorkspace:
             active = dict(active)
             if int(active.get("target_plan_rounds", 0)) != target_plan_rounds:
                 raise ValidationError("active cycle round target mismatch")
+            if active.get("cycle_mode", "fast_then_slow") != cycle_mode:
+                raise ValidationError("active cycle mode mismatch")
             if (
                 int(active.get("input_signal_registry_version", 0))
                 != int(state.get("current_signal_registry_version", 0))
@@ -5306,9 +5322,23 @@ class EvolutionWorkspace:
                 for item in attempt.get("trajectories", ())
                 if isinstance(item, Mapping)
             )
+        bootstrap_manifest_path = self.root / "slow_bootstrap" / "manifest.json"
+        signal_need_items: Iterable[Mapping[str, Any]] = ()
+        if bootstrap_manifest_path.exists():
+            envelope = _read_json(bootstrap_manifest_path)
+            manifest = envelope.get("manifest", {})
+            if isinstance(manifest, Mapping):
+                backlog_seed = manifest.get("capability_backlog_seed", {})
+                if isinstance(backlog_seed, Mapping):
+                    raw_items = backlog_seed.get("signal_need_items", ())
+                    if isinstance(raw_items, list):
+                        signal_need_items = tuple(
+                            item for item in raw_items if isinstance(item, Mapping)
+                        )
         report = aggregate_capability_gaps(
             trajectories,
             available_source_types=available_source_types,
+            signal_need_items=signal_need_items,
         )
         _atomic_write_json(
             self.experiments_root / "capability_gap_report.json",
@@ -8559,8 +8589,9 @@ class SignalEvolutionEngine:
             _read_json(backlog_path)
             if backlog_path.exists()
             else {
-                "schema_version": "capability-gap-report-v1",
+                "schema_version": "capability-gap-report-v2",
                 "items": [],
+                "signal_need_items": [],
                 "open_count": 0,
                 "resolved_count": 0,
             }
@@ -9198,15 +9229,22 @@ class DualLoopEvolutionEngine:
         signal_registry: SignalRegistry,
         dataset: EvolutionDataset,
         plan_rounds_per_signal_cycle: int = 5,
+        cycle_mode: str = "fast_then_slow",
         on_progress: ProgressCallback | None = None,
     ) -> None:
-        if plan_rounds_per_signal_cycle < 1:
-            raise ValidationError("plan rounds per Signal cycle must be positive")
+        if cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
+            raise ValidationError("dual-loop cycle mode is invalid")
+        if (
+            (cycle_mode == "fast_then_slow" and plan_rounds_per_signal_cycle < 1)
+            or (cycle_mode == "slow_bootstrap" and plan_rounds_per_signal_cycle != 0)
+        ):
+            raise ValidationError("dual-loop mode and Fast-round target conflict")
         self.plan_engine = plan_engine
         self.signal_engine = signal_engine
         self.signal_registry = signal_registry
         self.dataset = dataset
         self.plan_rounds_per_signal_cycle = plan_rounds_per_signal_cycle
+        self.cycle_mode = cycle_mode
         self.on_progress = on_progress
 
     def run_cycle(
@@ -9241,6 +9279,7 @@ class DualLoopEvolutionEngine:
         _emit_progress(
             self.on_progress,
             "fast_loop_started",
+            cycle_mode=self.cycle_mode,
             completed_plan_rounds=completed_plan_rounds,
             target_plan_rounds=self.plan_rounds_per_signal_cycle,
             signal_registry_hash=(
@@ -9269,6 +9308,7 @@ class DualLoopEvolutionEngine:
         _emit_progress(
             self.on_progress,
             "slow_loop_started",
+            cycle_mode=self.cycle_mode,
             completed_plan_rounds=self.plan_rounds_per_signal_cycle,
             target_plan_rounds=self.plan_rounds_per_signal_cycle,
         )

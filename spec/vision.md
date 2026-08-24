@@ -41,6 +41,16 @@ their original blind-evaluation F1 and are not replayed merely because the
 Signal Library changed; new Plans must displace them by producing better F1.
 Signal version/hash is therefore execution provenance, never a fitness term.
 
+Cold start has one explicit recovery exception. When a Fast round is durably
+rejected because its label-hidden trajectories request capabilities that no
+stable Signal can answer, a separately frozen `slow_bootstrap` run may consume
+only an immutable, identity-masked aggregation of those pre-label unmet needs.
+It does not commit the rejected Plan round, import its score or post-hoc label,
+or advance the Fast pointer. Mining, candidate execution, paired effectiveness,
+atomic Signal promotion, Locked-Test sealing, and next-Fast snapshot visibility
+remain identical to the ordinary Slow Loop. This is an approved orchestration
+trigger, not a weaker Signal-promotion path.
+
 The resulting information plan remains a proposal until it succeeds on
 label-hidden evolution validation and later passes a separately locked test.
 Only after the information layer reaches a stable validation plateau should the

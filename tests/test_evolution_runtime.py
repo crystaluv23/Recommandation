@@ -5099,6 +5099,118 @@ class ConcreteRoleAdapterTests(TestCase):
 
 
 class RunControlTests(TestCase):
+    def test_slow_bootstrap_manifest_masks_identity_and_binds_rejection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            target = root / "target"
+            source_registry = SignalRegistry(source / "signals")
+            source_registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            target_registry = SignalRegistry(target / "signals")
+            target_registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            snapshot = target_registry.freeze()
+            self.assertEqual(source_registry.freeze().registry_hash, snapshot.registry_hash)
+            case = evolution_runtime_module.EvolutionCase(
+                case_id="case_kgc",
+                company_id="issuer_kgc",
+                prediction_time=datetime(2025, 9, 30, tzinfo=timezone.utc),
+                basic_info={
+                    "company_name": "Kinross Gold Corporation",
+                    "ticker": "KGC",
+                    "identity_aliases": ["Kinross Gold"],
+                },
+                ground_truth=GroundTruth(2.5),
+            )
+            dataset = evolution_runtime_module.ApprovedDevelopmentDataset(
+                discovery=(),
+                anchor=(),
+                evolution_validation=(case,),
+                locked_test_hash=SHA_B,
+                approved_manifest_hash=SHA_A,
+            )
+            source_contract = EvolutionRunContract(
+                **{
+                    **make_contract().__dict__,
+                    "run_id": "source-run",
+                    "initial_signal_registry_version": snapshot.version,
+                    "initial_signal_registry_hash": snapshot.registry_hash,
+                }
+            )
+            source.mkdir(parents=True, exist_ok=True)
+            source_contract.freeze(source / "run_contract.json")
+            write_json(source / "state.json", {"last_completed_round": 0})
+            rejected_path = source / "experiments" / "round-0001" / "rejected.json"
+            rejected_path.parent.mkdir(parents=True)
+            write_json(
+                rejected_path,
+                {
+                    "schema_version": "plan-round-rejected-v1",
+                    "round_id": 1,
+                    "last_completed_round": 0,
+                    "reason": "no fitness-eligible candidate",
+                    "attempts": [
+                        {
+                            "trajectories": [
+                                {
+                                    "case_id": case.case_id,
+                                    "stop_reason": "no_signal_match",
+                                    "termination_trigger": "no_signal_match",
+                                    "final_state": {
+                                        "decision": "continue",
+                                        "next_information_needs": [
+                                            "What are Kinross Gold's latest analyst estimate revisions?"
+                                        ],
+                                    },
+                                    "prediction": {"is_surge": True},
+                                    "ground_truth": {"realized_max_multiple": 2.5},
+                                }
+                            ]
+                        }
+                    ],
+                },
+            )
+
+            manifest_hash = evolution_runtime_module.build_slow_bootstrap_manifest(
+                workspace=target,
+                source_workspaces=(source,),
+                dataset=dataset,
+                signal_snapshot=snapshot,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            envelope = json.loads(
+                (target / "slow_bootstrap" / "manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            serialized = json.dumps(envelope)
+            self.assertIn("[MASKED_COMPANY]", serialized)
+            self.assertNotIn("Kinross", serialized)
+            self.assertNotIn("case_kgc", serialized)
+            self.assertNotIn("ground_truth", serialized)
+            self.assertEqual(
+                envelope["manifest"]["sources"][0]["rejected_hash"],
+                hashlib.sha256(rejected_path.read_bytes()).hexdigest(),
+            )
+            bootstrap_contract = EvolutionRunContract(
+                **{
+                    **make_contract().__dict__,
+                    "initial_signal_registry_version": snapshot.version,
+                    "initial_signal_registry_hash": snapshot.registry_hash,
+                    "limits": {
+                        **make_contract().limits,
+                        "plan_rounds_per_signal_cycle": 0,
+                    },
+                    "cycle_mode": "slow_bootstrap",
+                    "slow_bootstrap_manifest_hash": manifest_hash,
+                }
+            )
+            validated = evolution_runtime_module.validate_slow_bootstrap_manifest(
+                workspace=target,
+                contract=bootstrap_contract,
+                signal_snapshot=snapshot,
+            )
+            self.assertEqual(validated["schema_version"], "slow-bootstrap-manifest-v1")
+
     def _seed_candidate(
         self,
         *,

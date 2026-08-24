@@ -44,8 +44,8 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Only `evolution-run-contract-v6` may execute. Older frozen contracts, including
-v5, remain
+Only `evolution-run-contract-v7` may execute. Older frozen contracts, including
+v6, remain
 readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
 default. Before the first cycle creates requests or execution artifacts,
@@ -55,7 +55,7 @@ stable snapshot against the last committed cycle output, not against the
 initial contract snapshot. Evaluation snapshots are immutable recovery inputs
 under the run workspace. Their existence does not prove round completion or
 advance `state.json:last_completed_round`.
-For v6, both model roles, code/runtime identities, and every consumed limit are
+For v7, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 The contract additionally freezes the fixed Predictor-semantics hash, the
@@ -65,6 +65,16 @@ model-facing character ceilings, and role output-token ceilings. The frozen
 role ceilings are 2,000 tokens for controller, routing, Predictor, post-hoc,
 H1, and H2; 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for
 H3 and Update.
+V7 additionally freezes `cycle_mode`. `fast_then_slow` requires a positive
+`plan_rounds_per_signal_cycle` and no bootstrap manifest. `slow_bootstrap` is
+single-cycle and requires exactly zero Fast rounds plus the hash of
+`slow_bootstrap/manifest.json`. That immutable manifest contains only
+identity-masked, label-hidden `no_signal_match` needs aggregated from compatible
+next-round rejection artifacts, and binds their source contract/rejection
+hashes and the exact input Signal Registry. Runtime verifies the manifest before
+creating a cycle and rejects an empty diagnostic seed. The mode changes only
+the Slow trigger; H1/H2/H3, Update, validation, promotion, Locked Test, attempt,
+cost, and source-data policies are unchanged.
 Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
 check is scoped to runtime-bearing tracked paths (`src/`, `scripts/`, and
 `configs/`) plus untracked files under those paths; unrelated progress or memory
@@ -148,7 +158,7 @@ deterministic controls. The canonical model payload names and emits those frozen
 available cards first, before case-dynamic needs/results, to increase provider
 prefix-cache reuse while retaining them as untrusted user data.
 
-The v6 contract additionally freezes `predictor_context_bytes=24000`. Predictor
+The v7 contract additionally freezes `predictor_context_bytes=24000`. Predictor
 assembly removes repeated full Basic projections and full per-round Signal evidence:
 it sends a Basic source/DataGap index, the complete final ResearchState, compact
 Signal state/interpretation/coverage rows, and exact material only for final-state
@@ -674,7 +684,7 @@ them to an optional caller callback. An external request interrupted after its
 attempt reservation remains visibly `in_progress`; it is not silently retried
 or marked unused.
 
-One cycle freezes its start round, configured Fast-round count, and input Signal
+One cycle freezes its mode, start round, configured Fast-round count, and input Signal
 Registry version/hash in `cycle_state.json`. Resume calculates remaining Fast
 work from the authoritative `state.json:last_completed_round`, not from files or
 printed output. Slow validation is written as an exact immutable artifact before
@@ -685,6 +695,9 @@ supervisor may start successive bounded cycles, but `Ctrl+C` stops at the
 current durable boundary without changing the frozen run contract, attempt
 ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
 recoverable in-progress Signal transition, never an untracked partial rollover.
+For `slow_bootstrap`, the frozen Fast target is zero, the round pointer remains
+unchanged throughout, and the same Slow-validation/result order governs cycle
+completion.
 
 The stable operator launcher treats Python exit status `75` as the only
 automatically recoverable process outcome. For an invocation-specific window
