@@ -3423,6 +3423,42 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
+    def test_h2_profile_preflight_pauses_before_h1_without_adapter(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                replace(
+                    make_case(f"preflight_case_{index}", 4.0 if index < 8 else 1.1),
+                    basic_info={
+                        "company_name": f"Preflight Company {index}",
+                        "ticker": f"PF{index:02d}",
+                    },
+                )
+                for index in range(16)
+            )
+            model = EmptyMiningModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            with self.assertRaises(SlowLoopDataUnavailable) as context:
+                engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(context.exception.case_ref, "profile-preflight")
+            self.assertEqual(
+                context.exception.reason, "profile_adapter_unavailable"
+            )
+            self.assertEqual(model.requests, [])
+
     def test_h2_profile_provider_failure_raises_retryable_slow_pause(self) -> None:
         class ProviderFailureResolver:
             available_source_types = ("filing",)
@@ -3476,6 +3512,33 @@ class SignalEvolutionTests(TestCase):
             self.assertTrue(context.exception.retryable)
 
     def test_h2_profile_readiness_shortage_skips_h2_and_h3(self) -> None:
+        class NoDataResolver:
+            available_source_types = ("news", "filing")
+
+            def can_acquire(self, request):
+                del request
+                return True
+
+            def resolve(self, request, *, company_id, identity, as_of):
+                del request, company_id, identity, as_of
+
+                class Gap:
+                    reason = type("Reason", (), {"value": "provider_no_data"})()
+
+                    @staticmethod
+                    def to_dict():
+                        return {"reason": "provider_no_data"}
+
+                return type(
+                    "Resolution",
+                    (),
+                    {"gap": Gap(), "status": "unresolved"},
+                )()
+
+            def load_documents(self, resolution, *, as_of):
+                del resolution, as_of
+                return ()
+
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
@@ -3521,6 +3584,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                evidence_resolver=NoDataResolver(),
             )
 
             result = engine._run_signal_mining(cycle_id=1)
@@ -3531,6 +3595,82 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(result["audit"]["h2_profile_readiness"]["ready"], 0)
             self.assertEqual(result["candidate_refs"], ())
+
+    def test_h2_profile_scan_stops_when_target_and_class_minima_are_met(self) -> None:
+        class RankingModel(ScriptedMiningModel):
+            def rank_cases(self, payload):
+                self.requests.append(dict(payload))
+                case_refs = tuple(
+                    item["case_ref"] for item in payload["case_briefs"]
+                )
+                return AgentStep(
+                    {"profile_signal": case_refs},
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                make_case("scan_control_a", 1.1),
+                make_case("scan_positive_a", 2.5),
+                make_case("scan_positive_b", 5.0),
+                make_case("scan_positive_c", 12.0),
+                make_case("scan_control_b", 1.2),
+                make_case("scan_positive_d", 4.0),
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="profile_signal",
+                statement="A public update separates outcomes.",
+                applicability="Operating issuers.",
+                expected_positive_pattern="Positive cases show the update.",
+                source_types=("news",),
+                query="public update",
+                falsifiers=("Controls show the same update.",),
+            )
+            model = RankingModel(hypotheses=(hypothesis,))
+            raw_store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="scan-news",
+                        company_id=cases[0].company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Scan Control A issued a public update.",
+                    ),
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=4,
+                    h2_profile_scan_limit=6,
+                    h2_min_ready_issuers=4,
+                    h2_min_ready_per_class=1,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(
+                result["audit"]["stages"]["H2"]["profile_readiness"]["scanned"],
+                4,
+            )
+            self.assertEqual(
+                len(model.requests[1]["case_briefs"]),
+                4,
+            )
 
     def test_h3_news_requires_visible_issuer_and_query_relevance(self) -> None:
         case = replace(

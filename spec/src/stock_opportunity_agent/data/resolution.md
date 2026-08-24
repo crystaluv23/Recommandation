@@ -22,7 +22,9 @@ differ only in how resolved documents are consumed.
   context, and a non-secret message.
 - `AcquisitionAdapter`: provider boundary returning complete Raw Info documents.
 - `EvidenceResolver`: local search, bounded acquisition, append, immediate
-  re-query, deterministic selection, and audit events.
+  re-query, deterministic selection, audit events, and a side-effect-free
+  capability check for whether a request has at least one available authorized
+  acquisition adapter.
 
 Supported DataGap reasons are `adapter_missing`, `missing_identifier`,
 `external_not_authorized`, `historical_data_unavailable`, `quota_deferred`,
@@ -90,6 +92,12 @@ Unknown source types remain valid Information Plan content and yield
 `adapter_missing`; they do not reject a candidate. Source-data authorization is
 separate from LLM authorization. Provider cache/ledger/quota behavior remains
 owned by data-source transports and is surfaced as resolution events/gaps.
+The resolver's capability check never searches, reserves, acquires, or writes;
+it reports only whether the frozen policy and current adapter availability make
+external acquisition possible for the exact request. Controllers may use it to
+pause before a paid upstream model call when a mandatory downstream data stage
+is already known to be impossible. A positive result is capability, not a
+promise that the provider has data or will respond successfully.
 
 Adapter declarations must include the canonical source types used by the
 stable Signal Library, not only provider-facing aliases. In particular,

@@ -8146,6 +8146,10 @@ class SignalEvolutionEngine:
 
     def _run_hypothesis_mining(self, *, cycle_id: int) -> dict[str, Any]:
         config = self.mining_config
+        scanned_pairs = self._mining_case_universe(
+            limit=config.h2_profile_scan_limit
+        )
+        self._preflight_h2_profiles(scanned_pairs)
         context = self._mining_context(cycle_id=cycle_id)
         hypotheses_step = self.mining_model.propose_hypotheses(
             {
@@ -8193,9 +8197,10 @@ class SignalEvolutionEngine:
             }
             return self._mining_output(audit=audit, refined=refined)
 
-        scanned_pairs = self._mining_case_universe(limit=config.h2_profile_scan_limit)
         ready_rows: list[tuple[str, EvolutionCase, dict[str, Any]]] = []
         profile_audit: list[dict[str, Any]] = []
+        positive_ready_count = 0
+        control_ready_count = 0
         for case_ref, case in scanned_pairs:
             brief = self._mining_case_brief(case_ref, case)
             profile_audit.append(
@@ -8207,6 +8212,16 @@ class SignalEvolutionEngine:
             )
             if profile_audit[-1]["ready"]:
                 ready_rows.append((case_ref, case, brief))
+                if case.ground_truth.is_surge:
+                    positive_ready_count += 1
+                else:
+                    control_ready_count += 1
+                if (
+                    len(ready_rows) >= config.case_pool_limit
+                    and positive_ready_count >= config.h2_min_ready_per_class
+                    and control_ready_count >= config.h2_min_ready_per_class
+                ):
+                    break
         positives = [item for item in ready_rows if item[1].ground_truth.is_surge]
         controls = [item for item in ready_rows if not item[1].ground_truth.is_surge]
         if (
@@ -8219,7 +8234,7 @@ class SignalEvolutionEngine:
                 refined[hypothesis.hypothesis_id] = (reason,)
             audit["status"] = reason
             audit["h2_profile_readiness"] = {
-                "scanned": len(scanned_pairs),
+                "scanned": len(profile_audit),
                 "ready": len(ready_rows),
                 "positive_ready": len(positives),
                 "control_ready": len(controls),
@@ -8286,7 +8301,7 @@ class SignalEvolutionEngine:
                 briefs_by_ref[case_ref] for case_ref, _case in case_pairs
             ],
             "profile_readiness": {
-                "scanned": len(scanned_pairs),
+                "scanned": len(profile_audit),
                 "ready": len(ready_rows),
                 "selected": len(case_pairs),
                 "cases": profile_audit,
@@ -8699,10 +8714,65 @@ class SignalEvolutionEngine:
             )
         )
 
-    def _mining_case_brief(
-        self, case_ref: str, case: EvolutionCase
-    ) -> dict[str, Any]:
-        aliases = _discovery_identity_terms((case,))
+    def _preflight_h2_profiles(
+        self, case_pairs: Iterable[tuple[str, EvolutionCase]]
+    ) -> None:
+        """Pause before H1 when mandatory H2 profiles cannot be obtained."""
+
+        pairs = tuple(case_pairs)
+        config = self.mining_config
+        potential_positive = sum(case.ground_truth.is_surge for _, case in pairs)
+        potential_control = len(pairs) - potential_positive
+        if (
+            len(pairs) < config.h2_min_ready_issuers
+            or potential_positive < config.h2_min_ready_per_class
+            or potential_control < config.h2_min_ready_per_class
+        ):
+            return
+        ready = 0
+        positive_ready = 0
+        control_ready = 0
+        first_case_ref = "profile-preflight"
+        for case_ref, case in pairs:
+            if first_case_ref == "profile-preflight":
+                first_case_ref = case_ref
+            _documents, profile = self._mining_local_profile(case)
+            if not self._mining_profile_ready(profile):
+                continue
+            ready += 1
+            if case.ground_truth.is_surge:
+                positive_ready += 1
+            else:
+                control_ready += 1
+        if (
+            ready >= config.h2_min_ready_issuers
+            and positive_ready >= config.h2_min_ready_per_class
+            and control_ready >= config.h2_min_ready_per_class
+        ):
+            return
+        request = self._mining_profile_request(first_case_ref)
+        can_acquire = getattr(self.evidence_resolver, "can_acquire", None)
+        if can_acquire is None or can_acquire(request):
+            return
+        raise SlowLoopDataUnavailable(
+            "profile-preflight",
+            "profile_adapter_unavailable",
+        )
+
+    @staticmethod
+    def _mining_profile_request(case_ref: str) -> RawInfoRequest:
+        return RawInfoRequest(
+            request_id=f"signal_mining_profile:{case_ref}",
+            description="Latest point-in-time annual filing business profile.",
+            source_types=("10-k", "filing", "sec_filing"),
+            lookback_days=730,
+            max_documents=1,
+            query="item 1 business",
+        )
+
+    def _mining_local_profile(
+        self, case: EvolutionCase
+    ) -> tuple[tuple[RawInfoDocument, ...], dict[str, Any]]:
         documents = tuple(
             document
             for document in self.raw_info_store.documents
@@ -8710,51 +8780,71 @@ class SignalEvolutionEngine:
             and document.available_at <= case.prediction_time
         )
         profile = _point_in_time_profile_fields(case.basic_info, documents)
-        profile_resolution: dict[str, Any] | None = None
-        if not any(
-            profile.get(name)
-            for name in ("business_description", "industry", "sector")
-        ):
-            resolution = self.evidence_resolver.resolve(
-                RawInfoRequest(
-                    request_id=f"signal_mining_profile:{case_ref}",
-                    description="Latest point-in-time annual filing business profile.",
-                    source_types=("10-k", "filing", "sec_filing"),
-                    lookback_days=730,
-                    max_documents=1,
-                    query="item 1 business",
-                ),
-                company_id=case.company_id,
-                identity=case.basic_info,
-                as_of=case.prediction_time,
-            )
-            if resolution.gap is not None and resolution.gap.reason.value in {
-                "provider_error",
-                "quota_deferred",
-                "materialization_failed",
-            }:
-                raise SlowLoopDataUnavailable(
-                    case_ref,
-                    resolution.gap.reason.value,
-                )
-            acquired = self.evidence_resolver.load_documents(
-                resolution, as_of=case.prediction_time
-            )
-            documents = tuple({item.document_id: item for item in (*documents, *acquired)}.values())
-            profile = _point_in_time_profile_fields(case.basic_info, documents)
-            profile_resolution = {
-                "status": resolution.status,
-                "data_gap": resolution.gap.to_dict() if resolution.gap else None,
-                "document_count": len(acquired),
-            }
         if not profile.get("business_description"):
             excerpt = _item1_business_excerpt(documents)
             if excerpt:
                 profile["business_description"] = excerpt
-        profile_ready = any(
+        return documents, profile
+
+    @staticmethod
+    def _mining_profile_ready(profile: Mapping[str, Any]) -> bool:
+        return any(
             profile.get(name)
             for name in ("business_description", "industry", "sector")
         )
+
+    def _mining_case_brief(
+        self, case_ref: str, case: EvolutionCase
+    ) -> dict[str, Any]:
+        aliases = _discovery_identity_terms((case,))
+        documents, profile = self._mining_local_profile(case)
+        profile_resolution: dict[str, Any] | None = None
+        if not self._mining_profile_ready(profile):
+            request = self._mining_profile_request(case_ref)
+            can_acquire = getattr(self.evidence_resolver, "can_acquire", None)
+            acquisition_available = can_acquire is None or can_acquire(request)
+            if not acquisition_available:
+                profile_resolution = {
+                    "status": "unavailable",
+                    "data_gap": {"reason": "profile_adapter_unavailable"},
+                    "document_count": 0,
+                }
+            else:
+                resolution = self.evidence_resolver.resolve(
+                    request,
+                    company_id=case.company_id,
+                    identity=case.basic_info,
+                    as_of=case.prediction_time,
+                )
+                if resolution.gap is not None and resolution.gap.reason.value in {
+                    "provider_error",
+                    "quota_deferred",
+                    "materialization_failed",
+                }:
+                    raise SlowLoopDataUnavailable(
+                        case_ref,
+                        resolution.gap.reason.value,
+                    )
+                acquired = self.evidence_resolver.load_documents(
+                    resolution, as_of=case.prediction_time
+                )
+                documents = tuple(
+                    {
+                        item.document_id: item
+                        for item in (*documents, *acquired)
+                    }.values()
+                )
+                profile = _point_in_time_profile_fields(case.basic_info, documents)
+                profile_resolution = {
+                    "status": resolution.status,
+                    "data_gap": resolution.gap.to_dict() if resolution.gap else None,
+                    "document_count": len(acquired),
+                }
+        if not profile.get("business_description"):
+            excerpt = _item1_business_excerpt(documents)
+            if excerpt:
+                profile["business_description"] = excerpt
+        profile_ready = self._mining_profile_ready(profile)
         safe_info = {
             "business_description": profile.get("business_description")
             or "unavailable",

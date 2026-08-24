@@ -1007,7 +1007,15 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    identity or outcome. A brief is ready only when at least one of business
    description/excerpt, industry, or sector exists. The target remains 32; H2
    is not called with fewer than 16 ready issuers or with fewer than four
-   locally hidden positive and four control issuers. Retryable provider failure
+   locally hidden positive and four control issuers. Before the paid H1 call,
+   the controller inspects the same deterministic case universe using only
+   point-in-time local profiles. When the universe itself has enough positive
+   and control cases to satisfy H2, but those local profiles cannot meet the H2
+   minimum and no available authorized adapter can acquire the exact annual-filing
+   profile request, the cycle pauses at `profile-preflight` without an H1 call,
+   provider reservation, or data request. When acquisition is possible, H2
+   scans only until the 32-case target and both hidden class minima are met;
+   96 remains a ceiling, not a required acquisition count. Retryable provider failure
    creates a cycle-level control-plane pause with the opaque case ref and provider
    reason, preserves both pointers, and returns process exit 75 for exact-contract
    resume. It is not a hypothesis rejection or generic traceback. Deterministic shortage records

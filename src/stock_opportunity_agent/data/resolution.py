@@ -893,6 +893,20 @@ class EvidenceResolver:
                 "No point-in-time documents matched the request.",
             ),
         )
+
+    def can_acquire(self, request: RawInfoRequest) -> bool:
+        """Return whether an available authorized adapter can serve ``request``.
+
+        This check is side-effect free: it does not search the store, reserve
+        budget, contact a provider, or promise that provider data exists.
+        """
+
+        return self.policy.enabled and any(
+            getattr(adapter, "available", True)
+            and self._adapter_authorized(adapter, request)
+            for adapter in self._select_adapters(request)
+        )
+
     def resolve_basic_info(
         self,
         requests: Iterable[RawInfoRequest],

@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 11
+visit_times: 12
 
 ## Trigger
 
@@ -258,6 +258,19 @@ contradiction gate before accepting empty: only an exact phrase of three or more
 consecutive normalized Signal-ref words in a need triggers one semantic correction.
 Do not expand this into fuzzy retrieval or locally choose the ref; an unmatched empty
 must remain a legitimate no-match result.
+
+## Downstream-readiness addendum (2026-08-24)
+
+A paid upstream role should not run when a mandatory downstream stage is already
+known to be impossible. Check the exact downstream request with a side-effect-free
+adapter-capability predicate before reserving the upstream attempt; capability means
+available plus contract-authorized, not that the provider will return data. Keep three
+states distinct: a Discovery universe that cannot satisfy the total/class minimum, a
+sufficient universe whose local profiles need an unavailable adapter, and a live
+authorized adapter that fails transiently. Only the second is a zero-call preflight
+pause; the first remains deterministic shortage and the third remains retryable
+provider control flow. During acquisition, a scan ceiling is not a target: stop once
+the target pool and hidden class minima are satisfied.
 
 ## Auxiliary-tag addendum (2026-08-23)
 

@@ -85,6 +85,38 @@ class FailingAdapter(FakeAdapter):
 
 
 class EvidenceResolverTests(TestCase):
+    def test_can_acquire_is_side_effect_free_and_honors_availability_and_policy(
+        self,
+    ) -> None:
+        request = RawInfoRequest("profile", "Read profile.", ("news",))
+        adapter = FakeAdapter()
+        disabled = EvidenceResolver(RawInfoStore(), adapters=(adapter,))
+
+        self.assertFalse(disabled.can_acquire(request))
+        self.assertEqual(adapter.calls, 0)
+
+        enabled = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("fake_news",),
+                allowed_capabilities=("news",),
+                allowed_source_types=("news",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+        self.assertTrue(enabled.can_acquire(request))
+        self.assertFalse(
+            enabled.can_acquire(
+                RawInfoRequest("filing", "Read filing.", ("filing",))
+            )
+        )
+        adapter.available = False
+        self.assertFalse(enabled.can_acquire(request))
+        self.assertEqual(adapter.calls, 0)
+
     def test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports(
         self,
     ) -> None:
