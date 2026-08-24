@@ -89,6 +89,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _assemble_final_context,
     _mask_identity_values,
     _filter_h3_documents,
+    _slow_role_identity_guard_inventory,
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
@@ -827,6 +828,42 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_slow_role_identity_guards_exclude_derived_protocol_words(self) -> None:
+        cases = tuple(
+            EvolutionCase(
+                company_id=f"cik_000000000{index}",
+                prediction_time=NOW,
+                basic_info={
+                    "company_name": company_name,
+                    "ticker": ticker,
+                    "identity_aliases": [ticker, company_name],
+                },
+                ground_truth=GroundTruth(1.2),
+            )
+            for index, (company_name, ticker) in enumerate(
+                (
+                    ("Match Group Inc - New / Match Group, Inc.", "MTCH"),
+                    ("News Corp - Class A / NEWS CORP", "NWSA"),
+                    (
+                        "Alpha Metallurgical Resources Inc / "
+                        "Alpha Metallurgical Resources, Inc.",
+                        "AMR",
+                    ),
+                    ("Open Lending Corp", "LPRO"),
+                ),
+                start=1,
+            )
+        )
+
+        guards = _slow_role_identity_guard_inventory(cases)
+
+        self.assertIn("Match Group", guards)
+        self.assertIn("NEWS CORP", guards)
+        self.assertIn("Alpha Metallurgical Resources", guards)
+        self.assertIn("Open Lending", guards)
+        self.assertTrue({"MTCH", "NWSA", "AMR", "LPRO"} <= set(guards))
+        self.assertTrue({"Match", "News", "Alpha", "Open"}.isdisjoint(guards))
+
     def test_identity_mask_compiles_aliases_once_per_payload_traversal(self) -> None:
         fixture = json.loads(
             (

@@ -2021,6 +2021,57 @@ def _case_identity_alias_inventory(cases: Iterable[EvolutionCase]) -> tuple[str,
     return tuple(dict.fromkeys(aliases))
 
 
+def _slow_role_identity_guard_inventory(
+    cases: Iterable[EvolutionCase],
+) -> tuple[str, ...]:
+    """Build exact, non-ambiguous identity guards for aggregate Slow roles.
+
+    Complete local case masking deliberately expands formal names to brands. An
+    aggregate role cannot use that expansion because ordinary brands such as
+    ``News`` or ``Open`` are also protocol vocabulary. Keep only opaque ids,
+    exact ticker-like aliases, and multi-token formal-name components here.
+    """
+
+    guards: list[str] = []
+    for case in cases:
+        guards.extend((case.case_id, case.company_id))
+        for key in ("ticker", "symbol"):
+            value = case.basic_info.get(key)
+            if isinstance(value, str) and value.strip():
+                guards.append(value.strip())
+        raw_names: list[str] = []
+        for key in ("company_name", "name"):
+            value = case.basic_info.get(key)
+            if isinstance(value, str) and value.strip():
+                raw_names.append(value)
+        raw_aliases = case.basic_info.get("identity_aliases", ())
+        if isinstance(raw_aliases, str):
+            raw_aliases = (raw_aliases,)
+        if isinstance(raw_aliases, (list, tuple)):
+            raw_names.extend(
+                item for item in raw_aliases if isinstance(item, str) and item.strip()
+            )
+        for raw_name in raw_names:
+            for component in _IDENTITY_NAME_SEPARATOR.split(raw_name):
+                component = " ".join(component.split()).strip(" ,")
+                if _is_strong_slow_identity_term(component):
+                    guards.append(component)
+                natural_name = _IDENTITY_LEGAL_SUFFIX.sub("", component).strip(" ,")
+                if len(re.findall(r"[A-Za-z0-9]+", natural_name)) >= 2:
+                    guards.append(natural_name)
+    return tuple(dict.fromkeys(guards))
+
+
+def _is_strong_slow_identity_term(value: str) -> bool:
+    tokens = re.findall(r"[A-Za-z0-9]+", value)
+    return len(tokens) >= 2 or (
+        len(tokens) == 1
+        and value.isalnum()
+        and value.isupper()
+        and 2 <= len(value) <= 5
+    )
+
+
 def _assemble_final_context(
     *,
     plan: InformationPlan,
@@ -7321,9 +7372,9 @@ class SignalEvolutionEngine:
         self.workspace = workspace
         self.mining_model = mining_model
         self.update_model = update_model
-        discovery_aliases = _case_identity_alias_inventory(discovery_cases)
+        discovery_aliases = _slow_role_identity_guard_inventory(discovery_cases)
         for role in (self.mining_model, self.update_model):
-            setter = getattr(role, "set_anonymous_aliases", None)
+            setter = getattr(role, "set_identity_guard_aliases", None)
             if callable(setter):
                 setter(discovery_aliases)
         self.llm_signal_runner = llm_signal_runner

@@ -201,12 +201,19 @@ not coerced into a bogus Plan.
 Every role that receives source-derived text also receives the same explicit
 untrusted-data instruction: source text cannot override the system message,
 the output contract, identity/outcome boundaries, or source authorization.
-Accepted free-text outputs from critic, round reflection, post-hoc, proposer,
-and H1 are value-masked and rescanned against the complete 24-case alias
-inventory before entering Plan/meta domains. A fixed-semantics scanner rejects
-attempts to introduce probability thresholds, redefine the six-month price
-surge/horizon, change the four-way judgment, or turn `H_analyse` into a
-Predictor.
+Accepted free-text outputs from critic, round reflection, post-hoc, and proposer
+are value-masked and rescanned against the complete 24-case alias inventory
+before entering Plan/meta domains. Slow aggregate roles use a different boundary:
+their case-derived inputs have already been masked and rescanned by the local
+controller, so H1 must preserve the structured payload byte-for-byte rather than
+recursively replacing Discovery-wide derived brands that can collide with source
+types, enum values, Signal ids, or ordinary prose. Before send, H1 performs only
+a non-mutating scan for strong exact identity terms. Free-text Mining/Update
+outputs use the same strong-term scan and fail into the one bounded correction;
+the leaking value is not echoed and accepted output is never silently mutated.
+A fixed-semantics scanner rejects attempts to introduce probability thresholds,
+redefine the six-month price surge/horizon, change the four-way judgment, or turn
+`H_analyse` into a Predictor.
 
 Signal Mining uses five narrow structured role stages rather than a
 one-tool-per-turn Agent transcript:
@@ -246,11 +253,12 @@ All H2/H3/E1 Discovery material is identity-masked before leaving the local
 controller. Short ticker-like aliases remain case-sensitive in ordinary prose
 to avoid masking common words, but are matched case-insensitively inside URLs;
 short all-uppercase brands derived from a formal company name are masked too.
-Slow-loop full-Discovery-inventory boundaries compile each expanded alias matcher
-once per payload traversal and reuse it across every nested string. This is only a
-local performance rule: the recursive mask, case rules, URL handling, and separate
-post-mask full-inventory scan remain mandatory and complete before request
-reservation or send.
+Each local case boundary compiles its expanded alias matcher once per payload
+traversal and reuses it across every nested string. This is only a local
+performance rule: the recursive mask, case rules, URL handling, and separate
+post-mask scan remain mandatory and complete before request reservation or send.
+It does not authorize a later full-Discovery-inventory rewrite of the aggregate
+H1/control payload.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

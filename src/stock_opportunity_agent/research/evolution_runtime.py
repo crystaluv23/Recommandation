@@ -4554,6 +4554,7 @@ def _complete_parsed_role(
     max_output_tokens: int | None = None,
     max_request_tokens: int | None = None,
     sanitize_output_aliases: Iterable[str] = (),
+    reject_output_aliases: Iterable[str] = (),
     stable_correction_prefix: bool = False,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
@@ -4611,6 +4612,18 @@ def _complete_parsed_role(
                 allow_outcomes=allow_outcomes,
                 anonymous_aliases=sanitize_output_aliases,
             )
+        if tuple(reject_output_aliases):
+            try:
+                _scan_payload(
+                    value,
+                    allow_outcomes=allow_outcomes,
+                    anonymous_aliases=reject_output_aliases,
+                    identity_boundary="structured role output",
+                )
+            except ValidationError as exc:
+                failed_output = {}
+                failure = exc
+                continue
         try:
             return _parse_role_output(request_stage, value, parser), usage
         except (KeyError, TypeError, ValueError) as exc:
@@ -6596,10 +6609,10 @@ class LLMSignalUpdateModel(SignalUpdateModel):
 
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
-        self.anonymous_aliases: tuple[str, ...] = ()
+        self.identity_guard_aliases: tuple[str, ...] = ()
 
-    def set_anonymous_aliases(self, value: Iterable[str]) -> None:
-        self.anonymous_aliases = tuple(value)
+    def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
+        self.identity_guard_aliases = tuple(value)
 
     def update(
         self, payload: Mapping[str, Any]
@@ -6634,8 +6647,9 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             payload=payload,
             parser=parse,
             allow_outcomes=True,
+            anonymous_aliases=self.identity_guard_aliases,
             temperature=0.0,
-            sanitize_output_aliases=self.anonymous_aliases,
+            reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=8_000,
         )
         return AgentStep(value, usage)
@@ -6649,10 +6663,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             raise ValidationError("Signal Mining creative temperature must be in [0, 1]")
         self.caller = caller
         self.creative_temperature = creative_temperature
-        self.anonymous_aliases: tuple[str, ...] = ()
+        self.identity_guard_aliases: tuple[str, ...] = ()
 
-    def set_anonymous_aliases(self, value: Iterable[str]) -> None:
-        self.anonymous_aliases = tuple(value)
+    def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
+        self.identity_guard_aliases = tuple(value)
 
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
@@ -6695,12 +6709,12 @@ class LLMSignalMiningModel(SignalMiningModel):
             return items
 
         request_payload: Mapping[str, Any] = payload
-        if self.anonymous_aliases:
-            request_payload = _mask_identity_values(payload, self.anonymous_aliases)
+        if self.identity_guard_aliases:
             _scan_payload(
                 request_payload,
                 allow_outcomes=True,
-                anonymous_aliases=self.anonymous_aliases,
+                anonymous_aliases=self.identity_guard_aliases,
+                identity_boundary="Signal Mining H1 aggregate request",
             )
         value, usage = _complete_parsed_role(
             self.caller,
@@ -6720,7 +6734,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=request_payload,
             parser=parse,
             allow_outcomes=True,
-            sanitize_output_aliases=self.anonymous_aliases,
+            anonymous_aliases=self.identity_guard_aliases,
+            reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
             temperature=self.creative_temperature,
         )
@@ -6788,6 +6803,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=False,
+            anonymous_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
         )
         return AgentStep(value, usage)
@@ -6852,6 +6868,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=False,
+            anonymous_aliases=self.identity_guard_aliases,
+            reject_output_aliases=self.identity_guard_aliases,
         )
         return AgentStep(value, usage)
 
@@ -6904,7 +6922,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=True,
-            sanitize_output_aliases=self.anonymous_aliases,
+            anonymous_aliases=self.identity_guard_aliases,
+            reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=(8_000 if stage == "signal_mining_contrast" else 4_000),
             temperature=temperature,
         )
@@ -9094,6 +9113,7 @@ def _scan_payload(
     *,
     allow_outcomes: bool,
     anonymous_aliases: Iterable[str],
+    identity_boundary: str = "anonymous request",
 ) -> None:
     aliases = tuple(
         sorted(
@@ -9134,7 +9154,9 @@ def _scan_payload(
                 if not ticker_like and casefolded is None:
                     casefolded = item.casefold()
                 if matcher.search(item if ticker_like else casefolded or ""):
-                    raise ValidationError(f"identity alias leaked into anonymous request: {path}")
+                    raise ValidationError(
+                        f"identity alias leaked into {identity_boundary}: {path}"
+                    )
 
     visit(value, "payload")
 

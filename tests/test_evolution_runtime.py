@@ -1008,6 +1008,121 @@ class ScriptedRoleCaller:
 
 
 class ConcreteRoleAdapterTests(TestCase):
+    def test_signal_h1_preserves_real_structured_context_with_brand_collisions(
+        self,
+    ) -> None:
+        output = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "estimate_revision_dispersion",
+                    "statement": "Estimate revisions may precede repricing.",
+                    "applicability": "Companies with current analyst estimates.",
+                    "expected_positive_pattern": (
+                        "Positive cases show stronger upward revisions than controls."
+                    ),
+                    "source_types": ["news"],
+                    "query": "analyst estimate revision",
+                    "falsifiers": ["Controls revise upward just as often."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([output])
+        model = LLMSignalMiningModel(caller, creative_temperature=1.0)
+        model.set_identity_guard_aliases(
+            (
+                "OPEN",
+                "Match Group",
+                "News Corp",
+                "Alpha Metallurgical Resources",
+            )
+        )
+        payload = {
+            "track": "hypothesis",
+            "limits": {"hypothesis_limit": 3},
+            "available_raw_source_types": [
+                "alpha_vantage_earnings_raw_response",
+                "company_facts",
+                "market_data",
+                "news",
+                "price_history",
+            ],
+            "capability_backlog": {
+                "status": "open",
+                "signal_need_items": [
+                    {
+                        "status": "open",
+                        "stop_reason": "no_signal_match",
+                        "need": "Compare revisions against prior expectations.",
+                    }
+                ],
+            },
+            "registered_deterministic_functions": ["news.negative_word_count"],
+            "stable_signal_cards": [
+                {
+                    "signal_id": "negative_word_count",
+                    "signal_ref": "negative_word_count:v1",
+                    "category": "news",
+                    "description": "Count negative terms in company news.",
+                }
+            ],
+        }
+
+        hypotheses = model.propose_hypotheses(payload)
+
+        self.assertEqual(caller.calls[0]["payload"], payload)
+        self.assertNotIn("MASKED_COMPANY", json.dumps(caller.calls[0]["payload"]))
+        self.assertEqual(hypotheses.value[0].source_types, ("news",))
+
+    def test_signal_h1_rejects_identity_output_without_echoing_it(self) -> None:
+        leaking = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "named_issuer",
+                    "statement": "Match Group shows a reusable pattern.",
+                    "applicability": "Companies with estimate revisions.",
+                    "expected_positive_pattern": "Upward revisions are stronger.",
+                    "source_types": ["news"],
+                    "query": "estimate revision",
+                    "falsifiers": ["Controls revise equally often."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = {
+            "hypotheses": [
+                {
+                    **leaking["hypotheses"][0],
+                    "statement": "Upward estimate revisions may precede repricing.",
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([leaking, corrected])
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases(("Match Group",))
+
+        result = model.propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        )
+        self.assertEqual(caller.calls[1]["payload"]["invalid_output"], {})
+        self.assertIn(
+            "identity alias leaked into structured role output",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertNotIn("Match Group", json.dumps(caller.calls[1]["payload"]))
+        self.assertEqual(
+            result.value[0].statement,
+            "Upward estimate revisions may precede repricing.",
+        )
+
     def test_plan_proposer_repairs_malformed_provider_json_once(self) -> None:
         class MalformedThenValidCaller:
             def __init__(self) -> None:

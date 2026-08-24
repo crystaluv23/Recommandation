@@ -1075,6 +1075,22 @@ and candidate contract; it has no domain tools. A new deterministic formula is
 a code-reviewed framework change; Mining or Update may use only functions
 already registered by the runtime.
 
+Discovery identity removal is owned by the controller at the boundary where one
+case's source-derived brief, evidence packet, Signal-result view, or bootstrap
+need is assembled. That boundary uses the complete local alias inventory and a
+post-mask scan. An aggregate Slow role must not recursively substitute the full
+Discovery-wide alias inventory through an already anonymous structured payload:
+derived brands such as `Open`, `Match`, `Alpha`, or `News` can also be legitimate
+source types, enum values, Signal identifiers, and ordinary analytical prose.
+H1 therefore receives its producer-validated payload unchanged and applies only
+a non-mutating fail-closed scan for strong identity terms: opaque case/company
+ids, exact ticker-like aliases, and complete multi-word formal-name components.
+The same strong-term rule applies to free-text Mining/Update outputs.
+An output leak is rejected into the one bounded correction without echoing the
+leaking value; the adapter never silently edits an accepted schema, enum,
+identifier, or candidate. H2/H3/E1 and Update retain their local per-case
+mask-and-scan boundaries before request reservation.
+
 All candidates are staged first. The orchestrator then executes each
 candidate's non-empty point-in-time fixtures through the real candidate
 executor and checks expected canonical state, schema, leakage (including

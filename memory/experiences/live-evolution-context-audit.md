@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 10
+visit_times: 11
 
 ## Trigger
 
@@ -425,3 +425,22 @@ Exclude predictions, labels, post-hoc reflection, literal evidence, hypotheses, 
 and Plan definitions. The exception changes only the Slow trigger: H1/H2/H3, Update,
 candidate execution, paired effectiveness, atomic promotion, and Locked Test remain the
 ordinary gates, and the rejected Fast round stays outside committed history.
+
+## Aggregate-identity addendum (2026-08-24)
+
+Do not reuse a case-local identity masker as an aggregate structured-role rewrite.
+The complete Discovery inventory intentionally derives leading brands so a concrete
+case's source text cannot leak its issuer, but across thousands of issuers those brands
+include protocol vocabulary such as `Open`, `Match`, `Alpha`, and `News`. In one exact
+H1 request, global substitution corrupted source-type enums, backlog status/stop values,
+stable Signal categories/functions, and ordinary comparative prose before any network
+call was sent.
+
+Keep the full recursive derived-alias mask and independent scan at each case/source
+producer. Once those producers have emitted anonymous briefs, evidence packets, Signal
+views, or bootstrap needs, preserve the aggregate JSON exactly and scan it without
+mutation for only strong identities: opaque ids, exact ticker-like aliases, and
+multi-word formal-name components. Apply the same strong scan to Mining/Update output;
+on a leak, reject into the bounded correction without echoing the leaking value. Never
+silently rewrite an accepted schema, enum, identifier, candidate, or control value in
+the name of output sanitization.
