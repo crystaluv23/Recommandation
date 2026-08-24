@@ -428,7 +428,10 @@ The Research Controller's `continue/finalize` vocabulary governs information
 collection, not the final opportunity class. Proposed `H_init` or `H_reflect` text
 that defines or asks the controller to finalize an alternative prediction ontology
 such as `strong up/up/down/strong down` is rejected through the same proposal
-correction. The fixed four-way Predictor remains the only classification owner.
+correction. Explicit guard language that preserves that boundary, such as keeping the
+fixed four-way judgment intact or proceeding without altering the Predictor ontology,
+must not be mistaken for a replacement ontology. The fixed four-way Predictor remains
+the only classification owner.
 
 Each candidate slot may make at most three independently hashed proposal
 attempts. Every structured runtime role receives at most one correction with

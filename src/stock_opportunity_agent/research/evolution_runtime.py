@@ -4110,6 +4110,17 @@ _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+_RESEARCH_CONTROLLER_ONTOLOGY_GUARD = re.compile(
+    r"\b(?:keep(?:ing)?|preserv(?:e|ing))\s+(?:the\s+)?four[- ]way\s+"
+    r"(?:judg\w*|class\w*)\s+(?:intact|unchanged|fixed)\b|"
+    r"\bwithout\s+(?:altering|changing|defining|finali[sz]ing|naming|"
+    r"redefining)\s+(?:the\s+)?(?:four[- ]way\s+(?:judg\w*|class\w*)|"
+    r"predictor\s+(?:class\s+)?ontology)(?:\s+(?:or|and)\s+(?:the\s+)?"
+    r"(?:four[- ]way\s+(?:judg\w*|class\w*)|"
+    r"predictor\s+(?:class\s+)?ontology))?",
+    re.IGNORECASE,
+)
+
 
 def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
     """Reject output-template echoes and incomplete evolvable role instructions."""
@@ -4205,10 +4216,11 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
         ("H_init", plan.initial_research_skill),
         ("H_reflect", plan.reflection_skill),
     ):
+        scrubbed = _RESEARCH_CONTROLLER_ONTOLOGY_GUARD.sub("", text_value)
         scrubbed = re.sub(
             r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
             "",
-            text_value,
+            scrubbed,
             flags=re.IGNORECASE,
         )
         if _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY.search(scrubbed):

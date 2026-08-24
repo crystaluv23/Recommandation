@@ -4985,7 +4985,8 @@ class ConcreteRoleAdapterTests(TestCase):
         corrected["H_reflect"] = (
             "Reflect on supporting and contradictory evidence to update beliefs, "
             "then continue with the next information need or finalize evidence "
-            "collection without producing a prediction."
+            "collection while keeping the four-way judgment intact and without "
+            "altering the Predictor class ontology."
         )
         caller = ScriptedRoleCaller([invalid, corrected])
 

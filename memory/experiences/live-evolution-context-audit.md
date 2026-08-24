@@ -399,3 +399,11 @@ Controller instructions may finalize evidence collection but cannot redefine the
 Predictor's fixed four-way ontology. Identity masking must not derive generic prose
 aliases such as `High` from a multi-word company name, because replacing a normal
 adjective silently corrupts Plan meaning even though the target identity disappears.
+
+Ontology guards have the same affirmative-versus-negative boundary as probability
+guards. A real proposer first wrote “keeping the four-way judgment intact” and then
+corrected it to “without altering the Predictor class ontology”; both faithfully
+preserved the fixed boundary, but a bare ontology scanner rejected both and discarded
+the proposal attempt. Remove only tightly shaped preservation phrases before checking
+for a replacement class list. Do not scrub arbitrary `without ...` clauses, which
+could hide an affirmative instruction later in the same sentence.

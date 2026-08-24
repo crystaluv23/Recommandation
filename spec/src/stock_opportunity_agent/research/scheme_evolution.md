@@ -87,6 +87,9 @@ S = (B, H_init, H_reflect, H_analyse)
   `finalize` decision ends evidence collection only; `H_reflect` cannot define,
   name, or choose a replacement prediction-class ontology. The fixed Predictor
   alone owns `likely/possible/unlikely/insufficient_information` and magnitude.
+  A Plan may explicitly preserve this boundary (for example, keep the fixed
+  four-way judgment intact or continue without altering the Predictor ontology);
+  negative guard language is not itself an ontology definition.
 - `H_analyse`: supplies only evidence-organization and weighting instructions
   for assembling Basic Info, important Signal results, counter-evidence, and
   final state into the label-free Predictor context. It cannot calculate event
