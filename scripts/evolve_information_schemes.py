@@ -1037,8 +1037,9 @@ def _print_progress(event: dict[str, object], *, stream=None) -> None:
         )
         if event.get("attempt_id") is not None:
             message += f" · attempt={event.get('attempt_id')}"
+    elif event_type == "slow_loop_started":
+        message = event_type
     elif event_type in {
-        "slow_loop_started",
         "slow_loop_completed",
         "slow_loop_result_reused",
         "slow_loop_result_staged",

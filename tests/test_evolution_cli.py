@@ -83,6 +83,18 @@ class EvolutionCliTests(TestCase):
         self.assertIn("F1=0.750", output)
         self.assertIn("当前 Top-K", output)
 
+    def test_slow_loop_started_progress_has_no_fake_candidate_result(self) -> None:
+        stream = io.StringIO()
+
+        CLI._print_progress(
+            {"event_type": "slow_loop_started", "cycle_id": 1},
+            stream=stream,
+        )
+
+        self.assertIn("slow_loop_started", stream.getvalue())
+        self.assertNotIn("validated=", stream.getvalue())
+        self.assertNotIn("promoted=", stream.getvalue())
+
     def test_ctrl_c_result_is_durable_and_parser_supports_continuous_mode(self) -> None:
         args = CLI.build_parser().parse_args(
             [

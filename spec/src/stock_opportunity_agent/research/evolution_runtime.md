@@ -714,6 +714,9 @@ paid correction without duplicating source text.
 
 The runtime emits structured, secret-free progress events before and after
 request, cache, Plan, case, scoring, round-commit, and Slow-loop boundaries.
+`slow_bootstrap` has no Fast boundary and therefore emits no
+`fast_loop_started` event; its `slow_loop_started` rendering contains no empty
+candidate-validation fields because those values do not exist until completion.
 The workspace appends those events to its debug trajectory before forwarding
 them to an optional caller callback. An external request interrupted after its
 attempt reservation remains visibly `in_progress`; it is not silently retried

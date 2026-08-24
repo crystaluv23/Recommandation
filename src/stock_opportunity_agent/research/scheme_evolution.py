@@ -9443,18 +9443,19 @@ class DualLoopEvolutionEngine:
             )
         )
         rounds: list[PlanRoundResult] = []
-        _emit_progress(
-            self.on_progress,
-            "fast_loop_started",
-            cycle_mode=self.cycle_mode,
-            completed_plan_rounds=completed_plan_rounds,
-            target_plan_rounds=self.plan_rounds_per_signal_cycle,
-            signal_registry_hash=(
-                str(staged_validation["input_registry_hash"])
-                if staged_validation is not None
-                else snapshot.registry_hash
-            ),
-        )
+        if self.cycle_mode == "fast_then_slow":
+            _emit_progress(
+                self.on_progress,
+                "fast_loop_started",
+                cycle_mode=self.cycle_mode,
+                completed_plan_rounds=completed_plan_rounds,
+                target_plan_rounds=self.plan_rounds_per_signal_cycle,
+                signal_registry_hash=(
+                    str(staged_validation["input_registry_hash"])
+                    if staged_validation is not None
+                    else snapshot.registry_hash
+                ),
+            )
         if snapshot is None and completed_plan_rounds < self.plan_rounds_per_signal_cycle:
             raise ValidationError("Fast-loop resume requires an input Signal snapshot")
         for _ in range(

@@ -4947,6 +4947,7 @@ class DualLoopTests(TestCase):
                 evolution_validation=make_evaluation_pool(),
                 locked_test=(make_case("locked_company", 12.0),),
             )
+            progress_events = []
 
             result = DualLoopEvolutionEngine(
                 plan_engine=plan_engine,
@@ -4955,6 +4956,7 @@ class DualLoopTests(TestCase):
                 dataset=dataset,
                 plan_rounds_per_signal_cycle=0,
                 cycle_mode="slow_bootstrap",
+                on_progress=progress_events.append,
             ).run_cycle(cycle_id=1)
 
             self.assertEqual(result.plan_rounds, ())
@@ -4962,6 +4964,9 @@ class DualLoopTests(TestCase):
             self.assertEqual(evaluator.seen_company_ids, [])
             self.assertEqual(workspace.last_completed_round, 0)
             self.assertEqual(len(mining_model.requests), 1)
+            event_types = [item["event_type"] for item in progress_events]
+            self.assertNotIn("fast_loop_started", event_types)
+            self.assertIn("slow_loop_started", event_types)
 
     def test_offline_dual_loop_freezes_signals_then_runs_one_slow_cycle(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
