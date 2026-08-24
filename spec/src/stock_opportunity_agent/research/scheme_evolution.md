@@ -83,7 +83,10 @@ S = (B, H_init, H_reflect, H_analyse)
   may instead split the assertion or remove unsupported numeric detail.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
-  resolved/open questions, next needs, and `continue` or `finalize`.
+  resolved/open questions, next needs, and `continue` or `finalize`. Its
+  `finalize` decision ends evidence collection only; `H_reflect` cannot define,
+  name, or choose a replacement prediction-class ontology. The fixed Predictor
+  alone owns `likely/possible/unlikely/insufficient_information` and magnitude.
 - `H_analyse`: supplies only evidence-organization and weighting instructions
   for assembling Basic Info, important Signal results, counter-evidence, and
   final state into the label-free Predictor context. It cannot calculate event
@@ -141,11 +144,12 @@ visible card categories such as `catalysts`, `risks`, or `product` must not reje
 an otherwise valid selection merely because they are not context-tag enum values.
 The sole semantic exception is version-owned applicability: a Signal may expose
 `routing_excluded_context_tags`, and selecting that Signal while the selector itself
-attaches one of those tags is a direct contradiction that receives the one bounded
-correction. Runtime neither infers tags from case content nor substitutes another
-Signal. The correction must remove the incompatible selection, or return a genuinely
-different supported applicability classification; merely paying for a Signal whose
-own stated hypothesis says it is inapplicable is not allowed.
+attaches one of those tags now or attached it in an earlier accepted selection for
+the same case is a direct contradiction that receives the one bounded correction.
+Runtime neither infers tags from case content nor substitutes another Signal. The
+correction must remove the incompatible selection, or return a genuinely different
+supported applicability classification; merely dropping a prior case classification
+to pay for a Signal whose own hypothesis says it is inapplicable is not allowed.
 Unknown refs, missing fields, and invalid reason/role enums remain semantic failures
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
@@ -329,6 +333,11 @@ source-backed decision driver is required; an all-empty “nothing failed” obj
 not useful original-layer learning and receives one correction. Older read-only
 artifacts without this field deserialize it as empty, while every new artifact writes
 the field explicitly.
+When the framework judgment is incorrect, at least one concrete failure-attribution
+item is likewise required across `why_prediction_failed`, `misleading_signals`,
+`ignored_evidence`, `missing_information`, or `plan_issues`. Merely copying
+`prediction_outcome.correct=false` with every diagnostic array empty is invalid and
+receives the same one bounded correction.
 The Predictor packet is a separate deterministic projection capped at 24,000
 canonical UTF-8 payload bytes so its exact wire request plus the 2,000-token output
 ceiling fits inside the frozen 36,000-token terminal reserve even under the

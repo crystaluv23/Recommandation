@@ -1694,6 +1694,17 @@ class ConcreteRoleAdapterTests(TestCase):
                 snapshot,
                 {},
             )
+            omitted_prior_tag = signal_selection("commercialization_status:v1")
+            omitted_prior_tag["selections"][0]["context_tags"] = ["general"]
+            prior_caller = ScriptedRoleCaller(
+                [omitted_prior_tag, {"selections": []}]
+            )
+            prior_classified = LLMSignalRetrievalAgent(prior_caller).select(
+                ("Check whether a distinct new product became commercial.",),
+                snapshot,
+                {},
+                prior_context_tags=("mature_operations",),
+            )
 
         self.assertEqual(selection.value, ())
         self.assertEqual(selection.usage.llm_calls, 2)
@@ -1717,6 +1728,15 @@ class ConcreteRoleAdapterTests(TestCase):
             ("commercialization_status:v1",),
         )
         self.assertEqual(applicable.usage.llm_calls, 1)
+        self.assertEqual(prior_classified.value, ())
+        self.assertEqual(
+            prior_caller.calls[0]["payload"]["previous_context_tags"],
+            ["mature_operations"],
+        )
+        self.assertIn(
+            "earlier accepted case classification",
+            validation_error(prior_caller.calls[1]),
+        )
 
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -2262,6 +2282,58 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.calls[1]["payload"]["validation_error"],
         )
         self.assertEqual(reflection.value.decision_drivers, tuple(corrected["decision_drivers"]))
+
+    def test_v30_incorrect_posthoc_requires_specific_failure_attribution(self) -> None:
+        empty = {
+            "prediction_outcome": {"correct": False},
+            "decision_drivers": [],
+            "why_prediction_failed": [],
+            "misleading_signals": [],
+            "ignored_evidence": [],
+            "missing_information": [],
+            "plan_issues": [],
+        }
+        corrected = json.loads(json.dumps(empty))
+        corrected["misleading_signals"] = [
+            "The 52-week high and low drawdown were momentum evidence, not a "
+            "source-backed catalyst for a six-month doubling."
+        ]
+        caller = ScriptedRoleCaller([empty, corrected])
+        predictor = LLMBlindPredictor(caller)
+
+        reflection = predictor.reflect(
+            {"summary": "Momentum was positive but no doubling catalyst was supplied."},
+            BlindPrediction(
+                is_surge=True,
+                candidate_judgment=CandidateJudgment.POSSIBLE,
+                magnitude=MagnitudeClass.TWO_TO_THREE,
+                confidence=ConfidenceLevel.MEDIUM,
+                key_reasons=("strong momentum",),
+                uncertainties=("no catalyst",),
+                session_id="anonymous-session",
+            ),
+            GroundTruth(1.5),
+        )
+
+        self.assertEqual(
+            caller.stages,
+            [
+                "blind_predictor_posthoc_reflect",
+                "blind_predictor_posthoc_reflect_correction",
+            ],
+        )
+        self.assertIn(
+            "all-empty incorrect reflection",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertEqual(
+            reflection.value.misleading_signals,
+            tuple(corrected["misleading_signals"]),
+        )
+        self.assertIn(
+            "at least one of why_prediction_failed",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_plan_critic_receives_compact_anonymous_trajectories(self) -> None:
         class Artifact:
@@ -4675,6 +4747,156 @@ class ConcreteRoleAdapterTests(TestCase):
         ]
         self.assertEqual(len(identities), len(set(identities)))
 
+    def test_v30_shared_soft_projection_preserves_per_signal_document_scope(self) -> None:
+        class CrossScopeCaller:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, Any]] = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                payload = kwargs["payload"]
+                if len(self.calls) == 1:
+                    scopes = {
+                        item["signal_ref"]: item["eligible_projection_ids"]
+                        for item in payload["signals"]
+                    }
+                    return (
+                        {
+                            "results": [
+                                {
+                                    "signal_ref": "scope_a:v1",
+                                    "result": {
+                                        "signal_id": "scope_a",
+                                        "version": 1,
+                                        "state": {
+                                            "value": "positive",
+                                            "confidence": 0.8,
+                                        },
+                                        "interpretation": {
+                                            "summary": "Peer evidence was cited."
+                                        },
+                                        "evidence": {
+                                            "supporting": [
+                                                {
+                                                    "projection_id": scopes[
+                                                        "scope_b:v1"
+                                                    ][0],
+                                                    "exact_text": (
+                                                        "Customer B signed a contract."
+                                                    ),
+                                                }
+                                            ],
+                                            "counter": [],
+                                        },
+                                        "status": {"coverage": "sufficient"},
+                                    },
+                                },
+                                {
+                                    "signal_ref": "scope_b:v1",
+                                    "result": {
+                                        "signal_id": "scope_b",
+                                        "version": 1,
+                                        "state": {
+                                            "value": "unavailable",
+                                            "confidence": 0.0,
+                                        },
+                                        "interpretation": {
+                                            "summary": "No conclusion."
+                                        },
+                                        "evidence": {
+                                            "supporting": [],
+                                            "counter": [],
+                                        },
+                                        "status": {"coverage": "unavailable"},
+                                    },
+                                },
+                            ]
+                        },
+                        AgentUsage(llm_calls=1, tokens=50, cost=0.01),
+                    )
+                return (
+                    {
+                        "results": [
+                            {
+                                "signal_ref": "scope_a:v1",
+                                "result": {
+                                    "signal_id": "scope_a",
+                                    "version": 1,
+                                    "state": {
+                                        "value": "unavailable",
+                                        "confidence": 0.0,
+                                    },
+                                    "interpretation": {"summary": "No conclusion."},
+                                    "evidence": {"supporting": [], "counter": []},
+                                    "status": {"coverage": "unavailable"},
+                                },
+                            }
+                        ]
+                    },
+                    AgentUsage(llm_calls=1, tokens=20, cost=0.005),
+                )
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        document_a = RawInfoDocument.create(
+            document_id="document-a",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="Issuer A raised guidance.",
+        )
+        document_b = RawInfoDocument.create(
+            document_id="document-b",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="Customer B signed a contract.",
+        )
+        inputs = tuple(
+            LLMSignalBatchInput(
+                SignalSpec(
+                    signal_id=signal_id,
+                    version=1,
+                    category="catalysts",
+                    description="Inspect one bounded filing.",
+                    execution_type=SignalExecutionType.LLM,
+                    source_types=("filing",),
+                    skill_file=f"{signal_id}.md",
+                ),
+                (document,),
+                "Extract source-grounded evidence.",
+            )
+            for signal_id, document in (
+                ("scope_a", document_a),
+                ("scope_b", document_b),
+            )
+        )
+        caller = CrossScopeCaller()
+
+        results, usage = StructuredLLMSignalRunner(caller).execute_many(inputs, as_of)
+
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertEqual(results["scope_a:v1"].value, SignalValue.UNAVAILABLE)
+        first_scopes = {
+            item["signal_ref"]: item["eligible_projection_ids"]
+            for item in caller.calls[0]["payload"]["signals"]
+        }
+        self.assertTrue(first_scopes["scope_a:v1"])
+        self.assertTrue(first_scopes["scope_b:v1"])
+        self.assertTrue(
+            set(first_scopes["scope_a:v1"]).isdisjoint(
+                first_scopes["scope_b:v1"]
+            )
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
+        self.assertIn("outside this Signal's eligible_projection_ids", feedback["validation_error"])
+        self.assertIn("unchanged eligible_projection_ids", feedback["required_action"])
+        self.assertIn(
+            "Each Signal may cite only projection ids",
+            caller.calls[0]["system_prompt"],
+        )
+
     def test_proposer_corrects_unsupported_source_then_rejects_stale_probability(self) -> None:
         parent = default_information_plan()
         unsupported = {
@@ -4729,6 +4951,66 @@ class ConcreteRoleAdapterTests(TestCase):
                 "available_source_types"
             ],
             ["filing", "market_data"],
+        )
+
+    def test_v30_proposer_rejects_controller_owned_prediction_ontology(self) -> None:
+        parent = default_information_plan()
+        invalid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "market",
+                        "description": "compact market evidence",
+                        "source_types": ["market_data"],
+                        "lookback_days": 30,
+                        "max_documents": 1,
+                    }
+                ]
+            },
+            "H_init": (
+                "Form a falsifiable hypothesis and list unresolved information "
+                "needs and questions."
+            ),
+            "H_reflect": (
+                "Reflect on supporting and contradictory evidence, then finalize "
+                "the four-way judgment (strong up, up, down, strong down) or "
+                "continue to the next information need."
+            ),
+            "H_analyse": (
+                "Organize and weight supporting and counter-evidence while "
+                "preserving uncertainty."
+            ),
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["H_reflect"] = (
+            "Reflect on supporting and contradictory evidence to update beliefs, "
+            "then continue with the next information need or finalize evidence "
+            "collection without producing a prediction."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        plan = LLMInformationPlanProposer(
+            caller,
+            available_source_types=("market_data",),
+        ).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(plan.reflection_skill, corrected["H_reflect"])
+        self.assertIn(
+            "cannot define or finalize a replacement Predictor class ontology",
+            caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
+        )
+        self.assertIn(
+            "must not define, name, or finalize a replacement Predictor class ontology",
+            caller.calls[0]["system_prompt"],
         )
 
     def test_posthoc_uses_compact_view_not_full_original_context(self) -> None:

@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 8
+visit_times: 9
 
 ## Trigger
 
@@ -375,3 +375,27 @@ partial deterministic round if the soft request cannot be reserved. The case rem
 correction still counts. When a soft citation fails at an internal projection edge,
 name the evidence index, touched edge, and overlapping projection ids so the sole
 correction can choose a complete visible clause without local evidence synthesis.
+
+## Persisted-scope addendum (2026-08-24)
+
+Semantic constraints that depend on an earlier model decision must persist across
+rounds. A selector can correctly tag one commercialization selection as
+`mature_operations`, have that selection rejected, and then choose the same Signal as
+`general` on the next round. Preserve the selector-authored accepted tag history in
+later routing context and apply the version-owned exclusion to the union of prior and
+current tags; never infer issuer stage locally.
+
+A shared LLM projection also needs per-Signal citation scope. Batching two Signals over
+one union of documents can let one result cite a document supplied only for its peer,
+which is predictable from the prompt rather than merely a bad response. Expose each
+versioned ref's exact eligible projection ids and enforce that subset during literal
+mapping, unique relocation, and overlap repair while retaining one shared provider
+call.
+
+Finally, role and privacy validators must inspect ordinary prose semantics, not just
+schemas and alias presence. An incorrect prediction with every diagnostic array empty
+is not useful reflection; require at least one concrete failure attribution. Research
+Controller instructions may finalize evidence collection but cannot redefine the
+Predictor's fixed four-way ontology. Identity masking must not derive generic prose
+aliases such as `High` from a multi-word company name, because replacing a normal
+adjective silently corrupts Plan meaning even though the target identity disappears.

@@ -222,6 +222,7 @@ class OneSignalSelector:
         prior_signal_results=None,
         eligible_signal_refs=None,
         research_state=None,
+        prior_context_tags=(),
     ):
         self.needs = tuple(information_needs)
         return AgentStep(
@@ -887,6 +888,20 @@ class InformationPlanRuntimeTests(TestCase):
             ),
         )
 
+    def test_v30_common_leading_name_word_does_not_damage_plan_prose(self) -> None:
+        masked = _mask_identity_values(
+            (
+                "High Tide announced an update while HITI traded higher; "
+                "retain high decision relevance in the generic Plan instruction."
+            ),
+            ("HITI", "High Tide Inc / High Tide Inc."),
+        )
+
+        self.assertEqual(masked.count("[MASKED_COMPANY]"), 2)
+        self.assertNotIn("High Tide", masked)
+        self.assertNotIn("HITI", masked)
+        self.assertIn("high decision relevance", masked)
+
     def test_formal_name_masks_short_uppercase_brand_and_url_alias(self) -> None:
         masked = _mask_identity_values(
             "AAR signed an agreement at https://www.aar.com/aar-update.",
@@ -1106,6 +1121,7 @@ class InformationPlanRuntimeTests(TestCase):
                 prior_signal_results=None,
                 eligible_signal_refs=None,
                 research_state=None,
+                prior_context_tags=(),
             ):
                 eligible = tuple(eligible_signal_refs or ())
                 self.eligible_calls.append(eligible)
@@ -1186,6 +1202,7 @@ class InformationPlanRuntimeTests(TestCase):
                 prior_signal_results=None,
                 eligible_signal_refs=None,
                 research_state=None,
+                prior_context_tags=(),
             ):
                 return AgentStep(
                     (
@@ -1550,6 +1567,7 @@ class InformationPlanRuntimeTests(TestCase):
         class EligibleSelector:
             def __init__(self) -> None:
                 self.eligible_calls: list[tuple[str, ...]] = []
+                self.prior_context_calls: list[tuple[str, ...]] = []
 
             def select(
                 self,
@@ -1559,9 +1577,11 @@ class InformationPlanRuntimeTests(TestCase):
                 prior_signal_results=None,
                 eligible_signal_refs=None,
                 research_state=None,
+                prior_context_tags=(),
             ):
                 eligible = tuple(eligible_signal_refs or ())
                 self.eligible_calls.append(eligible)
+                self.prior_context_calls.append(tuple(prior_context_tags))
                 if "revenue_growth_yoy:v1" in eligible:
                     return AgentStep(
                         (
@@ -1571,6 +1591,7 @@ class InformationPlanRuntimeTests(TestCase):
                                 selection_reason="Answer the remaining evidence need.",
                                 applicability_hypothesis="Comparable financial facts exist.",
                                 expected_role="primary",
+                                context_tags=("mature_operations",),
                             ),
                         ),
                         AgentUsage(),
@@ -1606,6 +1627,11 @@ class InformationPlanRuntimeTests(TestCase):
             )
             self.assertIn("revenue_growth_yoy:v1", selector.eligible_calls[0])
             self.assertNotIn("revenue_growth_yoy:v1", selector.eligible_calls[1])
+            self.assertEqual(selector.prior_context_calls[0], ())
+            self.assertEqual(
+                selector.prior_context_calls[1],
+                ("mature_operations",),
+            )
             self.assertFalse(trajectory.signal_rounds[0].batch.skipped_unchanged_refs)
 
     def test_repeated_issuer_cases_keep_distinct_truths_and_prediction_files(self) -> None:

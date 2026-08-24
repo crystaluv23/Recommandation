@@ -209,12 +209,21 @@ semantic boundary if it is nevertheless selected.
 A Signal version may additionally declare a small
 `routing_excluded_context_tags` array inside `parameters`. Every value must come
 from the frozen routing-tag vocabulary. The compact card exposes these exclusions,
-and a selector output that attaches one of them to that same Signal is internally
-contradictory and receives the one bounded routing correction. Runtime does not
+and a selector output is internally contradictory when the excluded tag appears
+either in the current batch or in that selector's earlier accepted classifications
+for the same case. It receives the one bounded routing correction. Runtime does not
 infer a case tag, remove a tag to force acceptance, or choose another Signal; it
-acts only on the selector's own explicit classification plus the version-owned
-exclusion. `commercialization_status:v1` excludes `mature_operations`, matching
-its skill boundary without turning general routing tags into universal hard rules.
+acts only on the selector's own explicit current/prior classification plus the
+version-owned exclusion. `commercialization_status:v1` excludes
+`mature_operations`, matching its skill boundary without turning general routing
+tags into universal hard rules.
+
+A shared soft-Signal provider call deduplicates source text across at most two
+Signals, but document eligibility remains per Signal. Each model-facing Signal entry
+therefore includes `eligible_projection_ids`; evidence mapping rejects any citation
+outside the matching list even when that projection is visible because the peer
+Signal contributed it. Shared context is a transport optimization, not an expansion
+of either Signal's Raw Info boundary.
 
 `unavailable` is a coverage state, never evidence that the measured condition
 is absent. The complete model-returned interpretation remains durable in the

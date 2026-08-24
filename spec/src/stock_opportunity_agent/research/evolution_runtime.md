@@ -109,7 +109,10 @@ composite formal-name components, suffix-stripped natural company names, and
 distinctive leading brand tokens are independently stripped and masked before a
 defense-in-depth scan of the assembled context. This still catches an explicit
 `AN`/`LOW` ticker leak but does not misclassify ordinary prose such as "an
-artifact" or "low liquidity".
+artifact" or "low liquidity". A common leading company-name word such as `High`
+is not by itself a distinctive derived brand alias: the complete name and ticker
+remain masked, while ordinary Plan prose such as "high decision relevance" must
+remain byte-for-byte intact.
 Distinctive non-generic leading brands of four or more alphanumeric characters are
 included, so a four-letter brand reused inside a target-branded property or product
 name cannot survive merely because the ticker matcher is intentionally case-sensitive.
@@ -304,6 +307,11 @@ specific `decision_drivers` item explaining which supplied evidence or counter-e
 made the saved judgment work. An otherwise all-empty correct reflection receives the
 bounded correction instead of entering the original case layer and later allowing a
 generic vertical or horizontal summary to substitute for the case-level reason.
+For a framework-incorrect case, at least one concrete item must appear in
+`why_prediction_failed`, `misleading_signals`, `ignored_evidence`,
+`missing_information`, or `plan_issues`. A false prediction with all diagnostic
+arrays empty receives the same correction and, if still invalid, the existing
+explicit validation-failure fallback rather than a content-free reflection.
 
 The Plan critic must not receive complete saved trajectories. Its request uses
 one deterministic compact row per case containing only an opaque case index,
@@ -415,6 +423,12 @@ user payload contains one stable `proposal_context` followed by
 `validation_feedback`, which is null initially and contains the rejected output
 and exact local error only on correction. This retains all correction context
 while preserving the largest provider-cacheable prefix.
+
+The Research Controller's `continue/finalize` vocabulary governs information
+collection, not the final opportunity class. Proposed `H_init` or `H_reflect` text
+that defines or asks the controller to finalize an alternative prediction ontology
+such as `strong up/up/down/strong down` is rejected through the same proposal
+correction. The fixed four-way Predictor remains the only classification owner.
 
 Each candidate slot may make at most three independently hashed proposal
 attempts. Every structured runtime role receives at most one correction with
@@ -596,6 +610,13 @@ complementarity; the information needs remain the retrieval objective. This prev
 the selector from inventing a company stage that the controller state already
 contradicts without duplicating the 32,000-character Basic projection.
 
+Each later selection request also carries the deduplicated context tags from earlier
+accepted selections in the same case. Version-owned exclusions are checked against
+the union of these prior selector-authored tags and the current output's tags. Runtime
+still never infers a tag from prose and never chooses a replacement Signal; it only
+prevents the selector from dropping its own prior `mature_operations` classification
+to bypass a later exclusion.
+
 Routing tags remain non-semantic hints. Runtime normalizes strings, deduplicates
 them, drops values outside the frozen tag vocabulary, and retains at most four in
 model order. A model copying a visible card category such as `catalysts`, `risks`,
@@ -632,6 +653,14 @@ An initial preflight failure performs no attempt/network action. If the initial 
 attempt completed but its correction preflight fails, runtime still counts that paid
 usage while accepting no invalid soft result. In both cases the selection remains
 auditable in the exact routing response and request-ready event.
+
+When two LLM Signals share one deduplicated source projection, each compact Signal
+entry lists its own `eligible_projection_ids`, derived only from that Signal's
+resolved Raw Info documents. The role may read the shared projection once but may
+cite only ids in the matching list. Mapping and validation enforce the same scope,
+and correction feedback points back to that stable list. This prevents one Signal
+from citing a document contributed only by its batch peer and avoids a predictable
+paid correction without duplicating source text.
 
 ## Supervision, Interrupt, and Resume
 

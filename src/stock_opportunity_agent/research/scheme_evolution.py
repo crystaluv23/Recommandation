@@ -67,6 +67,7 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
         "first",
         "general",
         "global",
+        "high",
         "international",
         "national",
         "new",
@@ -839,6 +840,7 @@ class SignalRetrievalAgent(Protocol):
         prior_signal_results: Mapping[str, Mapping[str, Any]],
         eligible_signal_refs: tuple[str, ...] | None = None,
         research_state: ResearchState | None = None,
+        prior_context_tags: tuple[str, ...] = (),
     ) -> AgentStep[tuple[SignalSelectionDecision, ...]]:
         """Return a reasoned unique batch using needs and bounded applicability state."""
 
@@ -1737,6 +1739,14 @@ def execute_information_plan(
                 prior_signal_results,
                 eligible_signal_refs=eligible_signal_refs,
                 research_state=state,
+                prior_context_tags=tuple(
+                    dict.fromkeys(
+                        tag
+                        for round_row in rounds
+                        for selection in round_row.selections
+                        for tag in selection.context_tags
+                    )
+                ),
             )
         except RuntimeBudgetExceeded:
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED

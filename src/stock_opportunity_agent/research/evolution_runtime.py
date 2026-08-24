@@ -3805,7 +3805,7 @@ _PREDICTION_REFLECTION_OUTPUT = _output_contract(
 def _prediction_reflection_from_role(
     value: Mapping[str, Any], *, framework_correct: bool
 ) -> PredictionSelfReflection:
-    """Validate that correct cases retain concrete original-layer learning."""
+    """Validate that every case retains concrete original-layer learning."""
 
     reflection = PredictionSelfReflection.from_dict(
         _reject_fixed_semantics_redefinition(value)
@@ -3815,6 +3815,20 @@ def _prediction_reflection_from_role(
             "a framework-correct post-hoc reflection requires at least one specific "
             "source-backed decision_drivers item; do not return an all-empty correct "
             "reflection"
+        )
+    failure_attribution = (
+        *reflection.why_prediction_failed,
+        *reflection.misleading_signals,
+        *reflection.ignored_evidence,
+        *reflection.missing_information,
+        *reflection.plan_issues,
+    )
+    if not framework_correct and not failure_attribution:
+        raise ValidationError(
+            "a framework-incorrect post-hoc reflection requires at least one "
+            "specific failure-attribution item in why_prediction_failed, "
+            "misleading_signals, ignored_evidence, missing_information, or "
+            "plan_issues; do not return an all-empty incorrect reflection"
         )
     return reflection
 
@@ -4001,7 +4015,9 @@ _INFORMATION_PLAN_OUTPUT = (
     "H_init must cover hypothesis "
     "formation and unresolved information needs/questions; H_reflect must cover "
     "evidence-based updating and continue/finalize or next-needs choice; H_analyse "
-    "must cover evidence organization/weighting and counter-evidence or uncertainty."
+    "must cover evidence organization/weighting and counter-evidence or uncertainty. "
+    "H_init and H_reflect update ResearchState and evidence collection only; they "
+    "must not define, name, or finalize a replacement Predictor class ontology."
     " Do not return plan_id or parent_ids; runtime owns structural metadata. "
     "B must contain at least one compact market-backbone request whose "
     "source_types includes market_data, whose lookback_days is at most 60, "
@@ -4087,6 +4103,12 @@ _PLAN_SKILL_REQUIREMENTS: dict[str, tuple[tuple[re.Pattern[str], str], ...]] = {
         ),
     ),
 }
+
+_RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY = re.compile(
+    r"\bfour[- ]way\s+(?:judg\w*|class\w*)\b|"
+    r"\bstrong\s+up\b.{0,80}\bstrong\s+down\b",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
@@ -4179,6 +4201,22 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
             "H_analyse may organize/weight evidence only and cannot redefine fixed "
             "Predictor semantics"
         )
+    for field_name, text_value in (
+        ("H_init", plan.initial_research_skill),
+        ("H_reflect", plan.reflection_skill),
+    ):
+        scrubbed = re.sub(
+            r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
+            "",
+            text_value,
+            flags=re.IGNORECASE,
+        )
+        if _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY.search(scrubbed):
+            raise ValidationError(
+                f"{field_name} may update ResearchState and decide evidence "
+                "collection only; it cannot define or finalize a replacement "
+                "Predictor class ontology"
+            )
 
 
 def _reject_fixed_semantics_redefinition(value: Any) -> Any:
@@ -5361,6 +5399,7 @@ class LLMSignalRetrievalAgent:
         prior_signal_results: Mapping[str, Mapping[str, Any]] | None = None,
         eligible_signal_refs: tuple[str, ...] | None = None,
         research_state: ResearchState | None = None,
+        prior_context_tags: tuple[str, ...] = (),
     ) -> AgentStep[tuple[SignalSelectionDecision, ...]]:
         registry_refs = tuple(spec.ref for spec in signal_registry.specs)
         allowed_refs = (
@@ -5372,6 +5411,14 @@ class LLMSignalRetrievalAgent:
             raise ValidationError("eligible Signal refs must be unique")
         if not set(allowed_refs).issubset(registry_refs):
             raise ValidationError("eligible Signal refs must belong to the Registry")
+        if any(
+            not isinstance(tag, str) or tag not in SIGNAL_CONTEXT_TAGS
+            for tag in prior_context_tags
+        ):
+            raise ValidationError(
+                "prior Signal routing context tags must use the frozen vocabulary"
+            )
+        normalized_prior_tags = tuple(dict.fromkeys(prior_context_tags))
         allowed = set(allowed_refs)
         cards = []
         specs_by_ref = {spec.ref: spec for spec in signal_registry.specs}
@@ -5403,6 +5450,7 @@ class LLMSignalRetrievalAgent:
             "available_signal_cards": cards,
             "information_needs": list(information_needs),
             "research_context": _signal_routing_research_context(research_state),
+            "previous_context_tags": list(normalized_prior_tags),
             "previous_signal_results": {
                 ref: signal_result_model_view(value)
                 for ref, value in (prior_signal_results or {}).items()
@@ -5473,21 +5521,6 @@ class LLMSignalRetrievalAgent:
                     if len(tags) == 4:
                         break
                 spec = specs_by_ref[signal_ref]
-                excluded_tags = tuple(
-                    tag
-                    for tag in tags
-                    if tag
-                    in spec.parameters.get("routing_excluded_context_tags", ())
-                )
-                if excluded_tags:
-                    raise ValidationError(
-                        "Signal selection applicability contradicts a version-owned "
-                        f"routing exclusion: {signal_ref} cannot be selected with "
-                        f"context_tags={list(excluded_tags)}. Remove the incompatible "
-                        "selection, or return a genuinely different supported "
-                        "applicability classification; runtime will not choose a "
-                        "replacement Signal"
-                    )
                 if spec.execution_type.value == "llm":
                     if llm_count >= 2:
                         continue
@@ -5506,6 +5539,27 @@ class LLMSignalRetrievalAgent:
                 )
                 if len(parsed) == 4:
                     break
+            selector_case_tags = {
+                *normalized_prior_tags,
+                *(tag for item in parsed for tag in item.context_tags),
+            }
+            for item in parsed:
+                excluded_tags = sorted(
+                    selector_case_tags.intersection(
+                        specs_by_ref[item.signal_ref].parameters.get(
+                            "routing_excluded_context_tags", ()
+                        )
+                    )
+                )
+                if excluded_tags:
+                    raise ValidationError(
+                        "Signal selection applicability contradicts a version-owned "
+                        f"routing exclusion: {item.signal_ref} cannot be selected "
+                        "after the selector classified this case with "
+                        f"context_tags={excluded_tags}. Remove the incompatible "
+                        "selection; runtime will not infer a replacement Signal or "
+                        "forget an earlier accepted case classification"
+                    )
             return tuple(parsed)
 
         selected, usage = _complete_parsed_role(
@@ -5517,7 +5571,10 @@ class LLMSignalRetrievalAgent:
                 "executed Signals are omitted and must not be reconstructed. If "
                 "research_context is present, use it only to test Signal "
                 "applicability and complementarity; it is accepted controller state, "
-                "not a new source, and contains no literal evidence. If "
+                "not a new source, and contains no literal evidence. "
+                "previous_context_tags contains your accepted classifications from "
+                "earlier routing rounds in this case; preserve them when applying "
+                "version-owned exclusions and do not omit one to bypass a card. If "
                 "none of the supplied cards adds useful evidence, return "
                 "{\"selections\": []}. Empty is invalid when an information need "
                 "repeats three or more consecutive normalized words from an "
@@ -5667,7 +5724,11 @@ class LLMBlindPredictor:
                     "one realized outcome proves an ex-ante probability category. "
                     "When framework_prediction_correct is true, decision_drivers must "
                     "name at least one specific supplied evidence or counter-evidence "
-                    "reason that made the saved judgment work."
+                    "reason that made the saved judgment work. When it is false, "
+                    "at least one of why_prediction_failed, misleading_signals, "
+                    "ignored_evidence, missing_information, or plan_issues must name "
+                    "a specific failure attribution; an all-empty incorrect "
+                    "reflection is invalid."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _PREDICTION_REFLECTION_OUTPUT
                 ),
@@ -6810,9 +6871,27 @@ def _project_llm_signal_documents(
 def _map_projected_signal_evidence(
     value: Mapping[str, Any],
     lineage: Mapping[str, _SignalProjectionLineage],
+    *,
+    eligible_projection_ids: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     """Map unique projected quotes back to canonical original Raw Info spans."""
 
+    eligible_ids = (
+        frozenset(lineage)
+        if eligible_projection_ids is None
+        else frozenset(eligible_projection_ids)
+    )
+    unknown_ids = eligible_ids - set(lineage)
+    if unknown_ids:
+        raise ValidationError(
+            "Signal eligible_projection_ids contain unknown projections: "
+            f"{sorted(unknown_ids)}"
+        )
+    eligible_lineage = {
+        projection_id: projection
+        for projection_id, projection in lineage.items()
+        if projection_id in eligible_ids
+    }
     normalized = json.loads(json.dumps(value))
     evidence = normalized.get("evidence")
     if not isinstance(evidence, Mapping):
@@ -6833,19 +6912,25 @@ def _map_projected_signal_evidence(
             exact_text = entry.get("exact_text")
             if not isinstance(projection_id, str) or not isinstance(exact_text, str):
                 raise ValidationError("Signal evidence requires projection_id and exact_text")
-            projection = lineage.get(projection_id)
+            if projection_id in lineage and projection_id not in eligible_ids:
+                raise ValidationError(
+                    f"Signal {group} evidence[{index}] cites projection "
+                    f"{projection_id!r} outside this Signal's "
+                    f"eligible_projection_ids={sorted(eligible_ids)}"
+                )
+            projection = eligible_lineage.get(projection_id)
             resolved_projection_id = projection_id
             if not exact_text:
                 raise ValidationError("Signal projection evidence must map uniquely")
             if projection is None or projection.projection_text.count(exact_text) != 1:
                 matches = [
                     (candidate_id, candidate)
-                    for candidate_id, candidate in lineage.items()
+                    for candidate_id, candidate in eligible_lineage.items()
                     if candidate.projection_text.count(exact_text) == 1
                 ]
                 occurrence_count = sum(
                     candidate.projection_text.count(exact_text)
-                    for candidate in lineage.values()
+                    for candidate in eligible_lineage.values()
                 )
                 if len(matches) != 1 or occurrence_count != 1:
                     raise ValidationError("Signal projection evidence must map uniquely")
@@ -6866,7 +6951,7 @@ def _map_projected_signal_evidence(
             if touched_edges:
                 overlapping_projection_ids = sorted(
                     candidate_id
-                    for candidate_id, candidate in lineage.items()
+                    for candidate_id, candidate in eligible_lineage.items()
                     if candidate_id != resolved_projection_id
                     and candidate.document.document_id
                     == projection.document.document_id
@@ -6950,10 +7035,32 @@ class StructuredLLMSignalRunner:
         if len({item.spec.ref for item in inputs}) != len(inputs):
             raise ValidationError("LLM Signal batch refs must be unique")
         documents, lineage = _shared_llm_signal_projection(inputs)
+        projection_ids_by_ref: dict[str, tuple[str, ...]] = {}
+        for item in inputs:
+            document_identities = {
+                (document.document_id, document.content_hash)
+                for document in item.documents
+            }
+            projection_ids_by_ref[item.spec.ref] = tuple(
+                projection_id
+                for projection_id, projection in lineage.items()
+                if (
+                    projection.document.document_id,
+                    projection.document.content_hash,
+                )
+                in document_identities
+            )
         base_payload = {
             "batch_signal_refs": sorted(item.spec.ref for item in inputs),
             "signals": [
-                {"signal_ref": item.spec.ref, "signal_spec": item.spec.to_dict(), "skill": item.skill}
+                {
+                    "signal_ref": item.spec.ref,
+                    "signal_spec": item.spec.to_dict(),
+                    "skill": item.skill,
+                    "eligible_projection_ids": list(
+                        projection_ids_by_ref[item.spec.ref]
+                    ),
+                }
                 for item in inputs
             ],
             "as_of": as_of.isoformat(),
@@ -6989,7 +7096,10 @@ class StructuredLLMSignalRunner:
                         "shared bounded point-in-time source_projection. Each evidence "
                         "item inside a nested result must use projection_id and "
                         "exact_text copied from one visible projection; runtime maps it to "
-                        "the original raw span. Do not cite text that starts or ends at an "
+                        "the original raw span. Each Signal may cite only projection ids "
+                        "listed in its own eligible_projection_ids, even though peer "
+                        "Signal projections are visible in the shared batch. Do not cite "
+                        "text that starts or ends at an "
                         "internal projection edge; use the overlapping projection containing "
                         "the complete clause. Never infer omitted source text is absent. "
                         "Return unavailable with no evidence when visible text is insufficient. "
@@ -7041,7 +7151,11 @@ class StructuredLLMSignalRunner:
                     normalized = _canonicalize_unique_case_only_spans(
                         normalized, item.documents
                     )
-                    normalized = _map_projected_signal_evidence(normalized, lineage)
+                    normalized = _map_projected_signal_evidence(
+                        normalized,
+                        lineage,
+                        eligible_projection_ids=projection_ids_by_ref[signal_ref],
+                    )
                     result = _parse_role_output(
                         "llm_signal_batch_execute", normalized, SignalResult.from_dict
                     )
@@ -7072,8 +7186,9 @@ class StructuredLLMSignalRunner:
                                 f"Return outer signal_ref exactly {signal_ref!r}; set nested "
                                 f"result.signal_id exactly {item.spec.signal_id!r} without "
                                 f"a version suffix and result.version exactly {item.spec.version}. "
-                                "Ground the corrected result only in one unique visible "
-                                "projection quote, or return unavailable with empty evidence."
+                                "Ground the corrected result only in one unique quote from "
+                                "that Signal's unchanged eligible_projection_ids list, or "
+                                "return unavailable with empty evidence."
                             ),
                         }
                     )
