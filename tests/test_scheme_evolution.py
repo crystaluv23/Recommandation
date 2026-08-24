@@ -70,6 +70,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimeUsage,
     RoundPaused,
     SharedEvaluationDataUnavailable,
+    SlowLoopDataUnavailable,
     SignalCandidateEffectivenessEvaluator,
     SignalCandidateValidator,
     SignalEvolutionEngine,
@@ -3422,6 +3423,58 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
+    def test_h2_profile_provider_failure_raises_retryable_slow_pause(self) -> None:
+        class ProviderFailureResolver:
+            available_source_types = ("filing",)
+
+            def resolve(self, request, *, company_id, identity, as_of):
+                del request, company_id, identity, as_of
+                return type(
+                    "Resolution",
+                    (),
+                    {
+                        "gap": type(
+                            "Gap",
+                            (),
+                            {
+                                "reason": type(
+                                    "Reason", (), {"value": "provider_error"}
+                                )()
+                            },
+                        )()
+                    },
+                )()
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            case = replace(
+                make_case("profile_provider_failure", 4.0),
+                basic_info={
+                    "company_name": "Profile Provider Failure Corp",
+                    "ticker": "PPFC",
+                },
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(case,),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                evidence_resolver=ProviderFailureResolver(),
+            )
+
+            with self.assertRaises(SlowLoopDataUnavailable) as context:
+                engine._mining_case_brief("case-001", case)
+
+            self.assertEqual(context.exception.case_ref, "case-001")
+            self.assertEqual(context.exception.reason, "provider_error")
+            self.assertTrue(context.exception.retryable)
+
     def test_h2_profile_readiness_shortage_skips_h2_and_h3(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

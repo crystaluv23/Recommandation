@@ -1637,6 +1637,7 @@ class SharedEvaluationDataUnavailable(EvolutionControlFlow):
             )
         )
 
+
     def to_dict(self) -> dict[str, Any]:
         """Return the secret-free process-control payload."""
 
@@ -1647,6 +1648,16 @@ class SharedEvaluationDataUnavailable(EvolutionControlFlow):
             "retryable": self.retryable,
             "checkpoint_ref": self.checkpoint_ref,
         }
+
+
+class SlowLoopDataUnavailable(EvolutionControlFlow):
+    """A retryable source failure interrupted Slow case preparation."""
+
+    def __init__(self, case_ref: str, reason: str) -> None:
+        self.case_ref = str(case_ref)
+        self.reason = str(reason)
+        self.retryable = True
+        super().__init__(f"Slow profile data unavailable: {case_ref}={reason}")
 
 
 def execute_information_plan(
@@ -8722,9 +8733,9 @@ class SignalEvolutionEngine:
                 "quota_deferred",
                 "materialization_failed",
             }:
-                raise EvolutionControlFlow(
-                    "temporary_h2_profile_provider_failure: "
-                    + resolution.gap.reason.value
+                raise SlowLoopDataUnavailable(
+                    case_ref,
+                    resolution.gap.reason.value,
                 )
             acquired = self.evidence_resolver.load_documents(
                 resolution, as_of=case.prediction_time

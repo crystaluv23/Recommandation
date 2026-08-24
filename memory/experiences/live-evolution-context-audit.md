@@ -225,6 +225,13 @@ without embedding a complete candidate. Keep legacy-echo validation, and give in
 and correction attempts one byte-identical system prompt plus a stable
 `proposal_context` prefix followed by null-or-object validation feedback.
 
+The same rule applies to H1. In v36 the first hypothesis copied the complete order
+example and the remaining portfolio stayed in that example's domain while ignoring
+the supplied earnings/production/estimate/revenue needs. Use a schema-only H1 contract;
+when bootstrap needs exist, require every hypothesis to share at least two normalized
+non-generic topic terms with one need. This validates grounding without having local
+code invent or select a hypothesis, and still permits an explicit empty portfolio.
+
 ## Citation-usability addendum (2026-08-23)
 
 An evidence contract can be correct while its model view still makes compliance

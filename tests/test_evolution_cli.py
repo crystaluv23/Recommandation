@@ -243,3 +243,45 @@ class EvolutionCliTests(TestCase):
             )
             self.assertEqual(payload["case_reasons"], {"case_pdc": "provider_error"})
             self.assertEqual(payload["last_completed_round"], 0)
+
+    def test_main_returns_75_for_retryable_slow_profile_data(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            stdout = io.StringIO()
+            argv = [
+                str(SCRIPT_PATH),
+                "run-loop",
+                "--workspace",
+                str(workspace),
+                "--raw-info-root",
+                str(root / "raw_info"),
+                "--approved-dataset",
+                str(root / "approved.json"),
+                "--dashboard-root",
+                str(root / "dashboard"),
+            ]
+            unavailable = CLI.SlowLoopDataUnavailable(
+                "case-001", "provider_error"
+            )
+            with (
+                patch.object(sys, "argv", argv),
+                patch.object(
+                    CLI,
+                    "run_loop_command",
+                    side_effect=unavailable,
+                ),
+                redirect_stdout(stdout),
+            ):
+                exit_code = CLI.main()
+
+            payload = json.loads(stdout.getvalue())
+            self.assertEqual(exit_code, 75)
+            self.assertEqual(payload["status"], "slow_loop_data_unavailable")
+            self.assertEqual(payload["case_ref"], "case-001")
+            self.assertEqual(payload["provider_reason"], "provider_error")
+            self.assertEqual(payload["last_completed_cycle"], 0)
+            events = (
+                workspace / "experiments" / "trajectory.jsonl"
+            ).read_text(encoding="utf-8")
+            self.assertIn("slow_loop_data_unavailable", events)

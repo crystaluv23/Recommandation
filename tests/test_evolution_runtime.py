@@ -1008,6 +1008,67 @@ class ScriptedRoleCaller:
 
 
 class ConcreteRoleAdapterTests(TestCase):
+    def test_signal_h1_corrects_hypothesis_unrelated_to_bootstrap_need(self) -> None:
+        ungrounded = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "large_order_confirmation",
+                    "statement": "Material order confirmation precedes repricing.",
+                    "applicability": "Project-driven companies.",
+                    "expected_positive_pattern": "Positive cases confirm more orders.",
+                    "source_types": ["news"],
+                    "query": "material order customer award",
+                    "falsifiers": ["Controls confirm orders equally often."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        grounded = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "production_cost_guidance_gap",
+                    "statement": (
+                        "Production volume and cost-per-ounce guidance gaps may "
+                        "precede repricing."
+                    ),
+                    "applicability": "Producers disclosing operating guidance.",
+                    "expected_positive_pattern": (
+                        "Positive cases beat production and unit-cost guidance."
+                    ),
+                    "source_types": ["news"],
+                    "query": "production volume cost ounce guidance",
+                    "falsifiers": ["Controls beat the same guidance as often."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([ungrounded, grounded])
+        model = LLMSignalMiningModel(caller)
+
+        result = model.propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {
+                            "need": (
+                                "What are recent production volumes and cost per "
+                                "ounce, and how do they compare to guidance?"
+                            )
+                        }
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        )
+        self.assertIn("at least two", validation_error(caller.calls[1]))
+        self.assertEqual(result.value[0].hypothesis_id, "production_cost_guidance_gap")
+
     def test_signal_h1_preserves_real_structured_context_with_brand_collisions(
         self,
     ) -> None:
@@ -1053,7 +1114,10 @@ class ConcreteRoleAdapterTests(TestCase):
                     {
                         "status": "open",
                         "stop_reason": "no_signal_match",
-                        "need": "Compare revisions against prior expectations.",
+                        "need": (
+                            "Compare analyst estimate revisions against prior "
+                            "expectations."
+                        ),
                     }
                 ],
             },
@@ -1455,6 +1519,11 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(caller.calls[0]["temperature"], 1.0)
         self.assertEqual(caller.calls[1]["temperature"], 1.0)
+        self.assertNotIn("large_order_confirmation", caller.calls[0]["system_prompt"])
+        self.assertNotIn(
+            "material order contract customer award",
+            caller.calls[0]["system_prompt"],
+        )
         self.assertIn("validation_error", caller.calls[1]["payload"])
         self.assertEqual(caller.calls[2]["temperature"], 0.0)
         self.assertFalse(caller.calls[2]["allow_outcomes"])

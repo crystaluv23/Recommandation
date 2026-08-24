@@ -26,6 +26,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanEvaluationConfig,
     RoundPaused,
     SharedEvaluationDataUnavailable,
+    SlowLoopDataUnavailable,
 )
 from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_PRIORS
 from stock_opportunity_agent.research.evolution_dashboard import (
@@ -1178,6 +1179,41 @@ def _shared_evaluation_data_result(
     }
 
 
+def _slow_loop_data_result(
+    workspace_path: Path,
+    unavailable: SlowLoopDataUnavailable,
+    *,
+    on_progress=None,
+) -> dict[str, object]:
+    """Record a retryable Slow data pause without candidate semantics."""
+
+    workspace = EvolutionWorkspace(workspace_path)
+    event = workspace.append_event(
+        "cycle_paused",
+        {
+            "reason": "slow_loop_data_unavailable",
+            "case_ref": unavailable.case_ref,
+            "provider_reason": unavailable.reason,
+            "retryable": True,
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": workspace.last_completed_cycle,
+        },
+    )
+    if on_progress is not None:
+        on_progress(event)
+    return {
+        "status": "slow_loop_data_unavailable",
+        "workspace": str(workspace_path),
+        "case_ref": unavailable.case_ref,
+        "provider_reason": unavailable.reason,
+        "retryable": True,
+        "last_completed_round": workspace.last_completed_round,
+        "last_completed_cycle": workspace.last_completed_cycle,
+        "resume": "rerun the same command with the same frozen contract",
+        "locked_test_accessed": False,
+    }
+
+
 def main() -> int:
     args = build_parser().parse_args()
     exit_code = 0
@@ -1319,6 +1355,15 @@ def main() -> int:
             on_progress=progress,
         )
         exit_code = 75 if unavailable.retryable else 2
+    except SlowLoopDataUnavailable as unavailable:
+        if args.command not in {"run-cycle", "run-loop"}:
+            raise
+        result = _slow_loop_data_result(
+            args.workspace,
+            unavailable,
+            on_progress=progress,
+        )
+        exit_code = 75
     except RetryableOpenAIClientError as exc:
         if args.command not in {"run-cycle", "run-loop"}:
             raise

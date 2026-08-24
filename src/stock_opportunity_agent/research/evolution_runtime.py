@@ -6527,23 +6527,70 @@ class LLMRoundReflector:
             )
 
 
-_SIGNAL_MINING_HYPOTHESES_OUTPUT = _output_contract(
-    "SignalMiningHypotheses",
+_SIGNAL_MINING_HYPOTHESES_OUTPUT = (
+    ' Output contract for SignalMiningHypotheses: return exactly {"hypotheses":[]}, '
+    "where hypotheses is a JSON array containing zero to the supplied "
+    "hypothesis_limit objects. Each object has exactly these keys and types: "
+    "hypothesis_id (lowercase safe-id string), statement (non-empty string), "
+    "applicability (non-empty string), expected_positive_pattern (non-empty "
+    "string), source_types (non-empty unique string array), query (non-empty "
+    "string), falsifiers (non-empty string array), and lookback_days (integer "
+    "from 1 through 1825). Do not add wrapper keys or Markdown, and never name "
+    "a company."
+)
+
+_H1_GENERIC_TOPIC_TERMS = frozenset(
     {
-        "hypotheses": [
-            {
-                "hypothesis_id": "large_order_confirmation",
-                "statement": "Explicit material order confirmation precedes repricing.",
-                "applicability": "Companies with project or customer order disclosure.",
-                "expected_positive_pattern": "Positive cases show confirmed material orders more often than controls.",
-                "source_types": ["news", "filing"],
-                "query": "material order contract customer award",
-                "falsifiers": ["The pattern is equally common in controls."],
-                "lookback_days": 365,
-            }
-        ]
-    },
-) + " Return zero to the supplied hypothesis_limit items and never name a company."
+        "about",
+        "after",
+        "against",
+        "before",
+        "case",
+        "company",
+        "compare",
+        "control",
+        "could",
+        "from",
+        "have",
+        "into",
+        "latest",
+        "more",
+        "pattern",
+        "positive",
+        "recent",
+        "show",
+        "signal",
+        "than",
+        "that",
+        "their",
+        "these",
+        "they",
+        "this",
+        "those",
+        "what",
+        "when",
+        "where",
+        "which",
+        "with",
+        "would",
+    }
+)
+
+
+def _h1_topic_terms(value: str) -> frozenset[str]:
+    """Return deterministic topic terms for demand-grounding validation."""
+
+    result: set[str] = set()
+    for raw in re.findall(r"[A-Za-z0-9]+", value.casefold()):
+        if len(raw) < 4 or raw in _H1_GENERIC_TOPIC_TERMS:
+            continue
+        term = raw[:-3] + "y" if raw.endswith("ies") else raw
+        if term.endswith("s") and len(term) > 4 and not term.endswith("ss"):
+            term = term[:-1]
+        if term in _H1_GENERIC_TOPIC_TERMS:
+            continue
+        result.add(term)
+    return frozenset(result)
 
 _SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
     "SignalMiningRankings",
@@ -6675,6 +6722,16 @@ class LLMSignalMiningModel(SignalMiningModel):
         allowed_source_types = {
             str(item) for item in payload.get("available_raw_source_types", ())
         }
+        backlog = payload.get("capability_backlog", {})
+        need_term_sets = tuple(
+            _h1_topic_terms(str(item["need"]))
+            for item in (
+                backlog.get("signal_need_items", ())
+                if isinstance(backlog, Mapping)
+                else ()
+            )
+            if isinstance(item, Mapping) and str(item.get("need", "")).strip()
+        )
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
             if set(value) != {"hypotheses"} or not isinstance(
@@ -6706,6 +6763,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                 )
             for item in items:
                 _reject_fixed_semantics_redefinition(item.to_dict())
+                if need_term_sets:
+                    hypothesis_terms = _h1_topic_terms(
+                        " ".join(
+                            (
+                                item.statement,
+                                item.applicability,
+                                item.expected_positive_pattern,
+                                item.query,
+                            )
+                        )
+                    )
+                    if not any(
+                        len(hypothesis_terms & need_terms) >= 2
+                        for need_terms in need_term_sets
+                    ):
+                        raise ValidationError(
+                            "Signal Mining H1 hypothesis must share at least two "
+                            "non-generic topic terms with one signal_need_item: "
+                            + item.hypothesis_id
+                        )
             return items
 
         request_payload: Mapping[str, Any] = payload
@@ -6726,6 +6803,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "capability_backlog.signal_need_items are identity-masked, label-hidden "
                 "needs that an actual Fast trajectory could not match to a stable Signal; "
                 "treat them as diagnostic demand, not as evidence that a candidate works. "
+                "When signal_need_items is non-empty, every hypothesis must directly "
+                "address one need and reuse at least two of its non-generic topic terms. "
                 "Every source_types item must exactly equal one value from "
                 "available_raw_source_types; never pluralize or invent an alias."
                 + _UNTRUSTED_DATA_INSTRUCTION

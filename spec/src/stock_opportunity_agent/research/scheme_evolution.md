@@ -991,7 +991,14 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The
-   Registry artifact and frozen snapshot remain complete in both cases.
+   Registry artifact and frozen snapshot remain complete in both cases. The H1
+   output contract describes keys and JSON types without a complete domain
+   example that can be copied as an answer. When bootstrap `signal_need_items`
+   are present, every returned hypothesis must directly ground itself in one
+   item by sharing at least two non-generic normalized topic terms across its
+   statement, applicability, expected pattern, and query. An ungrounded
+   hypothesis receives the one bounded correction; an empty portfolio remains
+   a valid explicit result.
 2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business
@@ -1001,7 +1008,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    description/excerpt, industry, or sector exists. The target remains 32; H2
    is not called with fewer than 16 ready issuers or with fewer than four
    locally hidden positive and four control issuers. Retryable provider failure
-   creates a control-plane pause. Deterministic shortage records
+   creates a cycle-level control-plane pause with the opaque case ref and provider
+   reason, preserves both pointers, and returns process exit 75 for exact-contract
+   resume. It is not a hypothesis rejection or generic traceback. Deterministic shortage records
    `insufficient_h2_profile_readiness` without calling H2/H3 and is not a
    hypothesis failure.
 3. `local feasibility`: reveal labels only inside the controller, require at

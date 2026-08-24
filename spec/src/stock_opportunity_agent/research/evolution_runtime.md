@@ -242,6 +242,12 @@ both zero `selection_events` and zero `unique_observations`; otherwise the full
 anonymous profile remains visible. This removes repeated empty matrices without
 discarding learned routing or effectiveness evidence, and never changes the
 Registry/frozen-snapshot artifact.
+The H1 provider contract is schema-only and contains no complete business-domain
+hypothesis. If bootstrap `signal_need_items` are nonempty, the adapter requires
+each hypothesis to share at least two non-generic, simply singular-normalized
+topic terms with one exact need across its semantic fields. This is a grounding
+check against supplied demand, not local hypothesis generation; failures receive
+the existing one bounded correction and explicit empty remains valid.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming
@@ -264,6 +270,11 @@ performance rule: the recursive mask, case rules, URL handling, and separate
 post-mask scan remain mandatory and complete before request reservation or send.
 It does not authorize a later full-Discovery-inventory rewrite of the aggregate
 H1/control payload.
+If H2 profile acquisition returns `provider_error`, `quota_deferred`, or
+`materialization_failed`, the CLI records a cycle-level Slow data pause containing
+only the opaque case ref and reason, leaves round/cycle pointers and Registry
+unchanged, and exits 75. Resume uses the same frozen contract; the failure never
+becomes model correction, candidate rejection, or Plan fitness.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact
