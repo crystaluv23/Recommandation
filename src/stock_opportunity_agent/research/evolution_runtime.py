@@ -6694,7 +6694,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             payload=payload,
             parser=parse,
             allow_outcomes=True,
-            anonymous_aliases=self.identity_guard_aliases,
+            anonymous_aliases=(),
             temperature=0.0,
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=8_000,
@@ -6882,7 +6882,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=False,
-            anonymous_aliases=self.identity_guard_aliases,
+            anonymous_aliases=(),
+            reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
         )
         return AgentStep(value, usage)
@@ -6947,7 +6948,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=False,
-            anonymous_aliases=self.identity_guard_aliases,
+            anonymous_aliases=(),
             reject_output_aliases=self.identity_guard_aliases,
         )
         return AgentStep(value, usage)
@@ -7001,7 +7002,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             payload=payload,
             parser=parse,
             allow_outcomes=True,
-            anonymous_aliases=self.identity_guard_aliases,
+            anonymous_aliases=(),
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=(8_000 if stage == "signal_mining_contrast" else 4_000),
             temperature=temperature,

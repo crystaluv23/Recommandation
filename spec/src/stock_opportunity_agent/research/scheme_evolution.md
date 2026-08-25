@@ -1003,9 +1003,13 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business
    description or Item 1 business excerpt, industry, sector, exchange, coarse
-   size/listing-age buckets, and Raw Info coverage, but never company/ticker
-   identity or outcome. A brief is ready only when at least one of business
-   description/excerpt, industry, or sector exists. The target remains 32; H2
+   size/listing-age buckets, and Raw Info coverage, but never target
+   company/ticker identity or outcome. An HTML filing excerpt must come from an
+   actual non-navigation Item 1 block and begin at a substantive operating-
+   profile paragraph; table-of-contents page numbers, cross-reference text,
+   filing/website boilerplate, and other non-business fragments do not make a
+   profile ready. A brief is ready only when at least one semantically usable
+   business description/excerpt, industry, or sector exists. The target remains 32; H2
    is not called with fewer than 16 ready issuers or with fewer than four
    locally hidden positive and four control issuers. Before the paid H1 call,
    the controller inspects the same deterministic case universe using only
@@ -1112,7 +1116,12 @@ The same strong-term rule applies to free-text Mining/Update outputs.
 An output leak is rejected into the one bounded correction without echoing the
 leaking value; the adapter never silently edits an accepted schema, enum,
 identifier, or candidate. H2/H3/E1 and Update retain their local per-case
-mask-and-scan boundaries before request reservation.
+mask-and-scan boundaries before request reservation. Their aggregate adapters
+still reject outcome fields, but do not rescan request prose against every other
+Discovery issuer: a named partner/customer in one case or a product code equal
+to another issuer's short ticker is not the current target's identity. Their
+free-text outputs retain the strong Discovery-wide leak guard because accepted
+reusable Signal text must not name a sampled issuer.
 
 All candidates are staged first. The orchestrator then executes each
 candidate's non-empty point-in-time fixtures through the real candidate

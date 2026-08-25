@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 13
+visit_times: 14
 
 ## Trigger
 
@@ -475,3 +475,22 @@ public timestamp yet store only a short header fragment before Item 1. Such arti
 are provenance records, not business profiles, and resampling them would only hide the
 gap. Report a known missing provider configuration with a stable non-secret reason code
 so operators can act without exposing the configured value.
+
+## Slow-profile content addendum (2026-08-25)
+
+A non-empty profile field is not semantic readiness. In one real H2 pool, 28 of
+32 supposedly ready `business_description` values were table-of-contents page
+numbers or punctuation because a flat `Item 1 ... Item 1A` regex selected the
+first navigation occurrence. Inspect every actual brief, not only ready counts.
+For SEC HTML, identify a non-linked Item 1 block, stop at a short standalone
+Item 1A/Item 2 heading, skip forward-looking and filing/website boilerplate,
+and start the bounded excerpt at a substantive operating-profile paragraph.
+
+An aggregate Discovery identity scan is also stricter than target anonymity.
+One valid target profile named a separate public manager, while another used a
+drug code equal to a different issuer's short ticker. Mask and rescan the exact
+target's complete aliases at each case boundary; then outcome-scan the aggregate
+request without treating every other sampled issuer as the current target.
+Retain the strong Discovery-wide guard on accepted reusable Signal output, and
+make local formal-name matching tolerate ordinary filing variants such as
+`&` versus `and` and straight versus curly possessives.

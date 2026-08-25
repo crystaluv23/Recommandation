@@ -1187,6 +1187,53 @@ class ConcreteRoleAdapterTests(TestCase):
             "Upward estimate revisions may precede repricing.",
         )
 
+    def test_signal_h2_trusts_case_local_masking_without_global_alias_rescan(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "operating_profile",
+                            "case_refs": ["case-001", "case-002"],
+                        }
+                    ]
+                }
+            ]
+        )
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases(
+            ("Vornado Realty Trust", "VNO", "LX")
+        )
+
+        result = model.rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "operating_profile"}],
+                "case_briefs": [
+                    {
+                        "case_ref": "case-001",
+                        "business_description": (
+                            "The masked target is managed by Vornado Realty Trust "
+                            "(NYSE: VNO) and leases commercial properties."
+                        ),
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "business_description": (
+                            "The masked target develops the LX 9211 drug candidate."
+                        ),
+                    },
+                ],
+            }
+        )
+
+        self.assertEqual(
+            result.value["operating_profile"],
+            ("case-001", "case-002"),
+        )
+        self.assertEqual(caller.calls[0]["anonymous_aliases"], ())
+
     def test_plan_proposer_repairs_malformed_provider_json_once(self) -> None:
         class MalformedThenValidCaller:
             def __init__(self) -> None:

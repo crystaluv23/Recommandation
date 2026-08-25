@@ -93,6 +93,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     score_predictions,
     MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
     _assemble_final_context,
+    _item1_business_excerpt,
     _mask_identity_values,
     _filter_h3_documents,
     _slow_role_identity_guard_inventory,
@@ -914,6 +915,19 @@ class InformationPlanRuntimeTests(TestCase):
             _mask_identity_values("Company Inc reported.", ("Company Inc",)),
             "[MASKED_COMPANY] reported.",
         )
+
+    def test_formal_name_mask_accepts_ampersand_and_possessive_variants(self) -> None:
+        masked = _mask_identity_values(
+            (
+                "Air Products and Chemicals expanded while Alexander’s leased "
+                "another property."
+            ),
+            ("AIR PRODUCTS & CHEMICALS INC", "ALEXANDERS INC"),
+        )
+
+        self.assertEqual(masked.count("[MASKED_COMPANY]"), 2)
+        self.assertNotIn("Air Products", masked)
+        self.assertNotIn("Alexander", masked)
 
     def test_short_ticker_masking_is_case_sensitive(self) -> None:
         masked = _mask_identity_values(
@@ -3428,6 +3442,63 @@ class PlanEvolutionEngineTests(TestCase):
 
 
 class SignalEvolutionTests(TestCase):
+    def test_item1_excerpt_skips_linked_navigation_and_filing_boilerplate(
+        self,
+    ) -> None:
+        document = RawInfoDocument.create(
+            document_id="filing-profile",
+            company_id="company-profile",
+            source_type="10-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "<html><body>"
+                '<div><a href="#item1">ITEM 1. BUSINESS</a></div>'
+                "<div>2</div>"
+                '<div><a href="#item1a">ITEM 1A. RISK FACTORS</a></div>'
+                '<div id="item1">ITEM 1. BUSINESS</div>'
+                "<div>Cautionary Statement Regarding Forward-Looking Statements. "
+                "These forward-looking statements involve risks.</div>"
+                "<div>Reports are available on our website and filed with the "
+                "Securities Exchange Commission. This Annual Report on Form 10-K "
+                "is not incorporated by reference.</div>"
+                "<div>We design and manufacture precision inspection products and "
+                "provide monitoring services to semiconductor customers in global "
+                "markets. Our business operates through two technology segments and "
+                "offers recurring software solutions for advanced factories.</div>"
+                '<div id="item1a">ITEM 1A. RISK FACTORS</div>'
+                "<div>Demand volatility may harm future results.</div>"
+                "</body></html>"
+            ),
+        )
+
+        excerpt = _item1_business_excerpt((document,))
+
+        self.assertIsNotNone(excerpt)
+        assert excerpt is not None
+        self.assertTrue(excerpt.startswith("We design and manufacture"))
+        self.assertNotIn("forward-looking", excerpt.casefold())
+        self.assertNotIn("Demand volatility", excerpt)
+
+    def test_item1_excerpt_rejects_navigation_page_number(self) -> None:
+        document = RawInfoDocument.create(
+            document_id="filing-navigation-only",
+            company_id="company-navigation",
+            source_type="10-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "<html><body>"
+                '<div><a href="#item1">ITEM 1. BUSINESS</a></div>'
+                "<div>1</div>"
+                '<div><a href="#item1a">ITEM 1A. RISK FACTORS</a></div>'
+                "<div>5</div>"
+                "</body></html>"
+            ),
+        )
+
+        self.assertIsNone(_item1_business_excerpt((document,)))
+
     def test_h2_profile_preflight_pauses_before_h1_without_adapter(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

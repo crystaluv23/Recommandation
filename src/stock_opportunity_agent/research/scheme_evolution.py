@@ -13,6 +13,7 @@ import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
 
@@ -133,6 +134,25 @@ _HTML_PREFIX_FRAGMENT = re.compile(
 )
 _HTML_SUFFIX_FRAGMENT = re.compile(r"^</?[A-Za-z][\w:.-]*(?:\s|$)")
 _URL_VALUE = re.compile(r"https?://[^\s\"\\]+", re.IGNORECASE)
+_FILING_BLOCK_TAGS = frozenset(
+    {"div", "p", "li", "h1", "h2", "h3", "h4", "h5", "h6", "td", "th"}
+)
+_BUSINESS_PROFILE_TERM = re.compile(
+    r"\b(?:company|business|products?|services?|customers?|markets?|operations?|"
+    r"develop\w*|manufactur\w*|provid\w*|offer\w*|sell\w*|design\w*|"
+    r"solutions?|technolog\w*|properties|leasing|insurance|pharmaceutical|"
+    r"medicines?|drugs?|construction|airline|energy|semiconductor|resources?|"
+    r"projects?|portfolio)\b",
+    re.IGNORECASE,
+)
+_BUSINESS_PROFILE_BOILERPLATE = (
+    "securities exchange commission",
+    "available on our website",
+    "not incorporated by reference",
+    "voluntary disclosures",
+    "federal securities laws",
+    "annual report on form 10-k",
+)
 
 
 def _json_string_array(
@@ -8790,7 +8810,8 @@ class SignalEvolutionEngine:
             and document.available_at <= case.prediction_time
         )
         profile = _point_in_time_profile_fields(case.basic_info, documents)
-        if not profile.get("business_description"):
+        if not _usable_business_description(profile.get("business_description")):
+            profile.pop("business_description", None)
             excerpt = _item1_business_excerpt(documents)
             if excerpt:
                 profile["business_description"] = excerpt
@@ -8798,9 +8819,10 @@ class SignalEvolutionEngine:
 
     @staticmethod
     def _mining_profile_ready(profile: Mapping[str, Any]) -> bool:
-        return any(
-            profile.get(name)
-            for name in ("business_description", "industry", "sector")
+        return bool(
+            _usable_business_description(profile.get("business_description"))
+            or profile.get("industry")
+            or profile.get("sector")
         )
 
     def _mining_case_brief(
@@ -8845,12 +8867,17 @@ class SignalEvolutionEngine:
                     }.values()
                 )
                 profile = _point_in_time_profile_fields(case.basic_info, documents)
+                if not _usable_business_description(
+                    profile.get("business_description")
+                ):
+                    profile.pop("business_description", None)
                 profile_resolution = {
                     "status": resolution.status,
                     "data_gap": resolution.gap.to_dict() if resolution.gap else None,
                     "document_count": len(acquired),
                 }
-        if not profile.get("business_description"):
+        if not _usable_business_description(profile.get("business_description")):
+            profile.pop("business_description", None)
             excerpt = _item1_business_excerpt(documents)
             if excerpt:
                 profile["business_description"] = excerpt
@@ -9839,10 +9866,154 @@ def _point_in_time_profile_fields(
     return output
 
 
+class _FilingLeafBlockParser(HTMLParser):
+    """Project filing HTML into non-duplicated leaf text blocks."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._stack: list[list[Any]] = []
+        self._anchor_depth = 0
+        self.blocks: list[tuple[str, bool]] = []
+
+    def handle_starttag(
+        self, tag: str, attrs: list[tuple[str, str | None]]
+    ) -> None:
+        del attrs
+        normalized = tag.casefold()
+        if normalized == "a":
+            self._anchor_depth += 1
+        if normalized in _FILING_BLOCK_TAGS:
+            if self._stack:
+                self._stack[-1][3] += 1
+            self._stack.append(
+                [normalized, [], self._anchor_depth > 0, 0]
+            )
+        elif normalized == "br":
+            for frame in self._stack:
+                frame[1].append(" ")
+
+    def handle_endtag(self, tag: str) -> None:
+        normalized = tag.casefold()
+        if normalized in _FILING_BLOCK_TAGS and self._stack:
+            match = next(
+                (
+                    index
+                    for index in range(len(self._stack) - 1, -1, -1)
+                    if self._stack[index][0] == normalized
+                ),
+                None,
+            )
+            if match is not None:
+                closing = self._stack[match:]
+                self._stack = self._stack[:match]
+                for _tag, parts, has_anchor, nested_blocks in reversed(closing):
+                    text = " ".join("".join(parts).split())
+                    if text and nested_blocks == 0:
+                        self.blocks.append((text, bool(has_anchor)))
+        if normalized == "a" and self._anchor_depth:
+            self._anchor_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        for frame in self._stack:
+            frame[1].append(data)
+            if self._anchor_depth:
+                frame[2] = True
+
+
+def _filing_heading_key(value: str) -> str:
+    return " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
+def _is_item1_start_heading(value: str) -> bool:
+    tokens = _filing_heading_key(value).split()
+    return (
+        tokens[:3] == ["item", "1", "business"]
+        or tokens[:5] == ["item", "1", "description", "of", "business"]
+    ) and len(tokens) <= 7
+
+
+def _is_item1_end_heading(value: str) -> bool:
+    tokens = _filing_heading_key(value).split()
+    return (
+        tokens[:4] == ["item", "1a", "risk", "factors"]
+        or tokens[:3] == ["item", "2", "properties"]
+    ) and len(tokens) <= 7
+
+
+def _usable_business_description(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    normalized = " ".join(value.split())
+    return (
+        len(normalized) >= 60
+        and sum(character.isalpha() for character in normalized) >= 40
+        and len(re.findall(r"[A-Za-z]{2,}", normalized)) >= 8
+    )
+
+
+def _html_item1_business_excerpt(raw_text: str) -> str | None:
+    parser = _FilingLeafBlockParser()
+    try:
+        parser.feed(raw_text)
+        parser.close()
+    except (AssertionError, ValueError):
+        return None
+    blocks = parser.blocks
+    start_indexes = [
+        index
+        for index, (text, linked) in enumerate(blocks)
+        if not linked and _is_item1_start_heading(text)
+    ]
+    for start in start_indexes:
+        section: list[str] = []
+        for text, linked in blocks[start + 1 :]:
+            if not linked and _is_item1_end_heading(text):
+                break
+            heading = _filing_heading_key(text)
+            if linked or heading in {"table of contents", "part i"}:
+                continue
+            if len(re.findall(r"[A-Za-z]{2,}", text)) < 15:
+                continue
+            if "forward-looking" in text.casefold():
+                continue
+            section.append(text)
+        for position, text in enumerate(section):
+            terms = {
+                match.group(0).casefold()
+                for match in _BUSINESS_PROFILE_TERM.finditer(text)
+            }
+            boilerplate_count = sum(
+                phrase in text.casefold()
+                for phrase in _BUSINESS_PROFILE_BOILERPLATE
+            )
+            if len(terms) < 3 or boilerplate_count >= 2:
+                continue
+            excerpt = " ".join(section[position:])[:800]
+            if _usable_business_description(excerpt):
+                return excerpt
+    return None
+
+
+def _plain_item1_business_excerpt(raw_text: str) -> str | None:
+    text_value, _runs = _normalized_projection_text(raw_text)
+    matches = re.finditer(
+        r"\bitem\s+1[.\s:-]+business\b(?P<body>.*?)(?="
+        r"\bitem\s+1a[.\s:-]+risk\s+factors\b|"
+        r"\bitem\s+2[.\s:-]+properties\b|$)",
+        text_value,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    for match in matches:
+        excerpt = " ".join(match.group("body").split())[:800]
+        if _usable_business_description(excerpt):
+            return excerpt
+    return None
+
+
 def _item1_business_excerpt(
     documents: Iterable[RawInfoDocument],
 ) -> str | None:
-    """Extract a bounded readable Item 1 business excerpt from an as-of filing."""
+    """Extract a substantive bounded Item 1 business excerpt from an as-of filing."""
 
     for document in sorted(
         documents,
@@ -9856,16 +10027,12 @@ def _item1_business_excerpt(
             "sec_filing",
         }:
             continue
-        text_value, _runs = _normalized_projection_text(document.content)
-        match = re.search(
-            r"\bitem\s+1[.\s:-]+business\b(?P<body>.*?)(?=\bitem\s+1a[.\s:-]+risk\s+factors\b|\bitem\s+2[.\s:-]+properties\b|$)",
-            text_value,
-            flags=re.IGNORECASE | re.DOTALL,
+        excerpt = (
+            _html_item1_business_excerpt(document.content)
+            if _HTML_TAG.search(document.content)
+            else _plain_item1_business_excerpt(document.content)
         )
-        if match is None:
-            continue
-        excerpt = " ".join(match.group("body").split())[:800]
-        if excerpt:
+        if excerpt is not None:
             return excerpt
     return None
 
@@ -9969,7 +10136,7 @@ def _compiled_identity_aliases(
 
     compiled: list[tuple[str, re.Pattern[str], re.Pattern[str]]] = []
     for alias in _identity_alias_variants(aliases):
-        escaped = re.escape(alias)
+        escaped = _identity_alias_pattern(alias)
         pattern = (
             rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
             if alias[0].isalnum() and alias[-1].isalnum()
@@ -9988,6 +10155,24 @@ def _compiled_identity_aliases(
             )
         )
     return tuple(compiled)
+
+
+def _identity_alias_pattern(alias: str) -> str:
+    """Allow common filing punctuation variants without broad fuzzy matching."""
+
+    ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
+    if ticker_like:
+        return re.escape(alias)
+    tokens = re.findall(r"[A-Za-z0-9]+", alias.replace("&", " and "))
+    if len(tokens) >= 2:
+        token_patterns = [
+            r"(?:and|&)" if token.casefold() == "and" else re.escape(token)
+            for token in tokens
+        ]
+        return r"[^A-Za-z0-9]+".join(token_patterns)
+    if len(tokens) == 1 and len(tokens[0]) >= 6 and tokens[0].casefold().endswith("s"):
+        return re.escape(tokens[0][:-1]) + r"[’']?s"
+    return re.escape(alias)
 
 
 def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
