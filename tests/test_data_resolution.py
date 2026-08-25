@@ -13,6 +13,7 @@ from stock_opportunity_agent.data.acquisition import (
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
     SecFilingAdapter,
+    UnavailableProviderAdapter,
 )
 from stock_opportunity_agent.data.sources.core import PriceBar
 from stock_opportunity_agent.data.raw_info import (
@@ -93,6 +94,10 @@ class EvidenceResolverTests(TestCase):
         disabled = EvidenceResolver(RawInfoStore(), adapters=(adapter,))
 
         self.assertFalse(disabled.can_acquire(request))
+        self.assertEqual(
+            disabled.acquisition_unavailability_reason(request),
+            "external_not_authorized",
+        )
         self.assertEqual(adapter.calls, 0)
 
         enabled = EvidenceResolver(
@@ -108,14 +113,43 @@ class EvidenceResolverTests(TestCase):
             ),
         )
         self.assertTrue(enabled.can_acquire(request))
+        self.assertIsNone(enabled.acquisition_unavailability_reason(request))
         self.assertFalse(
             enabled.can_acquire(
                 RawInfoRequest("filing", "Read filing.", ("filing",))
             )
         )
+        self.assertEqual(
+            enabled.acquisition_unavailability_reason(
+                RawInfoRequest("missing", "Read filing.", ("filing",))
+            ),
+            "adapter_missing",
+        )
         adapter.available = False
         self.assertFalse(enabled.can_acquire(request))
+        self.assertEqual(
+            enabled.acquisition_unavailability_reason(request),
+            "provider_unavailable",
+        )
         self.assertEqual(adapter.calls, 0)
+
+        configured_gap = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(
+                UnavailableProviderAdapter(
+                    "fake_news",
+                    ("news",),
+                    ("news",),
+                    "Configuration is absent.",
+                    unavailability_reason="test_configuration_unavailable",
+                ),
+            ),
+            policy=enabled.policy,
+        )
+        self.assertEqual(
+            configured_gap.acquisition_unavailability_reason(request),
+            "test_configuration_unavailable",
+        )
 
     def test_transcript_adapter_maps_fiscal_quarters_and_excludes_future_reports(
         self,

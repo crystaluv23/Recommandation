@@ -907,6 +907,40 @@ class EvidenceResolver:
             for adapter in self._select_adapters(request)
         )
 
+    def acquisition_unavailability_reason(
+        self, request: RawInfoRequest
+    ) -> str | None:
+        """Return one stable non-secret reason when acquisition is impossible."""
+
+        if self.can_acquire(request):
+            return None
+        matching = self._select_adapters(request)
+        if not matching:
+            return DataGapReason.ADAPTER_MISSING.value
+        if not self.policy.enabled:
+            return DataGapReason.EXTERNAL_NOT_AUTHORIZED.value
+        authorized = tuple(
+            adapter
+            for adapter in matching
+            if self._adapter_authorized(adapter, request)
+        )
+        if not authorized:
+            return DataGapReason.EXTERNAL_NOT_AUTHORIZED.value
+        reasons = {
+            str(
+                getattr(
+                    adapter,
+                    "unavailability_reason",
+                    "provider_unavailable",
+                )
+            )
+            for adapter in authorized
+            if not getattr(adapter, "available", True)
+        }
+        if len(reasons) == 1:
+            return reasons.pop()
+        return "provider_unavailable"
+
     def resolve_basic_info(
         self,
         requests: Iterable[RawInfoRequest],

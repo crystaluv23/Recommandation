@@ -281,7 +281,9 @@ enough for the H2 total and class minima, runtime checks local point-in-time
 readiness and the exact profile request's available authorized adapter capability; it does
 not query, reserve, acquire, or materialize data. If local rows cannot meet the
 H2 minimum and acquisition is impossible, runtime pauses at
-`profile-preflight/profile_adapter_unavailable` before spending an H1 attempt.
+`profile-preflight/<stable-unavailability-reason>` before spending an H1 attempt.
+Known SEC configuration absence is reported as
+`sec_user_agent_unconfigured`; no contact value is persisted or printed.
 A positive adapter capability does not predict provider success. During the
 real H2 build, scanning stops as soon as the 32-row target and both hidden class
 minima are satisfied; the 96-row scan limit remains only a deterministic upper

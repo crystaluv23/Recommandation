@@ -8048,12 +8048,14 @@ def _build_evidence_resolver(
                         SecCompanyFactsAdapter.source_types,
                         SecCompanyFactsAdapter.capabilities,
                         "SOA_SEC_USER_AGENT is not configured.",
+                        unavailability_reason="sec_user_agent_unconfigured",
                     ),
                     UnavailableProviderAdapter(
                         "sec_edgar",
                         SecFilingAdapter.source_types,
                         SecFilingAdapter.capabilities,
                         "SOA_SEC_USER_AGENT is not configured.",
+                        unavailability_reason="sec_user_agent_unconfigured",
                     ),
                 ]
             )

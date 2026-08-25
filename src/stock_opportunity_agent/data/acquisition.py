@@ -432,6 +432,7 @@ class HistoricalUnavailableAdapter:
 
     capabilities = ("company_profile",)
     available = False
+    unavailability_reason = "historical_data_unavailable"
 
     def __init__(self, provider: str, source_types: Iterable[str]) -> None:
         self.provider = provider
@@ -455,11 +456,14 @@ class UnavailableProviderAdapter:
         source_types: Iterable[str],
         capabilities: Iterable[str],
         message: str,
+        *,
+        unavailability_reason: str = "provider_unavailable",
     ) -> None:
         self.provider = provider
         self.source_types = tuple(source_types)
         self.capabilities = tuple(capabilities)
         self.message = message
+        self.unavailability_reason = unavailability_reason
 
     def acquire(self, request: RawInfoRequest, **_: Any) -> AcquisitionResult:
         raise AcquisitionFailure(DataGapReason.PROVIDER_ERROR, self.message)

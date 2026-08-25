@@ -1013,7 +1013,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    and control cases to satisfy H2, but those local profiles cannot meet the H2
    minimum and no available authorized adapter can acquire the exact annual-filing
    profile request, the cycle pauses at `profile-preflight` without an H1 call,
-   provider reservation, or data request. When acquisition is possible, H2
+   provider reservation, or data request. Its provider reason is the resolver's
+   stable non-secret cause (for example `sec_user_agent_unconfigured`), not a
+   generic adapter failure or any configured value. When acquisition is possible, H2
    scans only until the 32-case target and both hidden class minima are met;
    96 remains a ceiling, not a required acquisition count. Retryable provider failure
    creates a cycle-level control-plane pause with the opaque case ref and provider

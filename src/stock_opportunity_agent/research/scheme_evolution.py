@@ -8754,9 +8754,19 @@ class SignalEvolutionEngine:
         can_acquire = getattr(self.evidence_resolver, "can_acquire", None)
         if can_acquire is None or can_acquire(request):
             return
+        reason_resolver = getattr(
+            self.evidence_resolver,
+            "acquisition_unavailability_reason",
+            None,
+        )
+        reason = (
+            reason_resolver(request)
+            if reason_resolver is not None
+            else "profile_adapter_unavailable"
+        )
         raise SlowLoopDataUnavailable(
             "profile-preflight",
-            "profile_adapter_unavailable",
+            reason or "profile_adapter_unavailable",
         )
 
     @staticmethod

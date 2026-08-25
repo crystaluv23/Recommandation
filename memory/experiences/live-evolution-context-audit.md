@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 12
+visit_times: 13
 
 ## Trigger
 
@@ -464,3 +464,14 @@ multi-word formal-name components. Apply the same strong scan to Mining/Update o
 on a leak, reject into the bounded correction without echoing the leaking value. Never
 silently rewrite an accepted schema, enum, identifier, candidate, or control value in
 the name of output sanitization.
+
+## Profile-coverage addendum (2026-08-25)
+
+Raw Info document count is not downstream readiness. Before changing an H2 sampler or
+requesting more data, join the complete Discovery universe to local documents using
+the exact canonical company id, case cutoff, and profile extractor. Also audit apparent
+alias matches for content completeness: legacy filings may carry a matching ticker and
+public timestamp yet store only a short header fragment before Item 1. Such artifacts
+are provenance records, not business profiles, and resampling them would only hide the
+gap. Report a known missing provider configuration with a stable non-secret reason code
+so operators can act without exposing the configured value.

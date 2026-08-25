@@ -98,6 +98,12 @@ external acquisition possible for the exact request. Controllers may use it to
 pause before a paid upstream model call when a mandatory downstream data stage
 is already known to be impossible. A positive result is capability, not a
 promise that the provider has data or will respond successfully.
+The same side-effect-free boundary exposes a stable non-secret unavailability
+reason. It distinguishes missing routes, disabled/unauthorized policy, audited
+historical unavailability, and known provider-configuration gaps such as
+`sec_user_agent_unconfigured`; it never returns a credential or configured
+value. Multiple heterogeneous unavailable adapters collapse to
+`provider_unavailable` rather than leaking implementation detail.
 
 Adapter declarations must include the canonical source types used by the
 stable Signal Library, not only provider-facing aliases. In particular,

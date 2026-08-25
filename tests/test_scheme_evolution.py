@@ -16,7 +16,12 @@ from stock_opportunity_agent.data.raw_info import (
     RawInfoStore,
     content_sha256,
 )
-from stock_opportunity_agent.data.resolution import RawInfoRequest
+from stock_opportunity_agent.data.acquisition import UnavailableProviderAdapter
+from stock_opportunity_agent.data.resolution import (
+    DataAcquisitionPolicy,
+    EvidenceResolver,
+    RawInfoRequest,
+)
 from stock_opportunity_agent.llm.agent import (
     AgentRequest,
     AgentTurn,
@@ -3439,6 +3444,26 @@ class SignalEvolutionTests(TestCase):
                 for index in range(16)
             )
             model = EmptyMiningModel()
+            resolver = EvidenceResolver(
+                RawInfoStore(),
+                adapters=(
+                    UnavailableProviderAdapter(
+                        "sec_edgar",
+                        ("10-k", "filing", "sec_filing"),
+                        ("filing_documents",),
+                        "SOA_SEC_USER_AGENT is not configured.",
+                        unavailability_reason="sec_user_agent_unconfigured",
+                    ),
+                ),
+                policy=DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=("sec_edgar",),
+                    allowed_capabilities=("filing_documents",),
+                    allowed_source_types=("filing",),
+                    max_requests_per_cycle=1,
+                    max_requests_per_run=1,
+                ),
+            )
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
@@ -3448,6 +3473,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                evidence_resolver=resolver,
             )
 
             with self.assertRaises(SlowLoopDataUnavailable) as context:
@@ -3455,7 +3481,7 @@ class SignalEvolutionTests(TestCase):
 
             self.assertEqual(context.exception.case_ref, "profile-preflight")
             self.assertEqual(
-                context.exception.reason, "profile_adapter_unavailable"
+                context.exception.reason, "sec_user_agent_unconfigured"
             )
             self.assertEqual(model.requests, [])
 
