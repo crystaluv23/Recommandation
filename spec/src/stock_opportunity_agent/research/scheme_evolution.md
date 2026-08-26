@@ -1030,9 +1030,14 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    applicable first. An empty shortlist is a valid statement that the current
    anonymous pool has no applicable case; irrelevant cases must be omitted and
    the model must not pad a ranking by copying the complete pool. Every selected
-   case carries one short exact `profile_evidence` span from its supplied brief
-   and a bounded `applicability_reason`; a missing/non-literal span or malformed
-   explanation receives the one structured-role correction. This does not ask
+   case carries one exact 1-160 character `profile_evidence` span from its
+   supplied brief and a 1-240 character `applicability_reason`. The reason must
+   identify positive visible support; an explanation that itself says required
+   facts are missing, unavailable, too generic, insufficient, or unconfirmed is
+   an invalid inclusion. A missing/non-literal span, out-of-bound field, or
+   self-disqualifying explanation receives the one structured-role correction.
+   Initial and correction requests keep a byte-stable common prompt/payload prefix
+   so the large anonymous brief pool is provider-cache eligible. This does not ask
    the model to reveal a label or prove H3 evidence availability, but it makes
    every H2 inclusion auditable instead of accepting an unexplained opaque ref.
    The controller rejects any per-hypothesis list above the supplied shortlist ceiling.

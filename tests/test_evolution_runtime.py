@@ -1211,6 +1211,110 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value["production_guidance"], ())
         self.assertIn("exact contiguous span", validation_error(caller.calls[1]))
 
+    def test_signal_h2_rejects_self_disqualifying_reason_with_stable_feedback(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "cases": [
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "expanded service offerings",
+                                    "applicability_reason": (
+                                        "The profile mentions growth, but no analyst "
+                                        "estimate data are provided and the evidence is "
+                                        "too generic to confirm applicability."
+                                    ),
+                                }
+                            ],
+                        }
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "cases": [],
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "estimate_gap"}],
+                "case_briefs": [
+                    {
+                        "case_ref": "case-001",
+                        "business_description": "expanded service offerings",
+                    }
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["estimate_gap"], ())
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
+        self.assertIn(
+            "cannot disclaim applicability", validation_error(caller.calls[1])
+        )
+        prompt = str(caller.calls[0]["system_prompt"])
+        self.assertIn("1-160 characters", prompt)
+        self.assertIn("1-240 characters", prompt)
+
+    def test_signal_h2_malformed_text_feedback_does_not_echo_raw_output(self) -> None:
+        class MalformedThenValidCaller(ScriptedRoleCaller):
+            def complete_json(self, **kwargs):
+                self.stages.append(str(kwargs["stage"]))
+                self.calls.append(dict(kwargs))
+                if len(self.calls) == 1:
+                    raise StructuredOutputInvalid(
+                        "provider returned invalid structured output: Extra data",
+                        '{"rankings":[]} Vornado Realty Trust',
+                        AgentUsage(llm_calls=1, tokens=5, cost=0.01),
+                    )
+                return self.outputs.pop(0), AgentUsage(
+                    llm_calls=1, tokens=5, cost=0.01
+                )
+
+        caller = MalformedThenValidCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "cases": [],
+                        }
+                    ]
+                }
+            ]
+        )
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases(("Vornado Realty Trust",))
+
+        result = model.rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "estimate_gap"}],
+                "case_briefs": [{"case_ref": "case-001"}],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["estimate_gap"], ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"], {})
+        self.assertIn("Extra data", feedback["validation_error"])
+        self.assertNotIn("identity alias", feedback["validation_error"])
+        self.assertNotIn("Vornado", json.dumps(caller.calls[1]["payload"]))
+
     def test_signal_h3_repairs_missing_evidence_rejection_to_inconclusive(
         self,
     ) -> None:

@@ -4605,6 +4605,10 @@ def _complete_parsed_role(
             temperature=temperature,
         )
         usage = usage + step_usage
+        if set(value) == {"invalid_structured_output", "validation_error"}:
+            failed_output = {}
+            failure = ValidationError(str(value["validation_error"]))
+            continue
         if tuple(sanitize_output_aliases):
             value = _mask_identity_values(value, sanitize_output_aliases)
             _scan_payload(
@@ -6635,6 +6639,29 @@ _SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
     },
 ) + " Return every supplied hypothesis exactly once and only supplied case_ref values."
 
+_H2_SELF_DISQUALIFYING_REASON_PATTERNS = tuple(
+    re.compile(pattern, flags=re.IGNORECASE)
+    for pattern in (
+        r"\b(?:lack|lacks|lacking|missing|absent|unavailable|insufficient)\b",
+        r"\b(?:too|only)\s+(?:generic|broad|indirect|speculative)\b",
+        r"\b(?:cannot|can't|does not|doesn't|fails? to)\b.{0,60}"
+        r"\b(?:confirm|establish|demonstrate|show|support)\b",
+        r"\b(?:no|not|never)\b.{0,80}"
+        r"\b(?:provided|available|shown|disclosed|mentioned|included|present)\b",
+        r"\b(?:could|may|might)\b.{0,60}"
+        r"\b(?:apply|applicable|relevant|support|lead)\b",
+    )
+)
+
+
+def _h2_reason_disclaims_applicability(value: str) -> bool:
+    """Return whether an H2 reason admits it lacks positive profile support."""
+
+    return any(
+        pattern.search(value) is not None
+        for pattern in _H2_SELF_DISQUALIFYING_REASON_PATTERNS
+    )
+
 _SIGNAL_MINING_DECISIONS_OUTPUT = _output_contract(
     "SignalMiningDecisions",
     {
@@ -6973,6 +7000,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                         raise ValidationError(
                             "Signal Mining H2 applicability_reason must be 1-240 characters"
                         )
+                    if _h2_reason_disclaims_applicability(reason):
+                        raise ValidationError(
+                            "Signal Mining H2 applicability_reason must state positive "
+                            "visible support and cannot disclaim applicability"
+                        )
                     visible_fields = brief_strings_by_ref.get(case_ref, ())
                     if not any(
                         evidence.casefold() in field.casefold()
@@ -7010,9 +7042,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "applicable cases, most applicable first; omit irrelevant cases, do "
                 "not pad by copying the full pool, and use an empty cases array when "
                 "none apply. Every included case must quote one short exact contiguous "
-                "span from its supplied anonymous brief as profile_evidence and give "
-                "a concise applicability_reason that connects that span to the exact "
-                "hypothesis applicability; never infer missing profile facts. Respect "
+                "span of 1-160 characters from its supplied anonymous brief as "
+                "profile_evidence and give an applicability_reason of 1-240 characters "
+                "that states positive visible support for the exact hypothesis "
+                "applicability. If the reason would say evidence is missing, unavailable, "
+                "generic, insufficient, speculative, or unconfirmed, omit that case; "
+                "never infer missing profile facts. Do not quote a company name, ticker, "
+                "or brand in profile_evidence. Respect "
                 "rules.max_case_refs_per_hypothesis."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _SIGNAL_MINING_RANKING_OUTPUT
@@ -7023,6 +7059,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             anonymous_aliases=(),
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
+            stable_correction_prefix=True,
         )
         return AgentStep(value, usage)
 

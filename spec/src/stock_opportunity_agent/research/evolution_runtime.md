@@ -176,11 +176,14 @@ bundle and silently emit an empty index.
 A provider response that is not exactly one JSON object is a paid structured
 output failure, not a process-level crash. The runtime persists its raw model
 text and usage in a failure-only audit artifact, records the actual cost on the
-attempt ledger, and does not add it to the valid-response cache. Role adapters
-then treat the malformed text as invalid output under their already frozen
-single structured-correction allowance. If the correction also fails, the
-existing candidate/role failure semantics apply; no parser exception may abort
-the whole round or advance a commit pointer.
+attempt ledger, and does not add it to the valid-response cache. Narrow parsed
+role adapters, including Slow H1/H2/H3/Update, then consume their already frozen
+single structured-correction allowance using the exact parser failure and
+unchanged task payload. They do not resend the raw malformed text: it is already
+preserved locally, is not needed to regenerate the contract, can contain an
+identity alias, and would duplicate paid context. If the correction also fails,
+the existing candidate/role failure semantics apply; no parser exception may
+abort the whole round or advance a commit pointer.
 
 Temperature is part of the exact request hash. Information Plan proposal calls
 sample at `1.0`. Prediction, explanation, research, reflection, Signal
@@ -294,10 +297,16 @@ real H2 build, scanning stops as soon as the 32-row target and both hidden class
 minima are satisfied; the 96-row scan limit remains only a deterministic upper
 bound.
 H2 output is not an unexplained opaque-ref list: every selected ref includes a
-short exact `profile_evidence` span copied from its supplied anonymous brief and a
-bounded `applicability_reason`. The adapter validates the literal span and field
-shape before returning only the ranked refs to the local label-owning controller;
-empty per-hypothesis selections remain valid.
+`profile_evidence` span of 1-160 characters copied from its supplied anonymous
+brief and an `applicability_reason` of 1-240 characters. The reason must state
+positive visible support for material applicability; language that admits missing,
+insufficient, generic, or unconfirmed support invalidates the inclusion instead of
+turning an inapplicable case into a ranked case. The adapter validates the literal
+span, bounds, and self-disqualification before returning only the ranked refs to
+the local label-owning controller; empty per-hypothesis selections remain valid.
+The initial and correction requests use one stable provider prefix with
+`validation_feedback=null` on the initial request so the repeated H2 pool remains
+cacheable.
 For H3, exact source routing is followed by an ordered query-coverage gate. Longer
 queries require both a short-range ordered consecutive query pair in each kept
 document and complete distinct non-generic query-term coverage across the packet. H3 has an explicit

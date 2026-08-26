@@ -537,3 +537,23 @@ material lacks the condition needed for comparison, give it an explicit inconclu
 state and persist that under evidence-unavailable. Do not force or accept a missing-
 source rationale as semantic refinement or contradiction merely because a model call
 was already paid for.
+
+## Structured-correction addendum (2026-08-26)
+
+Persisted malformed output and provider-facing correction context have different
+jobs. V44 correctly retained its complete paid H2 text in `failed_responses`, but
+feeding that text through the ordinary output identity scan replaced the real
+`Extra data` parser failure with an identity-alias error. The correction therefore
+received neither the actual syntax defect nor a useful invalid value. Keep the raw
+text local for audit, and let narrow parsed roles regenerate from the unchanged task
+payload plus the exact parser error. This avoids both identity re-exposure and
+redundant correction tokens.
+
+Prompt bounds and parser bounds are one contract. V44's H2 prompt asked only for a
+“concise” reason while the parser imposed 240 characters, so the sole correction
+failed at 268 characters. State both numeric limits in the provider prompt. Also do
+not equate a shorter valid string with semantic applicability: the same reason said
+that analyst/earnings facts were absent and that its evidence was too generic.
+Reject self-disqualifying reasons and require the model to omit that case. For a
+large unchanged H2 pool, keep initial and correction prompts byte-identical and put
+nullable validation feedback at the tail so provider prefix caching can apply.
