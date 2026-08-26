@@ -6601,7 +6601,7 @@ def _h1_topic_terms(value: str) -> frozenset[str]:
     value = re.sub(r"\byear[- ]over[- ]year\b", " yoy ", value, flags=re.IGNORECASE)
     result: set[str] = set()
     for raw in re.findall(r"[A-Za-z0-9]+", value.casefold()):
-        if len(raw) < 4 or raw in _H1_GENERIC_TOPIC_TERMS:
+        if (len(raw) < 4 and raw != "yoy") or raw in _H1_GENERIC_TOPIC_TERMS:
             continue
         term = raw[:-3] + "y" if raw.endswith("ies") else raw
         if term.endswith("s") and len(term) > 4 and not term.endswith("ss"):

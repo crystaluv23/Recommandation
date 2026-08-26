@@ -1161,6 +1161,56 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value[0].hypothesis_id, "production_volume_cost_gap")
         self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
 
+    def test_signal_h1_preserves_yoy_in_stable_signal_identity(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": (
+                                "revenue_growth_composition_core_vs_nonoperating"
+                            ),
+                            "statement": (
+                                "Core operating contribution distinguishes the "
+                                "composition of recent revenue growth."
+                            ),
+                            "applicability": (
+                                "Companies with segment or revenue-driver disclosure."
+                            ),
+                            "expected_positive_pattern": (
+                                "Positive cases show more core-driven revenue growth "
+                                "than control cases."
+                            ),
+                            "source_types": ["10-q"],
+                            "query": (
+                                "core vs non-operating revenue growth segment drivers"
+                            ),
+                            "falsifiers": [
+                                "Control cases have equal core operating contribution."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-q"],
+                "registered_deterministic_functions": [
+                    "financial.revenue_growth_yoy"
+                ],
+            }
+        )
+
+        self.assertEqual(
+            result.value[0].hypothesis_id,
+            "revenue_growth_composition_core_vs_nonoperating",
+        )
+        self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
+
     def test_signal_h1_corrects_alternate_outcome_with_stable_feedback(self) -> None:
         invalid = {
             "hypotheses": [

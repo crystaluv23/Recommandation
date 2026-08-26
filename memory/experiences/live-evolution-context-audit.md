@@ -575,3 +575,12 @@ query made a production/cost construct look like `revenue_acceleration` merely
 because it named that stable metric downstream. Match standalone notation, and use
 candidate id/query for stable identity exclusion. Aggregate every locally decidable
 H1 issue into its single correction and preserve a stable correction prefix.
+
+Compact financial qualifiers can carry the distinction that makes a stable Signal
+specific. V46 converted `year-over-year` to `yoy` and then dropped tokens shorter
+than four characters, reducing `revenue_growth_yoy` to the generic pair `revenue
+growth`. A distinct core-versus-non-operating revenue-composition hypothesis was
+therefore rejected twice, and the correction weakened otherwise useful quantitative
+constructs into word-frequency proxies. Preserve explicit domain qualifiers such as
+`yoy` through normalization and test the complete identity, not its accidentally
+truncated prefix.

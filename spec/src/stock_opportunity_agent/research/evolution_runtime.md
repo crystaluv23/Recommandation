@@ -227,7 +227,9 @@ metric mentioned only as a downstream comparison or falsifier. H1 aggregates the
 locally decidable issues into one validation message and uses a stable initial/
 correction prefix. The generic fixed-semantics detector treats probability notation
 only as a standalone `P(` token; an ordinary word ending in `p` before parentheses is
-not a Predictor-semantic redefinition.
+not a Predictor-semantic redefinition. Stable-identity topic normalization retains
+the compact `yoy` qualifier after converting year-over-year spelling; otherwise the
+specific `revenue_growth_yoy` identity would collapse into generic `revenue growth`.
 
 Signal Mining uses five narrow structured role stages rather than a
 one-tool-per-turn Agent transcript:

@@ -1012,6 +1012,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    only as a comparison, control, or falsifier is not itself a renamed candidate.
    All locally decidable H1 semantic issues are returned together in the one
    correction, whose initial/correction requests retain one stable provider prefix.
+   Semantic identity normalization preserves meaningful compact qualifiers such as
+   `yoy`; it must not reduce `revenue_growth_yoy` to the generic pair
+   `revenue growth` and reject a distinct revenue-composition hypothesis.
 2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business
