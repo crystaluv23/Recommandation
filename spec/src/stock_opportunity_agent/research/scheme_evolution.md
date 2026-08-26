@@ -996,7 +996,12 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    other newly invented target. The expected pattern names both the positive and
    control groups, with case/group/cohort wording treated as equivalent, so H3's
    actual comparison is explicit. H1 never invents opaque case refs or bracketed
-   case placeholders. A stable card whose exact version
+   case placeholders. Its statement describes the candidate feature and fixed-group
+   contrast, not the availability, observability, or inferability of source data.
+   Cross-issuer comparisons cannot treat higher/lower raw absolute revenue,
+   earnings, cash, production, cost, or another size-dependent amount as the Signal;
+   the feature is normalized to a case-local baseline such as consensus, guidance,
+   a prior comparable period, or a ratio. A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The
@@ -1049,8 +1054,18 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    supplied brief and a 1-240 character `applicability_reason`. The reason must
    identify positive visible support; an explanation that itself says required
    facts are missing, unavailable, too generic, insufficient, or unconfirmed is
-   an invalid inclusion. A missing/non-literal span, out-of-bound field, or
-   self-disqualifying explanation receives the one structured-role correction.
+   an invalid inclusion. The same applies to an explanation that uses inferential
+   language such as `suggests`, `indicates`, `aligns`, `likely`, `typically`,
+   `may`, or `might` to invent analyst coverage, disclosure availability, operating
+   metrics, or another profile fact not visible in the brief. A missing/non-literal
+   span, out-of-bound field, self-disqualifying explanation, or speculative
+   inference receives one aggregated structured-role correction. H2's output
+   contract describes only keys, types, cardinality, and supplied-ref constraints;
+   it contains no complete semantic example that a correction can copy.
+   A rejected H2 value remains in the local response audit but is represented as
+   `invalid_output={}` in correction context. The model already has the unchanged
+   hypotheses and briefs; aggregated error categories and affected opaque refs carry
+   the necessary repair information without resending or anchoring on a padded list.
    Initial and correction requests keep a byte-stable common prompt/payload prefix
    so the large anonymous brief pool is provider-cache eligible. This does not ask
    the model to reveal a label or prove H3 evidence availability, but it makes
@@ -1183,6 +1198,10 @@ H1 therefore receives its producer-validated payload unchanged and applies only
 a non-mutating fail-closed scan for strong identity terms: opaque case/company
 ids, exact ticker-like aliases, and complete multi-word formal-name components.
 The same strong-term rule applies to free-text Mining/Update outputs.
+Because a bare two-character uppercase token can be both a ticker and common domain
+vocabulary, it is not a sufficient leak by itself: two-character ticker aliases are
+rejected only with explicit ticker syntax such as `$XX`, `ticker XX`, or
+`NASDAQ: XX`; longer uppercase tickers remain exact case-sensitive guards.
 An output leak is rejected into the one bounded correction without echoing the
 leaking value; the adapter never silently edits an accepted schema, enum,
 identifier, or candidate. H2/H3/E1 and Update retain their local per-case

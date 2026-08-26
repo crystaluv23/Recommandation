@@ -1330,6 +1330,61 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("both positive and control groups", error)
         self.assertNotIn("Match Group", json.dumps(feedback))
 
+    def test_signal_h1_rejects_data_readiness_and_raw_absolute_scale(self) -> None:
+        invalid = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "consensus_revenue_surprise",
+                    "statement": (
+                        "Quarterly revenue and earnings figures are available in "
+                        "point-in-time filings."
+                    ),
+                    "applicability": "Companies with analyst consensus estimates.",
+                    "expected_positive_pattern": (
+                        "Positive cases have higher absolute revenue and earnings "
+                        "figures than control cases."
+                    ),
+                    "source_types": ["news"],
+                    "query": "revenue earnings consensus surprise",
+                    "falsifiers": [
+                        "Control cases have equal case-local consensus surprises."
+                    ],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = {
+            "hypotheses": [
+                {
+                    **invalid["hypotheses"][0],
+                    "statement": (
+                        "Case-local quarterly revenue surprise relative to consensus "
+                        "distinguishes the fixed Discovery groups."
+                    ),
+                    "expected_positive_pattern": (
+                        "The positive group has more positive revenue surprise versus "
+                        "its own consensus baseline than the control cases."
+                    ),
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "consensus_revenue_surprise")
+        error = validation_error(caller.calls[1])
+        self.assertIn("measurable group feature", error)
+        self.assertIn("normalize raw absolute scale", error)
+        prompt = caller.calls[0]["system_prompt"]
+        self.assertIn("not merely say data are available", prompt)
+        self.assertIn("Never compare raw absolute", prompt)
+
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
     ) -> None:
@@ -1487,6 +1542,93 @@ class ConcreteRoleAdapterTests(TestCase):
         prompt = str(caller.calls[0]["system_prompt"])
         self.assertIn("1-160 characters", prompt)
         self.assertIn("1-240 characters", prompt)
+        self.assertNotIn("project-driven engineering services", prompt)
+
+    def test_signal_h2_aggregates_inference_and_span_errors_without_echo(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "cases": [
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "AI platform leadership",
+                                    "applicability_reason": (
+                                        "AI platform leadership suggests likely analyst "
+                                        "coverage."
+                                    ),
+                                },
+                                {
+                                    "case_ref": "case-002",
+                                    "profile_evidence": "analyst estimates",
+                                    "applicability_reason": (
+                                        "The profile lacks visible estimates and cannot "
+                                        "confirm applicability."
+                                    ),
+                                },
+                            ],
+                        }
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "cases": [],
+                        }
+                    ]
+                },
+            ]
+        )
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases(("AI",))
+
+        result = model.rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "estimate_gap"}],
+                "case_briefs": [
+                    {
+                        "case_ref": "case-001",
+                        "business_description": "AI platform leadership",
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "business_description": "expanded service offerings",
+                    },
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["estimate_gap"], ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"], {})
+        error = feedback["validation_error"]
+        self.assertIn("must not infer missing profile facts", error)
+        self.assertIn("cannot disclaim applicability", error)
+        self.assertIn("exact contiguous span", error)
+        self.assertNotIn("identity alias leaked", error)
+
+    def test_identity_guard_requires_context_for_two_character_ticker(self) -> None:
+        evolution_runtime_module._scan_payload(
+            {"summary": "AI platform leadership"},
+            allow_outcomes=True,
+            anonymous_aliases=("AI",),
+        )
+
+        for value in ("ticker AI", "$AI", "NASDAQ: AI"):
+            with self.subTest(value=value), self.assertRaisesRegex(
+                ValidationError, "identity alias leaked"
+            ):
+                evolution_runtime_module._scan_payload(
+                    {"summary": value},
+                    allow_outcomes=True,
+                    anonymous_aliases=("AI",),
+                )
 
     def test_signal_h2_malformed_text_feedback_does_not_echo_raw_output(self) -> None:
         class MalformedThenValidCaller(ScriptedRoleCaller):
@@ -2072,16 +2214,18 @@ class ConcreteRoleAdapterTests(TestCase):
                             "cases": [
                                 {
                                     "case_ref": "case-002",
-                                    "profile_evidence": "hardware",
+                                    "profile_evidence": "project-driven hardware",
                                     "applicability_reason": (
-                                        "Hardware suppliers may disclose project awards."
+                                        "The profile directly identifies project-driven "
+                                        "operations."
                                     ),
                                 },
                                 {
                                     "case_ref": "case-001",
-                                    "profile_evidence": "hardware",
+                                    "profile_evidence": "project-driven hardware",
                                     "applicability_reason": (
-                                        "Hardware suppliers may disclose project awards."
+                                        "The profile directly identifies project-driven "
+                                        "operations."
                                     ),
                                 },
                             ],
@@ -2103,8 +2247,8 @@ class ConcreteRoleAdapterTests(TestCase):
             {
                 "hypotheses": [item.to_dict() for item in hypotheses.value],
                 "case_briefs": [
-                    {"case_ref": "case-001", "industry": "hardware"},
-                    {"case_ref": "case-002", "industry": "hardware"},
+                    {"case_ref": "case-001", "industry": "project-driven hardware"},
+                    {"case_ref": "case-002", "industry": "project-driven hardware"},
                 ],
             }
         )
@@ -6505,7 +6649,7 @@ class RunControlTests(TestCase):
                 client.complete_json(
                     stage="predict",
                     system_prompt="Return JSON.",
-                    payload={"context": "AN identity disclosed"},
+                    payload={"context": "ticker AN identity disclosed"},
                     allow_outcomes=False,
                     anonymous_aliases=("AN",),
                 )

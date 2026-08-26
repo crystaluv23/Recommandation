@@ -114,11 +114,15 @@ values as free identity text, because legitimate values such as confidence
 
 Free-text scanning preserves alias type. Company names are matched
 case-insensitively, while short uppercase ticker aliases are matched
-case-sensitively. The current case's internal id, identity fields, source aliases,
+case-sensitively. A bare two-character uppercase token is too ambiguous to prove a
+ticker leak (`AI` is also ordinary domain vocabulary); a two-character ticker is
+rejected only in explicit ticker context such as `$AI`, `ticker AI`, or
+`NASDAQ: AI`. Three-to-five-character uppercase tickers retain exact
+case-sensitive boundary matching. The current case's internal id, identity fields, source aliases,
 composite formal-name components, suffix-stripped natural company names, and
 distinctive leading brand tokens are independently stripped and masked before a
 defense-in-depth scan of the assembled context. This still catches an explicit
-`AN`/`LOW` ticker leak but does not misclassify ordinary prose such as "an
+`ticker AN`/`ticker LOW` leak but does not misclassify ordinary prose such as "an
 artifact" or "low liquidity". A common leading company-name word such as `High`
 is not by itself a distinctive derived brand alias: the complete name and ticker
 remain masked, while ordinary Plan prose such as "high decision relevance" must
@@ -223,7 +227,12 @@ comparison. Its expected pattern must name both groups using case/group/cohort
 language, and its statement/pattern/falsifiers cannot introduce a later-quarter,
 later-year, event-study, short-window market reaction, return, momentum, or
 outperformance outcome that H3 will never evaluate. It cannot invent opaque case
-refs or bracketed case placeholders. `lookback_days` remains an input-evidence window. Existing
+refs or bracketed case placeholders. The statement must assert a measurable
+cross-group feature rather than merely say that data are available, observable, or
+inferable from a source. Cross-issuer patterns cannot use raw absolute revenue,
+earnings, cash, production, cost, or similar scale as the discriminator; they must
+normalize against a case-local expectation, guidance value, prior period, ratio, or
+other comparable baseline. `lookback_days` remains an input-evidence window. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/
@@ -323,9 +332,18 @@ H2 output is not an unexplained opaque-ref list: every selected ref includes a
 brief and an `applicability_reason` of 1-240 characters. The reason must state
 positive visible support for material applicability; language that admits missing,
 insufficient, generic, or unconfirmed support invalidates the inclusion instead of
-turning an inapplicable case into a ranked case. The adapter validates the literal
-span, bounds, and self-disqualification before returning only the ranked refs to
-the local label-owning controller; empty per-hypothesis selections remain valid.
+turning an inapplicable case into a ranked case. Inferential language such as
+`suggests`, `indicates`, `aligns`, `likely`, `typically`, `may`, or `might` also
+invalidates an inclusion when it substitutes an assumed profile fact for visible
+support. The adapter aggregates all locally decidable span, bound,
+self-disqualification, and inference defects into the one correction before
+returning only the ranked refs to the local label-owning controller; empty
+per-hypothesis selections remain valid. Its output contract is schema-only and
+contains no case ref, hypothesis id, evidence phrase, or business reason that can be
+copied as if it came from the supplied brief. The locally persisted rejected H2
+value is not echoed into the correction; the unchanged hypotheses/briefs plus the
+aggregated validation categories and affected opaque refs are sufficient, preserve
+the cacheable prefix, and avoid paying to resend a padded ranking.
 The initial and correction requests use one stable provider prefix with
 `validation_feedback=null` on the initial request so the repeated H2 pool remains
 cacheable.

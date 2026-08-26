@@ -4556,6 +4556,7 @@ def _complete_parsed_role(
     sanitize_output_aliases: Iterable[str] = (),
     reject_output_aliases: Iterable[str] = (),
     stable_correction_prefix: bool = False,
+    echo_invalid_output_on_correction: bool = True,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
@@ -4651,13 +4652,13 @@ def _complete_parsed_role(
             return _parse_role_output(request_stage, value, parser), usage
         except (KeyError, TypeError, ValueError) as exc:
             keys = ", ".join(sorted(str(key) for key in value))
-            failed_output = value
+            failed_output = value if echo_invalid_output_on_correction else {}
             failure = ValidationError(
                 f"{request_stage} returned invalid JSON fields [{keys}]: "
                 f"{type(exc).__name__}: {exc}"
             )
         except ValidationError as exc:
-            failed_output = value
+            failed_output = value if echo_invalid_output_on_correction else {}
             failure = exc
     raise CandidateExecutionRejected(
         stage,
@@ -6623,6 +6624,18 @@ _H1_CONTROL_CASE_PATTERN = re.compile(
 _H1_INVENTED_CASE_REF = re.compile(
     r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
 )
+_H1_DATA_READINESS_STATEMENT = re.compile(
+    r"\b(?:available|observable|observed|inferable|inferred|retrievable|retrieved|"
+    r"extractable|extracted|found|documented)\s+"
+    r"(?:in|from|through|within|using|via)\b",
+    re.IGNORECASE,
+)
+_H1_UNNORMALIZED_SCALE_PATTERN = re.compile(
+    r"\b(?:higher|lower|larger|smaller|greater|less)\s+(?:raw|absolute)\s+"
+    r"(?:revenue|earnings|profits?|sales|cash|production|costs?|figures?|levels?|"
+    r"amounts?)\b",
+    re.IGNORECASE,
+)
 
 
 def _h1_topic_terms(value: str) -> frozenset[str]:
@@ -6663,25 +6676,16 @@ def _h1_existing_signal_term_sets(
     }
     return tuple(sorted(term_sets, key=lambda item: tuple(sorted(item))))
 
-_SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
-    "SignalMiningRankings",
-    {
-        "rankings": [
-            {
-                "hypothesis_id": "large_order_confirmation",
-                "cases": [
-                    {
-                        "case_ref": "case-001",
-                        "profile_evidence": "project-driven engineering services",
-                        "applicability_reason": (
-                            "The operating profile makes disclosed project awards applicable."
-                        ),
-                    }
-                ],
-            }
-        ]
-    },
-) + " Return every supplied hypothesis exactly once and only supplied case_ref values."
+_SIGNAL_MINING_RANKING_OUTPUT = (
+    ' Output contract for SignalMiningRankings: return exactly {"rankings":[]}, '
+    "where rankings is a JSON array with one object per supplied hypothesis. "
+    "Each ranking object has exactly hypothesis_id (a supplied string) and cases "
+    "(an array from zero through rules.max_case_refs_per_hypothesis items). Each "
+    "case object has exactly case_ref (a supplied opaque string), profile_evidence "
+    "(a string), and applicability_reason (a string). Return every supplied "
+    "hypothesis exactly once, only supplied case_ref values, no wrapper keys, and "
+    "no Markdown."
+)
 
 _H2_SELF_DISQUALIFYING_REASON_PATTERNS = tuple(
     re.compile(pattern, flags=re.IGNORECASE)
@@ -6695,6 +6699,12 @@ _H2_SELF_DISQUALIFYING_REASON_PATTERNS = tuple(
         r"\b(?:could|may|might)\b.{0,60}"
         r"\b(?:apply|applicable|relevant|support|lead)\b",
     )
+)
+
+_H2_INFERENTIAL_REASON_PATTERN = re.compile(
+    r"\b(?:suggests?|implies?|indicates?|aligns?|likely|typically|apparently|"
+    r"appears?|seems?|potentially|presumably|may|might|could)\b",
+    re.IGNORECASE,
 )
 
 
@@ -6904,6 +6914,23 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "Signal Mining H1 must not invent opaque case refs or case "
                         f"placeholders for {item.hypothesis_id}"
                     )
+                if _H1_DATA_READINESS_STATEMENT.search(item.statement) is not None:
+                    issues.append(
+                        "Signal Mining H1 statement must assert a measurable group "
+                        "feature rather than source-data readiness: "
+                        + item.hypothesis_id
+                    )
+                if (
+                    _H1_UNNORMALIZED_SCALE_PATTERN.search(
+                        item.expected_positive_pattern
+                    )
+                    is not None
+                ):
+                    issues.append(
+                        "Signal Mining H1 expected_positive_pattern must normalize "
+                        "raw absolute scale to a case-local baseline: "
+                        + item.hypothesis_id
+                    )
                 if not (
                     _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
                     and _H1_CONTROL_CASE_PATTERN.search(
@@ -6988,7 +7015,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "and falsifiers must not invent a next-quarter, later-year, event-study, "
                 "short-window market reaction, return, momentum, outperformance, or "
                 "other outcome/horizon. Do not invent opaque case refs or bracketed "
-                "case placeholders. lookback_days is only the pre-prediction "
+                "case placeholders. A statement must assert the measurable group "
+                "feature, not merely say data are available, observable, or inferable "
+                "from a source. Never compare raw absolute financial or operating scale "
+                "across issuers; normalize to a case-local expectation, guidance, prior "
+                "period, or ratio. lookback_days is only the pre-prediction "
                 "evidence window. Existing Signals exclude only a candidate whose own "
                 "hypothesis_id or query renames their measured construct; mentioning "
                 "an existing metric only as a comparison or falsifier is allowed. "
@@ -7062,6 +7093,19 @@ class LLMSignalMiningModel(SignalMiningModel):
             ):
                 raise ValidationError("Signal Mining H2 requires a rankings array")
             rankings: dict[str, tuple[str, ...]] = {}
+            semantic_issues: dict[str, list[str]] = {
+                "evidence_bounds": [],
+                "reason_bounds": [],
+                "self_disqualifying_reason": [],
+                "inferential_reason": [],
+                "nonliteral_evidence": [],
+            }
+
+            def record_issue(kind: str, hypothesis_id: str, case_ref: str) -> None:
+                ref = f"{hypothesis_id}/{case_ref}"
+                if ref not in semantic_issues[kind]:
+                    semantic_issues[kind].append(ref)
+
             for raw in value["rankings"]:
                 if not isinstance(raw, Mapping) or set(raw) != {
                     "hypothesis_id",
@@ -7098,27 +7142,21 @@ class LLMSignalMiningModel(SignalMiningModel):
                         str(ranked_case["applicability_reason"]).split()
                     )
                     if not evidence or len(evidence) > 160:
-                        raise ValidationError(
-                            "Signal Mining H2 profile_evidence must be 1-160 characters"
-                        )
+                        record_issue("evidence_bounds", hypothesis_id, case_ref)
                     if not reason or len(reason) > 240:
-                        raise ValidationError(
-                            "Signal Mining H2 applicability_reason must be 1-240 characters"
-                        )
+                        record_issue("reason_bounds", hypothesis_id, case_ref)
                     if _h2_reason_disclaims_applicability(reason):
-                        raise ValidationError(
-                            "Signal Mining H2 applicability_reason must state positive "
-                            "visible support and cannot disclaim applicability"
+                        record_issue(
+                            "self_disqualifying_reason", hypothesis_id, case_ref
                         )
+                    if _H2_INFERENTIAL_REASON_PATTERN.search(reason) is not None:
+                        record_issue("inferential_reason", hypothesis_id, case_ref)
                     visible_fields = brief_strings_by_ref.get(case_ref, ())
-                    if not any(
+                    if evidence and len(evidence) <= 160 and not any(
                         evidence.casefold() in field.casefold()
                         for field in visible_fields
                     ):
-                        raise ValidationError(
-                            "Signal Mining H2 profile_evidence must be an exact "
-                            "contiguous span from the selected case brief: " + case_ref
-                        )
+                        record_issue("nonliteral_evidence", hypothesis_id, case_ref)
                     refs.append(case_ref)
                 if len(set(refs)) != len(refs):
                     raise ValidationError("Signal Mining H2 case refs must be unique")
@@ -7135,6 +7173,36 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise ValidationError(
                     "Signal Mining H2 used unknown case refs: " + ", ".join(unknown)
                 )
+            issue_messages: list[str] = []
+            if semantic_issues["evidence_bounds"]:
+                issue_messages.append(
+                    "Signal Mining H2 profile_evidence must be 1-160 characters for: "
+                    + ", ".join(semantic_issues["evidence_bounds"])
+                )
+            if semantic_issues["reason_bounds"]:
+                issue_messages.append(
+                    "Signal Mining H2 applicability_reason must be 1-240 characters for: "
+                    + ", ".join(semantic_issues["reason_bounds"])
+                )
+            if semantic_issues["self_disqualifying_reason"]:
+                issue_messages.append(
+                    "Signal Mining H2 applicability_reason must state positive visible "
+                    "support and cannot disclaim applicability for: "
+                    + ", ".join(semantic_issues["self_disqualifying_reason"])
+                )
+            if semantic_issues["inferential_reason"]:
+                issue_messages.append(
+                    "Signal Mining H2 applicability_reason must not infer missing profile "
+                    "facts for: " + ", ".join(semantic_issues["inferential_reason"])
+                )
+            if semantic_issues["nonliteral_evidence"]:
+                issue_messages.append(
+                    "Signal Mining H2 profile_evidence must be an exact contiguous span "
+                    "from the selected case brief for: "
+                    + ", ".join(semantic_issues["nonliteral_evidence"])
+                )
+            if issue_messages:
+                raise ValidationError("; ".join(issue_messages))
             return rankings
 
         value, usage = _complete_parsed_role(
@@ -7152,7 +7220,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "that states positive visible support for the exact hypothesis "
                 "applicability. If the reason would say evidence is missing, unavailable, "
                 "generic, insufficient, speculative, or unconfirmed, omit that case; "
-                "never infer missing profile facts. Do not quote a company name, ticker, "
+                "never infer missing profile facts. Reasons using suggests, indicates, "
+                "aligns, likely, typically, may, might, or similar inferential language "
+                "are invalid; omit those cases. Do not quote a company name, ticker, "
                 "or brand in profile_evidence. Respect "
                 "rules.max_case_refs_per_hypothesis."
                 + _UNTRUSTED_DATA_INSTRUCTION
@@ -7165,6 +7235,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
             stable_correction_prefix=True,
+            echo_invalid_output_on_correction=False,
         )
         return AgentStep(value, usage)
 
@@ -9523,19 +9594,22 @@ def _scan_payload(
             reverse=True,
         )
     )
-    alias_matchers = tuple(
-        (
-            ticker_like,
-            re.compile(
-                rf"(?<![A-Za-z0-9]){re.escape(alias if ticker_like else alias.casefold())}"
+    alias_matchers: list[tuple[bool, re.Pattern[str]]] = []
+    for alias in aliases:
+        ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
+        if ticker_like and len(alias) == 2:
+            pattern = (
+                rf"(?:\${re.escape(alias)}(?![A-Za-z0-9])|"
+                rf"(?i:\b(?:ticker|symbol|nasdaq|nyse|amex)\b)"
+                rf"\s*(?::|=)?\s*{re.escape(alias)}(?![A-Za-z0-9]))"
+            )
+        else:
+            pattern = (
+                rf"(?<![A-Za-z0-9])"
+                rf"{re.escape(alias if ticker_like else alias.casefold())}"
                 rf"(?![A-Za-z0-9])"
-            ),
-        )
-        for alias in aliases
-        for ticker_like in (
-            alias.isalnum() and alias.isupper() and len(alias) <= 5,
-        )
-    )
+            )
+        alias_matchers.append((ticker_like, re.compile(pattern)))
 
     def visit(item: Any, path: str) -> None:
         if isinstance(item, Mapping):

@@ -600,3 +600,30 @@ response for no design reason. Conversely, five-day price reaction, momentum, re
 and outperformance are alternate outcomes even if a hypothesis also mentions the
 positive/control groups. Accept the former synonyms, reject the latter targets, and
 forbid opaque bracketed case refs that are neither supplied nor evaluable.
+
+## H1/H2 semantic-grounding addendum (2026-08-26)
+
+A role can satisfy the fixed-group grammar while still fail to state a Signal.
+V48's three H1 statements said the requested facts were available, observable, or
+inferable from filings/news. Those are readiness claims, not falsifiable feature
+contrasts. One expected pattern also compared higher absolute revenue and earnings
+across issuers, which is mostly a size comparison. Require statements to name the
+measurable group feature and normalize cross-issuer amounts to a case-local
+expectation, guidance, prior comparable period, or ratio.
+
+Do not put a complete domain example in a correction-bounded schema. V48's H2
+correction copied the example's case ref, evidence phrase, and reason for all three
+hypotheses even though that phrase was absent from the real brief. A schema-only
+contract removes this attractor. The locally persisted rejected ranking also need
+not be resent: unchanged briefs plus aggregated error categories and affected opaque
+refs are sufficient and cheaper.
+
+Positive-support validation must reject inference, not only explicit admissions of
+missing data. V48 padded 36 selections with `suggests`, `indicates`, `aligns`,
+`likely`, `typically`, or modal claims that an unrelated operating description
+implied analyst coverage or production disclosures. Aggregate these defects with
+span/bound/disclaimer failures so the sole correction sees the complete safe issue
+set. Finally, a bare two-letter uppercase token is ambiguous: `AI` was ordinary
+technology vocabulary but also a Discovery ticker. Require explicit `$XX`, ticker,
+symbol, or exchange context for two-letter aliases while retaining exact guards for
+longer tickers and complete names.
