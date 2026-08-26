@@ -84,6 +84,10 @@ _GENERIC_QUERY_WORDS = frozenset(
         "and",
         "business",
         "company",
+        "compare",
+        "compared",
+        "comparison",
+        "change",
         "for",
         "from",
         "latest",
@@ -140,6 +144,10 @@ _MODEL_VIEW_METADATA_FIELD = re.compile(
     re.IGNORECASE,
 )
 _HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
+_NONVISIBLE_HTML_BLOCK = re.compile(
+    r"<(?:ix:header|script|style)\b[^>]*>.*?</(?:ix:header|script|style)\s*>",
+    flags=re.IGNORECASE | re.DOTALL,
+)
 _HTML_PREFIX_FRAGMENT = re.compile(
     r"(?:\b(?:style|class|id|name|contextref|unitref|dimension|colspan|rowspan|scale)\s*=|"
     r"(?:font|background|border|padding|text-align)[-a-z]*\s*:|"
@@ -217,6 +225,10 @@ def _normalized_projection_text(
     """Return readable text plus compact projection-to-raw offset runs."""
 
     removed: list[tuple[int, int]] = list(
+        (match.start(), match.end())
+        for match in _NONVISIBLE_HTML_BLOCK.finditer(raw_text)
+    )
+    removed.extend(
         (match.start(), match.end()) for match in _HTML_TAG.finditer(raw_text)
     )
     first_close = raw_text.find(">")
@@ -6714,8 +6726,15 @@ class SignalMiningDecision:
 
     def __post_init__(self) -> None:
         _validate_id(self.hypothesis_id, "mining decision hypothesis_id")
-        if self.disposition not in {"supported", "refine", "rejected"}:
-            raise ValidationError("Mining disposition must be supported, refine, or rejected")
+        if self.disposition not in {
+            "supported",
+            "refine",
+            "rejected",
+            "inconclusive",
+        }:
+            raise ValidationError(
+                "Mining disposition must be supported, refine, rejected, or inconclusive"
+            )
         if not self.rationale or any(not item.strip() for item in self.rationale):
             raise ValidationError("Mining decision requires rationale")
         if self.disposition == "supported" and not isinstance(self.candidate, Mapping):
@@ -8519,7 +8538,12 @@ class SignalEvolutionEngine:
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
-                    "decisions": ["supported", "refine", "rejected"],
+                    "decisions": [
+                        "supported",
+                        "refine",
+                        "rejected",
+                        "inconclusive",
+                    ],
                     "candidate_only_when_supported": True,
                 },
             }
@@ -8531,11 +8555,25 @@ class SignalEvolutionEngine:
             decisions_step.value,
             allowed_hypothesis_ids=allowed_hypotheses,
         )
+        for decision in decisions:
+            if decision.disposition == "inconclusive":
+                evidence_unavailable[decision.hypothesis_id] = tuple(
+                    "H3 judged the model-facing evidence semantically insufficient: "
+                    + reason
+                    for reason in decision.rationale
+                )
         audit["stages"]["H3"] = {
-            "status": "completed",
+            "status": (
+                "completed_with_inconclusive"
+                if any(item.disposition == "inconclusive" for item in decisions)
+                else "completed"
+            ),
             "decisions": [item.to_dict() for item in decisions],
             "resolutions": resolution_audit,
             "usage": _usage_to_dict(decisions_step.usage),
+        }
+        audit["evidence_unavailable"] = {
+            key: list(value) for key, value in evidence_unavailable.items()
         }
         selection_by_id = {
             item["hypothesis"].hypothesis_id: item
@@ -8654,7 +8692,12 @@ class SignalEvolutionEngine:
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
                     "candidate_only_for_repeated_observable_pattern": True,
-                    "decisions": ["supported", "refine", "rejected"],
+                    "decisions": [
+                        "supported",
+                        "refine",
+                        "rejected",
+                        "inconclusive",
+                    ],
                 },
             }
         )
@@ -9106,7 +9149,7 @@ class SignalEvolutionEngine:
             resolution,
             as_of=case.prediction_time,
         )
-        documents, filtered_documents = _filter_h3_documents(
+        documents, filtered_documents, query_coverage = _filter_h3_documents(
             documents,
             case=case,
             query=query,
@@ -9160,6 +9203,7 @@ class SignalEvolutionEngine:
             "usable": bool(documents),
             "document_hashes": [item.content_hash for item in documents],
             "filtered_documents": filtered_documents,
+            "query_coverage": query_coverage,
             "as_of": case.prediction_time.isoformat(),
         }
 
@@ -10189,10 +10233,17 @@ def _filter_h3_documents(
     *,
     case: EvolutionCase,
     query: str | None,
-) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, str]]]:
+) -> tuple[
+    tuple[RawInfoDocument, ...],
+    list[dict[str, str]],
+    dict[str, Any],
+]:
     """Keep exact-routed sources with hypothesis-relevant visible content."""
 
-    query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    ordered_query_terms = tuple(
+        dict.fromkeys(_h3_ordered_content_terms(query or "", exclude_generic=True))
+    )
+    query_terms = set(ordered_query_terms)
     kept: list[RawInfoDocument] = []
     filtered: list[dict[str, str]] = []
     for document in documents:
@@ -10203,12 +10254,22 @@ def _filter_h3_documents(
             if is_news
             else True
         )
-        visible_terms = _h3_content_terms(visible_text, exclude_generic=False)
-        minimum_matches = min(2, len(query_terms))
-        relevance_match = (
-            not query_terms
-            or len(query_terms & visible_terms) >= minimum_matches
+        visible_sequence = _h3_ordered_content_terms(
+            visible_text,
+            exclude_generic=True,
         )
+        visible_terms = set(visible_sequence)
+        matched_count = len(query_terms & visible_terms)
+        matched_pairs = _h3_matched_query_pairs(
+            ordered_query_terms,
+            visible_sequence,
+        )
+        if len(query_terms) <= 1:
+            relevance_match = not query_terms or matched_count == 1
+        elif len(query_terms) == 2:
+            relevance_match = matched_count == 2
+        else:
+            relevance_match = matched_count >= 2 and bool(matched_pairs)
         if issuer_match and relevance_match:
             kept.append(document)
             continue
@@ -10222,13 +10283,27 @@ def _filter_h3_documents(
                 ),
             }
         )
-    return tuple(kept), filtered
+    coverage = _h3_packet_query_coverage(kept, query=query)
+    if kept and not coverage["sufficient"]:
+        filtered.extend(
+            {
+                "document_id": document.document_id,
+                "reason": "hypothesis_query_coverage_insufficient",
+            }
+            for document in kept
+        )
+        kept = []
+    return tuple(kept), filtered, coverage
 
 
-def _h3_content_terms(value: str, *, exclude_generic: bool) -> set[str]:
-    """Normalize bounded query/content terms without substring matching."""
+def _h3_ordered_content_terms(
+    value: str,
+    *,
+    exclude_generic: bool,
+) -> tuple[str, ...]:
+    """Normalize ordered query/content terms without substring matching."""
 
-    result: set[str] = set()
+    result: list[str] = []
     separated = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", value)
     for raw in re.findall(r"[A-Za-z0-9]+", separated.casefold()):
         if len(raw) < 3 or (exclude_generic and raw in _GENERIC_QUERY_WORDS):
@@ -10238,8 +10313,75 @@ def _h3_content_terms(value: str, *, exclude_generic: bool) -> set[str]:
             term = term[:-1]
         if exclude_generic and term in _GENERIC_QUERY_WORDS:
             continue
-        result.add(term)
-    return result
+        result.append(term)
+    return tuple(result)
+
+
+def _h3_matched_query_pairs(
+    query_terms: tuple[str, ...],
+    visible_terms: tuple[str, ...],
+    *,
+    max_gap: int = 4,
+) -> set[tuple[str, str]]:
+    """Return consecutive query pairs found in order within a short term gap."""
+
+    pairs = set(zip(query_terms, query_terms[1:]))
+    matched: set[tuple[str, str]] = set()
+    for first, second in pairs:
+        for index, term in enumerate(visible_terms):
+            if term != first:
+                continue
+            if second in visible_terms[index + 1 : index + 1 + max_gap]:
+                matched.add((first, second))
+                break
+    return matched
+
+
+def _h3_packet_query_coverage(
+    documents: Iterable[RawInfoDocument],
+    *,
+    query: str | None,
+) -> dict[str, Any]:
+    """Audit distinct-term and short-range ordered-pair packet coverage."""
+
+    ordered_query_terms = tuple(
+        dict.fromkeys(_h3_ordered_content_terms(query or "", exclude_generic=True))
+    )
+    query_terms = set(ordered_query_terms)
+    matched_terms: set[str] = set()
+    matched_pairs: set[tuple[str, str]] = set()
+    for document in documents:
+        visible_terms = _h3_ordered_content_terms(
+            _h3_document_visible_text(document),
+            exclude_generic=True,
+        )
+        matched_terms.update(query_terms & set(visible_terms))
+        matched_pairs.update(
+            _h3_matched_query_pairs(ordered_query_terms, visible_terms)
+        )
+    required_match_count = len(query_terms)
+    sufficient = (
+        not query_terms
+        or (
+            len(matched_terms) >= required_match_count
+            and (len(query_terms) <= 2 or bool(matched_pairs))
+        )
+    )
+    return {
+        "query_terms": list(ordered_query_terms),
+        "matched_terms": sorted(matched_terms),
+        "required_match_count": required_match_count,
+        "matched_ordered_pairs": [
+            f"{first} {second}" for first, second in sorted(matched_pairs)
+        ],
+        "sufficient": sufficient,
+    }
+
+
+def _h3_content_terms(value: str, *, exclude_generic: bool) -> set[str]:
+    """Normalize bounded query/content terms without substring matching."""
+
+    return set(_h3_ordered_content_terms(value, exclude_generic=exclude_generic))
 
 
 def _h3_document_visible_text(document: RawInfoDocument) -> str:

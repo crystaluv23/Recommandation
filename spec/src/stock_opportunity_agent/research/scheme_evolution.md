@@ -1029,8 +1029,13 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    bounded shortlist of materially applicable cases for each hypothesis, most
    applicable first. An empty shortlist is a valid statement that the current
    anonymous pool has no applicable case; irrelevant cases must be omitted and
-   the model must not pad a ranking by copying the complete pool. The controller
-   rejects any per-hypothesis list above the supplied shortlist ceiling.
+   the model must not pad a ranking by copying the complete pool. Every selected
+   case carries one short exact `profile_evidence` span from its supplied brief
+   and a bounded `applicability_reason`; a missing/non-literal span or malformed
+   explanation receives the one structured-role correction. This does not ask
+   the model to reveal a label or prove H3 evidence availability, but it makes
+   every H2 inclusion auditable instead of accepting an unexplained opaque ref.
+   The controller rejects any per-hypothesis list above the supplied shortlist ceiling.
    Retryable provider failure
    creates a cycle-level control-plane pause with the opaque case ref and provider
    reason, preserves both pointers, and returns process exit 75 for exact-contract
@@ -1054,20 +1059,31 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    reference packet ids. News packets require a strong company-name or ticker
    match in title/body plus hypothesis-query relevance. Ticker-association
    metadata alone is filtered and audited. Every document must match the exact
-   requested source semantics and contain exact word-boundary matches for the
-   non-generic hypothesis query: one distinct term for a one-term query and at
-   least two distinct terms for a longer query. Substrings such as `ounce` in
-   `announced` or `per` in `performance` are not matches. Directly issuer-routed
+   requested source semantics. Query relevance is evaluated over ordered normalized
+   terms, not a two-word bag: a one-term query requires that term, a two-term query
+   requires both, and a longer query requires at least two terms plus one consecutive
+   query pair occurring in order within a short local term gap. Across the kept packet,
+   every distinct non-generic query term must be covered. This admits
+   complementary documents such as one `quarterly revenue` source plus one
+   `analyst estimate` source, while excluding filing boilerplate that happens to say
+   `quarterly`, `revenue`, and `estimates` in unrelated clauses. Substrings such as
+   `ounce` in `announced` or `per` in `performance` are not matches. Directly issuer-routed
    SEC, market, and facts sources retain their
    issuer routing, but do not bypass this hypothesis-relevance check. The model
    excerpt is a deterministic normalized window centered on the strongest query
    match, with the complete immutable document hash retained as lineage; it must
    not substitute an XML header plus signature-page tail for substantive source
-   text. If any selected induction case has no usable document after these
+   text. Inline-XBRL `ix:header`/hidden resource bodies and script/style bodies are
+   removed before query matching as well as projection, so taxonomy member names
+   cannot manufacture evidence relevance. If any selected induction case has no usable document after these
    checks, that hypothesis is recorded separately as evidence-unavailable and
    is not sent to H3. Data absence is not learned as a hypothesis refinement.
-   H3 must return exactly one decision per comparison; `refine` is reserved for
-   an actual underspecification supported by visible evidence.
+   H3 must return exactly one decision per comparison. `refine` is reserved for an
+   actual underspecification supported by visible evidence, `rejected` requires visible
+   contradiction, and `inconclusive` records that the model-facing evidence is still
+   semantically insufficient despite deterministic preflight. `inconclusive` is carried
+   under evidence-unavailable, never as refinement or rejection; absence-language in a
+   `refine`/`rejected` rationale receives the one bounded correction.
 
 Exploration-driven cycles execute:
 

@@ -3797,7 +3797,7 @@ class SignalEvolutionTests(TestCase):
             metadata={"associated_ticker": "TGTS", "title": "Market update"},
         )
 
-        kept, filtered = _filter_h3_documents(
+        kept, filtered, coverage = _filter_h3_documents(
             (relevant, metadata_only), case=case, query="guidance"
         )
 
@@ -3811,6 +3811,7 @@ class SignalEvolutionTests(TestCase):
                 }
             ],
         )
+        self.assertTrue(coverage["sufficient"])
 
     def test_h3_visible_brand_from_uppercase_formal_name_is_case_insensitive(
         self,
@@ -3832,12 +3833,13 @@ class SignalEvolutionTests(TestCase):
             content="Ciena raised full-year guidance for networking demand.",
         )
 
-        kept, filtered = _filter_h3_documents(
+        kept, filtered, coverage = _filter_h3_documents(
             (relevant,), case=case, query="guidance"
         )
 
         self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
         self.assertEqual(filtered, [])
+        self.assertTrue(coverage["sufficient"])
 
     def test_h3_filing_requires_query_relevance_and_projects_matching_window(
         self,
@@ -3870,7 +3872,7 @@ class SignalEvolutionTests(TestCase):
             content="<html><body>Only a routine legal exhibit.</body></html>",
         )
 
-        kept, filtered = _filter_h3_documents(
+        kept, filtered, coverage = _filter_h3_documents(
             (relevant, irrelevant),
             case=case,
             query="quarterly revenue earnings analyst expectations",
@@ -3894,6 +3896,118 @@ class SignalEvolutionTests(TestCase):
         self.assertIn("revenue and earnings exceeded analyst", view["content_excerpt"])
         self.assertNotIn("XML namespace filing header", view["content_excerpt"])
         self.assertEqual(view["content_projection"], "normalized_query_window_v1")
+        self.assertTrue(coverage["sufficient"])
+        self.assertGreaterEqual(len(coverage["matched_ordered_pairs"]), 1)
+
+    def test_h3_rejects_scattered_accounting_boilerplate_query_terms(self) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        boilerplate = RawInfoDocument.create(
+            document_id="accounting-boilerplate",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "This quarterly report contains forward-looking statements. "
+                "Management makes estimates and assumptions about liabilities. "
+                "Reported amounts of revenues and expenses may differ from actual results."
+            ),
+        )
+
+        kept, filtered, coverage = _filter_h3_documents(
+            (boilerplate,),
+            case=case,
+            query="quarterly revenue analyst estimates comparison",
+        )
+
+        self.assertEqual(kept, ())
+        self.assertFalse(coverage["sufficient"])
+        self.assertEqual(
+            filtered,
+            [
+                {
+                    "document_id": "accounting-boilerplate",
+                    "reason": "hypothesis_query_irrelevant",
+                }
+            ],
+        )
+
+    def test_h3_packet_combines_complementary_ordered_query_pairs(self) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        actuals = RawInfoDocument.create(
+            document_id="quarterly-actuals",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content="Quarterly revenue increased to $120 million.",
+        )
+        estimates = RawInfoDocument.create(
+            document_id="analyst-estimates",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content="Analyst estimates called for $110 million.",
+        )
+
+        kept, filtered, coverage = _filter_h3_documents(
+            (actuals, estimates),
+            case=case,
+            query="quarterly revenue analyst estimates",
+        )
+
+        self.assertEqual(
+            tuple(item.document_id for item in kept),
+            ("quarterly-actuals", "analyst-estimates"),
+        )
+        self.assertEqual(filtered, [])
+        self.assertTrue(coverage["sufficient"])
+        self.assertEqual(
+            set(coverage["matched_ordered_pairs"]),
+            {"analyst estimate", "quarterly revenue"},
+        )
+
+    def test_h3_ignores_inline_xbrl_hidden_query_terms(self) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        hidden_only = RawInfoDocument.create(
+            document_id="hidden-xbrl-terms",
+            company_id=case.company_id,
+            source_type="10-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "<html><body><ix:header><ix:hidden>production volume cost ounce "
+                "guidance</ix:hidden></ix:header><div>Routine legal disclosure.</div>"
+                "</body></html>"
+            ),
+        )
+
+        kept, filtered, coverage = _filter_h3_documents(
+            (hidden_only,),
+            case=case,
+            query="production volume cost ounce guidance",
+        )
+        view = _agent_raw_document_view(
+            hidden_only,
+            max_content_chars=240,
+            query="production volume cost ounce guidance",
+        )
+
+        self.assertEqual(kept, ())
+        self.assertFalse(coverage["sufficient"])
+        self.assertEqual(filtered[0]["reason"], "hypothesis_query_irrelevant")
+        self.assertNotIn("production", view["content_excerpt"])
+        self.assertIn("Routine legal disclosure", view["content_excerpt"])
 
     def test_mining_ranks_identity_and_label_hidden_briefs_then_overlays_labels(
         self,
@@ -4067,7 +4181,6 @@ class SignalEvolutionTests(TestCase):
                 llm_signal_runner=None,
                 mining_config=fixture_mining_config(2),
             )
-
             result = engine._run_signal_mining(cycle_id=1)
 
             self.assertEqual(len(mining_model.requests), 2)
@@ -4186,6 +4299,79 @@ class SignalEvolutionTests(TestCase):
                     refs_by_class[True][0],
                     refs_by_class[False][0],
                 }.issubset(attempted)
+            )
+
+    def test_mining_keeps_h3_inconclusive_out_of_semantic_refinement(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            positive = make_case("inconclusive_positive", 4.0)
+            control = make_case("inconclusive_control", 1.1)
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="production_cost_pattern",
+                statement="Production and cost changes may precede repricing.",
+                applicability="Operating producers.",
+                expected_positive_pattern="Production rises while cost declines.",
+                source_types=("news",),
+                query="production cost guidance",
+                falsifiers=("Controls show the same pattern.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="production_cost_pattern",
+                        disposition="inconclusive",
+                        rationale=(
+                            "The visible material remains insufficient to compare guidance.",
+                        ),
+                    ),
+                ),
+            )
+            documents = tuple(
+                RawInfoDocument.create(
+                    document_id=f"inconclusive_{case.company_id}",
+                    company_id=case.company_id,
+                    source_type="news",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=(
+                        f"{case.basic_info['company_name']} reported production cost "
+                        "guidance without a comparable historical range."
+                    ),
+                )
+                for case in (positive, control)
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=documents),
+                discovery_cases=(positive, control),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(2),
+            )
+            mining_model.rankings = {
+                "production_cost_pattern": tuple(
+                    case_ref
+                    for case_ref, _case in engine._mining_case_universe(limit=2)
+                )
+            }
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertNotIn(
+                "production_cost_pattern", result["refined_hypotheses"]
+            )
+            self.assertIn(
+                "production_cost_pattern", result["audit"]["evidence_unavailable"]
+            )
+            self.assertEqual(
+                result["audit"]["stages"]["H3"]["status"],
+                "completed_with_inconclusive",
             )
 
     def test_signal_update_makes_zero_calls_without_actionable_learning(self) -> None:

@@ -6621,7 +6621,15 @@ _SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
         "rankings": [
             {
                 "hypothesis_id": "large_order_confirmation",
-                "case_refs": ["case-001", "case-002"],
+                "cases": [
+                    {
+                        "case_ref": "case-001",
+                        "profile_evidence": "project-driven engineering services",
+                        "applicability_reason": (
+                            "The operating profile makes disclosed project awards applicable."
+                        ),
+                    }
+                ],
             }
         ]
     },
@@ -6633,16 +6641,24 @@ _SIGNAL_MINING_DECISIONS_OUTPUT = _output_contract(
         "decisions": [
             {
                 "hypothesis_id": "large_order_confirmation",
-                "disposition": "refine",
-                "rationale": ["The visible evidence does not separate the groups."],
+                "disposition": "inconclusive",
+                "rationale": ["The visible packet lacks the required source material."],
                 "candidate": None,
             }
         ]
     },
 ) + (
-    ' disposition must be "supported", "refine", or "rejected". Only supported '
+    ' disposition must be "supported", "refine", "rejected", or "inconclusive". '
+    "Use inconclusive only for semantically insufficient visible evidence. Only supported "
     "may carry a candidate object, which must contain exactly spec, skill, and tests "
     "under the supplied candidate_contract; otherwise candidate must be null."
+)
+
+_MINING_EVIDENCE_ABSENCE = re.compile(
+    r"\b(?:lack(?:s|ed|ing)?|missing|insufficient|unrelated|"
+    r"do(?:es)?\s+not\s+(?:contain|include)|"
+    r"no\s+basis\s+to\s+evaluate|cannot\s+evaluate|unable\s+to\s+evaluate)\b",
+    flags=re.IGNORECASE,
 )
 
 _SIGNAL_MINING_SIGNATURES_OUTPUT = _output_contract(
@@ -6875,6 +6891,30 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in case_briefs
             if isinstance(item, Mapping) and "case_ref" in item
         }
+        brief_strings_by_ref: dict[str, tuple[str, ...]] = {}
+
+        def collect_strings(value: Any, *, key: str | None = None) -> list[str]:
+            if isinstance(value, str):
+                return [] if key == "case_ref" else [" ".join(value.split())]
+            if isinstance(value, Mapping):
+                return [
+                    text
+                    for child_key, child in value.items()
+                    for text in collect_strings(child, key=str(child_key))
+                ]
+            if isinstance(value, (list, tuple)):
+                return [
+                    text
+                    for child in value
+                    for text in collect_strings(child, key=key)
+                ]
+            return []
+
+        for item in case_briefs:
+            if isinstance(item, Mapping) and "case_ref" in item:
+                brief_strings_by_ref[str(item["case_ref"])] = tuple(
+                    text for text in collect_strings(item) if text
+                )
         rules = payload.get("rules", {})
         ranking_limit = int(
             rules.get("max_case_refs_per_hypothesis", len(allowed_cases))
@@ -6893,23 +6933,61 @@ class LLMSignalMiningModel(SignalMiningModel):
             for raw in value["rankings"]:
                 if not isinstance(raw, Mapping) or set(raw) != {
                     "hypothesis_id",
-                    "case_refs",
+                    "cases",
                 }:
                     raise ValidationError(
-                        "each Signal Mining H2 ranking requires hypothesis_id and case_refs"
+                        "each Signal Mining H2 ranking requires hypothesis_id and cases"
                     )
                 hypothesis_id = str(raw["hypothesis_id"])
-                refs = _strict_string_list(raw, "case_refs", allow_empty=True)
-                if refs is None:
-                    raise ValidationError("Signal Mining H2 case_refs must be unique strings")
-                if len(refs) > ranking_limit:
+                raw_cases = raw["cases"]
+                if not isinstance(raw_cases, list):
+                    raise ValidationError("Signal Mining H2 cases must be an array")
+                if len(raw_cases) > ranking_limit:
                     raise ValidationError(
                         "Signal Mining H2 ranking exceeds "
                         f"max_case_refs_per_hypothesis={ranking_limit}"
                     )
+                refs: list[str] = []
+                for ranked_case in raw_cases:
+                    if not isinstance(ranked_case, Mapping) or set(ranked_case) != {
+                        "case_ref",
+                        "profile_evidence",
+                        "applicability_reason",
+                    }:
+                        raise ValidationError(
+                            "each Signal Mining H2 case requires case_ref, "
+                            "profile_evidence, and applicability_reason"
+                        )
+                    case_ref = str(ranked_case["case_ref"])
+                    evidence = " ".join(
+                        str(ranked_case["profile_evidence"]).split()
+                    )
+                    reason = " ".join(
+                        str(ranked_case["applicability_reason"]).split()
+                    )
+                    if not evidence or len(evidence) > 160:
+                        raise ValidationError(
+                            "Signal Mining H2 profile_evidence must be 1-160 characters"
+                        )
+                    if not reason or len(reason) > 240:
+                        raise ValidationError(
+                            "Signal Mining H2 applicability_reason must be 1-240 characters"
+                        )
+                    visible_fields = brief_strings_by_ref.get(case_ref, ())
+                    if not any(
+                        evidence.casefold() in field.casefold()
+                        for field in visible_fields
+                    ):
+                        raise ValidationError(
+                            "Signal Mining H2 profile_evidence must be an exact "
+                            "contiguous span from the selected case brief: " + case_ref
+                        )
+                    refs.append(case_ref)
+                if len(set(refs)) != len(refs):
+                    raise ValidationError("Signal Mining H2 case refs must be unique")
                 if hypothesis_id in rankings:
                     raise ValidationError("Signal Mining H2 repeated a hypothesis")
-                rankings[hypothesis_id] = refs
+                rankings[hypothesis_id] = tuple(refs)
             if set(rankings) != allowed_hypotheses:
                 raise ValidationError("Signal Mining H2 must rank every supplied hypothesis")
             unknown = sorted(
@@ -6930,8 +7008,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Outcomes and identities are hidden. Use only supplied opaque refs and "
                 "rank all hypotheses in this single call. Return only materially "
                 "applicable cases, most applicable first; omit irrelevant cases, do "
-                "not pad by copying the full pool, and use an empty case_refs array "
-                "when none apply. Respect rules.max_case_refs_per_hypothesis."
+                "not pad by copying the full pool, and use an empty cases array when "
+                "none apply. Every included case must quote one short exact contiguous "
+                "span from its supplied anonymous brief as profile_evidence and give "
+                "a concise applicability_reason that connects that span to the exact "
+                "hypothesis applicability; never infer missing profile facts. Respect "
+                "rules.max_case_refs_per_hypothesis."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _SIGNAL_MINING_RANKING_OUTPUT
             ),
@@ -6961,11 +7043,13 @@ class LLMSignalMiningModel(SignalMiningModel):
             prompt=(
                 "Contrast the supplied exact point-in-time positive and control evidence. "
                 "Support only a repeated observable difference, refine an underspecified "
-                "idea, or reject a contradicted one. A supported draft must be a complete "
-                "new Signal with executable fixtures. Return exactly one decision for "
-                "every comparison. The controller has preflighted evidence availability; "
-                "use refine only for an evidence-grounded semantic change, not merely to "
-                "report missing source material."
+                "idea, reject a visibly contradicted one, or return inconclusive when the "
+                "visible material is still semantically insufficient. A supported draft "
+                "must be a complete new Signal with executable fixtures. Return exactly "
+                "one decision for every comparison. The controller has preflighted "
+                "deterministic query coverage, but use inconclusive for any residual "
+                "source insufficiency; use refine only for an evidence-grounded semantic "
+                "change and rejected only for visible contradiction."
             ),
             temperature=0.0,
         )
@@ -7036,6 +7120,19 @@ class LLMSignalMiningModel(SignalMiningModel):
         prompt: str,
         temperature: float,
     ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        rules = payload.get("rules", {})
+        allowed_dispositions = {
+            str(item)
+            for item in (
+                rules.get(
+                    "decisions",
+                    ("supported", "refine", "rejected", "inconclusive"),
+                )
+                if isinstance(rules, Mapping)
+                else ("supported", "refine", "rejected", "inconclusive")
+            )
+        }
+
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningDecision, ...]:
             if set(value) != {"decisions"} or not isinstance(
                 value.get("decisions"), list
@@ -7054,6 +7151,25 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise ValidationError(
                     "Signal Mining decisions must cover every supplied comparison"
                 )
+            unsupported = sorted(
+                {item.disposition for item in items} - allowed_dispositions
+            )
+            if unsupported:
+                raise ValidationError(
+                    "Signal Mining used unsupported dispositions: "
+                    + ", ".join(unsupported)
+                )
+            for item in items:
+                if item.disposition in {"refine", "rejected"} and any(
+                    _MINING_EVIDENCE_ABSENCE.search(reason)
+                    for reason in item.rationale
+                ):
+                    raise ValidationError(
+                        "Signal Mining evidence absence must use inconclusive, not "
+                        + item.disposition
+                        + ": "
+                        + item.hypothesis_id
+                    )
             return items
 
         value, usage = _complete_parsed_role(

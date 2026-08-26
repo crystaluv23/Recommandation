@@ -293,6 +293,16 @@ A positive adapter capability does not predict provider success. During the
 real H2 build, scanning stops as soon as the 32-row target and both hidden class
 minima are satisfied; the 96-row scan limit remains only a deterministic upper
 bound.
+H2 output is not an unexplained opaque-ref list: every selected ref includes a
+short exact `profile_evidence` span copied from its supplied anonymous brief and a
+bounded `applicability_reason`. The adapter validates the literal span and field
+shape before returning only the ranked refs to the local label-owning controller;
+empty per-hypothesis selections remain valid.
+For H3, exact source routing is followed by an ordered query-coverage gate. Longer
+queries require both a short-range ordered consecutive query pair in each kept
+document and complete distinct non-generic query-term coverage across the packet. H3 has an explicit
+`inconclusive` decision for residual semantic evidence insufficiency; it is persisted
+as evidence-unavailable and cannot become refinement, rejection, or candidate state.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

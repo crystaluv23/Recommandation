@@ -1121,7 +1121,14 @@ class ConcreteRoleAdapterTests(TestCase):
                     "rankings": [
                         {
                             "hypothesis_id": "mining_operations",
-                            "case_refs": ["case-001", "case-002", "case-003"],
+                            "cases": [
+                                {
+                                    "case_ref": case_ref,
+                                    "profile_evidence": "irrelevant",
+                                    "applicability_reason": "irrelevant",
+                                }
+                                for case_ref in ("case-001", "case-002", "case-003")
+                            ],
                         }
                     ]
                 },
@@ -1129,7 +1136,7 @@ class ConcreteRoleAdapterTests(TestCase):
                     "rankings": [
                         {
                             "hypothesis_id": "mining_operations",
-                            "case_refs": [],
+                            "cases": [],
                         }
                     ]
                 },
@@ -1156,6 +1163,106 @@ class ConcreteRoleAdapterTests(TestCase):
                 "signal_mining_case_ranking",
                 "signal_mining_case_ranking_correction",
             ],
+        )
+
+    def test_signal_h2_requires_literal_profile_evidence_for_each_case(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "production_guidance",
+                            "cases": [
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "operates gold mines",
+                                    "applicability_reason": (
+                                        "A mine operator can report production guidance."
+                                    ),
+                                }
+                            ],
+                        }
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "production_guidance",
+                            "cases": [],
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "production_guidance"}],
+                "case_briefs": [
+                    {
+                        "case_ref": "case-001",
+                        "business_description": "Provides aviation repair services.",
+                    }
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["production_guidance"], ())
+        self.assertIn("exact contiguous span", validation_error(caller.calls[1]))
+
+    def test_signal_h3_repairs_missing_evidence_rejection_to_inconclusive(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "decisions": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "disposition": "rejected",
+                            "rationale": [
+                                "The packets do not contain analyst estimate data."
+                            ],
+                            "candidate": None,
+                        }
+                    ]
+                },
+                {
+                    "decisions": [
+                        {
+                            "hypothesis_id": "estimate_gap",
+                            "disposition": "inconclusive",
+                            "rationale": [
+                                "The packets do not contain analyst estimate data."
+                            ],
+                            "candidate": None,
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).contrast(
+            {
+                "comparisons": [
+                    {"hypothesis": {"hypothesis_id": "estimate_gap"}}
+                ],
+                "rules": {
+                    "decisions": [
+                        "supported",
+                        "refine",
+                        "rejected",
+                        "inconclusive",
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(result.value[0].disposition, "inconclusive")
+        self.assertIn(
+            "evidence absence must use inconclusive",
+            validation_error(caller.calls[1]),
         )
 
     def test_signal_h1_preserves_real_structured_context_with_brand_collisions(
@@ -1285,7 +1392,22 @@ class ConcreteRoleAdapterTests(TestCase):
                     "rankings": [
                         {
                             "hypothesis_id": "operating_profile",
-                            "case_refs": ["case-001", "case-002"],
+                            "cases": [
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "leases commercial properties",
+                                    "applicability_reason": (
+                                        "The profile identifies an externally managed REIT."
+                                    ),
+                                },
+                                {
+                                    "case_ref": "case-002",
+                                    "profile_evidence": "drug candidate",
+                                    "applicability_reason": (
+                                        "The profile identifies a clinical-stage drug developer."
+                                    ),
+                                },
+                            ],
                         }
                     ]
                 }
@@ -1615,7 +1737,22 @@ class ConcreteRoleAdapterTests(TestCase):
                     "rankings": [
                         {
                             "hypothesis_id": "order_confirmation",
-                            "case_refs": ["case-002", "case-001"],
+                            "cases": [
+                                {
+                                    "case_ref": "case-002",
+                                    "profile_evidence": "hardware",
+                                    "applicability_reason": (
+                                        "Hardware suppliers may disclose project awards."
+                                    ),
+                                },
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "hardware",
+                                    "applicability_reason": (
+                                        "Hardware suppliers may disclose project awards."
+                                    ),
+                                },
+                            ],
                         }
                     ]
                 },

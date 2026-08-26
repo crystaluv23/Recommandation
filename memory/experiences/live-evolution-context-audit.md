@@ -516,3 +516,24 @@ empty or irrelevant packet, do not record the resulting complaint as learned sem
 work, and do not discard exact model-authored refinement reasons in the next cycle.
 Persist `evidence_unavailable` separately and carry each genuine refinement together
 with its exact reasons so later H1 cannot blur or invert what was learned.
+
+## Semantic-evidence addendum (2026-08-26)
+
+A shortlist ceiling does not make H2 selective. V43 returned exactly 12 cases for
+all three hypotheses, including identical analyst/revenue lists and an unexplained
+production list spanning unrelated operating profiles. Require each selected opaque
+ref to quote a short exact span from its anonymous profile and explain applicability;
+otherwise the controller cannot distinguish semantic ranking from cap-filling.
+
+Two exact query tokens are not evidence readiness. Filing boilerplate can scatter
+`quarterly`, `revenue`, and `estimates` across unrelated clauses, while an Inline-XBRL
+hidden header can contain every taxonomy word without reader-visible evidence. Remove
+hidden/resource and script/style bodies before matching, require a consecutive query
+pair within a short term gap in each kept document, and require complete non-generic
+query-term coverage across the packet. Keep exact matched terms/pairs in the audit.
+
+Deterministic coverage is still only a preflight. If H3 can see that the supplied
+material lacks the condition needed for comparison, give it an explicit inconclusive
+state and persist that under evidence-unavailable. Do not force or accept a missing-
+source rationale as semantic refinement or contradiction merely because a model call
+was already paid for.
