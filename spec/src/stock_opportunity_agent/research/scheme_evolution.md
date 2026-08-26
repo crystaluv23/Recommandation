@@ -986,8 +986,14 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
 1. `H1 hypothesis portfolio`: from current meta-info, capability backlog,
    provisional/refined work, and stable Signal cards, propose at most three
    falsifiable hypotheses. Each hypothesis declares its applicability,
-   expected winner/control difference, required source types, bounded query,
-   and falsifiers; it does not name companies. A stable card whose exact version
+   expected winner/control difference in evidence available by the prediction
+   date, required source types, bounded query, and falsifiers; it does not name
+   companies. `lookback_days` bounds only pre-prediction evidence retrieval.
+   `statement`, `expected_positive_pattern`, and falsifiers must test the fixed
+   Discovery positive/control outcome; they cannot substitute a next-quarter
+   earnings result, subsequent revenue growth, one-year return, event-study
+   horizon, or any other newly invented target. The expected pattern names both
+   positive cases and control cases so H3's actual comparison is explicit. A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The
@@ -999,10 +1005,13 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    statement, applicability, expected pattern, and query. An ungrounded
    hypothesis receives the one bounded correction; an empty portfolio remains
    a valid explicit result. Stable Signal ids and registered deterministic
-   function leaves are also a local exclusion boundary: a renamed hypothesis
-   that contains the complete non-generic semantic term set of an existing
-   multi-term Signal is rejected into the bounded correction rather than sent
-   onward as new Mining work.
+   function leaves are also a local exclusion boundary: a candidate whose own
+   `hypothesis_id` or evidence `query` contains the complete non-generic semantic
+   term set of an existing multi-term Signal is rejected into the bounded
+   correction rather than sent onward as new Mining work. A stable metric named
+   only as a comparison, control, or falsifier is not itself a renamed candidate.
+   All locally decidable H1 semantic issues are returned together in the one
+   correction, whose initial/correction requests retain one stable provider prefix.
 2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business

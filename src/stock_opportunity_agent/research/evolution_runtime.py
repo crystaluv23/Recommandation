@@ -4453,7 +4453,7 @@ def _validate_proposal_change_focus(
 
 
 _FIXED_SEMANTICS_REDEFINITION = re.compile(
-    r"(?:p\s*\(|probabilit(?:y|ies)|odds|"
+    r"(?:\bp\s*\(|probabilit(?:y|ies)|odds|"
     r"(?:set|apply|use|adopt|change|raise|lower|adjust|redefine)"
     r".{0,40}(?:threshold|cutoff)|"
     r"(?:threshold|cutoff)\s*(?:of|at|to|=)\s*[-+]?\d|"
@@ -6580,6 +6580,20 @@ _H1_GENERIC_TOPIC_TERMS = frozenset(
     }
 )
 
+_H1_ALTERNATE_TEST_OUTCOME = re.compile(
+    r"\b(?:event\s+stud(?:y|ies)|"
+    r"(?:over|during|in)\s+the\s+next\s+"
+    r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
+    r"(?:quarters?|months?|years?|trading\s+days?)|"
+    r"(?:next|subsequent|following)[- ]+"
+    r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
+    r"(?:quarter(?:ly)?|quarters?|months?|years?|trading\s+days?|"
+    r"earnings\s+surprise|revenue\s+growth|stock\s+returns?))\b",
+    re.IGNORECASE,
+)
+_H1_POSITIVE_CASE_PATTERN = re.compile(r"\bpositive\s+cases?\b", re.IGNORECASE)
+_H1_CONTROL_CASE_PATTERN = re.compile(r"\bcontrols?(?:\s+cases?)?\b", re.IGNORECASE)
+
 
 def _h1_topic_terms(value: str) -> frozenset[str]:
     """Return deterministic topic terms for demand-grounding validation."""
@@ -6811,10 +6825,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 else (_raise_mining_shape("H1 hypothesis must be an object"))
                 for item in value["hypotheses"]
             )
+            issues: list[str] = []
             if len(items) > limit:
-                raise ValidationError(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
+                issues.append(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
             if len({item.hypothesis_id for item in items}) != len(items):
-                raise ValidationError("Signal Mining H1 hypothesis ids must be unique")
+                issues.append("Signal Mining H1 hypothesis ids must be unique")
             unsupported = sorted(
                 {
                     source_type
@@ -6824,12 +6839,45 @@ class LLMSignalMiningModel(SignalMiningModel):
                 }
             )
             if unsupported:
-                raise ValidationError(
+                issues.append(
                     "Signal Mining H1 source_types must use exact supplied values; "
                     "unsupported: " + ", ".join(unsupported)
                 )
             for item in items:
-                _reject_fixed_semantics_redefinition(item.to_dict())
+                fixed_match = _fixed_semantics_match(
+                    json.dumps(item.to_dict(), ensure_ascii=False, sort_keys=True)
+                )
+                if fixed_match is not None:
+                    issues.append(
+                        "role output attempts to redefine fixed Predictor semantics "
+                        f"for {item.hypothesis_id}; matched prohibited phrase "
+                        f"{fixed_match.group(0)!r}"
+                    )
+                test_text = " ".join(
+                    (
+                        item.statement,
+                        item.expected_positive_pattern,
+                        *item.falsifiers,
+                    )
+                )
+                alternate_match = _H1_ALTERNATE_TEST_OUTCOME.search(test_text)
+                if alternate_match is not None:
+                    issues.append(
+                        "Signal Mining H1 must test the fixed Discovery "
+                        "positive/control outcome rather than an alternate horizon "
+                        f"for {item.hypothesis_id}; matched "
+                        f"{alternate_match.group(0)!r}"
+                    )
+                if not (
+                    _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
+                    and _H1_CONTROL_CASE_PATTERN.search(
+                        item.expected_positive_pattern
+                    )
+                ):
+                    issues.append(
+                        "Signal Mining H1 expected_positive_pattern must name both "
+                        "positive cases and control cases: " + item.hypothesis_id
+                    )
                 hypothesis_terms = _h1_topic_terms(
                     " ".join(
                         (
@@ -6841,11 +6889,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                     )
                 )
+                identity_term_sets = (
+                    _h1_topic_terms(
+                        item.hypothesis_id.replace("_", " ").replace("-", " ")
+                    ),
+                    _h1_topic_terms(item.query),
+                )
                 if any(
-                    stable_terms <= hypothesis_terms
+                    stable_terms <= identity_terms
                     for stable_terms in existing_signal_term_sets
+                    for identity_terms in identity_term_sets
                 ):
-                    raise ValidationError(
+                    issues.append(
                         "Signal Mining H1 hypothesis restates an existing stable "
                         "Signal: " + item.hypothesis_id
                     )
@@ -6854,11 +6909,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                         len(hypothesis_terms & need_terms) >= 2
                         for need_terms in need_term_sets
                     ):
-                        raise ValidationError(
+                        issues.append(
                             "Signal Mining H1 hypothesis must share at least two "
                             "non-generic topic terms with one signal_need_item: "
                             + item.hypothesis_id
                         )
+            if issues:
+                raise ValidationError("; ".join(issues))
             return items
 
         request_payload: Mapping[str, Any] = payload
@@ -6888,6 +6945,15 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "treat them as diagnostic demand, not as evidence that a candidate works. "
                 "When signal_need_items is non-empty, every hypothesis must directly "
                 "address one need and reuse at least two of its non-generic topic terms. "
+                "H3 tests point-in-time evidence available by each case's prediction "
+                "date against the fixed Discovery positive/control groups. Therefore "
+                "expected_positive_pattern must explicitly name both positive cases "
+                "and control cases, and statement, expected_positive_pattern, and "
+                "falsifiers must not invent a next-quarter, later-year, event-study, "
+                "or other outcome/horizon. lookback_days is only the pre-prediction "
+                "evidence window. Existing Signals exclude only a candidate whose own "
+                "hypothesis_id or query renames their measured construct; mentioning "
+                "an existing metric only as a comparison or falsifier is allowed. "
                 "Every source_types item must exactly equal one value from "
                 "available_raw_source_types; never pluralize or invent an alias."
                 + _UNTRUSTED_DATA_INSTRUCTION
@@ -6900,6 +6966,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=2_000,
             temperature=self.creative_temperature,
+            stable_correction_prefix=True,
         )
         return AgentStep(value, usage)
 

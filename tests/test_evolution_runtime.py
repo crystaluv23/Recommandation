@@ -1015,7 +1015,9 @@ class ConcreteRoleAdapterTests(TestCase):
                     "hypothesis_id": "large_order_confirmation",
                     "statement": "Material order confirmation precedes repricing.",
                     "applicability": "Project-driven companies.",
-                    "expected_positive_pattern": "Positive cases confirm more orders.",
+                    "expected_positive_pattern": (
+                        "Positive cases confirm more orders than control cases."
+                    ),
                     "source_types": ["news"],
                     "query": "material order customer award",
                     "falsifiers": ["Controls confirm orders equally often."],
@@ -1033,7 +1035,8 @@ class ConcreteRoleAdapterTests(TestCase):
                     ),
                     "applicability": "Producers disclosing operating guidance.",
                     "expected_positive_pattern": (
-                        "Positive cases beat production and unit-cost guidance."
+                        "Positive cases beat production and unit-cost guidance more "
+                        "often than control cases."
                     ),
                     "source_types": ["news"],
                     "query": "production volume cost ounce guidance",
@@ -1078,7 +1081,10 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Accelerating year-over-year revenue growth precedes repricing."
                     ),
                     "applicability": "Companies with quarterly revenue history.",
-                    "expected_positive_pattern": "Revenue acceleration is positive.",
+                    "expected_positive_pattern": (
+                        "Positive cases show stronger revenue acceleration than "
+                        "control cases."
+                    ),
                     "source_types": ["10-q"],
                     "query": "revenue growth acceleration",
                     "falsifiers": ["Controls accelerate equally often."],
@@ -1111,6 +1117,107 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.stages,
             ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
         )
+
+    def test_signal_h1_allows_gap_parenthesis_and_downstream_stable_metric(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "production_volume_cost_gap",
+                            "statement": (
+                                "A production gap (volume versus guidance) is "
+                                "associated with revenue acceleration."
+                            ),
+                            "applicability": "Commodity producers with guidance.",
+                            "expected_positive_pattern": (
+                                "Positive cases show larger production beats and "
+                                "lower unit costs than control cases."
+                            ),
+                            "source_types": ["10-q"],
+                            "query": "production volume cost ounce guidance",
+                            "falsifiers": [
+                                "Control cases show equal production and cost gaps."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-q"],
+                "registered_deterministic_functions": [
+                    "financial.revenue_acceleration"
+                ],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "production_volume_cost_gap")
+        self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
+
+    def test_signal_h1_corrects_alternate_outcome_with_stable_feedback(self) -> None:
+        invalid = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "production_guidance_gap",
+                    "statement": (
+                        "Production above guidance predicts revenue growth in the "
+                        "next quarter."
+                    ),
+                    "applicability": "Commodity producers with guidance.",
+                    "expected_positive_pattern": (
+                        "Production beats lead to faster growth in the next quarter."
+                    ),
+                    "source_types": ["10-q"],
+                    "query": "production volume cost ounce guidance",
+                    "falsifiers": [
+                        "The next quarter has the same growth after a miss."
+                    ],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = {
+            "hypotheses": [
+                {
+                    **invalid["hypotheses"][0],
+                    "statement": (
+                        "Prediction-date production and guidance gaps distinguish "
+                        "the fixed Discovery groups."
+                    ),
+                    "expected_positive_pattern": (
+                        "Positive cases show larger production beats and lower unit "
+                        "costs than control cases."
+                    ),
+                    "falsifiers": [
+                        "Control cases show equal or stronger production beats."
+                    ],
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-q"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "production_guidance_gap")
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
+        error = validation_error(caller.calls[1])
+        self.assertIn("alternate horizon", error)
+        self.assertIn("both positive cases and control cases", error)
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
@@ -1434,7 +1541,9 @@ class ConcreteRoleAdapterTests(TestCase):
 
         hypotheses = model.propose_hypotheses(payload)
 
-        self.assertEqual(caller.calls[0]["payload"], payload)
+        self.assertEqual(
+            caller.calls[0]["payload"], {**payload, "validation_feedback": None}
+        )
         self.assertNotIn("MASKED_COMPANY", json.dumps(caller.calls[0]["payload"]))
         self.assertEqual(hypotheses.value[0].source_types, ("news",))
 
@@ -1445,7 +1554,10 @@ class ConcreteRoleAdapterTests(TestCase):
                     "hypothesis_id": "named_issuer",
                     "statement": "Match Group shows a reusable pattern.",
                     "applicability": "Companies with estimate revisions.",
-                    "expected_positive_pattern": "Upward revisions are stronger.",
+                    "expected_positive_pattern": (
+                        "Positive cases show stronger upward revisions than control "
+                        "cases."
+                    ),
                     "source_types": ["news"],
                     "query": "estimate revision",
                     "falsifiers": ["Controls revise equally often."],
@@ -1476,10 +1588,11 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.stages,
             ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
         )
-        self.assertEqual(caller.calls[1]["payload"]["invalid_output"], {})
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"], {})
         self.assertIn(
             "identity alias leaked into structured role output",
-            caller.calls[1]["payload"]["validation_error"],
+            feedback["validation_error"],
         )
         self.assertNotIn("Match Group", json.dumps(caller.calls[1]["payload"]))
         self.assertEqual(
@@ -1815,7 +1928,9 @@ class ConcreteRoleAdapterTests(TestCase):
                             "hypothesis_id": "order_confirmation",
                             "statement": "Confirmed orders precede repricing.",
                             "applicability": "Project-driven companies.",
-                            "expected_positive_pattern": "Positive cases confirm more orders.",
+                            "expected_positive_pattern": (
+                                "Positive cases confirm more orders than control cases."
+                            ),
                             "source_types": ["filings"],
                             "query": "material order",
                             "falsifiers": ["Controls confirm orders equally often."],
@@ -1829,7 +1944,9 @@ class ConcreteRoleAdapterTests(TestCase):
                             "hypothesis_id": "order_confirmation",
                             "statement": "Confirmed orders precede repricing.",
                             "applicability": "Project-driven companies.",
-                            "expected_positive_pattern": "Positive cases confirm more orders.",
+                            "expected_positive_pattern": (
+                                "Positive cases confirm more orders than control cases."
+                            ),
                             "source_types": ["filing"],
                             "query": "material order",
                             "falsifiers": ["Controls confirm orders equally often."],
@@ -1901,7 +2018,9 @@ class ConcreteRoleAdapterTests(TestCase):
             "material order contract customer award",
             caller.calls[0]["system_prompt"],
         )
-        self.assertIn("validation_error", caller.calls[1]["payload"])
+        self.assertIn(
+            "validation_error", caller.calls[1]["payload"]["validation_feedback"]
+        )
         self.assertEqual(caller.calls[2]["temperature"], 0.0)
         self.assertFalse(caller.calls[2]["allow_outcomes"])
 

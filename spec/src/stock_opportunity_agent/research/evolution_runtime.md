@@ -218,6 +218,17 @@ A fixed-semantics scanner rejects attempts to introduce probability thresholds,
 redefine the six-month price surge/horizon, change the four-way judgment, or turn
 `H_analyse` into a Predictor.
 
+Slow H1 explicitly binds each hypothesis to the fixed Discovery positive/control
+comparison. Its expected pattern must name both groups, and its statement/pattern/
+falsifiers cannot introduce a later-quarter, later-year, or event-study outcome that
+H3 will never evaluate. `lookback_days` remains an input-evidence window. Existing
+Signal exclusion compares the candidate identity and evidence query, not an existing
+metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
+locally decidable issues into one validation message and uses a stable initial/
+correction prefix. The generic fixed-semantics detector treats probability notation
+only as a standalone `P(` token; an ordinary word ending in `p` before parentheses is
+not a Predictor-semantic redefinition.
+
 Signal Mining uses five narrow structured role stages rather than a
 one-tool-per-turn Agent transcript:
 

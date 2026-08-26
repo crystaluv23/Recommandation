@@ -557,3 +557,21 @@ that analyst/earnings facts were absent and that its evidence was too generic.
 Reject self-disqualifying reasons and require the model to omit that case. For a
 large unchanged H2 pool, keep initial and correction prompts byte-identical and put
 nullable validation feedback at the tail so provider prefix caching can apply.
+
+## H1 evaluation-boundary addendum (2026-08-26)
+
+A demand-grounded topic is not yet a testable hypothesis for the actual controller.
+V45 proposed analyst, production, and revenue-composition ideas that matched the Fast
+backlog, but defined success as a next-quarter earnings surprise, subsequent revenue
+growth, or next-year return. H3 compares point-in-time evidence between the frozen
+Discovery positive and control groups; it cannot test those substituted outcomes.
+Require the expected pattern to name both real groups, keep `lookback_days` as an
+input-evidence window, and reject alternate future horizons before H2.
+
+Generic semantic scanners and duplicate guards must respect field roles. A regex for
+probability notation `P(` without a leading word boundary matched the last letter of
+ordinary `gap (`. Likewise, joining a hypothesis statement, expected outcome, and
+query made a production/cost construct look like `revenue_acceleration` merely
+because it named that stable metric downstream. Match standalone notation, and use
+candidate id/query for stable identity exclusion. Aggregate every locally decidable
+H1 issue into its single correction and preserve a stable correction prefix.
