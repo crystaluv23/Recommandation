@@ -71,6 +71,13 @@ for `financials`, and `price_daily` can satisfy `market_data`, provided the
 provider and capability are also explicitly authorized. Readiness never widens
 an allowlist or converts a disabled policy into authorization.
 
+Specific SEC form names are not interchangeable aliases. A request that names
+`10-Q`, `10-K`, or `8-K` may match that exact materialized form, or a generic
+`filing`/`sec_filing`/`filing_body` document whose form metadata proves the same
+form; it must not be satisfied by a different SEC form merely because both are
+members of the filing acquisition family. Generic `filing` requests may still
+use the ordinary filing-family route.
+
 The operator boundary exposes one versioned broad-research authorization
 profile for new evolution workspaces. Its wildcard policy authorizes every
 historical Raw Info adapter registered by the contract-bound code revision; it
@@ -162,6 +169,12 @@ insufficient. Non-matching documents remain immutable Raw Info but are excluded
 from both Basic Info and Signal resolution, and the resolution events record the
 filtered document ids. This check does not apply to directly issuer-routed SEC,
 market, facts, or transcript sources.
+
+For legacy provider payloads stored as complete JSON, "visible title or body"
+means the provider's title and summary/body fields, not routing metadata or a
+secondary `ticker_sentiment` row embedded elsewhere in the JSON. A secondary
+ticker association therefore cannot turn an article about another issuer into
+company evidence.
 
 For Basic Info only, plain-text selected documents are split into 2,000-character
 spans with 200-character overlap. Query ranking uses literal case-insensitive token

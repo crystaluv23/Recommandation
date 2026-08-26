@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 14
+visit_times: 15
 
 ## Trigger
 
@@ -494,3 +494,25 @@ request without treating every other sampled issuer as the current target.
 Retain the strong Discovery-wide guard on accepted reusable Signal output, and
 make local formal-name matching tolerate ordinary filing variants such as
 `&` versus `and` and straight versus curly possessives.
+
+## Slow evidence-selection addendum (2026-08-26)
+
+Schema-valid ranking can be semantically empty. In v42, H2 returned all 32 cases in
+the same order for three unrelated hypotheses, so the controller repeatedly selected
+aviation, semiconductors, insurance, and real estate for mining-production guidance.
+Require a bounded materially applicable shortlist, allow a validated empty list, and
+walk ranked refs locally until issuer-disjoint positive/control evidence is actually
+ready. The H3 comparison budget counts sent, evidence-ready comparisons rather than
+early hypotheses or unusable refs.
+
+Source-family aliases are too broad for hypothesis evidence. A request for `10-q`
+must not be satisfied by a `10-k` merely because both are filings, and provider
+ticker-association metadata must not make another issuer's visible news relevant.
+Build model-facing filing text around exact normalized query matches rather than XML
+headers and signature tails, while retaining the full raw document locally.
+
+Missing upstream evidence is not hypothesis refinement. Do not ask H3 to judge an
+empty or irrelevant packet, do not record the resulting complaint as learned semantic
+work, and do not discard exact model-authored refinement reasons in the next cycle.
+Persist `evidence_unavailable` separately and carry each genuine refinement together
+with its exact reasons so later H1 cannot blur or invert what was learned.

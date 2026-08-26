@@ -1183,7 +1183,7 @@ def document_has_strong_issuer_match(
     resolved_aliases = aliases or _issuer_relevance_aliases(identity)
     if not resolved_aliases:
         return False
-    visible_text = f"{str(document.metadata.get('title', ''))}\n{document.content}"
+    visible_text = _document_visible_issuer_text(document)
     return any(
         re.search(
             rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])",
@@ -1192,6 +1192,25 @@ def document_has_strong_issuer_match(
         )
         for alias, ticker_like in resolved_aliases
     )
+
+
+def _document_visible_issuer_text(document: RawInfoDocument) -> str:
+    """Project legacy provider JSON to reader-visible title/body text."""
+
+    metadata_title = str(document.metadata.get("title", ""))
+    if document.source_type.casefold() not in {"news", "company_news"}:
+        return f"{metadata_title}\n{document.content}"
+    try:
+        payload = json.loads(document.content)
+    except (json.JSONDecodeError, TypeError):
+        return f"{metadata_title}\n{document.content}"
+    if not isinstance(payload, Mapping):
+        return f"{metadata_title}\n{document.content}"
+    visible_fields = (
+        str(payload.get(key) or "")
+        for key in ("title", "summary", "body", "content")
+    )
+    return "\n".join((metadata_title, *visible_fields))
 
 
 def _issuer_relevance_aliases(
@@ -1271,16 +1290,22 @@ def _matches_source_type(
     actual = document.source_type.casefold()
     if actual in requested:
         return True
-    if requested.intersection({"10-k", "10-q", "8-k"}) and actual in {
-        "filing",
-        "sec_filing",
-        "filing_body",
-    }:
+    requested_forms = requested.intersection({"10-k", "10-q", "8-k"})
+    filing_types = {"filing", "sec_filing", "filing_body", "10-k", "10-q", "8-k"}
+    if requested_forms and actual in filing_types:
+        if actual not in {"filing", "sec_filing", "filing_body"}:
+            return False
         searchable = " ".join(
             str(document.metadata.get(key, "")) for key in ("form", "title")
         ).casefold()
-        return any(form in searchable for form in requested.intersection({"10-k", "10-q", "8-k"}))
-    return source_types_compatible((actual,), requested)
+        return any(form in searchable for form in requested_forms)
+    if actual in {"10-k", "10-q", "8-k"} and requested.intersection({
+        "filing",
+        "sec_filing",
+        "filing_body",
+    }):
+        return True
+    return source_types_compatible((actual,), requested - requested_forms)
 
 
 _SOURCE_TYPE_FAMILIES = (

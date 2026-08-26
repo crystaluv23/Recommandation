@@ -93,6 +93,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     score_predictions,
     MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
     _assemble_final_context,
+    _agent_raw_document_view,
     _item1_business_excerpt,
     _mask_identity_values,
     _filter_h3_documents,
@@ -3838,6 +3839,62 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
         self.assertEqual(filtered, [])
 
+    def test_h3_filing_requires_query_relevance_and_projects_matching_window(
+        self,
+    ) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        relevant = RawInfoDocument.create(
+            document_id="relevant-quarterly",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "<html><body><div>XML namespace filing header</div>"
+                + "<div>ordinary disclosure text</div>" * 100
+                + "<div>Quarterly revenue and earnings exceeded analyst "
+                "expectations by a material amount.</div>"
+                + "<div>signature page tail</div>" * 100
+                + "</body></html>"
+            ),
+        )
+        irrelevant = RawInfoDocument.create(
+            document_id="irrelevant-quarterly",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content="<html><body>Only a routine legal exhibit.</body></html>",
+        )
+
+        kept, filtered = _filter_h3_documents(
+            (relevant, irrelevant),
+            case=case,
+            query="quarterly revenue earnings analyst expectations",
+        )
+        view = _agent_raw_document_view(
+            relevant,
+            max_content_chars=240,
+            query="quarterly revenue earnings analyst expectations",
+        )
+
+        self.assertEqual(tuple(item.document_id for item in kept), ("relevant-quarterly",))
+        self.assertEqual(
+            filtered,
+            [
+                {
+                    "document_id": "irrelevant-quarterly",
+                    "reason": "hypothesis_query_irrelevant",
+                }
+            ],
+        )
+        self.assertIn("revenue and earnings exceeded analyst", view["content_excerpt"])
+        self.assertNotIn("XML namespace filing header", view["content_excerpt"])
+        self.assertEqual(view["content_projection"], "normalized_query_window_v1")
+
     def test_mining_ranks_identity_and_label_hidden_briefs_then_overlays_labels(
         self,
     ) -> None:
@@ -3900,6 +3957,11 @@ class SignalEvolutionTests(TestCase):
                         disposition="refine",
                         rationale=("Two cases are not enough to draft a Signal.",),
                     ),
+                    SignalMiningDecision(
+                        hypothesis_id="commercialization_confirmation",
+                        disposition="refine",
+                        rationale=("The visible cases do not separate the groups.",),
+                    ),
                 ),
             )
             raw_store = RawInfoStore(
@@ -3954,6 +4016,176 @@ class SignalEvolutionTests(TestCase):
                 (
                     "deferred because the per-cycle evidence contrast budget was reached",
                 ),
+            )
+
+    def test_mining_does_not_learn_refinement_from_unusable_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            positive = make_case("evidence_positive", 4.0)
+            control = make_case("evidence_control", 1.1)
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="production_cost_pattern",
+                statement="Production and cost changes may precede repricing.",
+                applicability="Operating producers.",
+                expected_positive_pattern="Production rises while cost declines.",
+                source_types=("news",),
+                query="production cost guidance",
+                falsifiers=("Controls show the same pattern.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                rankings={
+                    "production_cost_pattern": ("case-001", "case-002")
+                },
+            )
+            raw_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"unrelated_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} filed a routine legal "
+                            "notice."
+                        ),
+                    )
+                    for index, case in enumerate((positive, control))
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=(positive, control),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(2),
+            )
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(len(mining_model.requests), 2)
+            self.assertNotIn(
+                "production_cost_pattern", result["refined_hypotheses"]
+            )
+            self.assertIn(
+                "production_cost_pattern", result["audit"]["evidence_unavailable"]
+            )
+            self.assertEqual(
+                result["audit"]["stages"]["H3"]["status"],
+                "not_called_evidence_unavailable",
+            )
+
+    def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"fallback_positive_{index}", 4.0) for index in range(3)]
+                + [make_case(f"fallback_control_{index}", 1.1) for index in range(3)]
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="production_cost_pattern",
+                statement="Production and cost changes may precede repricing.",
+                applicability="Operating producers.",
+                expected_positive_pattern="Production rises while cost declines.",
+                source_types=("news",),
+                query="production cost guidance",
+                falsifiers=("Controls show the same pattern.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="production_cost_pattern",
+                        disposition="refine",
+                        rationale=("The visible pattern remains underspecified.",),
+                    ),
+                ),
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=6,
+                    ranking_case_limit=6,
+                    h2_profile_scan_limit=6,
+                    h2_min_ready_issuers=6,
+                    h2_min_ready_per_class=3,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+            pairs = engine._mining_case_universe(limit=6)
+            refs_by_class = {
+                class_value: [
+                    case_ref
+                    for case_ref, case in pairs
+                    if bool(case.ground_truth.is_surge) is class_value
+                ]
+                for class_value in (True, False)
+            }
+            ranking = tuple(
+                value
+                for index in range(3)
+                for value in (
+                    refs_by_class[True][index],
+                    refs_by_class[False][index],
+                )
+            )
+            mining_model.rankings = {"production_cost_pattern": ranking}
+            usable_refs = {
+                refs_by_class[True][1],
+                refs_by_class[False][1],
+            }
+            engine.raw_info_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"usable_{case_ref}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} reported production "
+                            "cost guidance."
+                        ),
+                    )
+                    for case_ref, case in pairs
+                    if case_ref in usable_refs
+                )
+            )
+            engine.evidence_resolver = EvidenceResolver(engine.raw_info_store)
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            selected = result["audit"]["local_selection"][0]
+            self.assertEqual(set(selected["induction_case_refs"]), usable_refs)
+            self.assertEqual(len(mining_model.requests), 3)
+            attempted = {
+                item["case_ref"]
+                for item in result["audit"]["stages"]["H3"]["resolutions"]
+            }
+            self.assertTrue(
+                {
+                    refs_by_class[True][0],
+                    refs_by_class[False][0],
+                }.issubset(attempted)
             )
 
     def test_signal_update_makes_zero_calls_without_actionable_learning(self) -> None:
@@ -4201,6 +4433,78 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 engine._prior_signal_update("portfolio-fingerprint")["disposition"],
                 "defer",
+            )
+
+    def test_mining_context_preserves_refinement_reasons_and_data_gaps(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("workflow_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            refined = {
+                "hypothesis_id": "refined_pattern",
+                "statement": "An underspecified pattern.",
+            }
+            unavailable = {
+                "hypothesis_id": "missing_evidence_pattern",
+                "statement": "A pattern needing unavailable evidence.",
+            }
+            cycle_dir = workspace.experiments_root / "cycles" / "cycle-0001"
+            cycle_dir.mkdir(parents=True)
+            (cycle_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "refined_hypotheses": {
+                                "refined_pattern": [
+                                    "The visible controls show the same pattern."
+                                ]
+                            },
+                            "agent_audits": {
+                                "mining_pipeline": {
+                                    "evidence_unavailable": {
+                                        "missing_evidence_pattern": [
+                                            "No query-relevant 10-Q was available."
+                                        ]
+                                    },
+                                    "stages": {
+                                        "H1": {
+                                            "hypotheses": [refined, unavailable]
+                                        }
+                                    },
+                                }
+                            },
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            prior = engine._mining_context(cycle_id=2)["prior_slow_work"][0]
+
+            self.assertEqual(
+                prior["refined_hypotheses"][0],
+                {
+                    "hypothesis": refined,
+                    "reasons": ["The visible controls show the same pattern."],
+                },
+            )
+            self.assertEqual(
+                prior["evidence_unavailable"][0],
+                {
+                    "hypothesis": unavailable,
+                    "reasons": ["No query-relevant 10-Q was available."],
+                },
             )
 
     def test_signal_update_uses_one_induction_call_and_local_holdout_gate(self) -> None:
@@ -4768,7 +5072,10 @@ class SignalEvolutionTests(TestCase):
                         source_type="news",
                         published_at=NOW,
                         available_at=NOW,
-                        content="Management changed guidance.",
+                        content=(
+                            f"{case.basic_info['company_name']} management changed "
+                            "guidance."
+                        ),
                     )
                     for index, case in enumerate((positive, control))
                 )

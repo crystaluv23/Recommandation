@@ -79,7 +79,21 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
     }
 )
 _GENERIC_QUERY_WORDS = frozenset(
-    {"and", "for", "from", "the", "this", "with", "company", "business"}
+    {
+        "actual",
+        "and",
+        "business",
+        "company",
+        "for",
+        "from",
+        "latest",
+        "per",
+        "recent",
+        "the",
+        "this",
+        "versus",
+        "with",
+    }
 )
 _AMBIGUOUS_SHORT_IDENTITY_TERMS = frozenset(
     {
@@ -6559,6 +6573,7 @@ class SignalMiningConfig:
     hypothesis_limit: int = 3
     selected_hypothesis_limit: int = 2
     case_pool_limit: int = 32
+    ranking_case_limit: int = 12
     h2_profile_scan_limit: int = 96
     h2_min_ready_issuers: int = 16
     h2_min_ready_per_class: int = 4
@@ -6573,6 +6588,7 @@ class SignalMiningConfig:
             "hypothesis_limit",
             "selected_hypothesis_limit",
             "case_pool_limit",
+            "ranking_case_limit",
             "h2_profile_scan_limit",
             "h2_min_ready_issuers",
             "h2_min_ready_per_class",
@@ -6602,6 +6618,7 @@ class SignalMiningConfig:
             "hypothesis_limit": self.hypothesis_limit,
             "selected_hypothesis_limit": self.selected_hypothesis_limit,
             "case_pool_limit": self.case_pool_limit,
+            "ranking_case_limit": self.ranking_case_limit,
             "h2_profile_scan_limit": self.h2_profile_scan_limit,
             "h2_min_ready_issuers": self.h2_min_ready_issuers,
             "h2_min_ready_per_class": self.h2_min_ready_per_class,
@@ -8294,6 +8311,10 @@ class SignalEvolutionEngine:
                     "labels_hidden": True,
                     "identities_hidden": True,
                     "rank_only_supplied_case_refs": True,
+                    "max_case_refs_per_hypothesis": min(
+                        config.ranking_case_limit,
+                        len(case_pairs),
+                    ),
                 },
             }
         )
@@ -8307,8 +8328,12 @@ class SignalEvolutionEngine:
         rankings: dict[str, tuple[str, ...]] = {}
         for hypothesis_id, case_refs in ranking_step.value.items():
             parsed = tuple(str(item) for item in case_refs)
-            if not parsed or len(set(parsed)) != len(parsed):
-                raise ValidationError("Signal Mining case ranking must be non-empty and unique")
+            if len(set(parsed)) != len(parsed):
+                raise ValidationError("Signal Mining case ranking must be unique")
+            if len(parsed) > min(config.ranking_case_limit, len(case_pairs)):
+                raise ValidationError(
+                    "Signal Mining case ranking exceeds the configured shortlist limit"
+                )
             unknown = sorted(set(parsed) - allowed_refs)
             if unknown:
                 raise ValidationError(
@@ -8329,14 +8354,8 @@ class SignalEvolutionEngine:
             "usage": _usage_to_dict(ranking_step.usage),
         }
 
-        hypothesis_by_id = {item.hypothesis_id: item for item in hypotheses}
         selections: list[dict[str, Any]] = []
         for hypothesis in hypotheses:
-            if len(selections) >= config.selected_hypothesis_limit:
-                refined[hypothesis.hypothesis_id] = (
-                    "deferred because the per-cycle evidence contrast budget was reached",
-                )
-                continue
             selected = self._select_mining_cases(
                 rankings[hypothesis.hypothesis_id],
                 case_by_ref=case_by_ref,
@@ -8352,15 +8371,8 @@ class SignalEvolutionEngine:
                     **selected,
                 }
             )
-        audit["local_selection"] = [
-            {
-                "hypothesis_id": item["hypothesis"].hypothesis_id,
-                "induction_case_refs": list(item["induction_refs"]),
-                "validation_case_refs": list(item["validation_refs"]),
-            }
-            for item in selections
-        ]
         if not selections:
+            audit["local_selection"] = []
             audit["candidate_refs"] = []
             audit["refined_hypotheses"] = {
                 key: list(value) for key, value in refined.items()
@@ -8370,11 +8382,26 @@ class SignalEvolutionEngine:
         contrast_packets: list[dict[str, Any]] = []
         evidence_packets_by_key: dict[tuple[Any, ...], dict[str, Any]] = {}
         resolution_audit: list[dict[str, Any]] = []
+        evidence_unavailable: dict[str, tuple[str, ...]] = {}
+        evaluable_selections: list[dict[str, Any]] = []
         for selection in selections:
             hypothesis = selection["hypothesis"]
-            packet_refs: list[str] = []
-            for case_ref in selection["induction_refs"]:
+            if len(evaluable_selections) >= config.selected_hypothesis_limit:
+                refined[hypothesis.hypothesis_id] = (
+                    "deferred because the per-cycle evidence contrast budget was reached",
+                )
+                continue
+            usable_by_class: dict[bool, list[str]] = {True: [], False: []}
+            attempted_case_refs: list[str] = []
+            packet_ref_by_case: dict[str, str] = {}
+            for case_ref in rankings[hypothesis.hypothesis_id]:
                 case = case_by_ref[case_ref]
+                case_class = bool(case.ground_truth.is_surge)
+                if (
+                    len(usable_by_class[case_class])
+                    >= config.induction_cases_per_class
+                ):
+                    continue
                 packet_key = (
                     case_ref,
                     tuple(hypothesis.source_types),
@@ -8398,17 +8425,97 @@ class SignalEvolutionEngine:
                         **packet,
                     }
                     resolution_audit.append({"packet_ref": packet_ref, **resolution})
-                packet_refs.append(evidence_packets_by_key[packet_key]["packet_ref"])
+                stored_packet = evidence_packets_by_key[packet_key]
+                attempted_case_refs.append(case_ref)
+                if stored_packet["evidence"]:
+                    usable_by_class[case_class].append(case_ref)
+                    packet_ref_by_case[case_ref] = stored_packet["packet_ref"]
+                if all(
+                    len(refs) >= config.induction_cases_per_class
+                    for refs in usable_by_class.values()
+                ):
+                    break
+            if not all(
+                len(refs) >= config.induction_cases_per_class
+                for refs in usable_by_class.values()
+            ):
+                evidence_unavailable[hypothesis.hypothesis_id] = (
+                    "fewer than the configured issuer-distinct cases had usable "
+                    "hypothesis-relevant point-in-time evidence; attempted refs: "
+                    + ", ".join(attempted_case_refs),
+                )
+                continue
+            induction_refs = tuple(
+                (*usable_by_class[True], *usable_by_class[False])
+            )
+            validation_by_class: dict[bool, list[str]] = {True: [], False: []}
+            used_companies = {
+                case_by_ref[case_ref].company_id for case_ref in induction_refs
+            }
+            for case_ref in rankings[hypothesis.hypothesis_id]:
+                case = case_by_ref[case_ref]
+                case_class = bool(case.ground_truth.is_surge)
+                if (
+                    case.company_id in used_companies
+                    or len(validation_by_class[case_class])
+                    >= config.validation_cases_per_class
+                ):
+                    continue
+                used_companies.add(case.company_id)
+                validation_by_class[case_class].append(case_ref)
+            actual_selection = {
+                **selection,
+                "induction_refs": induction_refs,
+                "validation_refs": tuple(
+                    (*validation_by_class[True], *validation_by_class[False])
+                ),
+            }
+            evaluable_selections.append(actual_selection)
             contrast_packets.append(
                 {
                     "hypothesis": hypothesis.to_dict(),
-                    "evidence_packet_refs": packet_refs,
+                    "evidence_packet_refs": [
+                        packet_ref_by_case[case_ref]
+                        for case_ref in induction_refs
+                    ],
                 }
             )
+        audit["local_selection"] = [
+            {
+                "hypothesis_id": item["hypothesis"].hypothesis_id,
+                "induction_case_refs": list(item["induction_refs"]),
+                "validation_case_refs": list(item["validation_refs"]),
+            }
+            for item in evaluable_selections
+        ]
+        audit["evidence_unavailable"] = {
+            key: list(value) for key, value in evidence_unavailable.items()
+        }
+        if not contrast_packets:
+            audit["stages"]["H3"] = {
+                "status": "not_called_evidence_unavailable",
+                "decisions": [],
+                "resolutions": resolution_audit,
+                "usage": _usage_to_dict(AgentUsage()),
+            }
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {
+                key: list(value) for key, value in refined.items()
+            }
+            return self._mining_output(audit=audit, refined=refined)
+        active_packet_refs = {
+            packet_ref
+            for comparison in contrast_packets
+            for packet_ref in comparison["evidence_packet_refs"]
+        }
         decisions_step = self.mining_model.contrast(
             {
                 "track": "hypothesis",
-                "evidence_packets": list(evidence_packets_by_key.values()),
+                "evidence_packets": [
+                    packet
+                    for packet in evidence_packets_by_key.values()
+                    if packet["packet_ref"] in active_packet_refs
+                ],
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
@@ -8418,23 +8525,21 @@ class SignalEvolutionEngine:
             }
         )
         allowed_hypotheses = {
-            item["hypothesis"].hypothesis_id for item in selections
+            item["hypothesis"].hypothesis_id for item in evaluable_selections
         }
         decisions = self._validate_mining_decisions(
             decisions_step.value,
             allowed_hypothesis_ids=allowed_hypotheses,
         )
-        for missing_id in sorted(
-            allowed_hypotheses - {item.hypothesis_id for item in decisions}
-        ):
-            refined[missing_id] = ("contrast returned no decision",)
         audit["stages"]["H3"] = {
+            "status": "completed",
             "decisions": [item.to_dict() for item in decisions],
             "resolutions": resolution_audit,
             "usage": _usage_to_dict(decisions_step.usage),
         }
         selection_by_id = {
-            item["hypothesis"].hypothesis_id: item for item in selections
+            item["hypothesis"].hypothesis_id: item
+            for item in evaluable_selections
         }
         staged = self._stage_mining_decisions(
             decisions,
@@ -8665,14 +8770,42 @@ class SignalEvolutionEngine:
             refined_ids = set(
                 dict(validation.get("refined_hypotheses", {}))
             )
+            refined_reasons = dict(
+                validation.get("refined_hypotheses", {})
+            )
+            evidence_unavailable = (
+                dict(audit.get("evidence_unavailable", {}))
+                if isinstance(audit, Mapping)
+                else {}
+            )
             prior_work.append(
                 {
                     "provisional_candidates": provisional_rows,
                     "refined_hypotheses": [
-                        dict(item)
+                        {
+                            "hypothesis": dict(item),
+                            "reasons": list(
+                                refined_reasons.get(
+                                    str(item.get("hypothesis_id")), ()
+                                )
+                            ),
+                        }
                         for item in h1_rows
                         if isinstance(item, Mapping)
                         and item.get("hypothesis_id") in refined_ids
+                    ],
+                    "evidence_unavailable": [
+                        {
+                            "hypothesis": dict(item),
+                            "reasons": list(
+                                evidence_unavailable.get(
+                                    str(item.get("hypothesis_id")), ()
+                                )
+                            ),
+                        }
+                        for item in h1_rows
+                        if isinstance(item, Mapping)
+                        and item.get("hypothesis_id") in evidence_unavailable
                     ],
                 }
             )
@@ -8882,9 +9015,11 @@ class SignalEvolutionEngine:
             if excerpt:
                 profile["business_description"] = excerpt
         profile_ready = self._mining_profile_ready(profile)
+        description = str(
+            profile.get("business_description") or "unavailable"
+        )[:600]
         safe_info = {
-            "business_description": profile.get("business_description")
-            or "unavailable",
+            "business_description": description,
             "industry": profile.get("industry") or "unavailable",
             "sector": profile.get("sector") or "unavailable",
             "exchange": profile.get("exchange") or "unavailable",
@@ -8893,6 +9028,11 @@ class SignalEvolutionEngine:
                 profile.get("listing_date"),
                 as_of=case.prediction_time,
             ),
+        }
+        safe_info = {
+            key: value
+            for key, value in safe_info.items()
+            if key == "business_description" or value != "unavailable"
         }
         masked_info = dict(_mask_identity_values(safe_info, aliases))
         _assert_identity_values_masked(masked_info, aliases)
@@ -8974,7 +9114,11 @@ class SignalEvolutionEngine:
         aliases = _discovery_identity_terms((case,))
         evidence = []
         for index, document in enumerate(documents, start=1):
-            view = _agent_raw_document_view(document, max_content_chars=1_200)
+            view = _agent_raw_document_view(
+                document,
+                max_content_chars=1_200,
+                query=query,
+            )
             evidence.append(
                 {
                     "document_ref": f"document-{index:02d}",
@@ -8986,6 +9130,7 @@ class SignalEvolutionEngine:
                         view["content_excerpt"], aliases
                     ),
                     "content_truncated": view["content_truncated"],
+                    "content_projection": view["content_projection"],
                 }
             )
         _assert_identity_values_masked(evidence, aliases)
@@ -8993,7 +9138,11 @@ class SignalEvolutionEngine:
             "case_ref": case_ref,
             "prediction_time": case.prediction_time.isoformat(),
             "evidence": evidence,
-            "resolution_status": resolution.status,
+            "resolution_status": (
+                resolution.status
+                if documents
+                else "unresolved_after_relevance_filter"
+            ),
         }
         if reveal_label:
             packet["label"] = (
@@ -9001,9 +9150,14 @@ class SignalEvolutionEngine:
             )
         return packet, {
             "case_ref": case_ref,
-            "status": resolution.status,
+            "status": (
+                resolution.status
+                if documents
+                else "unresolved_after_relevance_filter"
+            ),
             "requested_source_types": list(source_types),
             "document_count": len(documents),
+            "usable": bool(documents),
             "document_hashes": [item.content_hash for item in documents],
             "filtered_documents": filtered_documents,
             "as_of": case.prediction_time.isoformat(),
@@ -9031,11 +9185,9 @@ class SignalEvolutionEngine:
         if len(set(ids)) != len(ids):
             raise ValidationError("Signal Mining decisions must have unique hypothesis ids")
         if allowed_hypothesis_ids is not None:
-            unknown = sorted(set(ids) - allowed_hypothesis_ids)
-            if unknown:
+            if set(ids) != allowed_hypothesis_ids:
                 raise ValidationError(
-                    "Signal Mining decisions used unknown hypotheses: "
-                    + ", ".join(unknown)
+                    "Signal Mining decisions must cover every supplied comparison"
                 )
         return values
 
@@ -9617,23 +9769,17 @@ def _agent_raw_document_view(
     document: RawInfoDocument,
     *,
     max_content_chars: int,
+    query: str | None = None,
 ) -> dict[str, Any]:
     """Return a bounded prompt view while the executor keeps the full document."""
 
     if max_content_chars < 200:
         raise ValidationError("Agent Raw Info preview bound is too small")
-    content = document.content
-    truncated = len(content) > max_content_chars
-    if truncated:
-        head_chars = max_content_chars // 2
-        tail_chars = max_content_chars - head_chars
-        excerpt = (
-            content[:head_chars]
-            + "\n...[bounded Raw Info preview]...\n"
-            + content[-tail_chars:]
-        )
-    else:
-        excerpt = content
+    excerpt, truncated = _query_relevant_excerpt(
+        document,
+        query=query,
+        max_chars=max_content_chars,
+    )
     compact_metadata = {
         str(key): (value[:500] if isinstance(value, str) else value)
         for key, value in document.metadata.items()
@@ -9646,9 +9792,10 @@ def _agent_raw_document_view(
         "published_at": document.published_at.isoformat(),
         "available_at": document.available_at.isoformat(),
         "content_hash": document.content_hash,
-        "content_length": len(content),
+        "content_length": len(document.content),
         "content_excerpt": excerpt,
         "content_truncated": truncated,
+        "content_projection": "normalized_query_window_v1",
         "metadata": compact_metadata,
         "metadata_keys": sorted(document.metadata),
     }
@@ -10043,27 +10190,24 @@ def _filter_h3_documents(
     case: EvolutionCase,
     query: str | None,
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, str]]]:
-    """Keep issuer-routed sources and require strong issuer/query news relevance."""
+    """Keep exact-routed sources with hypothesis-relevant visible content."""
 
-    query_terms = {
-        token.casefold()
-        for token in re.findall(r"[A-Za-z0-9]+", query or "")
-        if len(token) >= 3 and token.casefold() not in _GENERIC_QUERY_WORDS
-    }
+    query_terms = _h3_content_terms(query or "", exclude_generic=True)
     kept: list[RawInfoDocument] = []
     filtered: list[dict[str, str]] = []
     for document in documents:
-        if "news" not in document.source_type.casefold():
-            kept.append(document)
-            continue
-        title = str(document.metadata.get("title", ""))
-        visible_text = f"{title}\n{document.content}"
-        issuer_match = document_has_strong_issuer_match(
-            document,
-            case.basic_info,
+        is_news = "news" in document.source_type.casefold()
+        visible_text = _h3_document_visible_text(document)
+        issuer_match = (
+            document_has_strong_issuer_match(document, case.basic_info)
+            if is_news
+            else True
         )
-        relevance_match = not query_terms or any(
-            term in visible_text.casefold() for term in query_terms
+        visible_terms = _h3_content_terms(visible_text, exclude_generic=False)
+        minimum_matches = min(2, len(query_terms))
+        relevance_match = (
+            not query_terms
+            or len(query_terms & visible_terms) >= minimum_matches
         )
         if issuer_match and relevance_match:
             kept.append(document)
@@ -10079,6 +10223,103 @@ def _filter_h3_documents(
             }
         )
     return tuple(kept), filtered
+
+
+def _h3_content_terms(value: str, *, exclude_generic: bool) -> set[str]:
+    """Normalize bounded query/content terms without substring matching."""
+
+    result: set[str] = set()
+    separated = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", value)
+    for raw in re.findall(r"[A-Za-z0-9]+", separated.casefold()):
+        if len(raw) < 3 or (exclude_generic and raw in _GENERIC_QUERY_WORDS):
+            continue
+        term = raw[:-3] + "y" if raw.endswith("ies") else raw
+        if term.endswith("s") and len(term) > 4 and not term.endswith("ss"):
+            term = term[:-1]
+        if exclude_generic and term in _GENERIC_QUERY_WORDS:
+            continue
+        result.add(term)
+    return result
+
+
+def _h3_document_visible_text(document: RawInfoDocument) -> str:
+    """Return deterministic reader-visible text for H3 relevance and excerpts."""
+
+    title = str(document.metadata.get("title", ""))
+    if "news" in document.source_type.casefold():
+        try:
+            payload = json.loads(document.content)
+        except (json.JSONDecodeError, TypeError):
+            payload = None
+        if isinstance(payload, Mapping):
+            fields = [
+                str(payload.get(key) or "")
+                for key in ("title", "summary", "body", "content")
+            ]
+            return " ".join("\n".join((title, *fields)).split())
+    projected, _runs = _normalized_projection_text(document.content)
+    return " ".join(f"{title}\n{projected}".split())
+
+
+def _query_relevant_excerpt(
+    document: RawInfoDocument,
+    *,
+    query: str | None,
+    max_chars: int,
+) -> tuple[str, bool]:
+    """Select one bounded visible window around the strongest query match."""
+
+    text_value = _h3_document_visible_text(document)
+    if len(text_value) <= max_chars:
+        return text_value, False
+    query_terms = tuple(sorted(_h3_content_terms(query or "", exclude_generic=True)))
+    lowered = text_value.casefold()
+    anchors: list[int] = []
+    for term in query_terms:
+        cursor = 0
+        while (position := lowered.find(term, cursor)) >= 0:
+            end = position + len(term)
+            left_boundary = (
+                position == 0
+                or not text_value[position - 1].isalnum()
+                or (
+                    text_value[position].isupper()
+                    and text_value[position - 1].islower()
+                )
+            )
+            right_boundary = (
+                end == len(text_value)
+                or not text_value[end].isalnum()
+                or (
+                    text_value[end].isupper()
+                    and text_value[end - 1].islower()
+                )
+            )
+            if left_boundary and right_boundary:
+                anchors.append(position)
+            cursor = position + 1
+    starts = {0}
+    starts.update(
+        max(0, min(len(text_value) - max_chars, anchor - max_chars // 3))
+        for anchor in anchors
+    )
+
+    def score(start: int) -> tuple[int, int, int, int]:
+        window = lowered[start : start + max_chars]
+        counts = tuple(window.count(term) for term in query_terms)
+        return (
+            sum(count > 0 for count in counts),
+            sum(counts),
+            sum(character.isalpha() for character in window),
+            -start,
+        )
+
+    start = max(starts, key=score)
+    if start:
+        boundary = text_value.find(" ", start, min(len(text_value), start + 80))
+        if boundary >= 0:
+            start = boundary + 1
+    return text_value[start : start + max_chars], True
 
 
 def _nested_profile_mappings(value: Any, *, depth: int) -> list[Mapping[str, Any]]:

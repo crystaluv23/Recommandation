@@ -703,6 +703,95 @@ class EvidenceResolverTests(TestCase):
             ["news_wrong_company"],
         )
 
+    def test_legacy_news_json_ignores_secondary_ticker_association(self) -> None:
+        unrelated = document(
+            "news_secondary_ticker",
+            json.dumps(
+                {
+                    "title": "Salesforce raises full-year guidance",
+                    "summary": "Salesforce reported stronger subscription revenue.",
+                    "ticker_sentiment": [
+                        {"ticker": "AMD", "relevance_score": "0.62"}
+                    ],
+                }
+            ),
+        )
+        relevant = document(
+            "news_visible_issuer",
+            json.dumps(
+                {
+                    "title": "AMD expands data-center product line",
+                    "summary": "AMD described new accelerator availability.",
+                    "ticker_sentiment": [
+                        {"ticker": "AMD", "relevance_score": "1.0"}
+                    ],
+                }
+            ),
+        )
+        resolution = EvidenceResolver(
+            RawInfoStore(documents=(unrelated, relevant))
+        ).resolve(
+            RawInfoRequest("company_news", "Read issuer news.", ("news",)),
+            company_id="issuer_1",
+            identity={"company_name": "Advanced Micro Devices", "ticker": "AMD"},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(
+            [item.document_id for item in resolution.documents],
+            ["news_visible_issuer"],
+        )
+        filter_events = [
+            event
+            for event in resolution.events
+            if event.kind == "news_documents_filtered"
+        ]
+        self.assertEqual(
+            filter_events[0].details["filtered_document_ids"],
+            ["news_secondary_ticker"],
+        )
+
+    def test_specific_sec_forms_do_not_substitute_for_each_other(self) -> None:
+        annual = document("annual", "Annual filing.", source_type="10-k")
+        quarterly = document("quarterly", "Quarterly filing.", source_type="10-q")
+        resolver = EvidenceResolver(RawInfoStore(documents=(annual, quarterly)))
+
+        resolution = resolver.resolve(
+            RawInfoRequest("quarter", "Read the quarterly filing.", ("10-q",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(
+            [item.document_id for item in resolution.documents],
+            ["quarterly"],
+        )
+        annual_only = EvidenceResolver(RawInfoStore(documents=(annual,))).resolve(
+            RawInfoRequest("quarter", "Read the quarterly filing.", ("10-q",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        self.assertEqual(annual_only.status, "unresolved")
+        self.assertEqual(annual_only.documents, ())
+        mixed = EvidenceResolver(
+            RawInfoStore(documents=(annual, document("issuer_news", "Issuer news.")))
+        ).resolve(
+            RawInfoRequest(
+                "mixed",
+                "Read quarterly filings or company news.",
+                ("10-q", "company_news"),
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        self.assertEqual(
+            [item.document_id for item in mixed.documents],
+            ["issuer_news"],
+        )
+
     def test_visible_issuer_match_is_case_insensitive_for_name_derived_brand(self) -> None:
         target = document(
             "news_target",

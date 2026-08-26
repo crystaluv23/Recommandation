@@ -998,7 +998,11 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    item by sharing at least two non-generic normalized topic terms across its
    statement, applicability, expected pattern, and query. An ungrounded
    hypothesis receives the one bounded correction; an empty portfolio remains
-   a valid explicit result.
+   a valid explicit result. Stable Signal ids and registered deterministic
+   function leaves are also a local exclusion boundary: a renamed hypothesis
+   that contains the complete non-generic semantic term set of an existing
+   multi-term Signal is rejected into the bounded correction rather than sent
+   onward as new Mining work.
 2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
    and rank controller-issued opaque `case_ref` values for every hypothesis from
    bounded point-in-time company briefs. Briefs may contain a business
@@ -1021,7 +1025,13 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    stable non-secret cause (for example `sec_user_agent_unconfigured`), not a
    generic adapter failure or any configured value. When acquisition is possible, H2
    scans only until the 32-case target and both hidden class minima are met;
-   96 remains a ceiling, not a required acquisition count. Retryable provider failure
+   96 remains a ceiling, not a required acquisition count. H2 returns only a
+   bounded shortlist of materially applicable cases for each hypothesis, most
+   applicable first. An empty shortlist is a valid statement that the current
+   anonymous pool has no applicable case; irrelevant cases must be omitted and
+   the model must not pad a ranking by copying the complete pool. The controller
+   rejects any per-hypothesis list above the supplied shortlist ceiling.
+   Retryable provider failure
    creates a cycle-level control-plane pause with the opaque case ref and provider
    reason, preserves both pointers, and returns process exit 75 for exact-contract
    resume. It is not a hypothesis rejection or generic traceback. Deterministic shortage records
@@ -1030,7 +1040,12 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
 3. `local feasibility`: reveal labels only inside the controller, require at
    least one issuer-distinct positive and one control, reserve later relevant
    cases for validation, and select at most two feasible hypotheses. An
-   infeasible hypothesis becomes refined work rather than a model failure.
+   infeasible hypothesis becomes refined work rather than a model failure. For
+   each feasible H2 shortlist, the controller walks the ranking in order and
+   uses the next issuer of the same hidden class when an earlier case has no
+   usable H3 evidence. The two-hypothesis contrast limit counts only evidence-
+   ready comparisons; an evidence-unavailable early hypothesis must not prevent
+   a later feasible hypothesis from using the bounded contrast budget.
 4. `H3 contrast`: retrieve exact point-in-time Raw Info for the selected cases,
    then ask the model to support, refine, or reject each hypothesis and, when
    supported, return a complete candidate Signal plus fixtures. The controller
@@ -1038,8 +1053,21 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    the top level, keyed by `(case, source_types, query, lookback)`; comparisons
    reference packet ids. News packets require a strong company-name or ticker
    match in title/body plus hypothesis-query relevance. Ticker-association
-   metadata alone is filtered and audited; directly issuer-routed SEC, market,
-   and facts sources retain their trusted routing.
+   metadata alone is filtered and audited. Every document must match the exact
+   requested source semantics and contain exact word-boundary matches for the
+   non-generic hypothesis query: one distinct term for a one-term query and at
+   least two distinct terms for a longer query. Substrings such as `ounce` in
+   `announced` or `per` in `performance` are not matches. Directly issuer-routed
+   SEC, market, and facts sources retain their
+   issuer routing, but do not bypass this hypothesis-relevance check. The model
+   excerpt is a deterministic normalized window centered on the strongest query
+   match, with the complete immutable document hash retained as lineage; it must
+   not substitute an XML header plus signature-page tail for substantive source
+   text. If any selected induction case has no usable document after these
+   checks, that hypothesis is recorded separately as evidence-unavailable and
+   is not sent to H3. Data absence is not learned as a hypothesis refinement.
+   H3 must return exactly one decision per comparison; `refine` is reserved for
+   an actual underspecification supported by visible evidence.
 
 Exploration-driven cycles execute:
 
@@ -1063,6 +1091,12 @@ those refs to Discovery cases, checks point-in-time feasibility, and issues the
 same bounded `RawInfoRequest` for every compared case. Model-facing evidence is
 compact and immutable; complete documents remain the local lineage and final
 Signal-execution boundary.
+
+Cross-cycle H1 context preserves both the original H1 hypothesis and the exact
+H3 refinement reasons. Evidence-unavailable work is carried with its distinct
+status and data reasons. The next cycle must never receive a bare old hypothesis
+under a `refined_hypotheses` label after discarding the reasoning that made it
+refined.
 
 Signal Update begins locally, not with `H_U`. The controller scans exact-version
 learning profiles and selects at most three distinct actionable targets by

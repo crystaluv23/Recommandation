@@ -220,8 +220,9 @@ one-tool-per-turn Agent transcript:
 
 - `signal_mining_hypotheses` proposes a portfolio of no more than three
   falsifiable hypotheses from bounded meta/backlog/Registry context;
-- `signal_mining_case_ranking` ranks only allowed opaque case refs from
-  label-hidden, identity-hidden company briefs for all hypotheses in one call;
+- `signal_mining_case_ranking` returns a bounded, unpadded applicability
+  shortlist of only allowed opaque case refs from label-hidden, identity-hidden
+  company briefs for all hypotheses in one call; an empty shortlist is valid;
 - `signal_mining_contrast` supports/refines/rejects at most two locally feasible
   hypotheses from exact point-in-time positive/control evidence;
 - `signal_mining_exploration_extract` creates label-hidden observable signatures
@@ -248,6 +249,10 @@ each hypothesis to share at least two non-generic, simply singular-normalized
 topic terms with one exact need across its semantic fields. This is a grounding
 check against supplied demand, not local hypothesis generation; failures receive
 the existing one bounded correction and explicit empty remains valid.
+The same parse boundary rejects a renamed hypothesis when its semantic text
+contains the complete multi-term id of a stable Signal or registered
+deterministic function supplied in the request. Prompt advice alone is not the
+duplicate guard.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming

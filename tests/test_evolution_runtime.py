@@ -1069,6 +1069,95 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("at least two", validation_error(caller.calls[1]))
         self.assertEqual(result.value[0].hypothesis_id, "production_cost_guidance_gap")
 
+    def test_signal_h1_corrects_renamed_existing_stable_signal(self) -> None:
+        duplicate = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "revenue_growth_trajectory_shift",
+                    "statement": (
+                        "Accelerating year-over-year revenue growth precedes repricing."
+                    ),
+                    "applicability": "Companies with quarterly revenue history.",
+                    "expected_positive_pattern": "Revenue acceleration is positive.",
+                    "source_types": ["10-q"],
+                    "query": "revenue growth acceleration",
+                    "falsifiers": ["Controls accelerate equally often."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = {"hypotheses": []}
+        caller = ScriptedRoleCaller([duplicate, corrected])
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-q"],
+                "registered_deterministic_functions": [
+                    "financial.revenue_acceleration"
+                ],
+                "stable_signal_cards": [
+                    {
+                        "signal_id": "revenue_acceleration",
+                        "signal_ref": "revenue_acceleration:v1",
+                    }
+                ],
+            }
+        )
+
+        self.assertEqual(result.value, ())
+        self.assertIn("restate", validation_error(caller.calls[1]))
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        )
+
+    def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "mining_operations",
+                            "case_refs": ["case-001", "case-002", "case-003"],
+                        }
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "mining_operations",
+                            "case_refs": [],
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).rank_cases(
+            {
+                "hypotheses": [{"hypothesis_id": "mining_operations"}],
+                "case_briefs": [
+                    {"case_ref": "case-001"},
+                    {"case_ref": "case-002"},
+                    {"case_ref": "case-003"},
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["mining_operations"], ())
+        self.assertIn("exceeds", validation_error(caller.calls[1]))
+        self.assertEqual(
+            caller.stages,
+            [
+                "signal_mining_case_ranking",
+                "signal_mining_case_ranking_correction",
+            ],
+        )
+
     def test_signal_h1_preserves_real_structured_context_with_brand_collisions(
         self,
     ) -> None:

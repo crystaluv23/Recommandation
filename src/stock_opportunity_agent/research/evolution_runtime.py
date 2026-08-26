@@ -6580,6 +6580,7 @@ _H1_GENERIC_TOPIC_TERMS = frozenset(
 def _h1_topic_terms(value: str) -> frozenset[str]:
     """Return deterministic topic terms for demand-grounding validation."""
 
+    value = re.sub(r"\byear[- ]over[- ]year\b", " yoy ", value, flags=re.IGNORECASE)
     result: set[str] = set()
     for raw in re.findall(r"[A-Za-z0-9]+", value.casefold()):
         if len(raw) < 4 or raw in _H1_GENERIC_TOPIC_TERMS:
@@ -6591,6 +6592,28 @@ def _h1_topic_terms(value: str) -> frozenset[str]:
             continue
         result.add(term)
     return frozenset(result)
+
+
+def _h1_existing_signal_term_sets(
+    payload: Mapping[str, Any],
+) -> tuple[frozenset[str], ...]:
+    """Return multi-term stable identities that new H1 work must not rename."""
+
+    identities = [
+        str(item.get("signal_id", ""))
+        for item in payload.get("stable_signal_cards", ())
+        if isinstance(item, Mapping)
+    ]
+    identities.extend(
+        str(value).rsplit(".", 1)[-1]
+        for value in payload.get("registered_deterministic_functions", ())
+    )
+    term_sets = {
+        terms
+        for value in identities
+        if len(terms := _h1_topic_terms(value.replace("_", " "))) >= 2
+    }
+    return tuple(sorted(term_sets, key=lambda item: tuple(sorted(item))))
 
 _SIGNAL_MINING_RANKING_OUTPUT = _output_contract(
     "SignalMiningRankings",
@@ -6732,6 +6755,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             )
             if isinstance(item, Mapping) and str(item.get("need", "")).strip()
         )
+        existing_signal_term_sets = _h1_existing_signal_term_sets(payload)
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
             if set(value) != {"hypotheses"} or not isinstance(
@@ -6763,17 +6787,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                 )
             for item in items:
                 _reject_fixed_semantics_redefinition(item.to_dict())
-                if need_term_sets:
-                    hypothesis_terms = _h1_topic_terms(
-                        " ".join(
-                            (
-                                item.statement,
-                                item.applicability,
-                                item.expected_positive_pattern,
-                                item.query,
-                            )
+                hypothesis_terms = _h1_topic_terms(
+                    " ".join(
+                        (
+                            item.hypothesis_id.replace("_", " ").replace("-", " "),
+                            item.statement,
+                            item.applicability,
+                            item.expected_positive_pattern,
+                            item.query,
                         )
                     )
+                )
+                if any(
+                    stable_terms <= hypothesis_terms
+                    for stable_terms in existing_signal_term_sets
+                ):
+                    raise ValidationError(
+                        "Signal Mining H1 hypothesis restates an existing stable "
+                        "Signal: " + item.hypothesis_id
+                    )
+                if need_term_sets:
                     if not any(
                         len(hypothesis_terms & need_terms) >= 2
                         for need_terms in need_term_sets
@@ -6800,6 +6833,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Propose a small portfolio of falsifiable, reusable Signal hypotheses. "
                 "Use meta/backlog gaps and stable cards, prefer observable point-in-time "
                 "differences, and do not select companies or restate an existing Signal. "
+                "Treat stable_signal_cards and registered_deterministic_functions as "
+                "an exclusion list: do not rename, combine, or re-propose an existing "
+                "metric as a new Signal. prior_slow_work.refined_hypotheses preserves "
+                "the exact prior hypothesis with its evidence-grounded reasons; address "
+                "those reasons instead of merely restating the old hypothesis. Entries "
+                "under evidence_unavailable describe data failure, not evidence that the "
+                "hypothesis should be semantically changed. "
                 "capability_backlog.signal_need_items are identity-masked, label-hidden "
                 "needs that an actual Fast trajectory could not match to a stable Signal; "
                 "treat them as diagnostic demand, not as evidence that a candidate works. "
@@ -6835,6 +6875,14 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in case_briefs
             if isinstance(item, Mapping) and "case_ref" in item
         }
+        rules = payload.get("rules", {})
+        ranking_limit = int(
+            rules.get("max_case_refs_per_hypothesis", len(allowed_cases))
+            if isinstance(rules, Mapping)
+            else len(allowed_cases)
+        )
+        if ranking_limit < 1:
+            raise ValidationError("Signal Mining H2 ranking limit must be positive")
 
         def parse(value: Mapping[str, Any]) -> Mapping[str, tuple[str, ...]]:
             if set(value) != {"rankings"} or not isinstance(
@@ -6851,9 +6899,14 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "each Signal Mining H2 ranking requires hypothesis_id and case_refs"
                     )
                 hypothesis_id = str(raw["hypothesis_id"])
-                refs = _strict_string_list(raw, "case_refs")
+                refs = _strict_string_list(raw, "case_refs", allow_empty=True)
                 if refs is None:
                     raise ValidationError("Signal Mining H2 case_refs must be unique strings")
+                if len(refs) > ranking_limit:
+                    raise ValidationError(
+                        "Signal Mining H2 ranking exceeds "
+                        f"max_case_refs_per_hypothesis={ranking_limit}"
+                    )
                 if hypothesis_id in rankings:
                     raise ValidationError("Signal Mining H2 repeated a hypothesis")
                 rankings[hypothesis_id] = refs
@@ -6875,7 +6928,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             system_prompt=(
                 "Rank the anonymous company briefs by applicability to each hypothesis. "
                 "Outcomes and identities are hidden. Use only supplied opaque refs and "
-                "rank all hypotheses in this single call."
+                "rank all hypotheses in this single call. Return only materially "
+                "applicable cases, most applicable first; omit irrelevant cases, do "
+                "not pad by copying the full pool, and use an empty case_refs array "
+                "when none apply. Respect rules.max_case_refs_per_hypothesis."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _SIGNAL_MINING_RANKING_OUTPUT
             ),
@@ -6906,7 +6962,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Contrast the supplied exact point-in-time positive and control evidence. "
                 "Support only a repeated observable difference, refine an underspecified "
                 "idea, or reject a contradicted one. A supported draft must be a complete "
-                "new Signal with executable fixtures."
+                "new Signal with executable fixtures. Return exactly one decision for "
+                "every comparison. The controller has preflighted evidence availability; "
+                "use refine only for an evidence-grounded semantic change, not merely to "
+                "report missing source material."
             ),
             temperature=0.0,
         )
@@ -6991,8 +7050,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             ids = [item.hypothesis_id for item in items]
             if len(set(ids)) != len(ids):
                 raise ValidationError("Signal Mining decisions must use unique ids")
-            if allowed_hypothesis_ids is not None and not set(ids) <= allowed_hypothesis_ids:
-                raise ValidationError("Signal Mining decision used an unknown hypothesis")
+            if allowed_hypothesis_ids is not None and set(ids) != allowed_hypothesis_ids:
+                raise ValidationError(
+                    "Signal Mining decisions must cover every supplied comparison"
+                )
             return items
 
         value, usage = _complete_parsed_role(
