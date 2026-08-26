@@ -1267,7 +1267,68 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
         error = validation_error(caller.calls[1])
         self.assertIn("alternate horizon", error)
-        self.assertIn("both positive cases and control cases", error)
+        self.assertIn("both positive and control groups", error)
+
+    def test_signal_h1_combines_identity_and_semantic_feedback_without_echo(
+        self,
+    ) -> None:
+        invalid = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "estimate_gap",
+                    "statement": (
+                        "Match Group estimate beats cause a price reaction within "
+                        "5 days."
+                    ),
+                    "applicability": "Companies with analyst coverage.",
+                    "expected_positive_pattern": (
+                        "Positive group case [CASE_POSITIVE_A] beats estimates."
+                    ),
+                    "source_types": ["news"],
+                    "query": "analyst estimate gap",
+                    "falsifiers": ["No short-term price increase."],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = {
+            "hypotheses": [
+                {
+                    **invalid["hypotheses"][0],
+                    "statement": (
+                        "Prediction-date analyst estimate gaps distinguish the "
+                        "fixed Discovery groups."
+                    ),
+                    "expected_positive_pattern": (
+                        "The positive group shows larger estimate beats than the "
+                        "control cases."
+                    ),
+                    "falsifiers": [
+                        "The control group shows equal or larger estimate beats."
+                    ],
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases(("Match Group",))
+
+        result = model.propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "estimate_gap")
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"], {})
+        error = feedback["validation_error"]
+        self.assertIn("identity alias leaked", error)
+        self.assertIn("alternate horizon", error)
+        self.assertIn("must not invent opaque case refs", error)
+        self.assertIn("both positive and control groups", error)
+        self.assertNotIn("Match Group", json.dumps(feedback))
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,

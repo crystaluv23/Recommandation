@@ -4624,9 +4624,28 @@ def _complete_parsed_role(
                     anonymous_aliases=reject_output_aliases,
                     identity_boundary="structured role output",
                 )
-            except ValidationError as exc:
+            except ValidationError as identity_exc:
                 failed_output = {}
-                failure = exc
+                messages = [str(identity_exc)]
+                try:
+                    _parse_role_output(request_stage, value, parser)
+                except ValidationError as parser_exc:
+                    safe_parser_error = str(
+                        _mask_identity_values(
+                            str(parser_exc), reject_output_aliases
+                        )
+                    )
+                    try:
+                        _scan_payload(
+                            safe_parser_error,
+                            allow_outcomes=True,
+                            anonymous_aliases=reject_output_aliases,
+                            identity_boundary="validation feedback",
+                        )
+                    except ValidationError:
+                        safe_parser_error = "additional role validation failed"
+                    messages.append("additional local validation: " + safe_parser_error)
+                failure = ValidationError("; ".join(messages))
                 continue
         try:
             return _parse_role_output(request_stage, value, parser), usage
@@ -6581,18 +6600,29 @@ _H1_GENERIC_TOPIC_TERMS = frozenset(
 )
 
 _H1_ALTERNATE_TEST_OUTCOME = re.compile(
-    r"\b(?:event\s+stud(?:y|ies)|"
+    r"\b(?:event\s+stud(?:y|ies)|short[- ]term|"
+    r"within\s+\d+\s+(?:trading\s+)?days?|"
     r"(?:over|during|in)\s+the\s+next\s+"
     r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
     r"(?:quarters?|months?|years?|trading\s+days?)|"
-    r"(?:next|subsequent|following)[- ]+"
-    r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
+    r"(?:next|subsequent|following)\b.{0,60}\b"
     r"(?:quarter(?:ly)?|quarters?|months?|years?|trading\s+days?|"
-    r"earnings\s+surprise|revenue\s+growth|stock\s+returns?))\b",
+    r"earnings\s+surprise|revenue\s+growth|returns?|price|growth)|"
+    r"(?:price|market|stock)\s+"
+    r"(?:reaction|movement|change|increase|decrease|returns?|trend|momentum|"
+    r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",
     re.IGNORECASE,
 )
-_H1_POSITIVE_CASE_PATTERN = re.compile(r"\bpositive\s+cases?\b", re.IGNORECASE)
-_H1_CONTROL_CASE_PATTERN = re.compile(r"\bcontrols?(?:\s+cases?)?\b", re.IGNORECASE)
+_H1_POSITIVE_CASE_PATTERN = re.compile(
+    r"\bpositive\s+(?:cases?|group(?:\s+cases?)?|cohort)\b", re.IGNORECASE
+)
+_H1_CONTROL_CASE_PATTERN = re.compile(
+    r"\bcontrol(?:s|\s+cases?|\s+group(?:\s+cases?)?|\s+cohort)\b",
+    re.IGNORECASE,
+)
+_H1_INVENTED_CASE_REF = re.compile(
+    r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
+)
 
 
 def _h1_topic_terms(value: str) -> frozenset[str]:
@@ -6868,6 +6898,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                         f"for {item.hypothesis_id}; matched "
                         f"{alternate_match.group(0)!r}"
                     )
+                invented_ref_match = _H1_INVENTED_CASE_REF.search(test_text)
+                if invented_ref_match is not None:
+                    issues.append(
+                        "Signal Mining H1 must not invent opaque case refs or case "
+                        f"placeholders for {item.hypothesis_id}"
+                    )
                 if not (
                     _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
                     and _H1_CONTROL_CASE_PATTERN.search(
@@ -6876,7 +6912,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 ):
                     issues.append(
                         "Signal Mining H1 expected_positive_pattern must name both "
-                        "positive cases and control cases: " + item.hypothesis_id
+                        "positive and control groups: " + item.hypothesis_id
                     )
                 hypothesis_terms = _h1_topic_terms(
                     " ".join(
@@ -6947,10 +6983,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "address one need and reuse at least two of its non-generic topic terms. "
                 "H3 tests point-in-time evidence available by each case's prediction "
                 "date against the fixed Discovery positive/control groups. Therefore "
-                "expected_positive_pattern must explicitly name both positive cases "
-                "and control cases, and statement, expected_positive_pattern, and "
-                "falsifiers must not invent a next-quarter, later-year, event-study, "
-                "or other outcome/horizon. lookback_days is only the pre-prediction "
+                "expected_positive_pattern must explicitly name both the positive "
+                "and control case/group/cohort, and statement, expected_positive_pattern, "
+                "and falsifiers must not invent a next-quarter, later-year, event-study, "
+                "short-window market reaction, return, momentum, outperformance, or "
+                "other outcome/horizon. Do not invent opaque case refs or bracketed "
+                "case placeholders. lookback_days is only the pre-prediction "
                 "evidence window. Existing Signals exclude only a candidate whose own "
                 "hypothesis_id or query renames their measured construct; mentioning "
                 "an existing metric only as a comparison or falsifier is allowed. "

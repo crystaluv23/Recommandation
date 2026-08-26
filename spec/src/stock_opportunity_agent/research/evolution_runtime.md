@@ -219,9 +219,11 @@ redefine the six-month price surge/horizon, change the four-way judgment, or tur
 `H_analyse` into a Predictor.
 
 Slow H1 explicitly binds each hypothesis to the fixed Discovery positive/control
-comparison. Its expected pattern must name both groups, and its statement/pattern/
-falsifiers cannot introduce a later-quarter, later-year, or event-study outcome that
-H3 will never evaluate. `lookback_days` remains an input-evidence window. Existing
+comparison. Its expected pattern must name both groups using case/group/cohort
+language, and its statement/pattern/falsifiers cannot introduce a later-quarter,
+later-year, event-study, short-window market reaction, return, momentum, or
+outperformance outcome that H3 will never evaluate. It cannot invent opaque case
+refs or bracketed case placeholders. `lookback_days` remains an input-evidence window. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/
@@ -230,6 +232,13 @@ only as a standalone `P(` token; an ordinary word ending in `p` before parenthes
 not a Predictor-semantic redefinition. Stable-identity topic normalization retains
 the compact `yoy` qualifier after converting year-over-year spelling; otherwise the
 specific `revenue_growth_yoy` identity would collapse into generic `revenue growth`.
+
+Output identity rejection must not consume the sole correction while hiding other
+pure local validation defects in the same structured value. The adapter still sends
+an empty invalid output and never echoes the leaking value, but it also runs the
+side-effect-free role parser locally and appends its alias-masked validation message
+to the identity path. A correction therefore sees every safe, locally decidable issue
+at once without receiving the identity-bearing content.
 
 Signal Mining uses five narrow structured role stages rather than a
 one-tool-per-turn Agent transcript:

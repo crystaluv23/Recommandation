@@ -584,3 +584,19 @@ therefore rejected twice, and the correction weakened otherwise useful quantitat
 constructs into word-frequency proxies. Preserve explicit domain qualifiers such as
 `yoy` through normalization and test the complete identity, not its accidentally
 truncated prefix.
+
+V47 showed that a privacy guard and a semantic validator cannot be independent
+one-error gates when the role has only one correction. The initial H1 response
+invented `[CASE_POSITIVE_*]` placeholders, so the identity scan rejected it before
+the parser could report its short-window price/return outcomes and missing control
+comparison. Keep the rejected output local and send `invalid_output={}`, but run the
+side-effect-free parser too, mask aliases in its error, rescan the feedback, and
+append every safe defect to the same correction.
+
+Semantic contracts should recognize harmless wording variants while rejecting real
+target substitution. `positive group`, `positive cases`, and `positive cohort` name
+the same frozen Discovery side; requiring one literal phrase rejected a corrected
+response for no design reason. Conversely, five-day price reaction, momentum, return,
+and outperformance are alternate outcomes even if a hypothesis also mentions the
+positive/control groups. Accept the former synonyms, reject the latter targets, and
+forbid opaque bracketed case refs that are neither supplied nor evaluable.

@@ -992,8 +992,11 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    `statement`, `expected_positive_pattern`, and falsifiers must test the fixed
    Discovery positive/control outcome; they cannot substitute a next-quarter
    earnings result, subsequent revenue growth, one-year return, event-study
-   horizon, or any other newly invented target. The expected pattern names both
-   positive cases and control cases so H3's actual comparison is explicit. A stable card whose exact version
+   horizon, short-window price reaction, return, momentum, outperformance, or any
+   other newly invented target. The expected pattern names both the positive and
+   control groups, with case/group/cohort wording treated as equivalent, so H3's
+   actual comparison is explicit. H1 never invents opaque case refs or bracketed
+   case placeholders. A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The
