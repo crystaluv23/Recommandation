@@ -1033,14 +1033,17 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Production volume and cost-per-ounce guidance gaps may "
                         "precede repricing."
                     ),
-                    "applicability": "Producers disclosing operating guidance.",
+                    "applicability": "Commodity extraction producers.",
                     "expected_positive_pattern": (
                         "Positive cases beat production and unit-cost guidance more "
                         "often than control cases."
                     ),
                     "source_types": ["news"],
                     "query": "production volume cost ounce guidance",
-                    "falsifiers": ["Controls beat the same guidance as often."],
+                    "falsifiers": [
+                        "Positive cases and control cases beat the same guidance "
+                        "equally often."
+                    ],
                     "lookback_days": 365,
                 }
             ]
@@ -1131,7 +1134,7 @@ class ConcreteRoleAdapterTests(TestCase):
                                 "A production gap (volume versus guidance) is "
                                 "associated with revenue acceleration."
                             ),
-                            "applicability": "Commodity producers with guidance.",
+                            "applicability": "Commodity extraction producers.",
                             "expected_positive_pattern": (
                                 "Positive cases show larger production beats and "
                                 "lower unit costs than control cases."
@@ -1139,7 +1142,8 @@ class ConcreteRoleAdapterTests(TestCase):
                             "source_types": ["10-q"],
                             "query": "production volume cost ounce guidance",
                             "falsifiers": [
-                                "Control cases show equal production and cost gaps."
+                                "Positive cases and control cases show equal or "
+                                "reversed production and cost gaps."
                             ],
                             "lookback_days": 365,
                         }
@@ -1175,7 +1179,8 @@ class ConcreteRoleAdapterTests(TestCase):
                                 "composition of recent revenue growth."
                             ),
                             "applicability": (
-                                "Companies with segment or revenue-driver disclosure."
+                                "Diversified companies with multiple operating "
+                                "segments in the business profile."
                             ),
                             "expected_positive_pattern": (
                                 "Positive cases show more core-driven revenue growth "
@@ -1186,7 +1191,8 @@ class ConcreteRoleAdapterTests(TestCase):
                                 "core vs non-operating revenue growth segment drivers"
                             ),
                             "falsifiers": [
-                                "Control cases have equal core operating contribution."
+                                "Positive cases and control cases have equal or "
+                                "reversed core operating contribution."
                             ],
                             "lookback_days": 365,
                         }
@@ -1241,12 +1247,14 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Prediction-date production and guidance gaps distinguish "
                         "the fixed Discovery groups."
                     ),
+                    "applicability": "Commodity extraction producers.",
                     "expected_positive_pattern": (
                         "Positive cases show larger production beats and lower unit "
                         "costs than control cases."
                     ),
                     "falsifiers": [
-                        "Control cases show equal or stronger production beats."
+                        "Positive cases and control cases show equal or reversed "
+                        "production beats."
                     ],
                 }
             ]
@@ -1299,12 +1307,16 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Prediction-date analyst estimate gaps distinguish the "
                         "fixed Discovery groups."
                     ),
+                    "applicability": (
+                        "Mature companies with news Raw Info coverage."
+                    ),
                     "expected_positive_pattern": (
                         "The positive group shows larger estimate beats than the "
                         "control cases."
                     ),
                     "falsifiers": [
-                        "The control group shows equal or larger estimate beats."
+                        "The positive group and control group show equal or reversed "
+                        "estimate beats."
                     ],
                 }
             ]
@@ -1361,10 +1373,17 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Case-local quarterly revenue surprise relative to consensus "
                         "distinguishes the fixed Discovery groups."
                     ),
+                    "applicability": (
+                        "Mature operating companies with 10-q Raw Info coverage."
+                    ),
                     "expected_positive_pattern": (
                         "The positive group has more positive revenue surprise versus "
                         "its own consensus baseline than the control cases."
                     ),
+                    "falsifiers": [
+                        "The positive and control groups show equal or reversed "
+                        "case-local consensus surprise."
+                    ],
                 }
             ]
         }
@@ -1381,9 +1400,12 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("measurable group feature", error)
         self.assertIn("normalize raw absolute scale", error)
+        self.assertIn("only H2-visible profile fields", error)
+        self.assertIn("positive/control group non-separation", error)
         prompt = caller.calls[0]["system_prompt"]
         self.assertIn("not merely say data are available", prompt)
         self.assertIn("Never compare raw absolute", prompt)
+        self.assertIn("applicability must be decidable only from H2-visible", prompt)
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
@@ -1737,13 +1759,15 @@ class ConcreteRoleAdapterTests(TestCase):
                 {
                     "hypothesis_id": "estimate_revision_dispersion",
                     "statement": "Estimate revisions may precede repricing.",
-                    "applicability": "Companies with current analyst estimates.",
+                    "applicability": "Mature issuers with news Raw Info coverage.",
                     "expected_positive_pattern": (
                         "Positive cases show stronger upward revisions than controls."
                     ),
                     "source_types": ["news"],
                     "query": "analyst estimate revision",
-                    "falsifiers": ["Controls revise upward just as often."],
+                    "falsifiers": [
+                        "Positive cases and control cases revise upward equally often."
+                    ],
                     "lookback_days": 365,
                 }
             ]
@@ -1823,6 +1847,10 @@ class ConcreteRoleAdapterTests(TestCase):
                 {
                     **leaking["hypotheses"][0],
                     "statement": "Upward estimate revisions may precede repricing.",
+                    "applicability": "Mature issuers with news Raw Info coverage.",
+                    "falsifiers": [
+                        "Positive cases and control cases revise upward equally often."
+                    ],
                 }
             ]
         }
@@ -2186,7 +2214,10 @@ class ConcreteRoleAdapterTests(TestCase):
                             ),
                             "source_types": ["filings"],
                             "query": "material order",
-                            "falsifiers": ["Controls confirm orders equally often."],
+                            "falsifiers": [
+                                "Positive cases and control cases confirm orders "
+                                "equally often."
+                            ],
                             "lookback_days": 365,
                         }
                     ]
@@ -2202,7 +2233,10 @@ class ConcreteRoleAdapterTests(TestCase):
                             ),
                             "source_types": ["filing"],
                             "query": "material order",
-                            "falsifiers": ["Controls confirm orders equally often."],
+                            "falsifiers": [
+                                "Positive cases and control cases confirm orders "
+                                "equally often."
+                            ],
                             "lookback_days": 365,
                         }
                     ]

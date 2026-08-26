@@ -1001,7 +1001,13 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    Cross-issuer comparisons cannot treat higher/lower raw absolute revenue,
    earnings, cash, production, cost, or another size-dependent amount as the Signal;
    the feature is normalized to a case-local baseline such as consensus, guidance,
-   a prior comparable period, or a ratio. A stable card whose exact version
+   a prior comparable period, or a ratio. `applicability` uses only fields H2 can
+   actually see: the business profile, industry/sector, exchange, coarse buckets, or
+   Raw Info coverage counts/source types. It cannot require analyst coverage,
+   consensus data, disclosed quantitative guidance/actuals, revenue decomposition,
+   or any other hidden document content; H3 tests those facts. At least one falsifier
+   names both fixed groups and says that no separation, overlap, or reversal would
+   refute the candidate relation, rather than listing only one-company edge cases. A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The

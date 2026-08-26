@@ -232,7 +232,13 @@ cross-group feature rather than merely say that data are available, observable, 
 inferable from a source. Cross-issuer patterns cannot use raw absolute revenue,
 earnings, cash, production, cost, or similar scale as the discriminator; they must
 normalize against a case-local expectation, guidance value, prior period, ratio, or
-other comparable baseline. `lookback_days` remains an input-evidence window. Existing
+other comparable baseline. `applicability` must be decidable from the H2-visible
+profile contract: business description/Item 1 excerpt, industry, sector, exchange,
+coarse size/listing age, or Raw Info coverage counts/source types. It cannot require
+hidden document contents such as analyst coverage, consensus data, quantitative
+guidance, actual metrics, or revenue decomposition; those belong to the H3 query.
+At least one falsifier explicitly names both fixed groups and states that absent
+separation, overlap, or reversal would refute the hypothesis. `lookback_days` remains an input-evidence window. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/

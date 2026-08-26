@@ -6615,10 +6615,12 @@ _H1_ALTERNATE_TEST_OUTCOME = re.compile(
     re.IGNORECASE,
 )
 _H1_POSITIVE_CASE_PATTERN = re.compile(
-    r"\bpositive\s+(?:cases?|group(?:\s+cases?)?|cohort)\b", re.IGNORECASE
+    r"\bpositive(?:\s+(?:cases?|groups?(?:\s+cases?)?|cohorts?)|"
+    r"\s+and\s+control\s+(?:cases?|groups?|cohorts?))\b",
+    re.IGNORECASE,
 )
 _H1_CONTROL_CASE_PATTERN = re.compile(
-    r"\bcontrol(?:s|\s+cases?|\s+group(?:\s+cases?)?|\s+cohort)\b",
+    r"\bcontrol(?:s|\s+cases?|\s+groups?(?:\s+cases?)?|\s+cohorts?)\b",
     re.IGNORECASE,
 )
 _H1_INVENTED_CASE_REF = re.compile(
@@ -6634,6 +6636,12 @@ _H1_UNNORMALIZED_SCALE_PATTERN = re.compile(
     r"\b(?:higher|lower|larger|smaller|greater|less)\s+(?:raw|absolute)\s+"
     r"(?:revenue|earnings|profits?|sales|cash|production|costs?|figures?|levels?|"
     r"amounts?)\b",
+    re.IGNORECASE,
+)
+_H1_UNSCREENABLE_APPLICABILITY_PATTERN = re.compile(
+    r"\b(?:analyst\s+(?:coverage|estimates?)|consensus|estimates?|guidance|"
+    r"decomposition|breakdown|actual\s+(?:results?|metrics?)|"
+    r"(?:segment|revenue[- ]driver)\b.{0,30}\bdisclosures?)\b",
     re.IGNORECASE,
 )
 
@@ -6931,6 +6939,27 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "raw absolute scale to a case-local baseline: "
                         + item.hypothesis_id
                     )
+                if (
+                    _H1_UNSCREENABLE_APPLICABILITY_PATTERN.search(
+                        item.applicability
+                    )
+                    is not None
+                ):
+                    issues.append(
+                        "Signal Mining H1 applicability must use only H2-visible "
+                        "profile fields, not hidden document content: "
+                        + item.hypothesis_id
+                    )
+                falsifier_text = " ".join(item.falsifiers)
+                if not (
+                    _H1_POSITIVE_CASE_PATTERN.search(falsifier_text)
+                    and _H1_CONTROL_CASE_PATTERN.search(falsifier_text)
+                ):
+                    issues.append(
+                        "Signal Mining H1 falsifiers must include a positive/control "
+                        "group non-separation or reversal test: "
+                        + item.hypothesis_id
+                    )
                 if not (
                     _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
                     and _H1_CONTROL_CASE_PATTERN.search(
@@ -7019,7 +7048,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "feature, not merely say data are available, observable, or inferable "
                 "from a source. Never compare raw absolute financial or operating scale "
                 "across issuers; normalize to a case-local expectation, guidance, prior "
-                "period, or ratio. lookback_days is only the pre-prediction "
+                "period, or ratio. applicability must be decidable only from H2-visible "
+                "business profile, industry/sector, exchange, coarse buckets, or Raw Info "
+                "coverage counts/source types; do not require analyst coverage, consensus "
+                "data, disclosed guidance/actuals, decomposition, or other hidden document "
+                "content. At least one falsifier must name both fixed groups and say that "
+                "non-separation, overlap, or reversal refutes the hypothesis. "
+                "lookback_days is only the pre-prediction "
                 "evidence window. Existing Signals exclude only a candidate whose own "
                 "hypothesis_id or query renames their measured construct; mentioning "
                 "an existing metric only as a comparison or falsifier is allowed. "

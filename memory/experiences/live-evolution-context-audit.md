@@ -627,3 +627,22 @@ set. Finally, a bare two-letter uppercase token is ambiguous: `AI` was ordinary
 technology vocabulary but also a Discovery ticker. Require explicit `$XX`, ticker,
 symbol, or exchange context for two-letter aliases while retaining exact guards for
 longer tickers and complete names.
+
+## H1-to-H2 interface addendum (2026-08-26)
+
+An honest empty H2 shortlist can still be caused by an impossible H1 screening
+contract. V49's corrected hypotheses required analyst coverage, quantitative
+guidance/actuals, or revenue decomposition in `applicability`, while H2 sees only a
+business profile, industry/sector, exchange, coarse buckets, and Raw Info coverage
+metadata. H2 correctly refused to infer those hidden facts and returned three empty
+arrays, but that did not establish that no Discovery case could support the query.
+Require H1 applicability to be decidable from the literal H2-visible schema; keep
+document-content requirements in the query for H3.
+
+Falsifiers must target the hypothesis relation, not merely describe individual
+negative observations. V49 listed cases such as meeting one metric but missing
+another or a guidance restatement, none of which says what group result would refute
+the proposed association. Require at least one falsifier to name both positive and
+control groups and specify non-separation, overlap, or reversal. This keeps the
+single H1 correction actionable and makes H3's eventual decision logically tied to
+the frozen evaluation.
