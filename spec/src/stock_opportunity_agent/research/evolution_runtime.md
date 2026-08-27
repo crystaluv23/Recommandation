@@ -269,14 +269,14 @@ side-effect-free role parser locally and appends its alias-masked validation mes
 to the identity path. A correction therefore sees every safe, locally decidable issue
 at once without receiving the identity-bearing content.
 
-Signal Mining uses five narrow structured role stages rather than a
-one-tool-per-turn Agent transcript:
+Signal Mining uses four narrow structured model stages plus one deterministic local
+H2 shortlist rather than a one-tool-per-turn Agent transcript:
 
 - `signal_mining_hypotheses` proposes a portfolio of no more than three
   falsifiable hypotheses from bounded meta/backlog/Registry context;
-- `signal_mining_case_ranking` returns a bounded, unpadded applicability
-  shortlist of only allowed opaque case refs from label-hidden, identity-hidden
-  company briefs for all hypotheses in one call; an empty shortlist is valid;
+- local `H2 canonical shortlist` applies each H1 rule to the same label-hidden,
+  identity-hidden briefs, preserves their deterministic order, and retains at most
+  the configured number of opaque refs; an empty shortlist means no brief matched;
 - `signal_mining_contrast` supports/refines/rejects at most two locally feasible
   hypotheses from exact point-in-time positive/control evidence;
 - `signal_mining_exploration_extract` creates label-hidden observable signatures
@@ -284,14 +284,18 @@ one-tool-per-turn Agent transcript:
 - `signal_mining_exploration_discover` reveals labels only beside those frozen
   signatures and emits supported candidates or refined patterns.
 
-All stages use literal key/type contracts and one bounded correction. Creative
+All model stages use literal key/type contracts and one bounded correction. Creative
 hypothesis/discovery calls sample at the run-contract proposal temperature;
-ranking, extraction, and evidence contrast remain greedy. Exact request caching,
+extraction and evidence contrast remain greedy. Exact request caching,
 ledger charging, outcome/identity disclosure checks, and external-approval
 semantics are identical to the other structured roles. The controller—not the
-model—resolves case refs, performs positive/control feasibility, queries Raw
+model—resolves case refs, applies canonical H2 applicability, performs
+positive/control feasibility, queries Raw
 Info, stages candidates, executes fixtures, and selects issuer-disjoint
 effectiveness cases.
+The former H2 LLM ranking/correction is retired: once H1 applicability is a
+machine-decidable predicate over the actual brief pool, another model judgment adds
+no evidence, can contradict that predicate, and repeats the largest Slow context.
 H1 card projection omits `learned_profile` only when its exact stable version has
 both zero `selection_events` and zero `unique_observations`; otherwise the full
 anonymous profile remains visible. This removes repeated empty matrices without

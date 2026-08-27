@@ -6807,17 +6807,12 @@ class SignalMiningSignature:
 
 
 class SignalMiningModel(Protocol):
-    """Five narrow structured roles used by the local Mining controller."""
+    """Four narrow structured roles used by the local Mining controller."""
 
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
         """Return a bounded hypothesis portfolio."""
-
-    def rank_cases(
-        self, payload: Mapping[str, Any]
-    ) -> AgentStep[Mapping[str, tuple[str, ...]]]:
-        """Rank allowed opaque case refs without labels or identities."""
 
     def contrast(
         self, payload: Mapping[str, Any]
@@ -8318,47 +8313,21 @@ class SignalEvolutionEngine:
                 key: list(value) for key, value in refined.items()
             }
             return self._mining_output(audit=audit, refined=refined)
-        ranking_step = self.mining_model.rank_cases(
-            {
-                "track": "hypothesis",
-                "hypotheses": [item.to_dict() for item in hypotheses],
-                "case_briefs": [
-                    briefs_by_ref[case_ref] for case_ref, _case in case_pairs
-                ],
-                "rules": {
-                    "labels_hidden": True,
-                    "identities_hidden": True,
-                    "rank_only_supplied_case_refs": True,
-                    "max_case_refs_per_hypothesis": min(
-                        config.ranking_case_limit,
-                        len(case_pairs),
-                    ),
-                },
-            }
-        )
-        allowed_refs = {case_ref for case_ref, _case in case_pairs}
         case_by_ref = dict(case_pairs)
-        hypothesis_ids = {item.hypothesis_id for item in hypotheses}
-        if set(ranking_step.value) != hypothesis_ids:
-            raise ValidationError(
-                "Signal Mining ranking must cover every supplied hypothesis exactly once"
-            )
-        rankings: dict[str, tuple[str, ...]] = {}
-        for hypothesis_id, case_refs in ranking_step.value.items():
-            parsed = tuple(str(item) for item in case_refs)
-            if len(set(parsed)) != len(parsed):
-                raise ValidationError("Signal Mining case ranking must be unique")
-            if len(parsed) > min(config.ranking_case_limit, len(case_pairs)):
-                raise ValidationError(
-                    "Signal Mining case ranking exceeds the configured shortlist limit"
+        ranking_limit = min(config.ranking_case_limit, len(case_pairs))
+        rankings = {
+            hypothesis.hypothesis_id: tuple(
+                case_ref
+                for case_ref, _case in case_pairs
+                if self._h2_applicability_matches(
+                    hypothesis.applicability,
+                    briefs_by_ref[case_ref],
                 )
-            unknown = sorted(set(parsed) - allowed_refs)
-            if unknown:
-                raise ValidationError(
-                    "Signal Mining ranking used unknown case refs: " + ", ".join(unknown)
-                )
-            rankings[hypothesis_id] = parsed
+            )[:ranking_limit]
+            for hypothesis in hypotheses
+        }
         audit["stages"]["H2"] = {
+            "mode": "deterministic_canonical_applicability",
             "rankings": {key: list(value) for key, value in rankings.items()},
             "case_briefs": [
                 briefs_by_ref[case_ref] for case_ref, _case in case_pairs
@@ -8369,7 +8338,7 @@ class SignalEvolutionEngine:
                 "selected": len(case_pairs),
                 "cases": profile_audit,
             },
-            "usage": _usage_to_dict(ranking_step.usage),
+            "usage": _usage_to_dict(AgentUsage()),
         }
 
         selections: list[dict[str, Any]] = []
@@ -9053,6 +9022,58 @@ class SignalEvolutionEngine:
                 "max_total_terms": 8,
             },
         }
+
+    @staticmethod
+    def _h2_applicability_matches(
+        applicability: str,
+        brief: Mapping[str, Any],
+    ) -> bool:
+        """Apply an H1 canonical rule without model judgment or label access."""
+
+        if applicability == "all_ready_issuers":
+            return True
+        rule_name, separator, raw_values = applicability.partition(":")
+        if not separator:
+            return False
+        values = tuple(item.casefold() for item in raw_values.split("|") if item)
+        if not values:
+            return False
+        if rule_name == "business_description_topics":
+            description_terms = set(
+                _h3_ordered_content_terms(
+                    str(brief.get("business_description", "")),
+                    exclude_generic=False,
+                )
+            )
+            return any(
+                set(
+                    _h3_ordered_content_terms(value, exclude_generic=False)
+                ).issubset(description_terms)
+                for value in values
+            )
+        if rule_name == "raw_info_source_type_values":
+            coverage = brief.get("raw_info_coverage", {})
+            visible = (
+                coverage.get("source_types", ())
+                if isinstance(coverage, Mapping)
+                else ()
+            )
+        else:
+            field_by_rule = {
+                "industry_values": "industry",
+                "sector_values": "sector",
+                "exchange_values": "exchange",
+                "market_cap_bucket_values": "market_cap_bucket",
+                "listing_age_bucket_values": "listing_age_bucket",
+            }
+            field_name = field_by_rule.get(rule_name)
+            if field_name is None:
+                return False
+            visible = (brief.get(field_name),)
+        visible_values = {
+            str(item).casefold() for item in visible if item is not None and str(item)
+        }
+        return any(value in visible_values for value in values)
 
     def _mining_case_brief(
         self, case_ref: str, case: EvolutionCase

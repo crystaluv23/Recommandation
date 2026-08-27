@@ -686,3 +686,18 @@ bounded business-description topics, or one observed categorical/coverage field.
 Reject absent values and conjunctions locally, then make H2 validate selected refs
 and false-empty rankings against the same rule. If profile readiness itself is below
 the fixed threshold, stop before H1 rather than paying to propose unusable work.
+
+## Retire redundant H2 judgment (2026-08-28)
+
+Once applicability is a complete canonical predicate, asking another model whether
+the same brief is applicable is both redundant and logically dangerous. V52's H1
+validly returned three `all_ready_issuers` rules. The H2 model still returned three
+empty arrays, then repeated them after correction explicitly said every supplied
+brief matched. The two H2 calls consumed 13,394 tokens without introducing evidence.
+
+Apply the canonical predicate locally in deterministic identity/outcome-hidden brief
+order and retain the configured bounded prefix. This preserves the exact screening
+semantics, leaves hidden-label positive/control feasibility to the existing local
+controller, and keeps H3 as the first evidence-bearing model judgment. Retiring the
+H2 call removes a large repeated context and a contradiction point without weakening
+Signal retrieval, validation, promotion, or cross-cycle visibility.

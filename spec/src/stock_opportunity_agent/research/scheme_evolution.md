@@ -1043,9 +1043,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    Semantic identity normalization preserves meaningful compact qualifiers such as
    `yoy`; it must not reduce `revenue_growth_yoy` to the generic pair
    `revenue growth` and reject a distinct revenue-composition hypothesis.
-2. `H2 label-hidden ranking`: scan at most 96 issuer-distinct Discovery cases
-   and rank controller-issued opaque `case_ref` values for every hypothesis from
-   bounded point-in-time company briefs. Briefs may contain a business
+2. `H2 label-hidden canonical shortlist`: scan at most 96 issuer-distinct Discovery
+   cases and locally filter controller-issued opaque `case_ref` values for every
+   hypothesis from bounded point-in-time company briefs. Briefs may contain a business
    description or Item 1 business excerpt, industry, sector, exchange, coarse
    size/listing-age buckets, and Raw Info coverage, but never target
    company/ticker identity or outcome. An HTML filing excerpt must come from an
@@ -1053,8 +1053,8 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    profile paragraph; table-of-contents page numbers, cross-reference text,
    filing/website boilerplate, and other non-business fragments do not make a
    profile ready. A brief is ready only when at least one semantically usable
-   business description/excerpt, industry, or sector exists. The target remains 32; H2
-   is not called with fewer than 16 ready issuers or with fewer than four
+   business description/excerpt, industry, or sector exists. The target remains 32;
+   H1 and the H2 shortlist are not run with fewer than 16 ready issuers or fewer than four
    locally hidden positive and four control issuers. Before the paid H1 call,
    the controller inspects the same deterministic case universe using only
    point-in-time local profiles. When the universe itself has enough positive
@@ -1065,37 +1065,20 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    stable non-secret cause (for example `sec_user_agent_unconfigured`), not a
    generic adapter failure or any configured value. When acquisition is possible, H2
    scans only until the 32-case target and both hidden class minima are met;
-   96 remains a ceiling, not a required acquisition count. H2 returns only a
-   bounded shortlist of materially applicable cases for each hypothesis, most
-   applicable first. An empty shortlist is a valid statement that the current
-   anonymous pool has no applicable case; irrelevant cases must be omitted and
-   the model must not pad a ranking by copying the complete pool. Every selected
-   case carries one exact 1-160 character `profile_evidence` span from its
-   supplied brief and a 1-240 character `applicability_reason`. The reason must
-   identify positive visible support; an explanation that itself says required
-   facts are missing, unavailable, too generic, insufficient, or unconfirmed is
-   an invalid inclusion. The same applies to an explanation that uses inferential
-   language such as `suggests`, `indicates`, `aligns`, `likely`, `typically`,
-   `may`, or `might` to invent analyst coverage, disclosure availability, operating
-   metrics, or another profile fact not visible in the brief. A missing/non-literal
-   span, out-of-bound field, self-disqualifying explanation, or speculative
-   inference receives one aggregated structured-role correction. H2's output
-   contract describes only keys, types, cardinality, and supplied-ref constraints;
-   it contains no complete semantic example that a correction can copy.
-   A rejected H2 value remains in the local response audit but is represented as
-   `invalid_output={}` in correction context. The model already has the unchanged
-   hypotheses and briefs; aggregated error categories and affected opaque refs carry
-   the necessary repair information without resending or anchoring on a padded list.
-   Initial and correction requests keep a byte-stable common prompt/payload prefix
-   so the large anonymous brief pool is provider-cache eligible. This does not ask
-   the model to reveal a label or prove H3 evidence availability, but it makes
-   every H2 inclusion auditable instead of accepting an unexplained opaque ref.
-   The controller rejects any per-hypothesis list above the supplied shortlist ceiling.
+   96 remains a ceiling, not a required acquisition count. H2 applies the single
+   H1 canonical rule directly: all-ready matches every ready brief, observed
+   categorical/coverage rules match exact visible values, and business-description
+   topics require normalized literal term coverage. It preserves deterministic brief
+   order and retains at most twelve refs per hypothesis. No model call, quote, reason,
+   or correction exists at H2 because applicability is now locally decidable;
+   retaining the former ranker would repeat the largest Slow context and allow a
+   model to contradict the canonical rule. A valid empty shortlist therefore means
+   no supplied brief matched, not that a model declined to choose one.
    Retryable provider failure
    creates a cycle-level control-plane pause with the opaque case ref and provider
    reason, preserves both pointers, and returns process exit 75 for exact-contract
    resume. It is not a hypothesis rejection or generic traceback. Deterministic shortage records
-   `insufficient_h2_profile_readiness` without calling H2/H3 and is not a
+   `insufficient_h2_profile_readiness` without calling H1/H3 and is not a
    hypothesis failure.
 3. `local feasibility`: reveal labels only inside the controller, require at
    least one issuer-distinct positive and one control, reserve later relevant

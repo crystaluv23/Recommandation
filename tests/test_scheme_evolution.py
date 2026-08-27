@@ -3654,7 +3654,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="profile_gap",
                 statement="Business profile separates outcomes.",
-                applicability="Operating issuers.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases show a distinct profile.",
                 source_types=("news",),
                 query="guidance",
@@ -3721,7 +3721,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="profile_signal",
                 statement="A public update separates outcomes.",
-                applicability="Operating issuers.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases show the update.",
                 source_types=("news",),
                 query="public update",
@@ -3766,8 +3766,12 @@ class SignalEvolutionTests(TestCase):
                 4,
             )
             self.assertEqual(
-                len(model.requests[1]["case_briefs"]),
+                len(result["audit"]["stages"]["H2"]["case_briefs"]),
                 4,
+            )
+            self.assertEqual(
+                result["audit"]["stages"]["H2"]["mode"],
+                "deterministic_canonical_applicability",
             )
             self.assertEqual(
                 model.requests[0]["h2_applicability_contract"]["observed_values"][
@@ -3781,6 +3785,45 @@ class SignalEvolutionTests(TestCase):
                 ],
                 [],
             )
+
+    def test_h2_canonical_shortlist_is_local_and_field_exact(self) -> None:
+        brief = {
+            "business_description": "Develops seafloor mineral resources.",
+            "exchange": "NASDAQ",
+            "listing_age_bucket": "over_10y",
+            "raw_info_coverage": {"source_types": ["10-k", "news"]},
+        }
+
+        self.assertTrue(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "all_ready_issuers", brief
+            )
+        )
+        self.assertTrue(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "business_description_topics:mineral resource|extraction", brief
+            )
+        )
+        self.assertTrue(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "exchange_values:NYSE|NASDAQ", brief
+            )
+        )
+        self.assertTrue(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "raw_info_source_type_values:news", brief
+            )
+        )
+        self.assertFalse(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "exchange_values:NYSE", brief
+            )
+        )
+        self.assertFalse(
+            SignalEvolutionEngine._h2_applicability_matches(
+                "business_description_topics:airline", brief
+            )
+        )
 
     def test_h3_news_requires_visible_issuer_and_query_relevance(self) -> None:
         case = replace(
@@ -4049,7 +4092,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="order_confirmation",
                 statement="Material order confirmation precedes repricing.",
-                applicability="Project-driven hardware companies.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases disclose confirmed orders.",
                 source_types=("news",),
                 query="material order",
@@ -4116,7 +4159,7 @@ class SignalEvolutionTests(TestCase):
             )
             result = engine._run_signal_mining(cycle_id=1)
 
-            ranking_payload = mining_model.requests[1]
+            ranking_payload = result["audit"]["stages"]["H2"]
             ranking_json = json.dumps(ranking_payload)
             self.assertNotIn("Winner Corp", ranking_json)
             self.assertNotIn("Control Corp", ranking_json)
@@ -4124,13 +4167,13 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("CTRL", ranking_json)
             self.assertNotIn("ground_truth", ranking_json)
             self.assertNotIn('"label"', ranking_json)
-            contrast_cases = mining_model.requests[2]["evidence_packets"]
+            contrast_cases = mining_model.requests[1]["evidence_packets"]
             self.assertEqual(
                 {item["label"] for item in contrast_cases},
                 {"positive", "control"},
             )
             self.assertTrue(
-                mining_model.requests[2]["comparisons"][0][
+                mining_model.requests[1]["comparisons"][0][
                     "evidence_packet_refs"
                 ]
             )
@@ -4154,7 +4197,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="production_cost_pattern",
                 statement="Production and cost changes may precede repricing.",
-                applicability="Operating producers.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Production rises while cost declines.",
                 source_types=("news",),
                 query="production cost guidance",
@@ -4195,7 +4238,7 @@ class SignalEvolutionTests(TestCase):
             )
             result = engine._run_signal_mining(cycle_id=1)
 
-            self.assertEqual(len(mining_model.requests), 2)
+            self.assertEqual(len(mining_model.requests), 1)
             self.assertNotIn(
                 "production_cost_pattern", result["refined_hypotheses"]
             )
@@ -4221,7 +4264,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="production_cost_pattern",
                 statement="Production and cost changes may precede repricing.",
-                applicability="Operating producers.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Production rises while cost declines.",
                 source_types=("news",),
                 query="production cost guidance",
@@ -4301,7 +4344,7 @@ class SignalEvolutionTests(TestCase):
 
             selected = result["audit"]["local_selection"][0]
             self.assertEqual(set(selected["induction_case_refs"]), usable_refs)
-            self.assertEqual(len(mining_model.requests), 3)
+            self.assertEqual(len(mining_model.requests), 2)
             attempted = {
                 item["case_ref"]
                 for item in result["audit"]["stages"]["H3"]["resolutions"]
@@ -4323,7 +4366,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="production_cost_pattern",
                 statement="Production and cost changes may precede repricing.",
-                applicability="Operating producers.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Production rises while cost declines.",
                 source_types=("news",),
                 query="production cost guidance",
@@ -5089,7 +5132,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="broad_growth",
                 statement="Point-in-time revenue acceleration separates winners.",
-                applicability="Companies with comparable financial periods.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases show stronger growth.",
                 source_types=("financials",),
                 query="revenue",
@@ -5238,7 +5281,7 @@ class SignalEvolutionTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="guidance_change",
                 statement="Explicit guidance changes separate winners.",
-                applicability="Companies issuing guidance.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases raise guidance.",
                 source_types=("news",),
                 query="guidance",
@@ -5705,7 +5748,7 @@ class DualLoopTests(TestCase):
             hypothesis = SignalMiningHypothesis(
                 hypothesis_id="cross_cycle_growth",
                 statement="Revenue growth direction separates winners.",
-                applicability="Companies with comparable financial periods.",
+                applicability="all_ready_issuers",
                 expected_positive_pattern="Positive cases have stronger growth.",
                 source_types=("financials",),
                 query="revenue",
