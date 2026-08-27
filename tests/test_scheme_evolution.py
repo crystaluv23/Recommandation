@@ -3687,7 +3687,7 @@ class SignalEvolutionTests(TestCase):
 
             result = engine._run_signal_mining(cycle_id=1)
 
-            self.assertEqual(len(model.requests), 1)
+            self.assertEqual(len(model.requests), 0)
             self.assertEqual(
                 result["audit"]["status"], "insufficient_h2_profile_readiness"
             )
@@ -3768,6 +3768,18 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 len(model.requests[1]["case_briefs"]),
                 4,
+            )
+            self.assertEqual(
+                model.requests[0]["h2_applicability_contract"]["observed_values"][
+                    "industry_values"
+                ],
+                ["fixture"],
+            )
+            self.assertEqual(
+                model.requests[0]["h2_applicability_contract"]["observed_values"][
+                    "sector_values"
+                ],
+                [],
             )
 
     def test_h3_news_requires_visible_issuer_and_query_relevance(self) -> None:
@@ -5448,7 +5460,7 @@ class SignalEvolutionTests(TestCase):
                 llm_signal_runner=None,
             )
             validation = engine._validate_cycle(registry.freeze())
-            mining_workspace = mining_model.requests[0]
+            mining_workspace = engine._mining_context(cycle_id=1)
             serialized = json.dumps(mining_workspace)
             self.assertNotIn("locked_company", serialized)
             self.assertFalse(mining_workspace["locked_test_available"])
@@ -5553,7 +5565,7 @@ class DualLoopTests(TestCase):
             self.assertEqual(proposer.calls, [])
             self.assertEqual(evaluator.seen_company_ids, [])
             self.assertEqual(workspace.last_completed_round, 0)
-            self.assertEqual(len(mining_model.requests), 1)
+            self.assertEqual(len(mining_model.requests), 0)
             event_types = [item["event_type"] for item in progress_events]
             self.assertNotIn("fast_loop_started", event_types)
             self.assertIn("slow_loop_started", event_types)
@@ -5617,7 +5629,7 @@ class DualLoopTests(TestCase):
             self.assertEqual(workspace.last_completed_round, 1)
             self.assertEqual(len(evaluator.seen_company_ids), 24)
             self.assertEqual(len(set(evaluator.seen_company_ids)), 24)
-            self.assertNotIn("locked_company", json.dumps(mining_model.requests[0]))
+            self.assertEqual(mining_model.requests, [])
 
     def test_next_cycle_uses_promoted_registry_without_reevaluating_old_plans(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

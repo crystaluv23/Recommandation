@@ -1001,20 +1001,27 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    Cross-issuer comparisons cannot treat higher/lower raw absolute revenue,
    earnings, cash, production, cost, or another size-dependent amount as the Signal;
    the feature is normalized to a case-local baseline such as consensus, guidance,
-   a prior comparable period, or a ratio. `applicability` uses only fields H2 can
-   actually see: the business profile, industry/sector, exchange, coarse buckets, or
-   Raw Info coverage counts/source types. It cannot require analyst coverage,
-   consensus data, disclosed quantitative guidance/actuals, revenue decomposition,
-   or any other hidden document content; H3 tests those facts. At least one falsifier
+   a prior comparable period, or a ratio. The controller prepares the bounded,
+   identity-masked H2 briefs before H1 and supplies a label-free inventory of only
+   the optional fields and categorical values that actually exist in that pool.
+   `applicability` is one canonical rule, never free prose or a conjunction:
+   `all_ready_issuers`, bounded `business_description_topics:<term>|...`, or a
+   single observed `industry_values`, `sector_values`, `exchange_values`,
+   `market_cap_bucket_values`, `listing_age_bucket_values`, or
+   `raw_info_source_type_values` rule. Non-description values must be copied from
+   the supplied inventory. It therefore cannot hide analyst coverage, consensus
+   data, disclosed quantitative guidance/actuals, revenue decomposition, market-data
+   availability, classification metadata, or another absent field behind a visible
+   clause; H3 tests document facts. At least one falsifier
    names both fixed groups and says that no separation, overlap, or reversal would
    refute the candidate relation, rather than listing only one-company edge cases.
    Positive/control labels are never redefined in parentheses as estimate-beat,
    price-performance, sustained-growth, or another candidate-specific outcome.
    `query` contains only a concise two-to-eight-term retrieval topic; it is not a
    `Find companies where ...` instruction, numeric filter, or second time-window
-   field. Applicability correction identifies the offending hidden-content term and
-   replaces the entire field with an H2-visible criterion instead of retaining a
-   synonym of the rejected requirement. A stable card whose exact version
+   field. Applicability correction identifies the unsupported rule/value and
+   replaces the entire field with one canonical rule from the supplied inventory.
+   A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The

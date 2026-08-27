@@ -232,11 +232,18 @@ cross-group feature rather than merely say that data are available, observable, 
 inferable from a source. Cross-issuer patterns cannot use raw absolute revenue,
 earnings, cash, production, cost, or similar scale as the discriminator; they must
 normalize against a case-local expectation, guidance value, prior period, ratio, or
-other comparable baseline. `applicability` must be decidable from the H2-visible
-profile contract: business description/Item 1 excerpt, industry, sector, exchange,
-coarse size/listing age, or Raw Info coverage counts/source types. It cannot require
-hidden document contents such as analyst coverage, consensus data, quantitative
-guidance, actual metrics, or revenue decomposition; those belong to the H3 query.
+other comparable baseline. Before H1, local code resolves the bounded anonymous H2
+brief pool and derives a label-free `h2_applicability_contract` from fields and values
+that are actually present, rather than claiming that optional dataset fields are
+visible. `applicability` is exactly one canonical, non-conjunctive screening rule:
+`all_ready_issuers`, `business_description_topics:<term>|...`, or one observed-field
+rule among `industry_values`, `sector_values`, `exchange_values`,
+`market_cap_bucket_values`, `listing_age_bucket_values`, and
+`raw_info_source_type_values`. A non-description value must come from the supplied
+contract; business-description topics are bounded short terms. Free prose and
+multiple-field conjunctions are invalid, so an H2-visible clause cannot conceal an
+analyst-coverage, consensus, guidance, actual-metric, decomposition, market-data, or
+classification prerequisite. Those document facts belong to the H3 query.
 At least one falsifier explicitly names both fixed groups and states that absent
 separation, overlap, or reversal would refute the hypothesis. Neither group may be
 parenthetically or otherwise redefined as a candidate-specific result such as an
@@ -244,9 +251,8 @@ estimate beat, price move, or sustained growth; group membership remains the fro
 Discovery label. `query` is a concise two-to-eight-term retrieval topic, not an
 imperative company screen, numeric threshold, or duplicate time window. Thresholds
 belong in the feature/test and `lookback_days` owns the evidence window. When
-applicability is invalid, correction feedback names the matched hidden-content term
-and requires the complete field to be replaced with an H2-visible criterion rather
-than paraphrasing the same condition. Existing
+applicability is invalid, correction feedback identifies the unsupported form/value
+and requires complete replacement with one supplied canonical rule. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/

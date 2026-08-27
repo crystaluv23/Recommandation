@@ -8206,53 +8206,15 @@ class SignalEvolutionEngine:
             limit=config.h2_profile_scan_limit
         )
         self._preflight_h2_profiles(scanned_pairs)
-        context = self._mining_context(cycle_id=cycle_id)
-        hypotheses_step = self.mining_model.propose_hypotheses(
-            {
-                "track": "hypothesis",
-                "limits": config.to_dict(),
-                **context,
-            }
-        )
-        if len(hypotheses_step.value) > config.hypothesis_limit:
-            raise ValidationError(
-                "Signal Mining hypothesis portfolio exceeds the configured limit"
-            )
-        hypotheses: list[SignalMiningHypothesis] = []
         refined: dict[str, tuple[str, ...]] = {}
-        available_sources = set(self.evidence_resolver.available_source_types)
-        seen_ids: set[str] = set()
-        for hypothesis in hypotheses_step.value:
-            if hypothesis.hypothesis_id in seen_ids:
-                raise ValidationError("Signal Mining hypothesis ids must be unique")
-            seen_ids.add(hypothesis.hypothesis_id)
-            unsupported = sorted(set(hypothesis.source_types) - available_sources)
-            if unsupported:
-                refined[hypothesis.hypothesis_id] = (
-                    "required source types are unavailable: " + ", ".join(unsupported),
-                )
-                continue
-            hypotheses.append(hypothesis)
         audit: dict[str, Any] = {
             "schema_version": "signal-mining-audit-v1",
             "status": "completed",
             "cycle_id": cycle_id,
             "track": "hypothesis",
             "limits": config.to_dict(),
-            "stages": {
-                "H1": {
-                    "hypotheses": [item.to_dict() for item in hypotheses_step.value],
-                    "usage": _usage_to_dict(hypotheses_step.usage),
-                }
-            },
+            "stages": {},
         }
-        if not hypotheses:
-            audit["candidate_refs"] = []
-            audit["refined_hypotheses"] = {
-                key: list(value) for key, value in refined.items()
-            }
-            return self._mining_output(audit=audit, refined=refined)
-
         ready_rows: list[tuple[str, EvolutionCase, dict[str, Any]]] = []
         profile_audit: list[dict[str, Any]] = []
         positive_ready_count = 0
@@ -8286,8 +8248,6 @@ class SignalEvolutionEngine:
             or len(controls) < config.h2_min_ready_per_class
         ):
             reason = "insufficient_h2_profile_readiness"
-            for hypothesis in hypotheses:
-                refined[hypothesis.hypothesis_id] = (reason,)
             audit["status"] = reason
             audit["h2_profile_readiness"] = {
                 "scanned": len(profile_audit),
@@ -8319,6 +8279,45 @@ class SignalEvolutionEngine:
         selected_ready = selected_ready[: config.case_pool_limit]
         case_pairs = tuple((ref, case) for ref, case, _brief in selected_ready)
         briefs_by_ref = {ref: brief for ref, _case, brief in selected_ready}
+        context = self._mining_context(cycle_id=cycle_id)
+        hypotheses_step = self.mining_model.propose_hypotheses(
+            {
+                "track": "hypothesis",
+                "limits": config.to_dict(),
+                "h2_applicability_contract": self._h2_applicability_contract(
+                    briefs_by_ref.values()
+                ),
+                **context,
+            }
+        )
+        if len(hypotheses_step.value) > config.hypothesis_limit:
+            raise ValidationError(
+                "Signal Mining hypothesis portfolio exceeds the configured limit"
+            )
+        hypotheses: list[SignalMiningHypothesis] = []
+        available_sources = set(self.evidence_resolver.available_source_types)
+        seen_ids: set[str] = set()
+        for hypothesis in hypotheses_step.value:
+            if hypothesis.hypothesis_id in seen_ids:
+                raise ValidationError("Signal Mining hypothesis ids must be unique")
+            seen_ids.add(hypothesis.hypothesis_id)
+            unsupported = sorted(set(hypothesis.source_types) - available_sources)
+            if unsupported:
+                refined[hypothesis.hypothesis_id] = (
+                    "required source types are unavailable: " + ", ".join(unsupported),
+                )
+                continue
+            hypotheses.append(hypothesis)
+        audit["stages"]["H1"] = {
+            "hypotheses": [item.to_dict() for item in hypotheses_step.value],
+            "usage": _usage_to_dict(hypotheses_step.usage),
+        }
+        if not hypotheses:
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {
+                key: list(value) for key, value in refined.items()
+            }
+            return self._mining_output(audit=audit, refined=refined)
         ranking_step = self.mining_model.rank_cases(
             {
                 "track": "hypothesis",
@@ -9000,6 +8999,60 @@ class SignalEvolutionEngine:
             or profile.get("industry")
             or profile.get("sector")
         )
+
+    @staticmethod
+    def _h2_applicability_contract(
+        briefs: Iterable[Mapping[str, Any]],
+    ) -> dict[str, Any]:
+        """Describe only fields and categorical values visible in this H2 pool."""
+
+        rows = tuple(briefs)
+        field_by_rule = {
+            "industry_values": "industry",
+            "sector_values": "sector",
+            "exchange_values": "exchange",
+            "market_cap_bucket_values": "market_cap_bucket",
+            "listing_age_bucket_values": "listing_age_bucket",
+        }
+        observed_values = {
+            rule_name: sorted(
+                {
+                    str(brief[field_name])
+                    for brief in rows
+                    if field_name in brief and str(brief[field_name]).strip()
+                }
+            )
+            for rule_name, field_name in field_by_rule.items()
+        }
+        observed_values["raw_info_source_type_values"] = sorted(
+            {
+                str(source_type)
+                for brief in rows
+                for source_type in (
+                    brief.get("raw_info_coverage", {}).get("source_types", ())
+                    if isinstance(brief.get("raw_info_coverage"), Mapping)
+                    else ()
+                )
+            }
+        )
+        return {
+            "schema_version": "h2-applicability-contract-v1",
+            "canonical_rule_names": [
+                "all_ready_issuers",
+                "business_description_topics",
+                *[
+                    rule_name
+                    for rule_name, values in observed_values.items()
+                    if values
+                ],
+            ],
+            "observed_values": observed_values,
+            "business_description_topic_limits": {
+                "max_values": 6,
+                "max_terms_per_value": 4,
+                "max_total_terms": 8,
+            },
+        }
 
     def _mining_case_brief(
         self, case_ref: str, case: EvolutionCase

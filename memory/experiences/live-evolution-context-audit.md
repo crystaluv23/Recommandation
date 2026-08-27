@@ -668,3 +668,21 @@ time window. H3's local retriever matches ordered query terms against bounded Ra
 Info; such instructions make evidence coverage nearly impossible and duplicate
 feature/test semantics. Keep H1 queries to concise two-to-eight-term topics, place
 thresholds in the later test, and let `lookback_days` own the evidence window.
+
+## Actual-field applicability addendum (2026-08-27)
+
+A field being part of a nominal schema does not mean it exists in a given live
+context. V51's H1 prompt advertised industry/sector/coarse profile fields, but the
+32 persisted H2 briefs had no industry, sector, or market-cap values. H1 then hid
+absent market-data and industry-code prerequisites behind visible exchange, news,
+and mining clauses. H2's three empty rankings were faithful to those conjunctions,
+not evidence that the hypotheses lacked eligible companies.
+
+Resolve the bounded identity-masked profile pool before spending H1 tokens and give
+H1 only a label-free inventory of fields and categorical values actually present.
+Free-text applicability is too weak a boundary because new synonyms and conjunctions
+continually evade lexical bans. Use exactly one canonical rule: all ready issuers,
+bounded business-description topics, or one observed categorical/coverage field.
+Reject absent values and conjunctions locally, then make H2 validate selected refs
+and false-empty rankings against the same rule. If profile readiness itself is below
+the fixed threshold, stop before H1 rather than paying to propose unusable work.

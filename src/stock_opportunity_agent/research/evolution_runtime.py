@@ -6643,11 +6643,17 @@ _H1_UNNORMALIZED_SCALE_PATTERN = re.compile(
     r"amounts?)\b",
     re.IGNORECASE,
 )
-_H1_UNSCREENABLE_APPLICABILITY_PATTERN = re.compile(
+_H1_HIDDEN_APPLICABILITY_TOPIC = re.compile(
     r"\b(?:analyst\s+(?:coverage|estimates?)|consensus|estimates?|guidance|"
     r"decomposition|breakdown|actual\s+(?:results?|metrics?)|"
+    r"market\s+data|standard\s+industry\s+codes?|classification|"
     r"(?:segment|revenue[- ]driver)\b.{0,30}\bdisclosures?)\b",
     re.IGNORECASE,
+)
+_H1_APPLICABILITY_RULE_PATTERN = re.compile(
+    r"^(business_description_topics|industry_values|sector_values|"
+    r"exchange_values|market_cap_bucket_values|listing_age_bucket_values|"
+    r"raw_info_source_type_values):([^:;\n]+)$"
 )
 _H1_QUERY_INSTRUCTION_PATTERN = re.compile(
     r"^\s*(?:find|search|identify|locate|retrieve)\b", re.IGNORECASE
@@ -6674,6 +6680,115 @@ def _h1_topic_terms(value: str) -> frozenset[str]:
             continue
         result.add(term)
     return frozenset(result)
+
+
+def _h1_applicability_rule(
+    value: str,
+    *,
+    contract: Mapping[str, Any] | None = None,
+) -> tuple[str, tuple[str, ...]]:
+    """Parse one non-conjunctive rule over the actual anonymous H2 brief schema."""
+
+    if value == "all_ready_issuers":
+        return value, ()
+    match = _H1_APPLICABILITY_RULE_PATTERN.fullmatch(value)
+    if match is None:
+        raise ValidationError(
+            "applicability must be all_ready_issuers or one canonical "
+            "<field_rule>:<value>|... rule"
+        )
+    rule_name = match.group(1)
+    values = tuple(item.strip() for item in match.group(2).split("|"))
+    if (
+        not 1 <= len(values) <= 6
+        or any(not item for item in values)
+        or len({item.casefold() for item in values}) != len(values)
+        or value != f"{rule_name}:{'|'.join(values)}"
+    ):
+        raise ValidationError(
+            "applicability values must contain 1-6 unique canonical entries"
+        )
+    if rule_name == "business_description_topics":
+        hidden = next(
+            (
+                matched.group(0)
+                for item in values
+                if (matched := _H1_HIDDEN_APPLICABILITY_TOPIC.search(item))
+                is not None
+            ),
+            None,
+        )
+        topic_sets = tuple(_h1_topic_terms(item) for item in values)
+        if hidden is not None:
+            raise ValidationError(
+                "business-description applicability cannot require hidden content; "
+                f"matched {hidden!r}"
+            )
+        if any(not 1 <= len(terms) <= 4 for terms in topic_sets) or len(
+            set().union(*topic_sets)
+        ) > 8:
+            raise ValidationError(
+                "business-description applicability requires 1-6 short topics "
+                "with at most 8 total normalized terms"
+            )
+        return rule_name, values
+    if contract is None:
+        return rule_name, values
+    observed = (
+        contract.get("observed_values", {})
+        if isinstance(contract, Mapping)
+        else {}
+    )
+    allowed = {
+        str(item).casefold()
+        for item in (
+            observed.get(rule_name, ()) if isinstance(observed, Mapping) else ()
+        )
+    }
+    unsupported = [item for item in values if item.casefold() not in allowed]
+    if unsupported:
+        raise ValidationError(
+            f"applicability {rule_name} must use supplied observed values; "
+            "unsupported: " + ", ".join(unsupported)
+        )
+    return rule_name, values
+
+
+def _h2_applicability_matches(
+    applicability: str,
+    brief: Mapping[str, Any],
+) -> bool:
+    """Return whether one anonymous brief satisfies a canonical H1 screen."""
+
+    try:
+        rule_name, values = _h1_applicability_rule(applicability)
+    except ValidationError:
+        return False
+    if rule_name == "all_ready_issuers":
+        return True
+    if rule_name == "business_description_topics":
+        description_terms = _h1_topic_terms(str(brief.get("business_description", "")))
+        return any(_h1_topic_terms(item) <= description_terms for item in values)
+    field_by_rule = {
+        "industry_values": "industry",
+        "sector_values": "sector",
+        "exchange_values": "exchange",
+        "market_cap_bucket_values": "market_cap_bucket",
+        "listing_age_bucket_values": "listing_age_bucket",
+    }
+    if rule_name == "raw_info_source_type_values":
+        coverage = brief.get("raw_info_coverage", {})
+        visible = (
+            coverage.get("source_types", ())
+            if isinstance(coverage, Mapping)
+            else ()
+        )
+    else:
+        visible = (brief.get(field_by_rule[rule_name]),)
+    visible_values = {
+        str(item).casefold() for item in visible if item is not None and str(item)
+    }
+    return any(item.casefold() in visible_values for item in values)
 
 
 def _h1_existing_signal_term_sets(
@@ -6874,6 +6989,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             if isinstance(item, Mapping) and str(item.get("need", "")).strip()
         )
         existing_signal_term_sets = _h1_existing_signal_term_sets(payload)
+        applicability_contract = payload.get("h2_applicability_contract", {})
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
             if set(value) != {"hypotheses"} or not isinstance(
@@ -6961,15 +7077,20 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "raw absolute scale to a case-local baseline: "
                         + item.hypothesis_id
                     )
-                applicability_match = _H1_UNSCREENABLE_APPLICABILITY_PATTERN.search(
-                    item.applicability
-                )
-                if applicability_match is not None:
+                try:
+                    _h1_applicability_rule(
+                        item.applicability,
+                        contract=(
+                            applicability_contract
+                            if isinstance(applicability_contract, Mapping)
+                            else {}
+                        ),
+                    )
+                except ValidationError as exc:
                     issues.append(
-                        "Signal Mining H1 applicability must use only H2-visible "
-                        "profile fields and replace the complete hidden-content "
-                        f"condition for {item.hypothesis_id}; matched "
-                        f"{applicability_match.group(0)!r}"
+                        "Signal Mining H1 applicability must replace the complete "
+                        "field with one canonical rule from the actual H2 profile "
+                        f"contract for {item.hypothesis_id}: {exc}"
                     )
                 falsifier_text = " ".join(item.falsifiers)
                 if not (
@@ -7081,19 +7202,23 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "feature, not merely say data are available, observable, or inferable "
                 "from a source. Never compare raw absolute financial or operating scale "
                 "across issuers; normalize to a case-local expectation, guidance, prior "
-                "period, or ratio. applicability must be decidable only from H2-visible "
-                "business profile, industry/sector, exchange, coarse buckets, or Raw Info "
-                "coverage counts/source types; do not require analyst coverage, consensus "
-                "data, disclosed guidance/actuals, decomposition, or other hidden document "
-                "content. At least one falsifier must name both fixed groups and say that "
+                "period, or ratio. applicability must be exactly one non-conjunctive "
+                "rule: all_ready_issuers, business_description_topics:<term>|..., or "
+                "one observed <field>_values:<value>|... rule listed in "
+                "h2_applicability_contract. Copy non-description values exactly from "
+                "that contract. Business-description values are 1-6 short visible "
+                "business topics with at most 8 total normalized terms; they cannot "
+                "require analyst/consensus/guidance/actual/decomposition/market-data/"
+                "classification facts. Free prose, multiple-field conjunctions, and "
+                "optional fields absent from the actual H2 pool are invalid. At least "
+                "one falsifier must name both fixed groups and say that "
                 "non-separation, overlap, or reversal refutes the hypothesis. Never "
                 "redefine either fixed group in parentheses as an estimate beat, price "
                 "move, sustained growth, or other candidate-specific result. query must "
                 "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
                 "numeric threshold, or another time-window instruction. For an invalid "
-                "applicability field, replace the whole field with an H2-visible business "
-                "profile criterion; paraphrasing the hidden-content condition is not a "
-                "correction. "
+                "applicability field, replace the whole field with one supplied canonical "
+                "rule; paraphrasing the rejected condition is not a correction. "
                 "lookback_days is only the pre-prediction "
                 "evidence window. Existing Signals exclude only a candidate whose own "
                 "hypothesis_id or query renames their measured construct; mentioning "
@@ -7129,6 +7254,21 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in case_briefs
             if isinstance(item, Mapping) and "case_ref" in item
         }
+        briefs_by_ref = {
+            str(item["case_ref"]): item
+            for item in case_briefs
+            if isinstance(item, Mapping) and "case_ref" in item
+        }
+        applicability_by_hypothesis: dict[str, str] = {}
+        for item in hypotheses:
+            if not isinstance(item, Mapping) or "hypothesis_id" not in item:
+                continue
+            applicability = str(item.get("applicability", ""))
+            try:
+                _h1_applicability_rule(applicability)
+            except ValidationError:
+                continue
+            applicability_by_hypothesis[str(item["hypothesis_id"])] = applicability
         brief_strings_by_ref: dict[str, tuple[str, ...]] = {}
 
         def collect_strings(value: Any, *, key: str | None = None) -> list[str]:
@@ -7174,6 +7314,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "self_disqualifying_reason": [],
                 "inferential_reason": [],
                 "nonliteral_evidence": [],
+                "applicability_rule_mismatch": [],
+                "empty_despite_visible_match": [],
             }
 
             def record_issue(kind: str, hypothesis_id: str, case_ref: str) -> None:
@@ -7232,6 +7374,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                         for field in visible_fields
                     ):
                         record_issue("nonliteral_evidence", hypothesis_id, case_ref)
+                    applicability = applicability_by_hypothesis.get(hypothesis_id)
+                    brief = briefs_by_ref.get(case_ref)
+                    if (
+                        applicability is not None
+                        and brief is not None
+                        and not _h2_applicability_matches(applicability, brief)
+                    ):
+                        record_issue(
+                            "applicability_rule_mismatch", hypothesis_id, case_ref
+                        )
                     refs.append(case_ref)
                 if len(set(refs)) != len(refs):
                     raise ValidationError("Signal Mining H2 case refs must be unique")
@@ -7240,6 +7392,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                 rankings[hypothesis_id] = tuple(refs)
             if set(rankings) != allowed_hypotheses:
                 raise ValidationError("Signal Mining H2 must rank every supplied hypothesis")
+            for hypothesis_id, applicability in applicability_by_hypothesis.items():
+                if rankings.get(hypothesis_id):
+                    continue
+                if any(
+                    _h2_applicability_matches(applicability, brief)
+                    for brief in briefs_by_ref.values()
+                ):
+                    semantic_issues["empty_despite_visible_match"].append(
+                        hypothesis_id
+                    )
             unknown = sorted(
                 {case_ref for refs in rankings.values() for case_ref in refs}
                 - allowed_cases
@@ -7276,6 +7438,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "from the selected case brief for: "
                     + ", ".join(semantic_issues["nonliteral_evidence"])
                 )
+            if semantic_issues["applicability_rule_mismatch"]:
+                issue_messages.append(
+                    "Signal Mining H2 selected case must satisfy the canonical visible "
+                    "applicability rule for: "
+                    + ", ".join(semantic_issues["applicability_rule_mismatch"])
+                )
+            if semantic_issues["empty_despite_visible_match"]:
+                issue_messages.append(
+                    "Signal Mining H2 cannot return an empty ranking when supplied "
+                    "briefs satisfy the canonical visible applicability rule for: "
+                    + ", ".join(semantic_issues["empty_despite_visible_match"])
+                )
             if issue_messages:
                 raise ValidationError("; ".join(issue_messages))
             return rankings
@@ -7289,7 +7463,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "rank all hypotheses in this single call. Return only materially "
                 "applicable cases, most applicable first; omit irrelevant cases, do "
                 "not pad by copying the full pool, and use an empty cases array when "
-                "none apply. Every included case must quote one short exact contiguous "
+                "none apply. applicability is a canonical single-field rule produced "
+                "from this exact brief pool. all_ready_issuers matches every supplied "
+                "brief; *_values rules match the named visible field; and "
+                "business_description_topics matches those literal normalized topics. "
+                "Do not return empty when at least one supplied brief satisfies the rule, "
+                "and never select a brief that does not satisfy it. Every included case "
+                "must quote one short exact contiguous "
                 "span of 1-160 characters from its supplied anonymous brief as "
                 "profile_evidence and give an applicability_reason of 1-240 characters "
                 "that states positive visible support for the exact hypothesis "

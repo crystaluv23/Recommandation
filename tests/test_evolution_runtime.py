@@ -1033,7 +1033,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Production volume and cost-per-ounce guidance gaps may "
                         "precede repricing."
                     ),
-                    "applicability": "Commodity extraction producers.",
+                    "applicability": "all_ready_issuers",
                     "expected_positive_pattern": (
                         "Positive cases beat production and unit-cost guidance more "
                         "often than control cases."
@@ -1134,7 +1134,7 @@ class ConcreteRoleAdapterTests(TestCase):
                                 "A production gap (volume versus guidance) is "
                                 "associated with revenue acceleration."
                             ),
-                            "applicability": "Commodity extraction producers.",
+                            "applicability": "all_ready_issuers",
                             "expected_positive_pattern": (
                                 "Positive cases show larger production beats and "
                                 "lower unit costs than control cases."
@@ -1178,10 +1178,7 @@ class ConcreteRoleAdapterTests(TestCase):
                                 "Core operating contribution distinguishes the "
                                 "composition of recent revenue growth."
                             ),
-                            "applicability": (
-                                "Diversified companies with multiple operating "
-                                "segments in the business profile."
-                            ),
+                            "applicability": "all_ready_issuers",
                             "expected_positive_pattern": (
                                 "Positive cases show more core-driven revenue growth "
                                 "than control cases."
@@ -1247,7 +1244,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Prediction-date production and guidance gaps distinguish "
                         "the fixed Discovery groups."
                     ),
-                    "applicability": "Commodity extraction producers.",
+                    "applicability": "all_ready_issuers",
                     "expected_positive_pattern": (
                         "Positive cases show larger production beats and lower unit "
                         "costs than control cases."
@@ -1307,9 +1304,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Prediction-date analyst estimate gaps distinguish the "
                         "fixed Discovery groups."
                     ),
-                    "applicability": (
-                        "Mature companies with news Raw Info coverage."
-                    ),
+                    "applicability": "all_ready_issuers",
                     "expected_positive_pattern": (
                         "The positive group shows larger estimate beats than the "
                         "control cases."
@@ -1377,9 +1372,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         "Case-local quarterly revenue surprise relative to consensus "
                         "distinguishes the fixed Discovery groups."
                     ),
-                    "applicability": (
-                        "Mature operating companies with 10-q Raw Info coverage."
-                    ),
+                    "applicability": "all_ready_issuers",
                     "expected_positive_pattern": (
                         "The positive group has more positive revenue surprise versus "
                         "its own consensus baseline than the control cases."
@@ -1405,16 +1398,123 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("measurable group feature", error)
         self.assertIn("normalize raw absolute scale", error)
-        self.assertIn("only H2-visible profile fields", error)
+        self.assertIn("one canonical rule", error)
         self.assertIn("positive/control group non-separation", error)
         self.assertIn("must not redefine fixed Discovery groups", error)
         self.assertIn("concise 2-8 term retrieval topic", error)
         prompt = caller.calls[0]["system_prompt"]
         self.assertIn("not merely say data are available", prompt)
         self.assertIn("Never compare raw absolute", prompt)
-        self.assertIn("applicability must be decidable only from H2-visible", prompt)
+        self.assertIn("applicability must be exactly one non-conjunctive", prompt)
         self.assertIn("Never redefine either fixed group", prompt)
         self.assertIn("concise 2-8 term retrieval topic", prompt)
+
+    def test_signal_h1_requires_one_rule_from_actual_h2_field_inventory(
+        self,
+    ) -> None:
+        base = {
+            "hypothesis_id": "estimate_revision_gap",
+            "statement": "Estimate revisions distinguish the fixed Discovery groups.",
+            "expected_positive_pattern": (
+                "Positive cases show stronger revisions than control cases."
+            ),
+            "source_types": ["news"],
+            "query": "analyst estimate revision",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed revisions."
+            ],
+            "lookback_days": 365,
+        }
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            **base,
+                            "applicability": (
+                                "Issuers on major exchanges with market data coverage."
+                            ),
+                        }
+                    ]
+                },
+                {
+                    "hypotheses": [
+                        {**base, "applicability": "exchange_values:NYSE|NASDAQ"}
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+                "h2_applicability_contract": {
+                    "observed_values": {
+                        "exchange_values": ["NASDAQ", "NYSE"],
+                        "industry_values": [],
+                    }
+                },
+            }
+        )
+
+        self.assertEqual(result.value[0].applicability, "exchange_values:NYSE|NASDAQ")
+        error = validation_error(caller.calls[1])
+        self.assertIn("one canonical rule", error)
+        self.assertIn("actual H2 profile contract", error)
+        self.assertNotIn("market data coverage", caller.calls[1]["system_prompt"])
+
+    def test_signal_h1_rejects_unobserved_canonical_applicability_value(
+        self,
+    ) -> None:
+        base = {
+            "hypothesis_id": "production_cost_gap",
+            "statement": "Production cost gaps distinguish the fixed Discovery groups.",
+            "expected_positive_pattern": (
+                "Positive cases show better production cost gaps than control cases."
+            ),
+            "source_types": ["10-k"],
+            "query": "production cost guidance gap",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed gaps."
+            ],
+            "lookback_days": 365,
+        }
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {**base, "applicability": "industry_values:Metals & Mining"}
+                    ]
+                },
+                {
+                    "hypotheses": [
+                        {
+                            **base,
+                            "applicability": (
+                                "business_description_topics:mining|mineral|extraction"
+                            ),
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-k"],
+                "h2_applicability_contract": {
+                    "observed_values": {"industry_values": []}
+                },
+            }
+        )
+
+        self.assertEqual(
+            result.value[0].applicability,
+            "business_description_topics:mining|mineral|extraction",
+        )
+        self.assertIn("unsupported: Metals & Mining", validation_error(caller.calls[1]))
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
@@ -1467,6 +1567,103 @@ class ConcreteRoleAdapterTests(TestCase):
                 "signal_mining_case_ranking",
                 "signal_mining_case_ranking_correction",
             ],
+        )
+
+    def test_signal_h2_rejects_empty_when_canonical_visible_rule_matches(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "rankings": [
+                        {"hypothesis_id": "broad_estimates", "cases": []}
+                    ]
+                },
+                {
+                    "rankings": [
+                        {
+                            "hypothesis_id": "broad_estimates",
+                            "cases": [
+                                {
+                                    "case_ref": "case-001",
+                                    "profile_evidence": "aerospace services",
+                                    "applicability_reason": (
+                                        "The canonical rule covers every ready issuer."
+                                    ),
+                                }
+                            ],
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).rank_cases(
+            {
+                "hypotheses": [
+                    {
+                        "hypothesis_id": "broad_estimates",
+                        "applicability": "all_ready_issuers",
+                    }
+                ],
+                "case_briefs": [
+                    {
+                        "case_ref": "case-001",
+                        "business_description": "aerospace services",
+                    }
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 1},
+            }
+        )
+
+        self.assertEqual(result.value["broad_estimates"], ("case-001",))
+        self.assertIn(
+            "cannot return an empty ranking",
+            validation_error(caller.calls[1]),
+        )
+
+    def test_signal_h2_rejects_case_outside_canonical_visible_rule(self) -> None:
+        def ranking(case_ref: str, evidence: str) -> dict[str, object]:
+            return {
+                "rankings": [
+                    {
+                        "hypothesis_id": "exchange_screen",
+                        "cases": [
+                            {
+                                "case_ref": case_ref,
+                                "profile_evidence": evidence,
+                                "applicability_reason": (
+                                    "The visible exchange satisfies the canonical rule."
+                                ),
+                            }
+                        ],
+                    }
+                ]
+            }
+
+        caller = ScriptedRoleCaller(
+            [ranking("case-002", "NASDAQ"), ranking("case-001", "NYSE")]
+        )
+        result = LLMSignalMiningModel(caller).rank_cases(
+            {
+                "hypotheses": [
+                    {
+                        "hypothesis_id": "exchange_screen",
+                        "applicability": "exchange_values:NYSE",
+                    }
+                ],
+                "case_briefs": [
+                    {"case_ref": "case-001", "exchange": "NYSE"},
+                    {"case_ref": "case-002", "exchange": "NASDAQ"},
+                ],
+                "rules": {"max_case_refs_per_hypothesis": 2},
+            }
+        )
+
+        self.assertEqual(result.value["exchange_screen"], ("case-001",))
+        self.assertIn(
+            "must satisfy the canonical visible applicability rule",
+            validation_error(caller.calls[1]),
         )
 
     def test_signal_h2_requires_literal_profile_evidence_for_each_case(self) -> None:
@@ -1768,7 +1965,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 {
                     "hypothesis_id": "estimate_revision_dispersion",
                     "statement": "Estimate revisions may precede repricing.",
-                    "applicability": "Mature issuers with news Raw Info coverage.",
+                    "applicability": "raw_info_source_type_values:news",
                     "expected_positive_pattern": (
                         "Positive cases show stronger upward revisions than controls."
                     ),
@@ -1801,6 +1998,9 @@ class ConcreteRoleAdapterTests(TestCase):
                 "news",
                 "price_history",
             ],
+            "h2_applicability_contract": {
+                "observed_values": {"raw_info_source_type_values": ["news"]}
+            },
             "capability_backlog": {
                 "status": "open",
                 "signal_need_items": [
@@ -1856,7 +2056,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 {
                     **leaking["hypotheses"][0],
                     "statement": "Upward estimate revisions may precede repricing.",
-                    "applicability": "Mature issuers with news Raw Info coverage.",
+                    "applicability": "all_ready_issuers",
                     "falsifiers": [
                         "Positive cases and control cases revise upward equally often."
                     ],
@@ -2217,7 +2417,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         {
                             "hypothesis_id": "order_confirmation",
                             "statement": "Confirmed orders precede repricing.",
-                            "applicability": "Project-driven companies.",
+                            "applicability": "all_ready_issuers",
                             "expected_positive_pattern": (
                                 "Positive cases confirm more orders than control cases."
                             ),
@@ -2236,7 +2436,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         {
                             "hypothesis_id": "order_confirmation",
                             "statement": "Confirmed orders precede repricing.",
-                            "applicability": "Project-driven companies.",
+                            "applicability": "all_ready_issuers",
                             "expected_positive_pattern": (
                                 "Positive cases confirm more orders than control cases."
                             ),
