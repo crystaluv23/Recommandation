@@ -6626,6 +6626,11 @@ _H1_CONTROL_CASE_PATTERN = re.compile(
 _H1_INVENTED_CASE_REF = re.compile(
     r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
 )
+_H1_GROUP_REDEFINITION_PATTERN = re.compile(
+    r"\b(?:discovery\s+)?(?:positive|control)\s+"
+    r"(?:cases?|groups?|cohorts?)\s*\([^)]{1,200}\)",
+    re.IGNORECASE,
+)
 _H1_DATA_READINESS_STATEMENT = re.compile(
     r"\b(?:available|observable|observed|inferable|inferred|retrievable|retrieved|"
     r"extractable|extracted|found|documented)\s+"
@@ -6642,6 +6647,14 @@ _H1_UNSCREENABLE_APPLICABILITY_PATTERN = re.compile(
     r"\b(?:analyst\s+(?:coverage|estimates?)|consensus|estimates?|guidance|"
     r"decomposition|breakdown|actual\s+(?:results?|metrics?)|"
     r"(?:segment|revenue[- ]driver)\b.{0,30}\bdisclosures?)\b",
+    re.IGNORECASE,
+)
+_H1_QUERY_INSTRUCTION_PATTERN = re.compile(
+    r"^\s*(?:find|search|identify|locate|retrieve)\b", re.IGNORECASE
+)
+_H1_QUERY_FILTER_PATTERN = re.compile(
+    r"\b(?:(?:at\s+least|more\s+than|less\s+than|within)\s+"
+    r"\d+(?:\.\d+)?\s*%|(?:over\s+)?(?:the\s+)?last\s+\d+\s+days?)\b",
     re.IGNORECASE,
 )
 
@@ -6922,6 +6935,15 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "Signal Mining H1 must not invent opaque case refs or case "
                         f"placeholders for {item.hypothesis_id}"
                     )
+                group_redefinition_match = _H1_GROUP_REDEFINITION_PATTERN.search(
+                    test_text
+                )
+                if group_redefinition_match is not None:
+                    issues.append(
+                        "Signal Mining H1 must not redefine fixed Discovery groups "
+                        f"for {item.hypothesis_id}; matched "
+                        f"{group_redefinition_match.group(0)!r}"
+                    )
                 if _H1_DATA_READINESS_STATEMENT.search(item.statement) is not None:
                     issues.append(
                         "Signal Mining H1 statement must assert a measurable group "
@@ -6939,16 +6961,15 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "raw absolute scale to a case-local baseline: "
                         + item.hypothesis_id
                     )
-                if (
-                    _H1_UNSCREENABLE_APPLICABILITY_PATTERN.search(
-                        item.applicability
-                    )
-                    is not None
-                ):
+                applicability_match = _H1_UNSCREENABLE_APPLICABILITY_PATTERN.search(
+                    item.applicability
+                )
+                if applicability_match is not None:
                     issues.append(
                         "Signal Mining H1 applicability must use only H2-visible "
-                        "profile fields, not hidden document content: "
-                        + item.hypothesis_id
+                        "profile fields and replace the complete hidden-content "
+                        f"condition for {item.hypothesis_id}; matched "
+                        f"{applicability_match.group(0)!r}"
                     )
                 falsifier_text = " ".join(item.falsifiers)
                 if not (
@@ -6958,6 +6979,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                     issues.append(
                         "Signal Mining H1 falsifiers must include a positive/control "
                         "group non-separation or reversal test: "
+                        + item.hypothesis_id
+                    )
+                query_terms = _h1_topic_terms(item.query)
+                if (
+                    not 2 <= len(query_terms) <= 8
+                    or _H1_QUERY_INSTRUCTION_PATTERN.search(item.query) is not None
+                    or _H1_QUERY_FILTER_PATTERN.search(item.query) is not None
+                ):
+                    issues.append(
+                        "Signal Mining H1 query must be a concise 2-8 term retrieval "
+                        "topic without an imperative, numeric threshold, or duplicate "
+                        "time window: "
                         + item.hypothesis_id
                     )
                 if not (
@@ -7053,7 +7086,14 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "coverage counts/source types; do not require analyst coverage, consensus "
                 "data, disclosed guidance/actuals, decomposition, or other hidden document "
                 "content. At least one falsifier must name both fixed groups and say that "
-                "non-separation, overlap, or reversal refutes the hypothesis. "
+                "non-separation, overlap, or reversal refutes the hypothesis. Never "
+                "redefine either fixed group in parentheses as an estimate beat, price "
+                "move, sustained growth, or other candidate-specific result. query must "
+                "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
+                "numeric threshold, or another time-window instruction. For an invalid "
+                "applicability field, replace the whole field with an H2-visible business "
+                "profile criterion; paraphrasing the hidden-content condition is not a "
+                "correction. "
                 "lookback_days is only the pre-prediction "
                 "evidence window. Existing Signals exclude only a candidate whose own "
                 "hypothesis_id or query renames their measured construct; mentioning "

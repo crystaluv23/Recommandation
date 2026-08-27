@@ -1353,11 +1353,15 @@ class ConcreteRoleAdapterTests(TestCase):
                     ),
                     "applicability": "Companies with analyst consensus estimates.",
                     "expected_positive_pattern": (
-                        "Positive cases have higher absolute revenue and earnings "
-                        "figures than control cases."
+                        "Positive cases (companies with higher absolute revenue) have "
+                        "higher absolute revenue and earnings figures than control "
+                        "cases."
                     ),
                     "source_types": ["news"],
-                    "query": "revenue earnings consensus surprise",
+                    "query": (
+                        "Find companies where revenue surprise is more than 5% over "
+                        "the last 30 days."
+                    ),
                     "falsifiers": [
                         "Control cases have equal case-local consensus surprises."
                     ],
@@ -1380,6 +1384,7 @@ class ConcreteRoleAdapterTests(TestCase):
                         "The positive group has more positive revenue surprise versus "
                         "its own consensus baseline than the control cases."
                     ),
+                    "query": "revenue earnings consensus surprise",
                     "falsifiers": [
                         "The positive and control groups show equal or reversed "
                         "case-local consensus surprise."
@@ -1402,10 +1407,14 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("normalize raw absolute scale", error)
         self.assertIn("only H2-visible profile fields", error)
         self.assertIn("positive/control group non-separation", error)
+        self.assertIn("must not redefine fixed Discovery groups", error)
+        self.assertIn("concise 2-8 term retrieval topic", error)
         prompt = caller.calls[0]["system_prompt"]
         self.assertIn("not merely say data are available", prompt)
         self.assertIn("Never compare raw absolute", prompt)
         self.assertIn("applicability must be decidable only from H2-visible", prompt)
+        self.assertIn("Never redefine either fixed group", prompt)
+        self.assertIn("concise 2-8 term retrieval topic", prompt)
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,

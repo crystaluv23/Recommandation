@@ -646,3 +646,25 @@ the proposed association. Require at least one falsifier to name both positive a
 control groups and specify non-separation, overlap, or reversal. This keeps the
 single H1 correction actionable and makes H3's eventual decision logically tied to
 the frozen evaluation.
+
+## H1 query and fixed-group addendum (2026-08-27)
+
+Correction feedback must identify the concrete defect closely enough that the role
+cannot satisfy it by synonym substitution. V50 changed "analyst estimate data from
+major providers" to "observable analyst estimate data" and retained the same hidden
+guidance and revenue-decomposition requirements. Report the matched hidden-content
+term and require replacement of the whole applicability field with a literal
+H2-visible profile criterion.
+
+Fixed Discovery labels are evaluation truth, not variables the hypothesis may
+define. Parentheticals such as positive cases being estimate beaters, subsequent
+price winners, or sustained growers make the expected pattern circular and silently
+replace the frozen target. Reject any candidate-specific parenthetical definition
+of the positive/control group even when the surrounding sentence names both labels.
+
+Finally, separate retrieval topics from executable screens. V50 emitted long
+`Find companies where ...` requests with percentage thresholds and an extra recent
+time window. H3's local retriever matches ordered query terms against bounded Raw
+Info; such instructions make evidence coverage nearly impossible and duplicate
+feature/test semantics. Keep H1 queries to concise two-to-eight-term topics, place
+thresholds in the later test, and let `lookback_days` own the evidence window.

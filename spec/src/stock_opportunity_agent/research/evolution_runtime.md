@@ -238,7 +238,15 @@ coarse size/listing age, or Raw Info coverage counts/source types. It cannot req
 hidden document contents such as analyst coverage, consensus data, quantitative
 guidance, actual metrics, or revenue decomposition; those belong to the H3 query.
 At least one falsifier explicitly names both fixed groups and states that absent
-separation, overlap, or reversal would refute the hypothesis. `lookback_days` remains an input-evidence window. Existing
+separation, overlap, or reversal would refute the hypothesis. Neither group may be
+parenthetically or otherwise redefined as a candidate-specific result such as an
+estimate beat, price move, or sustained growth; group membership remains the frozen
+Discovery label. `query` is a concise two-to-eight-term retrieval topic, not an
+imperative company screen, numeric threshold, or duplicate time window. Thresholds
+belong in the feature/test and `lookback_days` owns the evidence window. When
+applicability is invalid, correction feedback names the matched hidden-content term
+and requires the complete field to be replaced with an H2-visible criterion rather
+than paraphrasing the same condition. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/

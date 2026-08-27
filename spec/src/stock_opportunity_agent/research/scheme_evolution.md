@@ -1007,7 +1007,14 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    consensus data, disclosed quantitative guidance/actuals, revenue decomposition,
    or any other hidden document content; H3 tests those facts. At least one falsifier
    names both fixed groups and says that no separation, overlap, or reversal would
-   refute the candidate relation, rather than listing only one-company edge cases. A stable card whose exact version
+   refute the candidate relation, rather than listing only one-company edge cases.
+   Positive/control labels are never redefined in parentheses as estimate-beat,
+   price-performance, sustained-growth, or another candidate-specific outcome.
+   `query` contains only a concise two-to-eight-term retrieval topic; it is not a
+   `Find companies where ...` instruction, numeric filter, or second time-window
+   field. Applicability correction identifies the offending hidden-content term and
+   replaces the entire field with an H2-visible criterion instead of retaining a
+   synonym of the rejected requirement. A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise
    repetitive all-zero `learned_profile` from the H1 model view. Once either
    count is nonzero, the complete anonymous learned profile is retained. The
