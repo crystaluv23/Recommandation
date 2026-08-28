@@ -293,6 +293,12 @@ model—resolves case refs, applies canonical H2 applicability, performs
 positive/control feasibility, queries Raw
 Info, stages candidates, executes fixtures, and selects issuer-disjoint
 effectiveness cases.
+H3 feasibility is computed over the exact bounded excerpts sent to the model, not
+over hidden remainder text from the source documents. Full-document query coverage
+may be retained only as audit context. If the model-visible excerpts do not retain
+the required distinct terms and short-range ordered-pair coverage, the case is
+locally unavailable and no contrast call may claim that the model saw sufficient
+evidence.
 The former H2 LLM ranking/correction is retired: once H1 applicability is a
 machine-decidable predicate over the actual brief pool, another model judgment adds
 no evidence, can contradict that predicate, and repeats the largest Slow context.

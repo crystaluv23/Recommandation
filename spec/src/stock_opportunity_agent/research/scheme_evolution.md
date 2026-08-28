@@ -1017,6 +1017,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    refute the candidate relation, rather than listing only one-company edge cases.
    Positive/control labels are never redefined in parentheses as estimate-beat,
    price-performance, sustained-growth, or another candidate-specific outcome.
+   The same boundary rejects membership-style clauses such as `positive cases are
+   issuers that/with/as ...`: the feature is an expected difference between the
+   already frozen groups, never a new definition of who belongs to either group.
    `query` contains only a concise two-to-eight-term retrieval topic; it is not a
    `Find companies where ...` instruction, numeric filter, or second time-window
    field. Applicability correction identifies the unsupported rule/value and

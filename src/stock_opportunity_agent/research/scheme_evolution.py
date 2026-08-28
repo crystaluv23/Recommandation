@@ -9223,7 +9223,7 @@ class SignalEvolutionEngine:
             resolution,
             as_of=case.prediction_time,
         )
-        documents, filtered_documents, query_coverage = _filter_h3_documents(
+        documents, filtered_documents, full_query_coverage = _filter_h3_documents(
             documents,
             case=case,
             query=query,
@@ -9251,6 +9251,22 @@ class SignalEvolutionEngine:
                 }
             )
         _assert_identity_values_masked(evidence, aliases)
+        query_coverage = _h3_text_query_coverage(
+            (str(item["content_excerpt"]) for item in evidence),
+            query=query,
+        )
+        query_coverage["scope"] = "model_visible_excerpts"
+        query_coverage["full_document_coverage"] = full_query_coverage
+        if documents and not query_coverage["sufficient"]:
+            filtered_documents.extend(
+                {
+                    "document_id": document.document_id,
+                    "reason": "model_excerpt_query_coverage_insufficient",
+                }
+                for document in documents
+            )
+            documents = ()
+            evidence = []
         packet: dict[str, Any] = {
             "case_ref": case_ref,
             "prediction_time": case.prediction_time.isoformat(),
@@ -10418,15 +10434,28 @@ def _h3_packet_query_coverage(
 ) -> dict[str, Any]:
     """Audit distinct-term and short-range ordered-pair packet coverage."""
 
+    return _h3_text_query_coverage(
+        (_h3_document_visible_text(document) for document in documents),
+        query=query,
+    )
+
+
+def _h3_text_query_coverage(
+    visible_texts: Iterable[str],
+    *,
+    query: str | None,
+) -> dict[str, Any]:
+    """Audit query coverage over the exact visible text supplied by a caller."""
+
     ordered_query_terms = tuple(
         dict.fromkeys(_h3_ordered_content_terms(query or "", exclude_generic=True))
     )
     query_terms = set(ordered_query_terms)
     matched_terms: set[str] = set()
     matched_pairs: set[tuple[str, str]] = set()
-    for document in documents:
+    for visible_text in visible_texts:
         visible_terms = _h3_ordered_content_terms(
-            _h3_document_visible_text(document),
+            visible_text,
             exclude_generic=True,
         )
         matched_terms.update(query_terms & set(visible_terms))

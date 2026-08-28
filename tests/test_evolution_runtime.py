@@ -1514,6 +1514,64 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("actual H2 profile contract", error)
         self.assertNotIn("market data coverage", caller.calls[1]["system_prompt"])
 
+    def test_signal_h1_rejects_membership_style_group_redefinition(self) -> None:
+        base = {
+            "hypothesis_id": "consensus_revenue_gap",
+            "statement": (
+                "Case-local quarterly revenue surprise distinguishes the fixed "
+                "Discovery groups."
+            ),
+            "applicability": "all_ready_issuers",
+            "source_types": ["news"],
+            "query": "quarterly revenue consensus gap",
+            "falsifiers": [
+                "The positive and control groups show overlapping or reversed "
+                "case-local consensus gaps."
+            ],
+            "lookback_days": 365,
+        }
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            **base,
+                            "expected_positive_pattern": (
+                                "Positive cases are issuers classified in the "
+                                "Discovery positive group as beating consensus; "
+                                "control cases are issuers classified in the "
+                                "Discovery control group as missing consensus."
+                            ),
+                        }
+                    ]
+                },
+                {
+                    "hypotheses": [
+                        {
+                            **base,
+                            "expected_positive_pattern": (
+                                "The fixed Discovery positive group should show a "
+                                "more positive case-local consensus gap than the "
+                                "fixed Discovery control group."
+                            ),
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "consensus_revenue_gap")
+        error = validation_error(caller.calls[1])
+        self.assertIn("must not redefine fixed Discovery groups", error)
+        self.assertIn("membership clause", caller.calls[0]["system_prompt"])
+
     def test_signal_h1_rejects_unobserved_canonical_applicability_value(
         self,
     ) -> None:

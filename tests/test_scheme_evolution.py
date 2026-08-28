@@ -94,6 +94,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
     _assemble_final_context,
     _agent_raw_document_view,
+    _h3_text_query_coverage,
     _item1_business_excerpt,
     _mask_identity_values,
     _filter_h3_documents,
@@ -3989,6 +3990,44 @@ class SignalEvolutionTests(TestCase):
                 }
             ],
         )
+
+    def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        document = RawInfoDocument.create(
+            document_id="scattered-full-filing",
+            company_id=case.company_id,
+            source_type="10-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "Revenue growth was discussed in this section. "
+                + "ordinary disclosure text " * 120
+                + "Composition volume price and segment terms occur elsewhere."
+            ),
+        )
+
+        kept, _filtered, full_coverage = _filter_h3_documents(
+            (document,),
+            case=case,
+            query="revenue growth composition volume price segment",
+        )
+        view = _agent_raw_document_view(
+            document,
+            max_content_chars=1_200,
+            query="revenue growth composition volume price segment",
+        )
+        visible_coverage = _h3_text_query_coverage(
+            (view["content_excerpt"],),
+            query="revenue growth composition volume price segment",
+        )
+
+        self.assertEqual(kept, (document,))
+        self.assertTrue(full_coverage["sufficient"])
+        self.assertFalse(visible_coverage["sufficient"])
+        self.assertNotIn("revenue", visible_coverage["matched_terms"])
 
     def test_h3_packet_combines_complementary_ordered_query_pairs(self) -> None:
         case = replace(

@@ -6627,8 +6627,13 @@ _H1_INVENTED_CASE_REF = re.compile(
     r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
 )
 _H1_GROUP_REDEFINITION_PATTERN = re.compile(
+    r"(?:\b(?:discovery\s+)?(?:positive|control)\s+"
+    r"(?:cases?|groups?|cohorts?)\s*\([^)]{1,200}\)|"
     r"\b(?:discovery\s+)?(?:positive|control)\s+"
-    r"(?:cases?|groups?|cohorts?)\s*\([^)]{1,200}\)",
+    r"(?:cases?|groups?|cohorts?)\s+"
+    r"(?:are|consist(?:s)?\s+of|comprise(?:s)?|include(?:s)?)\s+"
+    r"(?:issuers?|companies?|entities|stocks?)\b[^.;]{0,200}\b"
+    r"(?:as|that|which|who|with)\b)",
     re.IGNORECASE,
 )
 _H1_DATA_READINESS_STATEMENT = re.compile(
@@ -7220,8 +7225,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "optional fields absent from the actual H2 pool are invalid. At least "
                 "one falsifier must name both fixed groups and say that "
                 "non-separation, overlap, or reversal refutes the hypothesis. Never "
-                "redefine either fixed group in parentheses as an estimate beat, price "
-                "move, sustained growth, or other candidate-specific result. query must "
+                "redefine either fixed group in parentheses or with a membership clause "
+                "such as positive/control cases are issuers that/with/as a candidate "
+                "result. Group membership is already frozen. query must "
                 "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
                 "numeric threshold, or another time-window instruction. For an invalid "
                 "applicability field, replace the whole field with one supplied canonical "

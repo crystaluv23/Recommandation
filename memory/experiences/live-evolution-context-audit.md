@@ -715,3 +715,25 @@ limit and keep the existing two-topic-term grounding check for every item. The o
 structured correction may produce grounded work; if it still cannot, record the
 bounded H1 failure rather than a successful empty Slow result. Preserve explicit
 empty only when the actual demand list is empty.
+
+## Model-visible H3 feasibility addendum (2026-08-28)
+
+Coverage computed over a complete document is not evidence that a bounded model
+view contains the same material. V54 marked four revenue-composition packets usable
+because the hidden filings collectively contained every query term and one ordered
+pair. In the exact H3 request, each document had been reduced to one 1,200-character
+window; none retained all six terms, and the core term `composition` was absent from
+all four. H3 correctly returned inconclusive, but the call itself violated the
+controller's claimed preflight and spent tokens on known-insufficient visible input.
+
+After query-window projection and identity masking, recompute the same distinct-term
+and short-range-pair coverage over the exact excerpts. Preserve full-document
+coverage only as diagnostic audit data. If the model-visible packet fails, classify
+the case as evidence-unavailable locally and do not send it to H3.
+
+V54 also showed that a parentheses-only group guard is incomplete. Phrases such as
+`positive cases are issuers classified in the positive group as beating consensus`
+or `that exhibit detailed disclosure` redefine membership just as circularly.
+Reject membership-style `are/consist of/comprise/include ... that/with/as` clauses
+and require the hypothesis to state an expected feature difference between the
+already frozen groups.
