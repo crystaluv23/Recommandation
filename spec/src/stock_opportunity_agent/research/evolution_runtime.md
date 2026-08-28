@@ -682,6 +682,21 @@ question boilerplate and function words. That narrow consistency check catches a
 actual response that newly resolved production-and-cost guidance while retaining the
 same production-and-cost-guidance need. It does not compare evidence semantics or
 force unrelated needs to change.
+The request additionally includes the executed Signal selections' bounded
+`reason_code`, `selection_reason`, and role. If a continuing reflection adopts new
+evidence from an available `answer_need` selection but returns the exact same set of
+prior needs, runtime rejects it once: the model must remove or genuinely narrow at
+least one answered need. Other selection reason codes do not imply that a need was
+answered, and runtime never chooses the affected need itself.
+
+The request also includes a runtime-owned terminal directive. It is true only when
+the current batch consumed the last permitted Signal round/call or when a soft-Signal
+request was refused before transmission after deterministic results already
+completed. H_reflect must then return a model-authored `finalize` state based solely
+on visible accepted evidence; unresolved items may remain as needs/open questions.
+An initial `continue` receives the single structured correction, while a repeated
+`continue` fails closed. The runtime does not synthesize a terminal state, and the
+actual boundary remains recorded separately as `termination_trigger`.
 Directly decidable Signal-claim quantity errors and this need-transition error are
 reported together before the one correction. Fixing a citation must not consume the
 only correction and reveal an already-visible stale/cosmetic need afterward.

@@ -275,6 +275,14 @@ a need, the role retains that need byte-for-byte. If the batch answered it fully
 partly, the role removes or genuinely narrows it and classifies resolved/open
 questions consistently. This preserves useful evidence without forcing an invented
 resolution.
+The reflection input also carries the executed selections' reason codes and reasons.
+When the role adopts evidence from an available Signal selected with
+`reason_code=answer_need`, returning the exact same set of prior needs while
+continuing is invalid: at least one answered need must be removed or genuinely
+narrowed. This boundary does not guess which need was answered or manufacture a
+resolution; the model receives the original selection intent and performs one
+bounded correction. Evidence selected only for confirmation, contradiction,
+applicability, or combination does not trigger this progress requirement.
 When the number of needs has not decreased, runtime rejects any changed need that
 contains at least 90% of a prior need's normalized word set; appending a qualifier
 to the whole old question is not progress. Exact retention remains valid because it
@@ -434,27 +442,36 @@ subgroup first and the at-most-two soft Signals second, then merges successful
 results back into the selector's order for one whole-batch reflection. This does
 not change the selector caps or create another routing call. If the soft request
 fails its conservative pre-send token reservation, already completed deterministic
-results are persisted as the executed portion of the round and may update state;
-the case still terminates as `budget_exhausted`, while the unexecuted soft selection
-remains visible in the exact routing request/response and request-ready audit event.
-Local results must not disappear merely because a later network request could not be
-reserved, and the partial round can never be relabeled `finalized` for fitness. If an
+results are persisted as the executed portion of the round and may update state. The
+one whole-batch reflection receives `must_finalize=true` and
+`termination_trigger=budget_exhausted`: it must author a `finalize` decision using
+only the executed evidence, while retaining remaining uncertainty in open questions
+or needs. The unexecuted soft selection remains visible in the exact routing
+request/response and request-ready audit event. Local results must not disappear
+merely because a later network request could not be reserved. If the reflection
+ignores the terminal directive, one correction is allowed and the unchanged
+`continue` state remains ineligible; runtime never rewrites it to `finalize`. If an
 initial soft attempt completed but its sole correction cannot be reserved, its paid
 usage remains counted even though no not-yet-valid soft result enters the partial batch.
 
 They prevent infinite or unexpectedly expensive execution and are not Plan
-research logic. When a guard or an empty/repeated Signal selection prevents the
-controller from finishing normally, no new evidence exists to justify another
-model rewrite. The runtime therefore preserves the complete last model-authored
-`ResearchState` byte-for-byte, including `decision=continue` and every pending
-`next_information_need`. It records the actual guard as both the stop reason and
-the durable termination trigger; it must never relabel the state as `finalize`
-or clear pending work. The fixed Predictor may still produce a durable bounded
-forecast from that explicitly incomplete state so the failure remains
-auditable, but `require_finalized` makes the trajectory diagnostic-only and
-excludes it from Plan fitness. Only an H_init/H_reflect state that itself returns
-`decision=finalize` earns `stop_reason=finalized`; no separate terminal
-controller rewrite exists.
+research logic. Before reflecting on a batch that consumes the last permitted
+Signal round/call or follows a pre-send soft-Signal budget refusal, runtime exposes
+that exact boundary as a terminal reflection directive. H_reflect must author
+`decision=finalize` from the evidence already available; finalization ends evidence
+collection and does not require clearing unresolved needs or pretending uncertainty
+was resolved. A `continue` response receives the normal single correction. Only that
+model-authored `finalize` earns `stop_reason=finalized`; runtime never mutates the
+decision or evidence itself, and the actual engineering boundary remains durable as
+`termination_trigger`.
+
+When a guard is reached before any usable batch can be reflected, when selection is
+empty/repeated, or when terminal reflection fails its correction, no new evidence
+exists to justify another model rewrite. Runtime preserves the complete last valid
+model-authored `ResearchState` byte-for-byte, records the actual guard as stop reason
+and termination trigger, and leaves the trajectory diagnostic-only under
+`require_finalized`. The fixed Predictor may still produce a durable bounded forecast
+so the failure remains auditable.
 
 `require_finalized` is a fixed Fast-loop fitness gate, not an optional runtime
 preference; a v5 evaluation contract that disables it is invalid. Once any case

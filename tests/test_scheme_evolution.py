@@ -1286,6 +1286,22 @@ class InformationPlanRuntimeTests(TestCase):
         class PartialController:
             def __init__(self) -> None:
                 self.reflected_refs: list[tuple[str, ...]] = []
+                self.runtime_contexts: list[dict[str, Any]] = []
+
+            def set_reflection_runtime_context(
+                self,
+                *,
+                selections,
+                must_finalize,
+                termination_trigger,
+            ):
+                self.runtime_contexts.append(
+                    {
+                        "selections": tuple(item.signal_ref for item in selections),
+                        "must_finalize": must_finalize,
+                        "termination_trigger": termination_trigger,
+                    }
+                )
 
             def initialize(self, plan, basic_info):
                 return AgentStep(
@@ -1359,10 +1375,20 @@ class InformationPlanRuntimeTests(TestCase):
         self.assertEqual(trajectory.usage.model.tokens, 82)
         self.assertEqual(trajectory.usage.model.llm_calls, 6)
         self.assertEqual(trajectory.final_state.decision, ResearchDecision.FINALIZE)
-        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.BUDGET_EXHAUSTED)
+        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
         self.assertEqual(
             trajectory.termination_trigger,
             RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
+        self.assertEqual(
+            controller.runtime_contexts,
+            [
+                {
+                    "selections": ("negative_word_count:v1",),
+                    "must_finalize": True,
+                    "termination_trigger": RuntimeStopReason.BUDGET_EXHAUSTED,
+                }
+            ],
         )
 
     def test_predictor_projection_omits_repeated_full_basic_and_signal_evidence(self) -> None:

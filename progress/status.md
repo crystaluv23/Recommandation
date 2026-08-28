@@ -1,5 +1,33 @@
 # Status
 
+Current ordinary-loop repair (2026-08-28): immutable v60 contract
+`ae7b3a9...2c9e9` reached the first complete real case, then rejected the only
+candidate at authoritative pointers `round=0/cycle=0`. It used 15 completed model
+attempts, `$0.01937908`, and four SEC company-facts request-ledger entries. Exact
+inspection covered proposer, H_init, three routing/reflection rounds, soft-Signal
+initial/correction, Predictor, and post-hoc payloads/responses. The first reflection
+adopted available `guidance_acceleration` evidence selected specifically to answer the
+production/cost need, yet retained all five needs unchanged. On the third round a
+soft-Signal request could not pass conservative pre-send reservation after four
+deterministic results had completed; H_reflect again returned `continue`, the fixed
+Predictor and post-hoc still completed, and the trajectory was excluded as
+`unfinalized_case`.
+
+H_reflect now receives exact executed selection intents. A continuing state that
+adopts evidence from an available `answer_need` selection must remove or genuinely
+narrow at least one need instead of returning the same set. The last reflectable
+batch also receives an exact terminal directive for round/call exhaustion or a
+pre-send soft-Signal budget refusal; the model must author `finalize` while it may
+retain unresolved needs/open questions. One correction remains available, and
+runtime never mutates the decision. The v60 states replay directly into both new
+validation errors. The financial-statements Basic request was also audited: its local
+SEC-derived `financials` document was seven days outside the Plan's 180-day lookback,
+so the unresolved acquisition is a real coverage gap rather than a source-alias bug.
+
+All 449 repository tests and lint pass. Before the successor contract, the remaining
+frozen ceilings are 253 attempts, `$18.22689552`, and 793 data requests; v60 remains
+immutable evidence and cannot resume across the code revision.
+
 Current Slow-bootstrap handoff (2026-08-28): immutable v59 contract `60287299...2ad8` committed cycle 1 at authoritative pointers `round=0/cycle=1` after one H1 attempt, `$0.00101332`, twelve provider requests (two SEC profiles and ten SEC company-facts fetches), and no Registry change. H1 passed in one call with a 2,432/2,521-token cache hit. H2 deterministically shortlisted 12 refs for each hypothesis and used zero calls. The relaxed full-document rule admitted strong near-complete packets, then the exact model-excerpt recomputation rejected every case because only one or two terms survived the 1,200-character window; H3 and Update therefore correctly used zero calls. This live-verifies that the new threshold improves retrieval reach without bypassing the visible-evidence boundary. A second invocation made no requests/calls and was rejected because `slow_bootstrap` is intentionally single-cycle, so E1/E2 cycle 3 cannot be tested in bootstrap mode.
 
 No additional code change follows v59. The remaining work moves to an ordinary `fast_then_slow` contract so newly committed Fast learning can drive Update and repeated cycles can reach exploration. Under the frozen remaining attempt ceiling, the verification contract will use one full 24-case candidate per Fast round rather than three parallel candidates; this preserves the complete per-case Signal/evidence/learning path being tested while fitting at least two cycles needed for Update.

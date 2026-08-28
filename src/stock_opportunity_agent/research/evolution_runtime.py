@@ -5160,6 +5160,8 @@ def _validate_research_state_refs(
     basic_info: Mapping[str, Any] | None = None,
     previous_state: ResearchState | None = None,
     batch: SignalBatchResult | None = None,
+    selections: tuple[SignalSelectionDecision, ...] = (),
+    must_finalize: bool = False,
 ) -> ResearchState:
     """Enforce the v6 visible-evidence transition contract locally."""
 
@@ -5303,6 +5305,16 @@ def _validate_research_state_refs(
         and str(item.signal_ref) in results
         for item in normalized_refs
     )
+    adopted_new_signal_refs = {
+        str(item.signal_ref)
+        for item in normalized_refs
+        if item.kind == "signal"
+        and _research_evidence_key(item) not in previous
+        and str(item.signal_ref) in results
+    }
+    answer_need_refs = {
+        item.signal_ref for item in selections if item.reason_code == "answer_need"
+    }
     cosmetic_needs = _cosmetically_retained_information_needs(
         previous_state.next_information_needs if previous_state else (),
         state.next_information_needs,
@@ -5324,6 +5336,18 @@ def _validate_research_state_refs(
         )
     if (
         phase == "reflect"
+        and must_finalize
+        and state.decision is not ResearchDecision.FINALIZE
+    ):
+        validation_errors.append(
+            "research_controller_reflect reached the last executable evidence "
+            "batch but returned decision='continue'. Return decision='finalize' "
+            "from the accepted evidence; preserve unresolved uncertainty in "
+            "open_questions or next_information_needs rather than inventing a "
+            "resolution"
+        )
+    if (
+        phase == "reflect"
         and previous_state is not None
         and state.decision is ResearchDecision.CONTINUE
         and adopted_new_signal_evidence
@@ -5342,6 +5366,21 @@ def _validate_research_state_refs(
                 "an exact matching next_information_need: "
                 f"{stale_resolved_needs}. Remove or narrow the answered need, or remove "
                 "the unsupported resolved question"
+            )
+        if (
+            adopted_new_signal_refs.intersection(answer_need_refs)
+            and len(state.next_information_needs)
+            == len(previous_state.next_information_needs)
+            and set(state.next_information_needs)
+            == set(previous_state.next_information_needs)
+        ):
+            validation_errors.append(
+                "research_controller_reflect adopted evidence from an available "
+                "Signal selected with reason_code='answer_need' but retained the "
+                "exact same set of prior next_information_needs. Remove or "
+                "genuinely narrow at least one answered need using the supplied "
+                "selection intent; runtime will not choose the need or fabricate "
+                "a resolution"
             )
     if validation_errors:
         raise ValidationError("; ".join(validation_errors))
@@ -5523,9 +5562,25 @@ class LLMResearchController:
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.request_token_budget: int | None = None
+        self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
+        self.reflection_must_finalize = False
+        self.reflection_termination_trigger: RuntimeStopReason | None = None
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
+
+    def set_reflection_runtime_context(
+        self,
+        *,
+        selections: tuple[SignalSelectionDecision, ...],
+        must_finalize: bool,
+        termination_trigger: RuntimeStopReason | None,
+    ) -> None:
+        """Set one-shot runtime facts for the next H_reflect call."""
+
+        self.reflection_selections = tuple(selections)
+        self.reflection_must_finalize = bool(must_finalize)
+        self.reflection_termination_trigger = termination_trigger
 
     def initialize(
         self, plan: InformationPlan, basic_info: Mapping[str, Any]
@@ -5566,6 +5621,12 @@ class LLMResearchController:
         state: ResearchState,
         batch: SignalBatchResult,
     ) -> AgentStep[ResearchState]:
+        selections = self.reflection_selections
+        must_finalize = self.reflection_must_finalize
+        termination_trigger = self.reflection_termination_trigger
+        self.reflection_selections = ()
+        self.reflection_must_finalize = False
+        self.reflection_termination_trigger = None
         reflected, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_reflect",
@@ -5593,7 +5654,14 @@ class LLMResearchController:
                 "when the batch did not answer it; do not change text merely to show "
                 "motion. Embedding the full old need inside a longer sentence is "
                 "invalid, and a newly resolved question cannot coexist with an exact "
-                "retained same-topic need. An unavailable Signal is only a coverage "
+                "retained same-topic need. Use executed_selection_intents to identify "
+                "why each current Signal was selected. If you adopt evidence from an "
+                "available answer_need selection and continue, remove or genuinely "
+                "narrow at least one answered need; returning the exact same need set "
+                "is invalid. If reflection_runtime.must_finalize is true, this is the "
+                "last executable evidence batch: return decision=finalize based only "
+                "on accepted evidence, while preserving unresolved uncertainty in "
+                "open_questions or next_information_needs. An unavailable Signal is only a coverage "
                 "diagnostic: it is "
                 "not evidence of absence and cannot create a belief or resolve a question."
                 + _UNTRUSTED_DATA_INSTRUCTION
@@ -5604,12 +5672,23 @@ class LLMResearchController:
                 "research_state": state.to_dict(),
                 "signal_batch": _signal_batch_model_view(batch),
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
+                "executed_selection_intents": [
+                    item.to_dict() for item in selections
+                ],
+                "reflection_runtime": {
+                    "must_finalize": must_finalize,
+                    "termination_trigger": (
+                        termination_trigger.value if termination_trigger else None
+                    ),
+                },
             },
             parser=lambda value: _validate_research_state_refs(
                 ResearchState.from_dict(_normalize_research_state_output(value)),
                 phase="reflect",
                 previous_state=state,
                 batch=batch,
+                selections=selections,
+                must_finalize=must_finalize,
             ),
             allow_outcomes=False,
             max_output_tokens=2_000,

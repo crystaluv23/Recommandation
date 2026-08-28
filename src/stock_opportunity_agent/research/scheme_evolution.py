@@ -1925,6 +1925,21 @@ def execute_information_plan(
                 stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
                 break
             continue
+        reflection_termination_trigger: RuntimeStopReason | None = None
+        if soft_budget_exhausted:
+            reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+        elif len(rounds) >= limits.max_signal_rounds:
+            reflection_termination_trigger = RuntimeStopReason.MAX_SIGNAL_ROUNDS
+        elif signal_calls >= limits.max_signal_calls:
+            reflection_termination_trigger = RuntimeStopReason.MAX_SIGNAL_CALLS
+        elif model_usage.llm_calls + 5 > limits.max_llm_calls:
+            reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+        _set_reflection_runtime_context(
+            controller,
+            selections=rounds[-1].selections,
+            must_finalize=reflection_termination_trigger is not None,
+            termination_trigger=reflection_termination_trigger,
+        )
         _set_request_token_budget(
             controller,
             limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
@@ -1936,9 +1951,14 @@ def execute_information_plan(
             break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
         state = reflection_step.value
+        if reflection_termination_trigger is not None:
+            termination_trigger = reflection_termination_trigger
         if soft_budget_exhausted:
-            termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
-            stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
+            stop_reason = (
+                RuntimeStopReason.FINALIZED
+                if state.decision is ResearchDecision.FINALIZE
+                else RuntimeStopReason.BUDGET_EXHAUSTED
+            )
             break
         if state.decision is ResearchDecision.FINALIZE:
             stop_reason = RuntimeStopReason.FINALIZED
@@ -2019,6 +2039,24 @@ def _set_request_token_budget(component: Any, remaining: int) -> None:
     setter = getattr(component, "set_request_token_budget", None)
     if callable(setter):
         setter(max(0, int(remaining)))
+
+
+def _set_reflection_runtime_context(
+    component: Any,
+    *,
+    selections: tuple[SignalSelectionDecision, ...],
+    must_finalize: bool,
+    termination_trigger: RuntimeStopReason | None,
+) -> None:
+    """Expose exact selection intent and a terminal boundary to capable controllers."""
+
+    setter = getattr(component, "set_reflection_runtime_context", None)
+    if callable(setter):
+        setter(
+            selections=selections,
+            must_finalize=must_finalize,
+            termination_trigger=termination_trigger,
+        )
 
 
 def _merge_runtime_signal_batches(

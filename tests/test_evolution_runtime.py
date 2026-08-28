@@ -75,6 +75,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RoundMetaEntry,
     RuntimeStopReason,
     RuntimeBudgetExceeded,
+    SignalSelectionDecision,
     _normalized_projection_text,
     project_basic_info_bundle,
     candidate_judgment_feedback,
@@ -5760,6 +5761,146 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             reflected.value.next_information_needs,
             ("What operating disruption could prevent delivery?",),
+        )
+
+    def test_v23_answer_need_evidence_requires_real_need_progress(self) -> None:
+        result = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=0.8,
+            interpretation="Guidance was reaffirmed without an upward revision.",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="guidance-document",
+                    exact_span="Production and cost guidance was reaffirmed.",
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        prior_need = "What is the current production guidance and cost outlook?"
+        other_need = "What operating disruption could prevent delivery?"
+        previous = ResearchState(
+            next_information_needs=(prior_need, other_need),
+        )
+        evidence_ref = {
+            "claim": "Production and cost guidance was reaffirmed.",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "guidance_acceleration:v1",
+        }
+        unchanged = {
+            "contradictions": [],
+            "current_beliefs": ["Production and cost guidance was reaffirmed."],
+            "decision": "continue",
+            "hypotheses": ["Execution now determines the thesis."],
+            "next_information_needs": [prior_need, other_need],
+            "open_questions": [],
+            "resolved_questions": [],
+            "supporting_evidence": [evidence_ref],
+        }
+        corrected = json.loads(json.dumps(unchanged))
+        corrected["next_information_needs"] = [other_need]
+        corrected["resolved_questions"] = [
+            "Management disclosed the current production and cost guidance."
+        ]
+        caller = ScriptedRoleCaller([unchanged, corrected])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(
+                SignalSelectionDecision(
+                    signal_ref="guidance_acceleration:v1",
+                    reason_code="answer_need",
+                    selection_reason=(
+                        "Directly answer the production-guidance and cost-outlook need."
+                    ),
+                    applicability_hypothesis="Current guidance is visible.",
+                    expected_role="primary",
+                    context_tags=("mature_operations",),
+                ),
+            ),
+            must_finalize=False,
+            termination_trigger=None,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("reason_code='answer_need'", error)
+        self.assertIn("exact same set", error)
+        self.assertEqual(reflected.value.next_information_needs, (other_need,))
+        self.assertEqual(
+            caller.calls[0]["payload"]["executed_selection_intents"][0][
+                "selection_reason"
+            ],
+            "Directly answer the production-guidance and cost-outlook need.",
+        )
+
+    def test_v23_terminal_reflection_requires_model_authored_finalize(self) -> None:
+        result = SignalResult(
+            signal_id="negative_word_count",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=1.0,
+            interpretation="negative_word_count=0",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="news-document",
+                    exact_span="No configured negative terms occurred.",
+                    timestamp=datetime(2025, 9, 24, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        need = "What additional catalyst evidence is available?"
+        continuing = {
+            "contradictions": [],
+            "current_beliefs": [],
+            "decision": "continue",
+            "hypotheses": ["A catalyst may still emerge."],
+            "next_information_needs": [need],
+            "open_questions": [need],
+            "resolved_questions": [],
+            "supporting_evidence": [],
+        }
+        finalized = json.loads(json.dumps(continuing))
+        finalized["decision"] = "finalize"
+        caller = ScriptedRoleCaller([continuing, finalized])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(
+                SignalSelectionDecision(
+                    signal_ref="negative_word_count:v1",
+                    reason_code="combine_evidence",
+                    selection_reason="Add a bounded sentiment diagnostic.",
+                    applicability_hypothesis="Current news is visible.",
+                    expected_role="confirmation",
+                    context_tags=("news_rich",),
+                ),
+            ),
+            must_finalize=True,
+            termination_trigger=RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=(need,)),
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        self.assertEqual(reflected.value.decision, ResearchDecision.FINALIZE)
+        self.assertEqual(reflected.value.next_information_needs, (need,))
+        self.assertIn("last executable evidence batch", validation_error(caller.calls[1]))
+        self.assertEqual(
+            caller.calls[0]["payload"]["reflection_runtime"],
+            {
+                "must_finalize": True,
+                "termination_trigger": "budget_exhausted",
+            },
         )
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:

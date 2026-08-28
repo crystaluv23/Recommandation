@@ -807,3 +807,25 @@ contract. Under a fixed attempt ceiling, one complete 24-case Fast candidate per
 round preserves the Signal execution/learning path more usefully than starting
 three candidates that cannot finish; record this as verification scope, not a new
 production default.
+
+## Terminal-reflection addendum (2026-08-28)
+
+Preserving a `continue` state at a guard is correct only when no usable new batch can
+be reflected. In v60, four deterministic Signal results completed before a soft
+request failed conservative pre-send reservation; H_reflect then ran on that real
+partial batch without knowing that no further acquisition round could execute. It
+returned `continue`, after which Predictor and post-hoc completed but the entire
+candidate became fitness-ineligible. This is different from the earlier v25 failure,
+where runtime rewrote a prior state after a guard with no new evidence.
+
+Expose an exact `must_finalize` terminal directive on the last reflectable batch and
+let H_reflect author the transition. Finalization means ending evidence collection,
+not claiming certainty: unresolved needs and open questions may remain. Reject and
+correct `continue` once; never mutate it locally. Retain the actual guard separately
+as `termination_trigger` so a finalized trajectory still shows why collection ended.
+
+Selection intent is also necessary transition context. A reflection can adopt a
+Signal selected with `reason_code=answer_need` yet copy every prior need unchanged.
+Supplying the executed bounded selection reasons lets runtime reject an exact
+same-set no-op without solving general semantic entailment or guessing which need was
+answered; confirmation/applicability selections do not force artificial progress.
