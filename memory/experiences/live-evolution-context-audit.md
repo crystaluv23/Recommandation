@@ -764,3 +764,16 @@ byte-for-byte and change or remove only named invalid items. When demand is none
 empty cannot be used to discard unaffected hypotheses. Keep the one correction and
 all existing semantic validators; the change localizes repair rather than accepting
 the invalid item.
+
+## Finite fixed-group alias grammar (2026-08-28)
+
+Alias handling should be finite but not tied to one surface phrase. V57 corrected
+feature-bearing `Discovery group: issuers with ...` definitions to `positive cases
+(fixed Discovery group)`. The latter has no feature or membership condition because
+the outer prefix already carries the positive/control label, yet a whitelist that
+required the label again inside the parentheses rejected it.
+
+Allow the same explicit Discovery label or the exact label-free `fixed Discovery
+group` alias after a labeled prefix. Do not allow a colon, issuer/company condition,
+feature/result vocabulary, or the opposite label. Verify the grammar by replaying
+the exact correction response rather than waiting for a favorable resample.

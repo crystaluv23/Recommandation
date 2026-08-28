@@ -6638,8 +6638,9 @@ _H1_GROUP_REDEFINITION_PATTERN = re.compile(
 )
 _H1_SAME_GROUP_ALIAS_PATTERN = re.compile(
     r"\b(?P<label>positive|control)\s+(?:cases?|groups?|cohorts?)\s*"
-    r"\(\s*(?:the\s+)?discovery\s+(?P=label)\s+"
-    r"(?:cases?|groups?|cohorts?)\s*\)",
+    r"\(\s*(?:(?:the\s+)?discovery\s+(?P=label)\s+"
+    r"(?:cases?|groups?|cohorts?)|(?:the\s+)?fixed\s+discovery\s+"
+    r"(?:cases?|groups?|cohorts?))\s*\)",
     re.IGNORECASE,
 )
 _H1_DATA_READINESS_STATEMENT = re.compile(
@@ -7238,7 +7239,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "non-separation, overlap, or reversal refutes the hypothesis. Never "
                 "redefine either fixed group in parentheses or with a membership clause "
                 "such as positive/control cases are issuers that/with/as a candidate "
-                "result. Group membership is already frozen. query must "
+                "result. Exact same-label or fixed-Discovery-group aliases are allowed; "
+                "group membership is already frozen. query must "
                 "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
                 "numeric threshold, or another time-window instruction. For an invalid "
                 "applicability field, replace the whole field with one supplied canonical "

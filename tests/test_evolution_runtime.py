@@ -1616,6 +1616,46 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value[0].hypothesis_id, "revenue_composition_gap")
         self.assertEqual(len(caller.calls), 1)
 
+    def test_signal_h1_allows_fixed_discovery_group_alias(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "estimate_revision_gap",
+                            "statement": (
+                                "Estimate revisions distinguish the fixed Discovery "
+                                "groups."
+                            ),
+                            "applicability": "all_ready_issuers",
+                            "expected_positive_pattern": (
+                                "Positive cases (fixed Discovery group) show more "
+                                "upward revisions than control cases (fixed Discovery "
+                                "group)."
+                            ),
+                            "source_types": ["news"],
+                            "query": "analyst estimate revision",
+                            "falsifiers": [
+                                "The positive and control groups show overlapping or "
+                                "reversed estimate revisions."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "estimate_revision_gap")
+        self.assertEqual(len(caller.calls), 1)
+
     def test_signal_h1_rejects_unobserved_canonical_applicability_value(
         self,
     ) -> None:

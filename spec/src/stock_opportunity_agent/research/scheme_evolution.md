@@ -1022,7 +1022,9 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    already frozen groups, never a new definition of who belongs to either group.
    A parenthetical that merely repeats the same frozen label, such as `positive
    cases (the Discovery positive group)`, is an allowed alias rather than a
-   redefinition; it cannot name a feature, result, or different group.
+   redefinition. The label-bearing prefix may also use the label-free alias
+   `(fixed Discovery group)`. An allowed alias cannot name a feature, result,
+   issuer condition, punctuation payload, or different group.
    `query` contains only a concise two-to-eight-term retrieval topic; it is not a
    `Find companies where ...` instruction, numeric filter, or second time-window
    field. Applicability correction identifies the unsupported rule/value and
