@@ -311,7 +311,12 @@ resolve a question, or change the ResearchState. The exact state remains unchang
 and the controller proceeds to routing over the still-unexecuted cards, subject to
 the normal round/call/token guards. Mixed batches and every batch with at least one
 available result still receive exactly one `H_reflect` call. This optimization cannot
-turn missing coverage into finalization or hide Signal execution cost.
+hide Signal execution cost. If routing then exhausts eligible cards or explicitly
+returns no useful match, `no_signal_match` is a normal end of evidence collection,
+not an unfinished research assertion: runtime copies the exact state and changes only
+its control field from `decision=continue` to `decision=finalize`, without another
+model call. Every hypothesis, belief, evidence ref, contradiction, question, and need
+remains byte-for-byte, and `termination_trigger=no_signal_match` stays durable.
 The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,
@@ -465,11 +470,13 @@ model-authored `finalize` earns `stop_reason=finalized`; runtime never mutates t
 decision or evidence itself, and the actual engineering boundary remains durable as
 `termination_trigger`.
 
-When a guard is reached before any usable batch can be reflected, when selection is
-empty/repeated, or when terminal reflection fails its correction, no new evidence
-exists to justify another model rewrite. Runtime preserves the complete last valid
-model-authored `ResearchState` byte-for-byte, records the actual guard as stop reason
-and termination trigger, and leaves the trajectory diagnostic-only under
+An empty selection or exhausted eligible Registry is a normal `no_signal_match`
+closure: runtime makes only the deterministic control-field transition described
+above and permits the fixed Predictor to evaluate the evidence already gathered.
+When a cost/round/call guard is reached before any usable batch can be reflected, or
+when terminal reflection fails its correction, runtime instead preserves the complete
+last valid model-authored `continue` state, records the actual guard as stop reason and
+termination trigger, and leaves the trajectory diagnostic-only under
 `require_finalized`. The fixed Predictor may still produce a durable bounded forecast
 so the failure remains auditable.
 

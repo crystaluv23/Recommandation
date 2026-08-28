@@ -1966,7 +1966,11 @@ def execute_information_plan(
     if state.decision is ResearchDecision.CONTINUE:
         if termination_trigger is None:
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
-        stop_reason = termination_trigger
+        if termination_trigger is RuntimeStopReason.NO_SIGNAL_MATCH:
+            state = _finalize_exhausted_research_collection(state)
+            stop_reason = RuntimeStopReason.FINALIZED
+        else:
+            stop_reason = termination_trigger
 
     final_context = _assemble_final_context(
         plan=plan,
@@ -2057,6 +2061,21 @@ def _set_reflection_runtime_context(
             must_finalize=must_finalize,
             termination_trigger=termination_trigger,
         )
+
+
+def _finalize_exhausted_research_collection(state: ResearchState) -> ResearchState:
+    """End natural no-match collection without changing research content."""
+
+    value = state.to_dict()
+    value["decision"] = ResearchDecision.FINALIZE.value
+    finalized = ResearchState.from_dict(value)
+    original_content = state.to_dict()
+    finalized_content = finalized.to_dict()
+    original_content.pop("decision")
+    finalized_content.pop("decision")
+    if finalized_content != original_content:
+        raise ValidationError("no_signal_match finalization changed research content")
+    return finalized
 
 
 def _merge_runtime_signal_batches(

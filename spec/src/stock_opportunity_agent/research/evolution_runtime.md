@@ -697,6 +697,14 @@ on visible accepted evidence; unresolved items may remain as needs/open question
 An initial `continue` receives the single structured correction, while a repeated
 `continue` fails closed. The runtime does not synthesize a terminal state, and the
 actual boundary remains recorded separately as `termination_trigger`.
+When all executed results are `unavailable`, H_reflect remains skipped because no
+belief may change. If the next routing decision is empty or eligible cards are
+exhausted, `no_signal_match` deterministically ends evidence collection: runtime
+copies the complete last state, changes only `decision` to `finalize`, and preserves
+every unresolved need/open question plus `termination_trigger=no_signal_match`.
+This zero-call control transition cannot add, delete, restate, or reclassify research
+content. Budget/round/call exhaustion without a reflectable terminal batch remains an
+ineligible `continue` state rather than using this natural-exhaustion rule.
 Directly decidable Signal-claim quantity errors and this need-transition error are
 reported together before the one correction. Fixing a citation must not consume the
 only correction and reveal an already-visible stale/cosmetic need afterward.

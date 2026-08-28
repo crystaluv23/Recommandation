@@ -1,5 +1,27 @@
 # Status
 
+Current ordinary-loop repair (2026-08-28): immutable v61 contract
+`1efbf49...88efa` reached one complete real case, then rejected the only candidate
+at authoritative pointers `round=0/cycle=0`. It used 11 completed model attempts,
+`$0.01205232`, and five SEC request-ledger entries. Exact inspection covered both
+proposer attempts/corrections, H_init, three routing decisions, deterministic Signal
+results, Predictor, and post-hoc. Every selected deterministic Signal returned honest
+`unavailable`; H_reflect correctly used zero calls. The final routing decision was
+empty, but runtime left the unchanged `continue` state and excluded the otherwise
+complete case as `unfinalized_case`.
+
+An empty selection or exhausted eligible Registry now represents natural evidence-
+collection closure, not a claim that uncertainty was resolved. Runtime copies the
+complete last ResearchState, changes only `decision=continue` to `decision=finalize`,
+asserts every other field remains equal, and preserves
+`termination_trigger=no_signal_match`. All-unavailable batches still skip H_reflect;
+cost/round/call exhaustion without a reflectable terminal batch remains ineligible
+and cannot use this rule.
+
+All 449 repository tests and lint pass. Before the successor contract, the remaining
+frozen ceilings are 242 attempts, `$18.21484320`, and 788 data requests; v61 remains
+immutable evidence and cannot resume across the code revision.
+
 Current ordinary-loop repair (2026-08-28): immutable v60 contract
 `ae7b3a9...2c9e9` reached the first complete real case, then rejected the only
 candidate at authoritative pointers `round=0/cycle=0`. It used 15 completed model

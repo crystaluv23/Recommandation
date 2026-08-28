@@ -829,3 +829,19 @@ Signal selected with `reason_code=answer_need` yet copy every prior need unchang
 Supplying the executed bounded selection reasons lets runtime reject an exact
 same-set no-op without solving general semantic entailment or guessing which need was
 answered; confirmation/applicability selections do not force artificial progress.
+
+## Natural-exhaustion finalization addendum (2026-08-28)
+
+`no_signal_match` is not interchangeable with an engineering budget guard. In v61,
+all selected deterministic Signals honestly returned `unavailable`, H_reflect
+correctly used zero calls, and the next routing decision was empty because no useful
+eligible card remained. The existing Basic evidence and unresolved need were still a
+valid bounded research result, but leaving `decision=continue` made the completed
+Predictor/post-hoc case fitness-ineligible.
+
+For this natural closure only, make a zero-call control transition: serialize and
+copy the complete ResearchState, change only `decision` to `finalize`, and assert all
+other fields remain equal. Preserve `termination_trigger=no_signal_match` so closure
+does not pretend that the information need was resolved. A cost, round, or call guard
+without a reflectable terminal batch remains an ineligible `continue`; it must not
+borrow this rule to conceal an interrupted acquisition path.

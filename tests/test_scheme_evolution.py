@@ -1226,7 +1226,12 @@ class InformationPlanRuntimeTests(TestCase):
             )
 
         self.assertEqual(controller.reflect_calls, 0)
-        self.assertEqual(trajectory.final_state, controller.initial_state)
+        expected_final_state = replace(
+            controller.initial_state,
+            decision=ResearchDecision.FINALIZE,
+        )
+        self.assertEqual(trajectory.final_state, expected_final_state)
+        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
         self.assertEqual(trajectory.termination_trigger, RuntimeStopReason.NO_SIGNAL_MATCH)
         self.assertEqual(len(trajectory.signal_rounds), 1)
         self.assertEqual(
@@ -1706,6 +1711,15 @@ class InformationPlanRuntimeTests(TestCase):
             )
 
             self.assertEqual(len(trajectory.signal_rounds), 1)
+            self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+            self.assertEqual(
+                trajectory.final_state.decision,
+                ResearchDecision.FINALIZE,
+            )
+            self.assertEqual(
+                trajectory.final_state.next_information_needs,
+                ("find new evidence",),
+            )
             self.assertEqual(
                 trajectory.termination_trigger,
                 RuntimeStopReason.NO_SIGNAL_MATCH,
