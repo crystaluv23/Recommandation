@@ -4029,6 +4029,23 @@ class SignalEvolutionTests(TestCase):
         self.assertFalse(visible_coverage["sufficient"])
         self.assertNotIn("revenue", visible_coverage["matched_terms"])
 
+    def test_h3_query_coverage_uses_strong_supermajority_not_all_terms(self) -> None:
+        near_complete = _h3_text_query_coverage(
+            ("Quarterly revenue and earnings analyst discussion.",),
+            query="quarterly revenue earnings analyst outlook",
+        )
+        minority = _h3_text_query_coverage(
+            ("Revenue growth segment discussion.",),
+            query="revenue growth composition volume price segment",
+        )
+
+        self.assertEqual(near_complete["required_match_count"], 4)
+        self.assertEqual(len(near_complete["matched_terms"]), 4)
+        self.assertTrue(near_complete["sufficient"])
+        self.assertEqual(minority["required_match_count"], 5)
+        self.assertEqual(len(minority["matched_terms"]), 3)
+        self.assertFalse(minority["sufficient"])
+
     def test_h3_packet_combines_complementary_ordered_query_pairs(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),

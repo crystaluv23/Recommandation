@@ -10462,7 +10462,11 @@ def _h3_text_query_coverage(
         matched_pairs.update(
             _h3_matched_query_pairs(ordered_query_terms, visible_terms)
         )
-    required_match_count = len(query_terms)
+    required_match_count = (
+        len(query_terms)
+        if len(query_terms) <= 2
+        else math.ceil(len(query_terms) * 0.75)
+    )
     sufficient = (
         not query_terms
         or (

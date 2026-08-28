@@ -298,7 +298,11 @@ over hidden remainder text from the source documents. Full-document query covera
 may be retained only as audit context. If the model-visible excerpts do not retain
 the required distinct terms and short-range ordered-pair coverage, the case is
 locally unavailable and no contrast call may claim that the model saw sufficient
-evidence.
+evidence. Query topics of one or two normalized terms require every term; longer
+topics require a 75-percent rounded-up supermajority plus at least one consecutive
+query pair in a short visible span. This treats modifiers such as `trajectory` or
+`comparison` as retrieval vocabulary rather than an accidental all-terms Boolean
+filter while still rejecting scattered or minority lexical overlap.
 The former H2 LLM ranking/correction is retired: once H1 applicability is a
 machine-decidable predicate over the actual brief pool, another model judgment adds
 no evidence, can contradict that predicate, and repeats the largest Slow context.

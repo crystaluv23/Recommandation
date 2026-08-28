@@ -777,3 +777,18 @@ Allow the same explicit Discovery label or the exact label-free `fixed Discovery
 group` alias after a labeled prefix. Do not allow a colon, issuer/company condition,
 feature/result vocabulary, or the opposite label. Verify the grammar by replaying
 the exact correction response rather than waiting for a favorable resample.
+
+## Strong-supermajority query coverage addendum (2026-08-28)
+
+A retrieval topic is not automatically an all-terms Boolean query. V58 produced
+valid production, consensus, and revenue-composition hypotheses. Many exact filing
+packets had 4/5 terms plus an ordered pair or 3/4 terms plus `revenue growth`, but
+the all-terms rule removed them before exact excerpt projection because abstract
+modifiers such as `comparison` or `trajectory` were not literal filing words.
+
+For one or two normalized query terms, require every term. For longer topics,
+require a rounded-up 75-percent supermajority and at least one consecutive query
+pair within the short-gap bound. Apply the same rule to full-document prefiltering
+and the exact identity-masked model excerpts. This still rejects V54's 3/6 or
+no-pair boilerplate windows while letting a strong near-complete topic reach the
+semantic H3 judge.
