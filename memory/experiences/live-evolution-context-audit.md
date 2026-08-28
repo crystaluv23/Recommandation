@@ -792,3 +792,18 @@ pair within the short-gap bound. Apply the same rule to full-document prefilteri
 and the exact identity-masked model excerpts. This still rejects V54's 3/6 or
 no-pair boilerplate windows while letting a strong near-complete topic reach the
 semantic H3 judge.
+
+## Bootstrap-to-ordinary handoff (2026-08-28)
+
+V59 live-verified the two-stage query gate: strong full-document near-matches were
+allowed to exact projection, but every bounded excerpt then failed and H3 used zero
+calls. The run also fetched ten missing SEC company-facts responses, so count actual
+data-request ledger rows rather than only the two profile requests.
+
+`slow_bootstrap` is intentionally single-cycle; a second invocation fails locally
+and cannot reach the every-third-cycle E1/E2 path. Testing exploration or Update
+from committed Fast learning therefore requires an ordinary `fast_then_slow`
+contract. Under a fixed attempt ceiling, one complete 24-case Fast candidate per
+round preserves the Signal execution/learning path more usefully than starting
+three candidates that cannot finish; record this as verification scope, not a new
+production default.
