@@ -1008,6 +1008,56 @@ class ScriptedRoleCaller:
 
 
 class ConcreteRoleAdapterTests(TestCase):
+    def test_signal_h1_rejects_empty_portfolio_with_unmet_signal_demand(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {"hypotheses": []},
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "analyst_estimate_revision_gap",
+                            "statement": (
+                                "Analyst estimate revisions distinguish the fixed "
+                                "Discovery groups."
+                            ),
+                            "applicability": "all_ready_issuers",
+                            "expected_positive_pattern": (
+                                "Positive cases show stronger analyst estimate "
+                                "revisions than control cases."
+                            ),
+                            "source_types": ["news"],
+                            "query": "analyst estimate revision",
+                            "falsifiers": [
+                                "Positive and control groups show overlapping or "
+                                "reversed estimate revisions."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                },
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need": "How have analyst estimate revisions changed?"}
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "analyst_estimate_revision_gap")
+        self.assertIn(
+            "must return at least one grounded hypothesis",
+            validation_error(caller.calls[1]),
+        )
+
     def test_signal_h1_corrects_hypothesis_unrelated_to_bootstrap_need(self) -> None:
         ungrounded = {
             "hypotheses": [

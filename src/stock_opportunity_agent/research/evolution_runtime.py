@@ -7005,6 +7005,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             issues: list[str] = []
             if len(items) > limit:
                 issues.append(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
+            if need_term_sets and not items:
+                issues.append(
+                    "Signal Mining H1 must return at least one grounded hypothesis "
+                    "when signal_need_items are non-empty"
+                )
             if len({item.hypothesis_id for item in items}) != len(items):
                 issues.append("Signal Mining H1 hypothesis ids must be unique")
             unsupported = sorted(
@@ -7190,7 +7195,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "needs that an actual Fast trajectory could not match to a stable Signal; "
                 "treat them as diagnostic demand, not as evidence that a candidate works. "
                 "When signal_need_items is non-empty, every hypothesis must directly "
-                "address one need and reuse at least two of its non-generic topic terms. "
+                "address one need and reuse at least two of its non-generic topic terms, "
+                "and the portfolio must contain at least one hypothesis. An empty "
+                "portfolio is valid only when signal_need_items is empty. "
                 "H3 tests point-in-time evidence available by each case's prediction "
                 "date against the fixed Discovery positive/control groups. Therefore "
                 "expected_positive_pattern must explicitly name both the positive "

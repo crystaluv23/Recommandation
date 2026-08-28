@@ -701,3 +701,17 @@ semantics, leaves hidden-label positive/control feasibility to the existing loca
 controller, and keeps H3 as the first evidence-bearing model judgment. Retiring the
 H2 call removes a large repeated context and a contradiction point without weakening
 Signal retrieval, validation, promotion, or cross-cycle visibility.
+
+## Demand-bound empty H1 addendum (2026-08-28)
+
+A syntactically explicit empty array is not automatically a meaningful no-op. V53
+received the same four real unmatched Fast needs and actual H2 field inventory as
+v52, but sampled only `{"hypotheses":[]}` in seven output tokens, with no rationale.
+The prior run had produced three valid canonical hypotheses from that demand. Accepting
+the empty value silently converted sampling variance into apparent demand exhaustion.
+
+When `signal_need_items` are present, require one through the bounded hypothesis
+limit and keep the existing two-topic-term grounding check for every item. The one
+structured correction may produce grounded work; if it still cannot, record the
+bounded H1 failure rather than a successful empty Slow result. Preserve explicit
+empty only when the actual demand list is empty.

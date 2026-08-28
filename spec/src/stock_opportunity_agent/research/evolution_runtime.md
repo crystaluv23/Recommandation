@@ -303,10 +303,12 @@ discarding learned routing or effectiveness evidence, and never changes the
 Registry/frozen-snapshot artifact.
 The H1 provider contract is schema-only and contains no complete business-domain
 hypothesis. If bootstrap `signal_need_items` are nonempty, the adapter requires
-each hypothesis to share at least two non-generic, simply singular-normalized
+one through the supplied hypothesis limit rather than accepting an unexplained empty
+portfolio, and each hypothesis must share at least two non-generic, simply singular-normalized
 topic terms with one exact need across its semantic fields. This is a grounding
 check against supplied demand, not local hypothesis generation; failures receive
-the existing one bounded correction and explicit empty remains valid.
+the existing one bounded correction. Explicit empty remains valid only when no
+`signal_need_items` exist.
 The same parse boundary rejects a renamed hypothesis when its semantic text
 contains the complete multi-term id of a stable Signal or registered
 deterministic function supplied in the request. Prompt advice alone is not the
