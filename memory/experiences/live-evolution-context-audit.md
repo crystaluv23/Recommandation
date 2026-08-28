@@ -750,3 +750,17 @@ Allow only the exact same-label Discovery alias across case/group/cohort synonym
 Keep different-label aliases, feature-bearing parentheses, and membership clauses
 invalid. Replay the exact corrected response through the current parser before the
 next paid run; this distinguishes a guard fix from a new sampled answer.
+
+## Item-local H1 correction addendum (2026-08-28)
+
+Independent portfolio items must not share one all-or-nothing correction fate. V56
+returned three grounded hypotheses; local validation named only the revenue-growth
+restatement, but correction returned an empty array and erased the untouched
+production-guidance and analyst-revision work. The nonempty-demand guard caught the
+empty value, yet the cycle still lost valid work and paid for a futile correction.
+
+In correction, preserve every hypothesis id not named by `validation_error`
+byte-for-byte and change or remove only named invalid items. When demand is nonempty,
+empty cannot be used to discard unaffected hypotheses. Keep the one correction and
+all existing semantic validators; the change localizes repair rather than accepting
+the invalid item.

@@ -1323,6 +1323,10 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("alternate horizon", error)
         self.assertIn("both positive and control groups", error)
+        self.assertIn(
+            "preserve every hypothesis whose hypothesis_id is not named",
+            caller.calls[1]["system_prompt"],
+        )
 
     def test_signal_h1_combines_identity_and_semantic_feedback_without_echo(
         self,

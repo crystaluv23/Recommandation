@@ -319,6 +319,12 @@ The same parse boundary rejects a renamed hypothesis when its semantic text
 contains the complete multi-term id of a stable Signal or registered
 deterministic function supplied in the request. Prompt advice alone is not the
 duplicate guard.
+When one H1 portfolio item fails but other hypotheses are not named by the
+aggregated validation error, correction preserves every unmentioned hypothesis
+byte-for-byte and changes or removes only the named invalid items. With nonempty
+`signal_need_items`, an empty correction cannot erase otherwise valid portfolio
+work. This keeps the correction local to its diagnosed defect instead of making
+independent hypotheses share one all-or-nothing fate.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming
