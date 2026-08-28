@@ -6636,6 +6636,12 @@ _H1_GROUP_REDEFINITION_PATTERN = re.compile(
     r"(?:as|that|which|who|with)\b)",
     re.IGNORECASE,
 )
+_H1_SAME_GROUP_ALIAS_PATTERN = re.compile(
+    r"\b(?P<label>positive|control)\s+(?:cases?|groups?|cohorts?)\s*"
+    r"\(\s*(?:the\s+)?discovery\s+(?P=label)\s+"
+    r"(?:cases?|groups?|cohorts?)\s*\)",
+    re.IGNORECASE,
+)
 _H1_DATA_READINESS_STATEMENT = re.compile(
     r"\b(?:available|observable|observed|inferable|inferred|retrievable|retrieved|"
     r"extractable|extracted|found|documented)\s+"
@@ -7064,7 +7070,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 group_redefinition_match = _H1_GROUP_REDEFINITION_PATTERN.search(
                     test_text
                 )
-                if group_redefinition_match is not None:
+                if group_redefinition_match is not None and (
+                    _H1_SAME_GROUP_ALIAS_PATTERN.fullmatch(
+                        group_redefinition_match.group(0)
+                    )
+                    is None
+                ):
                     issues.append(
                         "Signal Mining H1 must not redefine fixed Discovery groups "
                         f"for {item.hypothesis_id}; matched "

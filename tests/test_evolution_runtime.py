@@ -1572,6 +1572,46 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("must not redefine fixed Discovery groups", error)
         self.assertIn("membership clause", caller.calls[0]["system_prompt"])
 
+    def test_signal_h1_allows_parenthetical_same_group_alias(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "revenue_composition_gap",
+                            "statement": (
+                                "Revenue composition distinguishes the fixed "
+                                "Discovery groups."
+                            ),
+                            "applicability": "all_ready_issuers",
+                            "expected_positive_pattern": (
+                                "Positive cases (the Discovery positive group) show "
+                                "more granular revenue composition than control cases "
+                                "(the Discovery control group)."
+                            ),
+                            "source_types": ["10-k"],
+                            "query": "revenue growth composition",
+                            "falsifiers": [
+                                "The positive and control groups show overlapping or "
+                                "reversed revenue composition."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["10-k"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "revenue_composition_gap")
+        self.assertEqual(len(caller.calls), 1)
+
     def test_signal_h1_rejects_unobserved_canonical_applicability_value(
         self,
     ) -> None:

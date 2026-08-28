@@ -737,3 +737,16 @@ or `that exhibit detailed disclosure` redefine membership just as circularly.
 Reject membership-style `are/consist of/comprise/include ... that/with/as` clauses
 and require the hypothesis to state an expected feature difference between the
 already frozen groups.
+
+## Same-group alias exception (2026-08-28)
+
+A parenthetical is not automatically a group redefinition. V55 correctly rejected
+`positive cases (companies with upward revisions)` and supplied all defects in one
+correction, but then rejected `positive cases (the Discovery positive group)` too.
+The latter is only an explicit alias for the same frozen membership and contains no
+candidate feature or alternate label.
+
+Allow only the exact same-label Discovery alias across case/group/cohort synonyms.
+Keep different-label aliases, feature-bearing parentheses, and membership clauses
+invalid. Replay the exact corrected response through the current parser before the
+next paid run; this distinguishes a guard fix from a new sampled answer.
