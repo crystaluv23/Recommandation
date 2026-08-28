@@ -597,7 +597,14 @@ For ResearchState corrections, the role is told explicitly that every evidence
 provenance item named by `validation_error` must either change to a valid visible
 reference or be removed; an unchanged rejected item is not a correction. The
 runtime still validates the complete returned state and does not silently delete
-or synthesize evidence. `H_init` also receives a fixed boundary reminder that the
+or synthesize evidence. Parser-shape errors may name the
+returned key set for diagnosis, but an already precise semantic `ValidationError`
+must pass through unchanged rather than being wrapped once or twice as if every
+top-level ResearchState field were invalid. The correction contract requires every
+actually named item plus any explicitly named linked assertion to change, and every
+unrelated valid item to remain byte-for-byte. Quantity feedback therefore names the
+evidence index and any identical `current_beliefs`/`contradictions` indices that must
+track a corrected claim. `H_init` also receives a fixed boundary reminder that the
 six-month adjusted-price-doubling outcome is the evaluation definition, not an
 issuer target whose terms should be researched. For structured market JSON, it
 must cite a complete visible row rather than constructing a shorter object from

@@ -5182,6 +5182,78 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.calls[0]["system_prompt"],
         )
 
+    def test_v62_initialize_correction_keeps_precise_semantic_paths(self) -> None:
+        claim = (
+            "Kinross Gold reported strong Q2 2025 results with record operating "
+            "margins and free cash flow."
+        )
+        corrected_claim = (
+            "Kinross Gold reported strong second-quarter results with record "
+            "operating margins and free cash flow."
+        )
+        exact_text = (
+            "Our production in the second quarter was on plan, delivering 513,000 "
+            "ounces at a cost of sales of $1,074 per ounce. Our strong production "
+            "and cost management, combined with the gold price, resulted in record "
+            "operating margins. As a result, we also delivered record free cash "
+            "flow in the second quarter of almost $650 million and a first half "
+            "total of just over $1 billion."
+        )
+        invalid = {
+            "hypotheses": ["Strong operations may support a further repricing."],
+            "current_beliefs": [claim],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": claim,
+                    "projection_id": "projection_21113038b3f46eedb508d711",
+                    "exact_text": exact_text,
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["Check the durability of operating margins."],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = [corrected_claim]
+        corrected["supporting_evidence"][0]["claim"] = corrected_claim
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": (
+                                    "projection_21113038b3f46eedb508d711"
+                                ),
+                                "exact_text": exact_text,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("supporting_evidence[0]", error)
+        self.assertIn("['2025']", error)
+        self.assertIn("linked_assertions=['current_beliefs[0]']", error)
+        self.assertNotIn("returned invalid JSON fields", error)
+        self.assertIn(
+            "Preserve unrelated valid fields and items byte-for-byte",
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertEqual(initialized.value.current_beliefs, (corrected_claim,))
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].claim,
+            corrected_claim,
+        )
+
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         filing = RawInfoDocument.create(

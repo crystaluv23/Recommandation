@@ -1,5 +1,30 @@
 # Status
 
+Current ordinary-loop repair (2026-08-28): immutable v62 contract
+`fe5027b...a28d2c` rejected its only candidate on the first H_init case at
+authoritative pointers `round=0/cycle=0`. It used four attempts, including one
+zero-cost sandbox-denied HTTP attempt, `$0.00785680`, and three SEC request-ledger
+entries. The proposer passed in one call with a 1,152/1,158-token cache hit and
+returned a market/news/earnings-call Plan whose four actual role fields preserve the
+fixed Predictor boundary. H_init then used 11,103 input tokens; its only local defect
+was `supporting_evidence[2]` claiming `Q2 2025` while the exact quote said only
+`second quarter`. The correction had an 11,008/11,941-token cache hit but returned
+the identical ResearchState byte-for-byte and failed again.
+
+Exact correction-context inspection found that a local semantic `ValidationError`
+was wrapped twice as `invalid JSON fields` containing every ResearchState key, while
+the role instruction required every named field to change. The raw quantity
+prevalidator also named only the evidence ref, not its identical quantitative belief.
+Semantic errors now pass through unchanged; quantity feedback names both the exact
+evidence index and every linked belief/contradiction index, and correction preserves
+unrelated valid content byte-for-byte. The persisted v62 response replays to the new
+precise error: `supporting_evidence[2]`, missing `2025`, linked
+`current_beliefs[1]`.
+
+All 450 repository tests and lint pass. Before the successor contract, the remaining
+frozen ceilings are 238 attempts, `$18.20698640`, and 785 data requests; v62 remains
+immutable evidence and cannot resume across the code revision.
+
 Current ordinary-loop repair (2026-08-28): immutable v61 contract
 `1efbf49...88efa` reached one complete real case, then rejected the only candidate
 at authoritative pointers `round=0/cycle=0`. It used 11 completed model attempts,

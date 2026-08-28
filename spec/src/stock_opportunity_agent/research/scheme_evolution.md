@@ -209,6 +209,12 @@ only that final field to the failed output and exact local error. No Basic proje
 research skill, information need, card, learned profile, or prior Signal result is
 removed. This is provider-prefix reuse only; conservative request budgeting still
 assumes a cache miss and the same strict parser validates the corrected output.
+Semantic `ValidationError` feedback must retain its original field/item path instead
+of being rewrapped as though every returned top-level key were invalid. Correction
+changes every actually named invalid item and any explicitly named linked assertion,
+while preserving unrelated valid fields/items byte-for-byte. For a quantity-invalid
+evidence claim, feedback names both the evidence index and each identical quantitative
+belief/contradiction that must be changed to the corrected claim.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask

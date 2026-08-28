@@ -845,3 +845,20 @@ other fields remain equal. Preserve `termination_trigger=no_signal_match` so clo
 does not pretend that the information need was resolved. A cost, round, or call guard
 without a reflectable terminal batch remains an ineligible `continue`; it must not
 borrow this rule to conceal an interrupted acquisition path.
+
+## Precise structured-correction feedback addendum (2026-08-28)
+
+A domain `ValidationError` is already semantic feedback and must not be handled like
+an arbitrary parser exception. V62 had one quantity defect: one evidence claim added
+`2025` to a quote that said only `second quarter`. The generic wrapper caught the
+`ValidationError` as `ValueError`, listed every returned ResearchState key as invalid,
+then a second wrapper repeated that message. This conflicted with the role instruction
+to change every named field, and correction returned the exact original state.
+
+Preserve semantic errors unchanged; reserve top-level-key diagnostics for genuine
+shape/parser exceptions. A quantity-invalid evidence claim can also be copied into a
+quantitative belief or contradiction, so correction feedback must name those exact
+linked indices and require them to copy the corrected claim byte-for-byte. Require
+every named item to change, but preserve unrelated valid items. Replay the persisted
+invalid response through the local prevalidator to prove that the correction context,
+not just a newly sampled response, now has the intended scope.

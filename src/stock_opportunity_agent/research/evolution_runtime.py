@@ -4534,6 +4534,8 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
 
     try:
         return parser(value)
+    except ValidationError:
+        raise
     except (KeyError, TypeError, ValueError) as exc:
         keys = ", ".join(sorted(str(key) for key in value))
         raise ValidationError(
@@ -4565,10 +4567,11 @@ def _complete_parsed_role(
     failure: ValidationError | None = None
     correction_instruction = (
         " If validation_feedback is non-null, correct the invalid output once; "
-        "return the exact contract only. Every field or item named by "
-        "validation_error must change to valid content, or be removed when the "
-        "contract permits omission. Returning the same rejected content is not "
-        "a correction."
+        "return the exact contract only. Every invalid field or item identified "
+        "by validation_error, including an explicitly named linked assertion, "
+        "must change to valid content or be removed when the contract permits "
+        "omission. Preserve unrelated valid fields and items byte-for-byte. "
+        "Returning the same rejected content is not a correction."
     )
     for attempt in range(2):
         request_payload = dict(payload)
@@ -4650,6 +4653,9 @@ def _complete_parsed_role(
                 continue
         try:
             return _parse_role_output(request_stage, value, parser), usage
+        except ValidationError as exc:
+            failed_output = value if echo_invalid_output_on_correction else {}
+            failure = exc
         except (KeyError, TypeError, ValueError) as exc:
             keys = ", ".join(sorted(str(key) for key in value))
             failed_output = value if echo_invalid_output_on_correction else {}
@@ -4657,9 +4663,6 @@ def _complete_parsed_role(
                 f"{request_stage} returned invalid JSON fields [{keys}]: "
                 f"{type(exc).__name__}: {exc}"
             )
-        except ValidationError as exc:
-            failed_output = value if echo_invalid_output_on_correction else {}
-            failure = exc
     raise CandidateExecutionRejected(
         stage,
         f"{stage} failed validation after one correction: {failure}",
@@ -4837,16 +4840,19 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
             f"supporting_evidence[{index}] has unknown kind {kind!r}; "
             "expected 'basic_info' or 'signal'"
         )
-    issues.extend(_raw_basic_claim_quantity_issues(evidence))
+    issues.extend(_raw_basic_claim_quantity_issues(normalized))
     if issues:
         raise ValidationError("; ".join(issues))
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
 
 
-def _raw_basic_claim_quantity_issues(evidence: list[Any]) -> list[str]:
+def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
     """Preflight decidable Basic quantity errors before tagged refs exist."""
 
+    evidence = value.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return []
     grouped: dict[str, list[tuple[int, str]]] = {}
     for index, item in enumerate(evidence):
         if not isinstance(item, Mapping) or "signal_ref" in item:
@@ -4864,12 +4870,21 @@ def _raw_basic_claim_quantity_issues(evidence: list[Any]) -> list[str]:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
         missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
+            linked = [
+                f"{field_name}[{index}]"
+                for field_name in ("current_beliefs", "contradictions")
+                if isinstance(value.get(field_name), list)
+                for index, item in enumerate(value[field_name])
+                if item == claim and _normalized_claim_quantity_groups(str(item))
+            ]
             issues.append(
                 f"supporting_evidence[{items[0][0]}] claim contains numeric "
                 "quantities absent from all Basic exact_text refs with the same "
                 f"claim: {missing}. Add one exact literal ref for every quantity, "
                 "split the multi-span claim across refs with the same claim, or "
-                "narrow the claim"
+                "narrow the claim; "
+                f"linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
             )
     return issues
 
@@ -5082,8 +5097,23 @@ def _missing_claim_quantity_groups(
     ]
 
 
+def _linked_quantitative_assertion_paths(
+    state: ResearchState,
+    claim: str,
+) -> list[str]:
+    """Name state assertions that must track a corrected evidence claim."""
+
+    return [
+        f"{field_name}[{index}]"
+        for field_name in ("current_beliefs", "contradictions")
+        for index, item in enumerate(getattr(state, field_name))
+        if item == claim and _normalized_claim_quantity_groups(item)
+    ]
+
+
 def _validate_basic_claim_quantities(
     refs: tuple[ResearchEvidenceRef, ...],
+    state: ResearchState,
 ) -> None:
     """Require each Basic claim's quantities across its cited literal group."""
 
@@ -5098,16 +5128,20 @@ def _validate_basic_claim_quantities(
         missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
             index = items[0][0]
+            linked = _linked_quantitative_assertion_paths(state, claim)
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all Basic exact_text refs with the same claim: {missing}. "
                 "Add one exact literal ref for every quantity, split the multi-span "
-                "claim across refs with the same claim, or narrow the claim"
+                "claim across refs with the same claim, or narrow the claim; "
+                f"linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
             )
 
 
 def _validate_signal_claim_quantities(
     grouped: Mapping[str, list[tuple[int, str]]],
+    state: ResearchState,
 ) -> None:
     """Require each new Signal claim's quantities in its cited evidence items."""
 
@@ -5118,13 +5152,16 @@ def _validate_signal_claim_quantities(
         missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
             index = items[0][0]
+            linked = _linked_quantitative_assertion_paths(state, claim)
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all referenced Signal evidence items with the same "
                 f"claim: {missing}. Copy the exact canonical numeric form from a "
                 "deterministic Signal interpretation, cite every required Signal "
                 "evidence item with the same claim, or narrow the claim; do not "
-                "round or convert the supplied values"
+                "round or convert the supplied values; "
+                f"linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
             )
 
 
@@ -5288,8 +5325,8 @@ def _validate_research_state_refs(
             claim_literals.append((index, result.interpretation))
     validation_errors: list[str] = []
     validators = (
-        lambda: _validate_basic_claim_quantities(tuple(normalized_refs)),
-        lambda: _validate_signal_claim_quantities(signal_claim_literals),
+        lambda: _validate_basic_claim_quantities(tuple(normalized_refs), state),
+        lambda: _validate_signal_claim_quantities(signal_claim_literals, state),
         lambda: _validate_assertive_state_claim_links(
             state, tuple(normalized_refs)
         ),
