@@ -5,6 +5,7 @@ import json
 import math
 import re
 import tempfile
+from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -3109,6 +3110,69 @@ class ConcreteRoleAdapterTests(TestCase):
             validation_error(prior_caller.calls[1]),
         )
 
+    def test_v63_order_quality_cannot_relabel_a_share_sale_as_an_order(self) -> None:
+        invalid = signal_selection("order_quality:v1")
+        invalid_item = invalid["selections"][0]
+        invalid_item["reason_code"] = "assess_applicability"
+        invalid_item["selection_reason"] = (
+            "Assess whether the Asante share-sale terms are binding and material."
+        )
+        invalid_item["applicability_hypothesis"] = (
+            "The sale may be evaluated as a binding transaction."
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+
+            rejected_analogy = LLMSignalRetrievalAgent(caller).select(
+                (
+                    "What are the specific terms and potential impact of the Asante "
+                    "Gold share sale on the company's financial position?",
+                ),
+                snapshot,
+                {},
+                research_state=ResearchState(
+                    hypotheses=("Gold prices may support further repricing.",),
+                    next_information_needs=(
+                        "Clarify the financial impact of the share sale.",
+                    ),
+                ),
+            )
+            applicable_caller = ScriptedRoleCaller(
+                [signal_selection("order_quality:v1")]
+            )
+            applicable = LLMSignalRetrievalAgent(applicable_caller).select(
+                (
+                    "Are the disclosed customer purchase orders binding and likely "
+                    "to convert to revenue?",
+                ),
+                snapshot,
+                {},
+            )
+
+        self.assertEqual(rejected_analogy.value, ())
+        self.assertEqual(rejected_analogy.usage.llm_calls, 2)
+        order_card = next(
+            card
+            for card in caller.calls[0]["payload"]["available_signal_cards"]
+            if card["signal_ref"] == "order_quality:v1"
+        )
+        self.assertIn(
+            "purchase order",
+            order_card["routing_required_research_phrases"],
+        )
+        error = validation_error(caller.calls[1])
+        self.assertIn("version-owned required research context", error)
+        self.assertIn("order_quality:v1", error)
+        self.assertIn("new analogy", error)
+        self.assertEqual(
+            tuple(item.signal_ref for item in applicable.value),
+            ("order_quality:v1",),
+        )
+        self.assertEqual(applicable.usage.llm_calls, 1)
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -5973,6 +6037,64 @@ class ConcreteRoleAdapterTests(TestCase):
                 "must_finalize": True,
                 "termination_trigger": "budget_exhausted",
             },
+        )
+
+    def test_v63_unavailable_terminal_reflection_changes_only_decision(self) -> None:
+        need = "What additional customer-order evidence is available?"
+        previous = ResearchState(
+            hypotheses=("Binding customer orders may support growth.",),
+            open_questions=(need,),
+            next_information_needs=(need,),
+        )
+        invalid = replace(
+            previous,
+            hypotheses=("Unavailable data weakens the order thesis.",),
+            decision=ResearchDecision.FINALIZE,
+        ).to_dict()
+        corrected = replace(
+            previous,
+            decision=ResearchDecision.FINALIZE,
+        ).to_dict()
+        caller = ScriptedRoleCaller([invalid, corrected])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(
+                SignalSelectionDecision(
+                    signal_ref="revenue_growth_yoy:v1",
+                    reason_code="answer_need",
+                    selection_reason="Try the available financial periods.",
+                    applicability_hypothesis="Comparable periods may be available.",
+                    expected_role="coverage",
+                ),
+            ),
+            must_finalize=True,
+            termination_trigger=RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
+        unavailable = SignalResult(
+            signal_id="revenue_growth_yoy",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.0,
+            interpretation="Revenue periods are unavailable.",
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(unavailable,), signal_calls=1),
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("all-unavailable terminal batch", error)
+        self.assertIn("change only decision", error)
+        self.assertEqual(
+            reflected.value,
+            replace(previous, decision=ResearchDecision.FINALIZE),
+        )
+        self.assertIn(
+            "If every current-batch Signal is unavailable",
+            caller.calls[0]["system_prompt"],
         )
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:

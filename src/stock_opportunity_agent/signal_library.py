@@ -215,6 +215,26 @@ class SignalSpec:
             raise ValidationError(
                 "Signal routing_need_phrases must contain 1-8 non-empty strings"
             )
+        required_research_phrases = parameters.get(
+            "routing_required_research_phrases"
+        )
+        if required_research_phrases is not None and (
+            not isinstance(required_research_phrases, list)
+            or not required_research_phrases
+            or len(required_research_phrases) > 8
+            or any(
+                not isinstance(item, str)
+                or not item.strip()
+                or len(item) > 80
+                for item in required_research_phrases
+            )
+            or len(set(required_research_phrases))
+            != len(required_research_phrases)
+        ):
+            raise ValidationError(
+                "Signal routing_required_research_phrases must contain 1-8 "
+                "unique non-empty strings"
+            )
         excluded_tags = parameters.get("routing_excluded_context_tags")
         if excluded_tags is not None and (
             not isinstance(excluded_tags, list)

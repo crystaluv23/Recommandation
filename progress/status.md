@@ -1,5 +1,38 @@
 # Status
 
+Current ordinary-loop repair (2026-08-29): immutable v63 contract
+`8d43153...01e1` rejected its only candidate after one otherwise complete and
+correctly judged case at authoritative pointers `round=0/cycle=0`. It used 11
+completed attempts, `$0.01701224`, and three SEC request-ledger entries. Exact
+inspection covered proposer, H_init initial/correction, both routing decisions, the
+soft-Signal initial/correction, H_reflect initial/correction, both deterministic
+Signal results, Predictor, and post-hoc. Precise correction feedback worked live:
+H_init removed only an unsupported date, the soft Signal replaced a projection-edge
+`$1,` quote with the complete `$1,500` clause, and H_reflect removed only the need
+that its adopted `answer_need` guidance evidence had answered.
+
+The second routing response then relabeled an Asante equity sale as a customer order
+and selected `order_quality:v1`; its actual Signal request was persisted but refused
+before transmission by the conservative budget reservation. The completed
+`gross_margin_change` and `revenue_acceleration` results were both honestly
+`unavailable`. Runtime evaluated the generic all-unavailable shortcut before the
+partial soft-refusal terminal rule, skipped the required H_reflect call, left
+`decision=continue`, and excluded the case despite a complete correct Predictor and
+post-hoc result.
+
+Signal versions may now own a finite `routing_required_research_phrases` gate.
+`order_quality:v1` requires existing purchase-order, customer-order, backlog,
+contract-award, or customer-commitment wording in accepted research context; a new
+analogy invented only in routing prose cannot satisfy it. When a soft request is
+refused after an all-unavailable deterministic partial batch, runtime now performs
+one terminal H_reflect call, and validation requires every prior field and item to
+remain byte-for-byte while only `decision` changes to `finalize`. Both constraints
+pass exact v63 artifact replay, all 454 repository tests, and lint.
+
+Before the successor contract, the remaining frozen ceilings are 227 attempts,
+`$18.18997416`, and 782 data requests; v63 remains immutable evidence and cannot
+resume across the code revision.
+
 Current ordinary-loop repair (2026-08-28): immutable v62 contract
 `fe5027b...a28d2c` rejected its only candidate on the first H_init case at
 authoritative pointers `round=0/cycle=0`. It used four attempts, including one

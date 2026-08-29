@@ -862,3 +862,32 @@ linked indices and require them to copy the corrected claim byte-for-byte. Requi
 every named item to change, but preserve unrelated valid items. Replay the persisted
 invalid response through the local prevalidator to prove that the correction context,
 not just a newly sampled response, now has the intended scope.
+
+## Version-owned routing context and unavailable-terminal addendum (2026-08-29)
+
+Similarity prose is not an applicability contract. V63's second routing response
+selected `order_quality:v1` for an Asante equity sale by calling the sale terms a
+binding transaction. The Signal actually measures customer purchase orders, backlog,
+awards, and revenue conversion; neither the unresolved needs nor accepted research
+context mentioned any such object. Because the model could invent both a selection
+reason and an applicability hypothesis, generic semantic validation could not
+distinguish this analogy from a real order question.
+
+Let a Signal version declare a small set of required literal research phrases when
+its domain object is narrower than its category. Match them only against existing
+information needs and accepted research context, never against newly generated
+routing prose. For `order_quality:v1`, require an order, backlog, award, or customer-
+commitment phrase. Keep the gate version-owned and optional so broad Signals are not
+silently weakened. Replay the exact bad selection and require the structured
+correction to remove it; separately prove a real purchase-order need still routes.
+
+The same case exposed an ordering defect in terminal control. Two deterministic
+Signals completed as honest `unavailable`, while the selected soft request was
+refused before transmission by conservative reservation. The all-unavailable
+shortcut ran first, suppressed H_reflect, and preserved `continue`; Predictor and
+post-hoc completed, but fitness then rejected the case as unfinalized. When the
+partial batch is the last reflectable batch because the soft request cannot be sent,
+run one model-authored terminal reflection even if every completed result is
+unavailable. Since unavailable coverage contains no new claim, require every prior
+ResearchState field and item byte-for-byte and allow only `decision=finalize` to
+change. Preserve the real budget refusal as the termination trigger.

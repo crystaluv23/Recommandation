@@ -1920,11 +1920,8 @@ def execute_information_plan(
             result.value is SignalValue.UNAVAILABLE
             for result in batch.results
         ):
-            if soft_budget_exhausted:
-                termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
-                stop_reason = RuntimeStopReason.BUDGET_EXHAUSTED
-                break
-            continue
+            if not soft_budget_exhausted:
+                continue
         reflection_termination_trigger: RuntimeStopReason | None = None
         if soft_budget_exhausted:
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED

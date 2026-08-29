@@ -705,7 +705,11 @@ An initial `continue` receives the single structured correction, while a repeate
 `continue` fails closed. The runtime does not synthesize a terminal state, and the
 actual boundary remains recorded separately as `termination_trigger`.
 When all executed results are `unavailable`, H_reflect remains skipped because no
-belief may change. If the next routing decision is empty or eligible cards are
+belief may change, except when a selected soft subgroup was refused after those
+deterministic results completed. That exact terminal partial batch receives
+`must_finalize=true`; H_reflect must preserve all research content byte-for-byte and
+author only the `continue` to `finalize` decision transition. If the next ordinary
+routing decision is empty or eligible cards are
 exhausted, `no_signal_match` deterministically ends evidence collection: runtime
 copies the complete last state, changes only `decision` to `finalize`, and preserves
 every unresolved need/open question plus `termination_trigger=no_signal_match`.
@@ -813,6 +817,11 @@ applicability classification contradicts the visible card and receives the one
 correction. Runtime never infers the tag or chooses a replacement Signal. Wrong refs,
 missing fields, non-string tag containers, and invalid
 reason/role enums retain their correction/fail-closed behavior.
+`routing_required_research_phrases` is a second narrow version-owned gate: one exact
+normalized phrase must already be present in supplied information needs or accepted
+ResearchState context, never merely in the selector's new prose. `order_quality:v1`
+uses customer-order/backlog phrases so an equity sale or financing transaction cannot
+be relabeled as an order-quality problem by analogy.
 
 Research initialization and compact routing also preserve provider-cache prefixes
 across their single correction. The initial and correction system prompts are
@@ -833,8 +842,11 @@ runs first and the soft subgroup runs second; successful subgroup results are me
 back into selector order before the ordinary whole-batch reflection. If the soft
 request cannot pass its exact pre-send reservation, the completed deterministic
 subgroup remains a durable partial round and can still receive reflection when it has
-usable evidence. The trajectory then records `budget_exhausted` and stays ineligible
-for fitness even if that bounded partial reflection returns `decision=finalize`.
+usable evidence. If every completed deterministic result is unavailable, terminal
+reflection is still required but may change only the decision; unavailable remains a
+coverage diagnostic. A model-authored valid `finalize` earns
+`stop_reason=finalized`, while the actual boundary remains durable as
+`termination_trigger=budget_exhausted`; a repeated `continue` stays ineligible.
 An initial preflight failure performs no attempt/network action. If the initial soft
 attempt completed but its correction preflight fails, runtime still counts that paid
 usage while accepting no invalid soft result. In both cases the selection remains

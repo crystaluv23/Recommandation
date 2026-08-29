@@ -4877,14 +4877,19 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
                 for index, item in enumerate(value[field_name])
                 if item == claim and _normalized_claim_quantity_groups(str(item))
             ]
+            linked_instruction = (
+                f"; linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
+                if linked
+                else ""
+            )
             issues.append(
                 f"supporting_evidence[{items[0][0]}] claim contains numeric "
                 "quantities absent from all Basic exact_text refs with the same "
                 f"claim: {missing}. Add one exact literal ref for every quantity, "
                 "split the multi-span claim across refs with the same claim, or "
-                "narrow the claim; "
-                f"linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
+                "narrow the claim"
+                + linked_instruction
             )
     return issues
 
@@ -5129,13 +5134,18 @@ def _validate_basic_claim_quantities(
         if missing:
             index = items[0][0]
             linked = _linked_quantitative_assertion_paths(state, claim)
+            linked_instruction = (
+                f"; linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
+                if linked
+                else ""
+            )
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all Basic exact_text refs with the same claim: {missing}. "
                 "Add one exact literal ref for every quantity, split the multi-span "
-                "claim across refs with the same claim, or narrow the claim; "
-                f"linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
+                "claim across refs with the same claim, or narrow the claim"
+                + linked_instruction
             )
 
 
@@ -5153,15 +5163,20 @@ def _validate_signal_claim_quantities(
         if missing:
             index = items[0][0]
             linked = _linked_quantitative_assertion_paths(state, claim)
+            linked_instruction = (
+                f"; linked_assertions={linked} must copy the corrected claim "
+                "byte-for-byte"
+                if linked
+                else ""
+            )
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all referenced Signal evidence items with the same "
                 f"claim: {missing}. Copy the exact canonical numeric form from a "
                 "deterministic Signal interpretation, cite every required Signal "
                 "evidence item with the same claim, or narrow the claim; do not "
-                "round or convert the supplied values; "
-                f"linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
+                "round or convert the supplied values"
+                + linked_instruction
             )
 
 
@@ -5371,6 +5386,30 @@ def _validate_research_state_refs(
             f"{unavailable_state_errors}. Unavailable is coverage-only; remove the "
             "new belief/resolution and keep the topic open if it still matters"
         )
+    terminal_unavailable_only = (
+        phase == "reflect"
+        and must_finalize
+        and previous_state is not None
+        and batch is not None
+        and bool(batch.results)
+        and all(
+            result.value is SignalValue.UNAVAILABLE
+            or result.coverage is SignalCoverage.UNAVAILABLE
+            for result in batch.results
+        )
+    )
+    if terminal_unavailable_only and previous_state is not None:
+        previous_content = previous_state.to_dict()
+        reflected_content = state.to_dict()
+        previous_content.pop("decision")
+        reflected_content.pop("decision")
+        if reflected_content != previous_content:
+            validation_errors.append(
+                "research_controller_reflect received an all-unavailable terminal "
+                "batch. Preserve every prior ResearchState field and item "
+                "byte-for-byte and change only decision from 'continue' to "
+                "'finalize'; unavailable coverage cannot justify any other update"
+            )
     if (
         phase == "reflect"
         and must_finalize
@@ -5698,8 +5737,10 @@ class LLMResearchController:
                 "is invalid. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
                 "on accepted evidence, while preserving unresolved uncertainty in "
-                "open_questions or next_information_needs. An unavailable Signal is only a coverage "
-                "diagnostic: it is "
+                "open_questions or next_information_needs. If every current-batch "
+                "Signal is unavailable, preserve every prior ResearchState field and "
+                "item byte-for-byte and change only decision to finalize. An "
+                "unavailable Signal is only a coverage diagnostic: it is "
                 "not evidence of absence and cannot create a belief or resolve a question."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
@@ -5862,6 +5903,13 @@ class LLMSignalRetrievalAgent:
             routing_phrases = spec.parameters.get("routing_need_phrases", ())
             if routing_phrases:
                 card["routing_need_phrases"] = list(routing_phrases)
+            required_research_phrases = spec.parameters.get(
+                "routing_required_research_phrases", ()
+            )
+            if required_research_phrases:
+                card["routing_required_research_phrases"] = list(
+                    required_research_phrases
+                )
             excluded_tags = spec.parameters.get(
                 "routing_excluded_context_tags", ()
             )
@@ -5871,10 +5919,11 @@ class LLMSignalRetrievalAgent:
         if not cards:
             return AgentStep((), AgentUsage())
 
+        research_context = _signal_routing_research_context(research_state)
         selection_payload: dict[str, Any] = {
             "available_signal_cards": cards,
             "information_needs": list(information_needs),
-            "research_context": _signal_routing_research_context(research_state),
+            "research_context": research_context,
             "previous_context_tags": list(normalized_prior_tags),
             "previous_signal_results": {
                 ref: signal_result_model_view(value)
@@ -5886,6 +5935,20 @@ class LLMSignalRetrievalAgent:
         explicit_empty_matches = _explicit_signal_need_matches(
             information_needs,
             (specs_by_ref[ref] for ref in allowed_refs),
+        )
+        normalized_research_items = tuple(
+            " "
+            + re.sub(r"[^a-z0-9]+", " ", item.casefold()).strip()
+            + " "
+            for item in (
+                *information_needs,
+                *(
+                    text
+                    for values in research_context.values()
+                    for text in values
+                ),
+            )
+            if item.strip()
         )
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
@@ -5985,6 +6048,34 @@ class LLMSignalRetrievalAgent:
                         "selection; runtime will not infer a replacement Signal or "
                         "forget an earlier accepted case classification"
                     )
+                required_phrases = tuple(
+                    str(phrase)
+                    for phrase in specs_by_ref[item.signal_ref].parameters.get(
+                        "routing_required_research_phrases", ()
+                    )
+                )
+                normalized_required = tuple(
+                    " "
+                    + re.sub(
+                        r"[^a-z0-9]+", " ", phrase.casefold()
+                    ).strip()
+                    + " "
+                    for phrase in required_phrases
+                )
+                if required_phrases and not any(
+                    phrase in research_item
+                    for phrase in normalized_required
+                    for research_item in normalized_research_items
+                ):
+                    raise ValidationError(
+                        "Signal selection lacks version-owned required research "
+                        f"context: {item.signal_ref} requires at least one exact "
+                        "phrase already present in information_needs or accepted "
+                        f"research_context from {list(required_phrases)}. Remove "
+                        "the incompatible selection; runtime will not accept a "
+                        "new analogy stated only in selection_reason or "
+                        "applicability_hypothesis"
+                    )
             return tuple(parsed)
 
         selected, usage = _complete_parsed_role(
@@ -6007,7 +6098,12 @@ class LLMSignalRetrievalAgent:
                 "value; choose a non-empty answering batch in that case. A card's "
                 "routing_excluded_context_tags are version-owned hard "
                 "applicability exclusions: do not select that Signal when your own "
-                "context_tags contain one of them. For a non-empty answer, return "
+                "context_tags contain one of them. "
+                "A card's routing_required_research_phrases are also hard: select "
+                "that Signal only when at least one exact phrase already appears "
+                "in information_needs or research_context; your new reason or "
+                "applicability prose cannot create the measured object by analogy. "
+                "For a non-empty answer, return "
                 "selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "
                 "confirm_hypothesis, test_contradiction, assess_applicability, "

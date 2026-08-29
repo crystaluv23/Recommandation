@@ -149,6 +149,13 @@ The sole semantic exception is version-owned applicability: a Signal may expose
 `routing_excluded_context_tags`, and selecting that Signal while the selector itself
 attaches one of those tags now or attached it in an earlier accepted selection for
 the same case is a direct contradiction that receives the one bounded correction.
+It may also expose `routing_required_research_phrases`; at least one normalized exact
+phrase must already occur in the supplied information needs or bounded accepted
+ResearchState projection. The selector may not manufacture the required object by
+analogy in its own reason/applicability text. This is used narrowly for constructs
+such as `order_quality`, whose customer-order/backlog measurement must not be applied
+to an unrelated financing or share-sale transaction merely because both have terms
+that may be called binding or material.
 Runtime neither infers tags from case content nor substitutes another Signal. The
 correction must remove the incompatible selection, or return a genuinely different
 supported applicability classification; merely dropping a prior case classification
@@ -312,11 +319,16 @@ The same topic may remain in open questions or hypotheses because a data gap is 
 valid uncertainty, not a finding.
 When every result in one persisted Signal batch is canonical `unavailable`, runtime
 keeps the complete `SignalRound`, fingerprints, usage, and coverage diagnostics but
-does not call `H_reflect`: such a batch has no evidence that can support a belief,
-resolve a question, or change the ResearchState. The exact state remains unchanged
-and the controller proceeds to routing over the still-unexecuted cards, subject to
-the normal round/call/token guards. Mixed batches and every batch with at least one
-available result still receive exactly one `H_reflect` call. This optimization cannot
+normally does not call `H_reflect`: such a batch has no evidence that can support a
+belief, resolve a question, or change the ResearchState. The exact state remains
+unchanged and the controller proceeds to routing over the still-unexecuted cards,
+subject to the normal round/call/token guards. The exception is a partial mixed
+selection whose soft subgroup fails pre-send reservation after the deterministic
+subgroup completed entirely as `unavailable`: that boundary is terminal, so one
+H_reflect receives `must_finalize=true`. Its output must preserve every research
+field/item byte-for-byte and may change only `decision` from `continue` to `finalize`;
+one correction applies. Mixed batches and every ordinary batch with at least one
+available result still receive exactly one H_reflect call. This optimization cannot
 hide Signal execution cost. If routing then exhausts eligible cards or explicitly
 returns no useful match, `no_signal_match` is a normal end of evidence collection,
 not an unfinished research assertion: runtime copies the exact state and changes only

@@ -155,7 +155,8 @@
         "definition": {"description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
-        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"routing_required_research_phrases": ["purchase order", "purchase orders", "customer order", "customer orders", "order backlog", "funded backlog", "contract award", "customer commitment"]}
       },
       "skill": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.",
       "tests": [{"name": "non-binding MOU", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The memorandum of understanding is non-binding."}]}]

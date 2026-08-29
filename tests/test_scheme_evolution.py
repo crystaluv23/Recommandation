@@ -686,6 +686,38 @@ class SignalLibraryTests(TestCase):
                 },
             )
 
+    def test_order_quality_requires_version_owned_research_phrases(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            spec = registry.load_spec("order_quality:v1")
+
+        self.assertEqual(
+            spec.parameters["routing_required_research_phrases"],
+            [
+                "purchase order",
+                "purchase orders",
+                "customer order",
+                "customer orders",
+                "order backlog",
+                "funded backlog",
+                "contract award",
+                "customer commitment",
+            ],
+        )
+        with self.assertRaisesRegex(
+            ValidationError, "routing_required_research_phrases"
+        ):
+            SignalSpec(
+                signal_id="bad_required_research_phrase",
+                version=1,
+                category="orders",
+                description="Reject empty routing context requirements.",
+                execution_type=SignalExecutionType.LLM,
+                skill_file="skill.md",
+                source_types=("filing",),
+                parameters={"routing_required_research_phrases": []},
+            )
+
     def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -1390,6 +1422,156 @@ class InformationPlanRuntimeTests(TestCase):
             [
                 {
                     "selections": ("negative_word_count:v1",),
+                    "must_finalize": True,
+                    "termination_trigger": RuntimeStopReason.BUDGET_EXHAUSTED,
+                }
+            ],
+        )
+
+    def test_runtime_terminally_reflects_unavailable_partial_batch(self) -> None:
+        class BudgetBlockedRunner:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def set_request_token_budget(self, value):
+                pass
+
+            def execute_many(self, inputs, as_of):
+                self.calls += 1
+                raise RuntimeBudgetExceeded(
+                    "fixture soft request cannot be reserved",
+                    usage=AgentUsage(),
+                )
+
+        class MixedSelector:
+            def select(
+                self,
+                information_needs,
+                signal_registry,
+                prior_signal_fingerprints=None,
+                prior_signal_results=None,
+                eligible_signal_refs=None,
+                research_state=None,
+                prior_context_tags=(),
+            ):
+                return AgentStep(
+                    (
+                        SignalSelectionDecision(
+                            signal_ref="revenue_growth_yoy:v1",
+                            reason_code="answer_need",
+                            selection_reason="Try comparable financial periods.",
+                            applicability_hypothesis=(
+                                "Comparable revenue periods may be available."
+                            ),
+                            expected_role="primary",
+                        ),
+                        SignalSelectionDecision(
+                            signal_ref="order_quality:v1",
+                            reason_code="confirm_hypothesis",
+                            selection_reason="Check disclosed customer orders.",
+                            applicability_hypothesis=(
+                                "A filing may disclose binding customer orders."
+                            ),
+                            expected_role="confirmation",
+                        ),
+                    ),
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+        class TerminalController:
+            def __init__(self) -> None:
+                self.initial_state = ResearchState(
+                    hypotheses=("Customer orders may support growth.",),
+                    open_questions=("Are customer orders binding?",),
+                    next_information_needs=("Confirm purchase-order quality.",),
+                )
+                self.reflected_refs: list[tuple[str, ...]] = []
+                self.runtime_contexts: list[dict[str, Any]] = []
+
+            def set_reflection_runtime_context(
+                self,
+                *,
+                selections,
+                must_finalize,
+                termination_trigger,
+            ):
+                self.runtime_contexts.append(
+                    {
+                        "selections": tuple(item.signal_ref for item in selections),
+                        "must_finalize": must_finalize,
+                        "termination_trigger": termination_trigger,
+                    }
+                )
+
+            def initialize(self, plan, basic_info):
+                return AgentStep(
+                    self.initial_state,
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+            def reflect(self, plan, state, batch):
+                self.reflected_refs.append(tuple(item.ref for item in batch.results))
+                return AgentStep(
+                    replace(state, decision=ResearchDecision.FINALIZE),
+                    AgentUsage(llm_calls=1, tokens=10),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            runner = BudgetBlockedRunner()
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="current-filing",
+                        company_id="winner_1",
+                        source_type="filing",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="The company discussed ordinary operations.",
+                    ),
+                )
+            )
+            controller = TerminalController()
+            snapshot = registry.freeze()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=snapshot,
+                signal_executor=SignalExecutor(
+                    snapshot,
+                    store,
+                    llm_runner=runner,
+                ),
+                controller=controller,
+                signal_agent=MixedSelector(),
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(max_llm_calls=10),
+            )
+
+        self.assertEqual(runner.calls, 1)
+        self.assertEqual(
+            controller.reflected_refs,
+            [("revenue_growth_yoy:v1",)],
+        )
+        self.assertEqual(
+            trajectory.final_state,
+            replace(controller.initial_state, decision=ResearchDecision.FINALIZE),
+        )
+        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+        self.assertEqual(
+            trajectory.termination_trigger,
+            RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
+        self.assertEqual(
+            controller.runtime_contexts,
+            [
+                {
+                    "selections": ("revenue_growth_yoy:v1",),
                     "must_finalize": True,
                     "termination_trigger": RuntimeStopReason.BUDGET_EXHAUSTED,
                 }
