@@ -975,3 +975,25 @@ local and unchanged. Reuse that initial projection byte-for-byte on correction r
 than trimming after seeing failed output. In the exact V67 replay this retained 15 of
 19 projections and the full `$1,500 per ounce` guidance clause while reducing the new
 request reservation from 47,900 to 41,101 under the same 41,766 limit.
+
+## Shared-Signal correction isolation addendum (2026-08-30)
+
+One shared provider call does not make its Signal rows one atomic semantic result.
+V68's third soft call returned a valid financing row plus an invalid customer-
+concentration row. The latter inferred customer diversification from silence and
+changed the case of four “literal” quotes. Initial validation accepted financing and
+queued only concentration for correction, but the correction's exact reservation no
+longer fit. The old exception path discarded the whole subgroup, erased the valid
+financing evidence, and marked the case budget-exhausted.
+
+Treat a correction preflight refusal like an exhausted optional repair, not like an
+unsent initial batch. Preserve paid usage and already accepted sibling rows; convert
+only pending invalid rows to canonical `unavailable`, then let ordinary H_reflect and
+the next runtime guard decide whether work continues. This never accepts bad output.
+Make the validation feedback executable too: for a changed-case, changed-punctuation,
+absent, or ambiguous quote, report its evidence group/index, supplied projection id,
+occurrences in that projection and across eligible visible projections, and matching
+ids. Finally, keep routing at the measured-object boundary. A customer-concentration
+card needs a customer/client/buyer/offtake/backlog/order/program object in accepted
+needs/state; a selector's new analogy cannot turn mine diversification or commodity
+profitability into evidence about customer diversification.

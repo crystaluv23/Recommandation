@@ -806,6 +806,10 @@ supporting/counter index, rejected projection id, start/end edge, and overlappin
 projection ids covering that source boundary. This makes the sole correction
 actionable while leaving the complete projections unchanged and retaining model
 responsibility for selecting one complete literal or returning unavailable.
+For an absent, case-changed, punctuation-changed, or ambiguous quote, feedback likewise
+identifies the evidence group/index, supplied projection id, occurrence count inside
+that projection and across the Signal's eligible visible projections, and uniquely
+matching projection ids. A generic “must map uniquely” error is not actionable.
 The shared one/two-Signal role uses one dedicated batch output example and no
 single-`SignalResult` "return exactly" example. Its outer row copies the supplied
 versioned `signal_ref`; its inner `result.signal_id` copies the matching
@@ -895,8 +899,12 @@ coverage diagnostic. A model-authored valid `finalize` earns
 `termination_trigger=budget_exhausted`; a repeated `continue` stays ineligible.
 An initial preflight failure performs no attempt/network action. If the initial soft
 attempt completed but its correction preflight fails, runtime still counts that paid
-usage while accepting no invalid soft result. In both cases the selection remains
-auditable in the exact routing response and request-ready event.
+usage, converts only the pending invalid rows to canonical `unavailable`, and retains
+already accepted siblings for ordinary whole-batch reflection. It does not label the
+whole subgroup budget-exhausted merely because the larger optional repair cannot fit;
+the next ordinary runtime guard decides whether further adaptive work remains. In
+both cases the selection remains auditable in the exact routing response and
+request-ready event.
 
 When two LLM Signals share one deduplicated source projection, each compact Signal
 entry lists its own `eligible_projection_ids`, derived only from that Signal's

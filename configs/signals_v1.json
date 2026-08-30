@@ -183,7 +183,8 @@
         "definition": {"description": "Judge whether the growth thesis depends excessively on one customer or one customer program."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"]},
-        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {"routing_required_research_phrases": ["customer", "client", "buyer", "offtake", "backlog", "order", "customer program"]}
       },
       "skill": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.",
       "tests": [{"name": "single customer majority", "expected": "negative", "documents": [{"source_type": "filing", "content": "One customer represented 72 percent of revenue."}]}]

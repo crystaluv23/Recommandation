@@ -218,6 +218,14 @@ version-owned exclusion. `commercialization_status:v1` excludes
 `mature_operations`, matching its skill boundary without turning general routing
 tags into universal hard rules.
 
+The same measured-object rule applies to `customer_concentration:v1`: it is
+eligible only when accepted needs/state already name a customer, client, buyer,
+offtake, backlog, order, or customer program. A selector cannot introduce customer
+concentration in its own reason as generic context for commodity prices, operating
+diversification, or profitability. The extraction skill's existing semantic boundary
+still controls the result: silence about customer identity is `unavailable`, never
+proof of diversified adoption.
+
 A shared soft-Signal provider call deduplicates source text across at most two
 Signals, but document eligibility remains per Signal. Each model-facing Signal entry
 therefore includes `eligible_projection_ids`; evidence mapping rejects any citation
@@ -265,6 +273,12 @@ projected text; local code requires a unique mapping back to an original Raw Inf
 span and stores the original literal span in `SignalEvidence`. The projection is
 an execution context, not a claim that omitted text is absent; ambiguity, absence,
 or insufficient visible evidence fails closed.
+When an initial shared call contains both valid and invalid Signal rows, accepted
+rows remain independent. If the invalid rows' sole correction cannot pass its
+pre-send reservation, only those pending rows become canonical `unavailable`; the
+runtime retains the paid initial usage, accepted siblings, exact request-ready audit,
+and ordinary downstream reflection. It never accepts the invalid rows or converts
+the correction refusal into loss of a valid sibling.
 
 Required Signal-result objects and evidence-policy booleans are type-strict;
 missing coverage, string booleans, string-as-array evidence, and non-finite

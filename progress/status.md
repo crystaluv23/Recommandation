@@ -1,5 +1,31 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v68 contract
+`9a70a62...421bb` rejected its only candidate after the first case at authoritative
+pointers `round=0/cycle=0`. It used 16 attempts, `$0.02271920`, and three locally
+denied SEC request-ledger entries. The v67 repair passed its paid boundary: a
+30,830-character guidance projection sent both initial and correction calls, the
+correction moved from a truncated `$1,` edge to the complete `$1,500 per ounce`
+clause, and H_reflect removed the answered guidance need. A four-Signal deterministic
+round then preserved state correctly when three results were unavailable and the
+only available negative-word count was neutral.
+
+The third routing response selected one relevant financing Signal plus an irrelevant
+`customer_concentration` analogy for gold-price profitability. Its budget-trimmed
+14,739-character shared context sent the initial call. Financing returned a separately
+valid completed-share-sale result, while customer concentration inferred diversified
+customers from silence and changed the case of four purported literal quotes. The
+old mapper reported only `must map uniquely`; its 26,765-byte correction request then
+exceeded the remaining budget, and the whole soft subgroup was discarded, including
+the valid financing sibling. `customer_concentration:v1` now requires a pre-existing
+customer/client/buyer/offtake/backlog/order/program object before routing. Literal
+mapping feedback now names the evidence index, supplied projection, supplied/visible
+occurrences, and matching ids. If an initial shared call has accepted siblings but a
+pending correction cannot pass preflight, only the pending rows become canonical
+`unavailable`; accepted results and paid usage survive for ordinary H_reflect. All
+460 repository tests and lint pass. The successor contract must freeze 187 attempts,
+`$18.12799812`, and 767 data requests; v68 remains immutable evidence.
+
 Current ordinary-loop repair (2026-08-30): immutable v67 contract
 `47d64a8...d364` rejected its only candidate after the first case at authoritative
 pointers `round=0/cycle=0`. It used eight attempts, `$0.01462384`, and three SEC

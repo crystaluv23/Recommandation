@@ -3231,6 +3231,60 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(applicable.usage.llm_calls, 1)
 
+    def test_v68_customer_concentration_requires_an_existing_customer_object(
+        self,
+    ) -> None:
+        invalid = signal_selection("customer_concentration:v1")
+        invalid_item = invalid["selections"][0]
+        invalid_item["reason_code"] = "combine_evidence"
+        invalid_item["selection_reason"] = (
+            "Use operating diversification as customer concentration context."
+        )
+        invalid_item["applicability_hypothesis"] = (
+            "Multiple mines may imply a diversified customer base."
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+
+            rejected_analogy = LLMSignalRetrievalAgent(caller).select(
+                (
+                    "What is the gold price outlook and its effect on revenue and "
+                    "profitability?",
+                ),
+                snapshot,
+                {},
+            )
+            applicable_caller = ScriptedRoleCaller(
+                [signal_selection("customer_concentration:v1")]
+            )
+            applicable = LLMSignalRetrievalAgent(applicable_caller).select(
+                (
+                    "Does one customer program account for most backlog and revenue?",
+                ),
+                snapshot,
+                {},
+            )
+
+        self.assertEqual(rejected_analogy.value, ())
+        self.assertEqual(rejected_analogy.usage.llm_calls, 2)
+        card = next(
+            card
+            for card in caller.calls[0]["payload"]["available_signal_cards"]
+            if card["signal_ref"] == "customer_concentration:v1"
+        )
+        self.assertIn("customer", card["routing_required_research_phrases"])
+        error = validation_error(caller.calls[1])
+        self.assertIn("version-owned required research context", error)
+        self.assertIn("customer_concentration:v1", error)
+        self.assertEqual(
+            tuple(item.signal_ref for item in applicable.value),
+            ("customer_concentration:v1",),
+        )
+        self.assertEqual(applicable.usage.llm_calls, 1)
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -6762,6 +6816,123 @@ class ConcreteRoleAdapterTests(TestCase):
             for item in caller.calls[0]["payload"]["source_projection"]
         ]
         self.assertEqual(len(identities), len(set(identities)))
+
+    def test_v68_correction_budget_preserves_valid_soft_signal_sibling(self) -> None:
+        class CorrectionBudgetCaller:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, Any]] = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                if len(self.calls) == 2:
+                    raise RuntimeBudgetExceeded(
+                        "correction reservation exceeds remaining case budget"
+                    )
+                payload = kwargs["payload"]
+                projections = {
+                    item["projection_id"]: item
+                    for item in payload["source_projection"]
+                }
+                rows = []
+                for item in payload["signals"]:
+                    signal_ref = item["signal_ref"]
+                    projection = projections[item["eligible_projection_ids"][0]]
+                    exact_text = projection["exact_text"]
+                    if signal_ref == "customer_concentration:v1":
+                        exact_text = exact_text.replace("One customer", "one customer")
+                    signal_id, version = signal_ref.split(":v")
+                    rows.append(
+                        {
+                            "signal_ref": signal_ref,
+                            "result": {
+                                "signal_id": signal_id,
+                                "version": int(version),
+                                "state": {
+                                    "value": (
+                                        "negative"
+                                        if signal_id == "customer_concentration"
+                                        else "positive"
+                                    ),
+                                    "confidence": 0.8,
+                                },
+                                "interpretation": {
+                                    "summary": f"{signal_id} was source-backed."
+                                },
+                                "evidence": {
+                                    "supporting": [
+                                        {
+                                            "projection_id": projection[
+                                                "projection_id"
+                                            ],
+                                            "exact_text": exact_text,
+                                        }
+                                    ],
+                                    "counter": [],
+                                },
+                                "status": {"coverage": "sufficient"},
+                            },
+                        }
+                    )
+                return (
+                    {"results": rows},
+                    AgentUsage(llm_calls=1, tokens=50, cost=0.01),
+                )
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        guidance = RawInfoDocument.create(
+            document_id="guidance-document",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="Management raised annual guidance.",
+        )
+        concentration = RawInfoDocument.create(
+            document_id="concentration-document",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content="One customer represented 72 percent of revenue.",
+        )
+        inputs = tuple(
+            LLMSignalBatchInput(
+                SignalSpec(
+                    signal_id=signal_id,
+                    version=1,
+                    category="catalysts",
+                    description="Inspect the supplied disclosure.",
+                    execution_type=SignalExecutionType.LLM,
+                    source_types=("filing",),
+                    skill_file=f"{signal_id}.md",
+                ),
+                (document,),
+                "Extract one literal source-backed conclusion.",
+            )
+            for signal_id, document in (
+                ("guidance_change", guidance),
+                ("customer_concentration", concentration),
+            )
+        )
+        caller = CorrectionBudgetCaller()
+        runner = StructuredLLMSignalRunner(caller)
+        runner.set_request_token_budget(100)
+
+        results, usage = runner.execute_many(inputs, as_of)
+
+        self.assertEqual(usage, AgentUsage(llm_calls=1, tokens=50, cost=0.01))
+        self.assertEqual(results["guidance_change:v1"].value, SignalValue.POSITIVE)
+        concentration_result = results["customer_concentration:v1"]
+        self.assertEqual(concentration_result.value, SignalValue.UNAVAILABLE)
+        self.assertIn("correction request was not sent", concentration_result.interpretation)
+        self.assertEqual(len(caller.calls), 2)
+        error = caller.calls[1]["payload"]["validation_feedback"][0][
+            "validation_error"
+        ]
+        self.assertIn("Signal supporting evidence[0]", error)
+        self.assertIn("supplied_occurrences=0", error)
+        self.assertIn("visible_occurrences=0", error)
+        self.assertIn("matching_projection_ids=[]", error)
 
     def test_v30_shared_soft_projection_preserves_per_signal_document_scope(self) -> None:
         class CrossScopeCaller:

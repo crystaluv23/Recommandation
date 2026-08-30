@@ -8320,7 +8320,9 @@ def _map_projected_signal_evidence(
             projection = eligible_lineage.get(projection_id)
             resolved_projection_id = projection_id
             if not exact_text:
-                raise ValidationError("Signal projection evidence must map uniquely")
+                raise ValidationError(
+                    f"Signal {group} evidence[{index}] exact_text must be non-empty"
+                )
             if projection is None or projection.projection_text.count(exact_text) != 1:
                 matches = [
                     (candidate_id, candidate)
@@ -8332,7 +8334,21 @@ def _map_projected_signal_evidence(
                     for candidate in eligible_lineage.values()
                 )
                 if len(matches) != 1 or occurrence_count != 1:
-                    raise ValidationError("Signal projection evidence must map uniquely")
+                    supplied_occurrences = (
+                        projection.projection_text.count(exact_text)
+                        if projection is not None
+                        else 0
+                    )
+                    raise ValidationError(
+                        f"Signal {group} evidence[{index}] exact_text does not map "
+                        f"uniquely: supplied_projection_id={projection_id!r}, "
+                        f"supplied_occurrences={supplied_occurrences}, "
+                        f"visible_occurrences={occurrence_count}, "
+                        f"matching_projection_ids="
+                        f"{sorted(candidate_id for candidate_id, _ in matches)}. "
+                        "Copy one case- and punctuation-exact literal from an eligible "
+                        "projection or return unavailable"
+                    )
                 resolved_projection_id, projection = matches[0]
             projection_start = projection.projection_text.index(exact_text)
             projection_end = projection_start + len(exact_text)
@@ -8648,7 +8664,17 @@ class StructuredLLMSignalRunner:
                     ),
                 )
             except RuntimeBudgetExceeded as exc:
-                raise RuntimeBudgetExceeded(str(exc), usage=usage + exc.usage) from exc
+                if attempt == 0:
+                    raise RuntimeBudgetExceeded(
+                        str(exc), usage=usage + exc.usage
+                    ) from exc
+                usage = usage + exc.usage
+                for signal_ref in pending:
+                    last_errors[signal_ref] = (
+                        "correction request was not sent because its exact "
+                        f"reservation exceeded the remaining budget: {exc}"
+                    )
+                break
             usage = usage + step_usage
             rows = value.get("results")
             row_by_ref: dict[str, Mapping[str, Any]] = {}
@@ -8732,7 +8758,7 @@ class StructuredLLMSignalRunner:
                 value=SignalValue.UNAVAILABLE,
                 confidence=0.0,
                 interpretation=(
-                    "LLM Signal output failed strict validation after one correction: "
+                    "LLM Signal output failed strict validation: "
                     + last_errors.get(signal_ref, "missing batch result")
                 ),
                 coverage=SignalCoverage.UNAVAILABLE,
