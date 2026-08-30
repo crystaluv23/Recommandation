@@ -248,6 +248,32 @@ shorten the claim to at most 400 characters while retaining its provenance, or r
 the evidence item; an identical linked assertion must copy the corrected claim
 byte-for-byte or be removed. Unrelated valid fields and evidence remain unchanged.
 
+ResearchState is a bounded decision frontier, not a second summary of every Basic
+projection or Signal result. Provider output keeps only the smallest non-redundant set
+needed for the active hypothesis, evidence, counter-evidence, unresolved uncertainty,
+and next retrieval decision. The default per-field ceilings are three hypotheses,
+eight beliefs, eight evidence refs, four contradictions, six resolved questions, six
+open questions, and six next information needs; the combined arrays contain at most
+24 items, every non-evidence text item contains at most 300 characters, and the compact
+canonical JSON contains at most 6,000 UTF-8 bytes. During initialize, a Basic
+`exact_text` literal contains at most 800 characters and must be the shortest complete
+literal that supports its claim. Full Basic projections, Raw Info, Signal batches, and
+trajectories remain durable locally, so these limits remove repeated source summary
+rather than evidence coverage.
+
+Reflect remains backward compatible with committed states created before these
+ceilings. For each field, combined item count, and serialized byte size, its effective
+ceiling is the larger of the default and the prior state's observed value. An already
+over-limit field therefore cannot grow; retained overlong legacy text may remain
+byte-for-byte, while newly authored text obeys the current 300-character ceiling.
+This permits all-unavailable terminal reflection to preserve an old state exactly and
+lets an evidence-bearing reflection replace or compact stale frontier items without
+silently truncating them. Runtime aggregates every count, item-length, Basic-literal,
+and total-byte violation before the sole correction; it never locally drops a returned
+item. An incomplete JSON object that reaches its frozen output-token ceiling receives
+explicit truncation feedback, so the correction spends its one attempt on a compact
+complete object rather than guessing which semantic field failed.
+
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask
 for issuer-specific evidence that bears on its feasibility, but must not ask for

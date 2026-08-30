@@ -1066,3 +1066,28 @@ interpretable item against index shape/bounds, enums, prior-tag exclusions, requ
 research objects, and direct-answer objects. Report all paths and refs together. This
 does not increase corrections or relax validation; it lets one correction remove the
 bad analogy while preserving unrelated valid work.
+
+## Decision-frontier output addendum (2026-08-30)
+
+An input projection can be bounded while the model's output is still unbounded. V72
+sent a valid 38,855-character Basic context, but H_init treated ResearchState as an
+extraction summary: it emitted 52 beliefs, ten open questions, ten needs, and five
+resolved questions, used exactly the full 2,000 output tokens, and ended inside its
+first evidence object. The sole correction then had to repair transport shape before
+the strict literal gate could expose a paraphrased citation.
+
+Define long-lived model state as a compact decision frontier. Put per-field, combined
+item, semantic-item length, source-literal length, and total serialized-byte ceilings
+in the initial system contract, and aggregate the same limits locally before domain
+construction. Keep complete projections, Signal batches, Raw Info, and trajectories
+locally; the active state should retain only the non-redundant hypothesis, evidence,
+counter-evidence, uncertainty, and next retrieval decision. If invalid JSON consumes
+the exact frozen output allowance and ends before the object closes, say so explicitly
+in correction feedback instead of presenting a generic parse error.
+
+Do not make new output limits invalidate committed checkpoints. On reflection, use
+the larger of each default limit and the prior state's observed count/byte size. A
+legacy over-limit field can be preserved but cannot grow, retained legacy long text
+can remain byte-for-byte, and newly authored text follows current limits. This keeps
+all-unavailable terminal preservation valid while allowing evidence-bearing rounds to
+replace stale frontier items without silently truncating or locally synthesizing state.

@@ -3028,9 +3028,19 @@ class ExternalBudgetExhausted(ExternalExecutionPaused):
 class StructuredOutputInvalid(ValidationError):
     """A paid provider response was not exactly one JSON object."""
 
-    def __init__(self, message: str, raw_output: str, usage: AgentUsage) -> None:
+    def __init__(
+        self,
+        message: str,
+        raw_output: str,
+        usage: AgentUsage,
+        *,
+        output_tokens: int | None = None,
+        output_token_limit: int | None = None,
+    ) -> None:
         self.raw_output = str(raw_output)
         self.usage = usage
+        self.output_tokens = output_tokens
+        self.output_token_limit = output_token_limit
         super().__init__(message)
 
 
@@ -3842,6 +3852,8 @@ class StructuredRoleClient:
                     f"provider returned invalid structured output: {exc}",
                     response.output_text,
                     usage,
+                    output_tokens=output_tokens,
+                    output_token_limit=output_limit,
                 ) from exc
             scores = (
                 _extract_decision_token_scores(
@@ -3956,10 +3968,25 @@ def _complete_json_with_invalid_value(
             kwargs["max_request_tokens"] = max_request_tokens
         return caller.complete_json(**kwargs)
     except StructuredOutputInvalid as exc:
+        validation_error = str(exc)
+        if (
+            exc.output_tokens is not None
+            and exc.output_token_limit is not None
+            and exc.output_tokens >= exc.output_token_limit
+            and exc.raw_output.lstrip().startswith("{")
+            and not exc.raw_output.rstrip().endswith("}")
+        ):
+            validation_error += (
+                "; provider output reached max_output_tokens="
+                f"{exc.output_token_limit} and ended before one complete JSON object. "
+                "Treat this as output-ceiling truncation: return the compact decision "
+                "frontier only, obey every field/item/byte ceiling, and do not "
+                "enumerate the input projections"
+            )
         return (
             {
                 "invalid_structured_output": exc.raw_output[:12_000],
-                "validation_error": str(exc),
+                "validation_error": validation_error,
             },
             exc.usage,
         )
@@ -3991,6 +4018,33 @@ def _strict_string_list(
     if (not parsed and not allow_empty) or len(set(parsed)) != len(parsed):
         return None
     return parsed
+
+
+_RESEARCH_STATE_ARRAY_LIMITS = {
+    "hypotheses": 3,
+    "current_beliefs": 8,
+    "supporting_evidence": 8,
+    "contradictions": 4,
+    "resolved_questions": 6,
+    "open_questions": 6,
+    "next_information_needs": 6,
+}
+_RESEARCH_STATE_TOTAL_ITEM_LIMIT = 24
+_RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT = 300
+_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT = 800
+_RESEARCH_STATE_JSON_BYTE_LIMIT = 6_000
+_RESEARCH_STATE_COMPACT_OUTPUT = (
+    " ResearchState is a compact decision frontier, not a summary of every input "
+    "projection or Signal result. Return only the smallest non-redundant set needed "
+    "for the active thesis, material evidence/counter-evidence, unresolved uncertainty, "
+    "and next retrieval decision. Default maximum array counts are hypotheses=3, "
+    "current_beliefs=8, supporting_evidence=8, contradictions=4, "
+    "resolved_questions=6, open_questions=6, and next_information_needs=6; all arrays "
+    "combined contain at most 24 items. Every hypotheses/current_beliefs/contradictions/"
+    "resolved_questions/open_questions/next_information_needs item contains at most "
+    "300 characters. The complete canonical JSON object contains at most 6000 UTF-8 "
+    "bytes. Do not enumerate the source input."
+)
 
 
 _RESEARCH_STATE_OUTPUT = _output_contract(
@@ -4029,7 +4083,10 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "unless same-claim exact_text literally contains it. "
     "For structured market JSON, copy one "
     "complete visible row including every field between its braces; never construct "
-    "a shorter JSON object from selected fields."
+    "a shorter JSON object from selected fields. Every basic_info exact_text contains "
+    "at most 800 characters; copy the shortest complete literal that supports the "
+    "claim."
+    + _RESEARCH_STATE_COMPACT_OUTPUT
 )
 
 _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
@@ -4060,7 +4117,11 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
     "claims remain subject to the same numeric-quantity support rule. Every "
     "numeric-bearing current_beliefs or contradictions item must copy one accepted "
-    "supporting_evidence claim byte-for-byte."
+    "supporting_evidence claim byte-for-byte. If the supplied prior research_state "
+    "already exceeds a default count or byte ceiling, preserve compatibility by not "
+    "increasing that observed field/count/size; retained legacy text may remain "
+    "byte-for-byte, but every newly authored text item obeys the current limits."
+    + _RESEARCH_STATE_COMPACT_OUTPUT
 )
 
 _BLIND_PREDICTION_OUTPUT = _output_contract(
@@ -4850,12 +4911,127 @@ def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
     return normalized
 
 
-def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]:
+def _research_state_json_size(value: Mapping[str, Any]) -> int:
+    """Measure one canonical provider-facing state in UTF-8 bytes."""
+
+    return len(
+        json.dumps(
+            dict(value),
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    )
+
+
+def _raw_research_state_compaction_issues(
+    value: Mapping[str, Any],
+    *,
+    previous_state: ResearchState | None = None,
+    initialize: bool = False,
+) -> list[str]:
+    """Aggregate provider-only decision-frontier limit violations."""
+
+    previous = previous_state.to_dict() if previous_state is not None else {}
+    issues: list[str] = []
+    counts: dict[str, int] = {}
+    previous_counts: dict[str, int] = {}
+    for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
+        raw_items = value.get(field_name)
+        prior_items = previous.get(field_name)
+        prior_count = len(prior_items) if isinstance(prior_items, list) else 0
+        previous_counts[field_name] = prior_count
+        if not isinstance(raw_items, list):
+            continue
+        count = len(raw_items)
+        counts[field_name] = count
+        effective_limit = max(default_limit, prior_count)
+        if count > effective_limit:
+            issues.append(
+                f"{field_name} count={count} exceeds effective_limit={effective_limit} "
+                f"(default_limit={default_limit}, prior_count={prior_count}). Keep only "
+                "the most decision-relevant non-redundant items"
+            )
+
+    total_count = sum(counts.values())
+    previous_total = sum(previous_counts.values())
+    effective_total_limit = max(_RESEARCH_STATE_TOTAL_ITEM_LIMIT, previous_total)
+    if total_count > effective_total_limit:
+        issues.append(
+            f"combined ResearchState array count={total_count} exceeds "
+            f"effective_limit={effective_total_limit} "
+            f"(default_limit={_RESEARCH_STATE_TOTAL_ITEM_LIMIT}, "
+            f"prior_count={previous_total}). Remove redundant source-summary items"
+        )
+
+    for field_name in _RESEARCH_STATE_ARRAY_LIMITS:
+        if field_name == "supporting_evidence":
+            continue
+        raw_items = value.get(field_name)
+        prior_items = previous.get(field_name)
+        retained_legacy = set(prior_items) if isinstance(prior_items, list) else set()
+        if not isinstance(raw_items, list):
+            continue
+        for index, item in enumerate(raw_items):
+            if not isinstance(item, str):
+                continue
+            if len(item) <= _RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT:
+                continue
+            if previous_state is not None and item in retained_legacy:
+                continue
+            issues.append(
+                f"{field_name}[{index}] length={len(item)} exceeds "
+                f"{_RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT} characters. Shorten or remove "
+                "this newly authored decision-frontier item"
+            )
+
+    evidence = value.get("supporting_evidence")
+    if initialize and isinstance(evidence, list):
+        for index, item in enumerate(evidence):
+            exact_text = item.get("exact_text") if isinstance(item, Mapping) else None
+            if (
+                isinstance(exact_text, str)
+                and len(exact_text) > _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT
+            ):
+                issues.append(
+                    f"supporting_evidence[{index}].exact_text length={len(exact_text)} "
+                    f"exceeds {_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT} characters. "
+                    "Copy the shortest complete contiguous literal that supports the "
+                    "claim, or remove this evidence item"
+                )
+
+    size_bytes = _research_state_json_size(value)
+    previous_size = _research_state_json_size(previous) if previous else 0
+    effective_byte_limit = max(_RESEARCH_STATE_JSON_BYTE_LIMIT, previous_size)
+    if size_bytes > effective_byte_limit:
+        issues.append(
+            f"ResearchState compact JSON size_bytes={size_bytes} exceeds "
+            f"effective_limit={effective_byte_limit} "
+            f"(default_limit={_RESEARCH_STATE_JSON_BYTE_LIMIT}, "
+            f"prior_size_bytes={previous_size}). Return a compact decision frontier, "
+            "not an enumeration of the input projections"
+        )
+    return issues
+
+
+def _normalize_research_state_output(
+    value: Mapping[str, Any],
+    *,
+    previous_state: ResearchState | None = None,
+    initialize: bool = False,
+) -> dict[str, Any]:
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
     normalized = dict(value)
     evidence = normalized.get("supporting_evidence")
+    issues = _raw_research_state_compaction_issues(
+        normalized,
+        previous_state=previous_state,
+        initialize=initialize,
+    )
     if not isinstance(evidence, list):
+        if issues:
+            raise ValidationError("; ".join(issues))
         return normalized
     basic_fields = {"kind", "claim", "projection_id", "exact_text"}
     signal_fields = {
@@ -4867,7 +5043,6 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
     }
     allowed_signal_legacy_fields = {"projection_id", "exact_text"}
     normalized_evidence: list[Any] = []
-    issues: list[str] = []
     for index, item in enumerate(evidence):
         if not isinstance(item, Mapping):
             issues.append(
@@ -5946,7 +6121,9 @@ class LLMResearchController:
                 "basic_info": dict(basic_info),
             },
             parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(_normalize_research_state_output(value)),
+                ResearchState.from_dict(
+                    _normalize_research_state_output(value, initialize=True)
+                ),
                 phase="initialize",
                 basic_info=basic_info,
             ),
@@ -6031,7 +6208,12 @@ class LLMResearchController:
                 },
             },
             parser=lambda value: _validate_research_state_refs(
-                ResearchState.from_dict(_normalize_research_state_output(value)),
+                ResearchState.from_dict(
+                    _normalize_research_state_output(
+                        value,
+                        previous_state=state,
+                    )
+                ),
                 phase="reflect",
                 previous_state=state,
                 batch=batch,

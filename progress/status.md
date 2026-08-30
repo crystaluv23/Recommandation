@@ -1,5 +1,36 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v72 contract
+`e771419...8aab` rejected its only candidate during the third case at authoritative
+pointers `round=0/cycle=0`. It used 23 paid model attempts—22 completed plus one
+malformed response—`$0.03103324`, and four fetched/cache-hit SEC request-ledger
+entries. The first two Fast cases finalized and persisted Predictor plus post-hoc
+output. Locked Test remained sealed, the Registry stayed at its initial hash, and
+Slow Loop did not start. The successor ceilings are 90 attempts, `$18.00392396`, and
+752 data requests.
+
+Exact third-case H_init inspection found a 44,946-byte request containing the bounded
+38,855-character Basic projection. The response used exactly all 2,000 output tokens
+and ended inside `supporting_evidence[0]`: before truncation it had enumerated 52
+`current_beliefs`, ten open questions, ten next needs, and five resolved questions.
+Its correction retained the same full Basic context and correctly became compact, but
+paraphrased the first source literal (`Enbridge is considering...`) instead of copying
+the visible contiguous text (`Canadian pipeline operator Enbridge Inc. is
+considering...`). Strict literal rejection was correct; the design defect was that
+the initial ResearchState contract had no compactness bounds, so its sole correction
+was consumed by preventable transport truncation before semantic citation repair.
+
+Provider-authored ResearchState is now a bounded decision frontier rather than a
+second source summary: default field caps are 3/8/8/4/6/6/6, all arrays total at most
+24 items, non-evidence text is at most 300 characters, initialize Basic literals at
+most 800 characters, and canonical JSON at most 6,000 UTF-8 bytes. Raw prevalidation
+aggregates every count/item/literal/byte violation without dropping content. A
+full-token incomplete JSON response receives explicit truncation feedback. H_reflect
+uses the larger of defaults and prior observed counts/bytes, so an old over-limit
+checkpoint can be preserved but cannot grow; unchanged legacy long text remains
+readable. Complete Basic/Raw Info/Signal/trajectory artifacts remain local. Three V72
+regressions plus all 471 repository tests and lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v71 contract
 `b4bd1e1...34a68` rejected its only candidate during the fifth case at authoritative
 pointers `round=0/cycle=0`. Its preflight plus run used 30 completed model attempts,

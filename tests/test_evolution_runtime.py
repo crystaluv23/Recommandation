@@ -5973,6 +5973,157 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected_claim,
         )
 
+    def test_v72_initialize_aggregates_decision_frontier_limits(self) -> None:
+        invalid = {
+            "hypotheses": ["One material catalyst may support repricing."],
+            "current_beliefs": [
+                (
+                    f"Source-summary item {index} repeats one visible projection "
+                    "instead of retaining only a decision-relevant belief."
+                )
+                for index in range(52)
+            ],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                f"Resolved source-summary question {index}." for index in range(5)
+            ],
+            "open_questions": [
+                f"Open source-summary question {index}." for index in range(10)
+            ],
+            "next_information_needs": [
+                f"Check one distinct material uncertainty {index}." for index in range(10)
+            ],
+            "decision": "continue",
+        }
+        corrected = {
+            "hypotheses": ["One material catalyst may support repricing."],
+            "current_beliefs": ["The catalyst remains unconfirmed."],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": ["Will the catalyst occur within six months?"],
+            "next_information_needs": ["Check issuer evidence for the catalyst."],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("current_beliefs count=52", error)
+        self.assertIn("open_questions count=10", error)
+        self.assertIn("next_information_needs count=10", error)
+        self.assertIn("combined ResearchState array count=", error)
+        self.assertIn("ResearchState compact JSON size_bytes=", error)
+        self.assertEqual(
+            caller.calls[0]["system_prompt"],
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertIn(
+            "compact decision frontier, not a summary",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertIn(
+            "all arrays combined contain at most 24 items",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertEqual(
+            initialized.value.current_beliefs,
+            ("The catalyst remains unconfirmed.",),
+        )
+
+    def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
+        corrected = {
+            "hypotheses": ["One material catalyst may support repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": ["Is the catalyst issuer-confirmed?"],
+            "next_information_needs": ["Check issuer evidence for the catalyst."],
+            "decision": "continue",
+        }
+
+        class TruncatedThenValidCaller(ScriptedRoleCaller):
+            def complete_json(self, **kwargs):
+                self.stages.append(str(kwargs["stage"]))
+                self.calls.append(dict(kwargs))
+                if len(self.calls) == 1:
+                    raise StructuredOutputInvalid(
+                        "provider returned invalid structured output",
+                        '{"hypotheses":["unfinished output",',
+                        AgentUsage(llm_calls=1, tokens=2_500, cost=0.01),
+                        output_tokens=2_000,
+                        output_token_limit=2_000,
+                    )
+                return self.outputs.pop(0), AgentUsage(
+                    llm_calls=1,
+                    tokens=500,
+                    cost=0.01,
+                )
+
+        caller = TruncatedThenValidCaller([corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"], {})
+        self.assertIn("reached max_output_tokens=2000", feedback["validation_error"])
+        self.assertIn("output-ceiling truncation", feedback["validation_error"])
+        self.assertEqual(
+            caller.calls[0]["system_prompt"],
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertEqual(initialized.value, ResearchState.from_dict(corrected))
+
+    def test_v72_reflect_preserves_legacy_over_limit_state_without_growth(self) -> None:
+        legacy_beliefs = tuple(
+            f"Legacy belief {chr(65 + index)}: " + "material issuer context " * 15
+            for index in range(9)
+        )
+        self.assertTrue(all(len(item) > 300 for item in legacy_beliefs))
+        previous = ResearchState(
+            hypotheses=("One catalyst may support repricing.",),
+            current_beliefs=legacy_beliefs,
+            next_information_needs=("Check whether the catalyst remains feasible.",),
+        )
+        finalized = replace(previous, decision=ResearchDecision.FINALIZE)
+        caller = ScriptedRoleCaller([finalized.to_dict()])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(),
+            must_finalize=True,
+            termination_trigger=RuntimeStopReason.MAX_SIGNAL_ROUNDS,
+        )
+        unavailable = SignalResult(
+            signal_id="legacy_coverage",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.0,
+            interpretation="No current evidence is available.",
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(unavailable,), signal_calls=1),
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(reflected.value, finalized)
+        self.assertIn(
+            "already exceeds a default count or byte ceiling",
+            caller.calls[0]["system_prompt"],
+        )
+
     def test_v64_initialize_aggregates_all_decidable_numeric_repairs(self) -> None:
         cash_claim = "Kinross Gold has $1.1 billion in cash and $2.8 billion in liquidity."
         market_claim = (

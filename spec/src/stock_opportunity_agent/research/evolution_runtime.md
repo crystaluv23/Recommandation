@@ -620,6 +620,28 @@ identical belief/contradiction paths. The single correction shortens that claim 
 retaining provenance, or removes it, and updates an identical linked assertion
 byte-for-byte; unrelated valid items remain unchanged.
 
+The same provider contract defines ResearchState as a compact decision frontier, not
+an extraction summary. The default field ceilings are `hypotheses=3`,
+`current_beliefs=8`, `supporting_evidence=8`, `contradictions=4`,
+`resolved_questions=6`, `open_questions=6`, and `next_information_needs=6`, with at
+most 24 combined array items, 300 characters per non-evidence text item, and 6,000
+UTF-8 bytes for the canonical JSON object. H_init Basic `exact_text` uses the shortest
+complete supporting literal and is at most 800 characters. Complete projections and
+all trajectory artifacts stay local. These content limits therefore preserve source
+coverage while preventing a 2,000-token Controller response from enumerating the
+input and consuming its sole correction on transport truncation.
+
+H_reflect calculates each effective count/byte ceiling as the larger of that default
+and the prior committed state's observed value. A legacy over-limit field can be
+preserved but cannot grow, and an unchanged legacy text item may exceed 300
+characters; newly authored items cannot. Local raw-output validation reports all
+independently decidable count, item-length, initialize-literal, and total-byte defects
+in one message before domain construction and never repairs or drops them. If the
+provider reports an invalid JSON object after using the full frozen output-token
+allowance, correction feedback explicitly identifies output-ceiling truncation and
+repeats the compact-frontier requirement. Initial and correction system prompts remain
+byte-identical.
+
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
 
