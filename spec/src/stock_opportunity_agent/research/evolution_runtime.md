@@ -627,7 +627,15 @@ standard `k/m/mm/b/bn/t/tn` suffix, so `$1.6053 billion` is equivalent to raw
 `1605300000`; it performs no rounding, tolerance, or inferred unit conversion. A claim spanning two market
 endpoints may use two refs with the same claim; a lone beginning-balance literal cannot
 support a beginning-to-ending decrease. Missing quantities receive one actionable
-correction rather than being accepted merely because some literal exists.
+correction rather than being accepted merely because some literal exists. A year,
+quarter number, date, or other temporal quantity present only in projection metadata,
+a neighboring projection, or general document context does not support a claim; the
+same-claim `exact_text` must contain it. Before the one correction, runtime aggregates
+all locally decidable missing-quantity paths and every quantitative belief or
+contradiction that does not copy an evidence claim, so correction is not asked to
+discover a second independent defect after repairing the first. For an explicitly
+listed missing quantity, feedback names deletion from the claim and linked assertion
+as the minimal valid repair unless the role adds a same-claim literal containing it.
 Every numeric-bearing item in `current_beliefs` or `contradictions` must in turn copy
 one accepted evidence `claim` byte-for-byte. The role can attach several literal refs
 to that same claim for a real multi-span fact, split a composite assertion, or remove

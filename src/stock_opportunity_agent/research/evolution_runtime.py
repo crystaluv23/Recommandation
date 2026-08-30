@@ -3952,6 +3952,9 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "multi-span claim or narrow the claim. Every numeric-bearing current_beliefs or "
     "contradictions item must copy one accepted supporting_evidence claim "
     "byte-for-byte; split a composite assertion or remove unsupported numeric detail. "
+    "Do not add a year, quarter number, date, or other temporal quantity from "
+    "projection metadata, a neighboring projection, or general document context "
+    "unless same-claim exact_text literally contains it. "
     "For structured market JSON, copy one "
     "complete visible row including every field between its braces; never construct "
     "a shorter JSON object from selected fields."
@@ -4571,6 +4574,11 @@ def _complete_parsed_role(
         "by validation_error, including an explicitly named linked assertion, "
         "must change to valid content or be removed when the contract permits "
         "omission. Preserve unrelated valid fields and items byte-for-byte. "
+        "When validation_error lists absent numeric quantities, the minimal valid "
+        "repair is to delete every listed quantity from the named evidence claim "
+        "and each named linked assertion, unless you add same-claim exact_text that "
+        "literally contains it; document metadata or surrounding context does not "
+        "count. "
         "Returning the same rejected content is not a correction."
     )
     for attempt in range(2):
@@ -4841,6 +4849,7 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
             "expected 'basic_info' or 'signal'"
         )
     issues.extend(_raw_basic_claim_quantity_issues(normalized))
+    issues.extend(_raw_quantitative_assertion_link_issues(normalized))
     if issues:
         raise ValidationError("; ".join(issues))
     normalized["supporting_evidence"] = normalized_evidence
@@ -4890,6 +4899,44 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
                 "split the multi-span claim across refs with the same claim, or "
                 "narrow the claim"
                 + linked_instruction
+            )
+    return issues
+
+
+def _raw_quantitative_assertion_link_issues(
+    value: Mapping[str, Any],
+) -> list[str]:
+    """Aggregate decidable assertion-link errors into the first correction."""
+
+    evidence = value.get("supporting_evidence")
+    accepted_claims = (
+        {
+            str(item["claim"])
+            for item in evidence
+            if isinstance(item, Mapping) and isinstance(item.get("claim"), str)
+        }
+        if isinstance(evidence, list)
+        else set()
+    )
+    issues: list[str] = []
+    for field_name in ("current_beliefs", "contradictions"):
+        assertions = value.get(field_name)
+        if not isinstance(assertions, list):
+            continue
+        for index, item in enumerate(assertions):
+            if (
+                not isinstance(item, str)
+                or not _normalized_claim_quantity_groups(item)
+                or item in accepted_claims
+            ):
+                continue
+            issues.append(
+                "quantitative ResearchState assertions: "
+                f"{field_name}[{index}] must copy one supporting_evidence claim "
+                "byte-for-byte. Replace it with one exact accepted claim, attach "
+                "literals to that same exact claim, split the assertion, or remove "
+                "unsupported numeric detail; numbers from unrelated claims do not "
+                "count"
             )
     return issues
 

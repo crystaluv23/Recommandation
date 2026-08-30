@@ -5318,6 +5318,135 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected_claim,
         )
 
+    def test_v64_initialize_aggregates_all_decidable_numeric_repairs(self) -> None:
+        cash_claim = "Kinross Gold has $1.1 billion in cash and $2.8 billion in liquidity."
+        market_claim = (
+            "Kinross Gold's adjusted share price rose from $16.21 on 2025-08-01 "
+            "to $24.37 on 2025-09-29."
+        )
+        free_cash_flow_claim = (
+            "Kinross Gold delivered almost $650 million in Q2 2025 and over "
+            "$1 billion in the first half of 2025."
+        )
+        net_cash_claim = (
+            "Kinross Gold expects net cash in Q3 2025 and plans to repay its "
+            "$500 million 2027 notes."
+        )
+        projections = {
+            "projection_cash": (
+                "Kinross Gold has $1.1 billion in cash and $2.8 billion in liquidity"
+            ),
+            "projection_market_start": (
+                '{"adjusted_close":16.21,"as_of_date":"2025-08-01"}'
+            ),
+            "projection_market_end": (
+                '{"adjusted_close":24.37,"as_of_date":"2025-09-29"}'
+            ),
+            "projection_free_cash_flow": (
+                "delivered almost $650 million in the second quarter and over "
+                "$1 billion in the first half"
+            ),
+            "projection_net_cash": (
+                "expect net cash in Q3 and plan to repay our $500 million 2027 notes"
+            ),
+        }
+        invalid = {
+            "hypotheses": ["Cash generation may support further repricing."],
+            "current_beliefs": [
+                "Kinross Gold holds $1.1 billion cash and $2.8 billion liquidity.",
+                "Adjusted price increased from $16.21 on 2025-08-01 to $24.37 on 2025-09-29.",
+                free_cash_flow_claim,
+                net_cash_claim,
+            ],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": cash_claim,
+                    "projection_id": "projection_cash",
+                    "exact_text": projections["projection_cash"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": market_claim,
+                    "projection_id": "projection_market_start",
+                    "exact_text": projections["projection_market_start"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": market_claim,
+                    "projection_id": "projection_market_end",
+                    "exact_text": projections["projection_market_end"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": free_cash_flow_claim,
+                    "projection_id": "projection_free_cash_flow",
+                    "exact_text": projections["projection_free_cash_flow"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": net_cash_claim,
+                    "projection_id": "projection_net_cash",
+                    "exact_text": projections["projection_net_cash"],
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["Check the durability of cash generation."],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected_free_cash_flow_claim = (
+            "Kinross Gold delivered almost $650 million in Q2 and over $1 billion "
+            "in the first half."
+        )
+        corrected_net_cash_claim = (
+            "Kinross Gold expects net cash in Q3 and plans to repay its "
+            "$500 million 2027 notes."
+        )
+        corrected["current_beliefs"] = [
+            cash_claim,
+            market_claim,
+            corrected_free_cash_flow_claim,
+            corrected_net_cash_claim,
+        ]
+        corrected["supporting_evidence"][3]["claim"] = (
+            corrected_free_cash_flow_claim
+        )
+        corrected["supporting_evidence"][4]["claim"] = corrected_net_cash_claim
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": projection_id,
+                                "exact_text": exact_text,
+                            }
+                            for projection_id, exact_text in projections.items()
+                        ]
+                    }
+                ]
+            },
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("supporting_evidence[3]", error)
+        self.assertIn("supporting_evidence[4]", error)
+        self.assertIn("current_beliefs[0] must copy", error)
+        self.assertIn("current_beliefs[1] must copy", error)
+        self.assertIn("linked_assertions=['current_beliefs[2]']", error)
+        self.assertIn("linked_assertions=['current_beliefs[3]']", error)
+        self.assertIn("delete every listed quantity", caller.calls[1]["system_prompt"])
+        self.assertEqual(
+            initialized.value.current_beliefs,
+            tuple(corrected["current_beliefs"]),
+        )
+
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         filing = RawInfoDocument.create(

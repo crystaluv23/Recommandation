@@ -891,3 +891,22 @@ run one model-authored terminal reflection even if every completed result is
 unavailable. Since unavailable coverage contains no new claim, require every prior
 ResearchState field and item byte-for-byte and allow only `decision=finalize` to
 change. Preserve the real budget refusal as the termination trigger.
+
+## Aggregate temporal-literal correction addendum (2026-08-30)
+
+One correction should receive every defect that runtime can already decide. V64's
+initial state had two claims that borrowed `2025` from transcript metadata while the
+same-claim literals said only second quarter/Q3. It also had two quantitative beliefs
+that paraphrased rather than copied their evidence claims. Raw prevalidation reported
+only the two missing-year claims; correction independently repaired the unreported
+beliefs but left every named year unchanged, then exhausted the candidate's sole
+repair.
+
+State explicitly on the initial call that a year, quarter number, date, or temporal
+quantity in projection metadata, a neighboring projection, or general document
+context is not same-claim literal support. Before correction, aggregate missing Basic
+claim quantities with every quantitative belief/contradiction that fails the exact
+claim link. For a listed absent quantity, describe deletion from the named claim and
+linked assertions as the minimal valid edit unless the response adds another exact
+same-claim literal containing it. This remains model-authored correction rather than
+local evidence rewriting, but avoids spending one repair on a partial error frontier.

@@ -1,5 +1,37 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v64 contract
+`04fe683...8390` rejected its only candidate on the first H_init correction at
+authoritative pointers `round=0/cycle=0`. It used three completed attempts,
+`$0.00808780`, and three SEC request-ledger entries. The proposer passed in one
+cache-heavy call and made the required attributable change: it retained the compact
+market backbone, added a bounded earnings-call request, and expanded H_init's
+expectation-gap instruction without changing Predictor semantics. The complete
+proposer request/response and both H_init requests/responses were inspected.
+
+The initial ResearchState contained two otherwise grounded transcript claims that
+added `2025` to `Q2`/`Q3` even though their exact quoted spans contained only the
+quarter labels, plus two other quantitative beliefs that paraphrased rather than
+copied their evidence claims. The old prevalidator reported only the two missing-year
+claims and linked beliefs. The 10,624/11,899-token-cache-hit correction fixed the two
+unreported belief links but preserved every explicitly rejected `2025`, so validation
+failed again. This repeats v62's temporal-metadata pattern and shows that sequentially
+exposing locally decidable defects wastes the sole correction.
+
+The initial role instruction now states that a year, quarter number, date, or other
+temporal quantity cannot be borrowed from projection metadata, neighboring text, or
+general document context. Before correction, raw validation aggregates every
+decidable missing quantity and quantitative assertion-link path. Correction also
+states the minimal safe repair: delete each listed absent quantity from the named
+claim and linked assertion unless a same-claim literal containing it is added. It
+still never rewrites evidence locally. The persisted v64 invalid state replays to all
+six exact paths, and a minimal corrected form passes. All 455 repository tests and
+lint pass.
+
+Before the successor contract, the remaining frozen ceilings are 224 attempts,
+`$18.18188636`, and 779 data requests; v64 remains immutable evidence and cannot
+resume across the code revision.
+
 Current ordinary-loop repair (2026-08-29): immutable v63 contract
 `8d43153...01e1` rejected its only candidate after one otherwise complete and
 correctly judged case at authoritative pointers `round=0/cycle=0`. It used 11

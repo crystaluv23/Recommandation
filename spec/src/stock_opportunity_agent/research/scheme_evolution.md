@@ -80,7 +80,12 @@ S = (B, H_init, H_reflect, H_analyse)
   assertion in `current_beliefs` or `contradictions` must also occur byte-for-byte as
   the `claim` on its supporting evidence refs. This explicit link prevents a year or
   amount from an unrelated claim from accidentally grounding the assertion; the role
-  may instead split the assertion or remove unsupported numeric detail.
+  may instead split the assertion or remove unsupported numeric detail. A temporal
+  quantity from projection metadata, a neighboring projection, or general document
+  context is not literal support. Initial instructions say this explicitly, and the
+  sole correction aggregates every locally decidable missing-quantity and assertion-
+  link path before the call; deletion from the named claim and linked assertion is the
+  minimal repair when no same-claim literal contains the quantity.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its
