@@ -236,7 +236,21 @@ offtake, backlog, order, or customer program. A selector cannot introduce custom
 concentration in its own reason as generic context for commodity prices, operating
 diversification, or profitability. The extraction skill's existing semantic boundary
 still controls the result: silence about customer identity is `unavailable`, never
-proof of diversified adoption.
+proof of diversified adoption. Its available results also require cited evidence to
+name a customer/client/buyer/offtake/backlog/order/account/program object; strength
+across sales or distribution channels alone is not customer diversification.
+
+Applicability and directly answering a need are separate. A Signal version may
+declare `routing_answer_need_phrases` in addition to its broader applicability
+phrases. When the selector returns `reason_code=answer_need`, at least one of those
+version-owned phrases must already occur in the one need identified by its required
+single `target_need_indices` value; occurrence in another need, elsewhere in
+ResearchState, or in newly authored selector prose does not count. Non-answer reasons
+carry an empty target array. On failure, the selector must change the reason to an
+accurate contextual code such as `combine_evidence`, or remove the selection.
+`customer_concentration:v1` therefore
+directly answers only concentration/dependence/diversification needs, not a request
+to enumerate recent customer contracts merely because both contain “customer.”
 
 A shared soft-Signal provider call deduplicates source text across at most two
 Signals, but document eligibility remains per Signal. Each model-facing Signal entry

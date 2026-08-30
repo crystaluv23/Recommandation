@@ -113,6 +113,7 @@ def signal_selection(signal_ref: str) -> dict[str, Any]:
                 "applicability_hypothesis": "The supplied evidence is applicable.",
                 "expected_role": "primary",
                 "context_tags": ["general"],
+                "target_need_indices": [0],
             }
         ]
     }
@@ -3114,6 +3115,7 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid = signal_selection("order_quality:v1")
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "assess_applicability"
+        invalid_item["target_need_indices"] = []
         invalid_item["selection_reason"] = (
             "Assess whether the Asante share-sale terms are binding and material."
         )
@@ -3181,6 +3183,7 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid = signal_selection("commercialization_status:v1")
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "combine_evidence"
+        invalid_item["target_need_indices"] = []
         invalid_item["selection_reason"] = (
             "Use updates on Tasiast and Lobo-Marte as commercialization evidence."
         )
@@ -3237,6 +3240,7 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid = signal_selection("customer_concentration:v1")
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "combine_evidence"
+        invalid_item["target_need_indices"] = []
         invalid_item["selection_reason"] = (
             "Use operating diversification as customer concentration context."
         )
@@ -3284,6 +3288,64 @@ class ConcreteRoleAdapterTests(TestCase):
             ("customer_concentration:v1",),
         )
         self.assertEqual(applicable.usage.llm_calls, 1)
+
+    def test_v70_customer_contract_need_is_not_concentration_answer_need(
+        self,
+    ) -> None:
+        invalid = signal_selection("customer_concentration:v1")
+        invalid_item = invalid["selections"][0]
+        invalid_item["selection_reason"] = (
+            "Directly assesses announced customer contracts and revenue significance."
+        )
+        invalid_item["applicability_hypothesis"] = (
+            "Recent announcements may reveal customer concentration."
+        )
+        corrected = json.loads(json.dumps(invalid))
+        corrected_item = corrected["selections"][0]
+        corrected_item["reason_code"] = "combine_evidence"
+        corrected_item["target_need_indices"] = []
+        corrected_item["selection_reason"] = (
+            "Adds customer-dependence context but does not enumerate contracts."
+        )
+        corrected_item["expected_role"] = "confirmation"
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([invalid, corrected])
+
+            contextual = LLMSignalRetrievalAgent(caller).select(
+                (
+                    "What specific customer contracts or partnerships has the "
+                    "company announced in the last six months that could "
+                    "significantly increase revenue?",
+                ),
+                snapshot,
+                {},
+            )
+            direct_caller = ScriptedRoleCaller(
+                [signal_selection("customer_concentration:v1")]
+            )
+            direct = LLMSignalRetrievalAgent(direct_caller).select(
+                ("Does one customer account for most revenue?",),
+                snapshot,
+                {},
+            )
+
+        self.assertEqual(contextual.usage.llm_calls, 2)
+        self.assertEqual(contextual.value[0].reason_code, "combine_evidence")
+        error = validation_error(caller.calls[1])
+        self.assertIn("reason_code=answer_need", error)
+        self.assertIn("version-owned direct-need phrase", error)
+        self.assertIn("combine_evidence", error)
+        card = next(
+            item
+            for item in caller.calls[0]["payload"]["available_signal_cards"]
+            if item["signal_ref"] == "customer_concentration:v1"
+        )
+        self.assertIn("one customer", card["routing_answer_need_phrases"])
+        self.assertEqual(direct.value[0].reason_code, "answer_need")
+        self.assertEqual(direct.usage.llm_calls, 1)
 
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -4893,6 +4955,89 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value, SignalValue.POSITIVE)
         self.assertEqual(usage.llm_calls, 1)
 
+    def test_v70_customer_signal_rejects_distribution_channels_as_customers(
+        self,
+    ) -> None:
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        exact_span = (
+            "For NNA, we have strength in all three channels. It is not just "
+            "one channel."
+        )
+        document = RawInfoDocument.create(
+            document_id="transcript-channels",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=as_of,
+            available_at=as_of,
+            content=exact_span,
+        )
+        invalid = {
+            "signal_id": "customer_concentration",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {
+                "summary": "Strength across three channels proves diversified customers."
+            },
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": document.document_id,
+                        "exact_span": exact_span,
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        corrected = {
+            "signal_id": "customer_concentration",
+            "version": 1,
+            "state": {"value": "unavailable", "confidence": 0.0},
+            "interpretation": {
+                "summary": "The cited excerpt names channels, not customers."
+            },
+            "evidence": {"supporting": [], "counter": []},
+            "status": {"coverage": "unavailable"},
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+        spec = SignalSpec(
+            signal_id="customer_concentration",
+            version=1,
+            category="risks",
+            description="Judge dependence on one customer.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("earnings_call",),
+            skill_file="customer_concentration.md",
+            parameters={
+                "result_required_evidence_phrases": [
+                    "customer",
+                    "client",
+                    "buyer",
+                    "offtake",
+                    "backlog",
+                    "order",
+                    "account",
+                    "program",
+                ]
+            },
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Measure customer concentration, not channel mix.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
+        self.assertIn("customer_concentration:v1", feedback["validation_error"])
+        self.assertIn(
+            "result_required_evidence_phrases", feedback["validation_error"]
+        )
+
     def test_llm_signal_runner_repairs_unavailable_with_placeholder_evidence(
         self,
     ) -> None:
@@ -5250,7 +5395,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 raw.append(
                     {
                         "signal_ref": spec.ref,
-                        "reason_code": "answer_need",
+                        "reason_code": "combine_evidence",
                         "selection_reason": "x" * 400,
                         "applicability_hypothesis": "y" * 400,
                         "expected_role": "primary",
@@ -5261,6 +5406,7 @@ class ConcreteRoleAdapterTests(TestCase):
                             "Scaling",
                             "Small Cap",
                         ],
+                        "target_need_indices": [],
                     }
                 )
             caller = ScriptedRoleCaller([{"selections": raw}])
@@ -6561,6 +6707,102 @@ class ConcreteRoleAdapterTests(TestCase):
             ],
             "Directly answer the production-guidance and cost-outlook need.",
         )
+
+    def test_v70_reflect_changes_targeted_need_not_an_unrelated_need(self) -> None:
+        result = SignalResult(
+            signal_id="cash_reserves",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=1.0,
+            interpretation="cash_reserves=2.07009e+09",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="cash-document",
+                    exact_span="cash_reserves=2.07009e+09",
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        unrelated_need = (
+            "What were Q2 revenue and earnings per share versus analyst expectations?"
+        )
+        targeted_need = (
+            "What is the current debt level and liquidity position, and are there "
+            "upcoming debt maturities or refinancing plans?"
+        )
+        narrowed_need = (
+            "What is the current debt level, and are there upcoming debt maturities "
+            "or refinancing plans?"
+        )
+        previous = ResearchState(
+            next_information_needs=(unrelated_need, targeted_need),
+        )
+        evidence_ref = {
+            "claim": "cash_reserves=2.07009e+09",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "cash_reserves:v1",
+        }
+        for decision, must_finalize in (("continue", False), ("finalize", True)):
+            with self.subTest(decision=decision):
+                invalid = {
+                    "contradictions": [],
+                    "current_beliefs": ["cash_reserves=2.07009e+09"],
+                    "decision": decision,
+                    "hypotheses": ["Liquidity may support execution."],
+                    "next_information_needs": [targeted_need],
+                    "open_questions": [],
+                    "resolved_questions": [],
+                    "supporting_evidence": [evidence_ref],
+                }
+                corrected = json.loads(json.dumps(invalid))
+                corrected["next_information_needs"] = [
+                    unrelated_need,
+                    narrowed_need,
+                ]
+                caller = ScriptedRoleCaller([invalid, corrected])
+                controller = LLMResearchController(caller)
+                controller.set_reflection_runtime_context(
+                    selections=(
+                        SignalSelectionDecision(
+                            signal_ref="cash_reserves:v1",
+                            reason_code="answer_need",
+                            selection_reason="Answer the liquidity facet only.",
+                            applicability_hypothesis=(
+                                "A current cash balance is visible."
+                            ),
+                            expected_role="primary",
+                            target_need_indices=(1,),
+                        ),
+                    ),
+                    must_finalize=must_finalize,
+                    termination_trigger=None,
+                )
+
+                reflected = controller.reflect(
+                    default_information_plan(),
+                    previous,
+                    SignalBatchResult(results=(result,), signal_calls=1),
+                )
+
+                error = validation_error(caller.calls[1])
+                self.assertIn("next_information_needs[0]", error)
+                self.assertIn("untargeted need changed or was removed", error)
+                self.assertIn("next_information_needs[1]", error)
+                self.assertIn("targeted need remained byte-for-byte", error)
+                self.assertEqual(
+                    reflected.value.next_information_needs,
+                    (unrelated_need, narrowed_need),
+                )
+                selection_intent = caller.calls[0]["payload"][
+                    "executed_selection_intents"
+                ][0]
+                self.assertEqual(selection_intent["target_need_indices"], [1])
+                self.assertIn(
+                    "preserve every untargeted need",
+                    caller.calls[0]["system_prompt"],
+                )
 
     def test_v23_terminal_reflection_requires_model_authored_finalize(self) -> None:
         result = SignalResult(

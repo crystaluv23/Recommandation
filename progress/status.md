@@ -1,5 +1,39 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v70 contract
+`406f5f1...b71e2` rejected its only candidate during the fourth case at authoritative
+pointers `round=0/cycle=0`. Its preflight plus run used 32 completed model attempts,
+`$0.04067616`, and three successful/cache-hit SEC request-ledger entries. The first
+three Fast cases completed H_init, all reached an evidence-exhaustion finalization,
+and persisted Predictor plus post-hoc output. The fourth case reached H_init, routing,
+soft-Signal execution, and both H_reflect attempts before rejection. Locked Test
+remained sealed and Slow Loop did not start.
+
+Exact Wynn artifacts exposed a cross-role attribution defect. The router called
+`customer_concentration:v1` a direct answer to a request for specific recent customer
+contracts, while its available result cited only strength across three sales channels.
+H_reflect correctly kept the still-unanswered contracts need and therefore could not
+satisfy the old coarse “remove any need” correction. An earlier completed Wynn
+trajectory showed the more dangerous inverse: after adopting cash reserves and Q1
+YoY revenue growth, correction deleted the unrelated Q2 revenue/EPS-versus-expectations
+need, retained the compound debt/liquidity need unchanged, and passed. A routine Q2
+earnings-release date was also accepted as neutral financing evidence.
+
+Current selection output therefore binds every `reason_code=answer_need` to one
+pre-execution `target_need_indices` entry; all other reasons carry an empty array.
+Optional version-owned `routing_answer_need_phrases` separate direct need coverage
+from contextual applicability. H_reflect receives the persisted target and, in both
+continuing and terminal reflection, must remove or genuinely narrow only that target
+while preserving every untargeted prior need byte-for-byte. Legacy committed
+selections without the field remain readable. `customer_concentration:v1` now
+requires customer/order objects in available evidence and directly answers only
+concentration/dependence/diversification needs. `financing_listing_action:v1` rejects
+routine-event evidence, while revenue-growth, cash, guidance, customer, and financing
+versions expose bounded direct-answer objects. Exact v70 artifact replay changes the
+customer selection to contextual and rejects the channel and routine-event evidence.
+All 467 repository tests pass. The successor contract must freeze 143 attempts,
+`$18.07229184`, and 761 data requests; v70 remains immutable evidence.
+
 Current ordinary-loop repair (2026-08-30): immutable v69 contract
 `4333c20...aab2e` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. Its preflight plus run used 12 completed model attempts,

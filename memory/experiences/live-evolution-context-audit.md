@@ -1018,3 +1018,30 @@ the offending path. Validate raw structured output before construction, aggregat
 every empty/overlong `supporting_evidence[index].claim`, report actual length, and
 name identical beliefs/contradictions that must track the shortened claim. The prompt
 must state the limit on the initial call so correction is recovery, not discovery.
+
+## Targeted-need attribution addendum (2026-08-30)
+
+A coarse reflection rule such as “after adopting answer evidence, remove or narrow at
+least one need” is not only under-specified; it can reward the wrong edit. In V70,
+cash reserves answered only the liquidity facet of a debt/liquidity/maturities need,
+while Q1 YoY revenue growth did not answer Q2 EPS versus analyst expectations. The
+actual correction nevertheless deleted the Q2 need and retained the liquidity facet,
+then passed. In another case, a customer-concentration Signal was called a direct
+answer to a request to enumerate recent customer contracts, so the honest decision to
+retain the contracts need was rejected.
+
+Persist direct-answer intent before evidence execution. A current `answer_need`
+selection names exactly one valid need index; other reason codes name none. Where a
+Signal's direct object is locally decidable, let the version own a small phrase set and
+require it in that exact targeted need, not in other state or model-authored routing
+prose. If adopted evidence answers only one facet of a compound target, H_reflect
+narrows that target and preserves every untargeted need byte-for-byte. Enforce the
+same attribution on terminal reflection: `finalize` is not permission to rewrite the
+wrong unresolved question. Keep legacy selections readable through a separate coarse
+replay path rather than weakening current model output.
+
+Applicability and result semantics need independent object gates. Sales channels do
+not prove customer diversification, and an earnings-release date is not a financing
+action. Optional version-owned cited-evidence phrases can reject these false available
+results before reflection without turning the validator into a general semantic
+solver; the complete Signal skill still owns direction and comparative reasoning.

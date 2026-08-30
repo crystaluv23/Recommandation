@@ -799,6 +799,7 @@ class SignalSelectionDecision:
     applicability_hypothesis: str
     expected_role: str
     context_tags: tuple[str, ...] = ()
+    target_need_indices: tuple[int, ...] = ()
 
     def __post_init__(self) -> None:
         if self.reason_code not in _SIGNAL_SELECTION_REASON_CODES:
@@ -825,7 +826,17 @@ class SignalSelectionDecision:
             normalized_tags.append(tag)
         if len(set(normalized_tags)) != len(normalized_tags):
             raise ValidationError("Signal selection context tags must be unique")
+        if (
+            any(type(index) is not int or index < 0 for index in self.target_need_indices)
+            or len(set(self.target_need_indices)) != len(self.target_need_indices)
+            or len(self.target_need_indices) > 1
+        ):
+            raise ValidationError(
+                "Signal selection target_need_indices must contain at most one "
+                "unique non-negative integer"
+            )
         object.__setattr__(self, "context_tags", tuple(normalized_tags))
+        object.__setattr__(self, "target_need_indices", tuple(self.target_need_indices))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -835,6 +846,7 @@ class SignalSelectionDecision:
             "applicability_hypothesis": self.applicability_hypothesis,
             "expected_role": self.expected_role,
             "context_tags": list(self.context_tags),
+            "target_need_indices": list(self.target_need_indices),
         }
 
     @classmethod
@@ -847,9 +859,16 @@ class SignalSelectionDecision:
             "expected_role",
             "context_tags",
         }
-        if set(data) != required:
+        optional = {"target_need_indices"}
+        if not required.issubset(data) or set(data) - required - optional:
             raise ValidationError(
-                "Signal selection requires exactly: " + ", ".join(sorted(required))
+                "Signal selection requires: " + ", ".join(sorted(required))
+                + "; optional target_need_indices"
+            )
+        raw_target_indices = data.get("target_need_indices", ())
+        if not isinstance(raw_target_indices, (list, tuple)):
+            raise ValidationError(
+                "Signal selection target_need_indices must be an integer array"
             )
         return cls(
             signal_ref=str(data["signal_ref"]),
@@ -858,6 +877,7 @@ class SignalSelectionDecision:
             applicability_hypothesis=str(data["applicability_hypothesis"]),
             expected_role=str(data["expected_role"]),
             context_tags=_json_string_array(data, "context_tags"),
+            target_need_indices=tuple(raw_target_indices),
         )
 
     @classmethod

@@ -708,18 +708,26 @@ actual response that newly resolved production-and-cost guidance while retaining
 same production-and-cost-guidance need. It does not compare evidence semantics or
 force unrelated needs to change.
 The request additionally includes the executed Signal selections' bounded
-`reason_code`, `selection_reason`, and role. If a continuing reflection adopts new
-evidence from an available `answer_need` selection but returns the exact same set of
-prior needs, runtime rejects it once: the model must remove or genuinely narrow at
-least one answered need. Other selection reason codes do not imply that a need was
-answered, and runtime never chooses the affected need itself. Selection may use
+`reason_code`, `selection_reason`, role, and `target_need_indices`. A current
+`answer_need` selection names exactly one valid index into the supplied information
+needs; every other reason carries an empty array. Old committed decisions without the
+field remain readable but use the legacy coarse transition only during replay. If a
+reflection adopts new evidence from an available `answer_need` selection
+but retains that exact targeted need, or substitutes a cosmetic >=90%-word-retention
+version, runtime rejects it once. Removing an unrelated need cannot satisfy the
+transition, including when this is the terminal reflection. Other selection reason
+codes do not imply that a need was answered, and
+runtime never chooses the affected need itself. Selection may use
 `answer_need` only when the card description directly covers at least one explicit
-facet of the need; its reason names only that facet and does not promise that the
-Signal will answer other facets. A merely contextual card uses `combine_evidence` or
-another accurate reason code. Correction feedback names
+facet of the need. When a card exposes version-owned
+`routing_answer_need_phrases`, one must already occur in the information-needs array;
+accepted state or selector-authored reason/applicability prose cannot supply it. Its
+reason names only that matched facet and does not promise that the Signal will answer
+other facets. A merely contextual card uses `combine_evidence` or another accurate
+reason code. Correction feedback names
 `invalid_field='next_information_needs'` and provides the prior indexed values; the
-field must change through at least one evidence-supported removal or narrowing, but
-unanswered indexed items remain byte-for-byte.
+exact targeted field must change through an evidence-supported removal or narrowing,
+but untargeted indexed items remain byte-for-byte.
 
 H_init applies the same unresolved-only rule before any Signal call. It must not ask
 again for a fact already present in Basic Info or in the evidence/beliefs it returns.

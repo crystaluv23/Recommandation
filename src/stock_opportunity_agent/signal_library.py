@@ -235,6 +235,23 @@ class SignalSpec:
                 "Signal routing_required_research_phrases must contain 1-8 "
                 "unique non-empty strings"
             )
+        answer_need_phrases = parameters.get("routing_answer_need_phrases")
+        if answer_need_phrases is not None and (
+            not isinstance(answer_need_phrases, list)
+            or not answer_need_phrases
+            or len(answer_need_phrases) > 16
+            or any(
+                not isinstance(item, str)
+                or not item.strip()
+                or len(item) > 80
+                for item in answer_need_phrases
+            )
+            or len(set(answer_need_phrases)) != len(answer_need_phrases)
+        ):
+            raise ValidationError(
+                "Signal routing_answer_need_phrases must contain 1-16 unique "
+                "non-empty strings"
+            )
         result_required_evidence_phrases = parameters.get(
             "result_required_evidence_phrases"
         )
@@ -743,7 +760,10 @@ class SignalLearningEvent:
             "expected_role",
             "context_tags",
         }
-        if set(selection) != required_selection:
+        optional_selection = {"target_need_indices"}
+        if not required_selection.issubset(selection) or (
+            set(selection) - required_selection - optional_selection
+        ):
             raise ValidationError("Signal learning selection shape is invalid")
         if selection["signal_ref"] != self.signal_ref:
             raise ValidationError("Signal learning selection ref mismatch")
@@ -756,6 +776,26 @@ class SignalLearningEvent:
             for item in selection["context_tags"]
         ):
             raise ValidationError("Signal learning context tag is not allowed")
+        if "target_need_indices" in selection:
+            target_need_indices = selection["target_need_indices"]
+            if (
+                not isinstance(target_need_indices, (list, tuple))
+                or isinstance(target_need_indices, str)
+                or any(
+                    type(index) is not int or index < 0
+                    for index in target_need_indices
+                )
+                or len(set(target_need_indices)) != len(target_need_indices)
+                or len(target_need_indices) > 1
+            ):
+                raise ValidationError(
+                    "Signal learning target_need_indices must contain at most "
+                    "one unique non-negative integer"
+                )
+            if selection["reason_code"] != "answer_need" and target_need_indices:
+                raise ValidationError(
+                    "Signal learning non-answer selection must not name a target"
+                )
         object.__setattr__(self, "selection", selection)
         object.__setattr__(
             self,
@@ -2032,8 +2072,22 @@ def validate_signal_result(
                 )
     required_phrases = spec.parameters.get("result_required_evidence_phrases")
     if required_phrases:
-        cited_text = "\n".join(item.exact_span for item in evidence).casefold()
-        if not any(str(phrase).casefold() in cited_text for phrase in required_phrases):
+        cited_text = (
+            " "
+            + re.sub(
+                r"[^a-z0-9]+",
+                " ",
+                "\n".join(item.exact_span for item in evidence).casefold(),
+            ).strip()
+            + " "
+        )
+        normalized_phrases = tuple(
+            " "
+            + re.sub(r"[^a-z0-9]+", " ", str(phrase).casefold()).strip()
+            + " "
+            for phrase in required_phrases
+        )
+        if not any(phrase in cited_text for phrase in normalized_phrases):
             raise ValidationError(
                 f"signal {spec.ref} available result requires cited evidence "
                 "containing at least one version-owned "

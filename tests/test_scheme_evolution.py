@@ -741,6 +741,33 @@ class SignalLibraryTests(TestCase):
             ],
         )
 
+    def test_customer_concentration_owns_direct_need_and_result_phrases(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            spec = registry.load_spec("customer_concentration:v1")
+
+        self.assertIn(
+            "one customer",
+            spec.parameters["routing_answer_need_phrases"],
+        )
+        self.assertIn(
+            "customer",
+            spec.parameters["result_required_evidence_phrases"],
+        )
+        with self.assertRaisesRegex(
+            ValidationError, "routing_answer_need_phrases"
+        ):
+            SignalSpec(
+                signal_id="bad_answer_need_phrase",
+                version=1,
+                category="risks",
+                description="Reject empty direct-need phrase requirements.",
+                execution_type=SignalExecutionType.LLM,
+                skill_file="skill.md",
+                source_types=("filing",),
+                parameters={"routing_answer_need_phrases": []},
+            )
+
     def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

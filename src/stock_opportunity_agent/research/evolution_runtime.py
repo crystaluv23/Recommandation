@@ -5527,9 +5527,12 @@ def _validate_research_state_refs(
         and _research_evidence_key(item) not in previous
         and str(item.signal_ref) in results
     }
-    answer_need_refs = {
-        item.signal_ref for item in selections if item.reason_code == "answer_need"
-    }
+    targeted_answer_need_errors = _targeted_answer_need_transition_errors(
+        previous_state,
+        state,
+        selections,
+        adopted_new_signal_refs,
+    )
     cosmetic_needs = _cosmetically_retained_information_needs(
         previous_state.next_information_needs if previous_state else (),
         state.next_information_needs,
@@ -5585,6 +5588,15 @@ def _validate_research_state_refs(
             "open_questions or next_information_needs rather than inventing a "
             "resolution"
         )
+    if phase == "reflect" and adopted_new_signal_evidence:
+        if targeted_answer_need_errors:
+            validation_errors.append(
+                "research_controller_reflect changed the wrong information need "
+                "after targeted answer_need evidence: "
+                f"{targeted_answer_need_errors}. Remove or genuinely narrow each "
+                "named target_need_indices item; preserve every untargeted prior "
+                "next_information_needs item byte-for-byte"
+            )
     if (
         phase == "reflect"
         and previous_state is not None
@@ -5606,8 +5618,13 @@ def _validate_research_state_refs(
                 f"{stale_resolved_needs}. Remove or narrow the answered need, or remove "
                 "the unsupported resolved question"
             )
+        legacy_answer_need_refs = {
+            item.signal_ref
+            for item in selections
+            if item.reason_code == "answer_need" and not item.target_need_indices
+        }
         if (
-            adopted_new_signal_refs.intersection(answer_need_refs)
+            adopted_new_signal_refs.intersection(legacy_answer_need_refs)
             and len(state.next_information_needs)
             == len(previous_state.next_information_needs)
             and set(state.next_information_needs)
@@ -5644,6 +5661,78 @@ def _normalized_need_tokens(value: str) -> frozenset[str]:
     """Return stable word tokens for the narrow cosmetic-progress boundary."""
 
     return frozenset(re.findall(r"[a-z0-9]+", value.casefold()))
+
+
+def _targeted_answer_need_transition_errors(
+    previous: ResearchState | None,
+    current: ResearchState,
+    selections: tuple[SignalSelectionDecision, ...],
+    adopted_signal_refs: set[str],
+) -> list[dict[str, Any]]:
+    """Bind adopted answer evidence to its preselected need path."""
+
+    if previous is None:
+        return []
+    target_refs: dict[int, list[str]] = {}
+    for selection in selections:
+        if (
+            selection.reason_code != "answer_need"
+            or selection.signal_ref not in adopted_signal_refs
+            or not selection.target_need_indices
+        ):
+            continue
+        target_refs.setdefault(selection.target_need_indices[0], []).append(
+            selection.signal_ref
+        )
+    if not target_refs:
+        return []
+    errors: list[dict[str, Any]] = []
+    for index, need in enumerate(previous.next_information_needs):
+        if index not in target_refs:
+            if need not in current.next_information_needs:
+                errors.append(
+                    {
+                        "path": f"next_information_needs[{index}]",
+                        "value": need,
+                        "issue": "untargeted need changed or was removed",
+                    }
+                )
+            continue
+        if need in current.next_information_needs:
+            errors.append(
+                {
+                    "path": f"next_information_needs[{index}]",
+                    "value": need,
+                    "signal_refs": target_refs[index],
+                    "issue": "targeted need remained byte-for-byte",
+                }
+            )
+            continue
+        prior_tokens = _normalized_need_tokens(need)
+        cosmetic = next(
+            (
+                candidate
+                for candidate in current.next_information_needs
+                if prior_tokens
+                and len(
+                    prior_tokens & _normalized_need_tokens(candidate)
+                )
+                / len(prior_tokens)
+                >= 0.9
+            ),
+            None,
+        )
+        if cosmetic is not None:
+            errors.append(
+                {
+                    "path": f"next_information_needs[{index}]",
+                    "value": need,
+                    "signal_refs": target_refs[index],
+                    "issue": "targeted need changed only cosmetically",
+                    "returned_need": cosmetic,
+                }
+            )
+    return errors
 
 
 def _cosmetically_retained_information_needs(
@@ -5908,10 +5997,12 @@ class LLMResearchController:
                 "motion. Embedding the full old need inside a longer sentence is "
                 "invalid, and a newly resolved question cannot coexist with an exact "
                 "retained same-topic need. Use executed_selection_intents to identify "
-                "why each current Signal was selected. If you adopt evidence from an "
-                "available answer_need selection and continue, remove or genuinely "
-                "narrow at least one answered need; returning the exact same need set "
-                "is invalid. If reflection_runtime.must_finalize is true, this is the "
+                "why each current Signal was selected. Each answer_need selection "
+                "contains exactly one target_need_indices entry; if you adopt its "
+                "available evidence, remove or genuinely narrow that "
+                "exact indexed need and preserve every untargeted need byte-for-byte. "
+                "Deleting another need or returning the targeted need unchanged is "
+                "invalid. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
                 "on accepted evidence, while preserving unresolved uncertainty in "
                 "open_questions or next_information_needs. If every current-batch "
@@ -6088,6 +6179,11 @@ class LLMSignalRetrievalAgent:
                 card["routing_required_research_phrases"] = list(
                     required_research_phrases
                 )
+            answer_need_phrases = spec.parameters.get(
+                "routing_answer_need_phrases", ()
+            )
+            if answer_need_phrases:
+                card["routing_answer_need_phrases"] = list(answer_need_phrases)
             excluded_tags = spec.parameters.get(
                 "routing_excluded_context_tags", ()
             )
@@ -6114,19 +6210,23 @@ class LLMSignalRetrievalAgent:
             information_needs,
             (specs_by_ref[ref] for ref in allowed_refs),
         )
-        normalized_research_items = tuple(
+        normalized_information_needs = tuple(
             " "
-            + re.sub(r"[^a-z0-9]+", " ", item.casefold()).strip()
+            + re.sub(r"[^a-z0-9]+", " ", need.casefold()).strip()
             + " "
-            for item in (
-                *information_needs,
-                *(
-                    text
-                    for values in research_context.values()
-                    for text in values
-                ),
-            )
-            if item.strip()
+            for need in information_needs
+            if need.strip()
+        )
+        normalized_research_items = (
+            *normalized_information_needs,
+            *(
+                " "
+                + re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip()
+                + " "
+                for values in research_context.values()
+                for text in values
+                if text.strip()
+            ),
         )
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
@@ -6151,6 +6251,7 @@ class LLMSignalRetrievalAgent:
                 "applicability_hypothesis",
                 "expected_role",
                 "context_tags",
+                "target_need_indices",
             }
             parsed: list[SignalSelectionDecision] = []
             seen: set[str] = set()
@@ -6164,11 +6265,34 @@ class LLMSignalRetrievalAgent:
                     )
                 if any(
                     not isinstance(item.get(name), str)
-                    for name in required - {"context_tags"}
+                    for name in required - {"context_tags", "target_need_indices"}
                 ) or not isinstance(item.get("context_tags"), list) or any(
                     not isinstance(tag, str) for tag in item["context_tags"]
                 ):
                     raise ValidationError("Signal selection fields have invalid JSON types")
+                target_need_indices = item["target_need_indices"]
+                if not isinstance(target_need_indices, list) or any(
+                    type(index) is not int for index in target_need_indices
+                ):
+                    raise ValidationError(
+                        "Signal selection target_need_indices must be an integer array"
+                    )
+                if item["reason_code"] == "answer_need":
+                    if len(target_need_indices) != 1:
+                        raise ValidationError(
+                            "Signal selection reason_code=answer_need requires exactly "
+                            "one target_need_indices entry"
+                        )
+                    if not 0 <= target_need_indices[0] < len(information_needs):
+                        raise ValidationError(
+                            "Signal selection target_need_indices is outside the "
+                            "supplied information_needs array"
+                        )
+                elif target_need_indices:
+                    raise ValidationError(
+                        "Signal selection non-answer reason_code requires an empty "
+                        "target_need_indices array"
+                    )
                 signal_ref = item["signal_ref"]
                 if signal_ref not in allowed:
                     raise ValidationError("selection ref is outside supplied cards")
@@ -6201,6 +6325,7 @@ class LLMSignalRetrievalAgent:
                         ].strip()[:240],
                         expected_role=item["expected_role"],
                         context_tags=tuple(tags),
+                        target_need_indices=tuple(target_need_indices),
                     )
                 )
                 if len(parsed) == 4:
@@ -6254,6 +6379,41 @@ class LLMSignalRetrievalAgent:
                         "new analogy stated only in selection_reason or "
                         "applicability_hypothesis"
                     )
+                answer_need_phrases = tuple(
+                    str(phrase)
+                    for phrase in specs_by_ref[item.signal_ref].parameters.get(
+                        "routing_answer_need_phrases", ()
+                    )
+                )
+                normalized_answer_need_phrases = tuple(
+                    " "
+                    + re.sub(
+                        r"[^a-z0-9]+", " ", phrase.casefold()
+                    ).strip()
+                    + " "
+                    for phrase in answer_need_phrases
+                )
+                if (
+                    item.reason_code == "answer_need"
+                    and answer_need_phrases
+                    and not any(
+                        phrase
+                        in normalized_information_needs[
+                            item.target_need_indices[0]
+                        ]
+                        for phrase in normalized_answer_need_phrases
+                    )
+                ):
+                    raise ValidationError(
+                        "Signal selection reason_code=answer_need lacks a "
+                        "version-owned direct-need phrase: "
+                        f"{item.signal_ref} requires at least one exact "
+                        "phrase in its one targeted information need from "
+                        f"{list(answer_need_phrases)}. Change reason_code to an "
+                        "accurate contextual code such as combine_evidence, or "
+                        "remove the selection; research_context and selector-authored "
+                        "prose cannot turn context into an answered need"
+                    )
             return tuple(parsed)
 
         selected, usage = _complete_parsed_role(
@@ -6281,6 +6441,11 @@ class LLMSignalRetrievalAgent:
                 "that Signal only when at least one exact phrase already appears "
                 "in information_needs or research_context; your new reason or "
                 "applicability prose cannot create the measured object by analogy. "
+                "A card's routing_answer_need_phrases are a stricter direct-answer "
+                "boundary: reason_code=answer_need requires one exact phrase in "
+                "the one information need named by target_need_indices. If the "
+                "Signal is useful only as context, "
+                "use combine_evidence or another accurate reason code instead. "
                 "Use reason_code=answer_need only when the card description directly "
                 "covers at least one explicit facet of an information need. Name "
                 "only that facet in selection_reason and do not promise coverage of "
@@ -6293,6 +6458,9 @@ class LLMSignalRetrievalAgent:
                 "or combine_evidence); a <=240 character selection_reason; a "
                 "<=240 character applicability_hypothesis; expected_role "
                 "(primary, confirmation, contradiction, or coverage); and up "
+                "to one target_need_indices integer. answer_need requires exactly "
+                "one valid index into information_needs; every other reason requires "
+                "an empty target_need_indices array; and up "
                 "to four context_tags chosen only from: general, "
                 "comparable_financials, sparse_evidence, filing_rich, news_rich, "
                 "transcript_available, market_data_only, pre_revenue, "

@@ -306,15 +306,24 @@ questions consistently. This preserves useful evidence without forcing an invent
 resolution.
 The reflection input also carries the executed selections' reason codes and reasons.
 When the role adopts evidence from an available Signal selected with
-`reason_code=answer_need`, returning the exact same set of prior needs while
-continuing is invalid: at least one answered need must be removed or genuinely
-narrowed. This boundary does not guess which need was answered or manufacture a
-resolution; the model receives the original selection intent and performs one
-bounded correction. The invalid field and prior indexed values are named explicitly,
-while the model still chooses which evidence-supported item to remove or narrow.
+`reason_code=answer_need`, the current selector contract also carries exactly one
+`target_need_indices` entry pointing into the supplied information-needs array;
+non-answer reasons carry an empty array. Old committed selections without this field
+remain readable. Returning that exact targeted need, or replacing it with a cosmetic
+version retaining at least 90% of its words, is invalid; deleting an unrelated need
+cannot satisfy the transition in either continuing or terminal reflection. This
+boundary does not guess which need was answered
+or manufacture a resolution: the selector names the target before execution, local
+validation checks its version-owned direct-need phrase, and H_reflect receives the
+persisted target. Correction names only the targeted path/value and preserves every
+untargeted need byte-for-byte.
 Routing may use `answer_need` only for a need facet directly covered by the card and
 must not claim coverage of other facets; contextual selections use an accurate other
-reason code. Evidence selected only for confirmation, contradiction,
+reason code. A version-owned `routing_answer_need_phrases` boundary may make this
+locally decidable: an `answer_need` selection must match one such phrase in the actual
+information-needs array, not elsewhere in state or in selector-authored prose, while
+the same Signal may remain applicable under a contextual reason. Evidence selected
+only for confirmation, contradiction,
 applicability, or combination does not trigger this progress requirement.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound

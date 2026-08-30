@@ -10,7 +10,7 @@
         "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
         "raw_retrieval": {"source_types": ["financials"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
-        "parameters": {"positive_min": 0.2, "negative_max": 0.0}
+        "parameters": {"positive_min": 0.2, "negative_max": 0.0, "routing_answer_need_phrases": ["revenue growth", "year-over-year revenue", "year over year revenue", "yoy revenue"]}
       },
       "tests": [{"name": "positive growth", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2023-12-31\",\"start\":\"2023-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2024-12-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":130}]}"}]}]
     },
@@ -115,7 +115,7 @@
         "execution": {"type": "deterministic", "function": "financial.cash_reserves"},
         "raw_retrieval": {"source_types": ["financials", "filing"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
-        "parameters": {"positive_min": 100000000, "negative_max": 10000000}
+        "parameters": {"positive_min": 100000000, "negative_max": 10000000, "routing_answer_need_phrases": ["cash reserves", "cash balance", "cash and equivalents", "cash position", "liquidity"]}
       },
       "tests": [{"name": "cash buffer", "as_of": "2025-02-01T00:00:00+00:00", "expected": "positive", "documents": [{"source_type": "financials", "available_at": "2025-01-20T00:00:00+00:00", "content": "{\"schema_version\":\"sec-company-facts-document-v1\",\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}]}"}]}]
     },
@@ -144,6 +144,7 @@
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {
           "routing_need_phrases": ["guidance"],
+          "routing_answer_need_phrases": ["guidance", "outlook", "forecast"],
           "result_required_evidence_phrases": ["guidance", "outlook", "forecast", "we expect", "management expects", "company expects", "now expects", "raises its", "raised its", "lowers its", "lowered its", "reaffirms", "reaffirmed", "on track to"]
         }
       },
@@ -187,7 +188,11 @@
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
-        "parameters": {"routing_required_research_phrases": ["customer", "client", "buyer", "offtake", "backlog", "order", "customer program"]}
+        "parameters": {
+          "routing_required_research_phrases": ["customer", "client", "buyer", "offtake", "backlog", "order", "customer program"],
+          "routing_answer_need_phrases": ["customer concentration", "customer dependency", "customer dependence", "single customer", "one customer", "largest customer", "major customer", "revenue concentration", "customer diversification", "customer diversity", "diversified customers", "customer mix"],
+          "result_required_evidence_phrases": ["customer", "customers", "client", "clients", "buyer", "buyers", "offtake", "backlog", "order", "orders", "account", "accounts", "program"]
+        }
       },
       "skill": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.",
       "tests": [{"name": "single customer majority", "expected": "negative", "documents": [{"source_type": "filing", "content": "One customer represented 72 percent of revenue."}]}]
@@ -213,7 +218,11 @@
         "definition": {"description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "company_announcement", "news"]},
-        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
+        "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
+        "parameters": {
+          "routing_answer_need_phrases": ["financing", "refinancing", "debt restructuring", "listing", "dilution", "runway", "redemption", "reverse split", "share sale", "share offering", "equity offering", "debt maturity", "debt maturities"],
+          "result_required_evidence_phrases": ["financing", "refinancing", "debt", "restructuring", "listing", "dilution", "redemption", "reverse split", "share sale", "offering", "placement", "credit facility", "loan", "convertible"]
+        }
       },
       "skill": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Explain whether the point-in-time effect supports runway/tradability or increases dilution/distress, with literal spans.",
       "tests": [{"name": "proposed financing is not completed", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The financing remains a proposal and has not closed."}]}]
