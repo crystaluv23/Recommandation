@@ -765,8 +765,11 @@ refs, and contextual association refs. One routing round permits at most one dir
 answer per target. If reflection adopts an available full answer, it removes that
 exact target; if it adopts an available partial answer, it replaces the target with
 the selector-authored exact residual. Retaining the old target, omitting the required
-residual, substituting a cosmetic >=90%-word-retention residual, or removing an
-unrelated need is rejected once, including in terminal reflection. Other selection
+residual, substituting a cosmetic >=90%-topic-retention residual, supplying a residual
+whose non-generic topic terms are mostly absent from the selected target, or removing
+an unrelated need is rejected once, including in terminal reflection. A residual is a
+narrowed derivative of its one target, never a different information need copied from
+elsewhere in the same state. Other selection
 reason codes and unavailable results require exact preservation. Runtime never chooses
 the affected need itself. Old committed decisions without scope remain readable
 through the legacy generic transition.
@@ -777,7 +780,11 @@ facet of the need. When a card exposes version-owned
 accepted state or selector-authored reason/applicability prose cannot supply it. Its
 reason names only that matched facet and does not promise that the Signal will answer
 other facets. A merely contextual card uses `combine_evidence` or another accurate
-reason code. Correction feedback names
+reason code. Missing or invalid routing-only `context_tags` remains a shape defect but
+does not short-circuit independently decidable target, residual, required-context, or
+direct-answer checks on otherwise complete selection fields; the correction receives
+all such defects together. Runtime does not insert a default tag into accepted output.
+Correction feedback names
 `invalid_field='next_information_needs'` and provides the prior indexed values; the
 exact targeted field must change through an evidence-supported removal or narrowing,
 but untargeted indexed items remain byte-for-byte.

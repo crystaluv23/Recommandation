@@ -1175,3 +1175,19 @@ quantity, exact-literal, claim-length, and linked-assertion repair guidance belo
 ResearchState roles; sending it to Signal Mining or other schemas wastes cacheable
 context and introduces fields those roles cannot return. Specialize that guidance at
 the caller while preserving byte-identical initial/correction prompts within a role.
+
+## Layered routing and residual provenance addendum (2026-08-30)
+
+A shape error in an auxiliary routing field must not hide independently decidable
+semantics. V77 omitted only `context_tags`, so the old parser skipped target/scope and
+version-owned applicability checks. Correction added tags but retained a residual from
+an entirely different information need and a customer-concentration analogy with no
+customer object. Continue diagnostics with a local empty tag view when tags alone are
+missing or invalid, but retain the shape error and never insert that default into an
+accepted selection.
+
+Residual narrowing needs both directions. A maximum retained-target ratio prevents a
+cosmetic copy, but it does not prevent copying a different need from the same state.
+Require most non-generic residual topic terms to be anchored in its one target as well
+as a material reduction of that target. The router still authors the residual and
+H_reflect still copies it exactly; local code only rejects unrelated or unchanged text.

@@ -6056,6 +6056,77 @@ def _normalized_need_tokens(value: str) -> frozenset[str]:
     return frozenset(re.findall(r"[a-z0-9]+", value.casefold()))
 
 
+_NEED_RESIDUAL_GENERIC_TOKENS = frozenset(
+    {
+        "a",
+        "about",
+        "an",
+        "and",
+        "any",
+        "are",
+        "as",
+        "at",
+        "be",
+        "been",
+        "being",
+        "by",
+        "company",
+        "current",
+        "did",
+        "do",
+        "does",
+        "for",
+        "from",
+        "had",
+        "has",
+        "have",
+        "how",
+        "in",
+        "is",
+        "key",
+        "latest",
+        "of",
+        "on",
+        "or",
+        "remain",
+        "remaining",
+        "specific",
+        "such",
+        "the",
+        "there",
+        "to",
+        "was",
+        "were",
+        "what",
+        "when",
+        "where",
+        "which",
+        "who",
+        "why",
+        "with",
+    }
+)
+
+
+def _normalized_need_content_tokens(value: str) -> frozenset[str]:
+    """Return lightly singularized topic tokens for residual-target grounding."""
+
+    normalized: set[str] = set()
+    for token in re.findall(r"[a-z0-9]+", value.casefold()):
+        if token in _NEED_RESIDUAL_GENERIC_TOKENS:
+            continue
+        if len(token) > 4 and token.endswith("ies"):
+            token = token[:-3] + "y"
+        elif (
+            len(token) > 4
+            and token.endswith("s")
+            and not token.endswith(("is", "ss", "us"))
+        ):
+            token = token[:-1]
+        normalized.add(token)
+    return frozenset(normalized)
+
+
 def _targeted_answer_need_transition_errors(
     previous: ResearchState | None,
     current: ResearchState,
@@ -6724,12 +6795,15 @@ class LLMSignalRetrievalAgent:
             for index, raw in enumerate(raw_selections):
                 path = f"selections[{index}]"
                 item = dict(raw)
-                if set(item) != required:
+                missing = required - set(item)
+                unexpected = set(item) - required
+                if missing or unexpected:
                     validation_errors.append(
-                        f"{path} requires exactly {sorted(required)}; "
-                        f"missing={sorted(required - set(item))}; "
-                        f"unexpected={sorted(set(item) - required)}"
+                        f"{path} requires exactly {sorted(required)}, "
+                        f"missing={sorted(missing)}, "
+                        f"unexpected={sorted(unexpected)}"
                     )
+                if missing - {"context_tags"}:
                     continue
                 if any(
                     not isinstance(item.get(name), str)
@@ -6739,9 +6813,8 @@ class LLMSignalRetrievalAgent:
                         "target_need_indices",
                         "answer_scope",
                         "residual_need",
+                        "context_tags",
                     }
-                ) or not isinstance(item.get("context_tags"), list) or any(
-                    not isinstance(tag, str) for tag in item["context_tags"]
                 ) or (
                     item["answer_scope"] is not None
                     and not isinstance(item["answer_scope"], str)
@@ -6753,6 +6826,14 @@ class LLMSignalRetrievalAgent:
                         f"{path} fields have invalid JSON types"
                     )
                     continue
+                raw_context_tags = item.get("context_tags", [])
+                if not isinstance(raw_context_tags, list) or any(
+                    not isinstance(tag, str) for tag in raw_context_tags
+                ):
+                    validation_errors.append(
+                        f"{path}.context_tags must be a string array"
+                    )
+                    raw_context_tags = []
                 target_need_indices = item["target_need_indices"]
                 if not isinstance(target_need_indices, list) or any(
                     type(index) is not int for index in target_need_indices
@@ -6833,12 +6914,24 @@ class LLMSignalRetrievalAgent:
                             and target_need_indices[0] < len(information_needs)
                         ):
                             target_need = information_needs[target_need_indices[0]]
-                            target_tokens = _normalized_need_tokens(target_need)
-                            residual_tokens = _normalized_need_tokens(residual_need)
+                            target_content = _normalized_need_content_tokens(
+                                target_need
+                            )
+                            residual_content = _normalized_need_content_tokens(
+                                residual_need
+                            )
+                            content_overlap = target_content & residual_content
+                            if not residual_content or (
+                                len(content_overlap) / len(residual_content) < 0.5
+                            ):
+                                validation_errors.append(
+                                    f"{path}.residual_need must be grounded in the "
+                                    "targeted information need rather than copy or "
+                                    "invent a different need"
+                                )
                             if residual_need.strip() == target_need or (
-                                target_tokens
-                                and len(target_tokens & residual_tokens)
-                                / len(target_tokens)
+                                target_content
+                                and len(content_overlap) / len(target_content)
                                 >= 0.9
                             ):
                                 validation_errors.append(
@@ -6854,7 +6947,7 @@ class LLMSignalRetrievalAgent:
                         "residual_need=null"
                     )
                 tags: list[str] = []
-                for raw_tag in item["context_tags"]:
+                for raw_tag in raw_context_tags:
                     tag = re.sub(
                         r"[^a-z0-9_:-]+", "_", raw_tag.casefold()
                     ).strip("_")[:48]
@@ -6906,7 +6999,7 @@ class LLMSignalRetrievalAgent:
                 if len(paths) > 1:
                     validation_errors.append(
                         "one routing round permits at most one direct answer for "
-                        f"information_needs[{target_index}]; conflicting_paths={paths}. "
+                        f"information_needs[{target_index}], conflicting_paths={paths}. "
                         "Keep the smallest direct answer and classify other useful "
                         "Signals as contextual"
                     )
@@ -6934,7 +7027,7 @@ class LLMSignalRetrievalAgent:
                         f"routing exclusion at {path}: {signal_ref} cannot be selected "
                         "after the selector classified this case with "
                         f"context_tags={excluded_tags}. Remove the incompatible "
-                        "selection; runtime will not infer a replacement Signal or "
+                        "selection. Runtime will not infer a replacement Signal or "
                         "forget an earlier accepted case classification"
                     )
                 required_phrases = tuple(
@@ -6961,7 +7054,7 @@ class LLMSignalRetrievalAgent:
                         f"context at {path}: {signal_ref} requires at least one exact "
                         "phrase already present in information_needs or accepted "
                         f"research_context from {list(required_phrases)}. Remove "
-                        "the incompatible selection; runtime will not accept a "
+                        "the incompatible selection. Runtime will not accept a "
                         "new analogy stated only in selection_reason or "
                         "applicability_hypothesis"
                     )
@@ -7002,7 +7095,7 @@ class LLMSignalRetrievalAgent:
                         "phrase in its one targeted information need from "
                         f"{list(answer_need_phrases)}. Change reason_code to an "
                         "accurate contextual code such as combine_evidence, or "
-                        "remove the selection; research_context and selector-authored "
+                        "remove the selection. research_context and selector-authored "
                         "prose cannot turn context into an answered need"
                     )
             if validation_errors:

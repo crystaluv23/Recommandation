@@ -1,5 +1,25 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v77 contract
+`449e5fe...b9aca` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used four completed model attempts, `$0.00602560`, and
+three sandbox-denied staging data rows. Plan proposal and bounded H_init passed in one
+call each; routing failed after its one correction. Locked Test remained sealed and
+the Registry stayed at its initial hash. The successor ceilings are 216 attempts,
+`$17.90596848`, and 725 data requests.
+
+The exact initial routing output omitted `context_tags` on two rows. The parser treated
+that routing-only shape defect as terminal for each row and hid already decidable
+semantic errors until after correction: guidance pointed its residual at a different
+analyst-estimate need, while customer concentration retained the complete generic-risk
+target and lacked both required customer context and a direct-answer phrase. Current
+routing continues semantic diagnosis when only tags are missing/invalid, without
+inserting a tag into accepted output. A partial residual must now retain at least half
+of its own non-generic topic terms from the one selected target and remove at least ten
+percent of the target's topic terms. Internal routing diagnostics no longer create
+pathless semicolon fragments. Exact V77 replay yields six path-bearing obligations and
+accepts one minimal guidance-only correction; all 476 tests and lint pass.
+
 Current Slow-bootstrap verification (2026-08-30): immutable v76b contract
 `e0b0b6c...3462` committed authoritative `cycle=1` with zero Fast rounds, two
 completed H1 calls, `$0.00246036`, and 13 data-ledger rows (one local sandbox error,

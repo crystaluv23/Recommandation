@@ -3469,6 +3469,76 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("answer_scope=full only", caller.calls[0]["system_prompt"])
         self.assertIn("at most one answer_need selection per target", caller.calls[0]["system_prompt"])
 
+    def test_v77_routing_aggregates_semantics_behind_missing_tags(self) -> None:
+        information_needs = (
+            "What are the latest analyst earnings estimates and revisions?",
+            "What is the current gold price trend and forecast?",
+            "Are there recent insider or institutional purchases?",
+            "What is the current production guidance and any updates on project "
+            "timelines?",
+            "What are the key operational risks, such as geopolitical issues or "
+            "cost inflation?",
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance.pop("context_tags")
+        guidance["target_need_indices"] = [3]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = information_needs[0]
+        guidance["selection_reason"] = (
+            "Answer the production-guidance facet and retain project timelines."
+        )
+        customer = signal_selection("customer_concentration:v1")["selections"][0]
+        customer.pop("context_tags")
+        customer["target_need_indices"] = [4]
+        customer["answer_scope"] = "partial"
+        customer["residual_need"] = information_needs[4]
+        customer["selection_reason"] = (
+            "Treat customer concentration as a general operational risk."
+        )
+        corrected_guidance = json.loads(json.dumps(guidance))
+        corrected_guidance["context_tags"] = ["general"]
+        corrected_guidance["residual_need"] = (
+            "What updates are there on project timelines?"
+        )
+        caller = ScriptedRoleCaller(
+            [
+                {"selections": [guidance, customer]},
+                {"selections": [corrected_guidance]},
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                information_needs,
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=information_needs
+                ),
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        error = feedback["validation_error"]
+        self.assertIn("selections[0] requires exactly", error)
+        self.assertIn("selections[0].residual_need must be grounded", error)
+        self.assertIn("selections[1] requires exactly", error)
+        self.assertIn("selections[1].residual_need must remove", error)
+        self.assertIn("version-owned required research context", error)
+        self.assertIn("version-owned direct-need phrase", error)
+        must_change_paths = {
+            path
+            for obligation in feedback["obligations"]
+            for path in obligation["must_change_paths"]
+        }
+        self.assertIn("selections[0].residual_need", must_change_paths)
+        self.assertIn("selections[1].residual_need", must_change_paths)
+        self.assertEqual(selection.value[0].signal_ref, "guidance_acceleration:v1")
+        self.assertEqual(
+            selection.value[0].residual_need,
+            "What updates are there on project timelines?",
+        )
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
