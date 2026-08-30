@@ -1141,3 +1141,20 @@ named projection, include one bounded exact source window around that overlap. K
 the invalid value, occurrence count, full original context, one-correction limit, and
 the same byte-for-byte validator. Never substitute the suggested window locally or
 weaken ambiguous/no-overlap failures.
+
+## Multi-error correction checklist addendum (2026-08-30)
+
+Error aggregation is not equivalent to an executable correction interface. V75's
+H_init feedback named a missing evidence kind and an unsupported `2025` in both the
+claim and its linked belief. The correction added `kind=basic_info` but repeated the
+unsupported year byte-for-byte, even though the prose explicitly described deletion
+as the minimal valid repair. Models often stop after the first easy shape fix in one
+long semicolon-delimited paragraph.
+
+Keep the full error string for audit, but project its segments into a numbered
+`obligations` array with `obligation_count` and every named path. Tell the role that
+the count is a checklist and every row must be satisfied. This remains a diagnostic
+projection of local failures: it must not select replacement evidence, mutate the
+rejected output, suppress an obligation, or bypass the same one-correction parser and
+semantic validation. Structure is especially valuable when a shape error and a linked
+claim/assertion error coexist, because fixing the former must not hide the latter.

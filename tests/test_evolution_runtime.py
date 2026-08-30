@@ -5855,6 +5855,23 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("numeric quantities", error)
         self.assertIn("42", error)
         self.assertIn("2027", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertGreaterEqual(feedback["obligation_count"], 2)
+        obligations = feedback["obligations"]
+        self.assertEqual(
+            obligations[0]["must_change_paths"],
+            ["supporting_evidence[0].kind"],
+        )
+        self.assertTrue(
+            any(
+                "supporting_evidence[0].claim" in item["must_change_paths"]
+                for item in obligations
+            )
+        )
+        self.assertIn(
+            "Satisfy every validation_feedback.obligations row",
+            caller.calls[1]["system_prompt"],
+        )
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
             fixture["corrected_claim"],

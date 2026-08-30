@@ -1,5 +1,32 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v75 contract
+`7de3a6f...f019` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used 11 completed model attempts, `$0.01025724`, and
+four data-ledger rows. The first Fast case finalized and persisted Predictor plus
+post-hoc output. Locked Test remained sealed, the Registry stayed at its initial hash,
+and Slow Loop did not start. The successor ceilings are 16 attempts,
+`$17.91445444`, and 741 data requests.
+
+V75 live-validated the new routing schema. The first current selector response used
+`answer_scope=partial` for the revenue-growth facet, persisted the exact residual
+product-adoption need, and kept a second growth Signal contextual on the same target.
+Its only defect was two missing `context_tags` fields; correction added only those
+fields and preserved the scope/residual byte-for-byte. Both deterministic results were
+unavailable because the Plan's 10-Q request resolved to provider-no-data, so runtime
+correctly performed no H_reflect and a later empty routing decision finalized the case.
+Post-hoc correction replaced prohibited probability language with confidence language.
+
+The second H_init response had two independently reported defects: a missing evidence
+`kind`, and unsupported `2025` in both the evidence claim and linked belief. Correction
+fixed only the first and repeated the second. Aggregating several requirements into a
+semicolon-delimited string is therefore not enough to make one correction executable.
+Every role correction now receives the unchanged complete error string plus a numbered
+`obligations` array, `obligation_count`, and extracted `must_change_paths`; the system
+requires every row to be satisfied. This projection adds no semantic inference or
+local repair, and the exact same parser/validators still run after the one correction.
+The V75-shaped regression remains covered and all 475 tests plus lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v74 contract
 `053795a...3fe2` rejected its only candidate during the seventh case at authoritative
 pointers `round=0/cycle=0`. It used 50 completed model attempts, `$0.05659276`, and

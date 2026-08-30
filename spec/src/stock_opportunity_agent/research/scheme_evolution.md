@@ -273,6 +273,11 @@ and total-byte violation before the sole correction; it never locally drops a re
 item. An incomplete JSON object that reaches its frozen output-token ceiling receives
 explicit truncation feedback, so the correction spends its one attempt on a compact
 complete object rather than guessing which semantic field failed.
+Correction feedback retains the exact aggregated error text and also projects its
+semicolon-delimited error segments into numbered `obligations` with named field paths.
+The role must satisfy every row rather than stopping after the first easy shape fix.
+This is diagnostic structure only: runtime does not author a replacement value, drop
+an invalid item, or skip the unchanged parser and semantic validation pass.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask

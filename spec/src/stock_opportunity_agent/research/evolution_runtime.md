@@ -641,6 +641,12 @@ provider reports an invalid JSON object after using the full frozen output-token
 allowance, correction feedback explicitly identifies output-ceiling truncation and
 repeats the compact-frontier requirement. Initial and correction system prompts remain
 byte-identical.
+Every role correction also receives a deterministic `obligations` array alongside the
+complete audit string and rejected output. Each row contains one numbered error segment
+and the paths named by that segment; `obligation_count` makes partial repair directly
+observable. The projection does not interpret evidence, choose replacement content, or
+change validation: the model must correct every row, and the same parser and local
+semantic validators run again once.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.

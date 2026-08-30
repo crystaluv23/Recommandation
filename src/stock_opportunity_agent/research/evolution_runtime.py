@@ -4681,6 +4681,39 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
         ) from exc
 
 
+_VALIDATION_OBLIGATION_PATH = re.compile(
+    r"\b[a-z_]+(?:\.[a-z_]+)*\[\d+\](?:\.[a-z_]+)?"
+)
+
+
+def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
+    """Project aggregated validation prose into numbered correction obligations."""
+
+    segments = [
+        segment.strip()
+        for segment in str(failure or "validation failed").split("; ")
+        if segment.strip()
+    ]
+    obligations: list[dict[str, Any]] = []
+    for index, segment in enumerate(segments, start=1):
+        paths = list(dict.fromkeys(_VALIDATION_OBLIGATION_PATH.findall(segment)))
+        if paths and "unknown kind" in segment:
+            paths[0] += ".kind"
+        elif paths and "claim contains numeric quantities" in segment:
+            paths[0] += ".claim"
+        obligations.append(
+            {
+                "obligation_index": index,
+                "must_change_paths": paths,
+                "instruction": segment,
+            }
+        )
+    return {
+        "obligation_count": len(obligations),
+        "obligations": obligations,
+    }
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -4709,6 +4742,9 @@ def _complete_parsed_role(
         "by validation_error, including an explicitly named linked assertion, "
         "must change to valid content or be removed when the contract permits "
         "omission. Preserve unrelated valid fields and items byte-for-byte. "
+        "validation_feedback.obligation_count is the number of independent "
+        "obligations. Satisfy every validation_feedback.obligations row and use "
+        "must_change_paths as a checklist; fixing only the first row is invalid. "
         "When validation_error lists absent numeric quantities, the minimal valid "
         "repair is to delete every listed quantity from the named evidence claim "
         "and each named linked assertion, unless you add same-claim exact_text that "
@@ -4735,10 +4771,12 @@ def _complete_parsed_role(
                 request_payload["validation_feedback"] = {
                     "invalid_output": dict(failed_output or {}),
                     "validation_error": str(failure),
+                    **_validation_obligations(failure),
                 }
             else:
                 request_payload["invalid_output"] = dict(failed_output or {})
                 request_payload["validation_error"] = str(failure)
+                request_payload.update(_validation_obligations(failure))
                 prompt += correction_instruction
         value, step_usage = _complete_json_with_invalid_value(
             caller,
