@@ -72,7 +72,9 @@ S = (B, H_init, H_reflect, H_analyse)
   evolvable. Missing this backbone is a proposal-validation error with the same
   single bounded correction as other malformed Plan content.
 - `H_init`: turns Basic Info into hypotheses and natural-language information
-  needs, not hard-coded Signal ids. Every numeric quantity in a supporting claim
+  needs, not hard-coded Signal ids. Every supporting-evidence `claim` contains
+  1-400 characters; this bound is part of the role's visible output contract rather
+  than a hidden parser constraint. Every numeric quantity in a supporting claim
   must be present in the union of exact Basic literals attached to that same claim;
   explicit thousand/million/billion/trillion words and standard adjacent suffixes
   are compared by exact decimal scaling without tolerance or rounding. Multi-span
@@ -230,6 +232,12 @@ changes every actually named invalid item and any explicitly named linked assert
 while preserving unrelated valid fields/items byte-for-byte. For a quantity-invalid
 evidence claim, feedback names both the evidence index and each identical quantitative
 belief/contradiction that must be changed to the corrected claim.
+For an empty or over-400-character evidence claim, pre-domain validation aggregates
+every invalid `supporting_evidence[index].claim`, reports its actual character length,
+and names each identical `current_beliefs`/`contradictions` path. The correction must
+shorten the claim to at most 400 characters while retaining its provenance, or remove
+the evidence item; an identical linked assertion must copy the corrected claim
+byte-for-byte or be removed. Unrelated valid fields and evidence remain unchanged.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask

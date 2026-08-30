@@ -1,5 +1,35 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v69 contract
+`4333c20...aab2e` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. Its preflight plus run used 12 completed model attempts,
+`$0.01503012`, and three successful/cache-hit SEC request-ledger entries. The first
+KGC case completed H_init, natural empty routing finalization, Predictor, and post-hoc
+reflection. The second Wynn case reached H_init, routing, a shared soft-Signal initial
+and correction, and H_reflect initial and correction—the deepest ordinary Fast
+trajectory so far.
+
+Exact persisted content exposed two independent semantic failures. The
+`guidance_acceleration` correction cited a December 2022 Encore Boston Harbor
+sale-leaseback (`$1.70 billion` proceeds, `$182 million` gain, `$1.51 billion` lease
+liability) as positive current guidance even though no cited text named guidance,
+outlook, forecast, or a management expectation. H_reflect then copied that false
+Signal into a 678-character claim. The parser's 400-character maximum was absent from
+the system output contract, and its correction feedback named no field or linked
+belief, so the model repeated the invalid state byte-for-byte.
+
+Signal versions may now own `result_required_evidence_phrases`; a non-unavailable
+result must cite at least one measured-object phrase or correct to canonical
+`unavailable`. `guidance_acceleration:v1` carries explicit guidance/outlook/forecast/
+management-expectation phrases, while the real `$1,500 per ounce` guidance clause
+still passes. Every ResearchState prompt now exposes the 1-400 claim bound, and raw
+prevalidation aggregates exact `supporting_evidence[index].claim` paths, actual
+lengths, and identical belief/contradiction paths before the sole correction. Direct
+replay of v69's actual artifacts now rejects the sale-leaseback Signal and reports
+`supporting_evidence[1].claim length=678` plus `current_beliefs[1]`. All 463 repository
+tests and lint pass. The successor contract must freeze 175 attempts, `$18.11296800`,
+and 764 data requests; v69 remains immutable evidence.
+
 Current ordinary-loop repair (2026-08-30): immutable v68 contract
 `9a70a62...421bb` rejected its only candidate after the first case at authoritative
 pointers `round=0/cycle=0`. It used 16 attempts, `$0.02271920`, and three locally

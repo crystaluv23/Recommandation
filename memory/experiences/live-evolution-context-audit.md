@@ -997,3 +997,24 @@ ids. Finally, keep routing at the measured-object boundary. A customer-concentra
 card needs a customer/client/buyer/offtake/backlog/order/program object in accepted
 needs/state; a selector's new analogy cannot turn mine diversification or commodity
 profitability into evidence about customer diversification.
+
+## Result-object and hidden-limit addendum (2026-08-30)
+
+A correct source citation is necessary but not sufficient for an LLM Signal result.
+V69's `guidance_acceleration` correction cited a literal December 2022 sale-leaseback
+and then interpreted its cash proceeds and accounting gain as positive current
+guidance. The skill already required explicit current-versus-prior guidance, but the
+local result validator checked only identity, source, time, and literal occurrence.
+Bind a Signal version to a small measured-object phrase set when available results
+must name that object. If none of those phrases occur in the cited evidence, use the
+existing one correction and then canonical `unavailable`; do not let interpretation
+text manufacture applicability. Keep the phrase gate conservative and retain the
+full skill for comparative semantics.
+
+Do not hide a domain-field limit solely inside a dataclass constructor. The same v69
+trajectory copied the false Signal evidence into a 678-character H_reflect claim,
+while neither the output contract nor correction named the 400-character maximum or
+the offending path. Validate raw structured output before construction, aggregate
+every empty/overlong `supporting_evidence[index].claim`, report actual length, and
+name identical beliefs/contradictions that must track the shortened claim. The prompt
+must state the limit on the initial call so correction is recovery, not discovery.

@@ -4014,6 +4014,7 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     },
 ) + (
     ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+    " Every supporting_evidence claim must contain 1-400 characters."
     " Every basic_info evidence exact_text must be one contiguous literal substring "
     "copied byte-for-byte from exactly one supplied projection. Never use ellipses, "
     "join non-contiguous fragments, reorder JSON fields, or paraphrase exact_text. "
@@ -4053,6 +4054,7 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     },
 ) + (
     ' Decision must be "continue" or "finalize"; continue requires at least one need.'
+    " Every supporting_evidence claim must contain 1-400 characters."
     " Retain prior Basic Info refs using their basic_info shape. New signal refs must "
     "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
     "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
@@ -4650,6 +4652,10 @@ def _complete_parsed_role(
         "and each named linked assertion, unless you add same-claim exact_text that "
         "literally contains it; document metadata or surrounding context does not "
         "count. "
+        "When validation_error names an empty or overlong evidence claim, shorten "
+        "only that named claim to 1-400 characters while retaining its provenance, "
+        "or remove it; update each named linked assertion to copy the corrected "
+        "claim byte-for-byte or remove that assertion. "
         "Returning the same rejected content is not a correction."
     )
     for attempt in range(2):
@@ -4919,12 +4925,51 @@ def _normalize_research_state_output(value: Mapping[str, Any]) -> dict[str, Any]
             f"supporting_evidence[{index}] has unknown kind {kind!r}; "
             "expected 'basic_info' or 'signal'"
         )
+    issues.extend(_raw_research_evidence_claim_length_issues(normalized))
     issues.extend(_raw_basic_claim_quantity_issues(normalized))
     issues.extend(_raw_quantitative_assertion_link_issues(normalized))
     if issues:
         raise ValidationError("; ".join(issues))
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
+
+
+def _raw_research_evidence_claim_length_issues(
+    value: Mapping[str, Any],
+) -> list[str]:
+    """Aggregate visible claim-length errors before domain construction."""
+
+    evidence = value.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return []
+    issues: list[str] = []
+    for index, item in enumerate(evidence):
+        if not isinstance(item, Mapping):
+            continue
+        claim = item.get("claim")
+        if not isinstance(claim, str) or (claim.strip() and len(claim) <= 400):
+            continue
+        linked = [
+            f"{field_name}[{assertion_index}]"
+            for field_name in ("current_beliefs", "contradictions")
+            if isinstance(value.get(field_name), list)
+            for assertion_index, assertion in enumerate(value[field_name])
+            if assertion == claim
+        ]
+        linked_instruction = (
+            f"; linked_assertions={linked} must copy the corrected claim "
+            "byte-for-byte or be removed"
+            if linked
+            else ""
+        )
+        issues.append(
+            f"supporting_evidence[{index}].claim length={len(claim)} "
+            f"(trimmed_length={len(claim.strip())}) violates the required 1-400 "
+            "characters. Shorten this claim to at most 400 characters while "
+            "retaining its provenance, or remove this evidence item"
+            + linked_instruction
+        )
+    return issues
 
 
 def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:

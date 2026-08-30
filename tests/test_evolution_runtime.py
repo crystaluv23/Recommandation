@@ -4760,6 +4760,139 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(usage.llm_calls, 2)
         self.assertAlmostEqual(usage.cost, 0.02)
 
+    def test_v69_guidance_signal_rejects_unrelated_sale_leaseback_evidence(
+        self,
+    ) -> None:
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        exact_span = (
+            "In December 2022, the Company completed the sale-leaseback of "
+            "Encore Boston Harbor for $1.70 billion and recorded a $182 million gain."
+        )
+        document = RawInfoDocument.create(
+            document_id="filing-sale-leaseback",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content=exact_span,
+        )
+        invalid = {
+            "signal_id": "guidance_acceleration",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {
+                "summary": "The transaction materially strengthened guidance."
+            },
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": document.document_id,
+                        "exact_span": exact_span,
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        corrected = {
+            "signal_id": "guidance_acceleration",
+            "version": 1,
+            "state": {"value": "unavailable", "confidence": 0.0},
+            "interpretation": {
+                "summary": "Visible evidence did not name management guidance."
+            },
+            "evidence": {"supporting": [], "counter": []},
+            "status": {"coverage": "unavailable"},
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+        spec = SignalSpec(
+            signal_id="guidance_acceleration",
+            version=1,
+            category="management",
+            description="Detect explicit management-guidance acceleration.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="guidance_acceleration.md",
+            parameters={
+                "result_required_evidence_phrases": [
+                    "guidance",
+                    "outlook",
+                    "forecast",
+                    "we expect",
+                ]
+            },
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Compare current with prior explicit guidance.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"][0]
+        self.assertIn("guidance_acceleration:v1", feedback["validation_error"])
+        self.assertIn(
+            "result_required_evidence_phrases", feedback["validation_error"]
+        )
+        self.assertIn("Return unavailable", feedback["validation_error"])
+
+    def test_v69_guidance_signal_accepts_explicit_guidance_evidence(self) -> None:
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        exact_span = (
+            "Management raised 2025 production guidance and now expects all-in "
+            "sustaining cost of $1,500 per ounce."
+        )
+        document = RawInfoDocument.create(
+            document_id="filing-guidance",
+            company_id="issuer-1",
+            source_type="filing",
+            published_at=as_of,
+            available_at=as_of,
+            content=exact_span,
+        )
+        value = {
+            "signal_id": "guidance_acceleration",
+            "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "Management raised 2025 guidance."},
+            "evidence": {
+                "supporting": [
+                    {
+                        "document_id": document.document_id,
+                        "exact_span": exact_span,
+                        "timestamp": as_of.isoformat(),
+                    }
+                ],
+                "counter": [],
+            },
+            "status": {"coverage": "sufficient"},
+        }
+        caller = ScriptedRoleCaller([value])
+        spec = SignalSpec(
+            signal_id="guidance_acceleration",
+            version=1,
+            category="management",
+            description="Detect explicit management-guidance acceleration.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="guidance_acceleration.md",
+            parameters={"result_required_evidence_phrases": ["guidance"]},
+        )
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Compare current with prior explicit guidance.",
+            as_of,
+        )
+
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(usage.llm_calls, 1)
+
     def test_llm_signal_runner_repairs_unavailable_with_placeholder_evidence(
         self,
     ) -> None:
@@ -5543,6 +5676,93 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(initialized.value.current_beliefs, (corrected_claim,))
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
+            corrected_claim,
+        )
+
+    def test_v69_reflect_correction_names_overlong_claim_and_linked_belief(
+        self,
+    ) -> None:
+        prior_claim = "The resort construction timeline remains the key uncertainty."
+        prior_ref = ResearchEvidenceRef(
+            kind="basic_info",
+            claim=prior_claim,
+            projection_id="projection-resort",
+            exact_text="The resort remains under construction.",
+        )
+        previous = ResearchState(
+            hypotheses=("The resort opening may support repricing.",),
+            current_beliefs=(prior_claim,),
+            supporting_evidence=(prior_ref,),
+            open_questions=("Will construction remain on schedule?",),
+            next_information_needs=("Check construction and funding updates.",),
+        )
+        overlong_claim = (
+            "The 2022 sale-leaseback changed historical financing but does not "
+            "by itself establish a current management-guidance revision. "
+            + "This distinction must remain explicit in the active research state. "
+            * 6
+        )
+        self.assertGreater(len(overlong_claim), 400)
+        invalid = {
+            "hypotheses": list(previous.hypotheses),
+            "current_beliefs": [prior_claim, overlong_claim],
+            "supporting_evidence": [
+                prior_ref.to_dict(),
+                {
+                    "kind": "signal",
+                    "claim": overlong_claim,
+                    "signal_ref": "guidance_acceleration:v1",
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": list(previous.open_questions),
+            "next_information_needs": list(previous.next_information_needs),
+            "decision": "continue",
+        }
+        corrected_claim = (
+            "The cited filing discusses a historical sale-leaseback, not a current "
+            "management-guidance revision."
+        )
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"][1] = corrected_claim
+        corrected["supporting_evidence"][1]["claim"] = corrected_claim
+        caller = ScriptedRoleCaller([invalid, corrected])
+        result = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.NEUTRAL,
+            confidence=0.6,
+            interpretation="The filing contains historical financing context.",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="filing-1",
+                    exact_span="The Company completed a sale-leaseback in 2022.",
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("supporting_evidence[1].claim", error)
+        self.assertIn(f"length={len(overlong_claim)}", error)
+        self.assertIn("linked_assertions=['current_beliefs[1]']", error)
+        self.assertIn("at most 400 characters", error)
+        self.assertIn(
+            "Every supporting_evidence claim must contain 1-400 characters",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertEqual(reflected.value.current_beliefs[1], corrected_claim)
+        self.assertEqual(
+            reflected.value.supporting_evidence[1].claim,
             corrected_claim,
         )
 

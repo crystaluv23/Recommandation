@@ -235,6 +235,26 @@ class SignalSpec:
                 "Signal routing_required_research_phrases must contain 1-8 "
                 "unique non-empty strings"
             )
+        result_required_evidence_phrases = parameters.get(
+            "result_required_evidence_phrases"
+        )
+        if result_required_evidence_phrases is not None and (
+            not isinstance(result_required_evidence_phrases, list)
+            or not result_required_evidence_phrases
+            or len(result_required_evidence_phrases) > 16
+            or any(
+                not isinstance(item, str)
+                or not item.strip()
+                or len(item) > 80
+                for item in result_required_evidence_phrases
+            )
+            or len(set(result_required_evidence_phrases))
+            != len(result_required_evidence_phrases)
+        ):
+            raise ValidationError(
+                "Signal result_required_evidence_phrases must contain 1-16 "
+                "unique non-empty strings"
+            )
         excluded_tags = parameters.get("routing_excluded_context_tags")
         if excluded_tags is not None and (
             not isinstance(excluded_tags, list)
@@ -2010,6 +2030,17 @@ def validate_signal_result(
                 raise ValidationError(
                     f"{location} exact span is not in cited document: {item.document_id}"
                 )
+    required_phrases = spec.parameters.get("result_required_evidence_phrases")
+    if required_phrases:
+        cited_text = "\n".join(item.exact_span for item in evidence).casefold()
+        if not any(str(phrase).casefold() in cited_text for phrase in required_phrases):
+            raise ValidationError(
+                f"signal {spec.ref} available result requires cited evidence "
+                "containing at least one version-owned "
+                "result_required_evidence_phrases value: "
+                f"{list(required_phrases)}. Return unavailable with empty evidence "
+                "when visible evidence does not name the measured object"
+            )
 
 
 def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFunction]:

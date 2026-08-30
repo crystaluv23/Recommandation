@@ -194,6 +194,18 @@ canonical `unavailable` result with no evidence rather than accepting or
 fabricating a citation. Provider and unexpected runtime failures still
 propagate so external-call recovery remains explicit.
 
+An LLM Signal version may also declare a small
+`result_required_evidence_phrases` array inside `parameters`. For every
+non-`unavailable` result, at least one version-owned phrase must occur
+case-insensitively in the exact supporting or counter-evidence spans cited by that
+result. This is a conservative measured-object gate, not a replacement for the
+version skill: if the visible cited evidence does not name the measured object, the
+result must be `unavailable` rather than attaching a canonical state to an unrelated
+transaction or disclosure. `guidance_acceleration:v1` uses this gate for explicit
+guidance/outlook/forecast/expectation language, so a financing or sale-leaseback
+disclosure without such language cannot become guidance evidence. A failure names
+the Signal ref and required phrases in the existing one-correction feedback.
+
 LLM extraction skills also own an explicit applicability boundary. In
 particular, `commercialization_status` measures the transition of a previously
 non-commercial technical product or technology from demonstration/pilot into

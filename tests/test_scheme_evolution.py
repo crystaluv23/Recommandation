@@ -623,6 +623,10 @@ class SignalLibraryTests(TestCase):
             spec = registry.load_spec("guidance_acceleration:v1")
             self.assertEqual(spec.execution_type, SignalExecutionType.LLM)
             self.assertIn("guidance", registry.load_skill(spec.ref))
+            self.assertIn(
+                "guidance",
+                spec.parameters["result_required_evidence_phrases"],
+            )
             snapshot = registry.freeze()
             v2 = SignalSpec(
                 signal_id="revenue_growth_yoy",

@@ -142,7 +142,10 @@
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
-        "parameters": {"routing_need_phrases": ["guidance"]}
+        "parameters": {
+          "routing_need_phrases": ["guidance"],
+          "result_required_evidence_phrases": ["guidance", "outlook", "forecast", "we expect", "management expects", "company expects", "now expects", "raises its", "raised its", "lowers its", "lowered its", "reaffirms", "reaffirmed", "on track to"]
+        }
       },
       "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.",
       "tests": [{"name": "generic optimism", "expected": "neutral", "documents": [{"source_type": "filing", "content": "Management remains optimistic but did not change guidance."}]}]

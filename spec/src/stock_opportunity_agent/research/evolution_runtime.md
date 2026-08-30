@@ -612,6 +612,14 @@ issuer target whose terms should be researched. For structured market JSON, it
 must cite a complete visible row rather than constructing a shorter object from
 selected fields.
 
+Every provider-facing ResearchState contract also states that a
+`supporting_evidence` claim contains 1-400 characters. Before domain construction,
+runtime aggregates every empty or overlong claim, reports the exact
+`supporting_evidence[index].claim` path and actual character length, and names any
+identical belief/contradiction paths. The single correction shortens that claim while
+retaining provenance, or removes it, and updates an identical linked assertion
+byte-for-byte; unrelated valid items remain unchanged.
+
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
 
