@@ -5272,8 +5272,12 @@ def _signal_evidence_ref_catalog(batch: SignalBatchResult) -> list[dict[str, Any
             "signal_ref": result.ref,
             "supporting_evidence_indices": list(
                 range(len(result.supporting_evidence))
-            ),
-            "counter_evidence_indices": list(range(len(result.counter_evidence))),
+            )
+            if _signal_result_has_adoptable_evidence(result)
+            else [],
+            "counter_evidence_indices": list(range(len(result.counter_evidence)))
+            if _signal_result_has_adoptable_evidence(result)
+            else [],
         }
         for result in batch.results
     ]
@@ -5315,7 +5319,8 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
     for result in batch.results:
         model_result = signal_result_model_view(result)
         use_canonical_interpretation = (
-            result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
+            _signal_result_has_adoptable_evidence(result)
+            and result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
             and result.interpretation.startswith(result.signal_id + "=")
         )
         evidence_view: dict[str, list[dict[str, Any]]] = {
@@ -5331,9 +5336,7 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
                     "evidence_index": index,
                     "available_at": evidence.timestamp.isoformat(),
                 }
-                if use_canonical_interpretation:
-                    evidence_row["canonical_interpretation"] = result.interpretation
-                else:
+                if not use_canonical_interpretation:
                     text_limit = min(MAX_REFLECT_SIGNAL_EVIDENCE_CHARS, remaining)
                     compact_text = _compact_signal_evidence_text(
                         evidence.exact_span,
@@ -5342,21 +5345,102 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
                     remaining -= len(compact_text)
                     evidence_row["model_evidence_text"] = compact_text
                 evidence_view[group].append(evidence_row)
-        rows.append(
+        row = {
+            "signal_ref": result.ref,
+            "signal_id": result.signal_id,
+            "version": result.version,
+            "state": {
+                "value": result.value.value,
+                "confidence": result.confidence,
+            },
+            "evidence": evidence_view,
+            "status": {"coverage": result.coverage.value},
+        }
+        if use_canonical_interpretation:
+            row["exact_claim_if_adopted"] = result.interpretation
+        else:
+            row["interpretation"] = model_result["interpretation"]
+        rows.append(row)
+    return rows
+
+
+def _signal_result_has_adoptable_evidence(result: SignalResult) -> bool:
+    """Return whether H_reflect may cite one current result as evidence."""
+
+    return (
+        result.value is not SignalValue.UNAVAILABLE
+        and result.coverage is not SignalCoverage.UNAVAILABLE
+        and bool(result.supporting_evidence or result.counter_evidence)
+    )
+
+
+def _reflection_selection_intents(
+    selections: tuple[SignalSelectionDecision, ...],
+) -> list[dict[str, Any]]:
+    """Project persisted routing decisions into the fields reflection still needs."""
+
+    return [
+        {
+            "signal_ref": item.signal_ref,
+            "reason_code": item.reason_code,
+            "selection_reason": item.selection_reason,
+            "target_need_indices": list(item.target_need_indices),
+        }
+        for item in selections
+    ]
+
+
+def _reflection_need_transition_contract(
+    state: ResearchState,
+    selections: tuple[SignalSelectionDecision, ...],
+    batch: SignalBatchResult,
+) -> dict[str, Any]:
+    """Bind each prior need to deterministic routing and result-availability facts."""
+
+    results = {result.ref: result for result in batch.results}
+    rules: list[dict[str, Any]] = []
+    for index, need in enumerate(state.next_information_needs):
+        available_answer_refs: list[str] = []
+        unavailable_answer_refs: list[str] = []
+        contextual_refs: list[str] = []
+        for selection in selections:
+            if index not in selection.target_need_indices:
+                continue
+            if selection.reason_code != "answer_need":
+                if selection.signal_ref not in contextual_refs:
+                    contextual_refs.append(selection.signal_ref)
+                continue
+            result = results.get(selection.signal_ref)
+            destination = (
+                available_answer_refs
+                if result is not None and _signal_result_has_adoptable_evidence(result)
+                else unavailable_answer_refs
+            )
+            if selection.signal_ref not in destination:
+                destination.append(selection.signal_ref)
+        rules.append(
             {
-                "signal_ref": result.ref,
-                "signal_id": result.signal_id,
-                "version": result.version,
-                "state": {
-                    "value": result.value.value,
-                    "confidence": result.confidence,
-                },
-                "interpretation": model_result["interpretation"],
-                "evidence": evidence_view,
-                "status": {"coverage": result.coverage.value},
+                "need_index": index,
+                "need": need,
+                "available_answer_signal_refs": available_answer_refs,
+                "unavailable_answer_signal_refs": unavailable_answer_refs,
+                "context_only_signal_refs": contextual_refs,
+                "required_transition": (
+                    "if evidence from an available_answer_signal_ref is adopted, "
+                    "remove_or_genuinely_narrow; otherwise preserve_exactly"
+                    if available_answer_refs
+                    else "preserve_exactly"
+                ),
             }
         )
-    return rows
+    return {
+        "need_rules": rules,
+        "legacy_unindexed_answer_signal_refs": [
+            item.signal_ref
+            for item in selections
+            if item.reason_code == "answer_need" and not item.target_need_indices
+        ],
+    }
 
 
 _CLAIM_QUANTITY = re.compile(
@@ -5653,6 +5737,12 @@ def _validate_research_state_refs(
                     f"{item.signal_ref!r} outside the current batch; use one exact "
                     "signal_ref supplied by signal_batch"
                 )
+        if not _signal_result_has_adoptable_evidence(result):
+            raise ValidationError(
+                f"supporting_evidence[{index}] cited unavailable Signal result "
+                f"signal_ref={result.ref!r}. Unavailable is a coverage diagnostic, "
+                "not adoptable evidence; remove this evidence item"
+            )
         evidence = (
             result.supporting_evidence
             if item.evidence_group == "supporting"
@@ -5702,11 +5792,21 @@ def _validate_research_state_refs(
         and _research_evidence_key(item) not in previous
         and str(item.signal_ref) in results
     }
+    available_current_signal_refs = (
+        {
+            result.ref
+            for result in batch.results
+            if _signal_result_has_adoptable_evidence(result)
+        }
+        if batch is not None
+        else set()
+    )
     targeted_answer_need_errors = _targeted_answer_need_transition_errors(
         previous_state,
         state,
         selections,
         adopted_new_signal_refs,
+        available_current_signal_refs,
     )
     cosmetic_needs = _cosmetically_retained_information_needs(
         previous_state.next_information_needs if previous_state else (),
@@ -5766,8 +5866,8 @@ def _validate_research_state_refs(
     if phase == "reflect" and adopted_new_signal_evidence:
         if targeted_answer_need_errors:
             validation_errors.append(
-                "research_controller_reflect changed the wrong information need "
-                "after targeted answer_need evidence: "
+                "research_controller_reflect violated the supplied need transition "
+                "contract after adopting current Signal evidence: "
                 f"{targeted_answer_need_errors}. Remove or genuinely narrow each "
                 "named target_need_indices item; preserve every untargeted prior "
                 "next_information_needs item byte-for-byte"
@@ -5797,6 +5897,7 @@ def _validate_research_state_refs(
             item.signal_ref
             for item in selections
             if item.reason_code == "answer_need" and not item.target_need_indices
+            and item.signal_ref in available_current_signal_refs
         }
         if (
             adopted_new_signal_refs.intersection(legacy_answer_need_refs)
@@ -5843,24 +5944,34 @@ def _targeted_answer_need_transition_errors(
     current: ResearchState,
     selections: tuple[SignalSelectionDecision, ...],
     adopted_signal_refs: set[str],
+    available_signal_refs: set[str],
 ) -> list[dict[str, Any]]:
     """Bind adopted answer evidence to its preselected need path."""
 
     if previous is None:
+        return []
+    if not adopted_signal_refs or not selections:
+        return []
+    if any(
+        selection.reason_code == "answer_need"
+        and selection.signal_ref in adopted_signal_refs
+        and selection.signal_ref in available_signal_refs
+        and not selection.target_need_indices
+        for selection in selections
+    ):
         return []
     target_refs: dict[int, list[str]] = {}
     for selection in selections:
         if (
             selection.reason_code != "answer_need"
             or selection.signal_ref not in adopted_signal_refs
+            or selection.signal_ref not in available_signal_refs
             or not selection.target_need_indices
         ):
             continue
         target_refs.setdefault(selection.target_need_indices[0], []).append(
             selection.signal_ref
         )
-    if not target_refs:
-        return []
     errors: list[dict[str, Any]] = []
     for index, need in enumerate(previous.next_information_needs):
         if index not in target_refs:
@@ -6163,9 +6274,10 @@ class LLMResearchController:
                 "numeric quantity in a new Signal claim must occur in the union of the "
                 "model_evidence_text items referenced by refs with that same claim; "
                 "runtime revalidates it against complete canonical evidence. "
-                "For a deterministic Signal interpretation shaped metric=value, you "
-                "may copy that exact numeric form into the claim; do not round it, "
-                "convert it to a percentage, or add approximate raw values. "
+                "For a deterministic Signal row with exact_claim_if_adopted, if you "
+                "cite that result, copy the field byte-for-byte into the evidence "
+                "claim and every quantitative belief; do not round it, convert it "
+                "to a percentage, or add approximate raw values. "
                 "Copy a retained Signal ref's prior claim byte-for-byte because its "
                 "backing batch is no longer visible. If you adopt new current-batch "
                 "Signal evidence and continue, narrow or replace answered information "
@@ -6173,13 +6285,15 @@ class LLMResearchController:
                 "when the batch did not answer it; do not change text merely to show "
                 "motion. Embedding the full old need inside a longer sentence is "
                 "invalid, and a newly resolved question cannot coexist with an exact "
-                "retained same-topic need. Use executed_selection_intents to identify "
-                "why each current Signal was selected. Each answer_need selection "
-                "contains exactly one target_need_indices entry; if you adopt its "
-                "available evidence, remove or genuinely narrow that "
-                "exact indexed need and preserve every untargeted need byte-for-byte. "
-                "A target_need_indices entry on any other reason is association "
-                "metadata only and does not authorize changing that need. "
+                "retained same-topic need. Use need_transition_contract as the sole "
+                "need-ownership map. Each need_rules row names the exact prior need, "
+                "available direct-answer refs, unavailable direct-answer refs, and "
+                "context-only refs. Only when you adopt evidence from one listed "
+                "available_answer_signal_ref may you remove or genuinely narrow that "
+                "exact need. Every rule marked preserve_exactly, and every conditional "
+                "rule whose available answer evidence you did not adopt, must retain "
+                "its need byte-for-byte. Unavailable and context-only refs never "
+                "authorize changing a need. "
                 "Deleting another need or returning the targeted need unchanged is "
                 "invalid. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
@@ -6197,9 +6311,14 @@ class LLMResearchController:
                 "research_state": state.to_dict(),
                 "signal_batch": _signal_batch_model_view(batch),
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
-                "executed_selection_intents": [
-                    item.to_dict() for item in selections
-                ],
+                "executed_selection_intents": _reflection_selection_intents(
+                    selections
+                ),
+                "need_transition_contract": _reflection_need_transition_contract(
+                    state,
+                    selections,
+                    batch,
+                ),
                 "reflection_runtime": {
                     "must_finalize": must_finalize,
                     "termination_trigger": (

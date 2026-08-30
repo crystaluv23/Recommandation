@@ -1,5 +1,35 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v73 contract
+`7454f12...84f` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used 13 completed model attempts, `$0.02261952`, and
+four data-ledger entries (three sandbox-denied preflight rows plus one external SEC
+fetch). The first Fast case finalized and persisted Predictor plus post-hoc output;
+the second reached bounded H_init, corrected routing, corrected soft-Signal execution,
+and both H_reflect attempts. Locked Test remained sealed, the Registry stayed at its
+initial hash, and Slow Loop did not start. The successor ceilings are 77 attempts,
+`$17.98130444`, and 748 data requests.
+
+Exact V73 inspection verified the V72 state-frontier repair live: H_init used 866 and
+868 output tokens, returned bounded arrays, and its one correction changed only two
+numeric beliefs whose strings did not match their cited claims. Routing correctly
+reclassified a contextual revenue result from `answer_need` to `combine_evidence`,
+and the soft-Signal correction correctly made guidance unavailable because the visible
+source had no management guidance, outlook, or forecast. No extra H_reflect was used
+on the first naturally completed case.
+
+The second-case H_reflect adopted canonical `cash_reserves=2.07009e+09`, but rewrote
+it as an unsupported `$2.07 billion`, removed the context-only revenue need, and kept
+the directly targeted liquidity need. Its correction received the complete batch and
+prose selection intents but repeated the same invalid state byte-for-byte. The model
+view now exposes a deterministic exact claim once at result level, omits its repeated
+evidence/interpretation copies, strips routing-only fields from executed intents, and
+supplies one deterministic result-aware rule per prior need. Only adopted evidence
+from an available direct-answer ref authorizes narrowing its named need; contextual
+and unavailable refs require exact preservation. Local validation uses the same
+availability boundary and hides unavailable evidence indices. The V73-shaped
+regression plus all 472 repository tests and lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v72 contract
 `e771419...8aab` rejected its only candidate during the third case at authoritative
 pointers `round=0/cycle=0`. It used 23 paid model attempts—22 completed plus one

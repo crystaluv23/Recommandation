@@ -330,8 +330,12 @@ market `retrieved_at/source/symbol` fields are removed; each evidence text is ca
 at 1,200 characters and the batch evidence text at 8,000 characters. The complete
 canonical Signal batch remains in the local trajectory and is still the only input
 to literal/index/quantity validation. For locally validated deterministic numeric
-Signals, the model row uses the exact canonical `metric=value` interpretation in
-place of a potentially truncated raw JSON evidence excerpt; the indexed canonical
+Signals, the result row carries one top-level `exact_claim_if_adopted` containing the
+exact canonical `metric=value` interpretation. It replaces the same string formerly
+repeated in every evidence row and the generic interpretation projection is omitted
+for that deterministic row. If H_reflect cites that result, both the evidence
+`claim` and any quantitative belief copy this one value byte-for-byte; readable
+rounding or unit conversion is still a different unsupported claim. Indexed canonical
 evidence remains local and is still required for the ref.
 When a `continue` reflection adds a current-batch Signal evidence ref, it must not
 change an information need merely to demonstrate motion. If the batch did not answer
@@ -339,20 +343,27 @@ a need, the role retains that need byte-for-byte. If the batch answered it fully
 partly, the role removes or genuinely narrows it and classifies resolved/open
 questions consistently. This preserves useful evidence without forcing an invented
 resolution.
-The reflection input also carries the executed selections' reason codes and reasons.
-When the role adopts evidence from an available Signal selected with
-`reason_code=answer_need`, the current selector contract also carries exactly one
-`target_need_indices` entry pointing into the supplied information-needs array;
-non-answer reasons may carry zero or one valid association index, but it never implies
-resolution. Old committed selections without this field remain readable. Returning
-that exact direct-answer target, or replacing it with a cosmetic
-version retaining at least 90% of its words, is invalid; deleting an unrelated need
-cannot satisfy the transition in either continuing or terminal reflection. This
-boundary does not guess which need was answered
-or manufacture a resolution: the selector names the target before execution, local
-validation checks its version-owned direct-need phrase, and H_reflect receives the
-persisted target. Correction names only the targeted path/value and preserves every
-untargeted need byte-for-byte.
+The reflection input carries a compact executed-selection projection with only ref,
+reason code, reason, and target index, plus a deterministic
+`need_transition_contract`. Its one `need_rules` row per prior need names the exact
+text, available direct-answer refs, unavailable direct-answer refs, and contextual
+association refs. The rule is conditional on actual evidence adoption: if H_reflect
+adds evidence from an available `answer_need` ref, it removes or genuinely narrows
+that exact target; otherwise it preserves the need byte-for-byte. Context-only and
+unavailable refs never authorize a transition. This local projection removes
+applicability prose, roles, and tags already consumed by routing rather than adding a
+second semantic decision.
+
+The current selector contract carries exactly one `target_need_indices` entry for
+`reason_code=answer_need`; non-answer reasons may carry zero or one valid association
+index, but it never implies resolution. Old committed selections without this field
+remain readable. Returning the exact adopted direct-answer target, or replacing it
+with a cosmetic version retaining at least 90% of its words, is invalid; deleting an
+unrelated need cannot satisfy the transition in either continuing or terminal
+reflection. This boundary does not guess which need was answered or manufacture a
+resolution: the selector names the target before execution, local validation and the
+transition contract use the same persisted selection plus current result coverage,
+and correction preserves every untargeted need byte-for-byte.
 Routing may use `answer_need` only for a need facet directly covered by the card and
 must not claim coverage of other facets; contextual selections use an accurate other
 reason code. A version-owned `routing_answer_need_phrases` boundary may make this

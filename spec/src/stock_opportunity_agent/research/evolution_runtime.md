@@ -678,10 +678,12 @@ For Basic refs, reflect may restate a claim while preserving the provenance tupl
 because the exact literal remains present in the ref and can be revalidated. For a
 new current-batch Signal ref, every numeric quantity in the claim must occur in the
 union of exact Signal evidence items referenced by refs carrying that same claim.
-For a deterministic Signal, a claim may instead copy the exact canonical numeric
-form from `interpretation.summary`; local validation treats that validated derived
-record plus the cited source evidence as support. Rounded percentages, converted
-units, and new raw quantities absent from both remain invalid.
+For a deterministic Signal, the compact result row instead exposes the exact canonical
+numeric form once as `exact_claim_if_adopted`; the same value is not repeated in every
+evidence row. A cited deterministic result copies that field byte-for-byte into its
+evidence claim and any quantitative belief. Local validation treats that validated
+derived record plus the cited source evidence as support. Rounded percentages,
+converted units, and new raw quantities absent from both remain invalid.
 A retained Signal ref from an earlier batch must preserve its prior claim byte-for-byte:
 the backing batch is no longer in the model-facing context, so allowing an unsupported
 restatement would erase or invent the upstream finding. Missing quantities or a changed
@@ -709,8 +711,11 @@ each evidence text at 1,200 characters, and caps all current-batch evidence text
 8,000 characters. Evidence refs returned by the model are still validated against
 the complete canonical batch, so this token reduction cannot weaken literal,
 point-in-time, or provenance checks. A validated deterministic numeric Signal sends
-its exact canonical `metric=value` interpretation instead of a clipped raw JSON
-excerpt; H_reflect still cites the canonical local evidence index.
+its exact canonical `metric=value` interpretation once at result level as
+`exact_claim_if_adopted`, while its evidence rows retain only index and timestamp;
+the generic `interpretation` projection is omitted for that deterministic row so the
+same claim is not supplied twice. H_reflect still cites the canonical local evidence
+index. This is both clearer and smaller for results with multiple evidence spans.
 After that validation, H_reflect must distinguish an answered need from an
 unanswered one instead of changing text merely because it adopted a new Signal ref.
 An unanswered prior need may remain only byte-for-byte; forcing it to change would
@@ -729,18 +734,20 @@ question boilerplate and function words. That narrow consistency check catches a
 actual response that newly resolved production-and-cost guidance while retaining the
 same production-and-cost-guidance need. It does not compare evidence semantics or
 force unrelated needs to change.
-The request additionally includes the executed Signal selections' bounded
-`reason_code`, `selection_reason`, role, and `target_need_indices`. A current
-`answer_need` selection names exactly one valid index into the supplied information
-needs; every other reason may name zero or one valid association index, which does not
-authorize a needs transition. Old committed decisions without the field remain
-readable but use the legacy coarse transition only during replay. If a
-reflection adopts new evidence from an available `answer_need` selection
+The request additionally includes only each executed selection's `signal_ref`,
+`reason_code`, `selection_reason`, and `target_need_indices`; routing-only
+applicability, role, and context tags are omitted. Runtime also derives one compact
+`need_transition_contract.need_rules` row per prior need. Each row contains the exact
+need plus its currently available direct-answer refs, unavailable direct-answer refs,
+and contextual association refs. If a reflection adopts new evidence from one listed
+available `answer_need` ref,
 but retains that exact targeted need, or substitutes a cosmetic >=90%-word-retention
 version, runtime rejects it once. Removing an unrelated need cannot satisfy the
 transition, including when this is the terminal reflection. Other selection reason
-codes do not imply that a need was answered, and
-runtime never chooses the affected need itself. Selection may use
+codes and unavailable results do not imply that a need was answered; their rule is
+exact preservation. Runtime never chooses the affected need itself. Old committed
+decisions without a target remain readable through the legacy coarse transition.
+Selection may use
 `answer_need` only when the card description directly covers at least one explicit
 facet of the need. When a card exposes version-owned
 `routing_answer_need_phrases`, one must already occur in the information-needs array;

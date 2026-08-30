@@ -1091,3 +1091,29 @@ legacy over-limit field can be preserved but cannot grow, retained legacy long t
 can remain byte-for-byte, and newly authored text follows current limits. This keeps
 all-unavailable terminal preservation valid while allowing evidence-bearing rounds to
 replace stale frontier items without silently truncating or locally synthesizing state.
+
+## Result-aware reflection contract addendum (2026-08-30)
+
+Do not make H_reflect reconstruct control-flow ownership from routing prose after
+Signal execution. V73's router correctly distinguished contextual revenue from a
+direct liquidity answer and its soft correction correctly made guidance unavailable,
+but reflection still removed the revenue need, retained the answered liquidity need,
+and rounded the exact cash result. Its correction received the same long selection
+objects and repeated the invalid output byte-for-byte.
+
+Derive one compact rule per prior need from persisted target indices plus the current
+canonical result states. A need may change only when reflection actually adopts
+evidence from an available direct-answer ref listed for that rule. Contextual refs,
+unavailable direct-answer refs, and available-but-unadopted refs require byte-for-byte
+preservation. Apply the same availability predicate locally; do not expose evidence
+indices for an unavailable result. This keeps routing as the semantic decision point
+and makes reflection execute a visible transition contract rather than deciding
+ownership again.
+
+For deterministic numeric results, expose the canonical `metric=value` once as an
+explicit exact-if-adopted claim. Do not repeat it in every evidence row and again in a
+generic interpretation field. The evidence tuple still points to complete canonical
+local evidence, and the strict validator still rejects rounding, unit conversion, or
+new quantities. Compact executed intents to ref, reason, reason text, and target;
+applicability hypotheses, role, and tags have already served routing and add no
+reflection authority.

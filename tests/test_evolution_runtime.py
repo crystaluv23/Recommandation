@@ -6676,17 +6676,21 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
             ),
         )
-        deterministic_evidence = evolution_runtime_module._signal_batch_model_view(
+        deterministic_view = evolution_runtime_module._signal_batch_model_view(
             SignalBatchResult(results=(deterministic,), signal_calls=1)
-        )[0]["evidence"]["supporting"][0]
+        )[0]
         self.assertEqual(
-            deterministic_evidence,
+            deterministic_view["evidence"]["supporting"][0],
             {
                 "evidence_index": 0,
                 "available_at": "2025-07-31T00:00:00+00:00",
-                "canonical_interpretation": "max_drawdown_1y=-0.16",
             },
         )
+        self.assertEqual(
+            deterministic_view["exact_claim_if_adopted"],
+            "max_drawdown_1y=-0.16",
+        )
+        self.assertNotIn("interpretation", deterministic_view)
 
         no_adoption = fixture["invalid_reflection"] | {"supporting_evidence": []}
         unchanged = LLMResearchController(ScriptedRoleCaller([no_adoption])).reflect(
@@ -7011,10 +7015,197 @@ class ConcreteRoleAdapterTests(TestCase):
                     "executed_selection_intents"
                 ][0]
                 self.assertEqual(selection_intent["target_need_indices"], [1])
+                self.assertEqual(
+                    set(selection_intent),
+                    {
+                        "signal_ref",
+                        "reason_code",
+                        "selection_reason",
+                        "target_need_indices",
+                    },
+                )
+                need_rules = caller.calls[0]["payload"][
+                    "need_transition_contract"
+                ]["need_rules"]
+                self.assertEqual(need_rules[0]["required_transition"], "preserve_exactly")
+                self.assertEqual(
+                    need_rules[1]["available_answer_signal_refs"],
+                    ["cash_reserves:v1"],
+                )
+                self.assertIn("remove_or_genuinely_narrow", need_rules[1]["required_transition"])
                 self.assertIn(
-                    "preserve every untargeted need",
+                    "need_transition_contract as the sole need-ownership map",
                     caller.calls[0]["system_prompt"],
                 )
+
+    def test_v73_reflect_receives_result_aware_need_transition_contract(self) -> None:
+        revenue = SignalResult(
+            signal_id="revenue_growth_yoy",
+            version=1,
+            value=SignalValue.NEGATIVE,
+            confidence=1.0,
+            interpretation="revenue_growth_yoy=-0.0872356",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="revenue-document",
+                    exact_span="revenue_growth_yoy=-0.0872356",
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        guidance = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.0,
+            interpretation="No visible management guidance was found.",
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+        cash = SignalResult(
+            signal_id="cash_reserves",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=1.0,
+            interpretation="cash_reserves=2.07009e+09",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="cash-document",
+                    exact_span='{"cash_and_equivalents":2070090000}',
+                    timestamp=datetime(2025, 7, 31, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        financing = SignalResult(
+            signal_id="financing_activity",
+            version=1,
+            value=SignalValue.UNAVAILABLE,
+            confidence=0.0,
+            interpretation="No visible financing event was found.",
+            coverage=SignalCoverage.UNAVAILABLE,
+        )
+        revenue_need = "What is the current revenue growth trajectory and run-rate?"
+        guidance_need = "What guidance or outlook has management provided?"
+        liquidity_need = (
+            "What is the current balance sheet, debt, liquidity, and financing position?"
+        )
+        narrowed_liquidity_need = (
+            "What are the current debt obligations and upcoming maturities?"
+        )
+        previous = ResearchState(
+            next_information_needs=(revenue_need, guidance_need, liquidity_need),
+        )
+        rounded_claim = "Wynn Resorts' cash reserves are approximately $2.07 billion."
+        invalid = {
+            "contradictions": [],
+            "current_beliefs": [rounded_claim],
+            "decision": "continue",
+            "hypotheses": ["Liquidity may support continued execution."],
+            "next_information_needs": [guidance_need, liquidity_need],
+            "open_questions": [guidance_need],
+            "resolved_questions": ["The current cash balance is now known."],
+            "supporting_evidence": [
+                {
+                    "claim": rounded_claim,
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "kind": "signal",
+                    "signal_ref": "cash_reserves:v1",
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = ["cash_reserves=2.07009e+09"]
+        corrected["supporting_evidence"][0]["claim"] = "cash_reserves=2.07009e+09"
+        corrected["next_information_needs"] = [
+            revenue_need,
+            guidance_need,
+            narrowed_liquidity_need,
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(
+                SignalSelectionDecision(
+                    signal_ref="revenue_growth_yoy:v1",
+                    reason_code="combine_evidence",
+                    selection_reason="Provide context for the revenue trajectory.",
+                    applicability_hypothesis="Revenue facts are visible.",
+                    expected_role="confirmation",
+                    target_need_indices=(0,),
+                ),
+                SignalSelectionDecision(
+                    signal_ref="guidance_acceleration:v1",
+                    reason_code="answer_need",
+                    selection_reason="Answer the management-guidance need.",
+                    applicability_hypothesis="Guidance may be visible.",
+                    expected_role="primary",
+                    target_need_indices=(1,),
+                ),
+                SignalSelectionDecision(
+                    signal_ref="cash_reserves:v1",
+                    reason_code="answer_need",
+                    selection_reason="Answer the liquidity facet.",
+                    applicability_hypothesis="A current cash balance is visible.",
+                    expected_role="primary",
+                    target_need_indices=(2,),
+                ),
+                SignalSelectionDecision(
+                    signal_ref="financing_activity:v1",
+                    reason_code="combine_evidence",
+                    selection_reason="Provide financing context.",
+                    applicability_hypothesis="Financing facts may be visible.",
+                    expected_role="confirmation",
+                    target_need_indices=(2,),
+                ),
+            ),
+            must_finalize=False,
+            termination_trigger=None,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            previous,
+            SignalBatchResult(
+                results=(revenue, guidance, cash, financing),
+                signal_calls=4,
+            ),
+        )
+
+        payload = caller.calls[0]["payload"]
+        cash_view = payload["signal_batch"][2]
+        self.assertEqual(
+            cash_view["exact_claim_if_adopted"],
+            "cash_reserves=2.07009e+09",
+        )
+        self.assertNotIn("interpretation", cash_view)
+        self.assertNotIn(
+            "canonical_interpretation",
+            cash_view["evidence"]["supporting"][0],
+        )
+        rules = payload["need_transition_contract"]["need_rules"]
+        self.assertEqual(rules[0]["context_only_signal_refs"], ["revenue_growth_yoy:v1"])
+        self.assertEqual(rules[0]["required_transition"], "preserve_exactly")
+        self.assertEqual(
+            rules[1]["unavailable_answer_signal_refs"],
+            ["guidance_acceleration:v1"],
+        )
+        self.assertEqual(rules[1]["required_transition"], "preserve_exactly")
+        self.assertEqual(rules[2]["available_answer_signal_refs"], ["cash_reserves:v1"])
+        self.assertEqual(rules[2]["context_only_signal_refs"], ["financing_activity:v1"])
+        self.assertEqual(
+            payload["signal_evidence_ref_catalog"][1]["supporting_evidence_indices"],
+            [],
+        )
+        error = validation_error(caller.calls[1])
+        self.assertIn("2.07", error)
+        self.assertIn("next_information_needs[0]", error)
+        self.assertIn("untargeted need changed or was removed", error)
+        self.assertIn("next_information_needs[2]", error)
+        self.assertIn("targeted need remained byte-for-byte", error)
+        self.assertEqual(
+            reflected.value.next_information_needs,
+            (revenue_need, guidance_need, narrowed_liquidity_need),
+        )
 
     def test_v23_terminal_reflection_requires_model_authored_finalize(self) -> None:
         result = SignalResult(
