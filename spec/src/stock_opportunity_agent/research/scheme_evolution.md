@@ -299,8 +299,15 @@ When the role adopts evidence from an available Signal selected with
 continuing is invalid: at least one answered need must be removed or genuinely
 narrowed. This boundary does not guess which need was answered or manufacture a
 resolution; the model receives the original selection intent and performs one
-bounded correction. Evidence selected only for confirmation, contradiction,
+bounded correction. The invalid field and prior indexed values are named explicitly,
+while the model still chooses which evidence-supported item to remove or narrow.
+Routing may use `answer_need` only for a need facet directly covered by the card and
+must not claim coverage of other facets; contextual selections use an accurate other
+reason code. Evidence selected only for confirmation, contradiction,
 applicability, or combination does not trigger this progress requirement.
+H_init likewise emits only unresolved needs: a fact already present in Basic Info or
+the returned evidence/beliefs is not asked again, and a partly answered compound
+question retains only its unresolved facets.
 When the number of needs has not decreased, runtime rejects any changed need that
 contains at least 90% of a prior need's normalized word set; appending a qualifier
 to the whole old question is not progress. Exact retention remains valid because it

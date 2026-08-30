@@ -3172,6 +3172,10 @@ class ConcreteRoleAdapterTests(TestCase):
             ("order_quality:v1",),
         )
         self.assertEqual(applicable.usage.llm_calls, 1)
+        self.assertIn(
+            "Use reason_code=answer_need only when the card description directly",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -5442,6 +5446,10 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("linked_assertions=['current_beliefs[2]']", error)
         self.assertIn("linked_assertions=['current_beliefs[3]']", error)
         self.assertIn("delete every listed quantity", caller.calls[1]["system_prompt"])
+        self.assertIn(
+            "Every next_information_needs item must contain only facts absent",
+            caller.calls[0]["system_prompt"],
+        )
         self.assertEqual(
             initialized.value.current_beliefs,
             tuple(corrected["current_beliefs"]),
@@ -6098,6 +6106,10 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("reason_code='answer_need'", error)
         self.assertIn("exact same set", error)
+        self.assertIn("invalid_field='next_information_needs'", error)
+        self.assertIn("next_information_needs[0]", error)
+        self.assertIn(prior_need, error)
+        self.assertIn("next_information_needs[1]", error)
         self.assertEqual(reflected.value.next_information_needs, (other_need,))
         self.assertEqual(
             caller.calls[0]["payload"]["executed_selection_intents"][0][

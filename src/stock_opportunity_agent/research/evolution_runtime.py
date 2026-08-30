@@ -5497,13 +5497,23 @@ def _validate_research_state_refs(
             and set(state.next_information_needs)
             == set(previous_state.next_information_needs)
         ):
+            retained_indexed_items = [
+                {
+                    "path": f"next_information_needs[{index}]",
+                    "value": need,
+                }
+                for index, need in enumerate(previous_state.next_information_needs)
+            ]
             validation_errors.append(
                 "research_controller_reflect adopted evidence from an available "
                 "Signal selected with reason_code='answer_need' but retained the "
-                "exact same set of prior next_information_needs. Remove or "
-                "genuinely narrow at least one answered need using the supplied "
-                "selection intent; runtime will not choose the need or fabricate "
-                "a resolution"
+                "exact same set of prior next_information_needs; "
+                "invalid_field='next_information_needs'; "
+                f"retained_indexed_items={retained_indexed_items}. Change the field "
+                "by removing or genuinely narrowing at least one listed item that "
+                "the supplied selection intent and accepted evidence actually "
+                "answered. Preserve every unanswered listed item byte-for-byte; "
+                "runtime will not choose the need or fabricate a resolution"
             )
     if validation_errors:
         raise ValidationError("; ".join(validation_errors))
@@ -5718,7 +5728,11 @@ class LLMResearchController:
                 "definition, not an issuer statement or target. Ask only for "
                 "issuer-specific evidence bearing on its feasibility; never ask for "
                 "the terms, definition, baseline date, or baseline price of the "
-                "evaluation outcome; runtime owns those inputs."
+                "evaluation outcome; runtime owns those inputs. Every "
+                "next_information_needs item must contain only facts absent from "
+                "Basic Info and from the evidence or beliefs you return. Do not ask "
+                "again for an already visible fact; when a compound question is "
+                "partly answered, ask only its unresolved facets."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
@@ -6150,6 +6164,11 @@ class LLMSignalRetrievalAgent:
                 "that Signal only when at least one exact phrase already appears "
                 "in information_needs or research_context; your new reason or "
                 "applicability prose cannot create the measured object by analogy. "
+                "Use reason_code=answer_need only when the card description directly "
+                "covers at least one explicit facet of an information need. Name "
+                "only that facet in selection_reason and do not promise coverage of "
+                "other facets; use combine_evidence or another accurate code when "
+                "the card is only contextual. "
                 "For a non-empty answer, return "
                 "selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "

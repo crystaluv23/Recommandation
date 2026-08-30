@@ -910,3 +910,22 @@ claim link. For a listed absent quantity, describe deletion from the named claim
 linked assertions as the minimal valid edit unless the response adds another exact
 same-claim literal containing it. This remains model-authored correction rather than
 local evidence rewriting, but avoids spending one repair on a partial error frontier.
+
+## Unresolved-facet transition addendum (2026-08-30)
+
+A need set is too coarse a correction target. V65's compound need asked for asset-
+sale terms, expected closing dates, and proceeds use. The available financing Signal
+confirmed only sale terms; a correct reflection should narrow to the other two
+facets. The model instead retained the exact compound need, and correction repeated
+it because the error described only an unchanged set while the system contract spoke
+in terms of named fields/items.
+
+Name `next_information_needs` as the invalid field and include its prior indexed
+values. Require at least one evidence-supported removal or genuine narrowing, while
+preserving every unanswered item byte-for-byte; runtime still does not choose which
+need was answered. Upstream, let routing use `answer_need` only when the card
+description directly covers an explicit need facet and forbid promising coverage of
+other facets. H_init should prevent the stale state earlier by asking only for facts
+absent from Basic Info and its own evidence/beliefs, splitting a partly answered
+compound question into unresolved-only facets. These are model responsibilities, not
+local semantic rewriting.

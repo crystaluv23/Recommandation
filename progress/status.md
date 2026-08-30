@@ -1,5 +1,38 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v65 contract
+`2568710...76a4` rejected its only candidate on the first H_reflect correction at
+authoritative pointers `round=0/cycle=0`. It used six completed attempts,
+`$0.00529704`, and three SEC request-ledger entries. Exact inspection covered the
+complete proposer, H_init, routing, soft-Signal, H_reflect, and correction
+requests/responses. The v64 repair passed its paid check: H_init required one call,
+used only literal quantities, and returned two source-backed divestiture facts plus
+one information need without temporal-metadata leakage.
+
+Routing reasonably selected `financing_listing_action:v1` and a deterministic cash
+context. The soft result literally confirmed the completed Asante share sale; cash
+was honestly unavailable. The initial reflection adopted the available evidence but
+retained its compound need for transaction terms, closing dates, and proceeds use.
+Only the sale terms were partly answered, so the logically correct transition was to
+narrow the need to the two unresolved facets. The old correction error stated only
+that the need set must change, while the shared correction contract required every
+named field/item to change; it did not identify one exact field or indexed value, and
+the model returned the same output byte-for-byte.
+
+H_reflect feedback now names `invalid_field='next_information_needs'` and supplies
+every retained indexed value, while explicitly requiring only an evidence-supported
+removal/narrowing and byte-for-byte preservation of unanswered items. The router may
+use `answer_need` only for a facet directly covered by the card description and may
+not promise coverage of other facets; contextual cards use another accurate reason.
+H_init now asks only for facts absent from Basic Info and its returned state, and
+partly answered compound questions retain only unresolved facets. Exact v65 replay
+rejects the persisted no-op and accepts a split into closing-date and proceeds-use
+needs. All 455 repository tests and lint pass.
+
+Before the successor contract, the remaining frozen ceilings are 218 attempts,
+`$18.17658932`, and 776 data requests; v65 remains immutable evidence and cannot
+resume across the code revision.
+
 Current ordinary-loop repair (2026-08-30): immutable v64 contract
 `04fe683...8390` rejected its only candidate on the first H_init correction at
 authoritative pointers `round=0/cycle=0`. It used three completed attempts,

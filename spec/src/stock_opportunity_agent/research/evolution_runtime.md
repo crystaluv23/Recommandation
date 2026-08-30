@@ -702,7 +702,20 @@ The request additionally includes the executed Signal selections' bounded
 evidence from an available `answer_need` selection but returns the exact same set of
 prior needs, runtime rejects it once: the model must remove or genuinely narrow at
 least one answered need. Other selection reason codes do not imply that a need was
-answered, and runtime never chooses the affected need itself.
+answered, and runtime never chooses the affected need itself. Selection may use
+`answer_need` only when the card description directly covers at least one explicit
+facet of the need; its reason names only that facet and does not promise that the
+Signal will answer other facets. A merely contextual card uses `combine_evidence` or
+another accurate reason code. Correction feedback names
+`invalid_field='next_information_needs'` and provides the prior indexed values; the
+field must change through at least one evidence-supported removal or narrowing, but
+unanswered indexed items remain byte-for-byte.
+
+H_init applies the same unresolved-only rule before any Signal call. It must not ask
+again for a fact already present in Basic Info or in the evidence/beliefs it returns.
+When a compound question is partly answered, `next_information_needs` contains only
+the remaining facets. This is model-authored semantic scoping rather than a local
+inference or automatic need rewrite.
 
 The request also includes a runtime-owned terminal directive. It is true only when
 the current batch consumed the last permitted Signal round/call or when a soft-Signal
