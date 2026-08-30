@@ -4682,7 +4682,7 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
 
 
 _VALIDATION_OBLIGATION_PATH = re.compile(
-    r"\b[a-z_]+(?:\.[a-z_]+)*\[\d+\](?:\.[a-z_]+)?"
+    r"\b[a-z_]+(?:\[\d+\]|\.[a-z_]+)+"
 )
 
 
@@ -4714,6 +4714,18 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
     }
 
 
+_RESEARCH_STATE_CORRECTION_GUIDANCE = (
+    " When validation_error lists absent numeric quantities, the minimal valid "
+    "repair is to delete every listed quantity from the named evidence claim "
+    "and each named linked assertion, unless you add same-claim exact_text that "
+    "literally contains it; document metadata or surrounding context does not "
+    "count. When validation_error names an empty or overlong evidence claim, "
+    "shorten only that named claim to 1-400 characters while retaining its "
+    "provenance, or remove it; update each named linked assertion to copy the "
+    "corrected claim byte-for-byte or remove that assertion."
+)
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -4730,6 +4742,7 @@ def _complete_parsed_role(
     reject_output_aliases: Iterable[str] = (),
     stable_correction_prefix: bool = False,
     echo_invalid_output_on_correction: bool = True,
+    correction_guidance: str = "",
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
@@ -4745,15 +4758,8 @@ def _complete_parsed_role(
         "validation_feedback.obligation_count is the number of independent "
         "obligations. Satisfy every validation_feedback.obligations row and use "
         "must_change_paths as a checklist; fixing only the first row is invalid. "
-        "When validation_error lists absent numeric quantities, the minimal valid "
-        "repair is to delete every listed quantity from the named evidence claim "
-        "and each named linked assertion, unless you add same-claim exact_text that "
-        "literally contains it; document metadata or surrounding context does not "
-        "count. "
-        "When validation_error names an empty or overlong evidence claim, shorten "
-        "only that named claim to 1-400 characters while retaining its provenance, "
-        "or remove it; update each named linked assertion to copy the corrected "
-        "claim byte-for-byte or remove that assertion. "
+        + correction_guidance
+        + " "
         "Returning the same rejected content is not a correction."
     )
     for attempt in range(2):
@@ -6378,6 +6384,7 @@ class LLMResearchController:
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
+            correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
         )
         return AgentStep(state, usage)
 
@@ -6481,6 +6488,7 @@ class LLMResearchController:
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
+            correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
         )
         return AgentStep(reflected, usage)
 
@@ -8193,70 +8201,91 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "when signal_need_items are non-empty"
                 )
             if len({item.hypothesis_id for item in items}) != len(items):
-                issues.append("Signal Mining H1 hypothesis ids must be unique")
-            unsupported = sorted(
-                {
+                duplicate_paths = [
+                    f"hypotheses[{index}].hypothesis_id"
+                    for index, item in enumerate(items)
+                    if sum(
+                        candidate.hypothesis_id == item.hypothesis_id
+                        for candidate in items
+                    )
+                    > 1
+                ]
+                issues.append(
+                    "Signal Mining H1 hypothesis ids must be unique at "
+                    + ", ".join(duplicate_paths)
+                )
+            for item_index, item in enumerate(items):
+                item_path = f"hypotheses[{item_index}]"
+                unsupported = sorted(
                     source_type
-                    for item in items
                     for source_type in item.source_types
                     if source_type not in allowed_source_types
-                }
-            )
-            if unsupported:
-                issues.append(
-                    "Signal Mining H1 source_types must use exact supplied values; "
-                    "unsupported: " + ", ".join(unsupported)
                 )
-            for item in items:
-                fixed_match = _fixed_semantics_match(
-                    json.dumps(item.to_dict(), ensure_ascii=False, sort_keys=True)
-                )
-                if fixed_match is not None:
+                if unsupported:
                     issues.append(
-                        "role output attempts to redefine fixed Predictor semantics "
-                        f"for {item.hypothesis_id}; matched prohibited phrase "
-                        f"{fixed_match.group(0)!r}"
+                        "Signal Mining H1 source_types must use exact supplied values "
+                        f"at {item_path}.source_types, unsupported: "
+                        + ", ".join(unsupported)
                     )
-                test_text = " ".join(
+                test_fields = (
+                    (f"{item_path}.statement", item.statement),
                     (
-                        item.statement,
+                        f"{item_path}.expected_positive_pattern",
                         item.expected_positive_pattern,
-                        *item.falsifiers,
-                    )
+                    ),
+                    *tuple(
+                        (f"{item_path}.falsifiers[{index}]", text)
+                        for index, text in enumerate(item.falsifiers)
+                    ),
                 )
-                alternate_match = _H1_ALTERNATE_TEST_OUTCOME.search(test_text)
-                if alternate_match is not None:
-                    issues.append(
-                        "Signal Mining H1 must test the fixed Discovery "
-                        "positive/control outcome rather than an alternate horizon "
-                        f"for {item.hypothesis_id}; matched "
-                        f"{alternate_match.group(0)!r}"
-                    )
-                invented_ref_match = _H1_INVENTED_CASE_REF.search(test_text)
-                if invented_ref_match is not None:
-                    issues.append(
-                        "Signal Mining H1 must not invent opaque case refs or case "
-                        f"placeholders for {item.hypothesis_id}"
-                    )
-                group_redefinition_match = _H1_GROUP_REDEFINITION_PATTERN.search(
-                    test_text
+                semantic_fields = (
+                    (f"{item_path}.hypothesis_id", item.hypothesis_id),
+                    *test_fields,
+                    (f"{item_path}.applicability", item.applicability),
+                    (f"{item_path}.query", item.query),
                 )
-                if group_redefinition_match is not None and (
-                    _H1_SAME_GROUP_ALIAS_PATTERN.fullmatch(
-                        group_redefinition_match.group(0)
+                for path, text in semantic_fields:
+                    fixed_match = _fixed_semantics_match(text)
+                    if fixed_match is not None:
+                        issues.append(
+                            "role output attempts to redefine fixed Predictor "
+                            f"semantics at {path}, matched prohibited phrase "
+                            f"{fixed_match.group(0)!r}"
+                        )
+                for path, text in test_fields:
+                    alternate_match = _H1_ALTERNATE_TEST_OUTCOME.search(text)
+                    if alternate_match is not None:
+                        issues.append(
+                            "Signal Mining H1 must test the fixed Discovery "
+                            "positive/control outcome rather than an alternate "
+                            f"horizon at {path}, matched "
+                            f"{alternate_match.group(0)!r}"
+                        )
+                    invented_ref_match = _H1_INVENTED_CASE_REF.search(text)
+                    if invented_ref_match is not None:
+                        issues.append(
+                            "Signal Mining H1 must not invent opaque case refs or "
+                            f"case placeholders at {path}"
+                        )
+                    group_redefinition_match = _H1_GROUP_REDEFINITION_PATTERN.search(
+                        text
                     )
-                    is None
-                ):
-                    issues.append(
-                        "Signal Mining H1 must not redefine fixed Discovery groups "
-                        f"for {item.hypothesis_id}; matched "
-                        f"{group_redefinition_match.group(0)!r}"
-                    )
+                    if group_redefinition_match is not None and (
+                        _H1_SAME_GROUP_ALIAS_PATTERN.fullmatch(
+                            group_redefinition_match.group(0)
+                        )
+                        is None
+                    ):
+                        issues.append(
+                            "Signal Mining H1 must not redefine fixed Discovery "
+                            f"groups at {path}, matched "
+                            f"{group_redefinition_match.group(0)!r}"
+                        )
                 if _H1_DATA_READINESS_STATEMENT.search(item.statement) is not None:
                     issues.append(
                         "Signal Mining H1 statement must assert a measurable group "
-                        "feature rather than source-data readiness: "
-                        + item.hypothesis_id
+                        "feature rather than source-data readiness at "
+                        f"{item_path}.statement"
                     )
                 if (
                     _H1_UNNORMALIZED_SCALE_PATTERN.search(
@@ -8266,8 +8295,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 ):
                     issues.append(
                         "Signal Mining H1 expected_positive_pattern must normalize "
-                        "raw absolute scale to a case-local baseline: "
-                        + item.hypothesis_id
+                        "raw absolute scale to a case-local baseline at "
+                        f"{item_path}.expected_positive_pattern"
                     )
                 try:
                     _h1_applicability_rule(
@@ -8282,7 +8311,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     issues.append(
                         "Signal Mining H1 applicability must replace the complete "
                         "field with one canonical rule from the actual H2 profile "
-                        f"contract for {item.hypothesis_id}: {exc}"
+                        f"contract at {item_path}.applicability: {exc}"
                     )
                 falsifier_text = " ".join(item.falsifiers)
                 if not (
@@ -8291,8 +8320,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 ):
                     issues.append(
                         "Signal Mining H1 falsifiers must include a positive/control "
-                        "group non-separation or reversal test: "
-                        + item.hypothesis_id
+                        "group non-separation or reversal test at "
+                        f"{item_path}.falsifiers"
                     )
                 query_terms = _h1_topic_terms(item.query)
                 if (
@@ -8303,8 +8332,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     issues.append(
                         "Signal Mining H1 query must be a concise 2-8 term retrieval "
                         "topic without an imperative, numeric threshold, or duplicate "
-                        "time window: "
-                        + item.hypothesis_id
+                        f"time window at {item_path}.query"
                     )
                 if not (
                     _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
@@ -8314,7 +8342,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 ):
                     issues.append(
                         "Signal Mining H1 expected_positive_pattern must name both "
-                        "positive and control groups: " + item.hypothesis_id
+                        "positive and control groups at "
+                        f"{item_path}.expected_positive_pattern"
                     )
                 hypothesis_terms = _h1_topic_terms(
                     " ".join(
@@ -8328,20 +8357,23 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                 )
                 identity_term_sets = (
-                    _h1_topic_terms(
-                        item.hypothesis_id.replace("_", " ").replace("-", " ")
+                    (
+                        f"{item_path}.hypothesis_id",
+                        _h1_topic_terms(
+                            item.hypothesis_id.replace("_", " ").replace("-", " ")
+                        ),
                     ),
-                    _h1_topic_terms(item.query),
+                    (f"{item_path}.query", _h1_topic_terms(item.query)),
                 )
-                if any(
-                    stable_terms <= identity_terms
-                    for stable_terms in existing_signal_term_sets
-                    for identity_terms in identity_term_sets
-                ):
-                    issues.append(
-                        "Signal Mining H1 hypothesis restates an existing stable "
-                        "Signal: " + item.hypothesis_id
-                    )
+                for path, identity_terms in identity_term_sets:
+                    if any(
+                        stable_terms <= identity_terms
+                        for stable_terms in existing_signal_term_sets
+                    ):
+                        issues.append(
+                            "Signal Mining H1 hypothesis restates an existing stable "
+                            f"Signal at {path}"
+                        )
                 if need_term_sets:
                     if not any(
                         len(hypothesis_terms & need_terms) >= 2
@@ -8349,8 +8381,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                     ):
                         issues.append(
                             "Signal Mining H1 hypothesis must share at least two "
-                            "non-generic topic terms with one signal_need_item: "
-                            + item.hypothesis_id
+                            "non-generic topic terms with one signal_need_item at "
+                            + item_path
                         )
             if issues:
                 raise ValidationError("; ".join(issues))

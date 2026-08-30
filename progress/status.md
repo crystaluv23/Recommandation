@@ -1,5 +1,27 @@
 # Status
 
+Current Slow-bootstrap verification (2026-08-30): immutable v76b contract
+`e0b0b6c...3462` committed authoritative `cycle=1` with zero Fast rounds, two
+completed H1 calls, `$0.00246036`, and 13 data-ledger rows (one local sandbox error,
+seven fetched, five quota-deferred). It used current runtime code with the compatible
+v31-v33 frozen no-signal backlog and its Registry hash; the current ordinary Registry
+had no eligible no-signal bootstrap source. Locked Test stayed sealed. H1 proposed
+three grounded hypotheses, its correction removed fixed-group redefinitions and one
+alternate horizon, deterministic H2 built 32 anonymous ready profiles with zero model
+calls, and H3 was correctly not called because only one of 36 bounded evidence packets
+was usable. With no candidate, Update made zero calls and the Registry transition was
+an applied no-op. The remaining cumulative ceilings are 14 attempts,
+`$17.91199408`, and 728 data requests.
+
+Exact v76b correction artifacts exposed that semicolons inside four H1 diagnostics
+had been split into eight obligations and every `must_change_paths` array was empty.
+H1 validation now names exact hypothesis fields and keeps matched text within the same
+obligation; replay of the real initial/corrected responses produces four obligations
+with four exact paths. ResearchState-only quantity/claim repair prose is no longer
+sent to unrelated roles, reducing this H1 system prompt from 5,792 to 5,176 characters
+while preserving a byte-identical initial/correction prefix and all validators. The
+real V76 response replay, all 475 repository tests, and lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v75 contract
 `7de3a6f...f019` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used 11 completed model attempts, `$0.01025724`, and

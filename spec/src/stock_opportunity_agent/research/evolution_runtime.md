@@ -263,6 +263,10 @@ only as a standalone `P(` token; an ordinary word ending in `p` before parenthes
 not a Predictor-semantic redefinition. Stable-identity topic normalization retains
 the compact `yoy` qualifier after converting year-over-year spelling; otherwise the
 specific `revenue_growth_yoy` identity would collapse into generic `revenue growth`.
+Each H1 validation issue names the exact `hypotheses[index]` field or falsifier item
+that must change. Diagnostic matched text stays inside that one issue rather than
+creating another semicolon-delimited obligation. This makes the bounded correction
+checklist field-executable without authorizing local hypothesis repair.
 
 Output identity rejection must not consume the sole correction while hiding other
 pure local validation defects in the same structured value. The adapter still sends
@@ -646,7 +650,10 @@ complete audit string and rejected output. Each row contains one numbered error 
 and the paths named by that segment; `obligation_count` makes partial repair directly
 observable. The projection does not interpret evidence, choose replacement content, or
 change validation: the model must correct every row, and the same parser and local
-semantic validators run again once.
+semantic validators run again once. The shared correction prefix contains only this
+role-neutral contract. ResearchState-only repair advice for evidence quantities and
+claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated roles
+must not pay for or be distracted by evidence fields they cannot return.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.

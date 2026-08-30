@@ -1158,3 +1158,20 @@ projection of local failures: it must not select replacement evidence, mutate th
 rejected output, suppress an obligation, or bypass the same one-correction parser and
 semantic validation. Structure is especially valuable when a shape error and a linked
 claim/assertion error coexist, because fixing the former must not hide the latter.
+
+## Field-addressed Slow correction addendum (2026-08-30)
+
+Do not assume a numbered obligation is executable merely because it is structured.
+V76b's H1 validator embedded `; matched ...` inside each diagnostic and the generic
+projector also split on semicolons, turning four actual defects into eight rows whose
+`must_change_paths` were all empty. Keep auxiliary matched text inside the same error
+segment and make the owning validator name the exact output path. Replaying the real
+three-hypothesis failure should yield four obligations for two
+`expected_positive_pattern` fields, one `statement`, and the third
+`expected_positive_pattern`, not eight prose fragments.
+
+Shared stable correction prefixes should contain only role-neutral rules. Evidence
+quantity, exact-literal, claim-length, and linked-assertion repair guidance belongs to
+ResearchState roles; sending it to Signal Mining or other schemas wastes cacheable
+context and introduces fields those roles cannot return. Specialize that guidance at
+the caller while preserving byte-identical initial/correction prompts within a role.

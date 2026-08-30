@@ -1328,6 +1328,20 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("alternate horizon", error)
         self.assertIn("both positive and control groups", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        must_change_paths = {
+            path
+            for obligation in feedback["obligations"]
+            for path in obligation["must_change_paths"]
+        }
+        self.assertIn("hypotheses[0].statement", must_change_paths)
+        self.assertIn(
+            "hypotheses[0].expected_positive_pattern", must_change_paths
+        )
+        self.assertIn("hypotheses[0].falsifiers[0]", must_change_paths)
+        self.assertNotIn(
+            "delete every listed quantity", caller.calls[1]["system_prompt"]
+        )
         self.assertIn(
             "preserve every hypothesis whose hypothesis_id is not named",
             caller.calls[1]["system_prompt"],
@@ -1579,6 +1593,12 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(result.value[0].hypothesis_id, "consensus_revenue_gap")
         error = validation_error(caller.calls[1])
         self.assertIn("must not redefine fixed Discovery groups", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 1)
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_paths"],
+            ["hypotheses[0].expected_positive_pattern"],
+        )
         self.assertIn("membership clause", caller.calls[0]["system_prompt"])
 
     def test_signal_h1_allows_parenthetical_same_group_alias(self) -> None:
