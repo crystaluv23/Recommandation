@@ -710,8 +710,9 @@ force unrelated needs to change.
 The request additionally includes the executed Signal selections' bounded
 `reason_code`, `selection_reason`, role, and `target_need_indices`. A current
 `answer_need` selection names exactly one valid index into the supplied information
-needs; every other reason carries an empty array. Old committed decisions without the
-field remain readable but use the legacy coarse transition only during replay. If a
+needs; every other reason may name zero or one valid association index, which does not
+authorize a needs transition. Old committed decisions without the field remain
+readable but use the legacy coarse transition only during replay. If a
 reflection adopts new evidence from an available `answer_need` selection
 but retains that exact targeted need, or substitutes a cosmetic >=90%-word-retention
 version, runtime rejects it once. Removing an unrelated need cannot satisfy the
@@ -888,6 +889,18 @@ be relabeled as an order-quality problem by analogy. `commercialization_status:v
 requires an existing product, technology, prototype, or commercialization phrase so
 an established mining or operating project cannot be relabeled as a previously
 non-commercial technical product merely by omitting `mature_operations`.
+
+The one routing correction receives one aggregated diagnostic pass. For every
+structurally usable returned item, runtime reports target-index shape/bounds and
+reason/role defects and every independently visible version-owned exclusion,
+required-context, and
+direct-answer-phrase defect together, naming the selection index and ref. A model must
+not spend the correction fixing one invalid index only to discover that the same
+selection was already an unsupported cross-domain analogy. A valid target on a
+non-answer reason is retained as association metadata and causes no correction; only
+`answer_need` target evidence can authorize a need transition. Items that cannot
+be safely parsed remain rejected and are omitted only from further diagnostics, never
+from validation itself; runtime does not repair or execute them.
 
 Research initialization and compact routing also preserve provider-cache prefixes
 across their single correction. The initial and correction system prompts are

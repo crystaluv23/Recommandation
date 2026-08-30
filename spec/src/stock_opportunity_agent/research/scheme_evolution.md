@@ -178,6 +178,15 @@ help choose complementary evidence, but document fingerprints and content hashes
 remain local executor state. The selector cannot interpret those hashes, already
 executed refs are absent from its cards, and the executor independently enforces
 fingerprint no-op after selection.
+Because routing has only one correction, runtime evaluates every structurally usable
+returned selection against target-index shape/bounds, reason/role enums,
+version-owned tag exclusions, required research phrases, and direct-answer phrases
+before raising the initial validation error. All independently decidable failures are
+reported together with their selection index/ref. Fixing a target array must not
+consume the correction and reveal an already-visible applicability analogy afterward.
+Malformed items that
+cannot be safely interpreted are named and skipped during this diagnostic pass; no
+invalid item is accepted or locally repaired.
 One shared soft-Signal call uses a batch-specific output contract. Each outer
 row returns the exact supplied versioned `signal_ref`, while the nested result
 returns the matching unversioned `signal_spec.signal_id` and integer version.
@@ -308,8 +317,9 @@ The reflection input also carries the executed selections' reason codes and reas
 When the role adopts evidence from an available Signal selected with
 `reason_code=answer_need`, the current selector contract also carries exactly one
 `target_need_indices` entry pointing into the supplied information-needs array;
-non-answer reasons carry an empty array. Old committed selections without this field
-remain readable. Returning that exact targeted need, or replacing it with a cosmetic
+non-answer reasons may carry zero or one valid association index, but it never implies
+resolution. Old committed selections without this field remain readable. Returning
+that exact direct-answer target, or replacing it with a cosmetic
 version retaining at least 90% of its words, is invalid; deleting an unrelated need
 cannot satisfy the transition in either continuing or terminal reflection. This
 boundary does not guess which need was answered

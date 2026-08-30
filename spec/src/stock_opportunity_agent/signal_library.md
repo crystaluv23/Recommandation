@@ -246,8 +246,10 @@ phrases. When the selector returns `reason_code=answer_need`, at least one of th
 version-owned phrases must already occur in the one need identified by its required
 single `target_need_indices` value; occurrence in another need, elsewhere in
 ResearchState, or in newly authored selector prose does not count. Non-answer reasons
-carry an empty target array. On failure, the selector must change the reason to an
-accurate contextual code such as `combine_evidence`, or remove the selection.
+may carry zero or one valid index to preserve which need the context supports, but
+that association never means the need was answered and cannot authorize H_reflect to
+remove or narrow it. On direct-answer failure, the selector must change the reason to
+an accurate contextual code such as `combine_evidence`, or remove the selection.
 `customer_concentration:v1` therefore
 directly answers only concentration/dependence/diversification needs, not a request
 to enumerate recent customer contracts merely because both contain “customer.”

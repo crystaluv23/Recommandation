@@ -1,5 +1,45 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v71 contract
+`b4bd1e1...34a68` rejected its only candidate during the fifth case at authoritative
+pointers `round=0/cycle=0`. Its preflight plus run used 30 completed model attempts,
+`$0.03733464`, and five fetched/cache-hit SEC request-ledger entries. The first four
+Fast cases finalized and persisted Predictor plus post-hoc output; case five reached
+H_init, three routing rounds, one soft-Signal call, and two H_reflect calls before the
+last routing correction failed. Locked Test remained sealed and the Registry stayed
+at its initial version/hash, so Slow Loop did not start.
+
+Exact case-five inspection covered all ten persisted requests and responses. H_init's
+36,810-byte body used a bounded 31,015-character Basic projection and cited one literal
+membership-revenue clause. The 43,144-byte guidance request returned canonical
+`unavailable` because its visible projection contained no management guidance.
+H_reflect then adopted only available revenue, cash, and operating-cash-flow results;
+it correctly retained membership-count, future-projection, and capex/funding needs
+that those contextual results did not answer. Its 9.1-9.5k-byte compact requests did
+not repeat Raw Info. These state transitions match the design.
+
+The failure was routing correction layering plus an over-strict new schema rule. In
+three consecutive routing rounds, the model attached a need index to
+`combine_evidence` to record which need the context supported. Runtime treated this
+reasonable association as invalid and spent corrections clearing it. In the last
+round, the initial output also selected `customer_concentration:v1` by analogy from
+generic revenue-shortfall risk even though no current need/state named a customer,
+client, order, or backlog. Validation reported only the non-answer targets; correction
+cleared them, then the already-visible customer applicability error exhausted the sole
+repair and discarded a separately plausible financing selection.
+
+Current selection semantics allow any reason to retain zero or one valid association
+index, while `answer_need` alone requires a target and alone authorizes H_reflect to
+remove or narrow it. This preserves attribution without creating false resolution or
+unnecessary calls. Routing now aggregates every structurally usable item's index
+shape/bounds, reason/role, version-owned exclusion, required-context, and direct-answer
+failure in the first feedback, naming selection paths/refs; malformed items remain
+fail-closed and no error is repaired locally. The V71-shaped regression preserves the
+financing association, reports customer applicability together with an independent
+invalid index, and passes after one minimal correction. All 468 repository tests pass.
+The successor contract must freeze 113 attempts, `$18.03495720`, and 756 data requests;
+v71 remains immutable evidence.
+
 Current ordinary-loop repair (2026-08-30): immutable v70 contract
 `406f5f1...b71e2` rejected its only candidate during the fourth case at authoritative
 pointers `round=0/cycle=0`. Its preflight plus run used 32 completed model attempts,

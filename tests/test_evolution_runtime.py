@@ -3347,6 +3347,67 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(direct.value[0].reason_code, "answer_need")
         self.assertEqual(direct.usage.llm_calls, 1)
 
+    def test_v71_routing_aggregates_target_and_applicability_errors(self) -> None:
+        customer = signal_selection("customer_concentration:v1")["selections"][0]
+        customer["reason_code"] = "combine_evidence"
+        customer["target_need_indices"] = [1]
+        customer["selection_reason"] = (
+            "Use customer concentration as context for revenue shortfall risk."
+        )
+        customer["applicability_hypothesis"] = (
+            "Concentration may explain revenue volatility."
+        )
+        financing = signal_selection("financing_listing_action:v1")["selections"][0]
+        financing["reason_code"] = "combine_evidence"
+        financing["target_need_indices"] = [2]
+        financing["selection_reason"] = (
+            "Use financing actions to assess capital expenditure funding."
+        )
+        financing["applicability_hypothesis"] = (
+            "Financing may reveal how capital expenditure is funded."
+        )
+        revenue = signal_selection("revenue_growth_yoy:v1")["selections"][0]
+        revenue["target_need_indices"] = [9]
+        corrected_financing = json.loads(json.dumps(financing))
+        invalid = {"selections": [customer, financing, revenue]}
+        corrected = {"selections": [corrected_financing]}
+        information_needs = (
+            "What is the current membership count and quarterly growth rate?",
+            "What are revenue projections and possible shortfall factors?",
+            "What is capital expenditure and how is it funded?",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([invalid, corrected])
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                information_needs,
+                snapshot,
+                {},
+                research_state=ResearchState(
+                    current_beliefs=("Revenue growth remains uncertain.",),
+                    next_information_needs=information_needs,
+                ),
+            )
+
+        error = validation_error(caller.calls[1])
+        self.assertNotIn("non-answer reason_code requires an empty", error)
+        self.assertIn("selections[2].target_need_indices", error)
+        self.assertIn("outside the supplied information_needs", error)
+        self.assertIn("version-owned required research context", error)
+        self.assertIn("customer_concentration:v1", error)
+        self.assertEqual(selection.usage.llm_calls, 2)
+        self.assertEqual(
+            tuple(item.signal_ref for item in selection.value),
+            ("financing_listing_action:v1",),
+        )
+        self.assertEqual(selection.value[0].target_need_indices, (2,))
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

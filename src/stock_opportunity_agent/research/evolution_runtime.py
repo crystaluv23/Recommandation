@@ -6001,6 +6001,8 @@ class LLMResearchController:
                 "contains exactly one target_need_indices entry; if you adopt its "
                 "available evidence, remove or genuinely narrow that "
                 "exact indexed need and preserve every untargeted need byte-for-byte. "
+                "A target_need_indices entry on any other reason is association "
+                "metadata only and does not authorize changing that need. "
                 "Deleting another need or returning the targeted need unchanged is "
                 "invalid. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
@@ -6253,52 +6255,96 @@ class LLMSignalRetrievalAgent:
                 "context_tags",
                 "target_need_indices",
             }
-            parsed: list[SignalSelectionDecision] = []
+            allowed_reason_codes = {
+                "answer_need",
+                "confirm_hypothesis",
+                "test_contradiction",
+                "assess_applicability",
+                "combine_evidence",
+            }
+            allowed_roles = {
+                "primary",
+                "confirmation",
+                "contradiction",
+                "coverage",
+            }
+            validation_errors: list[str] = []
+            diagnostic_items: list[dict[str, Any]] = []
             seen: set[str] = set()
             llm_count = 0
-            for raw in raw_selections:
+            for index, raw in enumerate(raw_selections):
+                path = f"selections[{index}]"
                 item = dict(raw)
                 if set(item) != required:
-                    raise ValidationError(
-                        "Signal selection requires exactly: "
-                        + ", ".join(sorted(required))
+                    validation_errors.append(
+                        f"{path} requires exactly {sorted(required)}; "
+                        f"missing={sorted(required - set(item))}; "
+                        f"unexpected={sorted(set(item) - required)}"
                     )
+                    continue
                 if any(
                     not isinstance(item.get(name), str)
                     for name in required - {"context_tags", "target_need_indices"}
                 ) or not isinstance(item.get("context_tags"), list) or any(
                     not isinstance(tag, str) for tag in item["context_tags"]
                 ):
-                    raise ValidationError("Signal selection fields have invalid JSON types")
+                    validation_errors.append(
+                        f"{path} fields have invalid JSON types"
+                    )
+                    continue
                 target_need_indices = item["target_need_indices"]
                 if not isinstance(target_need_indices, list) or any(
                     type(index) is not int for index in target_need_indices
                 ):
-                    raise ValidationError(
-                        "Signal selection target_need_indices must be an integer array"
+                    validation_errors.append(
+                        f"{path}.target_need_indices must be an integer array"
                     )
-                if item["reason_code"] == "answer_need":
-                    if len(target_need_indices) != 1:
-                        raise ValidationError(
-                            "Signal selection reason_code=answer_need requires exactly "
-                            "one target_need_indices entry"
-                        )
-                    if not 0 <= target_need_indices[0] < len(information_needs):
-                        raise ValidationError(
-                            "Signal selection target_need_indices is outside the "
-                            "supplied information_needs array"
-                        )
-                elif target_need_indices:
-                    raise ValidationError(
-                        "Signal selection non-answer reason_code requires an empty "
-                        "target_need_indices array"
-                    )
+                    continue
                 signal_ref = item["signal_ref"]
                 if signal_ref not in allowed:
-                    raise ValidationError("selection ref is outside supplied cards")
+                    validation_errors.append(
+                        f"{path}.signal_ref={signal_ref!r} is outside supplied cards"
+                    )
+                    continue
                 if signal_ref in seen:
                     continue
                 seen.add(signal_ref)
+                if item["reason_code"] not in allowed_reason_codes:
+                    validation_errors.append(
+                        f"{path}.reason_code={item['reason_code']!r} is unsupported"
+                    )
+                if item["expected_role"] not in allowed_roles:
+                    validation_errors.append(
+                        f"{path}.expected_role={item['expected_role']!r} is unsupported"
+                    )
+                for name in ("selection_reason", "applicability_hypothesis"):
+                    if not item[name].strip():
+                        validation_errors.append(f"{path}.{name} must not be empty")
+                target_shape_valid = (
+                    len(target_need_indices) <= 1
+                    and len(set(target_need_indices)) == len(target_need_indices)
+                    and all(index >= 0 for index in target_need_indices)
+                )
+                if not target_shape_valid:
+                    validation_errors.append(
+                        f"{path}.target_need_indices must contain at most one "
+                        "unique non-negative integer"
+                    )
+                if (
+                    target_shape_valid
+                    and target_need_indices
+                    and target_need_indices[0] >= len(information_needs)
+                ):
+                    validation_errors.append(
+                        f"{path}.target_need_indices is outside the supplied "
+                        "information_needs array"
+                    )
+                if item["reason_code"] == "answer_need":
+                    if len(target_need_indices) != 1:
+                        validation_errors.append(
+                            f"{path} reason_code=answer_need requires exactly one "
+                            "target_need_indices entry"
+                        )
                 tags: list[str] = []
                 for raw_tag in item["context_tags"]:
                     tag = re.sub(
@@ -6315,37 +6361,45 @@ class LLMSignalRetrievalAgent:
                     if llm_count >= 2:
                         continue
                     llm_count += 1
-                parsed.append(
-                    SignalSelectionDecision(
-                        signal_ref=signal_ref,
-                        reason_code=item["reason_code"],
-                        selection_reason=item["selection_reason"].strip()[:240],
-                        applicability_hypothesis=item[
+                diagnostic_items.append(
+                    {
+                        "index": index,
+                        "signal_ref": signal_ref,
+                        "reason_code": item["reason_code"],
+                        "selection_reason": item["selection_reason"].strip()[:240],
+                        "applicability_hypothesis": item[
                             "applicability_hypothesis"
                         ].strip()[:240],
-                        expected_role=item["expected_role"],
-                        context_tags=tuple(tags),
-                        target_need_indices=tuple(target_need_indices),
-                    )
+                        "expected_role": item["expected_role"],
+                        "context_tags": tuple(tags),
+                        "target_need_indices": tuple(target_need_indices),
+                        "target_shape_valid": target_shape_valid,
+                    }
                 )
-                if len(parsed) == 4:
+                if len(diagnostic_items) == 4:
                     break
             selector_case_tags = {
                 *normalized_prior_tags,
-                *(tag for item in parsed for tag in item.context_tags),
+                *(
+                    tag
+                    for item in diagnostic_items
+                    for tag in item["context_tags"]
+                ),
             }
-            for item in parsed:
+            for item in diagnostic_items:
+                path = f"selections[{item['index']}]"
+                signal_ref = item["signal_ref"]
                 excluded_tags = sorted(
                     selector_case_tags.intersection(
-                        specs_by_ref[item.signal_ref].parameters.get(
+                        specs_by_ref[signal_ref].parameters.get(
                             "routing_excluded_context_tags", ()
                         )
                     )
                 )
                 if excluded_tags:
-                    raise ValidationError(
+                    validation_errors.append(
                         "Signal selection applicability contradicts a version-owned "
-                        f"routing exclusion: {item.signal_ref} cannot be selected "
+                        f"routing exclusion at {path}: {signal_ref} cannot be selected "
                         "after the selector classified this case with "
                         f"context_tags={excluded_tags}. Remove the incompatible "
                         "selection; runtime will not infer a replacement Signal or "
@@ -6353,7 +6407,7 @@ class LLMSignalRetrievalAgent:
                     )
                 required_phrases = tuple(
                     str(phrase)
-                    for phrase in specs_by_ref[item.signal_ref].parameters.get(
+                    for phrase in specs_by_ref[signal_ref].parameters.get(
                         "routing_required_research_phrases", ()
                     )
                 )
@@ -6370,9 +6424,9 @@ class LLMSignalRetrievalAgent:
                     for phrase in normalized_required
                     for research_item in normalized_research_items
                 ):
-                    raise ValidationError(
+                    validation_errors.append(
                         "Signal selection lacks version-owned required research "
-                        f"context: {item.signal_ref} requires at least one exact "
+                        f"context at {path}: {signal_ref} requires at least one exact "
                         "phrase already present in information_needs or accepted "
                         f"research_context from {list(required_phrases)}. Remove "
                         "the incompatible selection; runtime will not accept a "
@@ -6381,7 +6435,7 @@ class LLMSignalRetrievalAgent:
                     )
                 answer_need_phrases = tuple(
                     str(phrase)
-                    for phrase in specs_by_ref[item.signal_ref].parameters.get(
+                    for phrase in specs_by_ref[signal_ref].parameters.get(
                         "routing_answer_need_phrases", ()
                     )
                 )
@@ -6394,27 +6448,45 @@ class LLMSignalRetrievalAgent:
                     for phrase in answer_need_phrases
                 )
                 if (
-                    item.reason_code == "answer_need"
+                    item["reason_code"] == "answer_need"
                     and answer_need_phrases
+                    and item["target_shape_valid"]
+                    and len(item["target_need_indices"]) == 1
+                    and 0
+                    <= item["target_need_indices"][0]
+                    < len(normalized_information_needs)
                     and not any(
                         phrase
                         in normalized_information_needs[
-                            item.target_need_indices[0]
+                            item["target_need_indices"][0]
                         ]
                         for phrase in normalized_answer_need_phrases
                     )
                 ):
-                    raise ValidationError(
+                    validation_errors.append(
                         "Signal selection reason_code=answer_need lacks a "
-                        "version-owned direct-need phrase: "
-                        f"{item.signal_ref} requires at least one exact "
+                        f"version-owned direct-need phrase at {path}: "
+                        f"{signal_ref} requires at least one exact "
                         "phrase in its one targeted information need from "
                         f"{list(answer_need_phrases)}. Change reason_code to an "
                         "accurate contextual code such as combine_evidence, or "
                         "remove the selection; research_context and selector-authored "
                         "prose cannot turn context into an answered need"
                     )
-            return tuple(parsed)
+            if validation_errors:
+                raise ValidationError("; ".join(validation_errors))
+            return tuple(
+                SignalSelectionDecision(
+                    signal_ref=item["signal_ref"],
+                    reason_code=item["reason_code"],
+                    selection_reason=item["selection_reason"],
+                    applicability_hypothesis=item["applicability_hypothesis"],
+                    expected_role=item["expected_role"],
+                    context_tags=item["context_tags"],
+                    target_need_indices=item["target_need_indices"],
+                )
+                for item in diagnostic_items
+            )
 
         selected, usage = _complete_parsed_role(
             self.caller,
@@ -6457,10 +6529,12 @@ class LLMSignalRetrievalAgent:
                 "confirm_hypothesis, test_contradiction, assess_applicability, "
                 "or combine_evidence); a <=240 character selection_reason; a "
                 "<=240 character applicability_hypothesis; expected_role "
-                "(primary, confirmation, contradiction, or coverage); and up "
-                "to one target_need_indices integer. answer_need requires exactly "
-                "one valid index into information_needs; every other reason requires "
-                "an empty target_need_indices array; and up "
+                "(primary, confirmation, contradiction, or coverage); and a "
+                "target_need_indices array containing at most one integer. "
+                "answer_need requires exactly "
+                "one valid index into information_needs; every other reason may use "
+                "zero or one valid association index, which does not mean the need "
+                "was answered; and up "
                 "to four context_tags chosen only from: general, "
                 "comparable_financials, sparse_evidence, filing_rich, news_rich, "
                 "transcript_available, market_data_only, pre_revenue, "

@@ -1045,3 +1045,24 @@ not prove customer diversification, and an earnings-release date is not a financ
 action. Optional version-owned cited-evidence phrases can reject these false available
 results before reflection without turning the validator into a general semantic
 solver; the complete Signal skill still owns direction and comparative reasoning.
+
+## Routing-association and correction-layer addendum (2026-08-30)
+
+Do not conflate “this evidence is relevant to need N” with “this evidence answers
+need N.” V71's selector repeatedly put the capex/funding need index on cash and
+operating-cash-flow selections using `combine_evidence`. Rejecting those indices
+created paid corrections even though the reason code already made the weaker semantics
+explicit. Let every reason preserve at most one valid association index for audit;
+require the index for `answer_need`, and let only that reason authorize H_reflect to
+remove or narrow the target. Association metadata is useful lineage, not a resolution
+claim.
+
+One correction also requires one diagnostic layer. In V71's last routing output, two
+contextual targets violated the old shape while customer concentration independently
+lacked any customer/client/order object in needs or accepted state. The first error
+hid the applicability error; correction fixed exactly what it saw, then failed on the
+second layer and discarded a valid sibling. Before raising, validate every safely
+interpretable item against index shape/bounds, enums, prior-tag exclusions, required
+research objects, and direct-answer objects. Report all paths and refs together. This
+does not increase corrections or relax validation; it lets one correction remove the
+bad analogy while preserving unrelated valid work.

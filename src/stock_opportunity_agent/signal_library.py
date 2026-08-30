@@ -792,10 +792,6 @@ class SignalLearningEvent:
                     "Signal learning target_need_indices must contain at most "
                     "one unique non-negative integer"
                 )
-            if selection["reason_code"] != "answer_need" and target_need_indices:
-                raise ValidationError(
-                    "Signal learning non-answer selection must not name a target"
-                )
         object.__setattr__(self, "selection", selection)
         object.__setattr__(
             self,
