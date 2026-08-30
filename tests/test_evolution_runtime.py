@@ -4892,6 +4892,116 @@ class ConcreteRoleAdapterTests(TestCase):
             visible_text += item["exact_text"]
         self.assertIn(target, visible_text)
 
+    def test_llm_signal_runner_budget_trims_without_losing_each_signal_minimum(
+        self,
+    ) -> None:
+        class BudgetAwareCaller:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, Any]] = []
+
+            def estimate_json_request_tokens(self, **kwargs) -> int:
+                source_characters = sum(
+                    len(item["exact_text"])
+                    for item in kwargs["payload"]["source_projection"]
+                )
+                return int(kwargs["max_output_tokens"]) + 500 + source_characters
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                return (
+                    {
+                        "results": [
+                            {
+                                "signal_ref": item["signal_ref"],
+                                "result": {
+                                    "signal_id": item["signal_spec"]["signal_id"],
+                                    "version": item["signal_spec"]["version"],
+                                    "state": {
+                                        "value": "unavailable",
+                                        "confidence": 0.0,
+                                    },
+                                    "interpretation": {
+                                        "summary": "Visible evidence was insufficient."
+                                    },
+                                    "evidence": {"supporting": [], "counter": []},
+                                    "status": {"coverage": "unavailable"},
+                                },
+                            }
+                            for item in kwargs["payload"]["signals"]
+                        ]
+                    },
+                    AgentUsage(llm_calls=1, tokens=50, cost=0.01),
+                )
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        inputs = tuple(
+            LLMSignalBatchInput(
+                SignalSpec(
+                    signal_id=signal_id,
+                    version=1,
+                    category="catalysts",
+                    description=description,
+                    execution_type=SignalExecutionType.LLM,
+                    source_types=("filing",),
+                    skill_file=f"{signal_id}.md",
+                ),
+                (
+                    RawInfoDocument.create(
+                        document_id=f"{signal_id}-document",
+                        company_id="issuer-1",
+                        source_type="filing",
+                        published_at=as_of,
+                        available_at=as_of,
+                        content=target + (" Routine disclosure." * 1_500),
+                    ),
+                ),
+                f"Extract {description}",
+            )
+            for signal_id, description, target in (
+                (
+                    "guidance_change",
+                    "management guidance change",
+                    "Management raised annual guidance.",
+                ),
+                (
+                    "customer_order",
+                    "customer order quality",
+                    "A customer signed a repeat production order.",
+                ),
+            )
+        )
+        caller = BudgetAwareCaller()
+        runner = StructuredLLMSignalRunner(caller)
+        runner.set_request_token_budget(8_500)
+
+        results, usage = runner.execute_many(inputs, as_of)
+
+        self.assertEqual(set(results), {"guidance_change:v1", "customer_order:v1"})
+        self.assertEqual(usage.llm_calls, 1)
+        payload = caller.calls[0]["payload"]
+        self.assertTrue(payload["context_contract"]["budget_trimmed"])
+        self.assertLess(
+            payload["context_contract"]["visible_source_characters"],
+            evolution_runtime_module.MAX_LLM_SIGNAL_CONTEXT_CHARS,
+        )
+        self.assertTrue(
+            all(item["eligible_projection_ids"] for item in payload["signals"])
+        )
+        visible = "\n".join(
+            item["exact_text"] for item in payload["source_projection"]
+        )
+        self.assertIn("Management raised annual guidance.", visible)
+        self.assertIn("A customer signed a repeat production order.", visible)
+        self.assertLessEqual(
+            caller.estimate_json_request_tokens(
+                system_prompt=caller.calls[0]["system_prompt"],
+                payload=payload,
+                allow_outcomes=False,
+                max_output_tokens=4_000,
+            ),
+            8_500,
+        )
+
     def test_llm_signal_runner_falls_back_unavailable_after_failed_repair(self) -> None:
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
         document = RawInfoDocument.create(
@@ -7698,14 +7808,24 @@ class RunControlTests(TestCase):
                 environ={"FIXTURE_KEY": "test-key"},
             )
 
-            with self.assertRaisesRegex(RuntimeBudgetExceeded, "reservation"):
+            reservation = client.estimate_json_request_tokens(
+                system_prompt="Return JSON.",
+                payload={"context": "x" * 1_000},
+                allow_outcomes=False,
+                max_output_tokens=2_000,
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeBudgetExceeded,
+                f"required={reservation}, remaining={reservation - 1}",
+            ):
                 client.complete_json(
                     stage="predict",
                     system_prompt="Return JSON.",
                     payload={"context": "x" * 1_000},
                     allow_outcomes=False,
                     max_output_tokens=2_000,
-                    max_request_tokens=10,
+                    max_request_tokens=reservation - 1,
                 )
 
             self.assertFalse(transport.called)

@@ -148,11 +148,13 @@ Before cache lookup can fall through to attempt reservation or network I/O,
 runtime computes canonical UTF-8 bytes for the exact provider request and adds
 the frozen output-token ceiling as a conservative case-token reservation. A
 request whose reservation exceeds the remaining case budget is never sent.
-Adaptive research must preserve 36,000 tokens for deterministic terminal closure
-plus the Predictor; insufficient Signal/routing budget ends adaptive research and
-locally freezes the current state as final without another model call. The closure
-preserves hypotheses, beliefs, evidence provenance, contradictions, and question
-classifications exactly; only `decision` and `next_information_needs` change.
+Adaptive research must preserve 36,000 tokens for any reflectable terminal batch
+plus the Predictor. Insufficient routing budget, or insufficient Signal budget
+before any result exists, ends adaptive research with the current `continue` state
+ineligible for fitness; runtime must not disguise missing research as finalization.
+When a completed deterministic subgroup makes a partial batch reflectable but its
+soft peer cannot pass reservation, the existing terminal-reflection contract
+applies instead.
 Insufficient post-hoc budget preserves the immutable prediction and
 fitness and writes a deterministic `budget_skipped` reflection.
 Routing payloads never expose prior document fingerprints or content hashes. They
@@ -778,6 +780,17 @@ literal-window projection with document hashes and source offsets; complete
 documents remain local for request fingerprints and strict validation of the
 returned evidence. `SignalResult` carries only the canonical conclusion,
 interpretation, and source evidence rather than duplicating Raw Info.
+The 32,000-character projection is a ceiling, not a required payload size. Before
+the first provider call, runtime uses the same exact provider-body byte reservation
+as the external boundary to test the complete projection. When it cannot fit, the
+runtime preserves one highest-ranked eligible projection per selected Signal when
+that minimum fits, then greedily adds remaining ranked projections whose exact
+payload still fits. The resulting request is the largest subset reached by that
+stable pass; `context_contract` records `budget_trimmed=true` and the actual source
+characters. If even the minimum cannot fit, the ordinary pre-send budget refusal
+remains fail closed. A correction reuses the accepted initial projection unchanged;
+runtime never discards evidence after seeing model output merely to make a repair
+fit.
 Because fixed-width overlapping windows can begin or end inside a sentence, number,
 or JSON transcript field, a model citation may not touch a projection edge when that
 edge is not also the normalized source-document edge. The neighboring overlap remains

@@ -1,5 +1,28 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v67 contract
+`47d64a8...d364` rejected its only candidate after the first case at authoritative
+pointers `round=0/cycle=0`. It used eight attempts, `$0.01462384`, and three SEC
+request-ledger entries. H_init's initial UBS claim added an absent `$20` comparison;
+its exact correction removed only that quantity. Routing initially repeated the v66
+mature-project commercialization error, then its exact correction removed that ref
+and retained the valid guidance selection, live-verifying the new applicability gate.
+
+The selected guidance batch still made zero provider calls. Its persisted exact body
+was 43,839 bytes plus a 4,000-token output reservation, while only 41,766 adaptive
+tokens remained after H_init/routing and the frozen terminal reserve. The 30,830-
+character projection therefore failed the conservative byte-for-token preflight;
+Predictor/post-hoc completed, but the unchanged `continue` state remained correctly
+ineligible. Soft-Signal projection is now budget-aware only when the complete bounded
+request cannot fit: exact provider-body estimation preserves one highest-ranked
+projection per selected Signal when feasible, then adds further ranked projections
+while the whole request fits. Complete Raw Info, per-Signal projection scope, literal
+mapping, validation, and the unchanged correction context remain intact. Exact v67
+replay retains 15/19 projections and the complete `$1,500 per ounce` guidance clause,
+with a 41,101 reservation under the 41,766 limit. All 458 repository tests and lint
+pass. The successor contract must freeze 203 attempts, `$18.15071732`, and 770 data
+requests; v67 remains immutable evidence.
+
 Current ordinary-loop repair (2026-08-30): immutable v66 contract
 `784b5eb...65bc5` rejected its only candidate on the first H_reflect correction at
 authoritative pointers `round=0/cycle=0`. It used seven completed attempts,

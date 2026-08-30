@@ -954,3 +954,24 @@ commercialization, and spent a soft call whose own result said not applicable. B
 commercialization phrases just as `order_quality` is bound to order/backlog phrases.
 New selection prose cannot manufacture the measured object, while genuine prototype-
 to-product questions remain available.
+
+## Budget-aware Signal projection addendum (2026-08-30)
+
+The nominal source-character ceiling is not the exact request budget. V67's persisted
+soft-Signal request contained 30,830 source characters, but the real DeepSeek body was
+43,839 UTF-8 bytes; adding the frozen 4,000 output allowance required 47,839 against
+only 41,766 remaining adaptive tokens. The request was correctly refused before any
+attempt, yet the consequence was zero Signal evidence and an unfinalized case. Merely
+lowering the global 32,000-character ceiling would hide the relationship and weaken
+every otherwise affordable request.
+
+Use the same provider request builder as the external boundary to estimate the exact
+byte-plus-output reservation before persistence. Only when the complete 32,000-
+character projection cannot fit, preserve one highest-ranked eligible projection per
+selected Signal when feasible and greedily add further ranked projections whose whole
+payload still fits. Record the actual visible characters and trimming decision; keep
+complete Raw Info, lineage, per-Signal eligibility, literal mapping, and all validators
+local and unchanged. Reuse that initial projection byte-for-byte on correction rather
+than trimming after seeing failed output. In the exact V67 replay this retained 15 of
+19 projections and the full `$1,500 per ounce` guidance clause while reducing the new
+request reservation from 47,900 to 41,101 under the same 41,766 limit.

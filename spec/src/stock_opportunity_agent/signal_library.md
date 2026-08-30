@@ -250,14 +250,21 @@ projection ids and raw-offset mappings. SEC HTML tags and repetitive per-row
 market `retrieved_at/source/symbol` fields are absent from the model view while
 the unmodified original remains durable. At most two selected LLM Signals in
 one routing batch share one deduplicated projection capped at 32,000 source
-characters and one structured call. Results remain separately keyed, parsed,
-validated, learned, and versioned. A bad result degrades only that Signal to
-`unavailable` after the single correction boundary. Model evidence cites a
-projection id and literal projected text; local code requires a unique mapping
-back to an original Raw Info span and stores the original literal span in
-`SignalEvidence`. The projection is an execution context, not a claim that
-omitted text is absent; ambiguity, absence, or insufficient visible evidence
-fails closed.
+characters and one structured call. If that complete bounded projection cannot
+pass the exact remaining-request reservation, runtime retains the largest
+deterministic subset that does fit, in the existing relevance order, while
+preserving at least one eligible projection per selected Signal whenever that
+minimum itself fits. The payload records whether this budget-only trimming
+occurred and its actual visible-source size. This is a transport choice only
+relative to refusing the entire Signal request: complete documents remain local,
+omitted text is never treated as absence, and no citation or semantic validator
+is relaxed. Results remain separately keyed, parsed, validated, learned, and
+versioned. A bad result degrades only that Signal to `unavailable` after the
+single correction boundary. Model evidence cites a projection id and literal
+projected text; local code requires a unique mapping back to an original Raw Info
+span and stores the original literal span in `SignalEvidence`. The projection is
+an execution context, not a claim that omitted text is absent; ambiguity, absence,
+or insufficient visible evidence fails closed.
 
 Required Signal-result objects and evidence-policy booleans are type-strict;
 missing coverage, string booleans, string-as-array evidence, and non-finite

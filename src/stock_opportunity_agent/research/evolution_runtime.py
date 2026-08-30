@@ -3366,6 +3366,77 @@ class StructuredRoleClient:
         self.environ = environ
         self.on_progress = on_progress
 
+    def estimate_json_request_tokens(
+        self,
+        *,
+        system_prompt: str,
+        payload: Mapping[str, Any],
+        allow_outcomes: bool,
+        anonymous_aliases: Iterable[str] = (),
+        max_output_tokens: int | None = None,
+        temperature: float = 0.0,
+    ) -> int:
+        """Return the exact conservative byte-plus-output reservation for JSON."""
+
+        _scan_payload(
+            payload,
+            allow_outcomes=allow_outcomes,
+            anonymous_aliases=anonymous_aliases,
+        )
+        structured_system_prompt = (
+            "Return exactly one JSON object and no non-JSON text. " + system_prompt
+        )
+        output_limit = (
+            max_output_tokens or self.registration.default_max_output_tokens
+        )
+        messages = [
+            ChatMessage("system", structured_system_prompt),
+            ChatMessage(
+                "user",
+                json.dumps(
+                    payload,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ),
+            ),
+        ]
+        kwargs: dict[str, Any] = {
+            "max_output_tokens": output_limit,
+            "response_format": {"type": "json_object"},
+        }
+        if self.registration.default_reasoning_effort:
+            kwargs["reasoning"] = {
+                "effort": self.registration.default_reasoning_effort
+            }
+        wire_request = None
+        if self.registration.provider in _WIRE_AUDITED_PROVIDERS:
+            preview_client = self.registration.create_client(
+                ModelClientSettings(
+                    preview_only=True,
+                    temperature=temperature,
+                    max_http_attempts=1,
+                    environ=self.environ,
+                )
+            )
+            wire_request = _prepare_wire_record(preview_client, messages, kwargs)
+        estimated_input_bytes = (
+            int(wire_request["body_bytes"])
+            if wire_request is not None
+            else len(
+                json.dumps(
+                    [
+                        {"role": message.role, "content": message.content}
+                        for message in messages
+                    ],
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            )
+        )
+        return max(1, estimated_input_bytes) + output_limit
+
     def complete_json(
         self,
         *,
@@ -8331,6 +8402,26 @@ def _map_projected_signal_evidence(
     return normalized
 
 
+_LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
+    "Apply each versioned extraction skill independently to the one shared "
+    "bounded point-in-time source_projection. Each evidence item inside a nested "
+    "result must use projection_id and exact_text copied from one visible "
+    "projection; runtime maps it to the original raw span. Each Signal may cite "
+    "only projection ids listed in its own eligible_projection_ids, even though "
+    "peer Signal projections are visible in the shared batch. Do not cite text "
+    "that starts or ends at an internal projection edge; use the overlapping "
+    "projection containing the complete clause. Never infer omitted source text "
+    "is absent. Return unavailable with no evidence when visible text is "
+    "insufficient. If optional validation_feedback is present, this is the only "
+    "correction attempt: do not repeat failed_output and apply each "
+    "required_action exactly. When no literal citation supports the corrected "
+    "conclusion, set state.value and status.coverage to unavailable and keep both "
+    "evidence arrays empty."
+    + _UNTRUSTED_DATA_INSTRUCTION
+    + _SIGNAL_BATCH_RESULT_OUTPUT
+)
+
+
 class StructuredLLMSignalRunner:
     """No-label extraction-skill runner for one Signal and its exact documents."""
 
@@ -8340,6 +8431,157 @@ class StructuredLLMSignalRunner:
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
+
+    @staticmethod
+    def _batch_payload(
+        inputs: tuple[LLMSignalBatchInput, ...],
+        documents: list[dict[str, Any]],
+        lineage: Mapping[str, _SignalProjectionLineage],
+        as_of: datetime,
+        *,
+        budget_trimmed: bool,
+    ) -> dict[str, Any]:
+        projection_ids_by_ref: dict[str, tuple[str, ...]] = {}
+        for item in inputs:
+            document_identities = {
+                (document.document_id, document.content_hash)
+                for document in item.documents
+            }
+            projection_ids_by_ref[item.spec.ref] = tuple(
+                projection_id
+                for projection_id, projection in lineage.items()
+                if (
+                    projection.document.document_id,
+                    projection.document.content_hash,
+                )
+                in document_identities
+            )
+        return {
+            "batch_signal_refs": sorted(item.spec.ref for item in inputs),
+            "signals": [
+                {
+                    "signal_ref": item.spec.ref,
+                    "signal_spec": item.spec.to_dict(),
+                    "skill": item.skill,
+                    "eligible_projection_ids": list(
+                        projection_ids_by_ref[item.spec.ref]
+                    ),
+                }
+                for item in inputs
+            ],
+            "as_of": as_of.isoformat(),
+            "source_projection": documents,
+            "context_contract": {
+                "kind": "bounded_normalized_raw_info_projection",
+                "max_source_characters": MAX_LLM_SIGNAL_CONTEXT_CHARS,
+                "visible_source_characters": sum(
+                    len(item["exact_text"]) for item in documents
+                ),
+                "budget_trimmed": budget_trimmed,
+                "complete_documents_retained_locally": True,
+                "omitted_text_may_contain_additional_evidence": True,
+                "citation_fields": ["projection_id", "exact_text"],
+            },
+        }
+
+    def _fit_projection_to_budget(
+        self,
+        inputs: tuple[LLMSignalBatchInput, ...],
+        documents: list[dict[str, Any]],
+        lineage: Mapping[str, _SignalProjectionLineage],
+        as_of: datetime,
+    ) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage], bool]:
+        estimator = getattr(self.caller, "estimate_json_request_tokens", None)
+        if self.request_token_budget is None or not callable(estimator):
+            return documents, dict(lineage), False
+
+        def payload_for(
+            selected_documents: list[dict[str, Any]],
+            *,
+            trimmed: bool,
+        ) -> tuple[dict[str, Any], dict[str, _SignalProjectionLineage]]:
+            selected_ids = {
+                str(document["projection_id"]) for document in selected_documents
+            }
+            selected_lineage = {
+                projection_id: projection
+                for projection_id, projection in lineage.items()
+                if projection_id in selected_ids
+            }
+            payload = self._batch_payload(
+                inputs,
+                selected_documents,
+                selected_lineage,
+                as_of,
+                budget_trimmed=trimmed,
+            )
+            return payload, selected_lineage
+
+        full_payload, full_lineage = payload_for(documents, trimmed=False)
+        full_reservation = estimator(
+            system_prompt=_LLM_SIGNAL_BATCH_SYSTEM_PROMPT,
+            payload=full_payload,
+            allow_outcomes=False,
+            max_output_tokens=4_000,
+        )
+        if full_reservation <= self.request_token_budget:
+            return documents, full_lineage, False
+
+        essential_ids: set[str] = set()
+        for item in inputs:
+            identities = {
+                (document.document_id, document.content_hash)
+                for document in item.documents
+            }
+            for projection_id, projection in lineage.items():
+                if (
+                    projection.document.document_id,
+                    projection.document.content_hash,
+                ) in identities:
+                    essential_ids.add(projection_id)
+                    break
+        selected = [
+            document
+            for document in documents
+            if str(document["projection_id"]) in essential_ids
+        ]
+        minimum_payload, minimum_lineage = payload_for(selected, trimmed=True)
+        minimum_reservation = estimator(
+            system_prompt=_LLM_SIGNAL_BATCH_SYSTEM_PROMPT,
+            payload=minimum_payload,
+            allow_outcomes=False,
+            max_output_tokens=4_000,
+        )
+        if minimum_reservation > self.request_token_budget:
+            return selected, minimum_lineage, True
+
+        selected_ids = {
+            str(document["projection_id"]) for document in selected
+        }
+        projection_order = {
+            str(document["projection_id"]): index
+            for index, document in enumerate(documents)
+        }
+        for document in documents:
+            projection_id = str(document["projection_id"])
+            if projection_id in selected_ids:
+                continue
+            trial = [*selected, document]
+            trial.sort(
+                key=lambda item: projection_order[str(item["projection_id"])]
+            )
+            trial_payload, _trial_lineage = payload_for(trial, trimmed=True)
+            reservation = estimator(
+                system_prompt=_LLM_SIGNAL_BATCH_SYSTEM_PROMPT,
+                payload=trial_payload,
+                allow_outcomes=False,
+                max_output_tokens=4_000,
+            )
+            if reservation <= self.request_token_budget:
+                selected = trial
+                selected_ids.add(projection_id)
+        _payload, selected_lineage = payload_for(selected, trimmed=True)
+        return selected, selected_lineage, True
 
     def execute(
         self,
@@ -8363,43 +8605,19 @@ class StructuredLLMSignalRunner:
         if len({item.spec.ref for item in inputs}) != len(inputs):
             raise ValidationError("LLM Signal batch refs must be unique")
         documents, lineage = _shared_llm_signal_projection(inputs)
-        projection_ids_by_ref: dict[str, tuple[str, ...]] = {}
-        for item in inputs:
-            document_identities = {
-                (document.document_id, document.content_hash)
-                for document in item.documents
-            }
-            projection_ids_by_ref[item.spec.ref] = tuple(
-                projection_id
-                for projection_id, projection in lineage.items()
-                if (
-                    projection.document.document_id,
-                    projection.document.content_hash,
-                )
-                in document_identities
-            )
-        base_payload = {
-            "batch_signal_refs": sorted(item.spec.ref for item in inputs),
-            "signals": [
-                {
-                    "signal_ref": item.spec.ref,
-                    "signal_spec": item.spec.to_dict(),
-                    "skill": item.skill,
-                    "eligible_projection_ids": list(
-                        projection_ids_by_ref[item.spec.ref]
-                    ),
-                }
-                for item in inputs
-            ],
-            "as_of": as_of.isoformat(),
-            "source_projection": documents,
-            "context_contract": {
-                "kind": "bounded_normalized_raw_info_projection",
-                "max_source_characters": MAX_LLM_SIGNAL_CONTEXT_CHARS,
-                "complete_documents_retained_locally": True,
-                "omitted_text_may_contain_additional_evidence": True,
-                "citation_fields": ["projection_id", "exact_text"],
-            },
+        documents, lineage, budget_trimmed = self._fit_projection_to_budget(
+            inputs, documents, lineage, as_of
+        )
+        base_payload = self._batch_payload(
+            inputs,
+            documents,
+            lineage,
+            as_of,
+            budget_trimmed=budget_trimmed,
+        )
+        projection_ids_by_ref = {
+            str(item["signal_ref"]): tuple(item["eligible_projection_ids"])
+            for item in base_payload["signals"]
         }
         usage = AgentUsage()
         pending = {item.spec.ref: item for item in inputs}
@@ -8419,26 +8637,7 @@ class StructuredLLMSignalRunner:
                         if attempt == 0
                         else "llm_signal_batch_execute_correction"
                     ),
-                    system_prompt=(
-                        "Apply each versioned extraction skill independently to the one "
-                        "shared bounded point-in-time source_projection. Each evidence "
-                        "item inside a nested result must use projection_id and "
-                        "exact_text copied from one visible projection; runtime maps it to "
-                        "the original raw span. Each Signal may cite only projection ids "
-                        "listed in its own eligible_projection_ids, even though peer "
-                        "Signal projections are visible in the shared batch. Do not cite "
-                        "text that starts or ends at an "
-                        "internal projection edge; use the overlapping projection containing "
-                        "the complete clause. Never infer omitted source text is absent. "
-                        "Return unavailable with no evidence when visible text is insufficient. "
-                        "If optional validation_feedback is present, this is the only "
-                        "correction attempt: do not repeat failed_output and apply each "
-                        "required_action exactly. When no literal citation supports the "
-                        "corrected conclusion, set state.value and status.coverage to "
-                        "unavailable and keep both evidence arrays empty."
-                        + _UNTRUSTED_DATA_INSTRUCTION
-                        + _SIGNAL_BATCH_RESULT_OUTPUT
-                    ),
+                    system_prompt=_LLM_SIGNAL_BATCH_SYSTEM_PROMPT,
                     payload=payload,
                     allow_outcomes=False,
                     max_output_tokens=4_000,
