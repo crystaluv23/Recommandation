@@ -718,6 +718,25 @@ class SignalLibraryTests(TestCase):
                 parameters={"routing_required_research_phrases": []},
             )
 
+    def test_commercialization_requires_version_owned_product_phrases(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            spec = registry.load_spec("commercialization_status:v1")
+
+        self.assertEqual(
+            spec.parameters["routing_required_research_phrases"],
+            [
+                "product",
+                "technology",
+                "prototype",
+                "commercialization",
+                "commercial launch",
+                "commercially available",
+                "sellable",
+                "repeatable",
+            ],
+        )
+
     def test_empty_registry_cannot_be_frozen_for_an_evolution_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

@@ -5832,6 +5832,7 @@ class LLMResearchController:
             allow_outcomes=False,
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
+            stable_correction_prefix=True,
         )
         return AgentStep(reflected, usage)
 

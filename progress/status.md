@@ -1,5 +1,37 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v66 contract
+`784b5eb...65bc5` rejected its only candidate on the first H_reflect correction at
+authoritative pointers `round=0/cycle=0`. It used seven completed attempts,
+`$0.01124816`, and three SEC request-ledger entries. H_init again passed in one call
+with a literal two-row market claim and one unresolved guidance/project need. Routing
+correctly marked guidance as `answer_need`; the soft batch's initial guidance quote
+ended at `$1,`, and its correction moved to the overlapping projection containing the
+complete `$1,500` clause. This live-verifies the projection-edge correction path.
+
+The initial reflection then added an unsupported `2025` to the Signal claim and kept
+the exact compound guidance/project need. Its aggregated error correctly named the
+claim, linked belief, invalid needs field, index, and original value. Nevertheless,
+correction returned the exact same ResearchState. Exact request inspection found a
+contract contradiction: H_reflect's correction system said to act when
+`validation_feedback` was non-null, but the actual user payload contained only
+top-level `invalid_output` and `validation_error`; the named trigger field did not
+exist. Provider usage also hit only 640 of 2,883 correction input tokens.
+
+H_reflect now uses the stable correction transport already used by H_init/routing:
+byte-identical system prompts, complete unchanged reflection context, and one final
+`validation_feedback` field that is null initially and contains the rejected state
+plus aggregated error on correction. Exact v66 replay confirms the new payload and a
+minimal corrected state passes. The same routing output also treated Tasiast and
+Lobo-Marte mature mining projects as product commercialization, then paid for an
+LLM Signal to return unavailable. `commercialization_status:v1` now requires existing
+product/technology/prototype/commercialization wording, while real prototype-product
+needs remain routable. All 457 repository tests and lint pass.
+
+Before the successor contract, the remaining frozen ceilings are 211 attempts,
+`$18.16534116`, and 773 data requests; v66 remains immutable evidence and cannot
+resume across the code revision.
+
 Current ordinary-loop repair (2026-08-30): immutable v65 contract
 `2568710...76a4` rejected its only candidate on the first H_reflect correction at
 authoritative pointers `round=0/cycle=0`. It used six completed attempts,

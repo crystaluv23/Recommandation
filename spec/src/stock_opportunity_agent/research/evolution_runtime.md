@@ -717,6 +717,15 @@ When a compound question is partly answered, `next_information_needs` contains o
 the remaining facets. This is model-authored semantic scoping rather than a local
 inference or automatic need rewrite.
 
+H_reflect uses the same stable correction transport as H_init and routing. Its initial
+and correction system prompts are byte-identical and always describe the optional
+`validation_feedback`. The initial payload ends with `validation_feedback=null`; the
+correction changes only that field to the failed ResearchState and exact aggregated
+error. It must not condition correction on a field absent from the actual payload.
+This also keeps the ResearchState, Signal batch, selection intents, and runtime facts
+as a provider-cacheable prefix instead of duplicating them under alternate top-level
+correction keys.
+
 The request also includes a runtime-owned terminal directive. It is true only when
 the current batch consumed the last permitted Signal round/call or when a soft-Signal
 request was refused before transmission after deterministic results already
@@ -842,7 +851,10 @@ reason/role enums retain their correction/fail-closed behavior.
 normalized phrase must already be present in supplied information needs or accepted
 ResearchState context, never merely in the selector's new prose. `order_quality:v1`
 uses customer-order/backlog phrases so an equity sale or financing transaction cannot
-be relabeled as an order-quality problem by analogy.
+be relabeled as an order-quality problem by analogy. `commercialization_status:v1`
+requires an existing product, technology, prototype, or commercialization phrase so
+an established mining or operating project cannot be relabeled as a previously
+non-commercial technical product merely by omitting `mature_operations`.
 
 Research initialization and compact routing also preserve provider-cache prefixes
 across their single correction. The initial and correction system prompts are

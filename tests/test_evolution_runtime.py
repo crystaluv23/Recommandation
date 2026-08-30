@@ -3177,6 +3177,60 @@ class ConcreteRoleAdapterTests(TestCase):
             caller.calls[0]["system_prompt"],
         )
 
+    def test_v66_mining_project_is_not_a_product_commercialization(self) -> None:
+        invalid = signal_selection("commercialization_status:v1")
+        invalid_item = invalid["selections"][0]
+        invalid_item["reason_code"] = "combine_evidence"
+        invalid_item["selection_reason"] = (
+            "Use updates on Tasiast and Lobo-Marte as commercialization evidence."
+        )
+        invalid_item["applicability_hypothesis"] = (
+            "Major mining projects may represent commercialization milestones."
+        )
+        invalid_item["context_tags"] = ["general", "project_driven"]
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+
+            rejected_project = LLMSignalRetrievalAgent(caller).select(
+                (
+                    "What are the latest updates on major mining projects like "
+                    "Tasiast and Lobo-Marte?",
+                ),
+                snapshot,
+                {},
+            )
+            applicable_caller = ScriptedRoleCaller(
+                [signal_selection("commercialization_status:v1")]
+            )
+            applicable = LLMSignalRetrievalAgent(applicable_caller).select(
+                (
+                    "Has the prototype technology become a sellable repeatable "
+                    "product?",
+                ),
+                snapshot,
+                {},
+            )
+
+        self.assertEqual(rejected_project.value, ())
+        self.assertEqual(rejected_project.usage.llm_calls, 2)
+        card = next(
+            card
+            for card in caller.calls[0]["payload"]["available_signal_cards"]
+            if card["signal_ref"] == "commercialization_status:v1"
+        )
+        self.assertIn("technology", card["routing_required_research_phrases"])
+        error = validation_error(caller.calls[1])
+        self.assertIn("version-owned required research context", error)
+        self.assertIn("commercialization_status:v1", error)
+        self.assertEqual(
+            tuple(item.signal_ref for item in applicable.value),
+            ("commercialization_status:v1",),
+        )
+        self.assertEqual(applicable.usage.llm_calls, 1)
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -3418,10 +3472,16 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             correction_payload["signal_evidence_ref_catalog"], expected_catalog
         )
-        self.assertIn("supporting_evidence[1]", correction_payload["validation_error"])
-        self.assertIn("max_drawdown_1y:v1", correction_payload["validation_error"])
-        self.assertIn("evidence_index=1", correction_payload["validation_error"])
-        self.assertIn("valid_evidence_indices=[0]", correction_payload["validation_error"])
+        error = validation_error(caller.calls[1])
+        self.assertIn("supporting_evidence[1]", error)
+        self.assertIn("max_drawdown_1y:v1", error)
+        self.assertIn("evidence_index=1", error)
+        self.assertIn("valid_evidence_indices=[0]", error)
+        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
+        self.assertNotIn("validation_error", correction_payload)
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
+        )
         self.assertEqual(
             reflected.value.supporting_evidence[1].evidence_index,
             0,
@@ -3486,7 +3546,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
         correction_payload = caller.calls[1]["payload"]
-        error = correction_payload["validation_error"]
+        error = validation_error(caller.calls[1])
         self.assertIn("supporting_evidence[0]", error)
         self.assertIn("missing_fields=['exact_text']", error)
         self.assertIn(
@@ -5767,7 +5827,7 @@ class ConcreteRoleAdapterTests(TestCase):
             SignalBatchResult(results=results, signal_calls=2),
         )
 
-        error = caller.calls[1]["payload"]["validation_error"]
+        error = validation_error(caller.calls[1])
         self.assertIn("referenced Signal evidence", error)
         self.assertIn("513000", error)
         self.assertIn("2200", error)
@@ -5853,7 +5913,7 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected.value.next_information_needs,
             (fixture["narrowed_need"],),
         )
-        error = cosmetic_caller.calls[1]["payload"]["validation_error"]
+        error = validation_error(cosmetic_caller.calls[1])
         self.assertIn("cosmetically changed", error)
         self.assertIn("Keep an unanswered need byte-for-byte", error)
 
@@ -5956,7 +6016,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("not evidence of absence", caller.calls[0]["system_prompt"])
         self.assertIn(
             "treated an unavailable Signal as a finding",
-            caller.calls[1]["payload"]["validation_error"],
+            validation_error(caller.calls[1]),
         )
 
         compact_posthoc = evolution_runtime_module._compact_posthoc_context(
@@ -6027,7 +6087,7 @@ class ConcreteRoleAdapterTests(TestCase):
             SignalBatchResult(results=(result,), signal_calls=1),
         )
 
-        error = caller.calls[1]["payload"]["validation_error"]
+        error = validation_error(caller.calls[1])
         self.assertIn("numeric quantities", error)
         self.assertIn("newly resolved a question", error)
         self.assertIn("production cost guidance", error)
@@ -6304,7 +6364,7 @@ class ConcreteRoleAdapterTests(TestCase):
             )
         self.assertIn(
             "do not round or convert",
-            rounded_caller.calls[1]["payload"]["validation_error"],
+            validation_error(rounded_caller.calls[1]),
         )
 
     def test_v12_reflect_preserves_retained_signal_claim_without_old_batch(self) -> None:
@@ -6334,7 +6394,7 @@ class ConcreteRoleAdapterTests(TestCase):
             SignalBatchResult(results=(), signal_calls=0),
         )
 
-        error = caller.calls[1]["payload"]["validation_error"]
+        error = validation_error(caller.calls[1])
         self.assertIn("retained Signal claim changed", error)
         self.assertIn("backing Signal batch is no longer visible", error)
         self.assertEqual(reflected.value.supporting_evidence[0].claim, prior_claim)

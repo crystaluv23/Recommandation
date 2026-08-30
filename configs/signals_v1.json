@@ -170,7 +170,7 @@
         "execution": {"type": "llm", "skill_file": "skill.md"},
         "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
-        "parameters": {"routing_excluded_context_tags": ["mature_operations"]}
+        "parameters": {"routing_excluded_context_tags": ["mature_operations"], "routing_required_research_phrases": ["product", "technology", "prototype", "commercialization", "commercial launch", "commercially available", "sellable", "repeatable"]}
       },
       "skill": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.",
       "tests": [{"name": "technical demo only", "expected": "neutral", "documents": [{"source_type": "filing", "content": "The product remains a laboratory demonstration."}]}]

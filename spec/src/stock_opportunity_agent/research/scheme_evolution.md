@@ -160,7 +160,10 @@ ResearchState projection. The selector may not manufacture the required object b
 analogy in its own reason/applicability text. This is used narrowly for constructs
 such as `order_quality`, whose customer-order/backlog measurement must not be applied
 to an unrelated financing or share-sale transaction merely because both have terms
-that may be called binding or material.
+that may be called binding or material. `commercialization_status` similarly requires
+existing product/technology/prototype/commercialization wording; a mature mine or
+ordinary operating project is not a technical-product transition merely because the
+selector omits the `mature_operations` tag.
 Runtime neither infers tags from case content nor substitutes another Signal. The
 correction must remove the incompatible selection, or return a genuinely different
 supported applicability classification; merely dropping a prior case classification
@@ -213,7 +216,7 @@ visible; this is provider-prefix reuse rather than context removal. Conservative
 pre-send budgeting still assumes a cache miss, while provider-reported cache usage is
 persisted for live verification.
 
-`H_init` and compact Signal routing use the same correction-prefix discipline.
+`H_init`, `H_reflect`, and compact Signal routing use the same correction-prefix discipline.
 Each role's initial and correction calls have a byte-identical system prompt that
 always explains the optional `validation_feedback`. The initial user payload carries
 the complete stable role context plus `validation_feedback=null`; correction changes

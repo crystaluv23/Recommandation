@@ -929,3 +929,28 @@ other facets. H_init should prevent the stale state earlier by asking only for f
 absent from Basic Info and its own evidence/beliefs, splitting a partly answered
 compound question into unresolved-only facets. These are model responsibilities, not
 local semantic rewriting.
+
+## Correction-trigger and mature-project addendum (2026-08-30)
+
+A precise error is ineffective if the system's correction trigger names a field the
+user payload does not contain. V66 H_reflect received a valid aggregated error for an
+unsupported year and unchanged compound need, but its system said to correct only
+when `validation_feedback` was non-null while the correction payload exposed separate
+top-level `invalid_output`/`validation_error` keys. The model returned the exact same
+state, and provider caching reused only the short common prefix.
+
+Use one correction transport for H_init, H_reflect, and routing: a byte-identical
+system prompt plus a final `validation_feedback` field that is null initially and
+contains the failed output/error on correction. Keep the full role context before it
+so the provider can cache the stable prefix. Replay the persisted invalid v66 state
+through this exact shape and require a corrected claim plus unresolved-only needs to
+pass.
+
+V66 also showed that an applicability exclusion based only on model-authored tags can
+still be bypassed on the first selection. Tasiast and Lobo-Marte were ordinary mature
+mining projects, yet the selector omitted `mature_operations`, called them product
+commercialization, and spent a soft call whose own result said not applicable. Bind
+`commercialization_status` to pre-existing product, technology, prototype, or
+commercialization phrases just as `order_quality` is bound to order/backlog phrases.
+New selection prose cannot manufacture the measured object, while genuine prototype-
+to-product questions remain available.
