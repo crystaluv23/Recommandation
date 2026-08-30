@@ -114,6 +114,8 @@ def signal_selection(signal_ref: str) -> dict[str, Any]:
                 "expected_role": "primary",
                 "context_tags": ["general"],
                 "target_need_indices": [0],
+                "answer_scope": "full",
+                "residual_need": None,
             }
         ]
     }
@@ -3116,6 +3118,8 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "assess_applicability"
         invalid_item["target_need_indices"] = []
+        invalid_item["answer_scope"] = None
+        invalid_item["residual_need"] = None
         invalid_item["selection_reason"] = (
             "Assess whether the Asante share-sale terms are binding and material."
         )
@@ -3184,6 +3188,8 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "combine_evidence"
         invalid_item["target_need_indices"] = []
+        invalid_item["answer_scope"] = None
+        invalid_item["residual_need"] = None
         invalid_item["selection_reason"] = (
             "Use updates on Tasiast and Lobo-Marte as commercialization evidence."
         )
@@ -3241,6 +3247,8 @@ class ConcreteRoleAdapterTests(TestCase):
         invalid_item = invalid["selections"][0]
         invalid_item["reason_code"] = "combine_evidence"
         invalid_item["target_need_indices"] = []
+        invalid_item["answer_scope"] = None
+        invalid_item["residual_need"] = None
         invalid_item["selection_reason"] = (
             "Use operating diversification as customer concentration context."
         )
@@ -3304,6 +3312,8 @@ class ConcreteRoleAdapterTests(TestCase):
         corrected_item = corrected["selections"][0]
         corrected_item["reason_code"] = "combine_evidence"
         corrected_item["target_need_indices"] = []
+        corrected_item["answer_scope"] = None
+        corrected_item["residual_need"] = None
         corrected_item["selection_reason"] = (
             "Adds customer-dependence context but does not enumerate contracts."
         )
@@ -3351,6 +3361,8 @@ class ConcreteRoleAdapterTests(TestCase):
         customer = signal_selection("customer_concentration:v1")["selections"][0]
         customer["reason_code"] = "combine_evidence"
         customer["target_need_indices"] = [1]
+        customer["answer_scope"] = None
+        customer["residual_need"] = None
         customer["selection_reason"] = (
             "Use customer concentration as context for revenue shortfall risk."
         )
@@ -3360,6 +3372,8 @@ class ConcreteRoleAdapterTests(TestCase):
         financing = signal_selection("financing_listing_action:v1")["selections"][0]
         financing["reason_code"] = "combine_evidence"
         financing["target_need_indices"] = [2]
+        financing["answer_scope"] = None
+        financing["residual_need"] = None
         financing["selection_reason"] = (
             "Use financing actions to assess capital expenditure funding."
         )
@@ -3407,6 +3421,33 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
         )
+
+    def test_v74_routing_persists_partial_answer_residual(self) -> None:
+        target_need = (
+            "What is the current cash position and what share-buyback or strategic "
+            "funding plans remain?"
+        )
+        residual_need = "What share-buyback or strategic funding plans remain?"
+        output = signal_selection("cash_reserves:v1")
+        item = output["selections"][0]
+        item["selection_reason"] = "Answer only the current cash-position facet."
+        item["answer_scope"] = "partial"
+        item["residual_need"] = residual_need
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            caller = ScriptedRoleCaller([output])
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+            )
+
+        self.assertEqual(selection.value[0].answer_scope, "partial")
+        self.assertEqual(selection.value[0].residual_need, residual_need)
+        self.assertIn("answer_scope=full only", caller.calls[0]["system_prompt"])
+        self.assertIn("at most one answer_need selection per target", caller.calls[0]["system_prompt"])
 
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -5468,6 +5509,8 @@ class ConcreteRoleAdapterTests(TestCase):
                             "Small Cap",
                         ],
                         "target_need_indices": [],
+                        "answer_scope": None,
+                        "residual_need": None,
                     }
                 )
             caller = ScriptedRoleCaller([{"selections": raw}])
@@ -5497,6 +5540,9 @@ class ConcreteRoleAdapterTests(TestCase):
                 / "tests/fixtures/evolution_runtime/v17_signal_category_tags.json"
             ).read_text()
         )
+        for item in fixture["selections"]:
+            item["answer_scope"] = None
+            item["residual_need"] = None
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
@@ -5706,6 +5752,73 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             initialized.value.supporting_evidence[0].exact_text,
             fixture["valid_exact_text"],
+        )
+
+    def test_v74_initialize_names_closest_visible_literal_window(self) -> None:
+        projection_text = (
+            "SFIX Q1 Loss Narrower Than Expected, Active Clients Decline Y/Y "
+            "Stitch Fix, Inc. (SFIX) reported first-quarter fiscal 2025 results, "
+            "with both top and bottom lines beating consensus estimates, despite "
+            "a year-over-year decline in active clients and revenue. The company's "
+            "adjusted loss narrowed significantly."
+        )
+        invalid_literal = (
+            "SFIX reported first-quarter fiscal 2025 results, with both top and "
+            "bottom lines beating consensus estimates, despite a year-over-year "
+            "decline in active clients and revenue."
+        )
+        corrected_literal = (
+            "Stitch Fix, Inc. (SFIX) reported first-quarter fiscal 2025 results, "
+            "with both top and bottom lines beating consensus estimates, despite "
+            "a year-over-year decline in active clients and revenue."
+        )
+
+        def state(literal: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Revenue stabilization remains uncertain."],
+                "current_beliefs": [literal],
+                "supporting_evidence": [
+                    {
+                        "kind": "basic_info",
+                        "claim": literal,
+                        "projection_id": "projection_sfix",
+                        "exact_text": literal,
+                    }
+                ],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": ["Confirm active-client stabilization."],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_literal), state(corrected_literal)]
+        )
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_sfix",
+                                "exact_text": projection_text,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn(f"invalid_exact_text={invalid_literal!r}", error)
+        self.assertIn("occurrences_in_named_projection=0", error)
+        self.assertIn("closest_visible_projection_window=", error)
+        self.assertIn("Stitch Fix, Inc. (SFIX) reported", error)
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].exact_text,
+            corrected_literal,
         )
 
     def test_v20_initialize_aggregates_shape_and_quantity_feedback(self) -> None:
@@ -7205,6 +7318,84 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             reflected.value.next_information_needs,
             (revenue_need, guidance_need, narrowed_liquidity_need),
+        )
+
+    def test_v74_reflect_requires_exact_partial_answer_residual(self) -> None:
+        result = SignalResult(
+            signal_id="cash_reserves",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=1.0,
+            interpretation="cash_reserves=2.61739e+08",
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="cash-document",
+                    exact_span='{"cash_and_equivalents":261739000}',
+                    timestamp=datetime(2025, 8, 7, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        target_need = (
+            "What is the current cash position and what share-buyback or strategic "
+            "funding plans remain?"
+        )
+        residual_need = "What share-buyback or strategic funding plans remain?"
+        unrelated_need = "What competitive product launches are planned?"
+        evidence_ref = {
+            "claim": "cash_reserves=2.61739e+08",
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "kind": "signal",
+            "signal_ref": "cash_reserves:v1",
+        }
+        invalid = {
+            "contradictions": [],
+            "current_beliefs": ["cash_reserves=2.61739e+08"],
+            "decision": "continue",
+            "hypotheses": ["Liquidity may support execution."],
+            "next_information_needs": [unrelated_need],
+            "open_questions": [],
+            "resolved_questions": ["The current cash position is known."],
+            "supporting_evidence": [evidence_ref],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["next_information_needs"] = [residual_need, unrelated_need]
+        caller = ScriptedRoleCaller([invalid, corrected])
+        controller = LLMResearchController(caller)
+        controller.set_reflection_runtime_context(
+            selections=(
+                SignalSelectionDecision(
+                    signal_ref="cash_reserves:v1",
+                    reason_code="answer_need",
+                    selection_reason="Answer only the current cash-position facet.",
+                    applicability_hypothesis="A current cash balance is visible.",
+                    expected_role="primary",
+                    target_need_indices=(0,),
+                    answer_scope="partial",
+                    residual_need=residual_need,
+                ),
+            ),
+            must_finalize=False,
+            termination_trigger=None,
+        )
+
+        reflected = controller.reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=(target_need, unrelated_need)),
+            SignalBatchResult(results=(result,), signal_calls=1),
+        )
+
+        action = caller.calls[0]["payload"]["need_transition_contract"][
+            "need_rules"
+        ][0]["available_answer_actions"][0]
+        self.assertEqual(action["answer_scope"], "partial")
+        self.assertEqual(action["residual_need"], residual_need)
+        error = validation_error(caller.calls[1])
+        self.assertIn("partial-answer target omitted its exact residual", error)
+        self.assertIn(residual_need, error)
+        self.assertEqual(
+            reflected.value.next_information_needs,
+            (residual_need, unrelated_need),
         )
 
     def test_v23_terminal_reflection_requires_model_authored_finalize(self) -> None:

@@ -298,6 +298,11 @@ match across the current projections, local code canonicalizes a mismatched
 projection id without another model call. Ellipses, paraphrase, reordered JSON,
 non-contiguous joins, ambiguity, or no match receive one index-specific correction
 and then fail closed.
+For an absent literal that still shares a substantial contiguous span with its named
+projection, that correction may quote one bounded exact source window around the
+overlap. This diagnostic makes dropped company names, punctuation, and prefixes
+visible next to the rejected value. It never replaces model output, changes the
+canonical projection, or bypasses full byte-for-byte validation of the corrected ref.
 When an LLM Signal quote touches an internal projection edge, correction feedback
 also names its evidence group/index, the rejected projection id, which edge was
 touched, and every overlapping projection id for the same source boundary. The full
@@ -355,15 +360,21 @@ applicability prose, roles, and tags already consumed by routing rather than add
 second semantic decision.
 
 The current selector contract carries exactly one `target_need_indices` entry for
-`reason_code=answer_need`; non-answer reasons may carry zero or one valid association
-index, but it never implies resolution. Old committed selections without this field
-remain readable. Returning the exact adopted direct-answer target, or replacing it
-with a cosmetic version retaining at least 90% of its words, is invalid; deleting an
-unrelated need cannot satisfy the transition in either continuing or terminal
-reflection. This boundary does not guess which need was answered or manufacture a
-resolution: the selector names the target before execution, local validation and the
-transition contract use the same persisted selection plus current result coverage,
-and correction preserves every untargeted need byte-for-byte.
+`reason_code=answer_need` and classifies `answer_scope=full|partial`. A partial answer
+also persists one 1-300 character `residual_need` containing only the unanswered
+facets; a full answer carries null residual. Non-answer reasons may carry zero or one
+valid association index but carry null answer scope/residual, and the association
+never implies resolution. At most one direct-answer selection may target a given need
+within one routing round; other useful refs use contextual reason codes. Old committed
+selections without these fields remain readable through the prior generic transition.
+After adopting a current scoped answer, H_reflect removes a full target or replaces a
+partial target with the exact persisted residual. Returning the old target, omitting
+the required residual, substituting a cosmetic residual, or deleting an unrelated
+need is invalid in either continuing or terminal reflection. This boundary does not
+guess which need was answered or manufacture a resolution: the selector names the
+scope before execution, local validation and the transition contract use the same
+persisted selection plus current result coverage, and correction preserves every
+untargeted need byte-for-byte.
 Routing may use `answer_need` only for a need facet directly covered by the card and
 must not claim coverage of other facets; contextual selections use an accurate other
 reason code. A version-owned `routing_answer_need_phrases` boundary may make this

@@ -651,6 +651,13 @@ reorder JSON fields, or paraphrase `exact_text`. A literal that occurs exactly o
 across the visible projection set is deterministically assigned to that projection;
 otherwise correction feedback names the exact `supporting_evidence[index]`, supplied
 projection, and matching projection ids before the candidate fails closed.
+When an absent literal has substantial contiguous overlap with its named visible
+projection, correction feedback also includes the rejected value, its occurrence
+count, and at most one 800-character exact source window around that overlap. The
+window is a bounded diagnostic from already supplied context, not an accepted
+citation or local repair: the model must still author a replacement and runtime
+revalidates the returned projection id and literal byte-for-byte against the complete
+projection set.
 Each Basic evidence claim must also be quantitatively supported by the literal refs
 carrying that same claim: every numeric quantity in the claim must occur, after local
 format normalization, in the union of those exact texts. Normalization includes exact
@@ -736,17 +743,20 @@ same production-and-cost-guidance need. It does not compare evidence semantics o
 force unrelated needs to change.
 The request additionally includes only each executed selection's `signal_ref`,
 `reason_code`, `selection_reason`, and `target_need_indices`; routing-only
-applicability, role, and context tags are omitted. Runtime also derives one compact
+applicability, role, and context tags are omitted. A current direct answer also carries
+its persisted `answer_scope=full|partial` and partial `residual_need`; non-answer and
+legacy rows omit them. Runtime also derives one compact
 `need_transition_contract.need_rules` row per prior need. Each row contains the exact
-need plus its currently available direct-answer refs, unavailable direct-answer refs,
-and contextual association refs. If a reflection adopts new evidence from one listed
-available `answer_need` ref,
-but retains that exact targeted need, or substitutes a cosmetic >=90%-word-retention
-version, runtime rejects it once. Removing an unrelated need cannot satisfy the
-transition, including when this is the terminal reflection. Other selection reason
-codes and unavailable results do not imply that a need was answered; their rule is
-exact preservation. Runtime never chooses the affected need itself. Old committed
-decisions without a target remain readable through the legacy coarse transition.
+need plus its currently available direct-answer actions, unavailable direct-answer
+refs, and contextual association refs. One routing round permits at most one direct
+answer per target. If reflection adopts an available full answer, it removes that
+exact target; if it adopts an available partial answer, it replaces the target with
+the selector-authored exact residual. Retaining the old target, omitting the required
+residual, substituting a cosmetic >=90%-word-retention residual, or removing an
+unrelated need is rejected once, including in terminal reflection. Other selection
+reason codes and unavailable results require exact preservation. Runtime never chooses
+the affected need itself. Old committed decisions without scope remain readable
+through the legacy generic transition.
 Selection may use
 `answer_need` only when the card description directly covers at least one explicit
 facet of the need. When a card exposes version-owned

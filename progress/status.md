@@ -1,5 +1,41 @@
 # Status
 
+Current ordinary-loop repair (2026-08-30): immutable v74 contract
+`053795a...3fe2` rejected its only candidate during the seventh case at authoritative
+pointers `round=0/cycle=0`. It used 50 completed model attempts, `$0.05659276`, and
+three sandbox-denied data-ledger rows. The first six Fast cases finalized and
+persisted Predictor plus post-hoc output. Locked Test remained sealed, the Registry
+stayed at its initial hash, and Slow Loop did not start. The successor ceilings are
+27 attempts, `$17.92471168`, and 745 data requests.
+
+Three actual H_reflect requests live-verified the V73 result-aware interface. Enbridge
+adopted no context-only evidence and preserved its state; Life Time adopted exact
+cash/margin/growth claims while preserving every context-only need; Bumble adopted
+two direct-answer claims and changed only their targeted needs. Deterministic claims
+occurred once per result, unavailable evidence indices were hidden, routing-only
+fields were absent, and each call passed in one attempt. One optional soft correction
+was refused before transmission when it exceeded the adaptive reservation; its valid
+sibling survived and the case still finalized, so no extra call was spent.
+
+The exact Bumble output also showed that target identity alone cannot police compound
+needs: selection reasons said that revenue growth and cash position answered only one
+facet, but reflection deleted the remaining user-metrics and buyback/strategic-plan
+facets. Current routing therefore persists `answer_scope=full|partial`; partial answers
+must provide an exact residual need, and one routing round permits only one direct
+answer per target. H_reflect receives that action and local validation requires removal
+for full scope or exact residual replacement for partial scope. Non-answer and
+unavailable actions still require preservation; old selections without scope remain
+readable through the generic legacy path.
+
+V74's terminal H_init failure was a separate correction-usability defect. The source
+said `Stitch Fix, Inc. (SFIX) reported...`; initial and correction both returned the
+absent paraphrase `SFIX reported...`. Strict rejection was correct, but feedback only
+reported zero matches. Substantially overlapping absent Basic literals now receive
+one at-most-800-character exact window from the named visible projection, together
+with the rejected value and occurrence count. This is diagnostic only: the model must
+still author a new ref and full byte-for-byte validation is unchanged. The two exact
+V74 regressions plus all 475 repository tests and lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v73 contract
 `7454f12...84f` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used 13 completed model attempts, `$0.02261952`, and

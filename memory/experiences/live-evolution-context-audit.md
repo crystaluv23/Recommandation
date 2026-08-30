@@ -1117,3 +1117,27 @@ local evidence, and the strict validator still rejects rounding, unit conversion
 new quantities. Compact executed intents to ref, reason, reason text, and target;
 applicability hypotheses, role, and tags have already served routing and add no
 reflection authority.
+
+## Compound-need scope and correction-window addendum (2026-08-30)
+
+A correct target index does not prove a complete answer. In V74, cash reserves answered
+only the cash-position facet of a cash-plus-buyback/strategic-plans need, and revenue
+growth answered only one facet of a user-metrics-plus-growth need. The selection
+reasons said so, yet H_reflect removed both compound needs entirely and passed the
+index-only transition gate. Persist a machine-readable full/partial scope before
+execution. A partial selection owns one exact residual need containing only unresolved
+facets; after evidence adoption reflection must return that residual byte-for-byte.
+Allow one direct answer per target per routing round so several partial results do not
+create conflicting residuals; other useful refs remain contextual. Old unscoped
+selections can retain the generic replay path, but new calls must not ask H_reflect to
+infer coverage from prose.
+
+Literal correction feedback should expose the relevant source difference without
+repairing it. V74's visible projection said `Stitch Fix, Inc. (SFIX) reported...`,
+while H_init returned and then repeated `SFIX reported...`. A zero-match count and
+projection id were technically precise but did not put the missing prefix next to the
+bad quote. When an absent Basic literal has substantial contiguous overlap with its
+named projection, include one bounded exact source window around that overlap. Keep
+the invalid value, occurrence count, full original context, one-correction limit, and
+the same byte-for-byte validator. Never substitute the suggested window locally or
+weaken ambiguous/no-overlap failures.

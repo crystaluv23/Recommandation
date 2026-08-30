@@ -800,6 +800,8 @@ class SignalSelectionDecision:
     expected_role: str
     context_tags: tuple[str, ...] = ()
     target_need_indices: tuple[int, ...] = ()
+    answer_scope: str | None = None
+    residual_need: str | None = None
 
     def __post_init__(self) -> None:
         if self.reason_code not in _SIGNAL_SELECTION_REASON_CODES:
@@ -835,11 +837,39 @@ class SignalSelectionDecision:
                 "Signal selection target_need_indices must contain at most one "
                 "unique non-negative integer"
             )
+        if self.answer_scope is not None and self.answer_scope not in {
+            "full",
+            "partial",
+        }:
+            raise ValidationError(
+                "Signal selection answer_scope must be full, partial, or null"
+            )
+        if self.reason_code != "answer_need" and (
+            self.answer_scope is not None or self.residual_need is not None
+        ):
+            raise ValidationError(
+                "non-answer Signal selection cannot carry answer scope or residual need"
+            )
+        if self.answer_scope == "partial":
+            if (
+                self.residual_need is None
+                or not self.residual_need.strip()
+                or len(self.residual_need) > 300
+            ):
+                raise ValidationError(
+                    "partial Signal answer requires a 1-300 character residual need"
+                )
+        elif self.residual_need is not None:
+            raise ValidationError(
+                "Signal selection residual_need requires answer_scope=partial"
+            )
         object.__setattr__(self, "context_tags", tuple(normalized_tags))
         object.__setattr__(self, "target_need_indices", tuple(self.target_need_indices))
+        if self.residual_need is not None:
+            object.__setattr__(self, "residual_need", self.residual_need.strip())
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "signal_ref": self.signal_ref,
             "reason_code": self.reason_code,
             "selection_reason": self.selection_reason,
@@ -848,6 +878,10 @@ class SignalSelectionDecision:
             "context_tags": list(self.context_tags),
             "target_need_indices": list(self.target_need_indices),
         }
+        if self.answer_scope is not None:
+            value["answer_scope"] = self.answer_scope
+            value["residual_need"] = self.residual_need
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalSelectionDecision":
@@ -859,7 +893,7 @@ class SignalSelectionDecision:
             "expected_role",
             "context_tags",
         }
-        optional = {"target_need_indices"}
+        optional = {"target_need_indices", "answer_scope", "residual_need"}
         if not required.issubset(data) or set(data) - required - optional:
             raise ValidationError(
                 "Signal selection requires: " + ", ".join(sorted(required))
@@ -870,6 +904,10 @@ class SignalSelectionDecision:
             raise ValidationError(
                 "Signal selection target_need_indices must be an integer array"
             )
+        if ("answer_scope" in data) != ("residual_need" in data):
+            raise ValidationError(
+                "Signal selection answer_scope and residual_need must appear together"
+            )
         return cls(
             signal_ref=str(data["signal_ref"]),
             reason_code=str(data["reason_code"]),
@@ -878,6 +916,16 @@ class SignalSelectionDecision:
             expected_role=str(data["expected_role"]),
             context_tags=_json_string_array(data, "context_tags"),
             target_need_indices=tuple(raw_target_indices),
+            answer_scope=(
+                str(data["answer_scope"])
+                if data.get("answer_scope") is not None
+                else None
+            ),
+            residual_need=(
+                str(data["residual_need"])
+                if data.get("residual_need") is not None
+                else None
+            ),
         )
 
     @classmethod

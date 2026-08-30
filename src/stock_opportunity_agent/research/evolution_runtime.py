@@ -14,6 +14,7 @@ from calendar import monthrange
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Protocol
 
@@ -5379,15 +5380,19 @@ def _reflection_selection_intents(
 ) -> list[dict[str, Any]]:
     """Project persisted routing decisions into the fields reflection still needs."""
 
-    return [
-        {
+    rows: list[dict[str, Any]] = []
+    for item in selections:
+        row = {
             "signal_ref": item.signal_ref,
             "reason_code": item.reason_code,
             "selection_reason": item.selection_reason,
             "target_need_indices": list(item.target_need_indices),
         }
-        for item in selections
-    ]
+        if item.answer_scope is not None:
+            row["answer_scope"] = item.answer_scope
+            row["residual_need"] = item.residual_need
+        rows.append(row)
+    return rows
 
 
 def _reflection_need_transition_contract(
@@ -5401,6 +5406,7 @@ def _reflection_need_transition_contract(
     rules: list[dict[str, Any]] = []
     for index, need in enumerate(state.next_information_needs):
         available_answer_refs: list[str] = []
+        available_answer_actions: list[dict[str, Any]] = []
         unavailable_answer_refs: list[str] = []
         contextual_refs: list[str] = []
         for selection in selections:
@@ -5411,26 +5417,48 @@ def _reflection_need_transition_contract(
                     contextual_refs.append(selection.signal_ref)
                 continue
             result = results.get(selection.signal_ref)
+            adoptable = (
+                result is not None and _signal_result_has_adoptable_evidence(result)
+            )
             destination = (
-                available_answer_refs
-                if result is not None and _signal_result_has_adoptable_evidence(result)
-                else unavailable_answer_refs
+                available_answer_refs if adoptable else unavailable_answer_refs
             )
             if selection.signal_ref not in destination:
                 destination.append(selection.signal_ref)
+            if adoptable:
+                available_answer_actions.append(
+                    {
+                        "signal_ref": selection.signal_ref,
+                        "answer_scope": selection.answer_scope,
+                        "residual_need": selection.residual_need,
+                    }
+                )
+        if not available_answer_actions:
+            required_transition = "preserve_exactly"
+        elif available_answer_actions[0]["answer_scope"] == "full":
+            required_transition = (
+                "if evidence from this available full answer is adopted, "
+                "remove_exact_need; otherwise preserve_exactly"
+            )
+        elif available_answer_actions[0]["answer_scope"] == "partial":
+            required_transition = (
+                "if evidence from this available partial answer is adopted, "
+                "replace_with_exact_residual_need; otherwise preserve_exactly"
+            )
+        else:
+            required_transition = (
+                "if evidence from an available_answer_signal_ref is adopted, "
+                "remove_or_genuinely_narrow; otherwise preserve_exactly"
+            )
         rules.append(
             {
                 "need_index": index,
                 "need": need,
                 "available_answer_signal_refs": available_answer_refs,
+                "available_answer_actions": available_answer_actions,
                 "unavailable_answer_signal_refs": unavailable_answer_refs,
                 "context_only_signal_refs": contextual_refs,
-                "required_transition": (
-                    "if evidence from an available_answer_signal_ref is adopted, "
-                    "remove_or_genuinely_narrow; otherwise preserve_exactly"
-                    if available_answer_refs
-                    else "preserve_exactly"
-                ),
+                "required_transition": required_transition,
             }
         )
     return {
@@ -5475,6 +5503,36 @@ _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS = frozenset(
         "revenue_growth_yoy",
     }
 )
+
+MAX_BASIC_LITERAL_CORRECTION_WINDOW_CHARS = 800
+
+
+def _closest_basic_literal_correction_window(
+    invalid_text: str,
+    projection_text: str,
+) -> str | None:
+    """Expose one bounded exact source window for a strongly overlapping bad quote."""
+
+    if not invalid_text or not projection_text:
+        return None
+    match = SequenceMatcher(
+        None,
+        invalid_text,
+        projection_text,
+        autojunk=False,
+    ).find_longest_match()
+    if match.size < 32 or match.size / len(invalid_text) < 0.5:
+        return None
+    remaining = MAX_BASIC_LITERAL_CORRECTION_WINDOW_CHARS - match.size
+    before = min(match.b, max(0, remaining // 2))
+    after = min(
+        len(projection_text) - match.b - match.size,
+        max(0, remaining - before),
+    )
+    before = min(match.b, max(0, remaining - after))
+    return projection_text[
+        match.b - before : match.b + match.size + after
+    ]
 
 
 def _normalized_claim_quantities(text_value: str) -> set[str]:
@@ -5698,10 +5756,25 @@ def _validate_research_state_refs(
                     "single projection containing the exact contiguous literal or remove "
                     "this evidence item"
                 )
+            closest_window = _closest_basic_literal_correction_window(
+                exact_text,
+                projection,
+            )
+            closest_instruction = (
+                f"; invalid_exact_text={exact_text!r}; "
+                f"occurrences_in_named_projection={projection.count(exact_text)}; "
+                f"closest_visible_projection_window={closest_window!r}"
+                if closest_window is not None
+                else (
+                    f"; invalid_exact_text={exact_text!r}; "
+                    f"occurrences_in_named_projection={projection.count(exact_text)}"
+                )
+            )
             raise ValidationError(
                 f"supporting_evidence[{index}] basic_info exact_text is not one "
                 f"contiguous literal substring unique to projection "
-                f"{item.projection_id!r}; matching_projection_ids={matches}. Copy one "
+                f"{item.projection_id!r}; matching_projection_ids={matches}"
+                f"{closest_instruction}. Copy one "
                 "byte-for-byte span without ellipses, JSON-field reordering, "
                 "non-contiguous joins, or paraphrase, or remove this evidence item"
             )
@@ -5960,7 +6033,7 @@ def _targeted_answer_need_transition_errors(
         for selection in selections
     ):
         return []
-    target_refs: dict[int, list[str]] = {}
+    target_selections: dict[int, list[SignalSelectionDecision]] = {}
     for selection in selections:
         if (
             selection.reason_code != "answer_need"
@@ -5969,12 +6042,12 @@ def _targeted_answer_need_transition_errors(
             or not selection.target_need_indices
         ):
             continue
-        target_refs.setdefault(selection.target_need_indices[0], []).append(
-            selection.signal_ref
+        target_selections.setdefault(selection.target_need_indices[0], []).append(
+            selection
         )
     errors: list[dict[str, Any]] = []
     for index, need in enumerate(previous.next_information_needs):
-        if index not in target_refs:
+        if index not in target_selections:
             if need not in current.next_information_needs:
                 errors.append(
                     {
@@ -5984,12 +6057,37 @@ def _targeted_answer_need_transition_errors(
                     }
                 )
             continue
+        targeted = target_selections[index]
+        signal_refs = [item.signal_ref for item in targeted]
+        scoped = targeted[0] if len(targeted) == 1 else None
+        if scoped is not None and scoped.answer_scope == "partial":
+            if need in current.next_information_needs:
+                errors.append(
+                    {
+                        "path": f"next_information_needs[{index}]",
+                        "value": need,
+                        "signal_refs": signal_refs,
+                        "issue": "partial-answer target remained byte-for-byte",
+                        "required_residual_need": scoped.residual_need,
+                    }
+                )
+            elif scoped.residual_need not in current.next_information_needs:
+                errors.append(
+                    {
+                        "path": f"next_information_needs[{index}]",
+                        "value": need,
+                        "signal_refs": signal_refs,
+                        "issue": "partial-answer target omitted its exact residual",
+                        "required_residual_need": scoped.residual_need,
+                    }
+                )
+            continue
         if need in current.next_information_needs:
             errors.append(
                 {
                     "path": f"next_information_needs[{index}]",
                     "value": need,
-                    "signal_refs": target_refs[index],
+                    "signal_refs": signal_refs,
                     "issue": "targeted need remained byte-for-byte",
                 }
             )
@@ -6013,7 +6111,7 @@ def _targeted_answer_need_transition_errors(
                 {
                     "path": f"next_information_needs[{index}]",
                     "value": need,
-                    "signal_refs": target_refs[index],
+                    "signal_refs": signal_refs,
                     "issue": "targeted need changed only cosmetically",
                     "returned_need": cosmetic,
                 }
@@ -6287,10 +6385,12 @@ class LLMResearchController:
                 "invalid, and a newly resolved question cannot coexist with an exact "
                 "retained same-topic need. Use need_transition_contract as the sole "
                 "need-ownership map. Each need_rules row names the exact prior need, "
-                "available direct-answer refs, unavailable direct-answer refs, and "
+                "available direct-answer actions, unavailable direct-answer refs, and "
                 "context-only refs. Only when you adopt evidence from one listed "
-                "available_answer_signal_ref may you remove or genuinely narrow that "
-                "exact need. Every rule marked preserve_exactly, and every conditional "
+                "available answer action may you change that exact need. For a full "
+                "action remove the exact need; for a partial action replace it with "
+                "the action's residual_need byte-for-byte. Every rule marked "
+                "preserve_exactly, and every conditional "
                 "rule whose available answer evidence you did not adopt, must retain "
                 "its need byte-for-byte. Unavailable and context-only refs never "
                 "authorize changing a need. "
@@ -6555,6 +6655,8 @@ class LLMSignalRetrievalAgent:
                 "expected_role",
                 "context_tags",
                 "target_need_indices",
+                "answer_scope",
+                "residual_need",
             }
             allowed_reason_codes = {
                 "answer_need",
@@ -6585,9 +6687,21 @@ class LLMSignalRetrievalAgent:
                     continue
                 if any(
                     not isinstance(item.get(name), str)
-                    for name in required - {"context_tags", "target_need_indices"}
+                    for name in required
+                    - {
+                        "context_tags",
+                        "target_need_indices",
+                        "answer_scope",
+                        "residual_need",
+                    }
                 ) or not isinstance(item.get("context_tags"), list) or any(
                     not isinstance(tag, str) for tag in item["context_tags"]
+                ) or (
+                    item["answer_scope"] is not None
+                    and not isinstance(item["answer_scope"], str)
+                ) or (
+                    item["residual_need"] is not None
+                    and not isinstance(item["residual_need"], str)
                 ):
                     validation_errors.append(
                         f"{path} fields have invalid JSON types"
@@ -6646,6 +6760,53 @@ class LLMSignalRetrievalAgent:
                             f"{path} reason_code=answer_need requires exactly one "
                             "target_need_indices entry"
                         )
+                    if item["answer_scope"] not in {"full", "partial"}:
+                        validation_errors.append(
+                            f"{path} reason_code=answer_need requires "
+                            "answer_scope='full' or 'partial'"
+                        )
+                    elif item["answer_scope"] == "full":
+                        if item["residual_need"] is not None:
+                            validation_errors.append(
+                                f"{path} full answer requires residual_need=null"
+                            )
+                    else:
+                        residual_need = item["residual_need"]
+                        if (
+                            not isinstance(residual_need, str)
+                            or not residual_need.strip()
+                            or len(residual_need.strip()) > 300
+                        ):
+                            validation_errors.append(
+                                f"{path} partial answer requires a 1-300 character "
+                                "residual_need"
+                            )
+                        elif (
+                            target_shape_valid
+                            and len(target_need_indices) == 1
+                            and target_need_indices[0] < len(information_needs)
+                        ):
+                            target_need = information_needs[target_need_indices[0]]
+                            target_tokens = _normalized_need_tokens(target_need)
+                            residual_tokens = _normalized_need_tokens(residual_need)
+                            if residual_need.strip() == target_need or (
+                                target_tokens
+                                and len(target_tokens & residual_tokens)
+                                / len(target_tokens)
+                                >= 0.9
+                            ):
+                                validation_errors.append(
+                                    f"{path}.residual_need must remove the answered "
+                                    "facet rather than retain the target cosmetically"
+                                )
+                elif (
+                    item["answer_scope"] is not None
+                    or item["residual_need"] is not None
+                ):
+                    validation_errors.append(
+                        f"{path} non-answer reason requires answer_scope=null and "
+                        "residual_need=null"
+                    )
                 tags: list[str] = []
                 for raw_tag in item["context_tags"]:
                     tag = re.sub(
@@ -6674,11 +6835,35 @@ class LLMSignalRetrievalAgent:
                         "expected_role": item["expected_role"],
                         "context_tags": tuple(tags),
                         "target_need_indices": tuple(target_need_indices),
+                        "answer_scope": item["answer_scope"],
+                        "residual_need": (
+                            item["residual_need"].strip()
+                            if isinstance(item["residual_need"], str)
+                            else None
+                        ),
                         "target_shape_valid": target_shape_valid,
                     }
                 )
                 if len(diagnostic_items) == 4:
                     break
+            direct_target_paths: dict[int, list[str]] = {}
+            for item in diagnostic_items:
+                if (
+                    item["reason_code"] == "answer_need"
+                    and item["target_shape_valid"]
+                    and len(item["target_need_indices"]) == 1
+                ):
+                    direct_target_paths.setdefault(
+                        item["target_need_indices"][0], []
+                    ).append(f"selections[{item['index']}]")
+            for target_index, paths in direct_target_paths.items():
+                if len(paths) > 1:
+                    validation_errors.append(
+                        "one routing round permits at most one direct answer for "
+                        f"information_needs[{target_index}]; conflicting_paths={paths}. "
+                        "Keep the smallest direct answer and classify other useful "
+                        "Signals as contextual"
+                    )
             selector_case_tags = {
                 *normalized_prior_tags,
                 *(
@@ -6785,6 +6970,8 @@ class LLMSignalRetrievalAgent:
                     expected_role=item["expected_role"],
                     context_tags=item["context_tags"],
                     target_need_indices=item["target_need_indices"],
+                    answer_scope=item["answer_scope"],
+                    residual_need=item["residual_need"],
                 )
                 for item in diagnostic_items
             )
@@ -6822,8 +7009,13 @@ class LLMSignalRetrievalAgent:
                 "Use reason_code=answer_need only when the card description directly "
                 "covers at least one explicit facet of an information need. Name "
                 "only that facet in selection_reason and do not promise coverage of "
-                "other facets; use combine_evidence or another accurate code when "
-                "the card is only contextual. "
+                "other facets. Classify answer_scope=full only when the Signal can "
+                "answer every facet of the target; otherwise use partial and write "
+                "residual_need as the exact natural-language question containing "
+                "only unresolved facets. The residual must genuinely remove the "
+                "answered facet, not cosmetically restate the old need. Use at most "
+                "one answer_need selection per target in one round; classify other "
+                "useful Signals as contextual. "
                 "For a non-empty answer, return "
                 "selections whose items "
                 "contain exactly: signal_ref; reason_code (answer_need, "
@@ -6831,11 +7023,13 @@ class LLMSignalRetrievalAgent:
                 "or combine_evidence); a <=240 character selection_reason; a "
                 "<=240 character applicability_hypothesis; expected_role "
                 "(primary, confirmation, contradiction, or coverage); and a "
-                "target_need_indices array containing at most one integer. "
+                "target_need_indices array containing at most one integer; "
+                "answer_scope (full, partial, or null); and residual_need (a <=300 "
+                "character string only for partial, otherwise null). "
                 "answer_need requires exactly "
                 "one valid index into information_needs; every other reason may use "
-                "zero or one valid association index, which does not mean the need "
-                "was answered; and up "
+                "zero or one valid association index and requires null answer scope "
+                "and residual, which does not mean the need was answered; and up "
                 "to four context_tags chosen only from: general, "
                 "comparable_financials, sparse_evidence, filing_rich, news_rich, "
                 "transcript_available, market_data_only, pre_revenue, "
