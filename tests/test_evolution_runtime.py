@@ -6683,6 +6683,33 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, (need,))
 
+    def test_v84_initialize_does_not_treat_entity_metric_as_resolved_topic(
+        self,
+    ) -> None:
+        need = (
+            "What are the latest gold price forecasts and how do they impact "
+            "Kinross's revenue and profitability?"
+        )
+        state = {
+            "hypotheses": ["Gold-price strength may support further repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": ["What was Kinross's revenue in 2024?"],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
     def test_v81_initialize_aggregates_runtime_baseline_and_total_limit(
         self,
     ) -> None:
@@ -7148,6 +7175,7 @@ class ConcreteRoleAdapterTests(TestCase):
             if "missing_quantity_groups" in item
         )
         self.assertEqual(quantity_obligation["missing_quantity_groups"], ["25.7"])
+        self.assertEqual(quantity_obligation["missing_quantity_literals"], ["25.7"])
         self.assertEqual(
             quantity_obligation["same_claim_evidence_paths"],
             [

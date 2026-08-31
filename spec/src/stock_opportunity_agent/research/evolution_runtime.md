@@ -679,6 +679,11 @@ ref used to report the missing quantity. One obligation therefore carries the mi
 quantity groups, every same-claim evidence path, and every linked assertion path. All
 such refs must share the same corrected claim or be removed. None may be offered as an
 unchanged-valid copy candidate in that correction.
+The same obligation carries the literal numeric substrings as authored in the claim,
+in addition to normalized comparison groups. Correction can therefore delete the
+actual unsupported text (or add a same-claim literal) without translating a scaled
+value such as `4239700000` back into `$4,239,700,000`. If one endpoint of a comparison
+is deleted, the claim must be narrowed to a grammatical single supported observation.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
@@ -690,6 +695,10 @@ The same-state resolved/need consistency check treats a shared phrase as a topic
 when it contains semantic content. A phrase made entirely of period markers such as
 `Q2 2025` is not enough to claim that a gold-price question was answered by a
 production-cost question.
+Its conservative two-word fallback also ignores a phrase that begins with the same
+title-cased entity token in both questions, after removing possessive `s`; an issuer
+name plus a generic metric such as `Kinross revenue` is context, not proof that both
+questions ask the same unresolved facet.
 It also distinguishes the six-month repricing horizon from later operating events.
 An event outside the horizon may matter through a point-in-time expectation change,
 but H_init must not condition the six-month outcome on that later event already

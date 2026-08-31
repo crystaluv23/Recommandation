@@ -1,5 +1,32 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v84 contract
+`9c31bbc...fbe71` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used four completed model attempts, `$0.01383564`,
+and four data-ledger rows. Proposer correction was justified: initial H_reflect said
+it would finalize the four-way judgment, and correction narrowed this to evidence
+collection. H_init and its correction were the other two calls; Signal routing,
+execution, Predictor, post-hoc, and Slow Loop were correctly not entered. Locked Test
+remained sealed and the Registry stayed at its initial hash. The successor ceilings
+are 179 attempts, `$17.82977404`, and 702 data requests.
+
+All prompts, payloads, and responses were inspected. H_init saw 14/21 company-fact
+projections and 1/4 news projections with explicit budget omissions, plus complete
+market and transcript rows. The same-state gate falsely treated `Kinross revenue` as
+a resolved topic between a historical-revenue question and a gold-price sensitivity
+question. Its conservative two-word fallback now removes possessive remnants and
+abstains when both phrases begin with the same title-cased entity token; semantic
+lowercase topics such as construction progress remain eligible.
+
+Although V83 had structured missing quantity groups, V84 showed that normalized
+`4239700000` was not an actionable spelling for `$4,239,700,000`; correction copied
+the rejected claims unchanged. Missing-quantity obligations now also carry the exact
+numeric substrings found in each claim and instruct a grammatical single-observation
+narrowing when one comparison endpoint is removed. Exact V84 replay removes the false
+topic obligation, maps all normalized groups to authored literals, rejects the
+recorded response, and accepts four source-supported claims with matching beliefs.
+All 491 tests and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v83 contract
 `e0014d5...7beff` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used four completed/charged attempts, `$0.00985460`,

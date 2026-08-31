@@ -4785,7 +4785,10 @@ _VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
     r"\bcombined ResearchState array count=(\d+) exceeds effective_limit=(\d+)"
 )
 _VALIDATION_MISSING_QUANTITY_GROUPS = re.compile(
-    r"\bmissing_quantity_groups=(\[[^\n]*?\])(?=, same_claim_evidence_paths=)"
+    r"\bmissing_quantity_groups=(\[[^\n]*?\])(?=, missing_quantity_literals=)"
+)
+_VALIDATION_MISSING_QUANTITY_LITERALS = re.compile(
+    r"\bmissing_quantity_literals=(\[[^\n]*?\])(?=, same_claim_evidence_paths=)"
 )
 _VALIDATION_SAME_CLAIM_PATHS = re.compile(
     r"\bsame_claim_evidence_paths=(\[[^\n]*\])(?=\. Change or)"
@@ -4891,6 +4894,7 @@ def _validation_obligations(
             if copy_candidates:
                 obligation["copy_candidates_by_path"] = copy_candidates
         missing_match = _VALIDATION_MISSING_QUANTITY_GROUPS.search(segment)
+        missing_literal_match = _VALIDATION_MISSING_QUANTITY_LITERALS.search(segment)
         same_claim_match = _VALIDATION_SAME_CLAIM_PATHS.search(segment)
         if missing_match and same_claim_match:
             try:
@@ -4903,6 +4907,15 @@ def _validation_obligations(
                 isinstance(item, str) for item in missing_groups
             ):
                 obligation["missing_quantity_groups"] = missing_groups
+            if missing_literal_match:
+                try:
+                    missing_literals = json.loads(missing_literal_match.group(1))
+                except json.JSONDecodeError:
+                    missing_literals = []
+                if missing_literals and all(
+                    isinstance(item, str) for item in missing_literals
+                ):
+                    obligation["missing_quantity_literals"] = missing_literals
             if same_claim_paths and all(
                 isinstance(item, str) for item in same_claim_paths
             ):
@@ -4954,8 +4967,10 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     " When an obligation contains missing_quantity_groups and "
     "same_claim_evidence_paths, change or remove every listed evidence path, not "
     "only the first one. Every retained same-claim ref must use one identical "
-    "corrected claim with every missing group deleted unless a same-claim literal "
-    "is added. Apply that identical final claim to every named linked assertion."
+    "corrected claim with every missing_quantity_literals string deleted unless a "
+    "same-claim literal is added. If deletion removes one side of a comparison, "
+    "narrow it to one grammatical supported observation. Apply that identical final "
+    "claim to every named linked assertion."
     " When validation_error lists absent numeric quantities, the minimal valid "
     "repair is to delete every listed quantity from the named evidence claim "
     "and each named linked assertion, unless you add same-claim exact_text that "
@@ -5729,6 +5744,21 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
         missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
+            missing_groups_with_literals = [
+                (
+                    "|".join(sorted(group, key=lambda value: (len(value), value))),
+                    match.group(0).rstrip(","),
+                )
+                for match, group in zip(
+                    _CLAIM_QUANTITY.finditer(claim),
+                    _normalized_claim_quantity_groups(claim),
+                    strict=True,
+                )
+                if group.isdisjoint(cited_quantities)
+            ]
+            missing_literals = [
+                literal for _group, literal in missing_groups_with_literals
+            ]
             evidence_paths = [
                 f"supporting_evidence[{index}].claim" for index, _text in items
             ]
@@ -5750,6 +5780,8 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
                 "quantities absent from all Basic exact_text refs with the same "
                 "claim, missing_quantity_groups="
                 f"{json.dumps(missing, separators=(',', ':'))}, "
+                "missing_quantity_literals="
+                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
                 "same_claim_evidence_paths="
                 f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
                 "remove every listed evidence claim together, and retained refs must "
@@ -6842,14 +6874,18 @@ def _need_content_tokens(value: str) -> tuple[str, ...]:
 
 
 def _titlecase_phrase_occurs(value: str, phrase: tuple[str, ...]) -> bool:
-    """Return whether one normalized phrase occurs as title-cased source words."""
+    """Return whether a phrase begins with a title-cased source entity word."""
 
-    words = tuple(re.findall(r"[A-Za-z0-9]+", value))
+    words = tuple(
+        word
+        for word in re.findall(r"[A-Za-z0-9]+", value)
+        if word.casefold() != "s"
+    )
     normalized = tuple(word.casefold() for word in words)
     for index in range(len(words) - len(phrase) + 1):
         if normalized[index : index + len(phrase)] != phrase:
             continue
-        if all(word[:1].isupper() for word in words[index : index + len(phrase)]):
+        if words[index][:1].isupper():
             return True
     return False
 

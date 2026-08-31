@@ -1315,3 +1315,20 @@ phrase made entirely of quarter/year/month/day markers while retaining semantic
 phrases such as `construction progress`. Aggregate this corrected topic result with
 quantity/citation defects before the one correction so a false deletion is never sent
 to the model.
+
+## Authored quantity literals and entity-metric addendum (2026-08-31)
+
+Normalized quantities are useful for validation but can be poor correction language.
+V84 reported `4239700000` while the rejected claim wrote `$4,239,700,000`; the model
+copied the claim rather than translating and deleting the unsupported endpoint. Carry
+both the normalized group and the exact numeric substring matched inside the claim.
+If that substring is one side of a comparison, require a grammatical narrowing to a
+single supported observation rather than leaving `from ... to` with a missing side.
+This is still diagnostic only and does not authorize local claim rewriting.
+
+A two-word overlap can also be identity plus a generic metric rather than a shared
+question. `Kinross revenue` appeared in both a historical revenue answer and a gold-
+price sensitivity need. Normalize possessive `s` in source-word matching and abstain
+when the same two-word phrase begins with a title-cased entity token in both strings.
+Keep high-value lowercase topic pairs such as `construction progress`; conservative
+false-negative abstention is preferable to deleting an unresolved need.

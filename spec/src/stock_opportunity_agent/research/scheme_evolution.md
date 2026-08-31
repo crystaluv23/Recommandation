@@ -104,6 +104,9 @@ S = (B, H_init, H_reflect, H_analyse)
   names every same-claim evidence path plus its linked assertions, and excludes all of
   those refs from unchanged-valid copy candidates. Every retained ref must use the
   same repaired claim string.
+  Feedback includes both normalized groups and the exact numeric substrings found in
+  the claim so correction does not need to infer how a scaled value was written. A
+  comparison losing one endpoint is narrowed to one grammatical supported observation.
   The same raw prevalidation rejects an open question or next need asking for the
   runtime-owned evaluation baseline date/price or the definition/terms of the fixed
   outcome. This is not issuer evidence; feedback names only the exact offending path
@@ -111,6 +114,9 @@ S = (B, H_init, H_reflect, H_analyse)
   A same-state resolved/need overlap must contain a semantic topic; a shared period
   marker such as `Q2 2025` alone never makes two otherwise different questions
   contradictory.
+  The two-word fallback also abstains when both occurrences begin with the same
+  title-cased entity token after possessive normalization, so `Kinross revenue` does
+  not conflate a historical-revenue answer with a gold-price sensitivity question.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its
