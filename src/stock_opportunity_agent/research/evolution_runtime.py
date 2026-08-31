@@ -5671,7 +5671,7 @@ def _normalize_research_state_output(
                 )
             continue
         issues.append(
-            f"supporting_evidence[{index}] has unknown kind {kind!r}; "
+            f"supporting_evidence[{index}] has unknown kind {kind!r}, "
             "expected 'basic_info' or 'signal'"
         )
     issues.extend(_raw_research_evidence_claim_length_issues(normalized))
@@ -6853,9 +6853,9 @@ def _cosmetically_retained_information_needs(
 
 
 _NEED_FUNCTION_WORDS = frozenset(
-    "a an and are as at be been being by could current did do does for from has "
-    "have how if in is it latest of on or recent s that the their this to was were "
-    "what when which who why will with would".split()
+    "a an and are as at be been being by companies company could current did do "
+    "does for from has have how if in is issuer issuers it latest of on or recent "
+    "s that the their this to was were what when which who why will with would".split()
 )
 _TEMPORAL_TOPIC_TOKEN = re.compile(
     r"^(?:q[1-4]|(?:19|20)\d{2}|quarter|quarters|quarterly|year|years|annual|"
@@ -7067,6 +7067,12 @@ class LLMResearchController:
                 "omitted_context_budget, and no_context_spans are not evidence that "
                 "the requested fact is absent; keep a decision-relevant omitted "
                 "facet unresolved instead of asserting absence."
+                " The downstream Predictor receives this compact ResearchState, not "
+                "the complete Basic projection text. Keep the smallest material "
+                "direct expectation support or counter-evidence visible in Basic "
+                "Info, such as a price target, management guidance, or issuer "
+                "catalyst, when it bears on the fixed outcome; do not enumerate "
+                "every request or source."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),

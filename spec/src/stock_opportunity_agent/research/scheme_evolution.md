@@ -117,6 +117,13 @@ S = (B, H_init, H_reflect, H_analyse)
   The two-word fallback also abstains when both occurrences begin with the same
   title-cased entity token after possessive normalization, so `Kinross revenue` does
   not conflate a historical-revenue answer with a gold-price sensitivity question.
+  Generic subject words including `company` and `issuer` are removed before matching,
+  so `company revenue` cannot treat a quarter comparison plus EBITDA need as answered
+  by a broad recent-revenue question.
+  Because Predictor receives the compact frontier rather than complete Basic text,
+  H_init retains the smallest material direct expectation support/counter-evidence
+  (for example a visible price target, guidance item, or issuer catalyst) that bears
+  on the fixed outcome. It still does not enumerate every request or source.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its

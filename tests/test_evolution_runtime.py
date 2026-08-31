@@ -6710,6 +6710,89 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, (need,))
 
+    def test_v85_initialize_does_not_treat_generic_subject_as_topic(self) -> None:
+        need = (
+            "What are the company's revenue and EBITDA figures for Q1 compared to "
+            "the prior year, and what trends did management identify?"
+        )
+        state = {
+            "hypotheses": ["Revenue momentum may support further repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": ["What is the company's recent revenue?"],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+        self.assertIn(
+            "downstream Predictor receives this compact ResearchState",
+            caller.calls[0]["system_prompt"],
+        )
+
+    def test_v85_initialize_keeps_unknown_kind_feedback_in_one_obligation(
+        self,
+    ) -> None:
+        claim = "A direct issuer catalyst may change expectations."
+        exact_text = "A direct issuer catalyst may change expectations."
+        invalid = {
+            "hypotheses": ["The catalyst may support further repricing."],
+            "current_beliefs": [claim],
+            "supporting_evidence": [
+                {
+                    "kind": "news",
+                    "claim": claim,
+                    "projection_id": "projection_news",
+                    "exact_text": exact_text,
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["Check whether the catalyst is durable."],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["supporting_evidence"][0]["kind"] = "basic_info"
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_news",
+                                "exact_text": exact_text,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 1)
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_paths"],
+            ["supporting_evidence[0].kind"],
+        )
+        self.assertIn(
+            "expected 'basic_info' or 'signal'",
+            feedback["obligations"][0]["instruction"],
+        )
+        self.assertEqual(initialized.value.supporting_evidence[0].kind, "basic_info")
+
     def test_v81_initialize_aggregates_runtime_baseline_and_total_limit(
         self,
     ) -> None:

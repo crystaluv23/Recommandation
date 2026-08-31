@@ -699,6 +699,21 @@ Its conservative two-word fallback also ignores a phrase that begins with the sa
 title-cased entity token in both questions, after removing possessive `s`; an issuer
 name plus a generic metric such as `Kinross revenue` is context, not proof that both
 questions ask the same unresolved facet.
+Generic subject tokens such as `company`, `issuer`, and their plurals are removed
+before overlap matching, so the phrase `company revenue` cannot collapse a broad
+recent-revenue answer into a still-unresolved quarter comparison plus EBITDA need.
+
+The Predictor receives the compact ResearchState frontier and source index, not the
+complete Basic projection text. H_init therefore keeps the smallest material direct
+expectation evidence or counter-evidence visible in Basic Info—such as a price target,
+management guidance, or issuer catalyst—when it bears on the fixed outcome. This does
+not authorize an input summary or require one item per request; it prevents a market-
+only frontier from making downstream analysis falsely claim that visible material
+evidence was absent.
+
+One evidence-kind diagnostic is one correction obligation. Its expected-kind clause
+stays in the same segment as the exact `supporting_evidence[i].kind` path and must not
+create an additional pathless row.
 It also distinguishes the six-month repricing horizon from later operating events.
 An event outside the horizon may matter through a point-in-time expectation change,
 but H_init must not condition the six-month outcome on that later event already

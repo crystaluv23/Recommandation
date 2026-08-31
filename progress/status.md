@@ -1,5 +1,33 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v85 contract
+`45b2a09...f9b22` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used seven completed model attempts, `$0.01506148`,
+and four data-ledger rows. The first case completed H_init, empty routing, Predictor,
+and post-hoc in four case calls; it made zero Signal executions/reflections. The
+second H_init and correction then failed. Locked Test remained sealed and the Registry
+stayed at its initial hash. The successor ceilings are 172 attempts, `$17.81471256`,
+and 698 data requests.
+
+All seven prompts, payloads, and responses were inspected. Case one had an explicit
+SEC provider error, complete news and market context, and a single quarterly revenue /
+earnings-versus-expectations need. No current Signal card directly answered that
+compound need, so routing's empty selection and zero Signal calls were correct. The
+Predictor received the runtime five-day mean `23.982`, returned low-confidence
+`insufficient_information`, and post-hoc coherently attributed the realized non-surge
+to missing fundamentals without manufacturing certainty.
+
+H_init nevertheless retained only price evidence and omitted visible material UBS
+target/Tasiast context; downstream Predictor sees this frontier, not raw Basic text.
+The prompt now requires the smallest material direct expectation support or
+counter-evidence when present, without enumerating every source. In case two, a Q1
+year-over-year revenue/EBITDA need was falsely treated as answered by broad recent
+revenue because of `company revenue`; generic company/issuer tokens are now removed
+before overlap matching. Two `kind='news'` errors also split their expected-kind
+clauses into pathless obligations; each diagnostic is now one exact kind-path row.
+Exact V85 replay preserves the need, yields two pathful obligations, and accepts the
+recorded correction. All 493 tests and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v84 contract
 `9c31bbc...fbe71` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used four completed model attempts, `$0.01383564`,

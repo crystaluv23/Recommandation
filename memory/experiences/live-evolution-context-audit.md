@@ -1332,3 +1332,25 @@ price sensitivity need. Normalize possessive `s` in source-word matching and abs
 when the same two-word phrase begins with a title-cased entity token in both strings.
 Keep high-value lowercase topic pairs such as `construction progress`; conservative
 false-negative abstention is preferable to deleting an unresolved need.
+
+## Compact-frontier downstream visibility addendum (2026-08-31)
+
+An empty Signal selection can be the correct and cheapest result. V85's only need was
+quarterly revenue and earnings versus analyst expectations; no current Signal card
+directly answered that compound request. Routing returned empty, runtime made zero
+Signal calls, preserved the need, sent the five-day baseline to Predictor, and reached
+a coherent insufficient-information judgment and post-hoc. Do not force a loosely
+related revenue-growth Signal merely to avoid an empty batch.
+
+But a compact frontier must not erase material Basic evidence that downstream roles
+cannot otherwise see. The same case's H_init retained market prices but omitted a
+visible analyst target and operational event, so Predictor described the case as if
+only price evidence existed. Remind H_init that Predictor sees ResearchState plus a
+source index, not complete Basic text, and require the smallest direct expectation
+support/counter-evidence when it bears on the outcome. This is not permission to
+enumerate sources or locally select evidence.
+
+Finally, remove generic `company`/`issuer` subject words before two-question topic
+matching. A broad recent-revenue answer does not resolve a quarter comparison plus
+EBITDA/trend need. Keep each unknown evidence-kind error and its expected-kind clause
+in one semicolon-free segment so correction receives one pathful obligation per row.
