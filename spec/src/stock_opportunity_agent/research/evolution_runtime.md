@@ -657,6 +657,11 @@ must not pay for or be distracted by evidence fields they cannot return.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
+It also distinguishes the six-month repricing horizon from later operating events.
+An event outside the horizon may matter through a point-in-time expectation change,
+but H_init must not condition the six-month outcome on that later event already
+having occurred; it instead names the evidence or milestone that could change
+expectations inside the horizon.
 
 For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
 literal from one supplied projection: it may not use ellipses, join distant rows,
@@ -896,11 +901,17 @@ correction action. Runtime does not strip a version suffix or otherwise repair a
 semantic identity mismatch locally.
 The initial and correction calls use the exact same system prompt. That stable prompt
 always explains how a sole correction consumes the optional `validation_feedback`;
-the dynamic failed output, error, and required action are appended only after the
-unchanged shared `source_projection` in the user payload. This preserves the complete
-Signal specs, skills, projection coverage, and local validation boundary while making
-the large common request prefix eligible for provider caching. Pre-send token/cost
-reservation remains a cache miss, and actual hit/miss usage remains durable evidence.
+the dynamic error, expected identity, returned refs, and required action are appended
+only after the unchanged shared `source_projection` in the user payload. The rejected
+row remains durable in the exact initial response and is not duplicated into the
+correction request. A correction may use the smallest set of unique eligible literal
+quotes required by the Signal skill, including current/prior or supporting/counter
+pairs; it is never restricted to one quote when the versioned definition requires a
+comparison. This preserves the complete Signal specs, skills, projection coverage,
+and local validation boundary while making the large common request prefix eligible
+for provider caching and keeping repair reservations below the case budget where the
+unchanged evidence already fits. Pre-send token/cost reservation remains a cache miss,
+and actual hit/miss usage remains durable evidence.
 
 Model outputs are type-strict at the role boundary. JSON booleans, arrays,
 objects, numbers, and required fields cannot be replaced by truthy strings,
@@ -960,6 +971,17 @@ non-answer reason is retained as association metadata and causes no correction; 
 `answer_need` target evidence can authorize a need transition. Items that cannot
 be safely parsed remain rejected and are omitted only from further diagnostics, never
 from validation itself; runtime does not repair or execute them.
+When an invalid empty selection contradicts a version-owned exact need phrase,
+feedback names top-level `selections` plus each matching Signal ref, target need index,
+and matched phrase. The correction therefore need not guess which of several needs
+created the non-empty obligation. A partial answer starts from that exact target and
+deletes its answered facet; it must never copy another supplied information-needs row
+as the residual.
+For every partial answer, runtime also rejects a `selection_reason` that repeats a
+distinctive three-or-more-word phrase from `residual_need`. Such a reason is claiming
+coverage of a facet the same row declares unresolved. The correction names the exact
+`selections[index].selection_reason` path and must describe only the answered facet;
+runtime neither rewrites the reason nor deletes residual content.
 
 Research initialization and compact routing also preserve provider-cache prefixes
 across their single correction. The initial and correction system prompts are

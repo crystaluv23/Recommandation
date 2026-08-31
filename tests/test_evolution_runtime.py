@@ -3539,6 +3539,93 @@ class ConcreteRoleAdapterTests(TestCase):
             "What updates are there on project timelines?",
         )
 
+    def test_v78_empty_routing_feedback_names_target_before_bad_correction(
+        self,
+    ) -> None:
+        information_needs = (
+            "What regulatory milestones are required for the resort?",
+            "What is current construction progress and cost?",
+            "What is expected customer traffic and revenue contribution?",
+            "Are there earnings guidance projections for first-year revenue?",
+        )
+        bad_guidance = signal_selection("guidance_acceleration:v1")[
+            "selections"
+        ][0]
+        bad_guidance.pop("context_tags")
+        bad_guidance["target_need_indices"] = [3]
+        bad_guidance["answer_scope"] = "partial"
+        bad_guidance["residual_need"] = information_needs[2]
+        caller = ScriptedRoleCaller(
+            [{"selections": []}, {"selections": [bad_guidance]}]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            with self.assertRaises(CandidateExecutionRejected) as raised:
+                LLMSignalRetrievalAgent(caller).select(
+                    information_needs,
+                    registry.freeze(),
+                    {},
+                )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 1)
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_paths"], ["selections"]
+        )
+        self.assertIn("'target_need_index': 3", feedback["validation_error"])
+        self.assertIn("'matched_phrases': ['guidance']", feedback["validation_error"])
+        self.assertIn(
+            "must not copy a different information_needs item",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertIn("missing=['context_tags']", str(raised.exception))
+        self.assertIn("residual_need must be grounded", str(raised.exception))
+
+    def test_v78_partial_reason_cannot_claim_the_residual_facet(self) -> None:
+        target_need = (
+            "What are the latest production and cost guidance for 2025-2027, and "
+            "any updates on Tasiast mill restart?"
+        )
+        invalid = signal_selection("guidance_acceleration:v1")
+        invalid_item = invalid["selections"][0]
+        invalid_item["answer_scope"] = "partial"
+        invalid_item["residual_need"] = (
+            "What are the latest Tasiast mill restart timeline updates and their "
+            "impact on production?"
+        )
+        invalid_item["selection_reason"] = (
+            "Covers production and cost guidance, including Tasiast mill restart "
+            "impact."
+        )
+        corrected = json.loads(json.dumps(invalid))
+        corrected["selections"][0]["selection_reason"] = (
+            "Covers only the production and cost guidance facet."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selected = LLMSignalRetrievalAgent(caller).select(
+                (target_need,), registry.freeze(), {}
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn(
+            "selections[0].selection_reason claims a facet retained",
+            feedback["validation_error"],
+        )
+        self.assertIn("'tasiast mill restart'", feedback["validation_error"])
+        self.assertIn(
+            "selections[0].selection_reason",
+            {
+                path
+                for obligation in feedback["obligations"]
+                for path in obligation["must_change_paths"]
+            },
+        )
+        self.assertEqual(selected.value[0].selection_reason, corrected["selections"][0]["selection_reason"])
+
     def test_signal_selector_exposes_only_eligible_unexecuted_cards(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -3916,6 +4003,50 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("do not predict false merely because 2x moves are rare", prompt)
         self.assertIn("need not be more than 50% probable", prompt)
         self.assertNotIn("is_surge", prompt)
+
+    def test_v78_blind_predictor_corrects_stale_price_labeled_current(self) -> None:
+        invalid = {
+            "candidate_judgment": "unlikely",
+            "magnitude": None,
+            "confidence": {"level": "low"},
+            "key_reasons": [
+                "Current price $19.38 is far below the defined doubling threshold."
+            ],
+            "uncertainties": [],
+            "session_id": "fixture-session",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["key_reasons"] = [
+            "The prediction-time baseline price is $23.98, while visible catalyst "
+            "evidence remains limited."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "method": "mean_last_5_complete_adjusted_closes",
+                    "mean_adjusted_close": 23.982,
+                    "trading_dates": [],
+                },
+                "final_research_state": {},
+            }
+        )
+
+        self.assertEqual(prediction.usage.llm_calls, 2)
+        self.assertEqual(
+            caller.stages,
+            ["blind_predictor_predict", "blind_predictor_predict_correction"],
+        )
+        self.assertIn(
+            "key_reasons[0] labels 19.38",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+        self.assertIn(
+            "final_context.prediction_baseline", caller.calls[0]["system_prompt"]
+        )
+        self.assertIn("$23.98", prediction.value.key_reasons[0])
 
     def test_blind_predictor_repairs_legacy_binary_shape(self) -> None:
         valid = {
@@ -5000,6 +5131,9 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(len(caller.calls), 2)
         feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("supporting evidence[0] exact span", feedback["validation_error"])
+        self.assertNotIn("failed_output", feedback)
+        self.assertIn("smallest set of unique quotes", feedback["required_action"])
+        self.assertIn("multiple current/prior", feedback["required_action"])
         self.assertEqual(
             caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
         )
@@ -5833,6 +5967,8 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertTrue(rendered.startswith(stable_prefix))
         self.assertIn("evaluation definition, not an issuer statement", initial_prompt)
         self.assertIn("baseline date, or baseline price", initial_prompt)
+        self.assertIn("future operating event outside the six-month horizon", initial_prompt)
+        self.assertIn("within-horizon evidence or milestone", initial_prompt)
         self.assertIn("complete visible row", initial_prompt)
         self.assertIn("Returning the same rejected content", correction_prompt)
         self.assertIn(
@@ -6027,7 +6163,11 @@ class ConcreteRoleAdapterTests(TestCase):
 
         error = validation_error(caller.calls[1])
         self.assertIn("quantitative ResearchState assertions", error)
-        self.assertIn("numbers from unrelated claims do not count", error)
+        self.assertIn("Numbers from unrelated claims do not count", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertTrue(
+            all(item["must_change_paths"] for item in feedback["obligations"])
+        )
         self.assertEqual(initialized.value.current_beliefs, (cash_claim,))
         self.assertIn(
             "must copy one accepted supporting_evidence claim byte-for-byte",
@@ -7690,7 +7830,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 SignalBatchResult(results=(result,), signal_calls=1),
             )
         self.assertIn(
-            "do not round or convert",
+            "Do not round or convert",
             validation_error(rounded_caller.calls[1]),
         )
 
@@ -7873,6 +8013,10 @@ class ConcreteRoleAdapterTests(TestCase):
             "basic_info": fixture["predictor_basic_info"],
             "final_research_state": fixture["corrected_reflection"],
             "signal_rounds": [],
+            "prediction_baseline": {
+                "status": "available",
+                "mean_adjusted_close": 23.982,
+            },
         }
 
         compact = evolution_runtime_module._compact_posthoc_context(original_context)
@@ -7882,6 +8026,9 @@ class ConcreteRoleAdapterTests(TestCase):
             fixture["predictor_basic_info"]["source_index"],
         )
         self.assertEqual(compact["data_gaps"], [])
+        self.assertEqual(
+            compact["prediction_baseline"]["mean_adjusted_close"], 23.982
+        )
         serialized = json.dumps(compact, ensure_ascii=False)
         self.assertNotIn("source_projection", serialized)
         self.assertNotIn("guidance_source", serialized)

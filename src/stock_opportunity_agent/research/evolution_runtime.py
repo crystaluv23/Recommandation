@@ -4186,6 +4186,49 @@ def _blind_prediction_from_role(data: Mapping[str, Any]) -> BlindPrediction:
         }
     )
 
+
+_PREDICTOR_CURRENT_PRICE = re.compile(
+    r"\b(?:current(?:\s+adjusted)?(?:\s+share)?\s+price|"
+    r"prediction[- ]time\s+baseline(?:\s+adjusted\s+close)?|"
+    r"baseline(?:\s+adjusted\s+close|\s+price)?)"
+    r"\s*(?:is|was|=|of|at|:)?\s*\$?\s*(\d+(?:\.\d+)?)",
+    re.IGNORECASE,
+)
+
+
+def _blind_prediction_with_baseline(
+    value: Mapping[str, Any],
+    final_context: Mapping[str, Any],
+) -> BlindPrediction:
+    """Reject a historical observation mislabeled as the runtime baseline."""
+
+    prediction = _blind_prediction_from_role(value)
+    baseline = final_context.get("prediction_baseline")
+    if not isinstance(baseline, Mapping) or baseline.get("status") != "available":
+        return prediction
+    expected = baseline.get("mean_adjusted_close")
+    if isinstance(expected, bool) or not isinstance(expected, (int, float)):
+        return prediction
+    for field_name in ("key_reasons", "uncertainties"):
+        for index, text in enumerate(getattr(prediction, field_name)):
+            for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
+                returned = float(match.group(1))
+                if math.isclose(
+                    returned,
+                    float(expected),
+                    rel_tol=0.01,
+                    abs_tol=0.05,
+                ):
+                    continue
+                raise ValidationError(
+                    f"{field_name}[{index}] labels {returned:g} as the current or "
+                    "prediction-time baseline price, but the runtime-supplied "
+                    f"five-day baseline mean is {float(expected):g}. Use that mean "
+                    "for baseline arithmetic or describe the older observation with "
+                    "its actual date"
+                )
+    return prediction
+
 _PREDICTION_REFLECTION_OUTPUT = _output_contract(
     "PredictionSelfReflection",
     {
@@ -4320,6 +4363,7 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
         "signal_results": signal_results,
         "basic_info_source_index": source_index,
         "data_gaps": data_gaps,
+        "prediction_baseline": original_context.get("prediction_baseline", {}),
     }
     return dict(_bounded_json_view(compact, MAX_POSTHOC_MODEL_CHARS))
 
@@ -4684,6 +4728,9 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
 _VALIDATION_OBLIGATION_PATH = re.compile(
     r"\b[a-z_]+(?:\[\d+\]|\.[a-z_]+)+"
 )
+_VALIDATION_INVALID_FIELD_PATH = re.compile(
+    r"\binvalid_field=['\"]([a-z_]+(?:\[\d+\]|\.[a-z_]+)*)['\"]"
+)
 
 
 def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
@@ -4696,7 +4743,14 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
     ]
     obligations: list[dict[str, Any]] = []
     for index, segment in enumerate(segments, start=1):
-        paths = list(dict.fromkeys(_VALIDATION_OBLIGATION_PATH.findall(segment)))
+        paths = list(
+            dict.fromkeys(
+                (
+                    *_VALIDATION_OBLIGATION_PATH.findall(segment),
+                    *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
+                )
+            )
+        )
         if paths and "unknown kind" in segment:
             paths[0] += ".kind"
         elif paths and "claim contains numeric quantities" in segment:
@@ -5177,7 +5231,7 @@ def _raw_research_evidence_claim_length_issues(
             if assertion == claim
         ]
         linked_instruction = (
-            f"; linked_assertions={linked} must copy the corrected claim "
+            f". linked_assertions={linked} must copy the corrected claim "
             "byte-for-byte or be removed"
             if linked
             else ""
@@ -5223,7 +5277,7 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
                 if item == claim and _normalized_claim_quantity_groups(str(item))
             ]
             linked_instruction = (
-                f"; linked_assertions={linked} must copy the corrected claim "
+                f". linked_assertions={linked} must copy the corrected claim "
                 "byte-for-byte"
                 if linked
                 else ""
@@ -5271,7 +5325,7 @@ def _raw_quantitative_assertion_link_issues(
                 f"{field_name}[{index}] must copy one supporting_evidence claim "
                 "byte-for-byte. Replace it with one exact accepted claim, attach "
                 "literals to that same exact claim, split the assertion, or remove "
-                "unsupported numeric detail; numbers from unrelated claims do not "
+                "unsupported numeric detail. Numbers from unrelated claims do not "
                 "count"
             )
     return issues
@@ -5659,7 +5713,7 @@ def _validate_basic_claim_quantities(
             index = items[0][0]
             linked = _linked_quantitative_assertion_paths(state, claim)
             linked_instruction = (
-                f"; linked_assertions={linked} must copy the corrected claim "
+                f". linked_assertions={linked} must copy the corrected claim "
                 "byte-for-byte"
                 if linked
                 else ""
@@ -5688,7 +5742,7 @@ def _validate_signal_claim_quantities(
             index = items[0][0]
             linked = _linked_quantitative_assertion_paths(state, claim)
             linked_instruction = (
-                f"; linked_assertions={linked} must copy the corrected claim "
+                f". linked_assertions={linked} must copy the corrected claim "
                 "byte-for-byte"
                 if linked
                 else ""
@@ -5698,7 +5752,7 @@ def _validate_signal_claim_quantities(
                 f"absent from all referenced Signal evidence items with the same "
                 f"claim: {missing}. Copy the exact canonical numeric form from a "
                 "deterministic Signal interpretation, cite every required Signal "
-                "evidence item with the same claim, or narrow the claim; do not "
+                "evidence item with the same claim, or narrow the claim. Do not "
                 "round or convert the supplied values"
                 + linked_instruction
             )
@@ -5725,7 +5779,7 @@ def _validate_assertive_state_claim_links(
             "supporting_evidence claim byte-for-byte: "
             f"{errors}. Attach every literal needed by that exact claim, split a "
             "composite assertion into separately supported claims, or remove the "
-            "unsupported numeric detail; numbers from unrelated claims do not count"
+            "unsupported numeric detail. Numbers from unrelated claims do not count"
         )
 
 
@@ -6127,6 +6181,38 @@ def _normalized_need_content_tokens(value: str) -> frozenset[str]:
     return frozenset(normalized)
 
 
+def _shared_distinctive_phrase(
+    left: str,
+    right: str,
+    *,
+    minimum_words: int = 3,
+) -> str | None:
+    """Return one shared consecutive topic phrase, ignoring routing filler words."""
+
+    def words(value: str) -> tuple[str, ...]:
+        return tuple(
+            token
+            for token in re.findall(r"[a-z0-9]+", value.casefold())
+            if token not in _NEED_RESIDUAL_GENERIC_TOKENS
+        )
+
+    left_words = words(left)
+    right_words = words(right)
+    if len(left_words) < minimum_words or len(right_words) < minimum_words:
+        return None
+    right_ngrams = {
+        right_words[start : start + size]
+        for size in range(minimum_words, len(right_words) + 1)
+        for start in range(len(right_words) - size + 1)
+    }
+    for size in range(len(left_words), minimum_words - 1, -1):
+        for start in range(len(left_words) - size + 1):
+            phrase = left_words[start : start + size]
+            if phrase in right_ngrams:
+                return " ".join(phrase)
+    return None
+
+
 def _targeted_answer_need_transition_errors(
     previous: ResearchState | None,
     current: ResearchState,
@@ -6432,7 +6518,11 @@ class LLMResearchController:
                 "definition, not an issuer statement or target. Ask only for "
                 "issuer-specific evidence bearing on its feasibility; never ask for "
                 "the terms, definition, baseline date, or baseline price of the "
-                "evaluation outcome; runtime owns those inputs. Every "
+                "evaluation outcome; runtime owns those inputs. A future operating "
+                "event outside the six-month horizon may matter through expectation "
+                "repricing, but do not condition the six-month outcome on that later "
+                "event already having occurred; name the within-horizon evidence or "
+                "milestone that could change expectations instead. Every "
                 "next_information_needs item must contain only facts absent from "
                 "Basic Info and from the evidence or beliefs you return. Do not ask "
                 "again for an already visible fact; when a compound question is "
@@ -6564,10 +6654,10 @@ class LLMResearchController:
         return AgentStep(reflected, usage)
 
 
-def _explicit_signal_need_matches(
+def _explicit_signal_need_match_details(
     information_needs: tuple[str, ...], specs: Iterable[SignalSpec]
-) -> tuple[str, ...]:
-    """Find version-owned exact need phrases without choosing a Signal locally."""
+) -> tuple[dict[str, Any], ...]:
+    """Locate version-owned exact need phrases without choosing a Signal locally."""
 
     normalized_needs = tuple(
         " "
@@ -6575,7 +6665,7 @@ def _explicit_signal_need_matches(
         + " "
         for need in information_needs
     )
-    matched: list[str] = []
+    matched: list[dict[str, Any]] = []
     for spec in specs:
         signal_ref = spec.ref
         tokens = tuple(
@@ -6585,7 +6675,7 @@ def _explicit_signal_need_matches(
             ).split()
             if token
         )
-        ref_phrases = (
+        ref_phrases = tuple(
             " " + " ".join(tokens[start:end]) + " "
             for size in range(len(tokens), 2, -1)
             for start in range(len(tokens) - size + 1)
@@ -6596,13 +6686,36 @@ def _explicit_signal_need_matches(
             for item in spec.parameters.get("routing_need_phrases", ())
             if isinstance(item, str) and item.strip()
         )
-        if any(
-            phrase in need
-            for phrase in (*ref_phrases, *configured_phrases)
-            for need in normalized_needs
-        ):
-            matched.append(signal_ref)
+        phrases = (*ref_phrases, *configured_phrases)
+        target_matches = [
+            {
+                "target_need_index": need_index,
+                "matched_phrases": [
+                    phrase.strip() for phrase in phrases if phrase in need
+                ],
+            }
+            for need_index, need in enumerate(normalized_needs)
+            if any(phrase in need for phrase in phrases)
+        ]
+        if target_matches:
+            matched.append(
+                {
+                    "signal_ref": signal_ref,
+                    "target_matches": target_matches,
+                }
+            )
     return tuple(matched)
+
+
+def _explicit_signal_need_matches(
+    information_needs: tuple[str, ...], specs: Iterable[SignalSpec]
+) -> tuple[str, ...]:
+    """Find version-owned exact need refs without choosing a Signal locally."""
+
+    return tuple(
+        str(item["signal_ref"])
+        for item in _explicit_signal_need_match_details(information_needs, specs)
+    )
 
 
 def _signal_routing_research_context(
@@ -6726,9 +6839,12 @@ class LLMSignalRetrievalAgent:
             "learned_profile_default": "no committed observations",
             "selection_caps": {"signals": 4, "llm_signals": 2},
         }
-        explicit_empty_matches = _explicit_signal_need_matches(
+        explicit_empty_match_details = _explicit_signal_need_match_details(
             information_needs,
             (specs_by_ref[ref] for ref in allowed_refs),
+        )
+        explicit_empty_matches = tuple(
+            str(item["signal_ref"]) for item in explicit_empty_match_details
         )
         normalized_information_needs = tuple(
             " "
@@ -6760,9 +6876,13 @@ class LLMSignalRetrievalAgent:
             if not raw_selections and explicit_empty_matches:
                 raise ValidationError(
                     "empty Signal selection contradicts an exact version-owned "
-                    "information-need phrase in the available Signal cards: "
-                    f"{list(explicit_empty_matches)}. Return a non-empty smallest "
-                    "batch that answers the need; runtime will not choose a ref"
+                    "information-need phrase in the available Signal cards, "
+                    "invalid_field='selections', required_matches="
+                    f"{list(explicit_empty_match_details)}. Return a non-empty "
+                    "smallest batch targeted to one listed need. For a partial "
+                    "answer, delete only the answered facet from that exact target. "
+                    "Do not copy another information_needs row as residual_need. "
+                    "Runtime will not choose a ref or residual"
                 )
             required = {
                 "signal_ref",
@@ -6937,6 +7057,17 @@ class LLMSignalRetrievalAgent:
                                 validation_errors.append(
                                     f"{path}.residual_need must remove the answered "
                                     "facet rather than retain the target cosmetically"
+                                )
+                            shared_residual_phrase = _shared_distinctive_phrase(
+                                item["selection_reason"], residual_need
+                            )
+                            if shared_residual_phrase:
+                                validation_errors.append(
+                                    f"{path}.selection_reason claims a facet retained "
+                                    "by residual_need via shared phrase "
+                                    f"{shared_residual_phrase!r}. Name only the "
+                                    "answered facet and leave unresolved facets only "
+                                    "in residual_need"
                                 )
                 elif (
                     item["answer_scope"] is not None
@@ -7152,7 +7283,8 @@ class LLMSignalRetrievalAgent:
                 "answer every facet of the target; otherwise use partial and write "
                 "residual_need as the exact natural-language question containing "
                 "only unresolved facets. The residual must genuinely remove the "
-                "answered facet, not cosmetically restate the old need. Use at most "
+                "answered facet, not cosmetically restate the old need, and must not "
+                "copy a different information_needs item. Use at most "
                 "one answer_need selection per target in one round; classify other "
                 "useful Signals as contextual. "
                 "For a non-empty answer, return "
@@ -7221,6 +7353,10 @@ class LLMBlindPredictor:
                 "mean adjusted close over the last five complete trading days, and "
                 "the future numerator is the maximum mean adjusted close over any "
                 "five complete consecutive trading days inside that horizon. This "
+                "runtime-computed point-in-time mean is supplied as "
+                "final_context.prediction_baseline. When naming the current or "
+                "baseline price or computing target upside, use that supplied mean; "
+                "do not relabel an older cited price observation as current. This "
                 "is a stock-price repricing outcome, not a requirement that revenue, "
                 "earnings, users, production, or another operating metric doubles; "
                 "use those measures only as evidence about possible share-price "
@@ -7257,7 +7393,9 @@ class LLMBlindPredictor:
                 + _BLIND_PREDICTION_OUTPUT
             ),
             payload={"final_context": dict(final_context)},
-            parser=_blind_prediction_from_role,
+            parser=lambda value: _blind_prediction_with_baseline(
+                value, final_context
+            ),
             allow_outcomes=False,
             anonymous_aliases=self.anonymous_aliases,
             max_output_tokens=2_000,
@@ -9374,8 +9512,9 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "projection containing the complete clause. Never infer omitted source text "
     "is absent. Return unavailable with no evidence when visible text is "
     "insufficient. If optional validation_feedback is present, this is the only "
-    "correction attempt: do not repeat failed_output and apply each "
-    "required_action exactly. When no literal citation supports the corrected "
+    "correction attempt: apply each required_action exactly. The rejected row "
+    "remains in the saved initial response and is intentionally not duplicated "
+    "here. When no literal citation supports the corrected "
     "conclusion, set state.value and status.coverage to unavailable and keep both "
     "evidence arrays empty."
     + _UNTRUSTED_DATA_INSTRUCTION
@@ -9679,14 +9818,16 @@ class StructuredLLMSignalRunner:
                                 "version": item.spec.version,
                             },
                             "validation_error": validation_error,
-                            "failed_output": dict(raw_result or {}),
                             "required_action": (
                                 f"Return outer signal_ref exactly {signal_ref!r}; set nested "
                                 f"result.signal_id exactly {item.spec.signal_id!r} without "
                                 f"a version suffix and result.version exactly {item.spec.version}. "
-                                "Ground the corrected result only in one unique quote from "
-                                "that Signal's unchanged eligible_projection_ids list, or "
-                                "return unavailable with empty evidence."
+                                "Ground the corrected result in the smallest set of unique "
+                                "quotes required by that Signal's skill, using only its "
+                                "unchanged eligible_projection_ids list. Comparisons may use "
+                                "multiple current/prior or supporting/counter quotes. Return "
+                                "unavailable with empty evidence when visible literals are "
+                                "insufficient."
                             ),
                         }
                     )

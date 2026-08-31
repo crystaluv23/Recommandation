@@ -1,5 +1,34 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v78 contract
+`8d55189...504c4` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used 12 completed model attempts, `$0.01447992`, and
+three data-ledger rows. The first KGC case finalized and persisted Predictor plus
+post-hoc output; Wynn then failed after its empty routing correction. Locked Test
+remained sealed and the Registry stayed at its initial hash. The successor ceilings
+are 204 attempts, `$17.89148856`, and 722 data requests.
+
+Every real V78 request/response was inspected. Empty routing feedback named neither
+the matching Signal's target need nor an output path, so correction copied an unrelated
+need and omitted tags; feedback now identifies top-level `selections`, ref, target
+index, and phrase. KGC routing also claimed Tasiast restart coverage in
+`selection_reason` while retaining the same facet in `residual_need`; partial reasons
+may no longer repeat a distinctive residual phrase. Its soft-Signal correction was
+not sent because a 55,761 exact reservation exceeded the 54,735 remaining case
+budget. The correction had duplicated both rejected rows and incorrectly required one
+quote even for current/prior comparisons. It now omits durable failed output, permits
+the smallest skill-required quote set, and the exact V78 repair reservation is 53,478.
+
+The completed KGC Predictor received no runtime five-day mean and mislabeled the old
+`$19.38` observation as current, then post-hoc repeated the resulting wrong target
+upside as a decision driver. The bounded Predictor packet now carries a point-in-time
+five-day baseline derived from visible Basic market rows (`23.982` in the exact V78
+replay); local correction rejects another dated observation labeled current/baseline,
+and post-hoc retains the same baseline. H_init now distinguishes expectation repricing
+inside six months from operating events occurring later, and numeric correction
+advice no longer creates pathless semicolon obligations. Exact V78 routing/Predictor
+replay, all 480 repository tests, and lint pass.
+
 Current ordinary-loop repair (2026-08-30): immutable v77 contract
 `449e5fe...b9aca` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used four completed model attempts, `$0.00602560`, and

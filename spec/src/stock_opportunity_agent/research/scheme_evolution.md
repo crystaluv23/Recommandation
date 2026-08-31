@@ -475,6 +475,15 @@ or full Signal evidence arrays. Instead it contains the Basic request/source/Dat
 index, the complete final ResearchState, compact state/interpretation/coverage for
 each executed Signal, and exact evidence material only for Signal tuples cited by
 the final state. Basic literals are already carried by their tagged final-state refs.
+It also carries a deterministic `prediction_baseline` computed only from the last
+five complete adjusted-close rows strictly before `prediction_time` in the already
+resolved point-in-time Basic market projection. This is a runtime-owned definition
+input, not issuer evidence or a revealed outcome. Predictor instructions require this
+mean whenever prose names the current or baseline price; local validation rejects a
+different historical observation mislabeled as current and gives the model one
+correction. The same compact baseline is retained in post-hoc context so a
+framework-correct label cannot turn an arithmetically inconsistent original reason
+into accepted learning.
 Complete Basic Info, Signal rounds, lineage, and Raw Info remain durable locally.
 If the deterministic projection cannot fit without dropping these semantic layers,
 the case fails before a Predictor attempt; runtime never weakens the byte-level

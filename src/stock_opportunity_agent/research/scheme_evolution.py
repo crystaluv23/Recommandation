@@ -2044,6 +2044,7 @@ def execute_information_plan(
         basic_info=basic_info,
         state=state,
         rounds=rounds,
+        prediction_time=prediction_time,
     )
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
@@ -2251,6 +2252,85 @@ def _is_strong_slow_identity_term(value: str) -> bool:
     )
 
 
+def _prediction_baseline_from_basic_info(
+    basic_info: Mapping[str, Any],
+    prediction_time: datetime,
+) -> dict[str, Any]:
+    """Compute the fixed point-in-time Predictor baseline from visible market bars."""
+
+    market_source_types = {
+        "historical_price",
+        "market_data",
+        "price_daily",
+        "prices",
+    }
+    bars: dict[str, float] = {}
+    for row in basic_info.get("requests", ()):
+        if not isinstance(row, Mapping):
+            continue
+        request = row.get("request", {})
+        source_types = (
+            set(request.get("source_types", ()))
+            if isinstance(request, Mapping)
+            else set()
+        )
+        if not source_types.intersection(market_source_types):
+            continue
+        for projection in row.get("projections", ()):
+            if not isinstance(projection, Mapping):
+                continue
+            exact_text = projection.get("exact_text")
+            if not isinstance(exact_text, str):
+                continue
+            for match in re.finditer(r"\{[^{}]*\}", exact_text):
+                try:
+                    value = json.loads(match.group(0))
+                except json.JSONDecodeError:
+                    continue
+                if not isinstance(value, Mapping):
+                    continue
+                raw_date = value.get("as_of_date")
+                raw_close = value.get("adjusted_close")
+                if (
+                    not isinstance(raw_date, str)
+                    or isinstance(raw_close, bool)
+                    or not isinstance(raw_close, (int, float))
+                    or not math.isfinite(float(raw_close))
+                    or float(raw_close) <= 0
+                ):
+                    continue
+                try:
+                    bar_date = datetime.fromisoformat(raw_date).date()
+                except ValueError:
+                    continue
+                if bar_date >= prediction_time.date():
+                    continue
+                existing = bars.get(raw_date)
+                close = float(raw_close)
+                if existing is not None and not math.isclose(
+                    existing, close, rel_tol=0.0, abs_tol=1e-12
+                ):
+                    raise ValidationError(
+                        "conflicting adjusted-close values in Predictor baseline "
+                        f"for {raw_date}"
+                    )
+                bars[raw_date] = close
+    method = "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time"
+    recent = sorted(bars.items())[-5:]
+    if len(recent) < 5:
+        return {
+            "status": "unavailable",
+            "method": method,
+            "reason": "fewer_than_5_visible_market_bars",
+        }
+    return {
+        "status": "available",
+        "method": method,
+        "mean_adjusted_close": sum(close for _date, close in recent) / 5,
+        "trading_dates": [bar_date for bar_date, _close in recent],
+    }
+
+
 def _assemble_final_context(
     *,
     plan: InformationPlan,
@@ -2259,6 +2339,7 @@ def _assemble_final_context(
     basic_info: Mapping[str, Any],
     state: ResearchState,
     rounds: Iterable[SignalRound],
+    prediction_time: datetime,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -2380,6 +2461,9 @@ def _assemble_final_context(
             "source_index": source_index,
             "data_gaps": data_gaps,
         },
+        "prediction_baseline": _prediction_baseline_from_basic_info(
+            basic_info, prediction_time
+        ),
         "signal_rounds": signal_rounds,
         "cited_signal_evidence": cited_signal_evidence,
         "final_research_state": state.to_dict(),

@@ -1720,6 +1720,7 @@ class InformationPlanRuntimeTests(TestCase):
             basic_info=basic_info,
             state=state,
             rounds=tuple(rounds),
+            prediction_time=NOW,
         )
 
         serialized = json.dumps(
@@ -1768,6 +1769,7 @@ class InformationPlanRuntimeTests(TestCase):
                     ),
                 ),
             ),
+            prediction_time=NOW,
         )
 
         summary = context["signal_rounds"][0]["batch"]["results"][0][
@@ -1775,6 +1777,67 @@ class InformationPlanRuntimeTests(TestCase):
         ]["summary"]
         self.assertNotIn("No customer concentration was found", summary)
         self.assertIn("not evidence", summary)
+
+    def test_v78_predictor_projection_supplies_last_five_day_baseline(self) -> None:
+        rows = [
+            {"adjusted_close": close, "as_of_date": f"2025-07-{day:02d}"}
+            for day, close in (
+                (23, 100.0),
+                (24, 101.0),
+                (25, 102.0),
+                (28, 103.0),
+                (29, 104.0),
+                (30, 105.0),
+            )
+        ]
+        context = _assemble_final_context(
+            plan=default_information_plan(),
+            company_id="issuer-fixture",
+            additional_identity_aliases=(),
+            basic_info={
+                "requests": [
+                    {
+                        "request": {
+                            "request_id": "recent_market_backbone",
+                            "source_types": ["market_data"],
+                        },
+                        "status": "resolved",
+                        "data_gap": None,
+                        "projections": [
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": ",".join(
+                                    json.dumps(row, separators=(",", ":"))
+                                    for row in rows
+                                ),
+                            }
+                        ],
+                    }
+                ]
+            },
+            state=ResearchState(decision=ResearchDecision.FINALIZE),
+            rounds=(),
+            prediction_time=datetime(2025, 7, 31, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(
+            context["prediction_baseline"],
+            {
+                "status": "available",
+                "method": (
+                    "mean_last_5_complete_adjusted_closes_strictly_before_"
+                    "prediction_time"
+                ),
+                "mean_adjusted_close": 103.0,
+                "trading_dates": [
+                    "2025-07-24",
+                    "2025-07-25",
+                    "2025-07-28",
+                    "2025-07-29",
+                    "2025-07-30",
+                ],
+            },
+        )
 
     def test_runtime_stops_at_fixed_round_guard(self) -> None:
         class LoopingController(OneBatchController):

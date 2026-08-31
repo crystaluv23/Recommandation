@@ -1191,3 +1191,27 @@ cosmetic copy, but it does not prevent copying a different need from the same st
 Require most non-generic residual topic terms to be anchored in its one target as well
 as a material reduction of that target. The router still authors the residual and
 H_reflect still copies it exactly; local code only rejects unrelated or unchanged text.
+
+## Correction transport and Predictor baseline addendum (2026-08-31)
+
+A partial routing row can be internally inconsistent even when its residual is a real
+subset of the target. V78's reason promised coverage of `Tasiast mill restart impact`
+while the same row retained that facet as its residual. Reject a distinctive
+three-word overlap between `selection_reason` and `residual_need`; the model must name
+only the answered facet and runtime must not rewrite either field.
+
+Do not duplicate a complete rejected Signal row into a stateless correction when the
+error, expected identity, returned refs, unchanged specs/skills, and unchanged source
+projection are sufficient to author a fresh row. V78's duplication pushed an optional
+repair over its exact case reservation. Also do not tell every correction to use one
+quote: comparative Signals may require current/prior or supporting/counter pairs.
+Preserve the failed row in the initial response artifact, send the smallest actionable
+diagnostic, and retain all strict evidence validation.
+
+The Predictor's fixed baseline belongs in the anonymous prediction packet even though
+H_init must not retrieve it as issuer evidence. If runtime owns the mean of the last
+five complete adjusted closes but sends only isolated ResearchState citations, a model
+can label an older price as current and post-hoc can canonize the arithmetic because
+the binary judgment happened to be correct. Compute the point-in-time baseline from
+already resolved Basic market rows, send it compactly, reject a different price called
+current/baseline, and retain the same field for outcome-aware reflection.
