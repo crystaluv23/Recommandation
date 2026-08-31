@@ -100,10 +100,17 @@ S = (B, H_init, H_reflect, H_analyse)
   reported defect. These are copy candidates, not a runtime-selected repair; H_init
   may choose one, remove the assertion, or repair another evidence claim and copy its
   final claim exactly before the same validators rerun.
+  When the same invalid claim appears on several Basic refs, missing-quantity feedback
+  names every same-claim evidence path plus its linked assertions, and excludes all of
+  those refs from unchanged-valid copy candidates. Every retained ref must use the
+  same repaired claim string.
   The same raw prevalidation rejects an open question or next need asking for the
   runtime-owned evaluation baseline date/price or the definition/terms of the fixed
   outcome. This is not issuer evidence; feedback names only the exact offending path
   and requires deletion rather than inventing a source answer.
+  A same-state resolved/need overlap must contain a semantic topic; a shared period
+  marker such as `Q2 2025` alone never makes two otherwise different questions
+  contradictory.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its

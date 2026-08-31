@@ -1296,3 +1296,22 @@ byte-for-byte or remove the assertion. If no candidate is semantically suitable,
 role may repair another evidence claim and copy its final value. This remains
 diagnostic: local code must not select or insert a replacement, and the same parser,
 literal validation, and assertion-link validation rerun after the sole correction.
+
+## Same-claim path completeness and temporal-topic addendum (2026-08-31)
+
+A missing quantity is a claim-level defect, not a first-evidence-row defect. V83 used
+one market claim on two separate rows to cite the beginning and end observations; the
+unsupported computed percentage was absent from both literals. Reporting only the
+first row made the second unchanged-invalid row look eligible for an exact-copy
+candidate. Feedback must name every evidence path carrying that claim, require every
+retained ref to use the same corrected claim, carry the missing quantity groups, and
+exclude all named indices from unchanged-valid candidates. Linked assertions then copy
+the one final claim or are removed.
+
+Temporal overlap is context, not necessarily topic identity. V83's gold-price outlook
+need and production-cost resolved question both mentioned `Q2 2025`, but answered
+different facts. The narrow same-state contradiction gate should ignore a shared
+phrase made entirely of quarter/year/month/day markers while retaining semantic
+phrases such as `construction progress`. Aggregate this corrected topic result with
+quantity/citation defects before the one correction so a false deletion is never sent
+to the model.

@@ -4784,6 +4784,12 @@ _VALIDATION_REDUCE_ANY_PATHS = re.compile(
 _VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
     r"\bcombined ResearchState array count=(\d+) exceeds effective_limit=(\d+)"
 )
+_VALIDATION_MISSING_QUANTITY_GROUPS = re.compile(
+    r"\bmissing_quantity_groups=(\[[^\n]*?\])(?=, same_claim_evidence_paths=)"
+)
+_VALIDATION_SAME_CLAIM_PATHS = re.compile(
+    r"\bsame_claim_evidence_paths=(\[[^\n]*\])(?=\. Change or)"
+)
 
 
 def _quantitative_copy_candidates(
@@ -4870,6 +4876,7 @@ def _validation_obligations(
             paths[0] += ".kind"
         elif paths and "claim contains numeric quantities" in segment:
             paths[0] += ".claim"
+        paths = list(dict.fromkeys(paths))
         obligation = {
             "obligation_index": index,
             "must_change_paths": paths,
@@ -4883,6 +4890,23 @@ def _validation_obligations(
             )
             if copy_candidates:
                 obligation["copy_candidates_by_path"] = copy_candidates
+        missing_match = _VALIDATION_MISSING_QUANTITY_GROUPS.search(segment)
+        same_claim_match = _VALIDATION_SAME_CLAIM_PATHS.search(segment)
+        if missing_match and same_claim_match:
+            try:
+                missing_groups = json.loads(missing_match.group(1))
+                same_claim_paths = json.loads(same_claim_match.group(1))
+            except json.JSONDecodeError:
+                missing_groups = []
+                same_claim_paths = []
+            if missing_groups and all(
+                isinstance(item, str) for item in missing_groups
+            ):
+                obligation["missing_quantity_groups"] = missing_groups
+            if same_claim_paths and all(
+                isinstance(item, str) for item in same_claim_paths
+            ):
+                obligation["same_claim_evidence_paths"] = same_claim_paths
         obligations.append(obligation)
         minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
         reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
@@ -4927,6 +4951,11 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "do not restate, expand, or change issuer words. If no listed claim has the "
     "intended meaning, first correct an evidence claim and then copy that final "
     "claim byte-for-byte."
+    " When an obligation contains missing_quantity_groups and "
+    "same_claim_evidence_paths, change or remove every listed evidence path, not "
+    "only the first one. Every retained same-claim ref must use one identical "
+    "corrected claim with every missing group deleted unless a same-claim literal "
+    "is added. Apply that identical final claim to every named linked assertion."
     " When validation_error lists absent numeric quantities, the minimal valid "
     "repair is to delete every listed quantity from the named evidence claim "
     "and each named linked assertion, unless you add same-claim exact_text that "
@@ -5700,6 +5729,9 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
         missing = _missing_claim_quantity_groups(claim, cited_quantities)
         if missing:
+            evidence_paths = [
+                f"supporting_evidence[{index}].claim" for index, _text in items
+            ]
             linked = [
                 f"{field_name}[{index}]"
                 for field_name in ("current_beliefs", "contradictions")
@@ -5716,9 +5748,14 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
             issues.append(
                 f"supporting_evidence[{items[0][0]}] claim contains numeric "
                 "quantities absent from all Basic exact_text refs with the same "
-                f"claim: {missing}. Add one exact literal ref for every quantity, "
-                "split the multi-span claim across refs with the same claim, or "
-                "narrow the claim"
+                "claim, missing_quantity_groups="
+                f"{json.dumps(missing, separators=(',', ':'))}, "
+                "same_claim_evidence_paths="
+                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
+                "remove every listed evidence claim together, and retained refs must "
+                "share one identical corrected claim. Add one exact literal ref "
+                "for every quantity, split the multi-span claim across refs with "
+                "the same claim, or narrow the claim"
                 + linked_instruction
             )
     return issues
@@ -6788,6 +6825,10 @@ _NEED_FUNCTION_WORDS = frozenset(
     "have how if in is it latest of on or recent s that the their this to was were "
     "what when which who why will with would".split()
 )
+_TEMPORAL_TOPIC_TOKEN = re.compile(
+    r"^(?:q[1-4]|(?:19|20)\d{2}|quarter|quarters|quarterly|year|years|annual|"
+    r"month|months|monthly|week|weeks|weekly|day|days|daily)$"
+)
 
 
 def _need_content_tokens(value: str) -> tuple[str, ...]:
@@ -6830,6 +6871,8 @@ def _shared_resolved_need_phrase(left: str, right: str) -> str | None:
             for index in range(len(right_tokens) - size + 1)
         }
         for phrase in sorted(left_phrases & right_phrases):
+            if all(_TEMPORAL_TOPIC_TOKEN.fullmatch(token) for token in phrase):
+                continue
             if size == 2 and _titlecase_phrase_occurs(
                 left, phrase
             ) and _titlecase_phrase_occurs(right, phrase):

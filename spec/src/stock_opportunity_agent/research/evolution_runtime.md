@@ -673,6 +673,12 @@ The correction may copy one exact candidate, remove the assertion, or first repa
 different evidence claim and then copy that final claim exactly. This is diagnostic
 context only: runtime neither chooses a semantic replacement nor mutates the output,
 and the unchanged parser and validators still decide acceptance after correction.
+If one invalid numeric claim is shared by several evidence refs, the original defect
+belongs to every same-claim `supporting_evidence[*].claim` path, not merely the first
+ref used to report the missing quantity. One obligation therefore carries the missing
+quantity groups, every same-claim evidence path, and every linked assertion path. All
+such refs must share the same corrected claim or be removed. None may be offered as an
+unchanged-valid copy candidate in that correction.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
@@ -680,6 +686,10 @@ Raw H_init validation enforces this narrow boundary on `open_questions` and
 `next_information_needs`, names the exact offending path, and aggregates it with
 compaction/citation defects before the sole correction; it does not attempt to answer
 or rewrite the question.
+The same-state resolved/need consistency check treats a shared phrase as a topic only
+when it contains semantic content. A phrase made entirely of period markers such as
+`Q2 2025` is not enough to claim that a gold-price question was answered by a
+production-cost question.
 It also distinguishes the six-month repricing horizon from later operating events.
 An event outside the horizon may matter through a point-in-time expectation change,
 but H_init must not condition the six-month outcome on that later event already

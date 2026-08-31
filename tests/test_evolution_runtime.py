@@ -6308,7 +6308,7 @@ class ConcreteRoleAdapterTests(TestCase):
 
         error = validation_error(caller.calls[1])
         self.assertIn("supporting_evidence[0]", error)
-        self.assertIn("['2025']", error)
+        self.assertIn('missing_quantity_groups=["2025"]', error)
         self.assertIn("linked_assertions=['current_beliefs[0]']", error)
         self.assertNotIn("returned invalid JSON fields", error)
         self.assertIn(
@@ -6655,6 +6655,33 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, tuple(needs))
+
+    def test_v83_initialize_does_not_treat_period_as_resolved_topic(self) -> None:
+        need = (
+            "What is the current gold price outlook and how does it compare to the "
+            "average realized price in Q2 2025?"
+        )
+        state = {
+            "hypotheses": ["Gold-price strength may support further repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                "What was the issuer's production and cost performance in Q2 2025?"
+            ],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
 
     def test_v81_initialize_aggregates_runtime_baseline_and_total_limit(
         self,
@@ -7035,6 +7062,130 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             initialized.value.current_beliefs,
             tuple(corrected["current_beliefs"]),
+        )
+
+    def test_v83_initialize_names_every_invalid_same_claim_evidence_path(
+        self,
+    ) -> None:
+        invalid_market_claim = (
+            "The adjusted close rose from 19.38 on 2025-08-18 to 24.37 on "
+            "2025-09-29, a 25.7% increase."
+        )
+        corrected_market_claim = (
+            "The adjusted close rose from 19.38 on 2025-08-18 to 24.37 on "
+            "2025-09-29."
+        )
+        valid_news_claim = "UBS raised its price target to $27 from $20."
+        projections = {
+            "projection_start": (
+                '{"adjusted_close":19.38,"as_of_date":"2025-08-18"}'
+            ),
+            "projection_end": (
+                '{"adjusted_close":24.37,"as_of_date":"2025-09-29"}'
+            ),
+            "projection_news": "UBS raised its price target to $27 from $20.",
+        }
+        invalid = {
+            "hypotheses": ["Recent momentum may support further repricing."],
+            "current_beliefs": [
+                invalid_market_claim + " This indicates strong momentum."
+            ],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": invalid_market_claim,
+                    "projection_id": "projection_start",
+                    "exact_text": projections["projection_start"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": invalid_market_claim,
+                    "projection_id": "projection_end",
+                    "exact_text": projections["projection_end"],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": valid_news_claim,
+                    "projection_id": "projection_news",
+                    "exact_text": projections["projection_news"],
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "Check whether operating evidence confirms the momentum."
+            ],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = [corrected_market_claim]
+        corrected["supporting_evidence"][0]["claim"] = corrected_market_claim
+        corrected["supporting_evidence"][1]["claim"] = corrected_market_claim
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": projection_id,
+                                "exact_text": exact_text,
+                            }
+                            for projection_id, exact_text in projections.items()
+                        ]
+                    }
+                ]
+            },
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        quantity_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "missing_quantity_groups" in item
+        )
+        self.assertEqual(quantity_obligation["missing_quantity_groups"], ["25.7"])
+        self.assertEqual(
+            quantity_obligation["same_claim_evidence_paths"],
+            [
+                "supporting_evidence[0].claim",
+                "supporting_evidence[1].claim",
+            ],
+        )
+        self.assertEqual(
+            quantity_obligation["must_change_paths"],
+            [
+                "supporting_evidence[0].claim",
+                "supporting_evidence[1].claim",
+            ],
+        )
+        quantitative_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "quantitative ResearchState assertions" in item["instruction"]
+        )
+        candidates = quantitative_obligation["copy_candidates_by_path"][
+            "current_beliefs[0]"
+        ]
+        self.assertEqual(
+            candidates,
+            [
+                {
+                    "source_path": "supporting_evidence[2].claim",
+                    "exact_claim": valid_news_claim,
+                }
+            ],
+        )
+        self.assertIn(
+            "change or remove every listed evidence path",
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertEqual(
+            initialized.value.current_beliefs,
+            (corrected_market_claim,),
         )
 
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:

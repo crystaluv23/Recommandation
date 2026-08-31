@@ -1,5 +1,32 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v83 contract
+`e0014d5...7beff` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used four completed/charged attempts, `$0.00985460`,
+and four data-ledger rows. The first proposer output had one extra closing brace; its
+raw response and usage were durably preserved and the sole correction produced a
+valid Plan. H_init and its correction were the other two calls; Signal routing,
+execution, Predictor, post-hoc, and Slow Loop were correctly not entered. Locked Test
+remained sealed and the Registry stayed at its initial hash. The successor ceilings
+are 183 attempts, `$17.84360968`, and 706 data requests.
+
+All four requests and three persisted model responses, including the malformed raw
+proposer output, were inspected. H_init saw complete 4/4 market and 5/5 news coverage,
+an explicitly unavailable 10-K request, and 13/18 earnings-call projections with five
+budget omissions. Its initial state was compact, but the local same-state check
+mistook the shared period `Q2 2025` for a topic and falsely said a gold-price question
+was answered by a production-cost question. Pure temporal phrases no longer establish
+resolved/need equivalence.
+
+The same market claim containing an unsupported computed `25.7%` appeared on two
+evidence refs. Old feedback named only the first, then exact-copy diagnostics offered
+the still-invalid second ref as a valid candidate. Missing-quantity obligations now
+carry every same-claim evidence path and normalized missing group, require one
+identical retained repair, and exclude every named evidence index from copy candidates.
+Exact V83 replay removes the false period obligation, names both market refs, excludes
+their claim from candidates, rejects the recorded response, and accepts a complete
+model-authored repair. All 490 tests and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v82 contract
 `897e949...14d74` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00532476`,
