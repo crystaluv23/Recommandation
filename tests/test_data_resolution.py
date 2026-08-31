@@ -617,6 +617,54 @@ class EvidenceResolverTests(TestCase):
         self.assertNotIn("events", model_context["requests"][0])
         self.assertNotIn("summary", str(model_context).casefold())
 
+    def test_basic_info_context_budget_keeps_one_span_per_resolved_request(
+        self,
+    ) -> None:
+        documents = tuple(
+            document(
+                f"document_{index}",
+                f"request-{index} " + (f"evidence-{index} " * 2_000),
+                source_type=f"source_{index}",
+            )
+            for index in range(4)
+        )
+        requests = tuple(
+            RawInfoRequest(
+                f"request_{index}",
+                f"Read source {index}.",
+                (f"source_{index}",),
+                max_documents=1,
+            )
+            for index in range(4)
+        )
+
+        store = RawInfoStore(documents=documents)
+        bundle = EvidenceResolver(store).resolve_basic_info(
+            requests,
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertTrue(
+            all(resolution.context_spans for resolution in bundle.requests)
+        )
+        self.assertLessEqual(
+            sum(
+                len(span.exact_text)
+                for resolution in bundle.requests
+                for span in resolution.context_spans
+            ),
+            48_000,
+        )
+        for resolution in bundle.requests:
+            first = resolution.context_spans[0]
+            self.assertEqual(first.document_id, resolution.documents[0].document_id)
+            self.assertEqual(
+                first.exact_text,
+                store.load(first.document_id).content[first.start : first.end],
+            )
+
     def test_filing_markup_uses_readable_query_windows_with_raw_lineage(self) -> None:
         raw = document(
             "quarterly_markup",

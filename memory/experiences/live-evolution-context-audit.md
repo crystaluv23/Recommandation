@@ -1215,3 +1215,32 @@ can label an older price as current and post-hoc can canonize the arithmetic bec
 the binary judgment happened to be correct. Compute the point-in-time baseline from
 already resolved Basic market rows, send it compactly, reject a different price called
 current/baseline, and retain the same field for outcome-aware reflection.
+
+## Request-fair context and answered-need addendum (2026-08-31)
+
+A source-resolution status and a model-visibility status are different facts. V79's
+financial request was genuinely resolved, but earlier news, market, and transcript
+requests drained both sequential context ceilings and its model row contained
+`projections=[]`, `status=resolved`, and no gap. Allocate one highest-ranked full span
+to every resolved request before filling residual capacity at both the durable 48k and
+normalized 32k boundaries. Keep the ceilings fixed, never clip the last span, and send
+explicit available/visible/omitted projection counts. A budget omission is not evidence
+that the requested fact is absent.
+
+Prompt language alone does not enforce unresolved-only H_init needs. The V79 KGC
+response asked whether analyst price targets had recently been revised upward while a
+visible Basic projection literally said the target rose from `$20` to `$27` with a Buy
+rating. Its router correctly returned empty, which proved the downstream Signal call
+would add nothing. Use a conservative local rejection only when one projection covers
+at least 85% of four or more normalized need concepts and shares a rare consecutive
+two-concept phrase; otherwise abstain and leave partial semantic scope to the model.
+Report the exact need path, projection id, matched terms, score, and bounded literal,
+then rerun the unchanged parser after one model-authored correction.
+
+Collect this raw semantic issue before aggregate ResearchState compaction raises. V79
+Wynn needed at least nine deletions and also repeated a resolved construction-progress
+question as a next need. If those defects are discovered sequentially, the only
+correction can fix compaction and then fail on the hidden stale need. One feedback must
+carry the numeric removal minimum, alternative reducible arrays, and only the exact
+need path that is required to change; explanatory matched fields are context, not
+additional `must_change_paths` obligations.

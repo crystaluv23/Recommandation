@@ -327,15 +327,11 @@ def project_basic_info_bundle(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Build a bounded model view and durable projection lineage."""
 
-    remaining = max_chars
-    model_requests: list[dict[str, Any]] = []
-    audit_entries: list[dict[str, Any]] = []
+    candidate_rows: list[list[tuple[dict[str, Any], dict[str, Any]]]] = []
     for resolution in bundle.requests:
         source_types = {item.casefold() for item in resolution.request.source_types}
-        model_spans: list[dict[str, Any]] = []
+        rows: list[tuple[dict[str, Any], dict[str, Any]]] = []
         for span in resolution.context_spans:
-            if remaining <= 0:
-                break
             projected, runs = _normalized_projection_text(
                 span.exact_text,
                 raw_offset=span.start,
@@ -343,13 +339,11 @@ def project_basic_info_bundle(
                     source_types & {"market_data", "historical_price", "price_daily", "prices"}
                 ),
             )
-            projected = projected[:remaining]
             if not projected:
                 continue
             clipped_runs = [
-                (start, min(end, len(projected)), raw_start, raw_end)
+                (start, end, raw_start, raw_end)
                 for start, end, raw_start, raw_end in runs
-                if start < len(projected)
             ]
             projection_id = "projection_" + hashlib.sha256(
                 json.dumps(
@@ -358,29 +352,71 @@ def project_basic_info_bundle(
                     separators=(",", ":"),
                 ).encode("utf-8")
             ).hexdigest()[:24]
-            model_spans.append(
-                {
-                    "projection_id": projection_id,
-                    "document_id": span.document_id,
-                    "available_at": span.available_at.isoformat(),
-                    "exact_text": projected,
-                }
+            rows.append(
+                (
+                    {
+                        "projection_id": projection_id,
+                        "document_id": span.document_id,
+                        "available_at": span.available_at.isoformat(),
+                        "exact_text": projected,
+                    },
+                    {
+                        "projection_id": projection_id,
+                        "document_id": span.document_id,
+                        "content_hash": span.content_hash,
+                        "projection_text": projected,
+                        "raw_offset_runs": [list(item) for item in clipped_runs],
+                    },
+                )
             )
-            audit_entries.append(
-                {
-                    "projection_id": projection_id,
-                    "document_id": span.document_id,
-                    "content_hash": span.content_hash,
-                    "projection_text": projected,
-                    "raw_offset_runs": [list(item) for item in clipped_runs],
-                }
-            )
-            remaining -= len(projected)
+        candidate_rows.append(rows)
+
+    selected_indices: list[list[int]] = [[] for _rows in candidate_rows]
+    remaining = max_chars
+    for request_index, rows in enumerate(candidate_rows):
+        if rows and len(rows[0][0]["exact_text"]) <= remaining:
+            selected_indices[request_index].append(0)
+            remaining -= len(rows[0][0]["exact_text"])
+    for request_index, rows in enumerate(candidate_rows):
+        for row_index, (model_row, _audit_row) in enumerate(rows[1:], start=1):
+            row_chars = len(model_row["exact_text"])
+            if row_chars > remaining:
+                continue
+            selected_indices[request_index].append(row_index)
+            remaining -= row_chars
+
+    model_requests: list[dict[str, Any]] = []
+    audit_entries: list[dict[str, Any]] = []
+    for resolution, rows, indices in zip(
+        bundle.requests,
+        candidate_rows,
+        selected_indices,
+        strict=True,
+    ):
+        model_spans = [rows[index][0] for index in indices]
+        audit_entries.extend(rows[index][1] for index in indices)
+        available_count = len(rows)
+        visible_count = len(model_spans)
+        omitted_count = available_count - visible_count
+        if resolution.status != "resolved":
+            projection_status = "unavailable"
+        elif available_count == 0:
+            projection_status = "no_context_spans"
+        elif visible_count == 0:
+            projection_status = "omitted_context_budget"
+        elif omitted_count:
+            projection_status = "partial_context_budget"
+        else:
+            projection_status = "complete"
         model_requests.append(
             {
                 "request": resolution.request.to_dict(),
                 "status": resolution.status,
                 "projections": model_spans,
+                "projection_status": projection_status,
+                "available_projection_count": available_count,
+                "visible_projection_count": visible_count,
+                "omitted_projection_count": omitted_count,
                 "data_gap": resolution.gap.to_dict() if resolution.gap else None,
             }
         )
@@ -2358,27 +2394,34 @@ def _assemble_final_context(
             continue
         request = row.get("request", {})
         projections = row.get("projections", ())
-        source_index.append(
-            {
-                "request_id": (
-                    request.get("request_id")
-                    if isinstance(request, Mapping)
-                    else None
-                ),
-                "source_types": (
-                    list(request.get("source_types", ()))
-                    if isinstance(request, Mapping)
-                    else []
-                ),
-                "status": row.get("status"),
-                "projection_ids": [
-                    item.get("projection_id")
-                    for item in projections
-                    if isinstance(item, Mapping)
-                    and isinstance(item.get("projection_id"), str)
-                ],
-            }
-        )
+        source_row = {
+            "request_id": (
+                request.get("request_id")
+                if isinstance(request, Mapping)
+                else None
+            ),
+            "source_types": (
+                list(request.get("source_types", ()))
+                if isinstance(request, Mapping)
+                else []
+            ),
+            "status": row.get("status"),
+            "projection_ids": [
+                item.get("projection_id")
+                for item in projections
+                if isinstance(item, Mapping)
+                and isinstance(item.get("projection_id"), str)
+            ],
+        }
+        for field_name in (
+            "projection_status",
+            "available_projection_count",
+            "visible_projection_count",
+            "omitted_projection_count",
+        ):
+            if field_name in row:
+                source_row[field_name] = row[field_name]
+        source_index.append(source_row)
         if isinstance(row.get("data_gap"), Mapping):
             data_gaps.append(dict(row["data_gap"]))
 

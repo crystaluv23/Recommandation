@@ -654,6 +654,13 @@ semantic validators run again once. The shared correction prefix contains only t
 role-neutral contract. ResearchState-only repair advice for evidence quantities and
 claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated roles
 must not pay for or be distracted by evidence fields they cannot return.
+An aggregate ResearchState item-count overflow is a combination constraint rather than
+a claim that every contributing field is independently invalid. Its obligation
+therefore carries `minimum_removed_items` plus `must_reduce_any_of_paths` and the error
+reports current per-field counts. The correction removes at least that many total items
+from any listed combination while preserving the smallest material decision frontier;
+the runtime does not choose which semantics to discard. A field that independently
+exceeds its own ceiling still uses a real `invalid_field` path and must itself change.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
@@ -797,8 +804,20 @@ but untargeted indexed items remain byte-for-byte.
 H_init applies the same unresolved-only rule before any Signal call. It must not ask
 again for a fact already present in Basic Info or in the evidence/beliefs it returns.
 When a compound question is partly answered, `next_information_needs` contains only
-the remaining facets. This is model-authored semantic scoping rather than a local
-inference or automatic need rewrite.
+the remaining facets. Most semantic scoping remains model-authored, but runtime
+rejects the narrow cases it can decide without inventing an answer: (a) a need with
+at least four normalized content concepts, at least 85% of them present in one
+visible Basic Info projection, and a shared consecutive two-concept phrase; or (b) a
+need sharing an ordered three-word content phrase with a `resolved_questions` item in
+the same returned state. Case-common corpus terms are excluded from the first score,
+and a small fixed normalization collapses inflection plus common upward/downward
+revision wording. Feedback names the exact need path, matched projection or resolved
+question, matched terms, score, and a bounded visible excerpt. Runtime neither
+deletes nor narrows the item locally; lower-confidence and partly answered matches
+remain for the model. These semantic issues are collected from the raw provider
+object before compaction failure is raised, so one correction sees them together
+with aggregate count/byte obligations rather than discovering them only after
+compaction.
 
 H_reflect uses the same stable correction transport as H_init and routing. Its initial
 and correction system prompts are byte-identical and always describe the optional

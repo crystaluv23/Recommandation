@@ -188,7 +188,14 @@ single-character HTML entities with raw-span lineage, so repeated non-breaking-s
 and apostrophe encodings do not consume context as opaque markup. Without a query, documents
 rank by public availability descending. A request selects at most ten documents; a
 Plan has at most eight requests; one case has a 48,000-character raw-span budget. An
-over-budget span is omitted in full, never truncated.
+over-budget span is omitted in full, never truncated. Context allocation is
+request-fair rather than a sequential drain: after every request has been resolved,
+the resolver retains one highest-ranked eligible span for each resolved request,
+then assigns the remaining budget in request order. Since one span is at most 2,000
+characters and a Plan has at most eight requests, every resolved non-empty request
+can expose at least one span without raising the existing 48,000-character ceiling.
+This prevents an earlier long transcript from silently starving a later financial or
+filing request while preserving Plan request order and per-request ranking.
 
 For structured market-data documents, `lookback_days` applies to the dated
 observations exposed to Basic Info, not merely to the publication timestamp of

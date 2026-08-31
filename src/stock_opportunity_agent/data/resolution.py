@@ -951,23 +951,63 @@ class EvidenceResolver:
     ) -> BasicInfoBundle:
         """Resolve an ordered Plan bootstrap under one shared context budget."""
 
-        remaining = MAX_BASIC_INFO_CONTEXT_CHARS
-        resolutions: list[RawInfoResolution] = []
         request_values = tuple(requests)
         if len(request_values) > MAX_BASIC_INFO_REQUESTS:
             raise ValidationError("Basic Info policy cannot exceed 8 requests")
+        resolved_without_context: list[RawInfoResolution] = []
         for request in request_values:
             resolution = self.resolve(
                 request,
                 company_id=company_id,
                 identity=identity,
                 as_of=as_of,
-                include_context=True,
-                context_budget=remaining,
+                include_context=False,
             )
-            remaining -= sum(len(span.exact_text) for span in resolution.context_spans)
-            resolutions.append(resolution)
-        return BasicInfoBundle(tuple(resolutions))
+            resolved_without_context.append(resolution)
+
+        candidates: list[list[RawInfoContextSpan]] = []
+        for resolution in resolved_without_context:
+            if resolution.status != "resolved":
+                candidates.append([])
+                continue
+            documents = self.load_documents(resolution, as_of=as_of)
+            candidates.append(
+                _select_context_spans(
+                    documents,
+                    resolution.request,
+                    MAX_BASIC_INFO_CONTEXT_CHARS,
+                    as_of=as_of,
+                )
+            )
+
+        selected: list[list[RawInfoContextSpan]] = [
+            [] for _resolution in resolved_without_context
+        ]
+        remaining = MAX_BASIC_INFO_CONTEXT_CHARS
+        for index, rows in enumerate(candidates):
+            if rows and len(rows[0].exact_text) <= remaining:
+                selected[index].append(rows[0])
+                remaining -= len(rows[0].exact_text)
+        for index, rows in enumerate(candidates):
+            for span in rows[1:]:
+                if len(span.exact_text) > remaining:
+                    continue
+                selected[index].append(span)
+                remaining -= len(span.exact_text)
+
+        resolutions = tuple(
+            RawInfoResolution(
+                request=resolution.request,
+                status=resolution.status,
+                documents=resolution.documents,
+                context_spans=tuple(selected[index]),
+                events=resolution.events,
+                appended_documents=resolution.appended_documents,
+                gap=resolution.gap,
+            )
+            for index, resolution in enumerate(resolved_without_context)
+        )
+        return BasicInfoBundle(resolutions)
 
     def load_documents(
         self, resolution: RawInfoResolution, *, as_of: datetime

@@ -6379,6 +6379,35 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("next_information_needs count=10", error)
         self.assertIn("combined ResearchState array count=", error)
         self.assertIn("ResearchState compact JSON size_bytes=", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        beliefs_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "current_beliefs count=52" in item["instruction"]
+        )
+        self.assertEqual(
+            beliefs_obligation["must_change_paths"], ["current_beliefs"]
+        )
+        total_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "combined ResearchState array count=" in item["instruction"]
+        )
+        self.assertEqual(total_obligation["minimum_removed_items"], 54)
+        self.assertEqual(
+            total_obligation["must_reduce_any_of_paths"],
+            [
+                "hypotheses",
+                "current_beliefs",
+                "resolved_questions",
+                "open_questions",
+                "next_information_needs",
+            ],
+        )
+        self.assertIn(
+            "remove at least that many total array items",
+            caller.calls[1]["system_prompt"],
+        )
         self.assertEqual(
             caller.calls[0]["system_prompt"],
             caller.calls[1]["system_prompt"],
@@ -6394,6 +6423,129 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             initialized.value.current_beliefs,
             ("The catalyst remains unconfirmed.",),
+        )
+
+    def test_v79_initialize_aggregates_visible_answers_before_compaction(
+        self,
+    ) -> None:
+        analyst_need = (
+            "What are the latest analyst price targets and ratings for Kinross "
+            "Gold, and have they been revised upward recently?"
+        )
+        construction_need = (
+            "What is the current construction progress and expected opening timeline?"
+        )
+        invalid = {
+            "hypotheses": ["A material catalyst may support repricing."],
+            "current_beliefs": [
+                f"Redundant source-summary belief {index}." for index in range(25)
+            ],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": ["What is the current construction progress?"],
+            "open_questions": [],
+            "next_information_needs": [
+                analyst_need,
+                construction_need,
+                "What issuer operating milestone could change expectations?",
+            ],
+            "decision": "continue",
+        }
+        corrected = {
+            "hypotheses": ["A material catalyst may support repricing."],
+            "current_beliefs": ["The catalyst remains unconfirmed."],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": ["What is the current construction progress?"],
+            "open_questions": [],
+            "next_information_needs": [
+                "What issuer operating milestone could change expectations?"
+            ],
+            "decision": "continue",
+        }
+        basic_info = {
+            "requests": [
+                {
+                    "projections": [
+                        {
+                            "projection_id": "projection_analyst",
+                            "exact_text": (
+                                "UBS analyst recently increased Kinross Gold's price "
+                                "target to $27 from $20 while reiterating a Buy rating."
+                            ),
+                        }
+                    ]
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            basic_info,
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("current_beliefs count=25", error)
+        self.assertIn("already answered by visible Basic Info", error)
+        self.assertIn("matching_projection_id='projection_analyst'", error)
+        self.assertIn("next_information_needs[0]", error)
+        self.assertIn("contradicted its own resolved question", error)
+        self.assertIn("next_information_needs[1]", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        visible_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "already answered by visible Basic Info" in item["instruction"]
+        )
+        self.assertIn(
+            "next_information_needs[0]",
+            visible_obligation["must_change_paths"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            ("What issuer operating milestone could change expectations?",),
+        )
+
+    def test_v79_initialize_abstains_on_partial_basic_info_overlap(self) -> None:
+        state = {
+            "hypotheses": ["A material catalyst may support repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "How could an analyst price target affect customer demand and "
+                "operating margins?"
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_analyst",
+                                "exact_text": (
+                                    "An analyst increased the price target and kept "
+                                    "a Buy rating."
+                                ),
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            tuple(state["next_information_needs"]),
         )
 
     def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
@@ -6708,6 +6860,69 @@ class ConcreteRoleAdapterTests(TestCase):
                 len(span["exact_text"])
                 for request in model_view["requests"]
                 for span in request["projections"]
+            ),
+            32_000,
+        )
+
+    def test_v79_basic_projection_preserves_each_resolved_request_boundary(
+        self,
+    ) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        documents = tuple(
+            RawInfoDocument.create(
+                document_id=f"document-{index}",
+                company_id="issuer-1",
+                source_type=f"source_{index}",
+                published_at=as_of,
+                available_at=as_of,
+                content=f"request-{index} " + (f"evidence-{index} " * 2_000),
+            )
+            for index in range(4)
+        )
+        bundle = EvidenceResolver(
+            RawInfoStore(documents=documents)
+        ).resolve_basic_info(
+            tuple(
+                RawInfoRequest(
+                    f"request_{index}",
+                    f"Read source {index}.",
+                    (f"source_{index}",),
+                    max_documents=1,
+                )
+                for index in range(4)
+            ),
+            company_id="issuer-1",
+            identity={},
+            as_of=as_of,
+        )
+
+        model_view, _audit = project_basic_info_bundle(bundle)
+
+        self.assertTrue(
+            all(request["projections"] for request in model_view["requests"])
+        )
+        self.assertTrue(
+            all(
+                request["visible_projection_count"] >= 1
+                and request["available_projection_count"]
+                >= request["visible_projection_count"]
+                and request["omitted_projection_count"]
+                == request["available_projection_count"]
+                - request["visible_projection_count"]
+                for request in model_view["requests"]
+            )
+        )
+        self.assertTrue(
+            any(
+                request["projection_status"] == "partial_context_budget"
+                for request in model_view["requests"]
+            )
+        )
+        self.assertLessEqual(
+            sum(
+                len(projection["exact_text"])
+                for request in model_view["requests"]
+                for projection in request["projections"]
             ),
             32_000,
         )

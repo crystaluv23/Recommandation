@@ -219,6 +219,16 @@ offset mapping; it is a view, not a summary or new source. Signal Executor asks 
 resolver for complete point-in-time documents and then runs deterministic
 functions or LLM extraction skills. Signal results remain derived trajectory
 records and are never appended to Raw Info.
+The model projection applies the same request-fair boundary as the durable span
+selection: it first keeps one highest-ranked non-empty projection per resolved
+request and then fills remaining capacity in request order. It never clips a span to
+fit the final bytes. Each request separately exposes source resolution `status` and
+`projection_status` (`complete`, `partial_context_budget`,
+`omitted_context_budget`, `no_context_spans`, or `unavailable`) plus available,
+visible, and omitted projection counts. Thus `status=resolved` never implies that
+H_init actually saw evidence that was omitted by a context ceiling. These compact
+coverage fields also survive in the Predictor source index; they are diagnostics,
+not evidence and cannot be interpreted as absence of the requested fact.
 One/two-LLM-Signal batching sends one shared bounded `source_projection`. If strict
 validation requires the sole correction, its system prompt is byte-identical to the
 initial call and the dynamic `validation_feedback` is appended only at the end of the
@@ -390,7 +400,17 @@ only for confirmation, contradiction,
 applicability, or combination does not trigger this progress requirement.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound
-question retains only its unresolved facets.
+question retains only its unresolved facets. Runtime aggregates two directly
+decidable violations into the same bounded correction as structural defects: a need
+that shares a high-confidence normalized answer signature with one visible Basic Info
+projection, and a need that repeats an ordered three-word content phrase from the
+same state's `resolved_questions`. The first gate requires broad term coverage and a
+shared distinctive phrase, reports the exact need path, matching projection id,
+matched terms, and a bounded visible excerpt, and otherwise abstains; it never
+rewrites a question or attempts general semantic entailment. The correction must
+remove the answered need or retain only genuinely unresolved facets. This prevents a
+known answer from causing a useless Signal-routing call while keeping ambiguous
+partial matches model-authored.
 When the number of needs has not decreased, runtime rejects any changed need that
 contains at least 90% of a prior need's normalized word set; appending a qualifier
 to the whole old question is not progress. Exact retention remains valid because it

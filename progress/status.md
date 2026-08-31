@@ -1,5 +1,40 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v79 contract
+`e208df2...d8f8` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used eight completed model attempts, `$0.01779036`,
+and three data-ledger rows. KGC completed and persisted Predictor plus post-hoc
+output; Wynn failed after its H_init correction reduced a 33-item ResearchState by
+only two items. Locked Test remained sealed and the Registry stayed at its initial
+hash. The successor ceilings are 196 attempts, `$17.87369820`, and 719 data requests.
+
+All eight real V79 requests/responses were inspected. The KGC H_init correction fixed
+its quantitative belief but retained a request for the latest analyst target/rating
+even though the same visible news projection said UBS raised the target from `$20` to
+`$27` and reiterated Buy. Routing correctly returned empty and spent no Signal calls,
+but the already-answered need then survived into Predictor, which otherwise used the
+new runtime baseline `23.982` correctly. H_init raw prevalidation now aggregates a
+high-confidence visible-answer signature and same-state resolved/need contradiction
+with citation and compaction errors before the only correction; it reports one exact
+need path and bounded source excerpt, abstains on partial matches, and never rewrites
+the need locally.
+
+The real Wynn error said only `combined count=33 > 24`; it did not say that at least
+nine items must be removed or which arrays were alternatives, so correction returned
+31. Combination obligations now carry `minimum_removed_items` and
+`must_reduce_any_of_paths`, while per-field overflow remains field-addressed. Exact
+Wynn replay gives the nine-item minimum plus the duplicated construction-progress
+need path in one correction and accepts a 15-item model-authored repair.
+
+The actual Basic Info input exposed a second control-plane ambiguity: earlier news,
+market, and transcript requests consumed the sequential 48k/32k budgets, leaving the
+resolved financial request with zero visible projections and no omission marker.
+Both durable span and model projection allocation now retain one highest-ranked item
+per resolved request before filling remaining capacity, without increasing either
+ceiling or clipping a span. Each model request explicitly separates source `status`
+from `projection_status` and visible/omitted counts, which also survive in the
+Predictor source index. Exact KGC/Wynn replay, all 484 repository tests, and lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v78 contract
 `8d55189...504c4` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used 12 completed model attempts, `$0.01447992`, and

@@ -4731,6 +4731,12 @@ _VALIDATION_OBLIGATION_PATH = re.compile(
 _VALIDATION_INVALID_FIELD_PATH = re.compile(
     r"\binvalid_field=['\"]([a-z_]+(?:\[\d+\]|\.[a-z_]+)*)['\"]"
 )
+_VALIDATION_MINIMUM_REMOVED_ITEMS = re.compile(
+    r"\bminimum_removed_items=(\d+)"
+)
+_VALIDATION_REDUCE_ANY_PATHS = re.compile(
+    r"\bmust_reduce_any_of_paths=(\[[^\]]*\])"
+)
 
 
 def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
@@ -4755,13 +4761,30 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
             paths[0] += ".kind"
         elif paths and "claim contains numeric quantities" in segment:
             paths[0] += ".claim"
-        obligations.append(
-            {
-                "obligation_index": index,
-                "must_change_paths": paths,
-                "instruction": segment,
-            }
-        )
+        obligation = {
+            "obligation_index": index,
+            "must_change_paths": paths,
+            "instruction": segment,
+        }
+        obligations.append(obligation)
+        minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
+        reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
+        if minimum_match and reduce_match:
+            try:
+                reduce_paths = json.loads(reduce_match.group(1))
+            except json.JSONDecodeError:
+                reduce_paths = []
+            if (
+                isinstance(reduce_paths, list)
+                and reduce_paths
+                and all(isinstance(path, str) for path in reduce_paths)
+            ):
+                obligation["minimum_removed_items"] = int(
+                    minimum_match.group(1)
+                )
+                obligation["must_reduce_any_of_paths"] = list(
+                    dict.fromkeys(reduce_paths)
+                )
     return {
         "obligation_count": len(obligations),
         "obligations": obligations,
@@ -4769,6 +4792,12 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
 
 
 _RESEARCH_STATE_CORRECTION_GUIDANCE = (
+    " When an obligation contains minimum_removed_items and "
+    "must_reduce_any_of_paths, remove at least that many total array items across "
+    "any combination of those alternative paths; the listed paths are not all "
+    "individually mandatory. Prefer redundant source-summary beliefs, questions "
+    "already answered by visible evidence, and non-decision-relevant items while "
+    "preserving material support, counter-evidence, and unresolved uncertainty."
     " When validation_error lists absent numeric quantities, the minimal valid "
     "repair is to delete every listed quantity from the named evidence claim "
     "and each named linked assertion, unless you add same-claim exact_text that "
@@ -5023,16 +5052,244 @@ def _research_state_json_size(value: Mapping[str, Any]) -> int:
     )
 
 
+_ANSWER_SIGNATURE_ALIASES = {
+    "boost": "raise",
+    "boosted": "raise",
+    "cut": "lower",
+    "decrease": "lower",
+    "decreased": "lower",
+    "downgrade": "lower",
+    "downgraded": "lower",
+    "downward": "lower",
+    "increase": "raise",
+    "increased": "raise",
+    "latest": "recent",
+    "lift": "raise",
+    "lifted": "raise",
+    "lowered": "lower",
+    "raised": "raise",
+    "recently": "recent",
+    "reduce": "lower",
+    "reduced": "lower",
+    "revision": "revise",
+    "revised": "revise",
+    "upgrade": "raise",
+    "upgraded": "raise",
+    "upward": "raise",
+}
+_ANSWER_SIGNATURE_STOP_WORDS = frozenset(
+    "a about an and any are as at be been being by company did do does for from "
+    "had has have in is it of on or that the their there this to was were what "
+    "when where which who with".split()
+)
+
+
+def _answer_signature_tokens(value: str) -> tuple[str, ...]:
+    """Return ordered conservative concepts for visible-answer matching."""
+
+    tokens: list[str] = []
+    for raw in re.findall(r"[a-z0-9]+", value.casefold()):
+        if raw in _ANSWER_SIGNATURE_STOP_WORDS:
+            continue
+        token = raw
+        if len(token) > 4 and token.endswith("ies"):
+            token = token[:-3] + "y"
+        elif (
+            len(token) > 4
+            and token.endswith("s")
+            and not token.endswith(("is", "ss", "us"))
+        ):
+            token = token[:-1]
+        token = _ANSWER_SIGNATURE_ALIASES.get(token, token)
+        if token == "revise":
+            lowered = value.casefold()
+            if "upward" in lowered:
+                token = "raise"
+            elif "downward" in lowered:
+                token = "lower"
+        tokens.append(token)
+    return tuple(tokens)
+
+
+def _basic_projection_rows(
+    basic_info: Mapping[str, Any],
+) -> list[tuple[str, str]]:
+    """Return the visible Basic projection id/text pairs in payload order."""
+
+    rows: list[tuple[str, str]] = []
+    requests = basic_info.get("requests", ())
+    if not isinstance(requests, (list, tuple)):
+        return rows
+    for request in requests:
+        if not isinstance(request, Mapping):
+            continue
+        projections = request.get("projections", ())
+        if not isinstance(projections, (list, tuple)):
+            continue
+        for projection in projections:
+            if not isinstance(projection, Mapping):
+                continue
+            projection_id = projection.get("projection_id")
+            exact_text = projection.get("exact_text")
+            if isinstance(projection_id, str) and isinstance(exact_text, str):
+                rows.append((projection_id, exact_text))
+    return rows
+
+
+def _matching_answer_excerpt(
+    text_value: str,
+    matched_terms: Iterable[str],
+    *,
+    max_chars: int = 480,
+) -> str:
+    """Return a bounded literal window around the first matched answer term."""
+
+    start = 0
+    lowered = text_value.casefold()
+    offsets = [
+        lowered.find(term)
+        for term in matched_terms
+        if term and lowered.find(term) >= 0
+    ]
+    if offsets:
+        start = max(0, min(offsets) - max_chars // 4)
+    end = min(len(text_value), start + max_chars)
+    if end - start < max_chars:
+        start = max(0, end - max_chars)
+    return text_value[start:end]
+
+
+def _raw_initialize_need_issues(
+    value: Mapping[str, Any],
+    basic_info: Mapping[str, Any],
+) -> list[str]:
+    """Find only high-confidence already-answered H_init needs."""
+
+    raw_needs = value.get("next_information_needs")
+    raw_resolved = value.get("resolved_questions")
+    if not isinstance(raw_needs, list):
+        return []
+    resolved = (
+        [item for item in raw_resolved if isinstance(item, str)]
+        if isinstance(raw_resolved, list)
+        else []
+    )
+    projection_rows = _basic_projection_rows(basic_info)
+    projection_tokens = [
+        _answer_signature_tokens(text_value)
+        for _projection_id, text_value in projection_rows
+    ]
+    corpus_frequency: dict[str, int] = {}
+    for tokens in projection_tokens:
+        for token in set(tokens):
+            corpus_frequency[token] = corpus_frequency.get(token, 0) + 1
+    corpus_cutoff = max(3, math.ceil(len(projection_rows) * 0.6))
+    case_common = {
+        token for token, count in corpus_frequency.items() if count >= corpus_cutoff
+    }
+    bigram_frequency: dict[tuple[str, str], int] = {}
+    for tokens in projection_tokens:
+        for bigram in {
+            tokens[index : index + 2] for index in range(len(tokens) - 1)
+        }:
+            bigram_frequency[bigram] = bigram_frequency.get(bigram, 0) + 1
+    distinctive_bigram_cutoff = max(2, math.ceil(len(projection_rows) * 0.25))
+    issues: list[str] = []
+    for need_index, need in enumerate(raw_needs):
+        if not isinstance(need, str):
+            continue
+        need_tokens = tuple(
+            token
+            for token in _answer_signature_tokens(need)
+            if token not in case_common
+        )
+        need_terms = frozenset(need_tokens)
+        if len(need_terms) >= 4:
+            for (projection_id, projection_text), candidate_tokens in zip(
+                projection_rows,
+                projection_tokens,
+                strict=True,
+            ):
+                candidate_terms = frozenset(candidate_tokens)
+                matched = need_terms & candidate_terms
+                coverage = len(matched) / len(need_terms)
+                need_bigrams = {
+                    need_tokens[index : index + 2]
+                    for index in range(len(need_tokens) - 1)
+                }
+                candidate_bigrams = {
+                    candidate_tokens[index : index + 2]
+                    for index in range(len(candidate_tokens) - 1)
+                }
+                shared_bigrams = sorted(
+                    (
+                        bigram
+                        for bigram in need_bigrams & candidate_bigrams
+                        if bigram_frequency.get(bigram, 0)
+                        <= distinctive_bigram_cutoff
+                    ),
+                    key=lambda bigram: (bigram_frequency.get(bigram, 0), bigram),
+                )
+                if coverage < 0.85 or not shared_bigrams:
+                    continue
+                excerpt = _matching_answer_excerpt(projection_text, matched)
+                issues.append(
+                    "research_controller_initialize returned an information need "
+                    "already answered by visible Basic Info, "
+                    f"invalid_field='next_information_needs[{need_index}]', "
+                    f"next_information_needs[{need_index}]={need!r}, "
+                    f"matching_projection_id={projection_id!r}, "
+                    f"matched_terms={sorted(matched)}, "
+                    f"need_term_coverage={coverage:.6f}, "
+                    f"shared_phrase={' '.join(shared_bigrams[0])!r}, "
+                    f"visible_excerpt={excerpt!r}. Remove this answered need or "
+                    "replace it with only genuinely unresolved facets"
+                )
+                break
+
+        need_content = _need_content_tokens(need)
+        if len(need_content) < 3:
+            continue
+        need_phrases = {
+            need_content[index : index + 3]
+            for index in range(len(need_content) - 2)
+        }
+        for resolved_index, resolved_question in enumerate(resolved):
+            resolved_content = _need_content_tokens(resolved_question)
+            resolved_phrases = {
+                resolved_content[index : index + 3]
+                for index in range(len(resolved_content) - 2)
+            }
+            shared = sorted(need_phrases & resolved_phrases)
+            if not shared:
+                continue
+            issues.append(
+                "research_controller_initialize contradicted its own resolved "
+                "question with a retained information need, "
+                f"invalid_field='next_information_needs[{need_index}]', "
+                f"next_information_needs[{need_index}]={need!r}, "
+                f"matching_resolved_question_index={resolved_index}, "
+                f"matching_resolved_question={resolved_question!r}, "
+                f"shared_content_phrase={' '.join(shared[0])!r}. Remove the "
+                "answered need or narrow it to unresolved facets"
+            )
+            break
+    return issues
+
+
 def _raw_research_state_compaction_issues(
     value: Mapping[str, Any],
     *,
     previous_state: ResearchState | None = None,
     initialize: bool = False,
+    basic_info: Mapping[str, Any] | None = None,
 ) -> list[str]:
     """Aggregate provider-only decision-frontier limit violations."""
 
     previous = previous_state.to_dict() if previous_state is not None else {}
-    issues: list[str] = []
+    issues: list[str] = (
+        _raw_initialize_need_issues(value, basic_info or {}) if initialize else []
+    )
     counts: dict[str, int] = {}
     previous_counts: dict[str, int] = {}
     for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
@@ -5047,7 +5304,8 @@ def _raw_research_state_compaction_issues(
         effective_limit = max(default_limit, prior_count)
         if count > effective_limit:
             issues.append(
-                f"{field_name} count={count} exceeds effective_limit={effective_limit} "
+                f"invalid_field={field_name!r}, {field_name} count={count} "
+                f"exceeds effective_limit={effective_limit} "
                 f"(default_limit={default_limit}, prior_count={prior_count}). Keep only "
                 "the most decision-relevant non-redundant items"
             )
@@ -5056,11 +5314,22 @@ def _raw_research_state_compaction_issues(
     previous_total = sum(previous_counts.values())
     effective_total_limit = max(_RESEARCH_STATE_TOTAL_ITEM_LIMIT, previous_total)
     if total_count > effective_total_limit:
+        minimum_removed_items = total_count - effective_total_limit
+        reducible_paths = [
+            field_name
+            for field_name in _RESEARCH_STATE_ARRAY_LIMITS
+            if counts.get(field_name, 0) > 0
+        ]
         issues.append(
             f"combined ResearchState array count={total_count} exceeds "
             f"effective_limit={effective_total_limit} "
             f"(default_limit={_RESEARCH_STATE_TOTAL_ITEM_LIMIT}, "
-            f"prior_count={previous_total}). Remove redundant source-summary items"
+            f"prior_count={previous_total}), current_field_counts={counts}, "
+            f"minimum_removed_items={minimum_removed_items}, "
+            "must_reduce_any_of_paths="
+            f"{json.dumps(reducible_paths, separators=(',', ':'))}. Remove at "
+            "least that many redundant source-summary items across any listed "
+            "combination"
         )
 
     for field_name in _RESEARCH_STATE_ARRAY_LIMITS:
@@ -5118,6 +5387,7 @@ def _normalize_research_state_output(
     *,
     previous_state: ResearchState | None = None,
     initialize: bool = False,
+    basic_info: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
@@ -5127,6 +5397,7 @@ def _normalize_research_state_output(
         normalized,
         previous_state=previous_state,
         initialize=initialize,
+        basic_info=basic_info,
     )
     if not isinstance(evidence, list):
         if issues:
@@ -6526,7 +6797,12 @@ class LLMResearchController:
                 "next_information_needs item must contain only facts absent from "
                 "Basic Info and from the evidence or beliefs you return. Do not ask "
                 "again for an already visible fact; when a compound question is "
-                "partly answered, ask only its unresolved facets."
+                "partly answered, ask only its unresolved facets. A request's status "
+                "describes source resolution while projection_status describes what "
+                "you can actually see. partial_context_budget, "
+                "omitted_context_budget, and no_context_spans are not evidence that "
+                "the requested fact is absent; keep a decision-relevant omitted "
+                "facet unresolved instead of asserting absence."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
@@ -6536,7 +6812,11 @@ class LLMResearchController:
             },
             parser=lambda value: _validate_research_state_refs(
                 ResearchState.from_dict(
-                    _normalize_research_state_output(value, initialize=True)
+                    _normalize_research_state_output(
+                        value,
+                        initialize=True,
+                        basic_info=basic_info,
+                    )
                 ),
                 phase="initialize",
                 basic_info=basic_info,
