@@ -809,7 +809,10 @@ rejects the narrow cases it can decide without inventing an answer: (a) a need w
 at least four normalized content concepts, at least 85% of them present in one
 visible Basic Info projection, and a shared consecutive two-concept phrase; or (b) a
 need sharing an ordered three-word content phrase with a `resolved_questions` item in
-the same returned state. Case-common corpus terms are excluded from the first score,
+the same returned state, falling back to a non-titlecase two-word topic phrase only
+when no three-word phrase remains. Possessive remnants and current/recent/latest
+boilerplate are excluded, and a title-cased issuer-name bigram cannot satisfy this
+gate. Case-common corpus terms are excluded from the first score,
 and a small fixed normalization collapses inflection plus common upward/downward
 revision wording. Feedback names the exact need path, matched projection or resolved
 question, matched terms, score, and a bounded visible excerpt. Runtime neither

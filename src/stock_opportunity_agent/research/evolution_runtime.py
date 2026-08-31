@@ -5247,21 +5247,9 @@ def _raw_initialize_need_issues(
                 )
                 break
 
-        need_content = _need_content_tokens(need)
-        if len(need_content) < 3:
-            continue
-        need_phrases = {
-            need_content[index : index + 3]
-            for index in range(len(need_content) - 2)
-        }
         for resolved_index, resolved_question in enumerate(resolved):
-            resolved_content = _need_content_tokens(resolved_question)
-            resolved_phrases = {
-                resolved_content[index : index + 3]
-                for index in range(len(resolved_content) - 2)
-            }
-            shared = sorted(need_phrases & resolved_phrases)
-            if not shared:
+            shared = _shared_resolved_need_phrase(need, resolved_question)
+            if shared is None:
                 continue
             issues.append(
                 "research_controller_initialize contradicted its own resolved "
@@ -5270,7 +5258,7 @@ def _raw_initialize_need_issues(
                 f"next_information_needs[{need_index}]={need!r}, "
                 f"matching_resolved_question_index={resolved_index}, "
                 f"matching_resolved_question={resolved_question!r}, "
-                f"shared_content_phrase={' '.join(shared[0])!r}. Remove the "
+                f"shared_content_phrase={shared!r}. Remove the "
                 "answered need or narrow it to unresolved facets"
             )
             break
@@ -6622,9 +6610,9 @@ def _cosmetically_retained_information_needs(
 
 
 _NEED_FUNCTION_WORDS = frozenset(
-    "a an and are as at be been being by could did do does for from has have how "
-    "if in is it of on or that the their this to was were what when which who why "
-    "will with would".split()
+    "a an and are as at be been being by could current did do does for from has "
+    "have how if in is it latest of on or recent s that the their this to was were "
+    "what when which who why will with would".split()
 )
 
 
@@ -6636,6 +6624,44 @@ def _need_content_tokens(value: str) -> tuple[str, ...]:
         for token in re.findall(r"[a-z0-9]+", value.casefold())
         if token not in _NEED_FUNCTION_WORDS
     )
+
+
+def _titlecase_phrase_occurs(value: str, phrase: tuple[str, ...]) -> bool:
+    """Return whether one normalized phrase occurs as title-cased source words."""
+
+    words = tuple(re.findall(r"[A-Za-z0-9]+", value))
+    normalized = tuple(word.casefold() for word in words)
+    for index in range(len(words) - len(phrase) + 1):
+        if normalized[index : index + len(phrase)] != phrase:
+            continue
+        if all(word[:1].isupper() for word in words[index : index + len(phrase)]):
+            return True
+    return False
+
+
+def _shared_resolved_need_phrase(left: str, right: str) -> str | None:
+    """Return one directly decidable shared topic, excluding issuer-name bigrams."""
+
+    left_tokens = _need_content_tokens(left)
+    right_tokens = _need_content_tokens(right)
+    for size in (3, 2):
+        if len(left_tokens) < size or len(right_tokens) < size:
+            continue
+        left_phrases = {
+            left_tokens[index : index + size]
+            for index in range(len(left_tokens) - size + 1)
+        }
+        right_phrases = {
+            right_tokens[index : index + size]
+            for index in range(len(right_tokens) - size + 1)
+        }
+        for phrase in sorted(left_phrases & right_phrases):
+            if size == 2 and _titlecase_phrase_occurs(
+                left, phrase
+            ) and _titlecase_phrase_occurs(right, phrase):
+                continue
+            return " ".join(phrase)
+    return None
 
 
 def _stale_resolved_information_needs(
@@ -6660,30 +6686,15 @@ def _stale_resolved_information_needs(
     for need in previous.next_information_needs:
         if need not in retained:
             continue
-        need_tokens = _need_content_tokens(need)
-        if len(need_tokens) < 3:
-            continue
-        need_phrases = tuple(
-            tuple(need_tokens[index : index + 3])
-            for index in range(len(need_tokens) - 2)
-        )
         for resolved in newly_resolved:
-            resolved_tokens = _need_content_tokens(resolved)
-            resolved_phrases = {
-                tuple(resolved_tokens[index : index + 3])
-                for index in range(len(resolved_tokens) - 2)
-            }
-            matching_phrase = next(
-                (phrase for phrase in need_phrases if phrase in resolved_phrases),
-                None,
-            )
+            matching_phrase = _shared_resolved_need_phrase(need, resolved)
             if matching_phrase is None:
                 continue
             stale.append(
                 {
                     "retained_need": need,
                     "newly_resolved_question": resolved,
-                    "matching_content_phrase": " ".join(matching_phrase),
+                    "matching_content_phrase": matching_phrase,
                 }
             )
             break

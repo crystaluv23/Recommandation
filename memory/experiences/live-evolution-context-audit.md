@@ -1244,3 +1244,12 @@ correction can fix compaction and then fail on the hidden stale need. One feedba
 carry the numeric removal minimum, alternative reducible arrays, and only the exact
 need path that is required to change; explanatory matched fields are context, not
 additional `must_change_paths` obligations.
+
+Question-overlap validators must remove identity grammar before treating a repeated
+phrase as a resolved topic. V80 split `Kinross Gold's` into `kinross gold s` and
+mistook that three-token issuer prefix across unrelated questions for semantic
+contradiction. Strip possessive remnants and current/recent/latest boilerplate. Prefer
+a shared three-word topic; if only a two-word fallback exists, ignore it when the same
+words are title-cased as a proper name in both questions. Replay the exact initial and
+correction outputs: a tightened gate should leave the model's unrelated needs intact
+and accept its already-correct quantitative repair without spending another call.

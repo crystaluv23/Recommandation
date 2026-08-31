@@ -404,7 +404,10 @@ question retains only its unresolved facets. Runtime aggregates two directly
 decidable violations into the same bounded correction as structural defects: a need
 that shares a high-confidence normalized answer signature with one visible Basic Info
 projection, and a need that repeats an ordered three-word content phrase from the
-same state's `resolved_questions`. The first gate requires broad term coverage and a
+same state's `resolved_questions` (or a non-titlecase two-word topic phrase when no
+three-word phrase remains). Possessive remnants and current/recent/latest boilerplate
+are excluded, and a title-cased two-word issuer name is never treated as a resolved
+topic. The first gate requires broad term coverage and a
 shared distinctive phrase, reports the exact need path, matching projection id,
 matched terms, and a bounded visible excerpt, and otherwise abstains; it never
 rewrites a question or attempts general semantic entailment. The correction must

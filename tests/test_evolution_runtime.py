@@ -6548,6 +6548,37 @@ class ConcreteRoleAdapterTests(TestCase):
             tuple(state["next_information_needs"]),
         )
 
+    def test_v80_initialize_does_not_treat_issuer_name_as_resolved_topic(
+        self,
+    ) -> None:
+        needs = [
+            "What are Kinross Gold's recent quarterly earnings results and forward "
+            "guidance for production and costs?",
+            "Are there any regulatory approvals for Kinross Gold's major projects?",
+            "How does Kinross Gold's valuation compare with mining peers?",
+        ]
+        state = {
+            "hypotheses": ["An issuer catalyst may support repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                "What is Kinross Gold's recent stock price performance?"
+            ],
+            "open_questions": [],
+            "next_information_needs": needs,
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, tuple(needs))
+
     def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
         corrected = {
             "hypotheses": ["One material catalyst may support repricing."],

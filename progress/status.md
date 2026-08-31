@@ -1,5 +1,30 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v80 contract
+`6e9b69f...8d284` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00525840`,
+and three data-ledger rows. The candidate Plan, H_init, and its one correction were
+the only calls; Signal routing, execution, Predictor, post-hoc, and Slow Loop were
+correctly not entered. Locked Test remained sealed and the Registry stayed at its
+initial hash. The successor ceilings are 193 attempts, `$17.86843980`, and 716 data
+requests.
+
+The new projection coverage fields live-verified correctly: both Plan requests were
+source-resolved and `projection_status=complete` with 5/5 visible projections. H_init
+returned a compact 23-item state. Its actual citation defects were limited to one
+claim adding a date found only in metadata and the linked belief not copying that
+claim. The correction removed the date and returned four valid literal refs.
+
+Rejection instead came from the new same-state stale-need check tokenizing every
+`Kinross Gold's ...` question as the shared phrase `kinross gold s` and falsely
+marking four unrelated needs as resolved by the stock-performance question. The
+model reasonably preserved them. Topic matching now removes possessive remnants and
+current/recent/latest boilerplate, prefers an ordered three-word topic, and allows a
+two-word fallback only when it is not title-cased as an issuer name in both strings.
+The exact V80 initial/correction replay now yields only the two real quantitative
+obligations and accepts the recorded correction without another call. All 485 tests
+and lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v79 contract
 `e208df2...d8f8` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used eight completed model attempts, `$0.01779036`,
