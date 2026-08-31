@@ -4854,6 +4854,46 @@ def _quantitative_copy_candidates(
     return ranked_by_path
 
 
+def _structurally_redundant_remove_paths(
+    failed_output: Mapping[str, Any] | None,
+    minimum_removed_items: int,
+) -> list[str]:
+    """Name bounded byte-identical removal candidates without ranking meaning."""
+
+    if not isinstance(failed_output, Mapping) or minimum_removed_items <= 0:
+        return []
+    candidate_limit = min(minimum_removed_items, 12)
+    candidates: list[str] = []
+
+    open_questions = failed_output.get("open_questions")
+    next_needs = failed_output.get("next_information_needs")
+    if isinstance(open_questions, list) and isinstance(next_needs, list):
+        retained_needs = {
+            item for item in next_needs if isinstance(item, str)
+        }
+        for index, item in enumerate(open_questions):
+            if isinstance(item, str) and item in retained_needs:
+                candidates.append(f"open_questions[{index}]")
+                if len(candidates) >= candidate_limit:
+                    return candidates
+
+    for field_name in _RESEARCH_STATE_ARRAY_LIMITS:
+        raw_items = failed_output.get(field_name)
+        if not isinstance(raw_items, list):
+            continue
+        seen: list[Any] = []
+        for index, item in enumerate(raw_items):
+            if item in seen:
+                path = f"{field_name}[{index}]"
+                if path not in candidates:
+                    candidates.append(path)
+                    if len(candidates) >= candidate_limit:
+                        return candidates
+            else:
+                seen.append(item)
+    return candidates
+
+
 def _validation_obligations(
     failure: ValidationError | None,
     failed_output: Mapping[str, Any] | None = None,
@@ -4943,6 +4983,14 @@ def _validation_obligations(
                 if total_match:
                     obligation["current_total_items"] = int(total_match.group(1))
                     obligation["maximum_total_items"] = int(total_match.group(2))
+                redundant_paths = _structurally_redundant_remove_paths(
+                    failed_output,
+                    int(minimum_match.group(1)),
+                )
+                if redundant_paths:
+                    obligation["structurally_redundant_remove_paths"] = (
+                        redundant_paths
+                    )
     return {
         "obligation_count": len(obligations),
         "obligations": obligations,
@@ -4959,6 +5007,12 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "redundant source-summary beliefs, questions "
     "already answered by visible evidence, and non-decision-relevant items while "
     "preserving material support, counter-evidence, and unresolved uncertainty."
+    " When an obligation contains structurally_redundant_remove_paths, remove "
+    "those byte-identical duplicate items first until minimum_removed_items is "
+    "met, unless another obligation already removes enough total items. If the "
+    "candidate list is shorter than the removal quota, choose the remaining "
+    "removals from must_reduce_any_of_paths. These paths are suggestions, not "
+    "additional mandatory independent obligations."
     " When an obligation contains copy_candidates_by_path, copy one listed "
     "exact_claim byte-for-byte into that assertion path or remove the assertion; "
     "do not restate, expand, or change issuer words. If no listed claim has the "

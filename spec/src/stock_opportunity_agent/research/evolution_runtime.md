@@ -664,6 +664,13 @@ counts as two items. It removes at least the stated number of total items
 from any listed combination while preserving the smallest material decision frontier;
 the runtime does not choose which semantics to discard. A field that independently
 exceeds its own ceiling still uses a real `invalid_field` path and must itself change.
+If the failed object itself proves that some items are structurally redundant, the
+same aggregate obligation may carry bounded `structurally_redundant_remove_paths`.
+Runtime may name only byte-identical later duplicates within one array or an open
+question byte-identical to a next information need; it does not infer topical or
+economic redundancy. The paths are preferred, non-binding correction candidates. The
+model may remove different items, and the normal count plus semantic validation reruns
+without any local output mutation.
 
 When a quantitative assertion fails only because it does not copy an evidence claim
 byte-for-byte, correction feedback may add a bounded `copy_candidates_by_path` map.

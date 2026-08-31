@@ -324,6 +324,14 @@ semicolon-delimited error segments into numbered `obligations` with named field 
 The role must satisfy every row rather than stopping after the first easy shape fix.
 This is diagnostic structure only: runtime does not author a replacement value, drop
 an invalid item, or skip the unchanged parser and semantic validation pass.
+For an aggregate item-count overflow, correction feedback also reports the exact
+current total, maximum total, minimum removals, and alternative arrays. If the rejected
+object contains mechanically provable duplicate items, that obligation may add bounded
+`structurally_redundant_remove_paths`: a later byte-identical item in one array, or an
+`open_questions` item byte-identical to a `next_information_needs` item. These are
+preferred but non-binding removal candidates. Runtime does not infer semantic
+redundancy or mutate the state; the model may choose another removal combination, and
+the unchanged count and semantic validators rerun after correction.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask

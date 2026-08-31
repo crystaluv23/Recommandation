@@ -1354,3 +1354,14 @@ Finally, remove generic `company`/`issuer` subject words before two-question top
 matching. A broad recent-revenue answer does not resolve a quarter comparison plus
 EBITDA/trend need. Keep each unknown evidence-kind error and its expected-kind clause
 in one semicolon-free segment so correction receives one pathful obligation per row.
+
+## Structural compaction candidate addendum (2026-08-31)
+
+Explicit count arithmetic can still be under-actionable when several independent
+correction obligations compete for attention. V86 reported 25 items, a 24-item limit,
+and a one-item removal minimum, but its correction repaired two field-specific defects
+and preserved all 25 items. The rejected state already contained byte-identical open
+questions and next information needs. Aggregate feedback may safely name a bounded
+duplicate removal path when redundancy is mechanically exact, while keeping it
+non-binding and rerunning every normal validator. Do not infer topical or economic
+redundancy locally, and do not mutate the ResearchState.

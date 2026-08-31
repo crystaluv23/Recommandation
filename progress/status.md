@@ -1,5 +1,30 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v86 contract
+`1f8a0a1...994e4` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used five charged attempts, `$0.00936124`, and three
+data-ledger rows. The first proposer response was malformed; its correction became
+valid JSON but retained an H_reflect Predictor-ontology violation, so fail-closed
+proposal retry produced a valid Plan. H_init and its correction then failed. Locked
+Test remained sealed and the Registry stayed at its initial hash. The successor
+ceilings are 167 attempts, `$17.80535132`, and 695 data requests.
+
+All five requests/responses, including the malformed raw output, were inspected. The
+accepted Plan kept every request target-issuer-scoped and separated evidence
+organization from Predictor judgment. H_init received complete market/news/transcript
+coverage plus six visible filing projections. The new downstream-visibility prompt
+worked: its frontier retained the UBS target, production guidance, free cash flow, and
+two-point market evidence. Its initial 25 items had three independently validatable
+defects; correction fixed the resolved/need facet and unsupported year, but did not
+remove any item for the explicit 25-to-24 aggregate obligation.
+
+Aggregate correction feedback now adds bounded
+`structurally_redundant_remove_paths` only for mechanically provable duplicates. In
+the exact V86 shape, the duplicated open question / next information need yields
+`open_questions[0]` as a preferred non-binding removal candidate. Runtime neither
+infers research meaning nor mutates output; the normal validators rerun. Exact replay,
+all 494 tests, and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v85 contract
 `45b2a09...f9b22` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used seven completed model attempts, `$0.01506148`,

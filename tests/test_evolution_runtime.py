@@ -6855,6 +6855,67 @@ class ConcreteRoleAdapterTests(TestCase):
             tuple(corrected["open_questions"]),
         )
 
+    def test_v86_total_limit_suggests_structurally_duplicate_open_question(
+        self,
+    ) -> None:
+        repeated_question = "Is the customer renewal still pending?"
+        invalid = {
+            "hypotheses": [
+                f"Material hypothesis {letter}." for letter in "ABC"
+            ],
+            "current_beliefs": [
+                f"Distinct qualitative belief {letter}." for letter in "ABCDEFGH"
+            ],
+            "supporting_evidence": [],
+            "contradictions": [
+                f"Distinct qualitative contradiction {letter}." for letter in "ABCD"
+            ],
+            "resolved_questions": [],
+            "open_questions": [
+                repeated_question,
+                "Could financing delay deployment?",
+                "Could costs impair adoption?",
+                "Could regulation delay adoption?",
+            ],
+            "next_information_needs": [
+                repeated_question,
+                "Check renewal disclosure.",
+                "Check financing disclosure.",
+                "Check deployment evidence.",
+                "Check cost disclosure.",
+                "Check regulatory disclosure.",
+            ],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["open_questions"] = corrected["open_questions"][1:]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        total_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "combined ResearchState array count=25" in item["instruction"]
+        )
+        self.assertEqual(total_obligation["minimum_removed_items"], 1)
+        self.assertEqual(
+            total_obligation["structurally_redundant_remove_paths"],
+            ["open_questions[0]"],
+        )
+        self.assertIn(
+            "remove those byte-identical duplicate items first",
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertEqual(
+            initialized.value.open_questions,
+            tuple(corrected["open_questions"]),
+        )
+
     def test_v82_initialize_supplies_exact_claim_copy_candidates(self) -> None:
         exact_claim = (
             "Kinross's adjusted share price reached $24.37 on 2025-09-29."
