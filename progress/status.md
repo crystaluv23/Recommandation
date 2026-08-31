@@ -1,5 +1,34 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v81 contract
+`713719f...10d46` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00965076`,
+and three data-ledger rows. The candidate Plan, H_init, and its one correction were
+the only calls; Signal routing, execution, Predictor, post-hoc, and Slow Loop were
+correctly not entered. Locked Test remained sealed and the Registry stayed at its
+initial hash. The successor ceilings are 190 attempts, `$17.85878904`, and 713 data
+requests.
+
+All three real V81 requests/responses and all visible Basic projections were
+inspected. Request-fair context live-covered every resolved request: company news
+5/5, market 4/4, the nominal competitor request 3/3, and earnings calls 12/19 with
+seven explicit budget omissions. The competitor request itself was unsound: Basic
+Info always resolves under the target `company_id`, so its general cross-issuer
+description/query merely returned more target-company news. Automatic Plan
+validation now rejects such fields before case data or H_init calls; competitive
+requests must explicitly use the target issuer's own disclosures or company-scoped
+news.
+
+H_init returned 32 items, asked for the runtime-owned baseline date/price, attached
+two non-literal temporal/quantity claims, and authored eight quantitative beliefs
+that did not copy their evidence claims. Its correction fixed most citations but
+removed only four items and retained the baseline question. Raw validation now names
+that exact question path, groups all quantitative assertion paths into one checklist,
+and makes combination overflow computationally explicit with current total, maximum
+total, and minimum removals; removing a belief/evidence pair counts as two. Exact V81
+replay yields `32 / 24 / 8`, rejects the recorded 28-item correction, and accepts a
+24-item repair. All 487 tests and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v80 contract
 `6e9b69f...8d284` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00525840`,

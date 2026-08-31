@@ -63,6 +63,13 @@ S = (B, H_init, H_reflect, H_analyse)
   `request_id`, information-purpose `description`, `source_types`, optional
   `lookback_days` and literal `query`, and `max_documents` up to ten. It does
   not define a fixed company-profile schema and cannot set `as_of`.
+- Every current `B` request is routed under the target `company_id`; it is not a
+  cross-issuer news or peer database query. An automatic Plan therefore cannot ask
+  for general competitor/peer/rival actions as though the resolver will search those
+  other issuers. It may ask for the target issuer's own disclosures or company-scoped
+  news that explicitly discuss competitive position. Proposal validation names the
+  exact offending request fields and uses the existing single correction before any
+  case data or H_init call is spent.
 - The fixed `H_P` proposal boundary requires every automatically proposed Plan
   to retain one compact point-in-time market backbone request: canonical
   `market_data`, a positive lookback no longer than 60 days, and one source
@@ -88,6 +95,10 @@ S = (B, H_init, H_reflect, H_analyse)
   sole correction aggregates every locally decidable missing-quantity and assertion-
   link path before the call; deletion from the named claim and linked assertion is the
   minimal repair when no same-claim literal contains the quantity.
+  The same raw prevalidation rejects an open question or next need asking for the
+  runtime-owned evaluation baseline date/price or the definition/terms of the fixed
+  outcome. This is not issuer evidence; feedback names only the exact offending path
+  and requires deletion rather than inventing a source answer.
 - `H_reflect`: consumes the complete current research state plus one whole
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its

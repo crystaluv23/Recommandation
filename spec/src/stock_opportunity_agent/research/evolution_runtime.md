@@ -656,14 +656,21 @@ claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated
 must not pay for or be distracted by evidence fields they cannot return.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
-therefore carries `minimum_removed_items` plus `must_reduce_any_of_paths` and the error
-reports current per-field counts. The correction removes at least that many total items
+therefore carries `current_total_items`, `maximum_total_items`,
+`minimum_removed_items`, plus `must_reduce_any_of_paths`, and the error reports current
+per-field counts. The correction explicitly sums every returned array and must produce
+`corrected_total_items <= maximum_total_items`; removing one belief and its evidence
+counts as two items. It removes at least the stated number of total items
 from any listed combination while preserving the smallest material decision frontier;
 the runtime does not choose which semantics to discard. A field that independently
 exceeds its own ceiling still uses a real `invalid_field` path and must itself change.
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
+Raw H_init validation enforces this narrow boundary on `open_questions` and
+`next_information_needs`, names the exact offending path, and aggregates it with
+compaction/citation defects before the sole correction; it does not attempt to answer
+or rewrite the question.
 It also distinguishes the six-month repricing horizon from later operating events.
 An event outside the horizon may matter through a point-in-time expectation change,
 but H_init must not condition the six-month outcome on that later event already

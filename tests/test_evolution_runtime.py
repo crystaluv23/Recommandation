@@ -2495,6 +2495,81 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("market_data", str(caller.calls[0]["system_prompt"]))
 
+    def test_v81_plan_proposer_corrects_cross_issuer_request_scope(self) -> None:
+        invalid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "recent_company_news",
+                        "description": "Read recent company news.",
+                        "source_types": ["news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Read recent market data.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                    },
+                    {
+                        "request_id": "competitor_actions",
+                        "description": (
+                            "Competitor actions that could affect the company's "
+                            "market position."
+                        ),
+                        "source_types": ["news"],
+                        "lookback_days": 180,
+                        "query": "competitor product launch market share",
+                        "max_documents": 3,
+                    },
+                ]
+            },
+            "H_init": (
+                "Form an initial source-backed hypothesis and list unresolved "
+                "information needs."
+            ),
+            "H_reflect": (
+                "Reflect over all returned Signal evidence, then continue for the "
+                "next need or finalize."
+            ),
+            "H_analyse": (
+                "Organize and weigh supporting and counter evidence while preserving "
+                "uncertainty."
+            ),
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected_request = corrected["B"]["requests"][2]
+        corrected_request["description"] = (
+            "Read the target issuer's own disclosures about competitive position."
+        )
+        corrected_request["query"] = "competitive position"
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        error = caller.calls[1]["payload"]["validation_feedback"][
+            "validation_error"
+        ]
+        self.assertIn("B.requests[2].description", error)
+        self.assertIn("B.requests[2].query", error)
+        self.assertIn("target-company-scoped Basic Info resolver", error)
+        self.assertIn("target company_id", caller.calls[0]["system_prompt"])
+        self.assertEqual(
+            plan.basic_info_policy.requests[2].description,
+            corrected_request["description"],
+        )
+
     def test_v19_plan_proposer_corrects_placeholder_example_echo(self) -> None:
         fixture = json.loads(
             (
@@ -6394,6 +6469,8 @@ class ConcreteRoleAdapterTests(TestCase):
             if "combined ResearchState array count=" in item["instruction"]
         )
         self.assertEqual(total_obligation["minimum_removed_items"], 54)
+        self.assertEqual(total_obligation["current_total_items"], 78)
+        self.assertEqual(total_obligation["maximum_total_items"], 24)
         self.assertEqual(
             total_obligation["must_reduce_any_of_paths"],
             [
@@ -6405,7 +6482,7 @@ class ConcreteRoleAdapterTests(TestCase):
             ],
         )
         self.assertIn(
-            "remove at least that many total array items",
+            "sum the lengths of every returned array",
             caller.calls[1]["system_prompt"],
         )
         self.assertEqual(
@@ -6578,6 +6655,68 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, tuple(needs))
+
+    def test_v81_initialize_aggregates_runtime_baseline_and_total_limit(
+        self,
+    ) -> None:
+        invalid = {
+            "hypotheses": [
+                f"Material issuer hypothesis {letter}." for letter in "ABC"
+            ],
+            "current_beliefs": [
+                f"Decision-relevant issuer belief {letter}." for letter in "ABCDEFGH"
+            ],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                f"Resolved issuer question {letter}." for letter in "ABCD"
+            ],
+            "open_questions": [
+                "What is the exact baseline date and price for the six-month "
+                "evaluation outcome?",
+                "Could an operating disruption impair the active thesis?",
+                "Could capital allocation strengthen the active thesis?",
+                "Could a regulatory event impair the active thesis?",
+            ],
+            "next_information_needs": [
+                f"Check unresolved issuer uncertainty {letter}." for letter in "ABCDEF"
+            ],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["open_questions"] = corrected["open_questions"][1:]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("runtime-owned evaluation input", error)
+        self.assertIn("invalid_field='open_questions[0]'", error)
+        self.assertIn("combined ResearchState array count=25", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        total_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "combined ResearchState array count=25" in item["instruction"]
+        )
+        self.assertEqual(total_obligation["current_total_items"], 25)
+        self.assertEqual(total_obligation["maximum_total_items"], 24)
+        self.assertEqual(total_obligation["minimum_removed_items"], 1)
+        baseline_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "runtime-owned evaluation input" in item["instruction"]
+        )
+        self.assertEqual(
+            baseline_obligation["must_change_paths"], ["open_questions[0]"]
+        )
+        self.assertEqual(
+            initialized.value.open_questions,
+            tuple(corrected["open_questions"]),
+        )
 
     def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
         corrected = {
@@ -6786,8 +6925,19 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("supporting_evidence[3]", error)
         self.assertIn("supporting_evidence[4]", error)
-        self.assertIn("current_beliefs[0] must copy", error)
-        self.assertIn("current_beliefs[1] must copy", error)
+        self.assertIn("invalid_fields=['current_beliefs[0]'", error)
+        self.assertIn("'current_beliefs[1]']", error)
+        numeric_obligation = next(
+            item
+            for item in caller.calls[1]["payload"]["validation_feedback"][
+                "obligations"
+            ]
+            if "quantitative ResearchState assertions" in item["instruction"]
+        )
+        self.assertEqual(
+            numeric_obligation["must_change_paths"],
+            ["current_beliefs[0]", "current_beliefs[1]"],
+        )
         self.assertIn("linked_assertions=['current_beliefs[2]']", error)
         self.assertIn("linked_assertions=['current_beliefs[3]']", error)
         self.assertIn("delete every listed quantity", caller.calls[1]["system_prompt"])

@@ -1253,3 +1253,28 @@ a shared three-word topic; if only a two-word fallback exists, ignore it when th
 words are title-cased as a proper name in both questions. Replay the exact initial and
 correction outputs: a tightened gate should leave the model's unrelated needs intact
 and accept its already-correct quantitative repair without spending another call.
+
+## Resolver-scope and computable-compaction addendum (2026-08-31)
+
+A semantically plausible request is still useless when its described retrieval scope
+exceeds the resolver's actual key space. V81 asked for general competitor actions, but
+every Basic request was resolved under the target company id; the resulting row merely
+duplicated target-company news. Reject cross-issuer competitor/peer/rival requests at
+Plan proposal time unless they explicitly ask for the target issuer's own disclosures
+or company-scoped news mentioning competition. Do this before resolving case data or
+calling H_init.
+
+Correction arithmetic must be machine-readable as well as grammatical. V81's initial
+ResearchState had 32 items against a maximum of 24, but its correction removed only
+four. A combination obligation should carry current total, maximum total, minimum
+removals, and alternative arrays; tell the model to sum every returned array and that
+one belief plus its evidence is two items. Group repeated defects of one type, such as
+eight quantitative assertions lacking exact claim links, into one obligation with all
+eight paths so the checklist is complete without eight copies of the same prose.
+
+Fixed evaluation inputs are neither unanswered issuer questions nor Signal needs.
+Even when the H_init prompt says runtime owns the baseline date and price, validate
+`open_questions` and `next_information_needs` before compaction and require deletion
+of the exact offending path. Never answer or rewrite that item locally. Exact artifact
+replay should reject the recorded 28-item correction and accept a model-authored
+24-item repair that also removes the baseline question and unsupported claim pair.

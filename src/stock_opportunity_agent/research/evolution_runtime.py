@@ -4463,7 +4463,10 @@ _INFORMATION_PLAN_OUTPUT = (
     " Do not return plan_id or parent_ids; runtime owns structural metadata. "
     "B must contain at least one compact market-backbone request whose "
     "source_types includes market_data, whose lookback_days is at most 60, "
-    "and whose max_documents is 1."
+    "and whose max_documents is 1. Every B request is resolved under the "
+    "target company_id. Do not request general competitor, peer, or rival actions "
+    "as though B searches other issuers; competitive requests must explicitly use "
+    "the target issuer's own disclosures or target-company-scoped news."
 )
 
 
@@ -4481,6 +4484,47 @@ def _validate_proposed_market_backbone(plan: InformationPlan) -> None:
         raise ValidationError(
             "information_plan_propose must retain one compact market_data "
             "request with lookback_days <= 60 and max_documents = 1"
+        )
+
+
+_CROSS_ISSUER_REQUEST_TERMS = re.compile(
+    r"\b(?:competitors?|peers?|rivals?)\b",
+    re.IGNORECASE,
+)
+_TARGET_ISSUER_REQUEST_SCOPE = re.compile(
+    r"\b(?:(?:target[- ](?:company|issuer)(?:'s)?|"
+    r"(?:company|issuer)(?:'s)?)\s+own\s+"
+    r"(?:disclosures?|filings?|news)|"
+    r"(?:target[- ](?:company|issuer)|(?:company|issuer))[- ]scoped\s+"
+    r"(?:disclosures?|filings?|news))\b",
+    re.IGNORECASE,
+)
+
+
+def _validate_proposed_request_scope(plan: InformationPlan) -> None:
+    """Reject cross-issuer requests the company-scoped resolver cannot perform."""
+
+    for index, request in enumerate(plan.basic_info_policy.requests):
+        fields = {
+            "description": request.description,
+            "query": request.query or "",
+        }
+        cross_issuer_fields = [
+            field_name
+            for field_name, text_value in fields.items()
+            if _CROSS_ISSUER_REQUEST_TERMS.search(text_value)
+        ]
+        if not cross_issuer_fields or _TARGET_ISSUER_REQUEST_SCOPE.search(
+            " ".join(fields.values())
+        ):
+            continue
+        paths = [f"B.requests[{index}].{field}" for field in cross_issuer_fields]
+        raise ValidationError(
+            "information_plan_propose requested cross-issuer evidence that the "
+            "target-company-scoped Basic Info resolver cannot retrieve, "
+            f"invalid_fields={paths}. Rewrite or remove every named field; a "
+            "competitive request must explicitly ask for the target issuer's own "
+            "disclosures or target-company-scoped news mentioning competition"
         )
 
 
@@ -4737,6 +4781,9 @@ _VALIDATION_MINIMUM_REMOVED_ITEMS = re.compile(
 _VALIDATION_REDUCE_ANY_PATHS = re.compile(
     r"\bmust_reduce_any_of_paths=(\[[^\]]*\])"
 )
+_VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
+    r"\bcombined ResearchState array count=(\d+) exceeds effective_limit=(\d+)"
+)
 
 
 def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
@@ -4769,6 +4816,7 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
         obligations.append(obligation)
         minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
         reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
+        total_match = _VALIDATION_TOTAL_ITEM_LIMIT.search(segment)
         if minimum_match and reduce_match:
             try:
                 reduce_paths = json.loads(reduce_match.group(1))
@@ -4785,6 +4833,9 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
                 obligation["must_reduce_any_of_paths"] = list(
                     dict.fromkeys(reduce_paths)
                 )
+                if total_match:
+                    obligation["current_total_items"] = int(total_match.group(1))
+                    obligation["maximum_total_items"] = int(total_match.group(2))
     return {
         "obligation_count": len(obligations),
         "obligations": obligations,
@@ -4793,9 +4844,12 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
 
 _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     " When an obligation contains minimum_removed_items and "
-    "must_reduce_any_of_paths, remove at least that many total array items across "
-    "any combination of those alternative paths; the listed paths are not all "
-    "individually mandatory. Prefer redundant source-summary beliefs, questions "
+    "must_reduce_any_of_paths, sum the lengths of every returned array before "
+    "answering and ensure corrected_total_items is at most maximum_total_items. "
+    "Remove at least minimum_removed_items total items across any combination of "
+    "those alternative paths; removing one belief and its evidence counts as two "
+    "items, and the listed paths are not all individually mandatory. Prefer "
+    "redundant source-summary beliefs, questions "
     "already answered by visible evidence, and non-decision-relevant items while "
     "preserving material support, counter-evidence, and unresolved uncertainty."
     " When validation_error lists absent numeric quantities, the minimal valid "
@@ -5265,6 +5319,46 @@ def _raw_initialize_need_issues(
     return issues
 
 
+_RUNTIME_EVALUATION_BASELINE_INPUT = re.compile(
+    r"(?:\bbaseline\b.{0,48}\b(?:date|price)\b|"
+    r"\b(?:date|price)\b.{0,48}\bbaseline\b)",
+    re.IGNORECASE,
+)
+_RUNTIME_EVALUATION_DEFINITION_INPUT = re.compile(
+    r"(?:\b(?:terms?|definition)\s+of\s+(?:the\s+)?(?:fixed\s+)?"
+    r"(?:six[- ]month\s+)?(?:evaluation\s+)?outcome\b|"
+    r"\b(?:six[- ]month\s+)?(?:evaluation|doubling)\s+outcome(?:'s)?"
+    r"\s+(?:terms?|definition)\b)",
+    re.IGNORECASE,
+)
+
+
+def _raw_initialize_evaluation_boundary_issues(
+    value: Mapping[str, Any],
+) -> list[str]:
+    """Reject H_init questions about fixed runtime-owned evaluation inputs."""
+
+    issues: list[str] = []
+    for field_name in ("open_questions", "next_information_needs"):
+        raw_items = value.get(field_name)
+        if not isinstance(raw_items, list):
+            continue
+        for index, item in enumerate(raw_items):
+            if not isinstance(item, str) or not (
+                _RUNTIME_EVALUATION_BASELINE_INPUT.search(item)
+                or _RUNTIME_EVALUATION_DEFINITION_INPUT.search(item)
+            ):
+                continue
+            path = f"{field_name}[{index}]"
+            issues.append(
+                "research_controller_initialize asked for a runtime-owned "
+                "evaluation input rather than issuer evidence, "
+                f"invalid_field={path!r}, {path}={item!r}. Remove this item; do "
+                "not answer, source, or rewrite the fixed baseline/definition"
+            )
+    return issues
+
+
 def _raw_research_state_compaction_issues(
     value: Mapping[str, Any],
     *,
@@ -5275,9 +5369,10 @@ def _raw_research_state_compaction_issues(
     """Aggregate provider-only decision-frontier limit violations."""
 
     previous = previous_state.to_dict() if previous_state is not None else {}
-    issues: list[str] = (
-        _raw_initialize_need_issues(value, basic_info or {}) if initialize else []
-    )
+    issues: list[str] = []
+    if initialize:
+        issues.extend(_raw_initialize_need_issues(value, basic_info or {}))
+        issues.extend(_raw_initialize_evaluation_boundary_issues(value))
     counts: dict[str, int] = {}
     previous_counts: dict[str, int] = {}
     for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
@@ -5567,7 +5662,7 @@ def _raw_quantitative_assertion_link_issues(
         if isinstance(evidence, list)
         else set()
     )
-    issues: list[str] = []
+    invalid_paths: list[str] = []
     for field_name in ("current_beliefs", "contradictions"):
         assertions = value.get(field_name)
         if not isinstance(assertions, list):
@@ -5579,15 +5674,17 @@ def _raw_quantitative_assertion_link_issues(
                 or item in accepted_claims
             ):
                 continue
-            issues.append(
-                "quantitative ResearchState assertions: "
-                f"{field_name}[{index}] must copy one supporting_evidence claim "
-                "byte-for-byte. Replace it with one exact accepted claim, attach "
-                "literals to that same exact claim, split the assertion, or remove "
-                "unsupported numeric detail. Numbers from unrelated claims do not "
-                "count"
-            )
-    return issues
+            invalid_paths.append(f"{field_name}[{index}]")
+    if not invalid_paths:
+        return []
+    return [
+        "quantitative ResearchState assertions must each copy one "
+        "supporting_evidence claim byte-for-byte, invalid_fields="
+        f"{invalid_paths}. For every named path, replace it with one exact accepted "
+        "claim, attach literals to that same exact claim, split the assertion, or "
+        "remove unsupported numeric detail. Numbers from unrelated claims do not "
+        "count"
+    ]
 
 
 def _basic_projection_texts(basic_info: Mapping[str, Any]) -> dict[str, str]:
@@ -7903,6 +8000,11 @@ class LLMInformationPlanProposer:
             "proposal_context.proposal_constraints.required_change_focus through "
             "an actual content "
             "change while retaining the full four-field Plan contract."
+            " Every B request is executed under the target company_id. Do not ask "
+            "for general competitor, peer, or rival actions as though B searches "
+            "other issuers; competitive requests must explicitly ask for the target "
+            "issuer's own disclosures or target-company-scoped news mentioning "
+            "competition."
             " Every B.source_types item must exactly equal a supplied "
             "available_source_types value. H_analyse may organize and weight evidence "
             "only; it must not compute a probability, classify the final Signal, "
@@ -7966,6 +8068,7 @@ class LLMInformationPlanProposer:
                     stage, normalized, InformationPlan.from_dict
                 )
                 _validate_proposed_market_backbone(plan)
+                _validate_proposed_request_scope(plan)
                 unsupported = sorted(
                     {
                         source_type
