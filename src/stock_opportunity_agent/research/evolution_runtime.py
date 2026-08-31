@@ -4786,7 +4786,69 @@ _VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
 )
 
 
-def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
+def _quantitative_copy_candidates(
+    failure: ValidationError | None,
+    failed_output: Mapping[str, Any] | None,
+    assertion_paths: Iterable[str],
+) -> dict[str, list[dict[str, str]]]:
+    """Rank unchanged valid evidence claims for exact assertion copying."""
+
+    if not isinstance(failed_output, Mapping):
+        return {}
+    evidence = failed_output.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return {}
+    invalid_evidence_indices = {
+        int(index)
+        for index in re.findall(r"\bsupporting_evidence\[(\d+)\]", str(failure or ""))
+    }
+    candidates = [
+        (index, str(item["claim"]))
+        for index, item in enumerate(evidence)
+        if index not in invalid_evidence_indices
+        and isinstance(item, Mapping)
+        and isinstance(item.get("claim"), str)
+        and str(item["claim"]).strip()
+    ]
+    ranked_by_path: dict[str, list[dict[str, str]]] = {}
+    for path in assertion_paths:
+        path_match = re.fullmatch(r"(current_beliefs|contradictions)\[(\d+)\]", path)
+        if path_match is None:
+            continue
+        assertions = failed_output.get(path_match.group(1))
+        index = int(path_match.group(2))
+        if not isinstance(assertions, list) or index >= len(assertions):
+            continue
+        assertion = assertions[index]
+        if not isinstance(assertion, str):
+            continue
+        ranked = sorted(
+            candidates,
+            key=lambda item: (
+                -SequenceMatcher(
+                    None,
+                    assertion.casefold(),
+                    item[1].casefold(),
+                    autojunk=False,
+                ).ratio(),
+                item[0],
+            ),
+        )[:3]
+        if ranked:
+            ranked_by_path[path] = [
+                {
+                    "source_path": f"supporting_evidence[{candidate_index}].claim",
+                    "exact_claim": claim,
+                }
+                for candidate_index, claim in ranked
+            ]
+    return ranked_by_path
+
+
+def _validation_obligations(
+    failure: ValidationError | None,
+    failed_output: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     """Project aggregated validation prose into numbered correction obligations."""
 
     segments = [
@@ -4813,6 +4875,14 @@ def _validation_obligations(failure: ValidationError | None) -> dict[str, Any]:
             "must_change_paths": paths,
             "instruction": segment,
         }
+        if "quantitative ResearchState assertions" in segment:
+            copy_candidates = _quantitative_copy_candidates(
+                failure,
+                failed_output,
+                paths,
+            )
+            if copy_candidates:
+                obligation["copy_candidates_by_path"] = copy_candidates
         obligations.append(obligation)
         minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
         reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
@@ -4852,6 +4922,11 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "redundant source-summary beliefs, questions "
     "already answered by visible evidence, and non-decision-relevant items while "
     "preserving material support, counter-evidence, and unresolved uncertainty."
+    " When an obligation contains copy_candidates_by_path, copy one listed "
+    "exact_claim byte-for-byte into that assertion path or remove the assertion; "
+    "do not restate, expand, or change issuer words. If no listed claim has the "
+    "intended meaning, first correct an evidence claim and then copy that final "
+    "claim byte-for-byte."
     " When validation_error lists absent numeric quantities, the minimal valid "
     "repair is to delete every listed quantity from the named evidence claim "
     "and each named linked assertion, unless you add same-claim exact_text that "
@@ -4914,12 +4989,14 @@ def _complete_parsed_role(
                 request_payload["validation_feedback"] = {
                     "invalid_output": dict(failed_output or {}),
                     "validation_error": str(failure),
-                    **_validation_obligations(failure),
+                    **_validation_obligations(failure, failed_output),
                 }
             else:
                 request_payload["invalid_output"] = dict(failed_output or {})
                 request_payload["validation_error"] = str(failure)
-                request_payload.update(_validation_obligations(failure))
+                request_payload.update(
+                    _validation_obligations(failure, failed_output)
+                )
                 prompt += correction_instruction
         value, step_usage = _complete_json_with_invalid_value(
             caller,

@@ -1,5 +1,30 @@
 # Status
 
+Current ordinary-loop repair (2026-08-31): immutable v82 contract
+`897e949...14d74` rejected its only candidate during the first case at authoritative
+pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00532476`,
+and three data-ledger rows. The candidate Plan, H_init, and its one correction were
+the only calls; Signal routing, execution, Predictor, post-hoc, and Slow Loop were
+correctly not entered. Locked Test remained sealed and the Registry stayed at its
+initial hash. The successor ceilings are 187 attempts, `$17.85346428`, and 710 data
+requests.
+
+All three real V82 prompts, payloads, and responses were inspected. The accepted Plan
+had three target-company-scoped requests; H_init saw complete request coverage of
+4/4 disclosures, 5/5 news projections, and 3/3 market projections. It returned a
+compact state. Initial correction feedback correctly named one invalid multi-row
+market claim and two quantitative beliefs without byte-exact evidence claims. The
+correction fixed the claim and Asante belief but changed the valid evidence wording
+`Kinross's` to `Kinross Gold's`, leaving one exact-link failure. This was model
+noncompliance rather than a hidden validator or contradictory prompt.
+
+Grouped quantitative assertion obligations now add at most three path-specific exact
+claim candidates, ranked only from evidence rows with no independently reported
+defect. The role may copy one, remove the assertion, or repair a different evidence
+claim and copy its final value; runtime still makes no semantic replacement. Exact
+V82 replay ranks the correct final-price claim first for the failed belief and accepts
+a one-field byte-exact repair. All 488 tests and repository lint pass.
+
 Current ordinary-loop repair (2026-08-31): immutable v81 contract
 `713719f...10d46` rejected its only candidate during the first case at authoritative
 pointers `round=0/cycle=0`. It used three completed model attempts, `$0.00965076`,

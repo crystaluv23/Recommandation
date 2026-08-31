@@ -665,6 +665,15 @@ from any listed combination while preserving the smallest material decision fron
 the runtime does not choose which semantics to discard. A field that independently
 exceeds its own ceiling still uses a real `invalid_field` path and must itself change.
 
+When a quantitative assertion fails only because it does not copy an evidence claim
+byte-for-byte, correction feedback may add a bounded `copy_candidates_by_path` map.
+For each invalid assertion path it ranks up to three exact claims already present in
+the rejected output whose own evidence paths have no independently reported defect.
+The correction may copy one exact candidate, remove the assertion, or first repair a
+different evidence claim and then copy that final claim exactly. This is diagnostic
+context only: runtime neither chooses a semantic replacement nor mutates the output,
+and the unchanged parser and validators still decide acceptance after correction.
+
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
 Raw H_init validation enforces this narrow boundary on `open_questions` and

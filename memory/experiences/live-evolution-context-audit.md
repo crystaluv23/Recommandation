@@ -1278,3 +1278,21 @@ Even when the H_init prompt says runtime owns the baseline date and price, valid
 of the exact offending path. Never answer or rewrite that item locally. Exact artifact
 replay should reject the recorded 28-item correction and accept a model-authored
 24-item repair that also removes the baseline question and unsupported claim pair.
+
+## Exact-claim copy-candidate addendum (2026-08-31)
+
+An exact-link instruction can still fail through a one-word paraphrase even when the
+model performs the intended semantic correction. V82 removed an invalid multi-row
+market claim, selected a remaining valid single-row claim, and then changed
+`Kinross's` to `Kinross Gold's` in the linked belief. The rule and named path were
+already clear, so weakening exact provenance or adding another generic paragraph
+would be the wrong fix.
+
+For a grouped quantitative assertion-link obligation, use the rejected output to
+rank a bounded set of exact evidence claims separately for each invalid assertion
+path. Exclude every evidence index named by any independent failure, include the
+candidate source path and exact claim string, and instruct the role to copy one value
+byte-for-byte or remove the assertion. If no candidate is semantically suitable, the
+role may repair another evidence claim and copy its final value. This remains
+diagnostic: local code must not select or insert a replacement, and the same parser,
+literal validation, and assertion-link validation rerun after the sole correction.

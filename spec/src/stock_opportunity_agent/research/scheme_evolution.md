@@ -95,6 +95,11 @@ S = (B, H_init, H_reflect, H_analyse)
   sole correction aggregates every locally decidable missing-quantity and assertion-
   link path before the call; deletion from the named claim and linked assertion is the
   minimal repair when no same-claim literal contains the quantity.
+  A grouped assertion-link obligation also gives each invalid assertion path up to
+  three lexically nearest byte-exact claims from evidence refs that have no separate
+  reported defect. These are copy candidates, not a runtime-selected repair; H_init
+  may choose one, remove the assertion, or repair another evidence claim and copy its
+  final claim exactly before the same validators rerun.
   The same raw prevalidation rejects an open question or next need asking for the
   runtime-owned evaluation baseline date/price or the definition/terms of the fixed
   outcome. This is not issuer evidence; feedback names only the exact offending path

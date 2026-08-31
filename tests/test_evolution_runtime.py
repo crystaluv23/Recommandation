@@ -6718,6 +6718,79 @@ class ConcreteRoleAdapterTests(TestCase):
             tuple(corrected["open_questions"]),
         )
 
+    def test_v82_initialize_supplies_exact_claim_copy_candidates(self) -> None:
+        exact_claim = (
+            "Kinross's adjusted share price reached $24.37 on 2025-09-29."
+        )
+        invalid = {
+            "hypotheses": ["Recent momentum may support further repricing."],
+            "current_beliefs": [
+                "Kinross Gold's adjusted share price reached $24.37 on 2025-09-29."
+            ],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": exact_claim,
+                    "projection_id": "projection_market",
+                    "exact_text": (
+                        '{"adjusted_close":24.37,"as_of_date":"2025-09-29"}'
+                    ),
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "Check whether operating evidence confirms recent momentum."
+            ],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = [exact_claim]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": (
+                                    '{"adjusted_close":24.37,'
+                                    '"as_of_date":"2025-09-29"}'
+                                ),
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "quantitative ResearchState assertions" in item["instruction"]
+        )
+        self.assertEqual(
+            obligation["copy_candidates_by_path"],
+            {
+                "current_beliefs[0]": [
+                    {
+                        "source_path": "supporting_evidence[0].claim",
+                        "exact_claim": exact_claim,
+                    }
+                ]
+            },
+        )
+        self.assertIn(
+            "do not restate, expand, or change issuer words",
+            caller.calls[1]["system_prompt"],
+        )
+        self.assertEqual(initialized.value.current_beliefs, (exact_claim,))
+
     def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
         corrected = {
             "hypotheses": ["One material catalyst may support repricing."],
@@ -6937,6 +7010,20 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             numeric_obligation["must_change_paths"],
             ["current_beliefs[0]", "current_beliefs[1]"],
+        )
+        self.assertEqual(
+            numeric_obligation["copy_candidates_by_path"]["current_beliefs[0]"][0],
+            {
+                "source_path": "supporting_evidence[0].claim",
+                "exact_claim": cash_claim,
+            },
+        )
+        self.assertEqual(
+            numeric_obligation["copy_candidates_by_path"]["current_beliefs[1]"][0],
+            {
+                "source_path": "supporting_evidence[1].claim",
+                "exact_claim": market_claim,
+            },
         )
         self.assertIn("linked_assertions=['current_beliefs[2]']", error)
         self.assertIn("linked_assertions=['current_beliefs[3]']", error)
