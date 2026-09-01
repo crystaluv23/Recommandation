@@ -225,6 +225,19 @@ canonical flat field names. The literal canonical Plan contract is present on
 every proposal call, including the first slot; provider responses that instead
 use evidence arrays under `H_*` are rejected and retained in the exact cache,
 not coerced into a bogus Plan.
+An empty or whitespace-only string in optional `B.requests[index].query` is the sole
+field-level no-op normalization: runtime omits it before `RawInfoRequest` construction
+because both forms authorize the same unfiltered target-company request. The exact
+provider JSON remains cached; non-string queries and empty required fields still
+require correction.
+When proposal validation identifies raw `B/H_*` paths, correction feedback carries
+the same numbered obligations used by other structured roles and those paths become
+the only write scope. Runtime byte-compares the rejected and corrected raw objects;
+fixing one `B.requests[index].query` cannot rewrite H_init, H_reflect, H_analyse, or
+another request. A child-field authorization also preserves list shape; only an exact
+element path may authorize adding or removing that element. Broad whole-Plan defects
+with no mechanically narrow path retain the single correction without a false local
+scope guess.
 
 Every role that receives source-derived text also receives the same explicit
 untrusted-data instruction: source text cannot override the system message,
@@ -705,14 +718,19 @@ role-neutral contract. ResearchState-only repair advice for evidence quantities 
 claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated roles
 must not pay for or be distracted by evidence fields they cannot return.
 When partial Signal routing claims a facet retained by its residual, its correction
-obligation additionally carries the normalized shared phrase and
-`remove_terms_from_selection_reason`. The selector must omit every listed residual-only
-term from the named reason and describe only the narrower answered facet, or remove the
-selection. These fields exist only in failed-call feedback; runtime does not write the
-replacement and does not enlarge every normal routing prompt. The contradiction gate
-prefers a shared ordered three-word phrase but also catches reordered overlap containing
+obligation additionally carries `remove_terms_from_selection_reason`. Shared topic
+words are not themselves a contradiction. If the original target coordinates two
+explicit normalized temporal values and the residual removes one side, runtime first
+confines the conflict to the retained alternative value; this lets `2025 production
+guidance` and residual `2026 production guidance` share their necessary topic while
+rejecting a reason that claims both years. Without such an explicit split, the contradiction gate
+prefers a shared ordered three-word phrase and also catches reordered overlap containing
 at least three shared non-temporal content terms, so `growth project updates` cannot be
-claimed while `updates on growth projects` remains unresolved.
+claimed while `updates on growth projects` remains unresolved. The selector must omit
+every listed conflicting term from the named reason and describe only the narrower
+answered facet, or remove the selection. These fields exist only in failed-call
+feedback; runtime does not write the replacement and does not enlarge every normal
+routing prompt.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
 therefore carries `current_total_items`, `maximum_total_items`,
@@ -1152,9 +1170,11 @@ and matched phrase. The correction therefore need not guess which of several nee
 created the non-empty obligation. A partial answer starts from that exact target and
 deletes its answered facet; it must never copy another supplied information-needs row
 as the residual.
-For every partial answer, runtime also rejects a `selection_reason` that repeats a
-distinctive three-or-more-word phrase from `residual_need`. Such a reason is claiming
-coverage of a facet the same row declares unresolved. The correction names the exact
+For every partial answer without an explicit coordinated-period split, runtime also
+rejects a `selection_reason` that repeats a distinctive three-or-more-word phrase from
+`residual_need`. Such a reason is claiming coverage of a facet the same row declares
+unresolved. With an explicit split, only the retained alternative value is prohibited;
+the common topic remains allowed. The correction names the exact
 `selections[index].selection_reason` path and must describe only the answered facet;
 runtime neither rewrites the reason nor deletes residual content.
 

@@ -2610,6 +2610,144 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("market_data", str(caller.calls[0]["system_prompt"]))
 
+    def test_v91_plan_proposer_confines_query_correction_scope(self) -> None:
+        invalid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "recent_company_news",
+                        "description": "Read recent target-company news.",
+                        "source_types": ["news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Read recent point-in-time price and volume.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                        "query": 7,
+                    },
+                ]
+            },
+            "H_init": (
+                "Form a source-backed commercialization hypothesis and list "
+                "unresolved information needs."
+            ),
+            "H_reflect": (
+                "Update beliefs from all Signal evidence, then continue for the "
+                "next need or finalize."
+            ),
+            "H_analyse": (
+                "Organize and weigh supporting and counter evidence while exposing "
+                "uncertainty."
+            ),
+        }
+        minimally_corrected = json.loads(json.dumps(invalid))
+        minimally_corrected["B"]["requests"][1]["query"] = "price volume"
+        drifted = json.loads(json.dumps(minimally_corrected))
+        drifted["H_init"] += " Compare management strategy with market signals."
+
+        with self.assertRaisesRegex(
+            CandidateProposalRejected,
+            "correction changed unrelated valid content",
+        ):
+            LLMInformationPlanProposer(
+                ScriptedRoleCaller([invalid, drifted])
+            ).propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                proposal_attempt=1,
+                forbidden_plan_ids=(),
+                parents=(default_information_plan(),),
+                meta_info=(),
+                prior="fixed H_P",
+            )
+
+        deleted_request = json.loads(json.dumps(invalid))
+        deleted_request["B"]["requests"].pop(1)
+        with self.assertRaisesRegex(
+            CandidateProposalRejected,
+            "correction changed unrelated valid content",
+        ):
+            LLMInformationPlanProposer(
+                ScriptedRoleCaller([invalid, deleted_request])
+            ).propose(
+                round_id=1,
+                candidate_index=1,
+                candidate_count=1,
+                proposal_attempt=1,
+                forbidden_plan_ids=(),
+                parents=(default_information_plan(),),
+                meta_info=(),
+                prior="fixed H_P",
+            )
+
+        caller = ScriptedRoleCaller([invalid, minimally_corrected])
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(plan.basic_info_policy.requests[1].query, "price volume")
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_paths"],
+            ["B.requests[1].query"],
+        )
+        self.assertIn("preserve every unmentioned", caller.calls[0]["system_prompt"])
+
+    def test_v91_plan_proposer_omits_empty_optional_query_without_call(self) -> None:
+        output = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Read recent point-in-time price and volume.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                        "query": "",
+                    }
+                ]
+            },
+            "H_init": (
+                "Form a source-backed commercialization hypothesis and list "
+                "unresolved information needs."
+            ),
+            "H_reflect": (
+                "Update beliefs from all Signal evidence, then continue for the "
+                "next need or finalize."
+            ),
+            "H_analyse": (
+                "Organize and weigh supporting and counter evidence while exposing "
+                "uncertainty."
+            ),
+        }
+        caller = ScriptedRoleCaller([output])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(default_information_plan(),),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertIsNone(plan.basic_info_policy.requests[0].query)
+        self.assertEqual(caller.stages, ["information_plan_propose"])
+
     def test_v81_plan_proposer_corrects_cross_issuer_request_scope(self) -> None:
         invalid = {
             "B": {
@@ -3750,6 +3888,60 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(
             overlap_obligation["remove_terms_from_selection_reason"],
             ["growth", "project", "update"],
+        )
+        self.assertEqual(
+            selection.value[0].selection_reason,
+            corrected["selection_reason"],
+        )
+
+    def test_v91_routing_allows_shared_topic_but_not_residual_year(self) -> None:
+        target_need = (
+            "What are the company's production and cost guidance for 2025 and "
+            "2026?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance.pop("context_tags")
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What are the company's production and cost guidance for 2026?"
+        )
+        guidance["selection_reason"] = (
+            "Directly covers production and cost guidance for 2025 and 2026."
+        )
+        corrected = json.loads(json.dumps(guidance))
+        corrected["context_tags"] = ["general"]
+        corrected["selection_reason"] = (
+            "Directly covers production and cost guidance for 2025."
+        )
+        caller = ScriptedRoleCaller(
+            [{"selections": [guidance]}, {"selections": [corrected]}]
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=(target_need,)
+                ),
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        scope_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "explicit alternative facets" in item["instruction"]
+        )
+        self.assertEqual(
+            scope_obligation["remove_terms_from_selection_reason"],
+            ["2026"],
+        )
+        self.assertTrue(
+            all(item["must_change_paths"] for item in feedback["obligations"])
         )
         self.assertEqual(
             selection.value[0].selection_reason,

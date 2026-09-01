@@ -1449,3 +1449,24 @@ portfolio item byte-for-byte. If protected identity leakage requires withholding
 rejected object, byte comparison is impossible; keep the no-echo boundary and rerun
 all semantic validators on the replacement instead of exposing the identity merely
 to enforce scope.
+
+## Partial-scope dimensions and optional no-op addendum (2026-09-01)
+
+Shared topic words are not necessarily a partial-answer contradiction. V91 targeted
+production and cost guidance for 2025 and 2026, correctly retained 2026 as residual,
+and necessarily repeated `production cost guidance` in both clauses. The invalid
+claim was the answer reason's retained `2026`, not the research topic. When the
+original need explicitly coordinates two temporal values and the residual removes
+one, identify only the retained alternative as forbidden in the answer reason. Keep
+the broader phrase/reordered-overlap guard when no such split is mechanically visible;
+do not generalize local code into a semantic facet classifier.
+
+An optional provider field with exactly no execution meaning should not consume a
+semantic correction. An empty Basic-Info `query` and an omitted query both authorize
+the same unfiltered target-company request, so canonical omission is safe while the
+raw response remains cached. This does not license trimming required strings,
+inventing a query, or repairing arbitrary malformed JSON. For real field errors,
+preserve the narrow raw output path and descend equal-length arrays during correction
+diffing. Permit array-size changes only when an element path itself is authorized;
+naming one request child must not authorize rewriting or deleting the whole request or
+changing unrelated Plan skills.

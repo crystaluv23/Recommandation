@@ -4869,7 +4869,7 @@ def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any
 
 
 _VALIDATION_OBLIGATION_PATH = re.compile(
-    r"\b[a-z_]+(?:\[\d+\]|\.[a-z_]+)+"
+    r"\b[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)+"
 )
 _VALIDATION_INVALID_FIELD_PATH = re.compile(
     r"\binvalid_field=['\"]([a-z_]+(?:\[\d+\]|\.[a-z_]+)*)['\"]"
@@ -5237,6 +5237,8 @@ def _scoped_correction_drift_paths(
     failed_output: Mapping[str, Any],
     corrected_output: Mapping[str, Any],
     must_change_paths: Iterable[str],
+    *,
+    preserve_descendant_list_shape: bool = False,
 ) -> list[str]:
     """Find correction changes outside explicitly diagnosed structured paths."""
 
@@ -5274,12 +5276,21 @@ def _scoped_correction_drift_paths(
                 visit(old[key], new[key], child)
             return
         if isinstance(old, list) and isinstance(new, list):
+            if len(old) == len(new):
+                for index, (old_item, new_item) in enumerate(zip(old, new)):
+                    visit(old_item, new_item, f"{path}[{index}]")
+                return
             allowed_indices = {
                 int(match.group(1))
                 for item in paths
                 if (
                     match := re.match(
-                        rf"^{re.escape(path)}\[(\d+)\](?:\.|$)",
+                        rf"^{re.escape(path)}\[(\d+)\]"
+                        + (
+                            r"$"
+                            if preserve_descendant_list_shape
+                            else r"(?:\.|$)"
+                        ),
                         item,
                     )
                 )
@@ -5543,7 +5554,44 @@ def _normalize_information_plan_output(
         raise ValidationError(
             "information_plan_propose returned invalid basic_info_policy"
         )
+    policy = dict(normalized["basic_info_policy"])
+    requests = policy.get("requests")
+    if isinstance(requests, list):
+        normalized_requests: list[Any] = []
+        for request in requests:
+            if not isinstance(request, Mapping):
+                normalized_requests.append(request)
+                continue
+            normalized_request = dict(request)
+            if (
+                isinstance(normalized_request.get("query"), str)
+                and not normalized_request["query"].strip()
+            ):
+                normalized_request.pop("query")
+            normalized_requests.append(normalized_request)
+        policy["requests"] = normalized_requests
+        normalized["basic_info_policy"] = policy
     return normalized
+
+
+def _validate_raw_information_plan_request_fields(
+    value: Mapping[str, Any],
+) -> None:
+    """Name raw Plan request paths before domain construction can erase them."""
+
+    basic = value.get("B")
+    if not isinstance(basic, Mapping) or not isinstance(
+        basic.get("requests"), list
+    ):
+        return
+    for index, request in enumerate(basic["requests"]):
+        if not isinstance(request, Mapping) or "query" not in request:
+            continue
+        query = request["query"]
+        if not isinstance(query, str):
+            raise ValidationError(
+                f"B.requests[{index}].query must be omitted or a non-empty string"
+            )
 
 
 def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -7097,6 +7145,68 @@ def _normalized_need_content_tokens(value: str) -> frozenset[str]:
     return frozenset(normalized)
 
 
+def _coordinated_residual_facet_terms(
+    target_need: str,
+    residual_need: str,
+) -> tuple[str, ...]:
+    """Return retained values paired with a removed alternative in the target."""
+
+    target_content = _normalized_need_content_tokens(target_need)
+    residual_content = _normalized_need_content_tokens(residual_need)
+    answered_content = target_content - residual_content
+    if not answered_content:
+        return ()
+
+    raw_tokens = re.findall(r"[a-z0-9]+", target_need.casefold())
+
+    def normalized_at(index: int) -> str | None:
+        token = raw_tokens[index]
+        if token in _NEED_RESIDUAL_GENERIC_TOKENS:
+            return None
+        if len(token) > 4 and token.endswith("ies"):
+            return token[:-3] + "y"
+        if (
+            len(token) > 4
+            and token.endswith("s")
+            and not token.endswith(("is", "ss", "us"))
+        ):
+            return token[:-1]
+        return token
+
+    retained: list[str] = []
+    for conjunction_index, token in enumerate(raw_tokens):
+        if token not in {"and", "or", "versus", "vs"}:
+            continue
+        left = next(
+            (
+                normalized
+                for index in range(conjunction_index - 1, -1, -1)
+                if (normalized := normalized_at(index)) is not None
+            ),
+            None,
+        )
+        right = next(
+            (
+                normalized
+                for index in range(conjunction_index + 1, len(raw_tokens))
+                if (normalized := normalized_at(index)) is not None
+            ),
+            None,
+        )
+        if not (
+            left is not None
+            and right is not None
+            and _TEMPORAL_TOPIC_TOKEN.fullmatch(left)
+            and _TEMPORAL_TOPIC_TOKEN.fullmatch(right)
+        ):
+            continue
+        if left in answered_content and right in residual_content:
+            retained.append(str(right))
+        elif right in answered_content and left in residual_content:
+            retained.append(str(left))
+    return tuple(dict.fromkeys(retained))
+
+
 def _shared_distinctive_phrase(
     left: str,
     right: str,
@@ -8138,10 +8248,38 @@ class LLMSignalRetrievalAgent:
                                     f"{path}.residual_need must remove the answered "
                                     "facet rather than retain the target cosmetically"
                                 )
-                            shared_residual_phrase = _shared_distinctive_phrase(
-                                item["selection_reason"], residual_need
+                            coordinated_residual_terms = (
+                                _coordinated_residual_facet_terms(
+                                    target_need,
+                                    residual_need,
+                                )
                             )
-                            if shared_residual_phrase:
+                            reason_content = _normalized_need_content_tokens(
+                                item["selection_reason"]
+                            )
+                            conflicting_coordinated_terms = [
+                                term
+                                for term in coordinated_residual_terms
+                                if term in reason_content
+                            ]
+                            if conflicting_coordinated_terms:
+                                validation_errors.append(
+                                    f"{path}.selection_reason claims explicit "
+                                    "alternative facets retained by residual_need, "
+                                    "residual_facet_terms="
+                                    f"{json.dumps(conflicting_coordinated_terms, separators=(',', ':'))}, "
+                                    "remove_terms_from_selection_reason="
+                                    f"{json.dumps(conflicting_coordinated_terms, separators=(',', ':'))}. "
+                                    "Remove every listed residual-only term from "
+                                    "selection_reason, name only the answered "
+                                    "counterpart, and leave unresolved facets only "
+                                    "in residual_need"
+                                )
+                            elif not coordinated_residual_terms and (
+                                shared_residual_phrase := _shared_distinctive_phrase(
+                                    item["selection_reason"], residual_need
+                                )
+                            ):
                                 remove_terms = shared_residual_phrase.split()
                                 validation_errors.append(
                                     f"{path}.selection_reason claims a facet retained "
@@ -8151,7 +8289,7 @@ class LLMSignalRetrievalAgent:
                                     f"{json.dumps(remove_terms, separators=(',', ':'))}. "
                                     "Remove every listed residual-only term from "
                                     "selection_reason and name only the answered "
-                                    "facet; leave unresolved facets only in "
+                                    "facet, leaving unresolved facets only in "
                                     "residual_need"
                                 )
                 elif (
@@ -8722,7 +8860,8 @@ class LLMInformationPlanProposer:
             "and slot metadata from proposal_context. validation_feedback is null "
             "on the initial attempt. When it is an object, correct every field "
             "named by validation_feedback.validation_error using the supplied "
-            "invalid_output; returning the same rejected field is not a correction."
+            "invalid_output; preserve every unmentioned request and H_* field "
+            "byte-for-byte; returning the same rejected field is not a correction."
         )
         plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
         parent_ids = tuple(item.plan_id for item in parents)
@@ -8743,6 +8882,7 @@ class LLMInformationPlanProposer:
                     {
                         "invalid_output": dict(failed_value or {}),
                         "validation_error": str(failure),
+                        **_validation_obligations(failure, failed_value),
                     }
                     if attempt
                     else None
@@ -8766,6 +8906,33 @@ class LLMInformationPlanProposer:
                 )
             try:
                 _reject_fixed_semantics_redefinition(value)
+                if attempt and failed_value and failure is not None:
+                    obligations = _validation_obligations(failure, failed_value)
+                    must_change_paths = [
+                        path
+                        for obligation in obligations["obligations"]
+                        for path in obligation["must_change_paths"]
+                        if path.startswith(
+                            ("B.", "B[", "H_init", "H_reflect", "H_analyse")
+                        )
+                    ]
+                    if must_change_paths:
+                        drift_paths = _scoped_correction_drift_paths(
+                            failed_value,
+                            value,
+                            must_change_paths,
+                            preserve_descendant_list_shape=True,
+                        )
+                        if drift_paths:
+                            raise ValidationError(
+                                "information_plan_propose correction changed "
+                                "unrelated valid content outside "
+                                f"must_change_paths={must_change_paths}, "
+                                f"unrelated_changed_paths={drift_paths}. Preserve "
+                                "every unrelated B request and H_* field "
+                                "byte-for-byte"
+                            )
+                _validate_raw_information_plan_request_fields(value)
                 normalized = _normalize_information_plan_output(
                     value,
                     plan_id=plan_id,

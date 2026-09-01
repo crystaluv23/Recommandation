@@ -147,6 +147,15 @@ continue/finalize or next-need decision; and `H_analyse` must name evidence
 organization/weighting plus counter-evidence or uncertainty handling. Runtime
 rejects a copied output-contract example, placeholder-like wording, or a field
 missing its role semantics through the same single bounded proposal correction.
+Proposal correction is path-scoped whenever the initial defect identifies one or
+more raw `B/H_*` paths. Empty optional request strings identify their exact
+`B.requests[index].field`, except that `query: ""` is canonically identical to
+omitting the optional filter and is dropped without a model correction. A correction
+may change only diagnosed paths and preserves all other requests and role skills
+byte-for-byte. Naming a request child preserves the request-list shape; only a path to
+the request element itself permits adding or removing it. A whole-Plan constraint such
+as a missing market backbone or unchanged required exploration focus remains broad
+only when no narrower write path exists.
 
 The retrieval path is therefore created at runtime. Candidate Plans may change
 only these four fields plus their own id and parent references.
@@ -455,15 +464,20 @@ information-needs array, not elsewhere in state or in selector-authored prose, w
 the same Signal may remain applicable under a contextual reason. Evidence selected
 only for confirmation, contradiction,
 applicability, or combination does not trigger this progress requirement.
-For a partial answer, a `selection_reason` phrase shared with `residual_need` is a
-direct scope contradiction. Matching first uses an ordered three-word phrase; if word
-order differs, at least three shared non-temporal content terms are also sufficient.
-Correction feedback names the reason path and carries the normalized residual-only
-phrase plus `remove_terms_from_selection_reason`; correction must remove every listed
-residual-only term from that reason and name only the narrower answered facet, or
-remove the selection. This is correction-only diagnostic context: normal routing
-prompts do not pay for it, runtime does not author replacement prose, and the unchanged
-scope validator reruns.
+For a partial answer, `selection_reason` may repeat the research topic needed to make
+both the answered and residual facets intelligible. It may not claim an explicit
+alternative period value that `residual_need` retains. When the target coordinates
+two normalized temporal values with `and`, `or`, `versus`, or `vs`, and the residual
+removes one side while retaining the other, runtime treats the retained side as the
+residual facet and checks only that value rather than forbidding their shared topic.
+Otherwise,
+an ordered three-word phrase or at least three reordered non-temporal content terms
+shared by reason and residual remains a scope contradiction. Correction feedback names
+the reason path and carries only the conflicting normalized terms in
+`remove_terms_from_selection_reason`; correction must remove every listed term and
+name only the narrower answered facet, or remove the selection. This is
+correction-only diagnostic context: normal routing prompts do not pay for it, runtime
+does not author replacement prose, and the unchanged scope validator reruns.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound
 question retains only its unresolved facets. Runtime aggregates two directly

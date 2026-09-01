@@ -1,5 +1,32 @@
 # Status
 
+Current V91 repair (2026-09-01): post-H1 commit contract
+`4d7df7b...40223f` made six charged calls for `$0.015372` and three data requests,
+then rejected its only candidate in first-case Signal routing at authoritative
+pointers `round=0/cycle=0`; Registry stayed at v1 and Slow did not start. All six
+actual prompts, contexts, responses, correction feedback rows, and exact cache usage
+were inspected. H_init correctly removed one already answered analyst-target need and
+simultaneously compacted 25 items to 24 without unrelated change.
+
+The proposer initially returned the sole optional no-op `query: ""`; its paid
+correction added a query but also rewrote all three otherwise valid H_* skills. Empty
+optional query is now canonically omitted before domain construction, with the exact
+raw response still cached, so no correction call or new retrieval meaning is created.
+Non-string query failures carry their exact raw path, and Plan correction may change
+only diagnosed B/H_* paths. The shared correction diff now descends equal-length lists
+and permits list-size changes only when an element path itself is authorized, so a
+named child field does not authorize rewriting or deleting its whole object.
+
+Routing selected fresh guidance as a partial answer to a 2025/2026 guidance need and
+correctly retained 2026 as residual, but the old validator treated their shared
+`production cost guidance` topic as the unresolved facet. Correction was told to
+delete the topic words, then still claimed both years and failed. Runtime now permits
+the necessary shared topic while a mechanically visible `2025 and 2026` split makes
+only the retained `2026` illegal in the answer reason. Other residual branches retain
+the conservative three-term phrase/reordered-overlap gate. Correction no longer emits
+a pathless clause. Exact generalized fixtures and all 513 tests pass; successor
+ceilings are 294 attempts, `$17.68834240`, and 683 data requests.
+
 Current Slow-boundary repair (2026-09-01): the latest completed bootstrap artifact,
 v76b, was re-audited from its two persisted H1 requests/responses through H2, H3,
 Update, validation, Registry transition, and both authoritative pointers. H1 used two
