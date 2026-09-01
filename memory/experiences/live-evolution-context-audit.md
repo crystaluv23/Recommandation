@@ -1383,3 +1383,27 @@ case envelope even though the completed case used only 63,099 actual tokens. A f
 engineering ceiling must cover admitted initial context, its sole correction, and the
 finalization reserve under the reservation metric actually enforced. Raising that
 ceiling does not justify raising context, output, call, or cost caps.
+
+## Cross-stage control and applicability addendum (2026-09-01)
+
+Topic overlap is not resolution. A resolved answer that covers one facet of a
+compound question must not delete the remaining facets, and a shared title-cased
+project or product name identifies the subject without answering impact, capacity,
+timing, or market-share qualifiers. Require broad normalized content coverage and
+abstain when residual-scope markers remain. Keep real proper names in regression
+fixtures, never in production branches.
+
+Version-owned Signal applicability should be decided as early as its version contract
+allows. If required research phrases are absent or an exclusion tag is already known,
+omit the card before asking the routing model. Retain output validation as a defensive
+boundary, but do not pay for a correction whose invalidity was deterministic before
+the first call. Likewise, pass only compact prior conclusions back into routing;
+evidence literals and provenance remain locally persisted for audit and reflection.
+
+Runtime controls belong in a separate control-plane context, not in research evidence.
+Make the prediction timestamp, calendar horizon, and market baseline explicit, then
+check every role that can contradict them. An operating event outside the horizon can
+support a near-term prediction only through an authored expectation-transmission
+channel such as de-risking, bookings, approvals, or construction progress. When a
+price baseline is available, Predictor and post-hoc may distinguish absent forward
+projections but must not claim that no market data was supplied.

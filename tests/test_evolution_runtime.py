@@ -2915,7 +2915,15 @@ class ConcreteRoleAdapterTests(TestCase):
             )
             payload = selector_caller.calls[0]["payload"]
             cards = payload["available_signal_cards"]
-            self.assertEqual(len(cards), 14)
+            self.assertEqual(len(cards), 12)
+            self.assertNotIn(
+                "order_quality:v1",
+                {card["signal_ref"] for card in cards},
+            )
+            self.assertNotIn(
+                "customer_concentration:v1",
+                {card["signal_ref"] for card in cards},
+            )
             self.assertIn("category", cards[0])
             self.assertNotIn("learned_profile", cards[0])
             self.assertEqual(
@@ -3152,7 +3160,7 @@ class ConcreteRoleAdapterTests(TestCase):
             caller = ScriptedRoleCaller([incompatible, {"selections": []}])
 
             selection = LLMSignalRetrievalAgent(caller).select(
-                ("Clarify production status for the mature producer.",),
+                ("Clarify a new product transition for the mature producer.",),
                 snapshot,
                 {},
             )
@@ -3164,11 +3172,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 snapshot,
                 {},
             )
-            omitted_prior_tag = signal_selection("commercialization_status:v1")
-            omitted_prior_tag["selections"][0]["context_tags"] = ["general"]
-            prior_caller = ScriptedRoleCaller(
-                [omitted_prior_tag, {"selections": []}]
-            )
+            prior_caller = ScriptedRoleCaller([{"selections": []}])
             prior_classified = LLMSignalRetrievalAgent(prior_caller).select(
                 ("Check whether a distinct new product became commercial.",),
                 snapshot,
@@ -3203,29 +3207,23 @@ class ConcreteRoleAdapterTests(TestCase):
             prior_caller.calls[0]["payload"]["previous_context_tags"],
             ["mature_operations"],
         )
-        self.assertIn(
-            "earlier accepted case classification",
-            validation_error(prior_caller.calls[1]),
+        self.assertEqual(prior_classified.usage.llm_calls, 1)
+        self.assertNotIn(
+            "commercialization_status:v1",
+            {
+                card["signal_ref"]
+                for card in prior_caller.calls[0]["payload"][
+                    "available_signal_cards"
+                ]
+            },
         )
 
     def test_v63_order_quality_cannot_relabel_a_share_sale_as_an_order(self) -> None:
-        invalid = signal_selection("order_quality:v1")
-        invalid_item = invalid["selections"][0]
-        invalid_item["reason_code"] = "assess_applicability"
-        invalid_item["target_need_indices"] = []
-        invalid_item["answer_scope"] = None
-        invalid_item["residual_need"] = None
-        invalid_item["selection_reason"] = (
-            "Assess whether the Asante share-sale terms are binding and material."
-        )
-        invalid_item["applicability_hypothesis"] = (
-            "The sale may be evaluated as a binding transaction."
-        )
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
             snapshot = registry.freeze()
-            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+            caller = ScriptedRoleCaller([{"selections": []}])
 
             rejected_analogy = LLMSignalRetrievalAgent(caller).select(
                 (
@@ -3254,20 +3252,16 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
         self.assertEqual(rejected_analogy.value, ())
-        self.assertEqual(rejected_analogy.usage.llm_calls, 2)
-        order_card = next(
-            card
-            for card in caller.calls[0]["payload"]["available_signal_cards"]
-            if card["signal_ref"] == "order_quality:v1"
+        self.assertEqual(rejected_analogy.usage.llm_calls, 1)
+        self.assertNotIn(
+            "order_quality:v1",
+            {
+                card["signal_ref"]
+                for card in caller.calls[0]["payload"][
+                    "available_signal_cards"
+                ]
+            },
         )
-        self.assertIn(
-            "purchase order",
-            order_card["routing_required_research_phrases"],
-        )
-        error = validation_error(caller.calls[1])
-        self.assertIn("version-owned required research context", error)
-        self.assertIn("order_quality:v1", error)
-        self.assertIn("new analogy", error)
         self.assertEqual(
             tuple(item.signal_ref for item in applicable.value),
             ("order_quality:v1",),
@@ -3279,24 +3273,11 @@ class ConcreteRoleAdapterTests(TestCase):
         )
 
     def test_v66_mining_project_is_not_a_product_commercialization(self) -> None:
-        invalid = signal_selection("commercialization_status:v1")
-        invalid_item = invalid["selections"][0]
-        invalid_item["reason_code"] = "combine_evidence"
-        invalid_item["target_need_indices"] = []
-        invalid_item["answer_scope"] = None
-        invalid_item["residual_need"] = None
-        invalid_item["selection_reason"] = (
-            "Use updates on Tasiast and Lobo-Marte as commercialization evidence."
-        )
-        invalid_item["applicability_hypothesis"] = (
-            "Major mining projects may represent commercialization milestones."
-        )
-        invalid_item["context_tags"] = ["general", "project_driven"]
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
             snapshot = registry.freeze()
-            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+            caller = ScriptedRoleCaller([{"selections": []}])
 
             rejected_project = LLMSignalRetrievalAgent(caller).select(
                 (
@@ -3319,16 +3300,16 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
         self.assertEqual(rejected_project.value, ())
-        self.assertEqual(rejected_project.usage.llm_calls, 2)
-        card = next(
-            card
-            for card in caller.calls[0]["payload"]["available_signal_cards"]
-            if card["signal_ref"] == "commercialization_status:v1"
+        self.assertEqual(rejected_project.usage.llm_calls, 1)
+        self.assertNotIn(
+            "commercialization_status:v1",
+            {
+                card["signal_ref"]
+                for card in caller.calls[0]["payload"][
+                    "available_signal_cards"
+                ]
+            },
         )
-        self.assertIn("technology", card["routing_required_research_phrases"])
-        error = validation_error(caller.calls[1])
-        self.assertIn("version-owned required research context", error)
-        self.assertIn("commercialization_status:v1", error)
         self.assertEqual(
             tuple(item.signal_ref for item in applicable.value),
             ("commercialization_status:v1",),
@@ -3338,23 +3319,11 @@ class ConcreteRoleAdapterTests(TestCase):
     def test_v68_customer_concentration_requires_an_existing_customer_object(
         self,
     ) -> None:
-        invalid = signal_selection("customer_concentration:v1")
-        invalid_item = invalid["selections"][0]
-        invalid_item["reason_code"] = "combine_evidence"
-        invalid_item["target_need_indices"] = []
-        invalid_item["answer_scope"] = None
-        invalid_item["residual_need"] = None
-        invalid_item["selection_reason"] = (
-            "Use operating diversification as customer concentration context."
-        )
-        invalid_item["applicability_hypothesis"] = (
-            "Multiple mines may imply a diversified customer base."
-        )
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
             snapshot = registry.freeze()
-            caller = ScriptedRoleCaller([invalid, {"selections": []}])
+            caller = ScriptedRoleCaller([{"selections": []}])
 
             rejected_analogy = LLMSignalRetrievalAgent(caller).select(
                 (
@@ -3376,16 +3345,16 @@ class ConcreteRoleAdapterTests(TestCase):
             )
 
         self.assertEqual(rejected_analogy.value, ())
-        self.assertEqual(rejected_analogy.usage.llm_calls, 2)
-        card = next(
-            card
-            for card in caller.calls[0]["payload"]["available_signal_cards"]
-            if card["signal_ref"] == "customer_concentration:v1"
+        self.assertEqual(rejected_analogy.usage.llm_calls, 1)
+        self.assertNotIn(
+            "customer_concentration:v1",
+            {
+                card["signal_ref"]
+                for card in caller.calls[0]["payload"][
+                    "available_signal_cards"
+                ]
+            },
         )
-        self.assertIn("customer", card["routing_required_research_phrases"])
-        error = validation_error(caller.calls[1])
-        self.assertIn("version-owned required research context", error)
-        self.assertIn("customer_concentration:v1", error)
         self.assertEqual(
             tuple(item.signal_ref for item in applicable.value),
             ("customer_concentration:v1",),
@@ -3505,7 +3474,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("non-answer reason_code requires an empty", error)
         self.assertIn("selections[2].target_need_indices", error)
         self.assertIn("outside the supplied information_needs", error)
-        self.assertIn("version-owned required research context", error)
+        self.assertIn("outside supplied cards", error)
         self.assertIn("customer_concentration:v1", error)
         self.assertEqual(selection.usage.llm_calls, 2)
         self.assertEqual(
@@ -3679,8 +3648,8 @@ class ConcreteRoleAdapterTests(TestCase):
             "Are there recent insider or institutional purchases?",
             "What is the current production guidance and any updates on project "
             "timelines?",
-            "What are the key operational risks, such as geopolitical issues or "
-            "cost inflation?",
+            "What are the key customer-related operational risks, such as "
+            "geopolitical issues or cost inflation?",
         )
         guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
         guidance.pop("context_tags")
@@ -3727,7 +3696,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("selections[0].residual_need must be grounded", error)
         self.assertIn("selections[1] requires exactly", error)
         self.assertIn("selections[1].residual_need must remove", error)
-        self.assertIn("version-owned required research context", error)
+        self.assertNotIn("version-owned required research context", error)
         self.assertIn("version-owned direct-need phrase", error)
         must_change_paths = {
             path
@@ -3838,6 +3807,18 @@ class ConcreteRoleAdapterTests(TestCase):
                 "signal_id": "cash_reserves",
                 "version": 1,
                 "state": {"value": "positive", "confidence": 0.8},
+                "interpretation": {"summary": "Cash remained ample."},
+                "evidence": {
+                    "supporting": [
+                        {
+                            "document_id": "private-document-id",
+                            "exact_span": "A long literal must remain local.",
+                            "timestamp": "2025-01-01T00:00:00+00:00",
+                        }
+                    ],
+                    "counter": [],
+                },
+                "status": {"coverage": "sufficient"},
             }
 
             selection = LLMSignalRetrievalAgent(caller).select(
@@ -3860,7 +3841,13 @@ class ConcreteRoleAdapterTests(TestCase):
             )
             self.assertEqual(
                 payload["previous_signal_results"]["cash_reserves:v1"],
-                prior_result,
+                {
+                    "signal_id": "cash_reserves",
+                    "version": 1,
+                    "state": {"value": "positive", "confidence": 0.8},
+                    "interpretation": {"summary": "Cash remained ample."},
+                    "status": {"coverage": "sufficient"},
+                },
             )
 
     def test_signal_selector_skips_model_when_no_eligible_cards_remain(self) -> None:
@@ -4251,6 +4238,43 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("$23.98", prediction.value.key_reasons[0])
 
+    def test_v88_blind_predictor_rejects_false_market_data_absence(self) -> None:
+        invalid = {
+            "candidate_judgment": "unlikely",
+            "magnitude": None,
+            "confidence": {"level": "low"},
+            "key_reasons": ["A distant project is outside the six-month horizon."],
+            "uncertainties": [
+                "No financial projections or market data are provided."
+            ],
+            "session_id": "fixture-session",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["uncertainties"] = [
+            "Forward financial projections beyond the supplied price baseline are "
+            "not provided."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "mean_adjusted_close": 109.614,
+                    "trading_dates": ["2025-07-30"],
+                },
+                "final_research_state": {},
+            }
+        )
+
+        self.assertEqual(prediction.usage.llm_calls, 2)
+        self.assertIn(
+            "claimed market data was absent",
+            validation_error(caller.calls[1]),
+        )
+        self.assertIn("uncertainties[0]", validation_error(caller.calls[1]))
+        self.assertIn("supplied price baseline", prediction.value.uncertainties[0])
+
     def test_blind_predictor_repairs_legacy_binary_shape(self) -> None:
         valid = {
             "candidate_judgment": "unlikely",
@@ -4358,6 +4382,62 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn(
             "candidate_judgment_feedback",
             caller.calls[0]["system_prompt"],
+        )
+
+    def test_v88_posthoc_rejects_false_market_data_absence(self) -> None:
+        invalid = {
+            "prediction_outcome": {"correct": True},
+            "decision_drivers": [
+                "The distant project did not supply a near-term catalyst."
+            ],
+            "why_prediction_failed": [],
+            "misleading_signals": [],
+            "ignored_evidence": [],
+            "missing_information": [
+                "No financial projections or market data were available."
+            ],
+            "plan_issues": [],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["missing_information"] = [
+            "Forward financial projections beyond the supplied price baseline "
+            "were unavailable."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+        predictor = LLMBlindPredictor(caller)
+
+        reflection = predictor.reflect(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "mean_adjusted_close": 109.614,
+                    "trading_dates": ["2025-07-30"],
+                }
+            },
+            BlindPrediction(
+                is_surge=False,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("The catalyst was outside the horizon.",),
+                uncertainties=(),
+                session_id="anonymous-session",
+            ),
+            GroundTruth(1.2),
+        )
+
+        self.assertEqual(reflection.usage.llm_calls, 2)
+        self.assertIn(
+            "claimed market data was absent",
+            validation_error(caller.calls[1]),
+        )
+        self.assertIn(
+            "missing_information[0]",
+            validation_error(caller.calls[1]),
+        )
+        self.assertIn(
+            "supplied price baseline",
+            reflection.value.missing_information[0],
         )
 
     def test_posthoc_reflection_still_scans_original_context(self) -> None:
@@ -6664,6 +6744,7 @@ class ConcreteRoleAdapterTests(TestCase):
             "resolved_questions": ["What is the current construction progress?"],
             "open_questions": [],
             "next_information_needs": [
+                construction_need,
                 "What issuer operating milestone could change expectations?"
             ],
             "decision": "continue",
@@ -6695,8 +6776,7 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("already answered by visible Basic Info", error)
         self.assertIn("matching_projection_id='projection_analyst'", error)
         self.assertIn("next_information_needs[0]", error)
-        self.assertIn("contradicted its own resolved question", error)
-        self.assertIn("next_information_needs[1]", error)
+        self.assertNotIn("contradicted its own resolved question", error)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         visible_obligation = next(
             item
@@ -6709,7 +6789,10 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             initialized.value.next_information_needs,
-            ("What issuer operating milestone could change expectations?",),
+            (
+                construction_need,
+                "What issuer operating milestone could change expectations?",
+            ),
         )
 
     def test_v79_initialize_abstains_on_partial_basic_info_overlap(self) -> None:
@@ -6865,6 +6948,153 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn(
             "downstream Predictor receives this compact ResearchState",
             caller.calls[0]["system_prompt"],
+        )
+
+    def test_v88_initialize_preserves_named_project_unresolved_facets(self) -> None:
+        need = (
+            "What is the expected impact of the Southern Illinois Connector project "
+            "on Enbridge's overall capacity and market share in the Gulf Coast "
+            "region beyond the announced 200,000 barrels per day?"
+        )
+        state = {
+            "hypotheses": ["A new pipeline may support volume growth."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                "Has Enbridge announced any new pipeline projects to the Gulf Coast? "
+                "Yes, the Southern Illinois Connector with Energy Transfer LP."
+            ],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
+    def test_v88_initialize_preserves_explicit_residual_scope_need(self) -> None:
+        need = (
+            "What are the latest analyst price targets and ratings beyond UBS's "
+            "$27 target?"
+        )
+        state = {
+            "hypotheses": ["Further estimate revisions may support repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_analyst",
+                                "exact_text": (
+                                    "UBS increased its price target to $27 and kept "
+                                    "a Buy rating."
+                                ),
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
+    def test_v88_initialize_preserves_partly_resolved_compound_need(self) -> None:
+        need = (
+            "What is the company's production guidance for the remainder of 2025 "
+            "and 2026, and are there any updates on the Tasiast mill recovery and "
+            "its impact on full-year production?"
+        )
+        state = {
+            "hypotheses": ["Execution may determine further repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                "What is Kinross Gold's production guidance for 2025-2027?"
+            ],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
+    def test_v88_initialize_reframes_outside_horizon_event_causality(self) -> None:
+        invalid_hypothesis = (
+            "Wynn's UAE resort opening in 2027 will drive significant revenue "
+            "growth, supporting a doubling of adjusted share price within six months."
+        )
+        corrected_hypothesis = (
+            "Within-horizon construction progress and pre-opening bookings could "
+            "raise expectations for Wynn's 2027 UAE resort and support repricing."
+        )
+
+        def state(hypothesis: str) -> dict[str, Any]:
+            return {
+                "hypotheses": [hypothesis],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [
+                    "What construction or booking milestone could change expectations?"
+                ],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_hypothesis), state(corrected_hypothesis)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        error = validation_error(caller.calls[1])
+        self.assertIn("operating event outside the horizon", error)
+        self.assertIn("hypotheses[0]", error)
+        self.assertIn("2027", error)
+        self.assertIn("2026-01-31", error)
+        self.assertEqual(
+            caller.calls[0]["payload"]["evaluation_context"],
+            caller.calls[1]["payload"]["evaluation_context"],
+        )
+        self.assertEqual(
+            initialized.value.hypotheses,
+            (corrected_hypothesis,),
         )
 
     def test_v85_initialize_keeps_unknown_kind_feedback_in_one_obligation(
@@ -8088,9 +8318,7 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
             ),
         )
-        prior_need = (
-            "What are the specific production and cost guidance figures and risks?"
-        )
+        prior_need = "What is the production and cost guidance outlook?"
         previous = ResearchState(next_information_needs=(prior_need,))
         invalid = {
             "contradictions": [],
@@ -8130,7 +8358,7 @@ class ConcreteRoleAdapterTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("numeric quantities", error)
         self.assertIn("newly resolved a question", error)
-        self.assertIn("production cost guidance", error)
+        self.assertIn("cost guidance outlook", error)
         self.assertEqual(
             reflected.value.next_information_needs,
             ("What operating disruption could prevent delivery?",),

@@ -1854,6 +1854,7 @@ def execute_information_plan(
     )
     model_usage = AgentUsage()
     _set_request_token_budget(controller, limits.max_tokens)
+    _set_evaluation_context(controller, prediction_time)
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
     initial_state = initial_step.value
@@ -2145,6 +2146,14 @@ def _set_request_token_budget(component: Any, remaining: int) -> None:
     setter = getattr(component, "set_request_token_budget", None)
     if callable(setter):
         setter(max(0, int(remaining)))
+
+
+def _set_evaluation_context(component: Any, prediction_time: datetime) -> None:
+    """Expose the fixed point-in-time horizon to capable H_init adapters."""
+
+    setter = getattr(component, "set_evaluation_context", None)
+    if callable(setter):
+        setter(prediction_time)
 
 
 def _set_reflection_runtime_context(

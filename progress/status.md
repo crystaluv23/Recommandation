@@ -1,42 +1,35 @@
 # Status
 
-Current ordinary-loop repair (2026-09-01): immutable v87 contract
-`5ba23bd...e0a4cb` rejected its only candidate during the second case at authoritative
-pointers `round=0/cycle=0`. It used 15 charged attempts, `$0.02471952`, and three
-data-ledger rows. Case one completed the full Fast chain in 11 case calls; case two
-failed after H_init plus routing correction. Locked Test remained sealed and Registry
-stayed at its initial hash. The successor ceilings are 152 attempts, `$17.78063180`,
-and 692 data requests.
+Current ordinary-loop repair (2026-09-01): immutable v88 contract
+`d43f04e...850e2` rejected its only candidate during the third case at authoritative
+pointers `round=0/cycle=0`. It used 24 charged attempts, `$0.04663316`, and three
+data-ledger rows. The first two cases completed the full Fast chain; case three failed
+after H_init plus correction because a named but unanswered project was mistaken for
+an already-resolved need. Locked Test remained sealed and Registry stayed at its
+initial hash. The successor ceilings are 128 attempts, `$17.73399864`, and 689 data
+requests.
 
-All 15 requests/responses and the persisted but unsent soft-Signal correction request
-were inspected. The accepted Plan was target-scoped and kept H_analyse separate from
-Predictor. Case-one H_init retained material target, guidance, cash-flow, market, and
-operating evidence; its nine-obligation correction removed one already-visible target
-need, added all evidence kinds, and narrowed two unsupported years without losing the
-frontier. First routing selected guidance plus financing. Its guidance reason claimed
-`growth project updates` while its residual retained `updates on growth projects`, but
-the ordered-phrase-only validator missed the reordered contradiction. The soft batch
-then returned one internal-edge quote and one result lacking a version-required
-measured-object phrase. Its correction was correctly prepared but not transmitted:
-the 49,478-byte body plus 4,000 output reservation exceeded the remaining 41,323-token
-research budget after the admitted initial call.
+All 24 actual prompts, payloads, responses, and persisted contexts were inspected.
+The proposer syntax correction was necessary and produced a target-scoped Plan.
+Case-one H_init retained the material compact frontier; a large soft-Signal correction
+was now reachable under the 160k envelope and returned grounded guidance evidence.
+Two later routing rounds adopted financing evidence and then finalized a genuine empty
+match. Case two also reached Predictor and post-hoc through an empty Signal match.
+Case three's unresolved impact/capacity/market-share request shared only the named
+project with a resolved announcement, yet the stale-need gate demanded its deletion.
 
-The second routing round executed four deterministic Signals; only canonical
-`price_momentum_126d=0.951161` was available and H_reflect adopted only that claim.
-The third routing correctly returned empty, local no-match finalization preserved every
-state item, Predictor received baseline `23.982`, and an initially empty incorrect
-post-hoc response used one justified correction to attribute the false positive. Case
-two independently failed because correction added missing tags but did not remove
-`revenue/EBITDA/capital expenditures` from a reason whose residual retained them.
-
-Partial-scope validation now falls back from ordered three-word phrases to at least
-three shared singularized, non-temporal content terms. Failed correction feedback
-lists every normalized residual-only term to remove from the named reason, without
-adding tokens to normal routing prompts or authoring replacement prose. The default
-case ceiling is now 160,000 with the same 36,000 finalization reserve and unchanged
-context/output/call/cost caps, so an admitted full soft batch can reach its promised
-correction under conservative byte-based admission. Exact V87 shapes, all 497 tests,
-and repository lint pass.
+The audit also exposed four cross-case contract gaps. A generic resolved topic could
+collapse one facet of a compound need; routing repeatedly paid to select version-owned
+Signals whose required research phrases were absent; prior routing context carried
+full evidence arrays where only conclusions were specified; and a 2027 operating
+event was allowed to cause a six-month judgment while Predictor/post-hoc claimed no
+market data despite a runtime-provided five-day baseline. These are repaired without
+issuer/project branches: same-topic resolution requires broad content coverage and
+abstains on residual qualifiers or subject-only names; inapplicable version-owned
+cards are deterministically omitted before the LLM; prior results expose only state,
+interpretation, and status; and a separate runtime evaluation context enforces the
+six-calendar-month horizon plus baseline consistency across H_init, Predictor, and
+post-hoc. Exact V88 regressions, all 503 tests, and repository lint pass.
 
 Current ordinary-loop repair (2026-08-31): immutable v86 contract
 `1f8a0a1...994e4` rejected its only candidate during the first case at authoritative

@@ -4194,6 +4194,30 @@ _PREDICTOR_CURRENT_PRICE = re.compile(
     r"\s*(?:is|was|=|of|at|:)?\s*\$?\s*(\d+(?:\.\d+)?)",
     re.IGNORECASE,
 )
+_MARKET_DATA_ABSENCE = re.compile(
+    r"(?:\bno\b[^.;]{0,96}\bmarket data\b\s*"
+    r"(?:(?:is|are|was|were)\s+)?(?:available|provided|supplied)|"
+    r"\bno\s+market data\b(?:\s*[.;]|$)|"
+    r"\bmarket data\b[^.;]{0,32}\b(?:absent|missing|unavailable|"
+    r"not\s+(?:available|provided|supplied)))",
+    re.IGNORECASE,
+)
+
+
+def _market_data_absence_paths(
+    fields: Iterable[tuple[str, Iterable[str]]],
+    baseline: Any,
+) -> list[str]:
+    """Find blanket market-data absence claims contradicted by a baseline."""
+
+    if not isinstance(baseline, Mapping) or baseline.get("status") != "available":
+        return []
+    return [
+        f"{field_name}[{index}]"
+        for field_name, values in fields
+        for index, text in enumerate(values)
+        if _MARKET_DATA_ABSENCE.search(text)
+    ]
 
 
 def _blind_prediction_with_baseline(
@@ -4204,6 +4228,21 @@ def _blind_prediction_with_baseline(
 
     prediction = _blind_prediction_from_role(value)
     baseline = final_context.get("prediction_baseline")
+    absence_paths = _market_data_absence_paths(
+        (
+            ("key_reasons", prediction.key_reasons),
+            ("uncertainties", prediction.uncertainties),
+        ),
+        baseline,
+    )
+    if absence_paths:
+        raise ValidationError(
+            "BlindPrediction claimed market data was absent even though "
+            "final_context.prediction_baseline.status='available', "
+            f"invalid_fields={absence_paths}. Acknowledge the supplied price "
+            "baseline and narrow any remaining gap to forward projections or "
+            "another genuinely absent input"
+        )
     if not isinstance(baseline, Mapping) or baseline.get("status") != "available":
         return prediction
     expected = baseline.get("mean_adjusted_close")
@@ -4244,13 +4283,40 @@ _PREDICTION_REFLECTION_OUTPUT = _output_contract(
 
 
 def _prediction_reflection_from_role(
-    value: Mapping[str, Any], *, framework_correct: bool
+    value: Mapping[str, Any],
+    *,
+    framework_correct: bool,
+    compact_context: Mapping[str, Any] | None = None,
 ) -> PredictionSelfReflection:
     """Validate that every case retains concrete original-layer learning."""
 
     reflection = PredictionSelfReflection.from_dict(
         _reject_fixed_semantics_redefinition(value)
     )
+    baseline = (
+        compact_context.get("prediction_baseline")
+        if isinstance(compact_context, Mapping)
+        else None
+    )
+    absence_paths = _market_data_absence_paths(
+        (
+            ("decision_drivers", reflection.decision_drivers),
+            ("why_prediction_failed", reflection.why_prediction_failed),
+            ("misleading_signals", reflection.misleading_signals),
+            ("ignored_evidence", reflection.ignored_evidence),
+            ("missing_information", reflection.missing_information),
+            ("plan_issues", reflection.plan_issues),
+        ),
+        baseline,
+    )
+    if absence_paths:
+        raise ValidationError(
+            "PredictionSelfReflection claimed market data was absent even though "
+            "compact_context.prediction_baseline.status='available', "
+            f"invalid_fields={absence_paths}. Acknowledge the supplied price "
+            "baseline and narrow any remaining gap to forward projections or "
+            "another genuinely absent input"
+        )
     if framework_correct and not reflection.decision_drivers:
         raise ValidationError(
             "a framework-correct post-hoc reflection requires at least one specific "
@@ -5330,6 +5396,7 @@ _ANSWER_SIGNATURE_STOP_WORDS = frozenset(
     "had has have in is it of on or that the their there this to was were what "
     "when where which who with".split()
 )
+_ANSWER_RESIDUAL_SCOPE_MARKERS = frozenset({"additional", "beyond", "other"})
 
 
 def _answer_signature_tokens(value: str) -> tuple[str, ...]:
@@ -5459,6 +5526,10 @@ def _raw_initialize_need_issues(
                 strict=True,
             ):
                 candidate_terms = frozenset(candidate_tokens)
+                if (
+                    need_terms & _ANSWER_RESIDUAL_SCOPE_MARKERS
+                ) - candidate_terms:
+                    continue
                 matched = need_terms & candidate_terms
                 coverage = len(matched) / len(need_terms)
                 need_bigrams = {
@@ -5525,10 +5596,27 @@ _RUNTIME_EVALUATION_DEFINITION_INPUT = re.compile(
     r"\s+(?:terms?|definition)\b)",
     re.IGNORECASE,
 )
+_FUTURE_OPERATING_EVENT = re.compile(
+    r"\b(?:commerciali[sz](?:e|ed|ation)|complet(?:e|ed|ion)|commenc(?:e|ed|ement)|"
+    r"launch(?:ed|ing)?|open(?:ed|ing)?|operat(?:e|ed|ing|ion|ional)|"
+    r"produc(?:e|ed|ing|tion))\b",
+    re.IGNORECASE,
+)
+_FIXED_PRICE_OUTCOME = re.compile(
+    r"\b(?:2x|doubl(?:e|ed|es|ing)|re[- ]?pric(?:e|ed|ing)|share price|stock price)\b",
+    re.IGNORECASE,
+)
+_EXPECTATION_TRANSMISSION = re.compile(
+    r"\b(?:approval|bookings?|construction progress|de[- ]?risk(?:ed|ing)?|"
+    r"expectation|financing|forecast|guidance|market recognition|milestone|"
+    r"pre[- ]opening|progress toward)\b",
+    re.IGNORECASE,
+)
 
 
 def _raw_initialize_evaluation_boundary_issues(
     value: Mapping[str, Any],
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[str]:
     """Reject H_init questions about fixed runtime-owned evaluation inputs."""
 
@@ -5550,6 +5638,42 @@ def _raw_initialize_evaluation_boundary_issues(
                 f"invalid_field={path!r}, {path}={item!r}. Remove this item; do "
                 "not answer, source, or rewrite the fixed baseline/definition"
             )
+    if not isinstance(evaluation_context, Mapping):
+        return issues
+    raw_horizon_end = evaluation_context.get("horizon_end")
+    try:
+        horizon_end = date.fromisoformat(str(raw_horizon_end))
+    except ValueError:
+        return issues
+    raw_hypotheses = value.get("hypotheses")
+    if not isinstance(raw_hypotheses, list):
+        return issues
+    for index, item in enumerate(raw_hypotheses):
+        if not isinstance(item, str):
+            continue
+        future_years = sorted(
+            {
+                int(year)
+                for year in re.findall(r"\b20\d{2}\b", item)
+                if int(year) > horizon_end.year
+            }
+        )
+        if not future_years or not (
+            _FUTURE_OPERATING_EVENT.search(item)
+            and _FIXED_PRICE_OUTCOME.search(item)
+        ):
+            continue
+        if _EXPECTATION_TRANSMISSION.search(item):
+            continue
+        path = f"hypotheses[{index}]"
+        issues.append(
+            "research_controller_initialize directly conditioned the fixed "
+            "six-month price outcome on an operating event outside the horizon, "
+            f"invalid_field={path!r}, {path}={item!r}, "
+            f"future_event_years={future_years}, horizon_end={horizon_end.isoformat()!r}. "
+            "Reframe the hypothesis around within-horizon expectation evidence or "
+            "a de-risking milestone; do not assume the later event has occurred"
+        )
     return issues
 
 
@@ -5559,6 +5683,7 @@ def _raw_research_state_compaction_issues(
     previous_state: ResearchState | None = None,
     initialize: bool = False,
     basic_info: Mapping[str, Any] | None = None,
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[str]:
     """Aggregate provider-only decision-frontier limit violations."""
 
@@ -5566,7 +5691,12 @@ def _raw_research_state_compaction_issues(
     issues: list[str] = []
     if initialize:
         issues.extend(_raw_initialize_need_issues(value, basic_info or {}))
-        issues.extend(_raw_initialize_evaluation_boundary_issues(value))
+        issues.extend(
+            _raw_initialize_evaluation_boundary_issues(
+                value,
+                evaluation_context,
+            )
+        )
     counts: dict[str, int] = {}
     previous_counts: dict[str, int] = {}
     for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
@@ -5665,6 +5795,7 @@ def _normalize_research_state_output(
     previous_state: ResearchState | None = None,
     initialize: bool = False,
     basic_info: Mapping[str, Any] | None = None,
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
@@ -5675,6 +5806,7 @@ def _normalize_research_state_output(
         previous_state=previous_state,
         initialize=initialize,
         basic_info=basic_info,
+        evaluation_context=evaluation_context,
     )
     if not isinstance(evidence, list):
         if issues:
@@ -6965,7 +7097,12 @@ def _need_content_tokens(value: str) -> tuple[str, ...]:
     )
 
 
-def _titlecase_phrase_occurs(value: str, phrase: tuple[str, ...]) -> bool:
+def _titlecase_phrase_occurs(
+    value: str,
+    phrase: tuple[str, ...],
+    *,
+    require_all_words: bool = False,
+) -> bool:
     """Return whether a phrase begins with a title-cased source entity word."""
 
     words = tuple(
@@ -6977,7 +7114,12 @@ def _titlecase_phrase_occurs(value: str, phrase: tuple[str, ...]) -> bool:
     for index in range(len(words) - len(phrase) + 1):
         if normalized[index : index + len(phrase)] != phrase:
             continue
-        if words[index][:1].isupper():
+        phrase_words = words[index : index + len(phrase)]
+        if require_all_words and all(
+            word[:1].isupper() for word in phrase_words
+        ):
+            return True
+        if not require_all_words and words[index][:1].isupper():
             return True
     return False
 
@@ -6987,6 +7129,14 @@ def _shared_resolved_need_phrase(left: str, right: str) -> str | None:
 
     left_tokens = _need_content_tokens(left)
     right_tokens = _need_content_tokens(right)
+    left_terms = frozenset(left_tokens)
+    right_terms = frozenset(right_tokens)
+    if not left_terms:
+        return None
+    if (left_terms & _ANSWER_RESIDUAL_SCOPE_MARKERS) - right_terms:
+        return None
+    if len(left_terms & right_terms) / len(left_terms) < 0.75:
+        return None
     for size in (3, 2):
         if len(left_tokens) < size or len(right_tokens) < size:
             continue
@@ -7004,6 +7154,16 @@ def _shared_resolved_need_phrase(left: str, right: str) -> str | None:
             if size == 2 and _titlecase_phrase_occurs(
                 left, phrase
             ) and _titlecase_phrase_occurs(right, phrase):
+                continue
+            if size >= 3 and _titlecase_phrase_occurs(
+                left,
+                phrase,
+                require_all_words=True,
+            ) and _titlecase_phrase_occurs(
+                right,
+                phrase,
+                require_all_words=True,
+            ):
                 continue
             return " ".join(phrase)
     return None
@@ -7112,12 +7272,28 @@ class LLMResearchController:
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.request_token_budget: int | None = None
+        self.evaluation_context: dict[str, str] | None = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
         self.reflection_termination_trigger: RuntimeStopReason | None = None
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
+
+    def set_evaluation_context(self, prediction_time: datetime) -> None:
+        """Set the runtime-owned point-in-time horizon for the next H_init call."""
+
+        if (
+            prediction_time.tzinfo is None
+            or prediction_time.utcoffset() is None
+        ):
+            raise ValidationError("prediction_time must be timezone-aware")
+        normalized = prediction_time.astimezone(timezone.utc)
+        self.evaluation_context = {
+            "prediction_time": normalized.isoformat(),
+            "horizon": "six_calendar_months",
+            "horizon_end": _add_months(normalized.date(), 6).isoformat(),
+        }
 
     def set_reflection_runtime_context(
         self,
@@ -7135,6 +7311,17 @@ class LLMResearchController:
     def initialize(
         self, plan: InformationPlan, basic_info: Mapping[str, Any]
     ) -> AgentStep[ResearchState]:
+        evaluation_context = (
+            dict(self.evaluation_context)
+            if self.evaluation_context is not None
+            else None
+        )
+        payload: dict[str, Any] = {
+            "initial_research_skill": plan.initial_research_skill,
+            "basic_info": dict(basic_info),
+        }
+        if evaluation_context is not None:
+            payload["evaluation_context"] = evaluation_context
         state, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_initialize",
@@ -7149,7 +7336,10 @@ class LLMResearchController:
                 "event outside the six-month horizon may matter through expectation "
                 "repricing, but do not condition the six-month outcome on that later "
                 "event already having occurred; name the within-horizon evidence or "
-                "milestone that could change expectations instead. Every "
+                "milestone that could change expectations instead. "
+                "evaluation_context is runtime-owned control, not source evidence; "
+                "use its prediction_time and horizon_end to enforce that boundary. "
+                "Every "
                 "next_information_needs item must contain only facts absent from "
                 "Basic Info and from the evidence or beliefs you return. Do not ask "
                 "again for an already visible fact; when a compound question is "
@@ -7168,16 +7358,14 @@ class LLMResearchController:
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
-            payload={
-                "initial_research_skill": plan.initial_research_skill,
-                "basic_info": dict(basic_info),
-            },
+            payload=payload,
             parser=lambda value: _validate_research_state_refs(
                 ResearchState.from_dict(
                     _normalize_research_state_output(
                         value,
                         initialize=True,
                         basic_info=basic_info,
+                        evaluation_context=evaluation_context,
                     )
                 ),
                 phase="initialize",
@@ -7391,6 +7579,25 @@ def _signal_routing_research_context(
     }
 
 
+def _signal_routing_result_view(
+    value: SignalResult | Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return one prior conclusion without evidence literals or provenance."""
+
+    model_view = signal_result_model_view(value)
+    return {
+        key: model_view[key]
+        for key in (
+            "signal_id",
+            "version",
+            "state",
+            "interpretation",
+            "status",
+        )
+        if key in model_view
+    }
+
+
 class LLMSignalRetrievalAgent:
     """One-step selector over unexecuted compact cards in one frozen Registry."""
 
@@ -7429,65 +7636,8 @@ class LLMSignalRetrievalAgent:
                 "prior Signal routing context tags must use the frozen vocabulary"
             )
         normalized_prior_tags = tuple(dict.fromkeys(prior_context_tags))
-        allowed = set(allowed_refs)
-        cards = []
-        specs_by_ref = {spec.ref: spec for spec in signal_registry.specs}
-        for spec in signal_registry.specs:
-            if spec.ref not in allowed:
-                continue
-            card = {
-                "signal_ref": spec.ref,
-                "category": spec.category,
-                "description": spec.description,
-                "execution_type": spec.execution_type.value,
-            }
-            profile = dict(signal_registry.learned_profiles.get(spec.ref, {}))
-            if int(profile.get("unique_observations", 0) or 0) > 0:
-                card["learned_profile"] = profile
-            routing_phrases = spec.parameters.get("routing_need_phrases", ())
-            if routing_phrases:
-                card["routing_need_phrases"] = list(routing_phrases)
-            required_research_phrases = spec.parameters.get(
-                "routing_required_research_phrases", ()
-            )
-            if required_research_phrases:
-                card["routing_required_research_phrases"] = list(
-                    required_research_phrases
-                )
-            answer_need_phrases = spec.parameters.get(
-                "routing_answer_need_phrases", ()
-            )
-            if answer_need_phrases:
-                card["routing_answer_need_phrases"] = list(answer_need_phrases)
-            excluded_tags = spec.parameters.get(
-                "routing_excluded_context_tags", ()
-            )
-            if excluded_tags:
-                card["routing_excluded_context_tags"] = list(excluded_tags)
-            cards.append(card)
-        if not cards:
-            return AgentStep((), AgentUsage())
-
+        eligible = set(allowed_refs)
         research_context = _signal_routing_research_context(research_state)
-        selection_payload: dict[str, Any] = {
-            "available_signal_cards": cards,
-            "information_needs": list(information_needs),
-            "research_context": research_context,
-            "previous_context_tags": list(normalized_prior_tags),
-            "previous_signal_results": {
-                ref: signal_result_model_view(value)
-                for ref, value in (prior_signal_results or {}).items()
-            },
-            "learned_profile_default": "no committed observations",
-            "selection_caps": {"signals": 4, "llm_signals": 2},
-        }
-        explicit_empty_match_details = _explicit_signal_need_match_details(
-            information_needs,
-            (specs_by_ref[ref] for ref in allowed_refs),
-        )
-        explicit_empty_matches = tuple(
-            str(item["signal_ref"]) for item in explicit_empty_match_details
-        )
         normalized_information_needs = tuple(
             " "
             + re.sub(r"[^a-z0-9]+", " ", need.casefold()).strip()
@@ -7506,7 +7656,86 @@ class LLMSignalRetrievalAgent:
                 if text.strip()
             ),
         )
+        cards = []
+        available_specs: list[SignalSpec] = []
+        specs_by_ref = {spec.ref: spec for spec in signal_registry.specs}
+        for spec in signal_registry.specs:
+            if spec.ref not in eligible:
+                continue
+            required_research_phrases = tuple(
+                str(phrase)
+                for phrase in spec.parameters.get(
+                    "routing_required_research_phrases", ()
+                )
+            )
+            normalized_required = tuple(
+                " "
+                + re.sub(r"[^a-z0-9]+", " ", phrase.casefold()).strip()
+                + " "
+                for phrase in required_research_phrases
+            )
+            if required_research_phrases and not any(
+                phrase in research_item
+                for phrase in normalized_required
+                for research_item in normalized_research_items
+            ):
+                continue
+            excluded_tags = tuple(
+                str(tag)
+                for tag in spec.parameters.get(
+                    "routing_excluded_context_tags", ()
+                )
+            )
+            if set(normalized_prior_tags).intersection(excluded_tags):
+                continue
+            card = {
+                "signal_ref": spec.ref,
+                "category": spec.category,
+                "description": spec.description,
+                "execution_type": spec.execution_type.value,
+            }
+            profile = dict(signal_registry.learned_profiles.get(spec.ref, {}))
+            if int(profile.get("unique_observations", 0) or 0) > 0:
+                card["learned_profile"] = profile
+            routing_phrases = spec.parameters.get("routing_need_phrases", ())
+            if routing_phrases:
+                card["routing_need_phrases"] = list(routing_phrases)
+            if required_research_phrases:
+                card["routing_required_research_phrases"] = list(
+                    required_research_phrases
+                )
+            answer_need_phrases = spec.parameters.get(
+                "routing_answer_need_phrases", ()
+            )
+            if answer_need_phrases:
+                card["routing_answer_need_phrases"] = list(answer_need_phrases)
+            if excluded_tags:
+                card["routing_excluded_context_tags"] = list(excluded_tags)
+            cards.append(card)
+            available_specs.append(spec)
+        if not cards:
+            return AgentStep((), AgentUsage())
 
+        allowed = {spec.ref for spec in available_specs}
+        selection_payload: dict[str, Any] = {
+            "available_signal_cards": cards,
+            "information_needs": list(information_needs),
+            "research_context": research_context,
+            "previous_context_tags": list(normalized_prior_tags),
+            "previous_signal_results": {
+                ref: _signal_routing_result_view(value)
+                for ref, value in (prior_signal_results or {}).items()
+            },
+            "learned_profile_default": "no committed observations",
+            "selection_caps": {"signals": 4, "llm_signals": 2},
+        }
+        explicit_empty_match_details = _explicit_signal_need_match_details(
+            information_needs,
+            available_specs,
+        )
+        explicit_empty_matches = tuple(
+            str(item["signal_ref"]) for item in explicit_empty_match_details
+        )
         def parse(value: Mapping[str, Any]) -> tuple[SignalSelectionDecision, ...]:
             if set(value) != {"selections"} or not isinstance(
                 value.get("selections"), list
@@ -8004,6 +8233,9 @@ class LLMBlindPredictor:
                 "final_context.prediction_baseline. When naming the current or "
                 "baseline price or computing target upside, use that supplied mean; "
                 "do not relabel an older cited price observation as current. This "
+                "also means market data is not absent when prediction_baseline has "
+                "status=available; distinguish missing forward projections or other "
+                "specific gaps from the supplied price baseline. This "
                 "is a stock-price repricing outcome, not a requirement that revenue, "
                 "earnings, users, production, or another operating metric doubles; "
                 "use those measures only as evidence about possible share-price "
@@ -8073,6 +8305,7 @@ class LLMBlindPredictor:
                 original_prediction,
                 ground_truth,
             )
+            compact_context = _compact_posthoc_context(original_context)
             reflection, usage = _complete_parsed_role(
                 self.caller,
                 stage="blind_predictor_posthoc_reflect",
@@ -8093,19 +8326,24 @@ class LLMBlindPredictor:
                     "at least one of why_prediction_failed, misleading_signals, "
                     "ignored_evidence, missing_information, or plan_issues must name "
                     "a specific failure attribution; an all-empty incorrect "
-                    "reflection is invalid."
+                    "reflection is invalid. When compact_context.prediction_baseline "
+                    "has status=available, do not claim market data is absent or was "
+                    "not provided; distinguish missing forward projections or other "
+                    "specific gaps from the supplied price baseline."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _PREDICTION_REFLECTION_OUTPUT
                 ),
                 payload={
-                    "compact_context": _compact_posthoc_context(original_context),
+                    "compact_context": compact_context,
                     "original_prediction": original_prediction.to_dict(),
                     "revealed_ground_truth": ground_truth.to_dict(),
                     "framework_prediction_correct": framework_correct,
                     "candidate_judgment_feedback": judgment_feedback,
                 },
                 parser=lambda value: _prediction_reflection_from_role(
-                    value, framework_correct=framework_correct
+                    value,
+                    framework_correct=framework_correct,
+                    compact_context=compact_context,
                 ),
                 allow_outcomes=True,
                 # Validated enums may equal short ticker aliases such as LOW.

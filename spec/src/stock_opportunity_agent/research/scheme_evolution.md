@@ -202,6 +202,12 @@ that may be called binding or material. `commercialization_status` similarly req
 existing product/technology/prototype/commercialization wording; a mature mine or
 ordinary operating project is not a technical-product transition merely because the
 selector omits the `mature_operations` tag.
+Because both inputs are already accepted runtime state, cards whose required phrase
+is absent, or whose exclusion intersects a prior accepted context tag, are omitted
+before the LLM call. The post-output checks remain as fail-closed defenses for
+self-contradictory tags and malformed/out-of-card selections. This prefilter is not a
+semantic replacement selector: it can only remove a provably inapplicable card, and
+the LLM still chooses among every remaining card or returns empty.
 Runtime neither infers tags from case content nor substitutes another Signal. The
 correction must remove the incompatible selection, or return a genuinely different
 supported applicability classification; merely dropping a prior case classification
@@ -210,8 +216,9 @@ Unknown refs, missing fields, and invalid reason/role enums remain semantic fail
 with the single correction boundary. Zero-observation routing profiles are
 omitted per card; one top-level statement defines the absent profile as “no
 committed observations.” Prior compact Signal conclusions may be supplied to
-help choose complementary evidence, but document fingerprints and content hashes
-remain local executor state. The selector cannot interpret those hashes, already
+help choose complementary evidence, but their evidence arrays, literal spans,
+document ids, timestamps, document fingerprints, and content hashes remain local
+executor state. The selector cannot interpret those artifacts, already
 executed refs are absent from its cards, and the executor independently enforces
 fingerprint no-op after selection.
 Because routing has only one correction, runtime evaluates every structurally usable
@@ -462,17 +469,31 @@ the returned evidence/beliefs is not asked again, and a partly answered compound
 question retains only its unresolved facets. Runtime aggregates two directly
 decidable violations into the same bounded correction as structural defects: a need
 that shares a high-confidence normalized answer signature with one visible Basic Info
-projection, and a need that repeats an ordered three-word content phrase from the
-same state's `resolved_questions` (or a non-titlecase two-word topic phrase when no
-three-word phrase remains). Possessive remnants and current/recent/latest boilerplate
-are excluded, and a title-cased two-word issuer name is never treated as a resolved
-topic. The first gate requires broad term coverage and a
-shared distinctive phrase, reports the exact need path, matching projection id,
+projection, and a need for which one same-state `resolved_questions` item covers at
+least three quarters of the need's content terms and repeats an ordered three-word
+content phrase (or a non-titlecase two-word topic phrase when no three-word phrase
+remains). Possessive remnants and current/recent/latest boilerplate are excluded, and
+a title-cased two-word issuer name is never treated as a resolved topic. A
+three-or-more-word phrase title-cased word-for-word in both strings is likewise a
+subject entity such as a named project, not proof that its requested impact, capacity,
+timing, or economics were resolved. Both gates abstain when the need contains an
+explicit residual-scope qualifier such as `beyond`, `other`, or `additional` absent
+from the candidate. The Basic gate reports the exact need path, matching projection id,
 matched terms, and a bounded visible excerpt, and otherwise abstains; it never
 rewrites a question or attempts general semantic entailment. The correction must
 remove the answered need or retain only genuinely unresolved facets. This prevents a
 known answer from causing a useless Signal-routing call while keeping ambiguous
 partial matches model-authored.
+H_init also receives a separate runtime-owned evaluation context containing the
+point-in-time prediction timestamp and the fixed six-calendar-month horizon end. It
+is control state, not issuer evidence. A hypothesis may study a later operating event,
+but an explicit event year beyond that horizon cannot directly cause the within-
+horizon 2x/share-price outcome. It must instead name a within-horizon expectation
+transmission such as construction progress, approval, financing, bookings, guidance,
+or another de-risking milestone. Runtime rejects only the high-confidence case where
+an outside-horizon year, an operating-event term, and the fixed price outcome occur
+together without such a transmission; ordinary factual beliefs about a later project
+remain valid.
 When the number of needs has not decreased, runtime rejects any changed need that
 contains at least 90% of a prior need's normalized word set; appending a qualifier
 to the whole old question is not progress. Exact retention remains valid because it
@@ -480,9 +501,11 @@ explicitly means “still unanswered.” A shorter list may likewise retain unan
 prior needs after removing answered ones.
 To catch an internally contradictory stale need without pretending to understand
 general evidence semantics, runtime compares only newly added resolved questions.
-If one contains the same ordered content phrase of at least three words as an exact
-retained need after question boilerplate/function words are removed, the need must
-be removed or narrowed. Signal-claim quantity errors and this directly decidable
+If one broadly covers the exact retained need's content terms and contains the same
+ordered content phrase of at least three words after question boilerplate/function
+words are removed, the need must be removed or narrowed. A partial match such as
+`production guidance` does not erase still-unresolved recovery impact or risk facets.
+Signal-claim quantity errors and this directly decidable
 need-transition error are returned together in the one correction, so fixing the
 citation cannot reveal a second already-visible defect after correction is spent.
 Unavailable Signal rows in this and every other model-facing role use only the
@@ -565,7 +588,12 @@ mean whenever prose names the current or baseline price; local validation reject
 different historical observation mislabeled as current and gives the model one
 correction. The same compact baseline is retained in post-hoc context so a
 framework-correct label cannot turn an arithmetically inconsistent original reason
-into accepted learning.
+into accepted learning. When that baseline has `status=available`, neither the
+Predictor nor post-hoc reflection may make the blanket claim that market data was
+missing or not provided. They may identify absent forward projections or broader
+valuation inputs, but must distinguish those gaps from the supplied point-in-time
+price baseline; the one bounded correction enforces this before the claim becomes
+prediction rationale or Slow Loop learning.
 Complete Basic Info, Signal rounds, lineage, and Raw Info remain durable locally.
 If the deterministic projection cannot fit without dropping these semantic layers,
 the case fails before a Predictor attempt; runtime never weakens the byte-level

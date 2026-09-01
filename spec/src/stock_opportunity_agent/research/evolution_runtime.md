@@ -166,7 +166,10 @@ Insufficient post-hoc budget preserves the immutable prediction and
 fitness and writes a deterministic `budget_skipped` reflection.
 Routing payloads never expose prior document fingerprints or content hashes. They
 carry only remaining compact cards and prior compact Signal conclusions needed for
-semantic complementarity; executed-ref removal and fingerprint no-op are local
+semantic complementarity. A prior conclusion contains only Signal identity/version,
+value/confidence, coverage, and bounded interpretation summary; its evidence arrays,
+literal spans, document ids, and timestamps remain local. Executed-ref removal and
+fingerprint no-op are local
 deterministic controls. The canonical model payload names and emits those frozen
 available cards first, before case-dynamic needs/results, to increase provider
 prefix-cache reuse while retaining them as untrusted user data.
@@ -453,6 +456,12 @@ separate predictions. The four-way schema and deterministic mapping are fixed
 framework semantics, not evolvable Plan content or case-outcome disclosure.
 The active Predictor makes no dedicated token-probability request and persists
 no `P(YES)` or decision-margin fields.
+When `prediction_baseline.status=available`, runtime rejects a Predictor reason or
+uncertainty that broadly says market data is absent, unavailable, missing, or not
+provided. The same check applies to every post-hoc diagnostic array using its retained
+compact baseline. A model can still name missing forward estimates or other specific
+inputs, but cannot erase the price data it actually received and thereby manufacture
+a data-gap lesson.
 
 The Predictor adapter must persist the exact four-way `candidate_judgment`
 alongside its binary projection and reject an inconsistent pair. Once truth is
@@ -721,7 +730,17 @@ production-cost question.
 Its conservative two-word fallback also ignores a phrase that begins with the same
 title-cased entity token in both questions, after removing possessive `s`; an issuer
 name plus a generic metric such as `Kinross revenue` is context, not proof that both
-questions ask the same unresolved facet.
+questions ask the same unresolved facet. Any same-state resolved-question match must
+also cover at least three quarters of the need's normalized content terms. Therefore
+`production guidance` alone cannot collapse a compound Tasiast recovery-impact need,
+and `construction progress` cannot collapse a remaining opening-timeline facet.
+A three-or-more-word phrase is also ignored when every word is title-cased in both
+questions: `Southern Illinois Connector` identifies the subject but does not answer a
+separate capacity or market-share question. Visible Basic matching similarly abstains
+when the need has an explicit residual-scope qualifier (`beyond`, `other`, or
+`additional`) absent from the candidate; one known target does not answer a request
+for other targets. The same qualifier abstention applies to a same-state resolved
+question.
 Generic subject tokens such as `company`, `issuer`, and their plurals are removed
 before overlap matching, so the phrase `company revenue` cannot collapse a broad
 recent-revenue answer into a still-unresolved quarter comparison plus EBITDA need.
@@ -742,6 +761,15 @@ An event outside the horizon may matter through a point-in-time expectation chan
 but H_init must not condition the six-month outcome on that later event already
 having occurred; it instead names the evidence or milestone that could change
 expectations inside the horizon.
+Runtime supplies `evaluation_context` separately from Basic Info with the exact
+prediction timestamp, fixed horizon kind, and horizon-end date. This control object is
+not source evidence. For a conservative enforceable boundary, an H_init hypothesis
+that combines an explicit event year later than the horizon-end year, an operating-
+event term, and a 2x/share-price outcome is rejected unless it names a present
+expectation or within-horizon transmission (for example progress, approval, financing,
+bookings, guidance, forecast, or de-risking milestone). Current beliefs may still
+record the later event date, and hypotheses may use it through a named expectation
+channel.
 
 For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
 literal from one supplied projection: it may not use ellipses, join distant rows,
@@ -1054,6 +1082,16 @@ be relabeled as an order-quality problem by analogy. `commercialization_status:v
 requires an existing product, technology, prototype, or commercialization phrase so
 an established mining or operating project cannot be relabeled as a previously
 non-commercial technical product merely by omitting `mature_operations`.
+
+Before transmitting the selector request, runtime deterministically omits any card
+whose required phrase is absent from the already accepted information needs and
+ResearchState projection. It also omits a card whose version-owned exclusion
+intersects a context tag accepted in an earlier routing round. These are monotone
+applicability facts, so exposing such a card can only invite a known-invalid choice
+and a useless correction. Current-output tags are still model-authored and therefore
+remain subject to the post-output validator; runtime never infers a tag or picks a
+replacement Signal. Exact-empty-match enforcement is computed only over the cards
+actually supplied to the model.
 
 The one routing correction receives one aggregated diagnostic pass. For every
 structurally usable returned item, runtime reports target-index shape/bounds and
