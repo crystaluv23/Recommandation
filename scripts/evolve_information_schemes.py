@@ -715,7 +715,7 @@ def freeze_run(
                 "max_signals_per_round": 4,
                 "max_llm_signals_per_round": 2,
                 "max_llm_calls": 40,
-                "max_tokens": 120_000,
+                "max_tokens": 160_000,
                 "finalization_token_reserve": 36_000,
                 "basic_info_context_chars": 32_000,
                 "signal_batch_context_chars": 32_000,

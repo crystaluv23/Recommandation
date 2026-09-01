@@ -3544,6 +3544,134 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("answer_scope=full only", caller.calls[0]["system_prompt"])
         self.assertIn("at most one answer_need selection per target", caller.calls[0]["system_prompt"])
 
+    def test_v87_routing_names_residual_only_terms_in_correction(self) -> None:
+        information_needs = (
+            "What is current revenue and EBITDA from operations?",
+            "What is management's guidance for 2025 and 2026 regarding revenue, "
+            "EBITDA, and capital expenditures?",
+            "What are current analyst price targets?",
+            "What is the current construction status?",
+        )
+        financing = signal_selection("financing_listing_action:v1")[
+            "selections"
+        ][0]
+        financing.pop("context_tags")
+        financing["reason_code"] = "combine_evidence"
+        financing["expected_role"] = "coverage"
+        financing["target_need_indices"] = [3]
+        financing["answer_scope"] = None
+        financing["residual_need"] = None
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance.pop("context_tags")
+        guidance["target_need_indices"] = [1]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What are the numerical ranges for 2025 and 2026 revenue, EBITDA, "
+            "and capital expenditures?"
+        )
+        guidance["selection_reason"] = (
+            "Directly addresses management guidance regarding revenue, EBITDA, "
+            "and capital expenditures."
+        )
+        corrected_financing = json.loads(json.dumps(financing))
+        corrected_financing["context_tags"] = ["capital_intensive"]
+        corrected_guidance = json.loads(json.dumps(guidance))
+        corrected_guidance["context_tags"] = ["general"]
+        corrected_guidance["selection_reason"] = (
+            "Checks whether management issued fresh guidance that strengthened "
+            "the growth path."
+        )
+        caller = ScriptedRoleCaller(
+            [
+                {"selections": [financing, guidance]},
+                {"selections": [corrected_financing, corrected_guidance]},
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                information_needs,
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=information_needs
+                ),
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        overlap_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "claims a facet retained" in item["instruction"]
+        )
+        self.assertEqual(
+            overlap_obligation["must_change_paths"],
+            ["selections[1].selection_reason"],
+        )
+        self.assertEqual(
+            overlap_obligation["remove_terms_from_selection_reason"],
+            ["revenue", "ebitda", "capital", "expenditure"],
+        )
+        self.assertIn(
+            "Remove every listed residual-only term",
+            overlap_obligation["instruction"],
+        )
+        self.assertEqual(
+            selection.value[1].selection_reason,
+            corrected_guidance["selection_reason"],
+        )
+
+    def test_v87_routing_catches_reordered_residual_scope(self) -> None:
+        target_need = (
+            "What is production and cost guidance for 2025-2026, and what are "
+            "the updates on growth projects?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What are the specific updates on growth projects for 2025-2026?"
+        )
+        guidance["selection_reason"] = (
+            "Directly covers production and cost guidance for 2025-2026 and "
+            "growth project updates."
+        )
+        corrected = json.loads(json.dumps(guidance))
+        corrected["selection_reason"] = (
+            "Answers only the production and cost guidance facet."
+        )
+        caller = ScriptedRoleCaller(
+            [{"selections": [guidance]}, {"selections": [corrected]}]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=(target_need,)
+                ),
+            )
+
+        overlap_obligation = next(
+            item
+            for item in caller.calls[1]["payload"]["validation_feedback"][
+                "obligations"
+            ]
+            if "claims a facet retained" in item["instruction"]
+        )
+        self.assertEqual(
+            overlap_obligation["remove_terms_from_selection_reason"],
+            ["growth", "project", "update"],
+        )
+        self.assertEqual(
+            selection.value[0].selection_reason,
+            corrected["selection_reason"],
+        )
+
     def test_v77_routing_aggregates_semantics_behind_missing_tags(self) -> None:
         information_needs = (
             "What are the latest analyst earnings estimates and revisions?",

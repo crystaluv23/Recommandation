@@ -319,6 +319,12 @@ and total-byte violation before the sole correction; it never locally drops a re
 item. An incomplete JSON object that reaches its frozen output-token ceiling receives
 explicit truncation feedback, so the correction spends its one attempt on a compact
 complete object rather than guessing which semantic field failed.
+The default per-case model ceiling is 160,000 tokens with a separate 36,000-token
+finalization reserve. Admission still uses the conservative exact request-byte plus
+output reservation, and the higher ceiling changes no role context/output/call/cost
+cap; it prevents a paid 32,000-character soft-Signal attempt from making its own sole
+correction unreachable solely because prior H_init and routing consumed their normal
+reported tokens.
 Correction feedback retains the exact aggregated error text and also projects its
 semicolon-delimited error segments into numbered `obligations` with named field paths.
 The role must satisfy every row rather than stopping after the first easy shape fix.
@@ -442,6 +448,15 @@ information-needs array, not elsewhere in state or in selector-authored prose, w
 the same Signal may remain applicable under a contextual reason. Evidence selected
 only for confirmation, contradiction,
 applicability, or combination does not trigger this progress requirement.
+For a partial answer, a `selection_reason` phrase shared with `residual_need` is a
+direct scope contradiction. Matching first uses an ordered three-word phrase; if word
+order differs, at least three shared non-temporal content terms are also sufficient.
+Correction feedback names the reason path and carries the normalized residual-only
+phrase plus `remove_terms_from_selection_reason`; correction must remove every listed
+residual-only term from that reason and name only the narrower answered facet, or
+remove the selection. This is correction-only diagnostic context: normal routing
+prompts do not pay for it, runtime does not author replacement prose, and the unchanged
+scope validator reruns.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound
 question retains only its unresolved facets. Runtime aggregates two directly

@@ -1400,7 +1400,7 @@ class RuntimeLimits:
     max_signal_rounds: int = 8
     max_signal_calls: int = 20
     max_llm_calls: int = 30
-    max_tokens: int = 100_000
+    max_tokens: int = 160_000
     max_cost: float = 20.0
     max_signals_per_round: int = 4
     max_llm_signals_per_round: int = 2

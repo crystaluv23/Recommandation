@@ -919,6 +919,12 @@ class SignalLibraryTests(TestCase):
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_default_case_budget_keeps_soft_signal_correction_envelope(self) -> None:
+        limits = RuntimeLimits()
+
+        self.assertEqual(limits.max_tokens, 160_000)
+        self.assertEqual(limits.finalization_token_reserve, 36_000)
+
     def test_slow_role_identity_guards_exclude_derived_protocol_words(self) -> None:
         cases = tuple(
             EvolutionCase(

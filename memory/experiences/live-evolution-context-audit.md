@@ -1365,3 +1365,21 @@ questions and next information needs. Aggregate feedback may safely name a bound
 duplicate removal path when redundancy is mechanically exact, while keeping it
 non-binding and rerunning every normal validator. Do not infer topical or economic
 redundancy locally, and do not mutate the ResearchState.
+
+## Partial-scope order and correction-envelope addendum (2026-09-01)
+
+A partial Signal answer can claim its residual even when the same content words change
+order. V87 wrote `growth project updates` in `selection_reason` and retained `updates
+on growth projects` in `residual_need`; ordered n-grams missed it and allowed a soft
+call that could not make target progress. After ordered matching, conservatively catch
+at least three shared singularized non-temporal content terms. Put those terms only in
+failed-call feedback and require model-authored narrower reason prose; do not enlarge
+every normal routing prompt or locally rewrite scope.
+
+Audit correction reachability separately from actual token use. The same soft call's
+47,234-byte initial request fit the remaining conservative budget, but after 12,789
+reported tokens its 49,478-byte correction plus output reservation exceeded the old
+case envelope even though the completed case used only 63,099 actual tokens. A frozen
+engineering ceiling must cover admitted initial context, its sole correction, and the
+finalization reserve under the reservation metric actually enforced. Raising that
+ceiling does not justify raising context, output, call, or cost caps.

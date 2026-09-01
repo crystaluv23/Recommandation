@@ -4793,6 +4793,9 @@ _VALIDATION_MISSING_QUANTITY_LITERALS = re.compile(
 _VALIDATION_SAME_CLAIM_PATHS = re.compile(
     r"\bsame_claim_evidence_paths=(\[[^\n]*\])(?=\. Change or)"
 )
+_VALIDATION_ROUTING_REMOVE_TERMS = re.compile(
+    r"\bremove_terms_from_selection_reason=(\[[^\]]*\])"
+)
 
 
 def _quantitative_copy_candidates(
@@ -4936,6 +4939,22 @@ def _validation_obligations(
         missing_match = _VALIDATION_MISSING_QUANTITY_GROUPS.search(segment)
         missing_literal_match = _VALIDATION_MISSING_QUANTITY_LITERALS.search(segment)
         same_claim_match = _VALIDATION_SAME_CLAIM_PATHS.search(segment)
+        routing_remove_terms_match = _VALIDATION_ROUTING_REMOVE_TERMS.search(
+            segment
+        )
+        if routing_remove_terms_match:
+            try:
+                routing_remove_terms = json.loads(
+                    routing_remove_terms_match.group(1)
+                )
+            except json.JSONDecodeError:
+                routing_remove_terms = []
+            if routing_remove_terms and all(
+                isinstance(item, str) for item in routing_remove_terms
+            ):
+                obligation["remove_terms_from_selection_reason"] = (
+                    routing_remove_terms
+                )
         if missing_match and same_claim_match:
             try:
                 missing_groups = json.loads(missing_match.group(1))
@@ -6743,14 +6762,23 @@ def _shared_distinctive_phrase(
     *,
     minimum_words: int = 3,
 ) -> str | None:
-    """Return one shared consecutive topic phrase, ignoring routing filler words."""
+    """Return one shared ordered or reordered topic, ignoring routing filler."""
 
     def words(value: str) -> tuple[str, ...]:
-        return tuple(
-            token
-            for token in re.findall(r"[a-z0-9]+", value.casefold())
-            if token not in _NEED_RESIDUAL_GENERIC_TOKENS
-        )
+        normalized: list[str] = []
+        for token in re.findall(r"[a-z0-9]+", value.casefold()):
+            if token in _NEED_RESIDUAL_GENERIC_TOKENS:
+                continue
+            if len(token) > 4 and token.endswith("ies"):
+                token = token[:-3] + "y"
+            elif (
+                len(token) > 4
+                and token.endswith("s")
+                and not token.endswith(("is", "ss", "us"))
+            ):
+                token = token[:-1]
+            normalized.append(token)
+        return tuple(normalized)
 
     left_words = words(left)
     right_words = words(right)
@@ -6766,6 +6794,16 @@ def _shared_distinctive_phrase(
             phrase = left_words[start : start + size]
             if phrase in right_ngrams:
                 return " ".join(phrase)
+    right_word_set = set(right_words)
+    reordered_overlap: list[str] = []
+    for token in left_words:
+        if token in reordered_overlap or token not in right_word_set:
+            continue
+        if _TEMPORAL_TOPIC_TOKEN.fullmatch(token):
+            continue
+        reordered_overlap.append(token)
+    if len(reordered_overlap) >= minimum_words:
+        return " ".join(reordered_overlap)
     return None
 
 
@@ -7666,12 +7704,17 @@ class LLMSignalRetrievalAgent:
                                 item["selection_reason"], residual_need
                             )
                             if shared_residual_phrase:
+                                remove_terms = shared_residual_phrase.split()
                                 validation_errors.append(
                                     f"{path}.selection_reason claims a facet retained "
                                     "by residual_need via shared phrase "
-                                    f"{shared_residual_phrase!r}. Name only the "
-                                    "answered facet and leave unresolved facets only "
-                                    "in residual_need"
+                                    f"{shared_residual_phrase!r}, "
+                                    "remove_terms_from_selection_reason="
+                                    f"{json.dumps(remove_terms, separators=(',', ':'))}. "
+                                    "Remove every listed residual-only term from "
+                                    "selection_reason and name only the answered "
+                                    "facet; leave unresolved facets only in "
+                                    "residual_need"
                                 )
                 elif (
                     item["answer_scope"] is not None

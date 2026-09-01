@@ -148,6 +148,13 @@ Before cache lookup can fall through to attempt reservation or network I/O,
 runtime computes canonical UTF-8 bytes for the exact provider request and adds
 the frozen output-token ceiling as a conservative case-token reservation. A
 request whose reservation exceeds the remaining case budget is never sent.
+The default frozen case ceiling is 160,000 tokens while the finalization reserve
+remains 36,000. The ceiling is deliberately above ordinary reported-token use because
+request admission conservatively counts one UTF-8 byte as one token. It must leave room
+for the single correction of an admitted full 32,000-character soft-Signal batch after
+H_init and routing; otherwise the initial paid call can be accepted for transmission
+but its promised correction can never be sent. Raising this engineering ceiling does
+not raise source-context, role-output, call-count, or cost ceilings.
 Adaptive research must preserve 36,000 tokens for any reflectable terminal batch
 plus the Predictor. Insufficient routing budget, or insufficient Signal budget
 before any result exists, ends adaptive research with the current `continue` state
@@ -654,6 +661,15 @@ semantic validators run again once. The shared correction prefix contains only t
 role-neutral contract. ResearchState-only repair advice for evidence quantities and
 claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated roles
 must not pay for or be distracted by evidence fields they cannot return.
+When partial Signal routing claims a facet retained by its residual, its correction
+obligation additionally carries the normalized shared phrase and
+`remove_terms_from_selection_reason`. The selector must omit every listed residual-only
+term from the named reason and describe only the narrower answered facet, or remove the
+selection. These fields exist only in failed-call feedback; runtime does not write the
+replacement and does not enlarge every normal routing prompt. The contradiction gate
+prefers a shared ordered three-word phrase but also catches reordered overlap containing
+at least three shared non-temporal content terms, so `growth project updates` cannot be
+claimed while `updates on growth projects` remains unresolved.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
 therefore carries `current_total_items`, `maximum_total_items`,
