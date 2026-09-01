@@ -1,5 +1,27 @@
 # Status
 
+Current Slow-boundary repair (2026-09-01): the latest completed bootstrap artifact,
+v76b, was re-audited from its two persisted H1 requests/responses through H2, H3,
+Update, validation, Registry transition, and both authoritative pointers. H1 used two
+calls and `$0.00246036`; H2 was the intended deterministic canonical-applicability
+stage with zero model calls. All three H1 candidates then lacked enough
+hypothesis-relevant point-in-time packets in both fixed groups, so H3 durably recorded
+`not_called_evidence_unavailable` and Update recorded `no_actionable_target` with
+`model_called=false`. The Slow pointer advanced to one, the Fast pointer stayed zero,
+and Registry v1/hash stayed unchanged through an applied empty transition.
+
+The actual H1 content exposed cross-field construct drift: hypothesis identity and
+query requested guidance or analyst revisions while `expected_positive_pattern`
+could compare generic revenue growth or prior-period cost instead. H1 now derives a
+normalized candidate construct from the meaningful terms shared by hypothesis id and
+query, requires the expected pattern to retain at least half, and normalizes ordinary
+revision word forms. A bounded correction may change only diagnosed paths and cannot
+rewrite another valid hypothesis; identity-leaking outputs remain withheld and are
+fully revalidated rather than echoed for byte comparison. The H1 prompt states the
+same invariant to avoid preventable correction calls. All 510 tests pass. The frozen
+zero-attempt v90 contract predates this runtime change and is superseded; the next
+external run must use a new post-commit contract.
+
 Current ordinary-loop repair (2026-09-01): immutable v89 contract
 `e0ba705...c601aa` rejected its only candidate during the second case at authoritative
 pointers `round=0/cycle=0`. It used 22 charged attempts, `$0.03028424`, and three

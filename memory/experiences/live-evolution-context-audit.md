@@ -1430,3 +1430,22 @@ when one Predictor reason is invalid, the correction must preserve judgment,
 magnitude, confidence, unrelated reasons, and uncertainties byte-for-byte. Otherwise
 a validator false positive can manufacture a different prediction and then teach the
 wrong post-hoc lesson.
+
+## Cross-field hypothesis construct addendum (2026-09-01)
+
+A structured hypothesis can pass every per-field shape check while changing the
+feature between fields. In the actual v76b H1 response, identities and retrieval
+queries named guidance comparisons or analyst estimate revisions, while expected
+patterns compared generic revenue growth or prior-period cost trends. This is not an
+H3 evidence failure: H3 would be asked to retrieve one construct and judge another.
+Derive a deterministic candidate construct from normalized topic terms shared by the
+hypothesis id and query, and require the expected pattern to retain a bounded portion
+of it. Normalize ordinary inflections such as revise/revised/revisions so the guard
+checks meaning rather than spelling.
+
+Correction locality must apply to hypothesis portfolios as well as Predictor output.
+When validation names one field in one hypothesis, preserve every other field and
+portfolio item byte-for-byte. If protected identity leakage requires withholding the
+rejected object, byte comparison is impossible; keep the no-echo boundary and rerun
+all semantic validators on the replacement instead of exposing the identity merely
+to enforce scope.

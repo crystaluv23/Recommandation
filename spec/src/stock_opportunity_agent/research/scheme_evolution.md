@@ -1283,7 +1283,10 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    issuer condition, punctuation payload, or different group.
    `query` contains only a concise two-to-eight-term retrieval topic; it is not a
    `Find companies where ...` instruction, numeric filter, or second time-window
-   field. Applicability correction identifies the unsupported rule/value and
+   field. After generic-term normalization, runtime derives the candidate construct
+   from topic terms shared by `hypothesis_id` and `query`; the expected pattern keeps
+   at least half, rounded up, so H1 cannot retrieve one construct while comparing a
+   different one. Applicability correction identifies the unsupported rule/value and
    replaces the entire field with one canonical rule from the supplied inventory.
    A stable card whose exact version
    has zero selection events and zero unique observations omits its otherwise

@@ -1537,6 +1537,120 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("actual H2 profile contract", error)
         self.assertNotIn("market data coverage", caller.calls[1]["system_prompt"])
 
+    def test_signal_h1_keeps_expected_pattern_on_retrieved_construct(self) -> None:
+        invalid = {
+            "hypotheses": [
+                {
+                    "hypothesis_id": "analyst_estimate_revision_outcome",
+                    "statement": (
+                        "Analyst estimate revisions distinguish the fixed "
+                        "Discovery groups."
+                    ),
+                    "applicability": "all_ready_issuers",
+                    "expected_positive_pattern": (
+                        "Positive cases show stronger revenue growth than control "
+                        "cases."
+                    ),
+                    "source_types": ["news"],
+                    "query": "analyst revenue earnings estimates revised",
+                    "falsifiers": [
+                        "Positive and control groups show overlapping or reversed "
+                        "estimate revisions."
+                    ],
+                    "lookback_days": 365,
+                }
+            ]
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["hypotheses"][0]["expected_positive_pattern"] = (
+            "Positive cases show more favorable analyst estimate revisions than "
+            "control cases."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(
+            result.value[0].hypothesis_id,
+            invalid["hypotheses"][0]["hypothesis_id"],
+        )
+        error = validation_error(caller.calls[1])
+        self.assertIn("candidate construct", error)
+        self.assertIn("same candidate construct", caller.calls[0]["system_prompt"])
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "must_change_paths"
+            ],
+            ["hypotheses[0].expected_positive_pattern"],
+        )
+
+    def test_signal_h1_rejects_correction_drift_in_another_hypothesis(self) -> None:
+        invalid_hypothesis = {
+            "hypothesis_id": "analyst_estimate_revision_outcome",
+            "statement": (
+                "Analyst estimate revisions distinguish the fixed Discovery groups."
+            ),
+            "applicability": "all_ready_issuers",
+            "expected_positive_pattern": (
+                "Positive cases show stronger revenue growth than control cases."
+            ),
+            "source_types": ["news"],
+            "query": "analyst revenue earnings estimates revised",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed estimate "
+                "revisions."
+            ],
+            "lookback_days": 365,
+        }
+        valid_hypothesis = {
+            "hypothesis_id": "production_cost_gap",
+            "statement": (
+                "Production costs distinguish the fixed Discovery groups."
+            ),
+            "applicability": "all_ready_issuers",
+            "expected_positive_pattern": (
+                "Positive cases show lower production costs than control cases."
+            ),
+            "source_types": ["10-q"],
+            "query": "production cost guidance",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed "
+                "production costs."
+            ],
+            "lookback_days": 365,
+        }
+        invalid = {"hypotheses": [invalid_hypothesis, valid_hypothesis]}
+        drifted = json.loads(json.dumps(invalid))
+        drifted["hypotheses"][0]["expected_positive_pattern"] = (
+            "Positive cases show more favorable analyst estimate revisions than "
+            "control cases."
+        )
+        drifted["hypotheses"][1]["statement"] = (
+            "Production cost guidance distinguishes the fixed Discovery groups."
+        )
+        caller = ScriptedRoleCaller([invalid, drifted])
+
+        with self.assertRaisesRegex(
+            CandidateExecutionRejected,
+            "correction changed unrelated valid content",
+        ):
+            LLMSignalMiningModel(caller).propose_hypotheses(
+                {
+                    "limits": {"hypothesis_limit": 3},
+                    "available_raw_source_types": ["news", "10-q"],
+                }
+            )
+
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        )
+
     def test_signal_h1_rejects_membership_style_group_redefinition(self) -> None:
         base = {
             "hypothesis_id": "consensus_revenue_gap",
@@ -2272,6 +2386,7 @@ class ConcreteRoleAdapterTests(TestCase):
             "hypotheses": [
                 {
                     **leaking["hypotheses"][0],
+                    "hypothesis_id": "estimate_revision_gap",
                     "statement": "Upward estimate revisions may precede repricing.",
                     "applicability": "all_ready_issuers",
                     "falsifiers": [

@@ -271,9 +271,16 @@ parenthetically or otherwise redefined as a candidate-specific result such as an
 estimate beat, price move, or sustained growth; group membership remains the frozen
 Discovery label. `query` is a concise two-to-eight-term retrieval topic, not an
 imperative company screen, numeric threshold, or duplicate time window. Thresholds
-belong in the feature/test and `lookback_days` owns the evidence window. When
-applicability is invalid, correction feedback identifies the unsupported form/value
-and requires complete replacement with one supplied canonical rule. Existing
+belong in the feature/test and `lookback_days` owns the evidence window. After
+generic-term normalization, runtime derives the candidate construct from the topic
+terms shared by `hypothesis_id` and `query`; `expected_positive_pattern` retains at
+least half of that construct, rounded up. This lets a pattern omit source qualifiers
+while binding the fixed-group feature to the evidence H3 will retrieve; it rejects the
+observed guidance-comparison and estimate-revision candidates whose patterns retained
+too little of their shared construct. Runtime identifies the pattern path but never
+authors a synonym or replacement. When applicability is invalid, correction feedback
+identifies the unsupported form/value and requires complete replacement with one
+supplied canonical rule. Existing
 Signal exclusion compares the candidate identity and evidence query, not an existing
 metric mentioned only as a downstream comparison or falsifier. H1 aggregates these
 locally decidable issues into one validation message and uses a stable initial/
@@ -353,7 +360,10 @@ aggregated validation error, correction preserves every unmentioned hypothesis
 byte-for-byte and changes or removes only the named invalid items. With nonempty
 `signal_need_items`, an empty correction cannot erase otherwise valid portfolio
 work. This keeps the correction local to its diagnosed defect instead of making
-independent hypotheses share one all-or-nothing fate.
+independent hypotheses share one all-or-nothing fate. If the rejected value is
+withheld from correction feedback because it leaked a protected identity, runtime
+cannot compare correction bytes and instead reapplies every semantic validator to
+the replacement; it never weakens the identity boundary merely to enforce scope.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming

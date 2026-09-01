@@ -5428,6 +5428,7 @@ def _complete_parsed_role(
                 attempt
                 and enforce_scoped_correction
                 and isinstance(failed_output, Mapping)
+                and bool(failed_output)
                 and failure is not None
             ):
                 obligations = _validation_obligations(failure, failed_output)
@@ -9194,7 +9195,10 @@ def _h1_topic_terms(value: str) -> frozenset[str]:
     for raw in re.findall(r"[A-Za-z0-9]+", value.casefold()):
         if (len(raw) < 4 and raw != "yoy") or raw in _H1_GENERIC_TOPIC_TERMS:
             continue
-        term = raw[:-3] + "y" if raw.endswith("ies") else raw
+        if raw in {"revise", "revised", "revises", "revision", "revisions"}:
+            term = "revision"
+        else:
+            term = raw[:-3] + "y" if raw.endswith("ies") else raw
         if term.endswith("s") and len(term) > 4 and not term.endswith("ss"):
             term = term[:-1]
         if term in _H1_GENERIC_TOPIC_TERMS:
@@ -9665,6 +9669,35 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "topic without an imperative, numeric threshold, or duplicate "
                         f"time window at {item_path}.query"
                     )
+                else:
+                    identity_terms = _h1_topic_terms(
+                        item.hypothesis_id.replace("_", " ").replace("-", " ")
+                    )
+                    construct_terms = identity_terms & query_terms
+                    if not construct_terms:
+                        issues.append(
+                            "Signal Mining H1 hypothesis_id and query must share at "
+                            "least one normalized topic term so the retrieval target "
+                            f"is identifiable at {item_path}.query"
+                        )
+                    else:
+                        required_construct_terms = max(
+                            1, (len(construct_terms) + 1) // 2
+                        )
+                        pattern_terms = _h1_topic_terms(
+                            item.expected_positive_pattern
+                        )
+                        if (
+                            len(construct_terms & pattern_terms)
+                            < required_construct_terms
+                        ):
+                            issues.append(
+                                "Signal Mining H1 expected_positive_pattern must "
+                                "retain at least half of the normalized candidate "
+                                "construct shared by hypothesis_id and query so H3 "
+                                "retrieves the feature being compared at "
+                                f"{item_path}.expected_positive_pattern"
+                            )
                 if not (
                     _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
                     and _H1_CONTROL_CASE_PATTERN.search(
@@ -9776,6 +9809,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "group membership is already frozen. query must "
                 "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
                 "numeric threshold, or another time-window instruction. For an invalid "
+                "hypothesis_id/query pair, make both express the same candidate "
+                "construct; expected_positive_pattern must retain at least half of "
+                "their shared normalized topic terms. For an invalid "
                 "applicability field, replace the whole field with one supplied canonical "
                 "rule; paraphrasing the rejected condition is not a correction. "
                 "On correction, preserve every hypothesis whose hypothesis_id is not "
@@ -9799,6 +9835,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             max_output_tokens=2_000,
             temperature=self.creative_temperature,
             stable_correction_prefix=True,
+            enforce_scoped_correction=True,
         )
         return AgentStep(value, usage)
 
