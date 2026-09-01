@@ -840,9 +840,11 @@ not source evidence. For a conservative enforceable boundary, an H_init hypothes
 that combines an explicit event year later than the horizon-end year, an operating-
 event term, and a 2x/share-price outcome is rejected unless it names a present
 expectation or within-horizon transmission (for example progress, approval, financing,
-bookings, guidance, forecast, or de-risking milestone). Current beliefs may still
-record the later event date, and hypotheses may use it through a named expectation
-channel.
+bookings, guidance, forecast, a de-risking milestone, or explicit market
+`priced in`/`pricing in` language). Current beliefs may still record the later event
+date, and hypotheses may use it through a named expectation channel. The detector
+must recognize this standard expectation-pricing construction rather than demand a
+second synonym and reject already-correct reasoning.
 
 For v6 Basic-Info evidence, the controller must copy one byte-for-byte contiguous
 literal from one supplied projection: it may not use ellipses, join distant rows,

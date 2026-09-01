@@ -519,10 +519,12 @@ is control state, not issuer evidence. A hypothesis may study a later operating 
 but an explicit event year beyond that horizon cannot directly cause the within-
 horizon 2x/share-price outcome. It must instead name a within-horizon expectation
 transmission such as construction progress, approval, financing, bookings, guidance,
-or another de-risking milestone. Runtime rejects only the high-confidence case where
-an outside-horizon year, an operating-event term, and the fixed price outcome occur
-together without such a transmission; ordinary factual beliefs about a later project
-remain valid.
+another de-risking milestone, or explicit `priced in`/`pricing in` market language.
+Runtime rejects only the high-confidence case where an outside-horizon year, an
+operating-event term, and the fixed price outcome occur together without such a
+transmission; ordinary factual beliefs about a later project remain valid. Standard
+expectation-pricing wording is already a transmission and must not be corrected into a
+redundant synonym.
 When the number of needs has not decreased, runtime rejects any changed need that
 contains at least 90% of a prior need's normalized word set; appending a qualifier
 to the whole old question is not progress. Exact retention remains valid because it

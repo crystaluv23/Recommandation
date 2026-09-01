@@ -1492,3 +1492,14 @@ repeats in every later routing, reflection, prediction, and post-hoc request. Pu
 actionable item only in next needs and validate byte-identical new duplicates together
 with the existing semantic error aggregate. Do not fuzzy-deduplicate topics, mask other
 errors behind a pre-domain failure, or mutate committed legacy state.
+
+## Expectation-pricing language addendum (2026-09-01)
+
+When a provider returns a correction byte-for-byte unchanged, first verify whether the
+rejected logic was already valid. V93 explicitly said the market may be `pricing in`
+a later project's successful execution; that is a present expectation-transmission
+channel, not an assumption that the later opening has occurred. A future-event guard
+must recognize standard `priced in`, `prices in`, and `pricing in` constructions while
+still rejecting direct claims that a post-horizon event itself causes the within-
+horizon outcome. Keep one validator issue in one sentence so explanatory punctuation
+does not become a false pathless correction obligation.

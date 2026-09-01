@@ -1,5 +1,28 @@
 # Status
 
+Current V93 repair (2026-09-01): post-`bde2375` contract
+`2690f63...74727d` made seven charged calls for `$0.01263052` and four data
+requests. Its first Fast case completed with one H_init, one correct empty routing,
+one Predictor, and one post-hoc call and no correction; case 2 then failed one H_init
+correction, leaving authoritative pointers `round=0/cycle=0`, Registry v1, and Slow
+unstarted. All seven raw responses and every actual stage prompt/context were opened.
+The case-1 selector saw 11 unexecuted cards but its only actionable need was analyst
+targets, which none measured; no-match was logically correct. Predictor context was
+anonymous and outcome-free, and the outcome appeared only in post-hoc context.
+
+The selector's first response now included the unambiguous required-tag contract and
+needed no correction. H_init also avoided cross-field question duplication. The case-2
+hypothesis said the market “may be pricing in” successful execution of a 2027 opening
+within the current six-month stock outlook. This already named the permitted present
+expectation channel, but the local future-event guard recognized `expectation`,
+`progress`, and related terms without recognizing standard `priced in`/`pricing in`
+language. It therefore issued a false correction, which DeepSeek returned unchanged.
+The transmission detector now recognizes the general pricing-in construction while
+the direct outside-horizon causality fixture remains rejected. The same validator uses
+one sentence rather than a semicolon continuation, so its one path remains one
+obligation. All 515 tests and lint pass; successor ceilings are 269 attempts,
+`$17.65006276`, and 676 data requests.
+
 Current V92 repair (2026-09-01): post-`0bfac04` contract
 `1b9d6b8...f84491` made 18 charged calls for `$0.02564912` and three data
 requests. Its first Fast case completed all three Signal rounds, prediction, and

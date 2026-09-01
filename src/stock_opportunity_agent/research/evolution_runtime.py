@@ -5888,7 +5888,7 @@ _FIXED_PRICE_OUTCOME = re.compile(
 _EXPECTATION_TRANSMISSION = re.compile(
     r"\b(?:approval|bookings?|construction progress|de[- ]?risk(?:ed|ing)?|"
     r"expectation|financing|forecast|guidance|market recognition|milestone|"
-    r"pre[- ]opening|progress toward)\b",
+    r"pre[- ]opening|pric(?:e|es|ed|ing)[ -]+in|progress toward)\b",
     re.IGNORECASE,
 )
 
@@ -5951,7 +5951,7 @@ def _raw_initialize_evaluation_boundary_issues(
             f"invalid_field={path!r}, {path}={item!r}, "
             f"future_event_years={future_years}, horizon_end={horizon_end.isoformat()!r}. "
             "Reframe the hypothesis around within-horizon expectation evidence or "
-            "a de-risking milestone; do not assume the later event has occurred"
+            "a de-risking milestone. Do not assume the later event has occurred"
         )
     return issues
 

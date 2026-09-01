@@ -7532,6 +7532,43 @@ class ConcreteRoleAdapterTests(TestCase):
             initialized.value.hypotheses,
             (corrected_hypothesis,),
         )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 1)
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["hypotheses[0]"],
+        )
+
+    def test_v93_initialize_accepts_explicit_pricing_in_transmission(self) -> None:
+        hypothesis = (
+            "The market may be pricing in successful execution of a resort opening "
+            "in 2027, which could support the stock price over the next six months."
+        )
+        state = {
+            "hypotheses": [hypothesis],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "What current milestone could change project expectations?"
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(initialized.value.hypotheses, (hypothesis,))
+        self.assertEqual(caller.stages, ["research_controller_initialize"])
 
     def test_v85_initialize_keeps_unknown_kind_feedback_in_one_obligation(
         self,
