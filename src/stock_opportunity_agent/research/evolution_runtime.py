@@ -4045,7 +4045,9 @@ _RESEARCH_STATE_COMPACT_OUTPUT = (
     " ResearchState is a compact decision frontier, not a summary of every input "
     "projection or Signal result. Return only the smallest non-redundant set needed "
     "for the active thesis, material evidence/counter-evidence, unresolved uncertainty, "
-    "and next retrieval decision. Default maximum array counts are hypotheses=3, "
+    "and next retrieval decision. Put an actionable retrieval question only in "
+    "next_information_needs; never repeat its exact string in open_questions. "
+    "Default maximum array counts are hypotheses=3, "
     "current_beliefs=8, supporting_evidence=8, contradictions=4, "
     "resolved_questions=6, open_questions=6, and next_information_needs=6; all arrays "
     "combined contain at most 24 items. Every hypotheses/current_beliefs/contradictions/"
@@ -5183,10 +5185,30 @@ def _validation_obligations(
                             )
                         )
                     )
-    return {
+    feedback = {
         "obligation_count": len(obligations),
         "obligations": obligations,
     }
+    required_change_paths = list(
+        dict.fromkeys(
+            path
+            for obligation in obligations
+            for path in obligation["must_change_paths"]
+        )
+    )
+    if required_change_paths:
+        feedback.update(
+            {
+                "required_change_path_count": len(required_change_paths),
+                "required_change_paths": required_change_paths,
+                "completion_check": (
+                    "Before returning, compare every required_change_paths value "
+                    "with invalid_output. Each rejected value must differ or be "
+                    "removed; preserve every unlisted value byte-for-byte."
+                ),
+            }
+        )
+    return feedback
 
 
 _RESEARCH_STATE_CORRECTION_GUIDANCE = (
@@ -6914,6 +6936,26 @@ def _validate_research_state_refs(
             validator()
         except ValidationError as exc:
             validation_errors.append(str(exc))
+    legacy_cross_field_duplicates = (
+        set(previous_state.open_questions)
+        & set(previous_state.next_information_needs)
+        if previous_state is not None
+        else set()
+    )
+    for index, item in enumerate(state.open_questions):
+        if (
+            item not in state.next_information_needs
+            or item in legacy_cross_field_duplicates
+        ):
+            continue
+        need_index = state.next_information_needs.index(item)
+        path = f"open_questions[{index}]"
+        validation_errors.append(
+            f"{path} duplicates one next information need byte-for-byte, "
+            f"matching_next_need_index={need_index}, invalid_field={path!r}. "
+            "Remove the duplicate open question; next_information_needs owns "
+            "the actionable retrieval item"
+        )
     adopted_new_signal_evidence = any(
         item.kind == "signal"
         and _research_evidence_key(item) not in previous
@@ -8519,12 +8561,14 @@ class LLMSignalRetrievalAgent:
                 "(primary, confirmation, contradiction, or coverage); and a "
                 "target_need_indices array containing at most one integer; "
                 "answer_scope (full, partial, or null); and residual_need (a <=300 "
-                "character string only for partial, otherwise null). "
+                "character string only for partial, otherwise null); and a required "
+                "context_tags array containing zero to four values from the frozen "
+                "vocabulary below. "
                 "answer_need requires exactly "
                 "one valid index into information_needs; every other reason may use "
                 "zero or one valid association index and requires null answer scope "
-                "and residual, which does not mean the need was answered; and up "
-                "to four context_tags chosen only from: general, "
+                "and residual, which does not mean the need was answered. Choose "
+                "context_tags only from: general, "
                 "comparable_financials, sparse_evidence, filing_rich, news_rich, "
                 "transcript_available, market_data_only, pre_revenue, "
                 "early_commercialization, scaling, mature_operations, "

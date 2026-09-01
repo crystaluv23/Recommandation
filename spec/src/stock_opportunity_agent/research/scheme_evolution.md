@@ -217,6 +217,11 @@ before the LLM call. The post-output checks remain as fail-closed defenses for
 self-contradictory tags and malformed/out-of-card selections. This prefilter is not a
 semantic replacement selector: it can only remove a provably inapplicable card, and
 the LLM still chooses among every remaining card or returns empty.
+Every non-empty selection has one required `context_tags` array, which may be empty
+and contains at most four frozen-vocabulary values. The literal exact-field contract
+includes it with the other selection fields rather than describing it later as an
+optional add-on; this preserves model-authored applicability learning without paying a
+correction caused by contradictory schema prose.
 Runtime neither infers tags from case content nor substitutes another Signal. The
 correction must remove the incompatible selection, or return a genuinely different
 supported applicability classification; merely dropping a prior case classification
@@ -322,6 +327,13 @@ canonical JSON contains at most 6,000 UTF-8 bytes. During initialize, a Basic
 literal that supports its claim. Full Basic projections, Raw Info, Signal batches, and
 trajectories remain durable locally, so these limits remove repeated source summary
 rather than evidence coverage.
+The same exact question cannot be returned in both `open_questions` and
+`next_information_needs`: the latter owns an actionable retrieval question, while the
+former retains only other unresolved uncertainty. Runtime names only byte-identical
+new duplicates at `open_questions[index]`; it does not perform semantic deduplication.
+H_reflect preserves exact duplicates inherited from a committed legacy state but may
+not create another. Correction removes or changes the named open-question item and the
+normal parser reruns; runtime never deletes it locally.
 
 Reflect remains backward compatible with committed states created before these
 ceilings. For each field, combined item count, and serialized byte size, its effective
@@ -343,9 +355,12 @@ correction unreachable solely because prior H_init and routing consumed their no
 reported tokens.
 Correction feedback retains the exact aggregated error text and also projects its
 semicolon-delimited error segments into numbered `obligations` with named field paths.
-The role must satisfy every row rather than stopping after the first easy shape fix.
-This is diagnostic structure only: runtime does not author a replacement value, drop
-an invalid item, or skip the unchanged parser and semantic validation pass.
+It additionally supplies a deduplicated `required_change_paths` list, exact path count,
+and a correction-only final check that every listed rejected value changed or was
+removed. The role must satisfy every row rather than stopping after the first easy
+shape fix. This is diagnostic structure only: it adds no second correction and runtime
+does not author a replacement value, drop an invalid item, or skip the unchanged parser
+and semantic validation pass.
 For an aggregate item-count overflow, correction feedback also reports the exact
 current total, maximum total, minimum removals, and alternative arrays. If the rejected
 object contains mechanically provable duplicate items, that obligation may add bounded

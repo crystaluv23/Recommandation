@@ -3764,7 +3764,18 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(selection.value[0].answer_scope, "partial")
         self.assertEqual(selection.value[0].residual_need, residual_need)
         self.assertIn("answer_scope=full only", caller.calls[0]["system_prompt"])
-        self.assertIn("at most one answer_need selection per target", caller.calls[0]["system_prompt"])
+        self.assertIn(
+            "at most one answer_need selection per target",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertIn(
+            "required context_tags array containing zero to four values",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertNotIn(
+            "up to four context_tags",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_v87_routing_names_residual_only_terms_in_correction(self) -> None:
         information_needs = (
@@ -6760,9 +6771,55 @@ class ConcreteRoleAdapterTests(TestCase):
             "Satisfy every validation_feedback.obligations row",
             caller.calls[1]["system_prompt"],
         )
+        required_paths = feedback["required_change_paths"]
+        self.assertEqual(
+            feedback["required_change_path_count"],
+            len(required_paths),
+        )
+        self.assertEqual(len(required_paths), len(set(required_paths)))
+        self.assertIn("supporting_evidence[0].kind", required_paths)
+        self.assertIn("supporting_evidence[0].claim", required_paths)
+        self.assertIn(
+            "compare every required_change_paths",
+            feedback["completion_check"],
+        )
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
             fixture["corrected_claim"],
+        )
+
+    def test_v92_initialize_removes_exact_cross_frontier_duplicate(self) -> None:
+        need = "What evidence would distinguish adoption from customer trials?"
+        invalid = {
+            "contradictions": [],
+            "current_beliefs": [],
+            "decision": "continue",
+            "hypotheses": ["Adoption may accelerate within the forecast horizon."],
+            "next_information_needs": [need],
+            "open_questions": [need],
+            "resolved_questions": [],
+            "supporting_evidence": [],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["open_questions"] = []
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(initialized.value.open_questions, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        duplicate = next(
+            item
+            for item in feedback["obligations"]
+            if "duplicates one next information need" in item["instruction"]
+        )
+        self.assertEqual(duplicate["must_change_paths"], ["open_questions[0]"])
+        self.assertIn(
+            "never repeat its exact string in open_questions",
+            caller.calls[0]["system_prompt"],
         )
 
     def test_v29_initialize_binds_quantitative_belief_to_exact_evidence_claim(self) -> None:
@@ -9081,6 +9138,7 @@ class ConcreteRoleAdapterTests(TestCase):
             guidance_need,
             narrowed_liquidity_need,
         ]
+        corrected["open_questions"] = []
         caller = ScriptedRoleCaller([invalid, corrected])
         controller = LLMResearchController(caller)
         controller.set_reflection_runtime_context(
@@ -9267,7 +9325,7 @@ class ConcreteRoleAdapterTests(TestCase):
             "decision": "continue",
             "hypotheses": ["A catalyst may still emerge."],
             "next_information_needs": [need],
-            "open_questions": [need],
+            "open_questions": [],
             "resolved_questions": [],
             "supporting_evidence": [],
         }

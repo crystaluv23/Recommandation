@@ -697,6 +697,14 @@ complete supporting literal and is at most 800 characters. Complete projections 
 all trajectory artifacts stay local. These content limits therefore preserve source
 coverage while preventing a 2,000-token Controller response from enumerating the
 input and consuming its sole correction on transport truncation.
+An actionable retrieval question belongs in `next_information_needs`; an exact
+byte-identical copy in `open_questions` adds no uncertainty state and is rejected at
+the `open_questions[index]` path into the same aggregated correction. Runtime compares
+only exact strings and never infers topical equivalence. H_reflect may preserve an
+exact duplicate already present in a committed legacy state, but it may not introduce
+a new one; new H_init states have no compatibility exception. This removes repeated
+text from every later routing, reflection, Predictor, and post-hoc context without
+silently mutating accepted state.
 
 H_reflect calculates each effective count/byte ceiling as the larger of that default
 and the prior committed state's observed value. A legacy over-limit field can be
@@ -711,12 +719,17 @@ byte-identical.
 Every role correction also receives a deterministic `obligations` array alongside the
 complete audit string and rejected output. Each row contains one numbered error segment
 and the paths named by that segment; `obligation_count` makes partial repair directly
-observable. The projection does not interpret evidence, choose replacement content, or
-change validation: the model must correct every row, and the same parser and local
-semantic validators run again once. The shared correction prefix contains only this
-role-neutral contract. ResearchState-only repair advice for evidence quantities and
-claim-length/provenance coupling is appended only to H_init/H_reflect; unrelated roles
-must not pay for or be distracted by evidence fields they cannot return.
+observable. Correction-only feedback also flattens those paths into one deduplicated
+`required_change_paths` checklist with its exact count and a final comparison reminder:
+every rejected value at a listed path must differ or be removed before return. This is
+diagnostic redundancy for completion, not another correction, local repair, or
+permission to change unlisted fields. The projection does not interpret evidence,
+choose replacement content, or change validation: the model must correct every row,
+and the same parser and local semantic validators run again once. The shared correction
+prefix contains only this role-neutral contract. ResearchState-only repair advice for
+evidence quantities and claim-length/provenance coupling is appended only to
+H_init/H_reflect; unrelated roles must not pay for or be distracted by evidence fields
+they cannot return.
 When partial Signal routing claims a facet retained by its residual, its correction
 obligation additionally carries `remove_terms_from_selection_reason`. Shared topic
 words are not themselves a contradiction. If the original target coordinates two
@@ -1124,9 +1137,13 @@ still never infers a tag from prose and never chooses a replacement Signal; it o
 prevents the selector from dropping its own prior `mature_operations` classification
 to bypass a later exclusion.
 
-Routing tags remain non-semantic hints. Runtime normalizes strings, deduplicates
-them, drops values outside the frozen tag vocabulary, and retains at most four in
-model order. A model copying a visible card category such as `catalysts`, `risks`,
+Routing tags remain non-semantic hints. Every non-empty selector item must return a
+`context_tags` array, which may be empty and contains at most four values from the
+supplied frozen vocabulary. The provider prompt includes that field inside the same
+literal exact-field list as the other eight selection fields; it must not call the
+field optional in a later clause. Runtime normalizes strings, deduplicates them, drops
+values outside the vocabulary, and retains at most four in model order. A model copying
+a visible card category such as `catalysts`, `risks`,
 or `product` into `context_tags` therefore cannot reject an otherwise valid Signal
 selection. A version-owned `routing_excluded_context_tags` list is the narrow
 exception: if the selector attaches one of those tags to that same Signal, its own

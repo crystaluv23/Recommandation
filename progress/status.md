@@ -1,5 +1,44 @@
 # Status
 
+Current V92 repair (2026-09-01): post-`0bfac04` contract
+`1b9d6b8...f84491` made 18 charged calls for `$0.02564912` and three data
+requests. Its first Fast case completed all three Signal rounds, prediction, and
+post-hoc reflection; the second case's H_init failed its only correction, so
+authoritative pointers remain `round=0/cycle=0`, Registry remains v1, and Slow did
+not start. Every persisted request prompt, complete user context, raw response,
+correction payload, accepted trajectory, and failure artifact was inspected.
+
+The actual selector system prompt contradicted itself: the literal “contain exactly”
+field list omitted `context_tags`, while a later clause described up to four tags.
+DeepSeek consequently omitted the field in two initial routing outputs and both paid
+corrections added otherwise useful applicability classifications. `context_tags` is
+now one required, possibly empty, zero-to-four-value array inside the exact field
+list; runtime still never defaults or infers it, so cost reduction does not discard
+Signal applicability learning.
+
+Case 2 H_init produced three independently pathful obligations. Its correction fixed
+all three quantitative beliefs and the first unsupported evidence claim but retained
+the second rejected claim byte-for-byte. The validator correctly failed closed; the
+prompt already contained every source projection and obligation, so neither context
+loss nor a false validator caused the failure. Correction-only feedback now flattens
+all obligation paths into a deduplicated `required_change_paths` list with an exact
+count and final old-value comparison check. This preserves the one-correction
+boundary, adds nothing to normal calls, and neither deletes nor authors evidence
+locally. The first case's LLM-Signal edge-fragment correction and H_init exact-claim
+correction were substantively necessary. Although the raw financing correction tried
+to classify a share disposal as positive, canonical execution correctly downgraded it
+to `unavailable`, and H_reflect did not adopt it.
+
+The accepted first-case state also repeated all three actionable retrieval questions
+byte-for-byte in both `open_questions` and `next_information_needs`, then transmitted
+those duplicates through every reflection, Predictor, and post-hoc context. The shared
+contract now assigns an exact actionable question only to the next-needs field, and
+the semantic validator aggregates each new duplicate `open_questions[index]` with all
+other evidence/transition errors before the one correction. It performs exact-string
+comparison only, preserves committed legacy duplicates, and never infers or deletes
+semantic content locally. All 514 tests and lint pass; successor ceilings are 276
+attempts, `$17.66269328`, and 680 data requests.
+
 Current V91 repair (2026-09-01): post-H1 commit contract
 `4d7df7b...40223f` made six charged calls for `$0.015372` and three data requests,
 then rejected its only candidate in first-case Signal routing at authoritative

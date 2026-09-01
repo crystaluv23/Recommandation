@@ -1470,3 +1470,25 @@ preserve the narrow raw output path and descend equal-length arrays during corre
 diffing. Permit array-size changes only when an element path itself is authorized;
 naming one request child must not authorize rewriting or deleting the whole request or
 changing unrelated Plan skills.
+
+## Exact schemas and partial-correction completion addendum (2026-09-01)
+
+Treat a literal “contains exactly” field list as the provider's authoritative schema.
+If a required field is mentioned only in a later “up to N” clause, the prompt is
+logically ambiguous and repeated missing-field corrections are a design defect, not a
+reason to default model-authored metadata. Put every required field in the one exact
+list and say explicitly when its container may be empty.
+
+Aggregating validation errors does not guarantee that one correction will finish every
+obligation. V92 repaired two of three groups and left one exact rejected evidence claim
+unchanged even though its path and missing literal were present. Preserve the bounded
+single correction and fail-closed parser: add a correction-only flattened, counted
+path checklist plus a final comparison against the rejected value. Do not add normal
+prompt tokens, silently delete evidence, create a second retry, or infer a replacement.
+
+Inspect accepted contexts for cross-field repetition, not only prompt size. An exact
+actionable question copied into both `open_questions` and `next_information_needs`
+repeats in every later routing, reflection, prediction, and post-hoc request. Put the
+actionable item only in next needs and validate byte-identical new duplicates together
+with the existing semantic error aggregate. Do not fuzzy-deduplicate topics, mask other
+errors behind a pre-domain failure, or mutate committed legacy state.
