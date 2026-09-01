@@ -1407,3 +1407,26 @@ support a near-term prediction only through an authored expectation-transmission
 channel such as de-risking, bookings, approvals, or construction progress. When a
 price baseline is available, Predictor and post-hoc may distinguish absent forward
 projections but must not claim that no market data was supplied.
+
+## Transport normalization and scoped correction addendum (2026-09-01)
+
+Do not spend semantic correction calls on an unambiguous transport delimiter defect.
+If one complete object prefix is followed by exactly one redundant closing brace, the
+boundary may drop only that brace and record the raw-output hash plus normalization
+kind. Multiple delimiters, a second value, prose, wrong delimiters, and truncation stay
+fail-closed. This is syntax-envelope normalization, not permission to repair fields.
+
+An aggregate compaction choice across many arrays can be logically clear but still
+unexecutable for the model. Give a bounded exact eviction path using contract-owned
+information priority: independently invalid whole items, byte-identical duplicates,
+then resolved-question bookkeeping whose answer remains in beliefs/evidence. Do not
+rank economic hypotheses, open uncertainty, evidence, or future needs locally, and
+rerun the unchanged validators after the model removes the item.
+
+Distinguish a current baseline from a derived threshold. A correctly computed `2x`
+baseline value must be checked against twice the runtime mean, not rejected for being
+different from that mean. More generally, correction obligations are write scopes:
+when one Predictor reason is invalid, the correction must preserve judgment,
+magnitude, confidence, unrelated reasons, and uncertainties byte-for-byte. Otherwise
+a validator false positive can manufacture a different prediction and then teach the
+wrong post-hoc lesson.

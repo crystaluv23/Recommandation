@@ -189,8 +189,17 @@ omitting complete Basic projections and the full original Predictor context. It 
 not reinterpret the Predictor `source_index` as a pre-projection Basic `requests`
 bundle and silently emit an empty index.
 
-A provider response that is not exactly one JSON object is a paid structured
-output failure, not a process-level crash. The runtime persists its raw model
+A provider response that is not exactly one JSON object is normally a paid structured
+output failure, not a process-level crash. One transport-only exception is accepted:
+if the JSON decoder uniquely parses a complete object prefix and the entire remaining
+non-whitespace suffix is exactly one redundant `}`, runtime drops that delimiter and
+records the normalization kind plus the raw-output hash in the valid response cache.
+It does not repair fields or values. A second JSON value, prose suffix, more than one
+delimiter, wrong closing delimiter, or incomplete object remains invalid. This bounded
+normalization handles a provider envelope defect without spending a semantic correction
+call and remains fully auditable.
+
+For invalid structured output, the runtime persists its raw model
 text and usage in a failure-only audit artifact, records the actual cost on the
 attempt ledger, and does not add it to the valid-response cache. Narrow parsed
 role adapters, including Slow H1/H2/H3/Update, then consume their already frozen
@@ -462,6 +471,21 @@ provided. The same check applies to every post-hoc diagnostic array using its re
 compact baseline. A model can still name missing forward estimates or other specific
 inputs, but cannot erase the price data it actually received and thereby manufacture
 a data-gap lesson.
+Baseline validation distinguishes the supplied current mean from a mathematically
+derived outcome threshold. If a reason places `Nx`, `N×`, `double`, or `twice`
+immediately before the baseline phrase, the cited value is valid only when it equals
+that multiple of the runtime mean within the same tolerance; it is not compared to the
+mean as though it were the current price. Other baseline/current-price labels retain
+the strict direct comparison.
+
+Predictor semantic correction is path-scoped. When validation names one or more
+`must_change_paths`, every top-level field outside those paths remains byte-for-byte
+equal to the rejected object. For a named list item, all other old items remain in the
+same order and the correction may introduce at most one replacement per named item.
+Thus fixing one baseline reason cannot change `candidate_judgment`, magnitude,
+confidence, session id, unrelated reasons, or uncertainties. Scope drift fails closed
+after the already-authorized correction; runtime neither restores nor rewrites the
+model output locally.
 
 The Predictor adapter must persist the exact four-way `candidate_judgment`
 alongside its binary projection and reject an inconsistent pair. Once truth is
@@ -693,9 +717,17 @@ If the failed object itself proves that some items are structurally redundant, t
 same aggregate obligation may carry bounded `structurally_redundant_remove_paths`.
 Runtime may name only byte-identical later duplicates within one array or an open
 question byte-identical to a next information need; it does not infer topical or
-economic redundancy. The paths are preferred, non-binding correction candidates. The
-model may remove different items, and the normal count plus semantic validation reruns
-without any local output mutation.
+economic redundancy. To make aggregate correction executable rather than ask the model
+to guess across six arrays, the obligation also carries bounded
+`required_compaction_remove_paths`. It fills the removal quota in this contract-owned
+order: an independently invalid whole-item path that can satisfy both obligations,
+then a byte-identical duplicate, then the last `resolved_questions` bookkeeping item.
+The final tier is safe because its answer remains in active belief/evidence state and
+resolved bookkeeping is not an unresolved decision frontier. Runtime never selects an
+economic belief, hypothesis, contradiction, evidence item, open uncertainty, or next
+need by semantic opinion. The model removes every listed item, chooses any still-needed
+remainder itself, and the normal count plus semantic validation reruns without local
+output mutation.
 
 When a quantitative assertion fails only because it does not copy an evidence claim
 byte-for-byte, correction feedback may add a bounded `copy_candidates_by_path` map.

@@ -1,35 +1,39 @@
 # Status
 
-Current ordinary-loop repair (2026-09-01): immutable v88 contract
-`d43f04e...850e2` rejected its only candidate during the third case at authoritative
-pointers `round=0/cycle=0`. It used 24 charged attempts, `$0.04663316`, and three
-data-ledger rows. The first two cases completed the full Fast chain; case three failed
-after H_init plus correction because a named but unanswered project was mistaken for
-an already-resolved need. Locked Test remained sealed and Registry stayed at its
-initial hash. The successor ceilings are 128 attempts, `$17.73399864`, and 689 data
-requests.
+Current ordinary-loop repair (2026-09-01): immutable v89 contract
+`e0ba705...c601aa` rejected its only candidate during the second case at authoritative
+pointers `round=0/cycle=0`. It used 22 charged attempts, `$0.03028424`, and three
+data-ledger rows. Case one completed the full Fast chain in 16 case calls; case two
+failed after H_init plus correction. Locked Test remained sealed and Registry stayed
+at its initial version/hash. The successor ceilings are 106 attempts, `$17.70371440`,
+and 686 data requests.
 
-All 24 actual prompts, payloads, responses, and persisted contexts were inspected.
-The proposer syntax correction was necessary and produced a target-scoped Plan.
-Case-one H_init retained the material compact frontier; a large soft-Signal correction
-was now reachable under the 160k envelope and returned grounded guidance evidence.
-Two later routing rounds adopted financing evidence and then finalized a genuine empty
-match. Case two also reached Predictor and post-hoc through an empty Signal match.
-Case three's unresolved impact/capacity/market-share request shared only the named
-project with a resolved announcement, yet the stale-need gate demanded its deletion.
+All 22 actual prompts, payloads, responses, correction obligations, compact contexts,
+and persisted trajectory state were inspected. Three proposer outputs contained valid
+Plan objects followed by exactly one extra closing brace, creating three paid syntax
+failures before the fourth call produced an accepted target-scoped Plan. Case-one
+H_init was compact and material. Its first route repaired missing context tags; the
+soft batch kept the valid guidance result while one financing result corrected a
+cross-Signal projection citation. Four Signal rounds each contributed a new available
+result or partial need transition before an explicit empty fifth route finalized.
 
-The audit also exposed four cross-case contract gaps. A generic resolved topic could
-collapse one facet of a compound need; routing repeatedly paid to select version-owned
-Signals whose required research phrases were absent; prior routing context carried
-full evidence arrays where only conclusions were specified; and a 2027 operating
-event was allowed to cause a six-month judgment while Predictor/post-hoc claimed no
-market data despite a runtime-provided five-day baseline. These are repaired without
-issuer/project branches: same-topic resolution requires broad content coverage and
-abstains on residual qualifiers or subject-only names; inapplicable version-owned
-cards are deterministically omitted before the LLM; prior results expose only state,
-interpretation, and status; and a separate runtime evaluation context enforces the
-six-calendar-month horizon plus baseline consistency across H_init, Predictor, and
-post-hoc. Exact V88 regressions, all 503 tests, and repository lint pass.
+The initial Predictor correctly returned `unlikely`: its reasons used the supplied
+`23.982` mean, the `$27` target, and neutral guidance to argue against a doubling.
+It described `$47.96` as the derived 2x baseline, but the validator misclassified that
+threshold as the current baseline and forced correction. The correction drifted every
+reason plus judgment/magnitude to `possible/2-3x`, causing the saved false positive.
+Exact replay now accepts the original negative judgment. Case-two H_init then returned
+25 array items against the 24 limit; correction received only a six-array choice and
+returned the rejected object unchanged.
+
+Repairs are transport/state-contract generalizations, not issuer cases. One complete
+JSON object followed only by one redundant `}` is normalized with its raw hash logged;
+all ambiguous suffixes still fail. Aggregate compaction now requires an exact removal
+path from independently invalid items, byte-identical duplicates, then resolved
+bookkeeping, without local state mutation. Predictor baseline validation recognizes
+and checks `Nx/double/twice` derived arithmetic, while correction is confined to named
+paths and cannot silently change judgment or unrelated evidence. Exact V89 replay,
+all 508 tests, and repository lint pass.
 
 Current ordinary-loop repair (2026-08-31): immutable v86 contract
 `1f8a0a1...994e4` rejected its only candidate during the first case at authoritative

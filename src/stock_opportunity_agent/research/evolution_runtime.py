@@ -3805,6 +3805,7 @@ class StructuredRoleClient:
                 output_tokens=output_tokens,
                 cost=actual_cost,
             )
+            structured_output_normalization: dict[str, str] | None = None
             try:
                 if binary_token_output:
                     if response.output_text not in (decision_tokens or ()):
@@ -3813,7 +3814,9 @@ class StructuredRoleClient:
                         )
                     parsed = {str(decision_field): response.output_text}
                 else:
-                    parsed = _parse_json_object(response.output_text)
+                    parsed, structured_output_normalization = (
+                        _parse_json_object_envelope(response.output_text)
+                    )
             except (json.JSONDecodeError, ValidationError) as exc:
                 failure_record = {
                     "request_hash": request_hash,
@@ -3872,6 +3875,10 @@ class StructuredRoleClient:
                 "json_output": parsed,
                 "usage": provider_usage,
             }
+            if structured_output_normalization is not None:
+                response_record["structured_output_normalization"] = (
+                    structured_output_normalization
+                )
             if decision_tokens is not None:
                 response_record["decision_token_scores"] = (
                     scores.to_dict() if scores is not None else None
@@ -4194,6 +4201,10 @@ _PREDICTOR_CURRENT_PRICE = re.compile(
     r"\s*(?:is|was|=|of|at|:)?\s*\$?\s*(\d+(?:\.\d+)?)",
     re.IGNORECASE,
 )
+_PREDICTOR_BASELINE_MULTIPLE_PREFIX = re.compile(
+    r"(?:(?P<numeric>\d+(?:\.\d+)?)\s*[x×]|(?P<double>double|twice)(?:\s+the)?)\s*$",
+    re.IGNORECASE,
+)
 _MARKET_DATA_ABSENCE = re.compile(
     r"(?:\bno\b[^.;]{0,96}\bmarket data\b\s*"
     r"(?:(?:is|are|was|were)\s+)?(?:available|provided|supplied)|"
@@ -4259,6 +4270,28 @@ def _blind_prediction_with_baseline(
                     abs_tol=0.05,
                 ):
                     continue
+                prefix = text[max(0, match.start() - 32) : match.start()]
+                multiple_match = _PREDICTOR_BASELINE_MULTIPLE_PREFIX.search(prefix)
+                if multiple_match is not None:
+                    multiple = (
+                        float(multiple_match.group("numeric"))
+                        if multiple_match.group("numeric") is not None
+                        else 2.0
+                    )
+                    derived_threshold = multiple * float(expected)
+                    if math.isclose(
+                        returned,
+                        derived_threshold,
+                        rel_tol=0.01,
+                        abs_tol=0.1,
+                    ):
+                        continue
+                    raise ValidationError(
+                        f"{field_name}[{index}] gives {returned:g} for a "
+                        f"{multiple:g}x baseline threshold, but the runtime-supplied "
+                        f"five-day baseline mean implies {derived_threshold:g}. "
+                        "Correct the derived arithmetic or remove that threshold"
+                    )
                 raise ValidationError(
                     f"{field_name}[{index}] labels {returned:g} as the current or "
                     "prediction-time baseline price, but the runtime-supplied "
@@ -4963,6 +4996,52 @@ def _structurally_redundant_remove_paths(
     return candidates
 
 
+def _required_compaction_remove_paths(
+    failed_output: Mapping[str, Any] | None,
+    minimum_removed_items: int,
+    independently_invalid_paths: Iterable[str],
+) -> list[str]:
+    """Choose only contract-owned whole-item eviction paths for correction."""
+
+    if not isinstance(failed_output, Mapping) or minimum_removed_items <= 0:
+        return []
+    candidates: list[str] = []
+    for path in independently_invalid_paths:
+        match = re.fullmatch(
+            r"(hypotheses|current_beliefs|supporting_evidence|contradictions|"
+            r"resolved_questions|open_questions|next_information_needs)\[(\d+)\]",
+            path,
+        )
+        if match is None:
+            continue
+        items = failed_output.get(match.group(1))
+        if not isinstance(items, list) or int(match.group(2)) >= len(items):
+            continue
+        if path not in candidates:
+            candidates.append(path)
+        if len(candidates) >= minimum_removed_items:
+            return candidates
+
+    for path in _structurally_redundant_remove_paths(
+        failed_output,
+        minimum_removed_items,
+    ):
+        if path not in candidates:
+            candidates.append(path)
+        if len(candidates) >= minimum_removed_items:
+            return candidates
+
+    resolved_questions = failed_output.get("resolved_questions")
+    if isinstance(resolved_questions, list):
+        for index in range(len(resolved_questions) - 1, -1, -1):
+            path = f"resolved_questions[{index}]"
+            if path not in candidates:
+                candidates.append(path)
+            if len(candidates) >= minimum_removed_items:
+                return candidates
+    return candidates
+
+
 def _validation_obligations(
     failure: ValidationError | None,
     failed_output: Mapping[str, Any] | None = None,
@@ -4974,6 +5053,17 @@ def _validation_obligations(
         for segment in str(failure or "validation failed").split("; ")
         if segment.strip()
     ]
+    independently_invalid_paths = list(
+        dict.fromkeys(
+            path
+            for segment in segments
+            if _VALIDATION_TOTAL_ITEM_LIMIT.search(segment) is None
+            for path in (
+                *_VALIDATION_OBLIGATION_PATH.findall(segment),
+                *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
+            )
+        )
+    )
     obligations: list[dict[str, Any]] = []
     for index, segment in enumerate(segments, start=1):
         paths = list(
@@ -5076,6 +5166,23 @@ def _validation_obligations(
                     obligation["structurally_redundant_remove_paths"] = (
                         redundant_paths
                     )
+                required_remove_paths = _required_compaction_remove_paths(
+                    failed_output,
+                    int(minimum_match.group(1)),
+                    independently_invalid_paths,
+                )
+                if required_remove_paths:
+                    obligation["required_compaction_remove_paths"] = (
+                        required_remove_paths
+                    )
+                    obligation["must_change_paths"] = list(
+                        dict.fromkeys(
+                            (
+                                *obligation["must_change_paths"],
+                                *required_remove_paths,
+                            )
+                        )
+                    )
     return {
         "obligation_count": len(obligations),
         "obligations": obligations,
@@ -5098,6 +5205,11 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "candidate list is shorter than the removal quota, choose the remaining "
     "removals from must_reduce_any_of_paths. These paths are suggestions, not "
     "additional mandatory independent obligations."
+    " When an obligation contains required_compaction_remove_paths, remove every "
+    "item at those exact paths. They are contract-owned whole-item eviction "
+    "priorities and count toward minimum_removed_items; do not merely rewrite or "
+    "replace them. If they do not fill the quota, choose the remainder from "
+    "must_reduce_any_of_paths."
     " When an obligation contains copy_candidates_by_path, copy one listed "
     "exact_claim byte-for-byte into that assertion path or remove the assertion; "
     "do not restate, expand, or change issuer words. If no listed claim has the "
@@ -5121,6 +5233,76 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
 )
 
 
+def _scoped_correction_drift_paths(
+    failed_output: Mapping[str, Any],
+    corrected_output: Mapping[str, Any],
+    must_change_paths: Iterable[str],
+) -> list[str]:
+    """Find correction changes outside explicitly diagnosed structured paths."""
+
+    allowed = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
+    if not allowed:
+        return []
+    drift: list[str] = []
+
+    def relevant(path: str) -> tuple[str, ...]:
+        if not path:
+            return allowed
+        return tuple(
+            item
+            for item in allowed
+            if item == path
+            or item.startswith(path + ".")
+            or item.startswith(path + "[")
+        )
+
+    def visit(old: Any, new: Any, path: str) -> None:
+        paths = relevant(path)
+        if path in paths:
+            return
+        if not paths:
+            if old != new:
+                drift.append(path)
+            return
+        if isinstance(old, Mapping) and isinstance(new, Mapping):
+            for key in sorted(set(old) | set(new), key=str):
+                child = f"{path}.{key}" if path else str(key)
+                if key not in old or key not in new:
+                    if child not in allowed:
+                        drift.append(child)
+                    continue
+                visit(old[key], new[key], child)
+            return
+        if isinstance(old, list) and isinstance(new, list):
+            allowed_indices = {
+                int(match.group(1))
+                for item in paths
+                if (
+                    match := re.match(
+                        rf"^{re.escape(path)}\[(\d+)\](?:\.|$)",
+                        item,
+                    )
+                )
+            }
+            protected = [
+                item for index, item in enumerate(old) if index not in allowed_indices
+            ]
+            cursor = 0
+            for item in new:
+                if cursor < len(protected) and item == protected[cursor]:
+                    cursor += 1
+            if cursor != len(protected) or len(new) > (
+                len(protected) + len(allowed_indices)
+            ):
+                drift.append(path)
+            return
+        if old != new:
+            drift.append(path)
+
+    visit(dict(failed_output), dict(corrected_output), "")
+    return sorted(dict.fromkeys(path or "<root>" for path in drift))
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -5138,6 +5320,7 @@ def _complete_parsed_role(
     stable_correction_prefix: bool = False,
     echo_invalid_output_on_correction: bool = True,
     correction_guidance: str = "",
+    enforce_scoped_correction: bool = False,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
@@ -5240,7 +5423,32 @@ def _complete_parsed_role(
                 failure = ValidationError("; ".join(messages))
                 continue
         try:
-            return _parse_role_output(request_stage, value, parser), usage
+            parsed_value = _parse_role_output(request_stage, value, parser)
+            if (
+                attempt
+                and enforce_scoped_correction
+                and isinstance(failed_output, Mapping)
+                and failure is not None
+            ):
+                obligations = _validation_obligations(failure, failed_output)
+                must_change_paths = [
+                    path
+                    for obligation in obligations["obligations"]
+                    for path in obligation["must_change_paths"]
+                ]
+                drift_paths = _scoped_correction_drift_paths(
+                    failed_output,
+                    value,
+                    must_change_paths,
+                )
+                if drift_paths:
+                    raise ValidationError(
+                        "correction changed unrelated valid content outside "
+                        f"must_change_paths={must_change_paths}, "
+                        f"unrelated_changed_paths={drift_paths}. Preserve every "
+                        "unrelated field and list item byte-for-byte"
+                    )
+            return parsed_value, usage
         except ValidationError as exc:
             failed_output = value if echo_invalid_output_on_correction else {}
             failure = exc
@@ -8279,6 +8487,7 @@ class LLMBlindPredictor:
             anonymous_aliases=self.anonymous_aliases,
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
+            enforce_scoped_correction=True,
         )
         return AgentStep(prediction, usage)
 
@@ -12452,15 +12661,41 @@ def _usage_from_cache(data: Mapping[str, Any]) -> AgentUsage:
     )
 
 
-def _parse_json_object(text: str) -> dict[str, Any]:
+def _parse_json_object_envelope(
+    text: str,
+) -> tuple[dict[str, Any], dict[str, str] | None]:
+    """Parse one object and audit one unambiguous redundant closing brace."""
+
     stripped = text.strip()
     if stripped.startswith("```"):
         stripped = re.sub(r"^```(?:json)?\s*", "", stripped, flags=re.IGNORECASE)
         stripped = re.sub(r"\s*```$", "", stripped)
-    value = json.loads(stripped)
+    normalization: dict[str, str] | None = None
+    try:
+        value = json.loads(stripped)
+    except json.JSONDecodeError as failure:
+        try:
+            value, end = json.JSONDecoder().raw_decode(stripped)
+        except json.JSONDecodeError:
+            raise failure
+        suffix = stripped[end:].strip()
+        if failure.msg != "Extra data" or suffix != "}":
+            raise failure
+        normalization = {
+            "kind": "dropped_one_redundant_trailing_closing_brace",
+            "raw_output_sha256": hashlib.sha256(
+                text.encode("utf-8")
+            ).hexdigest(),
+        }
     if not isinstance(value, dict):
         raise ValidationError("structured model response must be a JSON object")
-    return value
+    return value, normalization
+
+
+def _parse_json_object(text: str) -> dict[str, Any]:
+    """Parse the accepted structured-response envelope into one object."""
+
+    return _parse_json_object_envelope(text)[0]
 
 
 class _StreamingJSONReader:

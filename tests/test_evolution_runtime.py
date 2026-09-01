@@ -4238,6 +4238,78 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("$23.98", prediction.value.key_reasons[0])
 
+    def test_v89_blind_predictor_accepts_derived_two_x_baseline_threshold(
+        self,
+    ) -> None:
+        output = {
+            "candidate_judgment": "unlikely",
+            "magnitude": None,
+            "confidence": {"level": "low"},
+            "key_reasons": [
+                "The stock would need to reach the 2x baseline of $47.96 within "
+                "six months, while visible catalysts remain limited."
+            ],
+            "uncertainties": ["Commodity prices may change the outlook."],
+            "session_id": "fixture-session",
+        }
+        caller = ScriptedRoleCaller([output])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "mean_adjusted_close": 23.982,
+                    "trading_dates": ["2025-09-29"],
+                },
+                "final_research_state": {},
+            }
+        )
+
+        self.assertFalse(prediction.value.is_surge)
+        self.assertEqual(prediction.usage.llm_calls, 1)
+
+    def test_v89_blind_predictor_rejects_unrelated_correction_drift(self) -> None:
+        invalid = {
+            "candidate_judgment": "unlikely",
+            "magnitude": None,
+            "confidence": {"level": "low"},
+            "key_reasons": [
+                "Current price $19.38 is far below the defined doubling threshold.",
+                "Management reaffirmed guidance without an upward revision.",
+            ],
+            "uncertainties": ["Commodity prices may change the outlook."],
+            "session_id": "fixture-session",
+        }
+        drifted = {
+            "candidate_judgment": "possible",
+            "magnitude": "2-3x",
+            "confidence": {"level": "low"},
+            "key_reasons": ["Strong momentum may support a re-rating."],
+            "uncertainties": ["The price target remains below the threshold."],
+            "session_id": "fixture-session",
+        }
+        caller = ScriptedRoleCaller([invalid, drifted])
+
+        with self.assertRaisesRegex(
+            CandidateExecutionRejected,
+            "correction changed unrelated valid content",
+        ):
+            LLMBlindPredictor(caller).predict(
+                {
+                    "prediction_baseline": {
+                        "status": "available",
+                        "mean_adjusted_close": 23.982,
+                        "trading_dates": ["2025-09-29"],
+                    },
+                    "final_research_state": {},
+                }
+            )
+
+        self.assertEqual(
+            caller.stages,
+            ["blind_predictor_predict", "blind_predictor_predict_correction"],
+        )
+
     def test_v88_blind_predictor_rejects_false_market_data_absence(self) -> None:
         invalid = {
             "candidate_judgment": "unlikely",
@@ -7265,13 +7337,72 @@ class ConcreteRoleAdapterTests(TestCase):
             total_obligation["structurally_redundant_remove_paths"],
             ["open_questions[0]"],
         )
+        self.assertEqual(
+            total_obligation["required_compaction_remove_paths"],
+            ["open_questions[0]"],
+        )
+        self.assertEqual(
+            total_obligation["must_change_paths"],
+            ["open_questions[0]"],
+        )
         self.assertIn(
-            "remove those byte-identical duplicate items first",
+            "remove every item at those exact paths",
             caller.calls[1]["system_prompt"],
         )
         self.assertEqual(
             initialized.value.open_questions,
             tuple(corrected["open_questions"]),
+        )
+
+    def test_v89_total_limit_requires_resolved_bookkeeping_compaction(
+        self,
+    ) -> None:
+        invalid = {
+            "hypotheses": [f"Material hypothesis {item}." for item in "ABC"],
+            "current_beliefs": [
+                f"Active issuer belief {item}." for item in "ABCDEFGH"
+            ],
+            "supporting_evidence": [],
+            "contradictions": [
+                f"Material issuer contradiction {item}." for item in "ABC"
+            ],
+            "resolved_questions": [
+                f"What issuer question {item} was resolved?" for item in "ABC"
+            ],
+            "open_questions": [
+                f"What issuer uncertainty {item} remains?" for item in "ABC"
+            ],
+            "next_information_needs": [
+                f"Check unresolved issuer evidence {item}." for item in "ABCDE"
+            ],
+            "decision": "continue",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["resolved_questions"] = corrected["resolved_questions"][:-1]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        total_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "combined ResearchState array count=25" in item["instruction"]
+        )
+        self.assertEqual(
+            total_obligation["required_compaction_remove_paths"],
+            ["resolved_questions[2]"],
+        )
+        self.assertEqual(
+            total_obligation["must_change_paths"],
+            ["resolved_questions[2]"],
+        )
+        self.assertEqual(
+            initialized.value.resolved_questions,
+            tuple(corrected["resolved_questions"]),
         )
 
     def test_v82_initialize_supplies_exact_claim_copy_candidates(self) -> None:
@@ -10103,6 +10234,78 @@ class RunControlTests(TestCase):
             failure = json.loads(failure_paths[0].read_text())
             self.assertIn('{"extra":false}', failure["raw_output"])
             self.assertEqual(tuple((root / "cache" / "responses").glob("*.json")), ())
+
+    def test_one_redundant_trailing_brace_is_normalized_and_audited(self) -> None:
+        class RedundantBraceClient:
+            def complete(self, _messages, **_kwargs):
+                from stock_opportunity_agent.llm.openai import ChatResponse
+
+                return ChatResponse(
+                    response_id="response-redundant-brace",
+                    model="fixture-model",
+                    output_text='{"ok":true}}',
+                    raw={"usage": {"input_tokens": 3, "output_tokens": 2}},
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registration = RegisteredModel(
+                alias="fixture-judge",
+                provider="fixture",
+                model="fixture-model",
+                roles=("judge",),
+                api_key_env_var="FIXTURE_KEY",
+                description="offline fixture",
+                client_factory=lambda _settings: RedundantBraceClient(),
+                default_input_cost_per_million_tokens=1.0,
+                default_output_cost_per_million_tokens=1.0,
+            )
+            ledger = ExternalAttemptLedger(
+                root / "attempts.json", max_attempts=2, max_total_cost=1.0
+            )
+            client = StructuredRoleClient(
+                registration=registration,
+                contract=make_contract(),
+                workspace=root,
+                ledger=ledger,
+                allow_external=True,
+                acknowledged_contract_hash=make_contract().contract_hash,
+                environ={"FIXTURE_KEY": "test-key"},
+            )
+
+            result, usage = client.complete_json(
+                stage="predict",
+                system_prompt="Return JSON.",
+                payload={"context": "anonymous evidence"},
+                allow_outcomes=False,
+            )
+
+            self.assertEqual(result, {"ok": True})
+            self.assertEqual(usage.llm_calls, 1)
+            attempt = json.loads((root / "attempts.json").read_text())["attempts"][0]
+            self.assertEqual(attempt["status"], "completed")
+            self.assertEqual(tuple((root / "failed_responses").glob("*.json")), ())
+            cache_paths = tuple((root / "cache" / "responses").glob("*.json"))
+            self.assertEqual(len(cache_paths), 1)
+            cache = json.loads(cache_paths[0].read_text())
+            self.assertEqual(
+                cache["structured_output_normalization"]["kind"],
+                "dropped_one_redundant_trailing_closing_brace",
+            )
+            self.assertRegex(
+                cache["structured_output_normalization"]["raw_output_sha256"],
+                r"^[0-9a-f]{64}$",
+            )
+
+    def test_transport_normalization_rejects_ambiguous_suffixes(self) -> None:
+        for raw in (
+            '{"ok":true}}}',
+            '{"ok":true}]',
+            '{"ok":true} trailing text',
+            '{"ok":true}{"second":false}',
+        ):
+            with self.subTest(raw=raw), self.assertRaises(json.JSONDecodeError):
+                evolution_runtime_module._parse_json_object(raw)
 
     def test_v3_contract_rejects_missing_behavioral_defaults(self) -> None:
         contract = make_contract()
