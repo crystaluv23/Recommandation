@@ -492,6 +492,10 @@ guess which need was answered or manufacture a resolution: the selector names th
 scope before execution, local validation and the transition contract use the same
 persisted selection plus current result coverage, and correction preserves every
 untargeted need byte-for-byte.
+Correction feedback records a per-row action and exact value where applicable:
+`restore_exactly`, `replace_with_exact_residual`, `remove_exact_target`, or
+`remove_or_genuinely_narrow`. It never follows a restore diagnosis with a conflicting
+generic instruction to remove or narrow that same need.
 Routing may use `answer_need` only for a need facet directly covered by the card and
 must not claim coverage of other facets; contextual selections use an accurate other
 reason code. A version-owned `routing_answer_need_phrases` boundary may make this

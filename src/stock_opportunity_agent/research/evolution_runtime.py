@@ -7260,9 +7260,9 @@ def _validate_research_state_refs(
             validation_errors.append(
                 "research_controller_reflect violated the supplied need transition "
                 "contract after adopting current Signal evidence: "
-                f"{targeted_answer_need_errors}. Remove or genuinely narrow each "
-                "named target_need_indices item; preserve every untargeted prior "
-                "next_information_needs item byte-for-byte"
+                f"{targeted_answer_need_errors}. Apply each row's required_action "
+                "and exact required_need when present. Preserve every untargeted "
+                "prior next_information_needs item byte-for-byte"
             )
     if (
         phase == "reflect"
@@ -7564,6 +7564,8 @@ def _targeted_answer_need_transition_errors(
                         "path": f"next_information_needs[{index}]",
                         "value": need,
                         "issue": "untargeted need changed or was removed",
+                        "required_action": "restore_exactly",
+                        "required_need": need,
                     }
                 )
             continue
@@ -7578,6 +7580,8 @@ def _targeted_answer_need_transition_errors(
                         "value": need,
                         "signal_refs": signal_refs,
                         "issue": "partial-answer target remained byte-for-byte",
+                        "required_action": "replace_with_exact_residual",
+                        "required_need": scoped.residual_need,
                         "required_residual_need": scoped.residual_need,
                     }
                 )
@@ -7588,6 +7592,8 @@ def _targeted_answer_need_transition_errors(
                         "value": need,
                         "signal_refs": signal_refs,
                         "issue": "partial-answer target omitted its exact residual",
+                        "required_action": "replace_with_exact_residual",
+                        "required_need": scoped.residual_need,
                         "required_residual_need": scoped.residual_need,
                     }
                 )
@@ -7599,6 +7605,7 @@ def _targeted_answer_need_transition_errors(
                     "value": need,
                     "signal_refs": signal_refs,
                     "issue": "targeted need remained byte-for-byte",
+                    "required_action": "remove_exact_target",
                 }
             )
             continue
@@ -7623,6 +7630,7 @@ def _targeted_answer_need_transition_errors(
                     "value": need,
                     "signal_refs": signal_refs,
                     "issue": "targeted need changed only cosmetically",
+                    "required_action": "remove_or_genuinely_narrow",
                     "returned_need": cosmetic,
                 }
             )

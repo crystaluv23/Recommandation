@@ -1003,6 +1003,10 @@ Correction feedback names
 `invalid_field='next_information_needs'` and provides the prior indexed values; the
 exact targeted field must change through an evidence-supported removal or narrowing,
 but untargeted indexed items remain byte-for-byte.
+Each transition error carries its own `required_action`: restore an untargeted prior
+need exactly, replace an adopted partial answer with its exact residual, remove an
+adopted full answer, or genuinely narrow a cosmetic target. Correction instructions
+must not append one generic remove/narrow directive that contradicts a restore action.
 
 H_init applies the same unresolved-only rule before any Signal call. It must not ask
 again for a fact already present in Basic Info or in the evidence/beliefs it returns.

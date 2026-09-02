@@ -1540,3 +1540,9 @@ showed that Basic quantities had exact literal/path checks while Signal quantiti
 still used prose; the model deleted a linked belief but kept the invalid Signal claim.
 Normalize both into one checklist rather than adding a company- or Signal-specific
 rule.
+
+When local validation already knows why a need transition failed, correction must
+state the exact inverse action. An untargeted need that changed requires restoration,
+not the generic “remove or narrow” instruction appropriate to an adopted answer.
+Represent restore, exact residual, removal, and narrowing per error row; do not append
+one shared suffix whose advice can contradict the row.

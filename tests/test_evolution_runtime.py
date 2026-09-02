@@ -9273,8 +9273,12 @@ class ConcreteRoleAdapterTests(TestCase):
                 error = validation_error(caller.calls[1])
                 self.assertIn("next_information_needs[0]", error)
                 self.assertIn("untargeted need changed or was removed", error)
+                self.assertIn("'required_action': 'restore_exactly'", error)
+                self.assertIn(f"'required_need': {unrelated_need!r}", error)
                 self.assertIn("next_information_needs[1]", error)
                 self.assertIn("targeted need remained byte-for-byte", error)
+                self.assertIn("'required_action': 'remove_exact_target'", error)
+                self.assertNotIn("Remove or genuinely narrow each", error)
                 self.assertEqual(
                     reflected.value.next_information_needs,
                     (unrelated_need, narrowed_need),
@@ -9300,11 +9304,61 @@ class ConcreteRoleAdapterTests(TestCase):
                     need_rules[1]["available_answer_signal_refs"],
                     ["cash_reserves:v1"],
                 )
-                self.assertIn("remove_or_genuinely_narrow", need_rules[1]["required_transition"])
+                self.assertIn(
+                    "remove_or_genuinely_narrow",
+                    need_rules[1]["required_transition"],
+                )
                 self.assertIn(
                     "need_transition_contract as the sole need-ownership map",
                     caller.calls[0]["system_prompt"],
                 )
+
+    def test_v97_need_transition_restores_target_when_answer_not_adopted(
+        self,
+    ) -> None:
+        original_need = (
+            "What are the latest revenue trends and management guidance?"
+        )
+        residual_need = "What are the latest revenue trends?"
+        errors = evolution_runtime_module._targeted_answer_need_transition_errors(
+            ResearchState(next_information_needs=(original_need,)),
+            ResearchState(next_information_needs=(residual_need,)),
+            (
+                SignalSelectionDecision(
+                    signal_ref="guidance_acceleration:v1",
+                    reason_code="answer_need",
+                    selection_reason="Answer the guidance facet.",
+                    applicability_hypothesis="Guidance may be visible.",
+                    expected_role="primary",
+                    target_need_indices=(0,),
+                    answer_scope="partial",
+                    residual_need=residual_need,
+                ),
+                SignalSelectionDecision(
+                    signal_ref="revenue_growth_yoy:v1",
+                    reason_code="combine_evidence",
+                    selection_reason="Provide revenue context.",
+                    applicability_hypothesis="Revenue facts are visible.",
+                    expected_role="confirmation",
+                    target_need_indices=(0,),
+                ),
+            ),
+            {"revenue_growth_yoy:v1"},
+            {"guidance_acceleration:v1", "revenue_growth_yoy:v1"},
+        )
+
+        self.assertEqual(
+            errors,
+            [
+                {
+                    "path": "next_information_needs[0]",
+                    "value": original_need,
+                    "issue": "untargeted need changed or was removed",
+                    "required_action": "restore_exactly",
+                    "required_need": original_need,
+                }
+            ],
+        )
 
     def test_v73_reflect_receives_result_aware_need_transition_contract(self) -> None:
         revenue = SignalResult(
