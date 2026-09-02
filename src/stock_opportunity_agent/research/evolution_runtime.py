@@ -4045,8 +4045,11 @@ _RESEARCH_STATE_COMPACT_OUTPUT = (
     " ResearchState is a compact decision frontier, not a summary of every input "
     "projection or Signal result. Return only the smallest non-redundant set needed "
     "for the active thesis, material evidence/counter-evidence, unresolved uncertainty, "
-    "and next retrieval decision. Put an actionable retrieval question only in "
-    "next_information_needs; never repeat its exact string in open_questions. "
+    "and next retrieval decision. open_questions contains only material uncertainty "
+    "that is not itself an actionable retrieval question. Put every actionable "
+    "retrieval question only in next_information_needs; if every open question is "
+    "already actionable there, return open_questions=[]. Never repeat an exact "
+    "next_information_needs string in open_questions. "
     "Default maximum array counts are hypotheses=3, "
     "current_beliefs=8, supporting_evidence=8, contradictions=4, "
     "resolved_questions=6, open_questions=6, and next_information_needs=6; all arrays "
@@ -4885,6 +4888,9 @@ _VALIDATION_REDUCE_ANY_PATHS = re.compile(
 _VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
     r"\bcombined ResearchState array count=(\d+) exceeds effective_limit=(\d+)"
 )
+_VALIDATION_JSON_BYTE_LIMIT = re.compile(
+    r"\bResearchState compact JSON size_bytes=(\d+) exceeds effective_limit=(\d+)"
+)
 _VALIDATION_MISSING_QUANTITY_GROUPS = re.compile(
     r"\bmissing_quantity_groups=(\[[^\n]*?\])(?=, missing_quantity_literals=)"
 )
@@ -5141,6 +5147,10 @@ def _validation_obligations(
         minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
         reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
         total_match = _VALIDATION_TOTAL_ITEM_LIMIT.search(segment)
+        byte_match = _VALIDATION_JSON_BYTE_LIMIT.search(segment)
+        if byte_match:
+            obligation["current_size_bytes"] = int(byte_match.group(1))
+            obligation["maximum_size_bytes"] = int(byte_match.group(2))
         if minimum_match and reduce_match:
             try:
                 reduce_paths = json.loads(reduce_match.group(1))
@@ -5212,26 +5222,27 @@ def _validation_obligations(
 
 
 _RESEARCH_STATE_CORRECTION_GUIDANCE = (
-    " When an obligation contains minimum_removed_items and "
-    "must_reduce_any_of_paths, sum the lengths of every returned array before "
-    "answering and ensure corrected_total_items is at most maximum_total_items. "
-    "Remove at least minimum_removed_items total items across any combination of "
-    "those alternative paths; removing one belief and its evidence counts as two "
-    "items, and the listed paths are not all individually mandatory. Prefer "
-    "redundant source-summary beliefs, questions "
-    "already answered by visible evidence, and non-decision-relevant items while "
-    "preserving material support, counter-evidence, and unresolved uncertainty."
+    " When an obligation contains required_compaction_remove_paths, those exact "
+    "removals override must_reduce_any_of_paths. Remove every listed whole item "
+    "first; do not rewrite or replace it. Each removal counts toward "
+    "minimum_removed_items. While any required path remains, do not remove or "
+    "change hypotheses, beliefs, evidence, or any other unlisted item. If the exact "
+    "paths fill the quota, do not choose alternative removals."
+    " After required removals, only if minimum_removed_items still has a remainder, "
+    "choose that remainder from must_reduce_any_of_paths. Sum the lengths of every "
+    "returned array before answering and ensure corrected_total_items is at most "
+    "maximum_total_items. Removing one belief and its evidence counts as two items. "
+    "When there are no required_compaction_remove_paths, remove at least "
+    "minimum_removed_items across any combination of the alternative paths. Prefer "
+    "redundant source-summary beliefs, questions already answered by visible "
+    "evidence, and non-decision-relevant items while preserving material support, "
+    "counter-evidence, and unresolved uncertainty."
     " When an obligation contains structurally_redundant_remove_paths, remove "
     "those byte-identical duplicate items first until minimum_removed_items is "
     "met, unless another obligation already removes enough total items. If the "
     "candidate list is shorter than the removal quota, choose the remaining "
     "removals from must_reduce_any_of_paths. These paths are suggestions, not "
     "additional mandatory independent obligations."
-    " When an obligation contains required_compaction_remove_paths, remove every "
-    "item at those exact paths. They are contract-owned whole-item eviction "
-    "priorities and count toward minimum_removed_items; do not merely rewrite or "
-    "replace them. If they do not fill the quota, choose the remainder from "
-    "must_reduce_any_of_paths."
     " When an obligation contains copy_candidates_by_path, copy one listed "
     "exact_claim byte-for-byte into that assertion path or remove the assertion; "
     "do not restate, expand, or change issuer words. If no listed claim has the "
@@ -5253,6 +5264,99 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "provenance, or remove it; update each named linked assertion to copy the "
     "corrected claim byte-for-byte or remove that assertion."
 )
+
+
+def _authorized_correction_paths(
+    feedback: Mapping[str, Any],
+    failed_output: Mapping[str, Any],
+) -> list[str]:
+    """Return a closed write scope only when obligations fully enumerate it."""
+
+    obligations = feedback.get("obligations", ())
+    if not isinstance(obligations, list):
+        return []
+    compaction_obligations = [
+        obligation
+        for obligation in obligations
+        if isinstance(obligation, Mapping)
+        and isinstance(obligation.get("minimum_removed_items"), int)
+        and not isinstance(obligation.get("minimum_removed_items"), bool)
+    ]
+    if not compaction_obligations:
+        return []
+    required_paths: list[str] = []
+    for obligation in compaction_obligations:
+        required = obligation.get("required_compaction_remove_paths", ())
+        minimum = obligation["minimum_removed_items"]
+        if not isinstance(required, list) or len(required) < minimum:
+            return []
+        required_paths.extend(
+            path for path in required if isinstance(path, str) and path
+        )
+    required_paths = list(dict.fromkeys(required_paths))
+    if not required_paths:
+        return []
+
+    authorized = list(required_paths)
+    for obligation in obligations:
+        if not isinstance(obligation, Mapping):
+            continue
+        must_change_paths = obligation.get("must_change_paths", ())
+        if not isinstance(must_change_paths, list):
+            return []
+        for path in must_change_paths:
+            if not isinstance(path, str) or not path:
+                continue
+            if re.fullmatch(r"[A-Za-z_]+", path):
+                authorized.append(path)
+                continue
+            if any(
+                path == required
+                or path.startswith(required + ".")
+                or path.startswith(required + "[")
+                for required in required_paths
+            ):
+                continue
+            return []
+        if (
+            not must_change_paths
+            and obligation not in compaction_obligations
+            and "maximum_size_bytes" not in obligation
+        ):
+            return []
+
+    roots_with_open_scope = {
+        path for path in authorized if re.fullmatch(r"[A-Za-z_]+", path)
+    }
+    projected = {
+        key: list(value) if isinstance(value, list) else value
+        for key, value in failed_output.items()
+    }
+    removals_by_field: dict[str, list[int]] = {}
+    for path in required_paths:
+        match = re.fullmatch(r"([A-Za-z_]+)\[(\d+)\]", path)
+        if match is None:
+            return []
+        removals_by_field.setdefault(match.group(1), []).append(int(match.group(2)))
+    for field_name, indices in removals_by_field.items():
+        items = projected.get(field_name)
+        if not isinstance(items, list):
+            return []
+        for index in sorted(set(indices), reverse=True):
+            if index >= len(items):
+                return []
+            items.pop(index)
+    for obligation in obligations:
+        if not isinstance(obligation, Mapping):
+            continue
+        maximum_size = obligation.get("maximum_size_bytes")
+        if (
+            isinstance(maximum_size, int)
+            and not roots_with_open_scope
+            and _research_state_json_size(projected) > maximum_size
+        ):
+            return []
+    return list(dict.fromkeys(authorized))
 
 
 def _scoped_correction_drift_paths(
@@ -5354,6 +5458,7 @@ def _complete_parsed_role(
     echo_invalid_output_on_correction: bool = True,
     correction_guidance: str = "",
     enforce_scoped_correction: bool = False,
+    exact_compaction_scope: bool = False,
 ) -> tuple[Any, AgentUsage]:
     """Apply one bounded semantic correction around a structured role."""
 
@@ -5456,7 +5561,6 @@ def _complete_parsed_role(
                 failure = ValidationError("; ".join(messages))
                 continue
         try:
-            parsed_value = _parse_role_output(request_stage, value, parser)
             if (
                 attempt
                 and enforce_scoped_correction
@@ -5465,11 +5569,17 @@ def _complete_parsed_role(
                 and failure is not None
             ):
                 obligations = _validation_obligations(failure, failed_output)
-                must_change_paths = [
-                    path
-                    for obligation in obligations["obligations"]
-                    for path in obligation["must_change_paths"]
-                ]
+                if exact_compaction_scope:
+                    must_change_paths = _authorized_correction_paths(
+                        obligations,
+                        failed_output,
+                    )
+                else:
+                    must_change_paths = [
+                        path
+                        for obligation in obligations["obligations"]
+                        for path in obligation["must_change_paths"]
+                    ]
                 drift_paths = _scoped_correction_drift_paths(
                     failed_output,
                     value,
@@ -5482,6 +5592,7 @@ def _complete_parsed_role(
                         f"unrelated_changed_paths={drift_paths}. Preserve every "
                         "unrelated field and list item byte-for-byte"
                     )
+            parsed_value = _parse_role_output(request_stage, value, parser)
             return parsed_value, usage
         except ValidationError as exc:
             failed_output = value if echo_invalid_output_on_correction else {}
@@ -7737,6 +7848,8 @@ class LLMResearchController:
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
         )
         return AgentStep(state, usage)
 
@@ -7841,6 +7954,8 @@ class LLMResearchController:
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
         )
         return AgentStep(reflected, usage)
 

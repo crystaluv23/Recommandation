@@ -1503,3 +1503,19 @@ must recognize standard `priced in`, `prices in`, and `pricing in` constructions
 still rejecting direct claims that a post-horizon event itself causes the within-
 horizon outcome. Keep one validator issue in one sentence so explanatory punctuation
 does not become a false pathless correction obligation.
+
+## Exact compaction scope addendum (2026-09-02)
+
+An exact removal list and a broad alternative-array instruction are competing write
+contracts unless precedence is explicit. Put exact removals first and allow an
+alternative choice only for a quota remainder. If exact removals meet the count and
+byte ceilings, a correction that deletes valid hypotheses, beliefs, evidence, or
+future needs is semantic drift even when the corrected state remains within size
+limits.
+
+Do not turn that observation into a global ResearchState freeze. Evidence claim
+repairs may require linked assertions or another same-claim ref, and need transitions
+may legitimately update resolved questions. Enable byte-level structural diff only
+when every obligation is provably contained in exact paths, explicitly open whole
+arrays, or a byte ceiling already satisfied by the exact removals. Otherwise rerun
+the semantic validators without claiming that the enumerated scope is complete.

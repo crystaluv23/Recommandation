@@ -6818,7 +6818,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(duplicate["must_change_paths"], ["open_questions[0]"])
         self.assertIn(
-            "never repeat its exact string in open_questions",
+            "Never repeat an exact next_information_needs string in open_questions",
             caller.calls[0]["system_prompt"],
         )
 
@@ -7080,7 +7080,7 @@ class ConcreteRoleAdapterTests(TestCase):
             "current_beliefs": ["The catalyst remains unconfirmed."],
             "supporting_evidence": [],
             "contradictions": [],
-            "resolved_questions": [],
+            "resolved_questions": invalid["resolved_questions"][:3],
             "open_questions": ["Will the catalyst occur within six months?"],
             "next_information_needs": ["Check issuer evidence for the catalyst."],
             "decision": "continue",
@@ -7126,7 +7126,7 @@ class ConcreteRoleAdapterTests(TestCase):
             ],
         )
         self.assertIn(
-            "sum the lengths of every returned array",
+            "Sum the lengths of every returned array",
             caller.calls[1]["system_prompt"],
         )
         self.assertEqual(
@@ -7747,13 +7747,62 @@ class ConcreteRoleAdapterTests(TestCase):
             ["open_questions[0]"],
         )
         self.assertIn(
-            "remove every item at those exact paths",
+            "those exact removals override must_reduce_any_of_paths",
             caller.calls[1]["system_prompt"],
+        )
+        correction_prompt = caller.calls[1]["system_prompt"]
+        self.assertLess(
+            correction_prompt.index("required_compaction_remove_paths"),
+            correction_prompt.index("After required removals"),
         )
         self.assertEqual(
             initialized.value.open_questions,
             tuple(corrected["open_questions"]),
         )
+
+    def test_initialize_exact_compaction_rejects_unrelated_drift(self) -> None:
+        repeated_question = "Is the customer renewal still pending?"
+        invalid = {
+            "hypotheses": [f"Material hypothesis {item}." for item in "ABC"],
+            "current_beliefs": [
+                f"Distinct qualitative belief {item}." for item in "ABCDEFGH"
+            ],
+            "supporting_evidence": [],
+            "contradictions": [
+                f"Distinct qualitative contradiction {item}." for item in "ABCD"
+            ],
+            "resolved_questions": [],
+            "open_questions": [
+                repeated_question,
+                "Could financing delay deployment?",
+                "Could costs impair adoption?",
+                "Could regulation delay adoption?",
+            ],
+            "next_information_needs": [
+                repeated_question,
+                "Check renewal disclosure.",
+                "Check financing disclosure.",
+                "Check deployment evidence.",
+                "Check cost disclosure.",
+                "Check regulatory disclosure.",
+            ],
+            "decision": "continue",
+        }
+        drifted = json.loads(json.dumps(invalid))
+        drifted["open_questions"] = drifted["open_questions"][1:]
+        drifted["current_beliefs"] = drifted["current_beliefs"][1:]
+        caller = ScriptedRoleCaller([invalid, drifted])
+
+        with self.assertRaisesRegex(
+            CandidateExecutionRejected,
+            "correction changed unrelated valid content",
+        ) as raised:
+            LLMResearchController(caller).initialize(
+                default_information_plan(),
+                {"requests": []},
+            )
+
+        self.assertIn("current_beliefs", str(raised.exception))
 
     def test_v89_total_limit_requires_resolved_bookkeeping_compaction(
         self,

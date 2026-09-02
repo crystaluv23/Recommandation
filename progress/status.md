@@ -1,5 +1,32 @@
 # Status
 
+Current V94 repair (2026-09-02): post-`e0e7215` contract
+`f0d505f...0634` made three charged calls for `$0.01281336` and three data
+requests. Its first Fast case stopped after H_init and its one correction, leaving
+authoritative pointers `round=0/cycle=0`, active cycle 1 in `fast_loop`, Registry v1,
+and Slow unstarted. The proposer and both H_init requests, full Basic projection
+context, raw responses, structured correction payload, rejection artifact, and
+pointers were inspected.
+
+The first H_init response contained 32 frontier items, including five actionable
+questions copied byte-for-byte into both `open_questions` and
+`next_information_needs`. Its correction received eight exact eviction paths: all
+five duplicate open questions plus three resolved-question bookkeeping items. Those
+paths alone met both the 24-item and 6000-byte limits. However, the prompt described
+the six arrays as alternative removals before the exact paths, and runtime did not
+enforce ResearchState correction scope. DeepSeek consequently removed or rewrote
+valid hypotheses, beliefs, evidence, and next needs while retaining four duplicate
+questions; normal validation correctly rejected the result.
+
+Exact compaction removals now override alternative arrays in provider instructions.
+ResearchState correction computes a closed structural write scope only when exact
+paths fill the quota and every other obligation is provably contained or satisfied by
+those removals; unbounded evidence/need linkage stays open to avoid false rejection.
+The actual V94 pair now replays to an explicit unrelated-drift rejection, while a
+generic fixture proves one exact removal cannot authorize deleting a valid belief.
+All 516 tests pass; successor ceilings are 266 attempts, `$17.63724940`, and 673 data
+requests.
+
 Current V93 repair (2026-09-01): post-`bde2375` contract
 `2690f63...74727d` made seven charged calls for `$0.01263052` and four data
 requests. Its first Fast case completed with one H_init, one correct empty routing,

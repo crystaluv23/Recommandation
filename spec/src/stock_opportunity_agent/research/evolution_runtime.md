@@ -705,6 +705,9 @@ exact duplicate already present in a committed legacy state, but it may not intr
 a new one; new H_init states have no compatibility exception. This removes repeated
 text from every later routing, reflection, Predictor, and post-hoc context without
 silently mutating accepted state.
+The provider contract states the ownership operationally: `open_questions` contains
+only material uncertainty that is not itself an actionable retrieval question, and it
+returns an empty array when every open question is already in next needs.
 
 H_reflect calculates each effective count/byte ceiling as the larger of that default
 and the prior committed state's observed value. A legacy over-limit field can be
@@ -769,6 +772,16 @@ economic belief, hypothesis, contradiction, evidence item, open uncertainty, or 
 need by semantic opinion. The model removes every listed item, chooses any still-needed
 remainder itself, and the normal count plus semantic validation reruns without local
 output mutation.
+`required_compaction_remove_paths` takes precedence over the alternative-array
+instruction. The correction removes every exact path first; only if those paths do not
+fill `minimum_removed_items` may it choose the remainder from
+`must_reduce_any_of_paths`. When exact paths fill the quota and every other validation
+obligation is either already within those paths, an explicitly open whole-array path,
+or a byte ceiling that the removals alone satisfy, runtime byte-compares the raw
+correction and rejects changes to unlisted content. If any remaining obligation has
+unbounded legitimate linkage, or exact paths cannot fill the quota, validation stays
+open and the normal parser determines validity. This enforces a closed scope only when
+runtime can prove it complete without making runtime choose semantic content.
 
 When a quantitative assertion fails only because it does not copy an evidence claim
 byte-for-byte, correction feedback may add a bounded `copy_candidates_by_path` map.

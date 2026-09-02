@@ -334,6 +334,9 @@ new duplicates at `open_questions[index]`; it does not perform semantic deduplic
 H_reflect preserves exact duplicates inherited from a committed legacy state but may
 not create another. Correction removes or changes the named open-question item and the
 normal parser reruns; runtime never deletes it locally.
+Provider instructions therefore reserve `open_questions` for non-retrieval
+uncertainty and require an empty array when every open item is already actionable in
+next needs.
 
 Reflect remains backward compatible with committed states created before these
 ceilings. For each field, combined item count, and serialized byte size, its effective
@@ -369,6 +372,14 @@ object contains mechanically provable duplicate items, that obligation may add b
 preferred but non-binding removal candidates. Runtime does not infer semantic
 redundancy or mutate the state; the model may choose another removal combination, and
 the unchanged count and semantic validators rerun after correction.
+When correction feedback supplies `required_compaction_remove_paths`, those exact
+removals override the otherwise alternative `must_reduce_any_of_paths` choice. Only a
+quota remainder may be chosen from the alternative arrays. If exact paths fill the
+quota and all other obligations are provably contained by exact or explicit
+whole-array paths (including a byte ceiling already met by exact removal), raw
+correction diffing protects every unlisted item byte-for-byte. Otherwise the scope
+remains open for legitimate linked repairs and the ordinary validators decide. Runtime
+still never performs a removal itself.
 
 The fixed six-month adjusted-price-doubling outcome is an evaluation definition,
 not an issuer statement, contractual target, or missing source. `H_init` may ask
