@@ -128,8 +128,10 @@ S = (B, H_init, H_reflect, H_analyse)
   Signal batch and returns beliefs, supporting evidence, contradictions,
   resolved/open questions, next needs, and `continue` or `finalize`. Its
   `finalize` decision ends evidence collection only; `H_reflect` cannot define,
-  name, or choose a replacement prediction-class ontology. The fixed Predictor
-  alone owns `likely/possible/unlikely/insufficient_information` and magnitude.
+  name, or choose a replacement prediction-class ontology, nor decide which price
+  direction, market trend, or outcome is likely. It decides whether evidence
+  collection should continue, not what the eventual answer should be. The fixed
+  Predictor alone owns `likely/possible/unlikely/insufficient_information` and magnitude.
   A Plan may explicitly preserve this boundary (for example, keep the fixed
   four-way judgment intact or continue without altering the Predictor ontology);
   negative guard language is not itself an ontology definition.
@@ -364,6 +366,12 @@ removed. The role must satisfy every row rather than stopping after the first ea
 shape fix. This is diagnostic structure only: it adds no second correction and runtime
 does not author a replacement value, drop an invalid item, or skip the unchanged parser
 and semantic validation pass.
+For quantity failures, correction feedback also flattens every affected claim and
+linked assertion into a counted literal checklist. Each listed missing literal must be
+absent from every retained path unless the final claim on that path has retained
+`exact_text` containing the same literal. Merely changing surrounding words while
+retaining an unsupported year, amount, percentage, or duration does not complete the
+check. Runtime still does not delete or rewrite the claim.
 For an aggregate item-count overflow, correction feedback also reports the exact
 current total, maximum total, minimum removals, and alternative arrays. If the rejected
 object contains mechanically provable duplicate items, that obligation may add bounded
@@ -412,9 +420,11 @@ visible next to the rejected value. It never replaces model output, changes the
 canonical projection, or bypasses full byte-for-byte validation of the corrected ref.
 When an LLM Signal quote touches an internal projection edge, correction feedback
 also names its evidence group/index, the rejected projection id, which edge was
-touched, and every overlapping projection id for the same source boundary. The full
-unchanged projections remain visible; the model must copy a complete clause from one
-of them or return unavailable. Runtime does not extend the quote or choose evidence.
+touched, and every overlapping projection id for the same source boundary. For each
+overlap, runtime may expose one bounded byte-exact interior candidate that touches
+neither internal edge. The full unchanged projections remain visible; the model must
+choose a candidate, copy another complete clause, or return unavailable. Runtime does
+not extend the quote or choose evidence.
 The correction instruction makes the required state transition explicit: each
 provenance item named by the validation error must be replaced by a valid visible
 reference or removed. Returning the same rejected provenance is not a correction.
@@ -496,9 +506,9 @@ alternative period value that `residual_need` retains. When the target coordinat
 two normalized temporal values with `and`, `or`, `versus`, or `vs`, and the residual
 removes one side while retaining the other, runtime treats the retained side as the
 residual facet and checks only that value rather than forbidding their shared topic.
-Otherwise,
-an ordered three-word phrase or at least three reordered non-temporal content terms
-shared by reason and residual remains a scope contradiction. Correction feedback names
+Otherwise, an ordered three-word phrase, at least three reordered non-temporal
+content terms, or two reordered non-temporal topic terms plus a shared temporal term
+between reason and residual remains a scope contradiction. Correction feedback names
 the reason path and carries only the conflicting normalized terms in
 `remove_terms_from_selection_reason`; correction must remove every listed term and
 name only the narrower answered facet, or remove the selection. This is

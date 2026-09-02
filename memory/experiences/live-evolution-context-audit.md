@@ -1519,3 +1519,18 @@ may legitimately update resolved questions. Enable byte-level structural diff on
 when every obligation is provably contained in exact paths, explicitly open whole
 arrays, or a byte ceiling already satisfied by the exact removals. Otherwise rerun
 the semantic validators without claiming that the enumerated scope is complete.
+
+## MVP closure discipline addendum (2026-09-02)
+
+After repeated live iterations, separate blockers from refinements. A blocker prevents
+an authoritative Fast/Slow pointer, corrupts role ownership or evidence provenance, or
+causes a clearly unnecessary model call. Put other possible improvements in backlog
+and run the complete cycle. Generality means enforcing structural ownership and
+proof-complete correction scopes, not expanding validation for every awkward sentence.
+
+Apply fixed semantics at the field that owns them. Operational-event probability is
+valid hypothesis language in H_init, whereas H_reflect cannot decide likely price
+direction. When a quantity correction names an unsupported literal, completion must
+check that literal at every linked retained path; merely changing the string is not a
+repair. For overlapping source chunks, expose a bounded exact interior candidate only
+when it is unique in visible context, and still let the model choose or abstain.

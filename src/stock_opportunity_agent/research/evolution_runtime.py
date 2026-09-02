@@ -4563,7 +4563,10 @@ _INFORMATION_PLAN_OUTPUT = (
     "evidence-based updating and continue/finalize or next-needs choice; H_analyse "
     "must cover evidence organization/weighting and counter-evidence or uncertainty. "
     "H_init and H_reflect update ResearchState and evidence collection only; they "
-    "must not define, name, or finalize a replacement Predictor class ontology."
+    "must not define, name, or finalize a replacement Predictor class ontology. "
+    "H_reflect decides only whether evidence collection should continue or "
+    "finalize; it must not decide which price direction, market trend, or outcome "
+    "is likely."
     " Do not return plan_id or parent_ids; runtime owns structural metadata. "
     "B must contain at least one compact market-backbone request whose "
     "source_types includes market_data, whose lookback_days is at most 60, "
@@ -4700,6 +4703,18 @@ _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+_RESEARCH_CONTROLLER_DIRECTION_DECISION = re.compile(
+    r"\b(?:decid\w*|determin\w*|conclud\w*|classif\w*|judg\w*)\b"
+    r"(?:(?![.!?]).){0,160}\b(?:price|share|stock|market\s+trend|trend|"
+    r"direction|outlook|outcome)\b(?:(?![.!?]).){0,120}\b(?:likely|rise|fall|"
+    r"increase|decrease|continu\w*|revers\w*|upward|downward|up|down)\b|"
+    r"\b(?:decid\w*|determin\w*|conclud\w*|classif\w*|judg\w*)\b"
+    r"(?:(?![.!?]).){0,160}\b(?:likely|rise|fall|increase|decrease|continu\w*|"
+    r"revers\w*|upward|downward|up|down)\b(?:(?![.!?]).){0,120}"
+    r"\b(?:price|share|stock|market\s+trend|trend|direction|outlook|outcome)\b",
+    re.IGNORECASE,
+)
+
 _RESEARCH_CONTROLLER_ONTOLOGY_GUARD = re.compile(
     r"\b(?:keep(?:ing)?|preserv(?:e|ing))\s+(?:the\s+)?four[- ]way\s+"
     r"(?:judg\w*|class\w*)\s+(?:intact|unchanged|fixed)\b|"
@@ -4799,8 +4814,8 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
 
     if _fixed_semantics_violation(plan.analysis_prompt):
         raise ValidationError(
-            "H_analyse may organize/weight evidence only and cannot redefine fixed "
-            "Predictor semantics"
+            "invalid_field='H_analyse', H_analyse may organize/weight evidence only "
+            "and cannot redefine fixed Predictor semantics"
         )
     for field_name, text_value in (
         ("H_init", plan.initial_research_skill),
@@ -4815,9 +4830,19 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
         )
         if _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY.search(scrubbed):
             raise ValidationError(
-                f"{field_name} may update ResearchState and decide evidence "
+                f"invalid_field={field_name!r}, {field_name} may update "
+                "ResearchState and decide evidence "
                 "collection only; it cannot define or finalize a replacement "
                 "Predictor class ontology"
+            )
+        if (
+            field_name == "H_reflect"
+            and _RESEARCH_CONTROLLER_DIRECTION_DECISION.search(scrubbed)
+        ):
+            raise ValidationError(
+                "invalid_field='H_reflect', H_reflect may decide only whether "
+                "evidence collection should continue or finalize; it cannot decide "
+                "which price direction, market trend, or outcome is likely"
             )
 
 
@@ -4877,7 +4902,7 @@ _VALIDATION_OBLIGATION_PATH = re.compile(
     r"\b[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)+"
 )
 _VALIDATION_INVALID_FIELD_PATH = re.compile(
-    r"\binvalid_field=['\"]([a-z_]+(?:\[\d+\]|\.[a-z_]+)*)['\"]"
+    r"\binvalid_field=['\"]([A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*)['\"]"
 )
 _VALIDATION_MINIMUM_REMOVED_ITEMS = re.compile(
     r"\bminimum_removed_items=(\d+)"
@@ -5199,6 +5224,30 @@ def _validation_obligations(
         "obligation_count": len(obligations),
         "obligations": obligations,
     }
+    quantity_literal_checks = [
+        {
+            "affected_paths": obligation["must_change_paths"],
+            "missing_quantity_literals": obligation["missing_quantity_literals"],
+            "same_claim_evidence_paths": obligation.get(
+                "same_claim_evidence_paths", []
+            ),
+            "completion_rule": (
+                "For every missing_quantity_literal, inspect every affected_path in "
+                "the final output. Remove the literal from each retained value; an "
+                "evidence claim may retain it only when final exact_text refs with "
+                "that identical claim contain the literal."
+            ),
+        }
+        for obligation in obligations
+        if obligation.get("missing_quantity_literals")
+    ]
+    if quantity_literal_checks:
+        feedback.update(
+            {
+                "quantity_literal_check_count": len(quantity_literal_checks),
+                "quantity_literal_checks": quantity_literal_checks,
+            }
+        )
     required_change_paths = list(
         dict.fromkeys(
             path
@@ -5215,6 +5264,12 @@ def _validation_obligations(
                     "Before returning, compare every required_change_paths value "
                     "with invalid_output. Each rejected value must differ or be "
                     "removed; preserve every unlisted value byte-for-byte."
+                    + (
+                        " Then complete every quantity_literal_checks row: changing "
+                        "surrounding words does not remove an unsupported literal."
+                        if quantity_literal_checks
+                        else ""
+                    )
                 ),
             }
         )
@@ -7408,6 +7463,13 @@ def _shared_distinctive_phrase(
         reordered_overlap.append(token)
     if len(reordered_overlap) >= minimum_words:
         return " ".join(reordered_overlap)
+    temporal_overlap = [
+        token
+        for token in left_words
+        if token in right_word_set and _TEMPORAL_TOPIC_TOKEN.fullmatch(token)
+    ]
+    if len(reordered_overlap) >= 2 and temporal_overlap:
+        return " ".join(dict.fromkeys((*reordered_overlap, *temporal_overlap)))
     return None
 
 
@@ -9064,7 +9126,6 @@ class LLMInformationPlanProposer:
                     anonymous_aliases=self.anonymous_aliases,
                 )
             try:
-                _reject_fixed_semantics_redefinition(value)
                 if attempt and failed_value and failure is not None:
                     obligations = _validation_obligations(failure, failed_value)
                     must_change_paths = [
@@ -10813,6 +10874,58 @@ def _project_llm_signal_documents(
     return payload
 
 
+def _bounded_projection_interior_candidate(
+    projection: _SignalProjectionLineage,
+    *,
+    maximum_characters: int = 800,
+) -> str | None:
+    """Return one exact complete interior sentence span, never an edge fragment."""
+
+    text_value = projection.projection_text
+    sentence_end = re.compile(r'[.!?](?:["\')\]]*)(?=\s|$)')
+    lower = 0
+    if projection.normalized_start > 0:
+        first_end = sentence_end.search(text_value)
+        if first_end is None:
+            return None
+        lower = first_end.end()
+        while lower < len(text_value) and text_value[lower].isspace():
+            lower += 1
+
+    terminal_ends = [
+        match.end()
+        for match in sentence_end.finditer(text_value, lower)
+        if not (
+            projection.normalized_end < projection.normalized_source_length
+            and match.end() == len(text_value)
+        )
+    ]
+    if not terminal_ends:
+        return None
+    upper = terminal_ends[-1]
+    if upper <= lower:
+        return None
+
+    starts = [lower]
+    for end in terminal_ends:
+        start = end
+        while start < upper and text_value[start].isspace():
+            start += 1
+        if start < upper:
+            starts.append(start)
+    candidates: list[tuple[int, int, str]] = []
+    for start in starts:
+        for end in terminal_ends:
+            if end <= start or end - start > maximum_characters:
+                continue
+            candidate = text_value[start:end].strip()
+            if candidate and text_value.count(candidate) == 1:
+                candidates.append((-len(candidate), start, candidate))
+    if not candidates:
+        return None
+    return min(candidates)[2]
+
+
 def _map_projected_signal_evidence(
     value: Mapping[str, Any],
     lineage: Mapping[str, _SignalProjectionLineage],
@@ -10910,8 +11023,8 @@ def _map_projected_signal_evidence(
             ):
                 touched_edges.append("end")
             if touched_edges:
-                overlapping_projection_ids = sorted(
-                    candidate_id
+                overlapping = {
+                    candidate_id: candidate
                     for candidate_id, candidate in eligible_lineage.items()
                     if candidate_id != resolved_projection_id
                     and candidate.document.document_id
@@ -10932,13 +11045,29 @@ def _map_projected_signal_evidence(
                             < candidate.normalized_end
                         )
                     )
-                )
+                }
+                overlapping_projection_ids = sorted(overlapping)
+                interior_candidates = {
+                    candidate_id: interior
+                    for candidate_id, candidate in sorted(overlapping.items())
+                    if (
+                        interior := _bounded_projection_interior_candidate(candidate)
+                    )
+                    and sum(
+                        visible.projection_text.count(interior)
+                        for visible in eligible_lineage.values()
+                    )
+                    == 1
+                }
                 raise ValidationError(
                     f"Signal {group} evidence[{index}] on projection "
                     f"{resolved_projection_id!r} touches internal projection "
                     f"edge={touched_edges}; overlapping_projection_ids="
-                    f"{overlapping_projection_ids}. Copy one complete literal from "
-                    "an overlapping projection or return unavailable"
+                    f"{overlapping_projection_ids}; "
+                    "overlapping_projection_interior_candidates="
+                    f"{json.dumps(interior_candidates, ensure_ascii=False)}. Copy "
+                    "one listed byte-exact candidate, another complete literal from "
+                    "an overlapping projection, or return unavailable"
                 )
             overlaps = [
                 run
@@ -10972,7 +11101,10 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "only projection ids listed in its own eligible_projection_ids, even though "
     "peer Signal projections are visible in the shared batch. Do not cite text "
     "that starts or ends at an internal projection edge; use the overlapping "
-    "projection containing the complete clause. Never infer omitted source text "
+    "projection containing the complete clause. Edge validation feedback may give "
+    "bounded byte-exact overlapping_projection_interior_candidates; copy one "
+    "exactly, choose another complete visible literal, or return unavailable. "
+    "Never infer omitted source text "
     "is absent. Return unavailable with no evidence when visible text is "
     "insufficient. If optional validation_feedback is present, this is the only "
     "correction attempt: apply each required_action exactly. The rejected row "

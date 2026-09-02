@@ -255,6 +255,13 @@ the leaking value is not echoed and accepted output is never silently mutated.
 A fixed-semantics scanner rejects attempts to introduce probability thresholds,
 redefine the six-month price surge/horizon, change the four-way judgment, or turn
 `H_analyse` into a Predictor.
+Plan validation applies that boundary at the owning field rather than to the
+serialized four-field object. `H_init` may discuss evidence that changes the
+likelihood of an operating or commercial event; this is hypothesis formation, not a
+replacement Predictor probability. `H_reflect` may decide only whether evidence
+collection should continue or finalize and cannot decide which price direction,
+trend, or outcome is likely. Each violation names its exact `H_*` path so correction
+cannot rewrite the other role instructions or Basic requests.
 
 Slow H1 explicitly binds each hypothesis to the fixed Discovery positive/control
 comparison. Its expected pattern must name both groups using case/group/cohort
@@ -733,6 +740,12 @@ prefix contains only this role-neutral contract. ResearchState-only repair advic
 evidence quantities and claim-length/provenance coupling is appended only to
 H_init/H_reflect; unrelated roles must not pay for or be distracted by evidence fields
 they cannot return.
+For quantity failures, correction feedback additionally flattens every affected claim
+and linked assertion into a counted literal checklist. Before return, each listed
+missing literal must either be absent from every retained path or occur in a retained
+`exact_text` attached to the identical final claim. Changing the string while retaining
+the same unsupported literal does not satisfy the checklist. This remains diagnostic
+only and does not delete, rewrite, or select a claim locally.
 When partial Signal routing claims a facet retained by its residual, its correction
 obligation additionally carries `remove_terms_from_selection_reason`. Shared topic
 words are not themselves a contradiction. If the original target coordinates two
@@ -741,8 +754,9 @@ confines the conflict to the retained alternative value; this lets `2025 product
 guidance` and residual `2026 production guidance` share their necessary topic while
 rejecting a reason that claims both years. Without such an explicit split, the contradiction gate
 prefers a shared ordered three-word phrase and also catches reordered overlap containing
-at least three shared non-temporal content terms, so `growth project updates` cannot be
-claimed while `updates on growth projects` remains unresolved. The selector must omit
+at least three shared non-temporal content terms. Two shared non-temporal topic terms
+plus a shared temporal term also qualify, so reordered period-qualified scope cannot
+evade the same check. The selector must omit
 every listed conflicting term from the named reason and describe only the narrower
 answered facet, or remove the selection. These fields exist only in failed-call
 feedback; runtime does not write the replacement and does not enlarge every normal
@@ -1095,9 +1109,11 @@ projection for raw-span mapping, matching the Basic-ref rule. Zero or multiple v
 matches remain semantic ambiguity and fail closed; runtime never edits the quote.
 For a quote touching an internal projection edge, validation feedback identifies the
 supporting/counter index, rejected projection id, start/end edge, and overlapping
-projection ids covering that source boundary. This makes the sole correction
-actionable while leaving the complete projections unchanged and retaining model
-responsibility for selecting one complete literal or returning unavailable.
+projection ids covering that source boundary. For each overlap, runtime may also expose
+one bounded byte-exact interior candidate that touches neither internal edge. This
+makes the sole correction actionable while leaving the complete projections unchanged
+and retaining model responsibility for choosing a candidate, another complete literal,
+or unavailable.
 For an absent, case-changed, punctuation-changed, or ambiguous quote, feedback likewise
 identifies the evidence group/index, supplied projection id, occurrence count inside
 that projection and across the Signal's eligible visible projections, and uniquely

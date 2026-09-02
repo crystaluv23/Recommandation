@@ -3905,6 +3905,57 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected["selection_reason"],
         )
 
+    def test_v95_routing_catches_reordered_period_qualified_scope(self) -> None:
+        target_need = (
+            "What is the company's current production guidance for the remainder "
+            "of 2025 and 2026, and any updates on regional operations?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What are the specific updates on regional operations and any changes "
+            "to 2025-2026 production guidance?"
+        )
+        guidance["selection_reason"] = (
+            "Directly addresses current production guidance for 2025-2026."
+        )
+        corrected = json.loads(json.dumps(guidance))
+        corrected["selection_reason"] = (
+            "Directly answers the currently stated output range."
+        )
+        caller = ScriptedRoleCaller(
+            [{"selections": [guidance]}, {"selections": [corrected]}]
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=(target_need,)
+                ),
+            )
+
+        overlap_obligation = next(
+            item
+            for item in caller.calls[1]["payload"]["validation_feedback"][
+                "obligations"
+            ]
+            if "claims a facet retained" in item["instruction"]
+        )
+        self.assertEqual(
+            overlap_obligation["remove_terms_from_selection_reason"],
+            ["production", "guidance", "2025", "2026"],
+        )
+        self.assertEqual(
+            selection.value[0].selection_reason,
+            corrected["selection_reason"],
+        )
+
     def test_v91_routing_allows_shared_topic_but_not_residual_year(self) -> None:
         target_need = (
             "What are the company's production and cost guidance for 2025 and "
@@ -5400,6 +5451,73 @@ class ConcreteRoleAdapterTests(TestCase):
             self.assertEqual(plan.analysis_prompt, analysis_prompt)
             self.assertEqual(caller.stages, ["information_plan_propose"])
 
+    def test_v95_proposer_allows_operating_event_probability_in_h_init(self) -> None:
+        parent = default_information_plan()
+        output = {
+            "B": parent.basic_info_policy.to_dict(),
+            "H_init": (
+                "Form falsifiable hypotheses from source-backed evidence about "
+                "whether the probability of commercial adoption changes, and list "
+                "the smallest unresolved information needs and questions."
+            ),
+            "H_reflect": parent.reflection_skill,
+            "H_analyse": parent.analysis_prompt,
+        }
+        caller = ScriptedRoleCaller([output])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        self.assertEqual(plan.initial_research_skill, output["H_init"])
+        self.assertEqual(caller.stages, ["information_plan_propose"])
+
+    def test_v95_proposer_scopes_direction_decision_repair_to_h_reflect(self) -> None:
+        parent = default_information_plan()
+        invalid = {
+            "B": parent.basic_info_policy.to_dict(),
+            "H_init": parent.initial_research_skill,
+            "H_reflect": (
+                "Update beliefs from supporting and contradictory evidence, then "
+                "decide whether the market trend is likely to continue or reverse; "
+                "continue to the next need or finalize."
+            ),
+            "H_analyse": parent.analysis_prompt,
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["H_reflect"] = (
+            "Update beliefs from supporting and contradictory evidence, then decide "
+            "whether evidence collection should continue to the next need or "
+            "finalize while preserving unresolved uncertainty."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=2,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("invalid_field='H_reflect'", feedback["validation_error"])
+        self.assertEqual(feedback["required_change_paths"], ["H_reflect"])
+        self.assertEqual(plan.reflection_skill, corrected["H_reflect"])
+        self.assertEqual(corrected["B"], invalid["B"])
+        self.assertEqual(corrected["H_init"], invalid["H_init"])
+        self.assertEqual(corrected["H_analyse"], invalid["H_analyse"])
+
     def test_v14_fixed_threshold_reference_is_not_a_semantics_redefinition(self) -> None:
         fixture = json.loads(
             (
@@ -6783,9 +6901,44 @@ class ConcreteRoleAdapterTests(TestCase):
             "compare every required_change_paths",
             feedback["completion_check"],
         )
+        self.assertIn(
+            "quantity_literal_checks",
+            feedback["completion_check"],
+        )
+        self.assertEqual(
+            feedback["quantity_literal_check_count"],
+            len(feedback["quantity_literal_checks"]),
+        )
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
             fixture["corrected_claim"],
+        )
+
+    def test_v95_quantity_feedback_checks_each_linked_retained_path(self) -> None:
+        error = ValidationError(
+            "supporting_evidence[1] claim contains numeric quantities absent from "
+            "all Basic exact_text refs with the same claim, "
+            'missing_quantity_groups=["2031"], '
+            'missing_quantity_literals=["2031"], '
+            'same_claim_evidence_paths=["supporting_evidence[1].claim"]. '
+            "Change or remove every listed evidence claim together. "
+            'linked_assertions=["current_beliefs[1]"] must copy the corrected '
+            "claim byte-for-byte"
+        )
+
+        feedback = evolution_runtime_module._validation_obligations(error, {})
+
+        self.assertEqual(feedback["quantity_literal_check_count"], 1)
+        check = feedback["quantity_literal_checks"][0]
+        self.assertEqual(check["missing_quantity_literals"], ["2031"])
+        self.assertEqual(
+            check["affected_paths"],
+            ["supporting_evidence[1].claim", "current_beliefs[1]"],
+        )
+        self.assertIn("every affected_path", check["completion_rule"])
+        self.assertIn(
+            "changing surrounding words",
+            feedback["completion_check"],
         )
 
     def test_v92_initialize_removes_exact_cross_frontier_duplicate(self) -> None:
@@ -9628,7 +9781,12 @@ class ConcreteRoleAdapterTests(TestCase):
             source_type="earnings_call",
             published_at=timestamp,
             available_at=timestamp,
-            content=raw_prefix + projection_text + "500 per ounce. Later context.",
+            content=(
+                raw_prefix
+                + projection_text
+                + "500 per ounce. Management reaffirmed the annual production "
+                "range. Later context."
+            ),
         )
         lineage = evolution_runtime_module._SignalProjectionLineage(
             document=document,
@@ -9682,6 +9840,14 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("projection_truncated", error)
         self.assertIn("edge=['end']", error)
         self.assertIn("projection_overlap", error)
+        candidate_marker = "overlapping_projection_interior_candidates="
+        candidate_payload = error.split(candidate_marker, 1)[1].split(". Copy", 1)[0]
+        candidates = json.loads(candidate_payload)
+        candidate = candidates["projection_overlap"]
+        self.assertLessEqual(len(candidate), 800)
+        self.assertIn("Management reaffirmed", candidate)
+        self.assertIn(candidate, overlap_text)
+        self.assertFalse(candidate.startswith(overlap_text[:20]))
 
     def test_v13_signal_evidence_relocates_unique_quote_from_wrong_overlap(self) -> None:
         fixture = json.loads(
