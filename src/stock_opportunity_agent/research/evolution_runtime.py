@@ -6832,6 +6832,30 @@ def _missing_claim_quantity_groups(
     ]
 
 
+def _missing_claim_quantity_details(
+    claim: str,
+    cited_quantities: set[str],
+) -> tuple[list[str], list[str]]:
+    """Return normalized missing groups and their exact authored literals."""
+
+    details = [
+        (
+            "|".join(sorted(group, key=lambda value: (len(value), value))),
+            match.group(0).rstrip(","),
+        )
+        for match, group in zip(
+            _CLAIM_QUANTITY.finditer(claim),
+            _normalized_claim_quantity_groups(claim),
+            strict=True,
+        )
+        if group.isdisjoint(cited_quantities)
+    ]
+    return (
+        [group for group, _literal in details],
+        [literal for _group, literal in details],
+    )
+
+
 def _linked_quantitative_assertion_paths(
     state: ResearchState,
     claim: str,
@@ -6860,9 +6884,15 @@ def _validate_basic_claim_quantities(
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
-        missing = _missing_claim_quantity_groups(claim, cited_quantities)
+        missing, missing_literals = _missing_claim_quantity_details(
+            claim, cited_quantities
+        )
         if missing:
             index = items[0][0]
+            evidence_paths = [
+                f"supporting_evidence[{item_index}].claim"
+                for item_index, _text in items
+            ]
             linked = _linked_quantitative_assertion_paths(state, claim)
             linked_instruction = (
                 f". linked_assertions={linked} must copy the corrected claim "
@@ -6872,9 +6902,16 @@ def _validate_basic_claim_quantities(
             )
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
-                f"absent from all Basic exact_text refs with the same claim: {missing}. "
-                "Add one exact literal ref for every quantity, split the multi-span "
-                "claim across refs with the same claim, or narrow the claim"
+                "absent from all Basic exact_text refs with the same claim, "
+                "missing_quantity_groups="
+                f"{json.dumps(missing, separators=(',', ':'))}, "
+                "missing_quantity_literals="
+                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
+                "same_claim_evidence_paths="
+                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
+                "remove every listed evidence claim together. Add one exact literal "
+                "ref for every quantity, split the multi-span claim across refs with "
+                "the same claim, or narrow the claim"
                 + linked_instruction
             )
 
@@ -6889,9 +6926,15 @@ def _validate_signal_claim_quantities(
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
             cited_quantities.update(_normalized_claim_quantities(exact_text))
-        missing = _missing_claim_quantity_groups(claim, cited_quantities)
+        missing, missing_literals = _missing_claim_quantity_details(
+            claim, cited_quantities
+        )
         if missing:
             index = items[0][0]
+            evidence_paths = [
+                f"supporting_evidence[{item_index}].claim"
+                for item_index, _text in items
+            ]
             linked = _linked_quantitative_assertion_paths(state, claim)
             linked_instruction = (
                 f". linked_assertions={linked} must copy the corrected claim "
@@ -6902,10 +6945,16 @@ def _validate_signal_claim_quantities(
             raise ValidationError(
                 f"supporting_evidence[{index}] claim contains numeric quantities "
                 f"absent from all referenced Signal evidence items with the same "
-                f"claim: {missing}. Copy the exact canonical numeric form from a "
-                "deterministic Signal interpretation, cite every required Signal "
-                "evidence item with the same claim, or narrow the claim. Do not "
-                "round or convert the supplied values"
+                "claim, missing_quantity_groups="
+                f"{json.dumps(missing, separators=(',', ':'))}, "
+                "missing_quantity_literals="
+                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
+                "same_claim_evidence_paths="
+                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
+                "remove every listed evidence claim together. Copy the exact "
+                "canonical numeric form from a deterministic Signal interpretation, "
+                "cite every required Signal evidence item with the same claim, or "
+                "narrow the claim. Do not round or convert the supplied values"
                 + linked_instruction
             )
 

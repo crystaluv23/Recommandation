@@ -1534,3 +1534,9 @@ direction. When a quantity correction names an unsupported literal, completion m
 check that literal at every linked retained path; merely changing the string is not a
 repair. For overlapping source chunks, expose a bounded exact interior candidate only
 when it is unique in visible context, and still let the model choose or abstain.
+
+Use the same correction schema for the same invariant across provenance types. V96
+showed that Basic quantities had exact literal/path checks while Signal quantities
+still used prose; the model deleted a linked belief but kept the invalid Signal claim.
+Normalize both into one checklist rather than adding a company- or Signal-specific
+rule.

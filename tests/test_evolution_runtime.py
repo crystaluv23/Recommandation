@@ -8831,6 +8831,18 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("referenced Signal evidence", error)
         self.assertIn("513000", error)
         self.assertIn("2200", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertGreater(feedback["quantity_literal_check_count"], 0)
+        self.assertTrue(
+            all(
+                item["missing_quantity_literals"]
+                for item in feedback["quantity_literal_checks"]
+            )
+        )
+        self.assertIn(
+            "quantity_literal_checks",
+            feedback["completion_check"],
+        )
         self.assertEqual(len(reflected.value.supporting_evidence), 2)
         self.assertIn(
             "Every numeric quantity in a new Signal claim",
