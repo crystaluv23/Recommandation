@@ -529,6 +529,12 @@ runtime reports only the cosmetic-residual defect and abstains from a reason-sco
 claim. Possessive punctuation remnants are never topic terms. Shape feedback names
 each missing or unexpected leaf field rather than treating the whole selection object
 as one replacement, so independent correction obligations remain non-conflicting.
+The same clause projection applies when an exact version-owned phrase makes an empty
+selection invalid. Its correction-only `required_matches` row includes
+`answer_scope=partial` and the literal `residual_facet_candidates` whenever the target
+has that unambiguous split; the correction therefore does not have to rediscover scope
+after spending its only retry. Targets without a mechanically unique split retain the
+existing open full-or-partial choice.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound
 question retains only its unresolved facets. Runtime aggregates two directly

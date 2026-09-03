@@ -1,5 +1,25 @@
 # Status
 
+Current V99 repair (2026-09-03): post-`3230a5b` contract
+`21fa5bf...ad8e7` made six completed calls for `$0.00588028` and four data
+rows. Its first proposer attempt and correction were rejected before the second
+proposal passed. The first Fast case then returned an empty Signal routing decision;
+the exact-phrase gate forced a correction, which selected `guidance_acceleration:v1`
+and failed scope validation. No case finalized, so pointers remain
+`round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The actual need requested quarterly production/cost actuals compared with already
+known annual guidance. The soft Signal measures fresh guidance versus prior guidance,
+so the empty initial decision was correct; the bare `guidance` mandatory-route phrase
+created both a needless correction and an inapplicable selection. Mandatory empty-
+route phrases must now contain at least two normalized words. The seed uses explicit
+update/change/revision constructions, while ordinary guidance mentions remain
+available for non-mandatory model routing. For a genuinely explicit update need, the
+empty correction also receives the unambiguous partial scope and literal residual
+clauses discovered in V98. Exact V99 no-call replay, explicit-update correction
+coverage, all 523 tests, and lint pass. Successor ceilings are 250 attempts,
+`$17.40318088`, and 652 data requests.
+
 Current V98 repair (2026-09-03): post-`f41b5cb` contract
 `7cc87b1...897c` made four completed calls for `$0.00446908` and four
 fetched/cache-hit data rows. The first Fast case reached H_init and routing, then its

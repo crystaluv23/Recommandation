@@ -209,11 +209,12 @@ class SignalSpec:
                 not isinstance(item, str)
                 or not item.strip()
                 or len(item) > 80
+                or len(re.findall(r"[a-z0-9]+", item.casefold())) < 2
                 for item in routing_phrases
             )
         ):
             raise ValidationError(
-                "Signal routing_need_phrases must contain 1-8 non-empty strings"
+                "Signal routing_need_phrases must contain 1-8 multiword strings"
             )
         required_research_phrases = parameters.get(
             "routing_required_research_phrases"

@@ -627,6 +627,18 @@ class SignalLibraryTests(TestCase):
                 "guidance",
                 spec.parameters["result_required_evidence_phrases"],
             )
+            self.assertIn(
+                "guidance updates",
+                spec.parameters["routing_need_phrases"],
+            )
+            with self.assertRaisesRegex(ValidationError, "multiword"):
+                replace(
+                    spec,
+                    parameters={
+                        **spec.parameters,
+                        "routing_need_phrases": ["guidance"],
+                    },
+                )
             snapshot = registry.freeze()
             v2 = SignalSpec(
                 signal_id="revenue_growth_yoy",

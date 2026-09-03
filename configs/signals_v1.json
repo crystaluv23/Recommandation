@@ -143,7 +143,7 @@
         "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {
-          "routing_need_phrases": ["guidance"],
+          "routing_need_phrases": ["guidance update", "guidance updates", "updated guidance", "guidance change", "guidance changes", "revised guidance", "guidance revision", "guidance revisions"],
           "routing_answer_need_phrases": ["guidance", "outlook", "forecast"],
           "result_required_evidence_phrases": ["guidance", "outlook", "forecast", "we expect", "management expects", "company expects", "now expects", "raises its", "raised its", "lowers its", "lowered its", "reaffirms", "reaffirmed", "on track to"]
         }

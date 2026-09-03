@@ -3351,7 +3351,24 @@ class ConcreteRoleAdapterTests(TestCase):
             caller = ScriptedRoleCaller(
                 [
                     fixture["invalid_output"],
-                    signal_selection(fixture["corrected_signal_ref"]),
+                    {
+                        "selections": [
+                            {
+                                **signal_selection(
+                                    fixture["corrected_signal_ref"]
+                                )["selections"][0],
+                                "selection_reason": (
+                                    "Answers only the production and cost guidance "
+                                    "updates facet."
+                                ),
+                                "answer_scope": "partial",
+                                "residual_need": (
+                                    "What risks could prevent achieving the 2.0 "
+                                    "million oz target?"
+                                ),
+                            }
+                        ]
+                    },
                 ]
             )
 
@@ -3368,11 +3385,18 @@ class ConcreteRoleAdapterTests(TestCase):
             for item in caller.calls[0]["payload"]["available_signal_cards"]
             if item["signal_ref"] == fixture["corrected_signal_ref"]
         )
-        self.assertEqual(guidance_card["routing_need_phrases"], ["guidance"])
+        self.assertIn(
+            "guidance updates", guidance_card["routing_need_phrases"]
+        )
         self.assertIn(
             "version-owned information-need phrase",
             validation_error(caller.calls[1]),
         )
+        required_target = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]["instruction"]
+        self.assertIn("'answer_scope': 'partial'", required_target)
+        self.assertIn("'residual_facet_candidates'", required_target)
         self.assertEqual(
             caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
         )
@@ -3398,6 +3422,30 @@ class ConcreteRoleAdapterTests(TestCase):
                 call["payload"], sort_keys=True, separators=(",", ":")
             )
             self.assertTrue(rendered.startswith(stable_prefix))
+
+    def test_v99_guidance_benchmark_does_not_force_empty_correction(self) -> None:
+        target_need = (
+            "What are Kinross Gold's latest quarterly production and cost figures, "
+            "and how do they compare to the 2.0 million oz annual guidance?"
+        )
+        caller = ScriptedRoleCaller([{"selections": []}])
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,), registry.freeze(), {}
+            )
+
+        self.assertEqual(selection.value, ())
+        self.assertEqual(selection.usage.llm_calls, 1)
+        guidance_card = next(
+            item
+            for item in caller.calls[0]["payload"]["available_signal_cards"]
+            if item["signal_ref"] == "guidance_acceleration:v1"
+        )
+        self.assertNotIn("guidance", guidance_card["routing_need_phrases"])
+        self.assertIn("guidance updates", guidance_card["routing_need_phrases"])
 
     def test_signal_selector_corrects_version_owned_excluded_context_tag(self) -> None:
         incompatible = signal_selection("commercialization_status:v1")
@@ -4169,7 +4217,7 @@ class ConcreteRoleAdapterTests(TestCase):
             "What regulatory milestones are required for the resort?",
             "What is current construction progress and cost?",
             "What is expected customer traffic and revenue contribution?",
-            "Are there earnings guidance projections for first-year revenue?",
+            "Are there earnings guidance updates for first-year revenue?",
         )
         bad_guidance = signal_selection("guidance_acceleration:v1")[
             "selections"
@@ -4197,7 +4245,10 @@ class ConcreteRoleAdapterTests(TestCase):
             feedback["obligations"][0]["must_change_paths"], ["selections"]
         )
         self.assertIn("'target_need_index': 3", feedback["validation_error"])
-        self.assertIn("'matched_phrases': ['guidance']", feedback["validation_error"])
+        self.assertIn(
+            "'matched_phrases': ['guidance updates']",
+            feedback["validation_error"],
+        )
         self.assertIn(
             "must not copy a different information_needs item",
             caller.calls[0]["system_prompt"],

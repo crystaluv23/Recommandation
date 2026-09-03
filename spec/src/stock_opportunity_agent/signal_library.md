@@ -272,11 +272,15 @@ research question.
 
 A Signal version may declare a small `routing_need_phrases` string array inside
 `parameters`. These phrases are conservative direct matches, not fuzzy search
-terms. They are exposed on the compact card and used only to reject an empty
-selection once for model correction; runtime still never chooses the Signal.
-The seed `guidance_acceleration:v1` declares `guidance` because an explicit
-request for guidance updates is a direct match even though the versioned ref has
-only two semantic words. Unmatched empty selection remains valid.
+terms, and each phrase contains at least two normalized words so a bare topic noun
+cannot force a Signal merely because the need uses it as a benchmark or qualifier.
+They are exposed on the compact card and used only to reject an empty selection once
+for model correction; runtime still never chooses the Signal. The seed
+`guidance_acceleration:v1` declares explicit update/revision constructions such as
+`guidance updates` and `revised guidance`. A need that merely compares operating
+results with existing guidance does not trigger this mandatory non-empty boundary,
+although the selector may still choose the Signal under its ordinary applicability
+contract. Unmatched empty selection remains valid.
 
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or

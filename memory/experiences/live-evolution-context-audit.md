@@ -1554,3 +1554,11 @@ expose the other literal clauses as correction-only candidates and check the rea
 against those; otherwise abstain until the model supplies a genuine residual. Keep
 missing/unexpected schema repairs on leaf paths, and ignore possessive punctuation as
 topic content. This is structural diagnosis, not local semantic repair.
+
+An empty-selection guard is stronger than ordinary Signal applicability. Do not use a
+single topic noun as its version-owned match: a need may mention guidance, orders, or
+cash only as a benchmark while asking for a different measured object. Require
+multiword phrases that express the Signal-owned request, and keep ordinary mentions
+eligible for model routing without forcing a correction. When a clear mandatory match
+has an unambiguous compound target, include the same partial/residual clause projection
+in the empty correction rather than discovering scope only after the sole retry.

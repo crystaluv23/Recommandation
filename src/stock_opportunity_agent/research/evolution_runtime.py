@@ -8196,17 +8196,36 @@ def _explicit_signal_need_match_details(
             for item in spec.parameters.get("routing_need_phrases", ())
             if isinstance(item, str) and item.strip()
         )
+        direct_answer_phrases = tuple(
+            item.strip()
+            for item in spec.parameters.get("routing_answer_need_phrases", ())
+            if isinstance(item, str) and item.strip()
+        )
         phrases = (*ref_phrases, *configured_phrases)
-        target_matches = [
-            {
+        target_matches: list[dict[str, Any]] = []
+        for need_index, need in enumerate(normalized_needs):
+            if not any(phrase in need for phrase in phrases):
+                continue
+            target_match: dict[str, Any] = {
                 "target_need_index": need_index,
                 "matched_phrases": [
                     phrase.strip() for phrase in phrases if phrase in need
                 ],
             }
-            for need_index, need in enumerate(normalized_needs)
-            if any(phrase in need for phrase in phrases)
-        ]
+            residual_facet_candidates = _routing_residual_facet_candidates(
+                information_needs[need_index],
+                direct_answer_phrases,
+            )
+            if residual_facet_candidates:
+                target_match.update(
+                    {
+                        "answer_scope": "partial",
+                        "residual_facet_candidates": list(
+                            residual_facet_candidates
+                        ),
+                    }
+                )
+            target_matches.append(target_match)
         if target_matches:
             matched.append(
                 {
@@ -8432,6 +8451,11 @@ class LLMSignalRetrievalAgent:
                     f"{list(explicit_empty_match_details)}. Return a non-empty "
                     "smallest batch targeted to one listed need. For a partial "
                     "answer, delete only the answered facet from that exact target. "
+                    "When a required target row includes answer_scope='partial' and "
+                    "residual_facet_candidates, use that scope and write the "
+                    "natural-language residual from only those literal target "
+                    "clauses. Name only the phrase-matched answered clause in "
+                    "selection_reason. "
                     "Do not copy another information_needs row as residual_need. "
                     "Runtime will not choose a ref or residual"
                 )

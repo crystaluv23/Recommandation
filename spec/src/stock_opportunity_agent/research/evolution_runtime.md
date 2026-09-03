@@ -773,6 +773,12 @@ diagnosis until the model supplies a genuine residual. Possessive `s` is ignored
 punctuation residue. Structural exact-key errors likewise project missing and
 unexpected keys to their leaf paths, keeping multiple correction obligations exact
 and independent instead of asking the model to replace an otherwise valid object.
+When an exact version-owned need phrase rejects an empty routing result, the same
+unambiguous split is attached to that failed call's `required_matches` target row as
+`answer_scope=partial` plus `residual_facet_candidates`. This uses no extra model call
+and leaves reason wording, tags, role, applicability, and the final natural-language
+residual to the selector. Without a unique clause split, feedback does not guess the
+scope.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
 therefore carries `current_total_items`, `maximum_total_items`,
