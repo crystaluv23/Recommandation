@@ -187,8 +187,10 @@ with the directly matching refs. This check does not select a Signal, require a
 particular matching ref, or use fuzzy/single-word similarity; any non-empty batch
 that answers the need remains the model's decision. A malformed container,
 duplicate ref, ref outside the supplied cards, or still-empty contradicted result
-receives at most one correction call with the exact allowed set. If the correction
-remains invalid, the agent raises a
+receives at most the frozen structured-correction budget with the exact allowed set.
+The current v7 budget is two: a second request occurs only after the first correction
+still fails and carries that latest output plus freshly recomputed obligations through
+the same unchanged validator. If the final correction remains invalid, the agent raises a
 usage-bearing candidate-execution rejection; it must never convert model/schema
 failure into `no_signal_match` or guess a category or Signal on the model's
 behalf.
@@ -237,7 +239,7 @@ document ids, timestamps, document fingerprints, and content hashes remain local
 executor state. The selector cannot interpret those artifacts, already
 executed refs are absent from its cards, and the executor independently enforces
 fingerprint no-op after selection.
-Because routing has only one correction, runtime evaluates every structurally usable
+Because routing has only a small frozen correction budget, runtime evaluates every structurally usable
 returned selection against target-index shape/bounds, reason/role enums,
 version-owned tag exclusions, required research phrases, and direct-answer phrases
 before raising the initial validation error. All independently decidable failures are
@@ -526,7 +528,12 @@ literal target clauses as `residual_facet_candidates` and checks the reason agai
 those clauses. These are source slices for diagnosis, not a runtime-authored answer;
 the selector still writes the natural-language residual. If the split is ambiguous,
 runtime reports only the cosmetic-residual defect and abstains from a reason-scope
-claim. Possessive punctuation remnants are never topic terms. Shape feedback names
+claim. A residual is also cosmetic when it retains a version-owned direct-answer
+phrase and removes at most one content token, unless that token is one side of an
+explicit coordinated temporal split. If no separable residual clause exists, the same
+obligation names both `answer_scope` and `residual_need`: the selector must classify
+the whole target as full only when the card covers it, change to a contextual reason,
+or remove the selection. Possessive punctuation remnants are never topic terms. Shape feedback names
 each missing or unexpected leaf field rather than treating the whole selection object
 as one replacement, so independent correction obligations remain non-conflicting.
 The same clause projection applies when an exact version-owned phrase makes an empty
@@ -612,10 +619,10 @@ The prior `research_state.supporting_evidence` array is itself the canonical,
 position-stable inventory for retained refs. Before constructing `ResearchState`,
 the role boundary validates each tagged-ref shape and reports the exact output index,
 missing fields, unexpected fields, and the four-key Basic or five-key Signal shape.
-Because a role has only one correction, this pre-domain validation aggregates every
+Even with bounded recovery, this pre-domain validation aggregates every
 tagged-ref shape error in the returned array and every Basic claim-quantity mismatch
 that is already decidable from its raw `claim + exact_text` fields. It must not make
-the model spend its sole correction on `kind` only and reveal an already-present
+the model spend one correction on `kind` only and reveal an already-present
 unsupported quantity afterward.
 For a malformed retained Basic ref, correction must copy `projection_id` and
 `exact_text` from an indexed prior ref byte-for-byte, may restate only `claim`, or

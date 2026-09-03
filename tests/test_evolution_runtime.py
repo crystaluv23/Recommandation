@@ -3265,6 +3265,52 @@ class ConcreteRoleAdapterTests(TestCase):
                 ],
             )
 
+    def test_structured_role_revalidates_one_fresh_recovery_correction(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [
+                    signal_selection("unknown:v1"),
+                    {"selections": "still-not-an-array"},
+                    signal_selection("revenue_growth_yoy:v1"),
+                ]
+            )
+            caller.max_structured_corrections = 2
+
+            selection = LLMSignalRetrievalAgent(caller).select(
+                ("revenue growth",), registry.freeze(), {}
+            )
+
+        self.assertEqual(
+            tuple(item.signal_ref for item in selection.value),
+            ("revenue_growth_yoy:v1",),
+        )
+        self.assertEqual(selection.usage.llm_calls, 3)
+        self.assertEqual(
+            caller.stages,
+            [
+                "signal_retrieval_cards",
+                "signal_retrieval_cards_correction",
+                "signal_retrieval_cards_correction",
+            ],
+        )
+        first_feedback = caller.calls[1]["payload"]["validation_feedback"]
+        second_feedback = caller.calls[2]["payload"]["validation_feedback"]
+        self.assertIn("outside supplied cards", first_feedback["validation_error"])
+        self.assertEqual(
+            second_feedback["invalid_output"],
+            {"selections": "still-not-an-array"},
+        )
+        self.assertIn(
+            "requires selections array", second_feedback["validation_error"]
+        )
+        self.assertEqual(
+            caller.calls[0]["system_prompt"], caller.calls[2]["system_prompt"]
+        )
+
     def test_signal_selector_repairs_non_array_containers_without_crashing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -3969,8 +4015,8 @@ class ConcreteRoleAdapterTests(TestCase):
             "Directly addresses current production guidance for 2025-2026."
         )
         corrected = json.loads(json.dumps(guidance))
-        corrected["selection_reason"] = (
-            "Directly answers the currently stated output range."
+        corrected["residual_need"] = (
+            "What are the specific updates on regional operations?"
         )
         caller = ScriptedRoleCaller(
             [{"selections": [guidance]}, {"selections": [corrected]}]
@@ -3988,20 +4034,20 @@ class ConcreteRoleAdapterTests(TestCase):
                 ),
             )
 
-        overlap_obligation = next(
+        residual_obligation = next(
             item
             for item in caller.calls[1]["payload"]["validation_feedback"][
                 "obligations"
             ]
-            if "claims a facet retained" in item["instruction"]
+            if "retain the target cosmetically" in item["instruction"]
         )
         self.assertEqual(
-            overlap_obligation["remove_terms_from_selection_reason"],
-            ["production", "guidance", "2025", "2026"],
+            residual_obligation["residual_facet_candidates"],
+            ["any updates on regional operations"],
         )
         self.assertEqual(
-            selection.value[0].selection_reason,
-            corrected["selection_reason"],
+            selection.value[0].residual_need,
+            corrected["residual_need"],
         )
 
     def test_v98_cosmetic_residual_uses_unanswered_target_clause(self) -> None:
@@ -4085,6 +4131,50 @@ class ConcreteRoleAdapterTests(TestCase):
             selection.value[0].residual_need,
             corrected["residual_need"],
         )
+
+    def test_v100_one_word_scope_change_is_cosmetic(self) -> None:
+        target_need = (
+            "What are Kinross Gold's latest production and cost guidance updates "
+            "for 2025-2027?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What are Kinross Gold's latest production and cost guidance for "
+            "2025-2027?"
+        )
+        guidance["selection_reason"] = (
+            "Directly covers the production and cost guidance updates for "
+            "2025-2027."
+        )
+        corrected = json.loads(json.dumps(guidance))
+        corrected["answer_scope"] = "full"
+        corrected["residual_need"] = None
+        caller = ScriptedRoleCaller(
+            [{"selections": [guidance]}, {"selections": [corrected]}]
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,), registry.freeze(), {}
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        cosmetic_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "retain the target cosmetically" in item["instruction"]
+        )
+        self.assertEqual(
+            cosmetic_obligation["must_change_paths"],
+            ["selections[0].residual_need", "selections[0].answer_scope"],
+        )
+        self.assertNotIn("residual_facet_candidates", cosmetic_obligation)
+        self.assertEqual(selection.value[0].answer_scope, "full")
+        self.assertIsNone(selection.value[0].residual_need)
 
     def test_v91_routing_allows_shared_topic_but_not_residual_year(self) -> None:
         target_need = (

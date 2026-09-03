@@ -737,6 +737,7 @@ def freeze_run(
                 },
                 "max_case_cost": 5.0,
                 "max_agent_steps": 20,
+                "max_structured_corrections": 2,
                 "evaluation": evaluation_contract,
             },
             max_external_attempts=max_external_attempts,

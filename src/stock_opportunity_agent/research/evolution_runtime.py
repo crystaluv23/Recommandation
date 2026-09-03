@@ -1776,6 +1776,17 @@ class EvolutionRunContract:
                 raise ValidationError(
                     f"{schema_label} contract max_case_cost must be positive"
                 )
+            structured_corrections = self.limits.get(
+                "max_structured_corrections", 1
+            )
+            if (
+                type(structured_corrections) is not int
+                or not 1 <= structured_corrections <= 2
+            ):
+                raise ValidationError(
+                    f"{schema_label} contract max_structured_corrections must "
+                    "be 1 or 2"
+                )
             evaluation = self.limits["evaluation"]
             if not isinstance(evaluation, Mapping):
                 raise ValidationError(
@@ -3376,6 +3387,9 @@ class StructuredRoleClient:
         self.acknowledged_contract_hash = acknowledged_contract_hash
         self.environ = environ
         self.on_progress = on_progress
+        self.max_structured_corrections = int(
+            contract.limits.get("max_structured_corrections", 1)
+        )
 
     def estimate_json_request_tokens(
         self,
@@ -5558,13 +5572,17 @@ def _complete_parsed_role(
     enforce_scoped_correction: bool = False,
     exact_compaction_scope: bool = False,
 ) -> tuple[Any, AgentUsage]:
-    """Apply one bounded semantic correction around a structured role."""
+    """Apply the caller's bounded semantic corrections around a structured role."""
 
     usage = AgentUsage()
     failed_output: Mapping[str, Any] | None = None
     failure: ValidationError | None = None
+    max_corrections = getattr(caller, "max_structured_corrections", 1)
+    if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
+        raise ValidationError("structured role correction budget must be 1 or 2")
     correction_instruction = (
-        " If validation_feedback is non-null, correct the invalid output once; "
+        " If validation_feedback is non-null, correct the immediately preceding "
+        "invalid output; "
         "return the exact contract only. Every invalid field or item identified "
         "by validation_error, including an explicitly named linked assertion, "
         "must change to valid content or be removed when the contract permits "
@@ -5576,7 +5594,7 @@ def _complete_parsed_role(
         + " "
         "Returning the same rejected content is not a correction."
     )
-    for attempt in range(2):
+    for attempt in range(max_corrections + 1):
         request_payload = dict(payload)
         request_stage = stage if attempt == 0 else f"{stage}_correction"
         prompt = (
@@ -5702,9 +5720,14 @@ def _complete_parsed_role(
                 f"{request_stage} returned invalid JSON fields [{keys}]: "
                 f"{type(exc).__name__}: {exc}"
             )
+    correction_count = (
+        "one correction"
+        if max_corrections == 1
+        else f"{max_corrections} corrections"
+    )
     raise CandidateExecutionRejected(
         stage,
-        f"{stage} failed validation after one correction: {failure}",
+        f"{stage} failed validation after {correction_count}: {failure}",
         usage,
     )
 
@@ -8617,14 +8640,48 @@ class LLMSignalRetrievalAgent:
                                 residual_need
                             )
                             content_overlap = target_content & residual_content
-                            cosmetic_residual = residual_need.strip() == target_need or (
-                                target_content
-                                and len(content_overlap) / len(target_content) >= 0.9
-                            )
                             answer_need_phrases = tuple(
                                 str(phrase)
                                 for phrase in spec.parameters.get(
                                     "routing_answer_need_phrases", ()
+                                )
+                            )
+                            coordinated_residual_terms = (
+                                _coordinated_residual_facet_terms(
+                                    target_need,
+                                    residual_need,
+                                )
+                            )
+                            normalized_residual_need = (
+                                " "
+                                + re.sub(
+                                    r"[^a-z0-9]+",
+                                    " ",
+                                    residual_need.casefold(),
+                                ).strip()
+                                + " "
+                            )
+                            residual_retains_direct_phrase = any(
+                                " "
+                                + re.sub(
+                                    r"[^a-z0-9]+", " ", phrase.casefold()
+                                ).strip()
+                                + " "
+                                in normalized_residual_need
+                                for phrase in answer_need_phrases
+                            )
+                            removed_content = target_content - residual_content
+                            cosmetic_residual = (
+                                residual_need.strip() == target_need
+                                or (
+                                    target_content
+                                    and len(content_overlap) / len(target_content)
+                                    >= 0.9
+                                )
+                                or (
+                                    residual_retains_direct_phrase
+                                    and len(removed_content) <= 1
+                                    and not coordinated_residual_terms
                                 )
                             )
                             residual_facet_candidates = (
@@ -8657,17 +8714,17 @@ class LLMSignalRetrievalAgent:
                                         "target clauses when writing the corrected "
                                         "natural-language residual"
                                         if residual_facet_candidates
-                                        else ""
+                                        else (
+                                            f", and {path}.answer_scope must change "
+                                            "from partial: use full with a null "
+                                            "residual only if the card covers the "
+                                            "complete target, otherwise use a "
+                                            "contextual reason or remove the selection"
+                                        )
                                     )
                                 )
-                            coordinated_residual_terms = (
-                                _coordinated_residual_facet_terms(
-                                    target_need,
-                                    residual_need,
-                                )
-                                if not cosmetic_residual
-                                else ()
-                            )
+                            if cosmetic_residual:
+                                coordinated_residual_terms = ()
                             reason_content = _normalized_need_content_tokens(
                                 item["selection_reason"]
                             )

@@ -1562,3 +1562,13 @@ multiword phrases that express the Signal-owned request, and keep ordinary menti
 eligible for model routing without forcing a correction. When a clear mandatory match
 has an unambiguous compound target, include the same partial/residual clause projection
 in the empty correction rather than discovering scope only after the sole retry.
+
+Provider-independent robustness needs a bounded recovery layer in addition to precise
+diagnostics. One imperfect correction should not discard a 24-case candidate when a
+fresh validation pass can describe the new defect. Permit one final correction only
+after the primary correction fails, and send the immediately preceding output plus
+newly recomputed obligations. Keep the same parser, semantic and identity boundaries,
+write scope, and frozen token/call/cost limits; successful paths pay nothing extra and
+the final invalid result still fails closed. Also treat a partial residual that keeps
+the Signal's direct-answer phrase while deleting only one non-period content token as
+cosmetic rather than progress.

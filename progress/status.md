@@ -1,5 +1,28 @@
 # Status
 
+Current V100 repair (2026-09-03): post-`e221d85` contract
+`a2c3868...30ce0` made nine completed calls for `$0.01403164` and three data
+rows. Plan proposal passed once; H_init, routing, and the soft Signal each passed
+their correction. The first Fast case then stopped after H_reflect correction, so
+pointers remain `round=0/cycle=0`, Registry v1, and Slow unstarted. The accepted
+Signal evidence grounded 2025 production, cost of sales, and AISC guidance. Routing,
+however, classified “latest production and cost guidance updates” as partial with a
+residual that removed only `updates`; H_reflect correctly followed that persisted but
+semantically cosmetic scope, and its correction restored the old need instead of the
+required residual.
+
+A partial residual that retains a version-owned direct-answer phrase while deleting
+at most one content token is now cosmetic unless it is an explicit coordinated-period
+split. Without a separable residual clause, correction names both scope and residual:
+use full only for complete card coverage, otherwise contextualize or remove the
+selection. More generally, new v7 contracts freeze two structured corrections. The
+second occurs only if the primary correction remains invalid and receives the latest
+output plus freshly recomputed obligations; every validator, identity/outcome
+boundary, correction scope, and runtime budget remains unchanged. Historical contracts
+without the limit retain one. Exact V100 scope and second-recovery tests, all 525
+tests, and lint pass. Successor ceilings are 241 attempts, `$17.38914924`, and 649
+data requests.
+
 Current V99 repair (2026-09-03): post-`3230a5b` contract
 `21fa5bf...ad8e7` made six completed calls for `$0.00588028` and four data
 rows. Its first proposer attempt and correction were rejected before the second

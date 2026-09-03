@@ -336,7 +336,11 @@ H2 shortlist rather than a one-tool-per-turn Agent transcript:
 - `signal_mining_exploration_discover` reveals labels only beside those frozen
   signatures and emits supported candidates or refined patterns.
 
-All model stages use literal key/type contracts and one bounded correction. Creative
+All model stages use literal key/type contracts and one primary bounded correction.
+Current v7 contracts freeze `max_structured_corrections=2`: only when that first
+correction still fails local validation does the role receive one final recovery
+request containing the latest rejected output and freshly recomputed obligations.
+Successful initial/first-correction paths make no additional call. Creative
 hypothesis/discovery calls sample at the run-contract proposal temperature;
 extraction and evidence contrast remain greedy. Exact request caching,
 ledger charging, outcome/identity disclosure checks, and external-approval
@@ -663,8 +667,12 @@ must not be mistaken for a replacement ontology. The fixed four-way Predictor re
 the only classification owner.
 
 Each candidate slot may make at most three independently hashed proposal
-attempts. Every structured runtime role receives at most one correction with
-the failed output and validation message. Unrepaired initialization/prediction
+attempts. Every structured runtime role receives at most the frozen
+`max_structured_corrections` value, currently two, with the immediately preceding
+failed output and validation message. The second is a provider/model-agnostic recovery
+path, not relaxed acceptance: the same parser, semantic validators, identity boundary,
+correction scope, token/call/cost ceilings, and exact cache/ledger controls rerun.
+Unrepaired initialization/prediction
 failures terminate that candidate; non-fitness reflections degrade to explicit
 deterministic failure records. Exact transport responses remain in cache for
 audit, but a transport-cache hit is never treated as domain validation.
@@ -762,6 +770,12 @@ answered facet, or remove the selection. These fields exist only in failed-call
 feedback; runtime does not write the replacement and does not enlarge every normal
 routing prompt.
 An unchanged or near-complete residual is invalid input to that overlap inference.
+Near-complete includes retaining a version-owned direct-answer phrase while removing
+at most one normalized content token; an explicit coordinated-period split is exempt
+because its one removed temporal value is a real facet. When no literal residual
+clause can be separated, correction names both the scope and residual paths and must
+choose full only if the card covers the complete target, otherwise use a contextual
+reason or remove the selection.
 For such a cosmetic residual, runtime first looks for an unambiguous top-level target
 split: exactly one coordinated clause contains a version-owned direct-answer phrase
 and at least one other clause remains. Correction receives those other literal clauses
