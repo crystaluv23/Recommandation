@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 7
+visit_times: 8
 
 ## Trigger
 
@@ -76,6 +76,9 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 12. Reject normalized full-question carryover, not only byte-identical state.
 13. Version conservative direct routing phrases and use them only for bounded
     empty-result correction.
+14. Separate directly invalid paths from bounded permitted dependency paths. A
+    mandatory evidence-literal repair may invalidate its same-claim assertions; do not
+    simultaneously freeze those dependents and then reject the required consequence.
 
 ## Limits
 

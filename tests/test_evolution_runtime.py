@@ -7190,6 +7190,98 @@ class ConcreteRoleAdapterTests(TestCase):
             feedback["completion_check"],
         )
 
+    def test_v102_literal_repair_permits_only_linked_claim_changes(self) -> None:
+        rows = [
+            json.dumps(
+                {
+                    "adjusted_close": 6.1 + (index / 10),
+                    "as_of_date": f"2025-09-{index + 2:02d}",
+                    "close": 6.1 + (index / 10),
+                    "high": 6.2 + (index / 10),
+                    "low": 6.0 + (index / 10),
+                    "open": 6.05 + (index / 10),
+                    "volume": 4_000_000 + index,
+                },
+                separators=(",", ":"),
+            )
+            for index in range(10)
+        ]
+        projection_text = ",".join(rows)
+        self.assertGreater(len(projection_text), 800)
+        range_claim = (
+            "Adjusted close ranged from 6.1 on 2025-09-02 to 7.0 on 2025-09-11."
+        )
+        invalid = {
+            "contradictions": [],
+            "current_beliefs": [range_claim],
+            "decision": "continue",
+            "hypotheses": ["Recent price action may show early market confirmation."],
+            "next_information_needs": [
+                "What issuer-specific event could materially change expectations?"
+            ],
+            "open_questions": [],
+            "resolved_questions": [],
+            "supporting_evidence": [
+                {
+                    "claim": range_claim,
+                    "exact_text": projection_text,
+                    "kind": "basic_info",
+                    "projection_id": "projection_market",
+                }
+            ],
+        }
+        narrowed_claim = "Adjusted close was 6.1 on 2025-09-02."
+        corrected = json.loads(json.dumps(invalid))
+        corrected["current_beliefs"] = [narrowed_claim]
+        corrected["supporting_evidence"][0]["claim"] = narrowed_claim
+        corrected["supporting_evidence"][0]["exact_text"] = rows[0]
+        caller = ScriptedRoleCaller([invalid, invalid, corrected])
+        caller.max_structured_corrections = 2
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": projection_text,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(len(caller.calls), 3)
+        feedback = caller.calls[2]["payload"]["validation_feedback"]
+        obligation = feedback["obligations"][0]
+        self.assertEqual(
+            obligation["must_change_paths"],
+            ["supporting_evidence[0].exact_text"],
+        )
+        self.assertEqual(
+            obligation["permitted_dependency_paths"],
+            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+        )
+        self.assertEqual(
+            feedback["permitted_dependency_paths"],
+            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+        )
+        self.assertIn(
+            "outside required_change_paths and permitted_dependency_paths",
+            feedback["completion_check"],
+        )
+        self.assertIn(
+            "When an obligation contains permitted_dependency_paths",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].claim,
+            narrowed_claim,
+        )
+
     def test_v92_initialize_removes_exact_cross_frontier_duplicate(self) -> None:
         need = "What evidence would distinguish adoption from customer trials?"
         invalid = {

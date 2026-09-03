@@ -1,5 +1,25 @@
 # Status
 
+Current V102 repair (2026-09-03): post-`835f358` contract
+`ca35d2b...e93e` made 34 completed calls for `$0.04113732` and three data
+rows. Five Fast cases finalized before case six exhausted H_init's bounded recovery,
+so pointers remain `round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The exact initial response used a 1,629-character market literal to support a price
+range. The first correction fixed all other quantity/link defects but retained that
+literal. Fresh second-correction feedback correctly required a shorter literal while
+also requiring every unlisted field to remain byte-for-byte; shortening to one complete
+row then necessarily invalidated the unchanged range claim and linked belief. This was
+a general correction-contract dependency conflict, not a Bumble or price-range rule.
+Overlong Basic-literal feedback now separates the mandatory literal path from bounded
+`permitted_dependency_paths` containing only same-claim evidence claims and identical
+beliefs/contradictions. Dependent paths change only when the mandatory repair would
+otherwise invalidate them; all normal semantic, provenance, identity, and outcome
+checks still rerun, and successful paths add no calls. Exact three-attempt recovery and
+all 527 tests plus repository lint pass. Successor ceilings are 286 attempts,
+`$17.26960856`, and 643
+data requests.
+
 Current V101 repair (2026-09-03): post-`10449a2` contract
 `acd8908...99dc1` recorded 38 completed calls plus one failed transport attempt for
 `$0.07840336` and three data rows. The generic second correction recovered two H_init

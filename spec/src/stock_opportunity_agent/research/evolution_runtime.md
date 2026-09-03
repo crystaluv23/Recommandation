@@ -694,6 +694,18 @@ issuer target whose terms should be researched. For structured market JSON, it
 must cite a complete visible row rather than constructing a shorter object from
 selected fields.
 
+Directly invalid paths and repair dependencies are distinct. When an H_init Basic
+`exact_text` literal is over the output limit, the literal path remains the only
+mandatory change. Correction feedback also emits bounded
+`permitted_dependency_paths` for every same-claim evidence claim and byte-identical
+belief/contradiction that could become invalid after the literal is shortened. Those
+paths are not independently invalid and need not change when the shorter literal still
+supports the claim; otherwise the provider may narrow/remove the same-claim evidence
+and update/remove its linked assertion. Every path outside the mandatory and permitted
+sets remains byte-for-byte. This dependency scope makes a repair executable without
+predicting which shorter literal the provider will choose, while the unchanged
+quantity/link validators reject unsupported or unrelated drift.
+
 Every provider-facing ResearchState contract also states that a
 `supporting_evidence` claim contains 1-400 characters. Before domain construction,
 runtime aggregates every empty or overlong claim, reports the exact
@@ -740,10 +752,13 @@ and the paths named by that segment; `obligation_count` makes partial repair dir
 observable. Correction-only feedback also flattens those paths into one deduplicated
 `required_change_paths` checklist with its exact count and a final comparison reminder:
 every rejected value at a listed path must differ or be removed before return. This is
-diagnostic redundancy for completion, not another correction, local repair, or
-permission to change unlisted fields. The projection does not interpret evidence,
-choose replacement content, or change validation: the model must correct every row,
-and the same parser and local semantic validators run again once. The shared correction
+diagnostic redundancy for completion, not another correction or local repair. A
+separate `permitted_dependency_paths` list, when present, authorizes only the bounded
+linked fields that may become invalid because a mandatory evidence-literal repair
+changes their support; it does not make them mandatory or open any unrelated field.
+The projection does not interpret evidence, choose replacement content, or change
+validation: the model must correct every row, and the same parser and local semantic
+validators rerun after each contract-bounded correction. The shared correction
 prefix contains only this role-neutral contract. ResearchState-only repair advice for
 evidence quantities and claim-length/provenance coupling is appended only to
 H_init/H_reflect; unrelated roles must not pay for or be distracted by evidence fields

@@ -4949,6 +4949,41 @@ _VALIDATION_EXACT_KEY_SHAPE = re.compile(
     r"\b([A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*) requires exactly .*?"
     r"missing=(\[[^\]]*\]), unexpected=(\[[^\]]*\])"
 )
+_VALIDATION_OVERLONG_BASIC_LITERAL = re.compile(
+    r"\bsupporting_evidence\[(\d+)\]\.exact_text length=\d+ exceeds \d+ characters"
+)
+
+
+def _basic_literal_dependency_paths(
+    segment: str,
+    failed_output: Mapping[str, Any] | None,
+) -> list[str]:
+    """Name claim/assertion paths that a mandatory literal repair may invalidate."""
+
+    match = _VALIDATION_OVERLONG_BASIC_LITERAL.search(segment)
+    if match is None or not isinstance(failed_output, Mapping):
+        return []
+    evidence = failed_output.get("supporting_evidence")
+    evidence_index = int(match.group(1))
+    if not isinstance(evidence, list) or evidence_index >= len(evidence):
+        return []
+    item = evidence[evidence_index]
+    if not isinstance(item, Mapping) or not isinstance(item.get("claim"), str):
+        return []
+    claim = str(item["claim"])
+    dependent = [
+        f"supporting_evidence[{index}].claim"
+        for index, candidate in enumerate(evidence)
+        if isinstance(candidate, Mapping) and candidate.get("claim") == claim
+    ]
+    dependent.extend(
+        f"{field_name}[{index}]"
+        for field_name in ("current_beliefs", "contradictions")
+        if isinstance(failed_output.get(field_name), list)
+        for index, assertion in enumerate(failed_output[field_name])
+        if assertion == claim
+    )
+    return list(dict.fromkeys(dependent))
 
 
 def _quantitative_copy_candidates(
@@ -5158,6 +5193,24 @@ def _validation_obligations(
             "must_change_paths": paths,
             "instruction": segment,
         }
+        permitted_dependency_paths = _basic_literal_dependency_paths(
+            segment,
+            failed_output,
+        )
+        if permitted_dependency_paths:
+            obligation.update(
+                {
+                    "permitted_dependency_paths": permitted_dependency_paths,
+                    "dependency_rule": (
+                        "These paths are not independently invalid. After shortening "
+                        "the required exact_text, leave them unchanged if the final "
+                        "same-claim literals still support every claim quantity. "
+                        "Otherwise narrow or remove every affected same-claim evidence "
+                        "claim and copy the identical final claim into each linked "
+                        "assertion, or remove that assertion. Change no unrelated path."
+                    ),
+                }
+            )
         if "quantitative ResearchState assertions" in segment:
             copy_candidates = _quantitative_copy_candidates(
                 failure,
@@ -5305,6 +5358,22 @@ def _validation_obligations(
                 "quantity_literal_checks": quantity_literal_checks,
             }
         )
+    permitted_dependency_paths = list(
+        dict.fromkeys(
+            path
+            for obligation in obligations
+            for path in obligation.get("permitted_dependency_paths", ())
+        )
+    )
+    if permitted_dependency_paths:
+        feedback.update(
+            {
+                "permitted_dependency_path_count": len(
+                    permitted_dependency_paths
+                ),
+                "permitted_dependency_paths": permitted_dependency_paths,
+            }
+        )
     required_change_paths = list(
         dict.fromkeys(
             path
@@ -5320,7 +5389,15 @@ def _validation_obligations(
                 "completion_check": (
                     "Before returning, compare every required_change_paths value "
                     "with invalid_output. Each rejected value must differ or be "
-                    "removed; preserve every unlisted value byte-for-byte."
+                    "removed; preserve every value outside required_change_paths"
+                    + (
+                        " and permitted_dependency_paths byte-for-byte. A permitted "
+                        "dependency path is not independently invalid: change it only "
+                        "when the required repair would otherwise leave the final "
+                        "object invalid."
+                        if permitted_dependency_paths
+                        else " byte-for-byte."
+                    )
                     + (
                         " Then complete every quantity_literal_checks row: changing "
                         "surrounding words does not remove an unsupported literal."
@@ -5355,6 +5432,13 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "candidate list is shorter than the removal quota, choose the remaining "
     "removals from must_reduce_any_of_paths. These paths are suggestions, not "
     "additional mandatory independent obligations."
+    " When an obligation contains permitted_dependency_paths, those paths are "
+    "not additional defects. First repair the required exact_text. If the shorter "
+    "literal no longer supports every quantity in its claim, use only those "
+    "permitted paths to narrow or remove every same-claim evidence claim and copy "
+    "the identical final claim into each linked assertion, or remove that assertion. "
+    "If final same-claim literals still support the claim, preserve every permitted "
+    "dependency path byte-for-byte."
     " When an obligation contains copy_candidates_by_path, copy one listed "
     "exact_claim byte-for-byte into that assertion path or remove the assertion; "
     "do not restate, expand, or change issuer words. If no listed claim has the "

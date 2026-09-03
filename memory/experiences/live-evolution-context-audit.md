@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 15
+visit_times: 16
 
 ## Trigger
 
@@ -1579,3 +1579,14 @@ proper prefix can name a different measured object: `operating cash flow` is not
 Only the complete normalized three-or-more-word id is safe as an automatic empty-route
 guard. Shorter forms and synonyms belong in explicit version-owned routing metadata;
 ordinary related concepts may remain contextual or correctly produce no match.
+
+## Correction dependency scope addendum (2026-09-03)
+
+A correction instruction can be locally exact yet globally impossible. V102 required
+an overlong Basic `exact_text` to change while freezing every unlisted value; choosing
+one complete market row then removed support for the frozen multi-row range claim and
+its copied belief. Keep the direct defect in `required_change_paths`, but expose only
+mechanically linked same-claim evidence/assertion paths as optional permitted
+dependencies. They need not change when the new literal preserves support; otherwise
+they may narrow or disappear, and the unchanged semantic validators remain the final
+gate. This is a proof-complete write scope, not a company, metric, or sentence rule.

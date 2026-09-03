@@ -365,9 +365,15 @@ semicolon-delimited error segments into numbered `obligations` with named field 
 It additionally supplies a deduplicated `required_change_paths` list, exact path count,
 and a correction-only final check that every listed rejected value changed or was
 removed. The role must satisfy every row rather than stopping after the first easy
-shape fix. This is diagnostic structure only: it adds no second correction and runtime
-does not author a replacement value, drop an invalid item, or skip the unchanged parser
-and semantic validation pass.
+shape fix. For an overlong Basic evidence literal, feedback separately supplies bounded
+`permitted_dependency_paths` for same-claim evidence claims and byte-identical linked
+beliefs/contradictions that may lose support when the literal is shortened. They are
+optional repair scope, not additional defects: change them only when the mandatory
+literal repair would otherwise make the result invalid, and preserve every path outside
+both sets byte-for-byte. This is diagnostic structure only: runtime does not author a
+replacement value, drop an invalid item, or skip the unchanged parser and semantic
+validation pass; the frozen bounded-recovery policy alone controls whether another
+correction is available.
 For quantity failures, correction feedback also flattens every affected claim and
 linked assertion into a counted literal checklist. Each listed missing literal must be
 absent from every retained path unless the final claim on that path has retained
