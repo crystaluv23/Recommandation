@@ -1,5 +1,33 @@
 # Status
 
+Current V103 successor repair (2026-09-03): immutable contract
+`4f90c4b...6e8` froze code `8388651` with 286 attempts, `$17.26960856`, and
+643 data requests, but its external launch was rejected by the execution platform
+because the workspace had no credits. No provider or data request was transmitted;
+`state.json:last_completed_round` remains 0, no `cycle_state.json` was created, and
+the contract is now superseded by the changes below.
+
+The complete V102 request/response audit found two provider-independent defects in
+otherwise accepted paths. First, fixed-semantics scanning matched `adjust` inside the
+market term `adjusted close`, causing a needless post-hoc correction; action verbs now
+match whole words. Second, an H_init need requested contents of a November report from
+a September prediction boundary; explicit future publication dates now fail at the
+exact need path while as-of questions about already disclosed future schedules remain
+valid, preventing an inevitable no-result routing call.
+
+Most importantly, the accepted KGC soft Signal cited an unrelated operations sentence
+after edge correction but inherited `guidance` from the rest of its 2,000-character
+projection because raw mapping widened the short quote to the whole lineage run.
+Projection lineage is now clipped to the exact quote, including safe handling of
+markup/entities/collapsed whitespace, and the mapped raw slice must normalize back to
+that exact quote. Edge candidates must be a unique complete sentence containing the
+rejected source boundary; no unrelated sentence elsewhere in an overlap is suggested.
+Consequently uncited window text cannot satisfy version-owned evidence phrases or enter
+H_reflect. These repairs add no normal-path LLM calls; all 532 tests pass. A fresh
+post-commit contract and live Fast+Slow run are still required after credits are
+available; the unchanged successor ceilings are 286 attempts, `$17.26960856`, and 643
+data requests.
+
 Current V102 repair (2026-09-03): post-`835f358` contract
 `ca35d2b...e93e` made 34 completed calls for `$0.04113732` and three data
 rows. Five Fast cases finalized before case six exhausted H_init's bounded recovery,

@@ -637,7 +637,9 @@ instructions and returns the matched prohibited phrase in correction feedback. T
 literal words `threshold` and `cutoff` are not violations by themselves: retrospective
 prose may explain that evidence stayed below the fixed doubling threshold. They are
 rejected only when paired with an instruction to set/use/change a threshold or an
-explicit replacement numeric threshold; probability/odds instructions remain blocked. The
+explicit replacement numeric threshold; action verbs match complete words, so the
+market-data term `adjusted close` cannot be mistaken for an instruction to `adjust` a
+threshold. Probability/odds instructions remain blocked. The
 outer candidate-attempt loop remains a separate bounded sampling layer; it must not
 retry an exact duplicate without explaining the required change. An unrepaired
 candidate is rejected as a bounded event without committing a partial round.
@@ -875,6 +877,16 @@ Raw H_init validation enforces this narrow boundary on `open_questions` and
 `next_information_needs`, names the exact offending path, and aggregates it with
 compaction/citation defects before the sole correction; it does not attempt to answer
 or rewrite the question.
+Every H_init `next_information_needs` item must also request evidence that could
+already be available by `evaluation_context.prediction_time`. It may ask what the
+issuer had disclosed by then about a scheduled future catalyst, milestone, or expected
+timeline, but it cannot ask for the contents, results, or metrics of a report/release
+explicitly dated after prediction time. Runtime rejects explicit future publication
+dates only when the need also expresses content-seeking intent; explicit as-of
+disclosure/schedule questions remain valid even when they name the later publication.
+Runtime names the exact need path and asks the provider to remove the need or restate
+it as an as-of evidence question; it never supplies the future fact. This prevents a
+point-in-time-impossible retrieval and its otherwise inevitable no-result routing call.
 The same-state resolved/need consistency check treats a shared phrase as a topic only
 when it contains semantic content. A phrase made entirely of period markers such as
 `Q2 2025` is not enough to claim that a gold-price question was answered by a
@@ -1163,10 +1175,22 @@ If a returned Signal quote is absent from its supplied projection id but occurs 
 once across all visible projections, runtime deterministically uses that unique
 projection for raw-span mapping, matching the Basic-ref rule. Zero or multiple visible
 matches remain semantic ambiguity and fail closed; runtime never edits the quote.
+Raw-span mapping clips projection lineage to the returned quote's exact character
+interval. One-to-one runs are sliced at the quote boundaries; collapsed whitespace,
+decoded entities, and removed markup contribute only the intersected normalized
+character's full raw run. Runtime then normalizes the mapped raw slice again and
+requires a byte-exact round trip to the returned `exact_text`. It must never widen a
+short quote to its complete projection window, because that would let unrelated words
+elsewhere in the window satisfy a Signal's evidence-phrase contract or leak uncited
+text into H_reflect.
 For a quote touching an internal projection edge, validation feedback identifies the
 supporting/counter index, rejected projection id, start/end edge, and overlapping
 projection ids covering that source boundary. For each overlap, runtime may also expose
-one bounded byte-exact interior candidate that touches neither internal edge. This
+one bounded byte-exact complete-sentence candidate only when that sentence contains
+the rejected normalized source boundary and touches neither internal edge. It never
+selects the longest unrelated sentence elsewhere in the overlap. When no unique
+boundary-anchored complete sentence exists, it exposes no candidate and leaves the
+provider to choose another visible complete literal or return unavailable. This
 makes the sole correction actionable while leaving the complete projections unchanged
 and retaining model responsibility for choosing a candidate, another complete literal,
 or unavailable.

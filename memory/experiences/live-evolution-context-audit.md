@@ -1590,3 +1590,22 @@ mechanically linked same-claim evidence/assertion paths as optional permitted
 dependencies. They need not change when the new literal preserves support; otherwise
 they may narrow or disappear, and the unchanged semantic validators remain the final
 gate. This is a proof-complete write scope, not a company, metric, or sentence rule.
+
+## Exact-citation lineage addendum (2026-09-03)
+
+Checking that a model quote exists in a visible projection is not enough; audit the
+canonical raw span produced by lineage mapping. A V102 soft Signal copied an unrelated
+operations sentence during edge correction, but a one-to-one lineage run widened that
+short quote to the whole 2,000-character projection. The widened span happened to
+contain `guidance`, passed the version-owned required-phrase gate, and exposed uncited
+guidance text to H_reflect. Clip one-to-one runs at the exact quote offsets, retain a
+whole raw run only for an intersected collapsed character such as markup, whitespace,
+or an entity, and require the mapped raw slice to normalize back to the model quote.
+
+Edge-repair suggestions also need semantic locality without a domain-specific keyword
+rule. A longest-interior-sentence heuristic can select a perfectly literal but unrelated
+sentence later in the overlapping window. Suggest a candidate only when one complete,
+bounded sentence contains the exact normalized boundary touched by the rejected quote;
+otherwise provide no candidate and let the provider select another visible literal or
+return unavailable. Inspect the corrected result's final canonical span, not merely
+the correction response text.

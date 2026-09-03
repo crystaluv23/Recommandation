@@ -8033,6 +8033,84 @@ class ConcreteRoleAdapterTests(TestCase):
             ["hypotheses[0]"],
         )
 
+    def test_v103_initialize_rejects_future_source_contents(self) -> None:
+        invalid_need = (
+            "What metrics did the issuer provide in its Q3 earnings, reported in "
+            "November 2025?"
+        )
+        corrected_need = (
+            "What paying-user and revenue metrics had the issuer disclosed by "
+            "September 30, 2025?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Recent user trends may change market expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller([state(invalid_need), state(corrected_need)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 9, 30, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("published after prediction_time", feedback["validation_error"])
+        self.assertIn("November 2025", feedback["validation_error"])
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["next_information_needs[0]"],
+        )
+        self.assertIn(
+            "must request evidence that could already exist by prediction_time",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (corrected_need,),
+        )
+
+    def test_v103_initialize_allows_as_of_future_schedule_question(self) -> None:
+        need = (
+            "What had the issuer disclosed by September 30, 2025 about the timing "
+            "of its Q3 earnings report to be released in November 2025?"
+        )
+        state = {
+            "hypotheses": ["A disclosed milestone may change market expectations."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 9, 30, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
     def test_v93_initialize_accepts_explicit_pricing_in_transmission(self) -> None:
         hypothesis = (
             "The market may be pricing in successful execution of a resort opening "
@@ -10250,11 +10328,195 @@ class ConcreteRoleAdapterTests(TestCase):
         candidate_marker = "overlapping_projection_interior_candidates="
         candidate_payload = error.split(candidate_marker, 1)[1].split(". Copy", 1)[0]
         candidates = json.loads(candidate_payload)
-        candidate = candidates["projection_overlap"]
-        self.assertLessEqual(len(candidate), 800)
-        self.assertIn("Management reaffirmed", candidate)
-        self.assertIn(candidate, overlap_text)
-        self.assertFalse(candidate.startswith(overlap_text[:20]))
+        self.assertEqual(candidates, {})
+        self.assertNotIn("Management reaffirmed", candidate_payload)
+
+    def test_v103_signal_edge_candidate_is_anchored_to_rejected_boundary(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        guidance = (
+            "Turning to guidance, management remains on track to produce 2 million "
+            "ounces at a cost of $1,500 per ounce."
+        )
+        prefix = "Earlier complete sentence. "
+        suffix = " Unrelated operations continued with steady production."
+        document = RawInfoDocument.create(
+            document_id="guidance-transcript",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=prefix + guidance + suffix,
+        )
+        boundary = len(prefix) + guidance.index("$1,500") + len("$1,")
+        truncated = document.content[:boundary]
+        overlap_start = 0
+        overlap = document.content[overlap_start:]
+        result = {
+            "evidence": {
+                "supporting": [
+                    {"projection_id": "truncated", "exact_text": truncated}
+                ],
+                "counter": [],
+            }
+        }
+        lineage = {
+            "truncated": evolution_runtime_module._SignalProjectionLineage(
+                document=document,
+                projection_text=truncated,
+                raw_offset_runs=((0, len(truncated), 0, len(truncated)),),
+                normalized_start=0,
+                normalized_end=boundary,
+                normalized_source_length=len(document.content),
+            ),
+            "overlap": evolution_runtime_module._SignalProjectionLineage(
+                document=document,
+                projection_text=overlap,
+                raw_offset_runs=(
+                    (0, len(overlap), overlap_start, len(document.content)),
+                ),
+                normalized_start=overlap_start,
+                normalized_end=len(document.content),
+                normalized_source_length=len(document.content),
+            ),
+        }
+
+        with self.assertRaisesRegex(
+            ValidationError, "touches internal projection edge"
+        ) as context:
+            evolution_runtime_module._map_projected_signal_evidence(result, lineage)
+
+        marker = "overlapping_projection_interior_candidates="
+        candidate_payload = str(context.exception).split(marker, 1)[1].split(
+            ". Copy", 1
+        )[0]
+        candidates = json.loads(candidate_payload)
+        self.assertEqual(candidates, {"overlap": guidance})
+        self.assertNotIn("Unrelated operations", candidates["overlap"])
+
+    def test_v103_signal_raw_mapping_is_exact_quote_not_projection_window(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        quote = "Operations continued with steady production."
+        content = (
+            "Management raised annual guidance. "
+            + quote
+            + " Later discussion covered exploration."
+        )
+        document = RawInfoDocument.create(
+            document_id="transcript",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=content,
+        )
+        mapped = evolution_runtime_module._map_projected_signal_evidence(
+            {
+                "evidence": {
+                    "supporting": [
+                        {"projection_id": "whole", "exact_text": quote}
+                    ],
+                    "counter": [],
+                }
+            },
+            {
+                "whole": evolution_runtime_module._SignalProjectionLineage(
+                    document=document,
+                    projection_text=content,
+                    raw_offset_runs=((0, len(content), 0, len(content)),),
+                    normalized_start=0,
+                    normalized_end=len(content),
+                    normalized_source_length=len(content),
+                )
+            },
+        )
+
+        self.assertEqual(
+            mapped["evidence"]["supporting"][0]["exact_span"], quote
+        )
+        self.assertNotIn(
+            "guidance", mapped["evidence"]["supporting"][0]["exact_span"]
+        )
+
+    def test_v103_signal_required_phrase_cannot_come_from_uncited_window(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        quote = "Operations continued with steady production."
+        document = RawInfoDocument.create(
+            document_id="transcript",
+            company_id="issuer-1",
+            source_type="earnings_call",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=(
+                "Management raised annual guidance. "
+                + quote
+                + " Later discussion covered exploration."
+            ),
+        )
+        invalid = {
+            "results": [
+                {
+                    "signal_ref": "guidance_acceleration:v1",
+                    "result": {
+                        "signal_id": "guidance_acceleration",
+                        "version": 1,
+                        "state": {"value": "neutral", "confidence": 0.8},
+                        "interpretation": {
+                            "summary": "Management reaffirmed rather than raised guidance."
+                        },
+                        "evidence": {
+                            "supporting": [
+                                {
+                                    "projection_id": "placeholder",
+                                    "exact_text": quote,
+                                }
+                            ],
+                            "counter": [],
+                        },
+                        "status": {"coverage": "sufficient"},
+                    },
+                }
+            ]
+        }
+
+        class UnrelatedEvidenceCaller:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, Any]] = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                response = json.loads(json.dumps(invalid))
+                response["results"][0]["result"]["evidence"]["supporting"][0][
+                    "projection_id"
+                ] = kwargs["payload"]["source_projection"][0]["projection_id"]
+                return response, AgentUsage(llm_calls=1, tokens=50, cost=0.01)
+
+        spec = SignalSpec(
+            signal_id="guidance_acceleration",
+            version=1,
+            category="management",
+            description="Detect explicit management-guidance acceleration.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("earnings_call",),
+            skill_file="guidance_acceleration.md",
+            parameters={"result_required_evidence_phrases": ["guidance"]},
+        )
+        caller = UnrelatedEvidenceCaller()
+
+        result, usage = StructuredLLMSignalRunner(caller).execute(
+            spec,
+            (document,),
+            "Compare current with prior explicit guidance.",
+            timestamp,
+        )
+
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertIn(
+            "result_required_evidence_phrases",
+            caller.calls[1]["payload"]["validation_feedback"][0][
+                "validation_error"
+            ],
+        )
 
     def test_v13_signal_evidence_relocates_unique_quote_from_wrong_overlap(self) -> None:
         fixture = json.loads(

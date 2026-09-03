@@ -1,11 +1,13 @@
 {
   "allowed": [
     "The cited price target implied only about 11% upside, far below the doubling threshold.",
-    "The evidence did not cross the fixed 2x cutoff."
+    "The evidence did not cross the fixed 2x cutoff.",
+    "The baseline mean adjusted close of $23.98 was far below the fixed 2x threshold."
   ],
   "rejected": [
     "Use a new threshold of 0.55 for positive predictions.",
     "Change the cutoff based on confidence.",
+    "Adjust the threshold based on recent volatility.",
     "Compute P(surge) and apply a 0.55 probability threshold."
   ]
 }

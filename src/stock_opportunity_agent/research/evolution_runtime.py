@@ -4813,7 +4813,7 @@ def _validate_proposal_change_focus(
 
 _FIXED_SEMANTICS_REDEFINITION = re.compile(
     r"(?:\bp\s*\(|probabilit(?:y|ies)|odds|"
-    r"(?:set|apply|use|adopt|change|raise|lower|adjust|redefine)"
+    r"\b(?:set|apply|use|adopt|change|raise|lower|adjust|redefine)\b"
     r".{0,40}(?:threshold|cutoff)|"
     r"(?:threshold|cutoff)\s*(?:of|at|to|=)\s*[-+]?\d|"
     r"three[- ]month|twelve[- ]month|one[- ]year|"
@@ -6207,6 +6207,85 @@ _EXPECTATION_TRANSMISSION = re.compile(
     r"pre[- ]opening|pric(?:e|es|ed|ing)[ -]+in|progress toward)\b",
     re.IGNORECASE,
 )
+_FUTURE_SOURCE_DATE = re.compile(
+    r"\b(?:report(?:ed|ing)?|releas(?:e|ed|ing)|publish(?:ed|ing)?|"
+    r"fil(?:e|ed|ing)|announc(?:e|ed|ing)|disclos(?:e|ed|ing))\s+"
+    r"(?:in|on|during)\s+"
+    r"(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
+    r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
+    r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
+    r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
+    r"(?P<iso>20\d{2}-\d{2}-\d{2})))\b",
+    re.IGNORECASE,
+)
+_FUTURE_SOURCE_CONTENT_INTENT = re.compile(
+    r"\b(?:contents?|results?|metrics?|figures?|numbers?|actuals?|guidance|"
+    r"outlook|forecast|findings?|outcomes?|performance|revenue|sales|profit|"
+    r"margins?|cash[ -]+flow|users?|subscribers?)\b|"
+    r"\b(?:what|which|how[ -]+much|how[ -]+many)\b.{0,120}"
+    r"\b(?:did|does|will|would)\b.{0,80}"
+    r"\b(?:provide|show|reveal|contain|report|state|say)\b|"
+    r"\b(?:summarize|analyse|analyze)\b.{0,80}\b(?:report|release|filing)\b",
+    re.IGNORECASE,
+)
+_AS_OF_FUTURE_SCHEDULE_REQUEST = re.compile(
+    r"\b(?:had|has|have|was|were)\b.{0,120}"
+    r"\b(?:disclos\w*|announc\w*|schedul\w*|plan\w*|expect\w*|stat(?:e|ed))\b"
+    r".{0,160}\b(?:timing|date|schedule|milestone|expected|planned|upcoming|"
+    r"future|release|report)\b",
+    re.IGNORECASE,
+)
+
+
+def _future_source_date_refs(text: str, prediction_date: date) -> list[str]:
+    """Return explicit source-publication dates after the blind prediction date."""
+
+    if (
+        not _FUTURE_SOURCE_CONTENT_INTENT.search(text)
+        or _AS_OF_FUTURE_SCHEDULE_REQUEST.search(text)
+    ):
+        return []
+    future: list[str] = []
+    for match in _FUTURE_SOURCE_DATE.finditer(text):
+        iso = match.group("iso")
+        if iso is not None:
+            try:
+                referenced = date.fromisoformat(iso)
+            except ValueError:
+                continue
+            is_future = referenced > prediction_date
+        else:
+            month = str(match.group("month")).casefold().rstrip(".")[:3]
+            month_number = {
+                "jan": 1,
+                "feb": 2,
+                "mar": 3,
+                "apr": 4,
+                "may": 5,
+                "jun": 6,
+                "jul": 7,
+                "aug": 8,
+                "sep": 9,
+                "oct": 10,
+                "nov": 11,
+                "dec": 12,
+            }[month]
+            year = int(str(match.group("year")))
+            raw_day = match.group("day")
+            if raw_day is None:
+                is_future = (year, month_number) > (
+                    prediction_date.year,
+                    prediction_date.month,
+                )
+            else:
+                try:
+                    referenced = date(year, month_number, int(raw_day))
+                except ValueError:
+                    continue
+                is_future = referenced > prediction_date
+        if is_future and match.group("date") not in future:
+            future.append(match.group("date"))
+    return future
 
 
 def _raw_initialize_evaluation_boundary_issues(
@@ -6235,6 +6314,34 @@ def _raw_initialize_evaluation_boundary_issues(
             )
     if not isinstance(evaluation_context, Mapping):
         return issues
+    raw_prediction_time = evaluation_context.get("prediction_time")
+    try:
+        prediction_date = datetime.fromisoformat(
+            str(raw_prediction_time).replace("Z", "+00:00")
+        ).date()
+    except ValueError:
+        prediction_date = None
+    raw_needs = value.get("next_information_needs")
+    if prediction_date is not None and isinstance(raw_needs, list):
+        for index, item in enumerate(raw_needs):
+            if not isinstance(item, str):
+                continue
+            future_refs = _future_source_date_refs(item, prediction_date)
+            if not future_refs:
+                continue
+            path = f"next_information_needs[{index}]"
+            issues.append(
+                "research_controller_initialize requested contents of a source "
+                "explicitly published after prediction_time, "
+                f"invalid_field={path!r}, {path}={item!r}, "
+                "future_source_date_refs="
+                f"{json.dumps(future_refs, separators=(',', ':'))}, "
+                f"prediction_time={prediction_date.isoformat()!r}. Remove this need "
+                "or restate it to request only evidence already available by "
+                "prediction_time. An as-of question about a disclosed future "
+                "schedule, expectation, or milestone is allowed, but the future "
+                "source's contents or results are not"
+            )
     raw_horizon_end = evaluation_context.get("horizon_end")
     try:
         horizon_end = date.fromisoformat(str(raw_horizon_end))
@@ -8122,6 +8229,12 @@ class LLMResearchController:
                 "milestone that could change expectations instead. "
                 "evaluation_context is runtime-owned control, not source evidence; "
                 "use its prediction_time and horizon_end to enforce that boundary. "
+                "Every next_information_needs item must request evidence that could "
+                "already exist by prediction_time. Do not ask for the contents, "
+                "results, or metrics of a report, release, filing, or announcement "
+                "published after prediction_time. You may ask what was already "
+                "disclosed by prediction_time about a scheduled future catalyst, "
+                "milestone, expectation, or timeline. "
                 "Every "
                 "next_information_needs item must contain only facts absent from "
                 "Basic Info and from the evidence or beliefs you return. Do not ask "
@@ -11098,6 +11211,40 @@ class _SignalProjectionLineage:
     normalized_source_length: int
 
 
+def _slice_projection_offset_runs(
+    runs: Iterable[tuple[int, int, int, int]],
+    start: int,
+    end: int,
+    *,
+    rebase: int,
+) -> tuple[tuple[int, int, int, int], ...]:
+    """Clip normalized-to-raw lineage without widening one-to-one runs."""
+
+    clipped: list[tuple[int, int, int, int]] = []
+    for run_start, run_end, raw_start, raw_end in runs:
+        intersection_start = max(run_start, start)
+        intersection_end = min(run_end, end)
+        if intersection_start >= intersection_end:
+            continue
+        if run_end - run_start == raw_end - raw_start:
+            clipped_raw_start = raw_start + intersection_start - run_start
+            clipped_raw_end = raw_start + intersection_end - run_start
+        else:
+            # One normalized character may represent an entity, removed markup,
+            # or collapsed whitespace. Its complete raw range is indivisible.
+            clipped_raw_start = raw_start
+            clipped_raw_end = raw_end
+        clipped.append(
+            (
+                intersection_start - rebase,
+                intersection_end - rebase,
+                clipped_raw_start,
+                clipped_raw_end,
+            )
+        )
+    return tuple(clipped)
+
+
 def _shared_llm_signal_projection(
     inputs: tuple[LLMSignalBatchInput, ...],
 ) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage]]:
@@ -11178,15 +11325,11 @@ def _shared_llm_signal_projection(
                 separators=(",", ":"),
             ).encode("utf-8")
         ).hexdigest()[:24]
-        clipped_runs = tuple(
-            (
-                max(run_start, start) - start,
-                min(run_end, end) - start,
-                raw_start + max(0, start - run_start),
-                raw_end - max(0, run_end - end),
-            )
-            for run_start, run_end, raw_start, raw_end in runs
-            if run_start < end and run_end > start
+        clipped_runs = _slice_projection_offset_runs(
+            runs,
+            start,
+            end,
+            rebase=start,
         )
         payload.append(
             {
@@ -11228,11 +11371,15 @@ def _project_llm_signal_documents(
 def _bounded_projection_interior_candidate(
     projection: _SignalProjectionLineage,
     *,
+    anchor_normalized_offset: int,
     maximum_characters: int = 800,
 ) -> str | None:
-    """Return one exact complete interior sentence span, never an edge fragment."""
+    """Return one complete sentence containing the rejected source boundary."""
 
     text_value = projection.projection_text
+    anchor = anchor_normalized_offset - projection.normalized_start
+    if anchor <= 0 or anchor >= len(text_value):
+        return None
     sentence_end = re.compile(r'[.!?](?:["\')\]]*)(?=\s|$)')
     lower = 0
     if projection.normalized_start > 0:
@@ -11253,28 +11400,28 @@ def _bounded_projection_interior_candidate(
     ]
     if not terminal_ends:
         return None
-    upper = terminal_ends[-1]
-    if upper <= lower:
+    candidates: list[str] = []
+    sentence_start = lower
+    for sentence_end_offset in terminal_ends:
+        raw_candidate = text_value[sentence_start:sentence_end_offset]
+        leading = len(raw_candidate) - len(raw_candidate.lstrip())
+        trailing = len(raw_candidate.rstrip())
+        candidate_start = sentence_start + leading
+        candidate_end = sentence_start + trailing
+        candidate = text_value[candidate_start:candidate_end]
+        if (
+            candidate
+            and candidate_start < anchor < candidate_end
+            and len(candidate) <= maximum_characters
+            and text_value.count(candidate) == 1
+        ):
+            candidates.append(candidate)
+        sentence_start = sentence_end_offset
+        while sentence_start < len(text_value) and text_value[sentence_start].isspace():
+            sentence_start += 1
+    if len(set(candidates)) != 1:
         return None
-
-    starts = [lower]
-    for end in terminal_ends:
-        start = end
-        while start < upper and text_value[start].isspace():
-            start += 1
-        if start < upper:
-            starts.append(start)
-    candidates: list[tuple[int, int, str]] = []
-    for start in starts:
-        for end in terminal_ends:
-            if end <= start or end - start > maximum_characters:
-                continue
-            candidate = text_value[start:end].strip()
-            if candidate and text_value.count(candidate) == 1:
-                candidates.append((-len(candidate), start, candidate))
-    if not candidates:
-        return None
-    return min(candidates)[2]
+    return candidates[0]
 
 
 def _map_projected_signal_evidence(
@@ -11398,18 +11545,33 @@ def _map_projected_signal_evidence(
                     )
                 }
                 overlapping_projection_ids = sorted(overlapping)
-                interior_candidates = {
-                    candidate_id: interior
-                    for candidate_id, candidate in sorted(overlapping.items())
+                interior_candidates: dict[str, str] = {}
+                for candidate_id, candidate in sorted(overlapping.items()):
+                    anchored = {
+                        interior
+                        for edge in touched_edges
+                        if (
+                            interior := _bounded_projection_interior_candidate(
+                                candidate,
+                                anchor_normalized_offset=(
+                                    projection.normalized_start
+                                    if edge == "start"
+                                    else projection.normalized_end
+                                ),
+                            )
+                        )
+                    }
+                    if len(anchored) != 1:
+                        continue
+                    interior = next(iter(anchored))
                     if (
-                        interior := _bounded_projection_interior_candidate(candidate)
-                    )
-                    and sum(
-                        visible.projection_text.count(interior)
-                        for visible in eligible_lineage.values()
-                    )
-                    == 1
-                }
+                        sum(
+                            visible.projection_text.count(interior)
+                            for visible in eligible_lineage.values()
+                        )
+                        == 1
+                    ):
+                        interior_candidates[candidate_id] = interior
                 raise ValidationError(
                     f"Signal {group} evidence[{index}] on projection "
                     f"{resolved_projection_id!r} touches internal projection "
@@ -11420,11 +11582,12 @@ def _map_projected_signal_evidence(
                     "one listed byte-exact candidate, another complete literal from "
                     "an overlapping projection, or return unavailable"
                 )
-            overlaps = [
-                run
-                for run in projection.raw_offset_runs
-                if run[0] < projection_end and run[1] > projection_start
-            ]
+            overlaps = _slice_projection_offset_runs(
+                projection.raw_offset_runs,
+                projection_start,
+                projection_end,
+                rebase=projection_start,
+            )
             if not overlaps:
                 raise ValidationError("Signal projection evidence has no raw mapping")
             raw_start = min(item[2] for item in overlaps)
@@ -11432,6 +11595,16 @@ def _map_projected_signal_evidence(
             raw_span = projection.document.content[raw_start:raw_end]
             if not raw_span:
                 raise ValidationError("Signal projection mapped to an empty raw span")
+            projected_raw_span, _raw_span_runs = _normalized_projection_text(
+                raw_span,
+                strip_market_metadata=projection.document.source_type.casefold()
+                in {"market_data", "historical_price", "price_daily", "prices"},
+            )
+            if projected_raw_span != exact_text:
+                raise ValidationError(
+                    f"Signal {group} evidence[{index}] raw mapping did not round-trip "
+                    "to exact_text; choose another complete literal or return unavailable"
+                )
             mapped_entries.append(
                 {
                     "document_id": projection.document.document_id,

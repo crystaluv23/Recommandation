@@ -341,6 +341,20 @@ normal parser reruns; runtime never deletes it locally.
 Provider instructions therefore reserve `open_questions` for non-retrieval
 uncertainty and require an empty array when every open item is already actionable in
 next needs.
+H_init next needs are point-in-time retrieval requests, not a wishlist for future
+observations. A need may ask for disclosures already available about a future catalyst
+or timeline, but not for the contents/results of a report or release explicitly dated
+after `prediction_time`. The provider prompt states this distinction, and local raw
+validation names the exact future-source need before routing; no future fact is inferred
+or injected.
+
+Soft-Signal citations retain exact normalized-to-raw lineage. Mapping slices that
+lineage to the returned quote rather than widening it to the surrounding projection,
+and the raw slice must normalize back to the same quote. An internal-edge repair
+candidate must be a complete sentence containing the rejected source boundary; an
+unrelated sentence elsewhere in the overlapping window is never suggested. Thus
+version-owned evidence requirements and later H_reflect see only explicitly cited
+source text.
 
 Reflect remains backward compatible with committed states created before these
 ceilings. For each field, combined item count, and serialized byte size, its effective
