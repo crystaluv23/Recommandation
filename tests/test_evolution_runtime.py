@@ -3956,6 +3956,88 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected["selection_reason"],
         )
 
+    def test_v98_cosmetic_residual_uses_unanswered_target_clause(self) -> None:
+        target_need = (
+            "What are Kinross Gold's specific production and cost guidance for "
+            "2025-2026, and any updates on Tasiast mill restart timeline?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance.pop("context_tags")
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = target_need
+        guidance["selection_reason"] = (
+            "Directly covers Kinross's production and cost guidance for 2025-2026, "
+            "including Tasiast mill restart timeline updates."
+        )
+        corrected = json.loads(json.dumps(guidance))
+        corrected["context_tags"] = ["general"]
+        corrected["residual_need"] = (
+            "What updates are available on the Tasiast mill restart timeline?"
+        )
+        corrected["selection_reason"] = (
+            "Directly covers production and cost guidance for 2025-2026."
+        )
+        caller = ScriptedRoleCaller(
+            [{"selections": [guidance]}, {"selections": [corrected]}]
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=(target_need,)
+                ),
+            )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        shape_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "requires exactly" in item["instruction"]
+        )
+        self.assertEqual(
+            shape_obligation["must_change_paths"],
+            ["selections[0].context_tags"],
+        )
+        residual_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "retain the target cosmetically" in item["instruction"]
+        )
+        self.assertEqual(
+            residual_obligation["residual_facet_candidates"],
+            ["any updates on Tasiast mill restart timeline"],
+        )
+        scope_obligation = next(
+            item
+            for item in feedback["obligations"]
+            if "claims a facet retained" in item["instruction"]
+        )
+        self.assertEqual(
+            scope_obligation["remove_terms_from_selection_reason"],
+            ["tasiast", "mill", "restart", "timeline"],
+        )
+        self.assertNotIn(
+            "s", scope_obligation["remove_terms_from_selection_reason"]
+        )
+        self.assertEqual(
+            feedback["required_change_paths"],
+            [
+                "selections[0].context_tags",
+                "selections[0].residual_need",
+                "selections[0].selection_reason",
+            ],
+        )
+        self.assertEqual(
+            selection.value[0].residual_need,
+            corrected["residual_need"],
+        )
+
     def test_v91_routing_allows_shared_topic_but_not_residual_year(self) -> None:
         target_need = (
             "What are the company's production and cost guidance for 2025 and "

@@ -518,6 +518,17 @@ the reason path and carries only the conflicting normalized terms in
 name only the narrower answered facet, or remove the selection. This is
 correction-only diagnostic context: normal routing prompts do not pay for it, runtime
 does not author replacement prose, and the unchanged scope validator reruns.
+When a returned residual is only a cosmetic copy of the complete target, runtime must
+not use that already-invalid residual to infer which topic belongs exclusively to the
+unanswered side. If the target has one unambiguous top-level coordinated clause that
+contains a version-owned direct-answer phrase, correction instead exposes the other
+literal target clauses as `residual_facet_candidates` and checks the reason against
+those clauses. These are source slices for diagnosis, not a runtime-authored answer;
+the selector still writes the natural-language residual. If the split is ambiguous,
+runtime reports only the cosmetic-residual defect and abstains from a reason-scope
+claim. Possessive punctuation remnants are never topic terms. Shape feedback names
+each missing or unexpected leaf field rather than treating the whole selection object
+as one replacement, so independent correction obligations remain non-conflicting.
 H_init likewise emits only unresolved needs: a fact already present in Basic Info or
 the returned evidence/beliefs is not asked again, and a partly answered compound
 question retains only its unresolved facets. Runtime aggregates two directly

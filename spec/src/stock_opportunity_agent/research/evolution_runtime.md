@@ -761,6 +761,18 @@ every listed conflicting term from the named reason and describe only the narrow
 answered facet, or remove the selection. These fields exist only in failed-call
 feedback; runtime does not write the replacement and does not enlarge every normal
 routing prompt.
+An unchanged or near-complete residual is invalid input to that overlap inference.
+For such a cosmetic residual, runtime first looks for an unambiguous top-level target
+split: exactly one coordinated clause contains a version-owned direct-answer phrase
+and at least one other clause remains. Correction receives those other literal clauses
+as `residual_facet_candidates`, and only overlap with those clauses can produce
+`remove_terms_from_selection_reason`. This prevents the diagnostic from labeling the
+answered clause itself as residual. The candidates are bounded literal target slices,
+not locally authored replacement prose; an ambiguous split yields no reason-scope
+diagnosis until the model supplies a genuine residual. Possessive `s` is ignored as
+punctuation residue. Structural exact-key errors likewise project missing and
+unexpected keys to their leaf paths, keeping multiple correction obligations exact
+and independent instead of asking the model to replace an otherwise valid object.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
 therefore carries `current_total_items`, `maximum_total_items`,

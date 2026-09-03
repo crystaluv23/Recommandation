@@ -4928,6 +4928,13 @@ _VALIDATION_SAME_CLAIM_PATHS = re.compile(
 _VALIDATION_ROUTING_REMOVE_TERMS = re.compile(
     r"\bremove_terms_from_selection_reason=(\[[^\]]*\])"
 )
+_VALIDATION_ROUTING_RESIDUAL_CANDIDATES = re.compile(
+    r"\bresidual_facet_candidates=(\[[^\]]*\])"
+)
+_VALIDATION_EXACT_KEY_SHAPE = re.compile(
+    r"\b([A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*) requires exactly .*?"
+    r"missing=(\[[^\]]*\]), unexpected=(\[[^\]]*\])"
+)
 
 
 def _quantitative_copy_candidates(
@@ -5099,9 +5106,29 @@ def _validation_obligations(
     )
     obligations: list[dict[str, Any]] = []
     for index, segment in enumerate(segments, start=1):
+        shape_match = _VALIDATION_EXACT_KEY_SHAPE.search(segment)
+        shape_paths: list[str] = []
+        if shape_match:
+            try:
+                missing_fields = json.loads(shape_match.group(2).replace("'", '"'))
+                unexpected_fields = json.loads(
+                    shape_match.group(3).replace("'", '"')
+                )
+            except json.JSONDecodeError:
+                missing_fields = []
+                unexpected_fields = []
+            if all(
+                isinstance(field_name, str)
+                for field_name in (*missing_fields, *unexpected_fields)
+            ):
+                shape_paths = [
+                    f"{shape_match.group(1)}.{field_name}"
+                    for field_name in (*missing_fields, *unexpected_fields)
+                ]
         paths = list(
             dict.fromkeys(
-                (
+                shape_paths
+                or (
                     *_VALIDATION_OBLIGATION_PATH.findall(segment),
                     *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
                 )
@@ -5131,6 +5158,22 @@ def _validation_obligations(
         routing_remove_terms_match = _VALIDATION_ROUTING_REMOVE_TERMS.search(
             segment
         )
+        routing_residual_candidates_match = (
+            _VALIDATION_ROUTING_RESIDUAL_CANDIDATES.search(segment)
+        )
+        if routing_residual_candidates_match:
+            try:
+                residual_facet_candidates = json.loads(
+                    routing_residual_candidates_match.group(1)
+                )
+            except json.JSONDecodeError:
+                residual_facet_candidates = []
+            if residual_facet_candidates and all(
+                isinstance(item, str) for item in residual_facet_candidates
+            ):
+                obligation["residual_facet_candidates"] = (
+                    residual_facet_candidates
+                )
         if routing_remove_terms_match:
             try:
                 routing_remove_terms = json.loads(
@@ -7365,6 +7408,7 @@ _NEED_RESIDUAL_GENERIC_TOKENS = frozenset(
         "or",
         "remain",
         "remaining",
+        "s",
         "specific",
         "such",
         "the",
@@ -7400,6 +7444,47 @@ def _normalized_need_content_tokens(value: str) -> frozenset[str]:
             token = token[:-1]
         normalized.add(token)
     return frozenset(normalized)
+
+
+_ROUTING_COMPOUND_FACET_BOUNDARY = re.compile(
+    r"(?:;\s*|,\s+(?:and|or)\s+)", re.IGNORECASE
+)
+
+
+def _routing_residual_facet_candidates(
+    target_need: str,
+    answer_need_phrases: Iterable[str],
+) -> tuple[str, ...]:
+    """Return literal unresolved clauses for one unambiguous direct-answer split."""
+
+    clauses = tuple(
+        clause.strip().strip(" ,;.?")[:300]
+        for clause in _ROUTING_COMPOUND_FACET_BOUNDARY.split(target_need)
+        if clause.strip().strip(" ,;.?")
+    )
+    if len(clauses) < 2:
+        return ()
+    normalized_phrases = tuple(
+        " " + re.sub(r"[^a-z0-9]+", " ", phrase.casefold()).strip() + " "
+        for phrase in answer_need_phrases
+        if re.sub(r"[^a-z0-9]+", " ", phrase.casefold()).strip()
+    )
+    if not normalized_phrases:
+        return ()
+    matched_indices = {
+        index
+        for index, clause in enumerate(clauses)
+        if any(
+            phrase
+            in " " + re.sub(r"[^a-z0-9]+", " ", clause.casefold()).strip() + " "
+            for phrase in normalized_phrases
+        )
+    }
+    if len(matched_indices) != 1:
+        return ()
+    return tuple(
+        clause for index, clause in enumerate(clauses) if index not in matched_indices
+    )
 
 
 def _coordinated_residual_facet_terms(
@@ -8434,6 +8519,7 @@ class LLMSignalRetrievalAgent:
                         f"{path}.signal_ref={signal_ref!r} is outside supplied cards"
                     )
                     continue
+                spec = specs_by_ref[signal_ref]
                 if signal_ref in seen:
                     continue
                 seen.add(signal_ref)
@@ -8507,6 +8593,24 @@ class LLMSignalRetrievalAgent:
                                 residual_need
                             )
                             content_overlap = target_content & residual_content
+                            cosmetic_residual = residual_need.strip() == target_need or (
+                                target_content
+                                and len(content_overlap) / len(target_content) >= 0.9
+                            )
+                            answer_need_phrases = tuple(
+                                str(phrase)
+                                for phrase in spec.parameters.get(
+                                    "routing_answer_need_phrases", ()
+                                )
+                            )
+                            residual_facet_candidates = (
+                                _routing_residual_facet_candidates(
+                                    target_need,
+                                    answer_need_phrases,
+                                )
+                                if cosmetic_residual
+                                else ()
+                            )
                             if not residual_content or (
                                 len(content_overlap) / len(residual_content) < 0.5
                             ):
@@ -8515,20 +8619,30 @@ class LLMSignalRetrievalAgent:
                                     "targeted information need rather than copy or "
                                     "invent a different need"
                                 )
-                            if residual_need.strip() == target_need or (
-                                target_content
-                                and len(content_overlap) / len(target_content)
-                                >= 0.9
-                            ):
+                            if cosmetic_residual:
                                 validation_errors.append(
                                     f"{path}.residual_need must remove the answered "
                                     "facet rather than retain the target cosmetically"
+                                    + (
+                                        ", residual_facet_candidates="
+                                        + json.dumps(
+                                            list(residual_facet_candidates),
+                                            separators=(",", ":"),
+                                        )
+                                        + ". Use only these literal unresolved "
+                                        "target clauses when writing the corrected "
+                                        "natural-language residual"
+                                        if residual_facet_candidates
+                                        else ""
+                                    )
                                 )
                             coordinated_residual_terms = (
                                 _coordinated_residual_facet_terms(
                                     target_need,
                                     residual_need,
                                 )
+                                if not cosmetic_residual
+                                else ()
                             )
                             reason_content = _normalized_need_content_tokens(
                                 item["selection_reason"]
@@ -8551,10 +8665,28 @@ class LLMSignalRetrievalAgent:
                                     "counterpart, and leave unresolved facets only "
                                     "in residual_need"
                                 )
-                            elif not coordinated_residual_terms and (
-                                shared_residual_phrase := _shared_distinctive_phrase(
-                                    item["selection_reason"], residual_need
+                            else:
+                                residual_scope_values = (
+                                    residual_facet_candidates
+                                    if cosmetic_residual
+                                    else (residual_need,)
                                 )
+                                shared_residual_phrase = next(
+                                    (
+                                        phrase
+                                        for residual_scope in residual_scope_values
+                                        if (
+                                            phrase := _shared_distinctive_phrase(
+                                                item["selection_reason"],
+                                                residual_scope,
+                                            )
+                                        )
+                                    ),
+                                    None,
+                                )
+                            if (
+                                not coordinated_residual_terms
+                                and shared_residual_phrase is not None
                             ):
                                 remove_terms = shared_residual_phrase.split()
                                 validation_errors.append(
@@ -8587,7 +8719,6 @@ class LLMSignalRetrievalAgent:
                         tags.append(tag)
                     if len(tags) == 4:
                         break
-                spec = specs_by_ref[signal_ref]
                 if spec.execution_type.value == "llm":
                     if llm_count >= 2:
                         continue

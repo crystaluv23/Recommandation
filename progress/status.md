@@ -1,5 +1,23 @@
 # Status
 
+Current V98 repair (2026-09-03): post-`f41b5cb` contract
+`7cc87b1...897c` made four completed calls for `$0.00446908` and four
+fetched/cache-hit data rows. The first Fast case reached H_init and routing, then its
+one routing correction changed only the missing `context_tags`; no case finalized,
+so pointers remain `round=0/cycle=0`, Registry v1, and Slow unstarted. The exact
+target asked for production/cost guidance plus a Tasiast restart update. The selector
+copied the whole target as a partial residual and claimed both facets. Correction
+feedback then incorrectly derived overlap from that already-invalid residual, labeling
+the answered guidance topic and possessive `s` as terms to delete.
+
+Cosmetic residuals now use only an unambiguous, version-phrase-matched top-level
+target split for reason diagnostics. The other literal clauses are exposed as bounded
+`residual_facet_candidates`; ambiguous splits abstain. Possessive punctuation is not
+a topic token, and exact-key shape feedback identifies missing/unexpected leaf paths
+instead of the whole selection object. Runtime still neither writes the residual nor
+chooses a semantic repair. Exact V98-shape replay, all 522 tests, and lint pass.
+Successor ceilings are 256 attempts, `$17.40906116`, and 656 data requests.
+
 Current V97 repair (2026-09-02): post-`df0e379` contract
 `2801fb6...1679b` made 47 completed calls plus one retryable TLS failure for
 `$0.06922132` and five data requests. Five Fast cases finalized before TLS resume;

@@ -1546,3 +1546,11 @@ state the exact inverse action. An untargeted need that changed requires restora
 not the generic “remove or narrow” instruction appropriate to an adopted answer.
 Represent restore, exact residual, removal, and narrowing per error row; do not append
 one shared suffix whose advice can contradict the row.
+
+When a partial routing residual is an unchanged or near-complete copy of its target,
+do not use that invalid residual to decide which words belong to the unanswered facet.
+If exactly one top-level target clause contains a version-owned direct-answer phrase,
+expose the other literal clauses as correction-only candidates and check the reason
+against those; otherwise abstain until the model supplies a genuine residual. Keep
+missing/unexpected schema repairs on leaf paths, and ignore possessive punctuation as
+topic content. This is structural diagnosis, not local semantic repair.
