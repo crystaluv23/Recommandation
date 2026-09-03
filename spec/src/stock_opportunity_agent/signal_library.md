@@ -281,6 +281,11 @@ for model correction; runtime still never chooses the Signal. The seed
 results with existing guidance does not trigger this mandatory non-empty boundary,
 although the selector may still choose the Signal under its ordinary applicability
 contract. Unmatched empty selection remains valid.
+For Signal ids with at least three normalized words, runtime may also use the complete
+id as the conservative empty-selection phrase; it must not generate prefix, suffix, or
+interior n-grams. `operating_cash_flow_margin:v1` separately declares the same full
+measured object as its direct-answer phrase, so a request about cash-flow funding uses
+contextual routing or no match rather than pretending it asked for a margin.
 
 Complete Raw Info documents remain the local lineage, fingerprint, and final
 evidence-validation boundary; they are not copied into an LLM Signal request or

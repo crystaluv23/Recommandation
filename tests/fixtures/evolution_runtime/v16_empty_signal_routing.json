@@ -1,7 +1,7 @@
 {
   "corrected_signal_ref": "operating_cash_flow_margin:v1",
   "information_needs": [
-    "What are the latest quarterly revenue and operating cash flow figures from the most recent 10-Q filing?",
+    "What is the latest quarterly operating cash flow margin from the most recent 10-Q filing?",
     "Are there any regulatory or financing events that could impact cash position and growth projects?",
     "What is the current status of a mill repair and its impact on production guidance?"
   ],

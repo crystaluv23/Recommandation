@@ -793,6 +793,11 @@ unambiguous split is attached to that failed call's `required_matches` target ro
 and leaves reason wording, tags, role, applicability, and the final natural-language
 residual to the selector. Without a unique clause split, feedback does not guess the
 scope.
+The automatic ref-derived mandatory phrase is only the complete normalized Signal id
+when it contains at least three words. Runtime never derives shorter n-grams from that
+id: mentioning `operating cash flow` does not force an
+`operating_cash_flow_margin` selection. Signal-owned synonyms or shorter direct
+requests must be declared explicitly in version parameters.
 An aggregate ResearchState item-count overflow is a combination constraint rather than
 a claim that every contributing field is independently invalid. Its obligation
 therefore carries `current_total_items`, `maximum_total_items`,

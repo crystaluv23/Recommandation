@@ -1572,3 +1572,10 @@ write scope, and frozen token/call/cost limits; successful paths pay nothing ext
 the final invalid result still fails closed. Also treat a partial residual that keeps
 the Signal's direct-answer phrase while deleting only one non-period content token as
 cosmetic rather than progress.
+
+Do not turn a multiword Signal id into every possible mandatory routing n-gram. A
+proper prefix can name a different measured object: `operating cash flow` is not
+`operating cash flow margin`, just as a funding-plan question is not a margin request.
+Only the complete normalized three-or-more-word id is safe as an automatic empty-route
+guard. Shorter forms and synonyms belong in explicit version-owned routing metadata;
+ordinary related concepts may remain contextual or correctly produce no match.

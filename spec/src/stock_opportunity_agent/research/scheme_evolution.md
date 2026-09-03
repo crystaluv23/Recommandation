@@ -181,10 +181,10 @@ specs remain executor-only disclosure after selection. An empty `signal_refs`
 array is a valid `no_signal_match` result when no remaining card can answer the
 need and consumes no correction call. Before accepting empty, runtime performs
 one conservative semantic contradiction check: if an information need repeats
-at least three consecutive normalized words from an available `signal_ref`
-(for example, “operating cash flow”), empty receives the same one correction
+the complete normalized name of an available `signal_ref` containing at least three
+words (for example, “operating cash flow margin”), empty receives the same one correction
 with the directly matching refs. This check does not select a Signal, require a
-particular matching ref, or use fuzzy/single-word similarity; any non-empty batch
+particular matching ref, or use fuzzy, single-word, or partial-ref similarity; any non-empty batch
 that answers the need remains the model's decision. A malformed container,
 duplicate ref, ref outside the supplied cards, or still-empty contradicted result
 receives at most the frozen structured-correction budget with the exact allowed set.

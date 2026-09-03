@@ -3493,6 +3493,32 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertNotIn("guidance", guidance_card["routing_need_phrases"])
         self.assertIn("guidance updates", guidance_card["routing_need_phrases"])
 
+    def test_v101_partial_signal_id_phrase_does_not_force_empty(self) -> None:
+        target_need = (
+            "What are the company's plans for using sale-leaseback proceeds and "
+            "operating cash flow to fund expansion?"
+        )
+        caller = ScriptedRoleCaller([{"selections": []}])
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,), registry.freeze(), {}
+            )
+
+        self.assertEqual(selection.value, ())
+        self.assertEqual(selection.usage.llm_calls, 1)
+        cash_flow_card = next(
+            item
+            for item in caller.calls[0]["payload"]["available_signal_cards"]
+            if item["signal_ref"] == "operating_cash_flow_margin:v1"
+        )
+        self.assertEqual(
+            cash_flow_card["routing_answer_need_phrases"],
+            ["operating cash flow margin"],
+        )
+
     def test_signal_selector_corrects_version_owned_excluded_context_tag(self) -> None:
         incompatible = signal_selection("commercialization_status:v1")
         item = incompatible["selections"][0]

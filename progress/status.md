@@ -1,5 +1,24 @@
 # Status
 
+Current V101 repair (2026-09-03): post-`10449a2` contract
+`acd8908...99dc1` recorded 38 completed calls plus one failed transport attempt for
+`$0.07840336` and three data rows. The generic second correction recovered two H_init
+outputs and one H_reflect output that would previously have rejected the candidate;
+four Fast cases finalized. Case five then stopped after both routing corrections, so
+pointers remain `round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The exact final routing context asked how operating cash flow and sale-leaseback
+proceeds would fund expansion. The model correctly returned empty, but runtime treated
+the three-word prefix `operating cash flow` from
+`operating_cash_flow_margin` as a mandatory direct match. Both corrections therefore
+invented a partial margin answer and failed scope validation. Automatic ref-derived
+mandatory matching now uses only the complete normalized Signal id when it has at
+least three words; it never derives sub-ngrams. Signal-owned synonyms remain explicit
+version metadata, and `operating_cash_flow_margin:v1` declares only its full measured
+object for direct answers. Exact V101 empty-route/full-metric regressions, all 526
+tests, and lint pass. Successor ceilings are 202 attempts, `$17.31074588`, and 646
+data requests.
+
 Current V100 repair (2026-09-03): post-`e221d85` contract
 `a2c3868...30ce0` made nine completed calls for `$0.01403164` and three data
 rows. Plan proposal passed once; H_init, routing, and the soft Signal each passed

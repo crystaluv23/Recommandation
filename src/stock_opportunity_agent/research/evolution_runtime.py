@@ -8208,11 +8208,8 @@ def _explicit_signal_need_match_details(
             ).split()
             if token
         )
-        ref_phrases = tuple(
-            " " + " ".join(tokens[start:end]) + " "
-            for size in range(len(tokens), 2, -1)
-            for start in range(len(tokens) - size + 1)
-            for end in (start + size,)
+        ref_phrases = (
+            (" " + " ".join(tokens) + " ",) if len(tokens) >= 3 else ()
         )
         configured_phrases = tuple(
             " " + re.sub(r"[^a-z0-9]+", " ", item.casefold()).strip() + " "
@@ -8972,8 +8969,9 @@ class LLMSignalRetrievalAgent:
                 "version-owned exclusions and do not omit one to bypass a card. If "
                 "none of the supplied cards adds useful evidence, return "
                 "{\"selections\": []}. Empty is invalid when an information need "
-                "repeats three or more consecutive normalized words from an "
-                "available signal_ref or contains a supplied routing_need_phrases "
+                "repeats the complete normalized name of an available signal_ref "
+                "with at least three words or contains a supplied "
+                "routing_need_phrases "
                 "value; choose a non-empty answering batch in that case. A card's "
                 "routing_excluded_context_tags are version-owned hard "
                 "applicability exclusions: do not select that Signal when your own "
