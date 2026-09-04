@@ -921,6 +921,19 @@ class SignalSelectionDecision:
             value["residual_need"] = self.residual_need
         return value
 
+    def to_learning_dict(self) -> dict[str, Any]:
+        """Project the routing decision onto the stable learning-event schema."""
+
+        return {
+            "signal_ref": self.signal_ref,
+            "reason_code": self.reason_code,
+            "selection_reason": self.selection_reason,
+            "applicability_hypothesis": self.applicability_hypothesis,
+            "expected_role": self.expected_role,
+            "context_tags": list(self.context_tags),
+            "target_need_indices": list(self.target_need_indices),
+        }
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalSelectionDecision":
         required = {
@@ -5803,21 +5816,31 @@ class EvolutionWorkspace:
             )
         bootstrap_manifest_path = self.root / "slow_bootstrap" / "manifest.json"
         signal_need_items: Iterable[Mapping[str, Any]] = ()
+        committed_fast_backlog: Mapping[str, Any] | None = None
         if bootstrap_manifest_path.exists():
             envelope = _read_json(bootstrap_manifest_path)
             manifest = envelope.get("manifest", {})
             if isinstance(manifest, Mapping):
                 backlog_seed = manifest.get("capability_backlog_seed", {})
                 if isinstance(backlog_seed, Mapping):
-                    raw_items = backlog_seed.get("signal_need_items", ())
-                    if isinstance(raw_items, list):
-                        signal_need_items = tuple(
-                            item for item in raw_items if isinstance(item, Mapping)
-                        )
-        report = aggregate_capability_gaps(
-            trajectories,
-            available_source_types=available_source_types,
-            signal_need_items=signal_need_items,
+                    if manifest.get("source_kind") == "committed_fast":
+                        committed_fast_backlog = dict(backlog_seed)
+                    else:
+                        raw_items = backlog_seed.get("signal_need_items", ())
+                        if isinstance(raw_items, list):
+                            signal_need_items = tuple(
+                                item
+                                for item in raw_items
+                                if isinstance(item, Mapping)
+                            )
+        report = (
+            dict(committed_fast_backlog)
+            if committed_fast_backlog is not None and not trajectories
+            else aggregate_capability_gaps(
+                trajectories,
+                available_source_types=available_source_types,
+                signal_need_items=signal_need_items,
+            )
         )
         _atomic_write_json(
             self.experiments_root / "capability_gap_report.json",
@@ -6667,7 +6690,6 @@ class PlanEvolutionEngine:
         )
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:
-        learning_events: list[SignalLearningEvent] = []
         for trajectory in record.trajectories:
             for round_index, signal_round in enumerate(trajectory.signal_rounds):
                 for result_index, result in enumerate(signal_round.batch.results):
@@ -6685,56 +6707,70 @@ class PlanEvolutionEngine:
                         result,
                         is_surge=trajectory.ground_truth.is_surge,
                     )
-                    selection = next(
-                        item
-                        for item in signal_round.selections
-                        if item.signal_ref == result.ref
+        self.signal_registry.record_learning_events(
+            _signal_learning_events_from_record(record)
+        )
+
+
+def _signal_learning_events_from_record(
+    record: PlanRecord,
+) -> tuple[SignalLearningEvent, ...]:
+    """Derive stable learning events from one authoritative Plan record."""
+
+    learning_events: list[SignalLearningEvent] = []
+    for trajectory in record.trajectories:
+        for round_index, signal_round in enumerate(trajectory.signal_rounds):
+            for result_index, result in enumerate(signal_round.batch.results):
+                selection = next(
+                    item
+                    for item in signal_round.selections
+                    if item.signal_ref == result.ref
+                )
+                fingerprint = tuple(
+                    signal_round.batch.document_fingerprints.get(result.ref, ())
+                )
+                observation_key = _canonical_hash(
+                    {
+                        "case_id": trajectory.case_id,
+                        "signal_ref": result.ref,
+                        "document_fingerprint": list(fingerprint),
+                    }
+                )
+                event_id = _canonical_hash(
+                    {
+                        "round_id": record.round_id,
+                        "plan_id": record.plan_id,
+                        "case_id": trajectory.case_id,
+                        "signal_round": round_index,
+                        "result_index": result_index,
+                        "signal_ref": result.ref,
+                    }
+                )
+                learning_events.append(
+                    SignalLearningEvent(
+                        event_id=event_id,
+                        observation_key=observation_key,
+                        signal_ref=result.ref,
+                        round_id=record.round_id,
+                        plan_id=record.plan_id,
+                        case_id=trajectory.case_id,
+                        company_id=trajectory.company_id,
+                        prediction_time=trajectory.prediction_time.isoformat(),
+                        selection=selection.to_learning_dict(),
+                        result_value=result.value,
+                        coverage=result.coverage,
+                        document_fingerprint=fingerprint,
+                        is_surge=trajectory.ground_truth.is_surge,
+                        realized_max_multiple=(
+                            trajectory.ground_truth.realized_max_multiple
+                        ),
+                        prediction_correct=trajectory.self_reflection.correct,
+                        reflection_attribution=_signal_reflection_attribution(
+                            result.ref, trajectory.self_reflection
+                        ),
                     )
-                    fingerprint = tuple(
-                        signal_round.batch.document_fingerprints.get(result.ref, ())
-                    )
-                    observation_key = _canonical_hash(
-                        {
-                            "case_id": trajectory.case_id,
-                            "signal_ref": result.ref,
-                            "document_fingerprint": list(fingerprint),
-                        }
-                    )
-                    event_id = _canonical_hash(
-                        {
-                            "round_id": record.round_id,
-                            "plan_id": record.plan_id,
-                            "case_id": trajectory.case_id,
-                            "signal_round": round_index,
-                            "result_index": result_index,
-                            "signal_ref": result.ref,
-                        }
-                    )
-                    learning_events.append(
-                        SignalLearningEvent(
-                            event_id=event_id,
-                            observation_key=observation_key,
-                            signal_ref=result.ref,
-                            round_id=record.round_id,
-                            plan_id=record.plan_id,
-                            case_id=trajectory.case_id,
-                            company_id=trajectory.company_id,
-                            prediction_time=trajectory.prediction_time.isoformat(),
-                            selection=selection.to_dict(),
-                            result_value=result.value,
-                            coverage=result.coverage,
-                            document_fingerprint=fingerprint,
-                            is_surge=trajectory.ground_truth.is_surge,
-                            realized_max_multiple=(
-                                trajectory.ground_truth.realized_max_multiple
-                            ),
-                            prediction_correct=trajectory.self_reflection.correct,
-                            reflection_attribution=_signal_reflection_attribution(
-                                result.ref, trajectory.self_reflection
-                            ),
-                        )
-                    )
-        self.signal_registry.record_learning_events(learning_events)
+                )
+    return tuple(learning_events)
 
 
 def _signal_reflection_attribution(

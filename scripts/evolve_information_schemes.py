@@ -235,8 +235,9 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         help=(
-            "freeze a zero-Fast Slow bootstrap from one compatible rejected "
-            "workspace; may be repeated"
+            "freeze a zero-Fast Slow bootstrap from compatible rejected "
+            "workspaces, or from exactly one compatible committed Fast "
+            "workspace whose Slow loop has not started"
         ),
     )
     freeze.add_argument("--candidates-per-round", type=int, default=3)

@@ -61,6 +61,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ConfidenceLevel,
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
+    EvolutionWorkspace,
+    ExecutionTrajectory,
     FitnessEligibility,
     GroundTruth,
     InformationPlan,
@@ -68,6 +70,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanMetaReflection,
     PlanMetrics,
     PlanEvaluationConfig,
+    PlanRecord,
     PlanReflection,
     PredictionSelfReflection,
     ResearchDecision,
@@ -76,6 +79,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RoundMetaEntry,
     RuntimeStopReason,
     RuntimeBudgetExceeded,
+    RuntimeUsage,
+    SignalRound,
     SignalSelectionDecision,
     _normalized_projection_text,
     project_basic_info_bundle,
@@ -12002,6 +12007,186 @@ class RunControlTests(TestCase):
                 signal_snapshot=snapshot,
             )
             self.assertEqual(validated["schema_version"], "slow-bootstrap-manifest-v1")
+
+    def test_slow_bootstrap_reconstructs_one_committed_fast_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            target = root / "target"
+            source_registry = SignalRegistry(source / "signals")
+            source_registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            target_registry = SignalRegistry(target / "signals")
+            target_registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            snapshot = target_registry.freeze()
+            source_contract = replace(
+                make_contract(),
+                run_id="committed-fast-source",
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+            )
+            source.mkdir(parents=True, exist_ok=True)
+            source_contract.freeze(source / "run_contract.json")
+            workspace = EvolutionWorkspace(source)
+            workspace.start_or_resume_cycle(
+                run_contract_hash=source_contract.contract_hash,
+                target_plan_rounds=1,
+                cycle_mode="fast_then_slow",
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            selection = SignalSelectionDecision(
+                signal_ref="revenue_growth_yoy:v1",
+                reason_code="answer_need",
+                selection_reason="Measure the answered revenue-growth facet.",
+                applicability_hypothesis="Comparable periods are available.",
+                expected_role="primary",
+                context_tags=("comparable_financials",),
+                target_need_indices=(0,),
+                answer_scope="partial",
+                residual_need="Determine whether growth is durable.",
+            )
+            signal_result = SignalResult(
+                signal_id="revenue_growth_yoy",
+                version=1,
+                value=SignalValue.POSITIVE,
+                confidence=1.0,
+                interpretation="Revenue grew year over year.",
+                coverage=SignalCoverage.SUFFICIENT,
+            )
+            final_state = ResearchState(decision=ResearchDecision.FINALIZE)
+            trajectory = ExecutionTrajectory(
+                case_id="case-1",
+                company_id="issuer-1",
+                prediction_time=datetime(2025, 1, 15, tzinfo=timezone.utc),
+                basic_info={},
+                initial_state=final_state,
+                signal_rounds=(
+                    SignalRound(
+                        information_needs=("Measure growth and durability.",),
+                        selections=(selection,),
+                        batch=SignalBatchResult(
+                            results=(signal_result,),
+                            signal_calls=1,
+                            document_fingerprints={
+                                "revenue_growth_yoy:v1": ("doc-hash",)
+                            },
+                        ),
+                    ),
+                ),
+                final_state=final_state,
+                final_context={},
+                prediction=BlindPrediction(
+                    is_surge=True,
+                    candidate_judgment=CandidateJudgment.POSSIBLE,
+                    magnitude=MagnitudeClass.TWO_TO_THREE,
+                    confidence=ConfidenceLevel.MEDIUM,
+                    key_reasons=("Growth is visible.",),
+                    uncertainties=(),
+                    session_id="session-1",
+                ),
+                prediction_ref="predictions/case-1.json",
+                ground_truth=GroundTruth(2.5),
+                self_reflection=PredictionSelfReflection(correct=True),
+                stop_reason=RuntimeStopReason.FINALIZED,
+                usage=RuntimeUsage(
+                    signal_rounds=1,
+                    signal_calls=1,
+                    model=AgentUsage(),
+                ),
+            )
+            metrics = PlanMetrics(
+                binary_precision=1.0,
+                binary_recall=1.0,
+                binary_f1=1.0,
+                magnitude_accuracy=1.0,
+                magnitude_macro_f1=1.0,
+                true_positive=1,
+                false_positive=0,
+                true_negative=0,
+                false_negative=0,
+                sample_count=1,
+            )
+            plan = default_information_plan()
+            record = PlanRecord(
+                plan=plan,
+                round_id=1,
+                embedding=(1.0,),
+                metrics=metrics,
+                reflection=PlanReflection(
+                    successful_patterns=("Revenue evidence was useful.",)
+                ),
+                signal_usage={"revenue_growth_yoy:v1": {"selected": 1}},
+                trajectories=(trajectory,),
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1,
+                    successful_patterns=("Revenue evidence was useful.",),
+                    evidence_refs=(plan.plan_id,),
+                ),
+                signal_registry_version=snapshot.version,
+                signal_registry_hash=snapshot.registry_hash,
+                run_contract_hash=source_contract.contract_hash,
+            )
+            dataset = evolution_runtime_module.ApprovedDevelopmentDataset(
+                discovery=(),
+                anchor=(),
+                evolution_validation=(),
+                locked_test_hash=SHA_B,
+                approved_manifest_hash=SHA_A,
+            )
+
+            manifest_hash = evolution_runtime_module.build_slow_bootstrap_manifest(
+                workspace=target,
+                source_workspaces=(source,),
+                dataset=dataset,
+                signal_snapshot=snapshot,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+            )
+            bootstrap_contract = replace(
+                make_contract(),
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                limits={
+                    **make_contract().limits,
+                    "plan_rounds_per_signal_cycle": 0,
+                },
+                cycle_mode="slow_bootstrap",
+                slow_bootstrap_manifest_hash=manifest_hash,
+            )
+            manifest = evolution_runtime_module.validate_slow_bootstrap_manifest(
+                workspace=target,
+                contract=bootstrap_contract,
+                signal_snapshot=snapshot,
+            )
+            self.assertEqual(manifest["source_kind"], "committed_fast")
+            self.assertEqual(manifest["schema_version"], "slow-bootstrap-manifest-v2")
+            self.assertEqual(len(manifest["meta_entries"]), 1)
+            self.assertEqual(len(manifest["signal_learning_events"]), 1)
+            learning_selection = manifest["signal_learning_events"][0]["selection"]
+            self.assertNotIn("answer_scope", learning_selection)
+            self.assertNotIn("residual_need", learning_selection)
+
+            for _ in range(2):
+                meta_entries = evolution_runtime_module.apply_slow_bootstrap_derivatives(
+                    manifest,
+                    registry=target_registry,
+                )
+            self.assertEqual(tuple(entry.round_id for entry in meta_entries), (1,))
+            events = target_registry.load_learning_events(
+                "revenue_growth_yoy:v1"
+            )
+            self.assertEqual(len(events), 1)
+            self.assertEqual(
+                target_registry.load_learning_profile("revenue_growth_yoy:v1")[
+                    "unique_observations"
+                ],
+                1,
+            )
 
     def _seed_candidate(
         self,

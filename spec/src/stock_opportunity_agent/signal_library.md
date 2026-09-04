@@ -338,7 +338,12 @@ After the round commit pointer advances, each exact Signal version receives an
 append-only event for every Plan selection. The event records the reason and
 coarse context, result/coverage and document fingerprint, realized outcome,
 prediction correctness, and whether post-hoc reflection explicitly attributed
-the Signal. A stable event id makes restore reconciliation idempotent.
+the Signal. The full routing decision remains in the execution trajectory. The
+learning event receives an explicit stable projection containing only the
+selection fields consumed by learning; routing-control fields such as answer
+scope and residual need do not implicitly widen the ledger schema. A new field
+is added to that projection only when the learning contract explicitly adopts
+its semantics. A stable event id makes restore reconciliation idempotent.
 `observation_key = (case_id, signal_ref, input fingerprint)` deduplicates the
 state/outcome effectiveness matrix across Plans, while each Plan's selection
 reason remains in the raw event stream. No event from an uncommitted round may

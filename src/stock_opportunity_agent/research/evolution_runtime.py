@@ -107,6 +107,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     default_information_plan,
     _normalized_projection_text,
     _mask_identity_values,
+    _signal_learning_events_from_record,
 )
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -114,6 +115,7 @@ from stock_opportunity_agent.signal_library import (
     SignalRegistry,
     SignalBatchResult,
     SignalCoverage,
+    SignalLearningEvent,
     SignalResult,
     SignalSpec,
     SignalValue,
@@ -2743,13 +2745,26 @@ def build_slow_bootstrap_manifest(
     signal_snapshot: FrozenSignalRegistry,
     evaluation_contract: Mapping[str, Any],
 ) -> str:
-    """Freeze identity-masked no-match needs from compatible rejected rounds."""
+    """Freeze one explicit rejected-gap or committed-Fast Slow seed."""
 
     workspace_root = Path(workspace)
     manifest_path = workspace_root / "slow_bootstrap" / "manifest.json"
     sources = tuple(Path(item) for item in source_workspaces)
     if not sources:
         raise ValidationError("slow_bootstrap requires at least one source workspace")
+    source_kinds = tuple(_slow_bootstrap_source_kind(item) for item in sources)
+    if all(kind == "committed_fast" for kind in source_kinds):
+        return _build_committed_fast_bootstrap_manifest(
+            manifest_path=manifest_path,
+            source_workspaces=sources,
+            dataset=dataset,
+            signal_snapshot=signal_snapshot,
+            evaluation_contract=evaluation_contract,
+        )
+    if any(kind != "rejected_no_match" for kind in source_kinds):
+        raise ValidationError(
+            "slow_bootstrap cannot merge rejected and committed Fast sources"
+        )
     cases = {
         case.case_id: case
         for case in (
@@ -2891,6 +2906,7 @@ def build_slow_bootstrap_manifest(
     backlog = aggregate_capability_gaps((), signal_need_items=signal_need_items)
     manifest = {
         "schema_version": "slow-bootstrap-manifest-v1",
+        "source_kind": "rejected_no_match",
         "dataset_manifest_hash": dataset.approved_manifest_hash,
         "predictor_semantics_hash": FIXED_PREDICTOR_SEMANTICS_HASH,
         "evaluation_contract": dict(evaluation_contract),
@@ -2898,6 +2914,190 @@ def build_slow_bootstrap_manifest(
         "input_signal_registry_hash": signal_snapshot.registry_hash,
         "sources": source_rows,
         "capability_backlog_seed": backlog,
+    }
+    manifest_hash = _canonical_hash(manifest)
+    _write_or_verify_json(
+        manifest_path,
+        {"manifest_hash": manifest_hash, "manifest": manifest},
+    )
+    return manifest_hash
+
+
+def _slow_bootstrap_source_kind(source_root: Path) -> str:
+    """Classify one source by its next authoritative Slow input boundary."""
+
+    state = _read_json(source_root / "state.json")
+    last_completed_round = int(state.get("last_completed_round", 0))
+    rejected_path = (
+        source_root
+        / "experiments"
+        / f"round-{last_completed_round + 1:04d}"
+        / "rejected.json"
+    )
+    if rejected_path.exists():
+        return "rejected_no_match"
+    if last_completed_round > 0:
+        return "committed_fast"
+    raise ValidationError("slow-bootstrap source has no authoritative seed boundary")
+
+
+def _build_committed_fast_bootstrap_manifest(
+    *,
+    manifest_path: Path,
+    source_workspaces: tuple[Path, ...],
+    dataset: ApprovedDevelopmentDataset,
+    signal_snapshot: FrozenSignalRegistry,
+    evaluation_contract: Mapping[str, Any],
+) -> str:
+    """Freeze derivatives from one committed Fast range whose Slow has not run."""
+
+    if len(source_workspaces) != 1:
+        raise ValidationError(
+            "committed Fast bootstrap requires exactly one source workspace"
+        )
+    source_root = source_workspaces[0]
+    contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
+    if (
+        contract.schema_version != "evolution-run-contract-v7"
+        or contract.cycle_mode != "fast_then_slow"
+        or contract.locked_test_accessed
+        or contract.dataset_manifest_hash != dataset.approved_manifest_hash
+        or contract.predictor_semantics_hash != FIXED_PREDICTOR_SEMANTICS_HASH
+        or dict(contract.limits.get("evaluation", {}))
+        != dict(evaluation_contract)
+    ):
+        raise ValidationError("committed Fast bootstrap source is incompatible")
+    source_snapshot = SignalRegistry(
+        source_root / "signals",
+        candidate_root=source_root / "signals_candidates",
+    ).freeze()
+    if (
+        source_snapshot.version != signal_snapshot.version
+        or source_snapshot.registry_hash != signal_snapshot.registry_hash
+    ):
+        raise ValidationError(
+            "committed Fast bootstrap source Signal Registry differs from target input"
+        )
+
+    state_path = source_root / "state.json"
+    cycle_state_path = source_root / "cycle_state.json"
+    state = _read_json(state_path)
+    cycle_state = _read_json(cycle_state_path)
+    active = cycle_state.get("active_cycle")
+    if not isinstance(active, Mapping):
+        raise ValidationError("committed Fast bootstrap requires an active source cycle")
+    cycle_id = int(active.get("cycle_id", 0))
+    start_round = int(active.get("start_round", -1))
+    target_rounds = int(active.get("target_plan_rounds", 0))
+    final_round = int(state.get("last_completed_round", 0))
+    if (
+        cycle_id < 1
+        or active.get("cycle_mode") != "fast_then_slow"
+        or cycle_state.get("run_contract_hash") != contract.contract_hash
+        or active.get("phase") != "fast_loop"
+        or int(active.get("input_signal_registry_version", 0))
+        != signal_snapshot.version
+        or active.get("input_signal_registry_hash")
+        != signal_snapshot.registry_hash
+        or target_rounds < 1
+        or final_round != start_round + target_rounds
+        or int(cycle_state.get("last_completed_cycle", -1)) != cycle_id - 1
+    ):
+        raise ValidationError(
+            "committed Fast bootstrap source is not at the pre-Slow boundary"
+        )
+    source_workspace = EvolutionWorkspace(source_root)
+    if (
+        source_workspace.staged_slow_validation(cycle_id) is not None
+        or source_workspace.staged_slow_result(cycle_id) is not None
+    ):
+        raise ValidationError(
+            "committed Fast bootstrap source already contains Slow output"
+        )
+    archive = source_workspace.restore_archive(
+        expected_run_contract_hash=contract.contract_hash
+    )
+    records = tuple(
+        record
+        for record in archive.records
+        if start_round < record.round_id <= final_round
+    )
+    expected_round_ids = tuple(range(start_round + 1, final_round + 1))
+    if tuple(sorted({record.round_id for record in records})) != expected_round_ids:
+        raise ValidationError("committed Fast bootstrap record range is incomplete")
+    meta_entries = tuple(
+        entry
+        for entry in source_workspace.restore_meta().entries
+        if start_round < entry.round_id <= final_round
+    )
+    if tuple(entry.round_id for entry in meta_entries) != expected_round_ids:
+        raise ValidationError("committed Fast bootstrap meta range is incomplete")
+    learning_events = tuple(
+        event
+        for record in records
+        for event in _signal_learning_events_from_record(record)
+    )
+    if len({event.event_id for event in learning_events}) != len(learning_events):
+        raise ValidationError("committed Fast bootstrap learning events are duplicated")
+    trajectories = tuple(
+        trajectory.to_dict()
+        for record in records
+        for trajectory in record.trajectories
+    )
+    artifacts: list[dict[str, Any]] = []
+    for round_id in expected_round_ids:
+        checkpoint_path = (
+            source_root / "experiments" / f"round-{round_id:04d}" / "checkpoint.json"
+        )
+        meta_path = source_root / "meta" / f"round-{round_id:04d}.json"
+        checkpoint = _read_json(checkpoint_path)
+        artifacts.extend(
+            (
+                {
+                    "kind": "checkpoint",
+                    "round_id": round_id,
+                    "sha256": _sha256_file(checkpoint_path),
+                },
+                {
+                    "kind": "meta",
+                    "round_id": round_id,
+                    "sha256": _sha256_file(meta_path),
+                },
+            )
+        )
+        for plan_id in checkpoint["plan_ids"]:
+            plan_path = source_root / "plans" / str(plan_id) / "record.json"
+            artifacts.append(
+                {
+                    "kind": "plan_record",
+                    "round_id": round_id,
+                    "plan_id": str(plan_id),
+                    "sha256": _sha256_file(plan_path),
+                }
+            )
+    manifest = {
+        "schema_version": "slow-bootstrap-manifest-v2",
+        "source_kind": "committed_fast",
+        "dataset_manifest_hash": dataset.approved_manifest_hash,
+        "predictor_semantics_hash": FIXED_PREDICTOR_SEMANTICS_HASH,
+        "evaluation_contract": dict(evaluation_contract),
+        "input_signal_registry_version": signal_snapshot.version,
+        "input_signal_registry_hash": signal_snapshot.registry_hash,
+        "sources": [
+            {
+                "run_id": contract.run_id,
+                "contract_hash": contract.contract_hash,
+                "cycle_id": cycle_id,
+                "start_round": start_round,
+                "final_round": final_round,
+                "state_hash": _sha256_file(state_path),
+                "cycle_state_hash": _sha256_file(cycle_state_path),
+                "artifacts": artifacts,
+            }
+        ],
+        "meta_entries": [entry.to_dict() for entry in meta_entries],
+        "signal_learning_events": [event.to_dict() for event in learning_events],
+        "capability_backlog_seed": aggregate_capability_gaps(trajectories),
     }
     manifest_hash = _canonical_hash(manifest)
     _write_or_verify_json(
@@ -2925,7 +3125,8 @@ def validate_slow_bootstrap_manifest(
     if (
         envelope.get("manifest_hash") != manifest_hash
         or contract.slow_bootstrap_manifest_hash != manifest_hash
-        or manifest.get("schema_version") != "slow-bootstrap-manifest-v1"
+        or manifest.get("schema_version")
+        not in {"slow-bootstrap-manifest-v1", "slow-bootstrap-manifest-v2"}
         or manifest.get("dataset_manifest_hash") != contract.dataset_manifest_hash
         or manifest.get("predictor_semantics_hash")
         != contract.predictor_semantics_hash
@@ -2937,10 +3138,89 @@ def validate_slow_bootstrap_manifest(
         != signal_snapshot.registry_hash
         or not isinstance(backlog, Mapping)
         or backlog.get("schema_version") != "capability-gap-report-v2"
-        or not backlog.get("signal_need_items")
     ):
         raise ValidationError("slow-bootstrap manifest differs from frozen contract")
+    schema_version = str(manifest["schema_version"])
+    if schema_version == "slow-bootstrap-manifest-v1":
+        if (
+            manifest.get("source_kind") not in {None, "rejected_no_match"}
+            or not backlog.get("signal_need_items")
+        ):
+            raise ValidationError(
+                "rejected Slow-bootstrap manifest has no diagnostic seed"
+            )
+        return manifest
+
+    sources = manifest.get("sources")
+    meta_values = manifest.get("meta_entries")
+    event_values = manifest.get("signal_learning_events")
+    if (
+        manifest.get("source_kind") != "committed_fast"
+        or not isinstance(sources, list)
+        or len(sources) != 1
+        or not isinstance(sources[0], Mapping)
+        or not isinstance(meta_values, list)
+        or not meta_values
+        or not isinstance(event_values, list)
+    ):
+        raise ValidationError("committed Fast bootstrap manifest shape is invalid")
+    source = sources[0]
+    start_round = int(source.get("start_round", -1))
+    final_round = int(source.get("final_round", 0))
+    expected_round_ids = tuple(range(start_round + 1, final_round + 1))
+    try:
+        meta_entries = tuple(
+            RoundMetaEntry.from_dict(dict(value)) for value in meta_values
+        )
+        learning_events = tuple(
+            SignalLearningEvent.from_dict(dict(value)) for value in event_values
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValidationError(
+            "committed Fast bootstrap contains invalid learning derivatives"
+        ) from exc
+    known_signal_refs = {spec.ref for spec in signal_snapshot.specs}
+    artifacts = source.get("artifacts")
+    if (
+        start_round < 0
+        or final_round <= start_round
+        or tuple(entry.round_id for entry in meta_entries) != expected_round_ids
+        or any(event.round_id not in expected_round_ids for event in learning_events)
+        or len({event.event_id for event in learning_events})
+        != len(learning_events)
+        or any(event.signal_ref not in known_signal_refs for event in learning_events)
+        or not isinstance(artifacts, list)
+        or not artifacts
+        or any(
+            not isinstance(item, Mapping)
+            or not re.fullmatch(r"[0-9a-f]{64}", str(item.get("sha256", "")))
+            for item in artifacts
+        )
+    ):
+        raise ValidationError(
+            "committed Fast bootstrap derivatives differ from their source range"
+        )
     return manifest
+
+
+def apply_slow_bootstrap_derivatives(
+    manifest: Mapping[str, Any],
+    *,
+    registry: SignalRegistry,
+) -> tuple[RoundMetaEntry, ...]:
+    """Idempotently restore manifest-bound committed-Fast learning derivatives."""
+
+    if manifest.get("schema_version") != "slow-bootstrap-manifest-v2":
+        return ()
+    events = tuple(
+        SignalLearningEvent.from_dict(dict(value))
+        for value in manifest.get("signal_learning_events", ())
+    )
+    registry.record_learning_events(events)
+    return tuple(
+        RoundMetaEntry.from_dict(dict(value))
+        for value in manifest.get("meta_entries", ())
+    )
 
 
 def current_code_revision(project_root: str | Path) -> str:
@@ -12738,11 +13018,16 @@ def _run_bounded_evolution_cycle_unlocked(
         candidate_root=workspace_root / "signals_candidates",
     )
     snapshot = registry.freeze()
+    bootstrap_meta_entries: tuple[RoundMetaEntry, ...] = ()
     if contract.cycle_mode == "slow_bootstrap":
-        validate_slow_bootstrap_manifest(
+        bootstrap_manifest = validate_slow_bootstrap_manifest(
             workspace=workspace_root,
             contract=contract,
             signal_snapshot=snapshot,
+        )
+        bootstrap_meta_entries = apply_slow_bootstrap_derivatives(
+            bootstrap_manifest,
+            registry=registry,
         )
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
@@ -12878,6 +13163,12 @@ def _run_bounded_evolution_cycle_unlocked(
         expected_run_contract_hash=contract.contract_hash
     )
     meta_memory = evolution_workspace.restore_meta()
+    if bootstrap_meta_entries:
+        if evolution_workspace.last_completed_round != 0 or meta_memory.entries:
+            raise ValidationError(
+                "committed Fast bootstrap target must keep an empty Fast pointer"
+            )
+        meta_memory = PlanMetaMemory(entries=bootstrap_meta_entries)
     signal_runner = StructuredLLMSignalRunner(judge_caller)
     evaluator = RuntimePlanEvaluator(
         raw_info_store=raw_info_store,

@@ -1,6 +1,6 @@
 # Signal Learning Profile Cycle Freeze
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 
@@ -20,6 +20,13 @@ definition. Freeze it at the Fast group's starting committed-round cutoff. On
 resume, rebuilding from all currently committed events would expose earlier
 rounds from that same group only in the restarted process, making interrupted
 and uninterrupted runs semantically different.
+
+Keep the full routing decision and the learning-event selection projection
+separate. Routing-only closure fields can evolve quickly; persisting the whole
+routing object into a strict learning schema makes an otherwise valid Fast
+commit fail after its pointer advances. Derive learning through an explicit
+stable projection, retain the complete decision in the trajectory, and replay
+the projection idempotently from committed Plan records.
 
 ## Context
 
@@ -43,6 +50,10 @@ from the following Slow Update.
    completed_rounds_in_cycle` during both fresh and resumed Fast execution.
 6. Let Slow Update read the latest ledger after Fast completion, while its
    holdout remains issuer-disjoint and hidden from the update role.
+7. If code repair makes the frozen source read-only after its Fast pointer,
+   hand Slow an immutable manifest of exactly one pre-Slow committed Fast range;
+   bind every contributing hash and reconstruct only derived learning/meta
+   state without copying the source pointer.
 
 ## Limits
 

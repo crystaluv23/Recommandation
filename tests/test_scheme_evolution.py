@@ -3153,8 +3153,14 @@ class CountingProposer:
 
 
 class SyntheticPlanEvaluator:
-    def __init__(self, *, include_signal: bool = True) -> None:
+    def __init__(
+        self,
+        *,
+        include_signal: bool = True,
+        signal_selection: SignalSelectionDecision | None = None,
+    ) -> None:
         self.include_signal = include_signal
+        self.signal_selection = signal_selection
         self.seen_company_ids: list[str] = []
         self.seen_registry_refs: list[tuple[str, ...]] = []
 
@@ -3173,6 +3179,7 @@ class SyntheticPlanEvaluator:
                     predicted,
                     case.ground_truth.magnitude if predicted else None,
                     case_id=case.case_id,
+                    signal_selection=self.signal_selection,
                     signal_result=(
                         SignalResult(
                             signal_id="revenue_growth_yoy",
@@ -3841,6 +3848,111 @@ class PlanEvolutionEngineTests(TestCase):
             reconciled = registry.load_stats("revenue_growth_yoy")
             self.assertEqual(reconciled.retrieved, 48)
             self.assertEqual(reconciled.executed, 48)
+
+    def test_post_pointer_learning_failure_reconciles_scoped_selection(
+        self,
+    ) -> None:
+        class FailFirstLearningRegistry(SignalRegistry):
+            def __init__(self, root):
+                super().__init__(root)
+                self.fail_learning = True
+
+            def record_learning_events(self, events):
+                materialized = tuple(events)
+                if self.fail_learning and materialized:
+                    self.fail_learning = False
+                    raise RuntimeError("simulated post-pointer learning failure")
+                return super().record_learning_events(materialized)
+
+        scoped_selection = SignalSelectionDecision(
+            signal_ref="revenue_growth_yoy:v1",
+            reason_code="answer_need",
+            selection_reason="Measure the answered revenue-growth facet.",
+            applicability_hypothesis="Comparable annual periods are available.",
+            expected_role="primary",
+            context_tags=("comparable_financials",),
+            target_need_indices=(0,),
+            answer_scope="partial",
+            residual_need="Determine whether the growth is durable.",
+        )
+        self.assertEqual(
+            set(scoped_selection.to_dict())
+            - set(scoped_selection.to_learning_dict()),
+            {"answer_scope", "residual_need"},
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry_root = root / "signals"
+            registry = FailFirstLearningRegistry(registry_root)
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            evaluator = SyntheticPlanEvaluator(signal_selection=scoped_selection)
+            engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=evaluator,
+                proposer=CountingProposer(),
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeError, "simulated post-pointer learning failure"
+            ):
+                engine.run_round(
+                    round_id=1,
+                    validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
+                    signal_snapshot=registry.freeze(),
+                )
+
+            self.assertEqual(workspace.last_completed_round, 1)
+            self.assertEqual(
+                registry.load_learning_events("revenue_growth_yoy:v1"), ()
+            )
+            restored_archive = workspace.restore_archive()
+            raw_selection = (
+                restored_archive.records[0]
+                .trajectories[0]
+                .signal_rounds[0]
+                .selections[0]
+                .to_dict()
+            )
+            self.assertEqual(raw_selection["answer_scope"], "partial")
+            self.assertEqual(
+                raw_selection["residual_need"],
+                "Determine whether the growth is durable.",
+            )
+
+            resumed_registry = SignalRegistry(registry_root)
+            for _ in range(2):
+                PlanEvolutionEngine(
+                    archive=restored_archive,
+                    meta_memory=workspace.restore_meta(),
+                    signal_registry=resumed_registry,
+                    evaluator=evaluator,
+                    proposer=CountingProposer(),
+                    critic=SimpleCritic(),
+                    round_reflector=SimpleRoundReflector(),
+                    workspace=workspace,
+                    seed_plans=(default_information_plan(),),
+                    candidates_per_round=1,
+                )
+
+            events = resumed_registry.load_learning_events(
+                "revenue_growth_yoy:v1"
+            )
+            self.assertEqual(len(events), 24)
+            self.assertNotIn("answer_scope", events[0].selection)
+            self.assertNotIn("residual_need", events[0].selection)
+            stats = resumed_registry.load_stats("revenue_growth_yoy")
+            self.assertEqual(stats.retrieved, 24)
+            self.assertEqual(stats.executed, 24)
 
     def test_fast_loop_reuses_staged_candidate_after_interrupted_evaluation(
         self,
@@ -6626,6 +6738,7 @@ def make_trajectory(
     predicted_magnitude: MagnitudeClass | None,
     *,
     signal_result: SignalResult | None = None,
+    signal_selection: SignalSelectionDecision | None = None,
     case_id: str | None = None,
     candidate_judgment: CandidateJudgment | None = None,
 ) -> ExecutionTrajectory:
@@ -6653,7 +6766,8 @@ def make_trajectory(
             SignalRound(
                 information_needs=("fixture need",),
                 selections=(
-                    SignalSelectionDecision(
+                    signal_selection
+                    or SignalSelectionDecision(
                         signal_ref=signal_result.ref,
                         reason_code="answer_need",
                         selection_reason="Exercise the fixture Signal.",

@@ -69,13 +69,25 @@ H3 and Update.
 V7 additionally freezes `cycle_mode`. `fast_then_slow` requires a positive
 `plan_rounds_per_signal_cycle` and no bootstrap manifest. `slow_bootstrap` is
 single-cycle and requires exactly zero Fast rounds plus the hash of
-`slow_bootstrap/manifest.json`. That immutable manifest contains only
-identity-masked, label-hidden `no_signal_match` needs aggregated from compatible
-next-round rejection artifacts, and binds their source contract/rejection
-hashes and the exact input Signal Registry. Runtime verifies the manifest before
-creating a cycle and rejects an empty diagnostic seed. The mode changes only
-the Slow trigger; H1/H2/H3, Update, validation, promotion, Locked Test, attempt,
-cost, and source-data policies are unchanged.
+`slow_bootstrap/manifest.json`. Its immutable manifest has one of two explicit,
+mutually exclusive source kinds:
+
+- `rejected_no_match` contains only identity-masked, label-hidden
+  `no_signal_match` needs aggregated from compatible next-round rejection
+  artifacts and binds their source contract/rejection hashes; or
+- `committed_fast` accepts exactly one compatible active cycle whose complete
+  Fast range is authoritative in `state.json`, whose Slow validation/result and
+  cycle pointer are still absent, and freezes the committed round meta,
+  stable-projection Signal learning events, capability backlog, and every
+  contributing checkpoint/Plan/meta hash.
+
+Both kinds bind the exact input Signal Registry. Runtime verifies the manifest
+before creating a cycle. For `committed_fast`, it idempotently reconstructs only
+the frozen post-pointer learning derivatives and in-memory meta view; it never
+copies or invents a Fast pointer in the target workspace. Independent committed
+cycles cannot be merged into one bootstrap. The mode changes only the Slow
+trigger; H1/H2/H3, Update, validation, promotion, Locked Test, attempt, cost,
+and source-data policies are unchanged.
 Freeze additionally rejects an empty stable Signal Registry. The clean-worktree
 check is scoped to runtime-bearing tracked paths (`src/`, `scripts/`, and
 `configs/`) plus untracked files under those paths; unrelated progress or memory
@@ -1440,7 +1452,12 @@ or marked unused.
 One cycle freezes its mode, start round, configured Fast-round count, and input Signal
 Registry version/hash in `cycle_state.json`. Resume calculates remaining Fast
 work from the authoritative `state.json:last_completed_round`, not from files or
-printed output. Slow validation is written as an exact immutable artifact before
+printed output. Signal statistics and learning events are post-pointer derivatives:
+after a committed Plan round, failure while writing either stops before Slow, and
+resume reconstructs both idempotently from the committed Plan records without
+recomputing Fast predictions or charging new model calls. The raw trajectory keeps
+the complete routing decision while the learning ledger receives only its explicit
+stable learning projection. Slow validation is written as an exact immutable artifact before
 Registry mutation. The exact transition is idempotently completed, the final
 Slow result records input/output version/hash, and only then may the cycle
 pointer advance and make that output the next cycle's input. The continuous CLI
@@ -1450,7 +1467,10 @@ ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
 recoverable in-progress Signal transition, never an untracked partial rollover.
 For `slow_bootstrap`, the frozen Fast target is zero, the round pointer remains
 unchanged throughout, and the same Slow-validation/result order governs cycle
-completion.
+completion. A `committed_fast` bootstrap must reconstruct and verify its
+manifest-bound learning/meta derivatives before H1, so actual H1/H2/H3 and
+Update contexts consume the source Fast evidence even though the target has no
+Fast pointer.
 
 The stable operator launcher treats Python exit status `75` as the only
 automatically recoverable process outcome. For an invocation-specific window
