@@ -248,6 +248,15 @@ consume the correction and reveal an already-visible applicability analogy after
 Malformed items that
 cannot be safely interpreted are named and skipped during this diagnostic pass; no
 invalid item is accepted or locally repaired.
+Every answer-scope/residual/reason obligation also names the complete invalid selection
+as a conservative alternative scope: the provider may convert that row to contextual
+with null scope/residual or remove it instead of guessing an answered facet. If both
+corrections remain invalid, runtime may quarantine only complete selection rows named by
+every remaining obligation. Valid siblings remain byte-for-byte and in order, and the
+ordinary routing parser reruns from the top. Mandatory nonempty matching, applicability,
+unique refs, and caps therefore remain fail closed; runtime neither selects a Signal nor
+rewrites a reason. This generic portfolio fallback adds no call and prevents one
+provider-stubborn invalid row from discarding valid sibling routing work.
 One shared soft-Signal call uses a batch-specific output contract. Each outer
 row returns the exact supplied versioned `signal_ref`, while the nested result
 returns the matching unversioned `signal_spec.signal_id` and integer version.

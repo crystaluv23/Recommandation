@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 17
+visit_times: 18
 
 ## Trigger
 
@@ -1626,3 +1626,13 @@ Strip that scaffolding before ordered/reordered topic comparison, while preservi
 substantive shared product, project, operational, customer, and financial-object terms.
 Replay the first saved correction as a whole: it may already be valid once the false
 diagnostic is removed, making another provider call unnecessary.
+
+## Portfolio-row recovery addendum (2026-09-04)
+
+When one invalid optional row survives bounded correction, audit whether it destroys
+valid siblings. For an optional structured portfolio such as Signal selections, a safe
+provider-independent fallback removes only complete rows named by every remaining
+obligation, preserves sibling bytes/order, and reruns the entire parser. Never rewrite
+the row or bypass a top-level nonempty/applicability invariant; if reparsing fails, keep
+the candidate rejected. This turns correction refusal into local evidence loss rather
+than whole-case loss without adding another call.

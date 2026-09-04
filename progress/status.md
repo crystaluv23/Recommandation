@@ -1,5 +1,29 @@
 # Status
 
+Current V106 repair (2026-09-04): post-`a423775` contract
+`146d83f...3a8d` made 56 completed calls for `$0.07987476` and five data
+requests. Five Fast cases finalized. The V105 Bumble case passed H_init after one
+correction, confirming the numeric grounding repair; its routing then exhausted both
+corrections on one partial guidance row. Authoritative pointers remain
+`round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The exact target asked for guidance about user growth, revenue, or cost savings. The
+first correction correctly left only cost savings in `residual_need` and downgraded an
+unrelated financing row to contextual. It retained a broad guidance selection reason;
+the final correction changed that reason but again claimed cost savings, which the same
+row declared unresolved. The validator was correct, but one stubborn invalid row erased
+two valid contextual siblings and the whole case.
+
+Routing correction feedback now explicitly permits whole-row contextual downgrade or
+removal when an exact answered facet cannot be stated. After both corrections, a generic
+call-free indexed-portfolio fallback may remove only rows named by every remaining
+obligation, preserve siblings byte-for-byte/in order, and rerun the complete routing
+parser. Mandatory nonempty matching and every applicability/cap validator remain
+enforced. The exact V106 final response replays to the two valid contextual Signals with
+an audited `selections[0]` removal; a sole mandatory invalid row still rejects. All 539
+tests and repository lint pass. Successor ceilings are 141 attempts, `$17.04414696`,
+and 632 data requests.
+
 Current V105 repair (2026-09-04): post-`4b07838` contract
 `541cbe5...7151` made 48 completed calls for `$0.07675780` and three data
 requests. Five Fast cases finalized; case six reached H_init plus both bounded

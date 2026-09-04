@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 9
+visit_times: 10
 
 ## Trigger
 
@@ -84,6 +84,10 @@ spaced JSON, so the artifact and provider message were not byte-identical.
     decimal. After bounded corrections, a deterministic fallback is safe only when it
     copies an already-visible short source literal or removes mechanically invalid whole
     items, preserves all unrelated state, and reruns the complete validator.
+16. Optional structured portfolios need row-level failure containment. If every final
+    obligation names an indexed row or descendant, removing only those complete rows and
+    reparsing is safer than either accepting them or discarding valid siblings. Preserve
+    mandatory-nonempty and all other collection invariants through that reparse.
 
 ## Limits
 

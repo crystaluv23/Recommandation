@@ -5870,6 +5870,69 @@ def _research_state_evidence_grounding_fallback(
     }
 
 
+def _indexed_row_quarantine_fallback(
+    collection_key: str,
+) -> Callable[
+    [Mapping[str, Any], ValidationError],
+    tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None,
+]:
+    """Build a fallback that removes only invalid rows from one optional portfolio."""
+
+    path_pattern = re.compile(
+        rf"^{re.escape(collection_key)}\[(\d+)\](?:\.|$)"
+    )
+
+    def quarantine(
+        failed_output: Mapping[str, Any],
+        failure: ValidationError,
+    ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+        rows = failed_output.get(collection_key)
+        if not isinstance(rows, list):
+            return None
+        obligations = _validation_obligations(failure, failed_output).get(
+            "obligations", ()
+        )
+        if not isinstance(obligations, list) or not obligations:
+            return None
+        invalid_indices: set[int] = set()
+        for obligation in obligations:
+            if not isinstance(obligation, Mapping):
+                return None
+            paths = obligation.get("must_change_paths")
+            if not isinstance(paths, list) or not paths:
+                return None
+            obligation_indices: set[int] = set()
+            for path in paths:
+                if not isinstance(path, str):
+                    return None
+                match = path_pattern.match(path)
+                if match is None:
+                    return None
+                index = int(match.group(1))
+                if index >= len(rows):
+                    return None
+                obligation_indices.add(index)
+            if not obligation_indices:
+                return None
+            invalid_indices.update(obligation_indices)
+        if not invalid_indices:
+            return None
+        quarantined = deepcopy(dict(failed_output))
+        quarantined_rows = quarantined.get(collection_key)
+        if not isinstance(quarantined_rows, list):
+            return None
+        for index in sorted(invalid_indices, reverse=True):
+            del quarantined_rows[index]
+        return quarantined, {
+            "source_substitution_paths": (),
+            "removed_paths": tuple(
+                f"{collection_key}[{index}]" for index in sorted(invalid_indices)
+            ),
+        }
+
+    return quarantine
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -9239,6 +9302,12 @@ class LLMSignalRetrievalAgent:
                                             "contextual reason or remove the selection"
                                         )
                                     )
+                                    + (
+                                        f". If exact scope remains uncertain, change "
+                                        f"{path} to a contextual reason with "
+                                        "answer_scope=null and residual_need=null, "
+                                        "or remove that complete selection"
+                                    )
                                 )
                             if cosmetic_residual:
                                 coordinated_residual_terms = ()
@@ -9261,7 +9330,11 @@ class LLMSignalRetrievalAgent:
                                     "Remove every listed residual-only term from "
                                     "selection_reason, name only the answered "
                                     "counterpart, and leave unresolved facets only "
-                                    "in residual_need"
+                                    "in residual_need. If that distinction cannot be "
+                                    f"stated exactly, change {path} to a contextual "
+                                    "reason with answer_scope=null and "
+                                    "residual_need=null, or remove that complete "
+                                    "selection"
                                 )
                             else:
                                 residual_scope_values = (
@@ -9296,7 +9369,11 @@ class LLMSignalRetrievalAgent:
                                     "Remove every listed residual-only term from "
                                     "selection_reason and name only the answered "
                                     "facet, leaving unresolved facets only in "
-                                    "residual_need"
+                                    "residual_need. If that distinction cannot be "
+                                    f"stated exactly, change {path} to a contextual "
+                                    "reason with answer_scope=null and "
+                                    "residual_need=null, or remove that complete "
+                                    "selection"
                                 )
                 elif (
                     item["answer_scope"] is not None
@@ -9550,6 +9627,9 @@ class LLMSignalRetrievalAgent:
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
+            final_validation_fallback=_indexed_row_quarantine_fallback(
+                "selections"
+            ),
         )
         return AgentStep(selected, usage)
 

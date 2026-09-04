@@ -3960,7 +3960,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             overlap_obligation["must_change_paths"],
-            ["selections[1].selection_reason"],
+            ["selections[1].selection_reason", "selections[1]"],
         )
         self.assertEqual(
             overlap_obligation["remove_terms_from_selection_reason"],
@@ -4150,6 +4150,7 @@ class ConcreteRoleAdapterTests(TestCase):
             [
                 "selections[0].context_tags",
                 "selections[0].residual_need",
+                "selections[0]",
                 "selections[0].selection_reason",
             ],
         )
@@ -4196,7 +4197,11 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             cosmetic_obligation["must_change_paths"],
-            ["selections[0].residual_need", "selections[0].answer_scope"],
+            [
+                "selections[0].residual_need",
+                "selections[0].answer_scope",
+                "selections[0]",
+            ],
         )
         self.assertNotIn("residual_facet_candidates", cosmetic_obligation)
         self.assertEqual(selection.value[0].answer_scope, "full")
@@ -4281,6 +4286,7 @@ class ConcreteRoleAdapterTests(TestCase):
             scope_obligation["remove_terms_from_selection_reason"],
             ["2026"],
         )
+        self.assertIn("selections[0]", scope_obligation["must_change_paths"])
         self.assertTrue(
             all(item["must_change_paths"] for item in feedback["obligations"])
         )
@@ -4288,6 +4294,119 @@ class ConcreteRoleAdapterTests(TestCase):
             selection.value[0].selection_reason,
             corrected["selection_reason"],
         )
+
+    def test_v106_routing_quarantines_only_invalid_portfolio_row_after_retries(
+        self,
+    ) -> None:
+        information_needs = (
+            "What specific management guidance or forward-looking statements were "
+            "disclosed in the Q2 2025 earnings call or 10-Q regarding expected user "
+            "growth, revenue, or cost savings?",
+            "What restructuring actions were disclosed?",
+            "What legal risks were disclosed?",
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What specific management guidance or forward-looking statements were "
+            "disclosed in the Q2 2025 earnings call or 10-Q regarding cost savings?"
+        )
+        guidance["selection_reason"] = (
+            "Directly covers Q2 2025 earnings call disclosures on user growth, "
+            "revenue, or cost savings."
+        )
+        financing = signal_selection("financing_listing_action:v1")["selections"][0]
+        financing.update(
+            {
+                "reason_code": "combine_evidence",
+                "selection_reason": "Provides restructuring context.",
+                "expected_role": "coverage",
+                "target_need_indices": [1],
+                "answer_scope": None,
+                "residual_need": None,
+            }
+        )
+        negative = signal_selection("negative_word_count:v1")["selections"][0]
+        negative.update(
+            {
+                "reason_code": "combine_evidence",
+                "selection_reason": "Provides legal-risk context.",
+                "expected_role": "coverage",
+                "target_need_indices": [2],
+                "answer_scope": None,
+                "residual_need": None,
+                "context_tags": ["news_rich"],
+            }
+        )
+        invalid = {"selections": [guidance, financing, negative]}
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                information_needs,
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=information_needs
+                ),
+            )
+
+        self.assertEqual(selection.usage.llm_calls, 3)
+        self.assertEqual(
+            tuple(item.signal_ref for item in selection.value),
+            ("financing_listing_action:v1", "negative_word_count:v1"),
+        )
+        self.assertEqual(
+            next(
+                item
+                for item in events
+                if item["event_type"] == "structured_validation_fallback_applied"
+            )["removed_paths"],
+            ["selections[0]"],
+        )
+
+    def test_v106_routing_quarantine_cannot_bypass_mandatory_nonempty_match(
+        self,
+    ) -> None:
+        target_need = (
+            "What guidance updates were disclosed in the Q2 earnings call regarding "
+            "revenue or cost savings?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = (
+            "What was disclosed in the Q2 earnings call regarding cost savings?"
+        )
+        guidance["selection_reason"] = (
+            "Directly covers guidance updates in the Q2 earnings call regarding cost "
+            "savings."
+        )
+        invalid = {"selections": [guidance]}
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            with self.assertRaises(CandidateExecutionRejected):
+                LLMSignalRetrievalAgent(caller).select(
+                    (target_need,),
+                    registry.freeze(),
+                    {},
+                )
+
+        self.assertEqual(len(caller.calls), 3)
 
     def test_v77_routing_aggregates_semantics_behind_missing_tags(self) -> None:
         information_needs = (

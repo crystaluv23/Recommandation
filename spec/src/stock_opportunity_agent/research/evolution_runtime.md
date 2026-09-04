@@ -1323,6 +1323,19 @@ non-answer reason is retained as association metadata and causes no correction; 
 `answer_need` target evidence can authorize a need transition. Items that cannot
 be safely parsed remain rejected and are omitted only from further diagnostics, never
 from validation itself; runtime does not repair or execute them.
+When a row-level answer-scope or residual/reason contradiction is reported, the same
+obligation explicitly permits changing that whole selection to a contextual reason
+with null answer scope/residual, or removing it. This exposes a conservative correction
+without asking the provider to invent an answered-facet paraphrase. After the frozen
+correction budget is exhausted, routing has a call-free portfolio-row quarantine: it is
+eligible only when every remaining obligation names one or more
+`selections[index]` rows or descendants. Runtime removes the complete implicated rows,
+preserves all other rows byte-for-byte and in order, then reruns the unchanged parser,
+including unique-ref, capacity, direct-answer, applicability, and mandatory-nonempty
+checks. If removal would violate a mandatory match or expose any other defect, the
+candidate still fails. A successful fallback emits
+`structured_validation_fallback_applied` with the exact removed paths. It never edits a
+selection, chooses a replacement Signal, or executes a row that failed validation.
 When an invalid empty selection contradicts a version-owned exact need phrase,
 feedback names top-level `selections` plus each matching Signal ref, target need index,
 and matched phrase. The correction therefore need not guess which of several needs
