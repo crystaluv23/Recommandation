@@ -787,12 +787,15 @@ answered facet, or remove the selection. These fields exist only in failed-call
 feedback; runtime does not write the replacement and does not enlarge every normal
 routing prompt.
 An unchanged or near-complete residual is invalid input to that overlap inference.
-Near-complete includes retaining a version-owned direct-answer phrase while removing
-at most one normalized content token; an explicit coordinated-period split is exempt
-because its one removed temporal value is a real facet. When no literal residual
-clause can be separated, correction names both the scope and residual paths and must
-choose full only if the card covers the complete target, otherwise use a contextual
-reason or remove the selection.
+A high token-overlap residual is nevertheless a genuine partial answer when it removes
+at least one complete version-owned direct-answer phrase present in the target and
+retains none of those phrases; a one-word measured facet is still a real facet. It is
+near-complete when no such phrase was removed, or when it retains a version-owned
+direct-answer phrase while removing at most one normalized content token. An explicit
+coordinated-period split is also exempt because its one removed temporal value is a
+real facet. When no literal residual clause can be separated, correction names both
+the scope and residual paths and must choose full only if the card covers the complete
+target, otherwise use a contextual reason or remove the selection.
 For such a cosmetic residual, runtime first looks for an unambiguous top-level target
 split: exactly one coordinated clause contains a version-owned direct-answer phrase
 and at least one other clause remains. Correction receives those other literal clauses
@@ -804,6 +807,10 @@ diagnosis until the model supplies a genuine residual. Possessive `s` is ignored
 punctuation residue. Structural exact-key errors likewise project missing and
 unexpected keys to their leaf paths, keeping multiple correction obligations exact
 and independent instead of asking the model to replace an otherwise valid object.
+Residual/reason overlap ignores request scaffolding such as `directly covers`,
+`reported/disclosed`, `figures`, and `fiscal`, just as it already ignores function
+words. Shared issuer/date/source framing is not an answered facet; only a substantive
+shared topic can make the selection reason contradict the residual.
 When an exact version-owned need phrase rejects an empty routing result, the same
 unambiguous split is attached to that failed call's `required_matches` target row as
 `answer_scope=partial` plus `residual_facet_candidates`. This uses no extra model call

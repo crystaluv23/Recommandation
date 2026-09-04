@@ -7603,10 +7603,23 @@ _NEED_RESIDUAL_GENERIC_TOKENS = frozenset(
         "being",
         "by",
         "company",
+        "cover",
+        "covered",
+        "covering",
+        "covers",
         "current",
+        "direct",
+        "directly",
         "did",
+        "disclose",
+        "disclosed",
+        "discloses",
+        "disclosure",
         "do",
         "does",
+        "figure",
+        "figures",
+        "fiscal",
         "for",
         "from",
         "had",
@@ -7620,6 +7633,12 @@ _NEED_RESIDUAL_GENERIC_TOKENS = frozenset(
         "of",
         "on",
         "or",
+        "provide",
+        "provided",
+        "provides",
+        "report",
+        "reported",
+        "reporting",
         "remain",
         "remaining",
         "s",
@@ -7789,24 +7808,30 @@ def _shared_distinctive_phrase(
 
     left_words = words(left)
     right_words = words(right)
-    if len(left_words) < minimum_words or len(right_words) < minimum_words:
-        return None
+    left_topic_words = tuple(
+        token
+        for token in left_words
+        if not token.isdigit() and not _TEMPORAL_TOPIC_TOKEN.fullmatch(token)
+    )
+    right_topic_words = tuple(
+        token
+        for token in right_words
+        if not token.isdigit() and not _TEMPORAL_TOPIC_TOKEN.fullmatch(token)
+    )
     right_ngrams = {
-        right_words[start : start + size]
-        for size in range(minimum_words, len(right_words) + 1)
-        for start in range(len(right_words) - size + 1)
+        right_topic_words[start : start + size]
+        for size in range(minimum_words, len(right_topic_words) + 1)
+        for start in range(len(right_topic_words) - size + 1)
     }
-    for size in range(len(left_words), minimum_words - 1, -1):
-        for start in range(len(left_words) - size + 1):
-            phrase = left_words[start : start + size]
+    for size in range(len(left_topic_words), minimum_words - 1, -1):
+        for start in range(len(left_topic_words) - size + 1):
+            phrase = left_topic_words[start : start + size]
             if phrase in right_ngrams:
                 return " ".join(phrase)
-    right_word_set = set(right_words)
+    right_word_set = set(right_topic_words)
     reordered_overlap: list[str] = []
-    for token in left_words:
+    for token in left_topic_words:
         if token in reordered_overlap or token not in right_word_set:
-            continue
-        if _TEMPORAL_TOPIC_TOKEN.fullmatch(token):
             continue
         reordered_overlap.append(token)
     if len(reordered_overlap) >= minimum_words:
@@ -7814,7 +7839,8 @@ def _shared_distinctive_phrase(
     temporal_overlap = [
         token
         for token in left_words
-        if token in right_word_set and _TEMPORAL_TOPIC_TOKEN.fullmatch(token)
+        if token in right_words
+        and (token.isdigit() or _TEMPORAL_TOPIC_TOKEN.fullmatch(token))
     ]
     if len(reordered_overlap) >= 2 and temporal_overlap:
         return " ".join(dict.fromkeys((*reordered_overlap, *temporal_overlap)))
@@ -8855,14 +8881,37 @@ class LLMSignalRetrievalAgent:
                                 ).strip()
                                 + " "
                             )
-                            residual_retains_direct_phrase = any(
+                            normalized_target_need = (
+                                " "
+                                + re.sub(
+                                    r"[^a-z0-9]+",
+                                    " ",
+                                    target_need.casefold(),
+                                ).strip()
+                                + " "
+                            )
+                            normalized_answer_need_phrases = tuple(
                                 " "
                                 + re.sub(
                                     r"[^a-z0-9]+", " ", phrase.casefold()
                                 ).strip()
                                 + " "
-                                in normalized_residual_need
                                 for phrase in answer_need_phrases
+                                if re.sub(
+                                    r"[^a-z0-9]+", " ", phrase.casefold()
+                                ).strip()
+                            )
+                            residual_retains_direct_phrase = any(
+                                phrase in normalized_residual_need
+                                for phrase in normalized_answer_need_phrases
+                            )
+                            residual_removes_complete_direct_facet = (
+                                not residual_retains_direct_phrase
+                                and any(
+                                    phrase in normalized_target_need
+                                    and phrase not in normalized_residual_need
+                                    for phrase in normalized_answer_need_phrases
+                                )
                             )
                             removed_content = target_content - residual_content
                             cosmetic_residual = (
@@ -8871,6 +8920,7 @@ class LLMSignalRetrievalAgent:
                                     target_content
                                     and len(content_overlap) / len(target_content)
                                     >= 0.9
+                                    and not residual_removes_complete_direct_facet
                                 )
                                 or (
                                     residual_retains_direct_phrase

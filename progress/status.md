@@ -1,5 +1,30 @@
 # Status
 
+Current V104 repair (2026-09-04): post-`1081e00` contract
+`2ebf1856...52f6` made 41 completed calls for `$0.06882904` and three data
+requests. Six Fast cases finalized, including the case that stopped V102, before case
+seven exhausted routing recovery. Authoritative pointers remain `round=0/cycle=0`,
+Registry v1, and Slow unstarted.
+
+The real target asked for fiscal-2025 guidance plus Q1 revenue and active-client
+figures. The first routing response correctly removed the one-word `guidance` facet
+from its partial residual, but the generic 90% token-overlap heuristic called that
+residual cosmetic because the long issuer/date frame remained. It also treated shared
+`figures disclosed by SFIX as of 2025-05-30` wording as an answered facet. The first
+correction correctly demoted the other two inexact direct answers to contextual and
+preserved the valid guidance selection; the false diagnostic then forced an impossible
+second change, which the provider repeated.
+
+High-overlap residuals are now genuine partial answers when they remove a complete
+version-owned direct-answer phrase and retain none; this works for one- or multiword
+measured facets without company-specific rules. Residual/reason comparison separately
+excludes reporting/request scaffolding and numeric/temporal framing from substantive
+topic n-grams while retaining material product/project/operating-scope checks. The
+exact saved V104 first correction now replays successfully with no second call, all 533
+tests and repository lint pass, and normal validation still never chooses a Signal or
+writes a residual. Successor ceilings are 245 attempts, `$17.20077952`, and 640 data
+requests.
+
 Current V103 successor repair (2026-09-03): immutable contract
 `4f90c4b...6e8` froze code `8388651` with 286 attempts, `$17.26960856`, and
 643 data requests, but its external launch was rejected by the execution platform

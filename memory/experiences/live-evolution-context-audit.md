@@ -1609,3 +1609,20 @@ bounded sentence contains the exact normalized boundary touched by the rejected 
 otherwise provide no candidate and let the provider select another visible literal or
 return unavailable. Inspect the corrected result's final canonical span, not merely
 the correction response text.
+
+## Version-owned residual-scope addendum (2026-09-04)
+
+Token-overlap ratios cannot by themselves distinguish cosmetic routing progress from
+a real narrow facet removal. In V104, removing the complete one-word `guidance` facet
+left an issuer/date-heavy residual above 90% overlap, so a correct first correction was
+forced into a second call and rejected. Prefer the frozen Signal version's direct-need
+phrases: a residual that removes a complete owned phrase and retains none is a genuine
+partial answer even when the rest of a long compound question is unchanged. Continue
+to reject residuals that retain the owned phrase while deleting only decoration.
+
+Likewise, shared `reported/disclosed`, `figures`, issuer, fiscal-period, and date text
+is request framing, not proof that the selection reason claims the unresolved facet.
+Strip that scaffolding before ordered/reordered topic comparison, while preserving
+substantive shared product, project, operational, customer, and financial-object terms.
+Replay the first saved correction as a whole: it may already be valid once the false
+diagnostic is removed, making another provider call unnecessary.

@@ -4202,6 +4202,39 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(selection.value[0].answer_scope, "full")
         self.assertIsNone(selection.value[0].residual_need)
 
+    def test_v104_partial_residual_may_remove_one_complete_direct_facet(self) -> None:
+        target_need = (
+            "What specific fiscal 2025 guidance and Q1 fiscal 2025 revenue and "
+            "active client figures were disclosed by SFIX as of 2025-05-30?"
+        )
+        residual = (
+            "What specific Q1 fiscal 2025 revenue and active client figures were "
+            "disclosed by SFIX as of 2025-05-30?"
+        )
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance["target_need_indices"] = [0]
+        guidance["answer_scope"] = "partial"
+        guidance["residual_need"] = residual
+        guidance["selection_reason"] = (
+            "Directly covers fiscal 2025 guidance disclosed by SFIX as of "
+            "2025-05-30."
+        )
+        guidance["applicability_hypothesis"] = (
+            "The accepted research context names a fiscal 2025 guidance update."
+        )
+        caller = ScriptedRoleCaller([{"selections": [guidance]}])
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (target_need,), registry.freeze(), {}
+            )
+
+        self.assertEqual(selection.usage.llm_calls, 1)
+        self.assertEqual(selection.value[0].answer_scope, "partial")
+        self.assertEqual(selection.value[0].residual_need, residual)
+
     def test_v91_routing_allows_shared_topic_but_not_residual_year(self) -> None:
         target_need = (
             "What are the company's production and cost guidance for 2025 and "
