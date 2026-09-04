@@ -4242,6 +4242,67 @@ _MARKET_DATA_ABSENCE = re.compile(
     r"not\s+(?:available|provided|supplied)))",
     re.IGNORECASE,
 )
+_PRICE_OUTCOME_TERM = (
+    r"(?:2\s*[x×]|doubl(?:e|es|ed|ing)|repric(?:e|es|ed|ing)|"
+    r"(?:share[- ]price|stock[- ]price|price)\s+surge)"
+)
+_PRICE_OUTCOME_AFFIRMATIVE_MODAL = re.compile(
+    rf"\b(?:could|may|might|can)\b(?P<link>[^.;:!?]{{0,56}})"
+    rf"\b{_PRICE_OUTCOME_TERM}\b",
+    re.IGNORECASE,
+)
+_PRICE_OUTCOME_AFFIRMATIVE_PATH = re.compile(
+    rf"\b(?:credible|plausible|realistic|evidence-backed)\b"
+    rf"(?P<link>[^.;:!?]{{0,56}})\b{_PRICE_OUTCOME_TERM}\b",
+    re.IGNORECASE,
+)
+_PRICE_OUTCOME_NEGATION = re.compile(
+    rf"(?:"
+    rf"\b(?:not|never)\b"
+    rf"(?!\s+(?:only|merely|necessarily|yet|guaranteed?|certain|proof|"
+    rf"impossible)\b)[^.;:!?]{{0,72}}\b{_PRICE_OUTCOME_TERM}\b|"
+    rf"\b(?:no|without)\s+"
+    rf"(?!(?:guarantee|certainty|proof|reason)\b)"
+    rf"[^.;:!?]{{0,72}}\b{_PRICE_OUTCOME_TERM}\b|"
+    rf"\b(?:lacks?|lacking|insufficient|unsupported)\b"
+    rf"[^.;:!?]{{0,72}}\b{_PRICE_OUTCOME_TERM}\b|"
+    rf"\b(?:fails?|failed)\s+to\b[^.;:!?]{{0,72}}"
+    rf"\b{_PRICE_OUTCOME_TERM}\b|"
+    rf"\b{_PRICE_OUTCOME_TERM}\b[^.;:!?]{{0,56}}"
+    rf"\b(?:unlikely|unsupported|implausible|"
+    rf"not\s+(?:supported|credible|realistic|possible))\b"
+    rf")",
+    re.IGNORECASE,
+)
+_PRICE_OUTCOME_LINK_NEGATION = re.compile(
+    r"\b(?:not|never|no|without|lack(?:s|ing)?)\b",
+    re.IGNORECASE,
+)
+_OPERATING_METRIC_DOUBLING = re.compile(
+    r"(?:"
+    r"\b(?:revenue|earnings|ebitda|sales|users?|customers?|production|"
+    r"shipments?|capacity|margin|cash flow)\b[^.;:!?]{0,32}"
+    r"\b(?:2\s*[x×]|doubl(?:e|es|ed|ing))\b|"
+    r"\b(?:2\s*[x×]|doubl(?:e|es|ed|ing))\b[^.;:!?]{0,20}"
+    r"\b(?:revenue|earnings|ebitda|sales|users?|customers?|production|"
+    r"shipments?|capacity|margin|cash flow)\b"
+    r")",
+    re.IGNORECASE,
+)
+
+
+def _explicitly_rejects_price_outcome(text: str) -> bool:
+    """Return true only for an unambiguous rejection of the target outcome."""
+
+    candidate = _OPERATING_METRIC_DOUBLING.sub("", text)
+    for pattern in (
+        _PRICE_OUTCOME_AFFIRMATIVE_MODAL,
+        _PRICE_OUTCOME_AFFIRMATIVE_PATH,
+    ):
+        for match in pattern.finditer(candidate):
+            if not _PRICE_OUTCOME_LINK_NEGATION.search(match.group("link")):
+                return False
+    return _PRICE_OUTCOME_NEGATION.search(candidate) is not None
 
 
 def _market_data_absence_paths(
@@ -4267,6 +4328,24 @@ def _blind_prediction_with_baseline(
     """Reject a historical observation mislabeled as the runtime baseline."""
 
     prediction = _blind_prediction_from_role(value)
+    if prediction.candidate_judgment.value in _POSITIVE_SURGE_JUDGMENTS and all(
+        _explicitly_rejects_price_outcome(reason)
+        for reason in prediction.key_reasons
+    ):
+        raise _RepairChoiceValidationError(
+            "BlindPrediction candidate_judgment is positive, but every "
+            "key_reasons item explicitly rejects the defined 2x, doubling, "
+            "surge, or repricing outcome. Either change candidate_judgment and "
+            "magnitude to a valid negative pair, or keep the positive pair and "
+            "change key_reasons so at least one item affirmatively connects "
+            "supplied source-backed evidence to a credible candidate for that "
+            "exact outcome",
+            alternative_paths=(
+                "candidate_judgment",
+                "magnitude",
+                "key_reasons",
+            ),
+        )
     baseline = final_context.get("prediction_baseline")
     absence_paths = _market_data_absence_paths(
         (
@@ -4959,6 +5038,19 @@ _VALIDATION_ROUTING_REMOVE_TERMS = re.compile(
 _VALIDATION_ROUTING_RESIDUAL_CANDIDATES = re.compile(
     r"\bresidual_facet_candidates=(\[[^\]]*\])"
 )
+
+
+class _RepairChoiceValidationError(ValidationError):
+    """Describe a semantic conflict with more than one valid repair path."""
+
+    def __init__(self, message: str, *, alternative_paths: Iterable[str]) -> None:
+        paths = tuple(dict.fromkeys(str(path) for path in alternative_paths if path))
+        if len(paths) < 2:
+            raise ValueError("repair-choice validation requires at least two paths")
+        super().__init__(message)
+        self.alternative_paths = paths
+
+
 _VALIDATION_EXACT_KEY_SHAPE = re.compile(
     r"\b([A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*) requires exactly .*?"
     r"missing=(\[[^\]]*\]), unexpected=(\[[^\]]*\])"
@@ -5150,6 +5242,27 @@ def _validation_obligations(
     failed_output: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Project aggregated validation prose into numbered correction obligations."""
+
+    if isinstance(failure, _RepairChoiceValidationError):
+        paths = list(failure.alternative_paths)
+        return {
+            "obligation_count": 1,
+            "obligations": [
+                {
+                    "obligation_index": 1,
+                    "must_change_paths": [],
+                    "must_change_any_of_paths": paths,
+                    "instruction": str(failure),
+                }
+            ],
+            "alternative_change_groups": [paths],
+            "completion_check": (
+                "Change at least one path in every alternative_change_groups row, "
+                "plus any other path in that same row required to keep the complete "
+                "object valid. Preserve every path outside those rows byte-for-byte, "
+                "then rerun the complete output contract."
+            ),
+        }
 
     segments = [
         segment.strip()
@@ -6004,10 +6117,13 @@ def _complete_parsed_role(
     correction_instruction = (
         " If validation_feedback is non-null, correct the immediately preceding "
         "invalid output; "
-        "return the exact contract only. Every invalid field or item identified "
-        "by validation_error, including an explicitly named linked assertion, "
-        "must change to valid content or be removed when the contract permits "
-        "omission. Preserve unrelated valid fields and items byte-for-byte. "
+        "return the exact contract only. For an ordinary obligation, every invalid "
+        "field or item identified by validation_error, including an explicitly "
+        "named linked assertion, must change to valid content or be removed when "
+        "the contract permits omission. For an obligation containing "
+        "must_change_any_of_paths, change a sufficient subset of those paths to "
+        "resolve the whole conflict and keep their dependent fields valid. Preserve "
+        "unrelated valid fields and items byte-for-byte. "
         "validation_feedback.obligation_count is the number of independent "
         "obligations. Satisfy every validation_feedback.obligations row and use "
         "must_change_paths as a checklist; fixing only the first row is invalid. "
@@ -6123,7 +6239,10 @@ def _complete_parsed_role(
                     must_change_paths = [
                         path
                         for obligation in obligations["obligations"]
-                        for path in obligation["must_change_paths"]
+                        for path in (
+                            *obligation["must_change_paths"],
+                            *obligation.get("must_change_any_of_paths", ()),
+                        )
                     ]
                 drift_paths = _scoped_correction_drift_paths(
                     failed_output,
@@ -9806,7 +9925,13 @@ class LLMBlindPredictor:
                 "or a proven, concrete path to 2x. Source-backed expectation-changing "
                 "acceleration, a material catalyst, or early market confirmation can "
                 "support possible even when the exact financial impact remains "
-                "uncertain. Return candidate_judgment=unlikely when contrary evidence "
+                "uncertain. For candidate_judgment=likely or possible, at least one "
+                "key_reasons item must affirmatively connect supplied source-backed "
+                "evidence to a credible candidate for this exact price outcome. "
+                "Counter-evidence may appear in other reasons or uncertainties, but "
+                "do not return a positive judgment when every key reason explicitly "
+                "denies support for 2x, doubling, surge, or repricing. Return "
+                "candidate_judgment=unlikely when contrary evidence "
                 "makes the outcome unlikely, or candidate_judgment="
                 "insufficient_information when the packet lacks source-backed positive "
                 "evidence; do not choose a negative judgment merely because certainty, "

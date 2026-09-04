@@ -508,6 +508,17 @@ separate predictions. The four-way schema and deterministic mapping are fixed
 framework semantics, not evolvable Plan content or case-outcome disclosure.
 The active Predictor makes no dedicated token-probability request and persists
 no `P(YES)` or decision-margin fields.
+For a positive judgment, the prompt requires at least one key reason to state the
+source-backed positive candidate thesis; explicit counter-evidence belongs in
+other reasons or uncertainties but cannot be the entire positive rationale. The
+adapter applies a conservative cross-field gate only when every key reason contains
+an explicit negation of the defined `2x`/doubling/surge/repricing outcome. It does
+not classify ambiguous prose or require a fixed positive vocabulary. The one bounded
+correction receives a generic alternative-path obligation over
+`candidate_judgment`, `magnitude`, and `key_reasons`: it may switch to a valid
+negative judgment/magnitude pair while retaining negative reasons, or retain the
+positive pair and supply an affirmatively supporting reason. The complete parser is
+rerun, and fields outside that alternative set remain byte-for-byte fixed.
 When `prediction_baseline.status=available`, runtime rejects a Predictor reason or
 uncertainty that broadly says market data is absent, unavailable, missing, or not
 provided. The same check applies to every post-hoc diagnostic array using its retained

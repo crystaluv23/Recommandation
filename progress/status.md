@@ -1,5 +1,31 @@
 # Status
 
+Current V110 semantic-consistency repair (2026-09-04): after the CLI reserve
+correction, V110 froze contract `d86c1b8...55c` against code `576d02d` with one
+Fast round before Slow, one candidate, a 64,000-token terminal reserve, 246 model
+attempts, `$16.77035548`, and 618 data requests. Its launch was rejected before
+transmission because the execution boundary requires explicit approval to send the
+anonymous historical-company prompt/context to DeepSeek and bounded identifier/date
+queries to the configured data providers. V110 therefore has no request, response,
+attempt, or cycle artifacts; authoritative pointers remain `round=0/cycle=0` and its
+full budget is unspent.
+
+The complete V109 request/response audit found one schema-valid but semantically
+contradictory Predictor result: `candidate_judgment=possible` and `magnitude=2-3x`
+were accepted even though all three key reasons explicitly said the cited target was
+not 2x, there was no evidence of doubling, and the divestiture was not a catalyst for
+2x repricing. The Predictor prompt now requires one affirmative source-backed reason
+for a positive judgment. A conservative local gate intervenes only when every reason
+explicitly rejects the defined price outcome; ambiguous language, uncertainty such as
+"not guaranteed", operating-metric doubling, and mixed positive/counter evidence are
+left to the model. Generic alternative-path correction metadata lets any structured
+role repair a sufficient subset: the Predictor may change the judgment plus dependent
+magnitude or retain them and change its rationale, while unrelated fields remain
+fixed and the full parser reruns. Exact V109-content regressions and both repair paths,
+all 550 repository tests, and repository lint pass. Because the code changed after
+V110 froze, a fresh successor must retain its unspent ceilings and freeze against the
+new revision before the explicitly approved external run.
+
 V110 preflight correction (2026-09-04): the runtime/spec default and its unit
 test required a 64,000-token terminal reserve, but the real `freeze-run` entry
 still wrote the historical 36,000 value into every new contract. The CLI now

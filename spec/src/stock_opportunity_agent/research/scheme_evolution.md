@@ -1047,6 +1047,15 @@ uncertainties. Numeric probability is not required, and the active Predictor
 does not make a separate token-probability call. Continuous
 `realized_max_multiple` remains the underlying truth.
 
+A positive `likely` or `possible` judgment requires at least one `key_reasons`
+item that affirmatively connects supplied source-backed evidence to a credible
+candidate for the defined price outcome. A portfolio whose every key reason
+explicitly concludes that the evidence does not support `2x`, doubling, surge,
+or repricing is cross-field inconsistent even when its JSON types and magnitude
+pair are valid. Runtime corrects only this high-confidence contradiction; if the
+prose is ambiguous or at least one reason supplies an affirmative thesis, local
+code does not infer sentiment or replace the model's judgment.
+
 `BlindPrediction` durably stores the provider's original `candidate_judgment`
 alongside the derived `is_surge` value. The record is invalid unless `likely`
 or `possible` is paired with true and `unlikely` or

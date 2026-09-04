@@ -1662,3 +1662,22 @@ model call. Also enforce a single OS-locked executor per workspace: otherwise an
 apparently lost terminal handle can race a still-live process, duplicate paid calls,
 and mix trajectories. The lock is control-plane safety; the round and cycle pointers
 remain the only completion authority.
+
+## Cross-field semantic consistency addendum (2026-09-04)
+
+Schema validity and pairwise enum validity do not prove that a model answer says one
+coherent thing. V109 returned a positive four-way Predictor judgment and a valid
+positive magnitude while every persisted key reason explicitly denied the defined 2x
+outcome. Inspect the actual rationale, not just its shape and final score. Prevent the
+common failure first in the prompt, then use a local gate only for high-confidence
+cross-field contradictions; ambiguous prose, uncertainty disclaimers, operating-metric
+doubling, and a rationale containing any affirmative price thesis should abstain from
+local sentiment classification.
+
+Do not force one hard-coded repair when several outcomes are valid. Correction
+metadata can name an alternative path group, authorize only that group's union, and
+require a sufficient subset plus all dependent fields to change. The provider may
+align the judgment/magnitude with the negative reasons or retain the positive pair and
+supply an affirmative reason. Preserve everything outside the group and rerun the
+complete unchanged parser, so this pattern generalizes to other structured semantic
+conflicts without making local code the research judge.

@@ -5029,11 +5029,178 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("Possible is a screening judgment", prompt)
         self.assertIn("does not require a quantified valuation bridge", prompt)
         self.assertIn("early market confirmation can support possible", prompt)
+        self.assertIn(
+            "at least one key_reasons item must affirmatively connect", prompt
+        )
+        self.assertIn(
+            "do not return a positive judgment when every key reason explicitly",
+            prompt,
+        )
         self.assertIn("Do not require a guarantee", prompt)
         self.assertIn("outcome-stratified", prompt)
         self.assertIn("do not predict false merely because 2x moves are rare", prompt)
         self.assertIn("need not be more than 50% probable", prompt)
         self.assertNotIn("is_surge", prompt)
+
+    def test_v110_blind_predictor_corrects_all_negative_positive_rationale(
+        self,
+    ) -> None:
+        invalid = {
+            "candidate_judgment": "possible",
+            "magnitude": "2-3x",
+            "confidence": {"level": "low"},
+            "key_reasons": [
+                "UBS raised price target to $27 from $20, implying ~13% upside "
+                "from baseline of $23.98, but not 2x.",
+                "Recent stock price momentum and strong production guidance "
+                "(2.0M oz) support potential upside, but no evidence of doubling.",
+                "Sale of Asante Gold shares for $53m provides liquidity, but is "
+                "not a material catalyst for 2x repricing.",
+            ],
+            "uncertainties": [
+                "No explicit forward projections or analyst targets suggest "
+                "doubling within six months."
+            ],
+            "session_id": "anonymous-session-id",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["candidate_judgment"] = "unlikely"
+        corrected["magnitude"] = None
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "mean_adjusted_close": 23.982,
+                    "trading_dates": ["2025-09-29"],
+                },
+                "final_research_state": {},
+            }
+        )
+
+        self.assertFalse(prediction.value.is_surge)
+        self.assertEqual(prediction.usage.llm_calls, 2)
+        self.assertEqual(
+            caller.stages,
+            ["blind_predictor_predict", "blind_predictor_predict_correction"],
+        )
+        feedback = caller.calls[1]["payload"]
+        self.assertIn(
+            "every key_reasons item explicitly rejects",
+            validation_error(caller.calls[1]),
+        )
+        self.assertEqual(
+            feedback["alternative_change_groups"],
+            [["candidate_judgment", "magnitude", "key_reasons"]],
+        )
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_any_of_paths"],
+            ["candidate_judgment", "magnitude", "key_reasons"],
+        )
+        self.assertEqual(
+            prediction.value.key_reasons,
+            tuple(invalid["key_reasons"]),
+        )
+        self.assertEqual(
+            prediction.value.uncertainties,
+            tuple(invalid["uncertainties"]),
+        )
+        self.assertEqual(prediction.value.confidence, ConfidenceLevel.LOW)
+        self.assertEqual(prediction.value.session_id, invalid["session_id"])
+
+    def test_v110_blind_predictor_accepts_mixed_positive_and_counterevidence(
+        self,
+    ) -> None:
+        output = {
+            "candidate_judgment": "possible",
+            "magnitude": "2-3x",
+            "confidence": {"level": "low"},
+            "key_reasons": [
+                "A signed launch contract could drive a 2x repricing if adoption "
+                "scales within the six-month horizon.",
+                "The current analyst target is not 2x the supplied baseline.",
+            ],
+            "uncertainties": ["Adoption timing remains uncertain."],
+            "session_id": "fixture-session",
+        }
+        caller = ScriptedRoleCaller([output])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {"basic_info": {"industry": "fixture"}}
+        )
+
+        self.assertTrue(prediction.value.is_surge)
+        self.assertEqual(prediction.usage.llm_calls, 1)
+        self.assertEqual(caller.stages, ["blind_predictor_predict"])
+
+    def test_v110_blind_predictor_accepts_ambiguous_non_outcome_negation(
+        self,
+    ) -> None:
+        reasons = (
+            "The catalyst is not guaranteed to double the price; timing remains "
+            "uncertain.",
+            "Revenue may not double, while the supplied evidence leaves the "
+            "share-price repricing direction uncertain.",
+            "The setup is not only a 2x case but could reach 3x if adoption scales.",
+        )
+        for reason in reasons:
+            with self.subTest(reason=reason):
+                caller = ScriptedRoleCaller(
+                    [
+                        {
+                            "candidate_judgment": "possible",
+                            "magnitude": "2-3x",
+                            "confidence": {"level": "low"},
+                            "key_reasons": [reason],
+                            "uncertainties": [],
+                            "session_id": "fixture-session",
+                        }
+                    ]
+                )
+
+                prediction = LLMBlindPredictor(caller).predict(
+                    {"basic_info": {"industry": "fixture"}}
+                )
+
+                self.assertTrue(prediction.value.is_surge)
+                self.assertEqual(prediction.usage.llm_calls, 1)
+
+    def test_v110_blind_predictor_can_repair_only_positive_rationale(
+        self,
+    ) -> None:
+        invalid = {
+            "candidate_judgment": "possible",
+            "magnitude": "2-3x",
+            "confidence": {"level": "medium"},
+            "key_reasons": ["No evidence supports a 2x repricing."],
+            "uncertainties": ["Adoption timing remains uncertain."],
+            "session_id": "fixture-session",
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["key_reasons"] = [
+            "A signed launch contract could drive a 2x repricing if adoption "
+            "scales within the six-month horizon."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        prediction = LLMBlindPredictor(caller).predict(
+            {"basic_info": {"industry": "fixture"}}
+        )
+
+        self.assertTrue(prediction.value.is_surge)
+        self.assertEqual(
+            prediction.value.candidate_judgment,
+            CandidateJudgment.POSSIBLE,
+        )
+        self.assertEqual(prediction.value.magnitude, MagnitudeClass.TWO_TO_THREE)
+        self.assertEqual(prediction.value.confidence, ConfidenceLevel.MEDIUM)
+        self.assertEqual(
+            prediction.value.uncertainties,
+            tuple(invalid["uncertainties"]),
+        )
+        self.assertEqual(prediction.value.session_id, invalid["session_id"])
+        self.assertEqual(prediction.usage.llm_calls, 2)
 
     def test_v78_blind_predictor_corrects_stale_price_labeled_current(self) -> None:
         invalid = {
