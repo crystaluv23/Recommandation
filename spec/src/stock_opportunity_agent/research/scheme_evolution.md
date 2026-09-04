@@ -377,8 +377,10 @@ and total-byte violation before the sole correction; it never locally drops a re
 item. An incomplete JSON object that reaches its frozen output-token ceiling receives
 explicit truncation feedback, so the correction spends its one attempt on a compact
 complete object rather than guessing which semantic field failed.
-The default per-case model ceiling is 160,000 tokens with a separate 36,000-token
-finalization reserve. Admission still uses the conservative exact request-byte plus
+The default per-case model ceiling is 160,000 tokens with a separate 64,000-token
+finalization reserve. The reserve covers the bounded terminal H_reflect
+initial/correction envelope and compact Predictor request under the conservative
+byte-for-token admission metric. Admission still uses the conservative exact request-byte plus
 output reservation, and the higher ceiling changes no role context/output/call/cost
 cap; it prevents a paid 32,000-character soft-Signal attempt from making its own sole
 correction unreachable solely because prior H_init and routing consumed their normal
@@ -707,7 +709,8 @@ item is likewise required across `why_prediction_failed`, `misleading_signals`,
 receives the same one bounded correction.
 The Predictor packet is a separate deterministic projection capped at 24,000
 canonical UTF-8 payload bytes so its exact wire request plus the 2,000-token output
-ceiling fits inside the frozen 36,000-token terminal reserve even under the
+ceiling fits inside the frozen 64,000-token terminal reserve after the bounded
+terminal H_reflect envelope even under the
 byte-for-token conservative preflight. It does not repeat complete Basic projections
 or full Signal evidence arrays. Instead it contains the Basic request/source/DataGap
 index, the complete final ResearchState, compact state/interpretation/coverage for
@@ -799,7 +802,10 @@ Runtime engineering guards are fixed framework controls:
 
 Each Signal round additionally admits at most four selected Signals and at most
 two LLM Signals. Routing and adaptive research stop normally when the remaining
-budget would invade the fixed 36,000-token terminal/Predictor reserve. Every
+budget would invade the fixed 64,000-token terminal/Predictor reserve. A completed
+batch at that boundary is explicitly terminal, so H_reflect receives
+`must_finalize=true` and may spend the reserved reflection portion before the compact
+Predictor is admitted. Every
 external request reserves canonical UTF-8 request bytes plus its frozen output
 ceiling before any attempt or network action; post-call overflow is not a valid
 budget boundary. Routing serializes the frozen available Signal cards before

@@ -60,7 +60,8 @@ mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 The contract additionally freezes the fixed Predictor-semantics hash, the
 available Basic-Info source-type catalog hash, a four-Signal/two-LLM-Signal
-per-round ceiling, a 36,000-token terminal-plus-Predictor reserve, all
+per-round ceiling, a 64,000-token terminal-plus-Predictor reserve for newly frozen
+contracts, all
 model-facing character ceilings, and role output-token ceilings. The frozen
 role ceilings are 2,000 tokens for controller, routing, Predictor, post-hoc,
 H1, and H2; 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for
@@ -148,15 +149,23 @@ Before cache lookup can fall through to attempt reservation or network I/O,
 runtime computes canonical UTF-8 bytes for the exact provider request and adds
 the frozen output-token ceiling as a conservative case-token reservation. A
 request whose reservation exceeds the remaining case budget is never sent.
-The default frozen case ceiling is 160,000 tokens while the finalization reserve
-remains 36,000. The ceiling is deliberately above ordinary reported-token use because
+The default frozen case ceiling is 160,000 tokens while the finalization reserve is
+64,000. The reserve is derived from the bounded terminal H_reflect initial/correction
+envelope plus the compact Predictor envelope under the same byte-for-token admission
+metric; post-hoc remains optional and may use its deterministic `budget_skipped`
+record. The ceiling is deliberately above ordinary reported-token use because
 request admission conservatively counts one UTF-8 byte as one token. It must leave room
 for the single correction of an admitted full 32,000-character soft-Signal batch after
 H_init and routing; otherwise the initial paid call can be accepted for transmission
 but its promised correction can never be sent. Raising this engineering ceiling does
 not raise source-context, role-output, call-count, or cost ceilings.
-Adaptive research must preserve 36,000 tokens for any reflectable terminal batch
-plus the Predictor. Insufficient routing budget, or insufficient Signal budget
+Historical v7 contracts that froze the former 36,000 value remain readable immutable
+evidence but cannot execute across the code revision; new freezes always write 64,000.
+Adaptive research must preserve 64,000 tokens for any reflectable terminal batch
+plus the Predictor. Once a completed batch reaches that reserve boundary, H_reflect
+receives `must_finalize=true` and may consume the reserved terminal envelope; its
+model-authored valid `finalize` remains mandatory. Insufficient routing budget, or
+insufficient Signal budget
 before any result exists, ends adaptive research with the current `continue` state
 ineligible for fitness; runtime must not disguise missing research as finalization.
 When a completed deterministic subgroup makes a partial batch reflectable but its
@@ -181,7 +190,7 @@ Signal state/interpretation/coverage rows, and exact material only for final-sta
 Signal citation tuples. Complete source bundles and rounds remain in the local
 trajectory. The compact payload is measured after anonymity masking with canonical
 UTF-8 JSON and must fit its byte ceiling before provider request construction. This
-keeps the byte-for-token preflight conservative and makes the 36,000 terminal reserve
+keeps the byte-for-token preflight conservative and makes the 64,000 terminal reserve
 internally consistent; no tokenizer approximation or post-call overflow is allowed.
 Post-hoc compaction consumes that already-compact Predictor view directly: it preserves
 the Basic `source_index` and `data_gaps`, final state, and compact Signal results while
@@ -1133,17 +1142,28 @@ This also keeps the ResearchState, Signal batch, selection intents, and runtime 
 as a provider-cacheable prefix instead of duplicating them under alternate top-level
 correction keys.
 
-The request also includes a runtime-owned terminal directive. It is true only when
-the current batch consumed the last permitted Signal round/call or when a soft-Signal
+H_reflect also receives a deterministic `research_state_capacity` map containing the
+current/effective per-field counts, remaining new-item slots, combined-item capacity,
+and canonical-byte capacity. This repeats no evidence and asks the model to select
+within already enforced limits before it emits an oversized portfolio. A correction
+that cannot pass the exact remaining-token preflight may still invoke the role's
+existing call-free validation fallback over the already paid invalid response; the
+fallback must pass the unchanged parser and scoped semantic validators. If it cannot,
+the budget stop retains the paid usage and remains fail-closed.
+
+The request also includes a runtime-owned terminal directive. It is true when the
+current batch consumed the last permitted Signal round/call, when a soft-Signal
 request was refused before transmission after deterministic results already
-completed. H_reflect must then return a model-authored `finalize` state based solely
+completed, or when completed batch usage reached the frozen terminal reserve.
+H_reflect must then return a model-authored `finalize` state based solely
 on visible accepted evidence; unresolved items may remain as needs/open questions.
 An initial `continue` receives the single structured correction, while a repeated
 `continue` fails closed. The runtime does not synthesize a terminal state, and the
 actual boundary remains recorded separately as `termination_trigger`.
 When all executed results are `unavailable`, H_reflect remains skipped because no
 belief may change, except when a selected soft subgroup was refused after those
-deterministic results completed. That exact terminal partial batch receives
+deterministic results completed or the completed batch reached the terminal reserve.
+That exact terminal partial batch receives
 `must_finalize=true`; H_reflect must preserve all research content byte-for-byte and
 author only the `continue` to `finalize` decision transition. If the next ordinary
 routing decision is empty or eligible cards are

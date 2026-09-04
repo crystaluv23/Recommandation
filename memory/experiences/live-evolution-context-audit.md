@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 18
+visit_times: 19
 
 ## Trigger
 
@@ -1636,3 +1636,17 @@ obligation, preserves sibling bytes/order, and reruns the entire parser. Never r
 the row or bypass a top-level nonempty/applicability invariant; if reparsing fails, keep
 the candidate rejected. This turns correction refusal into local evidence loss rather
 than whole-case loss without adding another call.
+
+## Terminal-envelope accounting addendum (2026-09-04)
+
+Audit a case token stop against three different numbers: reported usage already
+consumed, the exact conservative reservation of the next request, and the protected
+terminal envelope. V108 had enough nominal total tokens to produce a Predictor, but
+its H_reflect correction was excluded from the 36k reserve and therefore could not be
+sent; the initial paid response then disappeared from case usage when the preflight
+exception propagated. A reserve is only real if a completed terminal batch receives
+`must_finalize`, may spend its reflection portion, and still leaves the bounded
+Predictor envelope. Derive it from actual persisted wire bodies and role ceilings,
+not one observed provider token count. Expose compact-state capacity before generation
+to avoid predictable overflow, retain paid usage on every pre-send correction stop,
+and allow only already-defined call-free fallbacks that rerun the complete parser.

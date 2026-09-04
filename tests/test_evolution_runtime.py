@@ -4373,6 +4373,77 @@ class ConcreteRoleAdapterTests(TestCase):
             ["selections[0]"],
         )
 
+    def test_routing_quarantine_runs_when_correction_reservation_is_unaffordable(
+        self,
+    ) -> None:
+        information_needs = (
+            "What guidance was disclosed regarding revenue and cost savings?",
+            "What legal risks were disclosed?",
+        )
+        invalid = signal_selection("guidance_acceleration:v1")["selections"][0]
+        invalid.update(
+            {
+                "target_need_indices": [0],
+                "answer_scope": "partial",
+                "residual_need": (
+                    "What guidance was disclosed regarding cost savings?"
+                ),
+                "selection_reason": (
+                    "Covers guidance regarding revenue and cost savings."
+                ),
+            }
+        )
+        valid = signal_selection("negative_word_count:v1")["selections"][0]
+        valid.update(
+            {
+                "reason_code": "combine_evidence",
+                "selection_reason": "Provides legal-risk context.",
+                "expected_role": "coverage",
+                "target_need_indices": [1],
+                "answer_scope": None,
+                "residual_need": None,
+                "context_tags": ["news_rich"],
+            }
+        )
+
+        class BudgetCaller(ScriptedRoleCaller):
+            max_structured_corrections = 2
+
+            def complete_json(self, **kwargs):
+                if self.calls:
+                    self.stages.append(str(kwargs["stage"]))
+                    self.calls.append(dict(kwargs))
+                    raise RuntimeBudgetExceeded("correction envelope is unavailable")
+                return super().complete_json(**kwargs)
+
+        caller = BudgetCaller([{"selections": [invalid, valid]}])
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            selection = LLMSignalRetrievalAgent(caller).select(
+                information_needs,
+                registry.freeze(),
+                {},
+                research_state=ResearchState(
+                    next_information_needs=information_needs
+                ),
+            )
+
+        self.assertEqual(selection.usage, AgentUsage(llm_calls=1, tokens=5, cost=0.01))
+        self.assertEqual(
+            tuple(item.signal_ref for item in selection.value),
+            ("negative_word_count:v1",),
+        )
+        fallback = next(
+            item
+            for item in events
+            if item["event_type"] == "structured_validation_fallback_applied"
+        )
+        self.assertEqual(fallback["correction_count"], 0)
+        self.assertEqual(fallback["removed_paths"], ["selections[0]"])
+
     def test_v106_routing_quarantine_cannot_bypass_mandatory_nonempty_match(
         self,
     ) -> None:
@@ -7928,6 +7999,19 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("at most 400 characters", error)
         self.assertIn(
             "Every supporting_evidence claim must contain 1-400 characters",
+            caller.calls[0]["system_prompt"],
+        )
+        capacity = caller.calls[0]["payload"]["research_state_capacity"]
+        self.assertEqual(
+            capacity["fields"]["supporting_evidence"],
+            {
+                "current_count": 1,
+                "effective_maximum_count": 8,
+                "new_item_capacity": 7,
+            },
+        )
+        self.assertIn(
+            "Use research_state_capacity as an exact admission budget",
             caller.calls[0]["system_prompt"],
         )
         self.assertEqual(reflected.value.current_beliefs[1], corrected_claim)

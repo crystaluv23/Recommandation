@@ -1824,7 +1824,6 @@ class EvolutionRunContract:
                 required_v6_limits = {
                     "max_signals_per_round": 4,
                     "max_llm_signals_per_round": 2,
-                    "finalization_token_reserve": 36_000,
                     "basic_info_context_chars": 32_000,
                     "signal_batch_context_chars": 32_000,
                     "predictor_context_bytes": 24_000,
@@ -1837,7 +1836,17 @@ class EvolutionRunContract:
                         raise ValidationError(
                             f"{schema_label} contract limit {name} must equal the frozen value"
                         )
-                if int(self.limits["max_tokens"]) <= 36_000:
+                reserve = self.limits.get("finalization_token_reserve")
+                supported_reserves = (
+                    {36_000}
+                    if self.schema_version == "evolution-run-contract-v6"
+                    else {36_000, 64_000}
+                )
+                if reserve not in supported_reserves:
+                    raise ValidationError(
+                        f"{schema_label} contract finalization reserve is unsupported"
+                    )
+                if int(self.limits["max_tokens"]) <= int(reserve):
                     raise ValidationError(
                         f"{schema_label} max_tokens must exceed finalization reserve"
                     )
@@ -4928,6 +4937,10 @@ _VALIDATION_REDUCE_ANY_PATHS = re.compile(
 _VALIDATION_TOTAL_ITEM_LIMIT = re.compile(
     r"\bcombined ResearchState array count=(\d+) exceeds effective_limit=(\d+)"
 )
+_VALIDATION_FIELD_ITEM_LIMIT = re.compile(
+    r"\binvalid_field=['\"]([A-Za-z_]+)['\"], [A-Za-z_]+ count=(\d+) "
+    r"exceeds effective_limit=(\d+)"
+)
 _VALIDATION_JSON_BYTE_LIMIT = re.compile(
     r"\bResearchState compact JSON size_bytes=(\d+) exceeds effective_limit=(\d+)"
 )
@@ -5283,6 +5296,7 @@ def _validation_obligations(
         minimum_match = _VALIDATION_MINIMUM_REMOVED_ITEMS.search(segment)
         reduce_match = _VALIDATION_REDUCE_ANY_PATHS.search(segment)
         total_match = _VALIDATION_TOTAL_ITEM_LIMIT.search(segment)
+        field_limit_match = _VALIDATION_FIELD_ITEM_LIMIT.search(segment)
         byte_match = _VALIDATION_JSON_BYTE_LIMIT.search(segment)
         if byte_match:
             obligation["current_size_bytes"] = int(byte_match.group(1))
@@ -5331,6 +5345,13 @@ def _validation_obligations(
                             )
                         )
                     )
+        elif field_limit_match:
+            field_name = field_limit_match.group(1)
+            obligation["minimum_removed_items"] = (
+                int(field_limit_match.group(2))
+                - int(field_limit_match.group(3))
+            )
+            obligation["must_reduce_any_of_paths"] = [field_name]
     feedback = {
         "obligation_count": len(obligations),
         "obligations": obligations,
@@ -5578,6 +5599,17 @@ def _authorized_correction_paths(
         required = obligation.get("required_compaction_remove_paths", ())
         minimum = obligation["minimum_removed_items"]
         if not isinstance(required, list) or len(required) < minimum:
+            reducible = obligation.get("must_reduce_any_of_paths", ())
+            must_change = obligation.get("must_change_paths", ())
+            if (
+                isinstance(reducible, list)
+                and len(reducible) == 1
+                and isinstance(reducible[0], str)
+                and must_change == reducible
+                and isinstance(failed_output.get(reducible[0]), list)
+            ):
+                required_paths.append(reducible[0])
+                continue
             return []
         required_paths.extend(
             path for path in required if isinstance(path, str) and path
@@ -5963,6 +5995,9 @@ def _complete_parsed_role(
     usage = AgentUsage()
     failed_output: Mapping[str, Any] | None = None
     failure: ValidationError | None = None
+    budget_failure: RuntimeBudgetExceeded | None = None
+    budget_failure_stage: str | None = None
+    completed_corrections = 0
     max_corrections = getattr(caller, "max_structured_corrections", 1)
     if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
         raise ValidationError("structured role correction budget must be 1 or 2")
@@ -6004,22 +6039,30 @@ def _complete_parsed_role(
                     _validation_obligations(failure, failed_output)
                 )
                 prompt += correction_instruction
-        value, step_usage = _complete_json_with_invalid_value(
-            caller,
-            stage=request_stage,
-            system_prompt=prompt,
-            payload=request_payload,
-            allow_outcomes=allow_outcomes,
-            anonymous_aliases=anonymous_aliases,
-            max_output_tokens=max_output_tokens,
-            max_request_tokens=(
-                max_request_tokens - usage.tokens
-                if max_request_tokens is not None
-                else None
-            ),
-            temperature=temperature,
-        )
+        try:
+            value, step_usage = _complete_json_with_invalid_value(
+                caller,
+                stage=request_stage,
+                system_prompt=prompt,
+                payload=request_payload,
+                allow_outcomes=allow_outcomes,
+                anonymous_aliases=anonymous_aliases,
+                max_output_tokens=max_output_tokens,
+                max_request_tokens=(
+                    max_request_tokens - usage.tokens
+                    if max_request_tokens is not None
+                    else None
+                ),
+                temperature=temperature,
+            )
+        except RuntimeBudgetExceeded as exc:
+            usage = usage + exc.usage
+            budget_failure = exc
+            budget_failure_stage = request_stage
+            break
         usage = usage + step_usage
+        if attempt:
+            completed_corrections += 1
         if set(value) == {"invalid_structured_output", "validation_error"}:
             failed_output = {}
             failure = ValidationError(str(value["validation_error"]))
@@ -6131,13 +6174,20 @@ def _complete_parsed_role(
                     getattr(caller, "on_progress", None),
                     "structured_validation_fallback_applied",
                     stage=stage,
-                    correction_count=max_corrections,
+                    correction_count=completed_corrections,
                     source_substitution_paths=list(
                         fallback_actions["source_substitution_paths"]
                     ),
                     removed_paths=list(fallback_actions["removed_paths"]),
                 )
                 return parsed_value, usage
+    if budget_failure is not None:
+        raise RuntimeBudgetExceeded(
+            f"{budget_failure_stage or stage} was not sent because its exact "
+            f"reservation exceeded the remaining budget: {budget_failure}; "
+            f"last_validation_error={failure}",
+            usage,
+        )
     correction_count = (
         "one correction"
         if max_corrections == 1
@@ -6293,6 +6343,40 @@ def _research_state_json_size(value: Mapping[str, Any]) -> int:
             separators=(",", ":"),
         ).encode("utf-8")
     )
+
+
+def _research_state_capacity(state: ResearchState) -> dict[str, Any]:
+    """Expose exact remaining compact-state capacity without repeating evidence."""
+
+    value = state.to_dict()
+    field_capacity: dict[str, dict[str, int]] = {}
+    current_total = 0
+    for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
+        items = value.get(field_name, ())
+        current_count = len(items) if isinstance(items, list) else 0
+        effective_limit = max(default_limit, current_count)
+        current_total += current_count
+        field_capacity[field_name] = {
+            "current_count": current_count,
+            "effective_maximum_count": effective_limit,
+            "new_item_capacity": max(0, effective_limit - current_count),
+        }
+    effective_total_limit = max(_RESEARCH_STATE_TOTAL_ITEM_LIMIT, current_total)
+    current_size = _research_state_json_size(value)
+    effective_size_limit = max(_RESEARCH_STATE_JSON_BYTE_LIMIT, current_size)
+    return {
+        "fields": field_capacity,
+        "combined": {
+            "current_count": current_total,
+            "effective_maximum_count": effective_total_limit,
+            "new_item_capacity": max(0, effective_total_limit - current_total),
+        },
+        "canonical_json_bytes": {
+            "current_count": current_size,
+            "effective_maximum_count": effective_size_limit,
+            "new_item_capacity": max(0, effective_size_limit - current_size),
+        },
+    }
 
 
 _ANSWER_SIGNATURE_ALIASES = {
@@ -8690,7 +8774,10 @@ class LLMResearchController:
                 "its need byte-for-byte. Unavailable and context-only refs never "
                 "authorize changing a need. "
                 "Deleting another need or returning the targeted need unchanged is "
-                "invalid. If reflection_runtime.must_finalize is true, this is the "
+                "invalid. Use research_state_capacity as an exact admission budget: "
+                "do not add more items to any field or to the combined state than its "
+                "new_item_capacity, and compact existing items first when capacity is "
+                "zero. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
                 "on accepted evidence, while preserving unresolved uncertainty in "
                 "open_questions or next_information_needs. If every current-batch "
@@ -8714,6 +8801,7 @@ class LLMResearchController:
                     selections,
                     batch,
                 ),
+                "research_state_capacity": _research_state_capacity(state),
                 "reflection_runtime": {
                     "must_finalize": must_finalize,
                     "termination_trigger": (

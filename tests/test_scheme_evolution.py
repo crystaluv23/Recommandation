@@ -935,7 +935,7 @@ class InformationPlanRuntimeTests(TestCase):
         limits = RuntimeLimits()
 
         self.assertEqual(limits.max_tokens, 160_000)
-        self.assertEqual(limits.finalization_token_reserve, 36_000)
+        self.assertEqual(limits.finalization_token_reserve, 64_000)
 
     def test_slow_role_identity_guards_exclude_derived_protocol_words(self) -> None:
         cases = tuple(
@@ -1958,6 +1958,80 @@ class InformationPlanRuntimeTests(TestCase):
                 trajectory.final_state.open_questions,
                 ("confirm the next catalyst",),
             )
+
+    def test_completed_batch_at_token_reserve_gets_terminal_reflection(self) -> None:
+        class TerminalController(OneBatchController):
+            def __init__(self) -> None:
+                super().__init__()
+                self.must_finalize = False
+                self.termination_trigger = None
+                self.request_budgets: list[int] = []
+
+            def initialize(self, plan, basic_info):
+                return AgentStep(
+                    ResearchState(
+                        hypotheses=("growth remains unresolved",),
+                        next_information_needs=("measure revenue growth",),
+                    ),
+                    AgentUsage(llm_calls=1, tokens=90_000),
+                )
+
+            def set_reflection_runtime_context(
+                self, *, selections, must_finalize, termination_trigger
+            ):
+                self.must_finalize = must_finalize
+                self.termination_trigger = termination_trigger
+
+            def set_request_token_budget(self, value):
+                self.request_budgets.append(value)
+
+            def reflect(self, plan, state, batch):
+                self.assert_terminal_context()
+                return AgentStep(
+                    ResearchState(
+                        hypotheses=state.hypotheses,
+                        next_information_needs=state.next_information_needs,
+                        decision=ResearchDecision.FINALIZE,
+                    ),
+                    AgentUsage(llm_calls=1, tokens=20),
+                )
+
+            def assert_terminal_context(self):
+                if not self.must_finalize:
+                    raise AssertionError("completed reserve-bound batch must finalize")
+                if self.termination_trigger is not RuntimeStopReason.BUDGET_EXHAUSTED:
+                    raise AssertionError("terminal trigger must remain auditable")
+
+        class HighUsageSelector(OneSignalSelector):
+            def select(self, *args, **kwargs):
+                step = super().select(*args, **kwargs)
+                return AgentStep(step.value, AgentUsage(llm_calls=1, tokens=10_000))
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            controller = TerminalController()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id="winner_1",
+                company_basic_source={},
+                prediction_time=NOW,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=controller,
+                signal_agent=HighUsageSelector(),
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                limits=RuntimeLimits(),
+            )
+
+        self.assertEqual(trajectory.stop_reason, RuntimeStopReason.FINALIZED)
+        self.assertEqual(
+            trajectory.termination_trigger,
+            RuntimeStopReason.BUDGET_EXHAUSTED,
+        )
+        self.assertEqual(trajectory.final_state.decision, ResearchDecision.FINALIZE)
+        self.assertEqual(controller.request_budgets[-1], 60_000)
 
     def test_runtime_omits_executed_refs_before_next_signal_selection(self) -> None:
         class LoopingController(OneBatchController):

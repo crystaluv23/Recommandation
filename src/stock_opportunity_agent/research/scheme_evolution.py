@@ -1404,7 +1404,7 @@ class RuntimeLimits:
     max_cost: float = 20.0
     max_signals_per_round: int = 4
     max_llm_signals_per_round: int = 2
-    finalization_token_reserve: int = 36_000
+    finalization_token_reserve: int = 64_000
 
     def __post_init__(self) -> None:
         if min(
@@ -1910,7 +1910,8 @@ def execute_information_plan(
                     )
                 ),
             )
-        except RuntimeBudgetExceeded:
+        except RuntimeBudgetExceeded as exc:
+            model_usage = _consume_usage(model_usage, exc.usage, limits)
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
         model_usage = _consume_model_step(model_usage, selection_step.usage, limits)
@@ -2021,12 +2022,6 @@ def execute_information_plan(
                 batch=batch,
             )
         )
-        if all(
-            result.value is SignalValue.UNAVAILABLE
-            for result in batch.results
-        ):
-            if not soft_budget_exhausted:
-                continue
         reflection_termination_trigger: RuntimeStopReason | None = None
         if soft_budget_exhausted:
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
@@ -2036,19 +2031,29 @@ def execute_information_plan(
             reflection_termination_trigger = RuntimeStopReason.MAX_SIGNAL_CALLS
         elif model_usage.llm_calls + 5 > limits.max_llm_calls:
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+        elif model_usage.tokens >= (
+            limits.max_tokens - limits.finalization_token_reserve
+        ):
+            reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+        if all(
+            result.value is SignalValue.UNAVAILABLE
+            for result in batch.results
+        ) and reflection_termination_trigger is None:
+            continue
         _set_reflection_runtime_context(
             controller,
             selections=rounds[-1].selections,
             must_finalize=reflection_termination_trigger is not None,
             termination_trigger=reflection_termination_trigger,
         )
-        _set_request_token_budget(
-            controller,
-            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
-        )
+        reflection_budget = limits.max_tokens - model_usage.tokens
+        if reflection_termination_trigger is None:
+            reflection_budget -= limits.finalization_token_reserve
+        _set_request_token_budget(controller, reflection_budget)
         try:
             reflection_step = controller.reflect(plan, state, batch)
-        except RuntimeBudgetExceeded:
+        except RuntimeBudgetExceeded as exc:
+            model_usage = _consume_usage(model_usage, exc.usage, limits)
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)

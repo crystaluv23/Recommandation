@@ -1,5 +1,39 @@
 # Status
 
+Current V108 repair (2026-09-04): contract `61a3324...a14a` first resumed one
+retryable TLS EOF without repeating seven completed Fast cases, then made 110
+completed calls plus one failed transport attempt for `$0.16910964` and five data
+requests. Nine cases finalized; case ten persisted a Predictor and post-hoc result but
+remained `stop_reason=budget_exhausted`, so the candidate stopped at 10/24 with
+`incomplete_case_set` and `unfinalized_case`. Authoritative pointers remain
+`round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The exact case-ten H_reflect request had 7 prior evidence rows and explicitly capped
+the result at 8, but the response appended three deterministic Signal claims and
+returned 10. The correction correctly required compaction; its 24,041-byte wire body
+plus 2,000-token output reservation needed 26,041 conservative units while only
+16,822 remained outside the old reserve, so it was never transmitted. The old 36k
+reserve also did not let a completed terminal batch spend its H_reflect portion, and a
+correction preflight exception discarded already paid role usage before the Predictor.
+
+New freezes use a 64k terminal reserve derived from the bounded terminal H_reflect
+initial/correction and compact Predictor envelopes; historical 36k v7 contracts remain
+readable but cannot execute across the code revision. A completed batch that reaches
+the reserve receives `must_finalize=true` and may use it, while a pre-send correction
+budget failure first tries the role's existing call-free fallback under the complete
+unchanged parser and otherwise propagates with all paid usage. H_reflect now receives
+an exact count/byte capacity map, and per-field overflow feedback states the removal
+minimum without choosing evidence semantically. Focused reserve/fallback regressions,
+all 541 tests, and repository lint pass. Remaining successor ceilings are 289 attempts,
+`$16.83089036`, and 622 data requests.
+
+V107 evidence (2026-09-04): contract `e7b0f90...14c7` made 61 completed calls plus
+one failed TLS handshake attempt for `$0.10789268` and seven provider-ledger rows; six
+case checkpoints were durable. Its same-contract retry was blocked before any request
+because the bundled runtime auto-upgraded from frozen Python 3.12.13 to 3.12.14.
+Exact runtime identity is a contract invariant, so V107 remains immutable evidence
+rather than being modified or bypassed; V108 was frozen against the new runtime.
+
 Current V106 repair (2026-09-04): post-`a423775` contract
 `146d83f...3a8d` made 56 completed calls for `$0.07987476` and five data
 requests. Five Fast cases finalized. The V105 Bumble case passed H_init after one
