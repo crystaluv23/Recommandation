@@ -8556,6 +8556,81 @@ class ConcreteRoleAdapterTests(TestCase):
             (corrected_need,),
         )
 
+    def test_v109_initialize_rejects_prediction_date_adjusted_close_lookup(
+        self,
+    ) -> None:
+        invalid_need = (
+            "What was the adjusted close price of the issuer on 2025-07-31?"
+        )
+        corrected_need = (
+            "What financing or construction milestone had the issuer disclosed "
+            "by 2025-07-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Current milestones may change market expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller([state(invalid_need), state(corrected_need)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("runtime-owned evaluation input", feedback["validation_error"])
+        self.assertIn("next_information_needs[0]", feedback["validation_error"])
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["next_information_needs[0]"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (corrected_need,),
+        )
+
+    def test_v109_initialize_allows_price_volume_trend_question(self) -> None:
+        need = (
+            "How did issuer price and volume trend through 2025-07-31 after the "
+            "latest disclosed milestone?"
+        )
+        state = {
+            "hypotheses": ["Market confirmation may distinguish the active thesis."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
     def test_v103_initialize_allows_as_of_future_schedule_question(self) -> None:
         need = (
             "What had the issuer disclosed by September 30, 2025 about the timing "

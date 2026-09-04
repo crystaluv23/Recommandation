@@ -1705,6 +1705,19 @@ this contract.
 Fine-grained Plan, trajectory, candidate, and response artifacts may be written
 as soon as available. A round becomes official only in this order:
 
+Every accepted candidate Plan is durably staged before its first evaluation case.
+Its checkpoint binds the run contract, round, slot/count, selected parent ids,
+accepted proposal attempt, and complete Plan. A restart reconstructs the candidate
+list from those checkpoints and must not call the proposer again for an already
+staged slot. Any identity, lineage, or content mismatch fails closed. This staging
+is recovery state only and never makes the Plan official before the round pointer.
+
+One workspace permits only one active cycle executor. A non-blocking operating-
+system file lock is acquired before cycle state mutation or external calls and held
+through completion or failure; process death releases it. A concurrent `run-cycle`
+or `run-loop` invocation fails before making an external call instead of racing
+candidate generation, ledgers, trajectories, or commit markers.
+
 Exact request payloads include only semantic model inputs. Runtime usage,
 provider cost, cache-hit state, and other execution-accounting fields remain in
 audit trajectories but never enter Predictor context; therefore a resume from

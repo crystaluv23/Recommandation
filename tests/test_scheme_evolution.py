@@ -3101,6 +3101,16 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 json.loads(workspace.cycle_state_path.read_text())["active_cycle"]
             )
 
+    def test_workspace_execution_lock_rejects_concurrent_executor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            with workspace.execution_lock():
+                with self.assertRaisesRegex(ValidationError, "active cycle executor"):
+                    with EvolutionWorkspace(directory).execution_lock():
+                        self.fail("concurrent workspace lock unexpectedly succeeded")
+            with EvolutionWorkspace(directory).execution_lock():
+                pass
+
 
 class CountingProposer:
     def __init__(self) -> None:
@@ -3831,6 +3841,82 @@ class PlanEvolutionEngineTests(TestCase):
             reconciled = registry.load_stats("revenue_growth_yoy")
             self.assertEqual(reconciled.retrieved, 48)
             self.assertEqual(reconciled.executed, 48)
+
+    def test_fast_loop_reuses_staged_candidate_after_interrupted_evaluation(
+        self,
+    ) -> None:
+        class InterruptedEvaluator:
+            def evaluate(self, plan, cases, signal_registry):
+                raise RuntimeError("simulated evaluator interruption")
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(Path(directory) / "workspace")
+            first_proposer = CountingProposer()
+            first_engine = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=InterruptedEvaluator(),
+                proposer=first_proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+                run_contract_hash="contract-hash",
+            )
+            cases = make_evaluation_pool()
+            anchors = make_anchor_pool()
+
+            with self.assertRaisesRegex(RuntimeError, "simulated evaluator"):
+                first_engine.run_round(
+                    round_id=1,
+                    validation_cases=cases,
+                    anchor_cases=anchors,
+                    signal_snapshot=registry.freeze(),
+                )
+
+            candidate_path = (
+                workspace.experiments_root
+                / "round-0001"
+                / "candidates"
+                / "slot-01.json"
+            )
+            self.assertTrue(candidate_path.is_file())
+            self.assertEqual(len(first_proposer.calls), 1)
+            self.assertEqual(workspace.last_completed_round, 0)
+
+            resumed_proposer = CountingProposer()
+            events = []
+            resumed = PlanEvolutionEngine(
+                archive=PlanArchive(),
+                meta_memory=PlanMetaMemory(),
+                signal_registry=registry,
+                evaluator=SyntheticPlanEvaluator(),
+                proposer=resumed_proposer,
+                critic=SimpleCritic(),
+                round_reflector=SimpleRoundReflector(),
+                workspace=workspace,
+                seed_plans=(default_information_plan(),),
+                candidates_per_round=1,
+                run_contract_hash="contract-hash",
+                on_progress=events.append,
+            ).run_round(
+                round_id=1,
+                validation_cases=cases,
+                anchor_cases=anchors,
+                signal_snapshot=registry.freeze(),
+            )
+
+            self.assertEqual(resumed_proposer.calls, [])
+            self.assertEqual(resumed.records[0].plan.plan_id, "plan_child_1")
+            self.assertEqual(workspace.last_completed_round, 1)
+            self.assertIn(
+                "candidate_proposal_reused",
+                [event["event_type"] for event in events],
+            )
 
     def test_round_meta_cannot_cite_old_or_unrelated_experiment(self) -> None:
         class BadReflector(SimpleRoundReflector):

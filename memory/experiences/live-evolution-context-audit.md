@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 19
+visit_times: 21
 
 ## Trigger
 
@@ -1650,3 +1650,15 @@ Predictor envelope. Derive it from actual persisted wire bodies and role ceiling
 not one observed provider token count. Expose compact-state capacity before generation
 to avoid predictable overflow, retain paid usage on every pre-send correction stop,
 and allow only already-defined call-free fallbacks that rerun the complete parser.
+
+## Candidate-restart recovery addendum (2026-09-04)
+
+An exact response cache is not a candidate checkpoint. If an initial structured
+proposal was malformed but its correction was accepted, replaying only the initial
+request after a crash can yield different valid Plan content for the same runtime
+Plan id. Stage the complete accepted Plan, selected lineage, slot, proposal attempt,
+and contract before the first evaluation case, then restore that object without a
+model call. Also enforce a single OS-locked executor per workspace: otherwise an
+apparently lost terminal handle can race a still-live process, duplicate paid calls,
+and mix trajectories. The lock is control-plane safety; the round and cycle pointers
+remain the only completion authority.

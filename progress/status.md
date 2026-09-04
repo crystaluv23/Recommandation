@@ -1,5 +1,24 @@
 # Status
 
+Current V109 repair (2026-09-04): the first executor reached five completed Fast
+cases and then stopped on a retryable TLS EOF; a mistakenly concurrent resume was
+able to enter the same workspace, repeated the previously malformed initial proposer
+request, received different valid content for the same `plan_r0001_c01`, and correctly
+failed against the old case trajectory. Exact V109 H_init content also asked for the
+issuer's adjusted close on the prediction date despite the system prompt reserving
+that baseline to runtime; the missing local check accepted it and spent one useless
+empty-routing call. Authoritative pointers remain `round=0/cycle=0`, Registry v1, and
+V109 is immutable diagnostic evidence.
+
+The runtime now takes a non-blocking OS lock before any cycle mutation or external
+call, stages every accepted candidate Plan before its first case, and restores that
+exact contract/round/slot/parent-bound Plan without another proposer call. H_init
+validation now rejects scalar adjusted-close/share/stock-price lookups at the exact
+prediction date or described as current/prediction-time price while preserving valid
+price/volume-trend questions. Five focused regressions, both evolution modules (338
+tests), all 545 repository tests, and repository lint pass. A fresh successor must be
+frozen against this code revision before external execution resumes.
+
 Current V108 repair (2026-09-04): contract `61a3324...a14a` first resumed one
 retryable TLS EOF without repeating seven completed Fast cases, then made 110
 completed calls plus one failed transport attempt for `$0.16910964` and five data

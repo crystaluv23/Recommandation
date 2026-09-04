@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import fcntl
 import hashlib
 import html
 import json
@@ -10,12 +11,13 @@ import os
 import random
 import re
 import tempfile
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
+from typing import Any, Callable, Generic, Iterable, Iterator, Mapping, Protocol, TypeVar
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
@@ -5258,6 +5260,112 @@ class EvolutionWorkspace:
             return 0
         return int(_read_json(self.cycle_state_path).get("last_completed_cycle", 0))
 
+    @contextmanager
+    def execution_lock(self) -> Iterator[None]:
+        """Prevent concurrent cycle executors from mutating one workspace."""
+
+        with self.execution_lock_at(self.root):
+            yield
+
+    @staticmethod
+    @contextmanager
+    def execution_lock_at(root: str | Path) -> Iterator[None]:
+        """Lock an existing workspace without materializing runtime directories."""
+
+        lock_path = Path(root) / ".evolution-run.lock"
+        with lock_path.open("a+b") as handle:
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise ValidationError(
+                    "evolution workspace already has an active cycle executor"
+                ) from exc
+            try:
+                yield
+            finally:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+    def staged_candidate_plan(
+        self,
+        *,
+        round_id: int,
+        candidate_index: int,
+        candidate_count: int,
+        selected_parent_ids: tuple[str, ...],
+        run_contract_hash: str,
+    ) -> tuple[InformationPlan, int] | None:
+        """Load one exact accepted candidate checkpoint for restart recovery."""
+
+        path = self._candidate_plan_path(round_id, candidate_index)
+        if not path.exists():
+            return None
+        payload = _read_json(path)
+        expected_identity = {
+            "schema_version": "information-plan-candidate-checkpoint-v1",
+            "round_id": round_id,
+            "candidate_index": candidate_index,
+            "candidate_count": candidate_count,
+            "selected_parent_ids": list(selected_parent_ids),
+            "run_contract_hash": run_contract_hash,
+        }
+        if any(payload.get(key) != value for key, value in expected_identity.items()):
+            raise ValidationError("staged candidate Plan identity mismatch")
+        raw_plan = payload.get("plan")
+        proposal_attempt = payload.get("proposal_attempt")
+        if not isinstance(raw_plan, Mapping) or (
+            isinstance(proposal_attempt, bool)
+            or not isinstance(proposal_attempt, int)
+            or proposal_attempt < 1
+        ):
+            raise ValidationError("staged candidate Plan payload is invalid")
+        plan = InformationPlan.from_dict(raw_plan)
+        if tuple(plan.parent_ids) != selected_parent_ids:
+            raise ValidationError("staged candidate Plan lineage mismatch")
+        return plan, proposal_attempt
+
+    def stage_candidate_plan(
+        self,
+        *,
+        round_id: int,
+        candidate_index: int,
+        candidate_count: int,
+        selected_parent_ids: tuple[str, ...],
+        proposal_attempt: int,
+        run_contract_hash: str,
+        plan: InformationPlan,
+    ) -> Path:
+        """Persist one accepted candidate before its first evaluation case."""
+
+        if round_id < 1 or candidate_index < 1 or candidate_index > candidate_count:
+            raise ValidationError("candidate Plan checkpoint slot is invalid")
+        if proposal_attempt < 1 or tuple(plan.parent_ids) != selected_parent_ids:
+            raise ValidationError("candidate Plan checkpoint lineage is invalid")
+        path = self._candidate_plan_path(round_id, candidate_index)
+        _write_or_verify_json(
+            path,
+            {
+                "schema_version": "information-plan-candidate-checkpoint-v1",
+                "round_id": round_id,
+                "candidate_index": candidate_index,
+                "candidate_count": candidate_count,
+                "selected_parent_ids": list(selected_parent_ids),
+                "proposal_attempt": proposal_attempt,
+                "run_contract_hash": run_contract_hash,
+                "plan": plan.to_dict(),
+            },
+        )
+        return path
+
+    def _candidate_plan_path(self, round_id: int, candidate_index: int) -> Path:
+        if round_id < 1 or candidate_index < 1:
+            raise ValidationError("candidate Plan checkpoint identity is invalid")
+        return (
+            self.experiments_root
+            / f"round-{round_id:04d}"
+            / "candidates"
+            / f"slot-{candidate_index:02d}.json"
+        )
+
     def append_event(
         self,
         event_type: str,
@@ -6141,6 +6249,7 @@ class PlanEvolutionEngine:
         parents = tuple(quality_parents) + tuple(
             record.plan for record in selection.random
         )
+        selected_parent_ids = tuple(plan.plan_id for plan in parents)
         _emit_progress(
             self.on_progress,
             "parents_selected",
@@ -6162,61 +6271,100 @@ class PlanEvolutionEngine:
         } | {_canonical_hash(plan.canonical_dict()) for plan in parents}
         for candidate_index in range(1, self.candidates_per_round + 1):
             accepted: InformationPlan | None = None
-            for proposal_attempt in range(
-                1, self.evaluation_config.max_proposal_attempts_per_slot + 1
-            ):
+            accepted_proposal_attempt: int | None = None
+            staged_candidate = self.workspace.staged_candidate_plan(
+                round_id=round_id,
+                candidate_index=candidate_index,
+                candidate_count=self.candidates_per_round,
+                selected_parent_ids=selected_parent_ids,
+                run_contract_hash=self.run_contract_hash,
+            )
+            if staged_candidate is not None:
+                accepted, accepted_proposal_attempt = staged_candidate
+                content_hash = _canonical_hash(accepted.canonical_dict())
+                if content_hash in forbidden_content_hashes:
+                    raise ValidationError(
+                        "staged candidate Plan duplicates prior or sibling content"
+                    )
+                forbidden_content_hashes.add(content_hash)
                 _emit_progress(
                     self.on_progress,
-                    "candidate_proposal_started",
+                    "candidate_proposal_reused",
                     round_id=round_id,
                     candidate_index=candidate_index,
                     candidate_count=self.candidates_per_round,
-                    proposal_attempt=proposal_attempt,
+                    proposal_attempt=accepted_proposal_attempt,
+                    plan_id=accepted.plan_id,
                 )
-                try:
-                    candidate = self.proposer.propose(
-                        round_id=round_id,
-                        candidate_index=candidate_index,
-                        candidate_count=self.candidates_per_round,
-                        proposal_attempt=proposal_attempt,
-                        forbidden_plan_ids=tuple(
-                            sorted(
-                                {
-                                    *(record.plan_id for record in self.archive.records),
-                                    *(plan.plan_id for plan in candidate_plans),
-                                }
-                            )
-                        ),
-                        parents=parents,
-                        meta_info=self.meta_memory.entries,
-                        prior=self.priors.propose_plan,
-                    )
-                    if (
-                        not candidate.parent_ids
-                        or set(candidate.parent_ids) != allowed_parent_ids
-                    ):
-                        raise CandidateProposalRejected(
-                            "runtime lineage differs from selected parents"
-                        )
-                    content_hash = _canonical_hash(candidate.canonical_dict())
-                    if content_hash in forbidden_content_hashes:
-                        raise CandidateProposalRejected(
-                            "candidate Plan content duplicates an existing Plan"
-                        )
-                except CandidateProposalRejected as exc:
+            else:
+                for proposal_attempt in range(
+                    1, self.evaluation_config.max_proposal_attempts_per_slot + 1
+                ):
                     _emit_progress(
                         self.on_progress,
-                        "candidate_proposal_rejected",
+                        "candidate_proposal_started",
                         round_id=round_id,
                         candidate_index=candidate_index,
                         candidate_count=self.candidates_per_round,
                         proposal_attempt=proposal_attempt,
-                        reason=str(exc),
                     )
-                    continue
-                accepted = candidate
-                forbidden_content_hashes.add(content_hash)
-                break
+                    try:
+                        candidate = self.proposer.propose(
+                            round_id=round_id,
+                            candidate_index=candidate_index,
+                            candidate_count=self.candidates_per_round,
+                            proposal_attempt=proposal_attempt,
+                            forbidden_plan_ids=tuple(
+                                sorted(
+                                    {
+                                        *(
+                                            record.plan_id
+                                            for record in self.archive.records
+                                        ),
+                                        *(plan.plan_id for plan in candidate_plans),
+                                    }
+                                )
+                            ),
+                            parents=parents,
+                            meta_info=self.meta_memory.entries,
+                            prior=self.priors.propose_plan,
+                        )
+                        if (
+                            not candidate.parent_ids
+                            or set(candidate.parent_ids) != allowed_parent_ids
+                        ):
+                            raise CandidateProposalRejected(
+                                "runtime lineage differs from selected parents"
+                            )
+                        content_hash = _canonical_hash(candidate.canonical_dict())
+                        if content_hash in forbidden_content_hashes:
+                            raise CandidateProposalRejected(
+                                "candidate Plan content duplicates an existing Plan"
+                            )
+                    except CandidateProposalRejected as exc:
+                        _emit_progress(
+                            self.on_progress,
+                            "candidate_proposal_rejected",
+                            round_id=round_id,
+                            candidate_index=candidate_index,
+                            candidate_count=self.candidates_per_round,
+                            proposal_attempt=proposal_attempt,
+                            reason=str(exc),
+                        )
+                        continue
+                    accepted = candidate
+                    accepted_proposal_attempt = proposal_attempt
+                    forbidden_content_hashes.add(content_hash)
+                    self.workspace.stage_candidate_plan(
+                        round_id=round_id,
+                        candidate_index=candidate_index,
+                        candidate_count=self.candidates_per_round,
+                        selected_parent_ids=selected_parent_ids,
+                        proposal_attempt=proposal_attempt,
+                        run_contract_hash=self.run_contract_hash,
+                        plan=accepted,
+                    )
+                    break
             if accepted is None:
                 continue
             candidate_plans.append(accepted)

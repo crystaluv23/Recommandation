@@ -913,10 +913,13 @@ is deleted, the claim must be narrowed to a grammatical single supported observa
 
 The evaluation-boundary reminder also forbids asking for the fixed baseline date
 or baseline price: those are runtime-owned definition inputs, not issuer evidence.
-Raw H_init validation enforces this narrow boundary on `open_questions` and
-`next_information_needs`, names the exact offending path, and aggregates it with
-compaction/citation defects before the sole correction; it does not attempt to answer
-or rewrite the question.
+This includes a scalar adjusted-close/share/stock-price lookup explicitly at the
+prediction date or described as current/prediction-time price even when the model
+does not use the word `baseline`; issuer-specific price/volume trend or market-
+confirmation questions remain allowed. Raw H_init validation enforces this narrow
+boundary on `open_questions` and `next_information_needs`, names the exact offending
+path, and aggregates it with compaction/citation defects before the sole correction;
+it does not attempt to answer or rewrite the question.
 Every H_init `next_information_needs` item must also request evidence that could
 already be available by `evaluation_context.prediction_time`. It may ask what the
 issuer had disclosed by then about a scheduled future catalyst, milestone, or expected

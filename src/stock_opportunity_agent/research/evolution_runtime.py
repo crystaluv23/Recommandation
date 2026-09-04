@@ -6609,6 +6609,20 @@ _RUNTIME_EVALUATION_DEFINITION_INPUT = re.compile(
     r"\s+(?:terms?|definition)\b)",
     re.IGNORECASE,
 )
+_RUNTIME_EVALUATION_CURRENT_PRICE_INPUT = re.compile(
+    r"(?:\b(?:current|prediction[- ]time)\b.{0,48}\b(?:adjusted close(?: price)?|"
+    r"closing price|share price|stock price)\b|"
+    r"\b(?:adjusted close(?: price)?|closing price|share price|stock price)\b"
+    r".{0,48}\b(?:current|prediction[- ]time)\b)",
+    re.IGNORECASE,
+)
+_RUNTIME_EVALUATION_SCALAR_PRICE_LOOKUP = re.compile(
+    r"\b(?:what|which)\s+(?:exact\s+)?(?:is|was|were)\b.{0,64}"
+    r"\b(?:adjusted close(?: price)?|closing price|share price|stock price)\b|"
+    r"\b(?:exact|value|level)\b.{0,32}"
+    r"\b(?:adjusted close(?: price)?|closing price|share price|stock price)\b",
+    re.IGNORECASE,
+)
 _FUTURE_OPERATING_EVENT = re.compile(
     r"\b(?:commerciali[sz](?:e|ed|ation)|complet(?:e|ed|ion)|commenc(?:e|ed|ement)|"
     r"launch(?:ed|ing)?|open(?:ed|ing)?|operat(?:e|ed|ing|ion|ional)|"
@@ -6713,15 +6727,42 @@ def _raw_initialize_evaluation_boundary_issues(
     """Reject H_init questions about fixed runtime-owned evaluation inputs."""
 
     issues: list[str] = []
+    prediction_date: date | None = None
+    if isinstance(evaluation_context, Mapping):
+        raw_prediction_time = evaluation_context.get("prediction_time")
+        try:
+            prediction_date = datetime.fromisoformat(
+                str(raw_prediction_time).replace("Z", "+00:00")
+            ).date()
+        except ValueError:
+            pass
+    prediction_date_texts = (
+        {
+            prediction_date.isoformat(),
+            f"{prediction_date.strftime('%B')} {prediction_date.day}, "
+            f"{prediction_date.year}",
+        }
+        if prediction_date is not None
+        else set()
+    )
     for field_name in ("open_questions", "next_information_needs"):
         raw_items = value.get(field_name)
         if not isinstance(raw_items, list):
             continue
         for index, item in enumerate(raw_items):
-            if not isinstance(item, str) or not (
+            if not isinstance(item, str):
+                continue
+            runtime_owned = bool(
                 _RUNTIME_EVALUATION_BASELINE_INPUT.search(item)
                 or _RUNTIME_EVALUATION_DEFINITION_INPUT.search(item)
-            ):
+                or _RUNTIME_EVALUATION_CURRENT_PRICE_INPUT.search(item)
+                or (
+                    prediction_date_texts
+                    and _RUNTIME_EVALUATION_SCALAR_PRICE_LOOKUP.search(item)
+                    and any(text in item for text in prediction_date_texts)
+                )
+            )
+            if not runtime_owned:
                 continue
             path = f"{field_name}[{index}]"
             issues.append(
@@ -6732,13 +6773,6 @@ def _raw_initialize_evaluation_boundary_issues(
             )
     if not isinstance(evaluation_context, Mapping):
         return issues
-    raw_prediction_time = evaluation_context.get("prediction_time")
-    try:
-        prediction_date = datetime.fromisoformat(
-            str(raw_prediction_time).replace("Z", "+00:00")
-        ).date()
-    except ValueError:
-        prediction_date = None
     raw_needs = value.get("next_information_needs")
     if prediction_date is not None and isinstance(raw_needs, list):
         for index, item in enumerate(raw_needs):
@@ -12493,7 +12527,7 @@ def _canonicalize_unique_case_only_spans(
     return normalized
 
 
-def run_bounded_evolution_cycle(
+def _run_bounded_evolution_cycle_unlocked(
     *,
     workspace_path: str | Path,
     raw_info_root: str | Path,
@@ -12505,7 +12539,7 @@ def run_bounded_evolution_cycle(
     environ: Mapping[str, str] | None = None,
     on_progress: ProgressCallback | None = None,
 ) -> DualLoopResult:
-    """Run/resume one finite Fast group and one automatic Signal transition."""
+    """Run one finite cycle while the caller holds the workspace lock."""
 
     workspace_root = Path(workspace_path)
     if not contract.executable:
@@ -12810,6 +12844,50 @@ def run_bounded_evolution_cycle(
         }
     )
     return result
+
+
+def run_bounded_evolution_cycle(
+    *,
+    workspace_path: str | Path,
+    raw_info_root: str | Path,
+    approved_dataset_manifest: str | Path,
+    contract: EvolutionRunContract,
+    allow_external: bool,
+    acknowledged_contract_hash: str | None = None,
+    allow_data_external: bool = False,
+    environ: Mapping[str, str] | None = None,
+    on_progress: ProgressCallback | None = None,
+) -> DualLoopResult:
+    """Run/resume one finite Fast group under an exclusive workspace lock."""
+
+    if not contract.executable:
+        raise ValidationError("legacy_contract_read_only")
+    if allow_data_external and not contract.data_acquisition.enabled:
+        raise ExternalExecutionNotReady(
+            "data_acquisition_not_in_contract",
+            "source-data execution was requested but the frozen contract disabled it",
+        )
+    if contract.data_acquisition.enabled and not allow_data_external:
+        raise ExternalExecutionNotReady(
+            "data_external_approval_required",
+            (
+                "the frozen contract enables source-data acquisition; rerun with "
+                "--data-external before any cycle or evaluation snapshot can start"
+            ),
+        )
+    Path(workspace_path).mkdir(parents=True, exist_ok=True)
+    with EvolutionWorkspace.execution_lock_at(workspace_path):
+        return _run_bounded_evolution_cycle_unlocked(
+            workspace_path=workspace_path,
+            raw_info_root=raw_info_root,
+            approved_dataset_manifest=approved_dataset_manifest,
+            contract=contract,
+            allow_external=allow_external,
+            acknowledged_contract_hash=acknowledged_contract_hash,
+            allow_data_external=allow_data_external,
+            environ=environ,
+            on_progress=on_progress,
+        )
 
 
 def build_run_contract(
