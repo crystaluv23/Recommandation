@@ -1,5 +1,16 @@
 # Status
 
+V111 ready state (2026-09-04): fresh contract `da7b040e...98be` is frozen
+against code `fb601c7`, Python 3.12.14, and the approved development dataset.
+It will run one 24-case Fast round with one candidate and then the dependent Slow
+cycle, with a 64,000-token terminal reserve and V110's fully unspent ceilings of
+246 model attempts, `$16.77035548`, and 618 data requests. Both freeze attempts
+made zero external calls; the first failed closed until provider, capability, and
+source-type wildcard allowlists were explicit. `state.json:last_completed_round=0`,
+`cycle_state.json` is absent, Registry v1 is unchanged, and Locked Test has not been
+accessed. Real execution remains pending explicit approval of the described external
+payloads and destinations.
+
 Current V110 semantic-consistency repair (2026-09-04): after the CLI reserve
 correction, V110 froze contract `d86c1b8...55c` against code `576d02d` with one
 Fast round before Slow, one candidate, a 64,000-token terminal reserve, 246 model
@@ -23,8 +34,8 @@ role repair a sufficient subset: the Predictor may change the judgment plus depe
 magnitude or retain them and change its rationale, while unrelated fields remain
 fixed and the full parser reruns. Exact V109-content regressions and both repair paths,
 all 550 repository tests, and repository lint pass. Because the code changed after
-V110 froze, a fresh successor must retain its unspent ceilings and freeze against the
-new revision before the explicitly approved external run.
+V110 froze, it is immutable zero-call evidence; V111 is its fresh successor for the
+explicitly approved external run.
 
 V110 preflight correction (2026-09-04): the runtime/spec default and its unit
 test required a 64,000-token terminal reserve, but the real `freeze-run` entry
