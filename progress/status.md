@@ -1,5 +1,12 @@
 # Status
 
+V110 preflight correction (2026-09-04): the runtime/spec default and its unit
+test required a 64,000-token terminal reserve, but the real `freeze-run` entry
+still wrote the historical 36,000 value into every new contract. The CLI now
+derives its frozen value from `RuntimeLimits`, and an entry-point regression plus
+all 546 repository tests and repository lint pass. No V110 contract was frozen
+before this correction.
+
 Current V109 repair (2026-09-04): the first executor reached five completed Fast
 cases and then stopped on a retryable TLS EOF; a mistakenly concurrent resume was
 able to enter the same workspace, repeated the previously malformed initial proposer

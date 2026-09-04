@@ -25,6 +25,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvaluationDatasetManager,
     PlanEvaluationConfig,
     RoundPaused,
+    RuntimeLimits,
     SharedEvaluationDataUnavailable,
     SlowLoopDataUnavailable,
 )
@@ -95,6 +96,7 @@ DEFAULT_EXPANSION_PREDICTION_DATES = (
     "2025-09-30",
 )
 DEFAULT_ANCHOR_CASES = PROJECT_ROOT / "configs" / "information_plan_anchor_cases_v1.json"
+DEFAULT_FINALIZATION_TOKEN_RESERVE = RuntimeLimits().finalization_token_reserve
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -716,7 +718,7 @@ def freeze_run(
                 "max_llm_signals_per_round": 2,
                 "max_llm_calls": 40,
                 "max_tokens": 160_000,
-                "finalization_token_reserve": 36_000,
+                "finalization_token_reserve": DEFAULT_FINALIZATION_TOKEN_RESERVE,
                 "basic_info_context_chars": 32_000,
                 "signal_batch_context_chars": 32_000,
                 "predictor_context_bytes": 24_000,

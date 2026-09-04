@@ -22,6 +22,9 @@ SPEC.loader.exec_module(CLI)
 
 
 class EvolutionCliTests(TestCase):
+    def test_freeze_uses_current_terminal_reserve_default(self) -> None:
+        self.assertEqual(CLI.DEFAULT_FINALIZATION_TOKEN_RESERVE, 64_000)
+
     def test_data_external_alone_resolves_to_broad_research_policy(self) -> None:
         policy = CLI._resolve_data_acquisition_policy(
             data_external=True,
