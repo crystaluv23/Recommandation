@@ -1017,6 +1017,85 @@ class ScriptedRoleCaller:
         return self.outputs.pop(0), AgentUsage(llm_calls=1, tokens=5, cost=0.01)
 
 
+class ScopedCorrectionProjectionTests(TestCase):
+    def test_group_alias_recognition_does_not_relax_membership_guard(self) -> None:
+        for label in ("positive", "control"):
+            for qualifier in ("Discovery", "fixed Discovery", "fixed"):
+                text = f"{label} {qualifier} cases are issuers with high growth"
+                self.assertIsNotNone(
+                    evolution_runtime_module._H1_GROUP_REDEFINITION_PATTERN.search(text)
+                )
+        self.assertIsNone(
+            evolution_runtime_module._H1_POSITIVE_CASE_PATTERN.search(
+                "Positive revenue and negative costs occur in the control cases."
+            )
+        )
+
+    def test_nested_projection_preserves_null_siblings_and_source_objects(self) -> None:
+        invalid = {"rows": [{"value": "invalid", "keep": [1, 2]}], "keep": "old"}
+        corrected = {"rows": [{"value": None, "keep": []}], "keep": "drift"}
+        projected, paths = evolution_runtime_module._project_scoped_correction(
+            invalid, corrected, ["rows[0].value"]
+        )
+        self.assertEqual(
+            projected,
+            {"rows": [{"value": None, "keep": [1, 2]}], "keep": "old"},
+        )
+        self.assertEqual(paths, ("rows[0].value",))
+        projected["rows"][0]["keep"].append(3)
+        self.assertEqual(invalid["rows"][0]["keep"], [1, 2])
+        self.assertEqual(corrected["rows"][0]["keep"], [])
+
+    def test_projection_refuses_missing_paths_and_ambiguous_index_shifts(self) -> None:
+        invalid = {"rows": [{"value": 0}, {"value": 1}]}
+        for corrected, path in (
+            ({"rows": [{"value": 1}]}, "rows[0].value"),
+            ({"rows": [{}, {"value": 1}]}, "rows[0].value"),
+            (invalid, "rows[*].value"),
+            (invalid, "rows[-1].value"),
+            (invalid, "rows[0:1]"),
+        ):
+            with self.subTest(path=path, corrected=corrected):
+                self.assertIsNone(
+                    evolution_runtime_module._project_scoped_correction(
+                        invalid, corrected, [path]
+                    )
+                )
+
+    def test_remaining_correction_cannot_launder_unrelated_drift(self) -> None:
+        for repairable_shape in (True, False):
+            with self.subTest(repairable_shape=repairable_shape):
+                invalid = {"rows": [{"value": 0}, {"value": 2}], "keep": "original"}
+                drifted = {"rows": [{"value": -1}, {"value": 2}], "keep": "drift"}
+                if not repairable_shape:
+                    drifted["rows"].pop()
+                corrected = {"rows": [{"value": 1}, {"value": 2}], "keep": "original"}
+                caller = ScriptedRoleCaller([invalid, drifted, corrected])
+                caller.max_structured_corrections = 2
+
+                def parse(value):
+                    if value["rows"][0]["value"] <= 0:
+                        raise ValidationError("rows[0].value must be positive")
+                    return value
+
+                value, usage = evolution_runtime_module._complete_parsed_role(
+                    caller,
+                    stage="fixture",
+                    system_prompt="Return the fixed contract.",
+                    payload={},
+                    parser=parse,
+                    allow_outcomes=False,
+                    enforce_scoped_correction=True,
+                    stable_correction_prefix=True,
+                )
+                self.assertEqual(value, corrected)
+                self.assertEqual(usage.llm_calls, 3)
+                feedback = caller.calls[2]["payload"]["validation_feedback"]
+                self.assertEqual(feedback["invalid_output"]["keep"], "original")
+                self.assertEqual(len(feedback["invalid_output"]["rows"]), 2)
+                self.assertEqual(feedback["required_change_paths"], ["rows[0].value"])
+
+
 class ConcreteRoleAdapterTests(TestCase):
     def test_signal_h1_rejects_empty_portfolio_with_unmet_signal_demand(
         self,
@@ -1594,7 +1673,7 @@ class ConcreteRoleAdapterTests(TestCase):
             ["hypotheses[0].expected_positive_pattern"],
         )
 
-    def test_signal_h1_rejects_correction_drift_in_another_hypothesis(self) -> None:
+    def test_signal_h1_projects_valid_repair_and_discards_unrelated_drift(self) -> None:
         invalid_hypothesis = {
             "hypothesis_id": "analyst_estimate_revision_outcome",
             "statement": (
@@ -1639,10 +1718,86 @@ class ConcreteRoleAdapterTests(TestCase):
             "Production cost guidance distinguishes the fixed Discovery groups."
         )
         caller = ScriptedRoleCaller([invalid, drifted])
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news", "10-q"],
+            }
+        )
+
+        self.assertEqual(
+            caller.stages,
+            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        )
+        self.assertEqual(
+            result.value[0].expected_positive_pattern,
+            drifted["hypotheses"][0]["expected_positive_pattern"],
+        )
+        self.assertEqual(result.value[1].statement, valid_hypothesis["statement"])
+        projection = next(
+            item
+            for item in events
+            if item["event_type"] == "structured_correction_projection_applied"
+        )
+        self.assertEqual(
+            projection["copied_paths"],
+            ["hypotheses[0].expected_positive_pattern"],
+        )
+        self.assertEqual(projection["discarded_paths"], ["hypotheses[1]"])
+
+    def test_signal_h1_projected_correction_still_runs_full_validation(self) -> None:
+        invalid_hypothesis = {
+            "hypothesis_id": "analyst_estimate_revision_outcome",
+            "statement": (
+                "Analyst estimate revisions distinguish the fixed Discovery groups."
+            ),
+            "applicability": "all_ready_issuers",
+            "expected_positive_pattern": (
+                "Positive cases show stronger revenue growth than control cases."
+            ),
+            "source_types": ["news"],
+            "query": "analyst revenue earnings estimates revised",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed estimate "
+                "revisions."
+            ],
+            "lookback_days": 365,
+        }
+        valid_hypothesis = {
+            "hypothesis_id": "production_cost_gap",
+            "statement": (
+                "Production costs distinguish the fixed Discovery groups."
+            ),
+            "applicability": "all_ready_issuers",
+            "expected_positive_pattern": (
+                "Positive cases show lower production costs than control cases."
+            ),
+            "source_types": ["10-q"],
+            "query": "production cost guidance",
+            "falsifiers": [
+                "Positive and control groups show overlapping or reversed production "
+                "costs."
+            ],
+            "lookback_days": 365,
+        }
+        invalid = {"hypotheses": [invalid_hypothesis, valid_hypothesis]}
+        still_invalid = json.loads(json.dumps(invalid))
+        still_invalid["hypotheses"][0]["expected_positive_pattern"] = (
+            "Positive cases show more favorable analyst estimate revisions."
+        )
+        still_invalid["hypotheses"][1]["statement"] = (
+            "Production cost guidance distinguishes the fixed Discovery groups."
+        )
+        caller = ScriptedRoleCaller([invalid, still_invalid])
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
 
         with self.assertRaisesRegex(
             CandidateExecutionRejected,
-            "correction changed unrelated valid content",
+            "must name both positive and control groups",
         ):
             LLMSignalMiningModel(caller).propose_hypotheses(
                 {
@@ -1651,10 +1806,52 @@ class ConcreteRoleAdapterTests(TestCase):
                 }
             )
 
-        self.assertEqual(
-            caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
+        self.assertFalse(
+            any(
+                item["event_type"]
+                == "structured_correction_projection_applied"
+                for item in events
+            )
         )
+
+    def test_signal_h1_accepts_bounded_discovery_group_aliases(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "hypotheses": [
+                        {
+                            "hypothesis_id": "strategic_partnership_gap",
+                            "statement": (
+                                "Strategic partnership disclosures distinguish the "
+                                "fixed Discovery groups."
+                            ),
+                            "applicability": "all_ready_issuers",
+                            "expected_positive_pattern": (
+                                "Positive Discovery cases disclose more strategic "
+                                "partnerships than control Discovery cases."
+                            ),
+                            "source_types": ["news"],
+                            "query": "strategic partnership disclosure",
+                            "falsifiers": [
+                                "Positive and control Discovery cases show overlap or "
+                                "reversal in strategic partnership disclosures."
+                            ],
+                            "lookback_days": 365,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "limits": {"hypothesis_limit": 3},
+                "available_raw_source_types": ["news"],
+            }
+        )
+
+        self.assertEqual(result.value[0].hypothesis_id, "strategic_partnership_gap")
+        self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
 
     def test_signal_h1_rejects_membership_style_group_redefinition(self) -> None:
         base = {

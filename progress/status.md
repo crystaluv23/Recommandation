@@ -1,5 +1,23 @@
 # Status
 
+Current V113 Slow audit and recovery (2026-09-04): V112's committed Fast result
+was consumed through the exact committed-Fast bootstrap. V113 completed 48 model
+calls for `$0.13247836` and 30 provider-ledger requests, committing cycle 1 while
+keeping its Fast pointer at 0. This is not a successful Mining run: H1 used three
+calls, then failed structured correction, so H2/H3 never ran; Update completed three
+targets with conservative deferrals and Registry v1 remained unchanged.
+
+Reading the actual H1 prompt/context and all three responses exposed two generic
+errors: valid `positive Discovery cases` wording was rejected by an overly narrow
+group-mention check, and a repaired field was discarded alongside an unrelated
+rewrite. Fixed-group qualifiers now use the same grammar as the membership guard;
+closed structured corrections can project only authorized model-authored paths,
+restore unrelated values, and pass the complete unchanged parser. Ambiguous list
+index shifts fail closed, and later corrections cannot inherit unrelated drift.
+The exact V113 initial response now passes H1 in one replayed call. All 558 tests
+pass. Actual H2/H3, candidate validation/promotion, and next-Fast visibility remain
+unverified and required for the active MVP goal.
+
 V111 ready state (2026-09-04): fresh contract `da7b040e...98be` is frozen
 against code `fb601c7`, Python 3.12.14, and the approved development dataset.
 It will run one 24-case Fast round with one candidate and then the dependent Slow

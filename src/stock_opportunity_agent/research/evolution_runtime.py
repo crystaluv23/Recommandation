@@ -6154,6 +6154,51 @@ def _scoped_correction_drift_paths(
     return sorted(dict.fromkeys(path or "<root>" for path in drift))
 
 
+def _project_scoped_correction(
+    failed_output: Mapping[str, Any],
+    corrected_output: Mapping[str, Any],
+    must_change_paths: Iterable[str],
+) -> tuple[dict[str, Any], tuple[str, ...]] | None:
+    """Copy only unambiguous authorized correction values onto the failed object."""
+
+    paths = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
+    if not paths:
+        return None
+    projected = deepcopy(dict(failed_output))
+    for path in paths:
+        if re.fullmatch(r"[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*", path) is None:
+            return None
+        tokens = re.findall(r"[A-Za-z_]+|\[\d+\]", path)
+        target: Any = projected
+        source: Any = corrected_output
+        for index, raw_token in enumerate(tokens):
+            final = index == len(tokens) - 1
+            token: str | int = (
+                int(raw_token[1:-1]) if raw_token.startswith("[") else raw_token
+            )
+            if isinstance(token, str):
+                if (
+                    not isinstance(target, dict)
+                    or not isinstance(source, Mapping)
+                    or token not in source
+                    or (not final and token not in target)
+                ):
+                    return None
+            elif (
+                not isinstance(target, list)
+                or not isinstance(source, list)
+                or len(target) != len(source)
+                or token >= len(target)
+            ):
+                return None
+            if final:
+                target[token] = deepcopy(source[token])
+            else:
+                target = target[token]
+                source = source[token]
+    return projected, paths
+
+
 def _research_state_evidence_grounding_fallback(
     failed_output: Mapping[str, Any],
     failure: ValidationError,
@@ -6501,6 +6546,8 @@ def _complete_parsed_role(
                     messages.append("additional local validation: " + safe_parser_error)
                 failure = ValidationError("; ".join(messages))
                 continue
+        projected_paths: tuple[str, ...] = ()
+        discarded_drift_paths: tuple[str, ...] = ()
         try:
             if (
                 attempt
@@ -6530,13 +6577,36 @@ def _complete_parsed_role(
                     must_change_paths,
                 )
                 if drift_paths:
-                    raise ValidationError(
-                        "correction changed unrelated valid content outside "
-                        f"must_change_paths={must_change_paths}, "
-                        f"unrelated_changed_paths={drift_paths}. Preserve every "
-                        "unrelated field and list item byte-for-byte"
+                    projection = _project_scoped_correction(
+                        failed_output,
+                        value,
+                        must_change_paths,
                     )
+                    if projection is None:
+                        scope_failure = ValidationError(
+                            "correction changed unrelated valid content outside "
+                            f"must_change_paths={must_change_paths}, "
+                            f"unrelated_changed_paths={drift_paths}. Preserve every "
+                            "unrelated field and list item byte-for-byte"
+                        )
+                        if attempt == max_corrections:
+                            failure = scope_failure
+                        # Keep the original invalid object and obligations on retry;
+                        # drift diagnostics must not authorize those drifted paths.
+                        continue
+                    value, projected_paths = projection
+                    discarded_drift_paths = tuple(drift_paths)
             parsed_value = _parse_role_output(request_stage, value, parser)
+            if discarded_drift_paths:
+                _emit_runtime_progress(
+                    getattr(caller, "on_progress", None),
+                    "structured_correction_projection_applied",
+                    stage=stage,
+                    request_stage=request_stage,
+                    correction_count=completed_corrections,
+                    copied_paths=list(projected_paths),
+                    discarded_paths=list(discarded_drift_paths),
+                )
             return parsed_value, usage
         except ValidationError as exc:
             failed_output = value if echo_invalid_output_on_correction else {}
@@ -10905,30 +10975,35 @@ _H1_ALTERNATE_TEST_OUTCOME = re.compile(
     r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",
     re.IGNORECASE,
 )
+_H1_GROUP_QUALIFIER = r"(?:(?:fixed\s+)?discovery|fixed)"
+_H1_GROUP_NOUN = r"(?:cases?|groups?(?:\s+cases?)?|cohorts?)"
+_H1_GROUP_PHRASE = (
+    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?(?:positive|control)"
+    rf"\s+(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}"
+)
 _H1_POSITIVE_CASE_PATTERN = re.compile(
-    r"\bpositive(?:\s+(?:cases?|groups?(?:\s+cases?)?|cohorts?)|"
-    r"\s+and\s+control\s+(?:cases?|groups?|cohorts?))\b",
+    rf"\bpositive(?:\s+and\s+control)?\s+"
+    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}\b",
     re.IGNORECASE,
 )
 _H1_CONTROL_CASE_PATTERN = re.compile(
-    r"\bcontrol(?:s|\s+cases?|\s+groups?(?:\s+cases?)?|\s+cohorts?)\b",
+    rf"\b(?:control\s+(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}|controls)\b",
     re.IGNORECASE,
 )
 _H1_INVENTED_CASE_REF = re.compile(
     r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
 )
 _H1_GROUP_REDEFINITION_PATTERN = re.compile(
-    r"(?:\b(?:discovery\s+)?(?:positive|control)\s+"
-    r"(?:cases?|groups?|cohorts?)\s*\([^)]{1,200}\)|"
-    r"\b(?:discovery\s+)?(?:positive|control)\s+"
-    r"(?:cases?|groups?|cohorts?)\s+"
+    rf"(?:\b{_H1_GROUP_PHRASE}\s*\([^)]{{1,200}}\)|"
+    rf"\b{_H1_GROUP_PHRASE}\s+"
     r"(?:are|consist(?:s)?\s+of|comprise(?:s)?|include(?:s)?)\s+"
     r"(?:issuers?|companies?|entities|stocks?)\b[^.;]{0,200}\b"
     r"(?:as|that|which|who|with)\b)",
     re.IGNORECASE,
 )
 _H1_SAME_GROUP_ALIAS_PATTERN = re.compile(
-    r"\b(?P<label>positive|control)\s+(?:cases?|groups?|cohorts?)\s*"
+    rf"\b(?:{_H1_GROUP_QUALIFIER}\s+)?(?P<label>positive|control)\s+"
+    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}\s*"
     r"\(\s*(?:(?:the\s+)?discovery\s+(?P=label)\s+"
     r"(?:cases?|groups?|cohorts?)|(?:the\s+)?fixed\s+discovery\s+"
     r"(?:cases?|groups?|cohorts?))\s*\)",

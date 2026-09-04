@@ -409,6 +409,11 @@ independent hypotheses share one all-or-nothing fate. If the rejected value is
 withheld from correction feedback because it leaked a protected identity, runtime
 cannot compare correction bytes and instead reapplies every semantic validator to
 the replacement; it never weakens the identity boundary merely to enforce scope.
+The fixed-group mention check recognizes the same bounded label aliases on either
+side: `positive/control cases|groups|cohorts`, with optional `fixed` and/or
+`Discovery` qualifiers immediately beside the label. Thus ordinary wording such as
+`positive Discovery cases` is not mistaken for an absent group, while a bare
+`positive` adjective or a newly authored membership definition still does not pass.
 H1 and the Plan proposer validate every proposed source type against the exact supplied
 `available_raw_source_types` enumeration at the role boundary; aliases or
 pluralizations receive the existing one bounded correction rather than becoming
@@ -549,9 +554,11 @@ Predictor semantic correction is path-scoped. When validation names one or more
 equal to the rejected object. For a named list item, all other old items remain in the
 same order and the correction may introduce at most one replacement per named item.
 Thus fixing one baseline reason cannot change `candidate_judgment`, magnitude,
-confidence, session id, unrelated reasons, or uncertainties. Scope drift fails closed
-after the already-authorized correction; runtime neither restores nor rewrites the
-model output locally.
+confidence, session id, unrelated reasons, or uncertainties. The shared call-free
+authorized-path projection may discard unrelated rewrites while retaining an exact
+model-authored repair, followed by complete revalidation. Ambiguous indexed shape
+changes and invalid projected objects still fail closed; runtime never authors a
+reason or a judgment.
 
 The Predictor adapter must persist the exact four-way `candidate_judgment`
 alongside its binary projection and reject an inconsistent pair. Once truth is
@@ -797,6 +804,21 @@ prefix contains only this role-neutral contract. ResearchState-only repair advic
 evidence quantities and claim-length/provenance coupling is appended only to
 H_init/H_reflect; unrelated roles must not pay for or be distracted by evidence fields
 they cannot return.
+
+When a structured correction changes fields outside its closed write scope, runtime
+must not discard a valid repair merely because the provider also rewrote unrelated
+content. It may perform one call-free, role-neutral projection: start from the
+immediately preceding invalid object and copy only values at the exact authorized
+validation paths from the correction. Projection is eligible only when every path is
+syntactically unambiguous and present in the correction; ambiguous list deletion or
+shape change remains fail-closed. Runtime then reruns the unchanged role parser and
+all semantic validators over the projected object. A valid projection is accepted and
+emits `structured_correction_projection_applied` with the copied and discarded paths;
+an invalid projection becomes the safe input to the remaining bounded correction, so
+unrelated drift cannot be laundered through a later attempt. If projection is not
+mechanically possible, the original strict scope failure remains in force and any
+remaining correction repeats the original failed object and authorized paths. The
+projection never invents content, relaxes validation, or adds a model call.
 For quantity failures, correction feedback additionally flattens every affected claim
 and linked assertion into a counted literal checklist. Before return, each listed
 missing literal must either be absent from every retained path or occur in a retained
