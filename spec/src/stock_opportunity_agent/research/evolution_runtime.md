@@ -769,8 +769,32 @@ For quantity failures, correction feedback additionally flattens every affected 
 and linked assertion into a counted literal checklist. Before return, each listed
 missing literal must either be absent from every retained path or occur in a retained
 `exact_text` attached to the identical final claim. Changing the string while retaining
-the same unsupported literal does not satisfy the checklist. This remains diagnostic
-only and does not delete, rewrite, or select a claim locally.
+the same unsupported literal does not satisfy the checklist. Each row includes
+`missing_quantity_mentions` with the affected path, exact authored literal, half-open
+character span, bounded verbatim context, normalized quantity group, and an explicit
+complete-token boundary rule. Substring characters inside another numeric token do not
+count as that occurrence. This makes a one-digit date/day, quarter, or amount as
+executable as a long year or decimal without issuer-specific rules.
+
+If both model corrections are exhausted, ResearchState roles have one deterministic,
+call-free evidence-grounding fallback. It is eligible only when every remaining
+obligation is an unsupported-quantity evidence claim (including all same-claim refs and
+byte-identical linked assertions) or an unlinked quantitative assertion. When one
+invalid Basic ref already carries a non-empty `exact_text` of at most 400 characters,
+runtime first uses an exact-source substitution: it copies that entire literal into the
+claim and named linked assertions byte-for-byte. It does not summarize or choose another
+source. Otherwise runtime removes only the named complete top-level list items, in
+descending original index order per array, and refuses fallback if no evidence would
+remain. Every unlisted value and relative order is preserved byte-for-byte. The same
+parser and all local validators rerun over the grounded object, so a lost required need
+transition, invalid decision, malformed
+shape, identity leak, point-in-time defect, or any other residual error still rejects
+the candidate. Cached provider responses remain unchanged and a
+`structured_validation_fallback_applied` event records the role, exhausted correction
+count, and exact source-substitution and removal paths. Normal and
+successful-correction paths pay no additional
+tokens, while a provider-specific refusal to drop one invalid evidence leaf no longer
+discards all valid work in the case.
 When partial Signal routing claims a facet retained by its residual, its correction
 obligation additionally carries `remove_terms_from_selection_reason`. Shared topic
 words are not themselves a contradiction. If the original target coordinates two

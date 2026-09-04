@@ -393,7 +393,31 @@ linked assertion into a counted literal checklist. Each listed missing literal m
 absent from every retained path unless the final claim on that path has retained
 `exact_text` containing the same literal. Merely changing surrounding words while
 retaining an unsupported year, amount, percentage, or duration does not complete the
-check. Runtime still does not delete or rewrite the claim.
+check. Each checklist row also carries the exact authored numeric-token occurrence:
+its field path, half-open character span, bounded verbatim context, normalized group,
+and a token-boundary rule. A digit sequence inside another number is not the named
+numeric token, so a provider cannot mistake the `7` inside `8.7` for a separately
+authored `7`. Runtime still does not rewrite a claim.
+
+After the frozen correction budget is exhausted, H_init and H_reflect may use one
+call-free evidence-grounding fallback, but only when every remaining validation
+obligation is mechanically reducible to either (a) a quantitative evidence claim whose
+numbers are absent from its same-claim literals, together with byte-identical linked
+beliefs/contradictions, or (b) a quantitative belief/contradiction that does not copy an
+accepted evidence claim. For exactly one invalid Basic ref whose existing `exact_text`
+is a non-empty claim-sized literal, the fallback may copy that whole literal
+byte-for-byte into the claim and its named linked assertions; this is extractive source
+preservation, not a locally authored paraphrase. Otherwise it removes every invalid
+same-claim evidence item and named linked assertion as whole top-level list items. It
+never chooses a different source, changes a hypothesis or need, or handles shape,
+identity, time-boundary, provenance, or other semantic failures. A removal fallback is
+ineligible if it would leave no evidence. It preserves all other values and their order
+byte-for-byte, then reruns the unchanged ResearchState parser and every semantic
+validator; any remaining defect rejects the candidate as before. The original provider
+outputs remain durable, and runtime emits the exact substituted and removed paths as a
+`structured_validation_fallback_applied` trajectory event. Thus the fallback loses only
+locally invalid support instead of losing an otherwise usable case, adds no model call,
+and cannot relax acceptance.
 For an aggregate item-count overflow, correction feedback also reports the exact
 current total, maximum total, minimum removals, and alternative arrays. If the rejected
 object contains mechanically provable duplicate items, that obligation may add bounded

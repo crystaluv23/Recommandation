@@ -1,5 +1,29 @@
 # Status
 
+Current V105 repair (2026-09-04): post-`4b07838` contract
+`541cbe5...7151` made 48 completed calls for `$0.07675780` and three data
+requests. Five Fast cases finalized; case six reached H_init plus both bounded
+corrections before repeating one unsupported numeric detail. Authoritative pointers
+remain `round=0/cycle=0`, Registry v1, and Slow unstarted.
+
+The exact initial and correction requests/responses show that the model fixed every
+other evidence and assertion defect, but retained `August 7, 2025` when its same-claim
+literal contained only `8.7%`, Q2 2025, and 15.94%. Feedback exposed only the missing
+literal `"7"`; because those characters also occur inside `8.7`, the final correction
+mistook substring presence for the separately authored numeric token. Quantity feedback
+now reports every missing occurrence with its field path, half-open character span,
+bounded verbatim context, normalized group, and complete-token boundary rule.
+
+ResearchState roles also have a provider-independent, no-call grounding fallback after
+both corrections are exhausted. It is limited to mechanically isolated unsupported
+numeric evidence/assertions. A single Basic ref may copy its existing short exact source
+literal into the claim and linked assertions; otherwise invalid whole items are removed
+only when evidence remains. All unlisted state is preserved and the unchanged parser and
+semantic validators rerun; mixed, identity, temporal, structural, and transition errors
+still fail closed. The V105 final response replays by exact-source substitution while
+retaining three evidence refs. All 537 tests and repository lint pass. Successor ceilings
+are 197 attempts, `$17.12402172`, and 637 data requests.
+
 Current V104 repair (2026-09-04): post-`1081e00` contract
 `2ebf1856...52f6` made 41 completed calls for `$0.06882904` and three data
 requests. Six Fast cases finalized, including the case that stopped V102, before case

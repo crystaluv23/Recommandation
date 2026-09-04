@@ -7223,6 +7223,244 @@ class ConcreteRoleAdapterTests(TestCase):
             feedback["completion_check"],
         )
 
+    def test_v105_quantity_feedback_names_complete_numeric_token_occurrence(
+        self,
+    ) -> None:
+        claim = (
+            "Bumble reported an 8.7% decrease in total paying users in Q2 2025, "
+            "leading to a 15.94% stock price fall on August 7, 2025."
+        )
+        error = ValidationError(
+            "supporting_evidence[0] claim contains numeric quantities absent from "
+            "all Basic exact_text refs with the same claim, "
+            'missing_quantity_groups=["7"], '
+            'missing_quantity_literals=["7"], '
+            'same_claim_evidence_paths=["supporting_evidence[0].claim"]. '
+            "Change or remove every listed evidence claim together. "
+            "linked_assertions=['current_beliefs[0]'] must copy the corrected "
+            "claim byte-for-byte"
+        )
+        failed_output = {
+            "supporting_evidence": [{"claim": claim}],
+            "current_beliefs": [claim],
+        }
+
+        feedback = evolution_runtime_module._validation_obligations(
+            error,
+            failed_output,
+        )
+
+        check = feedback["quantity_literal_checks"][0]
+        mentions = check["missing_quantity_mentions"]
+        self.assertEqual(
+            [item["affected_path"] for item in mentions],
+            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+        )
+        for mention in mentions:
+            start, end = mention["authored_span"]
+            self.assertEqual(claim[start:end], "7")
+            self.assertEqual(mention["authored_literal"], "7")
+            self.assertEqual(mention["normalized_group"], "7")
+            self.assertIn("August 7, 2025", mention["verbatim_context"])
+            self.assertIn("complete numeric token", mention["token_boundary_rule"])
+        self.assertIn("inside another numeric token", check["completion_rule"])
+
+    def test_v105_initialize_grounds_invalid_claim_from_exact_source_after_retries(
+        self,
+    ) -> None:
+        invalid_claim = (
+            "Bumble reported an 8.7% decrease in paying users in Q2 2025, "
+            "followed by a 15.94% stock fall on August 7, 2025."
+        )
+        valid_claim = (
+            "Bumble reported an 8.7% decrease in paying users in Q2 2025."
+        )
+        exact_text = (
+            "Bumble reported an 8.7% decrease in paying users in Q2 2025, "
+            "followed by a 15.94% stock fall."
+        )
+        invalid = {
+            "hypotheses": [
+                "Weak user trends may prevent a material expectation repricing."
+            ],
+            "current_beliefs": [invalid_claim, valid_claim],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": invalid_claim,
+                    "projection_id": "projection_bumble",
+                    "exact_text": exact_text,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": valid_claim,
+                    "projection_id": "projection_bumble",
+                    "exact_text": exact_text,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "What current product adoption evidence could reverse weak user trends?"
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_bumble",
+                                "exact_text": exact_text,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(len(caller.calls), 3)
+        self.assertEqual(initialized.usage.llm_calls, 3)
+        self.assertEqual(
+            initialized.value.current_beliefs,
+            (exact_text, valid_claim),
+        )
+        self.assertEqual(len(initialized.value.supporting_evidence), 2)
+        self.assertEqual(
+            initialized.value.supporting_evidence[0].claim,
+            exact_text,
+        )
+        self.assertEqual(len(invalid["supporting_evidence"]), 2)
+        fallback_events = [
+            item
+            for item in events
+            if item["event_type"] == "structured_validation_fallback_applied"
+        ]
+        self.assertEqual(len(fallback_events), 1)
+        self.assertEqual(
+            fallback_events[0]["source_substitution_paths"],
+            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+        )
+        self.assertEqual(fallback_events[0]["removed_paths"], [])
+
+    def test_v105_evidence_grounding_refuses_mixed_validation_failures(
+        self,
+    ) -> None:
+        claim = "The metric fell 7% in 2025."
+        failure = ValidationError(
+            "supporting_evidence[0] claim contains numeric quantities absent from "
+            "all Basic exact_text refs with the same claim, "
+            'missing_quantity_groups=["7"], '
+            'missing_quantity_literals=["7"], '
+            'same_claim_evidence_paths=["supporting_evidence[0].claim"]. '
+            "Change or remove every listed evidence claim together; "
+            "supporting_evidence[1] has unknown kind 'other', expected "
+            "'basic_info' or 'signal'"
+        )
+
+        fallback = (
+            evolution_runtime_module._research_state_evidence_grounding_fallback(
+                {
+                    "current_beliefs": [claim],
+                    "supporting_evidence": [
+                        {"claim": claim},
+                        {"kind": "other", "claim": "Unrelated evidence."},
+                    ],
+                },
+                failure,
+            )
+        )
+
+        self.assertIsNone(fallback)
+
+    def test_v105_initialize_removes_invalid_group_only_when_evidence_remains(
+        self,
+    ) -> None:
+        invalid_claim = (
+            "Users fell 8.7% in Q2 2025 and the stock fell 15.94% on day 7."
+        )
+        long_exact_text = (
+            "Users fell 8.7% in Q2 2025 and the stock fell 15.94%."
+            + " Additional source context." * 12
+        )
+        self.assertGreater(len(long_exact_text), 300)
+        valid_claim = "Cash was 10 in 2025."
+        invalid = {
+            "hypotheses": ["Weak usage may limit expectation repricing."],
+            "current_beliefs": [invalid_claim, valid_claim],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": invalid_claim,
+                    "projection_id": "projection_usage",
+                    "exact_text": long_exact_text,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": valid_claim,
+                    "projection_id": "projection_cash",
+                    "exact_text": valid_claim,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["What could improve product adoption?"],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_usage",
+                                "exact_text": long_exact_text,
+                            },
+                            {
+                                "projection_id": "projection_cash",
+                                "exact_text": valid_claim,
+                            },
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(initialized.value.current_beliefs, (valid_claim,))
+        self.assertEqual(
+            tuple(item.claim for item in initialized.value.supporting_evidence),
+            (valid_claim,),
+        )
+        fallback_event = next(
+            item
+            for item in events
+            if item["event_type"] == "structured_validation_fallback_applied"
+        )
+        self.assertEqual(fallback_event["source_substitution_paths"], [])
+        self.assertEqual(
+            fallback_event["removed_paths"],
+            ["supporting_evidence[0]", "current_beliefs[0]"],
+        )
+
     def test_v102_literal_repair_permits_only_linked_claim_changes(self) -> None:
         rows = [
             json.dumps(

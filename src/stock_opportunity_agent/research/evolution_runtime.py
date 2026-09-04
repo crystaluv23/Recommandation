@@ -10,13 +10,14 @@ import platform
 import re
 import subprocess
 import tempfile
+from copy import deepcopy
 from calendar import monthrange
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Protocol
+from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.cases.selection import eligible_common_stock_listings
 from stock_opportunity_agent.config import load_config
@@ -5334,23 +5335,33 @@ def _validation_obligations(
         "obligation_count": len(obligations),
         "obligations": obligations,
     }
-    quantity_literal_checks = [
-        {
+    quantity_literal_checks = []
+    for obligation in obligations:
+        if not obligation.get("missing_quantity_literals"):
+            continue
+        missing_quantity_mentions = _missing_quantity_mentions(
+            obligation,
+            failed_output,
+        )
+        check = {
             "affected_paths": obligation["must_change_paths"],
             "missing_quantity_literals": obligation["missing_quantity_literals"],
             "same_claim_evidence_paths": obligation.get(
                 "same_claim_evidence_paths", []
             ),
             "completion_rule": (
-                "For every missing_quantity_literal, inspect every affected_path in "
-                "the final output. Remove the literal from each retained value; an "
-                "evidence claim may retain it only when final exact_text refs with "
-                "that identical claim contain the literal."
+                "For every missing_quantity_mention, inspect every affected_path and "
+                "the complete numeric token at its half-open authored_span in the "
+                "invalid value. Remove that token occurrence from each retained "
+                "affected path; matching "
+                "characters inside another numeric token do not count. An evidence "
+                "claim may retain it only when final exact_text refs with that "
+                "identical claim contain the complete token."
             ),
         }
-        for obligation in obligations
-        if obligation.get("missing_quantity_literals")
-    ]
+        if missing_quantity_mentions:
+            check["missing_quantity_mentions"] = missing_quantity_mentions
+        quantity_literal_checks.append(check)
     if quantity_literal_checks:
         feedback.update(
             {
@@ -5400,7 +5411,8 @@ def _validation_obligations(
                     )
                     + (
                         " Then complete every quantity_literal_checks row: changing "
-                        "surrounding words does not remove an unsupported literal."
+                        "surrounding words or finding the same characters inside a "
+                        "different numeric token does not remove the authored token."
                         if quantity_literal_checks
                         else ""
                     )
@@ -5447,8 +5459,11 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     " When an obligation contains missing_quantity_groups and "
     "same_claim_evidence_paths, change or remove every listed evidence path, not "
     "only the first one. Every retained same-claim ref must use one identical "
-    "corrected claim with every missing_quantity_literals string deleted unless a "
-    "same-claim literal is added. If deletion removes one side of a comparison, "
+    "corrected claim with every complete token identified by "
+    "missing_quantity_mentions deleted unless a same-claim literal is added. The "
+    "authored_span and verbatim_context identify the exact occurrence; matching "
+    "characters embedded inside another number are a different token. If deletion "
+    "removes one side of a comparison, "
     "narrow it to one grammatical supported observation. Apply that identical final "
     "claim to every named linked assertion."
     " When validation_error lists absent numeric quantities, the minimal valid "
@@ -5460,6 +5475,84 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "provenance, or remove it; update each named linked assertion to copy the "
     "corrected claim byte-for-byte or remove that assertion."
 )
+
+
+def _validation_path_value(
+    value: Mapping[str, Any] | None,
+    path: str,
+) -> Any | None:
+    """Read one top-level indexed validation path without interpreting content."""
+
+    if not isinstance(value, Mapping):
+        return None
+    match = re.fullmatch(
+        r"([A-Za-z_]+)\[(\d+)\](?:\.([A-Za-z_]+))?",
+        path,
+    )
+    if match is None:
+        return None
+    items = value.get(match.group(1))
+    index = int(match.group(2))
+    if not isinstance(items, list) or index >= len(items):
+        return None
+    item = items[index]
+    child = match.group(3)
+    if child is None:
+        return item
+    return item.get(child) if isinstance(item, Mapping) else None
+
+
+def _missing_quantity_mentions(
+    obligation: Mapping[str, Any],
+    failed_output: Mapping[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """Locate complete unsupported numeric tokens in each affected invalid value."""
+
+    missing_groups = obligation.get("missing_quantity_groups")
+    affected_paths = obligation.get("must_change_paths")
+    if not isinstance(missing_groups, list) or not isinstance(affected_paths, list):
+        return []
+    expected_groups = {
+        item for item in missing_groups if isinstance(item, str) and item
+    }
+    mentions: list[dict[str, Any]] = []
+    for path in affected_paths:
+        if not isinstance(path, str):
+            continue
+        text_value = _validation_path_value(failed_output, path)
+        if not isinstance(text_value, str):
+            continue
+        for match, group in zip(
+            _CLAIM_QUANTITY.finditer(text_value),
+            _normalized_claim_quantity_groups(text_value),
+            strict=True,
+        ):
+            normalized_group = "|".join(
+                sorted(group, key=lambda item: (len(item), item))
+            )
+            if normalized_group not in expected_groups:
+                continue
+            literal = match.group(0).rstrip(",")
+            authored_start = match.start()
+            authored_end = authored_start + len(literal)
+            context_start = max(0, authored_start - 48)
+            context_end = min(len(text_value), authored_end + 48)
+            mentions.append(
+                {
+                    "affected_path": path,
+                    "authored_literal": literal,
+                    "authored_span": [authored_start, authored_end],
+                    "normalized_group": normalized_group,
+                    "verbatim_context": text_value[context_start:context_end],
+                    "context_span": [context_start, context_end],
+                    "token_boundary_rule": (
+                        "authored_literal is one complete numeric token at "
+                        "authored_span; the same character sequence inside another "
+                        "numeric token neither supports nor removes this occurrence"
+                    ),
+                }
+            )
+    return mentions
 
 
 def _authorized_correction_paths(
@@ -5636,6 +5729,147 @@ def _scoped_correction_drift_paths(
     return sorted(dict.fromkeys(path or "<root>" for path in drift))
 
 
+def _research_state_evidence_grounding_fallback(
+    failed_output: Mapping[str, Any],
+    failure: ValidationError,
+) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+    """Ground or drop only mechanically isolated invalid evidence assertions."""
+
+    obligations = _validation_obligations(failure, failed_output).get(
+        "obligations", ()
+    )
+    if not isinstance(obligations, list) or not obligations:
+        return None
+    removal_paths: list[str] = []
+    source_substitutions: dict[str, str] = {}
+    for obligation in obligations:
+        if not isinstance(obligation, Mapping):
+            return None
+        instruction = obligation.get("instruction")
+        must_change_paths = obligation.get("must_change_paths")
+        if not isinstance(instruction, str) or not isinstance(
+            must_change_paths, list
+        ):
+            return None
+        if (
+            obligation.get("missing_quantity_literals")
+            and obligation.get("same_claim_evidence_paths")
+        ):
+            evidence_claim_paths = obligation["same_claim_evidence_paths"]
+            if not isinstance(evidence_claim_paths, list) or not evidence_claim_paths:
+                return None
+            permitted_paths = set()
+            evidence_indices: list[int] = []
+            for path in evidence_claim_paths:
+                if not isinstance(path, str):
+                    return None
+                match = re.fullmatch(r"supporting_evidence\[(\d+)\]\.claim", path)
+                if match is None:
+                    return None
+                permitted_paths.add(path)
+                evidence_indices.append(int(match.group(1)))
+            linked_paths: list[str] = []
+            for path in must_change_paths:
+                if not isinstance(path, str):
+                    return None
+                if path in permitted_paths:
+                    continue
+                if re.fullmatch(r"(?:current_beliefs|contradictions)\[\d+\]", path):
+                    permitted_paths.add(path)
+                    linked_paths.append(path)
+                    continue
+                return None
+            if set(must_change_paths) != permitted_paths:
+                return None
+            literal_substitution: str | None = None
+            if len(evidence_indices) == 1:
+                evidence = failed_output.get("supporting_evidence")
+                evidence_index = evidence_indices[0]
+                if isinstance(evidence, list) and evidence_index < len(evidence):
+                    item = evidence[evidence_index]
+                    if isinstance(item, Mapping) and item.get("kind") == "basic_info":
+                        exact_text = item.get("exact_text")
+                        maximum_length = 300 if linked_paths else 400
+                        if (
+                            isinstance(exact_text, str)
+                            and exact_text.strip()
+                            and len(exact_text) <= maximum_length
+                        ):
+                            literal_substitution = exact_text
+            if literal_substitution is not None:
+                for path in (*evidence_claim_paths, *linked_paths):
+                    source_substitutions[path] = literal_substitution
+            else:
+                removal_paths.extend(
+                    f"supporting_evidence[{index}]" for index in evidence_indices
+                )
+                removal_paths.extend(linked_paths)
+            continue
+        if instruction.startswith(
+            "quantitative ResearchState assertions must each copy one "
+            "supporting_evidence claim byte-for-byte"
+        ):
+            if not must_change_paths or not all(
+                isinstance(path, str)
+                and re.fullmatch(
+                    r"(?:current_beliefs|contradictions)\[\d+\]", path
+                )
+                for path in must_change_paths
+            ):
+                return None
+            removal_paths.extend(must_change_paths)
+            continue
+        return None
+
+    removal_paths = list(dict.fromkeys(removal_paths))
+    if not removal_paths and not source_substitutions:
+        return None
+    removals_by_field: dict[str, set[int]] = {}
+    for path in removal_paths:
+        match = re.fullmatch(r"([A-Za-z_]+)\[(\d+)\]", path)
+        if match is None:
+            return None
+        field_name = match.group(1)
+        index = int(match.group(2))
+        items = failed_output.get(field_name)
+        if not isinstance(items, list) or index >= len(items):
+            return None
+        removals_by_field.setdefault(field_name, set()).add(index)
+
+    grounded = deepcopy(dict(failed_output))
+    for path, replacement in source_substitutions.items():
+        match = re.fullmatch(
+            r"([A-Za-z_]+)\[(\d+)\](?:\.([A-Za-z_]+))?",
+            path,
+        )
+        if match is None:
+            return None
+        items = grounded.get(match.group(1))
+        index = int(match.group(2))
+        if not isinstance(items, list) or index >= len(items):
+            return None
+        child = match.group(3)
+        if child is None:
+            items[index] = replacement
+        elif isinstance(items[index], dict):
+            items[index][child] = replacement
+        else:
+            return None
+    for field_name, indices in removals_by_field.items():
+        items = grounded.get(field_name)
+        if not isinstance(items, list):
+            return None
+        for index in sorted(indices, reverse=True):
+            del items[index]
+    evidence = grounded.get("supporting_evidence")
+    if not isinstance(evidence, list) or not evidence:
+        return None
+    return grounded, {
+        "source_substitution_paths": tuple(source_substitutions),
+        "removed_paths": tuple(removal_paths),
+    }
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -5655,6 +5889,11 @@ def _complete_parsed_role(
     correction_guidance: str = "",
     enforce_scoped_correction: bool = False,
     exact_compaction_scope: bool = False,
+    final_validation_fallback: Callable[
+        [Mapping[str, Any], ValidationError],
+        tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None,
+    ]
+    | None = None,
 ) -> tuple[Any, AgentUsage]:
     """Apply the caller's bounded semantic corrections around a structured role."""
 
@@ -5804,6 +6043,38 @@ def _complete_parsed_role(
                 f"{request_stage} returned invalid JSON fields [{keys}]: "
                 f"{type(exc).__name__}: {exc}"
             )
+    if (
+        final_validation_fallback is not None
+        and isinstance(failed_output, Mapping)
+        and bool(failed_output)
+        and failure is not None
+    ):
+        fallback = final_validation_fallback(failed_output, failure)
+        if fallback is not None:
+            fallback_output, fallback_actions = fallback
+            try:
+                parsed_value = _parse_role_output(
+                    f"{stage}_validation_fallback",
+                    fallback_output,
+                    parser,
+                )
+            except ValidationError as fallback_exc:
+                failure = ValidationError(
+                    f"{failure}; deterministic evidence grounding remained invalid: "
+                    f"{fallback_exc}"
+                )
+            else:
+                _emit_runtime_progress(
+                    getattr(caller, "on_progress", None),
+                    "structured_validation_fallback_applied",
+                    stage=stage,
+                    correction_count=max_corrections,
+                    source_substitution_paths=list(
+                        fallback_actions["source_substitution_paths"]
+                    ),
+                    removed_paths=list(fallback_actions["removed_paths"]),
+                )
+                return parsed_value, usage
     correction_count = (
         "one correction"
         if max_corrections == 1
@@ -8300,6 +8571,7 @@ class LLMResearchController:
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
             enforce_scoped_correction=True,
             exact_compaction_scope=True,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
         return AgentStep(state, usage)
 
@@ -8406,6 +8678,7 @@ class LLMResearchController:
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
             enforce_scoped_correction=True,
             exact_compaction_scope=True,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
         return AgentStep(reflected, usage)
 

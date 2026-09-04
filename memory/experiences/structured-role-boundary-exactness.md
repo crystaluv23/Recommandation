@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 8
+visit_times: 9
 
 ## Trigger
 
@@ -79,6 +79,11 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 14. Separate directly invalid paths from bounded permitted dependency paths. A
     mandatory evidence-literal repair may invalidate its same-claim assertions; do not
     simultaneously freeze those dependents and then reject the required consequence.
+15. For unsupported numbers, identify the complete authored token with path, span, and
+    verbatim context; a one-digit token is not satisfied by the same character inside a
+    decimal. After bounded corrections, a deterministic fallback is safe only when it
+    copies an already-visible short source literal or removes mechanically invalid whole
+    items, preserves all unrelated state, and reruns the complete validator.
 
 ## Limits
 
