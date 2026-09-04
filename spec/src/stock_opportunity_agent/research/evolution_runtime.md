@@ -476,9 +476,20 @@ The initial and correction requests use one stable provider prefix with
 cacheable.
 For H3, exact source routing is followed by an ordered query-coverage gate. Longer
 queries require both a short-range ordered consecutive query pair in each kept
-document and complete distinct non-generic query-term coverage across the packet. H3 has an explicit
+document and rounded-up 75-percent distinct non-generic query-term coverage across
+the packet. Excerpt anchors and window scores share the gate's complete-term
+normalization and ordered-pair semantics; raw substring frequency is not evidence
+relevance. H3 has an explicit
 `inconclusive` decision for residual semantic evidence insufficiency; it is persisted
 as evidence-unavailable and cannot become refinement, rejection, or candidate state.
+
+All Slow output and candidate contracts are schema-only, including H3 decisions,
+E1 signatures, and Update decisions/fixtures; no populated answer or business
+example is included. H1 is instructed to retrieve a direction-neutral information
+topic that can serve either fixed group, leaving feature direction to H3 rather
+than requiring it in every source. Update rationale must cover every supplied
+opaque induction ref under the normal correction budget. This checks traceability,
+not semantic truth; actual case-specific reasoning remains an explicit live audit.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

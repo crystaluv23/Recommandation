@@ -1,5 +1,31 @@
 # Status
 
+Current V114 Slow audit (2026-09-04): H1 now produced three accepted hypotheses
+after one correction and deterministic H2 screened 32 ready profiles. H3 never
+called the model: all 36 hypothesis/case evidence resolutions were unavailable
+after relevance filtering. The cycle pointer committed to 1, Fast remained 0,
+and Registry v1 was unchanged. The run completed 48 model calls for `$0.13591368`
+and 40 provider-ledger requests (16 acquisition reservations). These are process
+completion facts, not successful Signal evolution.
+
+The actual Update response copied the complete defer rationale from the prompt
+without discussing any of its four induction cases. Slow output/candidate examples
+are now removed in favor of schema-only contracts, and Update checks that its
+rationale addresses every supplied case ref. H1 now requests direction-neutral
+retrieval subjects; this guidance does not rewrite queries or certify semantic
+relevance. H3 excerpt anchors/scores now share complete-term/plural normalization
+and ordered-pair coverage with the actual model-visible gate, replacing substring
+frequency that selected cover pages. No evidence, validation, or promotion gate
+was weakened. Real-source inspection still found broader unresolved issues:
+query-agnostic local-hit acquisition can stop on off-topic documents; Update
+re-resolves compact evidence instead of retaining its exact execution inputs;
+and fresh bootstrap workspaces do not carry the prior Slow reasoning forward.
+These must be resolved or explicitly verified before another full-MVP claim.
+The next successor has 252 remaining model attempts, `$16.25695168`, and 545
+provider requests. Actual H3, candidate validation/promotion, and next-Fast
+visibility remain required and unverified. All 563 repository tests, repository
+lint, and whitespace checks pass for this repair checkpoint.
+
 Current V113 Slow audit and recovery (2026-09-04): V112's committed Fast result
 was consumed through the exact committed-Fast bootstrap. V113 completed 48 model
 calls for `$0.13247836` and 30 provider-ledger requests, committing cycle 1 while

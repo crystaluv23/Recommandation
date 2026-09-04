@@ -4616,6 +4616,56 @@ class SignalEvolutionTests(TestCase):
             ],
         )
 
+    def test_h3_excerpt_uses_complete_normalized_terms_not_header_substrings(self) -> None:
+        document = RawInfoDocument.create(
+            document_id="plural-query-window",
+            company_id="fixture",
+            source_type="10-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "Office registry reoffering approved guidelines " * 80
+                + "Ordinary disclosure. " * 40
+                + "The entity signed off-take agreements covering production. "
+                + "Debt financing progressed under those agreements. "
+                + "Ordinary disclosure. " * 80
+            ),
+        )
+        view = _agent_raw_document_view(
+            document, max_content_chars=240, query="off take agreement financing"
+        )
+
+        self.assertIn("off-take agreements", view["content_excerpt"])
+        self.assertNotIn("Office registry", view["content_excerpt"])
+        self.assertLessEqual(len(view["content_excerpt"]), 240)
+        self.assertTrue(_h3_text_query_coverage(
+            (view["content_excerpt"],), query="off take agreement financing"
+        )["sufficient"])
+
+    def test_h3_excerpt_prefers_visible_ordered_pair_over_scattered_terms(self) -> None:
+        document = RawInfoDocument.create(
+            document_id="ordered-query-window",
+            company_id="fixture",
+            source_type="filing",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "Revenue " + "ordinary legal terms " * 6 + "growth "
+                + "ordinary legal terms " * 6 + "segment. "
+                + "ordinary disclosure " * 80
+                + "Revenue growth across the segment is discussed here. "
+                + "ordinary disclosure " * 80
+            ),
+        )
+        view = _agent_raw_document_view(
+            document, max_content_chars=320, query="revenue growth segment"
+        )
+
+        self.assertIn("Revenue growth across the segment", view["content_excerpt"])
+        self.assertTrue(_h3_text_query_coverage(
+            (view["content_excerpt"],), query="revenue growth segment"
+        )["sufficient"])
+
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
@@ -5554,6 +5604,8 @@ class SignalEvolutionTests(TestCase):
 
             self.assertEqual(result.promoted, (updated.ref,))
             self.assertEqual(len(update_model.requests), 1)
+            self.assertNotIn("example", update_model.requests[0]["candidate_contract"])
+            self.assertNotIn("example", engine._mining_candidate_contract())
             request_json = json.dumps(update_model.requests[0])
             for case in cases:
                 self.assertNotIn(case.company_id, request_json)

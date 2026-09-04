@@ -3305,6 +3305,72 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn("validation_error", caller.calls[1]["payload"])
 
+    def test_signal_update_corrects_canned_rationale_using_supplied_case_refs(self) -> None:
+        canned = {
+            "signal_ref": "financing_listing_action:v1",
+            "disposition": "defer",
+            "problem_type": "routing_applicability_unclear",
+            "rationale": ["Induction evidence does not isolate a Signal defect."],
+            "candidate": None,
+        }
+        grounded = {
+            **canned,
+            "rationale": [
+                "update-case-001 lacks a disclosed transaction, whereas "
+                "update-case-002 supplies a completed financing. Neither packet "
+                "shows extraction of an available transaction failing."
+            ],
+        }
+        caller = ScriptedRoleCaller([canned, grounded])
+        payload = {
+            "target": {"signal_ref": canned["signal_ref"]},
+            "induction_cases": [
+                {"case_ref": "update-case-001"},
+                {"case_ref": "update-case-002"},
+            ],
+        }
+
+        step = LLMSignalUpdateModel(caller).update(payload)
+
+        self.assertEqual(step.value.rationale, tuple(grounded["rationale"]))
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertIn("missing case_refs", caller.calls[1]["payload"]["validation_error"])
+        self.assertNotIn(canned["rationale"][0], caller.calls[0]["system_prompt"])
+        self.assertIn("do not substitute a generic decision", caller.calls[0]["system_prompt"])
+
+    def test_signal_update_case_ref_traceability_applies_to_no_change(self) -> None:
+        invalid = {
+            "signal_ref": "financing_listing_action:v1",
+            "disposition": "no_change",
+            "problem_type": "routing",
+            "rationale": ["update-case-001-extra is missing evidence."],
+            "candidate": None,
+        }
+        valid = {**invalid, "rationale": ["update-case-001 lacks the required evidence."]}
+        caller = ScriptedRoleCaller([invalid, valid])
+
+        step = LLMSignalUpdateModel(caller).update({
+            "target": {"signal_ref": invalid["signal_ref"]},
+            "induction_cases": [{"case_ref": "update-case-001"}],
+        })
+
+        self.assertEqual(step.value.disposition, "no_change")
+        self.assertEqual(step.usage.llm_calls, 2)
+
+    def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
+        contracts = (
+            evolution_runtime_module._SIGNAL_MINING_DECISIONS_OUTPUT,
+            evolution_runtime_module._SIGNAL_MINING_SIGNATURES_OUTPUT,
+            evolution_runtime_module._SIGNAL_UPDATE_OUTPUT,
+        )
+        for contract in contracts:
+            with self.subTest(contract=contract):
+                self.assertNotIn("example", contract.casefold())
+                self.assertNotIn("large_order_confirmation", contract)
+                self.assertNotIn("case-001", contract)
+                self.assertNotIn("Induction evidence does not isolate", contract)
+                self.assertNotIn("An expectation-changing event", contract)
+
     def test_controller_and_progressive_signal_selector_use_structured_roles(self) -> None:
         controller_caller = ScriptedRoleCaller(
             [

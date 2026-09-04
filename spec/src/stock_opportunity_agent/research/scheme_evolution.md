@@ -1518,7 +1518,8 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    terms, not a two-word bag: a one-term query requires that term, a two-term query
    requires both, and a longer query requires at least two terms plus one consecutive
    query pair occurring in order within a short local term gap. Across the kept packet,
-   every distinct non-generic query term must be covered. This admits
+   one/two-term topics require every term; longer topics require a rounded-up
+   75-percent supermajority and an ordered pair. This admits
    complementary documents such as one `quarterly revenue` source plus one
    `analyst estimate` source, while excluding filing boilerplate that happens to say
    `quarterly`, `revenue`, and `estimates` in unrelated clauses. Substrings such as
@@ -1526,7 +1527,10 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    SEC, market, and facts sources retain their
    issuer routing, but do not bypass this hypothesis-relevance check. The model
    excerpt is a deterministic normalized window centered on the strongest query
-   match, with the complete immutable document hash retained as lineage; it must
+   match, with the complete immutable document hash retained as lineage. Window
+   anchors and scores use the same complete normalized terms and ordered pairs
+   as the visible-evidence gate, not substring counts that reward navigation
+   boilerplate or discard ordinary plural forms; it must
    not substitute an XML header plus signature-page tail for substantive source
    text. Inline-XBRL `ix:header`/hidden resource bodies and script/style bodies are
    removed before query matching as well as projection, so taxonomy member names
@@ -1606,6 +1610,18 @@ enums, and registered deterministic functions. Update has one literal decision
 and candidate contract; it has no domain tools. A new deterministic formula is
 a code-reviewed framework change; Mining or Update may use only functions
 already registered by the runtime.
+
+Slow output and candidate contracts are schema-only: they contain no populated
+business hypothesis, disposition, rationale, skill, or fixture answer to copy.
+H1 retrieval topics name the information subject, not the expected directional
+result; both fixed groups must be retrievable before H3 tests the difference.
+This is model guidance, not a lexical blacklist or an automatic query rewrite.
+Every Update disposition must explain the supplied induction cases, citing each
+opaque case ref in its rationale and distinguishing observed facts from evidence
+gaps. The adapter checks complete case-ref coverage under the ordinary bounded
+correction; this necessary traceability check is not proof of semantic quality,
+which still requires inspection of the actual evidence and response. No candidate
+is synthesized and no promotion gate is relaxed.
 
 Discovery identity removal is owned by the controller at the boundary where one
 case's source-derived brief, evidence packet, Signal-result view, or bootstrap

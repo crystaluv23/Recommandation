@@ -8423,7 +8423,6 @@ class SignalEvolutionEngine:
             "induction_cases": induction_packets,
             "candidate_contract": {
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
-                "example": self._candidate_arguments_example(clone=True),
             },
             "rules": {
                 "dispositions": ["no_change", "defer", "update"],
@@ -9747,7 +9746,6 @@ class SignalEvolutionEngine:
     def _mining_candidate_contract(self) -> dict[str, Any]:
         return {
             "arguments_schema": self._candidate_arguments_schema(clone=False),
-            "example": self._candidate_arguments_example(clone=False),
             "constraints": [
                 "new signal_id only; existing stable identities belong to Update",
                 "non-empty point-in-time fixtures required",
@@ -10020,66 +10018,6 @@ class SignalEvolutionEngine:
                 "spec.version must equal stable version plus one",
             ]
         return schema
-
-    @staticmethod
-    def _candidate_arguments_example(*, clone: bool) -> dict[str, Any]:
-        spec = {
-            "signal_id": "guidance_quality",
-            "version": 2 if clone else 1,
-            "category": "management",
-            "definition": {
-                "description": "Judge whether point-in-time guidance materially strengthens."
-            },
-            "schema": {
-                "value": {
-                    "type": "categorical",
-                    "values": [
-                        "positive",
-                        "neutral",
-                        "negative",
-                        "unavailable",
-                    ],
-                },
-                "confidence": {"type": "float"},
-            },
-            "execution": {
-                "type": "llm",
-                "skill_file": "skills/guidance_quality.md",
-            },
-            "raw_retrieval": {"source_types": ["filing"]},
-            "evidence_policy": {
-                "require_source": True,
-                "require_timestamp": True,
-                "require_exact_span": True,
-            },
-            "parameters": {},
-        }
-        example = {
-            "spec": spec,
-            "skill": (
-                "Classify only explicit point-in-time guidance changes and cite an exact span."
-            ),
-            "tests": [
-                {
-                    "name": "raised guidance",
-                    "as_of": "2025-01-15T12:00:00+00:00",
-                    "company_id": "candidate_fixture",
-                    "expected": "positive",
-                    "documents": [
-                        {
-                            "document_id": "guidance_fixture",
-                            "source_type": "filing",
-                            "published_at": "2025-01-10T12:00:00+00:00",
-                            "available_at": "2025-01-10T12:00:00+00:00",
-                            "content": "Management raised full-year revenue guidance.",
-                        }
-                    ],
-                }
-            ],
-        }
-        if clone:
-            return {"signal_ref": "guidance_quality:v1", **example}
-        return example
 
     def _stage_from_tool(
         self,
@@ -10968,53 +10906,41 @@ def _query_relevant_excerpt(
     text_value = _h3_document_visible_text(document)
     if len(text_value) <= max_chars:
         return text_value, False
-    query_terms = tuple(sorted(_h3_content_terms(query or "", exclude_generic=True)))
-    lowered = text_value.casefold()
-    anchors: list[int] = []
-    for term in query_terms:
-        cursor = 0
-        while (position := lowered.find(term, cursor)) >= 0:
-            end = position + len(term)
-            left_boundary = (
-                position == 0
-                or not text_value[position - 1].isalnum()
-                or (
-                    text_value[position].isupper()
-                    and text_value[position - 1].islower()
-                )
+    query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    anchors = (
+        [
+            match.start()
+            for match in re.finditer(r"[A-Za-z0-9]+", text_value)
+            if query_terms.intersection(
+                _h3_content_terms(match.group(0), exclude_generic=True)
             )
-            right_boundary = (
-                end == len(text_value)
-                or not text_value[end].isalnum()
-                or (
-                    text_value[end].isupper()
-                    and text_value[end - 1].islower()
-                )
-            )
-            if left_boundary and right_boundary:
-                anchors.append(position)
-            cursor = position + 1
+        ]
+        if query_terms else []
+    )
     starts = {0}
     starts.update(
         max(0, min(len(text_value) - max_chars, anchor - max_chars // 3))
         for anchor in anchors
     )
 
+    # Score exactly the boundary-adjusted window that will leave the controller.
+    adjusted_starts = set()
+    for start in starts:
+        boundary = text_value.find(" ", start, start + 80) if start else -1
+        adjusted_starts.add(boundary + 1 if boundary >= 0 else start)
+
     def score(start: int) -> tuple[int, int, int, int]:
-        window = lowered[start : start + max_chars]
-        counts = tuple(window.count(term) for term in query_terms)
+        coverage = _h3_text_query_coverage(
+            (text_value[start : start + max_chars],), query=query
+        )
         return (
-            sum(count > 0 for count in counts),
-            sum(counts),
-            sum(character.isalpha() for character in window),
+            int(coverage["sufficient"]),
+            len(coverage["matched_terms"]),
+            len(coverage["matched_ordered_pairs"]),
             -start,
         )
 
-    start = max(starts, key=score)
-    if start:
-        boundary = text_value.find(" ", start, min(len(text_value), start + 80))
-        if boundary >= 0:
-            start = boundary + 1
+    start = max(adjusted_starts, key=score)
     return text_value[start : start + max_chars], True
 
 

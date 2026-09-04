@@ -11233,19 +11233,10 @@ def _h2_reason_disclaims_applicability(value: str) -> bool:
         for pattern in _H2_SELF_DISQUALIFYING_REASON_PATTERNS
     )
 
-_SIGNAL_MINING_DECISIONS_OUTPUT = _output_contract(
-    "SignalMiningDecisions",
-    {
-        "decisions": [
-            {
-                "hypothesis_id": "large_order_confirmation",
-                "disposition": "inconclusive",
-                "rationale": ["The visible packet lacks the required source material."],
-                "candidate": None,
-            }
-        ]
-    },
-) + (
+_SIGNAL_MINING_DECISIONS_OUTPUT = (
+    " Return one JSON object with exactly decisions (an array). Each decision "
+    "has exactly hypothesis_id (string), disposition (string), rationale "
+    "(non-empty array of evidence-grounded strings), and candidate (object or null). "
     ' disposition must be "supported", "refine", "rejected", or "inconclusive". '
     "Use inconclusive only for semantically insufficient visible evidence. Only supported "
     "may carry a candidate object, which must contain exactly spec, skill, and tests "
@@ -11259,29 +11250,17 @@ _MINING_EVIDENCE_ABSENCE = re.compile(
     flags=re.IGNORECASE,
 )
 
-_SIGNAL_MINING_SIGNATURES_OUTPUT = _output_contract(
-    "SignalMiningSignatures",
-    {
-        "signatures": [
-            {
-                "case_ref": "case-001",
-                "observations": ["An expectation-changing event is explicitly confirmed."],
-                "evidence_gaps": [],
-            }
-        ]
-    },
-) + " Return one signature for every supplied case_ref and do not infer outcomes."
+_SIGNAL_MINING_SIGNATURES_OUTPUT = (
+    " Return one JSON object with exactly signatures (an array). Each signature "
+    "has exactly case_ref (a supplied opaque string), observations (an array of "
+    "source-grounded strings), and evidence_gaps (an array of strings). Return "
+    "one signature for every supplied case_ref and do not infer outcomes."
+)
 
-_SIGNAL_UPDATE_OUTPUT = _output_contract(
-    "SignalUpdateDecision",
-    {
-        "signal_ref": "exact_signal:v1",
-        "disposition": "defer",
-        "problem_type": "routing_applicability_unclear",
-        "rationale": ["Induction evidence does not isolate a Signal defect."],
-        "candidate": None,
-    },
-) + (
+_SIGNAL_UPDATE_OUTPUT = (
+    " Return one JSON object with exactly signal_ref (the exact target string), "
+    "disposition (string), problem_type (string), rationale (non-empty array of "
+    "case-specific strings), and candidate (object or null). "
     ' disposition must be "no_change", "defer", or "update". Only update may '
     "carry a candidate, which must contain exactly signal_ref, spec, skill, and "
     "tests under candidate_contract."
@@ -11305,11 +11284,26 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         if not isinstance(target, Mapping) or not target.get("signal_ref"):
             raise ValidationError("Signal Update requires one local target")
         target_ref = str(target["signal_ref"])
+        induction_refs = {
+            str(item["case_ref"])
+            for item in payload.get("induction_cases", ())
+            if isinstance(item, Mapping) and item.get("case_ref")
+        }
 
         def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
             decision = SignalUpdateDecision.from_dict(value)
             if decision.signal_ref != target_ref:
                 raise ValidationError("Signal Update must preserve target signal_ref")
+            rationale = " ".join(decision.rationale)
+            missing_refs = sorted(
+                ref for ref in induction_refs
+                if re.search(rf"(?<![\w-]){re.escape(ref)}(?![\w-])", rationale) is None
+            )
+            if missing_refs:
+                raise ValidationError(
+                    "Signal Update rationale must explain every supplied induction "
+                    f"case; missing case_refs: {', '.join(missing_refs)}"
+                )
             return decision
 
         value, usage = _complete_parsed_role(
@@ -11324,7 +11318,11 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 "insufficient, or update with one complete vNext candidate. Never "
                 "infer or discuss the hidden holdout, choose another Signal, or "
                 "claim that Plan selection proves causal efficacy. Preserve the "
-                "static semantic identity required by candidate_contract."
+                "static semantic identity required by candidate_contract. For every "
+                "disposition, explain the actual observations or evidence gaps for "
+                "every supplied induction case, explicitly citing each case_ref in "
+                "rationale. Contrast problem cases with successful/neutral boundaries; "
+                "do not substitute a generic decision or treat unavailable as negative."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _SIGNAL_UPDATE_OUTPUT
             ),
@@ -11664,7 +11662,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "result. Exact same-label or fixed-Discovery-group aliases are allowed; "
                 "group membership is already frozen. query must "
                 "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
-                "numeric threshold, or another time-window instruction. For an invalid "
+                "numeric threshold, or another time-window instruction. Retrieve the "
+                "direction-neutral information subject for both fixed groups; do not "
+                "require the hypothesized favorable feature or conclusion in every "
+                "source. H3 tests its presence, absence, and direction from evidence. "
+                "For an invalid "
                 "hypothesis_id/query pair, make both express the same candidate "
                 "construct; expected_positive_pattern must retain at least half of "
                 "their shared normalized topic terms. For an invalid "
