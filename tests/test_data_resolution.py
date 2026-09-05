@@ -274,6 +274,17 @@ class EvidenceResolverTests(TestCase):
             [event.kind for event in second.events],
         )
 
+        distinct_topic = resolver.resolve(
+            RawInfoRequest(
+                "signal:three", "Read compatible news.", ("news",), query="margin"
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        self.assertEqual(adapter.calls, 2)
+        self.assertEqual(distinct_topic.gap.reason, DataGapReason.PROVIDER_ERROR)
+
     def test_enabled_policy_requires_explicit_allowlists_and_real_boolean(self) -> None:
         with self.assertRaisesRegex(ValidationError, "explicit provider"):
             DataAcquisitionPolicy(
@@ -936,10 +947,91 @@ class EvidenceResolverTests(TestCase):
         self.assertEqual(first.documents[0].document_id, "fetched_news")
         self.assertEqual(first.appended_documents[0].document_id, "fetched_news")
         self.assertEqual(adapter.calls, 1)
-        second = resolver.resolve(request, company_id="issuer_1", identity={}, as_of=AS_OF)
+        second = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
         self.assertEqual(second.documents[0].document_id, "fetched_news")
         self.assertEqual(adapter.calls, 1)
 
+    def test_empty_local_selection_continues_to_authorized_acquisition(self) -> None:
+        irrelevant = document("irrelevant", "routine legal boilerplate")
+        relevant = document("relevant", "material guidance outlook discussion")
+        adapter = FakeAdapter(AcquisitionResult((relevant,)))
+        policy = DataAcquisitionPolicy(
+            enabled=True,
+            allowed_providers=("fake_news",),
+            allowed_capabilities=("news",),
+            allowed_source_types=("news",),
+            max_requests_per_cycle=1,
+            max_requests_per_run=1,
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(documents=(irrelevant,)), adapters=(adapter,), policy=policy
+        )
+
+        resolution = resolver.resolve(
+            RawInfoRequest("guidance", "Read guidance.", ("news",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+            select_documents=lambda rows, _request: (
+                row for row in rows if "guidance" in row.content
+            ),
+        )
+
+        self.assertEqual(adapter.calls, 1)
+        self.assertEqual(
+            tuple(item.document_id for item in resolution.documents), ("relevant",)
+        )
+        self.assertEqual(
+            tuple(item.document_id for item in resolution.appended_documents),
+            ("relevant",),
+        )
+
+    def test_document_selector_falls_through_and_rejects_invented_documents(self) -> None:
+        irrelevant = FakeAdapter(
+            AcquisitionResult((document("primary", "routine boilerplate"),))
+        )
+        irrelevant.provider = "primary_news"
+        relevant = FakeAdapter(
+            AcquisitionResult((document("secondary", "guidance evidence"),))
+        )
+        relevant.provider = "secondary_news"
+        policy = DataAcquisitionPolicy(
+            enabled=True,
+            allowed_providers=("primary_news", "secondary_news"),
+            allowed_capabilities=("news",),
+            allowed_source_types=("news",),
+            max_requests_per_cycle=2,
+            max_requests_per_run=2,
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(), adapters=(irrelevant, relevant), policy=policy
+        )
+        request = RawInfoRequest("guidance", "Read guidance.", ("news",))
+
+        resolution = resolver.resolve(
+            request,
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+            select_documents=lambda rows, _request: (
+                row for row in rows if "guidance" in row.content
+            ),
+        )
+
+        self.assertEqual((irrelevant.calls, relevant.calls), (1, 1))
+        self.assertEqual(resolution.documents[0].document_id, "secondary")
+        with self.assertRaisesRegex(ValidationError, "unique unchanged eligible"):
+            resolver.resolve(
+                request,
+                company_id="issuer_1",
+                identity={},
+                as_of=AS_OF,
+                select_documents=lambda _rows, _request: (
+                    document("invented", "guidance evidence"),
+                ),
+            )
     def test_provider_miss_falls_through_to_next_authorized_adapter(self) -> None:
         first = FailingAdapter(DataGapReason.PROVIDER_NO_DATA)
         first.provider = "primary_news"

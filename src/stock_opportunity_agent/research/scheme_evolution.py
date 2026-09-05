@@ -7648,6 +7648,52 @@ def _signal_effectiveness_counts(
     return available, decisive, correct, wrong
 
 
+def _mining_needs_exploration_fallback(audit: Mapping[str, Any]) -> bool:
+    """Return whether H1/H3 ended without a substantive semantic decision."""
+
+    stages = audit.get("stages", {})
+    if not isinstance(stages, Mapping):
+        return True
+    h1 = stages.get("H1", {})
+    if not isinstance(h1, Mapping) or not h1.get("hypotheses"):
+        return True
+    h3 = stages.get("H3", {})
+    if not isinstance(h3, Mapping):
+        return True
+    decisions = h3.get("decisions", ())
+    return not decisions or all(
+        isinstance(item, Mapping) and item.get("disposition") == "inconclusive"
+        for item in decisions
+    )
+
+
+def _merge_mining_fallback(
+    hypothesis: Mapping[str, Any], exploration: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Merge two independent Mining results without changing either audit."""
+
+    def merged_mapping(key: str) -> dict[str, Any]:
+        return {**dict(hypothesis.get(key, {})), **dict(exploration.get(key, {}))}
+
+    return {
+        "candidate_refs": tuple(
+            (*hypothesis.get("candidate_refs", ()), *exploration.get("candidate_refs", ()))
+        ),
+        "induction_case_ids": merged_mapping("induction_case_ids"),
+        "validation_case_ids": merged_mapping("validation_case_ids"),
+        "refined_hypotheses": merged_mapping("refined_hypotheses"),
+        "failures": merged_mapping("failures"),
+        "audit": {
+            "schema_version": "signal-mining-audit-v2",
+            "status": "completed",
+            "track": "hypothesis_then_exploration_fallback",
+            "hypothesis": dict(hypothesis["audit"]),
+            "exploration": dict(exploration["audit"]),
+            "candidate_refs": list(exploration.get("candidate_refs", ())),
+        },
+    }
+
+
 @dataclass(frozen=True)
 class SlowLoopValidation:
     """Durable Slow-loop decision staged before stable Registry mutation."""
@@ -8320,7 +8366,9 @@ class SignalEvolutionEngine:
 
         spec = self.registry.load_spec(signal_ref)
         skill = self.registry.load_skill(signal_ref)
-        classified: dict[str, list[tuple[EvolutionCase, SignalResult]]] = {
+        classified: dict[
+            str, list[tuple[EvolutionCase, SignalResult, RawInfoResolution]]
+        ] = {
             "wrong": [],
             "correct": [],
             "unavailable": [],
@@ -8336,6 +8384,7 @@ class SignalEvolutionEngine:
             )
             execution_usage = execution_usage + batch.usage
             result = batch.results[0]
+            resolution = batch.resolutions[0]
             if result.value is SignalValue.UNAVAILABLE:
                 bucket = "unavailable"
             elif result.value is SignalValue.NEUTRAL:
@@ -8344,7 +8393,7 @@ class SignalEvolutionEngine:
                 bucket = "correct"
             else:
                 bucket = "wrong"
-            classified[bucket].append((case, result))
+            classified[bucket].append((case, result, resolution))
 
         primary_name = (
             "unavailable"
@@ -8358,7 +8407,9 @@ class SignalEvolutionEngine:
         ]
         boundary = boundary_pool[:2]
         induction = tuple([*primary, *boundary])
-        induction_companies = {case.company_id for case, _result in induction}
+        induction_companies = {
+            case.company_id for case, _result, _resolution in induction
+        }
         holdout = tuple(
             case
             for case in cases
@@ -8369,7 +8420,9 @@ class SignalEvolutionEngine:
             "available_bucket_counts": {
                 name: len(values) for name, values in classified.items()
             },
-            "induction_case_ids": [case.case_id for case, _result in induction],
+            "induction_case_ids": [
+                case.case_id for case, _result, _resolution in induction
+            ],
             "holdout_case_ids": [case.case_id for case in holdout],
             "issuer_disjoint": not (
                 induction_companies & {case.company_id for case in holdout}
@@ -8392,24 +8445,17 @@ class SignalEvolutionEngine:
 
         induction_packets: list[dict[str, Any]] = []
         resolutions: list[dict[str, Any]] = []
-        for index, (case, result) in enumerate(induction, start=1):
+        for index, (case, result, resolution) in enumerate(induction, start=1):
             case_ref = f"update-case-{index:03d}"
-            packet, resolution = self._mining_evidence_packet(
+            packet, resolution_audit = self._signal_update_evidence_packet(
                 case_ref,
                 case,
-                source_types=spec.source_types,
-                query=None,
-                lookback_days=self.mining_config.evidence_lookback_days,
-                reveal_label=True,
+                spec=spec,
+                result=result,
+                resolution=resolution,
             )
-            aliases = _discovery_identity_terms((case,))
-            masked_result = _mask_identity_values(
-                signal_result_model_view(result), aliases
-            )
-            _assert_identity_values_masked(masked_result, aliases)
-            packet["current_signal_result"] = masked_result
             induction_packets.append(packet)
-            resolutions.append(resolution)
+            resolutions.append(resolution_audit)
 
         payload = {
             "fixed_prior": self.priors.update_signal,
@@ -8468,7 +8514,9 @@ class SignalEvolutionEngine:
         return self._signal_update_output(
             candidate_refs=(staged_ref,),
             induction_case_ids={
-                staged_ref: tuple(case.case_id for case, _result in induction)
+                staged_ref: tuple(
+                    case.case_id for case, _result, _resolution in induction
+                )
             },
             validation_case_ids={
                 staged_ref: tuple(case.case_id for case in holdout)
@@ -8639,7 +8687,17 @@ class SignalEvolutionEngine:
         )
         if mode == "exploration":
             return self._run_exploration_mining(cycle_id=cycle_id)
-        return self._run_hypothesis_mining(cycle_id=cycle_id)
+        hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
+        if (
+            hypothesis_result["candidate_refs"]
+            or not getattr(
+                self.mining_model, "supports_exploration_fallback", False
+            )
+            or not _mining_needs_exploration_fallback(hypothesis_result["audit"])
+        ):
+            return hypothesis_result
+        exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
+        return _merge_mining_fallback(hypothesis_result, exploration_result)
 
     def _run_hypothesis_mining(self, *, cycle_id: int) -> dict[str, Any]:
         config = self.mining_config
@@ -8825,6 +8883,7 @@ class SignalEvolutionEngine:
                 )
                 continue
             usable_by_class: dict[bool, list[str]] = {True: [], False: []}
+            comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
             attempted_case_refs: list[str] = []
             packet_ref_by_case: dict[str, str] = {}
             for case_ref in rankings[hypothesis.hypothesis_id]:
@@ -8861,13 +8920,26 @@ class SignalEvolutionEngine:
                 stored_packet = evidence_packets_by_key[packet_key]
                 attempted_case_refs.append(case_ref)
                 if stored_packet["evidence"]:
-                    usable_by_class[case_class].append(case_ref)
                     packet_ref_by_case[case_ref] = stored_packet["packet_ref"]
+                    target = (
+                        usable_by_class
+                        if stored_packet.get("query_match_status") == "matched"
+                        else comparator_by_class
+                    )
+                    target[case_class].append(case_ref)
                 if all(
                     len(refs) >= config.induction_cases_per_class
                     for refs in usable_by_class.values()
                 ):
                     break
+            for case_class in (True, False):
+                needed = (
+                    config.induction_cases_per_class
+                    - len(usable_by_class[case_class])
+                )
+                usable_by_class[case_class].extend(
+                    comparator_by_class[case_class][:needed]
+                )
             if not all(
                 len(refs) >= config.induction_cases_per_class
                 for refs in usable_by_class.values()
@@ -9217,6 +9289,12 @@ class SignalEvolutionEngine:
             audit = dict(validation.get("agent_audits", {})).get(
                 "mining_pipeline", {}
             )
+            if (
+                isinstance(audit, Mapping)
+                and audit.get("track") == "hypothesis_then_exploration_fallback"
+                and isinstance(audit.get("hypothesis"), Mapping)
+            ):
+                audit = dict(audit["hypothesis"])
             h1_rows = (
                 dict(dict(audit).get("stages", {}))
                 .get("H1", {})
@@ -9642,6 +9720,56 @@ class SignalEvolutionEngine:
         )
         return {"induction_refs": induction, "validation_refs": validation}
 
+    def _signal_update_evidence_packet(
+        self,
+        case_ref: str,
+        case: EvolutionCase,
+        *,
+        spec: SignalSpec,
+        result: SignalResult,
+        resolution: RawInfoResolution,
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        """Project the exact documents already consumed by one Signal execution."""
+
+        documents = self.evidence_resolver.load_documents(
+            resolution, as_of=case.prediction_time
+        )
+        aliases = _discovery_identity_terms((case,))
+        evidence = [
+            _model_evidence_view(
+                document,
+                index=index,
+                aliases=aliases,
+                query=spec.description,
+            )
+            for index, document in enumerate(documents, start=1)
+        ]
+        masked_result = _mask_identity_values(signal_result_model_view(result), aliases)
+        _assert_identity_values_masked(evidence, aliases)
+        _assert_identity_values_masked(masked_result, aliases)
+        packet = {
+            "case_ref": case_ref,
+            "prediction_time": case.prediction_time.isoformat(),
+            "label": "positive" if case.ground_truth.is_surge else "control",
+            "evidence": evidence,
+            "evidence_scope": (
+                "bounded excerpts from every exact Signal execution input; "
+                "an excerpt cannot prove that an absent fact is absent from the source"
+            ),
+            "resolution_status": resolution.status,
+            "current_signal_result": masked_result,
+        }
+        return packet, {
+            "case_ref": case_ref,
+            "status": resolution.status,
+            "input_request": resolution.request.to_dict(),
+            "document_count": len(documents),
+            "document_ids": [item.document_id for item in documents],
+            "document_hashes": [item.content_hash for item in documents],
+            "as_of": case.prediction_time.isoformat(),
+            "reused_signal_execution_input": True,
+        }
+
     def _mining_evidence_packet(
         self,
         case_ref: str,
@@ -9652,6 +9780,23 @@ class SignalEvolutionEngine:
         lookback_days: int,
         reveal_label: bool,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
+        selection: dict[str, Any] = {}
+
+        def select_documents(
+            candidates: tuple[RawInfoDocument, ...],
+            request: RawInfoRequest,
+        ) -> tuple[RawInfoDocument, ...]:
+            selected, evidence, audit = _select_h3_model_evidence(
+                candidates,
+                case=case,
+                query=query,
+                limit=request.max_documents,
+            )
+            selection.clear()
+            selection.update(audit)
+            selection["evidence"] = evidence
+            return selected
+
         resolution = self.evidence_resolver.resolve(
             RawInfoRequest(
                 request_id=f"signal_mining:{case_ref}",
@@ -9664,59 +9809,33 @@ class SignalEvolutionEngine:
             company_id=case.company_id,
             identity=case.basic_info,
             as_of=case.prediction_time,
+            select_documents=select_documents,
         )
+        if resolution.gap is not None and resolution.gap.reason.value in {
+            "provider_error",
+            "quota_deferred",
+            "materialization_failed",
+        }:
+            raise SlowLoopDataUnavailable(case_ref, resolution.gap.reason.value)
         documents = self.evidence_resolver.load_documents(
             resolution,
             as_of=case.prediction_time,
         )
-        documents, filtered_documents, full_query_coverage = _filter_h3_documents(
-            documents,
-            case=case,
-            query=query,
+        evidence = list(selection.pop("evidence", ())) if documents else []
+        filtered_documents = list(selection.get("filtered_documents", ()))
+        query_coverage = dict(
+            selection.get(
+                "query_coverage",
+                _h3_text_query_coverage((), query=query),
+            )
         )
-        aliases = _discovery_identity_terms((case,))
-        evidence = []
-        for index, document in enumerate(documents, start=1):
-            view = _agent_raw_document_view(
-                document,
-                max_content_chars=1_200,
-                query=query,
-            )
-            evidence.append(
-                {
-                    "document_ref": f"document-{index:02d}",
-                    "source_type": view["source_type"],
-                    "published_at": view["published_at"],
-                    "available_at": view["available_at"],
-                    "content_hash": view["content_hash"],
-                    "content_excerpt": _mask_identity_values(
-                        view["content_excerpt"], aliases
-                    ),
-                    "content_truncated": view["content_truncated"],
-                    "content_projection": view["content_projection"],
-                }
-            )
-        _assert_identity_values_masked(evidence, aliases)
-        query_coverage = _h3_text_query_coverage(
-            (str(item["content_excerpt"]) for item in evidence),
-            query=query,
-        )
-        query_coverage["scope"] = "model_visible_excerpts"
-        query_coverage["full_document_coverage"] = full_query_coverage
-        if documents and not query_coverage["sufficient"]:
-            filtered_documents.extend(
-                {
-                    "document_id": document.document_id,
-                    "reason": "model_excerpt_query_coverage_insufficient",
-                }
-                for document in documents
-            )
-            documents = ()
-            evidence = []
         packet: dict[str, Any] = {
             "case_ref": case_ref,
             "prediction_time": case.prediction_time.isoformat(),
             "evidence": evidence,
+            "query_match_status": selection.get(
+                "query_match_status", "no_exact_source"
+            ),
             "resolution_status": (
                 resolution.status
                 if documents
@@ -10703,72 +10822,127 @@ def _item1_business_excerpt(
     return None
 
 
-def _filter_h3_documents(
-    documents: Iterable[RawInfoDocument],
+def _model_evidence_view(
+    document: RawInfoDocument,
+    *,
+    index: int,
+    aliases: tuple[str, ...],
+    query: str | None,
+) -> dict[str, Any]:
+    """Return one bounded, masked model view with immutable source lineage."""
+
+    view = _agent_raw_document_view(
+        document, max_content_chars=1_200, query=query
+    )
+    return {
+        "document_ref": f"document-{index:02d}",
+        "source_type": view["source_type"],
+        "published_at": view["published_at"],
+        "available_at": view["available_at"],
+        "content_hash": view["content_hash"],
+        "content_excerpt": _mask_identity_values(view["content_excerpt"], aliases),
+        "content_truncated": view["content_truncated"],
+        "content_projection": view["content_projection"],
+    }
+
+
+def _select_h3_model_evidence(
+    documents: tuple[RawInfoDocument, ...],
     *,
     case: EvolutionCase,
     query: str | None,
-) -> tuple[
-    tuple[RawInfoDocument, ...],
-    list[dict[str, str]],
-    dict[str, Any],
-]:
-    """Keep exact-routed sources with hypothesis-relevant visible content."""
+    limit: int,
+) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, Any]], dict[str, Any]]:
+    """Select a bounded complementary H3 packet from an eligible ranked pool."""
 
-    ordered_query_terms = tuple(
-        dict.fromkeys(_h3_ordered_content_terms(query or "", exclude_generic=True))
-    )
-    query_terms = set(ordered_query_terms)
-    kept: list[RawInfoDocument] = []
+    aliases = _discovery_identity_terms((case,))
+    eligible: list[RawInfoDocument] = []
     filtered: list[dict[str, str]] = []
     for document in documents:
-        is_news = "news" in document.source_type.casefold()
-        visible_text = _h3_document_visible_text(document)
-        issuer_match = (
-            document_has_strong_issuer_match(document, case.basic_info)
-            if is_news
-            else True
-        )
-        visible_sequence = _h3_ordered_content_terms(
-            visible_text,
-            exclude_generic=True,
-        )
-        visible_terms = set(visible_sequence)
-        matched_count = len(query_terms & visible_terms)
-        matched_pairs = _h3_matched_query_pairs(
-            ordered_query_terms,
-            visible_sequence,
-        )
-        if len(query_terms) <= 1:
-            relevance_match = not query_terms or matched_count == 1
-        elif len(query_terms) == 2:
-            relevance_match = matched_count == 2
+        if (
+            "news" in document.source_type.casefold()
+            and not document_has_strong_issuer_match(document, case.basic_info)
+        ):
+            filtered.append(
+                {
+                    "document_id": document.document_id,
+                    "reason": "missing_strong_issuer_match",
+                }
+            )
         else:
-            relevance_match = matched_count >= 2 and bool(matched_pairs)
-        if issuer_match and relevance_match:
-            kept.append(document)
-            continue
-        filtered.append(
-            {
-                "document_id": document.document_id,
-                "reason": (
-                    "missing_strong_issuer_match"
-                    if not issuer_match
-                    else "hypothesis_query_irrelevant"
-                ),
-            }
+            eligible.append(document)
+    full_coverage = _h3_packet_query_coverage(eligible, query=query)
+    indexed_views = [
+        (
+            index,
+            document,
+            _model_evidence_view(
+                document, index=1, aliases=aliases, query=query
+            ),
         )
-    coverage = _h3_packet_query_coverage(kept, query=query)
-    if kept and not coverage["sufficient"]:
-        filtered.extend(
-            {
-                "document_id": document.document_id,
-                "reason": "hypothesis_query_coverage_insufficient",
-            }
-            for document in kept
+        for index, document in enumerate(eligible)
+    ]
+    selected: list[RawInfoDocument] = []
+    evidence: list[dict[str, Any]] = []
+    remaining = list(indexed_views)
+    while remaining and len(selected) < limit:
+        best = max(
+            remaining,
+            key=lambda item: _h3_selection_score(
+                (*evidence, item[2]), query=query, rank=item[0]
+            ),
         )
-        kept = []
-    return tuple(kept), filtered, coverage
+        remaining.remove(best)
+        selected.append(best[1])
+        evidence.append(
+            {**best[2], "document_ref": f"document-{len(evidence) + 1:02d}"}
+        )
+    query_coverage = _h3_text_query_coverage(
+        (str(item["content_excerpt"]) for item in evidence), query=query
+    )
+    query_coverage["scope"] = "model_visible_excerpts"
+    query_coverage["full_document_coverage"] = full_coverage
+    selected_ids = {item.document_id for item in selected}
+    filtered.extend(
+        {
+            "document_id": document.document_id,
+            "reason": "document_limit_not_selected",
+        }
+        for document in eligible
+        if document.document_id not in selected_ids
+    )
+    return tuple(selected), evidence, {
+        "filtered_documents": filtered,
+        "query_coverage": query_coverage,
+        "query_match_status": (
+            "matched"
+            if query_coverage["sufficient"]
+            else (
+                "unmatched_comparator_context"
+                if selected
+                else "no_exact_source"
+            )
+        ),
+    }
+
+
+def _h3_selection_score(
+    evidence: tuple[dict[str, Any], ...],
+    *,
+    query: str | None,
+    rank: int,
+) -> tuple[int, int, int, int]:
+    """Prefer sufficient, term-diverse, ordered evidence with stable rank ties."""
+
+    coverage = _h3_text_query_coverage(
+        (str(item["content_excerpt"]) for item in evidence), query=query
+    )
+    return (
+        int(coverage["sufficient"]),
+        len(coverage["matched_terms"]),
+        len(coverage["matched_ordered_pairs"]),
+        -rank,
+    )
 
 
 def _h3_ordered_content_terms(
@@ -10852,17 +11026,21 @@ def _h3_text_query_coverage(
         if len(query_terms) <= 2
         else math.ceil(len(query_terms) * 0.75)
     )
+    required_pair_count = (
+        0 if len(query_terms) <= 2 else math.ceil((len(query_terms) - 1) * 0.5)
+    )
     sufficient = (
         not query_terms
         or (
             len(matched_terms) >= required_match_count
-            and (len(query_terms) <= 2 or bool(matched_pairs))
+            and len(matched_pairs) >= required_pair_count
         )
     )
     return {
         "query_terms": list(ordered_query_terms),
         "matched_terms": sorted(matched_terms),
         "required_match_count": required_match_count,
+        "required_ordered_pair_count": required_pair_count,
         "matched_ordered_pairs": [
             f"{first} {second}" for first, second in sorted(matched_pairs)
         ],

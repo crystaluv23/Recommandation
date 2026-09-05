@@ -1,30 +1,37 @@
 # Status
 
-Current V114 Slow audit (2026-09-04): H1 now produced three accepted hypotheses
-after one correction and deterministic H2 screened 32 ready profiles. H3 never
-called the model: all 36 hypothesis/case evidence resolutions were unavailable
-after relevance filtering. The cycle pointer committed to 1, Fast remained 0,
-and Registry v1 was unchanged. The run completed 48 model calls for `$0.13591368`
-and 40 provider-ledger requests (16 acquisition reservations). These are process
-completion facts, not successful Signal evolution.
+Current V114 systemic Slow repair (2026-09-05): H1 produced three hypotheses and
+H2 screened 32 ready profiles, but the old post-limit relevance filter erased all
+36 H3 case packets before contrast. Replay against the exact Discovery and Raw Info
+inputs found exact-source context for 11/12, 12/12, and 12/12 cases respectively,
+but zero model-visible query matches for every hypothesis. This is a systemic
+H1/data-alignment failure, not 36 independent source outages and not successful
+Signal evolution. V114 remains immutable evidence: cycle pointer 1, Fast pointer 0,
+Registry v1 unchanged, 48 model calls for `$0.13591368`, and 40 provider-ledger
+requests including 16 acquisition reservations.
 
-The actual Update response copied the complete defer rationale from the prompt
-without discussing any of its four induction cases. Slow output/candidate examples
-are now removed in favor of schema-only contracts, and Update checks that its
-rationale addresses every supplied case ref. H1 now requests direction-neutral
-retrieval subjects; this guidance does not rewrite queries or certify semantic
-relevance. H3 excerpt anchors/scores now share complete-term/plural normalization
-and ordered-pair coverage with the actual model-visible gate, replacing substring
-frequency that selected cover pages. No evidence, validation, or promotion gate
-was weakened. Real-source inspection still found broader unresolved issues:
-query-agnostic local-hit acquisition can stop on off-topic documents; Update
-re-resolves compact evidence instead of retaining its exact execution inputs;
-and fresh bootstrap workspaces do not carry the prior Slow reasoning forward.
-These must be resolved or explicitly verified before another full-MVP claim.
+The resolver now permits a pure consumer selector over the complete eligible pool
+before document truncation and reruns it after bounded acquisition; invalid selector
+output fails locally, and failed-acquisition reuse binds the literal query. Mining
+selects complementary bounded excerpts, keeps exact-source nonmatches as explicitly
+unmatched comparator context instead of data gaps, and requires direct query-matched
+packets in both fixed groups before H3 may produce any substantive decision. Thus
+nonmatch can never be treated as feature absence across providers or model styles.
+
+If H1 has no work, H3 has no usable proposal/evidence, or all H3 decisions are
+inconclusive, the production adapter now invokes the existing outcome-hidden
+exploration track once in the same cycle. Its candidates retain the identical
+fixture, holdout, effectiveness, and promotion gates; a substantive H3 refinement
+or rejection is never overridden. Update now reuses each Signal execution's exact
+resolution and records all input hashes plus the bounded-excerpt limitation instead
+of performing a different second retrieval. Slow output contracts remain
+schema-only and Update rationale remains case-ref complete.
+
 The next successor has 252 remaining model attempts, `$16.25695168`, and 545
-provider requests. Actual H3, candidate validation/promotion, and next-Fast
-visibility remain required and unverified. All 563 repository tests, repository
-lint, and whitespace checks pass for this repair checkpoint.
+provider requests. A real successor Slow run, actual prompt/context/response audit,
+candidate validation/promotion, and next-Fast visibility remain required before the
+MVP goal is complete. All 569 repository tests, repository lint, and whitespace
+checks pass for this repair checkpoint.
 
 Current V113 Slow audit and recovery (2026-09-04): V112's committed Fast result
 was consumed through the exact committed-Fast bootstrap. V113 completed 48 model

@@ -11340,6 +11340,8 @@ class LLMSignalUpdateModel(SignalUpdateModel):
 class LLMSignalMiningModel(SignalMiningModel):
     """Concrete five-role adapter for locally orchestrated Signal Mining."""
 
+    supports_exploration_fallback = True
+
     def __init__(self, caller: JSONRoleCaller, *, creative_temperature: float = 1.0):
         if not 0 <= creative_temperature <= 1:
             raise ValidationError("Signal Mining creative temperature must be in [0, 1]")
@@ -11955,6 +11957,14 @@ class LLMSignalMiningModel(SignalMiningModel):
     def contrast(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        packet_metadata = {
+            str(item["packet_ref"]): {
+                "label": str(item.get("label", "")),
+                "query_match_status": str(item.get("query_match_status", "")),
+            }
+            for item in payload.get("evidence_packets", ())
+            if isinstance(item, Mapping) and item.get("packet_ref")
+        }
         allowed = {
             str(item["hypothesis"]["hypothesis_id"])
             for item in payload.get("comparisons", ())
@@ -11962,10 +11972,29 @@ class LLMSignalMiningModel(SignalMiningModel):
             and isinstance(item.get("hypothesis"), Mapping)
             and "hypothesis_id" in item["hypothesis"]
         }
+        inconclusive_only: set[str] = set()
+        for item in payload.get("comparisons", ()):
+            if not isinstance(item, Mapping) or not isinstance(
+                item.get("hypothesis"), Mapping
+            ):
+                continue
+            hypothesis_id = str(item["hypothesis"].get("hypothesis_id", ""))
+            packet_refs = item.get("evidence_packet_refs", ())
+            if not hypothesis_id or not packet_refs:
+                continue
+            matched_labels = {
+                packet_metadata.get(str(ref), {}).get("label")
+                for ref in packet_refs
+                if packet_metadata.get(str(ref), {}).get("query_match_status")
+                == "matched"
+            }
+            if not {"positive", "control"}.issubset(matched_labels):
+                inconclusive_only.add(hypothesis_id)
         return self._decisions(
             stage="signal_mining_contrast",
             payload=payload,
             allowed_hypothesis_ids=allowed,
+            inconclusive_only_ids=inconclusive_only,
             prompt=(
                 "Contrast the supplied exact point-in-time positive and control evidence. "
                 "Support only a repeated observable difference, refine an underspecified "
@@ -11975,7 +12004,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "one decision for every comparison. The controller has preflighted "
                 "deterministic query coverage, but use inconclusive for any residual "
                 "source insufficiency; use refine only for an evidence-grounded semantic "
-                "change and rejected only for visible contradiction."
+                "change and rejected only for visible contradiction. A packet marked "
+                "unmatched_comparator_context is real point-in-time source context, but "
+                "query non-match is not proof that the feature or event is absent; "
+                "without direct positive or counter evidence it supports only an "
+                "inconclusive decision."
             ),
             temperature=0.0,
         )
@@ -12029,6 +12062,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             stage="signal_mining_exploration_discover",
             payload=payload,
             allowed_hypothesis_ids=None,
+            inconclusive_only_ids=set(),
             prompt=(
                 "Compare labels only against the frozen outcome-hidden signatures. "
                 "Propose a reusable new Signal only for a repeated observable difference; "
@@ -12043,6 +12077,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         stage: str,
         payload: Mapping[str, Any],
         allowed_hypothesis_ids: set[str] | None,
+        inconclusive_only_ids: set[str],
         prompt: str,
         temperature: float,
     ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
@@ -12070,6 +12105,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                 else (_raise_mining_shape("Mining decision must be an object"))
                 for item in value["decisions"]
             )
+            invalid_unmatched = sorted(
+                item.hypothesis_id
+                for item in items
+                if item.hypothesis_id in inconclusive_only_ids
+                and item.disposition != "inconclusive"
+            )
+            if invalid_unmatched:
+                raise ValidationError(
+                    "Signal Mining decisions without query-matched positive and "
+                    "control evidence must be inconclusive: "
+                    + ", ".join(invalid_unmatched)
+                )
             ids = [item.hypothesis_id for item in items]
             if len(set(ids)) != len(ids):
                 raise ValidationError("Signal Mining decisions must use unique ids")

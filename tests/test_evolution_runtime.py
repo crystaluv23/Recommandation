@@ -3357,6 +3357,109 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(step.value.disposition, "no_change")
         self.assertEqual(step.usage.llm_calls, 2)
 
+    def test_h3_only_unmatched_comparator_context_forces_inconclusive(self) -> None:
+        rejected = {
+            "decisions": [
+                {
+                    "hypothesis_id": "guidance_change",
+                    "disposition": "rejected",
+                    "rationale": ["The groups directly contradict the hypothesis."],
+                    "candidate": None,
+                }
+            ]
+        }
+        inconclusive = {
+            "decisions": [
+                {
+                    "hypothesis_id": "guidance_change",
+                    "disposition": "inconclusive",
+                    "rationale": [
+                        "The visible comparator packets are semantically insufficient."
+                    ],
+                    "candidate": None,
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([rejected, inconclusive])
+        model = LLMSignalMiningModel(caller)
+
+        step = model.contrast(
+            {
+                "evidence_packets": [
+                    {
+                        "packet_ref": ref,
+                        "query_match_status": "unmatched_comparator_context",
+                    }
+                    for ref in ("packet-a", "packet-b")
+                ],
+                "comparisons": [
+                    {
+                        "hypothesis": {"hypothesis_id": "guidance_change"},
+                        "evidence_packet_refs": ["packet-a", "packet-b"],
+                    }
+                ],
+            }
+        )
+
+        self.assertEqual(step.value[0].disposition, "inconclusive")
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertIn(
+            "without query-matched positive and control evidence",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+
+    def test_h3_one_unmatched_group_forces_inconclusive(self) -> None:
+        supported = {
+            "decisions": [
+                {
+                    "hypothesis_id": "guidance_change",
+                    "disposition": "supported",
+                    "rationale": ["Positive cases contain the queried disclosure."],
+                    "candidate": None,
+                }
+            ]
+        }
+        inconclusive = {
+            "decisions": [
+                {
+                    "hypothesis_id": "guidance_change",
+                    "disposition": "inconclusive",
+                    "rationale": ["The control evidence does not directly test the query."],
+                    "candidate": None,
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([supported, inconclusive])
+
+        step = LLMSignalMiningModel(caller).contrast(
+            {
+                "evidence_packets": [
+                    {
+                        "packet_ref": "packet-positive",
+                        "label": "positive",
+                        "query_match_status": "matched",
+                    },
+                    {
+                        "packet_ref": "packet-control",
+                        "label": "control",
+                        "query_match_status": "unmatched_comparator_context",
+                    },
+                ],
+                "comparisons": [
+                    {
+                        "hypothesis": {"hypothesis_id": "guidance_change"},
+                        "evidence_packet_refs": [
+                            "packet-positive",
+                            "packet-control",
+                        ],
+                    }
+                ],
+            }
+        )
+
+        self.assertEqual(step.value[0].disposition, "inconclusive")
+        self.assertEqual(step.usage.llm_calls, 2)
+
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (
             evolution_runtime_module._SIGNAL_MINING_DECISIONS_OUTPUT,

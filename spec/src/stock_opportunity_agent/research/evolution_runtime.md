@@ -475,9 +475,10 @@ The initial and correction requests use one stable provider prefix with
 `validation_feedback=null` on the initial request so the repeated H2 pool remains
 cacheable.
 For H3, exact source routing is followed by an ordered query-coverage gate. Longer
-queries require both a short-range ordered consecutive query pair in each kept
-document and rounded-up 75-percent distinct non-generic query-term coverage across
-the packet. Excerpt anchors and window scores share the gate's complete-term
+queries require rounded-up 75-percent distinct non-generic query-term coverage
+across the model-visible packet, including at least half of the topic's consecutive
+pairs rounded up within bounded document excerpts.
+Excerpt anchors and window scores share the gate's complete-term
 normalization and ordered-pair semantics; raw substring frequency is not evidence
 relevance. H3 has an explicit
 `inconclusive` decision for residual semantic evidence insufficiency; it is persisted
@@ -490,6 +491,18 @@ topic that can serve either fixed group, leaving feature direction to H3 rather
 than requiring it in every source. Update rationale must cover every supplied
 opaque induction ref under the normal correction budget. This checks traceability,
 not semantic truth; actual case-specific reasoning remains an explicit live audit.
+Mining supplies its exact visible-evidence selector to the shared resolver before
+the document limit. Query-matched packets are preferred; exact-source comparator
+packets are retained and explicitly marked unmatched rather than mislabeled as
+missing data or as proof of absence. Unless both fixed groups contain direct
+query-matched packets, H3 is constrained to `inconclusive`. Update induction uses
+the execution batch's existing resolution, never a new Mining request; all exact
+input hashes and the partial-excerpt boundary are retained for content audit.
+If the hypothesis path has no candidate because it has no usable proposal/evidence
+or only inconclusive H3 decisions, the production adapter executes the existing
+exploration track once in the same Slow cycle. Its audit is nested separately and
+both tracks retain the unchanged candidate and promotion gates; substantive H3
+refinement or rejection is not overridden by this fallback.
 
 The proposal contract also states and validates the fixed market-backbone
 invariant from the Information Plan spec. A proposed `B` must contain a compact

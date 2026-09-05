@@ -1,5 +1,6 @@
 # Changelog
 
+- 2026-09-05: Reclassified V114's 36/36 H3 relevance failures as one systemic evidence-selection and hypothesis-alignment failure; moved pure Mining selection before document truncation/acquisition fallback, retained unmatched exact-source comparator context without treating nonmatch as absence, required query-matched evidence in both fixed groups for substantive H3 decisions, reused exact Signal execution inputs for Update, and added a same-cycle exploration fallback that preserves every validation and promotion gate.
 - 2026-05-02: Migrated the meta mechanism from `../Quant` into this repository as a target-neutral setup: session entry, spec guide, progress tracking, and memory protocol are initialized without carrying over quant-specific assumptions.
 - 2026-05-02: Added a git checkpoint discipline requiring assistant-made project changes to be staged and committed once before the final reply for easier rollback.
 - 2026-05-02: Added a tracked pre-push lint hook, reusable repository lint command, and ignored local lint feedback logs for assistant self-feedback after push checks.

@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Protocol
+from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.models import ValidationError
@@ -123,6 +123,15 @@ class RawInfoRequest:
             max_documents=int(data.get("max_documents", 5)),
             query=(str(data["query"]) if data.get("query") is not None else None),
         )
+
+
+DocumentSelector = Callable[
+    [tuple[RawInfoDocument, ...], RawInfoRequest], Iterable[RawInfoDocument]
+]
+
+
+class _DocumentSelectionError(ValidationError):
+    """A local selection contract failure, never a provider/acquisition error."""
 
 
 @dataclass(frozen=True)
@@ -636,7 +645,7 @@ class EvidenceResolver:
         self.policy = policy
         self.budget = budget or DataAcquisitionBudget()
         self._acquisition_failures: dict[
-            tuple[str, str, str, str, int | None, int], DataGapReason
+            tuple[str, str, str, str, int | None, int, str | None], DataGapReason
         ] = {}
 
     def resolve(
@@ -648,14 +657,20 @@ class EvidenceResolver:
         as_of: datetime,
         include_context: bool = False,
         context_budget: int = MAX_BASIC_INFO_CONTEXT_CHARS,
+        select_documents: DocumentSelector | None = None,
     ) -> RawInfoResolution:
-        """Resolve one request and optionally select exact Basic Info spans."""
+        """Resolve a request, with an optional pure selector over eligible inputs.
+
+        The selector returns unique unchanged documents within the request limit;
+        an empty selection permits normal authorized acquisition fallback.
+        """
 
         documents, filtered_news_ids = self._local_documents(
             request,
             company_id=company_id,
             identity=identity,
             as_of=as_of,
+            select_documents=select_documents,
         )
         events = [self._local_event(request, documents, phase="initial")]
         if filtered_news_ids:
@@ -781,6 +796,7 @@ class EvidenceResolver:
                                 company_id=company_id,
                                 identity=identity,
                                 as_of=as_of,
+                                select_documents=select_documents,
                             )
                             events.append(
                                 self._local_event(
@@ -813,6 +829,8 @@ class EvidenceResolver:
                                     },
                                 )
                             )
+                        except _DocumentSelectionError:
+                            raise
                         except AcquisitionFailure as exc:
                             failures.append((adapter.provider, exc.reason))
                             self._acquisition_failures[failure_key] = exc.reason
@@ -1040,6 +1058,7 @@ class EvidenceResolver:
         company_id: str,
         identity: Mapping[str, Any],
         as_of: datetime,
+        select_documents: DocumentSelector | None = None,
     ) -> tuple[list[RawInfoDocument], tuple[str, ...]]:
         documents = [
             item
@@ -1053,10 +1072,30 @@ class EvidenceResolver:
             documents,
             identity=identity,
         )
-        return (
-            _rank_documents(documents, request)[: request.max_documents],
-            filtered_news_ids,
-        )
+        ranked = _rank_documents(documents, request)
+        if select_documents is None:
+            selected = ranked[: request.max_documents]
+        else:
+            try:
+                selected = list(select_documents(tuple(ranked), request))
+                available = {item.document_id: item for item in ranked}
+                selected_ids = [item.document_id for item in selected]
+                if (
+                    len(selected) > request.max_documents
+                    or len(set(selected_ids)) != len(selected_ids)
+                    or any(available.get(item.document_id) != item for item in selected)
+                ):
+                    raise _DocumentSelectionError(
+                        "Document selector must return unique unchanged eligible "
+                        "documents within the request limit"
+                    )
+            except _DocumentSelectionError:
+                raise
+            except Exception as exc:
+                raise _DocumentSelectionError(
+                    f"Local document selection failed ({type(exc).__name__})"
+                ) from exc
+        return selected, filtered_news_ids
 
     def _select_adapters(
         self, request: RawInfoRequest
@@ -1386,7 +1425,7 @@ def _acquisition_failure_key(
     *,
     company_id: str,
     as_of: datetime,
-) -> tuple[str, str, str, str, int | None, int]:
+) -> tuple[str, str, str, str, int | None, int, str | None]:
     adapter_types = {str(item).casefold() for item in adapter.source_types}
     requested_types = {str(item).casefold() for item in request.source_types}
     route = "|".join(sorted(adapter_types.intersection(requested_types)))
@@ -1401,6 +1440,7 @@ def _acquisition_failure_key(
         as_of.isoformat(),
         request.lookback_days,
         request.max_documents,
+        request.query,
     )
 
 

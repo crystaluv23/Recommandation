@@ -1515,17 +1515,17 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    match in title/body plus hypothesis-query relevance. Ticker-association
    metadata alone is filtered and audited. Every document must match the exact
    requested source semantics. Query relevance is evaluated over ordered normalized
-   terms, not a two-word bag: a one-term query requires that term, a two-term query
-   requires both, and a longer query requires at least two terms plus one consecutive
-   query pair occurring in order within a short local term gap. Across the kept packet,
-   one/two-term topics require every term; longer topics require a rounded-up
-   75-percent supermajority and an ordered pair. This admits
+   terms, not a two-word bag. Across the selected packet, a one-term query requires
+   that term, a two-term query requires both, and longer topics require a rounded-up
+   75-percent supermajority and at least half of the topic's consecutive pairs,
+   rounded up, with each pair occurring in order within one bounded document excerpt
+   and a short local term gap. This admits
    complementary documents such as one `quarterly revenue` source plus one
    `analyst estimate` source, while excluding filing boilerplate that happens to say
    `quarterly`, `revenue`, and `estimates` in unrelated clauses. Substrings such as
    `ounce` in `announced` or `per` in `performance` are not matches. Directly issuer-routed
-   SEC, market, and facts sources retain their
-   issuer routing, but do not bypass this hypothesis-relevance check. The model
+   SEC, market, and facts sources retain their issuer routing, but are still marked
+   matched or unmatched by this hypothesis-relevance check. The model
    excerpt is a deterministic normalized window centered on the strongest query
    match, with the complete immutable document hash retained as lineage. Window
    anchors and scores use the same complete normalized terms and ordered pairs
@@ -1534,15 +1534,31 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    not substitute an XML header plus signature-page tail for substantive source
    text. Inline-XBRL `ix:header`/hidden resource bodies and script/style bodies are
    removed before query matching as well as projection, so taxonomy member names
-   cannot manufacture evidence relevance. If any selected induction case has no usable document after these
-   checks, that hypothesis is recorded separately as evidence-unavailable and
-   is not sent to H3. Data absence is not learned as a hypothesis refinement.
+   cannot manufacture evidence relevance. If a selected induction case has no exact
+   requested source, that hypothesis is recorded separately as evidence-unavailable
+   and is not sent to H3. Data absence is not learned as a hypothesis refinement.
    H3 must return exactly one decision per comparison. `refine` is reserved for an
    actual underspecification supported by visible evidence, `rejected` requires visible
    contradiction, and `inconclusive` records that the model-facing evidence is still
    semantically insufficient despite deterministic preflight. `inconclusive` is carried
    under evidence-unavailable, never as refinement or rejection; absence-language in a
    `refine`/`rejected` rationale receives the one bounded correction.
+
+   The H3 model-visible selection is the resolver's local callback, not a
+   post-resolution filter that can strand a satisfiable request. It inspects the
+   eligible pool before the document-count limit and prefers complementary visible
+   query terms deterministically within that limit. Crucially, a fixed-group
+   comparator is still usable source context when its bounded excerpts do not
+   contain the hypothesized feature: the packet is retained with
+   `query_match_status=unmatched_comparator_context`, not erased as
+   data-unavailable. This status says only that the bounded visible packet lacks
+   the query pattern; it never proves that the feature or event is absent from the
+   company or complete source corpus. Unless both fixed groups contain direct
+   query-matched packets, H3 can yield only `inconclusive`, never support, refine,
+   or rejection. If no exact requested source exists,
+   selection remains empty and the resolver performs normal bounded acquisition
+   fallback. Filter reasons and selected hashes remain in the audit; no query,
+   hypothesis, or group membership is rewritten locally.
 
 Exploration-driven cycles execute:
 
@@ -1558,6 +1574,16 @@ Exploration is a bounded source of new hypotheses, not a separate promotion
 path. The default cadence runs it periodically while hypothesis-driven cycles
 exploit accumulated meta-memory. Both tracks use the same candidate contract
 and stable promotion gate.
+
+The production Mining adapter also provides one same-cycle fallback: when the
+hypothesis track produces no candidate because H1 has no work, H3 cannot assemble
+evidence, or every H3 decision is `inconclusive`, the controller runs the ordinary
+exploration track once. A supported/rejected/refined semantic H3 result does not
+trigger fallback merely because no candidate was promoted. The two audits remain
+separate under one wrapper and candidates still pass the identical fixture and
+paired-effectiveness gates. This is the general recovery branch for an
+underspecified or data-mismatched H1 portfolio; it neither manufactures a
+hypothesis nor weakens an earlier decision.
 
 The Raw Info module remains an exact retrieval boundary. A model never emits a
 free-form ticker for the controller to search: it ranks only allowed opaque
@@ -1585,8 +1611,14 @@ For a selected target, local code executes `vCurrent` on a deterministic,
 issuer-distinct Discovery sample and partitions it before model invocation.
 Induction contains both counterexamples and successful/neutral boundaries when
 available; holdout issuers are reserved and never enter the Update request.
-Point-in-time Raw Info is retrieved through the normal resolver, masked into
-bounded anonymous evidence packets, and the local audit records the split.
+Point-in-time Raw Info is retrieved through the normal resolver during Signal
+execution. Update reuses those exact `RawInfoResolution` inputs without a second
+query, acquisition, date window, or document substitution. All execution-input
+documents (at most ten) receive bounded anonymous excerpts centered on the stable
+Signal description; citations in the result remain available beside that input
+view. The packet explicitly states that excerpts are partial and cannot prove a
+fact is absent. The audit binds the complete ordered document ids/hashes, the
+original request, and the split.
 Insufficient induction support yields a durable `defer` without calling the
 model.
 

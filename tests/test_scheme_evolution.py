@@ -97,8 +97,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _h3_text_query_coverage,
     _item1_business_excerpt,
     _mask_identity_values,
-    _filter_h3_documents,
     _slow_role_identity_guard_inventory,
+    _select_h3_model_evidence,
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
@@ -4478,13 +4478,13 @@ class SignalEvolutionTests(TestCase):
             metadata={"associated_ticker": "TGTS", "title": "Market update"},
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
-            (relevant, metadata_only), case=case, query="guidance"
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (relevant, metadata_only), case=case, query="guidance", limit=2
         )
 
         self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
         self.assertEqual(
-            filtered,
+            audit["filtered_documents"],
             [
                 {
                     "document_id": "metadata-only-news",
@@ -4492,7 +4492,7 @@ class SignalEvolutionTests(TestCase):
                 }
             ],
         )
-        self.assertTrue(coverage["sufficient"])
+        self.assertTrue(audit["query_coverage"]["sufficient"])
 
     def test_h3_visible_brand_from_uppercase_formal_name_is_case_insensitive(
         self,
@@ -4514,13 +4514,13 @@ class SignalEvolutionTests(TestCase):
             content="Ciena raised full-year guidance for networking demand.",
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
-            (relevant,), case=case, query="guidance"
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (relevant,), case=case, query="guidance", limit=1
         )
 
         self.assertEqual(tuple(item.document_id for item in kept), ("relevant-news",))
-        self.assertEqual(filtered, [])
-        self.assertTrue(coverage["sufficient"])
+        self.assertEqual(audit["filtered_documents"], [])
+        self.assertTrue(audit["query_coverage"]["sufficient"])
 
     def test_h3_filing_requires_query_relevance_and_projects_matching_window(
         self,
@@ -4553,10 +4553,11 @@ class SignalEvolutionTests(TestCase):
             content="<html><body>Only a routine legal exhibit.</body></html>",
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
+        kept, _evidence, audit = _select_h3_model_evidence(
             (relevant, irrelevant),
             case=case,
             query="quarterly revenue earnings analyst expectations",
+            limit=1,
         )
         view = _agent_raw_document_view(
             relevant,
@@ -4566,21 +4567,23 @@ class SignalEvolutionTests(TestCase):
 
         self.assertEqual(tuple(item.document_id for item in kept), ("relevant-quarterly",))
         self.assertEqual(
-            filtered,
+            audit["filtered_documents"],
             [
                 {
                     "document_id": "irrelevant-quarterly",
-                    "reason": "hypothesis_query_irrelevant",
+                    "reason": "document_limit_not_selected",
                 }
             ],
         )
         self.assertIn("revenue and earnings exceeded analyst", view["content_excerpt"])
         self.assertNotIn("XML namespace filing header", view["content_excerpt"])
         self.assertEqual(view["content_projection"], "normalized_query_window_v1")
-        self.assertTrue(coverage["sufficient"])
-        self.assertGreaterEqual(len(coverage["matched_ordered_pairs"]), 1)
+        self.assertTrue(audit["query_coverage"]["sufficient"])
+        self.assertGreaterEqual(
+            len(audit["query_coverage"]["matched_ordered_pairs"]), 1
+        )
 
-    def test_h3_rejects_scattered_accounting_boilerplate_query_terms(self) -> None:
+    def test_h3_marks_scattered_accounting_boilerplate_as_comparator_context(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
             basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
@@ -4598,22 +4601,16 @@ class SignalEvolutionTests(TestCase):
             ),
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
-            (boilerplate,),
-            case=case,
-            query="quarterly revenue analyst estimates comparison",
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (boilerplate,), case=case,
+            query="quarterly revenue analyst estimates comparison", limit=1,
         )
 
-        self.assertEqual(kept, ())
-        self.assertFalse(coverage["sufficient"])
+        self.assertEqual(kept, (boilerplate,))
+        self.assertFalse(audit["query_coverage"]["sufficient"])
+        self.assertEqual(audit["filtered_documents"], [])
         self.assertEqual(
-            filtered,
-            [
-                {
-                    "document_id": "accounting-boilerplate",
-                    "reason": "hypothesis_query_irrelevant",
-                }
-            ],
+            audit["query_match_status"], "unmatched_comparator_context"
         )
 
     def test_h3_excerpt_uses_complete_normalized_terms_not_header_substrings(self) -> None:
@@ -4666,6 +4663,52 @@ class SignalEvolutionTests(TestCase):
             (view["content_excerpt"],), query="revenue growth segment"
         )["sufficient"])
 
+    def test_h3_selection_combines_complementary_documents_before_limit(self) -> None:
+        case = replace(
+            make_case("filing_target", 4.0),
+            basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
+        )
+        routine = RawInfoDocument.create(
+            document_id="routine",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content="Quarterly revenue was reported without comparative context.",
+        )
+        estimate = RawInfoDocument.create(
+            document_id="estimate",
+            company_id=case.company_id,
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content="Analyst estimates were the relevant external baseline.",
+        )
+
+        selected, evidence, audit = _select_h3_model_evidence(
+            (routine, estimate),
+            case=case,
+            query="quarterly revenue analyst estimates",
+            limit=2,
+        )
+
+        self.assertEqual({item.document_id for item in selected}, {"routine", "estimate"})
+        self.assertEqual(len(evidence), 2)
+        self.assertTrue(audit["query_coverage"]["sufficient"])
+
+        selected, evidence, audit = _select_h3_model_evidence(
+            (routine, estimate),
+            case=case,
+            query="quarterly revenue analyst estimates",
+            limit=1,
+        )
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(len(evidence), 1)
+        self.assertFalse(audit["query_coverage"]["sufficient"])
+        self.assertEqual(
+            audit["query_match_status"], "unmatched_comparator_context"
+        )
+
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
@@ -4684,10 +4727,9 @@ class SignalEvolutionTests(TestCase):
             ),
         )
 
-        kept, _filtered, full_coverage = _filter_h3_documents(
-            (document,),
-            case=case,
-            query="revenue growth composition volume price segment",
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (document,), case=case,
+            query="revenue growth composition volume price segment", limit=1,
         )
         view = _agent_raw_document_view(
             document,
@@ -4700,7 +4742,9 @@ class SignalEvolutionTests(TestCase):
         )
 
         self.assertEqual(kept, (document,))
-        self.assertTrue(full_coverage["sufficient"])
+        self.assertTrue(
+            audit["query_coverage"]["full_document_coverage"]["sufficient"]
+        )
         self.assertFalse(visible_coverage["sufficient"])
         self.assertNotIn("revenue", visible_coverage["matched_terms"])
 
@@ -4743,24 +4787,24 @@ class SignalEvolutionTests(TestCase):
             content="Analyst estimates called for $110 million.",
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
-            (actuals, estimates),
-            case=case,
-            query="quarterly revenue analyst estimates",
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (actuals, estimates), case=case,
+            query="quarterly revenue analyst estimates", limit=2,
         )
 
         self.assertEqual(
             tuple(item.document_id for item in kept),
             ("quarterly-actuals", "analyst-estimates"),
         )
-        self.assertEqual(filtered, [])
+        self.assertEqual(audit["filtered_documents"], [])
+        coverage = audit["query_coverage"]
         self.assertTrue(coverage["sufficient"])
         self.assertEqual(
             set(coverage["matched_ordered_pairs"]),
             {"analyst estimate", "quarterly revenue"},
         )
 
-    def test_h3_ignores_inline_xbrl_hidden_query_terms(self) -> None:
+    def test_h3_hidden_xbrl_terms_do_not_create_a_query_match(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
             basic_info={"company_name": "Filing Target Corp", "ticker": "FTGT"},
@@ -4778,10 +4822,9 @@ class SignalEvolutionTests(TestCase):
             ),
         )
 
-        kept, filtered, coverage = _filter_h3_documents(
-            (hidden_only,),
-            case=case,
-            query="production volume cost ounce guidance",
+        kept, _evidence, audit = _select_h3_model_evidence(
+            (hidden_only,), case=case,
+            query="production volume cost ounce guidance", limit=1,
         )
         view = _agent_raw_document_view(
             hidden_only,
@@ -4789,9 +4832,11 @@ class SignalEvolutionTests(TestCase):
             query="production volume cost ounce guidance",
         )
 
-        self.assertEqual(kept, ())
-        self.assertFalse(coverage["sufficient"])
-        self.assertEqual(filtered[0]["reason"], "hypothesis_query_irrelevant")
+        self.assertEqual(kept, (hidden_only,))
+        self.assertFalse(audit["query_coverage"]["sufficient"])
+        self.assertEqual(
+            audit["query_match_status"], "unmatched_comparator_context"
+        )
         self.assertNotIn("production", view["content_excerpt"])
         self.assertIn("Routine legal disclosure", view["content_excerpt"])
 
@@ -4939,6 +4984,15 @@ class SignalEvolutionTests(TestCase):
                 rankings={
                     "production_cost_pattern": ("case-001", "case-002")
                 },
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="production_cost_pattern",
+                        disposition="inconclusive",
+                        rationale=(
+                            "The comparator packets contain no direct production-cost evidence.",
+                        ),
+                    ),
+                ),
             )
             raw_store = RawInfoStore(
                 documents=tuple(
@@ -4969,7 +5023,7 @@ class SignalEvolutionTests(TestCase):
             )
             result = engine._run_signal_mining(cycle_id=1)
 
-            self.assertEqual(len(mining_model.requests), 1)
+            self.assertEqual(len(mining_model.requests), 2)
             self.assertNotIn(
                 "production_cost_pattern", result["refined_hypotheses"]
             )
@@ -4978,8 +5032,88 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(
                 result["audit"]["stages"]["H3"]["status"],
-                "not_called_evidence_unavailable",
+                "completed_with_inconclusive",
             )
+            packets = mining_model.requests[1]["evidence_packets"]
+            self.assertEqual(
+                {item["query_match_status"] for item in packets},
+                {"unmatched_comparator_context"},
+            )
+
+    def test_production_mining_falls_back_to_exploration_after_empty_h1(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"explore_{index}", 4.0 if index < 2 else 1.1)
+                for index in range(4)
+            )
+            signatures = tuple(
+                SignalMiningSignature(
+                    case_ref=f"case-{index:03d}",
+                    observations=("A material operational event was disclosed.",),
+                )
+                for index in (1, 3)
+            )
+            mining_model = ScriptedMiningModel(
+                signatures=signatures,
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="exploration_event_pattern",
+                        disposition="refine",
+                        rationale=("The observable event category needs refinement.",),
+                    ),
+                ),
+            )
+            mining_model.supports_exploration_fallback = True
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"explore-news-{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} disclosed an operational event."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=4,
+                    ranking_case_limit=4,
+                    h2_profile_scan_limit=4,
+                    h2_min_ready_issuers=4,
+                    h2_min_ready_per_class=2,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(
+                result["audit"]["track"],
+                "hypothesis_then_exploration_fallback",
+            )
+            self.assertEqual(result["audit"]["hypothesis"]["candidate_refs"], [])
+            self.assertEqual(result["audit"]["exploration"]["track"], "exploration")
+            self.assertIn(
+                "exploration_event_pattern", result["refined_hypotheses"]
+            )
+            self.assertEqual(len(mining_model.requests), 3)
 
     def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
         self,
@@ -5612,6 +5746,18 @@ class SignalEvolutionTests(TestCase):
             update_audit = result.agent_audits["update_pipeline"]
             self.assertEqual(update_audit["target_count"], 1)
             target_audit = update_audit["targets"][0]
+            for packet in update_model.requests[0]["induction_cases"]:
+                self.assertIn("excerpt cannot prove", packet["evidence_scope"])
+                self.assertEqual(len(packet["evidence"]), 1)
+            for resolution in target_audit["resolutions"]:
+                self.assertTrue(resolution["reused_signal_execution_input"])
+                self.assertEqual(resolution["document_count"], 1)
+                self.assertEqual(len(resolution["document_ids"]), 1)
+                self.assertEqual(len(resolution["document_hashes"]), 1)
+                self.assertTrue(
+                    resolution["input_request"]["request_id"].startswith("signal:")
+                )
+                self.assertNotIn("query", resolution["input_request"])
             induction_ids = set(
                 target_audit["local_selection"]["induction_case_ids"]
             )

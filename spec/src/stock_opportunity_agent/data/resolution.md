@@ -45,6 +45,22 @@ RawInfoRequest
 -> resolved documents or DataGap
 ```
 
+`resolve` optionally accepts a pure local `select_documents` callback. It receives
+the deterministic ranked pool only after issuer, exact source type, lookback, and
+availability filtering, plus the original request. It must return at most the
+request's document limit, using unique unchanged members of that pool. Invalid
+selection is a local contract error, never a provider error or an acquisition
+retry. The callback must perform no I/O. Without it, existing ranked-prefix
+selection is unchanged.
+
+An empty selected pool is an unresolved need. The same selection runs after each
+authorized acquisition, so a consumer can require a particular usable input when
+that requirement is truly mandatory. Every provider call retains the existing
+budget, ordering, append-only, and point-in-time guarantees. Failed acquisition
+reuse also binds the literal query; failure for one topic cannot suppress another.
+The resolver owns acquisition only; consumer-specific semantic evidence checks
+remain in the consumer and never import research into the data package.
+
 ## Signal Input Boundary
 
 `SignalExecutor.prepare_inputs` is the only Signal-to-Raw-Info preparation
