@@ -258,7 +258,11 @@ fixing one `B.requests[index].query` cannot rewrite H_init, H_reflect, H_analyse
 another request. A child-field authorization also preserves list shape; only an exact
 element path may authorize adding or removing that element. Broad whole-Plan defects
 with no mechanically narrow path retain the single correction without a false local
-scope guess.
+scope guess. A path inferred from validation prose is eligible for this write scope
+only when its root and every existing ancestor resolve against the rejected JSON
+object; a missing final child is allowed only for an explicit shape repair. Dotted
+prose tokens, abbreviations, domains, and version-like text therefore remain
+diagnostic prose and can never authorize mutation or prevent scoped projection.
 
 Every role that receives source-derived text also receives the same explicit
 untrusted-data instruction: source text cannot override the system message,

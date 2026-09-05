@@ -5341,6 +5341,59 @@ _VALIDATION_OVERLONG_BASIC_LITERAL = re.compile(
 )
 
 
+def _validation_path_targets_output(
+    path: str,
+    failed_output: Mapping[str, Any] | None,
+    *,
+    allow_missing_leaf: bool = False,
+) -> bool:
+    """Return whether a prose-derived path can address the rejected JSON object."""
+
+    if not isinstance(failed_output, Mapping) or re.fullmatch(
+        r"[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*", path
+    ) is None:
+        return False
+    tokens = re.findall(r"[A-Za-z_]+|\[\d+\]", path)
+    current: Any = failed_output
+    for index, raw_token in enumerate(tokens):
+        final = index == len(tokens) - 1
+        token: str | int = (
+            int(raw_token[1:-1]) if raw_token.startswith("[") else raw_token
+        )
+        if isinstance(token, str):
+            if not isinstance(current, Mapping):
+                return False
+            if token not in current:
+                return bool(allow_missing_leaf and final)
+            current = current[token]
+            continue
+        if not isinstance(current, list) or token >= len(current):
+            return False
+        current = current[token]
+    return True
+
+
+def _validated_obligation_paths(
+    paths: Iterable[str],
+    failed_output: Mapping[str, Any] | None,
+    *,
+    allow_missing_leaf: bool = False,
+) -> list[str]:
+    """Keep only unique candidate paths grounded in the rejected JSON shape."""
+
+    return list(
+        dict.fromkeys(
+            path
+            for path in paths
+            if _validation_path_targets_output(
+                path,
+                failed_output,
+                allow_missing_leaf=allow_missing_leaf,
+            )
+        )
+    )
+
+
 def _basic_literal_dependency_paths(
     segment: str,
     failed_output: Mapping[str, Any] | None,
@@ -5550,8 +5603,8 @@ def _validation_obligations(
         for segment in str(failure or "validation failed").split("; ")
         if segment.strip()
     ]
-    independently_invalid_paths = list(
-        dict.fromkeys(
+    independently_invalid_paths = _validated_obligation_paths(
+        (
             path
             for segment in segments
             if _VALIDATION_TOTAL_ITEM_LIMIT.search(segment) is None
@@ -5559,7 +5612,8 @@ def _validation_obligations(
                 *_VALIDATION_OBLIGATION_PATH.findall(segment),
                 *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
             )
-        )
+        ),
+        failed_output,
     )
     obligations: list[dict[str, Any]] = []
     for index, segment in enumerate(segments, start=1):
@@ -5582,20 +5636,26 @@ def _validation_obligations(
                     f"{shape_match.group(1)}.{field_name}"
                     for field_name in (*missing_fields, *unexpected_fields)
                 ]
-        paths = list(
-            dict.fromkeys(
-                shape_paths
-                or (
-                    *_VALIDATION_OBLIGATION_PATH.findall(segment),
-                    *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
-                )
-            )
+        paths = _validated_obligation_paths(
+            shape_paths
+            or (
+                *_VALIDATION_OBLIGATION_PATH.findall(segment),
+                *_VALIDATION_INVALID_FIELD_PATH.findall(segment),
+            ),
+            failed_output,
+            allow_missing_leaf=bool(shape_paths),
         )
+        derived_missing_leaf = False
         if paths and "unknown kind" in segment:
             paths[0] += ".kind"
+            derived_missing_leaf = True
         elif paths and "claim contains numeric quantities" in segment:
             paths[0] += ".claim"
-        paths = list(dict.fromkeys(paths))
+        paths = _validated_obligation_paths(
+            paths,
+            failed_output,
+            allow_missing_leaf=bool(shape_paths) or derived_missing_leaf,
+        )
         obligation = {
             "obligation_index": index,
             "must_change_paths": paths,

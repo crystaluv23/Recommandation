@@ -7844,7 +7844,11 @@ def _merge_mining_fallback(
         "failures": merged_mapping("failures"),
         "audit": {
             "schema_version": "signal-mining-audit-v2",
-            "status": "completed",
+            "status": (
+                "completed_with_hypothesis_failure"
+                if hypothesis["audit"].get("status") == "failed"
+                else "completed"
+            ),
             "track": "hypothesis_then_exploration_fallback",
             "hypothesis": dict(hypothesis["audit"]),
             "exploration": dict(exploration["audit"]),
@@ -8846,16 +8850,57 @@ class SignalEvolutionEngine:
         )
         if mode == "exploration":
             return self._run_exploration_mining(cycle_id=cycle_id)
-        hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
+        fallback_supported = bool(
+            getattr(self.mining_model, "supports_exploration_fallback", False)
+        )
+        hypothesis_failure: CandidateExecutionRejected | None = None
+        try:
+            hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
+        except CandidateExecutionRejected as exc:
+            if not fallback_supported:
+                raise
+            hypothesis_failure = exc
+            hypothesis_result = self._mining_output(
+                audit={
+                    "schema_version": "signal-mining-audit-v1",
+                    "status": "failed",
+                    "cycle_id": cycle_id,
+                    "track": "hypothesis",
+                    "limits": self.mining_config.to_dict(),
+                    "stages": {},
+                    "failure_stage": exc.stage,
+                    "error": str(exc),
+                    "usage": _usage_to_dict(exc.usage),
+                    "candidate_refs": [],
+                    "refined_hypotheses": {},
+                },
+                refined={},
+            )
         if (
             hypothesis_result["candidate_refs"]
-            or not getattr(
-                self.mining_model, "supports_exploration_fallback", False
+            or not fallback_supported
+            or (
+                hypothesis_failure is None
+                and not _mining_needs_exploration_fallback(
+                    hypothesis_result["audit"]
+                )
             )
-            or not _mining_needs_exploration_fallback(hypothesis_result["audit"])
         ):
             return hypothesis_result
-        exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
+        try:
+            exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
+        except ValidationError as exc:
+            if hypothesis_failure is None:
+                raise
+            combined_usage = hypothesis_failure.usage + getattr(
+                exc, "usage", AgentUsage()
+            )
+            raise CandidateExecutionRejected(
+                "signal_mining_pipeline",
+                "hypothesis track failed before same-cycle Exploration fallback: "
+                f"{hypothesis_failure}; Exploration track also failed: {exc}",
+                combined_usage,
+            ) from exc
         return _merge_mining_fallback(hypothesis_result, exploration_result)
 
     def _run_hypothesis_mining(self, *, cycle_id: int) -> dict[str, Any]:

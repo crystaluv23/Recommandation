@@ -1,5 +1,16 @@
 # Status
 
+Current V117 recovery verification (2026-09-05): inspected the real H1 request
+and correction response. Validation prose incorrectly introduced `e.g` as a JSON
+write path, preventing scoped correction projection. Pending recovery changes now
+resolve inferred paths against the rejected object and preserve bounded Exploration
+fallback after hypothesis structured-output exhaustion. All 578 tests and repository
+lint pass. Exact V117 replay clears the bogus-path failure but still detects an
+independent candidate-construct mismatch; it is not a successful live Mining result.
+V117 used 46 model calls for $0.13163836 and committed cycle 1 with no candidates
+or Registry transition. A fresh code-bound Slow run and dependent Fast verification
+remain required.
+
 Current exploration-grounding repair (2026-09-05): the post-V114 audit found
 that E1's old schema forced at least one free-form observation even when a case
 packet had no support, so a different model could fabricate a schema-valid

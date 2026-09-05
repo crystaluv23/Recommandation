@@ -1593,12 +1593,17 @@ and stable promotion gate.
 The production Mining adapter also provides one same-cycle fallback: when the
 hypothesis track produces no candidate because H1 has no work, H3 cannot assemble
 evidence, or every H3 decision is `inconclusive`, the controller runs the ordinary
-exploration track once. A supported/rejected/refined semantic H3 result does not
-trigger fallback merely because no candidate was promoted. The two audits remain
+exploration track once. Exhausting H1 or H3's bounded structured-correction budget is
+also a hypothesis-track-local failure: the controller preserves its exact error and
+usage in the hypothesis audit, then invokes the same exploration track instead of
+skipping Mining for the cycle. A supported/rejected/refined semantic H3 result does
+not trigger fallback merely because no candidate was promoted. The two audits remain
 separate under one wrapper and candidates still pass the identical fixture and
-paired-effectiveness gates. This is the general recovery branch for an
-underspecified or data-mismatched H1 portfolio; it neither manufactures a
-hypothesis nor weakens an earlier decision.
+paired-effectiveness gates. Only when exploration also fails does the combined Mining
+pipeline fail; that error carries both track failures and their cumulative usage.
+This is the general recovery branch for an underspecified, data-mismatched, or
+provider-malformed H1 portfolio; it neither manufactures a hypothesis nor weakens an
+earlier decision.
 
 The Raw Info module remains an exact retrieval boundary. A model never emits a
 free-form ticker for the controller to search: it ranks only allowed opaque
@@ -1750,6 +1755,9 @@ to Update and must use exact `vNext`. Diagnosis or a proposed Signal object is
 not itself a valid candidate. Structured role errors may be repaired only by
 the one frozen correction boundary; local staging/validation errors do not
 become another model call.
+When a hypothesis-track structured role exhausts that boundary, the production
+adapter treats it as a track-local failure and runs the bounded same-cycle Exploration
+fallback described above. This does not grant another correction to the failed role.
 Missing required candidate fields, invalid enums, and other `SignalSpec`
 deserialization failures are exposed to the agent as domain validation feedback;
 they never escape as raw parser exceptions and are never filled with defaults.

@@ -39,6 +39,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     CaseReflectionEvidence,
     CandidateJudgment,
     CandidateProposalRejected,
+    CandidateExecutionRejected,
     ConfidenceLevel,
     DualLoopEvolutionEngine,
     EvaluationCaseReadiness,
@@ -5122,6 +5123,140 @@ class SignalEvolutionTests(TestCase):
                 "exploration_event_pattern", result["refined_hypotheses"]
             )
             self.assertEqual(len(mining_model.requests), 3)
+
+    def test_production_mining_falls_back_after_h1_correction_exhaustion(
+        self,
+    ) -> None:
+        class FailedH1MiningModel(ScriptedMiningModel):
+            supports_exploration_fallback = True
+
+            def propose_hypotheses(self, payload):
+                self.requests.append(dict(payload))
+                raise CandidateExecutionRejected(
+                    "signal_mining_hypotheses",
+                    "signal_mining_hypotheses failed validation after 2 corrections",
+                    AgentUsage(llm_calls=3, tokens=29, cost=0.03),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"recover_{index}", 4.0 if index < 2 else 1.1)
+                for index in range(4)
+            )
+            signatures = tuple(
+                SignalMiningSignature(
+                    case_ref=f"case-{index:03d}",
+                    observations=(
+                        SignalMiningObservation(
+                            summary="A material operational event was disclosed.",
+                            document_ref="document-01",
+                            exact_span="disclosed an operational event.",
+                        ),
+                    ),
+                )
+                for index in (1, 3)
+            )
+            mining_model = FailedH1MiningModel(
+                signatures=signatures,
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="exploration_event_pattern",
+                        disposition="refine",
+                        rationale=("The repeated event needs refinement.",),
+                    ),
+                ),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"recover-news-{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} disclosed an "
+                            "operational event."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=4,
+                    ranking_case_limit=4,
+                    h2_profile_scan_limit=4,
+                    h2_min_ready_issuers=4,
+                    h2_min_ready_per_class=2,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+
+            result = engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(
+                result["audit"]["status"],
+                "completed_with_hypothesis_failure",
+            )
+            self.assertEqual(
+                result["audit"]["track"],
+                "hypothesis_then_exploration_fallback",
+            )
+            hypothesis_audit = result["audit"]["hypothesis"]
+            self.assertEqual(hypothesis_audit["status"], "failed")
+            self.assertEqual(
+                hypothesis_audit["failure_stage"],
+                "signal_mining_hypotheses",
+            )
+            self.assertEqual(hypothesis_audit["usage"]["llm_calls"], 3)
+            self.assertEqual(result["audit"]["exploration"]["track"], "exploration")
+            self.assertIn(
+                "exploration_event_pattern", result["refined_hypotheses"]
+            )
+            self.assertEqual(len(mining_model.requests), 3)
+
+            class FailedBothTracksModel(FailedH1MiningModel):
+                def extract_exploration(self, payload):
+                    self.requests.append(dict(payload))
+                    raise CandidateExecutionRejected(
+                        "signal_mining_exploration_extract",
+                        "exploration extraction remained malformed",
+                        AgentUsage(llm_calls=2, tokens=17, cost=0.02),
+                    )
+
+            failed_model = FailedBothTracksModel()
+            failed_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "failed-workspace"),
+                mining_model=failed_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=engine.mining_config,
+            )
+
+            with self.assertRaises(CandidateExecutionRejected) as caught:
+                failed_engine._run_signal_mining(cycle_id=1)
+
+            self.assertEqual(caught.exception.stage, "signal_mining_pipeline")
+            self.assertEqual(caught.exception.usage.llm_calls, 5)
+            self.assertIn("hypothesis track failed", str(caught.exception))
+            self.assertIn("Exploration track also failed", str(caught.exception))
 
     def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
         self,

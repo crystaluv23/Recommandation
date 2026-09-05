@@ -1681,7 +1681,8 @@ class ConcreteRoleAdapterTests(TestCase):
             ),
             "applicability": "all_ready_issuers",
             "expected_positive_pattern": (
-                "Positive cases show stronger revenue growth than control cases."
+                "Positive cases (e.g., case 23) show stronger revenue growth than "
+                "control cases."
             ),
             "source_types": ["news"],
             "query": "analyst revenue earnings estimates revised",
@@ -1737,6 +1738,16 @@ class ConcreteRoleAdapterTests(TestCase):
             drifted["hypotheses"][0]["expected_positive_pattern"],
         )
         self.assertEqual(result.value[1].statement, valid_hypothesis["statement"])
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("e.g.", feedback["validation_error"])
+        self.assertNotIn(
+            "e.g",
+            {
+                path
+                for obligation in feedback["obligations"]
+                for path in obligation["must_change_paths"]
+            },
+        )
         projection = next(
             item
             for item in events
@@ -8053,7 +8064,19 @@ class ConcreteRoleAdapterTests(TestCase):
             "claim byte-for-byte"
         )
 
-        feedback = evolution_runtime_module._validation_obligations(error, {})
+        feedback = evolution_runtime_module._validation_obligations(
+            error,
+            {
+                "supporting_evidence": [
+                    {"claim": "Unrelated claim."},
+                    {"claim": "The milestone is expected in 2031."},
+                ],
+                "current_beliefs": [
+                    "Unrelated belief.",
+                    "The milestone is expected in 2031.",
+                ],
+            },
+        )
 
         self.assertEqual(feedback["quantity_literal_check_count"], 1)
         check = feedback["quantity_literal_checks"][0]
