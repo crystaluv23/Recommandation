@@ -7219,22 +7219,93 @@ class SignalMiningDecision:
 
 
 @dataclass(frozen=True)
+class SignalMiningObservation:
+    """One locally verifiable observation over a model-visible evidence span."""
+
+    summary: str
+    document_ref: str
+    exact_span: str
+
+    def __post_init__(self) -> None:
+        if (
+            not isinstance(self.summary, str)
+            or not self.summary.strip()
+            or len(self.summary) > 500
+        ):
+            raise ValidationError(
+                "Mining observation summary must contain 1-500 characters"
+            )
+        _validate_id(self.document_ref, "mining observation document_ref")
+        if not 8 <= len(self.exact_span) <= 240:
+            raise ValidationError(
+                "Mining observation exact_span must contain 8-240 characters"
+            )
+        visible_tokens = re.findall(
+            r"[A-Za-z0-9]+", self.exact_span.replace(_MASKED_IDENTITY_VALUE, "")
+        )
+        if len(visible_tokens) < 2:
+            raise ValidationError(
+                "Mining observation exact_span must contain at least two visible tokens"
+            )
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "summary": self.summary,
+            "document_ref": self.document_ref,
+            "exact_span": self.exact_span,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningObservation":
+        required = {"summary", "document_ref", "exact_span"}
+        if set(data) != required:
+            raise ValidationError(
+                "Mining observation requires exactly: "
+                + ", ".join(sorted(required))
+            )
+        return cls(
+            summary=str(data["summary"]),
+            document_ref=str(data["document_ref"]),
+            exact_span=str(data["exact_span"]),
+        )
+
+
+@dataclass(frozen=True)
 class SignalMiningSignature:
     """One outcome-hidden observable signature extracted from Raw Info."""
 
     case_ref: str
-    observations: tuple[str, ...]
+    observations: tuple[SignalMiningObservation, ...]
     evidence_gaps: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         _validate_id(self.case_ref, "mining signature case_ref")
-        if not self.observations or any(not item.strip() for item in self.observations):
-            raise ValidationError("Mining signature requires observations")
+        if any(
+            not isinstance(item, SignalMiningObservation)
+            for item in self.observations
+        ):
+            raise ValidationError("Mining signature observations must be objects")
+        if len(self.observations) > 6:
+            raise ValidationError("Mining signature allows at most six observations")
+        if not self.observations and not self.evidence_gaps:
+            raise ValidationError(
+                "Mining signature without observations requires an evidence gap"
+            )
+        if any(
+            not isinstance(item, str) or not item.strip()
+            for item in self.evidence_gaps
+        ):
+            raise ValidationError("Mining signature evidence gaps must be non-empty")
+        identities = [
+            (item.document_ref, item.exact_span) for item in self.observations
+        ]
+        if len(set(identities)) != len(identities):
+            raise ValidationError("Mining signature observations must be unique")
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "case_ref": self.case_ref,
-            "observations": list(self.observations),
+            "observations": [item.to_dict() for item in self.observations],
             "evidence_gaps": list(self.evidence_gaps),
         }
 
@@ -7246,11 +7317,99 @@ class SignalMiningSignature:
                 "Signal Mining signature requires exactly: "
                 + ", ".join(sorted(required))
             )
+        observations: list[SignalMiningObservation] = []
+        for item in _json_array(data, "observations"):
+            if not isinstance(item, Mapping):
+                raise ValidationError("Mining observation must be an object")
+            observations.append(SignalMiningObservation.from_dict(item))
         return cls(
             case_ref=str(data["case_ref"]),
-            observations=_json_string_array(data, "observations"),
+            observations=tuple(observations),
             evidence_gaps=_json_string_array(data, "evidence_gaps", required=False),
         )
+
+
+def validate_signal_mining_signatures(
+    signatures: Iterable[SignalMiningSignature],
+    evidence_packets: Iterable[Mapping[str, Any]],
+) -> tuple[SignalMiningSignature, ...]:
+    """Bind every E1 observation to one exact supplied model-visible literal."""
+
+    values = tuple(signatures)
+    packets = tuple(evidence_packets)
+    packet_by_ref: dict[str, Mapping[str, Any]] = {}
+    for packet_index, packet in enumerate(packets):
+        if not isinstance(packet, Mapping):
+            raise ValidationError(
+                f"exploration evidence packet must be an object at cases[{packet_index}]"
+            )
+        case_ref = packet.get("case_ref")
+        if not isinstance(case_ref, str) or not case_ref:
+            raise ValidationError(
+                "exploration evidence packets require non-empty case_ref values"
+            )
+        _validate_id(case_ref, "exploration evidence case_ref")
+        if case_ref in packet_by_ref:
+            raise ValidationError(
+                "exploration evidence packets require unique case_ref values"
+            )
+        packet_by_ref[case_ref] = packet
+    expected_refs = set(packet_by_ref)
+    actual_refs = [item.case_ref for item in values]
+    if len(set(actual_refs)) != len(actual_refs) or set(actual_refs) != expected_refs:
+        raise ValidationError(
+            "exploration extraction must return one signature per supplied case_ref"
+        )
+    for signature_index, signature in enumerate(values):
+        packet = packet_by_ref[signature.case_ref]
+        evidence = packet.get("evidence", ())
+        if not isinstance(evidence, (list, tuple)):
+            raise ValidationError(
+                "exploration evidence must be an array at "
+                f"cases[{signature_index}].evidence"
+            )
+        documents: dict[str, str] = {}
+        for evidence_index, item in enumerate(evidence):
+            item_path = f"cases[{signature_index}].evidence[{evidence_index}]"
+            if not isinstance(item, Mapping):
+                raise ValidationError(
+                    f"exploration evidence item must be an object at {item_path}"
+                )
+            document_ref = item.get("document_ref")
+            content_excerpt = item.get("content_excerpt")
+            if not isinstance(document_ref, str) or not document_ref:
+                raise ValidationError(
+                    f"exploration evidence requires document_ref at {item_path}"
+                )
+            _validate_id(document_ref, "exploration evidence document_ref")
+            if not isinstance(content_excerpt, str):
+                raise ValidationError(
+                    f"exploration evidence requires content_excerpt at {item_path}"
+                )
+            if document_ref in documents:
+                raise ValidationError(
+                    f"exploration evidence document_ref must be unique at {item_path}"
+                )
+            documents[document_ref] = content_excerpt
+        if signature.observations and not documents:
+            raise ValidationError(
+                "Mining signature cannot observe an evidence-empty packet at "
+                f"signatures[{signature_index}].observations"
+            )
+        for observation_index, observation in enumerate(signature.observations):
+            path = (
+                f"signatures[{signature_index}].observations[{observation_index}]"
+            )
+            excerpt = documents.get(observation.document_ref)
+            if excerpt is None:
+                raise ValidationError(
+                    f"Mining observation uses an unknown document_ref at {path}.document_ref"
+                )
+            if observation.exact_span not in excerpt:
+                raise ValidationError(
+                    f"Mining observation exact_span is not a supplied literal at {path}.exact_span"
+                )
+    return values
 
 
 class SignalMiningModel(Protocol):
@@ -9085,7 +9244,7 @@ class SignalEvolutionEngine:
     def _run_exploration_mining(self, *, cycle_id: int) -> dict[str, Any]:
         config = self.mining_config
         required_per_class = (
-            config.induction_cases_per_class
+            (2 * config.induction_cases_per_class)
             + config.validation_cases_per_class
         )
         cases = _sample_binary_discovery_cases(
@@ -9097,11 +9256,21 @@ class SignalEvolutionEngine:
             for index, case in enumerate(cases, start=1)
         )
         case_by_ref = dict(case_pairs)
-        selected = self._select_mining_cases(
-            tuple(case_by_ref),
-            case_by_ref=case_by_ref,
+        refs_by_class = {
+            case_class: tuple(
+                case_ref
+                for case_ref, case in case_pairs
+                if bool(case.ground_truth.is_surge) == case_class
+            )
+            for case_class in (True, False)
+        }
+        minimum_per_class = (
+            config.induction_cases_per_class
+            + config.validation_cases_per_class
         )
-        if selected is None:
+        if any(
+            len(refs) < minimum_per_class for refs in refs_by_class.values()
+        ):
             audit = {
                 "schema_version": "signal-mining-audit-v1",
                 "status": "completed",
@@ -9112,7 +9281,8 @@ class SignalEvolutionEngine:
                 "candidate_refs": [],
                 "refined_hypotheses": {
                     "exploration_sampling": [
-                        "Discovery pool lacks both positive and control cases"
+                        "Discovery pool lacks the configured issuer-distinct "
+                        "induction and validation cases in one or both groups"
                     ]
                 },
             }
@@ -9120,10 +9290,29 @@ class SignalEvolutionEngine:
                 audit=audit,
                 refined={
                     "exploration_sampling": (
-                        "Discovery pool lacks both positive and control cases",
+                        "Discovery pool lacks the configured issuer-distinct "
+                        "induction and validation cases in one or both groups",
                     )
                 },
             )
+        e1_by_class: dict[bool, tuple[str, ...]] = {}
+        validation_by_class: dict[bool, tuple[str, ...]] = {}
+        for case_class, refs in refs_by_class.items():
+            candidate_count = min(
+                2 * config.induction_cases_per_class,
+                len(refs) - config.validation_cases_per_class,
+            )
+            e1_by_class[case_class] = refs[:candidate_count]
+            validation_by_class[case_class] = refs[
+                candidate_count : candidate_count
+                + config.validation_cases_per_class
+            ]
+        selected = {
+            "e1_refs": tuple((*e1_by_class[True], *e1_by_class[False])),
+            "validation_refs": tuple(
+                (*validation_by_class[True], *validation_by_class[False])
+            ),
+        }
         priority = ("news", "filings", "financials", "transcripts", "market_data")
         available = set(self.evidence_resolver.available_source_types)
         source_types = tuple(item for item in priority if item in available)
@@ -9131,7 +9320,7 @@ class SignalEvolutionEngine:
             source_types = tuple(sorted(available))
         evidence_packets: list[dict[str, Any]] = []
         resolution_audit: list[dict[str, Any]] = []
-        for case_ref in selected["induction_refs"]:
+        for case_ref in selected["e1_refs"]:
             packet, resolution = self._mining_evidence_packet(
                 case_ref,
                 case_by_ref[case_ref],
@@ -9153,12 +9342,73 @@ class SignalEvolutionEngine:
                 },
             }
         )
-        expected_refs = set(selected["induction_refs"])
-        signatures = extraction_step.value
-        signature_refs = {item.case_ref for item in signatures}
-        if signature_refs != expected_refs or len(signatures) != len(expected_refs):
-            raise ValidationError(
-                "exploration extraction must return one signature per supplied case_ref"
+        signatures = validate_signal_mining_signatures(
+            extraction_step.value,
+            evidence_packets,
+        )
+        signature_by_ref = {item.case_ref: item for item in signatures}
+        grounded_signatures = tuple(
+            signature_by_ref[case_ref]
+            for case_ref in selected["e1_refs"]
+            if signature_by_ref[case_ref].observations
+        )
+        grounded_by_class = {
+            case_class: tuple(
+                item
+                for item in grounded_signatures
+                if bool(case_by_ref[item.case_ref].ground_truth.is_surge)
+                == case_class
+            )
+            for case_class in (True, False)
+        }
+        selected_grounded_signatures = tuple(
+            (
+                *grounded_by_class[True][: config.induction_cases_per_class],
+                *grounded_by_class[False][: config.induction_cases_per_class],
+            )
+        )
+        if any(
+            len(items) < config.induction_cases_per_class
+            for items in grounded_by_class.values()
+        ):
+            reason = (
+                "Exploration E1 produced fewer than the configured grounded "
+                "signatures in one or both fixed groups"
+            )
+            audit = {
+                "schema_version": "signal-mining-audit-v1",
+                "status": "completed",
+                "cycle_id": cycle_id,
+                "track": "exploration",
+                "limits": config.to_dict(),
+                "local_selection": {
+                    "e1_candidate_case_refs": list(selected["e1_refs"]),
+                    "induction_case_refs": [
+                        item.case_ref for item in selected_grounded_signatures
+                    ],
+                    "validation_case_refs": list(selected["validation_refs"]),
+                    "grounded_case_refs": [
+                        item.case_ref for item in grounded_signatures
+                    ],
+                },
+                "stages": {
+                    "E1": {
+                        "signatures": [item.to_dict() for item in signatures],
+                        "resolutions": resolution_audit,
+                        "usage": _usage_to_dict(extraction_step.usage),
+                    },
+                    "E2": {
+                        "status": "not_called_evidence_unavailable",
+                        "decisions": [],
+                        "usage": _usage_to_dict(AgentUsage()),
+                    },
+                },
+                "candidate_refs": [],
+                "refined_hypotheses": {"exploration_evidence": [reason]},
+            }
+            return self._mining_output(
+                audit=audit,
+                refined={"exploration_evidence": (reason,)},
             )
         revealed = [
             {
@@ -9169,7 +9419,7 @@ class SignalEvolutionEngine:
                     else "control"
                 ),
             }
-            for signature in signatures
+            for signature in selected_grounded_signatures
         ]
         discovery_step = self.mining_model.discover_exploration(
             {
@@ -9178,6 +9428,7 @@ class SignalEvolutionEngine:
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
                     "candidate_only_for_repeated_observable_pattern": True,
+                    "exact_spans_authoritative_over_summaries": True,
                     "decisions": [
                         "supported",
                         "refine",
@@ -9194,7 +9445,9 @@ class SignalEvolutionEngine:
         refined: dict[str, tuple[str, ...]] = {}
         selection_by_id = {
             item.hypothesis_id: {
-                "induction_refs": selected["induction_refs"],
+                "induction_refs": tuple(
+                    signature.case_ref for signature in selected_grounded_signatures
+                ),
                 "validation_refs": selected["validation_refs"],
             }
             for item in decisions
@@ -9212,8 +9465,14 @@ class SignalEvolutionEngine:
             "track": "exploration",
             "limits": config.to_dict(),
             "local_selection": {
-                "induction_case_refs": list(selected["induction_refs"]),
+                "e1_candidate_case_refs": list(selected["e1_refs"]),
+                "induction_case_refs": [
+                    item.case_ref for item in selected_grounded_signatures
+                ],
                 "validation_case_refs": list(selected["validation_refs"]),
+                "grounded_case_refs": [
+                    item.case_ref for item in grounded_signatures
+                ],
             },
             "stages": {
                 "E1": {

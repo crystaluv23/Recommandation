@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 11
+visit_times: 12
 
 ## Trigger
 
@@ -88,6 +88,17 @@ spaced JSON, so the artifact and provider message were not byte-identical.
     obligation names an indexed row or descendant, removing only those complete rows and
     reparsing is safer than either accepting them or discarding valid siblings. Preserve
     mandatory-nonempty and all other collection invariants through that reparse.
+17. Give evidence-backed observations an explicit empty-plus-gap branch and exact
+    ref/span grounding; gate downstream comparison on complete fixed groups and use
+    only bounded, label-hidden replacement for missing evidence.
+
+A semantic extraction schema must never force positive-looking content when the
+source packet can legitimately be empty. Make empty observations an explicit
+validated branch with a specific evidence gap, require every non-empty observation
+to cite a supplied ref and byte-exact visible span, and run the same local validator
+after both production and scripted adapters. Downstream contrast should proceed only
+with complete fixed groups of grounded signatures; bounded same-group replacement
+may recover missing evidence without using outcome content or model-authored semantics.
 
 ## Limits
 

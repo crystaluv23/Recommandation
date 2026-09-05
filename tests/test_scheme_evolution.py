@@ -82,6 +82,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalMiningDecision,
     SignalMiningHypothesis,
     SignalMiningConfig,
+    SignalMiningObservation,
     SignalMiningSignature,
     SignalRound,
     SignalSelectionDecision,
@@ -99,6 +100,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _mask_identity_values,
     _slow_role_identity_guard_inventory,
     _select_h3_model_evidence,
+    validate_signal_mining_signatures,
 )
 from stock_opportunity_agent.research.evolution_runtime import ExternalRequestPending
 from stock_opportunity_agent.signal_library import (
@@ -5052,12 +5054,18 @@ class SignalEvolutionTests(TestCase):
             signatures = tuple(
                 SignalMiningSignature(
                     case_ref=f"case-{index:03d}",
-                    observations=("A material operational event was disclosed.",),
+                    observations=(
+                        SignalMiningObservation(
+                            summary="A material operational event was disclosed.",
+                            document_ref="document-01",
+                            exact_span="disclosed an operational event.",
+                        ),
+                    ),
                 )
                 for index in (1, 3)
             )
             mining_model = ScriptedMiningModel(
-                signatures=signatures,
+                signatures=tuple(reversed(signatures)),
                 decisions=(
                     SignalMiningDecision(
                         hypothesis_id="exploration_event_pattern",
@@ -6234,7 +6242,13 @@ class SignalEvolutionTests(TestCase):
                 signatures=tuple(
                     SignalMiningSignature(
                         case_ref=case_ref,
-                        observations=("A bounded observable event is present.",),
+                        observations=(
+                            SignalMiningObservation(
+                                summary="A bounded observable event is present.",
+                                document_ref="document-01",
+                                exact_span="A bounded observable event was reported.",
+                            ),
+                        ),
                     )
                     for case_ref in induction_refs
                 ),
@@ -6254,7 +6268,10 @@ class SignalEvolutionTests(TestCase):
                         source_type="news",
                         published_at=NOW,
                         available_at=NOW,
-                        content="A bounded observable event was reported.",
+                        content=(
+                            f"{case.basic_info['company_name']} reported: "
+                            "A bounded observable event was reported."
+                        ),
                     )
                     for index, case in enumerate(cases)
                 )
@@ -6282,6 +6299,237 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 result["refined_hypotheses"]["exploration_pattern"],
                 ("The extracted pattern needs more cases.",),
+            )
+
+    def test_exploration_does_not_call_e2_when_one_group_lacks_grounding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"explore_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"explore_control_{index}", 1.1) for index in range(4)]
+            )
+            induction_refs = ("case-001", "case-002", "case-005", "case-006")
+            signatures = []
+            for case_ref in induction_refs:
+                if case_ref == "case-001":
+                    signatures.append(
+                        SignalMiningSignature(
+                            case_ref=case_ref,
+                            observations=(),
+                            evidence_gaps=("No supportable observation was visible.",),
+                        )
+                    )
+                else:
+                    signatures.append(
+                        SignalMiningSignature(
+                            case_ref=case_ref,
+                            observations=(
+                                SignalMiningObservation(
+                                    summary="A bounded event was reported.",
+                                    document_ref="document-01",
+                                    exact_span="A bounded observable event was reported.",
+                                ),
+                            ),
+                        )
+                    )
+            mining_model = ScriptedMiningModel(signatures=tuple(signatures))
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"exploration_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} reported: "
+                            "A bounded observable event was reported."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
+            )
+
+            result = engine._run_signal_mining(cycle_id=3)
+
+            self.assertEqual(len(mining_model.requests), 1)
+            self.assertEqual(
+                result["audit"]["stages"]["E2"]["status"],
+                "not_called_evidence_unavailable",
+            )
+            self.assertIn("exploration_evidence", result["refined_hypotheses"])
+
+    def test_exploration_uses_bounded_same_group_evidence_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"explore_positive_{index}", 4.0) for index in range(6)]
+                + [make_case(f"explore_control_{index}", 1.1) for index in range(6)]
+            )
+            e1_refs = (
+                "case-001",
+                "case-002",
+                "case-003",
+                "case-004",
+                "case-007",
+                "case-008",
+                "case-009",
+                "case-010",
+            )
+            signatures = tuple(
+                SignalMiningSignature(
+                    case_ref=case_ref,
+                    observations=(
+                        ()
+                        if case_ref == "case-001"
+                        else (
+                            SignalMiningObservation(
+                                summary="A bounded event was reported.",
+                                document_ref="document-01",
+                                exact_span=(
+                                    "A bounded observable event was reported."
+                                ),
+                            ),
+                        )
+                    ),
+                    evidence_gaps=(
+                        ("No supportable observation was visible.",)
+                        if case_ref == "case-001"
+                        else ()
+                    ),
+                )
+                for case_ref in e1_refs
+            )
+            mining_model = ScriptedMiningModel(
+                signatures=tuple(reversed(signatures)),
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="exploration_pattern",
+                        disposition="refine",
+                        rationale=("The extracted pattern needs more cases.",),
+                    ),
+                ),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"exploration_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} reported: "
+                            "A bounded observable event was reported."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
+            )
+
+            result = engine._run_signal_mining(cycle_id=3)
+
+            self.assertEqual(len(mining_model.requests), 2)
+            self.assertEqual(
+                [item["case_ref"] for item in mining_model.requests[1]["signatures"]],
+                ["case-002", "case-003", "case-007", "case-008"],
+            )
+            self.assertEqual(
+                result["audit"]["local_selection"]["validation_case_refs"],
+                ["case-005", "case-006", "case-011", "case-012"],
+            )
+
+    def test_exploration_rejects_a_fabricated_document_ref(self) -> None:
+        signatures = (
+            SignalMiningSignature(
+                case_ref="case-001",
+                observations=(
+                    SignalMiningObservation(
+                        summary="A bounded event was reported.",
+                        document_ref="fabricated-document",
+                        exact_span="A bounded observable event was reported.",
+                    ),
+                ),
+            ),
+        )
+
+        with self.assertRaisesRegex(ValidationError, "unknown document_ref"):
+            validate_signal_mining_signatures(
+                signatures,
+                (
+                    {
+                        "case_ref": "case-001",
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": (
+                                    "A bounded observable event was reported."
+                                ),
+                            }
+                        ],
+                    },
+                ),
+            )
+
+    def test_exploration_rejects_a_malformed_evidence_collection(self) -> None:
+        signatures = (
+            SignalMiningSignature(
+                case_ref="case-001",
+                observations=(),
+                evidence_gaps=("No supportable observation was visible.",),
+            ),
+        )
+
+        with self.assertRaisesRegex(ValidationError, "evidence must be an array"):
+            validate_signal_mining_signatures(
+                signatures,
+                ({"case_ref": "case-001", "evidence": "not-an-array"},),
+            )
+
+    def test_exploration_rejects_a_malformed_evidence_item(self) -> None:
+        signatures = (
+            SignalMiningSignature(
+                case_ref="case-001",
+                observations=(),
+                evidence_gaps=("No supportable observation was visible.",),
+            ),
+        )
+
+        with self.assertRaisesRegex(ValidationError, "requires content_excerpt"):
+            validate_signal_mining_signatures(
+                signatures,
+                (
+                    {
+                        "case_ref": "case-001",
+                        "evidence": [{"document_ref": "document-01"}],
+                    },
+                ),
             )
 
     def test_signal_learning_keeps_plan_reasons_but_dedupes_effectiveness(self) -> None:

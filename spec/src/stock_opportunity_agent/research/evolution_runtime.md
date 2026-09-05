@@ -353,9 +353,14 @@ H2 shortlist rather than a one-tool-per-turn Agent transcript:
 - `signal_mining_contrast` supports/refines/rejects at most two locally feasible
   hypotheses from exact point-in-time positive/control evidence;
 - `signal_mining_exploration_extract` creates label-hidden observable signatures
-  for a locally selected diverse case batch; and
+  for a locally selected diverse case batch. Each observation carries a supplied
+  document ref and a byte-exact visible span; empty evidence permits only an empty
+  observation list with a non-empty gap; and
 - `signal_mining_exploration_discover` reveals labels only beside those frozen
-  signatures and emits supported candidates or refined patterns.
+  signatures and emits supported candidates or refined patterns, but only after
+  both groups retain the configured count of locally grounded signatures. The
+  controller may try at most one same-group evidence fallback per required slot;
+  exact spans, not model-authored summaries, remain authoritative in discovery.
 
 All model stages use literal key/type contracts and one primary bounded correction.
 Current v7 contracts freeze `max_structured_corrections=2`: only when that first

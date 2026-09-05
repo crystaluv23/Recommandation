@@ -1563,12 +1563,27 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
 Exploration-driven cycles execute:
 
 1. the controller selects a diverse issuer-distinct, label-stratified sample,
-   reserves independent validation cases, and retrieves exact point-in-time Raw
-   Info;
-2. `E1 label-hidden extraction` describes recurring observable case signatures
-   without outcomes; and
+   reserves independent validation cases, and gives each required induction slot
+   at most one same-group evidence fallback before retrieving exact point-in-time
+   Raw Info. Fallback choice may depend only on whether label-hidden E1 produced a
+   locally grounded observation, never on observation semantics, outcome content,
+   or validation data;
+2. `E1 label-hidden extraction` describes observable case signatures without
+   outcomes. Every observation contains exactly a short summary, one supplied
+   `document_ref`, and one byte-exact non-trivial span from that document's visible
+   excerpt. The controller validates the reference and literal locally. A packet
+   with no supportable observation returns an empty observation array plus at least
+   one evidence gap; the contract never forces a model to invent content; and
 3. `E2 label-revealed discovery` contrasts those frozen signatures with their
    labels and may return supported candidates, refined patterns, or rejection.
+
+Before E2, the controller drops observation-empty signatures, takes the first
+configured number of grounded signatures from each fixed group, and requires both
+groups to be complete. If either group remains short after the bounded evidence
+fallbacks, the exploration track ends as evidence-unavailable without an E2 call.
+The selected issuer-disjoint refs, rather than the original sample, bind any
+candidate's induction lineage; reserved validation issuers remain hidden and
+unchanged. In E2, exact spans remain authoritative over model-authored summaries.
 
 Exploration is a bounded source of new hypotheses, not a separate promotion
 path. The default cadence runs it periodically while hypothesis-driven cycles

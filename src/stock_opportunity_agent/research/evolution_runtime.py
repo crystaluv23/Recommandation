@@ -108,6 +108,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _normalized_projection_text,
     _mask_identity_values,
     _signal_learning_events_from_record,
+    validate_signal_mining_signatures,
 )
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -11252,9 +11253,14 @@ _MINING_EVIDENCE_ABSENCE = re.compile(
 
 _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     " Return one JSON object with exactly signatures (an array). Each signature "
-    "has exactly case_ref (a supplied opaque string), observations (an array of "
-    "source-grounded strings), and evidence_gaps (an array of strings). Return "
-    "one signature for every supplied case_ref and do not infer outcomes."
+    "has exactly case_ref (a supplied opaque string), observations (an array), "
+    "and evidence_gaps (an array of strings). Each observation has exactly summary "
+    "(a grounded interpretation), document_ref (copied from that case's evidence), "
+    "and exact_span (an exact contiguous 8-240 character substring copied from that "
+    "document's content_excerpt). Return at most six observations per case. When no "
+    "visible excerpt supports an observation, return observations=[] and at least one "
+    "specific evidence gap; never invent an observation to make the array non-empty. "
+    "Return one signature for every supplied case_ref and do not infer outcomes."
 )
 
 _SIGNAL_UPDATE_OUTPUT = (
@@ -12016,9 +12022,14 @@ class LLMSignalMiningModel(SignalMiningModel):
     def extract_exploration(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningSignature, ...]]:
+        packets = tuple(
+            item
+            for item in payload.get("cases", ())
+            if isinstance(item, Mapping)
+        )
         allowed = {
             str(item["case_ref"])
-            for item in payload.get("cases", ())
+            for item in packets
             if isinstance(item, Mapping) and "case_ref" in item
         }
 
@@ -12037,14 +12048,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise ValidationError(
                     "Signal Mining E1 must return one signature for every case_ref"
                 )
-            return items
+            return validate_signal_mining_signatures(items, packets)
 
         value, usage = _complete_parsed_role(
             self.caller,
             stage="signal_mining_exploration_extract",
             system_prompt=(
                 "Describe only recurring, executable observations in the anonymous "
-                "point-in-time evidence. Labels are hidden; do not predict or infer them."
+                "point-in-time evidence. Ground every observation in its own supplied "
+                "literal; the literal is authoritative when a summary overstates it. "
+                "Labels are hidden; do not predict or infer them."
                 + _SIGNAL_MINING_SIGNATURES_OUTPUT
             ),
             payload=payload,
@@ -12065,6 +12078,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             inconclusive_only_ids=set(),
             prompt=(
                 "Compare labels only against the frozen outcome-hidden signatures. "
+                "Treat each exact_span as authoritative; ignore any stronger or "
+                "different claim in its model-authored summary. "
                 "Propose a reusable new Signal only for a repeated observable difference; "
                 "otherwise preserve a refined pattern or reject it."
             ),

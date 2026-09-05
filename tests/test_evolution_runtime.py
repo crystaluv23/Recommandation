@@ -3460,6 +3460,123 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(step.value[0].disposition, "inconclusive")
         self.assertEqual(step.usage.llm_calls, 2)
 
+    def test_exploration_e1_corrects_a_nonliteral_observation(self) -> None:
+        invalid = {
+            "signatures": [
+                {
+                    "case_ref": "case-001",
+                    "observations": [
+                        {
+                            "summary": "Revenue guidance increased.",
+                            "document_ref": "document-01",
+                            "exact_span": "Management raised revenue guidance.",
+                        }
+                    ],
+                    "evidence_gaps": [],
+                }
+            ]
+        }
+        valid = json.loads(json.dumps(invalid))
+        valid["signatures"][0]["observations"][0]["exact_span"] = (
+            "Management reaffirmed revenue guidance."
+        )
+        caller = ScriptedRoleCaller([invalid, valid])
+
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            {
+                "cases": [
+                    {
+                        "case_ref": "case-001",
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": (
+                                    "Management reaffirmed revenue guidance."
+                                ),
+                            }
+                        ],
+                    }
+                ]
+            }
+        )
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(
+            step.value[0].observations[0].exact_span,
+            "Management reaffirmed revenue guidance.",
+        )
+        self.assertIn(
+            "not a supplied literal",
+            caller.calls[1]["payload"]["validation_error"],
+        )
+
+    def test_exploration_e1_empty_packet_records_gap_without_invention(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "signatures": [
+                        {
+                            "case_ref": "case-001",
+                            "observations": [],
+                            "evidence_gaps": ["No point-in-time excerpt was supplied."],
+                        }
+                    ]
+                }
+            ]
+        )
+
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            {"cases": [{"case_ref": "case-001", "evidence": []}]}
+        )
+
+        self.assertEqual(step.usage.llm_calls, 1)
+        self.assertEqual(step.value[0].observations, ())
+        self.assertTrue(step.value[0].evidence_gaps)
+
+    def test_exploration_e2_treats_exact_spans_as_authoritative(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "decisions": [
+                        {
+                            "hypothesis_id": "exploration-pattern",
+                            "disposition": "refine",
+                            "rationale": ["The literal pattern needs more cases."],
+                            "candidate": None,
+                        }
+                    ]
+                }
+            ]
+        )
+
+        LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {
+                        "case_ref": "case-001",
+                        "observations": [
+                            {
+                                "summary": "An overstated interpretation.",
+                                "document_ref": "document-01",
+                                "exact_span": "Management reaffirmed prior guidance.",
+                            }
+                        ],
+                        "evidence_gaps": [],
+                        "label": "positive",
+                    }
+                ]
+            }
+        )
+
+        self.assertIn(
+            "Treat each exact_span as authoritative",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertIn(
+            "ignore any stronger or different claim",
+            caller.calls[0]["system_prompt"],
+        )
+
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (
             evolution_runtime_module._SIGNAL_MINING_DECISIONS_OUTPUT,

@@ -1,5 +1,25 @@
 # Status
 
+Current exploration-grounding repair (2026-09-05): the post-V114 audit found
+that E1's old schema forced at least one free-form observation even when a case
+packet had no support, so a different model could fabricate a schema-valid
+signature and let E2 discover a false pattern. E1 now accepts only either an
+explicit empty observation list with a specific evidence gap or structured
+observations carrying a supplied document ref and byte-exact non-trivial span.
+The common local validator runs after every adapter, rejects malformed evidence,
+duplicate cases, fabricated refs, and non-literal spans, and keeps the literal
+authoritative over the model summary.
+
+Exploration now reserves validation issuers first and gives each required
+induction slot at most one label-hidden, same-group evidence fallback. E2 runs
+only after the controller can freeze the configured grounded count in both
+groups; it receives only those selected signatures, while validation cases remain
+unseen. This avoids both endless deterministic retry on one empty case and
+outcome-aware resampling. All 577 repository tests pass. V116 remains a zero-call
+pre-change contract and must be superseded after this checkpoint; the next real
+Slow run and dependent Fast verification still await explicit approval of the
+named external destinations and payload classes.
+
 Current V114 systemic Slow repair (2026-09-05): H1 produced three hypotheses and
 H2 screened 32 ready profiles, but the old post-limit relevance filter erased all
 36 H3 case packets before contrast. Replay against the exact Discovery and Raw Info
