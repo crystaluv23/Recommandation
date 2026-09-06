@@ -628,6 +628,60 @@ class EvidenceResolverTests(TestCase):
         self.assertNotIn("events", model_context["requests"][0])
         self.assertNotIn("summary", str(model_context).casefold())
 
+    def test_resolution_reports_query_coverage_and_deduplicates_source_copies(
+        self,
+    ) -> None:
+        duplicate_old = document(
+            "duplicate-old",
+            "Management raised annual guidance.",
+            available_at=AS_OF - timedelta(days=3),
+        )
+        duplicate_new = document(
+            "duplicate-new",
+            "Management raised annual guidance.",
+            available_at=AS_OF - timedelta(days=1),
+        )
+        irrelevant = document(
+            "irrelevant",
+            "Routine corporate administration.",
+            available_at=AS_OF - timedelta(days=2),
+        )
+
+        resolution = EvidenceResolver(
+            RawInfoStore(documents=(duplicate_new, duplicate_old, irrelevant))
+        ).resolve(
+            RawInfoRequest(
+                "guidance",
+                "Read guidance.",
+                ("news",),
+                max_documents=1,
+                query="annual guidance",
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(
+            [item.document_id for item in resolution.documents],
+            ["duplicate-old"],
+        )
+        self.assertEqual(resolution.coverage.eligible_document_count, 2)
+        self.assertEqual(resolution.coverage.selected_document_count, 1)
+        self.assertEqual(resolution.coverage.query_matched_document_count, 1)
+        self.assertEqual(resolution.coverage.query_status, "matched")
+        self.assertEqual(resolution.coverage.deduplicated_document_count, 1)
+        self.assertTrue(resolution.coverage.selection_truncated)
+        self.assertEqual(
+            type(resolution).from_dict(resolution.to_dict()).coverage,
+            resolution.coverage,
+        )
+        legacy = resolution.to_dict()
+        legacy.pop("coverage")
+        restored_legacy = type(resolution).from_dict(legacy)
+        self.assertEqual(restored_legacy.coverage.query_status, "not_recorded")
+        self.assertIsNone(restored_legacy.coverage.query_matched_document_count)
+
     def test_basic_info_context_budget_keeps_one_span_per_resolved_request(
         self,
     ) -> None:

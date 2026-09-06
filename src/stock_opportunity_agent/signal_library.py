@@ -180,6 +180,82 @@ class EvidencePolicy:
 
 
 @dataclass(frozen=True)
+class SignalRetrievalPolicy:
+    """Version-owned retrieval intent translated into one Raw Info request."""
+
+    query_terms: tuple[str, ...]
+    lookback_days: int | None = None
+    comparison_requirement: str | None = None
+
+    def __post_init__(self) -> None:
+        terms = tuple(" ".join(str(item).split()) for item in self.query_terms)
+        if (
+            not terms
+            or len(terms) > 12
+            or any(not item or len(item) > 80 for item in terms)
+            or len({item.casefold() for item in terms}) != len(terms)
+        ):
+            raise ValidationError(
+                "Signal retrieval query_terms require 1-12 unique bounded strings"
+            )
+        if self.lookback_days is not None and self.lookback_days < 1:
+            raise ValidationError("Signal retrieval lookback_days must be positive")
+        comparison = (
+            " ".join(self.comparison_requirement.split())
+            if self.comparison_requirement is not None
+            else None
+        )
+        if comparison is not None and (not comparison or len(comparison) > 240):
+            raise ValidationError(
+                "Signal retrieval comparison_requirement must be bounded text"
+            )
+        object.__setattr__(self, "query_terms", terms)
+        object.__setattr__(self, "comparison_requirement", comparison)
+
+    @property
+    def query(self) -> str:
+        """Return the bounded lexical query passed to the data boundary."""
+
+        return " ".join(self.query_terms)
+
+    def to_dict(self) -> dict[str, Any]:
+        value: dict[str, Any] = {"query_terms": list(self.query_terms)}
+        if self.lookback_days is not None:
+            value["lookback_days"] = self.lookback_days
+        if self.comparison_requirement is not None:
+            value["comparison_requirement"] = self.comparison_requirement
+        return value
+
+    @classmethod
+    def from_dict(
+        cls,
+        data: Mapping[str, Any],
+        *,
+        default_query_terms: tuple[str, ...],
+    ) -> "SignalRetrievalPolicy":
+        raw_terms = data.get("query_terms")
+        if raw_terms is None and data.get("query") is not None:
+            raw_terms = (str(data["query"]),)
+        if raw_terms is None:
+            raw_terms = default_query_terms
+        if not isinstance(raw_terms, (list, tuple)):
+            raise ValidationError("Signal retrieval query_terms must be an array")
+        return cls(
+            query_terms=tuple(str(item) for item in raw_terms),
+            lookback_days=(
+                int(data["lookback_days"])
+                if data.get("lookback_days") is not None
+                else None
+            ),
+            comparison_requirement=(
+                str(data["comparison_requirement"])
+                if data.get("comparison_requirement") is not None
+                else None
+            ),
+        )
+
+
+@dataclass(frozen=True)
 class SignalSpec:
     """Immutable schema, execution policy, retrieval policy, and evidence policy."""
 
@@ -193,6 +269,7 @@ class SignalSpec:
     function: str | None = None
     skill_file: str | None = None
     parameters: Mapping[str, Any] = field(default_factory=dict)
+    retrieval_policy: SignalRetrievalPolicy | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.signal_id, "signal_id")
@@ -313,6 +390,17 @@ class SignalSpec:
             )
         object.__setattr__(self, "source_types", tuple(self.source_types))
         object.__setattr__(self, "parameters", parameters)
+        retrieval_policy = self.retrieval_policy
+        if retrieval_policy is None:
+            retrieval_policy = SignalRetrievalPolicy(
+                query_terms=(self.signal_id.replace("_", " "),)
+            )
+        elif not isinstance(retrieval_policy, SignalRetrievalPolicy):
+            retrieval_policy = SignalRetrievalPolicy.from_dict(
+                dict(retrieval_policy),
+                default_query_terms=(self.signal_id.replace("_", " "),),
+            )
+        object.__setattr__(self, "retrieval_policy", retrieval_policy)
 
     @property
     def ref(self) -> str:
@@ -338,7 +426,10 @@ class SignalSpec:
                 **({"function": self.function} if self.function else {}),
                 **({"skill_file": self.skill_file} if self.skill_file else {}),
             },
-            "raw_retrieval": {"source_types": list(self.source_types)},
+            "raw_retrieval": {
+                "source_types": list(self.source_types),
+                **self.retrieval_policy.to_dict(),
+            },
             "evidence_policy": self.evidence_policy.to_dict(),
             "parameters": dict(self.parameters),
         }
@@ -377,6 +468,12 @@ class SignalSpec:
                 dict(data.get("evidence_policy", {}))
             ),
             parameters=dict(data.get("parameters", {})),
+            retrieval_policy=SignalRetrievalPolicy.from_dict(
+                retrieval,
+                default_query_terms=(
+                    str(data["signal_id"]).replace("_", " "),
+                ),
+            ),
         )
 
 
@@ -2205,7 +2302,9 @@ class SignalExecutor:
                 request_id=f"signal:{spec.ref}",
                 description=spec.description,
                 source_types=spec.source_types,
+                lookback_days=spec.retrieval_policy.lookback_days,
                 max_documents=10,
+                query=spec.retrieval_policy.query,
             ),
             company_id=company_id,
             identity=dict(identity or {}),

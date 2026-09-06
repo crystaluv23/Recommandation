@@ -346,6 +346,95 @@ class ResolutionEvent:
 
 
 @dataclass(frozen=True)
+class RawInfoCoverage:
+    """Retrieval and visibility facts that do not claim semantic answerability."""
+
+    eligible_document_count: int
+    selected_document_count: int
+    query_matched_document_count: int | None
+    selection_truncated: bool
+    query_requested: bool = False
+    query_evaluated: bool = False
+    deduplicated_document_count: int = 0
+    visible_span_count: int = 0
+    context_truncated: bool | None = None
+
+    def __post_init__(self) -> None:
+        counts = (
+            self.eligible_document_count,
+            self.selected_document_count,
+            self.deduplicated_document_count,
+            self.visible_span_count,
+        )
+        if any(type(value) is not int or value < 0 for value in counts):
+            raise ValidationError("raw info coverage counts must be non-negative")
+        if self.selected_document_count > self.eligible_document_count:
+            raise ValidationError(
+                "raw info selected count cannot exceed eligible count"
+            )
+        if self.query_matched_document_count is not None and (
+            type(self.query_matched_document_count) is not int
+            or not 0
+            <= self.query_matched_document_count
+            <= self.eligible_document_count
+        ):
+            raise ValidationError("raw info query match count is invalid")
+        if not self.query_requested and self.query_matched_document_count is not None:
+            raise ValidationError("raw info query matches require a requested query")
+        if self.query_evaluated != (self.query_matched_document_count is not None):
+            raise ValidationError(
+                "raw info query evaluation and match count must agree"
+            )
+
+    @property
+    def query_status(self) -> str:
+        if not self.query_requested:
+            return "not_requested"
+        if not self.query_evaluated:
+            return "not_recorded"
+        if self.query_matched_document_count:
+            return "matched"
+        return "unmatched"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "eligible_document_count": self.eligible_document_count,
+            "selected_document_count": self.selected_document_count,
+            "query_matched_document_count": self.query_matched_document_count,
+            "query_status": self.query_status,
+            "query_requested": self.query_requested,
+            "query_evaluated": self.query_evaluated,
+            "selection_truncated": self.selection_truncated,
+            "deduplicated_document_count": self.deduplicated_document_count,
+            "visible_span_count": self.visible_span_count,
+            "context_truncated": self.context_truncated,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "RawInfoCoverage":
+        query_count = data.get("query_matched_document_count")
+        return cls(
+            eligible_document_count=int(data.get("eligible_document_count", 0)),
+            selected_document_count=int(data.get("selected_document_count", 0)),
+            query_matched_document_count=(
+                int(query_count) if query_count is not None else None
+            ),
+            selection_truncated=bool(data.get("selection_truncated", False)),
+            query_requested=bool(data.get("query_requested", query_count is not None)),
+            query_evaluated=bool(data.get("query_evaluated", query_count is not None)),
+            deduplicated_document_count=int(
+                data.get("deduplicated_document_count", 0)
+            ),
+            visible_span_count=int(data.get("visible_span_count", 0)),
+            context_truncated=(
+                bool(data["context_truncated"])
+                if data.get("context_truncated") is not None
+                else None
+            ),
+        )
+
+
+@dataclass(frozen=True)
 class RawInfoResolution:
     """Resolved documents, exact spans, and complete acquisition lineage."""
 
@@ -356,6 +445,7 @@ class RawInfoResolution:
     events: tuple[ResolutionEvent, ...] = ()
     appended_documents: tuple[RawInfoDocumentRef, ...] = ()
     gap: DataGap | None = None
+    coverage: RawInfoCoverage | None = None
 
     def __post_init__(self) -> None:
         if self.status not in {"resolved", "unresolved"}:
@@ -366,6 +456,22 @@ class RawInfoResolution:
         object.__setattr__(self, "context_spans", tuple(self.context_spans))
         object.__setattr__(self, "events", tuple(self.events))
         object.__setattr__(self, "appended_documents", tuple(self.appended_documents))
+        if self.coverage is None:
+            object.__setattr__(
+                self,
+                "coverage",
+                RawInfoCoverage(
+                    eligible_document_count=len(self.documents),
+                    selected_document_count=len(self.documents),
+                    query_matched_document_count=None,
+                    selection_truncated=False,
+                    query_requested=bool(self.request.query),
+                    query_evaluated=False,
+                    deduplicated_document_count=0,
+                    visible_span_count=len(self.context_spans),
+                    context_truncated=None,
+                ),
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -376,6 +482,7 @@ class RawInfoResolution:
             "events": [item.to_dict() for item in self.events],
             "appended_documents": [item.to_dict() for item in self.appended_documents],
             "data_gap": self.gap.to_dict() if self.gap else None,
+            "coverage": self.coverage.to_dict(),
         }
 
     @classmethod
@@ -402,6 +509,11 @@ class RawInfoResolution:
                 if data.get("data_gap")
                 else None
             ),
+            coverage=(
+                RawInfoCoverage.from_dict(dict(data["coverage"]))
+                if isinstance(data.get("coverage"), Mapping)
+                else None
+            ),
         )
 
 
@@ -422,6 +534,7 @@ class BasicInfoBundle:
                 {
                     "request": item.request.to_dict(),
                     "status": item.status,
+                    "coverage": item.coverage.to_dict(),
                     "context_spans": [span.to_dict() for span in item.context_spans],
                     "data_gap": item.gap.to_dict() if item.gap else None,
                 }
@@ -665,7 +778,7 @@ class EvidenceResolver:
         an empty selection permits normal authorized acquisition fallback.
         """
 
-        documents, filtered_news_ids = self._local_documents(
+        documents, filtered_news_ids, coverage = self._local_documents(
             request,
             company_id=company_id,
             identity=identity,
@@ -791,7 +904,7 @@ class EvidenceResolver:
                                     },
                                 )
                             )
-                            documents, filtered_news_ids = self._local_documents(
+                            documents, filtered_news_ids, coverage = self._local_documents(
                                 request,
                                 company_id=company_id,
                                 identity=identity,
@@ -879,8 +992,16 @@ class EvidenceResolver:
                         )
 
         if documents:
-            spans = (
-                tuple(
+            if include_context:
+                all_spans = tuple(
+                    _select_context_spans(
+                        documents,
+                        request,
+                        10**12,
+                        as_of=as_of,
+                    )
+                )
+                spans = tuple(
                     _select_context_spans(
                         documents,
                         request,
@@ -888,9 +1009,23 @@ class EvidenceResolver:
                         as_of=as_of,
                     )
                 )
-                if include_context
-                else ()
-            )
+                coverage = RawInfoCoverage(
+                    eligible_document_count=coverage.eligible_document_count,
+                    selected_document_count=coverage.selected_document_count,
+                    query_matched_document_count=(
+                        coverage.query_matched_document_count
+                    ),
+                    selection_truncated=coverage.selection_truncated,
+                    query_requested=coverage.query_requested,
+                    query_evaluated=coverage.query_evaluated,
+                    deduplicated_document_count=(
+                        coverage.deduplicated_document_count
+                    ),
+                    visible_span_count=len(spans),
+                    context_truncated=len(spans) < len(all_spans),
+                )
+            else:
+                spans = ()
             return RawInfoResolution(
                 request=request,
                 status="resolved",
@@ -898,6 +1033,7 @@ class EvidenceResolver:
                 context_spans=spans,
                 events=tuple(events),
                 appended_documents=tuple(appended),
+                coverage=coverage,
             )
         return RawInfoResolution(
             request=request,
@@ -910,6 +1046,7 @@ class EvidenceResolver:
                 DataGapReason.NO_MATCHING_DOCUMENTS,
                 "No point-in-time documents matched the request.",
             ),
+            coverage=coverage,
         )
 
     def can_acquire(self, request: RawInfoRequest) -> bool:
@@ -984,9 +1121,11 @@ class EvidenceResolver:
             resolved_without_context.append(resolution)
 
         candidates: list[list[RawInfoContextSpan]] = []
+        all_candidates: list[list[RawInfoContextSpan]] = []
         for resolution in resolved_without_context:
             if resolution.status != "resolved":
                 candidates.append([])
+                all_candidates.append([])
                 continue
             documents = self.load_documents(resolution, as_of=as_of)
             candidates.append(
@@ -994,6 +1133,14 @@ class EvidenceResolver:
                     documents,
                     resolution.request,
                     MAX_BASIC_INFO_CONTEXT_CHARS,
+                    as_of=as_of,
+                )
+            )
+            all_candidates.append(
+                _select_context_spans(
+                    documents,
+                    resolution.request,
+                    10**12,
                     as_of=as_of,
                 )
             )
@@ -1022,6 +1169,29 @@ class EvidenceResolver:
                 events=resolution.events,
                 appended_documents=resolution.appended_documents,
                 gap=resolution.gap,
+                coverage=RawInfoCoverage(
+                    eligible_document_count=(
+                        resolution.coverage.eligible_document_count
+                    ),
+                    selected_document_count=(
+                        resolution.coverage.selected_document_count
+                    ),
+                    query_matched_document_count=(
+                        resolution.coverage.query_matched_document_count
+                    ),
+                    selection_truncated=(
+                        resolution.coverage.selection_truncated
+                    ),
+                    query_requested=resolution.coverage.query_requested,
+                    query_evaluated=resolution.coverage.query_evaluated,
+                    deduplicated_document_count=(
+                        resolution.coverage.deduplicated_document_count
+                    ),
+                    visible_span_count=len(selected[index]),
+                    context_truncated=(
+                        len(selected[index]) < len(all_candidates[index])
+                    ),
+                ),
             )
             for index, resolution in enumerate(resolved_without_context)
         )
@@ -1059,7 +1229,7 @@ class EvidenceResolver:
         identity: Mapping[str, Any],
         as_of: datetime,
         select_documents: DocumentSelector | None = None,
-    ) -> tuple[list[RawInfoDocument], tuple[str, ...]]:
+    ) -> tuple[list[RawInfoDocument], tuple[str, ...], RawInfoCoverage]:
         documents = [
             item
             for item in self.store.search(company_id, as_of=as_of)
@@ -1072,6 +1242,7 @@ class EvidenceResolver:
             documents,
             identity=identity,
         )
+        documents, duplicate_ids = _deduplicate_documents(documents)
         ranked = _rank_documents(documents, request)
         if select_documents is None:
             selected = ranked[: request.max_documents]
@@ -1095,7 +1266,22 @@ class EvidenceResolver:
                 raise _DocumentSelectionError(
                     f"Local document selection failed ({type(exc).__name__})"
                 ) from exc
-        return selected, filtered_news_ids
+        query_tokens = _request_query_tokens(request)
+        query_matches = (
+            sum(_document_query_hit_count(item, query_tokens) > 0 for item in ranked)
+            if query_tokens
+            else None
+        )
+        coverage = RawInfoCoverage(
+            eligible_document_count=len(ranked),
+            selected_document_count=len(selected),
+            query_matched_document_count=query_matches,
+            selection_truncated=len(selected) < len(ranked),
+            query_requested=bool(query_tokens),
+            query_evaluated=bool(query_tokens),
+            deduplicated_document_count=len(duplicate_ids),
+        )
+        return selected, filtered_news_ids, coverage
 
     def _select_adapters(
         self, request: RawInfoRequest
@@ -1216,13 +1402,46 @@ def _adapter_routing_identity(
     return routed
 
 
+def _request_query_tokens(request: RawInfoRequest) -> tuple[str, ...]:
+    return tuple(
+        dict.fromkeys(token.casefold() for token in _TOKEN.findall(request.query or ""))
+    )
+
+
+def _document_query_hit_count(
+    document: RawInfoDocument,
+    tokens: tuple[str, ...],
+) -> int:
+    searchable = document.content.casefold()
+    return sum(searchable.count(token) for token in tokens)
+
+
+def _deduplicate_documents(
+    documents: Iterable[RawInfoDocument],
+) -> tuple[list[RawInfoDocument], tuple[str, ...]]:
+    """Keep one earliest-visible copy for identical content in one source type."""
+
+    by_content: dict[tuple[str, str], RawInfoDocument] = {}
+    duplicate_ids: list[str] = []
+    for document in sorted(
+        documents,
+        key=lambda item: (item.available_at, item.document_id),
+    ):
+        key = (document.source_type.casefold(), document.content_hash)
+        if key in by_content:
+            duplicate_ids.append(document.document_id)
+            continue
+        by_content[key] = document
+    return list(by_content.values()), tuple(sorted(duplicate_ids))
+
+
 def _rank_documents(
     documents: Iterable[RawInfoDocument], request: RawInfoRequest
 ) -> list[RawInfoDocument]:
-    tokens = tuple(token.casefold() for token in _TOKEN.findall(request.query or ""))
+    tokens = _request_query_tokens(request)
 
     def key(document: RawInfoDocument) -> tuple[Any, ...]:
-        hit_count = sum(document.content.casefold().count(token) for token in tokens)
+        hit_count = _document_query_hit_count(document, tokens)
         return (-hit_count, -document.available_at.timestamp(), document.document_id)
 
     return sorted(documents, key=key)

@@ -16,7 +16,12 @@ differ only in how resolved documents are consumed.
 - `RawInfoRequest`: immutable request id, purpose description, source types,
   optional lookback and literal query, and a maximum document count.
 - `RawInfoResolution`: request, resolved document refs, optional exact context
-  spans, query/acquisition events, newly appended refs, and an optional gap.
+  spans, query/acquisition events, newly appended refs, an optional gap, and a
+  coverage record that separates eligible/retrieved counts, lexical query
+matches, selection truncation, and model-visible context truncation.
+  Coverage also distinguishes a query that was not requested from a legacy
+  query whose match evaluation was never recorded; neither state is reported
+  as a successful match.
 - `BasicInfoBundle`: ordered Basic Info resolutions sent to `H_init`.
 - `DataGap`: request-scoped structured failure with reason, source/provider
   context, and a non-secret message.
@@ -44,6 +49,14 @@ RawInfoRequest
 -> still unresolved: try the next authorized adapter
 -> resolved documents or DataGap
 ```
+
+Before any request limit is applied, the resolver filters the complete PIT
+eligible pool and removes byte-identical copies within the same canonical source
+family. It ranks the resulting pool by query relevance and then availability;
+an older relevant document therefore cannot be displaced by newer irrelevant
+documents merely because the selected prefix is bounded. A lexical query match
+is reported as retrieval coverage, not as a claim that the request is
+semantically answerable.
 
 `resolve` optionally accepts a pure local `select_documents` callback. It receives
 the deterministic ranked pool only after issuer, exact source type, lookback, and

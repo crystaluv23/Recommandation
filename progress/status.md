@@ -1,8 +1,9 @@
 # Status
 
-Current reliability implementation (2026-09-06): phase one of T1 from
+Current reliability implementation (2026-09-06): the T1 execution-isolation
+foundation and the first T2 retrieval/input-representation slice from
 [`self-evolution-action-plan-2026-09-06.md`](self-evolution-action-plan-2026-09-06.md)
-is in progress. Runtime validation now has machine-readable issues, explicit
+are implemented. Runtime validation now has machine-readable issues, explicit
 all/any path policy, stable item identity, and scoped projection that survives
 provider list reordering while retaining valid siblings. H1 emits this contract
 directly instead of granting write scope through diagnostic prose. Signal execution
@@ -11,8 +12,14 @@ transport, permanent, budget, and authorization failures. Valid batch siblings
 survive another row's failed correction; technical failures keep diagnostics but
 are excluded from observations, learning events, and directional statistics, and
 do not consume the idempotent observation key. Candidate effectiveness audits
-report failures while retaining the frozen case list. T1 migration of remaining
-role validators and T2-T7 are still open; no external request was sent.
+report failures while retaining the frozen case list. Signal retrieval intent is
+version-owned; the resolver ranks the complete PIT-eligible pool before limiting,
+deduplicates same-source byte-identical copies, and reports query, selection, and
+visible-context coverage separately. Update sees the exact evidence used by the
+current Signal before supplemental windows. Aggregate Slow inputs and outputs use
+one anonymity domain, and E1 refs are assigned after a cycle-bound outcome-free
+ordering. T1 migration of remaining role validators, the rest of T2, and T3-T7
+remain open; no external request was sent. All 584 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

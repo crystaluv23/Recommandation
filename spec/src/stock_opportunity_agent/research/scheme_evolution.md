@@ -1700,6 +1700,16 @@ to another issuer's short ticker is not the current target's identity. Their
 free-text outputs retain the strong Discovery-wide leak guard because accepted
 reusable Signal text must not name a sampled issuer.
 
+Every aggregate Slow role now uses one identical anonymity domain on both sides
+of its contract: all aliases rejected from output are masked from every input
+projection before transmission. A model can therefore copy an allowed masked
+literal without being rejected by a different alias inventory during output
+validation. Exploration cases are sorted by a cycle-bound hash of their hidden
+case identity before sequential opaque refs are assigned. E1 presentation then
+follows that outcome-independent order; positive/control membership remains only
+in the local selection map and cannot be inferred from ref ranges or request
+grouping.
+
 All candidates are staged first. The orchestrator then executes each
 candidate's non-empty point-in-time fixtures through the real candidate
 executor and checks expected canonical state, schema, leakage (including

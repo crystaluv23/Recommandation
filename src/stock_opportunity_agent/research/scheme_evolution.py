@@ -8121,6 +8121,7 @@ class SignalEvolutionEngine:
         self.mining_model = mining_model
         self.update_model = update_model
         discovery_aliases = _slow_role_identity_guard_inventory(discovery_cases)
+        self.slow_role_identity_guards = discovery_aliases
         for role in (self.mining_model, self.update_model):
             setter = getattr(role, "set_identity_guard_aliases", None)
             if callable(setter):
@@ -9326,10 +9327,7 @@ class SignalEvolutionEngine:
             self.discovery_cases,
             per_class=required_per_class,
         )
-        case_pairs = tuple(
-            (f"case-{index:03d}", case)
-            for index, case in enumerate(cases, start=1)
-        )
+        case_pairs = _exploration_case_pairs(cases, cycle_id=cycle_id)
         case_by_ref = dict(case_pairs)
         refs_by_class = {
             case_class: tuple(
@@ -9382,10 +9380,19 @@ class SignalEvolutionEngine:
                 candidate_count : candidate_count
                 + config.validation_cases_per_class
             ]
+        e1_ref_set = {*e1_by_class[True], *e1_by_class[False]}
+        validation_ref_set = {
+            *validation_by_class[True],
+            *validation_by_class[False],
+        }
         selected = {
-            "e1_refs": tuple((*e1_by_class[True], *e1_by_class[False])),
+            "e1_refs": tuple(
+                case_ref for case_ref, _case in case_pairs if case_ref in e1_ref_set
+            ),
             "validation_refs": tuple(
-                (*validation_by_class[True], *validation_by_class[False])
+                case_ref
+                for case_ref, _case in case_pairs
+                if case_ref in validation_ref_set
             ),
         }
         priority = ("news", "filings", "financials", "transcripts", "market_data")
@@ -9436,11 +9443,17 @@ class SignalEvolutionEngine:
             )
             for case_class in (True, False)
         }
-        selected_grounded_signatures = tuple(
-            (
+        selected_grounded_refs = {
+            item.case_ref
+            for item in (
                 *grounded_by_class[True][: config.induction_cases_per_class],
                 *grounded_by_class[False][: config.induction_cases_per_class],
             )
+        }
+        selected_grounded_signatures = tuple(
+            signature_by_ref[case_ref]
+            for case_ref, _case in case_pairs
+            if case_ref in selected_grounded_refs
         )
         if any(
             len(items) < config.induction_cases_per_class
@@ -9936,7 +9949,7 @@ class SignalEvolutionEngine:
     def _mining_case_brief(
         self, case_ref: str, case: EvolutionCase
     ) -> dict[str, Any]:
-        aliases = _discovery_identity_terms((case,))
+        aliases = self.slow_role_identity_guards
         documents, profile = self._mining_local_profile(case)
         profile_resolution: dict[str, Any] | None = None
         if not self._mining_profile_ready(profile):
@@ -10068,29 +10081,72 @@ class SignalEvolutionEngine:
         documents = self.evidence_resolver.load_documents(
             resolution, as_of=case.prediction_time
         )
-        aliases = _discovery_identity_terms((case,))
+        aliases = self.slow_role_identity_guards
+        cited_evidence = (
+            ("supporting", result.supporting_evidence),
+            ("counter", result.counter_evidence),
+        )
+        cited_document_ids = {
+            item.document_id
+            for _group, items in cited_evidence
+            for item in items
+        }
+        documents = tuple(
+            sorted(
+                documents,
+                key=lambda item: (
+                    item.document_id not in cited_document_ids,
+                    item.document_id,
+                ),
+            )
+        )
+        document_ref_by_id = {
+            document.document_id: f"document-{index:02d}"
+            for index, document in enumerate(documents, start=1)
+        }
         evidence = [
             _model_evidence_view(
                 document,
                 index=index,
                 aliases=aliases,
-                query=spec.description,
+                query=spec.retrieval_policy.query,
             )
             for index, document in enumerate(documents, start=1)
         ]
         masked_result = _mask_identity_values(signal_result_model_view(result), aliases)
+        for group in ("supporting", "counter"):
+            for item in masked_result["evidence"][group]:
+                item["document_id"] = document_ref_by_id.get(
+                    item["document_id"], "missing-document"
+                )
+        executed_evidence = [
+            {
+                "role": group,
+                "document_ref": document_ref_by_id.get(
+                    item.document_id, "missing-document"
+                ),
+                "exact_span": _mask_identity_values(item.exact_span, aliases),
+                "timestamp": item.timestamp.isoformat(),
+            }
+            for group, items in cited_evidence
+            for item in items
+        ]
         _assert_identity_values_masked(evidence, aliases)
         _assert_identity_values_masked(masked_result, aliases)
+        _assert_identity_values_masked(executed_evidence, aliases)
         packet = {
             "case_ref": case_ref,
             "prediction_time": case.prediction_time.isoformat(),
             "label": "positive" if case.ground_truth.is_surge else "control",
+            "executed_evidence": executed_evidence,
             "evidence": evidence,
             "evidence_scope": (
-                "bounded excerpts from every exact Signal execution input; "
+                "executed_evidence is the Signal's exact cited projection; evidence "
+                "adds bounded context from every exact Signal execution input; "
                 "an excerpt cannot prove that an absent fact is absent from the source"
             ),
             "resolution_status": resolution.status,
+            "resolution_coverage": resolution.coverage.to_dict(),
             "current_signal_result": masked_result,
         }
         return packet, {
@@ -10100,6 +10156,9 @@ class SignalEvolutionEngine:
             "document_count": len(documents),
             "document_ids": [item.document_id for item in documents],
             "document_hashes": [item.content_hash for item in documents],
+            "cited_document_refs": [
+                item["document_ref"] for item in executed_evidence
+            ],
             "as_of": case.prediction_time.isoformat(),
             "reused_signal_execution_input": True,
         }
@@ -10125,6 +10184,7 @@ class SignalEvolutionEngine:
                 case=case,
                 query=query,
                 limit=request.max_documents,
+                aliases=self.slow_role_identity_guards,
             )
             selection.clear()
             selection.update(audit)
@@ -10913,6 +10973,29 @@ def _sample_binary_discovery_cases(
     return tuple(selected)
 
 
+def _exploration_case_pairs(
+    cases: Iterable[EvolutionCase], *, cycle_id: int
+) -> tuple[tuple[str, EvolutionCase], ...]:
+    """Assign opaque refs after a cycle-bound ordering that excludes outcomes."""
+
+    ordered = sorted(
+        cases,
+        key=lambda case: _canonical_hash(
+            {
+                "namespace": "exploration-presentation-v1",
+                "cycle_id": cycle_id,
+                "case_id": case.case_id,
+                "company_id": case.company_id,
+                "prediction_time": case.prediction_time.isoformat(),
+            }
+        ),
+    )
+    return tuple(
+        (f"case-{index:03d}", case)
+        for index, case in enumerate(ordered, start=1)
+    )
+
+
 def _market_cap_bucket(value: Any) -> str:
     """Coarsen optional market cap without fabricating missing precision."""
 
@@ -11186,10 +11269,11 @@ def _select_h3_model_evidence(
     case: EvolutionCase,
     query: str | None,
     limit: int,
+    aliases: tuple[str, ...] | None = None,
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, Any]], dict[str, Any]]:
     """Select a bounded complementary H3 packet from an eligible ranked pool."""
 
-    aliases = _discovery_identity_terms((case,))
+    resolved_aliases = aliases or _discovery_identity_terms((case,))
     eligible: list[RawInfoDocument] = []
     filtered: list[dict[str, str]] = []
     for document in documents:
@@ -11211,7 +11295,7 @@ def _select_h3_model_evidence(
             index,
             document,
             _model_evidence_view(
-                document, index=1, aliases=aliases, query=query
+                document, index=1, aliases=resolved_aliases, query=query
             ),
         )
         for index, document in enumerate(eligible)

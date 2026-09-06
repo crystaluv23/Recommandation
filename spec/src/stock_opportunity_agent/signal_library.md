@@ -13,6 +13,14 @@ is one reusable analysis capability:
 Signal = Schema + ExecutionPolicy + EvidencePolicy
 ```
 
+`raw_retrieval` is a version-owned policy, not only a list of provider source
+types. It also stores bounded query terms, an optional lookback, and an optional
+comparison requirement. The executor copies this policy into `RawInfoRequest`;
+it never asks an LLM to invent provider aliases. Legacy definitions that omit
+query terms receive a deterministic default from the complete `signal_id`, and
+the normalized policy is included in every newly serialized spec and candidate
+hash. A long natural-language description is not silently reused as the query.
+
 This module is separate from `signals.py`, whose existing rules measure fixed
 `ResearchPacket` features for the older cold-start path.
 

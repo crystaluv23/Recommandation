@@ -96,6 +96,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
     _assemble_final_context,
     _agent_raw_document_view,
+    _exploration_case_pairs,
     _h3_text_query_coverage,
     _item1_business_excerpt,
     _mask_identity_values,
@@ -112,6 +113,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionType,
     SignalExecutor,
     SignalLearningEvent,
+    SignalRetrievalPolicy,
     SignalRegistry,
     SignalResult,
     SignalSpec,
@@ -889,6 +891,54 @@ class SignalLibraryTests(TestCase):
             stats = registry.load_stats("revenue_growth_yoy")
             self.assertEqual(stats.retrieved, 1)
             self.assertEqual(stats.states["positive"], {"total": 1, "surge": 1})
+
+    def test_signal_retrieval_policy_keeps_relevant_old_document(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            spec = registry.load_spec("guidance_acceleration:v1")
+            self.assertEqual(
+                spec.retrieval_policy,
+                SignalRetrievalPolicy(query_terms=("guidance acceleration",)),
+            )
+            documents = [
+                RawInfoDocument.create(
+                    document_id=f"recent-{index}",
+                    company_id="issuer_1",
+                    source_type="filing",
+                    published_at=NOW - timedelta(days=index),
+                    available_at=NOW - timedelta(days=index),
+                    content=f"Routine administrative disclosure number {index}.",
+                )
+                for index in range(10)
+            ]
+            relevant = RawInfoDocument.create(
+                document_id="older-relevant",
+                company_id="issuer_1",
+                source_type="filing",
+                published_at=NOW - timedelta(days=20),
+                available_at=NOW - timedelta(days=20),
+                content="Management reported guidance acceleration for the year.",
+            )
+            executor = SignalExecutor(
+                registry.freeze(),
+                RawInfoStore(documents=(*documents, relevant)),
+            )
+
+            resolution = executor.prepare_inputs(
+                (spec.ref,),
+                company_id="issuer_1",
+                as_of=NOW,
+            )[0]
+
+            self.assertEqual(resolution.request.query, "guidance acceleration")
+            self.assertIn(
+                "older-relevant",
+                {item.document_id for item in resolution.documents},
+            )
+            self.assertEqual(resolution.coverage.eligible_document_count, 11)
+            self.assertEqual(resolution.coverage.selected_document_count, 10)
+            self.assertEqual(resolution.coverage.query_matched_document_count, 1)
+            self.assertTrue(resolution.coverage.selection_truncated)
 
     def test_execution_failure_does_not_pollute_or_consume_observation_stats(
         self,
@@ -4972,6 +5022,10 @@ class SignalEvolutionTests(TestCase):
                     ),
                 ),
             )
+            counterparty_by_company = {
+                positive.company_id: control.basic_info["company_name"],
+                control.company_id: positive.basic_info["company_name"],
+            }
             raw_store = RawInfoStore(
                 documents=tuple(
                     RawInfoDocument.create(
@@ -4980,7 +5034,11 @@ class SignalEvolutionTests(TestCase):
                         source_type="news",
                         published_at=NOW,
                         available_at=NOW,
-                        content=f"{case.basic_info['company_name']} reported a material order.",
+                        content=(
+                            f"{case.basic_info['company_name']} reported a material "
+                            "order involving "
+                            f"{counterparty_by_company[case.company_id]}."
+                        ),
                     )
                     for index, case in enumerate((positive, control))
                 )
@@ -5017,6 +5075,7 @@ class SignalEvolutionTests(TestCase):
                 ]
             )
             self.assertNotIn("Winner Corp", json.dumps(contrast_cases))
+            self.assertNotIn("Control Corp", json.dumps(contrast_cases))
             self.assertEqual(result["candidate_refs"], ())
             self.assertIn("order_confirmation", result["refined_hypotheses"])
             self.assertEqual(
@@ -5112,9 +5171,12 @@ class SignalEvolutionTests(TestCase):
                 make_case(f"explore_{index}", 4.0 if index < 2 else 1.1)
                 for index in range(4)
             )
+            exploration = exploration_selection(
+                cases, cycle_id=1, induction_per_class=1, validation_per_class=1
+            )
             signatures = tuple(
                 SignalMiningSignature(
-                    case_ref=f"case-{index:03d}",
+                    case_ref=case_ref,
                     observations=(
                         SignalMiningObservation(
                             summary="A material operational event was disclosed.",
@@ -5123,7 +5185,7 @@ class SignalEvolutionTests(TestCase):
                         ),
                     ),
                 )
-                for index in (1, 3)
+                for case_ref in exploration["e1_refs"]
             )
             mining_model = ScriptedMiningModel(
                 signatures=tuple(reversed(signatures)),
@@ -5952,6 +6014,17 @@ class SignalEvolutionTests(TestCase):
             for packet in update_model.requests[0]["induction_cases"]:
                 self.assertIn("excerpt cannot prove", packet["evidence_scope"])
                 self.assertEqual(len(packet["evidence"]), 1)
+                self.assertTrue(packet["executed_evidence"])
+                cited_refs = {
+                    item["document_ref"] for item in packet["executed_evidence"]
+                }
+                self.assertEqual(
+                    packet["evidence"][0]["document_ref"], next(iter(cited_refs))
+                )
+                result_evidence = packet["current_signal_result"]["evidence"]
+                self.assertTrue(
+                    result_evidence["supporting"] or result_evidence["counter"]
+                )
             for resolution in target_audit["resolutions"]:
                 self.assertTrue(resolution["reused_signal_execution_input"])
                 self.assertEqual(resolution["document_count"], 1)
@@ -5960,7 +6033,9 @@ class SignalEvolutionTests(TestCase):
                 self.assertTrue(
                     resolution["input_request"]["request_id"].startswith("signal:")
                 )
-                self.assertNotIn("query", resolution["input_request"])
+                self.assertEqual(
+                    resolution["input_request"]["query"], "revenue growth yoy"
+                )
             induction_ids = set(
                 target_audit["local_selection"]["induction_case_ids"]
             )
@@ -6432,7 +6507,10 @@ class SignalEvolutionTests(TestCase):
                 [make_case(f"explore_positive_{index}", 4.0) for index in range(4)]
                 + [make_case(f"explore_control_{index}", 1.1) for index in range(4)]
             )
-            induction_refs = ("case-001", "case-002", "case-005", "case-006")
+            selection = exploration_selection(
+                cases, cycle_id=3, induction_per_class=2, validation_per_class=2
+            )
+            induction_refs = selection["e1_refs"]
             mining_model = ScriptedMiningModel(
                 signatures=tuple(
                     SignalMiningSignature(
@@ -6505,10 +6583,14 @@ class SignalEvolutionTests(TestCase):
                 [make_case(f"explore_positive_{index}", 4.0) for index in range(4)]
                 + [make_case(f"explore_control_{index}", 1.1) for index in range(4)]
             )
-            induction_refs = ("case-001", "case-002", "case-005", "case-006")
+            selection = exploration_selection(
+                cases, cycle_id=3, induction_per_class=2, validation_per_class=2
+            )
+            induction_refs = selection["e1_refs"]
+            failed_ref = selection["e1_by_class"][True][0]
             signatures = []
             for case_ref in induction_refs:
-                if case_ref == "case-001":
+                if case_ref == failed_ref:
                     signatures.append(
                         SignalMiningSignature(
                             case_ref=case_ref,
@@ -6576,22 +6658,17 @@ class SignalEvolutionTests(TestCase):
                 [make_case(f"explore_positive_{index}", 4.0) for index in range(6)]
                 + [make_case(f"explore_control_{index}", 1.1) for index in range(6)]
             )
-            e1_refs = (
-                "case-001",
-                "case-002",
-                "case-003",
-                "case-004",
-                "case-007",
-                "case-008",
-                "case-009",
-                "case-010",
+            selection = exploration_selection(
+                cases, cycle_id=3, induction_per_class=2, validation_per_class=2
             )
+            e1_refs = selection["e1_refs"]
+            failed_ref = selection["e1_by_class"][True][0]
             signatures = tuple(
                 SignalMiningSignature(
                     case_ref=case_ref,
                     observations=(
                         ()
-                        if case_ref == "case-001"
+                        if case_ref == failed_ref
                         else (
                             SignalMiningObservation(
                                 summary="A bounded event was reported.",
@@ -6604,7 +6681,7 @@ class SignalEvolutionTests(TestCase):
                     ),
                     evidence_gaps=(
                         ("No supportable observation was visible.",)
-                        if case_ref == "case-001"
+                        if case_ref == failed_ref
                         else ()
                     ),
                 )
@@ -6651,14 +6728,50 @@ class SignalEvolutionTests(TestCase):
             result = engine._run_signal_mining(cycle_id=3)
 
             self.assertEqual(len(mining_model.requests), 2)
+            grounded_by_class = {
+                label: tuple(
+                    ref
+                    for ref in refs
+                    if ref != failed_ref
+                )[:2]
+                for label, refs in selection["e1_by_class"].items()
+            }
+            expected_grounded = [
+                ref
+                for ref in selection["all_refs"]
+                if ref in {*grounded_by_class[True], *grounded_by_class[False]}
+            ]
             self.assertEqual(
                 [item["case_ref"] for item in mining_model.requests[1]["signatures"]],
-                ["case-002", "case-003", "case-007", "case-008"],
+                expected_grounded,
             )
             self.assertEqual(
                 result["audit"]["local_selection"]["validation_case_refs"],
-                ["case-005", "case-006", "case-011", "case-012"],
+                list(selection["validation_refs"]),
             )
+
+    def test_exploration_reference_order_is_independent_of_outcomes(self) -> None:
+        cases = tuple(
+            [make_case(f"shuffle_positive_{index}", 4.0) for index in range(4)]
+            + [make_case(f"shuffle_control_{index}", 1.1) for index in range(4)]
+        )
+        swapped = tuple(
+            replace(
+                case,
+                ground_truth=GroundTruth(
+                    1.1 if case.ground_truth.is_surge else 4.0
+                ),
+            )
+            for case in cases
+        )
+
+        original_pairs = _exploration_case_pairs(cases, cycle_id=7)
+        swapped_pairs = _exploration_case_pairs(swapped, cycle_id=7)
+
+        self.assertEqual(
+            [(ref, case.case_id) for ref, case in original_pairs],
+            [(ref, case.case_id) for ref, case in swapped_pairs],
+        )
 
     def test_exploration_rejects_a_fabricated_document_ref(self) -> None:
         signatures = (
@@ -7320,6 +7433,49 @@ def fixture_mining_config(case_count: int) -> SignalMiningConfig:
         induction_cases_per_class=min(2, per_class),
         validation_cases_per_class=min(2, max(1, per_class - 1)),
     )
+
+
+def exploration_selection(
+    cases: tuple[EvolutionCase, ...],
+    *,
+    cycle_id: int,
+    induction_per_class: int,
+    validation_per_class: int,
+) -> dict[str, Any]:
+    """Mirror local label-aware sampling while keeping presentation globally ordered."""
+
+    case_pairs = _exploration_case_pairs(cases, cycle_id=cycle_id)
+    refs_by_class = {
+        label: tuple(
+            case_ref
+            for case_ref, case in case_pairs
+            if case.ground_truth.is_surge == label
+        )
+        for label in (True, False)
+    }
+    e1_by_class: dict[bool, tuple[str, ...]] = {}
+    validation_by_class: dict[bool, tuple[str, ...]] = {}
+    for label, refs in refs_by_class.items():
+        candidate_count = min(
+            2 * induction_per_class,
+            len(refs) - validation_per_class,
+        )
+        e1_by_class[label] = refs[:candidate_count]
+        validation_by_class[label] = refs[
+            candidate_count : candidate_count + validation_per_class
+        ]
+    all_refs = tuple(case_ref for case_ref, _case in case_pairs)
+    e1_set = {*e1_by_class[True], *e1_by_class[False]}
+    validation_set = {
+        *validation_by_class[True],
+        *validation_by_class[False],
+    }
+    return {
+        "all_refs": all_refs,
+        "e1_by_class": e1_by_class,
+        "e1_refs": tuple(ref for ref in all_refs if ref in e1_set),
+        "validation_refs": tuple(ref for ref in all_refs if ref in validation_set),
+    }
 
 
 def candidate_growth_fixture() -> dict[str, Any]:
