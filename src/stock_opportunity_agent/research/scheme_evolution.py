@@ -7609,42 +7609,10 @@ class SignalCandidateEffectivenessEvaluator:
         excluded_case_ids: Iterable[str] = (),
         induction_supported: bool = False,
     ) -> SignalCandidateEffectiveness:
-        case_by_id = {case.case_id: case for case in self.discovery_cases}
-        excluded_companies = {
-            case_by_id[case_id].company_id
-            for case_id in excluded_case_ids
-            if case_id in case_by_id
-        }
-        eligible = tuple(
-            case
-            for case in self.discovery_cases
-            if case.company_id not in excluded_companies
+        cases = self._select_cases(
+            preferred_case_ids=preferred_case_ids,
+            excluded_case_ids=excluded_case_ids,
         )
-        preferred: list[EvolutionCase] = []
-        seen_companies: set[str] = set()
-        for case_id in preferred_case_ids:
-            case = case_by_id.get(str(case_id))
-            if (
-                case is None
-                or case.company_id in excluded_companies
-                or case.company_id in seen_companies
-            ):
-                continue
-            preferred.append(case)
-            seen_companies.add(case.company_id)
-            if len(preferred) >= self.case_limit:
-                break
-        for case in _sample_signal_discovery_cases(
-            eligible,
-            limit=self.case_limit,
-        ):
-            if len(preferred) >= self.case_limit:
-                break
-            if case.company_id in seen_companies:
-                continue
-            preferred.append(case)
-            seen_companies.add(case.company_id)
-        cases = tuple(preferred)
         case_ids = tuple(case.case_id for case in cases)
         try:
             current = self.registry.latest_spec(spec.signal_id)
@@ -7813,6 +7781,155 @@ class SignalCandidateEffectivenessEvaluator:
             current_execution_failed=current_counts[4],
         )
 
+    def evaluation_identity(
+        self,
+        spec: SignalSpec,
+        *,
+        candidate_hash: str,
+        preferred_case_ids: Iterable[str] = (),
+        excluded_case_ids: Iterable[str] = (),
+        induction_supported: bool = False,
+    ) -> Mapping[str, str]:
+        """Return the complete stable identity used to cache one paired gate."""
+
+        preferred_ids = tuple(str(item) for item in preferred_case_ids)
+        excluded_ids = tuple(str(item) for item in excluded_case_ids)
+        cases = self._select_cases(
+            preferred_case_ids=preferred_ids,
+            excluded_case_ids=excluded_ids,
+        )
+        try:
+            current = self.registry.latest_spec(spec.signal_id)
+            baseline = {
+                "spec": current.to_dict(),
+                "skill": self.registry.load_skill(current.ref),
+            }
+        except ValidationError:
+            baseline = {"spec": None, "skill": None}
+        source_manifest = []
+        for case in cases:
+            documents = self.raw_info_store.search(
+                case.company_id,
+                as_of=case.prediction_time,
+            )
+            source_manifest.append(
+                {
+                    "case_id": case.case_id,
+                    "company_id": case.company_id,
+                    "prediction_time": case.prediction_time.isoformat(),
+                    "documents": [
+                        {
+                            "document_id": document.document_id,
+                            "content_hash": document.content_hash,
+                            "source_type": document.source_type,
+                            "available_at": document.available_at.isoformat(),
+                        }
+                        for document in documents
+                    ],
+                }
+            )
+        runner_identity: dict[str, Any] = {
+            "type": (
+                None
+                if self.llm_runner is None
+                else f"{type(self.llm_runner).__module__}."
+                f"{type(self.llm_runner).__qualname__}"
+            )
+        }
+        caller = getattr(self.llm_runner, "caller", None)
+        registration = getattr(caller, "registration", None)
+        if registration is not None and callable(
+            getattr(registration, "to_public_dict", None)
+        ):
+            runner_identity["registration"] = registration.to_public_dict()
+        contract = getattr(caller, "contract", None)
+        if contract is not None and getattr(contract, "contract_hash", None):
+            runner_identity["contract_hash"] = str(contract.contract_hash)
+        return {
+            "baseline_hash": _canonical_hash(baseline),
+            "cohort_hash": _canonical_hash(
+                {
+                    "selected": [
+                        {
+                            "case_id": case.case_id,
+                            "company_id": case.company_id,
+                            "prediction_time": case.prediction_time.isoformat(),
+                        }
+                        for case in cases
+                    ],
+                    "excluded_case_ids": list(excluded_ids),
+                    "induction_supported": induction_supported,
+                }
+            ),
+            "source_manifest_hash": _canonical_hash(
+                {"source_manifest": source_manifest}
+            ),
+            "projection_hash": _canonical_hash(
+                {
+                    "schema": "signal-paired-projection-v1",
+                    "executor": "SignalExecutor",
+                    "point_in_time": True,
+                }
+            ),
+            "validator_hash": _canonical_hash(
+                {
+                    "contract": "signal-candidate-validation-v2",
+                    "effectiveness": "signal-candidate-effectiveness-v3",
+                    "minimum_cases": self.minimum_cases,
+                    "case_limit": self.case_limit,
+                    "functions": sorted(self.deterministic_functions),
+                }
+            ),
+            "model_hash": _canonical_hash(runner_identity),
+            "sampling_hash": _canonical_hash(
+                {
+                    "schema": "issuer-distinct-preferred-then-stratified-v1",
+                    "preferred_case_ids": list(preferred_ids),
+                    "selected_case_ids": [case.case_id for case in cases],
+                }
+            ),
+        }
+
+    def _select_cases(
+        self,
+        *,
+        preferred_case_ids: Iterable[str],
+        excluded_case_ids: Iterable[str],
+    ) -> tuple[EvolutionCase, ...]:
+        case_by_id = {case.case_id: case for case in self.discovery_cases}
+        excluded_companies = {
+            case_by_id[case_id].company_id
+            for case_id in excluded_case_ids
+            if case_id in case_by_id
+        }
+        eligible = tuple(
+            case
+            for case in self.discovery_cases
+            if case.company_id not in excluded_companies
+        )
+        preferred: list[EvolutionCase] = []
+        seen_companies: set[str] = set()
+        for case_id in preferred_case_ids:
+            case = case_by_id.get(str(case_id))
+            if (
+                case is None
+                or case.company_id in excluded_companies
+                or case.company_id in seen_companies
+            ):
+                continue
+            preferred.append(case)
+            seen_companies.add(case.company_id)
+            if len(preferred) >= self.case_limit:
+                break
+        for case in _sample_signal_discovery_cases(eligible, limit=self.case_limit):
+            if len(preferred) >= self.case_limit:
+                break
+            if case.company_id in seen_companies:
+                continue
+            preferred.append(case)
+            seen_companies.add(case.company_id)
+        return tuple(preferred)
+
 
 def _signal_effectiveness_counts(
     values: Iterable[tuple[SignalValue, bool, SignalExecutionStatus]],
@@ -7900,6 +8017,7 @@ class SlowLoopValidation:
     input_registry_version: int
     input_registry_hash: str
     input_signal_refs: tuple[str, ...]
+    candidate_evaluations: Mapping[str, str] = field(default_factory=dict)
     candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
         default_factory=dict
     )
@@ -7924,6 +8042,7 @@ class SlowLoopValidation:
             "input_registry_version": self.input_registry_version,
             "input_registry_hash": self.input_registry_hash,
             "input_signal_refs": list(self.input_signal_refs),
+            "candidate_evaluations": dict(self.candidate_evaluations),
             "candidate_effectiveness": {
                 ref: dict(value)
                 for ref, value in self.candidate_effectiveness.items()
@@ -7967,6 +8086,12 @@ class SlowLoopValidation:
             input_signal_refs=tuple(
                 str(item) for item in data.get("input_signal_refs", ())
             ),
+            candidate_evaluations={
+                str(ref): str(evaluation_key)
+                for ref, evaluation_key in dict(
+                    data.get("candidate_evaluations", {})
+                ).items()
+            },
             candidate_effectiveness={
                 str(ref): dict(value)
                 for ref, value in dict(
@@ -7995,6 +8120,7 @@ class SlowLoopResult:
     input_registry_hash: str
     output_registry_version: int
     output_registry_hash: str
+    candidate_evaluations: Mapping[str, str] = field(default_factory=dict)
     candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
         default_factory=dict
     )
@@ -8027,6 +8153,7 @@ class SlowLoopResult:
             "input_registry_hash": self.input_registry_hash,
             "output_registry_version": self.output_registry_version,
             "output_registry_hash": self.output_registry_hash,
+            "candidate_evaluations": dict(self.candidate_evaluations),
             "candidate_effectiveness": {
                 ref: dict(value)
                 for ref, value in self.candidate_effectiveness.items()
@@ -8077,6 +8204,12 @@ class SlowLoopResult:
                 data.get("output_registry_version", data.get("registry_version", 0))
             ),
             output_registry_hash=str(data.get("output_registry_hash", "")),
+            candidate_evaluations={
+                str(ref): str(evaluation_key)
+                for ref, evaluation_key in dict(
+                    data.get("candidate_evaluations", {})
+                ).items()
+            },
             candidate_effectiveness={
                 str(ref): dict(value)
                 for ref, value in dict(
@@ -8167,6 +8300,11 @@ class SignalEvolutionEngine:
             validation = SlowLoopValidation.from_dict(staged)
         transition = self.registry.promote_validated_batch(
             validation.validated_candidates,
+            validated_evaluations=(
+                validation.candidate_evaluations
+                if validation.candidate_evaluations
+                else None
+            ),
             transition_id=f"cycle-{cycle_id:04d}",
             input_version=validation.input_registry_version,
             input_hash=validation.input_registry_hash,
@@ -8184,6 +8322,7 @@ class SignalEvolutionEngine:
             input_registry_hash=transition.input_hash,
             output_registry_version=transition.output_version,
             output_registry_hash=transition.output_hash,
+            candidate_evaluations=validation.candidate_evaluations,
             candidate_effectiveness=validation.candidate_effectiveness,
             agent_audits=validation.agent_audits,
         )
@@ -8251,6 +8390,7 @@ class SignalEvolutionEngine:
 
         validations: dict[str, SignalCandidateValidation] = {}
         accepted_hashes: dict[str, str] = {}
+        accepted_evaluations: dict[str, str] = {}
         semantic_seen: dict[str, str] = {}
         effectiveness_by_ref: dict[str, Mapping[str, Any]] = {}
         for signal_ref in all_refs:
@@ -8261,14 +8401,27 @@ class SignalEvolutionEngine:
                 stable_ref = self.registry.latest_spec(spec.signal_id).ref
             except ValidationError:
                 stable_ref = None
-            prior_validation = self.registry.load_candidate_validation(signal_ref)
+            evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
+                spec,
+                candidate_hash=candidate_hash,
+                preferred_case_ids=validation_case_ids.get(signal_ref, ()),
+                excluded_case_ids=induction_case_ids.get(signal_ref, ()),
+                induction_supported=signal_ref in induction_case_ids,
+            )
+            evaluation_key, _identity = self.registry.candidate_evaluation_key(
+                signal_ref,
+                candidate_hash=candidate_hash,
+                evaluation_identity=evaluation_identity,
+            )
+            prior_validation = self.registry.load_candidate_validation(
+                signal_ref,
+                evaluation_key=evaluation_key,
+            )
             reusable_prior = (
                 prior_validation is not None
                 and prior_validation.get("schema_version")
-                == "signal-candidate-validation-v2"
+                == "signal-candidate-evaluation-v3"
                 and isinstance(prior_validation.get("effectiveness"), Mapping)
-                and dict(prior_validation["effectiveness"]).get("disposition")
-                != "provisional"
             )
             contract_validation: Mapping[str, Any]
             if stable_ref == signal_ref:
@@ -8339,7 +8492,6 @@ class SignalEvolutionEngine:
                     candidate_hash=candidate_hash,
                     executed_tests=checked.executed_tests,
                 )
-            effectiveness_by_ref[signal_ref] = effectiveness
             semantic = _normalize_semantics(spec.description)
             prior_ref = semantic_seen.get(semantic)
             if validation.accepted and prior_ref is not None:
@@ -8359,19 +8511,33 @@ class SignalEvolutionEngine:
                         duplicate_reason,
                     ],
                 }
+                effectiveness = {
+                    **dict(effectiveness),
+                    "accepted": False,
+                    "disposition": "rejected",
+                    "reasons": [
+                        *list(effectiveness.get("reasons", ())),
+                        duplicate_reason,
+                    ],
+                }
+            effectiveness_by_ref[signal_ref] = effectiveness
             if validation.accepted:
                 semantic_seen[semantic] = signal_ref
                 accepted_hashes[signal_ref] = candidate_hash
+                accepted_evaluations[signal_ref] = evaluation_key
             validations[signal_ref] = validation
             if not reusable_prior and stable_ref != signal_ref:
-                self.registry.record_candidate_validation(
+                recorded_key = self.registry.record_candidate_validation(
                     signal_ref,
                     candidate_hash=candidate_hash,
+                    evaluation_identity=evaluation_identity,
                     accepted=validation.accepted,
                     reasons=validation.reasons,
                     contract_validation=contract_validation,
                     effectiveness=effectiveness,
                 )
+                if validation.accepted:
+                    accepted_evaluations[signal_ref] = recorded_key
         rejected = dict(agent_failures)
         provisional = {
             signal_ref: tuple(
@@ -8397,6 +8563,7 @@ class SignalEvolutionEngine:
             input_registry_version=input_snapshot.version,
             input_registry_hash=input_snapshot.registry_hash,
             input_signal_refs=tuple(spec.ref for spec in input_snapshot.specs),
+            candidate_evaluations=accepted_evaluations,
             candidate_effectiveness=effectiveness_by_ref,
             agent_audits=agent_audits,
         )
@@ -8524,40 +8691,6 @@ class SignalEvolutionEngine:
                 "issue_fingerprint": issue_fingerprint,
             }
         )
-        prior = self._prior_signal_update(issue_fingerprint)
-        if prior is not None:
-            staged_ref = str(prior.get("staged_ref", ""))
-            if staged_ref:
-                validation = self.registry.load_candidate_validation(staged_ref)
-                effectiveness = (
-                    dict(validation.get("effectiveness", {}))
-                    if validation is not None
-                    else {}
-                )
-                if effectiveness.get("disposition") == "provisional":
-                    local = dict(prior.get("local_selection", {}))
-                    return self._signal_update_output(
-                        candidate_refs=(staged_ref,),
-                        induction_case_ids={
-                            staged_ref: tuple(local.get("induction_case_ids", ()))
-                        },
-                        validation_case_ids={
-                            staged_ref: tuple(local.get("holdout_case_ids", ()))
-                        },
-                        audit={
-                            **base_audit,
-                            "disposition": "reused_provisional",
-                            "staged_ref": staged_ref,
-                            "local_selection": local,
-                        },
-                    )
-            return self._signal_update_output(
-                audit={
-                    **base_audit,
-                    "disposition": "unchanged_issue_suppressed",
-                }
-            )
-
         spec = self.registry.load_spec(signal_ref)
         skill = self.registry.load_skill(signal_ref)
         classified: dict[
@@ -8622,6 +8755,66 @@ class SignalEvolutionEngine:
                 induction_companies & {case.company_id for case in holdout}
             ),
         }
+        execution_inputs = sorted(
+            (
+                {
+                    "case_id": case.case_id,
+                    "company_id": case.company_id,
+                    "prediction_time": case.prediction_time.isoformat(),
+                    "resolution": resolution.to_dict(),
+                }
+                for values in classified.values()
+                for case, _result, resolution in values
+            ),
+            key=lambda item: item["case_id"],
+        )
+        work_fingerprint = _canonical_hash(
+            {
+                "schema_version": "signal-update-work-v1",
+                "issue_fingerprint": issue_fingerprint,
+                "local_selection": local_selection,
+                "execution_inputs": execution_inputs,
+                "update_model": (
+                    f"{type(self.update_model).__module__}."
+                    f"{type(self.update_model).__qualname__}"
+                ),
+                "projection_protocol": "signal-update-evidence-packet-v2",
+            }
+        )
+        base_audit["work_fingerprint"] = work_fingerprint
+        prior = self._prior_signal_update(work_fingerprint)
+        if prior is not None:
+            staged_ref = str(prior.get("staged_ref", ""))
+            if staged_ref:
+                validation = self.registry.load_candidate_validation(staged_ref)
+                effectiveness = (
+                    dict(validation.get("effectiveness", {}))
+                    if validation is not None
+                    else {}
+                )
+                if effectiveness.get("disposition") == "provisional":
+                    return self._signal_update_output(
+                        candidate_refs=(staged_ref,),
+                        induction_case_ids={
+                            staged_ref: tuple(local_selection["induction_case_ids"])
+                        },
+                        validation_case_ids={
+                            staged_ref: tuple(local_selection["holdout_case_ids"])
+                        },
+                        audit={
+                            **base_audit,
+                            "disposition": "reused_provisional",
+                            "staged_ref": staged_ref,
+                            "local_selection": local_selection,
+                        },
+                    )
+            return self._signal_update_output(
+                audit={
+                    **base_audit,
+                    "disposition": "unchanged_work_suppressed",
+                    "local_selection": local_selection,
+                }
+            )
         if (
             not primary
             or not boundary
@@ -8769,7 +8962,7 @@ class SignalEvolutionEngine:
         return tuple(item[2] for item in ranked[:limit])
 
     def _prior_signal_update(
-        self, issue_fingerprint: str
+        self, work_fingerprint: str
     ) -> Mapping[str, Any] | None:
         for path in reversed(
             sorted(
@@ -8795,7 +8988,7 @@ class SignalEvolutionEngine:
                     item for item in target_audits if isinstance(item, Mapping)
                 )
             for candidate in candidates:
-                if candidate.get("issue_fingerprint") == issue_fingerprint:
+                if candidate.get("work_fingerprint") == work_fingerprint:
                     return candidate
         return None
 

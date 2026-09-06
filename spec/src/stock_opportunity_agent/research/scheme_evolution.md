@@ -1624,8 +1624,13 @@ learning profiles and selects at most three distinct actionable targets by
 evidence priority, only after repeated distinct observations show an
 explicit-attribution, directionality, or availability problem. If no target
 crosses that floor, Update records `no_actionable_target` and makes zero model
-calls. A fingerprint over each target version and supporting learning state
-prevents an unchanged issue from being proposed repeatedly.
+calls. A problem fingerprint over each target version and supporting learning
+state identifies the recurring defect. A separate work fingerprint binds that
+problem to the selected induction/holdout cases, their relevant Raw Info
+manifest, and the Update model/projection protocol. Only an exact work
+fingerprint is suppressed. New relevant evidence or a changed local cohort can
+therefore retry the same problem, while unrelated global Raw Info growth does
+not wake it.
 
 For a selected target, local code executes `vCurrent` on a deterministic,
 issuer-distinct Discovery sample and partitions it before model invocation.
@@ -1744,10 +1749,14 @@ idea, while lack of evidence still fails closed at the stable Registry boundary.
 This is a Signal-level safeguard, not a claim of downstream Plan-F1 causality;
 downstream impact is observed only in later Fast rounds.
 
-Passing candidates are recorded by exact candidate hash (spec + skill + tests)
-together with the versioned contract and effectiveness audits. The complete
+Every candidate evaluation is recorded by a key over the exact candidate hash
+(spec + skill + tests), baseline hash, issuer split, relevant Raw Info manifest,
+projection/validator versions, model identity, and sampling protocol. Contract
+and effectiveness results are immutable per key; provisional candidates may be
+evaluated again when that identity changes without overwriting history. The complete
 validation outcome is staged before stable mutation. The orchestrator then
-automatically promotes all passing hashes as one cycle-identified, recoverable
+automatically promotes all passing hash/evaluation-key pairs as one
+cycle-identified, recoverable
 batch and advances the Registry version once. Empty passing batches do not
 advance it. The next Fast Loop sees the resulting snapshot; the just-completed
 Fast Loop remains bound to its input snapshot.

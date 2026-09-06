@@ -355,6 +355,94 @@ class RawInfoStoreTests(TestCase):
             self.assertEqual(len(reloaded.documents), 2)
             self.assertEqual(reloaded.load("doc_visible"), visible)
 
+    def test_file_backed_instances_refresh_and_concurrent_replay_is_idempotent(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            first = RawInfoStore(directory)
+            stale = RawInfoStore(directory)
+            document = RawInfoDocument.create(
+                document_id="shared_doc",
+                company_id="issuer_1",
+                source_type="filing",
+                published_at=NOW,
+                available_at=NOW,
+                content="The same canonical filing body.",
+                metadata={"accession": "0001"},
+            )
+
+            self.assertTrue(first.append(document))
+            self.assertEqual(stale.documents, ())
+            self.assertFalse(stale.append(document))
+            self.assertEqual(stale.load(document.document_id), document)
+
+            later = RawInfoDocument.create(
+                document_id="later_doc",
+                company_id="issuer_1",
+                source_type="news",
+                published_at=NOW,
+                available_at=NOW,
+                content="A later source became available.",
+            )
+            first.append(later)
+            self.assertEqual(stale.refresh(), 1)
+            self.assertEqual(stale.load(later.document_id), later)
+
+    def test_file_backed_document_id_is_unique_across_canonical_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            first = RawInfoStore(directory)
+            second = RawInfoStore(directory)
+            first.append(
+                RawInfoDocument.create(
+                    document_id="global_id",
+                    company_id="issuer_1",
+                    source_type="filing",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="Original filing.",
+                )
+            )
+            conflicting = RawInfoDocument.create(
+                document_id="global_id",
+                company_id="issuer_2",
+                source_type="news",
+                published_at=NOW,
+                available_at=NOW,
+                content="Conflicting source and issuer.",
+            )
+
+            with self.assertRaisesRegex(ValidationError, "different content or provenance"):
+                second.append(conflicting)
+            self.assertFalse(
+                (Path(directory) / "news" / "issuer_2" / "global_id.json").exists()
+            )
+
+    def test_raw_info_snapshot_does_not_change_after_backing_store_refresh(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            store = RawInfoStore(directory)
+            first = RawInfoDocument.create(
+                document_id="snapshot_first",
+                company_id="issuer_1",
+                source_type="filing",
+                published_at=NOW,
+                available_at=NOW,
+                content="First document.",
+            )
+            store.append(first)
+            snapshot = store.snapshot()
+            store.append(
+                RawInfoDocument.create(
+                    document_id="snapshot_second",
+                    company_id="issuer_1",
+                    source_type="filing",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="Second document.",
+                )
+            )
+
+            self.assertEqual(snapshot.documents, (first,))
+
     def test_store_rejects_conflicting_id_hash_and_path_traversal(self) -> None:
         valid = RawInfoDocument.create(
             document_id="doc_1",
@@ -794,6 +882,30 @@ class SignalLibraryTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "empty stable Signal"):
                 registry.freeze()
 
+    def test_frozen_registry_deeply_isolates_specs_and_profiles(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            snapshot = registry.freeze()
+            original_hash = snapshot.registry_hash
+            original_learning_hash = snapshot.learning_hash
+            spec = snapshot.load_spec("guidance_acceleration:v1")
+
+            with self.assertRaisesRegex(TypeError, "cannot be mutated"):
+                spec.parameters["routing_need_phrases"].append("mutated phrase")
+            with self.assertRaisesRegex(TypeError, "cannot be mutated"):
+                snapshot.learned_profiles[spec.ref]["new_key"] = "mutated"
+
+            detached = spec.to_dict()
+            detached["parameters"]["routing_need_phrases"].append(
+                "detached mutation"
+            )
+            self.assertNotIn(
+                "detached mutation",
+                snapshot.load_spec(spec.ref).parameters["routing_need_phrases"],
+            )
+            self.assertEqual(snapshot.registry_hash, original_hash)
+            self.assertEqual(snapshot.learning_hash, original_learning_hash)
+
     def test_rejected_next_version_can_be_repaired_without_erasing_audit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -816,8 +928,21 @@ class SignalLibraryTests(TestCase):
             registry.record_candidate_validation(
                 rejected.ref,
                 candidate_hash=rejected_hash,
+                evaluation_identity={
+                    "baseline_hash": "0" * 64,
+                    "cohort_hash": "1" * 64,
+                    "source_manifest_hash": "2" * 64,
+                    "projection_hash": "3" * 64,
+                    "validator_hash": "4" * 64,
+                    "model_hash": "5" * 64,
+                    "sampling_hash": "6" * 64,
+                },
                 accepted=False,
                 reasons=("fixture failed",),
+                effectiveness={
+                    "accepted": False,
+                    "disposition": "rejected",
+                },
             )
             repaired = SignalSpec(
                 signal_id="revenue_growth_yoy",
@@ -839,7 +964,7 @@ class SignalLibraryTests(TestCase):
             self.assertEqual(active, repaired)
             archived = list(
                 (root / "signals_candidates" / ".rejected").glob(
-                    "financial/revenue_growth_yoy/v2/*/validation.json"
+                    "financial/revenue_growth_yoy/v2/*/evaluations/*.json"
                 )
             )
             self.assertEqual(len(archived), 1)
@@ -847,6 +972,108 @@ class SignalLibraryTests(TestCase):
                 json.loads(archived[0].read_text(encoding="utf-8"))["candidate_hash"],
                 rejected_hash,
             )
+
+    def test_candidate_keeps_multiple_immutable_evaluations_and_latest_pointer(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            candidate = SignalSpec(
+                signal_id="revenue_growth_yoy",
+                version=2,
+                category="financial",
+                description="Re-evaluate revenue growth when evidence expands.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy",
+                source_types=("financials",),
+            )
+            registry.stage_candidate(
+                candidate,
+                tests=(candidate_growth_fixture(),),
+                origin="cycle-1-update",
+            )
+            candidate_hash = registry.candidate_hash(candidate.ref)
+            base_identity = {
+                "baseline_hash": "0" * 64,
+                "cohort_hash": "1" * 64,
+                "source_manifest_hash": "2" * 64,
+                "projection_hash": "3" * 64,
+                "validator_hash": "4" * 64,
+                "model_hash": "5" * 64,
+                "sampling_hash": "6" * 64,
+            }
+            provisional_key = registry.record_candidate_validation(
+                candidate.ref,
+                candidate_hash=candidate_hash,
+                evaluation_identity=base_identity,
+                accepted=False,
+                reasons=("insufficient independent cases",),
+                effectiveness={
+                    "accepted": False,
+                    "disposition": "provisional",
+                },
+            )
+            expanded_identity = {
+                **base_identity,
+                "source_manifest_hash": "7" * 64,
+            }
+            accepted_key = registry.record_candidate_validation(
+                candidate.ref,
+                candidate_hash=candidate_hash,
+                evaluation_identity=expanded_identity,
+                accepted=True,
+                reasons=(),
+                effectiveness={
+                    "accepted": True,
+                    "disposition": "promoted",
+                },
+            )
+
+            self.assertNotEqual(provisional_key, accepted_key)
+            self.assertEqual(len(registry.list_candidate_evaluations(candidate.ref)), 2)
+            self.assertEqual(
+                registry.load_candidate_validation(candidate.ref)["evaluation_key"],
+                accepted_key,
+            )
+            self.assertEqual(
+                registry.load_candidate_validation(
+                    candidate.ref,
+                    evaluation_key=provisional_key,
+                )["status"],
+                "provisional",
+            )
+            snapshot = registry.freeze()
+            with self.assertRaisesRegex(
+                ValidationError, "matching successful validation"
+            ):
+                registry.promote_validated_batch(
+                    {candidate.ref: candidate_hash},
+                    validated_evaluations={candidate.ref: provisional_key},
+                    transition_id="cycle-provisional",
+                    input_version=snapshot.version,
+                    input_hash=snapshot.registry_hash,
+                    input_refs=tuple(spec.ref for spec in snapshot.specs),
+                )
+            transition = registry.promote_validated_batch(
+                {candidate.ref: candidate_hash},
+                validated_evaluations={candidate.ref: accepted_key},
+                transition_id="cycle-accepted",
+                input_version=snapshot.version,
+                input_hash=snapshot.registry_hash,
+                input_refs=tuple(spec.ref for spec in snapshot.specs),
+            )
+            self.assertEqual(transition.promoted, (candidate.ref,))
+            promotion = json.loads(
+                (
+                    Path(directory)
+                    / "signals_candidates"
+                    / candidate.category
+                    / candidate.signal_id
+                    / f"v{candidate.version}"
+                    / "promotion.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(promotion["evaluation_key"], accepted_key)
 
     def test_executor_uses_point_in_time_raw_info_and_tracks_observed_states(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -5734,7 +5961,7 @@ class SignalEvolutionTests(TestCase):
                 ["failed", "completed", "completed"],
             )
 
-    def test_signal_update_finds_prior_target_audits_in_v1_and_v2(self) -> None:
+    def test_signal_update_finds_prior_work_audits_in_v1_and_v2(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
@@ -5760,7 +5987,8 @@ class SignalEvolutionTests(TestCase):
                             "agent_audits": {
                                 "update_pipeline": {
                                     "schema_version": "signal-update-audit-v1",
-                                    "issue_fingerprint": "legacy-fingerprint",
+                                    "issue_fingerprint": "same-problem",
+                                    "work_fingerprint": "legacy-work",
                                     "disposition": "defer",
                                 }
                             }
@@ -5783,9 +6011,8 @@ class SignalEvolutionTests(TestCase):
                                             "schema_version": (
                                                 "signal-update-target-audit-v1"
                                             ),
-                                            "issue_fingerprint": (
-                                                "portfolio-fingerprint"
-                                            ),
+                                            "issue_fingerprint": "same-problem",
+                                            "work_fingerprint": "portfolio-work",
                                             "disposition": "defer",
                                         }
                                     ],
@@ -5798,13 +6025,141 @@ class SignalEvolutionTests(TestCase):
             )
 
             self.assertEqual(
-                engine._prior_signal_update("legacy-fingerprint")["disposition"],
+                engine._prior_signal_update("legacy-work")["disposition"],
                 "defer",
             )
             self.assertEqual(
-                engine._prior_signal_update("portfolio-fingerprint")["disposition"],
+                engine._prior_signal_update("portfolio-work")["disposition"],
                 "defer",
             )
+            self.assertIsNone(engine._prior_signal_update("same-problem"))
+
+    def test_signal_update_suppresses_exact_work_but_retries_relevant_new_input(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"work_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"work_control_{index}", 1.1) for index in range(4)]
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"work_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                130.0 if case.ground_truth.is_surge else 125.0,
+                                "2025-01-10",
+                            ),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            workspace = EvolutionWorkspace(root / "workspace")
+            update_model = NoChangeUpdateModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=update_model,
+                llm_signal_runner=None,
+            )
+            target = {
+                "signal_ref": "revenue_growth_yoy:v1",
+                "problem_type": "repeated_directional_wrong",
+                "support": {
+                    "unique_observations": 8,
+                    "misleading_attributions": 0,
+                    "directional_wrong": 4,
+                    "unavailable": 0,
+                    "unavailable_with_inputs": 0,
+                },
+                "recurring_contexts": [],
+            }
+
+            def execute_update():
+                executor = SignalExecutor(registry.freeze(), store)
+                return engine._run_one_signal_update(
+                    cycle_id=2,
+                    target=target,
+                    cases=cases,
+                    executor=executor,
+                )
+
+            first = execute_update()
+            cycle_dir = workspace.experiments_root / "cycles" / "cycle-0001"
+            cycle_dir.mkdir(parents=True)
+            (cycle_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "agent_audits": {
+                                "update_pipeline": {
+                                    "schema_version": "signal-update-audit-v2",
+                                    "targets": [first["audit"]],
+                                }
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            repeated = execute_update()
+            self.assertEqual(repeated["audit"]["disposition"], "unchanged_work_suppressed")
+            self.assertEqual(len(update_model.requests), 1)
+
+            store.append(
+                RawInfoDocument.create(
+                    document_id="unrelated_work_document",
+                    company_id="other_issuer",
+                    source_type="financials",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="Unrelated issuer revenue disclosure.",
+                )
+            )
+            still_repeated = execute_update()
+            self.assertEqual(
+                still_repeated["audit"]["disposition"],
+                "unchanged_work_suppressed",
+            )
+            self.assertEqual(len(update_model.requests), 1)
+
+            store.append(
+                RawInfoDocument.create(
+                    document_id="relevant_work_document",
+                    company_id=cases[0].company_id,
+                    source_type="financials",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=sec_company_facts_content(
+                        ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                        ("2024-01-01", "2024-12-31", 140.0, "2025-01-10"),
+                    ),
+                )
+            )
+            changed = execute_update()
+            self.assertEqual(changed["audit"]["disposition"], "no_change")
+            self.assertNotEqual(
+                changed["audit"]["work_fingerprint"],
+                first["audit"]["work_fingerprint"],
+            )
+            self.assertEqual(len(update_model.requests), 2)
 
     def test_mining_context_preserves_refinement_reasons_and_data_gaps(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

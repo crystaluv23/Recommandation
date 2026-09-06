@@ -22,7 +22,11 @@ Signal result, a prediction, or an outcome label.
 - source-specific metadata that must not contain hidden outcome labels in an
   evolution-validation workspace.
 
-The store exposes append, exact load, and filtered search. Search may filter by
+The store exposes append, exact load, filtered search, an immutable in-memory
+snapshot, and explicit `refresh()` for file-backed instances. A file-backed
+instance is a snapshot until refreshed; refresh adds newly committed documents
+and fails closed if disk state conflicts with a document already observed.
+Search may filter by
 company, source type, publication lookback, and prediction time, but every result must
 satisfy:
 
@@ -37,6 +41,11 @@ available_at <= prediction_time
   cannot leave a partial JSON document at its canonical path.
 - Reusing a `document_id` with different content or provenance fails closed.
 - Re-appending a byte-identical record is idempotent.
+- Concurrent append is serialized by an oracle-root lock independent of any
+  evolution workspace lock. If another writer wins, the loser reads back and
+  compares the complete canonical record: an exact record is an idempotent
+  replay and any field difference is rejected. `document_id` is unique across
+  every source/company path under the oracle root.
 - `available_at` cannot precede `published_at`.
 - A future document cannot be loaded through an as-of read.
 - Paths are derived only from validated identifiers; caller-controlled path

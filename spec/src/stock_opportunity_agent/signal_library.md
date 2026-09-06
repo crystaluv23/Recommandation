@@ -73,7 +73,9 @@ signals/<category>/<signal_id>/
     learning/
       events.jsonl    # append-only committed Fast observations
       profile.json    # rebuildable bounded routing summary
-signals_candidates/<category>/<signal_id>/v<N>/...
+signals_candidates/<category>/<signal_id>/v<N>/
+  evaluations/<evaluation_key>.json
+  validation.json    # pointer to the latest immutable evaluation
 ```
 
 The source-controlled v1 seed catalog may be compact JSON, but workspace
@@ -106,7 +108,7 @@ those cards with a bounded label-free ResearchState applicability view, but neve
 with Basic/Signal literal source payloads or a full Signal spec. No eligible card or a valid
 empty selection terminates retrieval without an additional model call.
 
-`freeze()` returns one immutable definition snapshot/hash plus a separately
+`freeze()` returns one deeply immutable definition snapshot/hash plus a separately
 hashed snapshot of the current learned profiles. Definitions and learned
 profiles therefore have distinct identities: observations do not create a new
 stable Signal version, but changing a profile changes the exact Fast execution
@@ -116,6 +118,9 @@ original profile snapshot, and stable definitions cannot change until it ends.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 11 enabled definitions.
+Nested spec parameters and learned profile values are immutable inside the
+snapshot. Serialization returns detached mutable JSON values, so caller mutation
+cannot alter executor behavior or silently separate a snapshot from its hash.
 
 Before freeze, `SignalCapabilityAudit` validates every enabled Signal against
 its registered deterministic function or LLM skill, supported source routing,
@@ -398,8 +403,15 @@ can be promoted only after checks for:
 - semantic duplication against stable Signals; and
 - valid version progression for updates.
 
-Candidate drafts are immutable once validated. An exact replay reuses its saved
-validation. If a rejected `vNext` is later repaired, the rejected draft is moved
+Candidate definitions are immutable once an evaluation is recorded, while the
+same exact candidate may have multiple immutable evaluations. Each evaluation
+is stored under a content-derived `evaluation_key` binding the candidate hash,
+baseline, issuer-disjoint cohort, relevant Raw Info manifest, projection and
+validator versions, model identity, and sampling protocol. An exact replay of
+the same key reuses its saved result; a changed source manifest or protocol
+creates a new record and preserves every earlier provisional or rejected result.
+`validation.json` is only the replaceable latest-evaluation pointer and is never
+the audit record itself. If a rejected `vNext` is later repaired, the rejected draft is moved
 under the candidate archive by its content/origin hash before the replacement
 draft occupies the active `vNext` path; this preserves audit history without
 permanently blocking that stable Signal from ever proposing the same next
@@ -421,6 +433,10 @@ advance the Registry version at most once, verify the output snapshot, and
 finish the same transition. A changed candidate, unrelated stable mutation, or
 invalid later item fails closed. Empty passing batches leave the version/hash
 unchanged.
+The prepared transition binds each candidate hash to one exact successful
+evaluation key. Recovery may complete only that identity; a later evaluation,
+even for the same candidate definition, cannot be substituted into an existing
+transition.
 
 Candidate validation has three durable dispositions. `promoted` means both the
 candidate contract and the independent paired effectiveness gate pass.

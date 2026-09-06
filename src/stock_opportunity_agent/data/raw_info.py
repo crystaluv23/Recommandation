@@ -8,10 +8,13 @@ import os
 import re
 import tempfile
 import uuid
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Iterator, Mapping
+
+import fcntl
 
 from stock_opportunity_agent.models import ValidationError
 
@@ -34,6 +37,7 @@ _FORBIDDEN_OUTCOME_FIELDS = frozenset(
 )
 _ORACLE_METADATA_NAME = "oracle.json"
 _ORACLE_SCHEMA = "raw-info-oracle-v1"
+_APPEND_LOCK_NAME = ".raw-info-append.lock"
 
 
 @dataclass(frozen=True)
@@ -203,7 +207,7 @@ class RawInfoStore:
         self._documents: dict[str, RawInfoDocument] = {}
         if self.root is not None:
             self.root.mkdir(parents=True, exist_ok=True)
-            self._load_existing()
+            self.refresh()
         for document in documents:
             self.append(document)
 
@@ -214,16 +218,15 @@ class RawInfoStore:
         provides no update or delete operation.
         """
 
-        existing = self._documents.get(document.document_id)
-        if existing is not None:
-            if existing == document:
-                return False
-            raise ValidationError(
-                f"raw info document_id already exists with different content: "
-                f"{document.document_id}"
-            )
+        if self.root is None:
+            return self._append_in_memory(document)
 
-        if self.root is not None:
+        with self._append_lock():
+            self.refresh()
+            existing = self._documents.get(document.document_id)
+            if existing is not None:
+                return self._resolve_replay(existing, document)
+
             path = self._path_for(document)
             path.parent.mkdir(parents=True, exist_ok=True)
             descriptor, temporary = tempfile.mkstemp(
@@ -235,16 +238,20 @@ class RawInfoStore:
                     handle.write("\n")
                     handle.flush()
                     os.fsync(handle.fileno())
-                os.link(temporary, path)
-            except FileExistsError as exc:
-                raise ValidationError(
-                    f"raw info path already exists for {document.document_id}"
-                ) from exc
+                try:
+                    os.link(temporary, path)
+                except FileExistsError:
+                    persisted = RawInfoDocument.from_dict(
+                        json.loads(path.read_text(encoding="utf-8"))
+                    )
+                    replay = self._resolve_replay(persisted, document)
+                    self._documents[document.document_id] = persisted
+                    return replay
             finally:
                 if os.path.exists(temporary):
                     os.unlink(temporary)
-        self._documents[document.document_id] = document
-        return True
+            self._documents[document.document_id] = document
+            return True
 
     def load(
         self,
@@ -302,6 +309,39 @@ class RawInfoStore:
 
         return tuple(self._documents[key] for key in sorted(self._documents))
 
+    def snapshot(self) -> "RawInfoStore":
+        """Return an isolated in-memory view of the documents seen so far."""
+
+        return RawInfoStore(documents=self.documents)
+
+    def refresh(self) -> int:
+        """Load newly committed file-backed documents into this snapshot.
+
+        Returns the number of newly visible documents. Existing in-memory stores
+        have no backing state and therefore return zero.
+        """
+
+        if self.root is None:
+            return 0
+        added = 0
+        for path in sorted(self.root.rglob("*.json")):
+            if path == self.root / _ORACLE_METADATA_NAME:
+                continue
+            document = RawInfoDocument.from_dict(
+                json.loads(path.read_text(encoding="utf-8"))
+            )
+            if path != self._path_for(document):
+                raise ValidationError(
+                    f"raw info document is stored outside its canonical path: {path}"
+                )
+            existing = self._documents.get(document.document_id)
+            if existing is not None:
+                self._resolve_replay(existing, document)
+                continue
+            self._documents[document.document_id] = document
+            added += 1
+        return added
+
     @property
     def inventory_hash(self) -> str:
         """Hash document identities without treating oracle growth as run state."""
@@ -320,20 +360,35 @@ class RawInfoStore:
             )
         ).hexdigest()
 
-    def _load_existing(self) -> None:
+    def _append_in_memory(self, document: RawInfoDocument) -> bool:
+        existing = self._documents.get(document.document_id)
+        if existing is not None:
+            return self._resolve_replay(existing, document)
+        self._documents[document.document_id] = document
+        return True
+
+    @staticmethod
+    def _resolve_replay(
+        existing: RawInfoDocument,
+        incoming: RawInfoDocument,
+    ) -> bool:
+        if existing == incoming:
+            return False
+        raise ValidationError(
+            "raw info document_id already exists with different content or "
+            f"provenance: {incoming.document_id}"
+        )
+
+    @contextmanager
+    def _append_lock(self) -> Iterator[None]:
         assert self.root is not None
-        for path in sorted(self.root.rglob("*.json")):
-            if path == self.root / _ORACLE_METADATA_NAME:
-                continue
-            document = RawInfoDocument.from_dict(
-                json.loads(path.read_text(encoding="utf-8"))
-            )
-            existing = self._documents.get(document.document_id)
-            if existing is not None and existing != document:
-                raise ValidationError(
-                    f"conflicting persisted raw info id: {document.document_id}"
-                )
-            self._documents[document.document_id] = document
+        lock_path = self.root / _APPEND_LOCK_NAME
+        with lock_path.open("a+", encoding="utf-8") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
     def _path_for(self, document: RawInfoDocument) -> Path:
         assert self.root is not None

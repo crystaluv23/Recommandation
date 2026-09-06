@@ -21,9 +21,13 @@ one anonymity domain, and E1 refs are assigned after a cycle-bound outcome-free
 ordering. Routing, Exploration E1, Signal Update, and baseline-sensitive Predictor
 checks now emit the same structured issue contract; their scoped recovery preserves
 valid siblings, explicitly rejects duplicate ids, and refuses to reinterpret an
-all-invalid quarantined routing portfolio as domain `no_match`. The rest of T2 and
-T3-T7 remain open; no external request was sent. All 587 tests and repository lint
-pass.
+all-invalid quarantined routing portfolio as domain `no_match`. The first T3
+persistence slice separates immutable candidate definitions from keyed immutable
+evaluations, binds promotion to one successful evaluation, deep-freezes Signal
+snapshots, separates Update problem/work identity, and gives file-backed Raw Info
+stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
+Promotion checkpoint fault injection, the rest of T2, and T4-T7 remain open; no
+external request was sent. All 593 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

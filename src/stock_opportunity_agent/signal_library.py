@@ -26,6 +26,18 @@ from stock_opportunity_agent.models import ValidationError
 
 
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_:-]*$")
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_CANDIDATE_EVALUATION_HASH_FIELDS = frozenset(
+    {
+        "baseline_hash",
+        "cohort_hash",
+        "source_manifest_hash",
+        "projection_hash",
+        "validator_hash",
+        "model_hash",
+        "sampling_hash",
+    }
+)
 _FORBIDDEN_SOURCE_TYPES = frozenset(
     {"ground_truth", "outcome_label", "future_price", "future_return"}
 )
@@ -67,6 +79,60 @@ SIGNAL_CONTEXT_TAGS = frozenset(
         "catalyst_window",
     }
 )
+
+
+class _FrozenDict(dict[Any, Any]):
+    """JSON-compatible mapping that rejects every in-place mutation."""
+
+    def _immutable(self, *_args: Any, **_kwargs: Any) -> None:
+        raise TypeError("frozen Signal snapshot values cannot be mutated")
+
+    __setitem__ = _immutable
+    __delitem__ = _immutable
+    clear = _immutable
+    pop = _immutable
+    popitem = _immutable
+    setdefault = _immutable
+    update = _immutable
+    __ior__ = _immutable
+
+
+class _FrozenList(list[Any]):
+    """JSON-compatible sequence that rejects every in-place mutation."""
+
+    def _immutable(self, *_args: Any, **_kwargs: Any) -> None:
+        raise TypeError("frozen Signal snapshot values cannot be mutated")
+
+    __setitem__ = _immutable
+    __delitem__ = _immutable
+    append = _immutable
+    clear = _immutable
+    extend = _immutable
+    insert = _immutable
+    pop = _immutable
+    remove = _immutable
+    reverse = _immutable
+    sort = _immutable
+    __iadd__ = _immutable
+    __imul__ = _immutable
+
+
+def _freeze_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return _FrozenDict(
+            {str(key): _freeze_json(nested) for key, nested in value.items()}
+        )
+    if isinstance(value, (list, tuple)):
+        return _FrozenList(_freeze_json(item) for item in value)
+    return value
+
+
+def _thaw_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {str(key): _thaw_json(nested) for key, nested in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_thaw_json(item) for item in value]
+    return value
 _BUILTIN_ADAPTER_SOURCE_TYPES = frozenset(
     {
         "financials",
@@ -389,7 +455,7 @@ class SignalSpec:
                 "frozen context tags"
             )
         object.__setattr__(self, "source_types", tuple(self.source_types))
-        object.__setattr__(self, "parameters", parameters)
+        object.__setattr__(self, "parameters", _freeze_json(parameters))
         retrieval_policy = self.retrieval_policy
         if retrieval_policy is None:
             retrieval_policy = SignalRetrievalPolicy(
@@ -431,7 +497,7 @@ class SignalSpec:
                 **self.retrieval_policy.to_dict(),
             },
             "evidence_policy": self.evidence_policy.to_dict(),
-            "parameters": dict(self.parameters),
+            "parameters": _thaw_json(self.parameters),
         }
 
     @classmethod
@@ -1116,14 +1182,14 @@ class FrozenSignalRegistry:
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "specs", tuple(self.specs))
-        object.__setattr__(self, "skills", dict(self.skills))
+        object.__setattr__(self, "skills", _freeze_json(self.skills))
         object.__setattr__(
             self,
             "learned_profiles",
-            {
+            _freeze_json({
                 str(ref): dict(profile)
                 for ref, profile in self.learned_profiles.items()
-            },
+            }),
         )
 
     def load_spec(self, signal_ref: str) -> SignalSpec:
@@ -1697,50 +1763,151 @@ class SignalRegistry:
         signal_ref: str,
         *,
         candidate_hash: str,
+        evaluation_identity: Mapping[str, Any],
         accepted: bool,
         reasons: Iterable[str],
         contract_validation: Mapping[str, Any] | None = None,
         effectiveness: Mapping[str, Any] | None = None,
-    ) -> None:
-        """Persist the machine result without changing the stable Registry."""
+    ) -> str:
+        """Persist one immutable evaluation without changing the stable Registry."""
 
         if candidate_hash != self.candidate_hash(signal_ref):
             raise ValidationError("candidate changed before validation was recorded")
-        path = self._candidate_spec_path(signal_ref).parent / "validation.json"
+        evaluation_key, identity = self.candidate_evaluation_key(
+            signal_ref,
+            candidate_hash=candidate_hash,
+            evaluation_identity=evaluation_identity,
+        )
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        path = candidate_dir / "evaluations" / f"{evaluation_key}.json"
+        effectiveness_value = dict(effectiveness or {})
+        disposition = str(effectiveness_value.get("disposition", "rejected"))
+        if disposition not in {"promoted", "provisional", "rejected"}:
+            raise ValidationError("candidate evaluation disposition is invalid")
+        if accepted != (
+            disposition == "promoted"
+            and effectiveness_value.get("accepted") is True
+        ):
+            raise ValidationError(
+                "candidate accepted state must match promoted effectiveness"
+            )
         _write_or_verify_json(
             path,
             {
-                "schema_version": "signal-candidate-validation-v2",
+                "schema_version": "signal-candidate-evaluation-v3",
+                "evaluation_key": evaluation_key,
+                "evaluation_identity": identity,
                 "signal_ref": signal_ref,
                 "candidate_hash": candidate_hash,
                 "accepted": bool(accepted),
-                "status": (
-                    "validated_for_automatic_promotion" if accepted else "rejected"
-                ),
+                "status": disposition,
                 "reasons": [str(item) for item in reasons],
                 "contract_validation": dict(contract_validation or {}),
-                "effectiveness": dict(effectiveness or {}),
+                "effectiveness": effectiveness_value,
             },
         )
+        _atomic_write_json(
+            candidate_dir / "validation.json",
+            {
+                "schema_version": "signal-candidate-validation-pointer-v1",
+                "signal_ref": signal_ref,
+                "candidate_hash": candidate_hash,
+                "latest_evaluation_key": evaluation_key,
+                "status": disposition,
+            },
+        )
+        return evaluation_key
+
+    def candidate_evaluation_key(
+        self,
+        signal_ref: str,
+        *,
+        candidate_hash: str,
+        evaluation_identity: Mapping[str, Any],
+    ) -> tuple[str, dict[str, str]]:
+        """Validate and hash the complete identity of one candidate evaluation."""
+
+        if candidate_hash != self.candidate_hash(signal_ref):
+            raise ValidationError("candidate evaluation hash differs from staged content")
+        if set(evaluation_identity) != _CANDIDATE_EVALUATION_HASH_FIELDS:
+            raise ValidationError(
+                "candidate evaluation identity requires exactly: "
+                + ", ".join(sorted(_CANDIDATE_EVALUATION_HASH_FIELDS))
+            )
+        identity = {
+            "candidate_hash": candidate_hash,
+            **{
+                field: str(evaluation_identity[field])
+                for field in sorted(_CANDIDATE_EVALUATION_HASH_FIELDS)
+            },
+        }
+        if any(not _SHA256.fullmatch(value) for value in identity.values()):
+            raise ValidationError("candidate evaluation identity hashes are invalid")
+        canonical = json.dumps(
+            {
+                "schema_version": "signal-candidate-evaluation-identity-v1",
+                **identity,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest(), identity
 
     def load_candidate_validation(
         self,
         signal_ref: str,
+        *,
+        evaluation_key: str | None = None,
     ) -> Mapping[str, Any] | None:
-        """Return an immutable prior validation for the active candidate draft."""
+        """Return one immutable evaluation, defaulting to the latest pointer."""
 
-        path = self._candidate_spec_path(signal_ref).parent / "validation.json"
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        pointer_path = candidate_dir / "validation.json"
+        if evaluation_key is not None:
+            if not _SHA256.fullmatch(evaluation_key):
+                raise ValidationError("candidate evaluation key is invalid")
+            path = candidate_dir / "evaluations" / f"{evaluation_key}.json"
+        else:
+            path = pointer_path
         if not path.exists():
             return None
         validation = _read_json(path)
+        if (
+            evaluation_key is None
+            and validation.get("schema_version")
+            == "signal-candidate-validation-pointer-v1"
+        ):
+            pointed_key = str(validation.get("latest_evaluation_key", ""))
+            if not _SHA256.fullmatch(pointed_key):
+                raise ValidationError("candidate validation pointer is invalid")
+            validation = _read_json(
+                candidate_dir / "evaluations" / f"{pointed_key}.json"
+            )
         if validation.get("candidate_hash") != self.candidate_hash(signal_ref):
             raise ValidationError("candidate validation hash differs from staged content")
+        if validation.get("schema_version") == "signal-candidate-evaluation-v3":
+            stored_key = str(validation.get("evaluation_key", ""))
+            if evaluation_key is not None and stored_key != evaluation_key:
+                raise ValidationError("candidate evaluation path and identity differ")
         return validation
+
+    def list_candidate_evaluations(
+        self,
+        signal_ref: str,
+    ) -> tuple[Mapping[str, Any], ...]:
+        """Return every immutable v3 evaluation in key order."""
+
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        return tuple(
+            _read_json(path)
+            for path in sorted((candidate_dir / "evaluations").glob("*.json"))
+        )
 
     def promote_validated_batch(
         self,
         validated_candidates: Mapping[str, str],
         *,
+        validated_evaluations: Mapping[str, str] | None = None,
         transition_id: str,
         input_version: int,
         input_hash: str,
@@ -1750,6 +1917,14 @@ class SignalRegistry:
 
         _validate_id(transition_id, "Signal transition id")
         ordered_candidates = tuple(sorted(validated_candidates.items()))
+        ordered_evaluations = tuple(sorted((validated_evaluations or {}).items()))
+        if validated_evaluations is not None and (
+            set(validated_evaluations) != set(validated_candidates)
+            or any(not _SHA256.fullmatch(key) for key in validated_evaluations.values())
+        ):
+            raise ValidationError(
+                "validated candidate evaluations must bind every candidate to one key"
+            )
         ordered_input_refs = tuple(str(item) for item in input_refs)
         if len(set(ordered_input_refs)) != len(ordered_input_refs):
             raise ValidationError("Signal transition input refs must be unique")
@@ -1757,12 +1932,21 @@ class SignalRegistry:
             raise ValidationError("Signal transition input identity is invalid")
         transition_path = self.root / ".transitions" / f"{transition_id}.json"
         intent = {
-            "schema_version": "signal-registry-transition-v1",
+            "schema_version": (
+                "signal-registry-transition-v2"
+                if validated_evaluations is not None
+                else "signal-registry-transition-v1"
+            ),
             "transition_id": transition_id,
             "input_registry_version": input_version,
             "input_registry_hash": input_hash,
             "input_signal_refs": list(ordered_input_refs),
             "validated_candidates": dict(ordered_candidates),
+            **(
+                {"validated_evaluations": dict(ordered_evaluations)}
+                if validated_evaluations is not None
+                else {}
+            ),
         }
         if transition_path.exists():
             stored_transition = _read_json(transition_path)
@@ -1780,6 +1964,11 @@ class SignalRegistry:
             self._validate_promotion_candidates(
                 ordered_candidates,
                 input_refs=ordered_input_refs,
+                validated_evaluations=(
+                    dict(ordered_evaluations)
+                    if validated_evaluations is not None
+                    else None
+                ),
             )
             _atomic_write_json(transition_path, {**intent, "status": "prepared"})
 
@@ -1788,6 +1977,11 @@ class SignalRegistry:
             input_hash=input_hash,
             input_refs=ordered_input_refs,
             validated_candidates=ordered_candidates,
+            validated_evaluations=(
+                dict(ordered_evaluations)
+                if validated_evaluations is not None
+                else None
+            ),
         )
         promoted_specs: list[SignalSpec] = []
         for signal_ref, candidate_hash in ordered_candidates:
@@ -1815,6 +2009,13 @@ class SignalRegistry:
                     "promoted": True,
                     "mode": "automatic_after_machine_validation",
                     "transition_id": transition_id,
+                    **(
+                        {
+                            "evaluation_key": dict(ordered_evaluations)[spec.ref]
+                        }
+                        if validated_evaluations is not None
+                        else {}
+                    ),
                     "output_registry_version": output.version,
                     "output_registry_hash": output.registry_hash,
                 },
@@ -1841,6 +2042,7 @@ class SignalRegistry:
         candidates: tuple[tuple[str, str], ...],
         *,
         input_refs: tuple[str, ...],
+        validated_evaluations: Mapping[str, str] | None = None,
     ) -> None:
         input_by_id = {
             _parse_ref(signal_ref)[0]: signal_ref for signal_ref in input_refs
@@ -1859,14 +2061,26 @@ class SignalRegistry:
                 raise ValidationError(
                     f"validated candidate hash does not match staged content: {signal_ref}"
                 )
-            validation = _read_json(
-                self._candidate_spec_path(signal_ref).parent / "validation.json"
+            validation = self.load_candidate_validation(
+                signal_ref,
+                evaluation_key=(
+                    validated_evaluations[signal_ref]
+                    if validated_evaluations is not None
+                    else None
+                ),
             )
+            if validation is None:
+                raise ValidationError(
+                    f"candidate requires matching successful validation: {signal_ref}"
+                )
             if (
                 not validation.get("accepted")
                 or validation.get("candidate_hash") != expected_hash
                 or validation.get("schema_version")
-                != "signal-candidate-validation-v2"
+                not in {
+                    "signal-candidate-validation-v2",
+                    "signal-candidate-evaluation-v3",
+                }
                 or dict(validation.get("effectiveness", {})).get("accepted")
                 is not True
             ):
@@ -1920,6 +2134,7 @@ class SignalRegistry:
         input_hash: str,
         input_refs: tuple[str, ...],
         validated_candidates: tuple[tuple[str, str], ...],
+        validated_evaluations: Mapping[str, str] | None = None,
     ) -> None:
         if self.version not in {input_version, input_version + 1}:
             raise ValidationError("Signal transition Registry version is inconsistent")
@@ -1944,6 +2159,7 @@ class SignalRegistry:
         self._validate_promotion_candidates(
             validated_candidates,
             input_refs=input_refs,
+            validated_evaluations=validated_evaluations,
         )
 
     def _snapshot_from_refs(
