@@ -37,6 +37,9 @@ more immutable `ValidationIssue` records. Each issue owns its machine-readable
 code, exact output paths or stable item id, retryability, allowed repairs,
 dependent paths, and source refs. Human-readable messages are diagnostic only:
 no repair implementation may derive write authority by parsing their prose.
+An issue may carry serializable `repair_context` such as literal candidate terms,
+but reserved path, item-id, dependency, and repair-policy keys are rejected so
+context cannot silently enlarge the issue's declared mutation boundary.
 
 Implementation may use dataclasses, Pydantic models, or typed dictionaries, but records crossing module boundaries must be explicit and serializable.
 

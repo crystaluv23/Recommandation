@@ -34,6 +34,7 @@ class ValidationIssue:
     allowed_repairs: tuple[str, ...] = ("replace",)
     dependent_paths: tuple[str, ...] = ()
     source_refs: tuple[str, ...] = ()
+    repair_context: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.code or any(
@@ -83,6 +84,21 @@ class ValidationIssue:
             or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", self.item_id_field) is None
         ):
             raise ValueError("validation issue item_id_field is invalid")
+        forbidden_context_keys = {
+            "allowed_repairs",
+            "item_id",
+            "item_id_field",
+            "must_change_any_of_paths",
+            "must_change_paths",
+            "paths",
+            "permitted_dependency_paths",
+        }
+        context = dict(self.repair_context)
+        if forbidden_context_keys.intersection(context):
+            raise ValueError(
+                "validation issue repair context cannot grant repair authority"
+            )
+        object.__setattr__(self, "repair_context", context)
 
     def to_dict(self) -> dict[str, Any]:
         """Return the exact correction-facing issue record."""
@@ -97,6 +113,7 @@ class ValidationIssue:
             "allowed_repairs": list(self.allowed_repairs),
             "dependent_paths": list(self.dependent_paths),
             "source_refs": list(self.source_refs),
+            "repair_context": dict(self.repair_context),
         }
         if self.item_id is not None:
             value["item_id"] = self.item_id

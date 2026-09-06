@@ -18,8 +18,12 @@ deduplicates same-source byte-identical copies, and reports query, selection, an
 visible-context coverage separately. Update sees the exact evidence used by the
 current Signal before supplemental windows. Aggregate Slow inputs and outputs use
 one anonymity domain, and E1 refs are assigned after a cycle-bound outcome-free
-ordering. T1 migration of remaining role validators, the rest of T2, and T3-T7
-remain open; no external request was sent. All 584 tests and repository lint pass.
+ordering. Routing, Exploration E1, Signal Update, and baseline-sensitive Predictor
+checks now emit the same structured issue contract; their scoped recovery preserves
+valid siblings, explicitly rejects duplicate ids, and refuses to reinterpret an
+all-invalid quarantined routing portfolio as domain `no_match`. The rest of T2 and
+T3-T7 remain open; no external request was sent. All 587 tests and repository lint
+pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

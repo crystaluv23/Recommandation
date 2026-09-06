@@ -4642,12 +4642,22 @@ def _blind_prediction_with_baseline(
         baseline,
     )
     if absence_paths:
-        raise ValidationError(
-            "BlindPrediction claimed market data was absent even though "
-            "final_context.prediction_baseline.status='available', "
-            f"invalid_fields={absence_paths}. Acknowledge the supplied price "
-            "baseline and narrow any remaining gap to forward projections or "
-            "another genuinely absent input"
+        raise StructuredValidationError(
+            [
+                ValidationIssue(
+                    code="predictor_market_data_absence_conflict",
+                    message=(
+                        "BlindPrediction claimed market data was absent even though "
+                        "final_context.prediction_baseline.status='available'; "
+                        f"invalid_field={path}. "
+                        "acknowledge the supplied price baseline and narrow any "
+                        "remaining gap to a genuinely absent input"
+                    ),
+                    paths=(path,),
+                    source_refs=("prediction_baseline",),
+                )
+                for path in absence_paths
+            ]
         )
     if not isinstance(baseline, Mapping) or baseline.get("status") != "available":
         return prediction
@@ -4681,18 +4691,35 @@ def _blind_prediction_with_baseline(
                         abs_tol=0.1,
                     ):
                         continue
-                    raise ValidationError(
-                        f"{field_name}[{index}] gives {returned:g} for a "
-                        f"{multiple:g}x baseline threshold, but the runtime-supplied "
-                        f"five-day baseline mean implies {derived_threshold:g}. "
-                        "Correct the derived arithmetic or remove that threshold"
+                    raise StructuredValidationError(
+                        [
+                            ValidationIssue(
+                                code="predictor_baseline_arithmetic_invalid",
+                                message=(
+                                    f"{field_name}[{index}] gives {returned:g} for "
+                                    f"a {multiple:g}x baseline threshold, but the "
+                                    "runtime-supplied five-day baseline mean implies "
+                                    f"{derived_threshold:g}"
+                                ),
+                                paths=(f"{field_name}[{index}]",),
+                                source_refs=("prediction_baseline",),
+                            )
+                        ]
                     )
-                raise ValidationError(
-                    f"{field_name}[{index}] labels {returned:g} as the current or "
-                    "prediction-time baseline price, but the runtime-supplied "
-                    f"five-day baseline mean is {float(expected):g}. Use that mean "
-                    "for baseline arithmetic or describe the older observation with "
-                    "its actual date"
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="predictor_baseline_value_invalid",
+                            message=(
+                                f"{field_name}[{index}] labels {returned:g} as the "
+                                "current or prediction-time baseline price, but the "
+                                "runtime-supplied five-day baseline mean is "
+                                f"{float(expected):g}"
+                            ),
+                            paths=(f"{field_name}[{index}]",),
+                            source_refs=("prediction_baseline",),
+                        )
+                    ]
                 )
     return prediction
 
@@ -5608,6 +5635,7 @@ def _validation_obligations(
             if issue.item_id is not None:
                 obligation["item_id"] = issue.item_id
                 obligation["item_id_field"] = issue.item_id_field
+            obligation.update(issue.repair_context)
             obligations.append(obligation)
             required_change_paths.extend(must_change_paths)
             permitted_dependency_paths.extend(dependent_paths)
@@ -6554,6 +6582,10 @@ def _indexed_row_quarantine_fallback(
             return None
         for index in sorted(invalid_indices, reverse=True):
             del quarantined_rows[index]
+        if not quarantined_rows:
+            # Exhausting an entirely invalid portfolio is a technical validation
+            # failure, not a legitimate domain-level no-match result.
+            return None
         return quarantined, {
             "source_substitution_paths": (),
             "removed_paths": tuple(
@@ -9803,25 +9835,45 @@ class LLMSignalRetrievalAgent:
             if set(value) != {"selections"} or not isinstance(
                 value.get("selections"), list
             ):
-                raise ValidationError("selection output requires selections array")
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="routing_portfolio_shape_invalid",
+                            message="selection output requires selections array",
+                            paths=("selections",),
+                        )
+                    ]
+                )
             raw_selections = value["selections"]
             if any(not isinstance(item, Mapping) for item in raw_selections):
-                raise ValidationError("every selection must be an object")
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="routing_selection_shape_invalid",
+                            message="every selection must be an object",
+                            paths=(f"selections[{index}]",),
+                            allowed_repairs=("replace", "remove", "quarantine"),
+                        )
+                        for index, item in enumerate(raw_selections)
+                        if not isinstance(item, Mapping)
+                    ]
+                )
             if not raw_selections and explicit_empty_matches:
-                raise ValidationError(
-                    "empty Signal selection contradicts an exact version-owned "
-                    "information-need phrase in the available Signal cards, "
-                    "invalid_field='selections', required_matches="
-                    f"{list(explicit_empty_match_details)}. Return a non-empty "
-                    "smallest batch targeted to one listed need. For a partial "
-                    "answer, delete only the answered facet from that exact target. "
-                    "When a required target row includes answer_scope='partial' and "
-                    "residual_facet_candidates, use that scope and write the "
-                    "natural-language residual from only those literal target "
-                    "clauses. Name only the phrase-matched answered clause in "
-                    "selection_reason. "
-                    "Do not copy another information_needs row as residual_need. "
-                    "Runtime will not choose a ref or residual"
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="routing_required_match_omitted",
+                            message=(
+                                "empty Signal selection contradicts an exact "
+                                "version-owned information-need phrase in the "
+                                "available Signal cards, required_matches="
+                                f"{list(explicit_empty_match_details)}. Return a "
+                                "non-empty smallest batch targeted to one listed need"
+                            ),
+                            paths=("selections",),
+                            source_refs=explicit_empty_matches,
+                        )
+                    ]
                 )
             required = {
                 "signal_ref",
@@ -9847,16 +9899,65 @@ class LLMSignalRetrievalAgent:
                 "contradiction",
                 "coverage",
             }
-            validation_errors: list[str] = []
+            class IssueMessages(list[str]):
+                def __init__(self) -> None:
+                    super().__init__()
+                    self.paths = ("selections",)
+                    self.item_id: str | None = None
+                    self.path_policy = "all"
+                    self.repair_context: dict[str, Any] = {}
+                    self.issues: list[ValidationIssue] = []
+
+                def bind(
+                    self,
+                    paths: str | tuple[str, ...],
+                    *,
+                    item_id: str | None = None,
+                    path_policy: str = "all",
+                    repair_context: Mapping[str, Any] | None = None,
+                ) -> None:
+                    self.paths = (paths,) if isinstance(paths, str) else paths
+                    self.item_id = item_id
+                    self.path_policy = path_policy
+                    self.repair_context = dict(repair_context or {})
+
+                def append(self, message: str) -> None:
+                    super().append(message)
+                    self.issues.append(
+                        ValidationIssue(
+                            code="routing_selection_invalid",
+                            message=message,
+                            paths=self.paths,
+                            item_id=self.item_id,
+                            item_id_field=(
+                                "signal_ref" if self.item_id is not None else None
+                            ),
+                            path_policy=self.path_policy,
+                            allowed_repairs=("replace", "remove", "quarantine"),
+                            source_refs=(
+                                (self.item_id,) if self.item_id is not None else ()
+                            ),
+                            repair_context=self.repair_context,
+                        )
+                    )
+
+            validation_errors = IssueMessages()
             diagnostic_items: list[dict[str, Any]] = []
             seen: set[str] = set()
             llm_count = 0
             for index, raw in enumerate(raw_selections):
                 path = f"selections[{index}]"
+                validation_errors.bind(path)
                 item = dict(raw)
                 missing = required - set(item)
                 unexpected = set(item) - required
                 if missing or unexpected:
+                    validation_errors.bind(
+                        tuple(
+                            f"{path}.{field_name}"
+                            for field_name in sorted((*missing, *unexpected))
+                        )
+                    )
                     validation_errors.append(
                         f"{path} requires exactly {sorted(required)}, "
                         f"missing={sorted(missing)}, "
@@ -9881,6 +9982,7 @@ class LLMSignalRetrievalAgent:
                     item["residual_need"] is not None
                     and not isinstance(item["residual_need"], str)
                 ):
+                    validation_errors.bind(path)
                     validation_errors.append(
                         f"{path} fields have invalid JSON types"
                     )
@@ -9889,6 +9991,7 @@ class LLMSignalRetrievalAgent:
                 if not isinstance(raw_context_tags, list) or any(
                     not isinstance(tag, str) for tag in raw_context_tags
                 ):
+                    validation_errors.bind(f"{path}.context_tags")
                     validation_errors.append(
                         f"{path}.context_tags must be a string array"
                     )
@@ -9897,30 +10000,46 @@ class LLMSignalRetrievalAgent:
                 if not isinstance(target_need_indices, list) or any(
                     type(index) is not int for index in target_need_indices
                 ):
+                    validation_errors.bind(f"{path}.target_need_indices")
                     validation_errors.append(
                         f"{path}.target_need_indices must be an integer array"
                     )
                     continue
                 signal_ref = item["signal_ref"]
                 if signal_ref not in allowed:
+                    validation_errors.bind(f"{path}.signal_ref")
                     validation_errors.append(
                         f"{path}.signal_ref={signal_ref!r} is outside supplied cards"
                     )
                     continue
                 spec = specs_by_ref[signal_ref]
                 if signal_ref in seen:
+                    validation_errors.bind(path)
+                    validation_errors.append(
+                        f"{path}.signal_ref duplicates {signal_ref!r} in this batch"
+                    )
                     continue
                 seen.add(signal_ref)
+                validation_errors.bind(path, item_id=signal_ref)
                 if item["reason_code"] not in allowed_reason_codes:
+                    validation_errors.bind(
+                        f"{path}.reason_code", item_id=signal_ref
+                    )
                     validation_errors.append(
                         f"{path}.reason_code={item['reason_code']!r} is unsupported"
                     )
                 if item["expected_role"] not in allowed_roles:
+                    validation_errors.bind(
+                        f"{path}.expected_role", item_id=signal_ref
+                    )
                     validation_errors.append(
                         f"{path}.expected_role={item['expected_role']!r} is unsupported"
                     )
                 for name in ("selection_reason", "applicability_hypothesis"):
                     if not item[name].strip():
+                        validation_errors.bind(
+                            f"{path}.{name}", item_id=signal_ref
+                        )
                         validation_errors.append(f"{path}.{name} must not be empty")
                 target_shape_valid = (
                     len(target_need_indices) <= 1
@@ -9928,6 +10047,9 @@ class LLMSignalRetrievalAgent:
                     and all(index >= 0 for index in target_need_indices)
                 )
                 if not target_shape_valid:
+                    validation_errors.bind(
+                        f"{path}.target_need_indices", item_id=signal_ref
+                    )
                     validation_errors.append(
                         f"{path}.target_need_indices must contain at most one "
                         "unique non-negative integer"
@@ -9937,23 +10059,35 @@ class LLMSignalRetrievalAgent:
                     and target_need_indices
                     and target_need_indices[0] >= len(information_needs)
                 ):
+                    validation_errors.bind(
+                        f"{path}.target_need_indices", item_id=signal_ref
+                    )
                     validation_errors.append(
                         f"{path}.target_need_indices is outside the supplied "
                         "information_needs array"
                     )
                 if item["reason_code"] == "answer_need":
                     if len(target_need_indices) != 1:
+                        validation_errors.bind(
+                            f"{path}.target_need_indices", item_id=signal_ref
+                        )
                         validation_errors.append(
                             f"{path} reason_code=answer_need requires exactly one "
                             "target_need_indices entry"
                         )
                     if item["answer_scope"] not in {"full", "partial"}:
+                        validation_errors.bind(
+                            f"{path}.answer_scope", item_id=signal_ref
+                        )
                         validation_errors.append(
                             f"{path} reason_code=answer_need requires "
                             "answer_scope='full' or 'partial'"
                         )
                     elif item["answer_scope"] == "full":
                         if item["residual_need"] is not None:
+                            validation_errors.bind(
+                                f"{path}.residual_need", item_id=signal_ref
+                            )
                             validation_errors.append(
                                 f"{path} full answer requires residual_need=null"
                             )
@@ -9964,6 +10098,9 @@ class LLMSignalRetrievalAgent:
                             or not residual_need.strip()
                             or len(residual_need.strip()) > 300
                         ):
+                            validation_errors.bind(
+                                f"{path}.residual_need", item_id=signal_ref
+                            )
                             validation_errors.append(
                                 f"{path} partial answer requires a 1-300 character "
                                 "residual_need"
@@ -10060,12 +10197,32 @@ class LLMSignalRetrievalAgent:
                             if not residual_content or (
                                 len(content_overlap) / len(residual_content) < 0.5
                             ):
+                                validation_errors.bind(
+                                    f"{path}.residual_need", item_id=signal_ref
+                                )
                                 validation_errors.append(
                                     f"{path}.residual_need must be grounded in the "
                                     "targeted information need rather than copy or "
                                     "invent a different need"
                                 )
                             if cosmetic_residual:
+                                cosmetic_paths = [f"{path}.residual_need"]
+                                if not residual_facet_candidates:
+                                    cosmetic_paths.append(f"{path}.answer_scope")
+                                cosmetic_paths.append(path)
+                                validation_errors.bind(
+                                    tuple(cosmetic_paths),
+                                    item_id=signal_ref,
+                                    repair_context=(
+                                        {
+                                            "residual_facet_candidates": list(
+                                                residual_facet_candidates
+                                            )
+                                        }
+                                        if residual_facet_candidates
+                                        else None
+                                    ),
+                                )
                                 validation_errors.append(
                                     f"{path}.residual_need must remove the answered "
                                     "facet rather than retain the target cosmetically"
@@ -10105,6 +10262,15 @@ class LLMSignalRetrievalAgent:
                                 if term in reason_content
                             ]
                             if conflicting_coordinated_terms:
+                                validation_errors.bind(
+                                    (f"{path}.selection_reason", path),
+                                    item_id=signal_ref,
+                                    repair_context={
+                                        "remove_terms_from_selection_reason": (
+                                            conflicting_coordinated_terms
+                                        )
+                                    },
+                                )
                                 validation_errors.append(
                                     f"{path}.selection_reason claims explicit "
                                     "alternative facets retained by residual_need, "
@@ -10145,6 +10311,15 @@ class LLMSignalRetrievalAgent:
                                 and shared_residual_phrase is not None
                             ):
                                 remove_terms = shared_residual_phrase.split()
+                                validation_errors.bind(
+                                    (f"{path}.selection_reason", path),
+                                    item_id=signal_ref,
+                                    repair_context={
+                                        "remove_terms_from_selection_reason": (
+                                            remove_terms
+                                        )
+                                    },
+                                )
                                 validation_errors.append(
                                     f"{path}.selection_reason claims a facet retained "
                                     "by residual_need via shared phrase "
@@ -10164,6 +10339,10 @@ class LLMSignalRetrievalAgent:
                     item["answer_scope"] is not None
                     or item["residual_need"] is not None
                 ):
+                    validation_errors.bind(
+                        (f"{path}.answer_scope", f"{path}.residual_need"),
+                        item_id=signal_ref,
+                    )
                     validation_errors.append(
                         f"{path} non-answer reason requires answer_scope=null and "
                         "residual_need=null"
@@ -10218,6 +10397,7 @@ class LLMSignalRetrievalAgent:
                     ).append(f"selections[{item['index']}]")
             for target_index, paths in direct_target_paths.items():
                 if len(paths) > 1:
+                    validation_errors.bind(tuple(paths), path_policy="any")
                     validation_errors.append(
                         "one routing round permits at most one direct answer for "
                         f"information_needs[{target_index}], conflicting_paths={paths}. "
@@ -10235,6 +10415,7 @@ class LLMSignalRetrievalAgent:
             for item in diagnostic_items:
                 path = f"selections[{item['index']}]"
                 signal_ref = item["signal_ref"]
+                validation_errors.bind(path, item_id=signal_ref)
                 excluded_tags = sorted(
                     selector_case_tags.intersection(
                         specs_by_ref[signal_ref].parameters.get(
@@ -10320,7 +10501,7 @@ class LLMSignalRetrievalAgent:
                         "prose cannot turn context into an answered need"
                     )
             if validation_errors:
-                raise ValidationError("; ".join(validation_errors))
+                raise StructuredValidationError(validation_errors.issues)
             return tuple(
                 SignalSelectionDecision(
                     signal_ref=item["signal_ref"],
@@ -10412,6 +10593,7 @@ class LLMSignalRetrievalAgent:
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
+            enforce_scoped_correction=True,
             final_validation_fallback=_indexed_row_quarantine_fallback(
                 "selections"
             ),
@@ -11490,18 +11672,55 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         }
 
         def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
-            decision = SignalUpdateDecision.from_dict(value)
+            try:
+                decision = SignalUpdateDecision.from_dict(value)
+            except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="signal_update_shape_invalid",
+                            message=str(exc),
+                            paths=(
+                                "signal_ref",
+                                "disposition",
+                                "problem_type",
+                                "rationale",
+                                "candidate",
+                            ),
+                            path_policy="any",
+                        )
+                    ]
+                ) from exc
             if decision.signal_ref != target_ref:
-                raise ValidationError("Signal Update must preserve target signal_ref")
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="signal_update_target_mismatch",
+                            message="Signal Update must preserve target signal_ref",
+                            paths=("signal_ref",),
+                            source_refs=(target_ref,),
+                        )
+                    ]
+                )
             rationale = " ".join(decision.rationale)
             missing_refs = sorted(
                 ref for ref in induction_refs
                 if re.search(rf"(?<![\w-]){re.escape(ref)}(?![\w-])", rationale) is None
             )
             if missing_refs:
-                raise ValidationError(
-                    "Signal Update rationale must explain every supplied induction "
-                    f"case; missing case_refs: {', '.join(missing_refs)}"
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="signal_update_case_traceability_missing",
+                            message=(
+                                "Signal Update rationale must explain every supplied "
+                                "induction case; missing case_refs: "
+                                + ", ".join(missing_refs)
+                            ),
+                            paths=("rationale",),
+                            source_refs=tuple(missing_refs),
+                        )
+                    ]
                 )
             return decision
 
@@ -11532,6 +11751,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             temperature=0.0,
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=8_000,
+            enforce_scoped_correction=True,
         )
         return AgentStep(value, usage)
 
@@ -12292,23 +12512,115 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in packets
             if isinstance(item, Mapping) and "case_ref" in item
         }
+        allowed_order = tuple(
+            str(item["case_ref"])
+            for item in packets
+            if isinstance(item, Mapping) and "case_ref" in item
+        )
+        packet_by_ref = {
+            str(item["case_ref"]): item
+            for item in packets
+            if isinstance(item, Mapping) and "case_ref" in item
+        }
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningSignature, ...]:
             if set(value) != {"signatures"} or not isinstance(
                 value.get("signatures"), list
             ):
-                raise ValidationError("Signal Mining E1 requires a signatures array")
-            items = tuple(
-                SignalMiningSignature.from_dict(item)
-                if isinstance(item, Mapping)
-                else (_raise_mining_shape("E1 signature must be an object"))
-                for item in value["signatures"]
-            )
-            if {item.case_ref for item in items} != allowed or len(items) != len(allowed):
-                raise ValidationError(
-                    "Signal Mining E1 must return one signature for every case_ref"
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="e1_portfolio_shape_invalid",
+                            message="Signal Mining E1 requires a signatures array",
+                            paths=("signatures",),
+                        )
+                    ]
                 )
-            return validate_signal_mining_signatures(items, packets)
+            raw_items = value["signatures"]
+            issues: list[ValidationIssue] = []
+            parsed_by_ref: dict[str, SignalMiningSignature] = {}
+            raw_ref_counts: dict[str, int] = {}
+            for raw in raw_items:
+                if isinstance(raw, Mapping) and isinstance(raw.get("case_ref"), str):
+                    case_ref = str(raw["case_ref"])
+                    raw_ref_counts[case_ref] = raw_ref_counts.get(case_ref, 0) + 1
+            for index, raw in enumerate(raw_items):
+                item_path = f"signatures[{index}]"
+                if not isinstance(raw, Mapping):
+                    issues.append(
+                        ValidationIssue(
+                            code="e1_signature_shape_invalid",
+                            message="E1 signature must be an object",
+                            paths=(item_path,),
+                            allowed_repairs=("replace", "remove"),
+                        )
+                    )
+                    continue
+                raw_ref = raw.get("case_ref")
+                case_ref = str(raw_ref) if isinstance(raw_ref, str) else None
+                if case_ref is None or case_ref not in allowed:
+                    issues.append(
+                        ValidationIssue(
+                            code="e1_case_ref_invalid",
+                            message=(
+                                "Signal Mining E1 case_ref must be copied from the "
+                                "supplied cases"
+                            ),
+                            paths=(f"{item_path}.case_ref",),
+                            allowed_repairs=("replace", "remove"),
+                        )
+                    )
+                    continue
+                if raw_ref_counts[case_ref] > 1:
+                    issues.append(
+                        ValidationIssue(
+                            code="e1_case_ref_duplicate",
+                            message=(
+                                "Signal Mining E1 must not duplicate supplied "
+                                f"case_ref {case_ref}"
+                            ),
+                            paths=(item_path,),
+                            allowed_repairs=("replace", "remove"),
+                            source_refs=(case_ref,),
+                        )
+                    )
+                    continue
+                try:
+                    item = SignalMiningSignature.from_dict(raw)
+                    validate_signal_mining_signatures(
+                        (item,), (packet_by_ref[case_ref],)
+                    )
+                except ValidationError as exc:
+                    issues.append(
+                        ValidationIssue(
+                            code="e1_signature_invalid",
+                            message=str(exc),
+                            paths=(item_path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                            source_refs=(case_ref,),
+                        )
+                    )
+                    continue
+                parsed_by_ref[case_ref] = item
+            missing_refs = sorted(allowed - set(raw_ref_counts))
+            if missing_refs:
+                issues.append(
+                    ValidationIssue(
+                        code="e1_case_refs_missing",
+                        message=(
+                            "Signal Mining E1 must return one signature for every "
+                            f"case_ref; missing={missing_refs}"
+                        ),
+                        paths=("signatures",),
+                        allowed_repairs=("replace",),
+                        source_refs=tuple(missing_refs),
+                    )
+                )
+            if issues:
+                raise StructuredValidationError(issues)
+            return tuple(parsed_by_ref[case_ref] for case_ref in allowed_order)
 
         value, usage = _complete_parsed_role(
             self.caller,
@@ -12325,6 +12637,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             allow_outcomes=False,
             anonymous_aliases=(),
             reject_output_aliases=self.identity_guard_aliases,
+            stable_correction_prefix=True,
+            enforce_scoped_correction=True,
         )
         return AgentStep(value, usage)
 

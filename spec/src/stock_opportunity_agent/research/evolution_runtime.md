@@ -21,6 +21,11 @@ Diagnostic prose is never parsed to grant write authority. Legacy validators
 without structured issues may still request a whole-object correction, but
 cannot use scoped projection until migrated.
 
+Signal routing, Exploration E1, Signal Update, and baseline-sensitive Predictor
+checks emit the same issue contract. Optional routing quarantine may preserve
+valid siblings only when at least one validated selection remains; removing the
+entire invalid portfolio is an execution failure rather than a domain `no_match`.
+
 ## Frozen Run Contract
 
 One immutable, secret-free `EvolutionRunContract` binds:

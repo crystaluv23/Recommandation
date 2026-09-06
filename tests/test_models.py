@@ -24,6 +24,7 @@ from stock_opportunity_agent.models import (
     ThemeMap,
     TickerRef,
     ValidationError,
+    ValidationIssue,
     VersionStamp,
     WatchlistEntry,
 )
@@ -90,6 +91,26 @@ def score_card() -> ScoreCard:
 
 
 class ModelSerializationTests(TestCase):
+    def test_validation_issue_context_cannot_expand_repair_authority(self) -> None:
+        issue = ValidationIssue(
+            code="example_invalid",
+            message="Replace the invalid example.",
+            paths=("items[0].value",),
+            repair_context={"literal_candidates": ["valid"]},
+        )
+
+        self.assertEqual(
+            issue.to_dict()["repair_context"],
+            {"literal_candidates": ["valid"]},
+        )
+        with self.assertRaisesRegex(ValueError, "cannot grant repair authority"):
+            ValidationIssue(
+                code="example_invalid",
+                message="Replace the invalid example.",
+                paths=("items[0].value",),
+                repair_context={"must_change_paths": ["items"]},
+            )
+
     def test_nested_score_card_round_trips(self) -> None:
         original = score_card()
 

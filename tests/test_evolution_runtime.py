@@ -3382,6 +3382,18 @@ class ConcreteRoleAdapterTests(TestCase):
             ["signal_update_decision", "signal_update_decision_correction"],
         )
         self.assertIn("validation_error", caller.calls[1]["payload"])
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_contract"],
+            "structured-validation-v1",
+        )
+        self.assertEqual(
+            caller.calls[1]["payload"]["obligations"][0]["must_change_paths"],
+            ["signal_ref"],
+        )
+        self.assertEqual(
+            step.value.rationale,
+            ("No definition change is justified.",),
+        )
 
     def test_signal_update_corrects_canned_rationale_using_supplied_case_refs(self) -> None:
         canned = {
@@ -3434,6 +3446,72 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(step.value.disposition, "no_change")
         self.assertEqual(step.usage.llm_calls, 2)
+
+    def test_routing_rejects_duplicate_refs_and_preserves_valid_siblings(
+        self,
+    ) -> None:
+        guidance = signal_selection("guidance_acceleration:v1")["selections"][0]
+        guidance.update(
+            {
+                "reason_code": "combine_evidence",
+                "target_need_indices": [],
+                "answer_scope": None,
+                "residual_need": None,
+            }
+        )
+        duplicate = json.loads(json.dumps(guidance))
+        negative = signal_selection("negative_word_count:v1")["selections"][0]
+        negative.update(
+            {
+                "reason_code": "combine_evidence",
+                "target_need_indices": [],
+                "answer_scope": None,
+                "residual_need": None,
+            }
+        )
+        financing = signal_selection("financing_listing_action:v1")["selections"][0]
+        financing.update(
+            {
+                "reason_code": "combine_evidence",
+                "target_need_indices": [],
+                "answer_scope": None,
+                "residual_need": None,
+            }
+        )
+        drifted_guidance = json.loads(json.dumps(guidance))
+        drifted_guidance["selection_reason"] = "Rewritten valid sibling."
+        drifted_negative = json.loads(json.dumps(negative))
+        drifted_negative["selection_reason"] = "Another rewritten valid sibling."
+        caller = ScriptedRoleCaller(
+            [
+                {"selections": [guidance, duplicate, negative]},
+                {"selections": [drifted_guidance, financing, drifted_negative]},
+            ]
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            result = LLMSignalRetrievalAgent(caller).select(
+                ("What source-backed context is available?",),
+                registry.freeze(),
+                {},
+            )
+
+        self.assertEqual(
+            tuple(item.signal_ref for item in result.value),
+            (
+                "guidance_acceleration:v1",
+                "financing_listing_action:v1",
+                "negative_word_count:v1",
+            ),
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["required_change_paths"], ["selections[1]"])
+        self.assertEqual(result.value[0].selection_reason, guidance["selection_reason"])
+        self.assertEqual(result.value[2].selection_reason, negative["selection_reason"])
+        self.assertEqual(feedback["validation_contract"], "structured-validation-v1")
+        self.assertIn("duplicates", feedback["validation_error"])
 
     def test_h3_only_unmatched_comparator_context_forces_inconclusive(self) -> None:
         rejected = {
@@ -3585,7 +3663,7 @@ class ConcreteRoleAdapterTests(TestCase):
         )
         self.assertIn(
             "not a supplied literal",
-            caller.calls[1]["payload"]["validation_error"],
+            caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
         )
 
     def test_exploration_e1_empty_packet_records_gap_without_invention(self) -> None:
@@ -3610,6 +3688,86 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertEqual(step.usage.llm_calls, 1)
         self.assertEqual(step.value[0].observations, ())
         self.assertTrue(step.value[0].evidence_gaps)
+
+    def test_exploration_e1_repairs_one_reordered_row_and_preserves_sibling(
+        self,
+    ) -> None:
+        first = {
+            "case_ref": "case-001",
+            "observations": [
+                {
+                    "summary": "Management reaffirmed guidance.",
+                    "document_ref": "document-01",
+                    "exact_span": "Management reaffirmed revenue guidance.",
+                }
+            ],
+            "evidence_gaps": [],
+        }
+        invalid_second = {
+            "case_ref": "case-002",
+            "observations": [
+                {
+                    "summary": "A customer order was disclosed.",
+                    "document_ref": "document-01",
+                    "exact_span": "A fabricated customer order was disclosed.",
+                }
+            ],
+            "evidence_gaps": [],
+        }
+        repaired_second = json.loads(json.dumps(invalid_second))
+        repaired_second["observations"][0]["exact_span"] = (
+            "A binding customer order was disclosed."
+        )
+        drifted_first = json.loads(json.dumps(first))
+        drifted_first["observations"][0]["summary"] = "Unrelated rewritten summary."
+        caller = ScriptedRoleCaller(
+            [
+                {"signatures": [first, invalid_second]},
+                {"signatures": [repaired_second, drifted_first]},
+            ]
+        )
+
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            {
+                "cases": [
+                    {
+                        "case_ref": "case-001",
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": (
+                                    "Management reaffirmed revenue guidance."
+                                ),
+                            }
+                        ],
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": (
+                                    "A binding customer order was disclosed."
+                                ),
+                            }
+                        ],
+                    },
+                ]
+            }
+        )
+
+        self.assertEqual(
+            [item.case_ref for item in step.value], ["case-001", "case-002"]
+        )
+        self.assertEqual(
+            step.value[0].observations[0].summary,
+            "Management reaffirmed guidance.",
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["validation_contract"], "structured-validation-v1"
+        )
+        self.assertEqual(feedback["obligations"][0]["item_id"], "case-002")
 
     def test_exploration_e2_treats_exact_spans_as_authoritative(self) -> None:
         caller = ScriptedRoleCaller(
@@ -3868,10 +4026,10 @@ class ConcreteRoleAdapterTests(TestCase):
         self.assertIn("outside supplied cards", first_feedback["validation_error"])
         self.assertEqual(
             second_feedback["invalid_output"],
-            {"selections": "still-not-an-array"},
+            signal_selection("unknown:v1"),
         )
         self.assertIn(
-            "requires selections array", second_feedback["validation_error"]
+            "outside supplied cards", second_feedback["validation_error"]
         )
         self.assertEqual(
             caller.calls[0]["system_prompt"], caller.calls[2]["system_prompt"]
