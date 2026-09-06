@@ -26,8 +26,11 @@ persistence slice separates immutable candidate definitions from keyed immutable
 evaluations, binds promotion to one successful evaluation, deep-freezes Signal
 snapshots, separates Update problem/work identity, and gives file-backed Raw Info
 stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
-Promotion checkpoint fault injection, the rest of T2, and T4-T7 remain open; no
-external request was sent. All 593 tests and repository lint pass.
+T3 promotion recovery now fails closed while a prepared transition exists and
+reconciles the same batch across preparation, every stable-file class, Registry
+version, output snapshot, promotion-record, and cycle-pointer fault boundaries.
+T3 is complete. The rest of T2 and T4-T7 remain open; no external request was
+sent. All 595 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

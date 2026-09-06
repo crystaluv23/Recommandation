@@ -1075,6 +1075,129 @@ class SignalLibraryTests(TestCase):
             )
             self.assertEqual(promotion["evaluation_key"], accepted_key)
 
+    def test_batch_promotion_fails_closed_and_recovers_exact_prepared_transition(
+        self,
+    ) -> None:
+        fault_stages = (
+            "after_transition_prepared",
+            "after_stable_spec",
+            "after_stable_tests",
+            "after_stable_skill",
+            "after_stable_stats",
+            "after_stable_manifest",
+            "after_registry_version",
+            "before_output_snapshot",
+            "after_output_snapshot",
+            "after_promotion_record",
+            "before_transition_applied",
+        )
+        for fault_stage in fault_stages:
+            with self.subTest(fault_stage=fault_stage), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                registry = self._registry(directory)
+                snapshot = registry.freeze()
+                candidates = (
+                    SignalSpec(
+                        signal_id="recoverable_growth_deterministic",
+                        version=1,
+                        category="financial",
+                        description="Recoverable deterministic growth candidate.",
+                        execution_type=SignalExecutionType.DETERMINISTIC,
+                        function="financial.revenue_growth_yoy",
+                        source_types=("financials",),
+                    ),
+                    SignalSpec(
+                        signal_id="recoverable_growth_llm",
+                        version=1,
+                        category="financial",
+                        description="Recoverable LLM growth candidate.",
+                        execution_type=SignalExecutionType.LLM,
+                        skill_file="skill.md",
+                        source_types=("financials",),
+                    ),
+                )
+                candidate_hashes: dict[str, str] = {}
+                evaluation_keys: dict[str, str] = {}
+                for index, candidate in enumerate(candidates):
+                    registry.stage_candidate(
+                        candidate,
+                        skill=(
+                            "Extract comparable revenue direction from cited facts."
+                            if candidate.execution_type is SignalExecutionType.LLM
+                            else None
+                        ),
+                        tests=(candidate_growth_fixture(),),
+                        origin="cycle-recovery",
+                    )
+                    candidate_hash = registry.candidate_hash(candidate.ref)
+                    candidate_hashes[candidate.ref] = candidate_hash
+                    evaluation_keys[candidate.ref] = registry.record_candidate_validation(
+                        candidate.ref,
+                        candidate_hash=candidate_hash,
+                        evaluation_identity={
+                            "baseline_hash": "0" * 64,
+                            "cohort_hash": f"{index + 1}" * 64,
+                            "source_manifest_hash": "3" * 64,
+                            "projection_hash": "4" * 64,
+                            "validator_hash": "5" * 64,
+                            "model_hash": "6" * 64,
+                            "sampling_hash": "7" * 64,
+                        },
+                        accepted=True,
+                        reasons=(),
+                        effectiveness={
+                            "accepted": True,
+                            "disposition": "promoted",
+                        },
+                    )
+
+                def inject(stage, _signal_ref):
+                    if stage == fault_stage:
+                        raise RuntimeError(f"fault after {fault_stage}")
+
+                registry._fault_injector = inject
+
+                with self.assertRaisesRegex(RuntimeError, "fault after"):
+                    registry.promote_validated_batch(
+                        candidate_hashes,
+                        validated_evaluations=evaluation_keys,
+                        transition_id="cycle-recovery",
+                        input_version=snapshot.version,
+                        input_hash=snapshot.registry_hash,
+                        input_refs=tuple(spec.ref for spec in snapshot.specs),
+                    )
+
+                interrupted = SignalRegistry(
+                    root / "signals",
+                    candidate_root=root / "signals_candidates",
+                )
+                with self.assertRaisesRegex(
+                    ValidationError, "prepared transition requiring recovery"
+                ):
+                    interrupted.freeze()
+
+                recovered = interrupted.promote_validated_batch(
+                    candidate_hashes,
+                    validated_evaluations=evaluation_keys,
+                    transition_id="cycle-recovery",
+                    input_version=snapshot.version,
+                    input_hash=snapshot.registry_hash,
+                    input_refs=tuple(spec.ref for spec in snapshot.specs),
+                )
+                self.assertEqual(set(recovered.promoted), {item.ref for item in candidates})
+                self.assertEqual(recovered.output_version, snapshot.version + 1)
+                stable_refs = {spec.ref for spec in interrupted.freeze().specs}
+                self.assertTrue({item.ref for item in candidates}.issubset(stable_refs))
+                replay = interrupted.promote_validated_batch(
+                    candidate_hashes,
+                    validated_evaluations=evaluation_keys,
+                    transition_id="cycle-recovery",
+                    input_version=snapshot.version,
+                    input_hash=snapshot.registry_hash,
+                    input_refs=tuple(spec.ref for spec in snapshot.specs),
+                )
+                self.assertEqual(replay, recovered)
+
     def test_executor_uses_point_in_time_raw_info_and_tracks_observed_states(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
@@ -3436,10 +3559,73 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 observed_signal_registry_version=1,
                 observed_signal_registry_hash="registry-hash-v1",
             )
+            workspace.complete_cycle(
+                cycle_id=1,
+                observed_signal_registry_version=1,
+                observed_signal_registry_hash="registry-hash-v1",
+            )
             self.assertEqual(workspace.last_completed_cycle, 1)
             self.assertIsNone(
                 json.loads(workspace.cycle_state_path.read_text())["active_cycle"]
             )
+
+    def test_cycle_pointer_recovers_fault_before_or_after_atomic_replace(self) -> None:
+        for fault_stage in ("before_cycle_pointer", "after_cycle_pointer"):
+            with self.subTest(fault_stage=fault_stage), tempfile.TemporaryDirectory() as directory:
+                workspace = EvolutionWorkspace(directory)
+                workspace.start_or_resume_cycle(
+                    run_contract_hash="contract-hash",
+                    target_plan_rounds=1,
+                    initial_signal_registry_version=1,
+                    initial_signal_registry_hash="registry-hash-v1",
+                    observed_signal_registry_version=1,
+                    observed_signal_registry_hash="registry-hash-v1",
+                )
+                record = make_record(
+                    "cycle_pointer_plan",
+                    0.6,
+                    (1.0, 0.0),
+                    round_id=1,
+                )
+                workspace.commit_round(
+                    round_id=1,
+                    records=(record,),
+                    meta_entry=RoundMetaEntry(
+                        round_id=1,
+                        evidence_refs=(record.plan_id,),
+                    ),
+                    signal_registry_version=1,
+                    signal_registry_hash="registry-hash-v1",
+                    run_contract_hash="contract-hash",
+                )
+                workspace.stage_slow_result(
+                    cycle_id=1,
+                    result={
+                        "input_registry_version": 1,
+                        "input_registry_hash": "registry-hash-v1",
+                        "output_registry_version": 1,
+                        "output_registry_hash": "registry-hash-v1",
+                    },
+                )
+
+                def inject(stage):
+                    if stage == fault_stage:
+                        raise RuntimeError(f"fault at {fault_stage}")
+
+                workspace._fault_injector = inject
+                with self.assertRaisesRegex(RuntimeError, "fault at"):
+                    workspace.complete_cycle(
+                        cycle_id=1,
+                        observed_signal_registry_version=1,
+                        observed_signal_registry_hash="registry-hash-v1",
+                    )
+                workspace._fault_injector = None
+                workspace.complete_cycle(
+                    cycle_id=1,
+                    observed_signal_registry_version=1,
+                    observed_signal_registry_hash="registry-hash-v1",
+                )
+                self.assertEqual(workspace.last_completed_cycle, 1)
 
     def test_workspace_execution_lock_rejects_concurrent_executor(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

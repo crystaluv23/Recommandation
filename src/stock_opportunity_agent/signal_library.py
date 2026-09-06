@@ -1250,6 +1250,8 @@ class SignalRegistry:
         )
         self.root.mkdir(parents=True, exist_ok=True)
         self.candidate_root.mkdir(parents=True, exist_ok=True)
+        self._transition_recovery_active = False
+        self._fault_injector: Callable[[str, str | None], None] | None = None
         if not self._registry_path.exists():
             _atomic_write_json(self._registry_path, {"version": 1})
 
@@ -1383,6 +1385,7 @@ class SignalRegistry:
     def list_signal_cards(self, category: str | None = None) -> tuple[SignalCard, ...]:
         """Return compact cards for the current stable versions."""
 
+        self._assert_registry_readable()
         cards: list[SignalCard] = []
         for manifest_path in sorted(self.root.glob("*/*/manifest.json")):
             manifest = _read_json(manifest_path)
@@ -1417,6 +1420,7 @@ class SignalRegistry:
     def load_spec(self, signal_ref: str) -> SignalSpec:
         """Load one exact stable version after progressive disclosure."""
 
+        self._assert_registry_readable()
         signal_id, version = _parse_ref(signal_ref)
         manifest_path = self._manifest_for(signal_id)
         manifest = _read_json(manifest_path)
@@ -1971,17 +1975,45 @@ class SignalRegistry:
                 ),
             )
             _atomic_write_json(transition_path, {**intent, "status": "prepared"})
+            self._fault_checkpoint("after_transition_prepared")
 
+        self._transition_recovery_active = True
+        try:
+            return self._apply_prepared_transition(
+                transition_path=transition_path,
+                intent=intent,
+                transition_id=transition_id,
+                input_version=input_version,
+                input_hash=input_hash,
+                input_refs=ordered_input_refs,
+                ordered_candidates=ordered_candidates,
+                validated_evaluations=(
+                    dict(ordered_evaluations)
+                    if validated_evaluations is not None
+                    else None
+                ),
+            )
+        finally:
+            self._transition_recovery_active = False
+
+    def _apply_prepared_transition(
+        self,
+        *,
+        transition_path: Path,
+        intent: Mapping[str, Any],
+        transition_id: str,
+        input_version: int,
+        input_hash: str,
+        input_refs: tuple[str, ...],
+        ordered_candidates: tuple[tuple[str, str], ...],
+        validated_evaluations: Mapping[str, str] | None,
+    ) -> SignalRegistryTransition:
         self._verify_transition_base(
             input_version=input_version,
             input_hash=input_hash,
-            input_refs=ordered_input_refs,
+            input_refs=input_refs,
             validated_candidates=ordered_candidates,
-            validated_evaluations=(
-                dict(ordered_evaluations)
-                if validated_evaluations is not None
-                else None
-            ),
+            validated_evaluations=validated_evaluations,
         )
         promoted_specs: list[SignalSpec] = []
         for signal_ref, candidate_hash in ordered_candidates:
@@ -1996,11 +2028,14 @@ class SignalRegistry:
         if ordered_candidates:
             if self.version == input_version:
                 self.bump_version()
+                self._fault_checkpoint("after_registry_version")
             elif self.version != input_version + 1:
                 raise ValidationError("Signal Registry version advanced unexpectedly")
         elif self.version != input_version:
             raise ValidationError("empty Signal transition changed Registry version")
+        self._fault_checkpoint("before_output_snapshot")
         output = self.freeze()
+        self._fault_checkpoint("after_output_snapshot")
         for spec in promoted_specs:
             candidate_dir = self._candidate_spec_path(spec.ref).parent
             _write_or_verify_json(
@@ -2010,9 +2045,7 @@ class SignalRegistry:
                     "mode": "automatic_after_machine_validation",
                     "transition_id": transition_id,
                     **(
-                        {
-                            "evaluation_key": dict(ordered_evaluations)[spec.ref]
-                        }
+                        {"evaluation_key": validated_evaluations[spec.ref]}
                         if validated_evaluations is not None
                         else {}
                     ),
@@ -2020,13 +2053,15 @@ class SignalRegistry:
                     "output_registry_hash": output.registry_hash,
                 },
             )
+            self._fault_checkpoint("after_promotion_record", spec.ref)
         completed = {
-            **intent,
+            **dict(intent),
             "status": "applied",
             "output_registry_version": output.version,
             "output_registry_hash": output.registry_hash,
             "promoted": [spec.ref for spec in promoted_specs],
         }
+        self._fault_checkpoint("before_transition_applied")
         _atomic_write_json(transition_path, completed)
         return SignalRegistryTransition(
             transition_id=transition_id,
@@ -2036,6 +2071,19 @@ class SignalRegistry:
             output_hash=output.registry_hash,
             promoted=tuple(spec.ref for spec in promoted_specs),
         )
+
+    def _assert_registry_readable(self) -> None:
+        if self._transition_recovery_active:
+            return
+        for path in sorted((self.root / ".transitions").glob("*.json")):
+            if _read_json(path).get("status") == "prepared":
+                raise ValidationError(
+                    "Signal Registry has a prepared transition requiring recovery"
+                )
+
+    def _fault_checkpoint(self, stage: str, signal_ref: str | None = None) -> None:
+        if self._fault_injector is not None:
+            self._fault_injector(stage, signal_ref)
 
     def _validate_promotion_candidates(
         self,
@@ -2201,11 +2249,15 @@ class SignalRegistry:
         version_dir = signal_dir / "versions" / f"v{spec.version}"
         version_dir.mkdir(parents=True, exist_ok=True)
         _write_or_verify_json(version_dir / "spec.json", spec.to_dict())
+        self._fault_checkpoint("after_stable_spec", spec.ref)
         _write_or_verify_json(version_dir / "tests.json", {"tests": list(tests)})
+        self._fault_checkpoint("after_stable_tests", spec.ref)
         if skill is not None:
             _write_or_verify_text(version_dir / "skill.md", skill.rstrip() + "\n")
+            self._fault_checkpoint("after_stable_skill", spec.ref)
         if not (signal_dir / "stats.json").exists():
             _atomic_write_json(signal_dir / "stats.json", SignalStats().to_dict())
+        self._fault_checkpoint("after_stable_stats", spec.ref)
         manifest_path = signal_dir / "manifest.json"
         expected_manifest = {
             "signal_id": spec.signal_id,
@@ -2220,6 +2272,7 @@ class SignalRegistry:
             if manifest.get("signal_id") != spec.signal_id or manifest.get("category") != spec.category:
                 raise ValidationError("stable Signal manifest identity mismatch")
         _atomic_write_json(manifest_path, expected_manifest)
+        self._fault_checkpoint("after_stable_manifest", spec.ref)
 
     def _candidate_spec_path(self, signal_ref: str) -> Path:
         signal_id, version = _parse_ref(signal_ref)

@@ -1856,6 +1856,12 @@ staged Slow validation/transition/result before advancing the completed-cycle
 pointer. The validated-batch artifact is durable before Registry mutation; the
 final Slow result is durable before the cycle pointer. It never infers
 completion from individual candidate files or an event log.
+Fault-injection coverage spans transition preparation, each stable Signal file,
+Registry version advancement, output snapshot hashing, promotion records, and
+the cycle pointer before and after atomic replacement. A failure before pointer
+replacement leaves the active cycle recoverable. A failure reported after the
+atomic replacement makes an exact `complete_cycle` replay a verified no-op;
+changed output identity still fails closed.
 
 `experiments/trajectory.jsonl` is the append-only debug stream for lifecycle,
 request/cache, round, candidate, case, score, Top-K, Slow-loop, interruption,

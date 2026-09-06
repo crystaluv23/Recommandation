@@ -437,6 +437,11 @@ The prepared transition binds each candidate hash to one exact successful
 evaluation key. Recovery may complete only that identity; a later evaluation,
 even for the same candidate definition, cannot be substituted into an existing
 transition.
+While any transition is `prepared`, ordinary Registry reads fail closed instead
+of exposing a mix of input and partially materialized output versions. Only the
+promotion recovery path, after verifying the same transition identity, may read
+that intermediate state and reconcile the remaining files, Registry version,
+output hash, and applied marker.
 
 Candidate validation has three durable dispositions. `promoted` means both the
 candidate contract and the independent paired effectiveness gate pass.

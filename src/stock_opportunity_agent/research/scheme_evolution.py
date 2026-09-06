@@ -5251,6 +5251,7 @@ class EvolutionWorkspace:
         if not self.state_path.exists():
             _atomic_write_json(self.state_path, {"last_completed_round": 0})
         self._event_sequence = _last_event_sequence(self.trajectory_events_path)
+        self._fault_injector: Callable[[str], None] | None = None
 
     @property
     def state_path(self) -> Path:
@@ -5666,7 +5667,18 @@ class EvolutionWorkspace:
 
         state = _read_json(self.cycle_state_path)
         active = state.get("active_cycle")
-        if not isinstance(active, Mapping) or int(active.get("cycle_id", 0)) != cycle_id:
+        if not isinstance(active, Mapping):
+            if (
+                int(state.get("last_completed_cycle", 0)) == cycle_id
+                and int(state.get("current_signal_registry_version", 0))
+                == observed_signal_registry_version
+                and state.get("current_signal_registry_hash")
+                == observed_signal_registry_hash
+                and state.get("last_cycle_ref") == str(self._slow_result_path(cycle_id))
+            ):
+                return
+            raise ValidationError("active dual-loop cycle identity mismatch")
+        if int(active.get("cycle_id", 0)) != cycle_id:
             raise ValidationError("active dual-loop cycle identity mismatch")
         target = int(active["target_plan_rounds"])
         expected_round = int(active["start_round"]) + target
@@ -5695,7 +5707,13 @@ class EvolutionWorkspace:
                 "active_cycle": None,
             }
         )
+        self._fault_checkpoint("before_cycle_pointer")
         _atomic_write_json(self.cycle_state_path, state)
+        self._fault_checkpoint("after_cycle_pointer")
+
+    def _fault_checkpoint(self, stage: str) -> None:
+        if self._fault_injector is not None:
+            self._fault_injector(stage)
 
     def _slow_validation_path(self, cycle_id: int) -> Path:
         if cycle_id < 1:
