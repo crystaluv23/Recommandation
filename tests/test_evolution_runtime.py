@@ -20,7 +20,11 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
 )
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import (
+    StructuredValidationError,
+    ValidationError,
+    ValidationIssue,
+)
 from stock_opportunity_agent.research import evolution_runtime as evolution_runtime_module
 from stock_opportunity_agent.research.evolution_runtime import (
     DecisionTokenScores,
@@ -93,6 +97,7 @@ from stock_opportunity_agent.signal_library import (
     SignalCoverage,
     SignalEvidence,
     SignalExecutor,
+    SignalExecutionStatus,
     SignalExecutionType,
     SignalRegistry,
     SignalResult,
@@ -1061,6 +1066,68 @@ class ScopedCorrectionProjectionTests(TestCase):
                         invalid, corrected, [path]
                     )
                 )
+
+    def test_structured_issue_projects_by_stable_id_after_reordering(self) -> None:
+        invalid = {
+            "rows": [
+                {"row_id": "bad", "value": 0, "keep": "bad sibling"},
+                {"row_id": "good", "value": 2, "keep": "good sibling"},
+            ],
+            "keep": "root sibling",
+        }
+        corrected = {
+            "rows": [
+                {"row_id": "good", "value": 99, "keep": "drift"},
+                {"row_id": "bad", "value": 1, "keep": "drift"},
+            ],
+            "keep": "drift",
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        def parse(value):
+            if value["rows"][0]["value"] <= 0:
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="row_value_invalid",
+                            message=(
+                                "diagnostic prose mentions rows[1].value but does not "
+                                "authorize it"
+                            ),
+                            paths=("rows[0].value",),
+                            item_id="bad",
+                            item_id_field="row_id",
+                        )
+                    ]
+                )
+            return value
+
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="fixture",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=parse,
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            stable_correction_prefix=True,
+        )
+
+        self.assertEqual(
+            value,
+            {
+                "rows": [
+                    {"row_id": "bad", "value": 1, "keep": "bad sibling"},
+                    {"row_id": "good", "value": 2, "keep": "good sibling"},
+                ],
+                "keep": "root sibling",
+            },
+        )
+        self.assertEqual(usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["validation_contract"], "structured-validation-v1")
+        self.assertEqual(feedback["required_change_paths"], ["rows[0].value"])
+        self.assertEqual(feedback["obligations"][0]["item_id"], "bad")
 
     def test_remaining_correction_cannot_launder_unrelated_drift(self) -> None:
         for repairable_shape in (True, False):
@@ -7636,9 +7703,57 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(result.value, SignalValue.UNAVAILABLE)
         self.assertEqual(result.coverage, SignalCoverage.UNAVAILABLE)
+        self.assertEqual(
+            result.execution_status,
+            SignalExecutionStatus.VALIDATION_FAILED,
+        )
+        self.assertEqual(
+            result.execution_error_code,
+            "signal_output_validation_exhausted",
+        )
         self.assertEqual(result.supporting_evidence, ())
         self.assertIn("failed strict validation", result.interpretation)
         self.assertEqual(usage.llm_calls, 2)
+
+    def test_llm_signal_runner_rejects_duplicate_ref_then_repairs_it(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        spec = SignalSpec(
+            signal_id="pilot_to_volume",
+            version=1,
+            category="customers",
+            description="Detect conversion from pilot to volume deployment.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",),
+            skill_file="pilot_to_volume.md",
+        )
+        result = {
+            "signal_id": spec.signal_id,
+            "version": spec.version,
+            "state": {"value": "unavailable", "confidence": 0.0},
+            "interpretation": {"summary": "No visible evidence."},
+            "evidence": {"supporting": [], "counter": []},
+            "status": {"coverage": "unavailable"},
+        }
+        row = {"signal_ref": spec.ref, "result": result}
+        caller = ScriptedRoleCaller(
+            [
+                {"results": [row, row]},
+                {"results": [row]},
+            ]
+        )
+
+        results, usage = StructuredLLMSignalRunner(caller).execute_many(
+            (LLMSignalBatchInput(spec, (), "Use only visible evidence."),),
+            as_of,
+        )
+
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertEqual(
+            results[spec.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("duplicated requested signal_ref", feedback[0]["validation_error"])
 
     def test_v6_routing_normalizes_format_and_caps_four_with_two_llm(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -12038,8 +12153,16 @@ class ConcreteRoleAdapterTests(TestCase):
 
         self.assertEqual(usage, AgentUsage(llm_calls=1, tokens=50, cost=0.01))
         self.assertEqual(results["guidance_change:v1"].value, SignalValue.POSITIVE)
+        self.assertEqual(
+            results["guidance_change:v1"].execution_status,
+            SignalExecutionStatus.SUCCESS,
+        )
         concentration_result = results["customer_concentration:v1"]
         self.assertEqual(concentration_result.value, SignalValue.UNAVAILABLE)
+        self.assertEqual(
+            concentration_result.execution_status,
+            SignalExecutionStatus.BUDGET_BLOCKED,
+        )
         self.assertIn("correction request was not sent", concentration_result.interpretation)
         self.assertEqual(len(caller.calls), 2)
         error = caller.calls[1]["payload"]["validation_feedback"][0][

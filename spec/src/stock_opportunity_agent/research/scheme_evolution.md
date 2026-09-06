@@ -1716,7 +1716,9 @@ unused relevant cases from the label-hidden ranking, then fills any remaining
 slots deterministically from the Discovery pool. `vCurrent` and `vNext` receive
 the same cases, prediction times, identity routing fields, model settings, and
 Raw Info corpus. The audit records availability, decisive-state count,
-directional correct count, and directional wrong count. An update must retain
+directional correct count, directional wrong count, and execution-failure count.
+Execution failures stay in the frozen denominator and audit but never become
+domain `unavailable` observations or directional states. An update must retain
 availability, not reduce correct states, not increase wrong states, and strictly
 improve at least one of those quantities. A new Signal must meet the minimum
 availability and decisive-support floors and have more correct than wrong

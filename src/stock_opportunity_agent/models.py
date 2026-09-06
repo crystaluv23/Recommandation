@@ -10,12 +10,109 @@ from __future__ import annotations
 from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from datetime import date, datetime
 from enum import Enum
+import re
 from types import UnionType
 from typing import Any, ClassVar, Literal, Mapping, TypeVar, Union, get_args, get_origin, get_type_hints
 
 
 class ValidationError(ValueError):
     """Raised when a domain record violates its contract."""
+
+
+@dataclass(frozen=True)
+class ValidationIssue:
+    """Machine-readable repair boundary for one validation obligation."""
+
+    code: str
+    message: str
+    paths: tuple[str, ...] = ()
+    item_id: str | None = None
+    item_id_field: str | None = None
+    severity: str = "error"
+    retryability: str = "correctable"
+    path_policy: str = "all"
+    allowed_repairs: tuple[str, ...] = ("replace",)
+    dependent_paths: tuple[str, ...] = ()
+    source_refs: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not self.code or any(
+            character not in "abcdefghijklmnopqrstuvwxyz0123456789_"
+            for character in self.code
+        ):
+            raise ValueError("validation issue code must be lowercase snake_case")
+        if not self.message.strip():
+            raise ValueError("validation issue message must not be empty")
+        if self.severity not in {"error", "warning"}:
+            raise ValueError("validation issue severity is invalid")
+        if self.retryability not in {"correctable", "terminal"}:
+            raise ValueError("validation issue retryability is invalid")
+        if self.path_policy not in {"all", "any"}:
+            raise ValueError("validation issue path_policy is invalid")
+        if not self.allowed_repairs or any(
+            repair not in {"replace", "remove", "quarantine"}
+            for repair in self.allowed_repairs
+        ):
+            raise ValueError("validation issue allowed repairs are invalid")
+        for values, name in (
+            (self.paths, "paths"),
+            (self.dependent_paths, "dependent_paths"),
+            (self.source_refs, "source_refs"),
+        ):
+            normalized = tuple(str(value) for value in values)
+            if any(not value for value in normalized) or len(set(normalized)) != len(
+                normalized
+            ):
+                raise ValueError(f"validation issue {name} must be unique and non-empty")
+            object.__setattr__(self, name, normalized)
+        if not self.paths:
+            raise ValueError("validation issue requires at least one path")
+        object.__setattr__(
+            self,
+            "allowed_repairs",
+            tuple(dict.fromkeys(str(value) for value in self.allowed_repairs)),
+        )
+        if self.item_id is not None and not self.item_id.strip():
+            raise ValueError("validation issue item_id must be omitted or non-empty")
+        if (self.item_id is None) != (self.item_id_field is None):
+            raise ValueError(
+                "validation issue item_id and item_id_field must be set together"
+            )
+        if self.item_id_field is not None and (
+            not self.item_id_field
+            or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", self.item_id_field) is None
+        ):
+            raise ValueError("validation issue item_id_field is invalid")
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return the exact correction-facing issue record."""
+
+        value: dict[str, Any] = {
+            "code": self.code,
+            "message": self.message,
+            "paths": list(self.paths),
+            "severity": self.severity,
+            "retryability": self.retryability,
+            "path_policy": self.path_policy,
+            "allowed_repairs": list(self.allowed_repairs),
+            "dependent_paths": list(self.dependent_paths),
+            "source_refs": list(self.source_refs),
+        }
+        if self.item_id is not None:
+            value["item_id"] = self.item_id
+            value["item_id_field"] = self.item_id_field
+        return value
+
+
+class StructuredValidationError(ValidationError):
+    """Validation failure whose repair authority is carried by typed issues."""
+
+    def __init__(self, issues: tuple[ValidationIssue, ...] | list[ValidationIssue]):
+        materialized = tuple(issues)
+        if not materialized:
+            raise ValueError("structured validation requires at least one issue")
+        super().__init__("; ".join(issue.message for issue in materialized))
+        self.issues = materialized
 
 
 class DataQuality(str, Enum):

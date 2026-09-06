@@ -57,7 +57,11 @@ from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import ModelClientSettings, RegisteredModel, get_model
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import ChatMessage, PreparedJsonRequest
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import (
+    StructuredValidationError,
+    ValidationError,
+    ValidationIssue,
+)
 from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
     BlindPrediction,
@@ -116,12 +120,14 @@ from stock_opportunity_agent.signal_library import (
     SignalRegistry,
     SignalBatchResult,
     SignalCoverage,
+    SignalExecutionStatus,
     SignalLearningEvent,
     SignalResult,
     SignalSpec,
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
     signal_result_model_view,
+    signal_execution_failure_result,
     validate_signal_result,
 )
 
@@ -5575,7 +5581,60 @@ def _validation_obligations(
     failure: ValidationError | None,
     failed_output: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Project aggregated validation prose into numbered correction obligations."""
+    """Return correction obligations without widening validator write authority."""
+
+    if isinstance(failure, StructuredValidationError):
+        obligations = []
+        required_change_paths: list[str] = []
+        permitted_dependency_paths: list[str] = []
+        alternative_change_groups: list[list[str]] = []
+        for index, issue in enumerate(failure.issues, start=1):
+            issue_paths = list(issue.paths)
+            dependent_paths = list(issue.dependent_paths)
+            must_change_paths = issue_paths if issue.path_policy == "all" else []
+            alternative_paths = issue_paths if issue.path_policy == "any" else []
+            obligation = {
+                "obligation_index": index,
+                "issue_code": issue.code,
+                "severity": issue.severity,
+                "retryability": issue.retryability,
+                "must_change_paths": must_change_paths,
+                "must_change_any_of_paths": alternative_paths,
+                "permitted_dependency_paths": dependent_paths,
+                "allowed_repairs": list(issue.allowed_repairs),
+                "source_refs": list(issue.source_refs),
+                "instruction": issue.message,
+            }
+            if issue.item_id is not None:
+                obligation["item_id"] = issue.item_id
+                obligation["item_id_field"] = issue.item_id_field
+            obligations.append(obligation)
+            required_change_paths.extend(must_change_paths)
+            permitted_dependency_paths.extend(dependent_paths)
+            if alternative_paths:
+                alternative_change_groups.append(alternative_paths)
+        required_change_paths = list(dict.fromkeys(required_change_paths))
+        permitted_dependency_paths = list(
+            dict.fromkeys(permitted_dependency_paths)
+        )
+        feedback: dict[str, Any] = {
+            "validation_contract": "structured-validation-v1",
+            "obligation_count": len(obligations),
+            "obligations": obligations,
+            "required_change_path_count": len(required_change_paths),
+            "required_change_paths": required_change_paths,
+            "permitted_dependency_path_count": len(permitted_dependency_paths),
+            "permitted_dependency_paths": permitted_dependency_paths,
+            "alternative_change_groups": alternative_change_groups,
+            "completion_check": (
+                "Apply only an allowed repair to every machine-readable obligation. "
+                "Preserve all content outside required_change_paths and any strictly "
+                "necessary permitted_dependency_paths, then satisfy the complete "
+                "output contract. Diagnostic instruction prose grants no additional "
+                "write scope."
+            ),
+        }
+        return feedback
 
     if isinstance(failure, _RepairChoiceValidationError):
         paths = list(failure.alternative_paths)
@@ -6219,12 +6278,15 @@ def _project_scoped_correction(
     failed_output: Mapping[str, Any],
     corrected_output: Mapping[str, Any],
     must_change_paths: Iterable[str],
+    *,
+    stable_item_paths: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], tuple[str, ...]] | None:
     """Copy only unambiguous authorized correction values onto the failed object."""
 
     paths = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
     if not paths:
         return None
+    stable_items = dict(stable_item_paths or {})
     projected = deepcopy(dict(failed_output))
     for path in paths:
         if re.fullmatch(r"[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*", path) is None:
@@ -6232,12 +6294,14 @@ def _project_scoped_correction(
         tokens = re.findall(r"[A-Za-z_]+|\[\d+\]", path)
         target: Any = projected
         source: Any = corrected_output
+        current_path = ""
         for index, raw_token in enumerate(tokens):
             final = index == len(tokens) - 1
             token: str | int = (
                 int(raw_token[1:-1]) if raw_token.startswith("[") else raw_token
             )
             if isinstance(token, str):
+                current_path = f"{current_path}.{token}" if current_path else token
                 if (
                     not isinstance(target, dict)
                     or not isinstance(source, Mapping)
@@ -6245,18 +6309,54 @@ def _project_scoped_correction(
                     or (not final and token not in target)
                 ):
                     return None
-            elif (
-                not isinstance(target, list)
-                or not isinstance(source, list)
-                or len(target) != len(source)
-                or token >= len(target)
-            ):
-                return None
-            if final:
-                target[token] = deepcopy(source[token])
+                target_token = source_token = token
             else:
-                target = target[token]
-                source = source[token]
+                current_path += f"[{token}]"
+                if not isinstance(target, list) or not isinstance(source, list):
+                    return None
+                stable_item = stable_items.get(current_path)
+                if stable_item is None:
+                    if (
+                        len(target) != len(source)
+                        or token >= len(target)
+                        or token >= len(source)
+                    ):
+                        return None
+                    target_token = source_token = token
+                else:
+                    item_id = stable_item.get("item_id")
+                    item_id_field = stable_item.get("item_id_field")
+                    if not isinstance(item_id, str) or not isinstance(
+                        item_id_field, str
+                    ):
+                        return None
+                    target_matches = [
+                        item_index
+                        for item_index, item in enumerate(target)
+                        if isinstance(item, Mapping)
+                        and item.get(item_id_field) == item_id
+                    ]
+                    source_matches = [
+                        item_index
+                        for item_index, item in enumerate(source)
+                        if isinstance(item, Mapping)
+                        and item.get(item_id_field) == item_id
+                    ]
+                    if len(target_matches) != 1 or len(source_matches) > 1:
+                        return None
+                    target_token = target_matches[0]
+                    if not source_matches:
+                        allowed_repairs = stable_item.get("allowed_repairs", ())
+                        if final and "remove" in allowed_repairs:
+                            del target[target_token]
+                            break
+                        return None
+                    source_token = source_matches[0]
+            if final:
+                target[target_token] = deepcopy(source[source_token])
+            else:
+                target = target[target_token]
+                source = source[source_token]
     return projected, paths
 
 
@@ -6518,6 +6618,12 @@ def _complete_parsed_role(
         "Returning the same rejected content is not a correction."
     )
     for attempt in range(max_corrections + 1):
+        if (
+            attempt
+            and isinstance(failure, StructuredValidationError)
+            and all(issue.retryability == "terminal" for issue in failure.issues)
+        ):
+            break
         request_payload = dict(payload)
         request_stage = stage if attempt == 0 else f"{stage}_correction"
         prompt = (
@@ -6632,6 +6738,32 @@ def _complete_parsed_role(
                             *obligation.get("must_change_any_of_paths", ()),
                         )
                     ]
+                stable_item_paths: dict[str, dict[str, Any]] = {}
+                for obligation in obligations["obligations"]:
+                    item_id = obligation.get("item_id")
+                    item_id_field = obligation.get("item_id_field")
+                    if not isinstance(item_id, str) or not isinstance(
+                        item_id_field, str
+                    ):
+                        continue
+                    for obligation_path in (
+                        *obligation["must_change_paths"],
+                        *obligation.get("must_change_any_of_paths", ()),
+                    ):
+                        item_match = re.match(
+                            r"^([A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*\[\d+\])"
+                            r"(?:\.|$)",
+                            obligation_path,
+                        )
+                        if item_match is None:
+                            continue
+                        stable_item_paths[item_match.group(1)] = {
+                            "item_id": item_id,
+                            "item_id_field": item_id_field,
+                            "allowed_repairs": obligation.get(
+                                "allowed_repairs", ()
+                            ),
+                        }
                 drift_paths = _scoped_correction_drift_paths(
                     failed_output,
                     value,
@@ -6642,6 +6774,7 @@ def _complete_parsed_role(
                         failed_output,
                         value,
                         must_change_paths,
+                        stable_item_paths=stable_item_paths,
                     )
                     if projection is None:
                         scope_failure = ValidationError(
@@ -11471,6 +11604,30 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "Signal Mining H1 hypothesis ids must be unique at "
                     + ", ".join(duplicate_paths)
                 )
+            global_issue_count = len(issues)
+            item_issues: list[ValidationIssue] = []
+
+            def add_item_issue(
+                item: SignalMiningHypothesis,
+                path: str | tuple[str, ...],
+                message: str,
+                *,
+                path_policy: str = "all",
+            ) -> None:
+                issues.append(message)
+                issue_paths = (path,) if isinstance(path, str) else path
+                item_issues.append(
+                    ValidationIssue(
+                        code="h1_hypothesis_invalid",
+                        message=message,
+                        paths=issue_paths,
+                        item_id=item.hypothesis_id,
+                        item_id_field="hypothesis_id",
+                        allowed_repairs=("replace", "remove"),
+                        path_policy=path_policy,
+                    )
+                )
+
             for item_index, item in enumerate(items):
                 item_path = f"hypotheses[{item_index}]"
                 unsupported = sorted(
@@ -11479,7 +11636,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                     if source_type not in allowed_source_types
                 )
                 if unsupported:
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.source_types",
                         "Signal Mining H1 source_types must use exact supplied values "
                         f"at {item_path}.source_types, unsupported: "
                         + ", ".join(unsupported)
@@ -11504,7 +11663,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 for path, text in semantic_fields:
                     fixed_match = _fixed_semantics_match(text)
                     if fixed_match is not None:
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            path,
                             "role output attempts to redefine fixed Predictor "
                             f"semantics at {path}, matched prohibited phrase "
                             f"{fixed_match.group(0)!r}"
@@ -11512,7 +11673,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 for path, text in test_fields:
                     alternate_match = _H1_ALTERNATE_TEST_OUTCOME.search(text)
                     if alternate_match is not None:
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            path,
                             "Signal Mining H1 must test the fixed Discovery "
                             "positive/control outcome rather than an alternate "
                             f"horizon at {path}, matched "
@@ -11520,7 +11683,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                     invented_ref_match = _H1_INVENTED_CASE_REF.search(text)
                     if invented_ref_match is not None:
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            path,
                             "Signal Mining H1 must not invent opaque case refs or "
                             f"case placeholders at {path}"
                         )
@@ -11533,13 +11698,17 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                         is None
                     ):
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            path,
                             "Signal Mining H1 must not redefine fixed Discovery "
                             f"groups at {path}, matched "
                             f"{group_redefinition_match.group(0)!r}"
                         )
                 if _H1_DATA_READINESS_STATEMENT.search(item.statement) is not None:
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.statement",
                         "Signal Mining H1 statement must assert a measurable group "
                         "feature rather than source-data readiness at "
                         f"{item_path}.statement"
@@ -11550,7 +11719,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                     is not None
                 ):
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.expected_positive_pattern",
                         "Signal Mining H1 expected_positive_pattern must normalize "
                         "raw absolute scale to a case-local baseline at "
                         f"{item_path}.expected_positive_pattern"
@@ -11565,7 +11736,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                         ),
                     )
                 except ValidationError as exc:
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.applicability",
                         "Signal Mining H1 applicability must replace the complete "
                         "field with one canonical rule from the actual H2 profile "
                         f"contract at {item_path}.applicability: {exc}"
@@ -11575,7 +11748,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                     _H1_POSITIVE_CASE_PATTERN.search(falsifier_text)
                     and _H1_CONTROL_CASE_PATTERN.search(falsifier_text)
                 ):
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.falsifiers",
                         "Signal Mining H1 falsifiers must include a positive/control "
                         "group non-separation or reversal test at "
                         f"{item_path}.falsifiers"
@@ -11586,7 +11761,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                     or _H1_QUERY_INSTRUCTION_PATTERN.search(item.query) is not None
                     or _H1_QUERY_FILTER_PATTERN.search(item.query) is not None
                 ):
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.query",
                         "Signal Mining H1 query must be a concise 2-8 term retrieval "
                         "topic without an imperative, numeric threshold, or duplicate "
                         f"time window at {item_path}.query"
@@ -11597,10 +11774,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                     construct_terms = identity_terms & query_terms
                     if not construct_terms:
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            (
+                                f"{item_path}.hypothesis_id",
+                                f"{item_path}.query",
+                            ),
                             "Signal Mining H1 hypothesis_id and query must share at "
                             "least one normalized topic term so the retrieval target "
-                            f"is identifiable at {item_path}.query"
+                            f"is identifiable at {item_path}.query",
+                            path_policy="any",
                         )
                     else:
                         required_construct_terms = max(
@@ -11613,7 +11796,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                             len(construct_terms & pattern_terms)
                             < required_construct_terms
                         ):
-                            issues.append(
+                            add_item_issue(
+                                item,
+                                f"{item_path}.expected_positive_pattern",
                                 "Signal Mining H1 expected_positive_pattern must "
                                 "retain at least half of the normalized candidate "
                                 "construct shared by hypothesis_id and query so H3 "
@@ -11626,7 +11811,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                         item.expected_positive_pattern
                     )
                 ):
-                    issues.append(
+                    add_item_issue(
+                        item,
+                        f"{item_path}.expected_positive_pattern",
                         "Signal Mining H1 expected_positive_pattern must name both "
                         "positive and control groups at "
                         f"{item_path}.expected_positive_pattern"
@@ -11656,7 +11843,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                         stable_terms <= identity_terms
                         for stable_terms in existing_signal_term_sets
                     ):
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            path,
                             "Signal Mining H1 hypothesis restates an existing stable "
                             f"Signal at {path}"
                         )
@@ -11665,13 +11854,24 @@ class LLMSignalMiningModel(SignalMiningModel):
                         len(hypothesis_terms & need_terms) >= 2
                         for need_terms in need_term_sets
                     ):
-                        issues.append(
+                        add_item_issue(
+                            item,
+                            item_path,
                             "Signal Mining H1 hypothesis must share at least two "
                             "non-generic topic terms with one signal_need_item at "
                             + item_path
                         )
             if issues:
-                raise ValidationError("; ".join(issues))
+                structured_issues = [
+                    ValidationIssue(
+                        code="h1_portfolio_invalid",
+                        message=message,
+                        paths=("hypotheses",),
+                    )
+                    for message in issues[:global_issue_count]
+                ]
+                structured_issues.extend(item_issues)
+                raise StructuredValidationError(structured_issues)
             return items
 
         request_payload: Mapping[str, Any] = payload
@@ -12972,6 +13172,7 @@ class StructuredLLMSignalRunner:
         accepted: dict[str, SignalResult] = {}
         validation_feedback: list[dict[str, Any]] = []
         last_errors: dict[str, str] = {}
+        failure_statuses: dict[str, SignalExecutionStatus] = {}
 
         for attempt in range(2):
             payload = dict(base_payload)
@@ -13002,6 +13203,9 @@ class StructuredLLMSignalRunner:
                     ) from exc
                 usage = usage + exc.usage
                 for signal_ref in pending:
+                    failure_statuses[signal_ref] = (
+                        SignalExecutionStatus.BUDGET_BLOCKED
+                    )
                     last_errors[signal_ref] = (
                         "correction request was not sent because its exact "
                         f"reservation exceeded the remaining budget: {exc}"
@@ -13010,13 +13214,18 @@ class StructuredLLMSignalRunner:
             usage = usage + step_usage
             rows = value.get("results")
             row_by_ref: dict[str, Mapping[str, Any]] = {}
+            duplicate_refs: set[str] = set()
             if isinstance(rows, list):
                 for row in rows:
                     if not isinstance(row, Mapping) or not isinstance(
                         row.get("signal_ref"), str
                     ) or not isinstance(row.get("result"), Mapping):
                         continue
-                    row_by_ref.setdefault(str(row["signal_ref"]), dict(row["result"]))
+                    returned_ref = str(row["signal_ref"])
+                    if returned_ref in row_by_ref:
+                        duplicate_refs.add(returned_ref)
+                        continue
+                    row_by_ref[returned_ref] = dict(row["result"])
             elif len(pending) == 1 and {
                 "signal_id",
                 "version",
@@ -13030,8 +13239,16 @@ class StructuredLLMSignalRunner:
             for signal_ref, item in tuple(pending.items()):
                 raw_result = row_by_ref.get(signal_ref)
                 try:
+                    if signal_ref in duplicate_refs:
+                        raise ValidationError(
+                            "batch output duplicated requested signal_ref"
+                        )
                     if raw_result is None:
                         raise ValidationError("batch output omitted requested signal_ref")
+                    if "execution" in raw_result:
+                        raise ValidationError(
+                            "Signal execution status is runtime-owned and must be omitted"
+                        )
                     normalized = _normalize_signal_result_output(raw_result)
                     normalized = _canonicalize_unique_case_only_spans(
                         normalized, item.documents
@@ -13049,6 +13266,9 @@ class StructuredLLMSignalRunner:
                     )
                 except ValidationError as exc:
                     validation_error = str(exc)
+                    failure_statuses[signal_ref] = (
+                        SignalExecutionStatus.VALIDATION_FAILED
+                    )
                     if "identity does not match SignalSpec" in validation_error:
                         validation_error += (
                             "; returned result.signal_id="
@@ -13086,16 +13306,18 @@ class StructuredLLMSignalRunner:
                 break
 
         for signal_ref, item in pending.items():
-            accepted[signal_ref] = SignalResult(
-                signal_id=item.spec.signal_id,
-                version=item.spec.version,
-                value=SignalValue.UNAVAILABLE,
-                confidence=0.0,
-                interpretation=(
-                    "LLM Signal output failed strict validation: "
-                    + last_errors.get(signal_ref, "missing batch result")
+            status = failure_statuses.get(
+                signal_ref, SignalExecutionStatus.VALIDATION_FAILED
+            )
+            accepted[signal_ref] = signal_execution_failure_result(
+                item.spec,
+                status=status,
+                error_code=(
+                    "signal_execution_budget_blocked"
+                    if status is SignalExecutionStatus.BUDGET_BLOCKED
+                    else "signal_output_validation_exhausted"
                 ),
-                coverage=SignalCoverage.UNAVAILABLE,
+                error_message=last_errors.get(signal_ref, "missing batch result"),
             )
         return accepted, usage
 

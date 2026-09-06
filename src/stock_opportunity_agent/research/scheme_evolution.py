@@ -34,6 +34,7 @@ from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     LLMSignalRunner,
     SignalBatchResult,
+    SignalExecutionStatus,
     SignalExecutionType,
     SignalExecutor,
     SignalLearningEvent,
@@ -6721,6 +6722,11 @@ def _signal_learning_events_from_record(
     for trajectory in record.trajectories:
         for round_index, signal_round in enumerate(trajectory.signal_rounds):
             for result_index, result in enumerate(signal_round.batch.results):
+                if result.execution_status not in {
+                    SignalExecutionStatus.SUCCESS,
+                    SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+                }:
+                    continue
                 selection = next(
                     item
                     for item in signal_round.selections
@@ -7529,10 +7535,12 @@ class SignalCandidateEffectiveness:
     candidate_decisive: int
     candidate_correct: int
     candidate_wrong: int
+    candidate_execution_failed: int = 0
     current_available: int = 0
     current_decisive: int = 0
     current_correct: int = 0
     current_wrong: int = 0
+    current_execution_failed: int = 0
 
     def __post_init__(self) -> None:
         if self.disposition not in {"promoted", "provisional", "rejected"}:
@@ -7544,7 +7552,7 @@ class SignalCandidateEffectiveness:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "signal-candidate-effectiveness-v2",
+            "schema_version": "signal-candidate-effectiveness-v3",
             "signal_ref": self.signal_ref,
             "current_ref": self.current_ref,
             "accepted": self.accepted,
@@ -7556,12 +7564,14 @@ class SignalCandidateEffectiveness:
                 "decisive": self.candidate_decisive,
                 "directional_correct": self.candidate_correct,
                 "directional_wrong": self.candidate_wrong,
+                "execution_failed": self.candidate_execution_failed,
             },
             "current": {
                 "available": self.current_available,
                 "decisive": self.current_decisive,
                 "directional_correct": self.current_correct,
                 "directional_wrong": self.current_wrong,
+                "execution_failed": self.current_execution_failed,
             },
         }
 
@@ -7685,8 +7695,12 @@ class SignalCandidateEffectivenessEvaluator:
             if current is not None
             else None
         )
-        candidate_values: list[tuple[SignalValue, bool]] = []
-        current_values: list[tuple[SignalValue, bool]] = []
+        candidate_values: list[
+            tuple[SignalValue, bool, SignalExecutionStatus]
+        ] = []
+        current_values: list[
+            tuple[SignalValue, bool, SignalExecutionStatus]
+        ] = []
         try:
             for case in cases:
                 candidate_result = candidate_executor.execute_batch(
@@ -7696,7 +7710,11 @@ class SignalCandidateEffectivenessEvaluator:
                     identity=case.basic_info,
                 ).results[0]
                 candidate_values.append(
-                    (candidate_result.value, case.ground_truth.is_surge)
+                    (
+                        candidate_result.value,
+                        case.ground_truth.is_surge,
+                        candidate_result.execution_status,
+                    )
                 )
                 if current is not None and current_executor is not None:
                     current_result = current_executor.execute_batch(
@@ -7706,7 +7724,11 @@ class SignalCandidateEffectivenessEvaluator:
                         identity=case.basic_info,
                     ).results[0]
                     current_values.append(
-                        (current_result.value, case.ground_truth.is_surge)
+                        (
+                            current_result.value,
+                            case.ground_truth.is_surge,
+                            current_result.execution_status,
+                        )
                     )
         except (ValidationError, KeyError, TypeError, ValueError) as exc:
             return SignalCandidateEffectiveness(
@@ -7783,18 +7805,26 @@ class SignalCandidateEffectivenessEvaluator:
             candidate_decisive=candidate_counts[1],
             candidate_correct=candidate_counts[2],
             candidate_wrong=candidate_counts[3],
+            candidate_execution_failed=candidate_counts[4],
             current_available=current_counts[0],
             current_decisive=current_counts[1],
             current_correct=current_counts[2],
             current_wrong=current_counts[3],
+            current_execution_failed=current_counts[4],
         )
 
 
 def _signal_effectiveness_counts(
-    values: Iterable[tuple[SignalValue, bool]],
-) -> tuple[int, int, int, int]:
-    available = decisive = correct = wrong = 0
-    for value, is_surge in values:
+    values: Iterable[tuple[SignalValue, bool, SignalExecutionStatus]],
+) -> tuple[int, int, int, int, int]:
+    available = decisive = correct = wrong = execution_failed = 0
+    for value, is_surge, execution_status in values:
+        if execution_status not in {
+            SignalExecutionStatus.SUCCESS,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        }:
+            execution_failed += 1
+            continue
         if value is not SignalValue.UNAVAILABLE:
             available += 1
         if value not in (SignalValue.POSITIVE, SignalValue.NEGATIVE):
@@ -7804,7 +7834,7 @@ def _signal_effectiveness_counts(
             correct += 1
         else:
             wrong += 1
-    return available, decisive, correct, wrong
+    return available, decisive, correct, wrong, execution_failed
 
 
 def _mining_needs_exploration_fallback(audit: Mapping[str, Any]) -> bool:
@@ -8292,7 +8322,7 @@ class SignalEvolutionEngine:
                     accepted = paired.accepted
                 else:
                     effectiveness = {
-                        "schema_version": "signal-candidate-effectiveness-v2",
+                        "schema_version": "signal-candidate-effectiveness-v3",
                         "signal_ref": signal_ref,
                         "accepted": False,
                         "disposition": "rejected",

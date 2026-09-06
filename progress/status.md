@@ -1,18 +1,18 @@
 # Status
 
-Current reliability action-plan audit (2026-09-06):
+Current reliability implementation (2026-09-06): phase one of T1 from
 [`self-evolution-action-plan-2026-09-06.md`](self-evolution-action-plan-2026-09-06.md)
-records a proposed, dependency-ordered implementation and acceptance plan against
-`aa2f57a`. Live V118 uses that revision and has cycle 1 / round 0 with no candidate
-or Registry transition; its hypothesis and exploration paths both failed. Local
-probes confirmed missing relevance intent in Signal retrieval, inconsistent E1
-input/output identity boundaries, immutable validation-file conflicts on provisional
-re-evaluation, shallow frozen Registry mutability, and cross-instance Raw Info
-visibility/idempotency gaps. The plan distinguishes execution correctness, actual
-capability promotion/use, and independently demonstrated system improvement.
-No runtime or active architecture was changed and no external request was sent.
-All 578 current repository tests pass; proposed contract and evaluation-policy
-changes remain unimplemented and subject to their documented decision boundaries.
+is in progress. Runtime validation now has machine-readable issues, explicit
+all/any path policy, stable item identity, and scoped projection that survives
+provider list reordering while retaining valid siblings. H1 emits this contract
+directly instead of granting write scope through diagnostic prose. Signal execution
+now distinguishes successful/domain-unavailable observations from validation,
+transport, permanent, budget, and authorization failures. Valid batch siblings
+survive another row's failed correction; technical failures keep diagnostics but
+are excluded from observations, learning events, and directional statistics, and
+do not consume the idempotent observation key. Candidate effectiveness audits
+report failures while retaining the frozen case list. T1 migration of remaining
+role validators and T2-T7 are still open; no external request was sent.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

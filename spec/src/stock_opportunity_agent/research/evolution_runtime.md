@@ -12,6 +12,15 @@ fields in an `InformationPlan`. It freezes inputs, discloses external requests,
 enforces attempt/cost ceilings, caches exact responses, and inventories legacy
 point-in-time artifacts before migration.
 
+Structured role validation is an execution contract. New validators emit
+machine-readable `ValidationIssue` records; correction feedback and scoped
+projection consume those records directly. Stable item ids may relocate a
+corrected list item after provider reordering, while unrelated valid siblings
+remain byte-identical and the complete original parser always runs again.
+Diagnostic prose is never parsed to grant write authority. Legacy validators
+without structured issues may still request a whole-object correction, but
+cannot use scoped projection until migrated.
+
 ## Frozen Run Contract
 
 One immutable, secret-free `EvolutionRunContract` binds:

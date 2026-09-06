@@ -30,6 +30,23 @@ Every Signal produces a `SignalResult` with:
 - supporting and counter-evidence spans; and
 - coverage status.
 
+Each canonical result also carries a runtime-owned execution status. `success`
+and `domain_unavailable` are domain observations. `validation_failed`,
+`transport_failed`, `permanent_failed`, `budget_blocked`, and
+`authorization_blocked` are execution outcomes. They may use the same safe
+unavailable-shaped value for downstream continuity, but they are not data
+unavailability and are excluded from Signal observation, learning-profile, and
+directional-effectiveness statistics. Their diagnostics remain in the canonical
+record; downstream model views receive only a generic unknown-result summary and
+the status. The model does not author execution status.
+
+Batch execution isolates failures by exact Signal ref. A valid sibling remains
+accepted and is not regenerated merely because another row fails validation or
+cannot afford its correction. Only failed rows receive the bounded correction;
+the complete local parser and evidence validator run again. A failed occurrence
+does not consume the observation id, so a later validated recovery can be
+recorded exactly once.
+
 Canonical state is the statistics interface. Rich interpretation and evidence
 remain available to the research runtime.
 

@@ -115,6 +115,29 @@ class SignalCoverage(str, Enum):
     UNAVAILABLE = "unavailable"
 
 
+class SignalExecutionStatus(str, Enum):
+    """Runtime-owned outcome of attempting one Signal execution."""
+
+    SUCCESS = "success"
+    DOMAIN_UNAVAILABLE = "domain_unavailable"
+    VALIDATION_FAILED = "validation_failed"
+    TRANSPORT_FAILED = "transport_failed"
+    PERMANENT_FAILED = "permanent_failed"
+    BUDGET_BLOCKED = "budget_blocked"
+    AUTHORIZATION_BLOCKED = "authorization_blocked"
+
+
+_SIGNAL_TECHNICAL_FAILURE_STATUSES = frozenset(
+    {
+        SignalExecutionStatus.VALIDATION_FAILED,
+        SignalExecutionStatus.TRANSPORT_FAILED,
+        SignalExecutionStatus.PERMANENT_FAILED,
+        SignalExecutionStatus.BUDGET_BLOCKED,
+        SignalExecutionStatus.AUTHORIZATION_BLOCKED,
+    }
+)
+
+
 @dataclass(frozen=True)
 class EvidencePolicy:
     """Traceability requirements enforced after every Signal execution."""
@@ -402,6 +425,9 @@ class SignalResult:
     supporting_evidence: tuple[SignalEvidence, ...] = ()
     counter_evidence: tuple[SignalEvidence, ...] = ()
     coverage: SignalCoverage = SignalCoverage.SUFFICIENT
+    execution_status: SignalExecutionStatus | None = None
+    execution_error_code: str | None = None
+    execution_error_message: str | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.signal_id, "signal_id")
@@ -411,6 +437,16 @@ class SignalResult:
             object.__setattr__(self, "value", SignalValue(self.value))
         if not isinstance(self.coverage, SignalCoverage):
             object.__setattr__(self, "coverage", SignalCoverage(self.coverage))
+        execution_status = self.execution_status
+        if execution_status is None:
+            execution_status = (
+                SignalExecutionStatus.DOMAIN_UNAVAILABLE
+                if self.value is SignalValue.UNAVAILABLE
+                else SignalExecutionStatus.SUCCESS
+            )
+        elif not isinstance(execution_status, SignalExecutionStatus):
+            execution_status = SignalExecutionStatus(execution_status)
+        object.__setattr__(self, "execution_status", execution_status)
         if (
             isinstance(self.confidence, bool)
             or not isinstance(self.confidence, (int, float))
@@ -432,13 +468,39 @@ class SignalResult:
                 raise ValidationError("unavailable signal result cannot carry evidence")
         elif self.coverage is SignalCoverage.UNAVAILABLE:
             raise ValidationError("available signal cannot use unavailable coverage")
+        if execution_status is SignalExecutionStatus.SUCCESS:
+            if self.value is SignalValue.UNAVAILABLE:
+                raise ValidationError("successful execution requires a domain value")
+        elif execution_status is SignalExecutionStatus.DOMAIN_UNAVAILABLE:
+            if self.value is not SignalValue.UNAVAILABLE:
+                raise ValidationError(
+                    "domain-unavailable execution requires unavailable value"
+                )
+        elif execution_status in _SIGNAL_TECHNICAL_FAILURE_STATUSES:
+            if self.value is not SignalValue.UNAVAILABLE:
+                raise ValidationError(
+                    "failed execution requires an unavailable-shaped value"
+                )
+            if not (self.execution_error_code or "").strip() or not (
+                self.execution_error_message or ""
+            ).strip():
+                raise ValidationError(
+                    "failed execution requires error code and diagnostic message"
+                )
+        if execution_status not in _SIGNAL_TECHNICAL_FAILURE_STATUSES and (
+            self.execution_error_code is not None
+            or self.execution_error_message is not None
+        ):
+            raise ValidationError(
+                "successful/domain-unavailable execution cannot carry an error"
+            )
 
     @property
     def ref(self) -> str:
         return f"{self.signal_id}:v{self.version}"
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "signal_id": self.signal_id,
             "version": self.version,
             "state": {"value": self.value.value, "confidence": self.confidence},
@@ -448,7 +510,16 @@ class SignalResult:
                 "counter": [item.to_dict() for item in self.counter_evidence],
             },
             "status": {"coverage": self.coverage.value},
+            "execution": {"status": self.execution_status.value},
         }
+        if self.execution_status in _SIGNAL_TECHNICAL_FAILURE_STATUSES:
+            result["execution"].update(
+                {
+                    "error_code": self.execution_error_code,
+                    "error_message": self.execution_error_message,
+                }
+            )
+        return result
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalResult":
@@ -477,6 +548,7 @@ class SignalResult:
         interpretation = dict(data["interpretation"])
         evidence = dict(data["evidence"])
         status = dict(data["status"])
+        execution = dict(data.get("execution", {}))
         if set(state) != {"value", "confidence"}:
             raise ValidationError(
                 "SignalResult state requires exactly value and confidence"
@@ -498,6 +570,12 @@ class SignalResult:
             state["confidence"], (int, float)
         ):
             raise ValidationError("SignalResult confidence must be numeric")
+        if execution and set(execution) - {
+            "status",
+            "error_code",
+            "error_message",
+        }:
+            raise ValidationError("SignalResult execution has unexpected fields")
         return cls(
             signal_id=str(data["signal_id"]),
             version=int(data["version"]),
@@ -513,12 +591,32 @@ class SignalResult:
                 for item in evidence["counter"]
             ),
             coverage=SignalCoverage(str(status["coverage"])),
+            execution_status=(
+                SignalExecutionStatus(str(execution["status"]))
+                if execution.get("status") is not None
+                else None
+            ),
+            execution_error_code=(
+                str(execution["error_code"])
+                if execution.get("error_code") is not None
+                else None
+            ),
+            execution_error_message=(
+                str(execution["error_message"])
+                if execution.get("error_message") is not None
+                else None
+            ),
         )
 
 
 UNAVAILABLE_SIGNAL_MODEL_SUMMARY = (
     "Unavailable: visible evidence was insufficient for a canonical conclusion. "
     "This is not evidence that the measured condition is absent."
+)
+
+FAILED_SIGNAL_MODEL_SUMMARY = (
+    "Signal execution did not produce a validated domain result. Treat this item "
+    "as unknown and do not infer that the measured condition is absent."
 )
 
 
@@ -528,12 +626,52 @@ def signal_result_model_view(
     """Return a downstream-safe view while preserving the canonical artifact."""
 
     result = value.to_dict() if isinstance(value, SignalResult) else dict(value)
+    execution = result.get("execution")
+    execution_status = (
+        execution.get("status") if isinstance(execution, Mapping) else None
+    )
     state = result.get("state")
     if isinstance(state, Mapping) and state.get("value") == SignalValue.UNAVAILABLE.value:
-        result["interpretation"] = {"summary": UNAVAILABLE_SIGNAL_MODEL_SUMMARY}
+        result["interpretation"] = {
+            "summary": (
+                FAILED_SIGNAL_MODEL_SUMMARY
+                if execution_status
+                in {status.value for status in _SIGNAL_TECHNICAL_FAILURE_STATUSES}
+                else UNAVAILABLE_SIGNAL_MODEL_SUMMARY
+            )
+        }
         result["evidence"] = {"supporting": [], "counter": []}
         result["status"] = {"coverage": SignalCoverage.UNAVAILABLE.value}
+    if isinstance(execution, Mapping):
+        result["execution"] = {"status": execution_status}
     return result
+
+
+def signal_execution_failure_result(
+    spec: SignalSpec,
+    *,
+    status: SignalExecutionStatus,
+    error_code: str,
+    error_message: str,
+) -> SignalResult:
+    """Build a canonical technical failure without claiming domain unavailability."""
+
+    if status not in _SIGNAL_TECHNICAL_FAILURE_STATUSES:
+        raise ValidationError("Signal execution failure requires a technical status")
+    return SignalResult(
+        signal_id=spec.signal_id,
+        version=spec.version,
+        value=SignalValue.UNAVAILABLE,
+        confidence=0.0,
+        interpretation=(
+            "Signal execution failed strict validation or execution: "
+            + error_message
+        ),
+        coverage=SignalCoverage.UNAVAILABLE,
+        execution_status=status,
+        execution_error_code=error_code,
+        execution_error_message=error_message,
+    )
 
 
 @dataclass(frozen=True)
@@ -626,6 +764,8 @@ class SignalStats:
         is_surge: bool,
         usage: AgentUsage = AgentUsage(),
     ) -> None:
+        if result.execution_status in _SIGNAL_TECHNICAL_FAILURE_STATUSES:
+            return
         self.executed += 1
         if result.value is SignalValue.UNAVAILABLE:
             self.unavailable += 1
@@ -647,6 +787,8 @@ class SignalStats:
 
         if not observation_id.strip():
             raise ValidationError("signal observation_id must not be empty")
+        if result.execution_status in _SIGNAL_TECHNICAL_FAILURE_STATUSES:
+            return False
         if observation_id in self.processed_observation_ids:
             return False
         self.processed_observation_ids.add(observation_id)
@@ -1947,20 +2089,54 @@ class SignalExecutor:
             elif spec.execution_type is SignalExecutionType.DETERMINISTIC:
                 try:
                     function = self.deterministic_functions[str(spec.function)]
-                except KeyError as exc:
-                    raise ValidationError(
-                        f"unregistered deterministic signal function: {spec.function}"
-                    ) from exc
-                result = function(spec, documents, as_of)
+                except KeyError:
+                    result = signal_execution_failure_result(
+                        spec,
+                        status=SignalExecutionStatus.PERMANENT_FAILED,
+                        error_code="deterministic_function_unregistered",
+                        error_message=(
+                            "unregistered deterministic signal function: "
+                            f"{spec.function}"
+                        ),
+                    )
+                else:
+                    try:
+                        result = function(spec, documents, as_of)
+                        validate_signal_result(
+                            spec, result, documents, as_of=as_of
+                        )
+                    except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                        result = signal_execution_failure_result(
+                            spec,
+                            status=SignalExecutionStatus.VALIDATION_FAILED,
+                            error_code="deterministic_result_validation_failed",
+                            error_message=f"{type(exc).__name__}: {exc}",
+                        )
             else:
                 if self.llm_runner is None:
-                    raise ValidationError("LLM signal runner is not configured")
+                    results_by_ref[spec.ref] = signal_execution_failure_result(
+                        spec,
+                        status=SignalExecutionStatus.PERMANENT_FAILED,
+                        error_code="llm_signal_runner_missing",
+                        error_message="LLM signal runner is not configured",
+                    )
+                    continue
                 skill = self.snapshot.skills.get(spec.ref, "")
                 if not skill.strip():
-                    raise ValidationError(f"frozen LLM skill is missing: {spec.ref}")
+                    results_by_ref[spec.ref] = signal_execution_failure_result(
+                        spec,
+                        status=SignalExecutionStatus.PERMANENT_FAILED,
+                        error_code="llm_signal_skill_missing",
+                        error_message=f"frozen LLM skill is missing: {spec.ref}",
+                    )
+                    continue
                 llm_inputs.append(LLMSignalBatchInput(spec, documents, skill))
                 continue
-            validate_signal_result(spec, result, documents, as_of=as_of)
+            if result.execution_status in {
+                SignalExecutionStatus.SUCCESS,
+                SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+            }:
+                validate_signal_result(spec, result, documents, as_of=as_of)
             results_by_ref[spec.ref] = result
         if llm_inputs:
             execute_many = getattr(self.llm_runner, "execute_many", None)
@@ -1970,17 +2146,23 @@ class SignalExecutor:
                 for item in llm_inputs:
                     result = llm_results.get(item.spec.ref)
                     if result is None:
-                        result = SignalResult(
-                            signal_id=item.spec.signal_id,
-                            version=item.spec.version,
-                            value=SignalValue.UNAVAILABLE,
-                            confidence=0.0,
-                            interpretation="LLM Signal batch omitted this result.",
-                            coverage=SignalCoverage.UNAVAILABLE,
+                        result = signal_execution_failure_result(
+                            item.spec,
+                            status=SignalExecutionStatus.VALIDATION_FAILED,
+                            error_code="signal_batch_result_missing",
+                            error_message="LLM Signal batch omitted this result.",
                         )
-                    validate_signal_result(
-                        item.spec, result, item.documents, as_of=as_of
-                    )
+                    try:
+                        validate_signal_result(
+                            item.spec, result, item.documents, as_of=as_of
+                        )
+                    except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                        result = signal_execution_failure_result(
+                            item.spec,
+                            status=SignalExecutionStatus.VALIDATION_FAILED,
+                            error_code="llm_result_validation_failed",
+                            error_message=f"{type(exc).__name__}: {exc}",
+                        )
                     results_by_ref[item.spec.ref] = result
             else:
                 for item in llm_inputs:
@@ -1988,9 +2170,17 @@ class SignalExecutor:
                         item.spec, item.documents, item.skill, as_of
                     )
                     usage = usage + signal_usage
-                    validate_signal_result(
-                        item.spec, result, item.documents, as_of=as_of
-                    )
+                    try:
+                        validate_signal_result(
+                            item.spec, result, item.documents, as_of=as_of
+                        )
+                    except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                        result = signal_execution_failure_result(
+                            item.spec,
+                            status=SignalExecutionStatus.VALIDATION_FAILED,
+                            error_code="llm_result_validation_failed",
+                            error_message=f"{type(exc).__name__}: {exc}",
+                        )
                     results_by_ref[item.spec.ref] = result
         results = tuple(results_by_ref[ref] for ref in refs if ref in results_by_ref)
         return SignalBatchResult(

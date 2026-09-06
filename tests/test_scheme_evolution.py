@@ -108,6 +108,7 @@ from stock_opportunity_agent.signal_library import (
     SignalBatchResult,
     SignalCoverage,
     SignalEvidence,
+    SignalExecutionStatus,
     SignalExecutionType,
     SignalExecutor,
     SignalLearningEvent,
@@ -115,6 +116,7 @@ from stock_opportunity_agent.signal_library import (
     SignalResult,
     SignalSpec,
     SignalValue,
+    signal_execution_failure_result,
 )
 
 
@@ -888,7 +890,57 @@ class SignalLibraryTests(TestCase):
             self.assertEqual(stats.retrieved, 1)
             self.assertEqual(stats.states["positive"], {"total": 1, "surge": 1})
 
-    def test_result_evidence_must_be_from_actual_input_with_literal_span(self) -> None:
+    def test_execution_failure_does_not_pollute_or_consume_observation_stats(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            spec = registry.load_spec("revenue_growth_yoy:v1")
+            failed = signal_execution_failure_result(
+                spec,
+                status=SignalExecutionStatus.VALIDATION_FAILED,
+                error_code="fixture_validation_failed",
+                error_message="fixture output did not satisfy its contract",
+            )
+
+            self.assertFalse(
+                registry.record_observation(
+                    "same-observation",
+                    failed,
+                    is_surge=True,
+                )
+            )
+            stats = registry.load_stats(spec.signal_id)
+            self.assertEqual(stats.retrieved, 0)
+            self.assertEqual(stats.executed, 0)
+            self.assertEqual(stats.unavailable, 0)
+            self.assertEqual(stats.processed_observation_ids, set())
+
+            recovered = SignalResult(
+                signal_id=spec.signal_id,
+                version=spec.version,
+                value=SignalValue.UNAVAILABLE,
+                confidence=0.0,
+                interpretation="No eligible point-in-time document was available.",
+                coverage=SignalCoverage.UNAVAILABLE,
+            )
+            self.assertTrue(
+                registry.record_observation(
+                    "same-observation",
+                    recovered,
+                    is_surge=True,
+                )
+            )
+            stats = registry.load_stats(spec.signal_id)
+            self.assertEqual(stats.retrieved, 1)
+            self.assertEqual(stats.executed, 1)
+            self.assertEqual(stats.unavailable, 1)
+            self.assertEqual(
+                stats.processed_observation_ids,
+                {"same-observation"},
+            )
+
+    def test_invalid_result_evidence_isolated_as_execution_failure(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)
             document = RawInfoDocument.create(
@@ -925,12 +977,20 @@ class SignalLibraryTests(TestCase):
                 RawInfoStore(documents=(document,)),
                 llm_runner=BadRunner(),
             )
-            with self.assertRaisesRegex(ValidationError, "outside its inputs"):
-                executor.execute_batch(
-                    ("guidance_acceleration:v1",),
-                    company_id="issuer_1",
-                    as_of=NOW,
-                )
+            batch = executor.execute_batch(
+                ("guidance_acceleration:v1",),
+                company_id="issuer_1",
+                as_of=NOW,
+            )
+
+            self.assertEqual(len(batch.results), 1)
+            result = batch.results[0]
+            self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+            self.assertEqual(
+                result.execution_status,
+                SignalExecutionStatus.VALIDATION_FAILED,
+            )
+            self.assertIn("outside its inputs", result.execution_error_message)
 
 
 class InformationPlanRuntimeTests(TestCase):

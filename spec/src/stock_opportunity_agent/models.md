@@ -32,6 +32,12 @@ Other modules may depend on stable model types such as:
 - `ExperimentRecord`
 - `VersionStamp`
 
+Runtime validators may also raise `StructuredValidationError` containing one or
+more immutable `ValidationIssue` records. Each issue owns its machine-readable
+code, exact output paths or stable item id, retryability, allowed repairs,
+dependent paths, and source refs. Human-readable messages are diagnostic only:
+no repair implementation may derive write authority by parsing their prose.
+
 Implementation may use dataclasses, Pydantic models, or typed dictionaries, but records crossing module boundaries must be explicit and serializable.
 
 Initial implementation uses standard-library dataclasses and enums in `src/stock_opportunity_agent/models.py`. `FeatureRecord` is the cross-module structured data contract used by the data layer and later scanner/scoring modules. These are domain records, not LLM provider adapters; model-provider API integrations belong under the research module.
