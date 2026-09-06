@@ -1,5 +1,19 @@
 # Status
 
+Current reliability action-plan audit (2026-09-06):
+[`self-evolution-action-plan-2026-09-06.md`](self-evolution-action-plan-2026-09-06.md)
+records a proposed, dependency-ordered implementation and acceptance plan against
+`aa2f57a`. Live V118 uses that revision and has cycle 1 / round 0 with no candidate
+or Registry transition; its hypothesis and exploration paths both failed. Local
+probes confirmed missing relevance intent in Signal retrieval, inconsistent E1
+input/output identity boundaries, immutable validation-file conflicts on provisional
+re-evaluation, shallow frozen Registry mutability, and cross-instance Raw Info
+visibility/idempotency gaps. The plan distinguishes execution correctness, actual
+capability promotion/use, and independently demonstrated system improvement.
+No runtime or active architecture was changed and no external request was sent.
+All 578 current repository tests pass; proposed contract and evaluation-policy
+changes remain unimplemented and subject to their documented decision boundaries.
+
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON
 write path, preventing scoped correction projection. Pending recovery changes now
