@@ -3103,84 +3103,19 @@ class ConcreteRoleAdapterTests(TestCase):
             corrected_request["description"],
         )
 
-    def test_v19_plan_proposer_corrects_placeholder_example_echo(self) -> None:
-        fixture = json.loads(
-            (
-                PROJECT_ROOT
-                / "tests/fixtures/evolution_runtime/"
-                "v19_proposer_placeholder_echo.json"
-            ).read_text(encoding="utf-8")
-        )
-        caller = ScriptedRoleCaller(
-            [fixture["invalid_output"], fixture["corrected_output"]]
-        )
-
-        plan = LLMInformationPlanProposer(caller).propose(
-            round_id=1,
-            candidate_index=1,
-            candidate_count=3,
-            proposal_attempt=1,
-            forbidden_plan_ids=(),
-            parents=(default_information_plan(),),
-            meta_info=(),
-            prior="fixed H_P",
-        )
-
-        self.assertEqual(
-            plan.initial_research_skill,
-            fixture["corrected_output"]["H_init"],
-        )
-        self.assertEqual(
-            caller.stages,
-            ["information_plan_propose", "information_plan_propose_correction"],
-        )
-        initial = caller.calls[0]
-        correction = caller.calls[1]
-        self.assertIsNone(initial["payload"]["validation_feedback"])
-        feedback = correction["payload"]["validation_feedback"]
-        validation_error = feedback["validation_error"]
-        self.assertIn("H_init is a placeholder", validation_error)
-        self.assertIn("H_reflect is a placeholder", validation_error)
-        self.assertIn("H_analyse is a placeholder", validation_error)
-        self.assertEqual(feedback["invalid_output"], fixture["invalid_output"])
-        self.assertEqual(
-            initial["payload"]["proposal_context"],
-            correction["payload"]["proposal_context"],
-        )
-        self.assertEqual(initial["system_prompt"], correction["system_prompt"])
-        stable_prefix = json.dumps(
-            {"proposal_context": initial["payload"]["proposal_context"]},
-            sort_keys=True,
-            separators=(",", ":"),
-        )[:-1] + ',"validation_feedback":'
-        for call in (initial, correction):
-            rendered = json.dumps(
-                call["payload"], sort_keys=True, separators=(",", ":")
-            )
-            self.assertTrue(rendered.startswith(stable_prefix))
-        self.assertIn(
-            "returning the same rejected field is not a correction",
-            correction["system_prompt"],
-        )
-        self.assertNotIn(
-            "complete initialization instructions",
-            caller.calls[0]["system_prompt"],
-        )
-        example_skills = (
-            evolution_runtime_module._LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS
-        )
-        for example in example_skills.values():
-            self.assertNotIn(example, initial["system_prompt"])
-        example_echo = InformationPlan(
-            plan_id="example_echo",
+    def test_plan_skill_validation_rejects_generic_placeholder(self) -> None:
+        plan = default_information_plan()
+        placeholder = InformationPlan(
+            plan_id="placeholder_plan",
             parent_ids=(),
-            basic_info_policy=default_information_plan().basic_info_policy,
-            initial_research_skill=example_skills["H_init"],
-            reflection_skill=example_skills["H_reflect"],
-            analysis_prompt=example_skills["H_analyse"],
+            basic_info_policy=plan.basic_info_policy,
+            initial_research_skill="Complete initialization instructions.",
+            reflection_skill=plan.reflection_skill,
+            analysis_prompt=plan.analysis_prompt,
         )
-        with self.assertRaisesRegex(ValidationError, "output-contract example echo"):
-            evolution_runtime_module._validate_proposed_plan_skills(example_echo)
+
+        with self.assertRaisesRegex(ValidationError, "generic placeholder"):
+            evolution_runtime_module._validate_proposed_plan_skills(placeholder)
 
     def test_default_information_plan_has_compact_market_backbone(self) -> None:
         plan = default_information_plan()
@@ -13279,7 +13214,7 @@ class RunControlTests(TestCase):
             '{"ok":true}{"second":false}',
         ):
             with self.subTest(raw=raw), self.assertRaises(json.JSONDecodeError):
-                evolution_runtime_module._parse_json_object(raw)
+                evolution_runtime_module._parse_json_object_envelope(raw)
 
     def test_v3_contract_rejects_missing_behavioral_defaults(self) -> None:
         contract = make_contract()

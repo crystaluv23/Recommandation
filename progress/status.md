@@ -1,5 +1,15 @@
 # Status
 
+Current code audit (2026-09-07): removed five unreachable private helpers, six
+unused imports, one test-only JSON wrapper, and the superseded per-document LLM
+Signal projection path. Information Plan validation no longer carries an exact
+blacklist for one historical provider response; it retains generalized placeholder,
+role-substance, schema, scope, and fixed-semantics validation. The obsolete exact-
+response fixture and test were removed, while a behavior-named generic-placeholder
+regression remains. This is a net deletion of more than 270 lines without changing
+public APIs, persistence records, external-call behavior, or point-in-time rules.
+All 595 tests, Python compilation, whitespace checks, and repository lint pass.
+
 Current reliability implementation (2026-09-06): the T1 execution-isolation
 foundation and the first T2 retrieval/input-representation slice from
 [`self-evolution-action-plan-2026-09-06.md`](self-evolution-action-plan-2026-09-06.md)

@@ -19,7 +19,6 @@ from stock_opportunity_agent.models import (
     DataQuality,
     EvidenceItem,
     EvidenceKind,
-    ResearchPacket,
     ValidationError,
 )
 from stock_opportunity_agent.research.ralph_loop import (

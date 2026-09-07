@@ -732,8 +732,10 @@ candidate is rejected as a bounded event without committing a partial round.
 
 The proposer output contract names the exact JSON keys, value types, and role
 substance without embedding copyable executable `B` or `H_*` candidate values.
-Legacy example echoes, phrases such as `complete ... instructions`, and generic
-template wording remain invalid. The proposer also validates role substance:
+Validation is behavior-based rather than tied to captured historical responses:
+phrases such as `complete ... instructions` and generic template wording remain
+invalid, while no exact-output blacklist is maintained. The proposer also validates
+role substance:
 `H_init` covers hypotheses and unresolved needs/questions; `H_reflect` covers
 evidence-based updating and the next-needs/continue/finalize decision; and
 `H_analyse` covers evidence organization/weighting and counter-evidence or

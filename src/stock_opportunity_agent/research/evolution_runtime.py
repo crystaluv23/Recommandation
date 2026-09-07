@@ -74,14 +74,12 @@ from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionCase,
     EvolutionControlFlow,
     EvolutionWorkspace,
-    EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
     FitnessEligibility,
     GroundTruth,
     HashingPlanEmbedder,
     InformationPlan,
     PlanMetrics,
-    PlanArchive,
     PlanEvaluationConfig,
     PlanEvolutionEngine,
     PlanMetaMemory,
@@ -4322,23 +4320,6 @@ def _output_contract(name: str, example: Mapping[str, Any]) -> str:
     )
 
 
-def _strict_string_list(
-    value: Mapping[str, Any],
-    field_name: str,
-    *,
-    allow_empty: bool = False,
-) -> tuple[str, ...] | None:
-    """Return one JSON string array, or None for bounded role correction."""
-
-    raw = value.get(field_name)
-    if not isinstance(raw, list) or any(not isinstance(item, str) for item in raw):
-        return None
-    parsed = tuple(raw)
-    if (not parsed and not allow_empty) or len(set(parsed)) != len(parsed):
-        return None
-    return parsed
-
-
 _RESEARCH_STATE_ARRAY_LIMITS = {
     "hypotheses": 3,
     "current_beliefs": 8,
@@ -4949,23 +4930,6 @@ _SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
     'least one literal evidence item.'
 )
 
-_LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS = {
-    "H_init": (
-        "Form one evidence-backed hypothesis from Basic Info and list the smallest "
-        "unresolved information needs or questions."
-    ),
-    "H_reflect": (
-        "Update support, contradictions, and unresolved questions from the complete "
-        "Signal batch; continue only for the smallest useful next need, otherwise "
-        "finalize."
-    ),
-    "H_analyse": (
-        "Organize and weight source-backed support and counter-evidence, preserving "
-        "uncertainty for the fixed Predictor."
-    ),
-}
-
-
 _INFORMATION_PLAN_OUTPUT = (
     " Output contract for InformationPlanContent: return exactly one JSON object "
     "with exactly four top-level keys: B, H_init, H_reflect, and H_analyse. "
@@ -5145,25 +5109,18 @@ _RESEARCH_CONTROLLER_ONTOLOGY_GUARD = re.compile(
 
 
 def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
-    """Reject output-template echoes and incomplete evolvable role instructions."""
+    """Reject generic placeholders and incomplete evolvable role instructions."""
 
     values = {
         "H_init": plan.initial_research_skill,
         "H_reflect": plan.reflection_skill,
         "H_analyse": plan.analysis_prompt,
     }
-    example_values = {
-        key: " ".join(value.casefold().split())
-        for key, value in _LEGACY_INFORMATION_PLAN_EXAMPLE_SKILLS.items()
-    }
     issues: list[str] = []
     for field, text_value in values.items():
         compact = " ".join(text_value.split())
-        if (
-            compact.casefold() == example_values[field]
-            or _GENERIC_PLAN_INSTRUCTION.fullmatch(compact)
-        ):
-            issues.append(f"{field} is a placeholder or output-contract example echo")
+        if _GENERIC_PLAN_INSTRUCTION.fullmatch(compact):
+            issues.append(f"{field} is a generic placeholder")
             continue
         missing = [
             description
@@ -9632,17 +9589,6 @@ def _explicit_signal_need_match_details(
     return tuple(matched)
 
 
-def _explicit_signal_need_matches(
-    information_needs: tuple[str, ...], specs: Iterable[SignalSpec]
-) -> tuple[str, ...]:
-    """Find version-owned exact need refs without choosing a Signal locally."""
-
-    return tuple(
-        str(item["signal_ref"])
-        for item in _explicit_signal_need_match_details(information_needs, specs)
-    )
-
-
 def _signal_routing_research_context(
     state: ResearchState | None,
 ) -> dict[str, list[str]]:
@@ -12753,97 +12699,6 @@ def _raise_mining_shape(message: str) -> Any:
     raise ValidationError(message)
 
 
-def _legacy_project_llm_signal_documents(
-    spec: SignalSpec,
-    documents: tuple[RawInfoDocument, ...],
-    skill: str,
-) -> list[dict[str, Any]]:
-    """Project complete Raw Info into bounded, exact model-facing source spans."""
-
-    query_terms = tuple(
-        sorted(
-            {
-                token.casefold()
-                for token in re.findall(
-                    r"[A-Za-z0-9]+", f"{spec.description}\n{skill}"
-                )
-                if len(token) >= 3
-                and token.casefold() not in _LLM_SIGNAL_QUERY_STOP_WORDS
-            }
-        )
-    )
-    candidates_by_document: dict[
-        str,
-        list[tuple[tuple[Any, ...], RawInfoDocument, int, int, str]],
-    ] = {}
-    step = LLM_SIGNAL_CONTEXT_CHUNK_CHARS - LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP
-    for document in documents:
-        candidates: list[
-            tuple[tuple[Any, ...], RawInfoDocument, int, int, str]
-        ] = []
-        start = 0
-        while start < len(document.content):
-            end = min(start + LLM_SIGNAL_CONTEXT_CHUNK_CHARS, len(document.content))
-            exact_text = document.content[start:end]
-            lowered = exact_text.casefold()
-            matched_terms = sum(term in lowered for term in query_terms)
-            capped_hits = sum(min(lowered.count(term), 3) for term in query_terms)
-            rank = (
-                -matched_terms,
-                -capped_hits,
-                -document.available_at.timestamp(),
-                document.document_id,
-                start,
-            )
-            candidates.append((rank, document, start, end, exact_text))
-            if end == len(document.content):
-                break
-            start += step
-        candidates_by_document[document.document_id] = sorted(
-            candidates, key=lambda item: item[0]
-        )
-
-    primary = sorted(
-        (items[0] for items in candidates_by_document.values() if items),
-        key=lambda item: item[0],
-    )
-    remaining = sorted(
-        (
-            candidate
-            for items in candidates_by_document.values()
-            for candidate in items[1:]
-        ),
-        key=lambda item: item[0],
-    )
-    selected: dict[str, list[dict[str, Any]]] = {}
-    used = 0
-    for _rank, document, start, end, exact_text in (*primary, *remaining):
-        if used + len(exact_text) > MAX_LLM_SIGNAL_CONTEXT_CHARS:
-            continue
-        selected.setdefault(document.document_id, []).append(
-            {"start": start, "end": end, "exact_text": exact_text}
-        )
-        used += len(exact_text)
-
-    payload: list[dict[str, Any]] = []
-    for document in documents:
-        spans = selected.get(document.document_id)
-        if not spans:
-            continue
-        payload.append(
-            {
-                "document_id": document.document_id,
-                "content_hash": document.content_hash,
-                "source_type": document.source_type,
-                "published_at": document.published_at.isoformat(),
-                "available_at": document.available_at.isoformat(),
-                "source_characters": len(document.content),
-                "context_spans": sorted(spans, key=lambda item: int(item["start"])),
-            }
-        )
-    return payload
-
-
 @dataclass(frozen=True)
 class _SignalProjectionLineage:
     document: RawInfoDocument
@@ -12996,19 +12851,6 @@ def _shared_llm_signal_projection(
         used += len(text_value)
         used_documents.add(document.document_id)
     return payload, lineage
-
-
-def _project_llm_signal_documents(
-    spec: SignalSpec,
-    documents: tuple[RawInfoDocument, ...],
-    skill: str,
-) -> list[dict[str, Any]]:
-    """Compatibility wrapper around the v6 normalized shared projection."""
-
-    payload, _lineage = _shared_llm_signal_projection(
-        (LLMSignalBatchInput(spec, documents, skill),)
-    )
-    return payload
 
 
 def _bounded_projection_interior_candidate(
@@ -15429,12 +15271,6 @@ def _parse_json_object_envelope(
     if not isinstance(value, dict):
         raise ValidationError("structured model response must be a JSON object")
     return value, normalization
-
-
-def _parse_json_object(text: str) -> dict[str, Any]:
-    """Parse the accepted structured-response envelope into one object."""
-
-    return _parse_json_object_envelope(text)[0]
 
 
 class _StreamingJSONReader:

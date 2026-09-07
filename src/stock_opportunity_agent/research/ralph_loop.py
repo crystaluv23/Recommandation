@@ -13,7 +13,12 @@ from typing import Any, Iterable, Mapping, Protocol
 from stock_opportunity_agent.cases.learning import ColdStartLearningResult, HistoricalCase
 from stock_opportunity_agent.cases.outcomes import CaseOutcomeLabel
 from stock_opportunity_agent.llm.openai import ChatMessage, OpenAIChatClient
-from stock_opportunity_agent.models import EvidenceItem, EvidenceKind, FeatureRecord, ResearchPacket, ValidationError
+from stock_opportunity_agent.models import (
+    EvidenceItem,
+    EvidenceKind,
+    ResearchPacket,
+    ValidationError,
+)
 from stock_opportunity_agent.research.cold_start import BlindCaseAnalysis
 from stock_opportunity_agent.research.playbooks import SurgePlaybookSynthesis
 from stock_opportunity_agent.themes import ThemeMapBuildResult

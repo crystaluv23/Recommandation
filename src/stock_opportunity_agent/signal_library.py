@@ -2726,23 +2726,6 @@ def _audit_deterministic_fixture(
         )
 
 
-def _metadata_signal(key: str) -> DeterministicSignalFunction:
-    def execute(
-        spec: SignalSpec,
-        documents: tuple[RawInfoDocument, ...],
-        as_of: datetime,
-    ) -> SignalResult:
-        found = _latest_metadata_value(documents, key)
-        if found is None:
-            return _unavailable_result(spec, f"Raw Info did not contain {key}.")
-        value, document = found
-        if not isinstance(value, (int, float)) or isinstance(value, bool):
-            raise ValidationError(f"deterministic metadata {key} must be numeric")
-        return _numeric_result(spec, float(value), document, as_of, label=key)
-
-    return execute
-
-
 @dataclass(frozen=True)
 class _SecFact:
     tag: str
