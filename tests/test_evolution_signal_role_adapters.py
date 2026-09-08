@@ -1,971 +1,201 @@
 """Signal Mining, Update, and exploration role-adapter tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.research import (
+    evolution_signal_roles as signal_roles_module,
+)
 
 
 class SignalRoleAdapterTests(TestCase):
-    def test_signal_h1_rejects_empty_portfolio_with_unmet_signal_demand(
+    def test_signal_h1_v2_accepts_structured_no_hypothesis_with_open_demand(
         self,
     ) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {"hypotheses": []},
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "analyst_estimate_revision_gap",
-                            "statement": (
-                                "Analyst estimate revisions distinguish the fixed "
-                                "Discovery groups."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases show stronger analyst estimate "
-                                "revisions than control cases."
-                            ),
-                            "source_types": ["news"],
-                            "query": "analyst estimate revision",
-                            "falsifiers": [
-                                "Positive and control groups show overlapping or "
-                                "reversed estimate revisions."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                },
-            ]
-        )
+        response = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "insufficient_retrieval_basis",
+                "rationale": [
+                    "Available source types do not expose the requested measurement."
+                ],
+                "need_refs": ["need-001"],
+            },
+        }
+        caller = ScriptedRoleCaller([response])
 
         result = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "limits": {"hypothesis_limit": 3},
+                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {
+                    "hypothesis_limit": 1,
+                    "evidence_lookback_days": 365,
+                },
                 "available_raw_source_types": ["news"],
                 "capability_backlog": {
                     "signal_need_items": [
-                        {"need": "How have analyst estimate revisions changed?"}
+                        {"need_ref": "need-001", "need": "Estimate changes"}
                     ]
                 },
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "analyst_estimate_revision_gap")
-        self.assertIn(
-            "must return at least one grounded hypothesis",
-            validation_error(caller.calls[1]),
-        )
-
-    def test_signal_h1_corrects_hypothesis_unrelated_to_bootstrap_need(self) -> None:
-        ungrounded = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "large_order_confirmation",
-                    "statement": "Material order confirmation precedes repricing.",
-                    "applicability": "Project-driven companies.",
-                    "expected_positive_pattern": (
-                        "Positive cases confirm more orders than control cases."
-                    ),
-                    "source_types": ["news"],
-                    "query": "material order customer award",
-                    "falsifiers": ["Controls confirm orders equally often."],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        grounded = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "production_cost_guidance_gap",
-                    "statement": (
-                        "Production volume and cost-per-ounce guidance gaps may "
-                        "precede repricing."
-                    ),
-                    "applicability": "all_ready_issuers",
-                    "expected_positive_pattern": (
-                        "Positive cases beat production and unit-cost guidance more "
-                        "often than control cases."
-                    ),
-                    "source_types": ["news"],
-                    "query": "production volume cost ounce guidance",
-                    "falsifiers": [
-                        "Positive cases and control cases beat the same guidance "
-                        "equally often."
-                    ],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([ungrounded, grounded])
-        model = LLMSignalMiningModel(caller)
-
-        result = model.propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-                "capability_backlog": {
-                    "signal_need_items": [
-                        {
-                            "need": (
-                                "What are recent production volumes and cost per "
-                                "ounce, and how do they compare to guidance?"
-                            )
-                        }
-                    ]
-                },
-            }
-        )
-
-        self.assertEqual(
-            caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
-        )
-        self.assertIn("at least two", validation_error(caller.calls[1]))
-        self.assertEqual(result.value[0].hypothesis_id, "production_cost_guidance_gap")
-
-    def test_signal_h1_corrects_renamed_existing_stable_signal(self) -> None:
-        duplicate = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "revenue_growth_trajectory_shift",
-                    "statement": (
-                        "Accelerating year-over-year revenue growth precedes repricing."
-                    ),
-                    "applicability": "Companies with quarterly revenue history.",
-                    "expected_positive_pattern": (
-                        "Positive cases show stronger revenue acceleration than "
-                        "control cases."
-                    ),
-                    "source_types": ["10-q"],
-                    "query": "revenue growth acceleration",
-                    "falsifiers": ["Controls accelerate equally often."],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = {"hypotheses": []}
-        caller = ScriptedRoleCaller([duplicate, corrected])
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["10-q"],
-                "registered_deterministic_functions": [
-                    "financial.revenue_acceleration"
-                ],
-                "stable_signal_cards": [
-                    {
-                        "signal_id": "revenue_acceleration",
-                        "signal_ref": "revenue_acceleration:v1",
-                    }
-                ],
             }
         )
 
         self.assertEqual(result.value, ())
-        self.assertIn("restate", validation_error(caller.calls[1]))
-        self.assertEqual(
-            caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
-        )
-
-    def test_signal_h1_allows_gap_parenthesis_and_downstream_stable_metric(
-        self,
-    ) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "production_volume_cost_gap",
-                            "statement": (
-                                "A production gap (volume versus guidance) is "
-                                "associated with revenue acceleration."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases show larger production beats and "
-                                "lower unit costs than control cases."
-                            ),
-                            "source_types": ["10-q"],
-                            "query": "production volume cost ounce guidance",
-                            "falsifiers": [
-                                "Positive cases and control cases show equal or "
-                                "reversed production and cost gaps."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                }
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["10-q"],
-                "registered_deterministic_functions": [
-                    "financial.revenue_acceleration"
-                ],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "production_volume_cost_gap")
+        self.assertEqual(result.metadata["conclusion"], "no_testable_hypothesis")
+        self.assertEqual(result.metadata["reason_code"], "insufficient_retrieval_basis")
         self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
 
-    def test_signal_h1_preserves_yoy_in_stable_signal_identity(self) -> None:
+    def test_signal_h1_v2_uses_runtime_identity_and_structured_measurement(
+        self,
+    ) -> None:
         caller = ScriptedRoleCaller(
             [
                 {
+                    "conclusion": "hypotheses",
                     "hypotheses": [
                         {
-                            "hypothesis_id": (
-                                "revenue_growth_composition_core_vs_nonoperating"
-                            ),
-                            "statement": (
-                                "Core operating contribution distinguishes the "
-                                "composition of recent revenue growth."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases show more core-driven revenue growth "
-                                "than control cases."
-                            ),
-                            "source_types": ["10-q"],
-                            "query": (
-                                "core vs non-operating revenue growth segment drivers"
-                            ),
+                            "proposal_ref": "h1-c0007-s01",
+                            "measurement": {
+                                "observable": "Customer commitments converted to revenue",
+                                "value_kind": "numeric",
+                                "normalization": "ratio to opening backlog",
+                            },
+                            "applicability": {
+                                "rule": "all_ready_issuers",
+                                "values": [],
+                            },
+                            "expected_direction": "higher_in_positive",
+                            "retrieval_intent": {
+                                "source_types": ["10-q"],
+                                "query": "contract awards backlog conversion",
+                            },
                             "falsifiers": [
-                                "Positive cases and control cases have equal or "
-                                "reversed core operating contribution."
+                                {
+                                    "condition": "The measurement is extracted.",
+                                    "expected_observation": (
+                                        "The fixed groups overlap or reverse direction."
+                                    ),
+                                }
                             ],
-                            "lookback_days": 365,
+                            "need_refs": [],
                         }
-                    ]
+                    ],
+                    "no_hypothesis": None,
                 }
             ]
         )
 
         result = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["10-q"],
-                "registered_deterministic_functions": [
-                    "financial.revenue_growth_yoy"
-                ],
-            }
-        )
-
-        self.assertEqual(
-            result.value[0].hypothesis_id,
-            "revenue_growth_composition_core_vs_nonoperating",
-        )
-        self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
-
-    def test_signal_h1_corrects_alternate_outcome_with_stable_feedback(self) -> None:
-        invalid = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "production_guidance_gap",
-                    "statement": (
-                        "Production above guidance predicts revenue growth in the "
-                        "next quarter."
-                    ),
-                    "applicability": "Commodity producers with guidance.",
-                    "expected_positive_pattern": (
-                        "Production beats lead to faster growth in the next quarter."
-                    ),
-                    "source_types": ["10-q"],
-                    "query": "production volume cost ounce guidance",
-                    "falsifiers": [
-                        "The next quarter has the same growth after a miss."
-                    ],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = {
-            "hypotheses": [
-                {
-                    **invalid["hypotheses"][0],
-                    "statement": (
-                        "Prediction-date production and guidance gaps distinguish "
-                        "the fixed Discovery groups."
-                    ),
-                    "applicability": "all_ready_issuers",
-                    "expected_positive_pattern": (
-                        "Positive cases show larger production beats and lower unit "
-                        "costs than control cases."
-                    ),
-                    "falsifiers": [
-                        "Positive cases and control cases show equal or reversed "
-                        "production beats."
-                    ],
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([invalid, corrected])
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
+                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "hypothesis_slots": ["h1-c0007-s01"],
+                "limits": {
+                    "hypothesis_limit": 1,
+                    "evidence_lookback_days": 540,
+                },
                 "available_raw_source_types": ["10-q"],
             }
         )
 
-        self.assertEqual(result.value[0].hypothesis_id, "production_guidance_gap")
-        self.assertEqual(
-            caller.calls[0]["system_prompt"], caller.calls[1]["system_prompt"]
-        )
-        self.assertIsNone(caller.calls[0]["payload"]["validation_feedback"])
-        error = validation_error(caller.calls[1])
-        self.assertIn("alternate horizon", error)
-        self.assertIn("both positive and control groups", error)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        must_change_paths = {
-            path
-            for obligation in feedback["obligations"]
-            for path in obligation["must_change_paths"]
-        }
-        self.assertIn("hypotheses[0].statement", must_change_paths)
-        self.assertIn(
-            "hypotheses[0].expected_positive_pattern", must_change_paths
-        )
-        self.assertIn("hypotheses[0].falsifiers[0]", must_change_paths)
-        self.assertNotIn(
-            "delete every listed quantity", caller.calls[1]["system_prompt"]
-        )
-        self.assertIn(
-            "preserve every hypothesis whose hypothesis_id is not named",
-            caller.calls[1]["system_prompt"],
-        )
+        hypothesis = result.value[0]
+        self.assertEqual(hypothesis.hypothesis_id, "h1-c0007-s01")
+        self.assertEqual(hypothesis.lookback_days, 540)
+        self.assertEqual(hypothesis.expected_direction, "higher_in_positive")
+        self.assertEqual(hypothesis.measurement["value_kind"], "numeric")
+        self.assertNotIn("h1-c0007-s01", hypothesis.query)
 
-    def test_signal_h1_combines_identity_and_semantic_feedback_without_echo(
+    def test_signal_h1_v2_correction_preserves_valid_sibling_by_runtime_id(
         self,
     ) -> None:
-        invalid = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "estimate_gap",
-                    "statement": (
-                        "Match Group estimate beats cause a price reaction within "
-                        "5 days."
-                    ),
-                    "applicability": "Companies with analyst coverage.",
-                    "expected_positive_pattern": (
-                        "Positive group case [CASE_POSITIVE_A] beats estimates."
-                    ),
-                    "source_types": ["news"],
-                    "query": "analyst estimate gap",
-                    "falsifiers": ["No short-term price increase."],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = {
-            "hypotheses": [
-                {
-                    **invalid["hypotheses"][0],
-                    "statement": (
-                        "Prediction-date analyst estimate gaps distinguish the "
-                        "fixed Discovery groups."
-                    ),
-                    "applicability": "all_ready_issuers",
-                    "expected_positive_pattern": (
-                        "The positive group shows larger estimate beats than the "
-                        "control cases."
-                    ),
-                    "falsifiers": [
-                        "The positive group and control group show equal or reversed "
-                        "estimate beats."
-                    ],
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([invalid, corrected])
-        model = LLMSignalMiningModel(caller)
-        model.set_identity_guard_aliases(("Match Group",))
-
-        result = model.propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "estimate_gap")
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(feedback["invalid_output"], {})
-        error = feedback["validation_error"]
-        self.assertIn("identity alias leaked", error)
-        self.assertIn("alternate horizon", error)
-        self.assertIn("must not invent opaque case refs", error)
-        self.assertIn("both positive and control groups", error)
-        self.assertNotIn("Match Group", json.dumps(feedback))
-
-    def test_signal_h1_rejects_data_readiness_and_raw_absolute_scale(self) -> None:
-        invalid = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "consensus_revenue_surprise",
-                    "statement": (
-                        "Quarterly revenue and earnings figures are available in "
-                        "point-in-time filings."
-                    ),
-                    "applicability": "Companies with analyst consensus estimates.",
-                    "expected_positive_pattern": (
-                        "Positive cases (companies with higher absolute revenue) have "
-                        "higher absolute revenue and earnings figures than control "
-                        "cases."
-                    ),
-                    "source_types": ["news"],
-                    "query": (
-                        "Find companies where revenue surprise is more than 5% over "
-                        "the last 30 days."
-                    ),
-                    "falsifiers": [
-                        "Control cases have equal case-local consensus surprises."
-                    ],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = {
-            "hypotheses": [
-                {
-                    **invalid["hypotheses"][0],
-                    "statement": (
-                        "Case-local quarterly revenue surprise relative to consensus "
-                        "distinguishes the fixed Discovery groups."
-                    ),
-                    "applicability": "all_ready_issuers",
-                    "expected_positive_pattern": (
-                        "The positive group has more positive revenue surprise versus "
-                        "its own consensus baseline than the control cases."
-                    ),
-                    "query": "revenue earnings consensus surprise",
-                    "falsifiers": [
-                        "The positive and control groups show equal or reversed "
-                        "case-local consensus surprise."
-                    ],
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([invalid, corrected])
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "consensus_revenue_surprise")
-        error = validation_error(caller.calls[1])
-        self.assertIn("measurable group feature", error)
-        self.assertIn("normalize raw absolute scale", error)
-        self.assertIn("one canonical rule", error)
-        self.assertIn("positive/control group non-separation", error)
-        self.assertIn("must not redefine fixed Discovery groups", error)
-        self.assertIn("concise 2-8 term retrieval topic", error)
-        prompt = caller.calls[0]["system_prompt"]
-        self.assertIn("not merely say data are available", prompt)
-        self.assertIn("Never compare raw absolute", prompt)
-        self.assertIn("applicability must be exactly one non-conjunctive", prompt)
-        self.assertIn("Never redefine either fixed group", prompt)
-        self.assertIn("concise 2-8 term retrieval topic", prompt)
-
-    def test_signal_h1_requires_one_rule_from_actual_h2_field_inventory(
-        self,
-    ) -> None:
-        base = {
-            "hypothesis_id": "estimate_revision_gap",
-            "statement": "Estimate revisions distinguish the fixed Discovery groups.",
-            "expected_positive_pattern": (
-                "Positive cases show stronger revisions than control cases."
-            ),
-            "source_types": ["news"],
-            "query": "analyst estimate revision",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed revisions."
-            ],
-            "lookback_days": 365,
-        }
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            **base,
-                            "applicability": (
-                                "Issuers on major exchanges with market data coverage."
-                            ),
-                        }
-                    ]
-                },
-                {
-                    "hypotheses": [
-                        {**base, "applicability": "exchange_values:NYSE|NASDAQ"}
-                    ]
-                },
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-                "h2_applicability_contract": {
-                    "observed_values": {
-                        "exchange_values": ["NASDAQ", "NYSE"],
-                        "industry_values": [],
-                    }
-                },
-            }
-        )
-
-        self.assertEqual(result.value[0].applicability, "exchange_values:NYSE|NASDAQ")
-        error = validation_error(caller.calls[1])
-        self.assertIn("one canonical rule", error)
-        self.assertIn("actual H2 profile contract", error)
-        self.assertNotIn("market data coverage", caller.calls[1]["system_prompt"])
-
-    def test_signal_h1_keeps_expected_pattern_on_retrieved_construct(self) -> None:
-        invalid = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "analyst_estimate_revision_outcome",
-                    "statement": (
-                        "Analyst estimate revisions distinguish the fixed "
-                        "Discovery groups."
-                    ),
-                    "applicability": "all_ready_issuers",
-                    "expected_positive_pattern": (
-                        "Positive cases show stronger revenue growth than control "
-                        "cases."
-                    ),
-                    "source_types": ["news"],
-                    "query": "analyst revenue earnings estimates revised",
-                    "falsifiers": [
-                        "Positive and control groups show overlapping or reversed "
-                        "estimate revisions."
-                    ],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = json.loads(json.dumps(invalid))
-        corrected["hypotheses"][0]["expected_positive_pattern"] = (
-            "Positive cases show more favorable analyst estimate revisions than "
-            "control cases."
-        )
-        caller = ScriptedRoleCaller([invalid, corrected])
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(
-            result.value[0].hypothesis_id,
-            invalid["hypotheses"][0]["hypothesis_id"],
-        )
-        error = validation_error(caller.calls[1])
-        self.assertIn("candidate construct", error)
-        self.assertIn("same candidate construct", caller.calls[0]["system_prompt"])
-        self.assertEqual(
-            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
-                "must_change_paths"
-            ],
-            ["hypotheses[0].expected_positive_pattern"],
-        )
-
-    def test_signal_h1_projects_valid_repair_and_discards_unrelated_drift(self) -> None:
-        invalid_hypothesis = {
-            "hypothesis_id": "analyst_estimate_revision_outcome",
-            "statement": (
-                "Analyst estimate revisions distinguish the fixed Discovery groups."
-            ),
-            "applicability": "all_ready_issuers",
-            "expected_positive_pattern": (
-                "Positive cases (e.g., case 23) show stronger revenue growth than "
-                "control cases."
-            ),
-            "source_types": ["news"],
-            "query": "analyst revenue earnings estimates revised",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed estimate "
-                "revisions."
-            ],
-            "lookback_days": 365,
-        }
-        valid_hypothesis = {
-            "hypothesis_id": "production_cost_gap",
-            "statement": (
-                "Production costs distinguish the fixed Discovery groups."
-            ),
-            "applicability": "all_ready_issuers",
-            "expected_positive_pattern": (
-                "Positive cases show lower production costs than control cases."
-            ),
-            "source_types": ["10-q"],
-            "query": "production cost guidance",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed "
-                "production costs."
-            ],
-            "lookback_days": 365,
-        }
-        invalid = {"hypotheses": [invalid_hypothesis, valid_hypothesis]}
-        drifted = json.loads(json.dumps(invalid))
-        drifted["hypotheses"][0]["expected_positive_pattern"] = (
-            "Positive cases show more favorable analyst estimate revisions than "
-            "control cases."
-        )
-        drifted["hypotheses"][1]["statement"] = (
-            "Production cost guidance distinguishes the fixed Discovery groups."
-        )
-        caller = ScriptedRoleCaller([invalid, drifted])
-        events: list[dict[str, object]] = []
-        caller.on_progress = events.append
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news", "10-q"],
-            }
-        )
-
-        self.assertEqual(
-            caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
-        )
-        self.assertEqual(
-            result.value[0].expected_positive_pattern,
-            drifted["hypotheses"][0]["expected_positive_pattern"],
-        )
-        self.assertEqual(result.value[1].statement, valid_hypothesis["statement"])
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("e.g.", feedback["validation_error"])
-        self.assertNotIn(
-            "e.g",
-            {
-                path
-                for obligation in feedback["obligations"]
-                for path in obligation["must_change_paths"]
+        invalid_item = {
+            "proposal_ref": "h1-c0008-s01",
+            "measurement": {
+                "observable": "New customer commitments",
+                "value_kind": "numeric",
+                "normalization": "ratio to opening backlog",
             },
+            "applicability": {"rule": "all_ready_issuers", "values": []},
+            "expected_direction": "higher_in_positive",
+            "retrieval_intent": {
+                "source_types": ["unavailable-source"],
+                "query": "new customer commitments",
+            },
+            "falsifiers": [
+                {
+                    "condition": "The measurement is extracted.",
+                    "expected_observation": "The fixed groups overlap.",
+                }
+            ],
+            "need_refs": [],
+        }
+        valid_item = {
+            "proposal_ref": "h1-c0008-s02",
+            "measurement": {
+                "observable": "Backlog converted to recognized revenue",
+                "value_kind": "numeric",
+                "normalization": "ratio to opening backlog",
+            },
+            "applicability": {"rule": "all_ready_issuers", "values": []},
+            "expected_direction": "higher_in_positive",
+            "retrieval_intent": {
+                "source_types": ["10-q"],
+                "query": "backlog revenue conversion",
+            },
+            "falsifiers": [
+                {
+                    "condition": "The measurement is extracted.",
+                    "expected_observation": "The fixed groups overlap.",
+                }
+            ],
+            "need_refs": [],
+        }
+        corrected_item = {
+            **invalid_item,
+            "retrieval_intent": {
+                "source_types": ["10-q"],
+                "query": "new customer commitments",
+            },
+        }
+        drifted_valid_item = {
+            **valid_item,
+            "expected_direction": "lower_in_positive",
+        }
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "conclusion": "hypotheses",
+                    "hypotheses": [invalid_item, valid_item],
+                    "no_hypothesis": None,
+                },
+                {
+                    "conclusion": "hypotheses",
+                    "hypotheses": [drifted_valid_item, corrected_item],
+                    "no_hypothesis": None,
+                },
+            ]
         )
-        projection = next(
-            item
-            for item in events
-            if item["event_type"] == "structured_correction_projection_applied"
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "hypothesis_slots": ["h1-c0008-s01", "h1-c0008-s02"],
+                "limits": {"hypothesis_limit": 2, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["10-q"],
+            }
+        )
+
+        by_ref = {item.hypothesis_id: item for item in result.value}
+        self.assertEqual(result.usage.llm_calls, 2)
+        self.assertEqual(
+            by_ref["h1-c0008-s01"].source_types,
+            ("10-q",),
         )
         self.assertEqual(
-            projection["copied_paths"],
-            ["hypotheses[0].expected_positive_pattern"],
+            by_ref["h1-c0008-s02"].expected_direction,
+            valid_item["expected_direction"],
         )
-        self.assertEqual(projection["discarded_paths"], ["hypotheses[1]"])
-
-    def test_signal_h1_projected_correction_still_runs_full_validation(self) -> None:
-        invalid_hypothesis = {
-            "hypothesis_id": "analyst_estimate_revision_outcome",
-            "statement": (
-                "Analyst estimate revisions distinguish the fixed Discovery groups."
-            ),
-            "applicability": "all_ready_issuers",
-            "expected_positive_pattern": (
-                "Positive cases show stronger revenue growth than control cases."
-            ),
-            "source_types": ["news"],
-            "query": "analyst revenue earnings estimates revised",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed estimate "
-                "revisions."
-            ],
-            "lookback_days": 365,
-        }
-        valid_hypothesis = {
-            "hypothesis_id": "production_cost_gap",
-            "statement": (
-                "Production costs distinguish the fixed Discovery groups."
-            ),
-            "applicability": "all_ready_issuers",
-            "expected_positive_pattern": (
-                "Positive cases show lower production costs than control cases."
-            ),
-            "source_types": ["10-q"],
-            "query": "production cost guidance",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed production "
-                "costs."
-            ],
-            "lookback_days": 365,
-        }
-        invalid = {"hypotheses": [invalid_hypothesis, valid_hypothesis]}
-        still_invalid = json.loads(json.dumps(invalid))
-        still_invalid["hypotheses"][0]["expected_positive_pattern"] = (
-            "Positive cases show more favorable analyst estimate revisions."
-        )
-        still_invalid["hypotheses"][1]["statement"] = (
-            "Production cost guidance distinguishes the fixed Discovery groups."
-        )
-        caller = ScriptedRoleCaller([invalid, still_invalid])
-        events: list[dict[str, object]] = []
-        caller.on_progress = events.append
-
-        with self.assertRaisesRegex(
-            CandidateExecutionRejected,
-            "must name both positive and control groups",
-        ):
-            LLMSignalMiningModel(caller).propose_hypotheses(
-                {
-                    "limits": {"hypothesis_limit": 3},
-                    "available_raw_source_types": ["news", "10-q"],
-                }
-            )
-
-        self.assertFalse(
-            any(
-                item["event_type"]
-                == "structured_correction_projection_applied"
-                for item in events
-            )
-        )
-
-    def test_signal_h1_accepts_bounded_discovery_group_aliases(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "strategic_partnership_gap",
-                            "statement": (
-                                "Strategic partnership disclosures distinguish the "
-                                "fixed Discovery groups."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive Discovery cases disclose more strategic "
-                                "partnerships than control Discovery cases."
-                            ),
-                            "source_types": ["news"],
-                            "query": "strategic partnership disclosure",
-                            "falsifiers": [
-                                "Positive and control Discovery cases show overlap or "
-                                "reversal in strategic partnership disclosures."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                }
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "strategic_partnership_gap")
-        self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
-
-    def test_signal_h1_rejects_membership_style_group_redefinition(self) -> None:
-        base = {
-            "hypothesis_id": "consensus_revenue_gap",
-            "statement": (
-                "Case-local quarterly revenue surprise distinguishes the fixed "
-                "Discovery groups."
-            ),
-            "applicability": "all_ready_issuers",
-            "source_types": ["news"],
-            "query": "quarterly revenue consensus gap",
-            "falsifiers": [
-                "The positive and control groups show overlapping or reversed "
-                "case-local consensus gaps."
-            ],
-            "lookback_days": 365,
-        }
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            **base,
-                            "expected_positive_pattern": (
-                                "Positive cases are issuers classified in the "
-                                "Discovery positive group as beating consensus; "
-                                "control cases are issuers classified in the "
-                                "Discovery control group as missing consensus."
-                            ),
-                        }
-                    ]
-                },
-                {
-                    "hypotheses": [
-                        {
-                            **base,
-                            "expected_positive_pattern": (
-                                "The fixed Discovery positive group should show a "
-                                "more positive case-local consensus gap than the "
-                                "fixed Discovery control group."
-                            ),
-                        }
-                    ]
-                },
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "consensus_revenue_gap")
-        error = validation_error(caller.calls[1])
-        self.assertIn("must not redefine fixed Discovery groups", error)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(feedback["obligation_count"], 1)
-        self.assertEqual(
-            feedback["obligations"][0]["must_change_paths"],
-            ["hypotheses[0].expected_positive_pattern"],
-        )
-        self.assertIn("membership clause", caller.calls[0]["system_prompt"])
-
-    def test_signal_h1_allows_parenthetical_same_group_alias(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "revenue_composition_gap",
-                            "statement": (
-                                "Revenue composition distinguishes the fixed "
-                                "Discovery groups."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases (the Discovery positive group) show "
-                                "more granular revenue composition than control cases "
-                                "(the Discovery control group)."
-                            ),
-                            "source_types": ["10-k"],
-                            "query": "revenue growth composition",
-                            "falsifiers": [
-                                "The positive and control groups show overlapping or "
-                                "reversed revenue composition."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                }
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["10-k"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "revenue_composition_gap")
-        self.assertEqual(len(caller.calls), 1)
-
-    def test_signal_h1_allows_fixed_discovery_group_alias(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "estimate_revision_gap",
-                            "statement": (
-                                "Estimate revisions distinguish the fixed Discovery "
-                                "groups."
-                            ),
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases (fixed Discovery group) show more "
-                                "upward revisions than control cases (fixed Discovery "
-                                "group)."
-                            ),
-                            "source_types": ["news"],
-                            "query": "analyst estimate revision",
-                            "falsifiers": [
-                                "The positive and control groups show overlapping or "
-                                "reversed estimate revisions."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                }
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(result.value[0].hypothesis_id, "estimate_revision_gap")
-        self.assertEqual(len(caller.calls), 1)
-
-    def test_signal_h1_rejects_unobserved_canonical_applicability_value(
-        self,
-    ) -> None:
-        base = {
-            "hypothesis_id": "production_cost_gap",
-            "statement": "Production cost gaps distinguish the fixed Discovery groups.",
-            "expected_positive_pattern": (
-                "Positive cases show better production cost gaps than control cases."
-            ),
-            "source_types": ["10-k"],
-            "query": "production cost guidance gap",
-            "falsifiers": [
-                "Positive and control groups show overlapping or reversed gaps."
-            ],
-            "lookback_days": 365,
-        }
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {**base, "applicability": "industry_values:Metals & Mining"}
-                    ]
-                },
-                {
-                    "hypotheses": [
-                        {
-                            **base,
-                            "applicability": (
-                                "business_description_topics:mining|mineral|extraction"
-                            ),
-                        }
-                    ]
-                },
-            ]
-        )
-
-        result = LLMSignalMiningModel(caller).propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["10-k"],
-                "h2_applicability_contract": {
-                    "observed_values": {"industry_values": []}
-                },
-            }
-        )
-
-        self.assertEqual(
-            result.value[0].applicability,
-            "business_description_topics:mining|mineral|extraction",
-        )
-        self.assertIn("unsupported: Metals & Mining", validation_error(caller.calls[1]))
+        self.assertEqual(feedback["obligations"][0]["item_id"], "h1-c0008-s01")
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
@@ -1408,140 +638,6 @@ class SignalRoleAdapterTests(TestCase):
             validation_error(caller.calls[1]),
         )
 
-    def test_signal_h1_preserves_real_structured_context_with_brand_collisions(
-        self,
-    ) -> None:
-        output = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "estimate_revision_dispersion",
-                    "statement": "Estimate revisions may precede repricing.",
-                    "applicability": "raw_info_source_type_values:news",
-                    "expected_positive_pattern": (
-                        "Positive cases show stronger upward revisions than controls."
-                    ),
-                    "source_types": ["news"],
-                    "query": "analyst estimate revision",
-                    "falsifiers": [
-                        "Positive cases and control cases revise upward equally often."
-                    ],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([output])
-        model = LLMSignalMiningModel(caller, creative_temperature=1.0)
-        model.set_identity_guard_aliases(
-            (
-                "OPEN",
-                "Match Group",
-                "News Corp",
-                "Alpha Metallurgical Resources",
-            )
-        )
-        payload = {
-            "track": "hypothesis",
-            "limits": {"hypothesis_limit": 3},
-            "available_raw_source_types": [
-                "alpha_vantage_earnings_raw_response",
-                "company_facts",
-                "market_data",
-                "news",
-                "price_history",
-            ],
-            "h2_applicability_contract": {
-                "observed_values": {"raw_info_source_type_values": ["news"]}
-            },
-            "capability_backlog": {
-                "status": "open",
-                "signal_need_items": [
-                    {
-                        "status": "open",
-                        "stop_reason": "no_signal_match",
-                        "need": (
-                            "Compare analyst estimate revisions against prior "
-                            "expectations."
-                        ),
-                    }
-                ],
-            },
-            "registered_deterministic_functions": ["news.negative_word_count"],
-            "stable_signal_cards": [
-                {
-                    "signal_id": "negative_word_count",
-                    "signal_ref": "negative_word_count:v1",
-                    "category": "news",
-                    "description": "Count negative terms in company news.",
-                }
-            ],
-        }
-
-        hypotheses = model.propose_hypotheses(payload)
-
-        self.assertEqual(
-            caller.calls[0]["payload"], {**payload, "validation_feedback": None}
-        )
-        self.assertNotIn("MASKED_COMPANY", json.dumps(caller.calls[0]["payload"]))
-        self.assertEqual(hypotheses.value[0].source_types, ("news",))
-
-    def test_signal_h1_rejects_identity_output_without_echoing_it(self) -> None:
-        leaking = {
-            "hypotheses": [
-                {
-                    "hypothesis_id": "named_issuer",
-                    "statement": "Match Group shows a reusable pattern.",
-                    "applicability": "Companies with estimate revisions.",
-                    "expected_positive_pattern": (
-                        "Positive cases show stronger upward revisions than control "
-                        "cases."
-                    ),
-                    "source_types": ["news"],
-                    "query": "estimate revision",
-                    "falsifiers": ["Controls revise equally often."],
-                    "lookback_days": 365,
-                }
-            ]
-        }
-        corrected = {
-            "hypotheses": [
-                {
-                    **leaking["hypotheses"][0],
-                    "hypothesis_id": "estimate_revision_gap",
-                    "statement": "Upward estimate revisions may precede repricing.",
-                    "applicability": "all_ready_issuers",
-                    "falsifiers": [
-                        "Positive cases and control cases revise upward equally often."
-                    ],
-                }
-            ]
-        }
-        caller = ScriptedRoleCaller([leaking, corrected])
-        model = LLMSignalMiningModel(caller)
-        model.set_identity_guard_aliases(("Match Group",))
-
-        result = model.propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "available_raw_source_types": ["news"],
-            }
-        )
-
-        self.assertEqual(
-            caller.stages,
-            ["signal_mining_hypotheses", "signal_mining_hypotheses_correction"],
-        )
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(feedback["invalid_output"], {})
-        self.assertIn(
-            "identity alias leaked into structured role output",
-            feedback["validation_error"],
-        )
-        self.assertNotIn("Match Group", json.dumps(caller.calls[1]["payload"]))
-        self.assertEqual(
-            result.value[0].statement,
-            "Upward estimate revisions may precede repricing.",
-        )
-
     def test_signal_h2_trusts_case_local_masking_without_global_alias_rescan(
         self,
     ) -> None:
@@ -1980,247 +1076,153 @@ class SignalRoleAdapterTests(TestCase):
         self.assertIn("sec_company_facts", model_catalog)
         self.assertNotIn("earnings_call", model_catalog)
 
-    def test_signal_update_role_returns_one_exact_semantic_decision(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "signal_ref": "revenue_growth_yoy:v1",
-                    "disposition": "defer",
-                    "problem_type": "routing_applicability_unclear",
-                    "rationale": ["The evidence does not isolate a Signal defect."],
-                    "candidate": None,
-                }
-            ]
-        )
-        model = LLMSignalUpdateModel(caller)
-
-        step = model.update(
-            {
-                "target": {"signal_ref": "revenue_growth_yoy:v1"},
-                "induction_cases": [],
-                "candidate_contract": {},
-            }
-        )
-
-        self.assertEqual(step.value.disposition, "defer")
-        system_prompt = str(caller.calls[0]["system_prompt"])
-        self.assertIn("routing/applicability mistake", system_prompt)
-        self.assertIn('"no_change"', system_prompt)
-
-    def test_signal_mining_roles_parse_hypotheses_and_rank_only_allowed_refs(
+    def test_signal_update_v2_rejects_label_as_fact_and_keeps_source_verdict_first(
         self,
     ) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "order_confirmation",
-                            "statement": "Confirmed orders precede repricing.",
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases confirm more orders than control cases."
-                            ),
-                            "source_types": ["filings"],
-                            "query": "material order",
-                            "falsifiers": [
-                                "Positive cases and control cases confirm orders "
-                                "equally often."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                },
-                {
-                    "hypotheses": [
-                        {
-                            "hypothesis_id": "order_confirmation",
-                            "statement": "Confirmed orders precede repricing.",
-                            "applicability": "all_ready_issuers",
-                            "expected_positive_pattern": (
-                                "Positive cases confirm more orders than control cases."
-                            ),
-                            "source_types": ["filing"],
-                            "query": "material order",
-                            "falsifiers": [
-                                "Positive cases and control cases confirm orders "
-                                "equally often."
-                            ],
-                            "lookback_days": 365,
-                        }
-                    ]
-                },
-                {
-                    "rankings": [
-                        {
-                            "hypothesis_id": "order_confirmation",
-                            "cases": [
-                                {
-                                    "case_ref": "case-002",
-                                    "profile_evidence": "project-driven hardware",
-                                    "applicability_reason": (
-                                        "The profile directly identifies project-driven "
-                                        "operations."
-                                    ),
-                                },
-                                {
-                                    "case_ref": "case-001",
-                                    "profile_evidence": "project-driven hardware",
-                                    "applicability_reason": (
-                                        "The profile directly identifies project-driven "
-                                        "operations."
-                                    ),
-                                },
-                            ],
-                        }
-                    ]
-                },
-            ]
-        )
-        model = LLMSignalMiningModel(caller, creative_temperature=1.0)
-
-        hypotheses = model.propose_hypotheses(
-            {
-                "limits": {"hypothesis_limit": 3},
-                "meta_info": [],
-                "available_raw_source_types": ["news", "filing"],
-            }
-        )
-        rankings = model.rank_cases(
-            {
-                "hypotheses": [item.to_dict() for item in hypotheses.value],
-                "case_briefs": [
-                    {"case_ref": "case-001", "industry": "project-driven hardware"},
-                    {"case_ref": "case-002", "industry": "project-driven hardware"},
-                ],
-            }
-        )
-
-        self.assertEqual(hypotheses.value[0].hypothesis_id, "order_confirmation")
-        self.assertEqual(
-            rankings.value["order_confirmation"],
-            ("case-002", "case-001"),
-        )
-        self.assertEqual(
-            caller.stages,
-            [
-                "signal_mining_hypotheses",
-                "signal_mining_hypotheses_correction",
-                "signal_mining_case_ranking",
-            ],
-        )
-        self.assertEqual(caller.calls[0]["temperature"], 1.0)
-        self.assertEqual(caller.calls[1]["temperature"], 1.0)
-        self.assertNotIn("large_order_confirmation", caller.calls[0]["system_prompt"])
-        self.assertNotIn(
-            "material order contract customer award",
-            caller.calls[0]["system_prompt"],
-        )
-        self.assertIn(
-            "validation_error", caller.calls[1]["payload"]["validation_feedback"]
-        )
-        self.assertEqual(caller.calls[2]["temperature"], 0.0)
-        self.assertFalse(caller.calls[2]["allow_outcomes"])
-
-    def test_signal_update_role_repairs_wrong_target_once(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "signal_ref": "other_signal:v1",
-                    "disposition": "no_change",
-                    "problem_type": "routing",
-                    "rationale": ["No definition change is justified."],
-                    "candidate": None,
-                },
-                {
-                    "signal_ref": "price_momentum_126d:v1",
-                    "disposition": "no_change",
-                    "problem_type": "routing",
-                    "rationale": ["The observed issue belongs to Plan routing."],
-                    "candidate": None,
-                },
-            ]
-        )
-
-        step = LLMSignalUpdateModel(caller).update(
-            {
-                "target": {"signal_ref": "price_momentum_126d:v1"},
-                "induction_cases": [],
-                "candidate_contract": {},
-            }
-        )
-
-        self.assertEqual(step.value.signal_ref, "price_momentum_126d:v1")
-        self.assertEqual(step.usage.llm_calls, 2)
-        self.assertEqual(
-            caller.stages,
-            ["signal_update_decision", "signal_update_decision_correction"],
-        )
-        self.assertIn("validation_error", caller.calls[1]["payload"])
-        self.assertEqual(
-            caller.calls[1]["payload"]["validation_contract"],
-            "structured-validation-v1",
-        )
-        self.assertEqual(
-            caller.calls[1]["payload"]["obligations"][0]["must_change_paths"],
-            ["signal_ref"],
-        )
-        self.assertEqual(
-            step.value.rationale,
-            ("No definition change is justified.",),
-        )
-
-    def test_signal_update_corrects_canned_rationale_using_supplied_case_refs(self) -> None:
-        canned = {
+        base = {
             "signal_ref": "financing_listing_action:v1",
             "disposition": "defer",
             "problem_type": "routing_applicability_unclear",
-            "rationale": ["Induction evidence does not isolate a Signal defect."],
+            "rationale": ["The source verdict is insufficient for update-case-001."],
             "candidate": None,
         }
-        grounded = {
-            **canned,
-            "rationale": [
-                "update-case-001 lacks a disclosed transaction, whereas "
-                "update-case-002 supplies a completed financing. Neither packet "
-                "shows extraction of an available transaction failing."
-            ],
-        }
-        caller = ScriptedRoleCaller([canned, grounded])
-        payload = {
-            "target": {"signal_ref": canned["signal_ref"]},
-            "induction_cases": [
-                {"case_ref": "update-case-001"},
-                {"case_ref": "update-case-002"},
-            ],
-        }
-
-        step = LLMSignalUpdateModel(caller).update(payload)
-
-        self.assertEqual(step.value.rationale, tuple(grounded["rationale"]))
-        self.assertEqual(step.usage.llm_calls, 2)
-        self.assertIn("missing case_refs", caller.calls[1]["payload"]["validation_error"])
-        self.assertNotIn(canned["rationale"][0], caller.calls[0]["system_prompt"])
-        self.assertIn("do not substitute a generic decision", caller.calls[0]["system_prompt"])
-
-    def test_signal_update_case_ref_traceability_applies_to_no_change(self) -> None:
         invalid = {
-            "signal_ref": "financing_listing_action:v1",
-            "disposition": "no_change",
-            "problem_type": "routing",
-            "rationale": ["update-case-001-extra is missing evidence."],
+            **base,
+            "case_diagnostics": [
+                {
+                    "case_ref": "update-case-001",
+                    "evidence_verdict": "supported",
+                    "facts": [
+                        {
+                            "claim": "The positive label proves financing occurred.",
+                            "document_ref": "document-01",
+                            "exact_span": "positive label",
+                        }
+                    ],
+                    "evidence_gaps": [],
+                    "outcome_relation": "aligned",
+                    "outcome_explanation": "The supplied label is positive.",
+                }
+            ],
+        }
+        corrected = {
+            **base,
+            "case_diagnostics": [
+                {
+                    "case_ref": "update-case-001",
+                    "evidence_verdict": "insufficient",
+                    "facts": [],
+                    "evidence_gaps": ["No transaction terms are visible."],
+                    "outcome_relation": "not_assessable",
+                    "outcome_explanation": (
+                        "The outcome cannot establish a missing source fact."
+                    ),
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+        payload = {
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": base["signal_ref"]},
+            "induction_cases": [
+                {
+                    "case_ref": "update-case-001",
+                    "evidence_observation": {
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": (
+                                    "The issuer discussed general corporate liquidity."
+                                ),
+                            }
+                        ]
+                    },
+                    "outcome_relation": {
+                        "label": "positive",
+                        "current_signal_relation": "not_assessable",
+                    },
+                }
+            ],
+        }
+
+        result = LLMSignalUpdateModel(caller).update(payload)
+
+        self.assertEqual(result.value.case_diagnostics, tuple(corrected["case_diagnostics"]))
+        self.assertEqual(result.usage.llm_calls, 2)
+        self.assertIn("source-cited literal facts", validation_error(caller.calls[1]))
+        self.assertIn("label cannot establish", caller.calls[0]["system_prompt"])
+
+    def test_signal_update_v2_adds_missing_case_without_rewriting_valid_sibling(
+        self,
+    ) -> None:
+        base = {
+            "signal_ref": "guidance_acceleration:v1",
+            "disposition": "defer",
+            "problem_type": "insufficient_case_evidence",
+            "rationale": ["Both cases require source-grounded observations."],
             "candidate": None,
         }
-        valid = {**invalid, "rationale": ["update-case-001 lacks the required evidence."]}
-        caller = ScriptedRoleCaller([invalid, valid])
+        valid_first = {
+            "case_ref": "update-case-001",
+            "evidence_verdict": "insufficient",
+            "facts": [],
+            "evidence_gaps": ["No guidance statement is visible."],
+            "outcome_relation": "not_assessable",
+            "outcome_explanation": "No source fact can be associated with the label.",
+        }
+        missing_second = {
+            "case_ref": "update-case-002",
+            "evidence_verdict": "insufficient",
+            "facts": [],
+            "evidence_gaps": ["No guidance statement is visible."],
+            "outcome_relation": "not_assessable",
+            "outcome_explanation": "No source fact can be associated with the label.",
+        }
+        caller = ScriptedRoleCaller(
+            [
+                {**base, "case_diagnostics": [valid_first]},
+                {
+                    **base,
+                    "case_diagnostics": [
+                        {
+                            **valid_first,
+                            "outcome_explanation": "Unrelated rewrite.",
+                        },
+                        missing_second,
+                    ],
+                },
+            ]
+        )
+        payload = {
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": base["signal_ref"]},
+            "induction_cases": [
+                {
+                    "case_ref": case_ref,
+                    "evidence_observation": {"evidence": []},
+                    "outcome_relation": {
+                        "label": label,
+                        "current_signal_relation": "not_assessable",
+                    },
+                }
+                for case_ref, label in (
+                    ("update-case-001", "positive"),
+                    ("update-case-002", "control"),
+                )
+            ],
+        }
 
-        step = LLMSignalUpdateModel(caller).update({
-            "target": {"signal_ref": invalid["signal_ref"]},
-            "induction_cases": [{"case_ref": "update-case-001"}],
-        })
+        result = LLMSignalUpdateModel(caller).update(payload)
 
-        self.assertEqual(step.value.disposition, "no_change")
-        self.assertEqual(step.usage.llm_calls, 2)
+        diagnostics = {
+            item["case_ref"]: item for item in result.value.case_diagnostics
+        }
+        self.assertEqual(result.usage.llm_calls, 2)
+        self.assertEqual(
+            diagnostics["update-case-001"]["outcome_explanation"],
+            valid_first["outcome_explanation"],
+        )
+        self.assertEqual(diagnostics["update-case-002"], missing_second)
 
     def test_routing_rejects_duplicate_refs_and_preserves_valid_siblings(
         self,
@@ -2590,9 +1592,10 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (
-            evolution_runtime_module._SIGNAL_MINING_DECISIONS_OUTPUT,
-            evolution_runtime_module._SIGNAL_MINING_SIGNATURES_OUTPUT,
-            evolution_runtime_module._SIGNAL_UPDATE_OUTPUT,
+            signal_roles_module._SIGNAL_MINING_HYPOTHESES_V2_OUTPUT,
+            signal_roles_module._SIGNAL_MINING_DECISIONS_OUTPUT,
+            signal_roles_module._SIGNAL_MINING_SIGNATURES_OUTPUT,
+            signal_roles_module._SIGNAL_UPDATE_V2_OUTPUT,
         )
         for contract in contracts:
             with self.subTest(contract=contract):

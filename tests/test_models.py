@@ -111,6 +111,18 @@ class ModelSerializationTests(TestCase):
                 repair_context={"must_change_paths": ["items"]},
             )
 
+    def test_validation_issue_accepts_explicit_stable_item_addition(self) -> None:
+        issue = ValidationIssue(
+            code="missing_item",
+            message="Add the missing runtime-owned item.",
+            paths=("items[1]",),
+            item_id="item-002",
+            item_id_field="item_id",
+            allowed_repairs=("add",),
+        )
+
+        self.assertEqual(issue.to_dict()["allowed_repairs"], ["add"])
+
     def test_nested_score_card_round_trips(self) -> None:
         original = score_card()
 

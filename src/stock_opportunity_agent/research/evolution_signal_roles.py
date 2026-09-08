@@ -58,16 +58,21 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 )
 
 
-_SIGNAL_MINING_HYPOTHESES_OUTPUT = (
-    ' Output contract for SignalMiningHypotheses: return exactly {"hypotheses":[]}, '
-    "where hypotheses is a JSON array containing zero to the supplied "
-    "hypothesis_limit objects. Each object has exactly these keys and types: "
-    "hypothesis_id (lowercase safe-id string), statement (non-empty string), "
-    "applicability (non-empty string), expected_positive_pattern (non-empty "
-    "string), source_types (non-empty unique string array), query (non-empty "
-    "string), falsifiers (non-empty string array), and lookback_days (integer "
-    "from 1 through 1825). Do not add wrapper keys or Markdown, and never name "
-    "a company."
+_SIGNAL_MINING_HYPOTHESES_V2_OUTPUT = (
+    ' Output contract signal-mining-hypothesis-v2: return exactly {"conclusion":'
+    '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
+    'object|null}. For conclusion="hypotheses", no_hypothesis is null and each '
+    "hypothesis has exactly proposal_ref (copied from hypothesis_slots), measurement "
+    "(exactly observable, value_kind, normalization), applicability (exactly rule "
+    "and values), "
+    "expected_direction, retrieval_intent (exactly source_types and query), "
+    "falsifiers, and need_refs. Each falsifier has exactly condition and "
+    "expected_observation. expected_direction is one of higher_in_positive, "
+    "lower_in_positive, more_frequent_in_positive, less_frequent_in_positive, or "
+    "different_between_groups. For conclusion=no_testable_hypothesis, hypotheses is "
+    "empty and no_hypothesis has exactly reason_code, rationale, and need_refs. "
+    "reason_code is no_new_measurable_gap, insufficient_retrieval_basis, or "
+    "prior_attempts_exhausted. Never add Markdown or company identities."
 )
 
 
@@ -125,72 +130,6 @@ _H1_ALTERNATE_TEST_OUTCOME = re.compile(
 )
 
 
-_H1_GROUP_QUALIFIER = r"(?:(?:fixed\s+)?discovery|fixed)"
-
-
-_H1_GROUP_NOUN = r"(?:cases?|groups?(?:\s+cases?)?|cohorts?)"
-
-
-_H1_GROUP_PHRASE = (
-    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?(?:positive|control)"
-    rf"\s+(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}"
-)
-
-
-_H1_POSITIVE_CASE_PATTERN = re.compile(
-    rf"\bpositive(?:\s+and\s+control)?\s+"
-    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}\b",
-    re.IGNORECASE,
-)
-
-
-_H1_CONTROL_CASE_PATTERN = re.compile(
-    rf"\b(?:control\s+(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}|controls)\b",
-    re.IGNORECASE,
-)
-
-
-_H1_INVENTED_CASE_REF = re.compile(
-    r"\[(?:case|positive|control)[-_a-z0-9]*\]", re.IGNORECASE
-)
-
-
-_H1_GROUP_REDEFINITION_PATTERN = re.compile(
-    rf"(?:\b{_H1_GROUP_PHRASE}\s*\([^)]{{1,200}}\)|"
-    rf"\b{_H1_GROUP_PHRASE}\s+"
-    r"(?:are|consist(?:s)?\s+of|comprise(?:s)?|include(?:s)?)\s+"
-    r"(?:issuers?|companies?|entities|stocks?)\b[^.;]{0,200}\b"
-    r"(?:as|that|which|who|with)\b)",
-    re.IGNORECASE,
-)
-
-
-_H1_SAME_GROUP_ALIAS_PATTERN = re.compile(
-    rf"\b(?:{_H1_GROUP_QUALIFIER}\s+)?(?P<label>positive|control)\s+"
-    rf"(?:{_H1_GROUP_QUALIFIER}\s+)?{_H1_GROUP_NOUN}\s*"
-    r"\(\s*(?:(?:the\s+)?discovery\s+(?P=label)\s+"
-    r"(?:cases?|groups?|cohorts?)|(?:the\s+)?fixed\s+discovery\s+"
-    r"(?:cases?|groups?|cohorts?))\s*\)",
-    re.IGNORECASE,
-)
-
-
-_H1_DATA_READINESS_STATEMENT = re.compile(
-    r"\b(?:available|observable|observed|inferable|inferred|retrievable|retrieved|"
-    r"extractable|extracted|found|documented)\s+"
-    r"(?:in|from|through|within|using|via)\b",
-    re.IGNORECASE,
-)
-
-
-_H1_UNNORMALIZED_SCALE_PATTERN = re.compile(
-    r"\b(?:higher|lower|larger|smaller|greater|less)\s+(?:raw|absolute)\s+"
-    r"(?:revenue|earnings|profits?|sales|cash|production|costs?|figures?|levels?|"
-    r"amounts?)\b",
-    re.IGNORECASE,
-)
-
-
 _H1_HIDDEN_APPLICABILITY_TOPIC = re.compile(
     r"\b(?:analyst\s+(?:coverage|estimates?)|consensus|estimates?|guidance|"
     r"decomposition|breakdown|actual\s+(?:results?|metrics?)|"
@@ -204,18 +143,6 @@ _H1_APPLICABILITY_RULE_PATTERN = re.compile(
     r"^(business_description_topics|industry_values|sector_values|"
     r"exchange_values|market_cap_bucket_values|listing_age_bucket_values|"
     r"raw_info_source_type_values):([^:;\n]+)$"
-)
-
-
-_H1_QUERY_INSTRUCTION_PATTERN = re.compile(
-    r"^\s*(?:find|search|identify|locate|retrieve)\b", re.IGNORECASE
-)
-
-
-_H1_QUERY_FILTER_PATTERN = re.compile(
-    r"\b(?:(?:at\s+least|more\s+than|less\s+than|within)\s+"
-    r"\d+(?:\.\d+)?\s*%|(?:over\s+)?(?:the\s+)?last\s+\d+\s+days?)\b",
-    re.IGNORECASE,
 )
 
 
@@ -348,28 +275,6 @@ def _h2_applicability_matches(
     return any(item.casefold() in visible_values for item in values)
 
 
-def _h1_existing_signal_term_sets(
-    payload: Mapping[str, Any],
-) -> tuple[frozenset[str], ...]:
-    """Return multi-term stable identities that new H1 work must not rename."""
-
-    identities = [
-        str(item.get("signal_id", ""))
-        for item in payload.get("stable_signal_cards", ())
-        if isinstance(item, Mapping)
-    ]
-    identities.extend(
-        str(value).rsplit(".", 1)[-1]
-        for value in payload.get("registered_deterministic_functions", ())
-    )
-    term_sets = {
-        terms
-        for value in identities
-        if len(terms := _h1_topic_terms(value.replace("_", " "))) >= 2
-    }
-    return tuple(sorted(term_sets, key=lambda item: tuple(sorted(item))))
-
-
 _SIGNAL_MINING_RANKING_OUTPUT = (
     ' Output contract for SignalMiningRankings: return exactly {"rankings":[]}, '
     "where rankings is a JSON array with one object per supplied hypothesis. "
@@ -445,13 +350,16 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
 )
 
 
-_SIGNAL_UPDATE_OUTPUT = (
-    " Return one JSON object with exactly signal_ref (the exact target string), "
-    "disposition (string), problem_type (string), rationale (non-empty array of "
-    "case-specific strings), and candidate (object or null). "
-    ' disposition must be "no_change", "defer", or "update". Only update may '
-    "carry a candidate, which must contain exactly signal_ref, spec, skill, and "
-    "tests under candidate_contract."
+_SIGNAL_UPDATE_V2_OUTPUT = (
+    " Return one JSON object with exactly signal_ref, disposition, problem_type, "
+    "rationale, case_diagnostics, and candidate. case_diagnostics must contain "
+    "exactly one object per supplied case_ref, with exactly case_ref, "
+    "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
+    "outcome_explanation. evidence_verdict is supported, contradicted, or "
+    "insufficient. Every fact has exactly claim, document_ref, and exact_span; "
+    "document_ref and exact_span must be copied from that case's source evidence. "
+    "outcome_relation is aligned, misaligned, or not_assessable. disposition is "
+    "no_change, defer, or update; only update may carry the supplied candidate."
 )
 
 
@@ -468,15 +376,52 @@ class LLMSignalUpdateModel(SignalUpdateModel):
     def update(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[SignalUpdateDecision]:
+        """Run the sole production Signal Update v2 contract."""
+
+        return self._update_v2(payload)
+
+    def _update_v2(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[SignalUpdateDecision]:
+        """Require source-grounded facts before outcome association."""
+
         target = payload.get("target", {})
         if not isinstance(target, Mapping) or not target.get("signal_ref"):
             raise ValidationError("Signal Update requires one local target")
         target_ref = str(target["signal_ref"])
-        induction_refs = {
-            str(item["case_ref"])
+        packets = tuple(
+            item
             for item in payload.get("induction_cases", ())
             if isinstance(item, Mapping) and item.get("case_ref")
-        }
+        )
+        packet_by_ref = {str(item["case_ref"]): item for item in packets}
+        if len(packet_by_ref) != len(packets):
+            raise ValidationError("Signal Update v2 case_ref values must be unique")
+
+        def evidence_by_ref(packet: Mapping[str, Any]) -> dict[str, tuple[str, ...]]:
+            observation = packet.get("evidence_observation", {})
+            rows = (
+                observation.get("evidence", ())
+                if isinstance(observation, Mapping)
+                else ()
+            )
+            literals: dict[str, list[str]] = {}
+            for item in rows:
+                if isinstance(item, Mapping) and item.get("document_ref"):
+                    literals.setdefault(str(item["document_ref"]), []).append(
+                        str(item.get("content_excerpt", ""))
+                    )
+            executed = (
+                observation.get("executed_evidence", ())
+                if isinstance(observation, Mapping)
+                else ()
+            )
+            for item in executed:
+                if isinstance(item, Mapping) and item.get("document_ref"):
+                    literals.setdefault(str(item["document_ref"]), []).append(
+                        str(item.get("exact_span", ""))
+                    )
+            return {key: tuple(values) for key, values in literals.items()}
 
         def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
             try:
@@ -485,13 +430,14 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 raise StructuredValidationError(
                     [
                         ValidationIssue(
-                            code="signal_update_shape_invalid",
+                            code="signal_update_v2_shape_invalid",
                             message=str(exc),
                             paths=(
                                 "signal_ref",
                                 "disposition",
                                 "problem_type",
                                 "rationale",
+                                "case_diagnostics",
                                 "candidate",
                             ),
                             path_policy="any",
@@ -509,47 +455,190 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         )
                     ]
                 )
-            rationale = " ".join(decision.rationale)
-            missing_refs = sorted(
-                ref for ref in induction_refs
-                if re.search(rf"(?<![\w-]){re.escape(ref)}(?![\w-])", rationale) is None
-            )
-            if missing_refs:
-                raise StructuredValidationError(
-                    [
+            diagnostics_by_ref: dict[str, Mapping[str, Any]] = {}
+            issues: list[ValidationIssue] = []
+            for index, diagnostic in enumerate(decision.case_diagnostics):
+                path = f"case_diagnostics[{index}]"
+                case_ref = str(diagnostic.get("case_ref", ""))
+                if set(diagnostic) != {
+                    "case_ref",
+                    "evidence_verdict",
+                    "facts",
+                    "evidence_gaps",
+                    "outcome_relation",
+                    "outcome_explanation",
+                }:
+                    issues.append(
                         ValidationIssue(
-                            code="signal_update_case_traceability_missing",
-                            message=(
-                                "Signal Update rationale must explain every supplied "
-                                "induction case; missing case_refs: "
-                                + ", ".join(missing_refs)
-                            ),
-                            paths=("rationale",),
-                            source_refs=tuple(missing_refs),
+                            code="signal_update_case_diagnostic_shape_invalid",
+                            message=f"{path} has unexpected fields",
+                            paths=(path,),
+                            item_id=(case_ref or None),
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
                         )
-                    ]
+                    )
+                    continue
+                if case_ref not in packet_by_ref or case_ref in diagnostics_by_ref:
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_case_ref_invalid",
+                            message=f"{path}.case_ref is unknown or duplicated",
+                            paths=(path,),
+                            item_id=(case_ref if case_ref in packet_by_ref else None),
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                    continue
+                diagnostics_by_ref[case_ref] = diagnostic
+                verdict = str(diagnostic.get("evidence_verdict", ""))
+                outcome_relation = str(diagnostic.get("outcome_relation", ""))
+                facts = diagnostic.get("facts")
+                gaps = diagnostic.get("evidence_gaps")
+                if verdict not in {"supported", "contradicted", "insufficient"}:
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_evidence_verdict_invalid",
+                            message=f"{path}.evidence_verdict is invalid",
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                    continue
+                if outcome_relation not in {"aligned", "misaligned", "not_assessable"}:
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_outcome_relation_invalid",
+                            message=f"{path}.outcome_relation is invalid",
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                    continue
+                expected_relation = packet_by_ref[case_ref].get(
+                    "outcome_relation", {}
                 )
+                expected_relation = (
+                    str(expected_relation.get("current_signal_relation", ""))
+                    if isinstance(expected_relation, Mapping)
+                    else ""
+                )
+                if outcome_relation != expected_relation:
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_outcome_relation_mismatch",
+                            message=(
+                                f"{path}.outcome_relation must copy the runtime-computed "
+                                "relation"
+                            ),
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                if not isinstance(facts, list) or not isinstance(gaps, list):
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_fact_list_invalid",
+                            message=f"{path} facts and evidence_gaps must be arrays",
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                    continue
+                visible = evidence_by_ref(packet_by_ref[case_ref])
+                fact_invalid = False
+                for fact in facts:
+                    if not isinstance(fact, Mapping) or set(fact) != {
+                        "claim",
+                        "document_ref",
+                        "exact_span",
+                    }:
+                        fact_invalid = True
+                        break
+                    document_ref = str(fact.get("document_ref", ""))
+                    exact_span = str(fact.get("exact_span", ""))
+                    if (
+                        not str(fact.get("claim", "")).strip()
+                        or not 8 <= len(exact_span) <= 240
+                        or not any(
+                            exact_span in literal
+                            for literal in visible.get(document_ref, ())
+                        )
+                    ):
+                        fact_invalid = True
+                        break
+                if fact_invalid or (verdict != "insufficient" and not facts):
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_fact_not_grounded",
+                            message=(
+                                f"{path} requires source-cited literal facts before "
+                                "outcome association"
+                            ),
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                if verdict == "insufficient" and not any(
+                    isinstance(item, str) and item.strip() for item in gaps
+                ):
+                    issues.append(
+                        ValidationIssue(
+                            code="signal_update_evidence_gap_missing",
+                            message=f"{path} insufficient verdict requires a gap",
+                            paths=(path,),
+                            item_id=case_ref,
+                            item_id_field="case_ref",
+                            allowed_repairs=("replace",),
+                        )
+                    )
+            missing = sorted(set(packet_by_ref) - set(diagnostics_by_ref))
+            for offset, case_ref in enumerate(missing):
+                issues.append(
+                    ValidationIssue(
+                        code="signal_update_case_diagnostics_missing",
+                        message=(
+                            "Signal Update omitted the required case diagnostic for "
+                            f"{case_ref}"
+                        ),
+                        paths=(
+                            f"case_diagnostics[{len(decision.case_diagnostics) + offset}]",
+                        ),
+                        item_id=case_ref,
+                        item_id_field="case_ref",
+                        allowed_repairs=("add",),
+                        source_refs=(case_ref,),
+                    )
+                )
+            if issues:
+                raise StructuredValidationError(issues)
             return decision
 
         value, usage = _complete_parsed_role(
             self.caller,
             stage="signal_update_decision",
             system_prompt=(
-                "Diagnose one exact stable Signal from its observational learned "
-                "profile and locally selected label-visible induction evidence. "
-                "First distinguish a routing/applicability mistake from a defect in "
-                "the Signal definition or extraction. Return no_change when the "
-                "stable Signal should remain as-is, defer when evidence is still "
-                "insufficient, or update with one complete vNext candidate. Never "
-                "infer or discuss the hidden holdout, choose another Signal, or "
-                "claim that Plan selection proves causal efficacy. Preserve the "
-                "static semantic identity required by candidate_contract. For every "
-                "disposition, explain the actual observations or evidence gaps for "
-                "every supplied induction case, explicitly citing each case_ref in "
-                "rationale. Contrast problem cases with successful/neutral boundaries; "
-                "do not substitute a generic decision or treat unavailable as negative."
+                "Diagnose one exact stable Signal. For each case, first compare the "
+                "current Signal result with evidence_observation and cite literal source "
+                "facts. Only after that evidence verdict may outcome_relation be used to "
+                "assess association. The supplied label cannot establish that financing, "
+                "a clinical result, an order, guidance, or any other source fact exists. "
+                "Use insufficient when the visible source cannot support or contradict "
+                "the result. Then choose no_change, defer, or one complete vNext update; "
+                "keep holdout and identities hidden."
                 + _UNTRUSTED_DATA_INSTRUCTION
-                + _SIGNAL_UPDATE_OUTPUT
+                + _SIGNAL_UPDATE_V2_OUTPUT
             ),
             payload=payload,
             parser=parse,
@@ -578,409 +667,347 @@ class LLMSignalMiningModel(SignalMiningModel):
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
 
+    @property
+    def work_identity(self) -> Mapping[str, Any]:
+        """Return the stable role/model identity used by Mining work keys."""
+
+        registration = getattr(self.caller, "registration", None)
+        return {
+            "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
+            "creative_temperature": self.creative_temperature,
+            "model_alias": getattr(registration, "alias", None),
+            "provider": getattr(registration, "provider", None),
+            "model": getattr(registration, "model", None),
+            "proposal_profile": getattr(registration, "proposal_profile", None),
+        }
+
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
-        limit = int(dict(payload.get("limits", {})).get("hypothesis_limit", 3))
+        """Run the sole production H1 v2 contract."""
+
+        return self._propose_hypotheses_v2(payload)
+
+    def _propose_hypotheses_v2(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
+        """Parse the production H1 contract without prose/identifier matching."""
+
+        limits = dict(payload.get("limits", {}))
+        limit = int(limits.get("hypothesis_limit", 3))
+        lookback_days = int(limits.get("evidence_lookback_days", 365))
+        slots = tuple(str(item) for item in payload.get("hypothesis_slots", ()))
+        if len(slots) != limit or len(set(slots)) != len(slots):
+            raise ValidationError(
+                "Signal Mining H1 v2 requires one unique runtime slot per hypothesis"
+            )
+        allowed_slots = set(slots)
         allowed_source_types = {
             str(item) for item in payload.get("available_raw_source_types", ())
         }
         backlog = payload.get("capability_backlog", {})
-        need_term_sets = tuple(
-            _h1_topic_terms(str(item["need"]))
+        allowed_need_refs = {
+            str(item["need_ref"])
             for item in (
                 backlog.get("signal_need_items", ())
                 if isinstance(backlog, Mapping)
                 else ()
             )
-            if isinstance(item, Mapping) and str(item.get("need", "")).strip()
-        )
-        existing_signal_term_sets = _h1_existing_signal_term_sets(payload)
+            if isinstance(item, Mapping) and item.get("need_ref")
+        }
         applicability_contract = payload.get("h2_applicability_contract", {})
+        expected_directions = {
+            "higher_in_positive",
+            "lower_in_positive",
+            "more_frequent_in_positive",
+            "less_frequent_in_positive",
+            "different_between_groups",
+        }
+        value_kinds = {"boolean", "ordinal", "numeric", "categorical"}
+        no_hypothesis_codes = {
+            "no_new_measurable_gap",
+            "insufficient_retrieval_basis",
+            "prior_attempts_exhausted",
+        }
+        conclusion_metadata: dict[str, Any] = {}
+
+        def string_array(
+            value: Any, *, path: str, allow_empty: bool = False
+        ) -> tuple[str, ...]:
+            if not isinstance(value, list) or any(
+                not isinstance(item, str) or not item.strip() for item in value
+            ):
+                raise ValidationError(f"{path} must be an array of non-empty strings")
+            if not allow_empty and not value:
+                raise ValidationError(f"{path} must not be empty")
+            return tuple(value)
+
+        def validate_need_refs(value: Any, *, path: str) -> tuple[str, ...]:
+            refs = string_array(value, path=path, allow_empty=True)
+            if len(set(refs)) != len(refs):
+                raise ValidationError(f"{path} must be unique")
+            unknown = sorted(set(refs) - allowed_need_refs)
+            if unknown:
+                raise ValidationError(
+                    f"{path} contains unknown runtime need refs: " + ", ".join(unknown)
+                )
+            return refs
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
-            if set(value) != {"hypotheses"} or not isinstance(
-                value.get("hypotheses"), list
+            if set(value) != {"conclusion", "hypotheses", "no_hypothesis"}:
+                raise ValidationError(
+                    "Signal Mining H1 v2 requires conclusion, hypotheses, and "
+                    "no_hypothesis"
+                )
+            conclusion = value.get("conclusion")
+            raw_items = value.get("hypotheses")
+            if conclusion not in {"hypotheses", "no_testable_hypothesis"} or not isinstance(
+                raw_items, list
             ):
-                raise ValidationError("Signal Mining H1 requires a hypotheses array")
-            items = tuple(
-                SignalMiningHypothesis.from_dict(item)
-                if isinstance(item, Mapping)
-                else (_raise_mining_shape("H1 hypothesis must be an object"))
-                for item in value["hypotheses"]
-            )
-            issues: list[str] = []
-            if len(items) > limit:
-                issues.append(f"Signal Mining H1 exceeds hypothesis_limit={limit}")
-            if need_term_sets and not items:
-                issues.append(
-                    "Signal Mining H1 must return at least one grounded hypothesis "
-                    "when signal_need_items are non-empty"
+                raise ValidationError("Signal Mining H1 v2 conclusion is invalid")
+            if conclusion == "no_testable_hypothesis":
+                no_hypothesis = value.get("no_hypothesis")
+                if raw_items or not isinstance(no_hypothesis, Mapping) or set(
+                    no_hypothesis
+                ) != {"reason_code", "rationale", "need_refs"}:
+                    raise ValidationError(
+                        "no_testable_hypothesis requires an empty portfolio and one "
+                        "structured reason"
+                    )
+                reason_code = str(no_hypothesis.get("reason_code", ""))
+                if reason_code not in no_hypothesis_codes:
+                    raise ValidationError("Signal Mining H1 no-hypothesis code is invalid")
+                rationale = string_array(
+                    no_hypothesis.get("rationale"), path="no_hypothesis.rationale"
                 )
-            if len({item.hypothesis_id for item in items}) != len(items):
-                duplicate_paths = [
-                    f"hypotheses[{index}].hypothesis_id"
-                    for index, item in enumerate(items)
-                    if sum(
-                        candidate.hypothesis_id == item.hypothesis_id
-                        for candidate in items
-                    )
-                    > 1
-                ]
-                issues.append(
-                    "Signal Mining H1 hypothesis ids must be unique at "
-                    + ", ".join(duplicate_paths)
+                need_refs = validate_need_refs(
+                    no_hypothesis.get("need_refs"), path="no_hypothesis.need_refs"
                 )
-            global_issue_count = len(issues)
-            item_issues: list[ValidationIssue] = []
-
-            def add_item_issue(
-                item: SignalMiningHypothesis,
-                path: str | tuple[str, ...],
-                message: str,
-                *,
-                path_policy: str = "all",
-            ) -> None:
-                issues.append(message)
-                issue_paths = (path,) if isinstance(path, str) else path
-                item_issues.append(
-                    ValidationIssue(
-                        code="h1_hypothesis_invalid",
-                        message=message,
-                        paths=issue_paths,
-                        item_id=item.hypothesis_id,
-                        item_id_field="hypothesis_id",
-                        allowed_repairs=("replace", "remove"),
-                        path_policy=path_policy,
-                    )
+                conclusion_metadata.clear()
+                conclusion_metadata.update(
+                    {
+                        "conclusion": conclusion,
+                        "reason_code": reason_code,
+                        "rationale": list(rationale),
+                        "need_refs": list(need_refs),
+                    }
                 )
-
-            for item_index, item in enumerate(items):
-                item_path = f"hypotheses[{item_index}]"
-                unsupported = sorted(
-                    source_type
-                    for source_type in item.source_types
-                    if source_type not in allowed_source_types
+                return ()
+            if value.get("no_hypothesis") is not None:
+                raise ValidationError(
+                    "Signal Mining H1 hypothesis portfolio requires no_hypothesis=null"
                 )
-                if unsupported:
-                    add_item_issue(
-                        item,
-                        f"{item_path}.source_types",
-                        "Signal Mining H1 source_types must use exact supplied values "
-                        f"at {item_path}.source_types, unsupported: "
-                        + ", ".join(unsupported)
-                    )
-                test_fields = (
-                    (f"{item_path}.statement", item.statement),
-                    (
-                        f"{item_path}.expected_positive_pattern",
-                        item.expected_positive_pattern,
-                    ),
-                    *tuple(
-                        (f"{item_path}.falsifiers[{index}]", text)
-                        for index, text in enumerate(item.falsifiers)
-                    ),
+            if not raw_items or len(raw_items) > limit:
+                raise ValidationError(
+                    "Signal Mining H1 hypothesis portfolio must contain 1 through "
+                    f"{limit} items"
                 )
-                semantic_fields = (
-                    (f"{item_path}.hypothesis_id", item.hypothesis_id),
-                    *test_fields,
-                    (f"{item_path}.applicability", item.applicability),
-                    (f"{item_path}.query", item.query),
+            parsed: list[SignalMiningHypothesis] = []
+            issues: list[ValidationIssue] = []
+            seen_slots: set[str] = set()
+            for index, raw in enumerate(raw_items):
+                item_path = f"hypotheses[{index}]"
+                proposal_ref = (
+                    str(raw.get("proposal_ref", ""))
+                    if isinstance(raw, Mapping)
+                    else ""
                 )
-                for path, text in semantic_fields:
-                    fixed_match = _fixed_semantics_match(text)
-                    if fixed_match is not None:
-                        add_item_issue(
-                            item,
-                            path,
-                            "role output attempts to redefine fixed Predictor "
-                            f"semantics at {path}, matched prohibited phrase "
-                            f"{fixed_match.group(0)!r}"
-                        )
-                for path, text in test_fields:
-                    alternate_match = _H1_ALTERNATE_TEST_OUTCOME.search(text)
-                    if alternate_match is not None:
-                        add_item_issue(
-                            item,
-                            path,
-                            "Signal Mining H1 must test the fixed Discovery "
-                            "positive/control outcome rather than an alternate "
-                            f"horizon at {path}, matched "
-                            f"{alternate_match.group(0)!r}"
-                        )
-                    invented_ref_match = _H1_INVENTED_CASE_REF.search(text)
-                    if invented_ref_match is not None:
-                        add_item_issue(
-                            item,
-                            path,
-                            "Signal Mining H1 must not invent opaque case refs or "
-                            f"case placeholders at {path}"
-                        )
-                    group_redefinition_match = _H1_GROUP_REDEFINITION_PATTERN.search(
-                        text
-                    )
-                    if group_redefinition_match is not None and (
-                        _H1_SAME_GROUP_ALIAS_PATTERN.fullmatch(
-                            group_redefinition_match.group(0)
-                        )
-                        is None
-                    ):
-                        add_item_issue(
-                            item,
-                            path,
-                            "Signal Mining H1 must not redefine fixed Discovery "
-                            f"groups at {path}, matched "
-                            f"{group_redefinition_match.group(0)!r}"
-                        )
-                if _H1_DATA_READINESS_STATEMENT.search(item.statement) is not None:
-                    add_item_issue(
-                        item,
-                        f"{item_path}.statement",
-                        "Signal Mining H1 statement must assert a measurable group "
-                        "feature rather than source-data readiness at "
-                        f"{item_path}.statement"
-                    )
-                if (
-                    _H1_UNNORMALIZED_SCALE_PATTERN.search(
-                        item.expected_positive_pattern
-                    )
-                    is not None
-                ):
-                    add_item_issue(
-                        item,
-                        f"{item_path}.expected_positive_pattern",
-                        "Signal Mining H1 expected_positive_pattern must normalize "
-                        "raw absolute scale to a case-local baseline at "
-                        f"{item_path}.expected_positive_pattern"
-                    )
                 try:
+                    if not isinstance(raw, Mapping) or set(raw) != {
+                        "proposal_ref",
+                        "measurement",
+                        "applicability",
+                        "expected_direction",
+                        "retrieval_intent",
+                        "falsifiers",
+                        "need_refs",
+                    }:
+                        raise ValidationError("hypothesis has unexpected fields")
+                    if proposal_ref not in allowed_slots or proposal_ref in seen_slots:
+                        raise ValidationError(
+                            "proposal_ref must be one unused runtime hypothesis slot"
+                        )
+                    measurement = raw.get("measurement")
+                    if not isinstance(measurement, Mapping) or set(measurement) != {
+                        "observable",
+                        "value_kind",
+                        "normalization",
+                    }:
+                        raise ValidationError(
+                            "measurement requires observable, value_kind, and normalization"
+                        )
+                    normalized_measurement = {
+                        key: str(measurement.get(key, "")).strip()
+                        for key in ("observable", "value_kind", "normalization")
+                    }
+                    if any(not item for item in normalized_measurement.values()):
+                        raise ValidationError("measurement fields must not be empty")
+                    if normalized_measurement["value_kind"] not in value_kinds:
+                        raise ValidationError("measurement value_kind is invalid")
+                    raw_applicability = raw.get("applicability")
+                    if not isinstance(raw_applicability, Mapping) or set(
+                        raw_applicability
+                    ) != {"rule", "values"}:
+                        raise ValidationError(
+                            "applicability requires structured rule and values"
+                        )
+                    applicability_rule = str(
+                        raw_applicability.get("rule", "")
+                    )
+                    applicability_values = string_array(
+                        raw_applicability.get("values"),
+                        path=f"{item_path}.applicability.values",
+                        allow_empty=True,
+                    )
+                    applicability = (
+                        "all_ready_issuers"
+                        if applicability_rule == "all_ready_issuers"
+                        and not applicability_values
+                        else f"{applicability_rule}:{'|'.join(applicability_values)}"
+                    )
                     _h1_applicability_rule(
-                        item.applicability,
+                        applicability,
                         contract=(
                             applicability_contract
                             if isinstance(applicability_contract, Mapping)
                             else {}
                         ),
                     )
-                except ValidationError as exc:
-                    add_item_issue(
-                        item,
-                        f"{item_path}.applicability",
-                        "Signal Mining H1 applicability must replace the complete "
-                        "field with one canonical rule from the actual H2 profile "
-                        f"contract at {item_path}.applicability: {exc}"
-                    )
-                falsifier_text = " ".join(item.falsifiers)
-                if not (
-                    _H1_POSITIVE_CASE_PATTERN.search(falsifier_text)
-                    and _H1_CONTROL_CASE_PATTERN.search(falsifier_text)
-                ):
-                    add_item_issue(
-                        item,
-                        f"{item_path}.falsifiers",
-                        "Signal Mining H1 falsifiers must include a positive/control "
-                        "group non-separation or reversal test at "
-                        f"{item_path}.falsifiers"
-                    )
-                query_terms = _h1_topic_terms(item.query)
-                if (
-                    not 2 <= len(query_terms) <= 8
-                    or _H1_QUERY_INSTRUCTION_PATTERN.search(item.query) is not None
-                    or _H1_QUERY_FILTER_PATTERN.search(item.query) is not None
-                ):
-                    add_item_issue(
-                        item,
-                        f"{item_path}.query",
-                        "Signal Mining H1 query must be a concise 2-8 term retrieval "
-                        "topic without an imperative, numeric threshold, or duplicate "
-                        f"time window at {item_path}.query"
-                    )
-                else:
-                    identity_terms = _h1_topic_terms(
-                        item.hypothesis_id.replace("_", " ").replace("-", " ")
-                    )
-                    construct_terms = identity_terms & query_terms
-                    if not construct_terms:
-                        add_item_issue(
-                            item,
-                            (
-                                f"{item_path}.hypothesis_id",
-                                f"{item_path}.query",
-                            ),
-                            "Signal Mining H1 hypothesis_id and query must share at "
-                            "least one normalized topic term so the retrieval target "
-                            f"is identifiable at {item_path}.query",
-                            path_policy="any",
+                    expected_direction = str(raw.get("expected_direction", ""))
+                    if expected_direction not in expected_directions:
+                        raise ValidationError("expected_direction is invalid")
+                    retrieval = raw.get("retrieval_intent")
+                    if not isinstance(retrieval, Mapping) or set(retrieval) != {
+                        "source_types",
+                        "query",
+                    }:
+                        raise ValidationError(
+                            "retrieval_intent requires source_types and query"
                         )
-                    else:
-                        required_construct_terms = max(
-                            1, (len(construct_terms) + 1) // 2
-                        )
-                        pattern_terms = _h1_topic_terms(
-                            item.expected_positive_pattern
-                        )
-                        if (
-                            len(construct_terms & pattern_terms)
-                            < required_construct_terms
-                        ):
-                            add_item_issue(
-                                item,
-                                f"{item_path}.expected_positive_pattern",
-                                "Signal Mining H1 expected_positive_pattern must "
-                                "retain at least half of the normalized candidate "
-                                "construct shared by hypothesis_id and query so H3 "
-                                "retrieves the feature being compared at "
-                                f"{item_path}.expected_positive_pattern"
-                            )
-                if not (
-                    _H1_POSITIVE_CASE_PATTERN.search(item.expected_positive_pattern)
-                    and _H1_CONTROL_CASE_PATTERN.search(
-                        item.expected_positive_pattern
+                    source_types = string_array(
+                        retrieval.get("source_types"),
+                        path=f"{item_path}.retrieval_intent.source_types",
                     )
-                ):
-                    add_item_issue(
-                        item,
-                        f"{item_path}.expected_positive_pattern",
-                        "Signal Mining H1 expected_positive_pattern must name both "
-                        "positive and control groups at "
-                        f"{item_path}.expected_positive_pattern"
-                    )
-                hypothesis_terms = _h1_topic_terms(
-                    " ".join(
-                        (
-                            item.hypothesis_id.replace("_", " ").replace("-", " "),
-                            item.statement,
-                            item.applicability,
-                            item.expected_positive_pattern,
-                            item.query,
+                    if len(set(source_types)) != len(source_types):
+                        raise ValidationError("retrieval source_types must be unique")
+                    unsupported = sorted(set(source_types) - allowed_source_types)
+                    if unsupported:
+                        raise ValidationError(
+                            "retrieval source_types are unavailable: "
+                            + ", ".join(unsupported)
                         )
+                    query = str(retrieval.get("query", "")).strip()
+                    if not 1 <= len(query) <= 240:
+                        raise ValidationError("retrieval query must be 1-240 characters")
+                    raw_falsifiers = raw.get("falsifiers")
+                    if not isinstance(raw_falsifiers, list) or not raw_falsifiers:
+                        raise ValidationError("falsifiers must be a non-empty array")
+                    falsifiers: tuple[str, ...] = tuple(
+                        f"{str(item.get('condition', '')).strip()} => "
+                        f"{str(item.get('expected_observation', '')).strip()}"
+                        for item in raw_falsifiers
+                        if isinstance(item, Mapping)
+                        and set(item) == {"condition", "expected_observation"}
+                        and str(item.get("condition", "")).strip()
+                        and str(item.get("expected_observation", "")).strip()
                     )
-                )
-                identity_term_sets = (
-                    (
-                        f"{item_path}.hypothesis_id",
-                        _h1_topic_terms(
-                            item.hypothesis_id.replace("_", " ").replace("-", " ")
-                        ),
-                    ),
-                    (f"{item_path}.query", _h1_topic_terms(item.query)),
-                )
-                for path, identity_terms in identity_term_sets:
+                    if len(falsifiers) != len(raw_falsifiers):
+                        raise ValidationError(
+                            "each falsifier requires condition and expected_observation"
+                        )
+                    semantic_texts = (
+                        *normalized_measurement.values(),
+                        query,
+                        *falsifiers,
+                    )
                     if any(
-                        stable_terms <= identity_terms
-                        for stable_terms in existing_signal_term_sets
+                        _fixed_semantics_match(text) is not None
+                        or _H1_ALTERNATE_TEST_OUTCOME.search(text) is not None
+                        for text in semantic_texts
                     ):
-                        add_item_issue(
-                            item,
-                            path,
-                            "Signal Mining H1 hypothesis restates an existing stable "
-                            f"Signal at {path}"
+                        raise ValidationError(
+                            "measurement, retrieval, and falsifiers must remain "
+                            "point-in-time and cannot redefine fixed outcome semantics"
                         )
-                if need_term_sets:
-                    if not any(
-                        len(hypothesis_terms & need_terms) >= 2
-                        for need_terms in need_term_sets
-                    ):
-                        add_item_issue(
-                            item,
-                            item_path,
-                            "Signal Mining H1 hypothesis must share at least two "
-                            "non-generic topic terms with one signal_need_item at "
-                            + item_path
-                        )
-            if issues:
-                structured_issues = [
-                    ValidationIssue(
-                        code="h1_portfolio_invalid",
-                        message=message,
-                        paths=("hypotheses",),
+                    need_refs = validate_need_refs(
+                        raw.get("need_refs"), path=f"{item_path}.need_refs"
                     )
-                    for message in issues[:global_issue_count]
-                ]
-                structured_issues.extend(item_issues)
-                raise StructuredValidationError(structured_issues)
-            return items
+                    seen_slots.add(proposal_ref)
+                    parsed.append(
+                        SignalMiningHypothesis(
+                            hypothesis_id=proposal_ref,
+                            statement=normalized_measurement["observable"],
+                            applicability=applicability,
+                            expected_positive_pattern=(
+                                "The runtime will test expected_direction="
+                                f"{expected_direction} across the fixed Discovery "
+                                "positive/control comparison."
+                            ),
+                            source_types=source_types,
+                            query=query,
+                            falsifiers=falsifiers,
+                            lookback_days=lookback_days,
+                            measurement=normalized_measurement,
+                            expected_direction=expected_direction,
+                        )
+                    )
+                except (TypeError, ValueError, ValidationError) as exc:
+                    issues.append(
+                        ValidationIssue(
+                            code="h1_hypothesis_v2_invalid",
+                            message=f"{item_path}: {exc}",
+                            paths=(item_path,),
+                            item_id=(proposal_ref if proposal_ref in allowed_slots else None),
+                            item_id_field="proposal_ref",
+                            allowed_repairs=("replace", "remove"),
+                        )
+                    )
+            if issues:
+                raise StructuredValidationError(issues)
+            conclusion_metadata.clear()
+            conclusion_metadata.update(
+                {
+                    "conclusion": "hypotheses",
+                    "reason_code": None,
+                    "rationale": [],
+                    "need_refs": sorted(
+                        {
+                            ref
+                            for raw in raw_items
+                            if isinstance(raw, Mapping)
+                            for ref in raw.get("need_refs", ())
+                        }
+                    ),
+                }
+            )
+            return tuple(parsed)
 
-        request_payload: Mapping[str, Any] = payload
         if self.identity_guard_aliases:
             _scan_payload(
-                request_payload,
+                payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
-                identity_boundary="Signal Mining H1 aggregate request",
+                identity_boundary="Signal Mining H1 v2 aggregate request",
             )
         value, usage = _complete_parsed_role(
             self.caller,
             stage="signal_mining_hypotheses",
             system_prompt=(
-                "Propose a small portfolio of falsifiable, reusable Signal hypotheses. "
-                "Use meta/backlog gaps and stable cards, prefer observable point-in-time "
-                "differences, and do not select companies or restate an existing Signal. "
-                "Treat stable_signal_cards and registered_deterministic_functions as "
-                "an exclusion list: do not rename, combine, or re-propose an existing "
-                "metric as a new Signal. prior_slow_work.refined_hypotheses preserves "
-                "the exact prior hypothesis with its evidence-grounded reasons; address "
-                "those reasons instead of merely restating the old hypothesis. Entries "
-                "under evidence_unavailable describe data failure, not evidence that the "
-                "hypothesis should be semantically changed. "
-                "capability_backlog.signal_need_items are identity-masked, label-hidden "
-                "needs that an actual Fast trajectory could not match to a stable Signal; "
-                "treat them as diagnostic demand, not as evidence that a candidate works. "
-                "When signal_need_items is non-empty, every hypothesis must directly "
-                "address one need and reuse at least two of its non-generic topic terms, "
-                "and the portfolio must contain at least one hypothesis. An empty "
-                "portfolio is valid only when signal_need_items is empty. "
-                "H3 tests point-in-time evidence available by each case's prediction "
-                "date against the fixed Discovery positive/control groups. Therefore "
-                "expected_positive_pattern must explicitly name both the positive "
-                "and control case/group/cohort, and statement, expected_positive_pattern, "
-                "and falsifiers must not invent a next-quarter, later-year, event-study, "
-                "short-window market reaction, return, momentum, outperformance, or "
-                "other outcome/horizon. Do not invent opaque case refs or bracketed "
-                "case placeholders. A statement must assert the measurable group "
-                "feature, not merely say data are available, observable, or inferable "
-                "from a source. Never compare raw absolute financial or operating scale "
-                "across issuers; normalize to a case-local expectation, guidance, prior "
-                "period, or ratio. applicability must be exactly one non-conjunctive "
-                "rule: all_ready_issuers, business_description_topics:<term>|..., or "
-                "one observed <field>_values:<value>|... rule listed in "
-                "h2_applicability_contract. Copy non-description values exactly from "
-                "that contract. Business-description values are 1-6 short visible "
-                "business topics with at most 8 total normalized terms; they cannot "
-                "require analyst/consensus/guidance/actual/decomposition/market-data/"
-                "classification facts. Free prose, multiple-field conjunctions, and "
-                "optional fields absent from the actual H2 pool are invalid. At least "
-                "one falsifier must name both fixed groups and say that "
-                "non-separation, overlap, or reversal refutes the hypothesis. Never "
-                "redefine either fixed group in parentheses or with a membership clause "
-                "such as positive/control cases are issuers that/with/as a candidate "
-                "result. Exact same-label or fixed-Discovery-group aliases are allowed; "
-                "group membership is already frozen. query must "
-                "be a concise 2-8 term retrieval topic, not Find/Search companies, a "
-                "numeric threshold, or another time-window instruction. Retrieve the "
-                "direction-neutral information subject for both fixed groups; do not "
-                "require the hypothesized favorable feature or conclusion in every "
-                "source. H3 tests its presence, absence, and direction from evidence. "
-                "For an invalid "
-                "hypothesis_id/query pair, make both express the same candidate "
-                "construct; expected_positive_pattern must retain at least half of "
-                "their shared normalized topic terms. For an invalid "
-                "applicability field, replace the whole field with one supplied canonical "
-                "rule; paraphrasing the rejected condition is not a correction. "
-                "On correction, preserve every hypothesis whose hypothesis_id is not "
-                "named by validation_error byte-for-byte; change or remove only named "
-                "invalid hypotheses. Non-empty signal_need_items mean the corrected "
-                "portfolio cannot be emptied to discard unaffected valid work. "
-                "lookback_days is only the pre-prediction "
-                "evidence window. Existing Signals exclude only a candidate whose own "
-                "hypothesis_id or query renames their measured construct; mentioning "
-                "an existing metric only as a comparison or falsifier is allowed. "
-                "Every source_types item must exactly equal one value from "
-                "available_raw_source_types; never pluralize or invent an alias."
+                "Propose only reusable, point-in-time observable measurements. The "
+                "runtime owns hypothesis identity, comparison groups, evidence window, "
+                "case selection, and limits; copy proposal_ref and need_refs exactly. "
+                "Use the supplied canonical applicability contract and source types. "
+                "A non-empty demand backlog is diagnostic demand, not proof that a new "
+                "testable measurement exists. Return no_testable_hypothesis when the "
+                "visible gaps, sources, or prior attempts do not support a new test. "
+                "Do not infer an event from an outcome label, redefine the fixed groups, "
+                "or encode a future outcome in the measurement. Existing Signal cards "
+                "are an exclusion catalog. On correction, change or remove only the "
+                "invalid proposal_ref; retain valid siblings byte-for-byte."
                 + _UNTRUSTED_DATA_INSTRUCTION
-                + _SIGNAL_MINING_HYPOTHESES_OUTPUT
+                + _SIGNAL_MINING_HYPOTHESES_V2_OUTPUT
             ),
-            payload=request_payload,
+            payload=payload,
             parser=parse,
             allow_outcomes=True,
             anonymous_aliases=self.identity_guard_aliases,
@@ -990,7 +1017,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata=dict(conclusion_metadata))
 
     def rank_cases(
         self, payload: Mapping[str, Any]

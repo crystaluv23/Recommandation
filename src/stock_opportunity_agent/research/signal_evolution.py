@@ -301,6 +301,7 @@ class SignalMiningConfig:
     exploration_interval: int = 3
     evidence_documents_per_case: int = 4
     evidence_lookback_days: int = 365
+    exploration_microbatch_size: int = 4
 
     def __post_init__(self) -> None:
         positive_fields = (
@@ -316,6 +317,7 @@ class SignalMiningConfig:
             "exploration_interval",
             "evidence_documents_per_case",
             "evidence_lookback_days",
+            "exploration_microbatch_size",
         )
         if any(getattr(self, name) < 1 for name in positive_fields):
             raise ValidationError("Signal Mining limits must be positive")
@@ -346,6 +348,7 @@ class SignalMiningConfig:
             "exploration_interval": self.exploration_interval,
             "evidence_documents_per_case": self.evidence_documents_per_case,
             "evidence_lookback_days": self.evidence_lookback_days,
+            "exploration_microbatch_size": self.exploration_microbatch_size,
         }
 
 
@@ -361,6 +364,9 @@ class SignalMiningHypothesis:
     query: str
     falsifiers: tuple[str, ...]
     lookback_days: int = 365
+    measurement: Mapping[str, str] | None = None
+    expected_direction: str | None = None
+    comparison: str = "fixed_discovery_positive_vs_control"
 
     def __post_init__(self) -> None:
         _validate_id(self.hypothesis_id, "mining hypothesis_id")
@@ -380,9 +386,28 @@ class SignalMiningHypothesis:
             raise ValidationError("Signal Mining hypothesis requires falsifiers")
         if self.lookback_days < 1 or self.lookback_days > 1825:
             raise ValidationError("Signal Mining lookback_days must be in [1, 1825]")
+        if self.measurement is not None:
+            required_measurement = {"observable", "value_kind", "normalization"}
+            if set(self.measurement) != required_measurement or any(
+                not str(self.measurement[key]).strip() for key in required_measurement
+            ):
+                raise ValidationError(
+                    "Signal Mining measurement requires observable, value_kind, and "
+                    "normalization"
+                )
+        if self.expected_direction is not None and self.expected_direction not in {
+            "higher_in_positive",
+            "lower_in_positive",
+            "more_frequent_in_positive",
+            "less_frequent_in_positive",
+            "different_between_groups",
+        }:
+            raise ValidationError("Signal Mining expected_direction is invalid")
+        if self.comparison != "fixed_discovery_positive_vs_control":
+            raise ValidationError("Signal Mining comparison must use fixed groups")
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "hypothesis_id": self.hypothesis_id,
             "statement": self.statement,
             "applicability": self.applicability,
@@ -392,6 +417,15 @@ class SignalMiningHypothesis:
             "falsifiers": list(self.falsifiers),
             "lookback_days": self.lookback_days,
         }
+        if self.measurement is not None:
+            result.update(
+                {
+                    "measurement": dict(self.measurement),
+                    "expected_direction": self.expected_direction,
+                    "comparison": self.comparison,
+                }
+            )
+        return result
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningHypothesis":
@@ -405,10 +439,15 @@ class SignalMiningHypothesis:
             "falsifiers",
             "lookback_days",
         }
-        if set(data) != required:
+        structured = {"measurement", "expected_direction", "comparison"}
+        if frozenset(data) not in {
+            frozenset(required),
+            frozenset(required | structured),
+        }:
             raise ValidationError(
                 "Signal Mining hypothesis requires exactly: "
                 + ", ".join(sorted(required))
+                + " with optional structured v2 fields"
             )
         return cls(
             hypothesis_id=str(data["hypothesis_id"]),
@@ -419,6 +458,19 @@ class SignalMiningHypothesis:
             query=str(data["query"]),
             falsifiers=_json_string_array(data, "falsifiers"),
             lookback_days=int(data["lookback_days"]),
+            measurement=(
+                {str(key): str(value) for key, value in data["measurement"].items()}
+                if isinstance(data.get("measurement"), Mapping)
+                else None
+            ),
+            expected_direction=(
+                str(data["expected_direction"])
+                if data.get("expected_direction") is not None
+                else None
+            ),
+            comparison=str(
+                data.get("comparison", "fixed_discovery_positive_vs_control")
+            ),
         )
 
 
@@ -705,6 +757,7 @@ class SignalUpdateDecision:
     problem_type: str
     rationale: tuple[str, ...]
     candidate: Mapping[str, Any] | None = None
+    case_diagnostics: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
         if re.fullmatch(
@@ -727,15 +780,25 @@ class SignalUpdateDecision:
             )
         if self.candidate is not None:
             object.__setattr__(self, "candidate", dict(self.candidate))
+        object.__setattr__(
+            self,
+            "case_diagnostics",
+            tuple(dict(item) for item in self.case_diagnostics),
+        )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "signal_ref": self.signal_ref,
             "disposition": self.disposition,
             "problem_type": self.problem_type,
             "rationale": list(self.rationale),
             "candidate": dict(self.candidate) if self.candidate is not None else None,
         }
+        if self.case_diagnostics:
+            result["case_diagnostics"] = [
+                dict(item) for item in self.case_diagnostics
+            ]
+        return result
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalUpdateDecision":
@@ -746,7 +809,7 @@ class SignalUpdateDecision:
             "rationale",
             "candidate",
         }
-        if set(data) != required:
+        if set(data) not in (required, required | {"case_diagnostics"}):
             raise ValidationError(
                 "Signal Update decision requires exactly: "
                 + ", ".join(sorted(required))
@@ -760,6 +823,11 @@ class SignalUpdateDecision:
             problem_type=str(data["problem_type"]),
             rationale=_json_string_array(data, "rationale"),
             candidate=dict(candidate) if candidate is not None else None,
+            case_diagnostics=tuple(
+                dict(item)
+                for item in data.get("case_diagnostics", ())
+                if isinstance(item, Mapping)
+            ),
         )
 
 
@@ -2099,6 +2167,7 @@ class SignalEvolutionEngine:
             resolutions.append(resolution_audit)
 
         payload = {
+            "update_contract_version": "signal-update-decision-v2",
             "fixed_prior": self.priors.update_signal,
             "target": {
                 "signal_ref": signal_ref,
@@ -2348,6 +2417,7 @@ class SignalEvolutionEngine:
                     "stages": {},
                     "failure_stage": exc.stage,
                     "error": str(exc),
+                    "failure_details": dict(exc.details),
                     "usage": _usage_to_dict(exc.usage),
                     "candidate_refs": [],
                     "refined_hypotheses": {},
@@ -2461,16 +2531,88 @@ class SignalEvolutionEngine:
         case_pairs = tuple((ref, case) for ref, case, _brief in selected_ready)
         briefs_by_ref = {ref: brief for ref, _case, brief in selected_ready}
         context = self._mining_context(cycle_id=cycle_id)
-        hypotheses_step = self.mining_model.propose_hypotheses(
+        applicability_contract = self._h2_applicability_contract(
+            briefs_by_ref.values()
+        )
+        h1_payload = {
+            "track": "hypothesis",
+            "h1_contract_version": "signal-mining-hypothesis-v2",
+            "hypothesis_slots": [
+                f"h1-c{cycle_id:04d}-s{index:02d}"
+                for index in range(1, config.hypothesis_limit + 1)
+            ],
+            "fixed_comparison": "fixed_discovery_positive_vs_control",
+            "limits": config.to_dict(),
+            "h2_applicability_contract": applicability_contract,
+            **context,
+        }
+        h1_input_fingerprint = _canonical_hash(
             {
-                "track": "hypothesis",
-                "limits": config.to_dict(),
-                "h2_applicability_contract": self._h2_applicability_contract(
-                    briefs_by_ref.values()
+                "schema_version": "signal-mining-h1-input-v2",
+                "contract": h1_payload["h1_contract_version"],
+                "limits": h1_payload["limits"],
+                "h2_applicability_contract": applicability_contract,
+                "capability_backlog": context["capability_backlog"],
+                "stable_signal_cards": context["stable_signal_cards"],
+                "available_raw_source_types": context[
+                    "available_raw_source_types"
+                ],
+                "registered_deterministic_functions": context[
+                    "registered_deterministic_functions"
+                ],
+                "mining_model": (
+                    dict(self.mining_model.work_identity)
+                    if isinstance(
+                        getattr(self.mining_model, "work_identity", None), Mapping
+                    )
+                    else (
+                        f"{type(self.mining_model).__module__}."
+                        f"{type(self.mining_model).__qualname__}"
+                    )
                 ),
-                **context,
             }
         )
+        prior_h1 = next(
+            (
+                item
+                for item in reversed(context["prior_slow_work"])
+                if item.get("h1_input_fingerprint") == h1_input_fingerprint
+                and dict(item.get("h1_conclusion", {})).get("conclusion")
+                in {"no_testable_hypothesis", "technical_failure"}
+            ),
+            None,
+        )
+        if prior_h1 is not None:
+            prior_conclusion = dict(prior_h1["h1_conclusion"])
+            audit["status"] = "unchanged_h1_work_suppressed"
+            audit["stages"]["H1"] = {
+                "contract_version": "signal-mining-hypothesis-v2",
+                "input_fingerprint": h1_input_fingerprint,
+                "conclusion": prior_conclusion,
+                "hypotheses": [],
+                "reused_from_prior_cycle": True,
+                "usage": _usage_to_dict(AgentUsage()),
+            }
+            audit["candidate_refs"] = []
+            audit["refined_hypotheses"] = {}
+            return self._mining_output(audit=audit, refined={})
+        try:
+            hypotheses_step = self.mining_model.propose_hypotheses(h1_payload)
+        except CandidateExecutionRejected as exc:
+            raise CandidateExecutionRejected(
+                exc.stage,
+                str(exc),
+                exc.usage,
+                details={
+                    **dict(exc.details),
+                    "contract_version": "signal-mining-hypothesis-v2",
+                    "input_fingerprint": h1_input_fingerprint,
+                    "conclusion": {
+                        "conclusion": "technical_failure",
+                        "reason_code": "structured_recovery_exhausted",
+                    },
+                },
+            ) from exc
         if len(hypotheses_step.value) > config.hypothesis_limit:
             raise ValidationError(
                 "Signal Mining hypothesis portfolio exceeds the configured limit"
@@ -2490,10 +2632,15 @@ class SignalEvolutionEngine:
                 continue
             hypotheses.append(hypothesis)
         audit["stages"]["H1"] = {
+            "contract_version": "signal-mining-hypothesis-v2",
+            "input_fingerprint": h1_input_fingerprint,
+            "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
             "usage": _usage_to_dict(hypotheses_step.usage),
         }
         if not hypotheses:
+            if hypotheses_step.metadata.get("conclusion") == "no_testable_hypothesis":
+                audit["status"] = "no_testable_hypothesis"
             audit["candidate_refs"] = []
             audit["refined_hypotheses"] = {
                 key: list(value) for key, value in refined.items()
@@ -2860,26 +3007,77 @@ class SignalEvolutionEngine:
             )
             evidence_packets.append(packet)
             resolution_audit.append(resolution)
-        extraction_step = self.mining_model.extract_exploration(
-            {
-                "track": "exploration",
-                "cases": evidence_packets,
-                "rules": {
-                    "labels_hidden": True,
-                    "identities_hidden": True,
-                    "describe_only_observable_patterns": True,
-                },
-            }
-        )
-        signatures = validate_signal_mining_signatures(
-            extraction_step.value,
-            evidence_packets,
-        )
+        signatures_list: list[SignalMiningSignature] = []
+        extraction_usage = AgentUsage()
+        extraction_failures: dict[str, tuple[str, ...]] = {}
+        microbatches: list[dict[str, Any]] = []
+        for start in range(0, len(evidence_packets), config.exploration_microbatch_size):
+            batch_packets = evidence_packets[
+                start : start + config.exploration_microbatch_size
+            ]
+            batch_refs = tuple(str(item["case_ref"]) for item in batch_packets)
+            try:
+                extraction_step = self.mining_model.extract_exploration(
+                    {
+                        "track": "exploration",
+                        "microbatch_ref": f"e1-batch-{start // config.exploration_microbatch_size + 1:03d}",
+                        "cases": batch_packets,
+                        "rules": {
+                            "labels_hidden": True,
+                            "identities_hidden": True,
+                            "describe_only_observable_patterns": True,
+                        },
+                    }
+                )
+                extraction_usage = extraction_usage + extraction_step.usage
+                batch_signatures = validate_signal_mining_signatures(
+                    extraction_step.value,
+                    batch_packets,
+                )
+            except CandidateExecutionRejected as exc:
+                extraction_usage = extraction_usage + exc.usage
+                reason = (
+                    "Exploration E1 microbatch exhausted structured recovery: "
+                    + str(exc),
+                )
+                for case_ref in batch_refs:
+                    extraction_failures[case_ref] = reason
+                microbatches.append(
+                    {
+                        "case_refs": list(batch_refs),
+                        "status": "technical_failure",
+                        "error": str(exc),
+                    }
+                )
+                continue
+            except RuntimeBudgetExceeded:
+                raise
+            except ValidationError as exc:
+                reason = (
+                    "Exploration E1 microbatch failed local result validation: "
+                    + str(exc),
+                )
+                for case_ref in batch_refs:
+                    extraction_failures[case_ref] = reason
+                microbatches.append(
+                    {
+                        "case_refs": list(batch_refs),
+                        "status": "validation_failure",
+                        "error": str(exc),
+                    }
+                )
+                continue
+            signatures_list.extend(batch_signatures)
+            microbatches.append(
+                {"case_refs": list(batch_refs), "status": "completed"}
+            )
+        signatures = tuple(signatures_list)
         signature_by_ref = {item.case_ref: item for item in signatures}
         grounded_signatures = tuple(
             signature_by_ref[case_ref]
             for case_ref in selected["e1_refs"]
-            if signature_by_ref[case_ref].observations
+            if case_ref in signature_by_ref
+            and signature_by_ref[case_ref].observations
         )
         grounded_by_class = {
             case_class: tuple(
@@ -2930,7 +3128,12 @@ class SignalEvolutionEngine:
                     "E1": {
                         "signatures": [item.to_dict() for item in signatures],
                         "resolutions": resolution_audit,
-                        "usage": _usage_to_dict(extraction_step.usage),
+                        "microbatches": microbatches,
+                        "failures": {
+                            key: list(value)
+                            for key, value in extraction_failures.items()
+                        },
+                        "usage": _usage_to_dict(extraction_usage),
                     },
                     "E2": {
                         "status": "not_called_evidence_unavailable",
@@ -2944,6 +3147,10 @@ class SignalEvolutionEngine:
             return self._mining_output(
                 audit=audit,
                 refined={"exploration_evidence": (reason,)},
+                failures={
+                    f"slow_loop:exploration_e1:{case_ref}": reasons
+                    for case_ref, reasons in extraction_failures.items()
+                },
             )
         revealed = [
             {
@@ -3013,7 +3220,11 @@ class SignalEvolutionEngine:
                 "E1": {
                     "signatures": [item.to_dict() for item in signatures],
                     "resolutions": resolution_audit,
-                    "usage": _usage_to_dict(extraction_step.usage),
+                    "microbatches": microbatches,
+                    "failures": {
+                        key: list(value) for key, value in extraction_failures.items()
+                    },
+                    "usage": _usage_to_dict(extraction_usage),
                 },
                 "E2": {
                     "decisions": [item.to_dict() for item in decisions],
@@ -3026,10 +3237,18 @@ class SignalEvolutionEngine:
                 key: list(value) for key, value in refined.items()
             },
         }
+        staged_with_failures = dict(staged)
+        staged_with_failures["failures"] = {
+            **dict(staged["failures"]),
+            **{
+                f"slow_loop:exploration_e1:{case_ref}": reasons
+                for case_ref, reasons in extraction_failures.items()
+            },
+        }
         return self._mining_output(
             audit=audit,
             refined=refined,
-            **staged,
+            **staged_with_failures,
         )
 
     def _mining_output(
@@ -3096,6 +3315,17 @@ class SignalEvolutionEngine:
                 if isinstance(audit, Mapping)
                 else []
             )
+            h1_stage = (
+                dict(dict(audit).get("stages", {})).get("H1", {})
+                if isinstance(audit, Mapping)
+                else {}
+            )
+            failure_details = (
+                dict(audit.get("failure_details", {}))
+                if isinstance(audit, Mapping)
+                and isinstance(audit.get("failure_details"), Mapping)
+                else {}
+            )
             refined_ids = set(
                 dict(validation.get("refined_hypotheses", {}))
             )
@@ -3136,6 +3366,26 @@ class SignalEvolutionEngine:
                         if isinstance(item, Mapping)
                         and item.get("hypothesis_id") in evidence_unavailable
                     ],
+                    "h1_conclusion": (
+                        dict(
+                            h1_stage.get(
+                                "conclusion", failure_details.get("conclusion", {})
+                            )
+                        )
+                        if isinstance(h1_stage, Mapping)
+                        and isinstance(h1_stage.get("conclusion"), Mapping)
+                        else {}
+                    ),
+                    "h1_input_fingerprint": (
+                        str(
+                            h1_stage.get(
+                                "input_fingerprint",
+                                failure_details.get("input_fingerprint", ""),
+                            )
+                        )
+                        if isinstance(h1_stage, Mapping)
+                        else ""
+                    ),
                 }
             )
         cards = [
@@ -3155,6 +3405,15 @@ class SignalEvolutionEngine:
                 "resolved_count": 0,
             }
         )
+        capability_backlog = dict(capability_backlog)
+        capability_backlog["signal_need_items"] = [
+            {
+                **dict(item),
+                "need_ref": str(item.get("need_ref") or "need-" + _canonical_hash(item)[:16]),
+            }
+            for item in capability_backlog.get("signal_need_items", ())
+            if isinstance(item, Mapping)
+        ]
         return {
             "cycle_id": cycle_id,
             "meta_info": list(self.meta_memory.model_view()),
@@ -3583,18 +3842,36 @@ class SignalEvolutionEngine:
         _assert_identity_values_masked(executed_evidence, aliases)
         packet = {
             "case_ref": case_ref,
-            "prediction_time": case.prediction_time.isoformat(),
-            "label": "positive" if case.ground_truth.is_surge else "control",
-            "executed_evidence": executed_evidence,
-            "evidence": evidence,
-            "evidence_scope": (
-                "executed_evidence is the Signal's exact cited projection; evidence "
-                "adds bounded context from every exact Signal execution input; "
-                "an excerpt cannot prove that an absent fact is absent from the source"
-            ),
-            "resolution_status": resolution.status,
-            "resolution_coverage": resolution.coverage.to_dict(),
-            "current_signal_result": masked_result,
+            "evidence_observation": {
+                "prediction_time": case.prediction_time.isoformat(),
+                "executed_evidence": executed_evidence,
+                "evidence": evidence,
+                "evidence_scope": (
+                    "executed_evidence is the Signal's exact cited projection; evidence "
+                    "adds bounded context from every exact Signal execution input; "
+                    "an excerpt cannot prove that an absent fact is absent from the source"
+                ),
+                "resolution_status": resolution.status,
+                "resolution_coverage": resolution.coverage.to_dict(),
+                "current_signal_result": masked_result,
+            },
+            "outcome_relation": {
+                "label": "positive" if case.ground_truth.is_surge else "control",
+                "current_signal_relation": (
+                    "not_assessable"
+                    if result.value in {SignalValue.UNAVAILABLE, SignalValue.NEUTRAL}
+                    else (
+                        "aligned"
+                        if (result.value is SignalValue.POSITIVE)
+                        == case.ground_truth.is_surge
+                        else "misaligned"
+                    )
+                ),
+                "rule": (
+                    "The label may assess directional association only after source "
+                    "support is judged; it is not evidence that a fact or event exists."
+                ),
+            },
         }
         return packet, {
             "case_ref": case_ref,

@@ -1,5 +1,27 @@
 # Status
 
+Current T4 Slow candidate-generation hardening (2026-09-08): production H1 now
+uses a versioned structured contract. The runtime owns stable proposal refs, the
+fixed Discovery comparison, and evidence lookback, while the model supplies a
+measurement object, canonical applicability rule, expected direction, retrieval
+intent, structured falsifiers, and demand refs. Validation no longer requires
+lexical overlap among model prose, query, and identifier. A non-empty capability
+backlog may end in a structured `no_testable_hypothesis` result rather than a
+forced candidate; its reason and H1 input fingerprint are committed and exposed
+to later cycles. Signal Update now separates label-free evidence observations
+from the runtime-computed outcome relation and requires each source fact to cite
+a supplied document ref and literal span before association is considered.
+Exploration E1 executes stable-ref microbatches; malformed batches are isolated
+as technical failures, valid siblings remain, the frozen validation cohort is
+unchanged, and E2 stops when either group lacks the configured grounded evidence
+floor. Stable-item correction can append an explicitly missing runtime-owned
+item without accepting rewrites to valid siblings. Superseded online H1 and
+Update protocols and their prose-regex tests have been removed; legacy persisted
+records remain readable at the compatibility boundary. This is the first T4
+slice; independent semantic blind review, bounded
+cross-cycle search/no-candidate diagnosis, and real closed-loop validation remain.
+All 582 tests and repository lint pass; no external request was sent.
+
 Current code organization audit (2026-09-08): the 15,507-line evolution runtime
 and 12,071-line scheme engine are now stable 51-line and 17-line import facades.
 Their implementation is separated into dataset, settings, transport, structured
@@ -42,7 +64,7 @@ stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
 T3 promotion recovery now fails closed while a prepared transition exists and
 reconciles the same batch across preparation, every stable-file class, Registry
 version, output snapshot, promotion-record, and cycle-pointer fault boundaries.
-T3 is complete. The rest of T2 and T4-T7 remain open; no external request was
+T3 is complete. The rest of T2, the remaining T4 work, and T5-T7 remain open; no external request was
 sent. All 595 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request

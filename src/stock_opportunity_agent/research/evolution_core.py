@@ -535,6 +535,7 @@ class AgentStep(Generic[T]):
 
     value: T
     usage: AgentUsage = field(default_factory=AgentUsage)
+    metadata: Mapping[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -1803,9 +1804,11 @@ class CandidateExecutionRejected(ValidationError):
         stage: str,
         message: str,
         usage: AgentUsage = AgentUsage(),
+        details: Mapping[str, Any] | None = None,
     ) -> None:
         self.stage = str(stage)
         self.usage = usage
+        self.details = dict(details or {})
         super().__init__(message)
 
 

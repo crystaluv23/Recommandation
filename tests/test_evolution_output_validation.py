@@ -4,19 +4,6 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class ScopedCorrectionProjectionTests(TestCase):
-    def test_group_alias_recognition_does_not_relax_membership_guard(self) -> None:
-        for label in ("positive", "control"):
-            for qualifier in ("Discovery", "fixed Discovery", "fixed"):
-                text = f"{label} {qualifier} cases are issuers with high growth"
-                self.assertIsNotNone(
-                    evolution_runtime_module._H1_GROUP_REDEFINITION_PATTERN.search(text)
-                )
-        self.assertIsNone(
-            evolution_runtime_module._H1_POSITIVE_CASE_PATTERN.search(
-                "Positive revenue and negative costs occur in the control cases."
-            )
-        )
-
     def test_nested_projection_preserves_null_siblings_and_source_objects(self) -> None:
         invalid = {"rows": [{"value": "invalid", "keep": [1, 2]}], "keep": "old"}
         corrected = {"rows": [{"value": None, "keep": []}], "keep": "drift"}
@@ -109,6 +96,40 @@ class ScopedCorrectionProjectionTests(TestCase):
         self.assertEqual(feedback["validation_contract"], "structured-validation-v1")
         self.assertEqual(feedback["required_change_paths"], ["rows[0].value"])
         self.assertEqual(feedback["obligations"][0]["item_id"], "bad")
+
+    def test_structured_issue_adds_only_missing_stable_item(self) -> None:
+        invalid = {"rows": [{"row_id": "present", "value": 1}]}
+        corrected = {
+            "rows": [
+                {"row_id": "present", "value": 99},
+                {"row_id": "missing", "value": 2},
+            ]
+        }
+        projected = evolution_runtime_module._project_scoped_correction(
+            invalid,
+            corrected,
+            ["rows[1]"],
+            stable_item_paths={
+                "rows[1]": {
+                    "item_id": "missing",
+                    "item_id_field": "row_id",
+                    "allowed_repairs": ("add",),
+                }
+            },
+        )
+
+        self.assertEqual(
+            projected,
+            (
+                {
+                    "rows": [
+                        {"row_id": "present", "value": 1},
+                        {"row_id": "missing", "value": 2},
+                    ]
+                },
+                ("rows[1]",),
+            ),
+        )
 
     def test_remaining_correction_cannot_launder_unrelated_drift(self) -> None:
         for repairable_shape in (True, False):

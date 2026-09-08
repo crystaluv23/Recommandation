@@ -32,11 +32,8 @@ from stock_opportunity_agent.research.evolution_settings import (
 )
 from stock_opportunity_agent.research.evolution_signal_roles import *  # noqa: F403
 from stock_opportunity_agent.research.evolution_signal_roles import (
-    _H1_GROUP_REDEFINITION_PATTERN,
-    _H1_POSITIVE_CASE_PATTERN,
     _SIGNAL_MINING_DECISIONS_OUTPUT,
     _SIGNAL_MINING_SIGNATURES_OUTPUT,
-    _SIGNAL_UPDATE_OUTPUT,
     _SignalProjectionLineage,
     _map_projected_signal_evidence,
 )

@@ -8,6 +8,17 @@ Fast/Slow engine dependency.
 
 ## Invariants
 
+- `AgentStep` may carry bounded, non-authoritative role metadata alongside its
+  value and usage. Controllers persist only the metadata fields defined by the
+  owning role contract; metadata never changes domain success or commit state.
+- A rejected candidate role may attach structured diagnostic details for
+  persistence. These details explain failed work and its input identity; they
+  never convert the rejection into a domain result or widen recovery scope.
+- Stable-item correction may add one explicitly missing item only when its
+  structured issue names the runtime-owned item ID and grants `add`. Existing
+  siblings are copied from the failed response, so a correction cannot rewrite
+  them while filling the omission.
+
 - Point-in-time and identity masking rules remain fail closed.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.

@@ -2119,11 +2119,19 @@ def _project_scoped_correction(
                         if isinstance(item, Mapping)
                         and item.get(item_id_field) == item_id
                     ]
+                    allowed_repairs = stable_item.get("allowed_repairs", ())
+                    if (
+                        not target_matches
+                        and len(source_matches) == 1
+                        and final
+                        and "add" in allowed_repairs
+                    ):
+                        target.append(deepcopy(source[source_matches[0]]))
+                        break
                     if len(target_matches) != 1 or len(source_matches) > 1:
                         return None
                     target_token = target_matches[0]
                     if not source_matches:
-                        allowed_repairs = stable_item.get("allowed_repairs", ())
                         if final and "remove" in allowed_repairs:
                             del target[target_token]
                             break

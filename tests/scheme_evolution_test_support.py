@@ -189,7 +189,15 @@ class ScriptedMiningModel(EmptyMiningModel):
 
     def extract_exploration(self, payload):
         self.requests.append(dict(payload))
-        return AgentStep(self.signatures, AgentUsage(llm_calls=1))
+        requested = {
+            str(item["case_ref"])
+            for item in payload.get("cases", ())
+            if isinstance(item, Mapping) and item.get("case_ref")
+        }
+        return AgentStep(
+            tuple(item for item in self.signatures if item.case_ref in requested),
+            AgentUsage(llm_calls=1),
+        )
 
     def discover_exploration(self, payload):
         self.requests.append(dict(payload))
@@ -499,6 +507,7 @@ def fixture_mining_config(case_count: int) -> SignalMiningConfig:
         h2_min_ready_per_class=per_class,
         induction_cases_per_class=min(2, per_class),
         validation_cases_per_class=min(2, max(1, per_class - 1)),
+        exploration_microbatch_size=max(1, case_count),
     )
 
 

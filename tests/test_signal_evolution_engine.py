@@ -1166,6 +1166,13 @@ class SignalEvolutionTests(TestCase):
                 "signal_mining_hypotheses",
             )
             self.assertEqual(hypothesis_audit["usage"]["llm_calls"], 3)
+            self.assertEqual(
+                hypothesis_audit["failure_details"]["conclusion"]["conclusion"],
+                "technical_failure",
+            )
+            self.assertTrue(
+                hypothesis_audit["failure_details"]["input_fingerprint"]
+            )
             self.assertEqual(result["audit"]["exploration"]["track"], "exploration")
             self.assertIn(
                 "exploration_event_pattern", result["refined_hypotheses"]
@@ -1194,13 +1201,112 @@ class SignalEvolutionTests(TestCase):
                 mining_config=engine.mining_config,
             )
 
-            with self.assertRaises(CandidateExecutionRejected) as caught:
-                failed_engine._run_signal_mining(cycle_id=1)
+            failed = failed_engine._run_signal_mining(cycle_id=1)
 
-            self.assertEqual(caught.exception.stage, "signal_mining_pipeline")
-            self.assertEqual(caught.exception.usage.llm_calls, 5)
-            self.assertIn("hypothesis track failed", str(caught.exception))
-            self.assertIn("Exploration track also failed", str(caught.exception))
+            self.assertEqual(failed["candidate_refs"], ())
+            self.assertEqual(
+                failed["audit"]["status"], "completed_with_hypothesis_failure"
+            )
+            exploration = failed["audit"]["exploration"]
+            self.assertEqual(
+                exploration["stages"]["E2"]["status"],
+                "not_called_evidence_unavailable",
+            )
+            self.assertEqual(
+                exploration["stages"]["E1"]["usage"]["llm_calls"], 2
+            )
+            self.assertEqual(len(failed["failures"]), 2)
+            self.assertTrue(
+                all(
+                    "exhausted structured recovery" in " ".join(reasons)
+                    for reasons in failed["failures"].values()
+                )
+            )
+
+    def test_identical_committed_no_hypothesis_suppresses_repeated_h1_work(
+        self,
+    ) -> None:
+        class NoHypothesisModel(EmptyMiningModel):
+            def propose_hypotheses(self, payload):
+                self.requests.append(dict(payload))
+                return AgentStep(
+                    (),
+                    AgentUsage(llm_calls=1),
+                    metadata={
+                        "conclusion": "no_testable_hypothesis",
+                        "reason_code": "insufficient_retrieval_basis",
+                        "rationale": ["No new measurable field is visible."],
+                        "need_refs": [],
+                    },
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"no_hypothesis_{index}", 4.0 if index < 2 else 1.1)
+                for index in range(4)
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"no-hypothesis-news-{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=f"{case.company_id} published a routine update.",
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            workspace = EvolutionWorkspace(root / "workspace")
+            model = NoHypothesisModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=4,
+                    ranking_case_limit=4,
+                    h2_profile_scan_limit=4,
+                    h2_min_ready_issuers=4,
+                    h2_min_ready_per_class=2,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+
+            first = engine._run_signal_mining(cycle_id=1)
+            cycle_dir = workspace.experiments_root / "cycles" / "cycle-0001"
+            cycle_dir.mkdir(parents=True)
+            (cycle_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "refined_hypotheses": {},
+                            "agent_audits": {"mining_pipeline": first["audit"]},
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            second = engine._run_signal_mining(cycle_id=2)
+
+            self.assertEqual(len(model.requests), 1)
+            self.assertEqual(
+                second["audit"]["status"], "unchanged_h1_work_suppressed"
+            )
+            self.assertTrue(
+                second["audit"]["stages"]["H1"]["reused_from_prior_cycle"]
+            )
 
     def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
         self,
@@ -1800,6 +1906,13 @@ class SignalEvolutionTests(TestCase):
                                     },
                                     "stages": {
                                         "H1": {
+                                            "input_fingerprint": "h1-input-hash",
+                                            "conclusion": {
+                                                "conclusion": "no_testable_hypothesis",
+                                                "reason_code": (
+                                                    "insufficient_retrieval_basis"
+                                                ),
+                                            },
                                             "hypotheses": [refined, unavailable]
                                         }
                                     },
@@ -1826,6 +1939,11 @@ class SignalEvolutionTests(TestCase):
                     "hypothesis": unavailable,
                     "reasons": ["No query-relevant 10-Q was available."],
                 },
+            )
+            self.assertEqual(prior["h1_input_fingerprint"], "h1-input-hash")
+            self.assertEqual(
+                prior["h1_conclusion"]["conclusion"],
+                "no_testable_hypothesis",
             )
 
     def test_signal_update_uses_one_induction_call_and_local_holdout_gate(self) -> None:
@@ -1962,16 +2080,22 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(update_audit["target_count"], 1)
             target_audit = update_audit["targets"][0]
             for packet in update_model.requests[0]["induction_cases"]:
-                self.assertIn("excerpt cannot prove", packet["evidence_scope"])
-                self.assertEqual(len(packet["evidence"]), 1)
-                self.assertTrue(packet["executed_evidence"])
+                observation = packet["evidence_observation"]
+                self.assertIn(
+                    "excerpt cannot prove",
+                    observation["evidence_scope"],
+                )
+                self.assertEqual(len(observation["evidence"]), 1)
+                self.assertTrue(observation["executed_evidence"])
                 cited_refs = {
-                    item["document_ref"] for item in packet["executed_evidence"]
+                    item["document_ref"]
+                    for item in observation["executed_evidence"]
                 }
                 self.assertEqual(
-                    packet["evidence"][0]["document_ref"], next(iter(cited_refs))
+                    observation["evidence"][0]["document_ref"],
+                    next(iter(cited_refs)),
                 )
-                result_evidence = packet["current_signal_result"]["evidence"]
+                result_evidence = observation["current_signal_result"]["evidence"]
                 self.assertTrue(
                     result_evidence["supporting"] or result_evidence["counter"]
                 )
@@ -2598,6 +2722,112 @@ class SignalEvolutionTests(TestCase):
                 "not_called_evidence_unavailable",
             )
             self.assertIn("exploration_evidence", result["refined_hypotheses"])
+
+    def test_exploration_microbatch_failure_preserves_valid_siblings(self) -> None:
+        class OneFailedMicrobatchModel(ScriptedMiningModel):
+            def __init__(self, *, failed_ref, **kwargs):
+                super().__init__(**kwargs)
+                self.failed_ref = failed_ref
+
+            def extract_exploration(self, payload):
+                refs = [item["case_ref"] for item in payload["cases"]]
+                if self.failed_ref in refs:
+                    self.requests.append(dict(payload))
+                    raise CandidateExecutionRejected(
+                        "signal_mining_exploration_extract",
+                        "one isolated response remained malformed",
+                        AgentUsage(llm_calls=2),
+                    )
+                return super().extract_exploration(payload)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"micro_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"micro_control_{index}", 1.1) for index in range(4)]
+            )
+            selection = exploration_selection(
+                cases, cycle_id=3, induction_per_class=1, validation_per_class=1
+            )
+            failed_ref = selection["e1_by_class"][True][0]
+            signatures = tuple(
+                SignalMiningSignature(
+                    case_ref=case_ref,
+                    observations=(
+                        SignalMiningObservation(
+                            summary="A bounded event was reported.",
+                            document_ref="document-01",
+                            exact_span="A bounded observable event was reported.",
+                        ),
+                    ),
+                )
+                for case_ref in selection["e1_refs"]
+            )
+            mining_model = OneFailedMicrobatchModel(
+                failed_ref=failed_ref,
+                signatures=signatures,
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id="microbatch_pattern",
+                        disposition="refine",
+                        rationale=("More evidence is required.",),
+                    ),
+                ),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"micro-news-{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} reported: "
+                            "A bounded observable event was reported."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            config = SignalMiningConfig(
+                case_pool_limit=8,
+                ranking_case_limit=8,
+                h2_profile_scan_limit=8,
+                h2_min_ready_issuers=8,
+                h2_min_ready_per_class=4,
+                induction_cases_per_class=1,
+                validation_cases_per_class=1,
+                exploration_microbatch_size=1,
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=config,
+            )
+
+            result = engine._run_signal_mining(cycle_id=3)
+
+            e1 = result["audit"]["stages"]["E1"]
+            self.assertEqual(len(e1["microbatches"]), 4)
+            self.assertEqual(e1["failures"].keys(), {failed_ref})
+            self.assertEqual(len(e1["signatures"]), 3)
+            self.assertIn("microbatch_pattern", result["refined_hypotheses"])
+            self.assertEqual(
+                result["audit"]["local_selection"]["validation_case_refs"],
+                list(selection["validation_refs"]),
+            )
+            self.assertIn(
+                f"slow_loop:exploration_e1:{failed_ref}", result["failures"]
+            )
 
     def test_exploration_uses_bounded_same_group_evidence_fallback(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -51,7 +51,7 @@ class ValidationIssue:
         if self.path_policy not in {"all", "any"}:
             raise ValueError("validation issue path_policy is invalid")
         if not self.allowed_repairs or any(
-            repair not in {"replace", "remove", "quarantine"}
+            repair not in {"replace", "remove", "quarantine", "add"}
             for repair in self.allowed_repairs
         ):
             raise ValueError("validation issue allowed repairs are invalid")
