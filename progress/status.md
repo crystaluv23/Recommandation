@@ -1,5 +1,23 @@
 # Status
 
+Completed the offline portion of T6's generalized reliability matrix
+(2026-09-08): [`self-evolution-reliability-matrix-2026-09-08.md`](self-evolution-reliability-matrix-2026-09-08.md)
+maps format/API, evidence, recovery, persistence, generalization, injected error
+distributions, and no-learning controls to deterministic acceptance tests and
+the remaining live evidence. New cross-cutting tests exercise 0%, 10%,
+distributed 20%, and issuer-clustered 20% technical failures without dropping
+system or capability cases; valid siblings can still satisfy explicit
+tolerances, while failures on supporting positive cases now reduce Binary F1.
+The audit found and fixed the prior successful-row-only F1 calculation: known
+positive technical failures are false negatives, and negative technical
+failures stay explicit instead of becoming true negatives. Transport coverage
+now includes retryable 429/5xx/timeout/URL failures, permanent HTTP errors,
+refusal/no-text envelopes, unrelated provider fields, and missing usage
+metadata. T1-T5 and offline T6 are complete; the real two-provider pilot,
+approved statistical/reliability thresholds, and T7 live closure remain open.
+All 613 tests, compileall, diff checks, and repository lint pass; no external
+request was sent.
+
 Completed T5 offline evolution-benefit confirmation tooling (2026-09-08): a
 frozen, explicit protocol now compares baseline/candidate Plan and Registry in
 all four combinations on the same cases, issuer groups, source corpus, model,

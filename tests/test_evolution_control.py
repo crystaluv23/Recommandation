@@ -1261,6 +1261,25 @@ class RunControlTests(TestCase):
         self.assertEqual(usage["prompt_cache_hit_tokens"], 64)
         self.assertEqual(usage["prompt_cache_miss_tokens"], 36)
 
+    def test_provider_usage_keeps_conservative_estimate_when_metadata_missing(
+        self,
+    ) -> None:
+        usage = evolution_runtime_module._provider_usage_record(
+            {},
+            input_tokens=100,
+            output_tokens=5,
+            cost=0.01,
+        )
+
+        self.assertEqual(
+            usage,
+            {
+                "input_tokens": 100,
+                "output_tokens": 5,
+                "cost": 0.01,
+            },
+        )
+
     def test_structured_client_records_optional_binary_token_scores(self) -> None:
         class RecordingClient:
             supports_token_logprobs = True

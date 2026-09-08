@@ -845,6 +845,7 @@ def _system_metrics(
 ) -> dict[str, Any]:
     values = tuple(rows)
     evaluable = tuple(row for row in values if row.evaluable)
+    unevaluable = tuple(row for row in values if not row.evaluable)
     true_positive = sum(row.predicted_surge and row.actual_surge for row in evaluable)
     false_positive = sum(
         row.predicted_surge and not row.actual_surge for row in evaluable
@@ -852,9 +853,12 @@ def _system_metrics(
     true_negative = sum(
         not row.predicted_surge and not row.actual_surge for row in evaluable
     )
-    false_negative = sum(
+    predicted_false_negative = sum(
         not row.predicted_surge and row.actual_surge for row in evaluable
     )
+    failed_positive = sum(row.actual_surge for row in unevaluable)
+    failed_negative = len(unevaluable) - failed_positive
+    false_negative = predicted_false_negative + failed_positive
     precision = _ratio(true_positive, true_positive + false_positive)
     recall = _ratio(true_positive, true_positive + false_negative)
     missing = expected_count - len(values)
@@ -875,6 +879,8 @@ def _system_metrics(
             "false_positive": false_positive,
             "true_negative": true_negative,
             "false_negative": false_negative,
+            "technical_failure_on_positive": failed_positive,
+            "technical_failure_on_negative": failed_negative,
         },
         "binary_precision": precision,
         "binary_recall": recall,
@@ -1174,6 +1180,7 @@ def _validate_response_reuse(rows: Iterable[SystemCaseResult]) -> None:
     within_replicate: dict[tuple[str, str], str] = {}
     response_replicate: dict[str, str] = {}
     response_input: dict[str, str] = {}
+    response_outcome: dict[str, tuple[bool | None, bool, bool]] = {}
     for row in rows:
         if row.input_hash is None or row.response_id is None:
             continue
@@ -1186,6 +1193,14 @@ def _validate_response_reuse(rows: Iterable[SystemCaseResult]) -> None:
         prior_input = response_input.setdefault(row.response_id, row.input_hash)
         if prior_input != row.input_hash:
             raise ValidationError("one response invocation has multiple model inputs")
+        outcome = (
+            row.predicted_surge,
+            row.contract_valid,
+            row.execution_failed,
+        )
+        prior_outcome = response_outcome.setdefault(row.response_id, outcome)
+        if prior_outcome != outcome:
+            raise ValidationError("one response invocation has conflicting outputs")
         prior_replicate = response_replicate.setdefault(
             row.response_id, row.replicate_id
         )

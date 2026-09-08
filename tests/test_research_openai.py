@@ -1,6 +1,8 @@
 from http.client import IncompleteRead
+from io import BytesIO
 from unittest import TestCase
 from unittest.mock import patch
+from urllib.error import HTTPError, URLError
 
 from stock_opportunity_agent.config import PromptConfig
 from stock_opportunity_agent.llm import create, registered
@@ -152,3 +154,113 @@ class OpenAIChatClientTests(TestCase):
             captured[0][0].data,
             '{"a":1,"z":"匿名证据"}'.encode("utf-8"),
         )
+
+    def test_urllib_transport_retries_generic_temporary_failures(self) -> None:
+        temporary_failures = (
+            HTTPError(
+                "https://api.example.test/responses",
+                429,
+                "rate limited",
+                {},
+                BytesIO(b'{"error":"rate limited"}'),
+            ),
+            HTTPError(
+                "https://api.example.test/responses",
+                503,
+                "unavailable",
+                {},
+                BytesIO(b'{"error":"unavailable"}'),
+            ),
+            URLError("temporary DNS failure"),
+            TimeoutError("socket timed out"),
+        )
+        for failure in temporary_failures:
+            with self.subTest(failure=type(failure).__name__):
+                with patch(
+                    "stock_opportunity_agent.llm.openai.request.urlopen",
+                    side_effect=[failure, JsonResponse()],
+                ) as urlopen:
+                    result = UrllibTransport(
+                        max_attempts=2,
+                        retry_backoff_seconds=0,
+                    ).post_json(
+                        "https://api.example.test/responses",
+                        {},
+                        {"ok": True},
+                    )
+
+                self.assertEqual(result, {"ok": True})
+                self.assertEqual(urlopen.call_count, 2)
+
+    def test_urllib_transport_does_not_retry_permanent_http_failure(self) -> None:
+        failure = HTTPError(
+            "https://api.example.test/responses",
+            400,
+            "bad request",
+            {},
+            BytesIO(b'{"error":"bad request"}'),
+        )
+        with patch(
+            "stock_opportunity_agent.llm.openai.request.urlopen",
+            side_effect=failure,
+        ) as urlopen:
+            with self.assertRaises(OpenAIClientError):
+                UrllibTransport(
+                    max_attempts=3,
+                    retry_backoff_seconds=0,
+                ).post_json(
+                    "https://api.example.test/responses",
+                    {},
+                    {"ok": True},
+                )
+
+        self.assertEqual(urlopen.call_count, 1)
+
+    def test_responses_envelope_ignores_unrelated_items_and_rejects_refusal(
+        self,
+    ) -> None:
+        client = OpenAIChatClient(
+            "gpt-5.4-mini",
+            "test-key",
+            transport=FakeTransport(
+                {
+                    "id": "response_with_tool",
+                    "model": "gpt-5.4-mini",
+                    "output": [
+                        {"type": "web_search_call", "status": "completed"},
+                        {
+                            "type": "message",
+                            "content": [
+                                {"type": "output_text", "text": '{"ok":true}'},
+                                {"type": "annotation", "value": "ignored"},
+                            ],
+                        },
+                    ],
+                    "usage": None,
+                    "provider_extra": {"shape": "allowed"},
+                }
+            ),
+        )
+        result = client.complete([ChatMessage("user", "Return JSON.")])
+        self.assertEqual(result.output_text, '{"ok":true}')
+
+        refusing = OpenAIChatClient(
+            "gpt-5.4-mini",
+            "test-key",
+            transport=FakeTransport(
+                {
+                    "id": "response_refusal",
+                    "model": "gpt-5.4-mini",
+                    "output": [
+                        {
+                            "type": "message",
+                            "content": [
+                                {"type": "refusal", "refusal": "Cannot comply."}
+                            ],
+                        }
+                    ],
+                }
+            ),
+        )
+        with self.assertRaisesRegex(OpenAIClientError, "no output_text"):
+            refusing.complete([ChatMessage("user", "Return JSON.")])

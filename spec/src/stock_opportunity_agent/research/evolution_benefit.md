@@ -47,13 +47,20 @@ the report `incomplete`; they are never dropped before recomputing F1.
 Within one replicate, arms with the exact same model input hash must reuse the
 same response invocation. Distinct replicate ids must use independent response
 invocations when a model call occurs. This separates paired response reuse from
-sampling-variance experiments.
+sampling-variance experiments. One response invocation also has one prediction
+and validation outcome; attaching different outputs to the same invocation is
+invalid rather than evidence of arm lift.
 
 The report contains confusion counts and F1, coverage, technical failure rate,
 cost, paired improvement/regression counts, Plan-only lift, Registry-only lift,
 combined lift, their interaction, and a deterministic issuer-cluster bootstrap
 interval. Retrieval coverage and cost deltas remain visible; they cannot be
 silently attributed to a Signal skill.
+
+A received technical failure with a known positive label counts as a false
+negative in Binary F1 instead of disappearing from the score. Failures on known
+negative labels remain explicit confusion diagnostics and are bounded by the
+separate failure-rate criterion; they are not counted as true negatives.
 
 The overall result is `gain_confirmed`, `no_gain`, or `incomplete`. Every frozen
 criterion must pass for `gain_confirmed`. A complete evaluable comparison that
