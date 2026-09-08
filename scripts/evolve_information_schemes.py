@@ -97,6 +97,7 @@ DEFAULT_EXPANSION_PREDICTION_DATES = (
 )
 DEFAULT_ANCHOR_CASES = PROJECT_ROOT / "configs" / "information_plan_anchor_cases_v1.json"
 DEFAULT_FINALIZATION_TOKEN_RESERVE = RuntimeLimits().finalization_token_reserve
+DEFAULT_MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES = 3
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -284,6 +285,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=0,
         help="0 continues until Ctrl+C; positive values stop after that many cycles",
+    )
+    run_loop.add_argument(
+        "--max-consecutive-no-candidate-cycles",
+        type=int,
+        default=DEFAULT_MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES,
+        help=(
+            "stop after this many consecutive committed cycles produce no "
+            "Mining or Update candidate"
+        ),
     )
     run_loop.add_argument(
         "--dashboard-root", type=Path, default=DEFAULT_EVOLUTION_ROOT
@@ -887,7 +897,16 @@ def run_cycle_command(
         "validated_signal_candidates": dict(
             result.signal_evolution.validated_candidates
         ),
+        "mined_signal_candidates": list(
+            result.signal_evolution.mined_candidates
+        ),
+        "updated_signal_candidates": list(
+            result.signal_evolution.updated_candidates
+        ),
         "promoted_signals": list(result.signal_evolution.promoted),
+        "search_input_fingerprint": (
+            result.signal_evolution.search_input_fingerprint
+        ),
         "input_registry_version": result.signal_evolution.input_registry_version,
         "input_registry_hash": result.signal_evolution.input_registry_hash,
         "output_registry_version": result.signal_evolution.output_registry_version,
@@ -899,6 +918,157 @@ def run_cycle_command(
     }
 
 
+def _no_candidate_cycle_category(validation: dict[str, object]) -> list[str]:
+    """Classify one committed no-candidate Slow result without changing state."""
+
+    categories: set[str] = set()
+    rejected = validation.get("rejected", {})
+    if isinstance(rejected, dict) and any(
+        str(key).startswith("slow_loop:") for key in rejected
+    ):
+        categories.add("technical_failure")
+    audits = validation.get("agent_audits", {})
+    mining = audits.get("mining_pipeline", {}) if isinstance(audits, dict) else {}
+    if isinstance(mining, dict):
+        hypothesis = (
+            mining.get("hypothesis", {})
+            if mining.get("track") == "hypothesis_then_exploration_fallback"
+            else mining
+        )
+        statuses = {
+            str(item.get("status", ""))
+            for item in (mining, hypothesis, mining.get("exploration", {}))
+            if isinstance(item, dict)
+        }
+        if "no_testable_hypothesis" in statuses:
+            categories.add("no_testable_hypothesis")
+        if "unchanged_h1_work_suppressed" in statuses:
+            categories.add("unchanged_work")
+        if any("failed" in status for status in statuses):
+            categories.add("technical_failure")
+        if isinstance(hypothesis, dict) and hypothesis.get("evidence_unavailable"):
+            categories.add("evidence_unavailable")
+        work_rows = (
+            hypothesis.get("hypothesis_work", ())
+            if isinstance(hypothesis, dict)
+            else ()
+        )
+        if isinstance(work_rows, list) and any(
+            isinstance(item, dict)
+            and item.get("status") == "unchanged_work_suppressed"
+            for item in work_rows
+        ):
+            categories.add("unchanged_work")
+    if validation.get("refined_hypotheses"):
+        categories.add("refinement_without_candidate")
+    update = audits.get("update_pipeline", {}) if isinstance(audits, dict) else {}
+    if isinstance(update, dict) and update.get("disposition") == "no_actionable_target":
+        categories.add("no_actionable_update")
+    return sorted(categories or {"no_candidate"})
+
+
+def _committed_no_candidate_diagnosis(
+    workspace_path: Path,
+) -> dict[str, object]:
+    """Describe the latest committed run of cycles that produced no candidate."""
+
+    workspace = EvolutionWorkspace(workspace_path)
+    rows: list[dict[str, object]] = []
+    for cycle_id in range(workspace.last_completed_cycle, 0, -1):
+        path = (
+            workspace.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_validation.json"
+        )
+        if not path.is_file():
+            break
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValidationError(
+                f"cannot read committed Slow validation: {path}"
+            ) from exc
+        if not isinstance(payload, dict):
+            raise ValidationError(
+                f"committed Slow validation must be an object: {path}"
+            )
+        validation = payload.get("validation", {})
+        if not isinstance(validation, dict):
+            raise ValidationError(
+                f"committed Slow validation must be an object: {path}"
+            )
+        candidate_refs: list[object] = []
+        for key in ("mined_candidates", "updated_candidates"):
+            refs = validation.get(key, [])
+            if not isinstance(refs, list):
+                raise ValidationError(
+                    f"committed Slow validation {key} must be an array: {path}"
+                )
+            candidate_refs.extend(refs)
+        if candidate_refs:
+            break
+        rows.append(
+            {
+                "cycle_id": cycle_id,
+                "search_input_fingerprint": str(
+                    validation.get("search_input_fingerprint", "")
+                ),
+                "categories": _no_candidate_cycle_category(validation),
+            }
+        )
+    rows.reverse()
+    fingerprints = [
+        str(row["search_input_fingerprint"])
+        for row in rows
+        if row["search_input_fingerprint"]
+    ]
+    return {
+        "consecutive_no_candidate_cycles": len(rows),
+        "cycle_ids": [int(row["cycle_id"]) for row in rows],
+        "search_input_fingerprints": fingerprints,
+        "search_input_changed_within_streak": len(set(fingerprints)) > 1,
+        "categories": sorted(
+            {
+                str(category)
+                for row in rows
+                for category in row["categories"]
+            }
+        ),
+    }
+
+
+def _no_candidate_limit_result(
+    *,
+    workspace_path: Path,
+    diagnosis: dict[str, object],
+    limit: int,
+    completed_cycles: list[int],
+    on_progress=None,
+) -> dict[str, object]:
+    """Persist and return one supervisor stop without moving cycle pointers."""
+
+    workspace = EvolutionWorkspace(workspace_path)
+    event = workspace.append_event(
+        "no_candidate_search_limit_reached",
+        {
+            **diagnosis,
+            "limit": limit,
+            "last_completed_round": workspace.last_completed_round,
+            "last_completed_cycle": workspace.last_completed_cycle,
+        },
+    )
+    if on_progress is not None:
+        on_progress(event)
+    return {
+        "status": "no_candidate_search_limit_reached",
+        "supervisor_status": "stopped_for_diagnosis",
+        "completed_cycles_this_invocation": completed_cycles,
+        "no_candidate_diagnosis": diagnosis,
+        **workspace_status(workspace_path),
+    }
+
+
 def run_loop_command(
     *,
     workspace_path: Path,
@@ -907,14 +1077,33 @@ def run_loop_command(
     external: bool,
     acknowledged_contract_hash: str | None,
     max_cycles: int,
+    max_consecutive_no_candidate_cycles: int = (
+        DEFAULT_MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES
+    ),
     data_external: bool = False,
     on_progress=None,
 ) -> dict[str, object]:
-    """Run successive bounded cycles; zero max_cycles waits for Ctrl+C."""
+    """Run bounded cycles until an operator or no-candidate limit is reached."""
 
     if max_cycles < 0:
         raise ValueError("--max-cycles must be non-negative")
+    if max_consecutive_no_candidate_cycles < 1:
+        raise ValueError(
+            "--max-consecutive-no-candidate-cycles must be positive"
+        )
     completed: list[int] = []
+    diagnosis = _committed_no_candidate_diagnosis(workspace_path)
+    if (
+        int(diagnosis["consecutive_no_candidate_cycles"])
+        >= max_consecutive_no_candidate_cycles
+    ):
+        return _no_candidate_limit_result(
+            workspace_path=workspace_path,
+            diagnosis=diagnosis,
+            limit=max_consecutive_no_candidate_cycles,
+            completed_cycles=completed,
+            on_progress=on_progress,
+        )
     while max_cycles == 0 or len(completed) < max_cycles:
         result = run_cycle_command(
             workspace_path=workspace_path,
@@ -932,6 +1121,18 @@ def run_loop_command(
                 "completed_cycles_this_invocation": completed,
             }
         completed.append(int(result["last_completed_cycle"]))
+        diagnosis = _committed_no_candidate_diagnosis(workspace_path)
+        if (
+            int(diagnosis["consecutive_no_candidate_cycles"])
+            >= max_consecutive_no_candidate_cycles
+        ):
+            return _no_candidate_limit_result(
+                workspace_path=workspace_path,
+                diagnosis=diagnosis,
+                limit=max_consecutive_no_candidate_cycles,
+                completed_cycles=completed,
+                on_progress=on_progress,
+            )
     final = workspace_status(workspace_path)
     return {
         "status": "loop_limit_reached",
@@ -1333,6 +1534,9 @@ def main() -> int:
                 data_external=args.data_external,
                 acknowledged_contract_hash=args.acknowledge_contract_hash,
                 max_cycles=args.max_cycles,
+                max_consecutive_no_candidate_cycles=(
+                    args.max_consecutive_no_candidate_cycles
+                ),
                 on_progress=progress,
             )
         elif args.command == "refresh-dashboard":

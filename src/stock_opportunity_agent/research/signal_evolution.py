@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any, Callable, Iterable, Mapping, Protocol
 from stock_opportunity_agent.artifacts import (
@@ -482,6 +482,7 @@ class SignalMiningDecision:
     disposition: str
     rationale: tuple[str, ...]
     candidate: Mapping[str, Any] | None = None
+    sample_basis: Mapping[str, tuple[str, ...]] | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.hypothesis_id, "mining decision hypothesis_id")
@@ -502,19 +503,50 @@ class SignalMiningDecision:
             raise ValidationError("only a supported Mining decision may carry a candidate")
         if self.candidate is not None:
             object.__setattr__(self, "candidate", dict(self.candidate))
+        if self.sample_basis is not None:
+            required_basis = {"positive_refs", "control_refs"}
+            if set(self.sample_basis) != required_basis:
+                raise ValidationError(
+                    "Mining sample_basis requires positive_refs and control_refs"
+                )
+            normalized_basis: dict[str, tuple[str, ...]] = {}
+            for key in sorted(required_basis):
+                raw_refs = self.sample_basis[key]
+                if not isinstance(raw_refs, (list, tuple)) or any(
+                    not isinstance(item, str) for item in raw_refs
+                ):
+                    raise ValidationError(
+                        "Mining sample_basis values must be string arrays"
+                    )
+                normalized_basis[key] = tuple(raw_refs)
+            if any(
+                not refs or any(not ref for ref in refs) or len(set(refs)) != len(refs)
+                for refs in normalized_basis.values()
+            ) or set(normalized_basis["positive_refs"]) & set(
+                normalized_basis["control_refs"]
+            ):
+                raise ValidationError(
+                    "Mining sample_basis requires non-empty, unique, disjoint refs"
+                )
+            object.__setattr__(self, "sample_basis", normalized_basis)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "hypothesis_id": self.hypothesis_id,
             "disposition": self.disposition,
             "rationale": list(self.rationale),
             "candidate": (dict(self.candidate) if self.candidate is not None else None),
         }
+        if self.sample_basis is not None:
+            result["sample_basis"] = {
+                key: list(refs) for key, refs in self.sample_basis.items()
+            }
+        return result
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalMiningDecision":
         required = {"hypothesis_id", "disposition", "rationale", "candidate"}
-        if set(data) != required:
+        if set(data) not in (required, required | {"sample_basis"}):
             raise ValidationError(
                 "Signal Mining decision requires exactly: "
                 + ", ".join(sorted(required))
@@ -522,11 +554,26 @@ class SignalMiningDecision:
         raw_candidate = data["candidate"]
         if raw_candidate is not None and not isinstance(raw_candidate, Mapping):
             raise ValidationError("Mining candidate must be an object or null")
+        raw_sample_basis = data.get("sample_basis")
+        if "sample_basis" in data and not isinstance(raw_sample_basis, Mapping):
+            raise ValidationError("Mining sample_basis must be an object")
+        parsed_sample_basis: dict[str, tuple[str, ...]] | None = None
+        if isinstance(raw_sample_basis, Mapping):
+            parsed_sample_basis = {}
+            for key, value in raw_sample_basis.items():
+                if not isinstance(value, list) or any(
+                    not isinstance(item, str) for item in value
+                ):
+                    raise ValidationError(
+                        "Mining sample_basis values must be string arrays"
+                    )
+                parsed_sample_basis[str(key)] = tuple(value)
         return cls(
             hypothesis_id=str(data["hypothesis_id"]),
             disposition=str(data["disposition"]),
             rationale=_json_string_array(data, "rationale"),
             candidate=(dict(raw_candidate) if raw_candidate is not None else None),
+            sample_basis=parsed_sample_basis,
         )
 
 
@@ -1344,6 +1391,7 @@ class SlowLoopValidation:
         default_factory=dict
     )
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
+    search_input_fingerprint: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -1372,6 +1420,7 @@ class SlowLoopValidation:
             "agent_audits": {
                 name: dict(value) for name, value in self.agent_audits.items()
             },
+            "search_input_fingerprint": self.search_input_fingerprint,
         }
 
     @classmethod
@@ -1424,6 +1473,9 @@ class SlowLoopValidation:
                 str(name): dict(value)
                 for name, value in dict(data.get("agent_audits", {})).items()
             },
+            search_input_fingerprint=str(
+                data.get("search_input_fingerprint", "")
+            ),
         )
 
 
@@ -1447,6 +1499,7 @@ class SlowLoopResult:
         default_factory=dict
     )
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
+    search_input_fingerprint: str = ""
 
     @property
     def registry_version(self) -> int:
@@ -1483,6 +1536,7 @@ class SlowLoopResult:
             "agent_audits": {
                 name: dict(value) for name, value in self.agent_audits.items()
             },
+            "search_input_fingerprint": self.search_input_fingerprint,
         }
 
     @classmethod
@@ -1542,6 +1596,9 @@ class SlowLoopResult:
                 str(name): dict(value)
                 for name, value in dict(data.get("agent_audits", {})).items()
             },
+            search_input_fingerprint=str(
+                data.get("search_input_fingerprint", "")
+            ),
         )
 
 
@@ -1601,6 +1658,171 @@ class SignalEvolutionEngine:
             minimum_cases=effectiveness_minimum_cases,
         )
 
+    @staticmethod
+    def _role_work_identity(role: Any) -> Any:
+        identity = getattr(role, "work_identity", None)
+        if isinstance(identity, Mapping):
+            return dict(identity)
+        return f"{type(role).__module__}.{type(role).__qualname__}"
+
+    def _search_input_fingerprint(
+        self, input_snapshot: FrozenSignalRegistry
+    ) -> str:
+        """Hash the committed inputs that can change Slow candidate search."""
+
+        cutoff_by_company: dict[str, datetime] = {}
+        for case in self.discovery_cases:
+            prior = cutoff_by_company.get(case.company_id)
+            if prior is None or case.prediction_time > prior:
+                cutoff_by_company[case.company_id] = case.prediction_time
+        relevant_documents = sorted(
+            (
+                {
+                    "document_id": document.document_id,
+                    "content_hash": document.content_hash,
+                    "company_id": document.company_id,
+                    "source_type": document.source_type,
+                    "available_at": document.available_at.isoformat(),
+                }
+                for document in self.raw_info_store.documents
+                if document.company_id in cutoff_by_company
+                and document.available_at <= cutoff_by_company[document.company_id]
+            ),
+            key=lambda item: (
+                item["company_id"],
+                item["available_at"],
+                item["document_id"],
+            ),
+        )
+        backlog_path = self.workspace.root / "capability_backlog.json"
+        backlog = _read_json(backlog_path) if backlog_path.exists() else {}
+
+        return _canonical_hash(
+            {
+                "schema_version": "slow-search-input-v1",
+                "input_registry_hash": input_snapshot.registry_hash,
+                "discovery_cases": [
+                    {
+                        "case_id": case.case_id,
+                        "company_id": case.company_id,
+                        "prediction_time": case.prediction_time.isoformat(),
+                    }
+                    for case in self.discovery_cases
+                ],
+                "relevant_raw_info": relevant_documents,
+                "capability_backlog": backlog,
+                "meta_info": list(self.meta_memory.model_view()),
+                "mining_config": self.mining_config.to_dict(),
+                "mining_model": self._role_work_identity(self.mining_model),
+                "update_model": self._role_work_identity(self.update_model),
+            }
+        )
+
+    def _hypothesis_work_fingerprint(
+        self,
+        hypothesis: SignalMiningHypothesis,
+        *,
+        packets: Iterable[Mapping[str, Any]],
+        validation_refs: Iterable[str],
+        case_by_ref: Mapping[str, EvolutionCase],
+    ) -> str:
+        """Hash one H3 comparison without its cycle-owned proposal id."""
+
+        hypothesis_definition = hypothesis.to_dict()
+        hypothesis_definition.pop("hypothesis_id", None)
+        validation_cases = [
+            {
+                "case_id": case_by_ref[case_ref].case_id,
+                "company_id": case_by_ref[case_ref].company_id,
+                "prediction_time": case_by_ref[case_ref].prediction_time.isoformat(),
+            }
+            for case_ref in validation_refs
+        ]
+        return _canonical_hash(
+            {
+                "schema_version": "signal-mining-h3-work-v1",
+                "hypothesis": hypothesis_definition,
+                "induction_packets": [dict(packet) for packet in packets],
+                "validation_cases": validation_cases,
+                "input_registry_hash": self.registry.freeze().registry_hash,
+                "mining_config": self.mining_config.to_dict(),
+                "mining_model": self._role_work_identity(self.mining_model),
+                "projection_protocol": "signal-mining-h3-evidence-v2",
+            }
+        )
+
+    def _prior_terminal_hypothesis_work(self) -> dict[str, Mapping[str, Any]]:
+        """Load exact committed H3 work that must not be retried unchanged."""
+
+        terminal_statuses = {
+            "candidate_rejected",
+            "evidence_unavailable",
+            "inconclusive",
+            "refine",
+            "rejected",
+            "unchanged_work_suppressed",
+        }
+        prior: dict[str, Mapping[str, Any]] = {}
+        paths = tuple(
+            self.workspace.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_validation.json"
+            for cycle_id in range(1, self.workspace.last_completed_cycle + 1)
+        )
+        for path in reversed(paths):
+            if not path.is_file():
+                continue
+            payload = _read_json(path)
+            validation = payload.get("validation", {})
+            if not isinstance(validation, Mapping):
+                continue
+            audits = validation.get("agent_audits", {})
+            if not isinstance(audits, Mapping):
+                continue
+            audit = audits.get("mining_pipeline", {})
+            if (
+                isinstance(audit, Mapping)
+                and audit.get("track") == "hypothesis_then_exploration_fallback"
+                and isinstance(audit.get("hypothesis"), Mapping)
+            ):
+                audit = audit["hypothesis"]
+            if not isinstance(audit, Mapping):
+                continue
+            rows = audit.get("hypothesis_work", ())
+            if not isinstance(rows, list):
+                continue
+            for row in rows:
+                if not isinstance(row, Mapping):
+                    continue
+                fingerprint = str(row.get("work_fingerprint", ""))
+                if (
+                    fingerprint
+                    and row.get("status") in terminal_statuses
+                    and fingerprint not in prior
+                ):
+                    prior[fingerprint] = row
+        return prior
+
+    @staticmethod
+    def _with_runtime_sample_basis(
+        decisions: Iterable[SignalMiningDecision],
+        *,
+        positive_refs: Iterable[str],
+        control_refs: Iterable[str],
+    ) -> tuple[SignalMiningDecision, ...]:
+        """Replace model sample claims with the exact runtime-owned groups."""
+
+        basis = {
+            "positive_refs": tuple(positive_refs),
+            "control_refs": tuple(control_refs),
+        }
+        if not basis["positive_refs"] or not basis["control_refs"]:
+            raise ValidationError(
+                "Signal Mining association requires positive and control sample refs"
+            )
+        return tuple(replace(item, sample_basis=basis) for item in decisions)
+
     def run_cycle(
         self,
         *,
@@ -1647,6 +1869,7 @@ class SignalEvolutionEngine:
             candidate_evaluations=validation.candidate_evaluations,
             candidate_effectiveness=validation.candidate_effectiveness,
             agent_audits=validation.agent_audits,
+            search_input_fingerprint=validation.search_input_fingerprint,
         )
 
     def _validate_cycle(
@@ -1888,6 +2111,9 @@ class SignalEvolutionEngine:
             candidate_evaluations=accepted_evaluations,
             candidate_effectiveness=effectiveness_by_ref,
             agent_audits=agent_audits,
+            search_input_fingerprint=self._search_input_fingerprint(
+                input_snapshot
+            ),
         )
 
     def _run_signal_update(self, *, cycle_id: int) -> dict[str, Any]:
@@ -2531,6 +2757,8 @@ class SignalEvolutionEngine:
         case_pairs = tuple((ref, case) for ref, case, _brief in selected_ready)
         briefs_by_ref = {ref: brief for ref, _case, brief in selected_ready}
         context = self._mining_context(cycle_id=cycle_id)
+        prior_terminal_work = self._prior_terminal_hypothesis_work()
+        hypothesis_work: list[dict[str, Any]] = []
         applicability_contract = self._h2_applicability_contract(
             briefs_by_ref.values()
         )
@@ -2560,16 +2788,7 @@ class SignalEvolutionEngine:
                 "registered_deterministic_functions": context[
                     "registered_deterministic_functions"
                 ],
-                "mining_model": (
-                    dict(self.mining_model.work_identity)
-                    if isinstance(
-                        getattr(self.mining_model, "work_identity", None), Mapping
-                    )
-                    else (
-                        f"{type(self.mining_model).__module__}."
-                        f"{type(self.mining_model).__qualname__}"
-                    )
-                ),
+                "mining_model": self._role_work_identity(self.mining_model),
             }
         )
         prior_h1 = next(
@@ -2595,6 +2814,7 @@ class SignalEvolutionEngine:
             }
             audit["candidate_refs"] = []
             audit["refined_hypotheses"] = {}
+            audit["hypothesis_work"] = []
             return self._mining_output(audit=audit, refined={})
         try:
             hypotheses_step = self.mining_model.propose_hypotheses(h1_payload)
@@ -2645,6 +2865,7 @@ class SignalEvolutionEngine:
             audit["refined_hypotheses"] = {
                 key: list(value) for key, value in refined.items()
             }
+            audit["hypothesis_work"] = []
             return self._mining_output(audit=audit, refined=refined)
         case_by_ref = dict(case_pairs)
         ranking_limit = min(config.ranking_case_limit, len(case_pairs))
@@ -2697,6 +2918,7 @@ class SignalEvolutionEngine:
             audit["refined_hypotheses"] = {
                 key: list(value) for key, value in refined.items()
             }
+            audit["hypothesis_work"] = []
             return self._mining_output(audit=audit, refined=refined)
 
         contrast_packets: list[dict[str, Any]] = []
@@ -2714,6 +2936,7 @@ class SignalEvolutionEngine:
             usable_by_class: dict[bool, list[str]] = {True: [], False: []}
             comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
             attempted_case_refs: list[str] = []
+            attempted_packet_refs: list[str] = []
             packet_ref_by_case: dict[str, str] = {}
             for case_ref in rankings[hypothesis.hypothesis_id]:
                 case = case_by_ref[case_ref]
@@ -2748,6 +2971,7 @@ class SignalEvolutionEngine:
                     resolution_audit.append({"packet_ref": packet_ref, **resolution})
                 stored_packet = evidence_packets_by_key[packet_key]
                 attempted_case_refs.append(case_ref)
+                attempted_packet_refs.append(stored_packet["packet_ref"])
                 if stored_packet["evidence"]:
                     packet_ref_by_case[case_ref] = stored_packet["packet_ref"]
                     target = (
@@ -2773,10 +2997,40 @@ class SignalEvolutionEngine:
                 len(refs) >= config.induction_cases_per_class
                 for refs in usable_by_class.values()
             ):
-                evidence_unavailable[hypothesis.hypothesis_id] = (
+                reasons = (
                     "fewer than the configured issuer-distinct cases had usable "
                     "hypothesis-relevant point-in-time evidence; attempted refs: "
                     + ", ".join(attempted_case_refs),
+                )
+                attempted_ref_set = set(attempted_packet_refs)
+                work_fingerprint = self._hypothesis_work_fingerprint(
+                    hypothesis,
+                    packets=(
+                        packet
+                        for packet in evidence_packets_by_key.values()
+                        if packet["packet_ref"] in attempted_ref_set
+                    ),
+                    validation_refs=selection["validation_refs"],
+                    case_by_ref=case_by_ref,
+                )
+                prior_work = prior_terminal_work.get(work_fingerprint)
+                if prior_work is not None:
+                    reasons = (
+                        "unchanged hypothesis work suppressed until evidence or "
+                        "strategy changes",
+                    )
+                    status = "unchanged_work_suppressed"
+                    refined[hypothesis.hypothesis_id] = reasons
+                else:
+                    status = "evidence_unavailable"
+                    evidence_unavailable[hypothesis.hypothesis_id] = reasons
+                hypothesis_work.append(
+                    {
+                        "hypothesis_id": hypothesis.hypothesis_id,
+                        "work_fingerprint": work_fingerprint,
+                        "status": status,
+                        "reasons": list(reasons),
+                    }
                 )
                 continue
             induction_refs = tuple(
@@ -2803,7 +3057,48 @@ class SignalEvolutionEngine:
                 "validation_refs": tuple(
                     (*validation_by_class[True], *validation_by_class[False])
                 ),
+                "sample_basis": {
+                    "positive_refs": tuple(
+                        packet_ref_by_case[case_ref]
+                        for case_ref in usable_by_class[True]
+                    ),
+                    "control_refs": tuple(
+                        packet_ref_by_case[case_ref]
+                        for case_ref in usable_by_class[False]
+                    ),
+                },
             }
+            active_refs = {
+                packet_ref_by_case[case_ref] for case_ref in induction_refs
+            }
+            work_fingerprint = self._hypothesis_work_fingerprint(
+                hypothesis,
+                packets=(
+                    packet
+                    for packet in evidence_packets_by_key.values()
+                    if packet["packet_ref"] in active_refs
+                ),
+                validation_refs=actual_selection["validation_refs"],
+                case_by_ref=case_by_ref,
+            )
+            prior_work = prior_terminal_work.get(work_fingerprint)
+            if prior_work is not None:
+                reasons = (
+                    "unchanged hypothesis work suppressed until evidence or "
+                    "strategy changes",
+                )
+                refined[hypothesis.hypothesis_id] = reasons
+                hypothesis_work.append(
+                    {
+                        "hypothesis_id": hypothesis.hypothesis_id,
+                        "work_fingerprint": work_fingerprint,
+                        "status": "unchanged_work_suppressed",
+                        "reasons": list(reasons),
+                        "prior_status": str(prior_work.get("status", "")),
+                    }
+                )
+                continue
+            actual_selection["work_fingerprint"] = work_fingerprint
             evaluable_selections.append(actual_selection)
             contrast_packets.append(
                 {
@@ -2826,8 +3121,17 @@ class SignalEvolutionEngine:
             key: list(value) for key, value in evidence_unavailable.items()
         }
         if not contrast_packets:
+            suppressed = any(
+                item.get("status") == "unchanged_work_suppressed"
+                for item in hypothesis_work
+            )
+            h3_status = "not_called_evidence_unavailable"
+            if suppressed and not evidence_unavailable:
+                h3_status = "not_called_unchanged_work"
+            elif suppressed:
+                h3_status = "not_called_no_evaluable_work"
             audit["stages"]["H3"] = {
-                "status": "not_called_evidence_unavailable",
+                "status": h3_status,
                 "decisions": [],
                 "resolutions": resolution_audit,
                 "usage": _usage_to_dict(AgentUsage()),
@@ -2836,6 +3140,7 @@ class SignalEvolutionEngine:
             audit["refined_hypotheses"] = {
                 key: list(value) for key, value in refined.items()
             }
+            audit["hypothesis_work"] = hypothesis_work
             return self._mining_output(audit=audit, refined=refined)
         active_packet_refs = {
             packet_ref
@@ -2870,6 +3175,17 @@ class SignalEvolutionEngine:
             decisions_step.value,
             allowed_hypothesis_ids=allowed_hypotheses,
         )
+        selection_by_id = {
+            item["hypothesis"].hypothesis_id: item
+            for item in evaluable_selections
+        }
+        decisions = tuple(
+            self._with_runtime_sample_basis(
+                (decision,),
+                **selection_by_id[decision.hypothesis_id]["sample_basis"],
+            )[0]
+            for decision in decisions
+        )
         for decision in decisions:
             if decision.disposition == "inconclusive":
                 evidence_unavailable[decision.hypothesis_id] = tuple(
@@ -2890,18 +3206,46 @@ class SignalEvolutionEngine:
         audit["evidence_unavailable"] = {
             key: list(value) for key, value in evidence_unavailable.items()
         }
-        selection_by_id = {
-            item["hypothesis"].hypothesis_id: item
-            for item in evaluable_selections
-        }
         staged = self._stage_mining_decisions(
             decisions,
             selection_by_id=selection_by_id,
             case_by_ref=case_by_ref,
             refined=refined,
         )
+        staging_by_id = {
+            str(item.get("hypothesis_id", "")): item
+            for item in staged["staging"]
+            if isinstance(item, Mapping)
+        }
+        for decision in decisions:
+            selection = selection_by_id[decision.hypothesis_id]
+            status = decision.disposition
+            reasons = decision.rationale
+            if decision.disposition == "supported":
+                staging = staging_by_id.get(decision.hypothesis_id, {})
+                if staging.get("status") == "contract_accepted":
+                    status = "candidate_staged"
+                    reasons = ()
+                else:
+                    status = "candidate_rejected"
+                    reasons = tuple(
+                        str(reason)
+                        for reason in staging.get(
+                            "reasons",
+                            ("candidate staging did not produce an accepted draft",),
+                        )
+                    )
+            hypothesis_work.append(
+                {
+                    "hypothesis_id": decision.hypothesis_id,
+                    "work_fingerprint": selection["work_fingerprint"],
+                    "status": status,
+                    "reasons": list(reasons),
+                }
+            )
         audit["candidate_refs"] = list(staged["candidate_refs"])
         audit["staging"] = list(staged["staging"])
+        audit["hypothesis_work"] = hypothesis_work
         audit["refined_hypotheses"] = {
             key: list(value) for key, value in refined.items()
         }
@@ -3183,6 +3527,19 @@ class SignalEvolutionEngine:
         decisions = self._validate_mining_decisions(
             discovery_step.value,
             allowed_hypothesis_ids=None,
+        )
+        decisions = self._with_runtime_sample_basis(
+            decisions,
+            positive_refs=(
+                signature.case_ref
+                for signature in selected_grounded_signatures
+                if case_by_ref[signature.case_ref].ground_truth.is_surge
+            ),
+            control_refs=(
+                signature.case_ref
+                for signature in selected_grounded_signatures
+                if not case_by_ref[signature.case_ref].ground_truth.is_surge
+            ),
         )
         refined: dict[str, tuple[str, ...]] = {}
         selection_by_id = {

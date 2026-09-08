@@ -4,6 +4,74 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class SignalEvolutionTests(TestCase):
+    def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
+        payload = {
+            "hypothesis_id": "h1-c0001-s01",
+            "disposition": "inconclusive",
+            "rationale": ["The supplied comparison is incomplete."],
+            "candidate": None,
+            "sample_basis": "positive-case",
+        }
+
+        with self.assertRaisesRegex(ValidationError, "must be an object"):
+            SignalMiningDecision.from_dict(payload)
+
+        payload["sample_basis"] = {
+            "positive_refs": "positive-case",
+            "control_refs": ["control-case"],
+        }
+        with self.assertRaisesRegex(ValidationError, "string arrays"):
+            SignalMiningDecision.from_dict(payload)
+
+    def test_slow_search_fingerprint_changes_only_for_relevant_inputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                make_case("fingerprint_positive", 4.0),
+                make_case("fingerprint_control", 1.1),
+            )
+            store = RawInfoStore()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
+            )
+            snapshot = registry.freeze()
+            initial = engine._search_input_fingerprint(snapshot)
+            store.append(
+                RawInfoDocument.create(
+                    document_id="unrelated-document",
+                    company_id="outside_discovery",
+                    source_type="news",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="This document cannot affect the frozen Discovery set.",
+                )
+            )
+
+            self.assertEqual(engine._search_input_fingerprint(snapshot), initial)
+
+            store.append(
+                RawInfoDocument.create(
+                    document_id="relevant-document",
+                    company_id=cases[0].company_id,
+                    source_type="news",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="Management disclosed a new point-in-time observation.",
+                )
+            )
+
+            self.assertNotEqual(engine._search_input_fingerprint(snapshot), initial)
+
     def test_item1_excerpt_skips_linked_navigation_and_filing_boilerplate(
         self,
     ) -> None:
@@ -982,6 +1050,138 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 {item["query_match_status"] for item in packets},
                 {"unmatched_comparator_context"},
+            )
+
+    def test_mining_suppresses_only_identical_committed_terminal_work(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            cases = tuple(
+                [make_case(f"repeat_positive_{index}", 4.0) for index in range(2)]
+                + [make_case(f"repeat_control_{index}", 1.1) for index in range(2)]
+            )
+            hypothesis = SignalMiningHypothesis(
+                hypothesis_id="repeatable_order_pattern",
+                statement="Material order confirmations may separate outcomes.",
+                applicability="all_ready_issuers",
+                expected_positive_pattern="Positive cases disclose material orders.",
+                source_types=("news",),
+                query="material order",
+                falsifiers=("Controls disclose the same pattern.",),
+            )
+            mining_model = ScriptedMiningModel(
+                hypotheses=(hypothesis,),
+                decisions=(
+                    SignalMiningDecision(
+                        hypothesis_id=hypothesis.hypothesis_id,
+                        disposition="refine",
+                        rationale=("The visible pattern needs a narrower rule.",),
+                    ),
+                ),
+            )
+            raw_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"repeat_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.company_id} disclosed a material order with "
+                            "bounded commercial terms."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
+            )
+
+            first = engine._run_signal_mining(cycle_id=1)
+            self.assertEqual(len(mining_model.requests), 2)
+            path = (
+                workspace.experiments_root
+                / "cycles"
+                / "cycle-0001"
+                / "slow_loop_validation.json"
+            )
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "agent_audits": {
+                                "mining_pipeline": first["audit"]
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            workspace.cycle_state_path.write_text(
+                json.dumps({"last_completed_cycle": 1}), encoding="utf-8"
+            )
+
+            repeated = engine._run_signal_mining(cycle_id=2)
+
+            self.assertEqual(len(mining_model.requests), 3)
+            self.assertEqual(repeated["candidate_refs"], ())
+            self.assertEqual(
+                repeated["audit"]["hypothesis_work"][0]["status"],
+                "unchanged_work_suppressed",
+            )
+            self.assertEqual(
+                repeated["audit"]["stages"]["H3"]["status"],
+                "not_called_unchanged_work",
+            )
+
+            changed_hypothesis = replace(
+                hypothesis,
+                hypothesis_id="named_counterparty_pattern",
+                statement=(
+                    "Material order confirmations with named counterparties "
+                    "may separate outcomes."
+                ),
+            )
+            mining_model.hypotheses = (hypothesis, changed_hypothesis)
+            mining_model.decisions = (
+                SignalMiningDecision(
+                    hypothesis_id=changed_hypothesis.hypothesis_id,
+                    disposition="refine",
+                    rationale=("The narrower visible pattern remains tentative.",),
+                ),
+            )
+            changed = engine._run_signal_mining(cycle_id=4)
+
+            self.assertEqual(len(mining_model.requests), 5)
+            self.assertEqual(
+                {
+                    item["hypothesis_id"]: item["status"]
+                    for item in changed["audit"]["hypothesis_work"]
+                },
+                {
+                    hypothesis.hypothesis_id: "unchanged_work_suppressed",
+                    changed_hypothesis.hypothesis_id: "refine",
+                },
+            )
+            self.assertEqual(
+                [
+                    item["hypothesis"]["hypothesis_id"]
+                    for item in mining_model.requests[-1]["comparisons"]
+                ],
+                [changed_hypothesis.hypothesis_id],
             )
 
     def test_production_mining_falls_back_to_exploration_after_empty_h1(self) -> None:
@@ -2479,8 +2679,14 @@ class SignalEvolutionTests(TestCase):
                 result.agent_audits["mining_pipeline"]["track"],
                 "hypothesis",
             )
+            sample_basis = result.agent_audits["mining_pipeline"]["stages"][
+                "H3"
+            ]["decisions"][0]["sample_basis"]
+            self.assertEqual(len(sample_basis["positive_refs"]), 2)
+            self.assertEqual(len(sample_basis["control_refs"]), 2)
             self.assertEqual(result.input_registry_version, 1)
             self.assertEqual(result.output_registry_version, 2)
+            self.assertEqual(len(result.search_input_fingerprint), 64)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertFalse(
                 (
@@ -2498,6 +2704,10 @@ class SignalEvolutionTests(TestCase):
                 {"discovery_growth_quality:v1"},
             )
             self.assertEqual(promoted.registry_version, 2)
+            self.assertEqual(
+                promoted.search_input_fingerprint,
+                result.search_input_fingerprint,
+            )
             self.assertEqual(len(mining_model.requests), mining_request_count)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
@@ -2647,6 +2857,11 @@ class SignalEvolutionTests(TestCase):
                 result["refined_hypotheses"]["exploration_pattern"],
                 ("The extracted pattern needs more cases.",),
             )
+            sample_basis = result["audit"]["stages"]["E2"]["decisions"][0][
+                "sample_basis"
+            ]
+            self.assertEqual(len(sample_basis["positive_refs"]), 2)
+            self.assertEqual(len(sample_basis["control_refs"]), 2)
 
     def test_exploration_does_not_call_e2_when_one_group_lacks_grounding(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

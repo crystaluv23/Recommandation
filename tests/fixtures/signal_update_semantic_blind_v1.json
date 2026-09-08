@@ -1,0 +1,80 @@
+{
+  "schema_version": "signal-update-semantic-blind-v1",
+  "cases": [
+    {
+      "review_id": "cross_case_source",
+      "expected_issue_code": "signal_update_fact_not_grounded",
+      "diagnostic": {
+        "case_ref": "blind-case-001",
+        "evidence_verdict": "supported",
+        "facts": [
+          {
+            "document_ref": "blind-document-002",
+            "exact_span": "Management maintained prior full-year revenue guidance."
+          }
+        ],
+        "evidence_gaps": [],
+        "outcome_relation": "aligned",
+        "outcome_explanation": "The result aligns with the supplied outcome."
+      }
+    },
+    {
+      "review_id": "fabricated_literal",
+      "expected_issue_code": "signal_update_fact_not_grounded",
+      "diagnostic": {
+        "case_ref": "blind-case-001",
+        "evidence_verdict": "supported",
+        "facts": [
+          {
+            "document_ref": "blind-document-001",
+            "exact_span": "Management doubled full-year guidance."
+          }
+        ],
+        "evidence_gaps": [],
+        "outcome_relation": "aligned",
+        "outcome_explanation": "The result aligns with the supplied outcome."
+      }
+    },
+    {
+      "review_id": "outcome_relation_override",
+      "expected_issue_code": "signal_update_outcome_relation_mismatch",
+      "diagnostic": {
+        "case_ref": "blind-case-001",
+        "evidence_verdict": "supported",
+        "facts": [
+          {
+            "document_ref": "blind-document-001",
+            "exact_span": "Management raised full-year revenue guidance by 8 percent."
+          }
+        ],
+        "evidence_gaps": [],
+        "outcome_relation": "misaligned",
+        "outcome_explanation": "The model replaced the runtime relation."
+      }
+    },
+    {
+      "review_id": "supported_without_source_fact",
+      "expected_issue_code": "signal_update_fact_not_grounded",
+      "diagnostic": {
+        "case_ref": "blind-case-001",
+        "evidence_verdict": "supported",
+        "facts": [],
+        "evidence_gaps": [],
+        "outcome_relation": "aligned",
+        "outcome_explanation": "The label alone was treated as support."
+      }
+    },
+    {
+      "review_id": "insufficient_without_gap",
+      "expected_issue_code": "signal_update_evidence_gap_missing",
+      "diagnostic": {
+        "case_ref": "blind-case-001",
+        "evidence_verdict": "insufficient",
+        "facts": [],
+        "evidence_gaps": [],
+        "outcome_relation": "aligned",
+        "outcome_explanation": "No missing source was identified."
+      }
+    }
+  ]
+}

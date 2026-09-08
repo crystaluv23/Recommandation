@@ -1,6 +1,6 @@
 # Status
 
-Current T4 Slow candidate-generation hardening (2026-09-08): production H1 now
+Completed T4 Slow candidate-generation hardening (2026-09-08): production H1 now
 uses a versioned structured contract. The runtime owns stable proposal refs, the
 fixed Discovery comparison, and evidence lookback, while the model supplies a
 measurement object, canonical applicability rule, expected direction, retrieval
@@ -17,10 +17,25 @@ unchanged, and E2 stops when either group lacks the configured grounded evidence
 floor. Stable-item correction can append an explicitly missing runtime-owned
 item without accepting rewrites to valid siblings. Superseded online H1 and
 Update protocols and their prose-regex tests have been removed; legacy persisted
-records remain readable at the compatibility boundary. This is the first T4
-slice; independent semantic blind review, bounded
-cross-cycle search/no-candidate diagnosis, and real closed-loop validation remain.
-All 582 tests and repository lint pass; no external request was sent.
+records remain readable at the compatibility boundary. An independent
+fixture-driven blind set now rejects five schema-valid
+Update errors (cross-case citation, fabricated literal, label-as-fact ordering,
+unsupported source verdict, and missing evidence gap) while scoped correction
+preserves valid sibling diagnostics. Label-revealed Mining decisions persist the
+engine-derived positive/control sample basis regardless of model adapter. H3 terminal work is fingerprinted
+without cycle-owned proposal ids, so exact committed refinement, rejection,
+inconclusive evidence, missing evidence, and invalid-candidate work is suppressed
+while changed evidence/strategy and unaffected siblings continue. Every Slow
+result also stores a global search-input fingerprint, and `run-loop` stops after
+three consecutive committed candidate-free cycles by default with cycle ids,
+terminal categories, and changed-input diagnosis; restart checks the committed
+streak before another cycle. A fresh read of V118's persisted E1 request/responses
+and Slow result reproduces the original cross-domain identity rejection and the
+Update claim that a positive label suggested a missing financing event, while
+the new blind set targets that semantic class without rewriting history. T4's
+local implementation and synthetic acceptance are complete; real closed-loop
+usefulness remains a T7 question. All 589 tests and repository lint pass; no
+external request was sent.
 
 Current code organization audit (2026-09-08): the 15,507-line evolution runtime
 and 12,071-line scheme engine are now stable 51-line and 17-line import facades.
@@ -64,7 +79,7 @@ stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
 T3 promotion recovery now fails closed while a prepared transition exists and
 reconciles the same batch across preparation, every stable-file class, Registry
 version, output snapshot, promotion-record, and cycle-pointer fault boundaries.
-T3 is complete. The rest of T2, the remaining T4 work, and T5-T7 remain open; no external request was
+T3 and T4 are complete. The rest of T2 and T5-T7 remain open; no external request was
 sent. All 595 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request

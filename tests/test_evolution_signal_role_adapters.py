@@ -618,8 +618,26 @@ class SignalRoleAdapterTests(TestCase):
 
         result = LLMSignalMiningModel(caller).contrast(
             {
+                "evidence_packets": [
+                    {
+                        "packet_ref": "packet-positive",
+                        "label": "positive",
+                        "query_match_status": "matched",
+                    },
+                    {
+                        "packet_ref": "packet-control",
+                        "label": "control",
+                        "query_match_status": "matched",
+                    },
+                ],
                 "comparisons": [
-                    {"hypothesis": {"hypothesis_id": "estimate_gap"}}
+                    {
+                        "hypothesis": {"hypothesis_id": "estimate_gap"},
+                        "evidence_packet_refs": [
+                            "packet-positive",
+                            "packet-control",
+                        ],
+                    }
                 ],
                 "rules": {
                     "decisions": [
@@ -636,6 +654,13 @@ class SignalRoleAdapterTests(TestCase):
         self.assertIn(
             "evidence absence must use inconclusive",
             validation_error(caller.calls[1]),
+        )
+        self.assertEqual(
+            result.value[0].sample_basis,
+            {
+                "positive_refs": ("packet-positive",),
+                "control_refs": ("packet-control",),
+            },
         )
 
     def test_signal_h2_trusts_case_local_masking_without_global_alias_rescan(
@@ -1224,6 +1249,112 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertEqual(diagnostics["update-case-002"], missing_second)
 
+    def test_signal_update_v2_semantic_blind_review_set(self) -> None:
+        fixture = json.loads(
+            (
+                PROJECT_ROOT
+                / "tests"
+                / "fixtures"
+                / "signal_update_semantic_blind_v1.json"
+            ).read_text(encoding="utf-8")
+        )
+        source_one = "Management raised full-year revenue guidance by 8 percent."
+        source_two = "Management maintained prior full-year revenue guidance."
+        payload = {
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": "guidance_acceleration:v1"},
+            "induction_cases": [
+                {
+                    "case_ref": "blind-case-001",
+                    "evidence_observation": {
+                        "evidence": [
+                            {
+                                "document_ref": "blind-document-001",
+                                "content_excerpt": source_one,
+                            }
+                        ]
+                    },
+                    "outcome_relation": {
+                        "label": "positive",
+                        "current_signal_relation": "aligned",
+                    },
+                },
+                {
+                    "case_ref": "blind-case-002",
+                    "evidence_observation": {
+                        "evidence": [
+                            {
+                                "document_ref": "blind-document-002",
+                                "content_excerpt": source_two,
+                            }
+                        ]
+                    },
+                    "outcome_relation": {
+                        "label": "control",
+                        "current_signal_relation": "misaligned",
+                    },
+                },
+            ],
+        }
+        valid_first = {
+            "case_ref": "blind-case-001",
+            "evidence_verdict": "supported",
+            "facts": [
+                {
+                    "document_ref": "blind-document-001",
+                    "exact_span": source_one,
+                }
+            ],
+            "evidence_gaps": [],
+            "outcome_relation": "aligned",
+            "outcome_explanation": "The source verdict precedes association.",
+        }
+        valid_second = {
+            "case_ref": "blind-case-002",
+            "evidence_verdict": "supported",
+            "facts": [
+                {
+                    "document_ref": "blind-document-002",
+                    "exact_span": source_two,
+                }
+            ],
+            "evidence_gaps": [],
+            "outcome_relation": "misaligned",
+            "outcome_explanation": "The source verdict precedes association.",
+        }
+        base = {
+            "signal_ref": "guidance_acceleration:v1",
+            "disposition": "defer",
+            "problem_type": "semantic_review",
+            "rationale": ["Review source facts before outcome association."],
+            "candidate": None,
+        }
+
+        for review in fixture["cases"]:
+            with self.subTest(review_id=review["review_id"]):
+                invalid = {
+                    **base,
+                    "case_diagnostics": [review["diagnostic"], valid_second],
+                }
+                corrected = {
+                    **base,
+                    "case_diagnostics": [valid_first, valid_second],
+                }
+                caller = ScriptedRoleCaller([invalid, corrected])
+
+                result = LLMSignalUpdateModel(caller).update(payload)
+
+                self.assertEqual(result.usage.llm_calls, 2)
+                self.assertEqual(result.value.case_diagnostics[0], valid_first)
+                self.assertEqual(result.value.case_diagnostics[1], valid_second)
+                issue_codes = {
+                    item["issue_code"]
+                    for item in caller.calls[1]["payload"]["validation_feedback"][
+                        "obligations"
+                    ]
+                }
+                self.assertIn(review["expected_issue_code"], issue_codes)
+
     def test_routing_rejects_duplicate_refs_and_preserves_valid_siblings(
         self,
     ) -> None:
@@ -1321,6 +1452,9 @@ class SignalRoleAdapterTests(TestCase):
                 "evidence_packets": [
                     {
                         "packet_ref": ref,
+                        "label": (
+                            "positive" if ref == "packet-a" else "control"
+                        ),
                         "query_match_status": "unmatched_comparator_context",
                     }
                     for ref in ("packet-a", "packet-b")
@@ -1576,6 +1710,18 @@ class SignalRoleAdapterTests(TestCase):
                         ],
                         "evidence_gaps": [],
                         "label": "positive",
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "observations": [
+                            {
+                                "summary": "Management maintained its prior position.",
+                                "document_ref": "document-02",
+                                "exact_span": "Management maintained its prior position.",
+                            }
+                        ],
+                        "evidence_gaps": [],
+                        "label": "control",
                     }
                 ]
             }

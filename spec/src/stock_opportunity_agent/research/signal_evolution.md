@@ -25,5 +25,21 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   evidence floor, without replacing validation cases.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
-  document ref and literal span for every claimed fact before an update draft
-  can be considered.
+  document ref and literal span for every fact before an update draft can be
+  considered; source facts are stored as literals without a model-authored
+  claim. Mining decisions persist the runtime-derived positive/control sample
+  basis used for their statistical association.
+- Every staged Slow validation records a `search_input_fingerprint` over the
+  input Registry, relevant point-in-time Raw Info identities, Discovery case
+  identities, capability backlog, meta context, Mining limits, and Mining/Update
+  model identities. Cycle ids and model-authored proposal ids are excluded.
+  This fingerprint diagnoses repeated search separately from changed-input
+  retries; it does not turn a no-candidate result into a domain failure.
+- Each H3 hypothesis comparison also records a cycle-independent work
+  fingerprint over the structured hypothesis without its runtime proposal id,
+  the exact visible induction packets, frozen validation case identities,
+  Registry input, Mining protocol, and model identity. A committed terminal
+  `refine`, `rejected`, `inconclusive`, evidence-unavailable, or locally invalid
+  candidate result suppresses only the identical comparison in later cycles.
+  Changed evidence, cohort, Registry, model, protocol, or structured hypothesis
+  creates new work; unaffected sibling hypotheses continue in the same batch.

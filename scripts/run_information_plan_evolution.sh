@@ -40,6 +40,8 @@ usage() {
     "resume tuning options:" \
     "  --max-cycles N             cycles this invocation; 0 means until Ctrl+C" \
     "                              (default: 1)" \
+    "  --max-consecutive-no-candidate-cycles N" \
+    "                              stop sustained no-candidate search (default: 3)" \
     "  --retry-window-hours N     auto-resume temporary transport failures" \
     "                              for this many hours (default: 10; 0 disables)" \
     "  --retry-initial-backoff-seconds N" \
@@ -88,6 +90,7 @@ PARENT_SELECTION_SEED=42
 MAX_EXTERNAL_ATTEMPTS=2500
 MAX_TOTAL_COST=100
 MAX_CYCLES=1
+MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES=3
 RETRY_WINDOW_HOURS=10
 RETRY_INITIAL_BACKOFF_SECONDS=5
 RETRY_MAX_BACKOFF_SECONDS=60
@@ -105,7 +108,7 @@ RESUME_ONLY_OPTION_SEEN=0
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --workspace|--raw-info-root|--approved-dataset|--run-id|--judge-model|--evolution-model|--plan-rounds|--candidates-per-round|--parent-selection-seed|--max-external-attempts|--max-total-cost|--max-data-requests-per-cycle|--max-data-requests-per-run|--max-cycles|--retry-window-hours|--retry-initial-backoff-seconds|--retry-max-backoff-seconds|--acknowledge-contract-hash)
+    --workspace|--raw-info-root|--approved-dataset|--run-id|--judge-model|--evolution-model|--plan-rounds|--candidates-per-round|--parent-selection-seed|--max-external-attempts|--max-total-cost|--max-data-requests-per-cycle|--max-data-requests-per-run|--max-cycles|--max-consecutive-no-candidate-cycles|--retry-window-hours|--retry-initial-backoff-seconds|--retry-max-backoff-seconds|--acknowledge-contract-hash)
       [ "$#" -ge 2 ] || fail "$1 requires a value"
       case "$1" in
         --workspace) WORKSPACE="$2" ;;
@@ -122,6 +125,7 @@ while [ "$#" -gt 0 ]; do
         --max-data-requests-per-cycle) MAX_DATA_REQUESTS_PER_CYCLE="$2"; NEW_ONLY_OPTION_SEEN=1 ;;
         --max-data-requests-per-run) MAX_DATA_REQUESTS_PER_RUN="$2"; NEW_ONLY_OPTION_SEEN=1 ;;
         --max-cycles) MAX_CYCLES="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
+        --max-consecutive-no-candidate-cycles) MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
         --retry-window-hours) RETRY_WINDOW_HOURS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
         --retry-initial-backoff-seconds) RETRY_INITIAL_BACKOFF_SECONDS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
         --retry-max-backoff-seconds) RETRY_MAX_BACKOFF_SECONDS="$2"; RESUME_ONLY_OPTION_SEEN=1 ;;
@@ -270,6 +274,7 @@ fi
 [ "$NEW_ONLY_OPTION_SEEN" -eq 0 ] || fail "resume uses frozen settings; new-only options cannot change them"
 [ -f "$CONTRACT_PATH" ] || fail "resume requires an existing frozen contract"
 [[ "$MAX_CYCLES" =~ ^[0-9]+$ ]] || fail "--max-cycles must be a non-negative integer"
+[[ "$MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES" =~ ^[1-9][0-9]*$ ]] || fail "--max-consecutive-no-candidate-cycles must be a positive integer"
 [[ "$RETRY_WINDOW_HOURS" =~ ^[0-9]+$ ]] || fail "--retry-window-hours must be a non-negative integer"
 [[ "$RETRY_INITIAL_BACKOFF_SECONDS" =~ ^[0-9]+$ ]] || fail "--retry-initial-backoff-seconds must be a non-negative integer"
 [[ "$RETRY_MAX_BACKOFF_SECONDS" =~ ^[0-9]+$ ]] || fail "--retry-max-backoff-seconds must be a non-negative integer"
@@ -290,6 +295,7 @@ RUN_ARGS=(
   --raw-info-root "$RAW_INFO_ROOT"
   --approved-dataset "$APPROVED_DATASET"
   --max-cycles "$MAX_CYCLES"
+  --max-consecutive-no-candidate-cycles "$MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES"
 )
 if [ "$ALLOW_EXTERNAL" -eq 1 ]; then
   [ -n "$ACKNOWLEDGED_CONTRACT_HASH" ] || fail "--external requires --acknowledge-contract-hash"

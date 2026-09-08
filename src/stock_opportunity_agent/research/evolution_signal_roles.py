@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
@@ -356,7 +356,7 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
     "outcome_explanation. evidence_verdict is supported, contradicted, or "
-    "insufficient. Every fact has exactly claim, document_ref, and exact_span; "
+    "insufficient. Every fact has exactly document_ref and exact_span; "
     "document_ref and exact_span must be copied from that case's source evidence. "
     "outcome_relation is aligned, misaligned, or not_assessable. disposition is "
     "no_change, defer, or update; only update may carry the supplied candidate."
@@ -372,6 +372,19 @@ class LLMSignalUpdateModel(SignalUpdateModel):
 
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
+
+    @property
+    def work_identity(self) -> Mapping[str, Any]:
+        """Return the stable role/model identity used by Slow search work."""
+
+        registration = getattr(self.caller, "registration", None)
+        return {
+            "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
+            "model_alias": getattr(registration, "alias", None),
+            "provider": getattr(registration, "provider", None),
+            "model": getattr(registration, "model", None),
+            "proposal_profile": getattr(registration, "proposal_profile", None),
+        }
 
     def update(
         self, payload: Mapping[str, Any]
@@ -558,7 +571,6 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 fact_invalid = False
                 for fact in facts:
                     if not isinstance(fact, Mapping) or set(fact) != {
-                        "claim",
                         "document_ref",
                         "exact_span",
                     }:
@@ -567,8 +579,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                     document_ref = str(fact.get("document_ref", ""))
                     exact_span = str(fact.get("exact_span", ""))
                     if (
-                        not str(fact.get("claim", "")).strip()
-                        or not 8 <= len(exact_span) <= 240
+                        not 8 <= len(exact_span) <= 240
                         or not any(
                             exact_span in literal
                             for literal in visible.get(document_ref, ())
@@ -648,6 +659,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=8_000,
             enforce_scoped_correction=True,
+            stable_correction_prefix=True,
         )
         return AgentStep(value, usage)
 
@@ -1516,6 +1528,46 @@ class LLMSignalMiningModel(SignalMiningModel):
                 else ("supported", "refine", "rejected", "inconclusive")
             )
         }
+        comparison_refs: dict[str, tuple[str, ...]] = {
+            str(item["hypothesis"]["hypothesis_id"]): tuple(
+                str(ref) for ref in item.get("evidence_packet_refs", ())
+            )
+            for item in payload.get("comparisons", ())
+            if isinstance(item, Mapping)
+            and isinstance(item.get("hypothesis"), Mapping)
+            and item["hypothesis"].get("hypothesis_id")
+        }
+        packet_labels = {
+            str(item["packet_ref"]): str(item.get("label", ""))
+            for item in payload.get("evidence_packets", ())
+            if isinstance(item, Mapping) and item.get("packet_ref")
+        }
+        exploration_labels = {
+            str(item["case_ref"]): str(item.get("label", ""))
+            for item in payload.get("signatures", ())
+            if isinstance(item, Mapping) and item.get("case_ref")
+        }
+
+        def sample_basis(
+            item: SignalMiningDecision,
+        ) -> Mapping[str, tuple[str, ...]] | None:
+            if item.hypothesis_id in comparison_refs:
+                refs = comparison_refs[item.hypothesis_id]
+                labels = packet_labels
+            else:
+                refs = tuple(exploration_labels)
+                labels = exploration_labels
+            basis = {
+                "positive_refs": tuple(ref for ref in refs if labels.get(ref) == "positive"),
+                "control_refs": tuple(ref for ref in refs if labels.get(ref) == "control"),
+            }
+            if not basis["positive_refs"] or not basis["control_refs"]:
+                if item.disposition == "inconclusive":
+                    return None
+                raise ValidationError(
+                    "Signal Mining association requires positive and control sample refs"
+                )
+            return basis
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningDecision, ...]:
             if set(value) != {"decisions"} or not isinstance(
@@ -1566,7 +1618,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                         + ": "
                         + item.hypothesis_id
                     )
-            return items
+            return tuple(
+                replace(item, sample_basis=sample_basis(item)) for item in items
+            )
 
         value, usage = _complete_parsed_role(
             self.caller,

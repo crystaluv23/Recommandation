@@ -111,6 +111,10 @@ class EvolutionCliTests(TestCase):
             ]
         )
         self.assertEqual(args.max_cycles, 0)
+        self.assertEqual(
+            args.max_consecutive_no_candidate_cycles,
+            CLI.DEFAULT_MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES,
+        )
 
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory)
@@ -125,6 +129,214 @@ class EvolutionCliTests(TestCase):
             stored = [json.loads(line) for line in trajectory.read_text().splitlines()]
             self.assertEqual(stored[-1]["event_type"], "run_interrupted")
             self.assertEqual(callback_events[-1]["sequence"], stored[-1]["sequence"])
+
+    def test_committed_no_candidate_diagnosis_survives_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = CLI.EvolutionWorkspace(root)
+            workspace.cycle_state_path.write_text(
+                json.dumps({"last_completed_cycle": 3}), encoding="utf-8"
+            )
+            rows = (
+                (
+                    1,
+                    "fingerprint-a",
+                    {"mining_pipeline": {"status": "no_testable_hypothesis"}},
+                    {},
+                ),
+                (
+                    2,
+                    "fingerprint-b",
+                    {},
+                    {"h1-c0002-s01": ["needs refinement"]},
+                ),
+                (3, "fingerprint-b", {}, {}),
+            )
+            for cycle_id, fingerprint, audits, refined in rows:
+                path = (
+                    workspace.experiments_root
+                    / "cycles"
+                    / f"cycle-{cycle_id:04d}"
+                    / "slow_loop_validation.json"
+                )
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(
+                    json.dumps(
+                        {
+                            "validation": {
+                                "mined_candidates": [],
+                                "updated_candidates": [],
+                                "rejected": (
+                                    {"slow_loop:mining_pipeline": ["invalid output"]}
+                                    if cycle_id == 3
+                                    else {}
+                                ),
+                                "refined_hypotheses": refined,
+                                "agent_audits": audits,
+                                "search_input_fingerprint": fingerprint,
+                            }
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+            diagnosis = CLI._committed_no_candidate_diagnosis(root)
+
+            self.assertEqual(diagnosis["consecutive_no_candidate_cycles"], 3)
+            self.assertEqual(diagnosis["cycle_ids"], [1, 2, 3])
+            self.assertTrue(diagnosis["search_input_changed_within_streak"])
+            self.assertEqual(
+                set(diagnosis["categories"]),
+                {
+                    "no_testable_hypothesis",
+                    "refinement_without_candidate",
+                    "technical_failure",
+                },
+            )
+
+            cycle_two_path = (
+                workspace.experiments_root
+                / "cycles"
+                / "cycle-0002"
+                / "slow_loop_validation.json"
+            )
+            cycle_two = json.loads(cycle_two_path.read_text(encoding="utf-8"))
+            cycle_two["validation"]["mined_candidates"] = ["candidate:v1"]
+            cycle_two_path.write_text(json.dumps(cycle_two), encoding="utf-8")
+
+            reset = CLI._committed_no_candidate_diagnosis(root)
+
+            self.assertEqual(reset["consecutive_no_candidate_cycles"], 1)
+            self.assertEqual(reset["cycle_ids"], [3])
+
+    def test_committed_no_candidate_diagnosis_rejects_corrupt_artifact(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = CLI.EvolutionWorkspace(root)
+            workspace.cycle_state_path.write_text(
+                json.dumps({"last_completed_cycle": 1}), encoding="utf-8"
+            )
+            path = (
+                workspace.experiments_root
+                / "cycles"
+                / "cycle-0001"
+                / "slow_loop_validation.json"
+            )
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "mined_candidates": "candidate:v1",
+                            "updated_candidates": [],
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                CLI.ValidationError, "mined_candidates must be an array"
+            ):
+                CLI._committed_no_candidate_diagnosis(root)
+
+    def test_run_loop_stops_after_committed_no_candidate_limit(self) -> None:
+        initial = {
+            "consecutive_no_candidate_cycles": 2,
+            "cycle_ids": [1, 2],
+            "search_input_fingerprints": ["a", "b"],
+            "search_input_changed_within_streak": True,
+            "categories": ["no_testable_hypothesis"],
+        }
+        diagnosis = {
+            "consecutive_no_candidate_cycles": 3,
+            "cycle_ids": [1, 2, 3],
+            "search_input_fingerprints": ["a", "b", "b"],
+            "search_input_changed_within_streak": True,
+            "categories": ["no_testable_hypothesis"],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            events: list[dict[str, object]] = []
+            with (
+                patch.object(
+                    CLI,
+                    "run_cycle_command",
+                    return_value={
+                        "status": "cycle_completed",
+                        "last_completed_cycle": 3,
+                    },
+                ) as run_cycle,
+                patch.object(
+                    CLI,
+                    "_committed_no_candidate_diagnosis",
+                    side_effect=(initial, diagnosis),
+                ),
+                patch.object(
+                    CLI,
+                    "workspace_status",
+                    return_value={"last_completed_cycle": 3},
+                ),
+            ):
+                result = CLI.run_loop_command(
+                    workspace_path=root,
+                    raw_info_root=root / "raw",
+                    approved_dataset_path=root / "dataset.json",
+                    external=False,
+                    acknowledged_contract_hash=None,
+                    max_cycles=0,
+                    max_consecutive_no_candidate_cycles=3,
+                    on_progress=events.append,
+                )
+
+            self.assertEqual(result["status"], "no_candidate_search_limit_reached")
+            self.assertEqual(result["no_candidate_diagnosis"], diagnosis)
+            self.assertEqual(run_cycle.call_count, 1)
+            self.assertEqual(
+                events[-1]["event_type"], "no_candidate_search_limit_reached"
+            )
+
+            events.clear()
+            with (
+                patch.object(CLI, "run_cycle_command") as run_cycle,
+                patch.object(
+                    CLI,
+                    "_committed_no_candidate_diagnosis",
+                    return_value=diagnosis,
+                ),
+                patch.object(
+                    CLI,
+                    "workspace_status",
+                    return_value={"last_completed_cycle": 3},
+                ),
+            ):
+                restarted = CLI.run_loop_command(
+                    workspace_path=root,
+                    raw_info_root=root / "raw",
+                    approved_dataset_path=root / "dataset.json",
+                    external=False,
+                    acknowledged_contract_hash=None,
+                    max_cycles=0,
+                    max_consecutive_no_candidate_cycles=3,
+                    on_progress=events.append,
+                )
+
+            self.assertEqual(restarted["completed_cycles_this_invocation"], [])
+            run_cycle.assert_not_called()
+            self.assertEqual(
+                events[-1]["event_type"], "no_candidate_search_limit_reached"
+            )
+
+        with self.assertRaisesRegex(ValueError, "must be positive"):
+            CLI.run_loop_command(
+                workspace_path=Path("/unused"),
+                raw_info_root=Path("/unused/raw"),
+                approved_dataset_path=Path("/unused/dataset.json"),
+                external=False,
+                acknowledged_contract_hash=None,
+                max_cycles=0,
+                max_consecutive_no_candidate_cycles=0,
+            )
 
     def test_durable_progress_boundary_refreshes_dashboard_bundle(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

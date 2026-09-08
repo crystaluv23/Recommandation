@@ -1889,7 +1889,16 @@ content, or identity-masked Predictor inputs.
 an explicit global `--raw-info-root`; none may infer a workspace-private Raw
 Info directory. `run-cycle` executes or resumes one frozen Fast/Slow cycle.
 `run-loop` is a thin supervisor that starts another bounded cycle only after the prior cycle commits;
-zero `--max-cycles` means continue until `Ctrl+C`. `KeyboardInterrupt` leaves
+zero `--max-cycles` means continue until `Ctrl+C` or the no-candidate search
+limit. The supervisor defaults to stopping after three consecutive committed
+cycles that produced neither Mining nor Update candidates. It returns a
+structured diagnosis containing the exact cycle ids, terminal categories, and
+search-input fingerprints, so unchanged searches and changed-input attempts are
+distinguishable. A restarted `run-loop` reads the committed streak before
+starting another cycle and stops immediately when the limit is already met;
+an operator can raise the positive limit or use one explicit `run-cycle` after
+changing inputs. The limit is supervisor control; it does not rewrite committed
+cycle state or classify technical errors as evidence absence. `KeyboardInterrupt` leaves
 committed pointers intact, records an interruption event at the CLI boundary,
 refreshes reporting, and exits with the conventional interrupted status. This
 does not widen the frozen attempt or cost ceilings.

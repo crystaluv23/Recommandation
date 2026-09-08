@@ -20,7 +20,14 @@ mining, and Signal update proposals.
   rationale, and remains distinct from malformed output or execution failure.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
-  A label is never accepted as evidence that an event or source fact exists.
+  Facts contain only a supplied `document_ref` and literal `exact_span`; the
+  runtime does not treat a model-authored paraphrase as source fact. A label is
+  never accepted as evidence that an event or source fact exists.
+- Every label-revealed Mining decision receives a runtime-derived sample basis
+  in its persisted form. The basis names the exact positive and control packet
+  or case refs used by that comparison, so a schema-valid association cannot be
+  audited without its sample. This field is runtime-owned rather than copied by
+  the model.
 - Legacy v1 H1 and Update records remain parseable only at explicit
   compatibility boundaries. New Slow execution always requests the v2
   contracts.
