@@ -7,6 +7,7 @@ import sys
 import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -24,6 +25,72 @@ SPEC.loader.exec_module(CLI)
 class EvolutionCliTests(TestCase):
     def test_freeze_uses_current_terminal_reserve_default(self) -> None:
         self.assertEqual(CLI.DEFAULT_FINALIZATION_TOKEN_RESERVE, 64_000)
+
+    def test_preflight_validates_exact_approved_dataset_without_locked_test(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / "dataset.approved.json"
+            manifest.write_text('{"approval_status":"human_approved"}\n')
+            inventory = SimpleNamespace(
+                to_dict=lambda: {"schema_version": "inventory-v1"},
+                inventory_hash="inventory_hash",
+                compatible_case_count=3,
+                migration_ready=False,
+                blockers=("legacy labels are incompatible",),
+            )
+            dataset = SimpleNamespace(
+                discovery=(object(), object()),
+                anchor=(object(),),
+                evolution_validation=(object(), object(), object()),
+                locked_test_hash="f" * 64,
+            )
+            models = {
+                "judge": {"api_key_available": True},
+                "proposer": {"api_key_available": True},
+            }
+            manager = patch.object(CLI, "EvaluationDatasetManager")
+            with (
+                patch.object(CLI, "_load_local_env"),
+                patch.object(
+                    CLI,
+                    "initialize_workspace",
+                    return_value={"workspace": str(root)},
+                ),
+                patch.object(
+                    CLI,
+                    "inventory_local_evolution_inputs",
+                    return_value=inventory,
+                ),
+                patch.object(CLI, "public_model_contract", return_value=models),
+                patch.object(
+                    CLI,
+                    "load_approved_development_dataset",
+                    return_value=dataset,
+                ),
+                manager as evaluation_manager,
+            ):
+                result = CLI.preflight_local(
+                    workspace_path=root,
+                    raw_info_root=root / "raw",
+                    catalog_path=root / "catalog.json",
+                    cases_path=root / "cases.json",
+                    documents_path=root / "documents.json",
+                    adjusted_prices_path=root / "prices.json",
+                    judge_model="judge",
+                    evolution_model="proposer",
+                    approved_dataset_path=manifest,
+                )
+
+            evaluation_manager.return_value.validate_feasibility.assert_called_once()
+            self.assertTrue(result["ready_for_freeze"])
+            self.assertFalse(result["ready_for_external_run"])
+            self.assertEqual(
+                result["approved_dataset"]["evolution_validation_case_count"],
+                3,
+            )
+            self.assertFalse(result["approved_dataset"]["locked_test_accessed"])
 
     def test_data_external_alone_resolves_to_broad_research_policy(self) -> None:
         policy = CLI._resolve_data_acquisition_policy(

@@ -1887,7 +1887,14 @@ content, or identity-masked Predictor inputs.
 
 `init`, local preflight, migration, freeze, `run-cycle`, and `run-loop` require
 an explicit global `--raw-info-root`; none may infer a workspace-private Raw
-Info directory. `run-cycle` executes or resumes one frozen Fast/Slow cycle.
+Info directory. Local preflight may also receive the exact human-approved
+development manifest intended for the run. It validates hashes, sealed Locked
+Test metadata, issuer-disjoint development splits, and evaluation feasibility
+without deserializing Locked Test, and reports this readiness separately from
+incompatible legacy-input migration. It may report `ready_for_freeze`, but never
+`ready_for_external_run`: external readiness additionally requires a frozen
+contract plus its later exact acknowledgement. `run-cycle` executes or resumes
+one frozen Fast/Slow cycle.
 `run-loop` is a thin supervisor that starts another bounded cycle only after the prior cycle commits;
 zero `--max-cycles` means continue until `Ctrl+C` or the no-candidate search
 limit. The supervisor defaults to stopping after three consecutive committed

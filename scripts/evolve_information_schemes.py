@@ -134,6 +134,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     preflight.add_argument("--workspace", type=Path, required=True)
     preflight.add_argument("--raw-info-root", type=Path, required=True)
+    preflight.add_argument("--approved-dataset", type=Path)
     preflight.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     preflight.add_argument("--cases", type=Path, default=DEFAULT_CASES)
     preflight.add_argument("--documents", type=Path, default=DEFAULT_DOCUMENTS)
@@ -442,6 +443,7 @@ def preflight_local(
     adjusted_prices_path: Path,
     judge_model: str,
     evolution_model: str,
+    approved_dataset_path: Path | None = None,
 ) -> dict[str, object]:
     """Write a no-network evidence bundle for local data and model readiness."""
 
@@ -460,10 +462,36 @@ def preflight_local(
             "proposer": evolution_model,
         }
     )
+    approved_dataset_summary: dict[str, object] | None = None
+    if approved_dataset_path is not None:
+        approved_dataset = load_approved_development_dataset(
+            approved_dataset_path
+        )
+        EvaluationDatasetManager(
+            workspace_path / "evaluation",
+            approved_dataset.evolution_validation,
+            approved_dataset.anchor,
+            PlanEvaluationConfig(),
+        ).validate_feasibility()
+        approved_dataset_summary = {
+            "manifest_path": str(approved_dataset_path),
+            "manifest_hash": hashlib.sha256(
+                approved_dataset_path.read_bytes()
+            ).hexdigest(),
+            "discovery_case_count": len(approved_dataset.discovery),
+            "anchor_case_count": len(approved_dataset.anchor),
+            "evolution_validation_case_count": len(
+                approved_dataset.evolution_validation
+            ),
+            "locked_test_hash": approved_dataset.locked_test_hash,
+            "locked_test_accessed": False,
+            "feasible": True,
+        }
     preflight_root = workspace_path / "preflight"
     preflight_root.mkdir(parents=True, exist_ok=True)
     inventory_path = preflight_root / "local_inventory.json"
     models_path = preflight_root / "model_availability.json"
+    approved_dataset_summary_path = preflight_root / "approved_dataset.json"
     inventory_path.write_text(
         json.dumps(inventory.to_dict(), indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -471,6 +499,15 @@ def preflight_local(
     models_path.write_text(
         json.dumps(models, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+    )
+    if approved_dataset_summary is not None:
+        approved_dataset_summary_path.write_text(
+            json.dumps(approved_dataset_summary, indent=2, sort_keys=True)
+            + "\n",
+            encoding="utf-8",
+        )
+    keys_available = all(
+        bool(value["api_key_available"]) for value in models.values()
     )
     return {
         **workspace_state,
@@ -485,6 +522,13 @@ def preflight_local(
             role: bool(value["api_key_available"])
             for role, value in models.items()
         },
+        "approved_dataset": approved_dataset_summary,
+        "approved_dataset_path": (
+            str(approved_dataset_summary_path)
+            if approved_dataset_summary is not None
+            else None
+        ),
+        "ready_for_freeze": bool(approved_dataset_summary) and keys_available,
         "external_calls": 0,
         "locked_test_accessed": False,
         "ready_for_external_run": False,
@@ -1445,6 +1489,7 @@ def main() -> int:
                 adjusted_prices_path=args.adjusted_prices,
                 judge_model=args.judge_model,
                 evolution_model=args.evolution_model,
+                approved_dataset_path=args.approved_dataset,
             )
         elif args.command == "filter-local-prices":
             result = filter_local_prices(

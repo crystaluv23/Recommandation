@@ -1,5 +1,20 @@
 # Status
 
+Prepared T7 for an exact, reviewable live freeze (2026-09-08): initialized
+`self-evolution-t7-20260908-v1` against the global Raw Info oracle and stable
+14-Signal Registry, then extended local preflight to accept the intended
+human-approved development manifest. Preflight validates its hash, sealed
+Locked Test metadata, disjoint development splits, and evaluation feasibility
+without loading Locked Test or making network calls. The verified dataset has
+8,755 Discovery, 16 Anchor, and 3,623 Evolution Validation cases; local status
+is `ready_for_freeze=true`, `ready_for_external_run=false`, with zero external
+calls. [`self-evolution-t7-execution-contract-2026-09-08.md`](self-evolution-t7-execution-contract-2026-09-08.md)
+now proposes the exact Fast/Slow, two-provider reliability, and T5 benefit
+thresholds and budgets. T7 remains open until those research decisions and
+external destinations are approved, a new contract is frozen and executed,
+and promotion, downstream use, and independent benefit are evidenced.
+All 614 tests and repository lint pass.
+
 Completed the offline portion of T6's generalized reliability matrix
 (2026-09-08): [`self-evolution-reliability-matrix-2026-09-08.md`](self-evolution-reliability-matrix-2026-09-08.md)
 maps format/API, evidence, recovery, persistence, generalization, injected error
