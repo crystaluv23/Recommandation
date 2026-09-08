@@ -385,6 +385,7 @@ Owned mainly by `monitoring`, `memory`, `review`, `signals`, `cases`, `ranking`,
 
 Module specs live under `spec/src/stock_opportunity_agent/` and describe active design boundaries. The active tree stays at module level unless implementation has proved a child boundary. The data layer currently has child specs because source adapters, feature normalization, document retrieval, and point-in-time packet assembly are already separate implementation boundaries.
 
+- [`artifacts.md`](src/stock_opportunity_agent/artifacts.md): shared canonical JSON hashing and crash-safe local artifact writes; it owns byte-level mechanics only, never domain schemas or lifecycle policy.
 - [`models.md`](src/stock_opportunity_agent/models.md): shared domain objects and versioned records.
 - [`config.md`](src/stock_opportunity_agent/config.md): universe, scoring, data-source, prompt, and run configuration.
 - [`data.md`](src/stock_opportunity_agent/data.md): structured and unstructured data access with point-in-time snapshots.

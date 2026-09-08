@@ -9,8 +9,24 @@ Ready - v6 bounded-context, evidence-reference, and cumulative Signal-transition
 Own the non-evolvable run boundary around the Information-Plan/Signal dual
 loop. This module does not decide research strategy and is not part of the four
 fields in an `InformationPlan`. It freezes inputs, discloses external requests,
-enforces attempt/cost ceilings, caches exact responses, and inventories legacy
-point-in-time artifacts before migration.
+enforces attempt/cost ceilings, caches exact responses, and composes the
+bounded Fast/Slow execution runtime. Dataset inventory, migration, proposal,
+and approval belong to `evolution_dataset.py`; this module re-exports its
+existing command-facing functions so the CLI boundary remains stable.
+
+The implementation is layered in dependency order:
+
+```text
+evolution_settings / evolution_dataset / evolution_transport
+-> evolution_output_validation / evolution_research_validation
+-> evolution_plan_roles / evolution_signal_roles
+-> evolution_control
+-> evolution_runtime (stable import facade)
+```
+
+New implementation code imports the owning module directly. The facade exists
+only to preserve the established command and test import surface; it owns no
+business logic.
 
 Structured role validation is an execution contract. New validators emit
 machine-readable `ValidationIssue` records; correction feedback and scoped

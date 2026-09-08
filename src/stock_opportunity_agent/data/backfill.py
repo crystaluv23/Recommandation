@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
-import tempfile
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
 from datetime import date, datetime, time, timedelta, timezone
@@ -14,6 +12,10 @@ from pathlib import Path
 from typing import Any, Protocol
 from urllib.parse import urlsplit
 
+from stock_opportunity_agent.artifacts import (
+    atomic_write_json as _atomic_write_json,
+    canonical_json_hash as _canonical_hash,
+)
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import DataSourceError, FilingMetadata
@@ -648,7 +650,7 @@ def run_sec_submissions_backfill(
                 "next_retry_at": exc.next_retry_at.isoformat(),
                 "reason": exc.reason,
             }
-            _store_submissions_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -674,7 +676,7 @@ def run_sec_submissions_backfill(
                 }
             )
             last_stop = "item_failed"
-            _store_submissions_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -709,7 +711,7 @@ def run_sec_submissions_backfill(
             "completed_at": now().isoformat(),
         }
         last_stop = "item_completed"
-        _store_submissions_progress(
+        _store_progress(
             state_path, progress, completed, failures, last_stop, now()
         )
         _emit_progress(
@@ -723,7 +725,7 @@ def run_sec_submissions_backfill(
         )
     pending_count = len(plan["items"]) - len(completed)
     status = "completed" if pending_count == 0 else "paused_resumable"
-    _store_submissions_progress(
+    _store_progress(
         state_path, progress, completed, failures, last_stop, now()
     )
     return {
@@ -997,7 +999,7 @@ def run_sec_company_facts_backfill(
                 "next_retry_at": exc.next_retry_at.isoformat(),
                 "reason": exc.reason,
             }
-            _store_company_facts_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -1023,7 +1025,7 @@ def run_sec_company_facts_backfill(
                 }
             )
             last_stop = "item_failed"
-            _store_company_facts_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -1055,7 +1057,7 @@ def run_sec_company_facts_backfill(
             "completed_at": now().isoformat(),
         }
         last_stop = "item_completed"
-        _store_company_facts_progress(
+        _store_progress(
             state_path, progress, completed, failures, last_stop, now()
         )
         _emit_progress(
@@ -1069,7 +1071,7 @@ def run_sec_company_facts_backfill(
         )
     pending_count = len(plan["items"]) - len(completed)
     status = "completed" if pending_count == 0 else "paused_resumable"
-    _store_company_facts_progress(
+    _store_progress(
         state_path, progress, completed, failures, last_stop, now()
     )
     return {
@@ -1339,7 +1341,7 @@ def run_sec_historical_submissions_backfill(
                 "next_retry_at": exc.next_retry_at.isoformat(),
                 "reason": exc.reason,
             }
-            _store_historical_submissions_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -1365,7 +1367,7 @@ def run_sec_historical_submissions_backfill(
                 }
             )
             last_stop = "item_failed"
-            _store_historical_submissions_progress(
+            _store_progress(
                 state_path, progress, completed, failures, last_stop, now()
             )
             _emit_progress(
@@ -1392,7 +1394,7 @@ def run_sec_historical_submissions_backfill(
             "completed_at": now().isoformat(),
         }
         last_stop = "item_completed"
-        _store_historical_submissions_progress(
+        _store_progress(
             state_path, progress, completed, failures, last_stop, now()
         )
         _emit_progress(
@@ -1406,7 +1408,7 @@ def run_sec_historical_submissions_backfill(
         )
     pending_count = len(plan["items"]) - len(completed)
     status = "completed" if pending_count == 0 else "paused_resumable"
-    _store_historical_submissions_progress(
+    _store_progress(
         state_path, progress, completed, failures, last_stop, now()
     )
     return {
@@ -1972,63 +1974,6 @@ def _load_historical_submissions_progress(
 
 
 def _store_progress(
-    path: Path,
-    progress: dict[str, Any],
-    completed: Mapping[str, Any],
-    failures: list[dict[str, Any]],
-    last_stop: str,
-    updated_at: datetime,
-) -> None:
-    progress.update(
-        {
-            "completed": dict(completed),
-            "failures": failures,
-            "last_stop": last_stop,
-            "updated_at": updated_at.isoformat(),
-        }
-    )
-    _atomic_write_json(path, progress)
-
-
-def _store_submissions_progress(
-    path: Path,
-    progress: dict[str, Any],
-    completed: Mapping[str, Any],
-    failures: list[dict[str, Any]],
-    last_stop: str,
-    updated_at: datetime,
-) -> None:
-    progress.update(
-        {
-            "completed": dict(completed),
-            "failures": failures,
-            "last_stop": last_stop,
-            "updated_at": updated_at.isoformat(),
-        }
-    )
-    _atomic_write_json(path, progress)
-
-
-def _store_company_facts_progress(
-    path: Path,
-    progress: dict[str, Any],
-    completed: Mapping[str, Any],
-    failures: list[dict[str, Any]],
-    last_stop: str,
-    updated_at: datetime,
-) -> None:
-    progress.update(
-        {
-            "completed": dict(completed),
-            "failures": failures,
-            "last_stop": last_stop,
-            "updated_at": updated_at.isoformat(),
-        }
-    )
-    _atomic_write_json(path, progress)
-
-
-def _store_historical_submissions_progress(
     path: Path,
     progress: dict[str, Any],
     completed: Mapping[str, Any],
@@ -2617,7 +2562,6 @@ def _company_id_from_symbol(symbol: str) -> str:
         raise ValidationError("cannot derive company_id from symbol")
     return value
 
-
 def _length_stats(values: list[int]) -> dict[str, int]:
     ordered = sorted(values)
     if not ordered:
@@ -2629,11 +2573,6 @@ def _length_stats(values: list[int]) -> dict[str, int]:
     }
 
 
-def _canonical_hash(value: Mapping[str, Any]) -> str:
-    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return hashlib.sha256(encoded).hexdigest()
-
-
 def _read_json(path: Path) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -2642,18 +2581,3 @@ def _read_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValidationError(f"JSON artifact must be an object: {path}")
     return value
-
-
-def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, sort_keys=True, indent=2)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)

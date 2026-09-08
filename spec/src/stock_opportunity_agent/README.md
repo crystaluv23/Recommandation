@@ -13,6 +13,7 @@ Earlier pre-implementation child specs were archived under [`../../_archive/2026
 
 ```text
 src/stock_opportunity_agent/
+  artifacts
   models
   config
   data
@@ -40,6 +41,17 @@ src/stock_opportunity_agent/
     ralph_loop
     information_plan
     scheme_evolution
+    evolution_core
+    plan_evolution
+    signal_evolution
+    evolution_dataset
+    evolution_settings
+    evolution_transport
+    evolution_output_validation
+    evolution_research_validation
+    evolution_plan_roles
+    evolution_signal_roles
+    evolution_control
     evolution_runtime
     evolution_dashboard
     playbooks
@@ -56,6 +68,7 @@ Matching active specs:
 
 ```text
 spec/src/stock_opportunity_agent/
+  artifacts.md
   models.md
   config.md
   data.md
@@ -83,6 +96,17 @@ spec/src/stock_opportunity_agent/
   research/ralph_loop.md
   research/information_plan.md
   research/scheme_evolution.md
+  research/evolution_core.md
+  research/plan_evolution.md
+  research/signal_evolution.md
+  research/evolution_dataset.md
+  research/evolution_settings.md
+  research/evolution_transport.md
+  research/evolution_output_validation.md
+  research/evolution_research_validation.md
+  research/evolution_plan_roles.md
+  research/evolution_signal_roles.md
+  research/evolution_control.md
   research/evolution_runtime.md
   research/evolution_dashboard.md
   research/playbooks.md

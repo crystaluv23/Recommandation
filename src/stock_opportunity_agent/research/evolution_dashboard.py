@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import json
 import math
-import os
-import tempfile
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+from stock_opportunity_agent.artifacts import atomic_write_text as _atomic_write_text
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -446,17 +445,3 @@ def _run_sort_key(run: Mapping[str, Any]) -> tuple[str, str]:
 def _clip(value: Any, limit: int = 180) -> str:
     normalized = " ".join(str(value or "").split())
     return normalized if len(normalized) <= limit else normalized[: limit - 1] + "…"
-
-
-def _atomic_write_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)

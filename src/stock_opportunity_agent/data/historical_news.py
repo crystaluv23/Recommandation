@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
-import tempfile
 from collections import Counter
 from collections.abc import Callable, Mapping
 from datetime import date, datetime, time, timedelta, timezone
@@ -14,6 +12,10 @@ from pathlib import Path
 from typing import Any, Protocol
 from urllib import parse
 
+from stock_opportunity_agent.artifacts import (
+    atomic_write_json as _atomic_write_json,
+    canonical_json_hash as _canonical_hash,
+)
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import DataSourceError
@@ -726,29 +728,9 @@ def _artifact_identity(path: Path) -> dict[str, Any]:
     }
 
 
-def _canonical_hash(value: Any) -> str:
-    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return hashlib.sha256(encoded).hexdigest()
-
-
 def _read_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         value = json.load(handle)
     if not isinstance(value, dict):
         raise ValidationError(f"JSON object required: {path}")
     return value
-
-
-def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, indent=2, sort_keys=True)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)

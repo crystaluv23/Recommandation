@@ -10,6 +10,12 @@ Evolve how the system researches and organizes information, while gradually
 improving the reusable Signal Library. The active system has two coupled time
 scales:
 
+`scheme_evolution.py` is the stable import facade. Implementation is separated
+by dependency direction: immutable records and pure rules live in
+`evolution_core.py`, workspace and Fast Plan evolution live in
+`plan_evolution.py`, and Slow Signal plus dual-loop orchestration live in
+`signal_evolution.py`. Child modules never import the facade.
+
 ```text
 Fast Loop: Information Plan Evolution
 Slow Loop: Signal Mining and Signal Update

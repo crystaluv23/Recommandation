@@ -7,13 +7,16 @@ import json
 import math
 import os
 import re
-import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
+from stock_opportunity_agent.artifacts import (
+    atomic_write_json as _atomic_write_json,
+    atomic_write_text as _atomic_write_text,
+)
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
@@ -3566,21 +3569,6 @@ def _read_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def _atomic_write_json(path: Path, value: Mapping[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, sort_keys=True, indent=2)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)
-
-
 def _write_or_verify_text(path: Path, value: str) -> None:
     """Write immutable UTF-8 text atomically or verify an exact replay."""
 
@@ -3588,17 +3576,7 @@ def _write_or_verify_text(path: Path, value: str) -> None:
         if path.read_text(encoding="utf-8") != value:
             raise ValidationError(f"conflicting immutable text artifact: {path}")
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            handle.write(value)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)
+    _atomic_write_text(path, value)
 
 
 def _write_or_verify_json(path: Path, value: Mapping[str, Any]) -> None:

@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import tempfile
 from dataclasses import dataclass
 from datetime import datetime, time, timedelta, timezone
 from enum import Enum
@@ -13,6 +12,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 from urllib import parse
 
+from stock_opportunity_agent.artifacts import atomic_write_json
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import DataSourceError, JsonTransport
 from stock_opportunity_agent.models import ValidationError
@@ -161,17 +161,7 @@ class RawDataCache:
             "retrieved_at": retrieved_at.isoformat(),
             "body": body,
         }
-        descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-        try:
-            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-                json.dump(record, handle, sort_keys=True)
-                handle.write("\n")
-                handle.flush()
-                os.fsync(handle.fileno())
-            os.replace(temporary, path)
-        finally:
-            if os.path.exists(temporary):
-                os.unlink(temporary)
+        atomic_write_json(path, record, indent=None)
 
     def _path(self, key: RawCacheKey) -> Path:
         return self.root_dir / key.source_key / key.capability.value / f"{key.digest}.json"
