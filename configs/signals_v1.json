@@ -8,7 +8,7 @@
         "category": "financial",
         "definition": {"description": "Measure the latest point-in-time year-over-year revenue growth."},
         "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
-        "raw_retrieval": {"source_types": ["financials"]},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "sales"], "comparison_requirement": "Latest period versus prior-year comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.2, "negative_max": 0.0, "routing_answer_need_phrases": ["revenue growth", "year-over-year revenue", "year over year revenue", "yoy revenue"]}
       },
@@ -21,7 +21,7 @@
         "category": "financial",
         "definition": {"description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."},
         "execution": {"type": "deterministic", "function": "financial.revenue_acceleration"},
-        "raw_retrieval": {"source_types": ["financials"]},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "sales"], "comparison_requirement": "Current and prior comparable growth periods.", "minimum_distinct_periods": 3, "minimum_period_span_days": 330},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.05, "negative_max": -0.05}
       },
@@ -34,7 +34,7 @@
         "category": "financial",
         "definition": {"description": "Measure the latest point-in-time change in gross margin."},
         "execution": {"type": "deterministic", "function": "financial.gross_margin_change"},
-        "raw_retrieval": {"source_types": ["financials"]},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["revenue", "gross profit"], "comparison_requirement": "Latest gross margin versus prior comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.02, "negative_max": -0.02}
       },
@@ -47,7 +47,7 @@
         "category": "financial",
         "definition": {"description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."},
         "execution": {"type": "deterministic", "function": "financial.operating_cash_flow_margin"},
-        "raw_retrieval": {"source_types": ["financials"]},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["operating cash flow", "revenue"], "comparison_requirement": "Operating cash flow and revenue for the same period.", "minimum_distinct_periods": 1},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.1, "negative_max": 0.0, "routing_answer_need_phrases": ["operating cash flow margin"]}
       },
@@ -60,7 +60,7 @@
         "category": "financial",
         "definition": {"description": "Measure year-over-year net share retirement, with dilution represented as a negative value."},
         "execution": {"type": "deterministic", "function": "financial.net_share_retirement_yoy"},
-        "raw_retrieval": {"source_types": ["financials"]},
+        "raw_retrieval": {"source_types": ["financials"], "query_terms": ["weighted average shares", "shares outstanding"], "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period.", "minimum_distinct_periods": 2, "minimum_period_span_days": 330},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 0.02, "negative_max": -0.05}
       },
@@ -73,7 +73,7 @@
         "category": "market",
         "definition": {"description": "Measure maximum drawdown from the point-in-time one-year price series."},
         "execution": {"type": "deterministic", "function": "market.max_drawdown_1y"},
-        "raw_retrieval": {"source_types": ["market_data"]},
+        "raw_retrieval": {"source_types": ["market_data"], "query_terms": ["adjusted close", "price history"], "lookback_days": 400},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": -0.2, "negative_max": -0.5}
       },
@@ -86,7 +86,7 @@
         "category": "market",
         "definition": {"description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."},
         "execution": {"type": "deterministic", "function": "market.price_momentum_126d"},
-        "raw_retrieval": {"source_types": ["market_data"]},
+        "raw_retrieval": {"source_types": ["market_data"], "query_terms": ["adjusted close", "price history"], "lookback_days": 400, "minimum_observations": 127},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"lookback_observations": 126, "positive_min": 0.2, "negative_max": -0.2}
       },
@@ -100,7 +100,7 @@
         "category": "company",
         "definition": {"description": "Read the latest point-in-time market capitalization as research context."},
         "execution": {"type": "deterministic", "function": "company.market_cap"},
-        "raw_retrieval": {"source_types": ["company_profile", "market_data"]},
+        "raw_retrieval": {"source_types": ["company_profile", "market_data"], "query_terms": ["market capitalization", "market cap"], "required_source_groups": [["company_profile", "market_data"]]},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 5000000000, "negative_max": 500000000}
       },
@@ -113,7 +113,7 @@
         "category": "financial",
         "definition": {"description": "Read the latest point-in-time cash and equivalents balance."},
         "execution": {"type": "deterministic", "function": "financial.cash_reserves"},
-        "raw_retrieval": {"source_types": ["financials", "filing"]},
+        "raw_retrieval": {"source_types": ["financials", "filing"], "query_terms": ["cash and equivalents", "cash balance", "liquidity"], "required_source_groups": [["financials", "filing"]], "minimum_distinct_periods": 1},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"positive_min": 100000000, "negative_max": 10000000, "routing_answer_need_phrases": ["cash reserves", "cash balance", "cash and equivalents", "cash position", "liquidity"]}
       },
@@ -127,7 +127,7 @@
         "category": "customers",
         "definition": {"description": "Judge whether customers moved from pilot or validation into volume purchase or scaled deployment."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["earnings_call", "company_announcement", "customer_announcement"]},
+        "raw_retrieval": {"source_types": ["earnings_call", "company_announcement", "customer_announcement"], "query_terms": ["pilot volume deployment", "qualification production", "repeat order"], "lookback_days": 730},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true}
       },
       "skill": "Extract only explicit customer-stage evidence. Positive requires a stated move from trial, qualification, or pilot into repeat volume purchase or scaled deployment. Treat partnership language without deployment evidence as neutral. Return literal supporting and counter spans.",
@@ -140,7 +140,7 @@
         "category": "management",
         "definition": {"description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"]},
+        "raw_retrieval": {"source_types": ["earnings_call", "filing", "company_announcement"], "query_terms": ["guidance outlook forecast", "raises lowers reaffirms"], "lookback_days": 730, "comparison_requirement": "Current guidance versus explicit prior guidance."},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {
           "routing_need_phrases": ["guidance update", "guidance updates", "updated guidance", "guidance change", "guidance changes", "revised guidance", "guidance revision", "guidance revisions"],
@@ -158,7 +158,7 @@
         "category": "orders",
         "definition": {"description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"], "query_terms": ["purchase order backlog", "contract award", "customer commitment"], "lookback_days": 730},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"routing_required_research_phrases": ["purchase order", "purchase orders", "customer order", "customer orders", "order backlog", "funded backlog", "contract award", "customer commitment"]}
       },
@@ -172,7 +172,7 @@
         "category": "product",
         "definition": {"description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"]},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "customer_announcement", "earnings_call"], "query_terms": ["commercial launch", "commercial shipment", "scaled sales"], "lookback_days": 1095},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"routing_excluded_context_tags": ["mature_operations"], "routing_required_research_phrases": ["product", "technology", "prototype", "commercialization", "commercial launch", "commercially available", "sellable", "repeatable"]}
       },
@@ -186,7 +186,7 @@
         "category": "risks",
         "definition": {"description": "Judge whether the growth thesis depends excessively on one customer or one customer program."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"]},
+        "raw_retrieval": {"source_types": ["filing", "earnings_call", "customer_announcement"], "query_terms": ["customer concentration", "major customer", "revenue customer"], "lookback_days": 1095},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {
           "routing_required_research_phrases": ["customer", "client", "buyer", "offtake", "backlog", "order", "customer program"],
@@ -204,7 +204,7 @@
         "category": "news",
         "definition": {"description": "Count configured negative terms in complete point-in-time company news source documents."},
         "execution": {"type": "deterministic", "function": "news.negative_word_count"},
-        "raw_retrieval": {"source_types": ["news"]},
+        "raw_retrieval": {"source_types": ["news"], "query_terms": ["risk loss delay", "decline warning"], "lookback_days": 365},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {"terms": ["decline", "loss", "risk", "delay", "investigation", "default"], "negative_count_min": 1}
       },
@@ -217,7 +217,7 @@
         "category": "catalysts",
         "definition": {"description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."},
         "execution": {"type": "llm", "skill_file": "skill.md"},
-        "raw_retrieval": {"source_types": ["filing", "company_announcement", "news"]},
+        "raw_retrieval": {"source_types": ["filing", "company_announcement", "news"], "query_terms": ["financing offering", "listing compliance", "reverse split"], "lookback_days": 730},
         "evidence_policy": {"require_source": true, "require_timestamp": true, "require_exact_span": true},
         "parameters": {
           "routing_answer_need_phrases": ["financing", "refinancing", "debt restructuring", "listing", "dilution", "runway", "redemption", "reverse split", "share sale", "share offering", "equity offering", "debt maturity", "debt maturities"],

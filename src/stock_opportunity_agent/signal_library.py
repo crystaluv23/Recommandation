@@ -19,6 +19,7 @@ from stock_opportunity_agent.artifacts import (
 )
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
+    DataGapReason,
     EvidenceResolver,
     RawInfoRequest,
     RawInfoResolution,
@@ -255,6 +256,10 @@ class SignalRetrievalPolicy:
     query_terms: tuple[str, ...]
     lookback_days: int | None = None
     comparison_requirement: str | None = None
+    required_source_groups: tuple[tuple[str, ...], ...] = ()
+    minimum_distinct_periods: int | None = None
+    minimum_period_span_days: int | None = None
+    minimum_observations: int | None = None
 
     def __post_init__(self) -> None:
         terms = tuple(" ".join(str(item).split()) for item in self.query_terms)
@@ -280,6 +285,32 @@ class SignalRetrievalPolicy:
             )
         object.__setattr__(self, "query_terms", terms)
         object.__setattr__(self, "comparison_requirement", comparison)
+        groups = tuple(
+            tuple(str(item) for item in group)
+            for group in self.required_source_groups
+        )
+        if any(
+            not group
+            or any(not item.strip() for item in group)
+            or len({item.casefold() for item in group}) != len(group)
+            for group in groups
+        ):
+            raise ValidationError(
+                "Signal retrieval source groups must be non-empty and unique"
+            )
+        if len(set(groups)) != len(groups):
+            raise ValidationError("Signal retrieval source groups must be unique")
+        for name in (
+            "minimum_distinct_periods",
+            "minimum_period_span_days",
+            "minimum_observations",
+        ):
+            value = getattr(self, name)
+            if value is not None and (type(value) is not int or value < 1):
+                raise ValidationError(
+                    f"Signal retrieval {name} must be a positive integer"
+                )
+        object.__setattr__(self, "required_source_groups", groups)
 
     @property
     def query(self) -> str:
@@ -293,6 +324,18 @@ class SignalRetrievalPolicy:
             value["lookback_days"] = self.lookback_days
         if self.comparison_requirement is not None:
             value["comparison_requirement"] = self.comparison_requirement
+        if self.required_source_groups:
+            value["required_source_groups"] = [
+                list(group) for group in self.required_source_groups
+            ]
+        for name in (
+            "minimum_distinct_periods",
+            "minimum_period_span_days",
+            "minimum_observations",
+        ):
+            field_value = getattr(self, name)
+            if field_value is not None:
+                value[name] = field_value
         return value
 
     @classmethod
@@ -319,6 +362,25 @@ class SignalRetrievalPolicy:
             comparison_requirement=(
                 str(data["comparison_requirement"])
                 if data.get("comparison_requirement") is not None
+                else None
+            ),
+            required_source_groups=tuple(
+                tuple(str(item) for item in group)
+                for group in data.get("required_source_groups", ())
+            ),
+            minimum_distinct_periods=(
+                int(data["minimum_distinct_periods"])
+                if data.get("minimum_distinct_periods") is not None
+                else None
+            ),
+            minimum_period_span_days=(
+                int(data["minimum_period_span_days"])
+                if data.get("minimum_period_span_days") is not None
+                else None
+            ),
+            minimum_observations=(
+                int(data["minimum_observations"])
+                if data.get("minimum_observations") is not None
                 else None
             ),
         )
@@ -470,6 +532,14 @@ class SignalSpec:
                 default_query_terms=(self.signal_id.replace("_", " "),),
             )
         object.__setattr__(self, "retrieval_policy", retrieval_policy)
+        if any(
+            not source_types_compatible((item,), self.source_types)
+            for group in retrieval_policy.required_source_groups
+            for item in group
+        ):
+            raise ValidationError(
+                "Signal retrieval source group is outside declared source_types"
+            )
 
     @property
     def ref(self) -> str:
@@ -2446,15 +2516,8 @@ class SignalExecutor:
             if (prior_fingerprints or {}).get(spec.ref) == fingerprint:
                 skipped.append(spec.ref)
                 continue
-            if not documents:
-                result = SignalResult(
-                    signal_id=spec.signal_id,
-                    version=spec.version,
-                    value=SignalValue.UNAVAILABLE,
-                    confidence=0.0,
-                    interpretation="No point-in-time source document was available.",
-                    coverage=SignalCoverage.UNAVAILABLE,
-                )
+            if resolution.status != "resolved":
+                result = _unresolved_signal_result(spec, resolution)
             elif spec.execution_type is SignalExecutionType.DETERMINISTIC:
                 try:
                     function = self.deterministic_functions[str(spec.function)]
@@ -2577,11 +2640,61 @@ class SignalExecutor:
                 lookback_days=spec.retrieval_policy.lookback_days,
                 max_documents=10,
                 query=spec.retrieval_policy.query,
+                required_source_groups=spec.retrieval_policy.required_source_groups,
+                minimum_distinct_periods=(
+                    spec.retrieval_policy.minimum_distinct_periods
+                ),
+                minimum_period_span_days=(
+                    spec.retrieval_policy.minimum_period_span_days
+                ),
+                minimum_observations=spec.retrieval_policy.minimum_observations,
             ),
             company_id=company_id,
             identity=dict(identity or {}),
             as_of=as_of,
         )
+
+
+def _unresolved_signal_result(
+    spec: SignalSpec, resolution: RawInfoResolution
+) -> SignalResult:
+    """Map data-boundary control failures without inventing a domain observation."""
+
+    reason = resolution.gap.reason if resolution.gap is not None else None
+    status_by_reason = {
+        DataGapReason.ADAPTER_MISSING: SignalExecutionStatus.PERMANENT_FAILED,
+        DataGapReason.MISSING_IDENTIFIER: SignalExecutionStatus.PERMANENT_FAILED,
+        DataGapReason.EXTERNAL_NOT_AUTHORIZED: (
+            SignalExecutionStatus.AUTHORIZATION_BLOCKED
+        ),
+        DataGapReason.QUOTA_DEFERRED: SignalExecutionStatus.BUDGET_BLOCKED,
+        DataGapReason.PROVIDER_ERROR: SignalExecutionStatus.TRANSPORT_FAILED,
+        DataGapReason.MATERIALIZATION_FAILED: SignalExecutionStatus.PERMANENT_FAILED,
+    }
+    status = status_by_reason.get(reason)
+    if status is not None:
+        code = reason.value if reason is not None else "raw_info_resolution_failed"
+        message = (
+            resolution.gap.message
+            if resolution.gap is not None
+            else "Raw Info resolution failed without a structured gap."
+        )
+        return signal_execution_failure_result(
+            spec,
+            status=status,
+            error_code=code,
+            error_message=message,
+        )
+    return SignalResult(
+        signal_id=spec.signal_id,
+        version=spec.version,
+        value=SignalValue.UNAVAILABLE,
+        confidence=0.0,
+        interpretation=(
+            "Point-in-time inputs did not satisfy the Signal retrieval contract."
+        ),
+        coverage=SignalCoverage.UNAVAILABLE,
+    )
 
 
 def validate_signal_result(

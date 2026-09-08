@@ -1,5 +1,25 @@
 # Status
 
+Completed T2 Raw Info and Signal retrieval contracts (2026-09-08):
+`RawInfoRequest` and versioned Signal retrieval policies now declare bounded
+query terms plus structured required-source groups, minimum distinct periods,
+period span, and observation count. The resolver selects over the complete
+point-in-time eligible pool, reserves required source families and comparison
+period coverage before the document limit, and continues authorized acquisition
+when local evidence exists but is contract-incomplete. Coverage records expose
+the exact missing requirements; unresolved partial documents and literal Basic
+Info spans remain visible without being reported as answered. Signal execution
+fingerprints partial inputs but gates execution until the contract is complete,
+isolates that Signal from valid siblings, and maps provider, budget,
+authorization, and materialization failures to technical execution statuses
+instead of domain observations. The v1 seed catalog now contains explicit,
+measurement-oriented queries and existing deterministic comparison/observation
+requirements; no new scoring threshold was introduced. Real-shape tests cover
+multi-source limiting, old comparison-period preservation, bounded acquisition
+after a partial local hit, partial Basic Info visibility, Signal execution
+gating, technical failure classification, round-trip compatibility, and shared
+readiness. T1-T4 are complete; T5-T7 remain open. No external request was sent.
+
 Completed T4 Slow candidate-generation hardening (2026-09-08): production H1 now
 uses a versioned structured contract. The runtime owns stable proposal refs, the
 fixed Discovery comparison, and evidence lookback, while the model supplies a
@@ -79,8 +99,8 @@ stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
 T3 promotion recovery now fails closed while a prepared transition exists and
 reconciles the same batch across preparation, every stable-file class, Registry
 version, output snapshot, promotion-record, and cycle-pointer fault boundaries.
-T3 and T4 are complete. The rest of T2 and T5-T7 remain open; no external request was
-sent. All 595 tests and repository lint pass.
+T2-T4 are complete. T5-T7 remain open; no external request was sent. All 595
+tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request
 and correction response. Validation prose incorrectly introduced `e.g` as a JSON

@@ -2308,7 +2308,7 @@ class SignalEvolutionTests(TestCase):
                     resolution["input_request"]["request_id"].startswith("signal:")
                 )
                 self.assertEqual(
-                    resolution["input_request"]["query"], "revenue growth yoy"
+                    resolution["input_request"]["query"], "revenue sales"
                 )
             induction_ids = set(
                 target_audit["local_selection"]["induction_case_ids"]

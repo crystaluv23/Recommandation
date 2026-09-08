@@ -1,6 +1,6 @@
 # Shared Evaluation Data Is Not Plan Fitness
 
-visit_times: 5
+visit_times: 6
 
 ## Trigger
 
@@ -15,6 +15,11 @@ fixed market backbone before Plan proposals. Try authorized adapters in frozen
 catalog order; for a new Random snapshot, continue through the same
 deterministic label/issuer rotation when a prospective case is unavailable.
 Never substitute a fixed Anchor or an already persisted snapshot.
+
+A local document hit is not sufficient readiness when the consumer's versioned
+contract requires another source family, comparison period, span, or observation
+count. Keep partial refs for diagnosis, continue authorized bounded acquisition,
+and mark the resolution complete only after the same frozen contract is met.
 
 A remaining shared-data failure must leave committed pointers unchanged and
 write a replaceable pause diagnostic, not an immutable `round_rejected`
@@ -40,6 +45,8 @@ rejection and the ten-hour launcher treated the normal CLI exit as completion.
    rejection.
 5. Regression-test that no proposer call or `rejected.json` occurs when the
    shared gate fails.
+6. Test non-empty but incomplete local inputs; they must not suppress provider
+   fallback or execute a Signal as though its comparison basis were complete.
 
 ## Limits
 

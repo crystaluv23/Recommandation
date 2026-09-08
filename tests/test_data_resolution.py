@@ -35,7 +35,9 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     SignalExecutionType,
+    SignalExecutionStatus,
     SignalExecutor,
+    SignalRetrievalPolicy,
     SignalSpec,
     SignalValue,
 )
@@ -86,6 +88,260 @@ class FailingAdapter(FakeAdapter):
 
 
 class EvidenceResolverTests(TestCase):
+    def test_retrieval_contract_preserves_required_sources_before_limit(self) -> None:
+        filing = document(
+            "filing",
+            '{"end":"2024-12-31","topic":"risk"}',
+            source_type="filing",
+        )
+        newest_news = document("newest_news", "risk update")
+        other_news = document(
+            "other_news",
+            "risk update two",
+            available_at=AS_OF - timedelta(days=2),
+        )
+        request = RawInfoRequest(
+            "mixed",
+            "Read both filing and news evidence.",
+            ("filing", "news"),
+            max_documents=2,
+            query="risk",
+            required_source_groups=(("filing",), ("news",)),
+        )
+
+        resolution = EvidenceResolver(
+            RawInfoStore(documents=(newest_news, other_news, filing))
+        ).resolve(request, company_id="issuer_1", identity={}, as_of=AS_OF)
+
+        self.assertEqual(resolution.status, "resolved")
+        self.assertEqual(
+            {item.document_id for item in resolution.documents},
+            {"filing", "newest_news"},
+        )
+        self.assertTrue(resolution.coverage.contract_satisfied)
+        self.assertEqual(resolution.coverage.satisfied_source_group_count, 2)
+
+    def test_incomplete_period_contract_continues_authorized_acquisition(self) -> None:
+        local = document(
+            "local_financials",
+            '{"facts":[{"end":"2024-12-31","value":20}]}',
+            source_type="financials",
+        )
+        prior = document(
+            "prior_financials",
+            '{"facts":[{"end":"2023-12-31","value":10}]}',
+            source_type="financials",
+            available_at=AS_OF - timedelta(days=2),
+        )
+        adapter = FakeAdapter(AcquisitionResult((prior,)))
+        adapter.source_types = ("financials",)
+        adapter.capabilities = ("financials",)
+        request = RawInfoRequest(
+            "financial_comparison",
+            "Read two comparable financial periods.",
+            ("financials",),
+            minimum_distinct_periods=2,
+            minimum_period_span_days=330,
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(documents=(local,)),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=(adapter.provider,),
+                allowed_capabilities=("financials",),
+                allowed_source_types=("financials",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+
+        resolution = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+
+        self.assertEqual(adapter.calls, 1)
+        self.assertEqual(resolution.status, "resolved")
+        self.assertEqual(resolution.coverage.observed_distinct_period_count, 2)
+        self.assertGreaterEqual(resolution.coverage.observed_period_span_days, 330)
+
+    def test_retrieval_contract_preserves_old_comparison_period_before_limit(
+        self,
+    ) -> None:
+        recent = tuple(
+            document(
+                f"recent_{index}",
+                (
+                    '{"facts":[{"end":"2024-12-31","value":'
+                    f"{20 + index}" + "}]}"
+                ),
+                source_type="financials",
+                available_at=AS_OF - timedelta(hours=index + 1),
+            )
+            for index in range(4)
+        )
+        prior = document(
+            "prior_period",
+            '{"facts":[{"end":"2023-12-31","value":10}]}',
+            source_type="financials",
+            available_at=AS_OF - timedelta(days=30),
+        )
+        request = RawInfoRequest(
+            "comparison",
+            "Read current and prior periods.",
+            ("financials",),
+            max_documents=2,
+            minimum_distinct_periods=2,
+            minimum_period_span_days=330,
+        )
+
+        resolution = EvidenceResolver(
+            RawInfoStore(documents=(*recent, prior))
+        ).resolve(request, company_id="issuer_1", identity={}, as_of=AS_OF)
+
+        self.assertEqual(resolution.status, "resolved")
+        self.assertIn(
+            "prior_period", {item.document_id for item in resolution.documents}
+        )
+        self.assertTrue(resolution.coverage.selection_truncated)
+
+    def test_partial_basic_info_is_visible_but_signal_does_not_execute(self) -> None:
+        partial = document(
+            "one_period",
+            '{"facts":[{"end":"2024-12-31","value":20}]}',
+            source_type="financials",
+        )
+        store = RawInfoStore(documents=(partial,))
+        resolver = EvidenceResolver(store)
+        request = RawInfoRequest(
+            "comparison",
+            "Read a comparison.",
+            ("financials",),
+            minimum_distinct_periods=2,
+        )
+        bundle = resolver.resolve_basic_info(
+            (request,), company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+        basic_resolution = bundle.requests[0]
+        self.assertEqual(basic_resolution.status, "unresolved")
+        self.assertEqual(
+            basic_resolution.gap.reason,
+            DataGapReason.REQUIRED_COVERAGE_INCOMPLETE,
+        )
+        self.assertEqual(basic_resolution.documents[0].document_id, "one_period")
+        self.assertIn("2024-12-31", basic_resolution.context_spans[0].exact_text)
+        self.assertFalse(basic_resolution.coverage.contract_satisfied)
+
+        calls: list[str] = []
+
+        def should_not_run(spec, documents, as_of):
+            calls.append(spec.ref)
+            raise AssertionError("incomplete retrieval contract must gate execution")
+
+        spec = SignalSpec(
+            signal_id="comparison_signal",
+            version=1,
+            category="financial",
+            description="Compare two periods.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials",),
+            function="test.comparison",
+            retrieval_policy=SignalRetrievalPolicy(
+                query_terms=("comparison",), minimum_distinct_periods=2
+            ),
+        )
+        batch = SignalExecutor(
+            FrozenSignalRegistry(1, "a" * 64, (spec,), {}),
+            store,
+            resolver=resolver,
+            deterministic_functions={"test.comparison": should_not_run},
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF)
+        self.assertEqual(calls, [])
+        self.assertEqual(batch.results[0].value, SignalValue.UNAVAILABLE)
+        self.assertEqual(
+            batch.document_fingerprints[spec.ref][0].split(":")[0],
+            "one_period",
+        )
+
+    def test_retrieval_contract_round_trips_in_signal_spec(self) -> None:
+        spec = SignalSpec(
+            signal_id="period_signal",
+            version=1,
+            category="financial",
+            description="Read a bounded period series.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials", "filing"),
+            function="test.period",
+            retrieval_policy=SignalRetrievalPolicy(
+                query_terms=("revenue",),
+                comparison_requirement="Compare current with prior year.",
+                required_source_groups=(("financials", "filing"),),
+                minimum_distinct_periods=2,
+                minimum_period_span_days=330,
+                minimum_observations=2,
+            ),
+        )
+
+        restored = SignalSpec.from_dict(spec.to_dict())
+
+        self.assertEqual(restored, spec)
+        request = RawInfoRequest.from_dict(
+            {
+                "request_id": "period",
+                "description": "Read periods.",
+                "source_types": ["financials", "filing"],
+                **restored.retrieval_policy.to_dict(),
+            }
+        )
+        self.assertEqual(request.required_source_groups, (("financials", "filing"),))
+        self.assertEqual(request.minimum_distinct_periods, 2)
+        with self.assertRaisesRegex(ValidationError, "outside source_types"):
+            RawInfoRequest(
+                "invalid_group",
+                "Reject undeclared source aliases.",
+                ("financials",),
+                required_source_groups=(("financials", "invented_provider"),),
+            )
+
+    def test_signal_resolution_control_failure_is_not_domain_unavailable(self) -> None:
+        adapter = FailingAdapter(DataGapReason.PROVIDER_ERROR)
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=(adapter.provider,),
+                allowed_capabilities=("news",),
+                allowed_source_types=("news",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+        spec = SignalSpec(
+            signal_id="news_signal",
+            version=1,
+            category="news",
+            description="Read news.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("news",),
+            function="test.news",
+        )
+        batch = SignalExecutor(
+            FrozenSignalRegistry(1, "a" * 64, (spec,), {}),
+            RawInfoStore(),
+            resolver=resolver,
+            deterministic_functions={"test.news": lambda *_args: None},
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF)
+
+        self.assertEqual(
+            batch.results[0].execution_status,
+            SignalExecutionStatus.TRANSPORT_FAILED,
+        )
+        self.assertEqual(
+            batch.results[0].execution_error_code,
+            DataGapReason.PROVIDER_ERROR.value,
+        )
+
     def test_can_acquire_is_side_effect_free_and_honors_availability_and_policy(
         self,
     ) -> None:

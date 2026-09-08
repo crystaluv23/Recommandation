@@ -931,7 +931,16 @@ class SignalLibraryTests(TestCase):
             spec = registry.load_spec("guidance_acceleration:v1")
             self.assertEqual(
                 spec.retrieval_policy,
-                SignalRetrievalPolicy(query_terms=("guidance acceleration",)),
+                SignalRetrievalPolicy(
+                    query_terms=(
+                        "guidance outlook forecast",
+                        "raises lowers reaffirms",
+                    ),
+                    lookback_days=730,
+                    comparison_requirement=(
+                        "Current guidance versus explicit prior guidance."
+                    ),
+                ),
             )
             documents = [
                 RawInfoDocument.create(
@@ -963,7 +972,10 @@ class SignalLibraryTests(TestCase):
                 as_of=NOW,
             )[0]
 
-            self.assertEqual(resolution.request.query, "guidance acceleration")
+            self.assertEqual(
+                resolution.request.query,
+                "guidance outlook forecast raises lowers reaffirms",
+            )
             self.assertIn(
                 "older-relevant",
                 {item.document_id for item in resolution.documents},

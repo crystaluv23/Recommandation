@@ -14,11 +14,17 @@ differ only in how resolved documents are consumed.
 ## Records
 
 - `RawInfoRequest`: immutable request id, purpose description, source types,
-  optional lookback and literal query, and a maximum document count.
+  optional lookback and literal query, a maximum document count, and optional
+  structured completeness requirements: AND-of-OR required source groups,
+  minimum distinct source periods, minimum period span, and minimum observation
+  count.
 - `RawInfoResolution`: request, resolved document refs, optional exact context
   spans, query/acquisition events, newly appended refs, an optional gap, and a
   coverage record that separates eligible/retrieved counts, lexical query
-matches, selection truncation, and model-visible context truncation.
+matches, selection truncation, model-visible context truncation, and whether
+the structured completeness requirements were met. Incomplete coverage reports
+the exact missing requirement instead of treating retrieved partial evidence as
+proof that the request was answered.
   Coverage also distinguishes a query that was not requested from a legacy
   query whose match evaluation was never recorded; neither state is reported
   as a successful match.
@@ -34,20 +40,21 @@ matches, selection truncation, and model-visible context truncation.
 Supported DataGap reasons are `adapter_missing`, `missing_identifier`,
 `external_not_authorized`, `historical_data_unavailable`, `quota_deferred`,
 `provider_no_data`, `provider_error`, `materialization_failed`, and
-`no_matching_documents`.
+`no_matching_documents`. A non-empty local result that does not satisfy the
+request contract uses `required_coverage_incomplete`.
 
 ## Resolution Flow
 
 ```text
 RawInfoRequest
 -> point-in-time local RawInfoStore query
--> local hit: reuse
--> miss: enumerate authorized adapters in deterministic catalog order
+-> complete local hit: reuse
+-> empty or contract-incomplete hit: enumerate authorized adapters in deterministic catalog order
 -> call one adapter within request ceilings
 -> append complete returned RawInfoDocument records
 -> immediately repeat the same local query
 -> still unresolved: try the next authorized adapter
--> resolved documents or DataGap
+-> complete resolved documents, or partial document refs plus DataGap
 ```
 
 Before any request limit is applied, the resolver filters the complete PIT
@@ -57,6 +64,18 @@ an older relevant document therefore cannot be displaced by newer irrelevant
 documents merely because the selected prefix is bounded. A lexical query match
 is reported as retrieval coverage, not as a claim that the request is
 semantically answerable.
+
+When required source groups are declared, default selection first keeps the
+highest-ranked member of every group and then fills the remaining capacity in
+rank order. Completeness is evaluated over the selected immutable documents.
+Period dates and observations are extracted only from known structured fields;
+publication and availability timestamps never masquerade as research periods.
+If local evidence is partial, authorized acquisition continues within the same
+frozen budget. Exhaustion returns an unresolved resolution that retains the
+partial document refs and explicit coverage diagnostics. Basic Info may expose
+literal spans from those partial documents together with the unresolved status;
+Signal execution records their fingerprint but does not execute until the
+contract is complete.
 
 `resolve` optionally accepts a pure local `select_documents` callback. It receives
 the deterministic ranked pool only after issuer, exact source type, lookback, and

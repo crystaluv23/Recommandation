@@ -67,6 +67,7 @@ class DataGapReason(str, Enum):
     PROVIDER_ERROR = "provider_error"
     MATERIALIZATION_FAILED = "materialization_failed"
     NO_MATCHING_DOCUMENTS = "no_matching_documents"
+    REQUIRED_COVERAGE_INCOMPLETE = "required_coverage_incomplete"
 
 
 @dataclass(frozen=True)
@@ -79,6 +80,10 @@ class RawInfoRequest:
     lookback_days: int | None = None
     max_documents: int = 5
     query: str | None = None
+    required_source_groups: tuple[tuple[str, ...], ...] = ()
+    minimum_distinct_periods: int | None = None
+    minimum_period_span_days: int | None = None
+    minimum_observations: int | None = None
 
     def __post_init__(self) -> None:
         if not self.request_id.strip() or not self.description.strip():
@@ -93,8 +98,42 @@ class RawInfoRequest:
             raise ValidationError("raw info max_documents must be between 1 and 10")
         if self.query is not None and not self.query.strip():
             raise ValidationError("raw info query must be omitted or non-empty")
+        groups = tuple(
+            tuple(str(item) for item in group)
+            for group in self.required_source_groups
+        )
+        if any(
+            not group
+            or any(not item.strip() for item in group)
+            or len({item.casefold() for item in group}) != len(group)
+            for group in groups
+        ):
+            raise ValidationError(
+                "raw info required source groups must be non-empty and unique"
+            )
+        if len(set(groups)) != len(groups):
+            raise ValidationError("raw info required source groups must be unique")
+        if len(groups) > self.max_documents:
+            raise ValidationError(
+                "raw info required source groups exceed document limit"
+            )
+        if any(
+            not source_types_compatible((item,), self.source_types)
+            for group in groups
+            for item in group
+        ):
+            raise ValidationError("raw info required source group is outside source_types")
+        for name in (
+            "minimum_distinct_periods",
+            "minimum_period_span_days",
+            "minimum_observations",
+        ):
+            value = getattr(self, name)
+            if value is not None and (type(value) is not int or value < 1):
+                raise ValidationError(f"raw info {name} must be a positive integer")
         object.__setattr__(self, "source_types", tuple(self.source_types))
         object.__setattr__(self, "query", self.query.strip() if self.query else None)
+        object.__setattr__(self, "required_source_groups", groups)
 
     def to_dict(self) -> dict[str, Any]:
         value: dict[str, Any] = {
@@ -107,6 +146,18 @@ class RawInfoRequest:
             value["lookback_days"] = self.lookback_days
         if self.query is not None:
             value["query"] = self.query
+        if self.required_source_groups:
+            value["required_source_groups"] = [
+                list(group) for group in self.required_source_groups
+            ]
+        for name in (
+            "minimum_distinct_periods",
+            "minimum_period_span_days",
+            "minimum_observations",
+        ):
+            field_value = getattr(self, name)
+            if field_value is not None:
+                value[name] = field_value
         return value
 
     @classmethod
@@ -122,6 +173,25 @@ class RawInfoRequest:
             ),
             max_documents=int(data.get("max_documents", 5)),
             query=(str(data["query"]) if data.get("query") is not None else None),
+            required_source_groups=tuple(
+                tuple(str(item) for item in group)
+                for group in data.get("required_source_groups", ())
+            ),
+            minimum_distinct_periods=(
+                int(data["minimum_distinct_periods"])
+                if data.get("minimum_distinct_periods") is not None
+                else None
+            ),
+            minimum_period_span_days=(
+                int(data["minimum_period_span_days"])
+                if data.get("minimum_period_span_days") is not None
+                else None
+            ),
+            minimum_observations=(
+                int(data["minimum_observations"])
+                if data.get("minimum_observations") is not None
+                else None
+            ),
         )
 
 
@@ -358,6 +428,13 @@ class RawInfoCoverage:
     deduplicated_document_count: int = 0
     visible_span_count: int = 0
     context_truncated: bool | None = None
+    required_source_group_count: int = 0
+    satisfied_source_group_count: int = 0
+    observed_distinct_period_count: int = 0
+    observed_period_span_days: int | None = None
+    observed_observation_count: int = 0
+    contract_satisfied: bool = True
+    missing_requirements: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         counts = (
@@ -365,6 +442,10 @@ class RawInfoCoverage:
             self.selected_document_count,
             self.deduplicated_document_count,
             self.visible_span_count,
+            self.required_source_group_count,
+            self.satisfied_source_group_count,
+            self.observed_distinct_period_count,
+            self.observed_observation_count,
         )
         if any(type(value) is not int or value < 0 for value in counts):
             raise ValidationError("raw info coverage counts must be non-negative")
@@ -385,6 +466,22 @@ class RawInfoCoverage:
             raise ValidationError(
                 "raw info query evaluation and match count must agree"
             )
+        if self.satisfied_source_group_count > self.required_source_group_count:
+            raise ValidationError(
+                "raw info satisfied source groups exceed required groups"
+            )
+        if (
+            self.observed_period_span_days is not None
+            and self.observed_period_span_days < 0
+        ):
+            raise ValidationError("raw info observed period span must be non-negative")
+        if self.contract_satisfied != (not self.missing_requirements):
+            raise ValidationError(
+                "raw info contract status and missing requirements disagree"
+            )
+        object.__setattr__(
+            self, "missing_requirements", tuple(self.missing_requirements)
+        )
 
     @property
     def query_status(self) -> str:
@@ -408,7 +505,24 @@ class RawInfoCoverage:
             "deduplicated_document_count": self.deduplicated_document_count,
             "visible_span_count": self.visible_span_count,
             "context_truncated": self.context_truncated,
+            "required_source_group_count": self.required_source_group_count,
+            "satisfied_source_group_count": self.satisfied_source_group_count,
+            "observed_distinct_period_count": self.observed_distinct_period_count,
+            "observed_period_span_days": self.observed_period_span_days,
+            "observed_observation_count": self.observed_observation_count,
+            "contract_satisfied": self.contract_satisfied,
+            "missing_requirements": list(self.missing_requirements),
         }
+
+    def with_visibility(
+        self, *, span_count: int, truncated: bool
+    ) -> "RawInfoCoverage":
+        """Return the same retrieval facts with model-visibility measurements."""
+
+        value = self.to_dict()
+        value["visible_span_count"] = span_count
+        value["context_truncated"] = truncated
+        return RawInfoCoverage.from_dict(value)
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RawInfoCoverage":
@@ -430,6 +544,25 @@ class RawInfoCoverage:
                 bool(data["context_truncated"])
                 if data.get("context_truncated") is not None
                 else None
+            ),
+            required_source_group_count=int(
+                data.get("required_source_group_count", 0)
+            ),
+            satisfied_source_group_count=int(
+                data.get("satisfied_source_group_count", 0)
+            ),
+            observed_distinct_period_count=int(
+                data.get("observed_distinct_period_count", 0)
+            ),
+            observed_period_span_days=(
+                int(data["observed_period_span_days"])
+                if data.get("observed_period_span_days") is not None
+                else None
+            ),
+            observed_observation_count=int(data.get("observed_observation_count", 0)),
+            contract_satisfied=bool(data.get("contract_satisfied", True)),
+            missing_requirements=tuple(
+                str(item) for item in data.get("missing_requirements", ())
             ),
         )
 
@@ -757,9 +890,7 @@ class EvidenceResolver:
         self.adapters = tuple(adapters)
         self.policy = policy
         self.budget = budget or DataAcquisitionBudget()
-        self._acquisition_failures: dict[
-            tuple[str, str, str, str, int | None, int, str | None], DataGapReason
-        ] = {}
+        self._acquisition_failures: dict[tuple[Any, ...], DataGapReason] = {}
 
     def resolve(
         self,
@@ -796,7 +927,7 @@ class EvidenceResolver:
             )
         appended: list[RawInfoDocumentRef] = []
         gap: DataGap | None = None
-        if not documents:
+        if not coverage.contract_satisfied:
             matching_adapters = self._select_adapters(request)
             if not matching_adapters:
                 gap = self._gap(
@@ -924,12 +1055,16 @@ class EvidenceResolver:
                                         phase="after_acquisition",
                                     )
                                 )
-                            if documents:
+                            if coverage.contract_satisfied:
                                 break
                             reason = (
                                 DataGapReason.PROVIDER_NO_DATA
                                 if not result.documents
-                                else DataGapReason.NO_MATCHING_DOCUMENTS
+                                else (
+                                    DataGapReason.REQUIRED_COVERAGE_INCOMPLETE
+                                    if documents
+                                    else DataGapReason.NO_MATCHING_DOCUMENTS
+                                )
                             )
                             failures.append((adapter.provider, reason))
                             self._acquisition_failures[failure_key] = reason
@@ -977,7 +1112,7 @@ class EvidenceResolver:
                                     },
                                 )
                             )
-                    if not documents and failures:
+                    if not coverage.contract_satisfied and failures:
                         provider, reason = failures[-1]
                         attempts = ", ".join(
                             f"{name}:{failure.value}"
@@ -991,7 +1126,7 @@ class EvidenceResolver:
                             provider=provider,
                         )
 
-        if documents:
+        if documents and coverage.contract_satisfied:
             if include_context:
                 all_spans = tuple(
                     _select_context_spans(
@@ -1009,42 +1144,64 @@ class EvidenceResolver:
                         as_of=as_of,
                     )
                 )
-                coverage = RawInfoCoverage(
-                    eligible_document_count=coverage.eligible_document_count,
-                    selected_document_count=coverage.selected_document_count,
-                    query_matched_document_count=(
-                        coverage.query_matched_document_count
-                    ),
-                    selection_truncated=coverage.selection_truncated,
-                    query_requested=coverage.query_requested,
-                    query_evaluated=coverage.query_evaluated,
-                    deduplicated_document_count=(
-                        coverage.deduplicated_document_count
-                    ),
-                    visible_span_count=len(spans),
-                    context_truncated=len(spans) < len(all_spans),
+                coverage = coverage.with_visibility(
+                    span_count=len(spans), truncated=len(spans) < len(all_spans)
                 )
             else:
                 spans = ()
             return RawInfoResolution(
                 request=request,
                 status="resolved",
-                documents=tuple(RawInfoDocumentRef.from_document(item) for item in documents),
+                documents=tuple(
+                    RawInfoDocumentRef.from_document(item) for item in documents
+                ),
                 context_spans=spans,
                 events=tuple(events),
                 appended_documents=tuple(appended),
                 coverage=coverage,
             )
+        if documents and include_context:
+            all_spans = tuple(
+                _select_context_spans(documents, request, 10**12, as_of=as_of)
+            )
+            spans = tuple(
+                _select_context_spans(
+                    documents, request, context_budget, as_of=as_of
+                )
+            )
+            coverage = coverage.with_visibility(
+                span_count=len(spans), truncated=len(spans) < len(all_spans)
+            )
+        else:
+            spans = ()
+        incomplete_message = (
+            "Point-in-time documents were found but required coverage is incomplete: "
+            + "; ".join(coverage.missing_requirements)
+            if documents
+            else "No point-in-time documents matched the request."
+        )
         return RawInfoResolution(
             request=request,
             status="unresolved",
+            documents=tuple(
+                RawInfoDocumentRef.from_document(item) for item in documents
+            ),
+            context_spans=spans,
             events=tuple(events),
             appended_documents=tuple(appended),
-            gap=gap
-            or self._gap(
-                request,
-                DataGapReason.NO_MATCHING_DOCUMENTS,
-                "No point-in-time documents matched the request.",
+            gap=(
+                self._gap(
+                    request,
+                    DataGapReason.REQUIRED_COVERAGE_INCOMPLETE,
+                    incomplete_message,
+                )
+                if documents
+                else gap
+                or self._gap(
+                    request,
+                    DataGapReason.NO_MATCHING_DOCUMENTS,
+                    incomplete_message,
+                )
             ),
             coverage=coverage,
         )
@@ -1123,7 +1280,7 @@ class EvidenceResolver:
         candidates: list[list[RawInfoContextSpan]] = []
         all_candidates: list[list[RawInfoContextSpan]] = []
         for resolution in resolved_without_context:
-            if resolution.status != "resolved":
+            if not resolution.documents:
                 candidates.append([])
                 all_candidates.append([])
                 continue
@@ -1169,28 +1326,9 @@ class EvidenceResolver:
                 events=resolution.events,
                 appended_documents=resolution.appended_documents,
                 gap=resolution.gap,
-                coverage=RawInfoCoverage(
-                    eligible_document_count=(
-                        resolution.coverage.eligible_document_count
-                    ),
-                    selected_document_count=(
-                        resolution.coverage.selected_document_count
-                    ),
-                    query_matched_document_count=(
-                        resolution.coverage.query_matched_document_count
-                    ),
-                    selection_truncated=(
-                        resolution.coverage.selection_truncated
-                    ),
-                    query_requested=resolution.coverage.query_requested,
-                    query_evaluated=resolution.coverage.query_evaluated,
-                    deduplicated_document_count=(
-                        resolution.coverage.deduplicated_document_count
-                    ),
-                    visible_span_count=len(selected[index]),
-                    context_truncated=(
-                        len(selected[index]) < len(all_candidates[index])
-                    ),
+                coverage=resolution.coverage.with_visibility(
+                    span_count=len(selected[index]),
+                    truncated=len(selected[index]) < len(all_candidates[index]),
                 ),
             )
             for index, resolution in enumerate(resolved_without_context)
@@ -1245,7 +1383,7 @@ class EvidenceResolver:
         documents, duplicate_ids = _deduplicate_documents(documents)
         ranked = _rank_documents(documents, request)
         if select_documents is None:
-            selected = ranked[: request.max_documents]
+            selected = _select_required_source_documents(ranked, request)
         else:
             try:
                 selected = list(select_documents(tuple(ranked), request))
@@ -1280,6 +1418,7 @@ class EvidenceResolver:
             query_requested=bool(query_tokens),
             query_evaluated=bool(query_tokens),
             deduplicated_document_count=len(duplicate_ids),
+            **_retrieval_contract_coverage(selected, request),
         )
         return selected, filtered_news_ids, coverage
 
@@ -1400,6 +1539,195 @@ def _adapter_routing_identity(
     if match is not None:
         routed["cik"] = match.group(1)
     return routed
+
+
+def _select_required_source_documents(
+    ranked: list[RawInfoDocument], request: RawInfoRequest
+) -> list[RawInfoDocument]:
+    """Reserve source groups and comparison coverage before ordinary ranking."""
+
+    selected: list[RawInfoDocument] = []
+    selected_ids: set[str] = set()
+    for group in request.required_source_groups:
+        match = next(
+            (
+                document
+                for document in ranked
+                if document.document_id not in selected_ids
+                and _matches_source_type(document, group)
+            ),
+            None,
+        )
+        if match is not None:
+            selected.append(match)
+            selected_ids.add(match.document_id)
+    while len(selected) < request.max_documents:
+        current_score = _retrieval_contract_selection_score(selected, request)
+        best: RawInfoDocument | None = None
+        best_score = current_score
+        for document in ranked:
+            if document.document_id in selected_ids:
+                continue
+            score = _retrieval_contract_selection_score(
+                (*selected, document), request
+            )
+            if score > best_score:
+                best = document
+                best_score = score
+        if best is None:
+            break
+        selected.append(best)
+        selected_ids.add(best.document_id)
+    for document in ranked:
+        if len(selected) >= request.max_documents:
+            break
+        if document.document_id not in selected_ids:
+            selected.append(document)
+            selected_ids.add(document.document_id)
+    return selected
+
+
+def _retrieval_contract_selection_score(
+    documents: Iterable[RawInfoDocument], request: RawInfoRequest
+) -> tuple[int, int, int, int]:
+    coverage = _retrieval_contract_coverage(documents, request)
+    period_target = request.minimum_distinct_periods or 0
+    span_target = request.minimum_period_span_days or 0
+    observation_target = request.minimum_observations or 0
+    return (
+        coverage["satisfied_source_group_count"],
+        min(coverage["observed_distinct_period_count"], period_target),
+        min(coverage["observed_period_span_days"] or 0, span_target),
+        min(coverage["observed_observation_count"], observation_target),
+    )
+
+
+def _retrieval_contract_coverage(
+    documents: Iterable[RawInfoDocument], request: RawInfoRequest
+) -> dict[str, Any]:
+    values = tuple(documents)
+    satisfied_groups = sum(
+        any(_matches_source_type(document, group) for document in values)
+        for group in request.required_source_groups
+    )
+    periods = sorted(
+        {
+            period
+            for document in values
+            for period in _document_research_periods(document)
+        }
+    )
+    period_span = (periods[-1] - periods[0]).days if len(periods) >= 2 else None
+    observation_count = max(
+        (_document_observation_count(document) for document in values),
+        default=0,
+    )
+    missing: list[str] = []
+    if not values:
+        missing.append("documents=0/1")
+    if satisfied_groups < len(request.required_source_groups):
+        for index, group in enumerate(request.required_source_groups):
+            if not any(_matches_source_type(document, group) for document in values):
+                missing.append(f"source_group[{index}]={'|'.join(group)}")
+    if (
+        request.minimum_distinct_periods is not None
+        and len(periods) < request.minimum_distinct_periods
+    ):
+        missing.append(
+            "distinct_periods="
+            f"{len(periods)}/{request.minimum_distinct_periods}"
+        )
+    if request.minimum_period_span_days is not None and (
+        period_span is None or period_span < request.minimum_period_span_days
+    ):
+        missing.append(
+            "period_span_days="
+            f"{period_span or 0}/{request.minimum_period_span_days}"
+        )
+    if (
+        request.minimum_observations is not None
+        and observation_count < request.minimum_observations
+    ):
+        missing.append(
+            f"observations={observation_count}/{request.minimum_observations}"
+        )
+    return {
+        "required_source_group_count": len(request.required_source_groups),
+        "satisfied_source_group_count": satisfied_groups,
+        "observed_distinct_period_count": len(periods),
+        "observed_period_span_days": period_span,
+        "observed_observation_count": observation_count,
+        "contract_satisfied": not missing,
+        "missing_requirements": tuple(missing),
+    }
+
+
+def _document_research_periods(document: RawInfoDocument) -> set[datetime]:
+    """Extract domain periods from known structured fields, never source times."""
+
+    values: list[Any] = [document.metadata]
+    try:
+        values.append(json.loads(document.content))
+    except (TypeError, ValueError, json.JSONDecodeError):
+        pass
+    result: set[datetime] = set()
+    period_keys = {
+        "as_of_date",
+        "date",
+        "end",
+        "fiscaldateending",
+        "fiscal_date_ending",
+        "period_end",
+    }
+
+    def visit(value: Any, key: str | None = None) -> None:
+        if isinstance(value, Mapping):
+            for nested_key, nested in value.items():
+                visit(nested, str(nested_key).casefold())
+        elif isinstance(value, (list, tuple)):
+            for nested in value:
+                visit(nested, key)
+        elif key in period_keys and isinstance(value, str):
+            try:
+                parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            except ValueError:
+                return
+            result.add(parsed.replace(tzinfo=None))
+
+    for value in values:
+        visit(value)
+    return result
+
+
+def _document_observation_count(document: RawInfoDocument) -> int:
+    """Return the largest explicit structured observation series in a document."""
+
+    values: list[Any] = [document.metadata]
+    try:
+        values.append(json.loads(document.content))
+    except (TypeError, ValueError, json.JSONDecodeError):
+        pass
+    counts: list[int] = []
+
+    def visit(value: Any, key: str | None = None) -> None:
+        if isinstance(value, Mapping):
+            for nested_key, nested in value.items():
+                visit(nested, str(nested_key).casefold())
+        elif isinstance(value, list):
+            if key in {"prices", "observations", "rows", "series"}:
+                counts.append(len(value))
+            elif value and all(
+                isinstance(item, Mapping)
+                and any(str(name).casefold() in {"date", "timestamp"} for name in item)
+                for item in value
+            ):
+                counts.append(len(value))
+            for nested in value:
+                visit(nested, key)
+
+    for value in values:
+        visit(value)
+    return max(counts, default=0)
 
 
 def _request_query_tokens(request: RawInfoRequest) -> tuple[str, ...]:
@@ -1644,7 +1972,7 @@ def _acquisition_failure_key(
     *,
     company_id: str,
     as_of: datetime,
-) -> tuple[str, str, str, str, int | None, int, str | None]:
+) -> tuple[Any, ...]:
     adapter_types = {str(item).casefold() for item in adapter.source_types}
     requested_types = {str(item).casefold() for item in request.source_types}
     route = "|".join(sorted(adapter_types.intersection(requested_types)))
@@ -1660,6 +1988,10 @@ def _acquisition_failure_key(
         request.lookback_days,
         request.max_documents,
         request.query,
+        request.required_source_groups,
+        request.minimum_distinct_periods,
+        request.minimum_period_span_days,
+        request.minimum_observations,
     )
 
 

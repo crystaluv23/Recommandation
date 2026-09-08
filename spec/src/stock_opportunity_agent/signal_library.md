@@ -14,12 +14,15 @@ Signal = Schema + ExecutionPolicy + EvidencePolicy
 ```
 
 `raw_retrieval` is a version-owned policy, not only a list of provider source
-types. It also stores bounded query terms, an optional lookback, and an optional
-comparison requirement. The executor copies this policy into `RawInfoRequest`;
+types. It also stores bounded query terms, an optional lookback, an optional
+human-readable comparison requirement, and structured source/period/observation
+completeness requirements. The executor copies this policy into `RawInfoRequest`;
 it never asks an LLM to invent provider aliases. Legacy definitions that omit
 query terms receive a deterministic default from the complete `signal_id`, and
 the normalized policy is included in every newly serialized spec and candidate
 hash. A long natural-language description is not silently reused as the query.
+The structured fields gate execution and authorized acquisition; the comparison
+text remains an auditable explanation and is never parsed as executable logic.
 
 This module is separate from `signals.py`, whose existing rules measure fixed
 `ResearchPacket` features for the older cold-start path.
@@ -170,6 +173,16 @@ cross-sectional Plan/evaluation layer.
 `available_at <= as_of`, executes all selected Signals, validates evidence, and
 returns one `SignalBatchResult`. Batch reflection happens later in the research
 controller.
+
+A non-empty but contract-incomplete Raw Info resolution is not executed. The
+executor retains its document fingerprint for restart/recovery and emits a
+domain-unavailable result for that Signal only. Complete siblings continue, so
+one missing period or source cannot erase a valid batch.
+Provider/configuration, budget, authorization, and materialization gaps map to
+their runtime execution statuses instead of becoming domain observations.
+Provider no-data, historical unavailability, no matching document, and an
+otherwise valid but incomplete comparison remain domain-unavailable evidence
+states.
 
 Within one case, executor identity is `(signal_ref, sorted document_id/hash
 fingerprint)`. Re-selecting the same Signal with an unchanged fingerprint is a

@@ -213,6 +213,16 @@ class InformationPlanRuntimeTests(TestCase):
 
             def raw(source_type: str) -> RawInfoDocument:
                 content = f"Point-in-time {source_type} evidence."
+                if source_type == "financials":
+                    content = json.dumps(
+                        {
+                            "facts": [
+                                {"end": "2022-12-31", "value": 80},
+                                {"end": "2023-12-31", "value": 100},
+                                {"end": "2024-12-31", "value": 130},
+                            ]
+                        }
+                    )
                 if source_type == "news":
                     content = f"{case.company_id} disclosed point-in-time news evidence."
                 return RawInfoDocument.create(
@@ -223,7 +233,7 @@ class InformationPlanRuntimeTests(TestCase):
                     available_at=NOW,
                     content=content,
                     metadata=(
-                        {"prices": [100.0, 110.0]}
+                        {"prices": [float(value) for value in range(100, 227)]}
                         if source_type == "market_data"
                         else {}
                     ),
