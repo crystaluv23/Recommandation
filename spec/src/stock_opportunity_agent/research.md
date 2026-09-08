@@ -75,6 +75,9 @@ Active child specs:
   dual-loop system: adaptive Information Plan execution, two-stage blind
   prediction, Plan Archive and quality-diverse parent selection, FIFO
   experimental meta-info, and bounded Signal mining/update cycles.
+- [`research/evolution_benefit.md`](research/evolution_benefit.md): offline,
+  immutable four-arm confirmation of Signal capability, downstream lifecycle,
+  and paired Plan/Registry system benefit.
 - [`research/evolution_dashboard.md`](research/evolution_dashboard.md): the
   read-only global local dashboard bundle for committed Plan rounds, F1/Top-K
   drift, cycle recovery state, and debug trajectories.

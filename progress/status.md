@@ -1,5 +1,24 @@
 # Status
 
+Completed T5 offline evolution-benefit confirmation tooling (2026-09-08): a
+frozen, explicit protocol now compares baseline/candidate Plan and Registry in
+all four combinations on the same cases, issuer groups, source corpus, model,
+budget, and output projection. It records case-level predictions, failures,
+coverage, usage, response identities, and executed/cited Signal refs; identical
+inputs reuse one response within a replicate, while independent replicates may
+not reuse an invocation. The immutable report separates contract validity,
+independent Signal measurement accuracy, outcome-association diagnostics,
+promotion/use lifecycle evidence, and paired system benefit. Missing system or
+candidate-capability cases remain in the frozen cohort and produce
+`incomplete`; a complete result below any approved threshold produces
+`no_gain`. Changed Registries require an explicitly frozen independent
+capability cohort and measurement thresholds. A crash-safe reservation ledger
+prevents post-result cohort replacement. Existing production promotion gates
+and historical Plan Archive ranking are unchanged. T1-T5 are locally complete;
+T6-T7 remain open, and actual benefit is not yet established because no
+confirmation protocol thresholds or external run were authorized. All 602
+tests pass; no external request was sent.
+
 Completed T2 Raw Info and Signal retrieval contracts (2026-09-08):
 `RawInfoRequest` and versioned Signal retrieval policies now declare bounded
 query terms plus structured required-source groups, minimum distinct periods,
@@ -18,7 +37,7 @@ requirements; no new scoring threshold was introduced. Real-shape tests cover
 multi-source limiting, old comparison-period preservation, bounded acquisition
 after a partial local hit, partial Basic Info visibility, Signal execution
 gating, technical failure classification, round-trip compatibility, and shared
-readiness. T1-T4 are complete; T5-T7 remain open. No external request was sent.
+readiness. T1-T5 are complete; T6-T7 remain open. No external request was sent.
 
 Completed T4 Slow candidate-generation hardening (2026-09-08): production H1 now
 uses a versioned structured contract. The runtime owns stable proposal refs, the
@@ -99,7 +118,7 @@ stores explicit snapshot/refresh plus oracle-root concurrent append semantics.
 T3 promotion recovery now fails closed while a prepared transition exists and
 reconciles the same batch across preparation, every stable-file class, Registry
 version, output snapshot, promotion-record, and cycle-pointer fault boundaries.
-T2-T4 are complete. T5-T7 remain open; no external request was sent. All 595
+T2-T5 are complete. T6-T7 remain open; no external request was sent. All 602
 tests and repository lint pass.
 
 Current V117 recovery verification (2026-09-05): inspected the real H1 request

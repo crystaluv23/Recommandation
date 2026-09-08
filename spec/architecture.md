@@ -247,6 +247,20 @@ their original Binary F1 and are neither rerun nor normalized against the new
 Registry. Parent selection compares all eligible historical records by stored
 Binary F1 plus the fixed diversity rule. Registry identity remains provenance
 for the round that produced a score and never enters the score itself.
+
+A separate confirmation evaluator may consume immutable completed artifacts to
+measure whether evolution produced downstream benefit. It never participates in
+candidate promotion or Plan Archive ordering. Its frozen protocol compares the
+four combinations of baseline/candidate Plan and baseline/candidate Registry on
+the same issuer-disjoint cases, point-in-time corpus, model configuration, and
+budget identity. Contract validity, Signal extraction accuracy, Signal/outcome
+association, and system-level prediction benefit remain separate report sections.
+Sample size, minimum benefit, tolerated regression, repeat count, uncertainty,
+experiment-look limits, and independent candidate-Signal measurement criteria
+have no production defaults: they must be explicit in the reviewed protocol
+before execution. A changed Registry cannot pass confirmation without
+independent Signal fixtures. Confirmation cases are reserved once in an
+append-only usage ledger and never returned to proposer or critic context.
 At the creation of a separate new workspace, the runtime may additionally
 build one deterministic cross-workspace historical Plan Seed Pool. It scans
 only records reachable from each source workspace's authoritative completed-
