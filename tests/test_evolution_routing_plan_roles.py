@@ -1,9 +1,47 @@
 """Signal routing, prediction, and Plan role-adapter tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.models import StructuredValidationError, ValidationIssue
+from stock_opportunity_agent.research.evolution_output_validation import (
+    _routing_context_only_fallback,
+)
+from stock_opportunity_agent.research.evolution_research_validation import (
+    _reflection_need_transition_contract,
+)
 
 
 class RoutingAndPlanRoleTests(TestCase):
+    def test_routing_context_fallback_uses_typed_issues_not_diagnostic_words(self):
+        row = signal_selection("guidance_acceleration:v1")["selections"][0]
+        original = {"selections": [row]}
+        recovered = []
+        for message in ("bad residual", "unrelated diagnostic wording", "语义声明未验证"):
+            failure = StructuredValidationError([ValidationIssue(
+                code="routing_answer_ownership_invalid",
+                message=message,
+                paths=("selections[0].selection_reason", "selections[0]"),
+                item_id=row["signal_ref"],
+                item_id_field="signal_ref",
+            )])
+            result = _routing_context_only_fallback(original, failure)
+            self.assertIsNotNone(result)
+            recovered.append(result[0])
+        self.assertEqual(recovered[0], recovered[1])
+        self.assertEqual(recovered[1], recovered[2])
+        self.assertEqual(original["selections"][0]["reason_code"], "answer_need")
+        self.assertEqual(recovered[0]["selections"][0]["signal_ref"], row["signal_ref"])
+        self.assertEqual(
+            recovered[0]["selections"][0]["target_need_indices"],
+            row["target_need_indices"],
+        )
+        for code, item_id in (("routing_selection_invalid", row["signal_ref"]),
+                              ("routing_answer_ownership_invalid", "other:v1")):
+            failure = StructuredValidationError([ValidationIssue(
+                code=code, message="bad residual", paths=("selections[0]",),
+                item_id=item_id, item_id_field="signal_ref",
+            )])
+            self.assertIsNone(_routing_context_only_fallback(original, failure))
+
     def test_controller_and_progressive_signal_selector_use_structured_roles(self) -> None:
         controller_caller = ScriptedRoleCaller(
             [
@@ -1196,7 +1234,7 @@ class RoutingAndPlanRoleTests(TestCase):
             corrected["selection_reason"],
         )
 
-    def test_v106_routing_quarantines_only_invalid_portfolio_row_after_retries(
+    def test_routing_removes_answer_ownership_and_preserves_valid_siblings(
         self,
     ) -> None:
         information_needs = (
@@ -1263,18 +1301,23 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(selection.usage.llm_calls, 3)
         self.assertEqual(
             tuple(item.signal_ref for item in selection.value),
-            ("financing_listing_action:v1", "negative_word_count:v1"),
+            ("guidance_acceleration:v1", "financing_listing_action:v1", "negative_word_count:v1"),
         )
+        self.assertEqual(selection.value[0].reason_code, "assess_applicability")
+        self.assertIsNone(selection.value[0].answer_scope)
+        self.assertIsNone(selection.value[0].residual_need)
+        self.assertEqual(selection.value[1].selection_reason, financing["selection_reason"])
+        self.assertEqual(selection.value[2].selection_reason, negative["selection_reason"])
         self.assertEqual(
             next(
                 item
                 for item in events
                 if item["event_type"] == "structured_validation_fallback_applied"
-            )["removed_paths"],
+            )["context_only_paths"],
             ["selections[0]"],
         )
 
-    def test_routing_quarantine_runs_when_correction_reservation_is_unaffordable(
+    def test_routing_context_only_fallback_preserves_paid_usage_on_budget_stop(
         self,
     ) -> None:
         information_needs = (
@@ -1335,7 +1378,7 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(selection.usage, AgentUsage(llm_calls=1, tokens=5, cost=0.01))
         self.assertEqual(
             tuple(item.signal_ref for item in selection.value),
-            ("negative_word_count:v1",),
+            ("guidance_acceleration:v1", "negative_word_count:v1"),
         )
         fallback = next(
             item
@@ -1343,9 +1386,10 @@ class RoutingAndPlanRoleTests(TestCase):
             if item["event_type"] == "structured_validation_fallback_applied"
         )
         self.assertEqual(fallback["correction_count"], 0)
-        self.assertEqual(fallback["removed_paths"], ["selections[0]"])
+        self.assertEqual(fallback["removed_paths"], [])
+        self.assertEqual(fallback["context_only_paths"], ["selections[0]"])
 
-    def test_v106_routing_quarantine_cannot_bypass_mandatory_nonempty_match(
+    def test_routing_context_only_fallback_keeps_mandatory_signal_without_answer_claim(
         self,
     ) -> None:
         target_need = (
@@ -1371,14 +1415,25 @@ class RoutingAndPlanRoleTests(TestCase):
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
-            with self.assertRaises(CandidateExecutionRejected):
-                LLMSignalRetrievalAgent(caller).select(
-                    (target_need,),
-                    registry.freeze(),
-                    {},
-                )
+            selected = LLMSignalRetrievalAgent(caller).select(
+                (target_need,),
+                registry.freeze(),
+                {},
+            )
 
         self.assertEqual(len(caller.calls), 3)
+        self.assertEqual(len(selected.value), 1)
+        self.assertEqual(selected.value[0].signal_ref, "guidance_acceleration:v1")
+        self.assertEqual(selected.value[0].reason_code, "assess_applicability")
+        self.assertIsNone(selected.value[0].answer_scope)
+        self.assertIsNone(selected.value[0].residual_need)
+        transition = _reflection_need_transition_contract(
+            ResearchState(next_information_needs=(target_need,)),
+            selected.value,
+            SignalBatchResult(results=(), signal_calls=0),
+        )
+        self.assertEqual(transition["need_rules"][0]["required_transition"], "preserve_exactly")
+        self.assertEqual(transition["need_rules"][0]["available_answer_actions"], [])
 
     def test_v77_routing_aggregates_semantics_behind_missing_tags(self) -> None:
         information_needs = (

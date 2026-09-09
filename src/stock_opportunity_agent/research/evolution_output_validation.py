@@ -2531,6 +2531,58 @@ def _indexed_row_quarantine_fallback(
     return quarantine
 
 
+def _routing_context_only_fallback(
+    failed_output: Mapping[str, Any],
+    failure: ValidationError,
+) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+    """Remove unvalidated answer ownership without choosing another Signal."""
+
+    quarantine = _indexed_row_quarantine_fallback("selections")
+    if not isinstance(failure, StructuredValidationError) or not failure.issues:
+        return quarantine(failed_output, failure)
+    rows = failed_output.get("selections")
+    if not isinstance(rows, list):
+        return None
+    indices: set[int] = set()
+    for issue in failure.issues:
+        if issue.code != "routing_answer_ownership_invalid" or not issue.paths:
+            return quarantine(failed_output, failure)
+        for path in issue.paths:
+            match = re.match(r"^selections\[(\d+)\](?:\.|$)", path)
+            if match is None:
+                return None
+            index = int(match.group(1))
+            if (
+                index >= len(rows)
+                or not isinstance(rows[index], Mapping)
+                or rows[index].get("reason_code") != "answer_need"
+                or rows[index].get("signal_ref") != issue.item_id
+            ):
+                return None
+            indices.add(index)
+    contextual = deepcopy(dict(failed_output))
+    for index in indices:
+        contextual["selections"][index].update({
+            "reason_code": "assess_applicability",
+            "expected_role": "coverage",
+            "answer_scope": None,
+            "residual_need": None,
+            "selection_reason": (
+                "Retain the model-selected Signal for context only; direct answer "
+                "ownership did not pass validation."
+            ),
+            "applicability_hypothesis": (
+                "Test applicability using this Signal's evidence; the original "
+                "information need remains unresolved."
+            ),
+        })
+    return contextual, {
+        "source_substitution_paths": (),
+        "removed_paths": (),
+        "context_only_paths": tuple(f"selections[{i}]" for i in sorted(indices)),
+    }
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -2790,6 +2842,7 @@ def _complete_parsed_role(
         fallback_steps: list[dict[str, list[str]]] = []
         removed_paths: list[str] = []
         source_substitution_paths: list[str] = []
+        context_only_paths: list[str] = []
         seen_states = {
             json.dumps(
                 dict(fallback_output),
@@ -2828,10 +2881,12 @@ def _complete_parsed_role(
                     fallback_actions["source_substitution_paths"]
                 ),
                 "removed_paths": list(fallback_actions["removed_paths"]),
+                "context_only_paths": list(fallback_actions.get("context_only_paths", ())),
             }
             fallback_steps.append(step)
             source_substitution_paths.extend(step["source_substitution_paths"])
             removed_paths.extend(step["removed_paths"])
+            context_only_paths.extend(step["context_only_paths"])
             fallback_output = next_output
             try:
                 parsed_value = _parse_role_output(
@@ -2853,6 +2908,7 @@ def _complete_parsed_role(
                         dict.fromkeys(source_substitution_paths)
                     ),
                     removed_paths=list(dict.fromkeys(removed_paths)),
+                    context_only_paths=list(dict.fromkeys(context_only_paths)),
                 )
                 return parsed_value, usage
         if fallback_steps:

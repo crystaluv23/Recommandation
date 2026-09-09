@@ -294,3 +294,5 @@
 2026-09-09: Rejected the zero-call v2 freeze after inspecting its exact proposer parent context: one historical seed still described third-party-capable `company_news` as issuer-owned in B and H_init. Historical seed discovery now applies the complete current Plan contract before ranking, staged pools revalidate and fail closed instead of rewriting incompatible parents, and ownership failures are typed with exact paths. The actual history scan now retains one of two seeds; all 623 tests and repository lint pass before a new freeze.
 
 - 2026-09-09: Live MVP wire audit found stale Predictor baselines caused by display truncation; compute from complete resolved PIT market documents, preserve strict cutoff and conflicts, and verify three real replays plus 624 tests and lint.
+
+- 2026-09-09: V4 routing exhaustion exposed a whole-round recovery gap; typed ownership failures now retain model-selected Signals as revalidated context only, preserving unanswered needs and valid siblings without another call.

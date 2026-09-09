@@ -11,3 +11,6 @@ Signal retrieval, blind prediction, and Plan reflection.
   state or commit pointers.
 - Prediction-time roles never receive labels or target identity.
 - Correction and fallback behavior delegates to the shared validators.
+- After bounded correction, typed answer-ownership failures may retain the same
+  selected Signal as context only, with full revalidation and unresolved needs.
+  This removes an unverified routing claim without inventing research evidence.

@@ -1487,15 +1487,24 @@ When a row-level answer-scope or residual/reason contradiction is reported, the 
 obligation explicitly permits changing that whole selection to a contextual reason
 with null answer scope/residual, or removing it. This exposes a conservative correction
 without asking the provider to invent an answered-facet paraphrase. After the frozen
-correction budget is exhausted, routing has a call-free portfolio-row quarantine: it is
+correction budget is exhausted, a typed `routing_answer_ownership_invalid` failure
+may conservatively retain the exact model-selected Signal as contextual evidence.
+Only implicated answer rows change: clear answer scope/residual, use
+`assess_applicability`/`coverage`, and replace the failed answer rationale with a
+runtime explanation that ownership was unvalidated. Preserve the ref, association
+index, context tags, and all sibling rows. This cannot resolve or narrow a need,
+choose another Signal, or bypass applicability/evidence checks; rerun the complete
+parser and record exact `context_only_paths`. No diagnostic wording is interpreted.
+Other failures retain the call-free portfolio-row quarantine: it is
 eligible only when every remaining obligation names one or more
 `selections[index]` rows or descendants. Runtime removes the complete implicated rows,
 preserves all other rows byte-for-byte and in order, then reruns the unchanged parser,
 including unique-ref, capacity, direct-answer, applicability, and mandatory-nonempty
 checks. If removal would violate a mandatory match or expose any other defect, the
 candidate still fails. A successful fallback emits
-`structured_validation_fallback_applied` with the exact removed paths. It never edits a
-selection, chooses a replacement Signal, or executes a row that failed validation.
+`structured_validation_fallback_applied` with the exact removed paths. Quarantine
+never edits a selection or chooses a replacement Signal; contextual fallback
+executes only a revalidated row without answer ownership.
 When an invalid empty selection contradicts a version-owned exact need phrase,
 feedback names top-level `selections` plus each matching Signal ref, target need index,
 and matched phrase. The correction therefore need not guess which of several needs

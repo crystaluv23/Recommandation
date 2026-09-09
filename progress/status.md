@@ -1,12 +1,15 @@
 # Status
 
-The 2026-09-09 authorized MVP live audit resumed v3 under its exact contract,
-then safely interrupted at Fast/Slow 0/0 after finding a computation/display
-boundary defect: Predictor baselines used truncated Basic market projections.
-Complete selected PIT market documents now supply the last five pre-cutoff rows;
-three real-case replays correct the stale August/June baselines. All 624 tests
-and repository lint pass. A fresh code-bound successor will execute the approved
-one-Fast/one-Slow MVP scope; live completion remains pending.
+The 2026-09-09 authorized MVP audit corrected the Predictor baseline's
+computation/display boundary (commit `4b149db`). V4 then completed five cases
+but rejected at case six when repeated partial-answer routing prose remained
+invalid. The shared fallback now uses typed answer-ownership issues to retain
+the exact selected Signal as context only, with full revalidation and the
+original need preserved. The exact final paid response replays successfully
+without another call. Other routing failures retain quarantine/rejection.
+The fresh successor uses the existing three-candidate portfolio for one Fast
+round, then one Slow cycle, so one invalid Plan need not end the entire pilot.
+Live Fast/Slow completion remains pending.
 
 Executed and audited the approved first T7 Fast/Slow pilot (2026-09-08).
 `self-evolution-t7-20260908-v1` safely paused at its 250-attempt ceiling after

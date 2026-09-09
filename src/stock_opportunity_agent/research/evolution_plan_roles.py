@@ -63,7 +63,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _blind_prediction_with_baseline,
     _compact_posthoc_context,
     _complete_parsed_role,
-    _indexed_row_quarantine_fallback,
+    _routing_context_only_fallback,
     _parse_role_output,
     _prediction_reflection_from_role,
     _reject_fixed_semantics_redefinition,
@@ -655,6 +655,7 @@ class LLMSignalRetrievalAgent:
                     self.path_policy = "all"
                     self.repair_context: dict[str, Any] = {}
                     self.issues: list[ValidationIssue] = []
+                    self.code = "routing_selection_invalid"
 
                 def bind(
                     self,
@@ -673,7 +674,7 @@ class LLMSignalRetrievalAgent:
                     super().append(message)
                     self.issues.append(
                         ValidationIssue(
-                            code="routing_selection_invalid",
+                            code=self.code,
                             message=message,
                             paths=self.paths,
                             item_id=self.item_id,
@@ -815,6 +816,7 @@ class LLMSignalRetrievalAgent:
                         "information_needs array"
                     )
                 if item["reason_code"] == "answer_need":
+                    validation_errors.code = "routing_answer_ownership_invalid"
                     if len(target_need_indices) != 1:
                         validation_errors.bind(
                             f"{path}.target_need_indices", item_id=signal_ref
@@ -1095,6 +1097,7 @@ class LLMSignalRetrievalAgent:
                         f"{path} non-answer reason requires answer_scope=null and "
                         "residual_need=null"
                     )
+                validation_errors.code = "routing_selection_invalid"
                 tags: list[str] = []
                 for raw_tag in raw_context_tags:
                     tag = re.sub(
@@ -1320,9 +1323,7 @@ class LLMSignalRetrievalAgent:
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
-            final_validation_fallback=_indexed_row_quarantine_fallback(
-                "selections"
-            ),
+            final_validation_fallback=_routing_context_only_fallback,
         )
         return AgentStep(selected, usage)
 
