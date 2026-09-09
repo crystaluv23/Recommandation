@@ -668,8 +668,8 @@ class ResearchEvidenceRef:
     def __post_init__(self) -> None:
         if self.kind not in {"basic_info", "signal"}:
             raise ValidationError("research evidence kind must be basic_info or signal")
-        if not self.claim.strip() or len(self.claim) > 400:
-            raise ValidationError("research evidence claim must contain 1-400 characters")
+        if not isinstance(self.claim, str) or not self.claim.strip():
+            raise ValidationError("research evidence claim must be nonempty text")
         if self.kind == "basic_info":
             if (
                 not str(self.projection_id or "").strip()

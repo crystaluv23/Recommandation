@@ -1,0 +1,3690 @@
+{
+  "schema_version": "mvp-signal-availability-audit-v1",
+  "diagnostic_only": true,
+  "external_calls": 0,
+  "source_workspace": "information-evolution-mvp-20260909-v7",
+  "comparisons": 216,
+  "unavailable_before": 47,
+  "unavailable_after": 28,
+  "recovered": 19,
+  "new_unavailable": 0,
+  "baseline_note": "Baseline includes the initial IFRS namespace and revenue-alias repair, before expanded compatibility and market-series selection fixes.",
+  "rows": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time SEC cash balance was unavailable."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=6.115e+08"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77",
+        "sec:cik_0000701818:000110465925072244",
+        "sec:cik_0000701818:000110465925072367",
+        "sec:cik_0000701818:000110465925075920",
+        "sec:cik_0000701818:000110465925070924",
+        "sec:cik_0000701818:000110465925093824",
+        "sec:cik_0000701818:000110465925092747",
+        "sec:cik_0000701818:000110465925089044",
+        "sec:cik_0000701818:000110465925088119",
+        "sec:cik_0000701818:000110465925062623"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0912935"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0912935"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.00152406"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.47514"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.47514"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0126591"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0126591"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.214426"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.214426"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.16"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.16"
+      },
+      "selected_documents": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.951161"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.951161"
+      },
+      "selected_documents": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "selected_documents": [
+        "avnews_1cbae6762014d22396232575",
+        "avnews_ffe9def8b6acc9e44bc15948",
+        "avnews_4955e2e056bbf4ec6f30cb8b",
+        "avnews_6a93e9c375efbd221d6be532",
+        "avnews_f3b17dcd7bee0b9dd8a17b0b",
+        "avnews_123b1b304932298d225d9f02",
+        "avnews_1b3026a8decb6571f5b0e4cf",
+        "avnews_36cd9853650361de286d1bc4",
+        "avnews_9674d2b29ca070b52372858b",
+        "avnews_c1af61931f25e5495bc42f65"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=2.07009e+09"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=2.07009e+09"
+      },
+      "selected_documents": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+        "sec:cik_0001174922:000117492225000084",
+        "sec:cik_0001174922:000117492225000032",
+        "sec:cik_0001174922:000117492225000095",
+        "sec:cik_0001174922:000117492225000091",
+        "sec:cik_0001174922:000117492225000038",
+        "sec:cik_0001174922:000117492225000083",
+        "sec:cik_0001174922:000117492225000068",
+        "sec:cik_0001174922:000117492225000057"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0498185"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0498185"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0786722"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0786722"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.17849"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.17849"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0872356"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0872356"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.378818"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.378818"
+      },
+      "selected_documents": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.298826"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.298826"
+      },
+      "selected_documents": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=19"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=19"
+      },
+      "selected_documents": [
+        "avnews_2a926ec59fbca19b7a24a34b",
+        "avnews_bc3455773532b7aeb5e09bf3",
+        "avnews_bfbe1eb01df5676109a317ca",
+        "avnews_0e25e58162ef29afcb892368",
+        "avnews_14176472c9b21d5115c578d1",
+        "avnews_074b6db8f0d5f8b203a4534e",
+        "avnews_f129615340828c2fabd84f64",
+        "avnews_6caca42f3ce13ea25a3e9d89",
+        "avnews_c50d16ca0c415aa474e1812a",
+        "avnews_2d31bb9ca997cd41a87f22dc"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.203e+09"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.203e+09"
+      },
+      "selected_documents": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+        "sec:cik_0000895728:000095017025101102",
+        "sec:cik_0000895728:000089572825000012",
+        "sec:cik_0000895728:000110465925061164",
+        "sec:cik_0000895728:000119312525060242",
+        "sec:cik_0000895728:000119312525052056",
+        "sec:cik_0000895728:000089572825000005",
+        "sec:cik_0000895728:000119312525115979",
+        "sec:cik_0000895728:000095017025101101"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0229939"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0229939"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.410318"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Two comparable SEC revenue growth periods were unavailable."
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.0928769"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.206769"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.0959296"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.0959296"
+      },
+      "selected_documents": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.118309"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.118309"
+      },
+      "selected_documents": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "selected_documents": [
+        "avnews_9d940aebccbf982aa538f2c2",
+        "avnews_738565ac75d961afe064aba7",
+        "avnews_d544335d95701e2dd672fc9e",
+        "avnews_84aeeb67cf1a0a7b234906c6",
+        "avnews_5737fae2ae710d628184d95e",
+        "avnews_2b72638846fbad3c8fd88676",
+        "avnews_3721f2ced165d723c23e210c",
+        "avnews_df487685aad6818e18e93442",
+        "avnews_0e10f80bea39d5eeb44e5c58",
+        "avnews_106bd2a382f705a2aaeccee0"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=9.0739e+10"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=9.0739e+10"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0.0106184"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0.0106184"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2018-03-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2018-03-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2015-06-30 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2015-06-30 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2015-06-30 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2015-06-30 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.292387"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.292387"
+      },
+      "selected_documents": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.046196"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.046196"
+      },
+      "selected_documents": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=23"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=23"
+      },
+      "selected_documents": [
+        "avnews_effe8ce405585591bd854601",
+        "avnews_a873f6e5d38784c88d081ccb",
+        "avnews_4419affe80e06179e1ade35b",
+        "avnews_b0d11c0fb45c3d1c91875f6a",
+        "avnews_636ef96fb9ada3d2c1df7f14",
+        "avnews_e6b40b84171f04f6445d9da6",
+        "avnews_0d241efff03ed14b667cce8e",
+        "avnews_5ca9ce5166ae041f6eb1bcf9",
+        "avnews_7b616d0dbe601229e8c534af",
+        "avnews_feae566c52c02843a1310378"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "cash_reserves=1.0879e+07"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=1.0879e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+        "sec:cik_0001869198:000186919824000052",
+        "sec:cik_0001869198:000186919824000055",
+        "sec:cik_0001869198:000186919824000046",
+        "sec:cik_0001869198:000119312525044111",
+        "sec:cik_0001869198:000186919824000038",
+        "sec:cik_0001869198:000119312524237232",
+        "sec:cik_0001869198:000186919825000008",
+        "sec:cik_0001869198:000186919825000003"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0305053"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0305053"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.219427"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.219427"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.00150421"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.00150421"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.182443"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.182443"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.166416"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.166416"
+      },
+      "selected_documents": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.2249"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.2249"
+      },
+      "selected_documents": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "selected_documents": [
+        "avnews_42311fc0371607dd6a5a97a2",
+        "avnews_fd0535c20cb062811afd6bec",
+        "avnews_aae161bf89c4a1076c145ea5",
+        "avnews_efa493f8e045b5bd81f29be4",
+        "avnews_b613c2598391687795652852",
+        "avnews_1aa15b578b31c71e5b5f7c5c",
+        "avnews_0fded41f974950c96295ca4f",
+        "avnews_01e8f3702b60ae69b87f68a7",
+        "avnews_c51b46ae51b6e5b14dc4381e",
+        "avnews_faad62adcf5883cb7011949a"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=2.61739e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=2.61739e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001830043:000095017025030151",
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+        "sec:cik_0001830043:000162828025038861",
+        "sec:cik_0001830043:000095017025069174",
+        "sec:cik_0001830043:000162828025038334",
+        "sec:cik_0001830043:000119312525146199",
+        "sec:cik_0001830043:000119312525008082",
+        "sec:cik_0001830043:000119312525042459",
+        "sec:cik_0001830043:000119312525137071",
+        "sec:cik_0001830043:000095017025022236"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.181749"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.181749"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.231121"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.231121"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.00065783"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.00065783"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0765488"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0765488"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.598018"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.598018"
+      },
+      "selected_documents": [
+        "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.465116"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.465116"
+      },
+      "selected_documents": [
+        "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e"
+      ]
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=20"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=20"
+      },
+      "selected_documents": [
+        "avnews_03a06ee00fab7a59afa3abb2",
+        "avnews_7255f6a741e0e408fb0a8df8",
+        "avnews_8bf21796ae7ad00922486aab",
+        "avnews_82c6cc3e5143825f6225f673",
+        "avnews_abe6090ce444378383b5259b",
+        "avnews_3d0c513ff571b68addf428aa",
+        "avnews_27bfcdc39a89f80a7a339092",
+        "avnews_27f4efa19062a8de312368e4",
+        "avnews_5c15146d3b608630896b3a5a",
+        "avnews_99c1e020321bc0ff6a2d08e8"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.13205e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.13205e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+        "sec:cik_0001576942:000157694224000037",
+        "sec:cik_0001576942:000157694225000009",
+        "sec:cik_0001576942:000157694224000133",
+        "sec:cik_0001576942:000157694224000062",
+        "sec:cik_0001576942:000157694224000158",
+        "sec:cik_0001576942:000157694224000087",
+        "sec:cik_0001576942:000157694225000006",
+        "sec:cik_0001576942:000157694224000130"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "gross_margin_change=0.0143471"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "gross_margin_change=0.0143471"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.0775041"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.0775041"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-0.00308118"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-0.00308118"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0335771"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0335771"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0924341"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.0924341"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.585843"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.585843"
+      },
+      "selected_documents": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.0138568"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=0.0138568"
+      },
+      "selected_documents": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "selected_documents": [
+        "avnews_30742237783f050857a27981",
+        "avnews_1f677e9b0b1e7070b5ff8d2d",
+        "avnews_3fe1fe46d3c39cfa9fd50447"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.05598e+09"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.05598e+09"
+      },
+      "selected_documents": [
+        "sec:cik_0000936395:000093639525000041",
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608",
+        "sec:cik_0000936395:000093639525000025",
+        "sec:cik_0000936395:000093639525000011",
+        "sec:cik_0000936395:000093639525000029",
+        "sec:cik_0000936395:000119312525009588",
+        "sec:cik_0000936395:000162828025042266",
+        "sec:cik_0000936395:000093639525000015",
+        "sec:cik_0000936395:000093639525000037",
+        "sec:cik_0000936395:000093639525000023"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "gross_margin_change=-0.0179398"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "gross_margin_change=-0.0179398"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0.0168351"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0.0168351"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.12729"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.12729"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_acceleration=0.0540913"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_acceleration=0.0540913"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.182189"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.182189"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.455083"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.455083"
+      },
+      "selected_documents": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=1.34113"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=1.34113"
+      },
+      "selected_documents": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "selected_documents": [
+        "avnews_ae86c2669f099d30aa2d19ac",
+        "avnews_1e09d1de37dc46604f53efeb",
+        "avnews_427a8caa8708c33ee61f0c47",
+        "avnews_92ddc178c562ffb7e0fe53f2",
+        "avnews_aa82f75f2268fa32b5d6d60b",
+        "avnews_8efe79554b80f0c86c2cbafa",
+        "avnews_c6991bb26ffca8faad57375d",
+        "avnews_9dc17cecc605cf86799368b7",
+        "avnews_fe2e7c00fb2373c30451f4dc",
+        "avnews_3a55eecb9a917d0af6f5b596"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=3.01911e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=3.01911e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+        "sec:cik_0001590364:000159036425000011",
+        "sec:cik_0001590364:000114036125023499",
+        "sec:cik_0001590364:000114036125014188",
+        "sec:cik_0001590364:000114036125005179",
+        "sec:cik_0001590364:000114036125016983",
+        "sec:cik_0001590364:000114036125020864",
+        "sec:cik_0001590364:000114036125006099",
+        "sec:cik_0001590364:000114036125027877"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0194174"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0194174"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-0.11566"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-0.11566"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.00714133"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.00714133"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.52971"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.52971"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.521091"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.521091"
+      },
+      "selected_documents": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.444311"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.444311"
+      },
+      "selected_documents": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=20"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=20"
+      },
+      "selected_documents": [
+        "avnews_1de3e5dcb68e20ae3535f2c5",
+        "avnews_6ec9b94402ab7eb51eabe958",
+        "avnews_211a01942f1b13a369b9e00f",
+        "avnews_7ecbc566df9e0b4180f0f78b",
+        "avnews_621f8d70da674056d501bc52",
+        "avnews_5ea28ff9f4fe2e8c1a66cca2",
+        "avnews_9b6abda19f442870231e6bbe",
+        "avnews_f3fcb47ce81e7703262106a5",
+        "avnews_a50778f1f1d7d4aa4b317104",
+        "avnews_4b2d47fb6d2fa4e6e342b5c7"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=3.196e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=3.196e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+        "sec:cik_0001018963:000162828025036963",
+        "sec:cik_0001018963:000162828025021463",
+        "sec:cik_0001018963:000119312525199688",
+        "sec:cik_0001018963:000119312525143715",
+        "sec:cik_0001018963:000119312525217804",
+        "sec:cik_0001018963:000119312525123974",
+        "sec:cik_0001018963:000162828025036845",
+        "sec:cik_0001018963:000162828025021324"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "gross_margin_change=0.0106682"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "gross_margin_change=0.0106682"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.122905"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.122905"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0301996"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0301996"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0287624"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0287624"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.0685623"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.0685623"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.37274"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.37274"
+      },
+      "selected_documents": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.555338"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.555338"
+      },
+      "selected_documents": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "selected_documents": [
+        "avnews_1ae82db4e51e139efd42c46e",
+        "avnews_26ee821d7b72939f63169448",
+        "avnews_513f73119ad3f00943bac2ca",
+        "avnews_dd6c1a2d847a5a5d6e7e0a63",
+        "avnews_51d9532d7af97cb4a934cd08",
+        "avnews_eb833d3efc5f42b5aa9cbe17",
+        "avnews_df2c5acb671a6ecef2e9ecba",
+        "avnews_b054e54cc8282fbb88cf0359",
+        "avnews_72215c02782ac5230cba3ad1",
+        "avnews_58b73d392cc087391d28edaf"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=6.185e+09"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=6.185e+09"
+      },
+      "selected_documents": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+        "sec:cik_0001164727:000116472725000035",
+        "sec:cik_0001164727:000116472724000061",
+        "sec:cik_0001164727:000116472725000020",
+        "sec:cik_0001164727:000110465925044139",
+        "sec:cik_0001164727:000110465925067786",
+        "sec:cik_0001164727:000110465924120181",
+        "sec:cik_0001164727:000116472725000008",
+        "sec:cik_0001164727:000116472725000033"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC gross-margin period ended 2019-12-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC gross-margin period ended 2019-12-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0303556"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0303556"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.42752"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.42752"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0195826"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0195826"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.225757"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.225757"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.369461"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.369461"
+      },
+      "selected_documents": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.506892"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.506892"
+      },
+      "selected_documents": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=21"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=21"
+      },
+      "selected_documents": [
+        "avnews_0377bd08d1d3d44e6c97c231",
+        "avnews_6984372f17ddb6c5e1c23311",
+        "avnews_51c6dcfcafdb441df7e26b35",
+        "avnews_dfd89b1005e045780a67b9ea",
+        "avnews_1ee7d171771518538fc8cc08",
+        "avnews_63b8546c4744b92d0595fbfd",
+        "avnews_0a261b9879dbceec9676913e",
+        "avnews_f063794163f3fccd6110767d",
+        "avnews_0007c439ea042db180f528d0",
+        "avnews_024b3433557bd4430a6595df"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=2.82442e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=2.82442e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+        "sec:cik_0001801368:000180136824000087",
+        "sec:cik_0001801368:000180136824000066",
+        "sec:cik_0001801368:000180136824000092",
+        "sec:cik_0001801368:000119312524273726",
+        "sec:cik_0001801368:000180136825000005",
+        "sec:cik_0001801368:000162828025002096",
+        "sec:cik_0001801368:000180136824000085",
+        "sec:cik_0001801368:000180136824000073"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0583641"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "net_share_retirement_yoy=0.0583641"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0654828"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0654828"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_acceleration=0.131188"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_acceleration=0.131188"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.195664"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.195664"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.324968"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.324968"
+      },
+      "selected_documents": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.607054"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.607054"
+      },
+      "selected_documents": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=6"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=6"
+      },
+      "selected_documents": [
+        "avnews_3cf9a3eec3926e99881bc735",
+        "avnews_22f4153fc68453f6a71edb3d",
+        "avnews_6f993b91056f666feb0bbc6b",
+        "avnews_ac3fb5ea4468db7c91de8d02",
+        "avnews_7ddb3f0a8b6a1c630a7a8c84",
+        "avnews_1bc79ff709d087d281db17b8",
+        "avnews_561fe623399a1e809e9f2d2c",
+        "avnews_2355b3a67cf2a7a279177b6e",
+        "avnews_14f56b92e050f55911bcae5a",
+        "avnews_494123a2951c49e068641dc9"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.481e+09"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.481e+09"
+      },
+      "selected_documents": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+        "sec:cik_0002023554:000202355425000027",
+        "sec:cik_0002023554:000202355425000004",
+        "sec:cik_0002023554:000119312525033433",
+        "sec:cik_0002023554:000119312525019298",
+        "sec:cik_0002023554:000202355425000007",
+        "sec:cik_0002023554:000119312525027285",
+        "sec:cik_0002023554:000119312525180782",
+        "sec:cik_0002023554:000202355425000021"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.139859"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.139859"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=0"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0114208"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0114208"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.00852305"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.00852305"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.103857"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.103857"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.475009"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.475009"
+      },
+      "selected_documents": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=1.31775"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=1.31775"
+      },
+      "selected_documents": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "selected_documents": [
+        "avnews_87f1fab57a6755b04c0fa025",
+        "avnews_32e96b2340fed6420501639e",
+        "avnews_e0e420314cd33b225a37e889",
+        "avnews_51a42c21e0d7320be74387a5",
+        "avnews_6c24b8c53f546085f9c9f3c2",
+        "avnews_346a5105feef401a22c404ae",
+        "avnews_5386c8a4315a6b5f41b06b74",
+        "avnews_5388f34b00efa231e1f20a27",
+        "avnews_575e6a80b7846557ff6a1859",
+        "avnews_8a4fb0d7ee55caefb2c10bbe"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.0163e+10"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.0163e+10"
+      },
+      "selected_documents": [
+        "sec:cik_0000723125:000072312525000021",
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+        "sec:cik_0000723125:000072312525000009",
+        "sec:cik_0000723125:000110465925004879",
+        "sec:cik_0000723125:000110465925022973",
+        "sec:cik_0000723125:000110465925041201",
+        "sec:cik_0000723125:000110465925058741",
+        "sec:cik_0000723125:000110465925020878",
+        "sec:cik_0000723125:000110465925069019",
+        "sec:cik_0000723125:000072312525000019"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.211082"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.211082"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.00905797"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.00905797"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.452557"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.452557"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.0875768"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.0875768"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.501238"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=0.501238"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.429327"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.429327"
+      },
+      "selected_documents": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.30017"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.30017"
+      },
+      "selected_documents": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=14"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=14"
+      },
+      "selected_documents": [
+        "avnews_afa5ed104f6ef721ae0aa67c",
+        "avnews_12f922d2969f4a92ebc00bef",
+        "avnews_f06c8105d1940422e5b98849",
+        "avnews_9861d5d9081cb48bc91f43bf",
+        "avnews_d7f5c970b401eb68eea99fb3",
+        "avnews_044392ac39909b03dc12651f",
+        "avnews_c47e934f9a177827e81e50e4",
+        "avnews_b61b1384b10ee9bb43724e79",
+        "avnews_aa57933655863bc380f78cb4",
+        "avnews_6900cfa980a539bd8a465ad0"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=1.57415e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=1.57415e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629",
+        "sec:cik_0001689548:000168954825000092",
+        "sec:cik_0001689548:000168954825000058",
+        "sec:cik_0001689548:000168954825000062",
+        "sec:cik_0001689548:000110465925087865",
+        "sec:cik_0001689548:000168954825000094",
+        "sec:cik_0001689548:000168954825000086",
+        "sec:cik_0001689548:000168954825000075",
+        "sec:cik_0001689548:000168954825000037"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.299557"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.299557"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-15.4048"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-15.4048"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-1"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-1"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.68635"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.68635"
+      },
+      "selected_documents": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.354889"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.354889"
+      },
+      "selected_documents": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=1"
+      },
+      "selected_documents": [
+        "avnews_1d92f5c5198d8be4a7bdbbae",
+        "avnews_b0b74f19f265dfdee7a27163",
+        "avnews_901d4d634ae3e7169a692a35",
+        "avnews_3c2efe7458545a154f429014",
+        "avnews_b41d20d50d2028212718ae0f",
+        "avnews_82e57370ef26aa468e7e141f"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "cash_reserves=2.541e+07"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=2.541e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+        "sec:cik_0001646188:000121390025043731",
+        "sec:cik_0001646188:000121390025044934",
+        "sec:cik_0001646188:000121390025042109",
+        "sec:cik_0001646188:000121390025035756",
+        "sec:cik_0001646188:000101376225004171",
+        "sec:cik_0001646188:000121390025022955",
+        "sec:cik_0001646188:000121390025043710",
+        "sec:cik_0001646188:000121390025031330"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.318279"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.318279"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.665814"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.665814"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-1.56756"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-1.56756"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_acceleration=6.33861"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_acceleration=6.33861"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=5.79699"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "revenue_growth_yoy=5.79699"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.194617"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.758321"
+      },
+      "selected_documents": [
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Price history requires 127 observations; received 31."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.206313"
+      },
+      "selected_documents": [
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=5"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=5"
+      },
+      "selected_documents": [
+        "avnews_20e9e929d6cea7bbd48d34ca",
+        "avnews_543f4f13476e58c76383fcff",
+        "avnews_5af6a8ef7b1d7774163246f7",
+        "avnews_a78d2729e59a1678afaa7692",
+        "avnews_c55cef90ef166e745272c108",
+        "avnews_d6fae89bec7ec618006e7878",
+        "avnews_69f310c0b152b9762b338a91",
+        "avnews_cf54a44e5b71fbad7e8806dd",
+        "avnews_0e0d2d143e6b815cd0ff5bf0",
+        "avnews_43a378c1e7c1a358d61a6aed"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "positive",
+        "reason": "cash_reserves=9.12814e+08"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=9.12814e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001521036:000162828025007970",
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac",
+        "sec:cik_0001521036:000162828024045459",
+        "sec:cik_0001521036:000119312525013841",
+        "sec:cik_0001521036:000119312525004904",
+        "sec:cik_0001521036:000119312525016381",
+        "sec:cik_0001521036:000119312524262071",
+        "sec:cik_0001521036:000119312524284219",
+        "sec:cik_0001521036:000162828025007965",
+        "sec:cik_0001521036:000162828024045456"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0969896"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0969896"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0136671"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0136671"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.355138"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.355138"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0294291"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=-0.0294291"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.183181"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.183181"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "positive",
+        "reason": "max_drawdown_1y=-0.125898"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.346816"
+      },
+      "selected_documents": [
+        "massive:cik_0001521036:market_data:3a5c4fe750092a3cbd93c292",
+        "massive:cik_0001521036:market_data:f3c226bd8641d6cf96c65101"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Price history requires 127 observations; received 30."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.109217"
+      },
+      "selected_documents": [
+        "massive:cik_0001521036:market_data:3a5c4fe750092a3cbd93c292",
+        "massive:cik_0001521036:market_data:f3c226bd8641d6cf96c65101"
+      ]
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "selected_documents": [
+        "avnews_03497966542127d8f991da66",
+        "avnews_5bbc41684f259f56e8a415ad",
+        "avnews_9e316228ae0a9fd10c4474f5",
+        "avnews_76511f8c1300e1fb8c635681",
+        "avnews_7c1233b2454bd46bbfc984bf",
+        "avnews_a87c67ec21783c6dd8f5136a",
+        "avnews_2074f4e341cacdd16b6f1671",
+        "avnews_04ec7635ae49e354277c0b57",
+        "avnews_8d9999e822f2b2c58c5a387b",
+        "avnews_b9f6facf0c6d3eedf5cac3e7"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time SEC cash balance was unavailable."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=5.418e+08"
+      },
+      "selected_documents": [
+        "sec:cik_0001322422:000106299325006369",
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+        "sec:cik_0001322422:000095017025021038",
+        "sec:cik_0001322422:000199937124014729",
+        "sec:cik_0001322422:000106299325002997",
+        "sec:cik_0001322422:000106299324019273",
+        "sec:cik_0001322422:000106299324016675",
+        "sec:cik_0001322422:000106299324019045",
+        "sec:cik_0001322422:000106299325006370",
+        "sec:cik_0001322422:000106299325000010"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0417152"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "gross_margin_change=0.0417152"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.212132"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.329606"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.329606"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0395409"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0395409"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.195955"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.195955"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.320988"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.320988"
+      },
+      "selected_documents": [
+        "massive:cik_0001322422:market_data:a2015600a8a7d6f3d82ab0f9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.121143"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.121143"
+      },
+      "selected_documents": [
+        "massive:cik_0001322422:market_data:a2015600a8a7d6f3d82ab0f9"
+      ]
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "selected_documents": [
+        "avnews_097ebca81e40c1230cc58cb0",
+        "avnews_c470bca2d59619236b25a0b7",
+        "avnews_6427baad701fe88ff756e740",
+        "avnews_e35e721aaf7c4049809ebaab",
+        "avnews_f2430bfd78eac433b986f81c",
+        "avnews_821cfbbf7dc432b5bc620cd0",
+        "avnews_406485c11c3504be6b4b4737",
+        "avnews_5933fcdac6a31658b9dea7fa",
+        "avnews_e0ae3b7b825b8e284c8e5014",
+        "avnews_da5fc2b35799995a4109ccd1"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time SEC cash balance was unavailable."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=4.7267e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0001847409:000162828025002990",
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+        "sec:cik_0001847409:000162828025003171",
+        "sec:cik_0001847409:000127956925000092",
+        "sec:cik_0001847409:000127956925000049",
+        "sec:cik_0001847409:000127956924001500",
+        "sec:cik_0001847409:000127956924001474",
+        "sec:cik_0001847409:000127956925000039",
+        "sec:cik_0001847409:000127956924001512",
+        "sec:cik_0001847409:000127956924001473"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "gross_margin_change=0.0035637"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.0703325"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Matching SEC operating-cash-flow and positive-revenue periods were unavailable."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "operating_cash_flow_margin=0.0680559"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Two comparable SEC revenue growth periods were unavailable."
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.295561"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.0710256"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.229462"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.229462"
+      },
+      "selected_documents": [
+        "massive:cik_0001847409:market_data:960005c7fcefa10ccf2a8e53",
+        "massive:cik_0001847409:market_data:218c1484d796af3731d2ffca",
+        "massive:cik_0001847409:market_data:3b220623d973e3d6660e0e83",
+        "massive:cik_0001847409:market_data:4341d5f2501dccc00c2f0a25",
+        "massive:cik_0001847409:market_data:44acb1ea71d23bfdb5d0b38b",
+        "massive:cik_0001847409:market_data:6e7e0f59fce77710ffa610e3",
+        "massive:cik_0001847409:market_data:7885eb8bdd19bd0853324a7b",
+        "massive:cik_0001847409:market_data:888077bdd10829e4335c2d6c",
+        "massive:cik_0001847409:market_data:88e5e28bcd8b5420a1bac11d",
+        "massive:cik_0001847409:market_data:c45cb67d080efc01bf8a0e70"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time inputs did not satisfy the Signal retrieval contract."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Point-in-time inputs did not satisfy the Signal retrieval contract."
+      },
+      "selected_documents": [
+        "massive:cik_0001847409:market_data:960005c7fcefa10ccf2a8e53",
+        "massive:cik_0001847409:market_data:218c1484d796af3731d2ffca",
+        "massive:cik_0001847409:market_data:3b220623d973e3d6660e0e83",
+        "massive:cik_0001847409:market_data:4341d5f2501dccc00c2f0a25",
+        "massive:cik_0001847409:market_data:44acb1ea71d23bfdb5d0b38b",
+        "massive:cik_0001847409:market_data:6e7e0f59fce77710ffa610e3",
+        "massive:cik_0001847409:market_data:7885eb8bdd19bd0853324a7b",
+        "massive:cik_0001847409:market_data:888077bdd10829e4335c2d6c",
+        "massive:cik_0001847409:market_data:88e5e28bcd8b5420a1bac11d",
+        "massive:cik_0001847409:market_data:c45cb67d080efc01bf8a0e70"
+      ]
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "selected_documents": [
+        "avnews_4977b2e17b4e217774e8d6e5",
+        "avnews_b24064200055bf4b16f6f5e1",
+        "avnews_dde9ab438be61e20cd928d4c",
+        "avnews_e3b0518b97b3400302f32b7c",
+        "avnews_55cae34372214b1a4034e6c5",
+        "avnews_ed4f1a3624c9affadead730f",
+        "avnews_96748e933f82b1d81f1c0b28",
+        "avnews_177e7ae8e85eaa62e7d2a62d",
+        "avnews_de9e6ae736351c656342f16f",
+        "avnews_8f0d67c58fa19793eaff92cf"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time SEC cash balance was unavailable."
+      },
+      "after": {
+        "value": "positive",
+        "reason": "cash_reserves=2.52535e+08"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+        "sec:cik_0001964504:000093041325001751",
+        "sec:cik_0001964504:000110465925049555",
+        "sec:cik_0001964504:000086917825000040",
+        "sec:cik_0001964504:000162828025023298",
+        "sec:cik_0001964504:000119312525080319",
+        "sec:cik_0001964504:000127956925000512",
+        "sec:cik_0001964504:000127956925000462",
+        "sec:cik_0001964504:000127956925000426",
+        "sec:cik_0001964504:000127956925000415"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable point-in-time SEC weighted-average share periods were unavailable."
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.153523"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.276608"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "operating_cash_flow_margin=0.276608"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0212825"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_acceleration=0.0212825"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.140571"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "revenue_growth_yoy=0.140571"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.404414"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.404414"
+      },
+      "selected_documents": [
+        "massive:cik_0001964504:market_data:b3aeb9f819db1d504996a99e"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.162282"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.162282"
+      },
+      "selected_documents": [
+        "massive:cik_0001964504:market_data:b3aeb9f819db1d504996a99e"
+      ]
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "selected_documents": [
+        "avnews_9f3785b440bc32874fa070e3",
+        "avnews_b43b83e71718ace2ca531aa6",
+        "avnews_103287e8a64e7f9883c634f5",
+        "avnews_c6612cc357c3f109ef963cd0"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "cash_reserves=7.1839e+07"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=7.1839e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0001658551:000095017024122833",
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba",
+        "sec:cik_0001658551:000095017024093311",
+        "sec:cik_0001658551:000119312525004547",
+        "sec:cik_0001658551:000119312524238572",
+        "sec:cik_0001658551:000119312524286212",
+        "sec:cik_0001658551:000095017024076339",
+        "sec:cik_0001658551:000119312524177000",
+        "sec:cik_0001658551:000119312524156050",
+        "sec:cik_0001658551:000095017024122779"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0129045"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.0129045"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-1.23403"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "operating_cash_flow_margin=-1.23403"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.193232"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_acceleration=-0.193232"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.676739"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "revenue_growth_yoy=-0.676739"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.268692"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.554765"
+      },
+      "selected_documents": [
+        "massive:cik_0001658551:market_data:437ef5addd99cd7abf37695d",
+        "massive:cik_0001658551:market_data:477852f754762b56eab7d567",
+        "massive:cik_0001658551:market_data:6131020d062349d23cc89ef0",
+        "massive:cik_0001658551:market_data:7f64693c7261b3d6874d074b",
+        "massive:cik_0001658551:market_data:897425514fc1b3c79c4b7b38",
+        "massive:cik_0001658551:market_data:8a11cd6e4f83545b51e94653",
+        "massive:cik_0001658551:market_data:95beb19a662654ce0fa1072b",
+        "massive:cik_0001658551:market_data:af501fb252dd18841e544b42",
+        "massive:cik_0001658551:market_data:c33087318a38faa84bf54e48",
+        "massive:cik_0001658551:market_data:7101ecf4994b5926308609d4"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Point-in-time inputs did not satisfy the Signal retrieval contract."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Point-in-time inputs did not satisfy the Signal retrieval contract."
+      },
+      "selected_documents": [
+        "massive:cik_0001658551:market_data:437ef5addd99cd7abf37695d",
+        "massive:cik_0001658551:market_data:477852f754762b56eab7d567",
+        "massive:cik_0001658551:market_data:6131020d062349d23cc89ef0",
+        "massive:cik_0001658551:market_data:7f64693c7261b3d6874d074b",
+        "massive:cik_0001658551:market_data:897425514fc1b3c79c4b7b38",
+        "massive:cik_0001658551:market_data:8a11cd6e4f83545b51e94653",
+        "massive:cik_0001658551:market_data:95beb19a662654ce0fa1072b",
+        "massive:cik_0001658551:market_data:af501fb252dd18841e544b42",
+        "massive:cik_0001658551:market_data:c33087318a38faa84bf54e48",
+        "massive:cik_0001658551:market_data:7101ecf4994b5926308609d4"
+      ]
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=2"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=2"
+      },
+      "selected_documents": [
+        "avnews_322dfea04c84fc924872c097",
+        "avnews_fe383d79b7267dcdb0512538",
+        "avnews_d35d186ab3f81359d1780bbe",
+        "avnews_b2256a8978a7a511f126154e",
+        "avnews_0cef73f3780a39c72eeb5155",
+        "avnews_c6c392d2551faf3e6562ef0a",
+        "avnews_6f96f2bc68ebbb6de6753432",
+        "avnews_6df158d2651f78ddb9378f3a",
+        "avnews_894ca055bdfa3ba7ac93ddcd",
+        "avnews_da10b53c09da48992eebc1c0"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "cash_reserves=1.1688e+07"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=1.1688e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0000921114:000155837025003406",
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f",
+        "sec:cik_0000921114:000155837025007765",
+        "sec:cik_0000921114:000110465925023015",
+        "sec:cik_0000921114:000110465925050219",
+        "sec:cik_0000921114:000110465925031127",
+        "sec:cik_0000921114:000110465924129981",
+        "sec:cik_0000921114:000110465924125505",
+        "sec:cik_0000921114:000155837025003405",
+        "sec:cik_0000921114:000155837025007752"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.00165597"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "net_share_retirement_yoy=-0.00165597"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2020-06-30 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2020-06-30 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Two comparable SEC revenue growth periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Two comparable SEC revenue growth periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000921114:financials:d08dce61341938708e6faa2f"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.380822"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.671273"
+      },
+      "selected_documents": [
+        "massive:cik_0000921114:market_data:4cebbf7f1d012cc925bd2252",
+        "massive:cik_0000921114:market_data:bb30809cb5665a0101486e81"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Price history requires 127 observations; received 42."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.0355556"
+      },
+      "selected_documents": [
+        "massive:cik_0000921114:market_data:4cebbf7f1d012cc925bd2252",
+        "massive:cik_0000921114:market_data:bb30809cb5665a0101486e81"
+      ]
+    },
+    {
+      "case_id": "cik_0000921114:20250530",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=3"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=3"
+      },
+      "selected_documents": [
+        "alpha_vantage:cik_0000921114:news:e1f71c7e5fee54bc015c3c5a",
+        "alpha_vantage:cik_0000921114:news:8d34695f2379cef8eaa76215",
+        "alpha_vantage:cik_0000921114:news:7a8eb492b4aa1bf00eeda0ad",
+        "alpha_vantage:cik_0000921114:news:88cbb246bbbdd54930d308d4"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "negative",
+        "reason": "cash_reserves=3.262e+06"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "cash_reserves=3.262e+06"
+      },
+      "selected_documents": [
+        "sec:cik_0000839470:000155837025003382",
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+        "sec:cik_0000839470:000155837024015722",
+        "sec:cik_0000839470:000155837024012233",
+        "sec:cik_0000839470:000155837025007769",
+        "sec:cik_0000839470:000110465924095599",
+        "sec:cik_0000839470:000110465925059140",
+        "sec:cik_0000839470:000110465925057364",
+        "sec:cik_0000839470:000110465925054321",
+        "sec:cik_0000839470:000110465925026660"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.210976"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.210976"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2009-12-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2009-12-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2020-06-30 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2020-06-30 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC revenue periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.228776"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "max_drawdown_1y=-0.603448"
+      },
+      "selected_documents": [
+        "massive:cik_0000839470:market_data:68c8d32520279535c82f8424",
+        "massive:cik_0000839470:market_data:2f17c8d6857eec8073bef326"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Price history requires 127 observations; received 31."
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "price_momentum_126d=-0.166989"
+      },
+      "selected_documents": [
+        "massive:cik_0000839470:market_data:68c8d32520279535c82f8424",
+        "massive:cik_0000839470:market_data:2f17c8d6857eec8073bef326"
+      ]
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "negative_word_count=4"
+      },
+      "selected_documents": [
+        "avnews_482638005e73adbbd22dcfdc",
+        "avnews_b16e20ccf08e823df82e5ad2",
+        "avnews_218843d09322e6c68755936a",
+        "avnews_77e0f7416a1adb2725bee8d9",
+        "avnews_77cd30f533c07ea1ba27331d",
+        "avnews_d0187d08b7fe919ea491e44b",
+        "avnews_c137265b10623cc0838150ee",
+        "avnews_aa48c112d2499fc18dd184df"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "cash_reserves:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "cash_reserves=6.8768e+07"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "cash_reserves=6.8768e+07"
+      },
+      "selected_documents": [
+        "sec:cik_0001718405:000171840525000026",
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+        "sec:cik_0001718405:000171840525000016",
+        "sec:cik_0001718405:000164117225015105",
+        "sec:cik_0001718405:000164117225014197",
+        "sec:cik_0001718405:000164117225019647",
+        "sec:cik_0001718405:000164117225021508",
+        "sec:cik_0001718405:000164117225014746",
+        "sec:cik_0001718405:000164117225010117",
+        "sec:cik_0001718405:000149315225009113"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "gross_margin_change:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Comparable SEC gross-margin periods were unavailable."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "net_share_retirement_yoy:v1",
+      "before": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.199529"
+      },
+      "after": {
+        "value": "negative",
+        "reason": "net_share_retirement_yoy=-0.199529"
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "operating_cash_flow_margin:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2022-12-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest matched SEC operating-cash-flow period ended 2022-12-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "revenue_acceleration:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2023-12-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2023-12-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "before": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2023-12-31 and is stale."
+      },
+      "after": {
+        "value": "unavailable",
+        "reason": "Latest supported SEC revenue period ended 2023-12-31 and is stale."
+      },
+      "selected_documents": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "max_drawdown_1y:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.305842"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "max_drawdown_1y=-0.305842"
+      },
+      "selected_documents": [
+        "massive:cik_0001718405:market_data:811bfe0658472af63f2f12e4"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "price_momentum_126d:v1",
+      "before": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.55814"
+      },
+      "after": {
+        "value": "positive",
+        "reason": "price_momentum_126d=0.55814"
+      },
+      "selected_documents": [
+        "massive:cik_0001718405:market_data:811bfe0658472af63f2f12e4"
+      ]
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "signal_ref": "negative_word_count:v1",
+      "before": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "after": {
+        "value": "neutral",
+        "reason": "negative_word_count=0"
+      },
+      "selected_documents": [
+        "avnews_a2998fedcf633c5f83d31015",
+        "avnews_a788e93ca7ec77773441ffcc",
+        "avnews_6f4871806ec4b74cfa0e7621",
+        "avnews_41461490b4e67e7a3ce8cf9d"
+      ]
+    }
+  ]
+}

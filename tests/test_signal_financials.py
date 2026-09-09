@@ -21,6 +21,93 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin(self) -> None:
+        for alias in ("RevenueFromContractsWithCustomers", "RevenueFromSaleOfGoods"):
+            with self.subTest(alias=alias):
+                original = json.loads(_scoped_company_facts_content())
+                facts = original["facts"].pop("us-gaap")
+                facts[alias] = facts.pop("Revenues")
+                original["facts"]["ifrs-full"] = facts
+                spec = _spec("gross_margin_change", "financial.gross_margin_change", 0.05, -0.05)
+                content = json.dumps(original, sort_keys=True, separators=(",", ":"))
+                result = SignalExecutor(
+                    _snapshot((spec,)), RawInfoStore(documents=(_document("ifrs", content),))
+                ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+                self.assertEqual(result.value, SignalValue.POSITIVE)
+                self.assertEqual(result.interpretation, "gross_margin_change=0.1")
+                for evidence in result.supporting_evidence:
+                    self.assertIn(evidence.exact_span, content)
+                    self.assertNotIn('"val":999', evidence.exact_span)
+
+    def test_raw_financial_namespaces_are_not_mixed(self) -> None:
+        payload = json.loads(_scoped_company_facts_content())
+        payload["facts"]["ifrs-full"] = {
+            "GrossProfit": payload["facts"]["us-gaap"].pop("GrossProfit")
+        }
+        spec = _spec("gross_margin_change", "financial.gross_margin_change", 0.05, -0.05)
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document(
+                "mixed", json.dumps(payload, sort_keys=True, separators=(",", ":"))
+            ),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+
+    def test_ifrs_cash_and_weighted_shares_aliases(self) -> None:
+        payload = json.loads(_scoped_company_facts_content())
+        facts = payload["facts"].pop("us-gaap")
+        facts["CashAndCashEquivalents"] = facts.pop("CashAndCashEquivalentsAtCarryingValue")
+        facts["WeightedAverageShares"] = facts.pop("WeightedAverageNumberOfSharesOutstandingBasic")
+        payload["facts"]["ifrs-full"] = facts
+        specs = (_spec("cash_reserves", "financial.cash_reserves", 30, 10),
+                 _spec("net_share_retirement_yoy", "financial.net_share_retirement_yoy", 0.02, -0.05))
+        result = SignalExecutor(_snapshot(specs), RawInfoStore(documents=(_document(
+            "ifrs-aliases", json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        ),))).execute_batch([s.ref for s in specs], company_id="issuer_1", as_of=AS_OF)
+        self.assertTrue(all(x.value is SignalValue.POSITIVE for x in result.results))
+
+    def test_ratios_accept_same_currency_but_never_mix_currencies(self) -> None:
+        payload = json.loads(_scoped_company_facts_content())
+        facts = payload["facts"]["us-gaap"]
+        for item in facts.values():
+            if "USD" in item["units"]:
+                item["units"]["CAD"] = item["units"].pop("USD")
+        specs = (_spec("gross_margin_change", "financial.gross_margin_change", 0.05, -0.05),
+                 _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, -0.1),
+                 _spec("operating_cash_flow_margin", "financial.operating_cash_flow_margin", 0.1, 0))
+        def execute():
+            return SignalExecutor(_snapshot(specs), RawInfoStore(documents=(_document(
+                "cad-ratios", json.dumps(payload, sort_keys=True, separators=(",", ":"))
+            ),))).execute_batch([s.ref for s in specs], company_id="issuer_1", as_of=AS_OF)
+        self.assertTrue(all(x.value is SignalValue.POSITIVE for x in execute().results))
+        for name in ("GrossProfit", "NetCashProvidedByUsedInOperatingActivities"):
+            units = facts[name]["units"]
+            units["USD"] = units.pop("CAD")
+        result = {x.signal_id: x for x in execute().results}
+        self.assertEqual(result["gross_margin_change"].value, SignalValue.UNAVAILABLE)
+        self.assertEqual(result["operating_cash_flow_margin"].value, SignalValue.UNAVAILABLE)
+
+    def test_market_history_selection_is_order_independent_and_conflicts_fail(self) -> None:
+        prices = [100.0 + index for index in range(127)]
+        def document(name, values, end="2025-01-20"):
+            return _document(name, json.dumps({"prices": values}), "market_data",
+                             metadata={"prices": values, "end": end})
+        full = document("full", prices)
+        short = document("short", prices[-31:])
+        spec = SignalSpec(signal_id="price_momentum_126d", version=1, category="market",
+                          description="Momentum.", execution_type=SignalExecutionType.DETERMINISTIC,
+                          function="market.price_momentum_126d", source_types=("market_data",),
+                          parameters={"lookback_observations": 126, "positive_min": 0.2, "negative_max": -0.2})
+        from stock_opportunity_agent.signal_library import _price_momentum_signal
+        for docs in ((full, short), (short, full)):
+            result = _price_momentum_signal(spec, docs, AS_OF)
+            self.assertEqual(result.interpretation, "price_momentum_126d=1.26")
+        from stock_opportunity_agent.models import ValidationError
+        with self.assertRaisesRegex(ValidationError, "conflicting market series"):
+            _price_momentum_signal(spec, (full, document("conflict", [999.0])), AS_OF)
+        latest_short = document("latest", prices[-31:], "2025-01-21")
+        result = _price_momentum_signal(spec, (full, latest_short), AS_OF)
+        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+
     def test_v18_current_revenue_alias_wins_and_stale_fallback_is_unavailable(self) -> None:
         fixture = json.loads(
             (

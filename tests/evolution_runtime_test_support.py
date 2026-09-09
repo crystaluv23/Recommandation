@@ -257,7 +257,7 @@ def make_contract() -> EvolutionRunContract:
             "posthoc_context_chars": 24_000,
             "meta_context_chars": 48_000,
             "role_output_tokens": {
-                "controller": 2_000,
+                "controller": 8_000,
                 "routing": 2_000,
                 "predictor": 2_000,
                 "posthoc": 2_000,

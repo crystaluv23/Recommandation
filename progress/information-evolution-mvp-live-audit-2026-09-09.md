@@ -134,3 +134,82 @@ changed and zero model usage. Exact paid V6 H_init outputs
 and `ba30141c9d598938b812302db6e7c01cfd3e8831e8cb738e46d5472b5edd60da`
 now replay unchanged through the full remaining parser, without external calls.
 A new live successor remains required; completion is not claimed.
+
+
+## V7 live continuation and Signal availability diagnosis
+
+V7 is frozen at commit `6e896f6`, contract
+`d3b56b5f064d3c696eea89ef4b4b058548e9c332fafaad090e819ea1bf983134`.
+It retains V6 model routes, three candidates, one Fast then Slow, and the same
+approved data allowlists and budget. All 625 tests and lint passed before launch.
+
+Read-only replay of V6's Kinross `gross_margin_change:v1` produces
+`execution.status=domain_unavailable` and
+`Comparable SEC gross-margin periods were unavailable.` The resolution itself
+succeeds, selecting the immutable financials document
+`sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77`
+(content hash `e6788b243ea9f3d1fd159b775d7d5a41e9b4b22ceb582aa5566012510a99c01c`).
+Its namespaces are `dei` and `ifrs-full`, but `_sec_facts` parses only `us-gaap`
+for raw Company Facts. It yields zero parsed facts. The source already contains
+USD GrossProfit for 2023 and 2024, including filings before the prediction cutoff,
+and revenue concepts `RevenueFromContractsWithCustomers` / `RevenueFromSaleOfGoods`.
+This confirms an IFRS input compatibility gap (including revenue-tag mapping),
+not an absent source, transport failure, or a defective gross-margin definition.
+The same source can pass generic period/readiness checks before metric-specific
+parsing fails; readiness is weaker than actual calculability. The running frozen
+V7 implementation is unchanged while its experiment finishes.
+
+
+## V7 result and generalized follow-up
+
+V7 ended at Fast/Slow 0/0 with 4/4/0 completed cases before evidence-claim
+length rejection. The earlier advisory summary change did not remove the separate
+ResearchEvidenceRef 400-character cap; that was an incomplete fix. Claims now
+require nonempty text without a field character ceiling. All semantic/evidence
+validators still apply. New Controller outputs allow 8,000 tokens, consumed from
+the frozen role limit; requests/cases/run budgets remain hard bounds. Historical
+2,000-token contracts remain readable, without changing their frozen contents.
+
+Two exact final paid responses replay unchanged through the complete current
+parser: `8598257f0a49312912bd218cd0bc718ef1dd92aef4238cf9734606e8cb1c9aeb`
+(claim 1,591 characters) and
+`0bcf93f00686cbc7edff28f8057304bc6988152feae51a15bde9ad2bcc8b1989`
+(claims 569 and 401 characters). The 658-character response
+`40af8e4c3a839821e43faeb16285b1ecadce379e3098943af6240e18ad0a4a58`
+still fails because current_beliefs contains a non-string item. This is a genuine
+remaining output defect, not a reason to silently stringify or discard structure.
+
+The expanded read-only audit covers 24 fixed cases and all nine deterministic
+stable Signals (216 combinations), without model or data calls. The baseline,
+after initial IFRS namespace/revenue mapping but before the expanded repairs,
+had 47 unavailable results. It compares normal resolved documents against all
+local PIT documents only as a diagnostic; broader evidence is never inserted into
+formal results. Parser memoization is confined to this diagnostic process.
+
+Confirmed input issues include missing IFRS CashAndCashEquivalents and
+WeightedAverageShares aliases, CAD amounts excluded from dimensionless ratios,
+and market calculations taking the final document in a tuple rather than the
+complete compatible series. ONDS and DNN each already had a full selected history
+(181/223 points) whose last 31 points exactly matched the selected short history,
+yet momentum used only the short history. Selection is now order-independent,
+latest-endpoint first and longest compatible suffix within that endpoint; conflicts
+fail instead of being merged. Currency ratios match the same unit throughout;
+absolute USD cash thresholds remain USD. Basic/diluted IFRS share concepts were
+verified against the [ESMA taxonomy](https://www.esma.europa.eu/sites/default/files/2024-05/ESMA32-2009130576-3011_Final_Report_amending_RTS_on_ESEF_-_2024.pdf).
+
+The audit does not equate banking net-interest revenue, an absent GrossProfit
+concept, stale annual facts, or too few listing-history observations with an input
+parser bug. No inferred gross profit, currency conversion, or sector-specific
+revenue substitution is introduced. Full regression and repository lint pass
+(631 tests); actual Fast/Slow completion still requires a new live run.
+
+
+The completed 216-combination expanded replay reduced unavailable results from
+47 to 28, recovering 19 combinations with no newly unavailable result. The
+comparison baseline already included initial IFRS namespace/revenue support;
+these 19 recoveries are additional. Four price-momentum cases recover after
+correct series choice, beyond the two cases detected by the broader-document
+probe (which itself still used the old order-dependent chooser). Complete results
+are in [the availability audit](information-evolution-mvp-signal-availability-2026-09-09.json).
+This is deterministic input recovery evidence, not Fast/Slow completion or proof
+of predictive improvement.

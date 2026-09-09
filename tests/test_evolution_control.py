@@ -4,6 +4,13 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class RunControlTests(TestCase):
+    def test_historical_controller_output_ceiling_remains_readable(self) -> None:
+        raw = make_contract().to_dict()
+        raw["limits"]["role_output_tokens"]["controller"] = 2_000
+        historical = EvolutionRunContract.from_dict(raw)
+        self.assertEqual(historical.to_dict()["limits"]["role_output_tokens"]["controller"], 2_000)
+        self.assertEqual(make_contract().limits["role_output_tokens"]["controller"], 8_000)
+
     def test_slow_bootstrap_manifest_masks_identity_and_binds_rejection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -147,7 +147,7 @@ def _model_available_source_types(
 
 
 ROLE_OUTPUT_TOKEN_LIMITS = {
-    "controller": 2_000,
+    "controller": 8_000,
     "routing": 2_000,
     "predictor": 2_000,
     "posthoc": 2_000,

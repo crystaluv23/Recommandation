@@ -188,14 +188,18 @@ Within one case, executor identity is `(signal_ref, sorted document_id/hash
 fingerprint)`. Re-selecting the same Signal with an unchanged fingerprint is a
 no-op and does not consume another Signal call. A changed oracle fingerprint may
 be executed again. Financial deterministic Signals parse both scoped SEC
-Company Facts API JSON and accession-scoped
+Company Facts API JSON (`us-gaap`, or `ifrs-full` when US GAAP is absent) and accession-scoped
 `sec-company-facts-document-v1`; derived evidence cites the exact serialized
 fact rows used in the calculation.
 
 Revenue aliases include both `RevenueFromContractWithCustomerExcludingAssessedTax`
 and `RevenueFromContractWithCustomerIncludingAssessedTax`; a company changing
 between those standard concepts must not make a current case fall back to an older
-legacy `Revenues` fact. For every duration/balance financial primitive, the newest
+legacy `Revenues` fact. IFRS revenue aliases additionally include
+`RevenueFromContractsWithCustomers` and `RevenueFromSaleOfGoods`, in that priority
+order. Use one reporting namespace per raw document to avoid mixing accounting
+bases; do not infer gross profit from a different metric. All period, currency,
+freshness, filing cutoff, and literal-evidence checks remain unchanged. For every duration/balance financial primitive, the newest
 fact used as the current period must end no more than 550 calendar days before the
 case as-of date. This accommodates one annual reporting cycle plus filing lag and a
 bounded buffer while making an otherwise valid but years-old concept `unavailable`.
@@ -483,3 +487,26 @@ identity-free bounded profiles, observed-policy compatibility counts,
 candidate isolation, executable candidate fixtures,
 alias-aware leakage rejection, exact-hash automatic batch promotion,
 partial-transition recovery, and versioned promotion.
+
+
+### Input compatibility and complete price windows
+
+IFRS aliases include `CashAndCashEquivalents`, basic `WeightedAverageShares`, and
+fallback diluted `AdjustedWeightedAverageShares`. These map to existing cash and
+weighted-average-share concepts; instant shares are not substituted for duration
+shares. The [ESMA taxonomy](https://www.esma.europa.eu/sites/default/files/2024-05/ESMA32-2009130576-3011_Final_Report_amending_RTS_on_ESEF_-_2024.pdf)
+defines the two weighted-average share concepts separately.
+
+Dimensionless revenue growth/acceleration and margin calculations accept monetary
+facts in reported three-letter currency units. Match currency as well as duration
+on every ratio and comparison; never mix or convert currencies. When multiple
+complete currency views end on the same date, USD is preferred deterministically.
+Absolute cash thresholds retain their USD requirement. Per-share units are not
+revenue amounts.
+
+Market calculations choose the latest declared series endpoint, independent of
+input tuple order. At the same endpoint prefer the longest history only when all
+shorter histories are identical suffixes. Conflicting same-endpoint prices fail
+validation; neither arbitrary document ordering nor merging incompatible adjusted
+series may select a result. Legacy metadata lacking an endpoint uses the document's
+availability date. Existing resolver PIT filtering and numeric checks still apply.

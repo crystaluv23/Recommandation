@@ -372,6 +372,10 @@ class EvolutionRunContract:
                     "role_output_tokens": ROLE_OUTPUT_TOKEN_LIMITS,
                 }
                 for name, expected in required_v6_limits.items():
+                    if name == "role_output_tokens" and self.limits.get(name) == {
+                        **ROLE_OUTPUT_TOKEN_LIMITS, "controller": 2_000
+                    }:
+                        continue
                     if self.limits.get(name) != expected:
                         raise ValidationError(
                             f"{schema_label} contract limit {name} must equal the frozen value"

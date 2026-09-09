@@ -2861,11 +2861,14 @@ _REVENUE_TAGS = (
     "Revenues",
     "SalesRevenueNet",
     "Revenue",
+    "RevenueFromContractsWithCustomers",
+    "RevenueFromSaleOfGoods",
 )
 _MAX_SEC_CURRENT_PERIOD_AGE_DAYS = 550
 _CASH_TAGS = (
     "CashAndCashEquivalentsAtCarryingValue",
     "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    "CashAndCashEquivalents",
 )
 _OPERATING_CASH_FLOW_TAGS = (
     "NetCashProvidedByUsedInOperatingActivities",
@@ -2876,6 +2879,8 @@ _SHARE_COUNT_TAGS = (
     "WeightedAverageNumberOfSharesOutstandingBasic",
     "WeightedAverageNumberOfDilutedSharesOutstanding",
     "WeightedAverageNumberOfSharesOutstanding",
+    "WeightedAverageShares",
+    "AdjustedWeightedAverageShares",
 )
 
 
@@ -2920,7 +2925,9 @@ def _revenue_acceleration_signal(
             f"Latest supported SEC revenue period ended {current_pair[0].end} and is stale.",
         )
     prior_pair = next(
-        (pair for pair in pairs[1:] if pair[0].end < current_pair[0].end),
+        (pair for pair in pairs[1:]
+         if pair[0].end < current_pair[0].end
+         and pair[0].unit.casefold() == current_pair[0].unit.casefold()),
         None,
     )
     if prior_pair is None or current_pair[1].value == 0 or prior_pair[1].value == 0:
@@ -2947,9 +2954,11 @@ def _gross_margin_change_signal(
     revenues = _duration_series(facts, _REVENUE_TAGS)
     gross_profit = _duration_series(facts, ("GrossProfit",))
     margins: list[tuple[str, float, _SecFact, _SecFact]] = []
-    gross_by_period = {(fact.start, fact.end): fact for fact in gross_profit}
+    gross_by_period = {
+        (fact.start, fact.end, fact.unit.casefold()): fact for fact in gross_profit
+    }
     for revenue in revenues:
-        gross = gross_by_period.get((revenue.start, revenue.end))
+        gross = gross_by_period.get((revenue.start, revenue.end, revenue.unit.casefold()))
         if gross is not None and revenue.value != 0:
             margins.append((revenue.end, gross.value / revenue.value, revenue, gross))
     margins.sort(key=lambda item: item[0], reverse=True)
@@ -2988,11 +2997,13 @@ def _operating_cash_flow_margin_signal(
     revenues = _duration_series(facts, _REVENUE_TAGS)
     operating_cash_flows = _duration_series(facts, _OPERATING_CASH_FLOW_TAGS)
     cash_flow_by_period = {
-        (fact.start, fact.end): fact for fact in operating_cash_flows
+        (fact.start, fact.end, fact.unit.casefold()): fact for fact in operating_cash_flows
     }
     ratios: list[tuple[str, float, _SecFact, _SecFact]] = []
     for revenue in revenues:
-        cash_flow = cash_flow_by_period.get((revenue.start, revenue.end))
+        cash_flow = cash_flow_by_period.get(
+            (revenue.start, revenue.end, revenue.unit.casefold())
+        )
         if cash_flow is not None and revenue.value > 0:
             ratios.append(
                 (revenue.end, cash_flow.value / revenue.value, revenue, cash_flow)
@@ -3109,10 +3120,12 @@ def _sec_facts(
         namespaces = payload.get("facts")
         if not isinstance(namespaces, Mapping):
             continue
-        us_gaap = namespaces.get("us-gaap")
-        if not isinstance(us_gaap, Mapping):
+        reporting_facts = namespaces.get("us-gaap")
+        if not isinstance(reporting_facts, Mapping):
+            reporting_facts = namespaces.get("ifrs-full")
+        if not isinstance(reporting_facts, Mapping):
             continue
-        for tag, definition in us_gaap.items():
+        for tag, definition in reporting_facts.items():
             if not isinstance(definition, Mapping):
                 continue
             units = definition.get("units")
@@ -3189,9 +3202,9 @@ def _duration_series(
         for fact in facts
         if fact.tag in tag_priority
         and fact.start is not None
-        and fact.unit.casefold() in {"usd", "usd/shares"}
+        and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
     ]
-    by_period: dict[tuple[str, str], _SecFact] = {}
+    by_period: dict[tuple[str, str, str], _SecFact] = {}
     for fact in sorted(
         eligible,
         key=lambda item: (
@@ -3202,11 +3215,15 @@ def _duration_series(
             item.document.document_id,
         ),
     ):
-        key = (fact.start or "", fact.end)
+        key = (fact.start or "", fact.end, fact.unit.casefold())
         current = by_period.get(key)
         if current is None or tag_priority[fact.tag] < tag_priority[current.tag]:
             by_period[key] = fact
-    return sorted(by_period.values(), key=lambda fact: fact.end, reverse=True)
+    return sorted(
+        by_period.values(),
+        key=lambda fact: (fact.end, fact.unit.casefold() == "usd", fact.unit),
+        reverse=True,
+    )
 
 
 def _share_duration_series(facts: Iterable[_SecFact]) -> list[_SecFact]:
@@ -3285,7 +3302,8 @@ def _latest_share_yoy_pair(
 
 
 def _comparable_duration(left: _SecFact, right: _SecFact) -> bool:
-    if left.start is None or right.start is None:
+    if (left.start is None or right.start is None
+            or left.unit.casefold() != right.unit.casefold()):
         return False
     left_days = (
         datetime.fromisoformat(left.end) - datetime.fromisoformat(left.start)
@@ -3509,10 +3527,28 @@ def _unavailable_result(spec: SignalSpec, interpretation: str) -> SignalResult:
 def _latest_metadata_value(
     documents: tuple[RawInfoDocument, ...], key: str
 ) -> tuple[Any, RawInfoDocument] | None:
-    for document in reversed(documents):
-        if key in document.metadata:
-            return document.metadata[key], document
-    return None
+    """Choose complete compatible metadata independently of resolver ordering."""
+
+    candidates = [document for document in documents if key in document.metadata]
+    if not candidates:
+        return None
+    def endpoint(document: RawInfoDocument) -> str:
+        return str(document.metadata.get("end") or document.available_at.date().isoformat())
+
+    latest = max(endpoint(document) for document in candidates)
+    candidates = [document for document in candidates if endpoint(document) == latest]
+    if any(not isinstance(document.metadata[key], list) for document in candidates):
+        raise ValidationError("market price metadata must be a list")
+    selected = max(
+        candidates,
+        key=lambda document: (len(document.metadata[key]), document.available_at, document.document_id),
+    )
+    values = selected.metadata[key]
+    for document in candidates:
+        other = document.metadata[key]
+        if other and values[-len(other):] != other:
+            raise ValidationError("conflicting market series at the same endpoint")
+    return values, selected
 
 
 def _build_signal_learning_profile(

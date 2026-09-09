@@ -28,3 +28,7 @@ Fast/Slow engine dependency.
 - Scoring and fitness rules remain deterministic.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or
   Signal engine implementations.
+
+ResearchEvidenceRef claims require nonempty text and have no hard character ceiling.
+Length is presentation guidance; evidence validation and transport budgets remain
+independent. Existing serialized record shapes are unchanged.

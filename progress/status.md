@@ -1,5 +1,14 @@
 # Status
 
+The V7 live run rejected all three candidates on the remaining evidence-claim
+length cap. That cap is now removed; claims remain nonempty and evidence-checked.
+New contracts allow 8,000 Controller output tokens, while historical contracts
+remain readable. Expanded input repairs cover IFRS facts/aliases, same-currency
+dimensionless ratios, and complete compatible market series independent of tuple
+order. Full regression: 631 tests and lint pass. The 216-combination deterministic
+replay recovered 19 false-unavailable results (47 to 28), with none regressing
+to unavailable. Fresh live validation is pending.
+
 The V6 MVP run terminated at Fast/Slow 0/0: candidates completed 3, 0, and 6
 cases before model-output rejection. Summary capacities are now advisory under
 existing hard transport budgets; terminal all-unavailable batches finalize the

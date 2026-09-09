@@ -1980,7 +1980,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             corrected_claim,
         )
 
-    def test_v69_reflect_correction_names_overlong_claim_and_linked_belief(
+    def test_reflect_retains_complete_grounded_long_claim(
         self,
     ) -> None:
         prior_claim = "The resort construction timeline remains the key uncertainty."
@@ -2056,15 +2056,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             SignalBatchResult(results=(result,), signal_calls=1),
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("supporting_evidence[1].claim", error)
-        self.assertIn(f"length={len(overlong_claim)}", error)
-        self.assertIn("linked_assertions=['current_beliefs[1]']", error)
-        self.assertIn("at most 400 characters", error)
-        self.assertIn(
-            "Every supporting_evidence claim must contain 1-400 characters",
-            caller.calls[0]["system_prompt"],
-        )
+        self.assertEqual(len(caller.calls), 1)
         capacity = caller.calls[0]["payload"]["research_state_capacity"]
         self.assertEqual(
             capacity["fields"]["supporting_evidence"],
@@ -2086,17 +2078,17 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "every new or retained question must request only facts available",
             caller.calls[0]["system_prompt"],
         )
-        self.assertEqual(reflected.value.current_beliefs[1], corrected_claim)
+        self.assertEqual(reflected.value.current_beliefs[1], overlong_claim)
         self.assertEqual(
             reflected.value.supporting_evidence[1].claim,
-            corrected_claim,
+            overlong_claim,
         )
 
     def test_initialize_keeps_complete_supported_content_above_summary_targets(self) -> None:
-        claim = "Issuer guidance remains conditional on customer demand. " * 6
+        claim = "Issuer guidance remains conditional on customer demand. " * 31
         literal = claim + " Additional disclosed context." * 30
         self.assertGreater(len(claim), 300)
-        self.assertLessEqual(len(claim), 400)
+        self.assertGreater(len(claim), 1600)
         self.assertGreater(len(literal), 800)
         evidence = [
             {"kind": "basic_info", "claim": claim,

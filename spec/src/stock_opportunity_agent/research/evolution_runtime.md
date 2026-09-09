@@ -93,9 +93,11 @@ available Basic-Info source-type catalog hash, a four-Signal/two-LLM-Signal
 per-round ceiling, a 64,000-token terminal-plus-Predictor reserve for newly frozen
 contracts, all
 model-facing character ceilings, and role output-token ceilings. The frozen
-role ceilings are 2,000 tokens for controller, routing, Predictor, post-hoc,
-H1, and H2; 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for
-H3 and Update.
+role ceilings are 2,000 tokens for routing, Predictor, post-hoc, H1, and H2;
+4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for controller,
+H3, and Update. Historical contracts with the former 2,000-token controller
+ceiling remain readable; exact code/contract checks still prevent silently
+resuming them with different runtime limits.
 V7 additionally freezes `cycle_mode`. `fast_then_slow` requires a positive
 `plan_rounds_per_signal_cycle` and no bootstrap manifest. `slow_bootstrap` is
 single-cycle and requires exactly zero Fast rounds plus the hash of
@@ -821,13 +823,10 @@ sets remains byte-for-byte. This dependency scope makes a repair executable with
 predicting which shorter literal the provider will choose, while the unchanged
 quantity/link validators reject unsupported or unrelated drift.
 
-Every provider-facing ResearchState contract also states that a
-`supporting_evidence` claim contains 1-400 characters. Before domain construction,
-runtime aggregates every empty or overlong claim, reports the exact
-`supporting_evidence[index].claim` path and actual character length, and names any
-identical belief/contradiction paths. The single correction shortens that claim while
-retaining provenance, or removes it, and updates an identical linked assertion
-byte-for-byte; unrelated valid items remain unchanged.
+ResearchState evidence claims must be nonempty strings with grounded support.
+A suggested 400-character claim length is not a parser or domain validity limit;
+complete claims are retained unchanged. Empty-claim feedback identifies the exact
+claim and identical linked assertions for bounded correction.
 
 ResearchState is a compact decision frontier. Suggested compression targets are
 `hypotheses=3`, `current_beliefs=8`, `supporting_evidence=8`, `contradictions=4`,

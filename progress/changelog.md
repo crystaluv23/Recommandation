@@ -298,3 +298,5 @@
 - 2026-09-09: V4 routing exhaustion exposed a whole-round recovery gap; typed ownership failures now retain model-selected Signals as revalidated context only, preserving unanswered needs and valid siblings without another call.
 
 - 2026-09-09: V6 exposed summary-capacity rejections and pointless terminal reflection; make research summary targets advisory while preserving evidence/PIT validation, and deterministically finalize all-unavailable terminal batches without inventing findings. Exact paid response replay passes unchanged.
+
+- 2026-09-09: Removed the remaining ResearchEvidenceRef character ceiling, retained semantic validation, and aligned Controller output capacity with frozen contracts. Expanded false-unavailable audit repaired IFRS namespace/aliases, currency-safe ratios, and compatible longest same-endpoint market history selection; 631 tests and lint pass before live continuation.

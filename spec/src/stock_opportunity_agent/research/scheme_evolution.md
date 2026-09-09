@@ -88,9 +88,8 @@ S = (B, H_init, H_reflect, H_analyse)
   evolvable. Missing this backbone is a proposal-validation error with the same
   single bounded correction as other malformed Plan content.
 - `H_init`: turns Basic Info into hypotheses and natural-language information
-  needs, not hard-coded Signal ids. Every supporting-evidence `claim` contains
-  1-400 characters; this bound is part of the role's visible output contract rather
-  than a hidden parser constraint. Every numeric quantity in a supporting claim
+  needs, not hard-coded Signal ids. Every supporting-evidence `claim` is a
+  nonempty string; concision is guidance, not a hard character limit. Every numeric quantity in a supporting claim
   must be present in the union of exact Basic literals attached to that same claim;
   explicit thousand/million/billion/trillion words and standard adjacent suffixes
   are compared by exact decimal scaling without tolerance or rounding. Multi-span
@@ -330,25 +329,14 @@ changes every actually named invalid item and any explicitly named linked assert
 while preserving unrelated valid fields/items byte-for-byte. For a quantity-invalid
 evidence claim, feedback names both the evidence index and each identical quantitative
 belief/contradiction that must be changed to the corrected claim.
-For an empty or over-400-character evidence claim, pre-domain validation aggregates
-every invalid `supporting_evidence[index].claim`, reports its actual character length,
-and names each identical `current_beliefs`/`contradictions` path. The correction must
-shorten the claim to at most 400 characters while retaining its provenance, or remove
-the evidence item; an identical linked assertion must copy the corrected claim
-byte-for-byte or be removed. Unrelated valid fields and evidence remain unchanged.
-
-ResearchState is a bounded decision frontier, not a second summary of every Basic
-projection or Signal result. Provider output keeps only the smallest non-redundant set
-needed for the active hypothesis, evidence, counter-evidence, unresolved uncertainty,
-and next retrieval decision. The default per-field ceilings are three hypotheses,
-eight beliefs, eight evidence refs, four contradictions, six resolved questions, six
-open questions, and six next information needs; the combined arrays contain at most
-24 items, every non-evidence text item contains at most 300 characters, and the compact
-canonical JSON contains at most 6,000 UTF-8 bytes. During initialize, a Basic
-`exact_text` literal contains at most 800 characters and must be the shortest complete
-literal that supports its claim. Full Basic projections, Raw Info, Signal batches, and
-trajectories remain durable locally, so these limits remove repeated source summary
-rather than evidence coverage.
+An empty evidence claim is invalid; correction names the claim and identical
+linked assertions. Research text has no field-level hard character limit. Summary
+counts, 300-character text, 400-character claims, 800-character literals, and
+6,000-byte state size are advisory compression targets. Runtime preserves complete
+accepted text and evidence rather than truncating it to meet a presentation target.
+The existing request, output, case, and run budgets remain hard bounds. Controller
+outputs have an 8,000-token ceiling frozen in new run contracts so complete evidence
+can fit without treating transport truncation as a content-quality failure.
 The same exact question cannot be returned in both `open_questions` and
 `next_information_needs`: the latter owns an actionable retrieval question, while the
 former retains only other unresolved uncertainty. Runtime names only byte-identical

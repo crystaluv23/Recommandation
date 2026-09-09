@@ -101,7 +101,7 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     },
 ) + (
     ' Decision must be "continue" or "finalize"; continue requires at least one need.'
-    " Every supporting_evidence claim must contain 1-400 characters."
+    " Every supporting_evidence claim must be nonempty text; aim for 400 characters without truncating supported content."
     " Every basic_info evidence exact_text must be one contiguous literal substring "
     "copied byte-for-byte from exactly one supplied projection. Never use ellipses, "
     "join non-contiguous fragments, reorder JSON fields, or paraphrase exact_text. "
@@ -145,7 +145,7 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     },
 ) + (
     ' Decision must be "continue" or "finalize"; continue requires at least one need.'
-    " Every supporting_evidence claim must contain 1-400 characters."
+    " Every supporting_evidence claim must be nonempty text; aim for 400 characters without truncating supported content."
     " Retain prior Basic Info refs using their basic_info shape. New signal refs must "
     "use exactly kind, claim, signal_ref, evidence_group, and evidence_index; do not "
     "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
@@ -1915,8 +1915,8 @@ _RESEARCH_STATE_CORRECTION_GUIDANCE = (
     "repair is to delete every listed quantity from the named evidence claim "
     "and each named linked assertion, unless you add same-claim exact_text that "
     "literally contains it; document metadata or surrounding context does not "
-    "count. When validation_error names an empty or overlong evidence claim, "
-    "shorten only that named claim to 1-400 characters while retaining its "
+    "count. When validation_error names an empty evidence claim, "
+    "supply a grounded nonempty claim while retaining its "
     "provenance, or remove it; update each named linked assertion to copy the "
     "corrected claim byte-for-byte or remove that assertion."
 )

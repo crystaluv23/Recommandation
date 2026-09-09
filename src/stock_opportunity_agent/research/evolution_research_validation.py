@@ -1013,7 +1013,7 @@ def _normalize_research_state_output(
 def _raw_research_evidence_claim_length_issues(
     value: Mapping[str, Any],
 ) -> list[str]:
-    """Aggregate visible claim-length errors before domain construction."""
+    """Identify empty claims and their linked assertions before construction."""
 
     evidence = value.get("supporting_evidence")
     if not isinstance(evidence, list):
@@ -1023,7 +1023,7 @@ def _raw_research_evidence_claim_length_issues(
         if not isinstance(item, Mapping):
             continue
         claim = item.get("claim")
-        if not isinstance(claim, str) or (claim.strip() and len(claim) <= 400):
+        if not isinstance(claim, str) or claim.strip():
             continue
         linked = [
             f"{field_name}[{assertion_index}]"
@@ -1040,9 +1040,8 @@ def _raw_research_evidence_claim_length_issues(
         )
         issues.append(
             f"supporting_evidence[{index}].claim length={len(claim)} "
-            f"(trimmed_length={len(claim.strip())}) violates the required 1-400 "
-            "characters. Shorten this claim to at most 400 characters while "
-            "retaining its provenance, or remove this evidence item"
+            "must be nonempty text. Supply a grounded claim while retaining "
+            "its provenance, or remove this evidence item"
             + linked_instruction
         )
     return issues

@@ -47,6 +47,7 @@ from stock_opportunity_agent.signal_library import (
 )
 from stock_opportunity_agent.research.evolution_settings import (
     REGISTERED_SOURCE_TYPE_CATALOG,
+    ROLE_OUTPUT_TOKEN_LIMITS,
 )
 from stock_opportunity_agent.research.evolution_transport import (
     JSONRoleCaller,
@@ -192,7 +193,7 @@ class LLMResearchController:
                 basic_info=basic_info,
             ),
             allow_outcomes=False,
-            max_output_tokens=2_000,
+            max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["controller"],
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
@@ -323,7 +324,7 @@ class LLMResearchController:
                 must_finalize=must_finalize,
             ),
             allow_outcomes=False,
-            max_output_tokens=2_000,
+            max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["controller"],
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
