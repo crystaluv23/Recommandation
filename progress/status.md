@@ -1,5 +1,12 @@
 # Status
 
+The V6 MVP run terminated at Fast/Slow 0/0: candidates completed 3, 0, and 6
+cases before model-output rejection. Summary capacities are now advisory under
+existing hard transport budgets; terminal all-unavailable batches finalize the
+previous state without a model call. The exact 338/342-character paid responses
+replay unchanged through all remaining validators. Prior incomplete execution is
+not classified as an implementation failure. A fresh live successor is pending.
+
 The 2026-09-09 authorized MVP audit corrected the Predictor baseline's
 computation/display boundary (commit `4b149db`). V4 then completed five cases
 but rejected at case six when repeated partial-answer routing prose remained

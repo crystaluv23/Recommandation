@@ -30,9 +30,7 @@ from stock_opportunity_agent.signal_library import (
 from stock_opportunity_agent.research.evolution_output_validation import (
     _CLAIM_QUANTITY,
     _RESEARCH_STATE_ARRAY_LIMITS,
-    _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT,
     _RESEARCH_STATE_JSON_BYTE_LIMIT,
-    _RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT,
     _RESEARCH_STATE_TOTAL_ITEM_LIMIT,
     _missing_claim_quantity_details,
     _missing_claim_quantity_groups,
@@ -194,6 +192,7 @@ def _research_state_capacity(state: ResearchState) -> dict[str, Any]:
     current_size = _research_state_json_size(value)
     effective_size_limit = max(_RESEARCH_STATE_JSON_BYTE_LIMIT, current_size)
     return {
+        "advisory": True,
         "fields": field_capacity,
         "combined": {
             "current_count": current_total,
@@ -888,9 +887,8 @@ def _raw_research_state_compaction_issues(
     basic_info: Mapping[str, Any] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[str]:
-    """Aggregate provider-only decision-frontier limit violations."""
+    """Validate research questions independently of advisory summary targets."""
 
-    previous = previous_state.to_dict() if previous_state is not None else {}
     issues: list[str] = []
     if initialize:
         issues.extend(_raw_initialize_need_issues(value, basic_info or {}))
@@ -900,80 +898,6 @@ def _raw_research_state_compaction_issues(
                 value,
                 evaluation_context,
             )
-        )
-    counts: dict[str, int] = {}
-    previous_counts: dict[str, int] = {}
-    for field_name, default_limit in _RESEARCH_STATE_ARRAY_LIMITS.items():
-        raw_items = value.get(field_name)
-        prior_items = previous.get(field_name)
-        prior_count = len(prior_items) if isinstance(prior_items, list) else 0
-        previous_counts[field_name] = prior_count
-        if not isinstance(raw_items, list):
-            continue
-        count = len(raw_items)
-        counts[field_name] = count
-        effective_limit = max(default_limit, prior_count)
-        if count > effective_limit:
-            issues.append(
-                f"invalid_field={field_name!r}, {field_name} count={count} "
-                f"exceeds effective_limit={effective_limit} "
-                f"(default_limit={default_limit}, prior_count={prior_count}). Keep only "
-                "the most decision-relevant non-redundant items"
-            )
-
-    total_count = sum(counts.values())
-    previous_total = sum(previous_counts.values())
-    effective_total_limit = max(_RESEARCH_STATE_TOTAL_ITEM_LIMIT, previous_total)
-    if total_count > effective_total_limit:
-        minimum_removed_items = total_count - effective_total_limit
-        reducible_paths = [
-            field_name
-            for field_name in _RESEARCH_STATE_ARRAY_LIMITS
-            if counts.get(field_name, 0) > 0
-        ]
-        issues.append(
-            f"combined ResearchState array count={total_count} exceeds "
-            f"effective_limit={effective_total_limit} "
-            f"(default_limit={_RESEARCH_STATE_TOTAL_ITEM_LIMIT}, "
-            f"prior_count={previous_total}), current_field_counts={counts}, "
-            f"minimum_removed_items={minimum_removed_items}, "
-            "must_reduce_any_of_paths="
-            f"{json.dumps(reducible_paths, separators=(',', ':'))}. Remove at "
-            "least that many redundant source-summary items across any listed "
-            "combination"
-        )
-
-    for field_name in _RESEARCH_STATE_ARRAY_LIMITS:
-        if field_name == "supporting_evidence":
-            continue
-        raw_items = value.get(field_name)
-        prior_items = previous.get(field_name)
-        retained_legacy = set(prior_items) if isinstance(prior_items, list) else set()
-        if not isinstance(raw_items, list):
-            continue
-        for index, item in enumerate(raw_items):
-            if not isinstance(item, str):
-                continue
-            if len(item) <= _RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT:
-                continue
-            if previous_state is not None and item in retained_legacy:
-                continue
-            issues.append(
-                f"{field_name}[{index}] length={len(item)} exceeds "
-                f"{_RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT} characters. Shorten or remove "
-                "this newly authored decision-frontier item"
-            )
-
-    size_bytes = _research_state_json_size(value)
-    previous_size = _research_state_json_size(previous) if previous else 0
-    effective_byte_limit = max(_RESEARCH_STATE_JSON_BYTE_LIMIT, previous_size)
-    if size_bytes > effective_byte_limit:
-        issues.append(
-            f"ResearchState compact JSON size_bytes={size_bytes} exceeds "
-            f"effective_limit={effective_byte_limit} "
-            f"(default_limit={_RESEARCH_STATE_JSON_BYTE_LIMIT}, "
-            f"prior_size_bytes={previous_size}). Return a compact decision frontier, "
-            "not an enumeration of the input projections"
         )
     return issues
 
@@ -1078,60 +1002,12 @@ def _normalize_research_state_output(
     if issues:
         raise ValidationError("; ".join(issues))
     typed_issues = []
-    if initialize:
-        typed_issues.extend(_raw_basic_literal_issues(normalized))
     typed_issues.extend(_raw_basic_claim_quantity_issues(normalized))
     typed_issues.extend(_raw_quantitative_assertion_link_issues(normalized))
     if typed_issues:
         raise StructuredValidationError(typed_issues)
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
-
-
-def _raw_basic_literal_issues(value: Mapping[str, Any]) -> list[ValidationIssue]:
-    """Return typed issues for overlong initialize-only Basic literals."""
-
-    evidence = value.get("supporting_evidence")
-    if not isinstance(evidence, list):
-        return []
-    issues: list[ValidationIssue] = []
-    for index, item in enumerate(evidence):
-        exact_text = item.get("exact_text") if isinstance(item, Mapping) else None
-        if (
-            not isinstance(exact_text, str)
-            or len(exact_text) <= _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT
-        ):
-            continue
-        claim = item.get("claim") if isinstance(item, Mapping) else None
-        dependent_paths = (
-            f"supporting_evidence[{index}].claim",
-            *(
-            f"{field_name}[{assertion_index}]"
-            for field_name in ("current_beliefs", "contradictions")
-            if isinstance(value.get(field_name), list)
-            for assertion_index, assertion in enumerate(value[field_name])
-            if assertion == claim
-            ),
-        )
-        issues.append(
-            ValidationIssue(
-                code="basic_literal_not_grounded",
-                message=(
-                    f"supporting_evidence[{index}].exact_text length={len(exact_text)} "
-                    f"exceeds {_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT} characters. "
-                    "Copy the shortest complete contiguous literal that supports the "
-                    "claim, or remove this evidence item"
-                ),
-                paths=(f"supporting_evidence[{index}].exact_text",),
-                allowed_repairs=("replace", "remove"),
-                dependent_paths=dependent_paths,
-                repair_context={
-                    "literal_length": len(exact_text),
-                    "maximum_literal_length": _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT,
-                },
-            )
-        )
-    return issues
 
 
 def _raw_research_evidence_claim_length_issues(

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from dataclasses import replace
 from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
@@ -27,6 +28,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     PlanReflection,
     PredictionSelfReflection,
     ResearchState,
+    ResearchDecision,
     ResearchEvidenceRef,
     RoundMetaEntry,
     SignalSelectionDecision,
@@ -36,6 +38,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     SignalBatchResult,
+    SignalCoverage,
+    SignalValue,
     SignalResult,
     SignalSpec,
     SIGNAL_CONTEXT_TAGS,
@@ -215,6 +219,14 @@ class LLMResearchController:
             if self.evaluation_context is not None
             else None
         )
+        if must_finalize and batch.results and all(
+            result.value is SignalValue.UNAVAILABLE
+            or result.coverage is SignalCoverage.UNAVAILABLE
+            for result in batch.results
+        ):
+            return AgentStep(
+                replace(state, decision=ResearchDecision.FINALIZE), AgentUsage()
+            )
         reflected, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_reflect",
@@ -255,9 +267,9 @@ class LLMResearchController:
                 "its need byte-for-byte. Unavailable and context-only refs never "
                 "authorize changing a need. "
                 "Deleting another need or returning the targeted need unchanged is "
-                "invalid. Use research_state_capacity as an exact admission budget: "
-                "do not add more items to any field or to the combined state than its "
-                "new_item_capacity, and compact existing items first when capacity is "
+                "invalid. Use research_state_capacity as advisory compression guidance: "
+                "prefer staying within each field and combined state target given by "
+                "new_item_capacity, and prefer compact evidence when capacity is "
                 "zero. If reflection_runtime.must_finalize is true, this is the "
                 "last executable evidence batch: return decision=finalize based only "
                 "on accepted evidence, while preserving unresolved uncertainty in "

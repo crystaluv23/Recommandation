@@ -38,12 +38,9 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=(unavailable,), signal_calls=1),
         )
 
-        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(len(caller.calls), 0)
         self.assertEqual(reflected.value, finalized)
-        self.assertIn(
-            "already exceeds a default count or byte ceiling",
-            caller.calls[0]["system_prompt"],
-        )
+        self.assertEqual(reflected.usage, AgentUsage())
 
     def test_v64_initialize_aggregates_all_decidable_numeric_repairs(self) -> None:
         cash_claim = "Kinross Gold has $1.1 billion in cash and $2.8 billion in liquidity."
@@ -1592,16 +1589,10 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=(unavailable,), signal_calls=1),
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("all-unavailable terminal batch", error)
-        self.assertIn("change only decision", error)
+        self.assertEqual(len(caller.calls), 0)
+        self.assertEqual(reflected.usage, AgentUsage())
         self.assertEqual(
-            reflected.value,
-            replace(previous, decision=ResearchDecision.FINALIZE),
-        )
-        self.assertIn(
-            "If every current-batch Signal is unavailable",
-            caller.calls[0]["system_prompt"],
+            reflected.value, replace(previous, decision=ResearchDecision.FINALIZE)
         )
 
     def test_v18_reflect_accepts_exact_deterministic_interpretation_not_rounding(self) -> None:

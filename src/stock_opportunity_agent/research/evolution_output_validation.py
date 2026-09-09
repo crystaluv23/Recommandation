@@ -58,12 +58,6 @@ _RESEARCH_STATE_ARRAY_LIMITS = {
 _RESEARCH_STATE_TOTAL_ITEM_LIMIT = 24
 
 
-_RESEARCH_STATE_TEXT_ITEM_CHAR_LIMIT = 300
-
-
-_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT = 800
-
-
 _RESEARCH_STATE_JSON_BYTE_LIMIT = 6_000
 
 
@@ -76,13 +70,13 @@ _RESEARCH_STATE_COMPACT_OUTPUT = (
     "retrieval question only in next_information_needs; if every open question is "
     "already actionable there, return open_questions=[]. Never repeat an exact "
     "next_information_needs string in open_questions. "
-    "Default maximum array counts are hypotheses=3, "
+    "Suggested array counts are hypotheses=3, "
     "current_beliefs=8, supporting_evidence=8, contradictions=4, "
     "resolved_questions=6, open_questions=6, and next_information_needs=6; all arrays "
-    "combined contain at most 24 items. Every hypotheses/current_beliefs/contradictions/"
-    "resolved_questions/open_questions/next_information_needs item contains at most "
-    "300 characters. The complete canonical JSON object contains at most 6000 UTF-8 "
-    "bytes. Do not enumerate the source input."
+    "combined should target 24 items. Every hypotheses/current_beliefs/contradictions/"
+    "resolved_questions/open_questions/next_information_needs item should target "
+    "300 characters. Target 6000 UTF-8 "
+    "bytes for the canonical JSON. These are compression guidance, not validity limits; preserve complete supported content. Do not enumerate the source input."
 )
 
 
@@ -123,7 +117,7 @@ _RESEARCH_STATE_OUTPUT = _output_contract(
     "For structured market JSON, copy one "
     "complete visible row including every field between its braces; never construct "
     "a shorter JSON object from selected fields. Every basic_info exact_text contains "
-    "at most 800 characters; copy the shortest complete literal that supports the "
+    "a suggested maximum of 800 characters; copy the shortest complete literal that supports the "
     "claim."
     + _RESEARCH_STATE_COMPACT_OUTPUT
 )
@@ -157,10 +151,8 @@ _REFLECT_RESEARCH_STATE_OUTPUT = _output_contract(
     "add projection_id, exact_text, document_id, or other keys. Retained Basic Info "
     "claims remain subject to the same numeric-quantity support rule. Every "
     "numeric-bearing current_beliefs or contradictions item must copy one accepted "
-    "supporting_evidence claim byte-for-byte. If the supplied prior research_state "
-    "already exceeds a default count or byte ceiling, preserve compatibility by not "
-    "increasing that observed field/count/size; retained legacy text may remain "
-    "byte-for-byte, but every newly authored text item obeys the current limits."
+    "supporting_evidence claim byte-for-byte. Preserve material accepted evidence "
+    "even when it exceeds a suggested summary target."
     + _RESEARCH_STATE_COMPACT_OUTPUT
 )
 
@@ -1897,27 +1889,6 @@ def _validation_obligations(
 
 
 _RESEARCH_STATE_CORRECTION_GUIDANCE = (
-    " When an obligation contains required_compaction_remove_paths, those exact "
-    "removals override must_reduce_any_of_paths. Remove every listed whole item "
-    "first; do not rewrite or replace it. Each removal counts toward "
-    "minimum_removed_items. While any required path remains, do not remove or "
-    "change hypotheses, beliefs, evidence, or any other unlisted item. If the exact "
-    "paths fill the quota, do not choose alternative removals."
-    " After required removals, only if minimum_removed_items still has a remainder, "
-    "choose that remainder from must_reduce_any_of_paths. Sum the lengths of every "
-    "returned array before answering and ensure corrected_total_items is at most "
-    "maximum_total_items. Removing one belief and its evidence counts as two items. "
-    "When there are no required_compaction_remove_paths, remove at least "
-    "minimum_removed_items across any combination of the alternative paths. Prefer "
-    "redundant source-summary beliefs, questions already answered by visible "
-    "evidence, and non-decision-relevant items while preserving material support, "
-    "counter-evidence, and unresolved uncertainty."
-    " When an obligation contains structurally_redundant_remove_paths, remove "
-    "those byte-identical duplicate items first until minimum_removed_items is "
-    "met, unless another obligation already removes enough total items. If the "
-    "candidate list is shorter than the removal quota, choose the remaining "
-    "removals from must_reduce_any_of_paths. These paths are suggestions, not "
-    "additional mandatory independent obligations."
     " When an obligation contains permitted_dependency_paths, those paths are "
     "not additional defects. First repair the required exact_text. If the shorter "
     "literal no longer supports every quantity in its claim, use only those "

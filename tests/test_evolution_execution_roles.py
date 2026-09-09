@@ -1744,7 +1744,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "supporting_evidence": [
                 {
                     "claim": range_claim,
-                    "exact_text": projection_text,
+                    "exact_text": rows[0] + " ... " + rows[-1],
                     "kind": "basic_info",
                     "projection_id": "projection_market",
                 }
@@ -1779,15 +1779,15 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         obligation = feedback["obligations"][0]
         self.assertEqual(
             obligation["must_change_paths"],
-            ["supporting_evidence[0].exact_text"],
+            ["supporting_evidence[0]"],
         )
         self.assertEqual(
             obligation["permitted_dependency_paths"],
-            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+            ["current_beliefs[0]"],
         )
         self.assertEqual(
             feedback["permitted_dependency_paths"],
-            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+            ["current_beliefs[0]"],
         )
         self.assertIn(
             "outside required_change_paths and permitted_dependency_paths",
@@ -1801,6 +1801,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             initialized.value.supporting_evidence[0].claim,
             narrowed_claim,
         )
+
 
     def test_v92_initialize_removes_exact_cross_frontier_duplicate(self) -> None:
         need = "What evidence would distinguish adoption from customer trials?"
@@ -2074,7 +2075,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
         )
         self.assertIn(
-            "Use research_state_capacity as an exact admission budget",
+            "Use research_state_capacity as advisory compression guidance",
             caller.calls[0]["system_prompt"],
         )
         self.assertEqual(
@@ -2091,12 +2092,39 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             corrected_claim,
         )
 
-    def test_v72_initialize_aggregates_decision_frontier_limits(self) -> None:
+    def test_initialize_keeps_complete_supported_content_above_summary_targets(self) -> None:
+        claim = "Issuer guidance remains conditional on customer demand. " * 6
+        literal = claim + " Additional disclosed context." * 30
+        self.assertGreater(len(claim), 300)
+        self.assertLessEqual(len(claim), 400)
+        self.assertGreater(len(literal), 800)
+        evidence = [
+            {"kind": "basic_info", "claim": claim,
+             "projection_id": f"source_{letter}", "exact_text": literal}
+            for letter in "ABCDEFGHI"
+        ]
+        output = ResearchState(
+            current_beliefs=(claim,),
+            next_information_needs=("What disclosed milestone would confirm demand?",),
+        ).to_dict()
+        output["supporting_evidence"] = evidence
+        caller = ScriptedRoleCaller([output])
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {"requests": [{"projections": [
+                {"projection_id": row["projection_id"], "exact_text": literal}
+                for row in evidence
+            ]}]},
+        )
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.to_dict(), output)
+
+    def test_initialize_summary_targets_do_not_reject_valid_content(self) -> None:
         invalid = {
             "hypotheses": ["One material catalyst may support repricing."],
             "current_beliefs": [
                 (
-                    f"Source-summary item {index} repeats one visible projection "
+                    f"Source-summary item {chr(65 + index)} repeats one visible projection "
                     "instead of retaining only a decision-relevant belief."
                 )
                 for index in range(52)
@@ -2114,76 +2142,17 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             ],
             "decision": "continue",
         }
-        corrected = {
-            "hypotheses": ["One material catalyst may support repricing."],
-            "current_beliefs": ["The catalyst remains unconfirmed."],
-            "supporting_evidence": [],
-            "contradictions": [],
-            "resolved_questions": invalid["resolved_questions"][:3],
-            "open_questions": ["Will the catalyst occur within six months?"],
-            "next_information_needs": ["Check issuer evidence for the catalyst."],
-            "decision": "continue",
-        }
-        caller = ScriptedRoleCaller([invalid, corrected])
+        caller = ScriptedRoleCaller([invalid])
 
         initialized = LLMResearchController(caller).initialize(
             default_information_plan(),
             {"requests": []},
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("current_beliefs count=52", error)
-        self.assertIn("open_questions count=10", error)
-        self.assertIn("next_information_needs count=10", error)
-        self.assertIn("combined ResearchState array count=", error)
-        self.assertIn("ResearchState compact JSON size_bytes=", error)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        beliefs_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "current_beliefs count=52" in item["instruction"]
-        )
-        self.assertEqual(
-            beliefs_obligation["must_change_paths"], ["current_beliefs"]
-        )
-        total_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "combined ResearchState array count=" in item["instruction"]
-        )
-        self.assertEqual(total_obligation["minimum_removed_items"], 54)
-        self.assertEqual(total_obligation["current_total_items"], 78)
-        self.assertEqual(total_obligation["maximum_total_items"], 24)
-        self.assertEqual(
-            total_obligation["must_reduce_any_of_paths"],
-            [
-                "hypotheses",
-                "current_beliefs",
-                "resolved_questions",
-                "open_questions",
-                "next_information_needs",
-            ],
-        )
-        self.assertIn(
-            "Sum the lengths of every returned array",
-            caller.calls[1]["system_prompt"],
-        )
-        self.assertEqual(
-            caller.calls[0]["system_prompt"],
-            caller.calls[1]["system_prompt"],
-        )
-        self.assertIn(
-            "compact decision frontier, not a summary",
-            caller.calls[0]["system_prompt"],
-        )
-        self.assertIn(
-            "all arrays combined contain at most 24 items",
-            caller.calls[0]["system_prompt"],
-        )
-        self.assertEqual(
-            initialized.value.current_beliefs,
-            ("The catalyst remains unconfirmed.",),
-        )
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.to_dict(), invalid)
+        self.assertGreater(len(json.dumps(invalid).encode()), 6000)
+
 
     def test_v79_initialize_aggregates_visible_answers_before_compaction(
         self,
@@ -2247,7 +2216,6 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
 
         error = validation_error(caller.calls[1])
-        self.assertIn("current_beliefs count=25", error)
         self.assertIn("already answered by visible Basic Info", error)
         self.assertIn("matching_projection_id='projection_analyst'", error)
         self.assertIn("next_information_needs[0]", error)
@@ -2269,6 +2237,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 "What issuer operating milestone could change expectations?",
             ),
         )
+
 
     def test_v79_initialize_abstains_on_partial_basic_info_overlap(self) -> None:
         state = {
@@ -2979,7 +2948,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
         self.assertEqual(initialized.value.supporting_evidence[0].kind, "basic_info")
 
-    def test_v81_initialize_aggregates_runtime_baseline_and_total_limit(
+    def test_initialize_rejects_runtime_baseline_need_above_summary_target(
         self,
     ) -> None:
         invalid = {
@@ -3018,16 +2987,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         error = validation_error(caller.calls[1])
         self.assertIn("runtime-owned evaluation input", error)
         self.assertIn("invalid_field='open_questions[0]'", error)
-        self.assertIn("combined ResearchState array count=25", error)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        total_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "combined ResearchState array count=25" in item["instruction"]
-        )
-        self.assertEqual(total_obligation["current_total_items"], 25)
-        self.assertEqual(total_obligation["maximum_total_items"], 24)
-        self.assertEqual(total_obligation["minimum_removed_items"], 1)
         baseline_obligation = next(
             item
             for item in feedback["obligations"]
@@ -3041,7 +3001,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             tuple(corrected["open_questions"]),
         )
 
-    def test_v86_total_limit_suggests_structurally_duplicate_open_question(
+
+    def test_initialize_duplicate_question_is_independent_of_summary_targets(
         self,
     ) -> None:
         repeated_question = "Is the customer renewal still pending?"
@@ -3082,84 +3043,16 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             {"requests": []},
         )
 
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        total_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "combined ResearchState array count=25" in item["instruction"]
-        )
-        self.assertEqual(total_obligation["minimum_removed_items"], 1)
-        self.assertEqual(
-            total_obligation["structurally_redundant_remove_paths"],
-            ["open_questions[0]"],
-        )
-        self.assertEqual(
-            total_obligation["required_compaction_remove_paths"],
-            ["open_questions[0]"],
-        )
-        self.assertEqual(
-            total_obligation["must_change_paths"],
-            ["open_questions[0]"],
-        )
-        self.assertIn(
-            "those exact removals override must_reduce_any_of_paths",
-            caller.calls[1]["system_prompt"],
-        )
-        correction_prompt = caller.calls[1]["system_prompt"]
-        self.assertLess(
-            correction_prompt.index("required_compaction_remove_paths"),
-            correction_prompt.index("After required removals"),
-        )
+        self.assertEqual(len(caller.calls), 2)
         self.assertEqual(
             initialized.value.open_questions,
             tuple(corrected["open_questions"]),
         )
 
-    def test_initialize_exact_compaction_rejects_unrelated_drift(self) -> None:
-        repeated_question = "Is the customer renewal still pending?"
-        invalid = {
-            "hypotheses": [f"Material hypothesis {item}." for item in "ABC"],
-            "current_beliefs": [
-                f"Distinct qualitative belief {item}." for item in "ABCDEFGH"
-            ],
-            "supporting_evidence": [],
-            "contradictions": [
-                f"Distinct qualitative contradiction {item}." for item in "ABCD"
-            ],
-            "resolved_questions": [],
-            "open_questions": [
-                repeated_question,
-                "Could financing delay deployment?",
-                "Could costs impair adoption?",
-                "Could regulation delay adoption?",
-            ],
-            "next_information_needs": [
-                repeated_question,
-                "Check renewal disclosure.",
-                "Check financing disclosure.",
-                "Check deployment evidence.",
-                "Check cost disclosure.",
-                "Check regulatory disclosure.",
-            ],
-            "decision": "continue",
-        }
-        drifted = json.loads(json.dumps(invalid))
-        drifted["open_questions"] = drifted["open_questions"][1:]
-        drifted["current_beliefs"] = drifted["current_beliefs"][1:]
-        caller = ScriptedRoleCaller([invalid, drifted])
 
-        with self.assertRaisesRegex(
-            CandidateExecutionRejected,
-            "correction changed unrelated valid content",
-        ) as raised:
-            LLMResearchController(caller).initialize(
-                default_information_plan(),
-                {"requests": []},
-            )
 
-        self.assertIn("current_beliefs", str(raised.exception))
 
-    def test_v89_total_limit_requires_resolved_bookkeeping_compaction(
+    def test_initialize_preserves_resolved_bookkeeping_above_summary_target(
         self,
     ) -> None:
         invalid = {
@@ -3191,24 +3084,9 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             {"requests": []},
         )
 
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        total_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "combined ResearchState array count=25" in item["instruction"]
-        )
-        self.assertEqual(
-            total_obligation["required_compaction_remove_paths"],
-            ["resolved_questions[2]"],
-        )
-        self.assertEqual(
-            total_obligation["must_change_paths"],
-            ["resolved_questions[2]"],
-        )
-        self.assertEqual(
-            initialized.value.resolved_questions,
-            tuple(corrected["resolved_questions"]),
-        )
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.to_dict(), invalid)
+
 
     def test_v82_initialize_supplies_exact_claim_copy_candidates(self) -> None:
         exact_claim = (

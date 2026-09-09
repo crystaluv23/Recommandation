@@ -829,16 +829,15 @@ identical belief/contradiction paths. The single correction shortens that claim 
 retaining provenance, or removes it, and updates an identical linked assertion
 byte-for-byte; unrelated valid items remain unchanged.
 
-The same provider contract defines ResearchState as a compact decision frontier, not
-an extraction summary. The default field ceilings are `hypotheses=3`,
-`current_beliefs=8`, `supporting_evidence=8`, `contradictions=4`,
-`resolved_questions=6`, `open_questions=6`, and `next_information_needs=6`, with at
-most 24 combined array items, 300 characters per non-evidence text item, and 6,000
-UTF-8 bytes for the canonical JSON object. H_init Basic `exact_text` uses the shortest
-complete supporting literal and is at most 800 characters. Complete projections and
-all trajectory artifacts stay local. These content limits therefore preserve source
-coverage while preventing a 2,000-token Controller response from enumerating the
-input and consuming its sole correction on transport truncation.
+ResearchState is a compact decision frontier. Suggested compression targets are
+`hypotheses=3`, `current_beliefs=8`, `supporting_evidence=8`, `contradictions=4`,
+`resolved_questions=6`, `open_questions=6`, and `next_information_needs=6`, with
+24 combined items, 300 characters per non-evidence item, 6,000 canonical JSON
+bytes, and 800 characters per Basic literal. These are advisory, not evidence
+validity criteria. Preserve complete supported assertions rather than truncating
+or rejecting them solely for crossing a summary target. Existing request/output
+and run budgets remain hard bounds; canonical claim shape, literal grounding,
+quantitative support, PIT boundaries, and need ownership remain enforced.
 An actionable retrieval question belongs in `next_information_needs`; an exact
 byte-identical copy in `open_questions` adds no uncertainty state and is rejected at
 the `open_questions[index]` path into the same aggregated correction. Runtime compares
@@ -851,16 +850,16 @@ The provider contract states the ownership operationally: `open_questions` conta
 only material uncertainty that is not itself an actionable retrieval question, and it
 returns an empty array when every open question is already in next needs.
 
-H_reflect calculates each effective count/byte ceiling as the larger of that default
-and the prior committed state's observed value. A legacy over-limit field can be
-preserved but cannot grow, and an unchanged legacy text item may exceed 300
-characters; newly authored items cannot. Local raw-output validation reports all
-independently decidable count, item-length, initialize-literal, and total-byte defects
-in one message before domain construction and never repairs or drops them. If the
-provider reports an invalid JSON object after using the full frozen output-token
-allowance, correction feedback explicitly identifies output-ceiling truncation and
-repeats the compact-frontier requirement. Initial and correction system prompts remain
-byte-identical.
+H_reflect receives observed counts and suggested remaining capacity as compression
+guidance. Runtime does not reject otherwise valid research for exceeding those
+targets. If JSON output is truncated at the frozen output-token allowance, the
+existing bounded correction still applies. Initial and correction system prompts
+remain byte-identical.
+When the runtime must finalize and every nonempty batch result is unavailable by
+value or coverage, H_reflect is deterministic: preserve every previous state field
+and change only decision to finalize, with zero model usage. This does not infer
+absence, answer a need, or consume unavailable content as evidence. Mixed or
+nonterminal batches retain normal reflection and validation.
 Every role correction also receives a deterministic `obligations` array alongside the
 complete audit string and rejected output. Each row contains one numbered error segment
 and the paths named by that segment; `obligation_count` makes partial repair directly
