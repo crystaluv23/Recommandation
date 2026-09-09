@@ -492,11 +492,8 @@ _EXPECTATION_TRANSMISSION = re.compile(
 )
 
 
-_FUTURE_SOURCE_DATE = re.compile(
-    r"\b(?:report(?:ed|ing)?|releas(?:e|ed|ing)|publish(?:ed|ing)?|"
-    r"fil(?:e|ed|ing)|announc(?:e|ed|ing)|disclos(?:e|ed|ing))\s+"
-    r"(?:in|on|during)\s+"
-    r"(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
+_EXPLICIT_CALENDAR_DATE = re.compile(
+    r"\b(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
     r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
     r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
     r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
@@ -508,7 +505,8 @@ _FUTURE_SOURCE_DATE = re.compile(
 _FUTURE_SOURCE_CONTENT_INTENT = re.compile(
     r"\b(?:contents?|results?|metrics?|figures?|numbers?|actuals?|guidance|"
     r"outlook|forecast|findings?|outcomes?|performance|revenue|sales|profit|"
-    r"margins?|cash[ -]+flow|users?|subscribers?)\b|"
+    r"margins?|cash[ -]+flow|users?|subscribers?|updates?|milestones?|"
+    r"announcements?|approvals?|partnerships?|agreements?)\b|"
     r"\b(?:what|which|how[ -]+much|how[ -]+many)\b.{0,120}"
     r"\b(?:did|does|will|would)\b.{0,80}"
     r"\b(?:provide|show|reveal|contain|report|state|say)\b|"
@@ -517,71 +515,286 @@ _FUTURE_SOURCE_CONTENT_INTENT = re.compile(
 )
 
 
-_AS_OF_FUTURE_SCHEDULE_REQUEST = re.compile(
-    r"\b(?:had|has|have|was|were)\b.{0,120}"
-    r"\b(?:disclos\w*|announc\w*|schedul\w*|plan\w*|expect\w*|stat(?:e|ed))\b"
-    r".{0,160}\b(?:timing|date|schedule|milestone|expected|planned|upcoming|"
-    r"future|release|report)\b",
+_EXPLICIT_AS_OF_BOUND = re.compile(
+    r"\b(?:by|as\s+of|through)\s+"
+    r"(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
+    r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
+    r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
+    r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
+    r"(?P<iso>20\d{2}-\d{2}-\d{2})))\b",
     re.IGNORECASE,
 )
 
 
-def _future_source_date_refs(text: str, prediction_date: date) -> list[str]:
-    """Return explicit source-publication dates after the blind prediction date."""
+_SYMBOLIC_AS_OF_BOUND = re.compile(
+    r"\b(?:by|as\s+of|through)\s+(?:the\s+)?"
+    r"(?:prediction|cutoff|as[- ]of)\s+(?:date|time)\b",
+    re.IGNORECASE,
+)
 
+
+_OPEN_ENDED_DATE_WINDOW = re.compile(
+    r"\b(?P<operator>after|since|following|subsequent\s+to)\s+"
+    r"(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
+    r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
+    r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
+    r"(?:(?P<day>\d{1,2})(?:st|nd|rd|th)?[,]?\s+)?(?P<year>20\d{2})|"
+    r"(?P<iso>20\d{2}-\d{2}-\d{2})))\b",
+    re.IGNORECASE,
+)
+
+
+_EXPLICIT_QUARTER = re.compile(
+    r"\b(?P<quarter>Q[1-4]|first|second|third|fourth)\s+(?:quarter\s+)?"
+    r"(?P<year>20\d{2})\b|"
+    r"\b(?P<year_first>20\d{2})\s+(?P<quarter_after>Q[1-4]|first|second|"
+    r"third|fourth)\s+quarter\b",
+    re.IGNORECASE,
+)
+
+
+_RELATIVE_FUTURE_SCOPE = re.compile(
+    r"\b(?:post[- ]cutoff|after\s+(?:the\s+)?(?:prediction|cutoff|as[- ]of)\s+"
+    r"(?:date|time)|(?:next|following|subsequent)\s+"
+    r"(?:month|quarter|half|year|reporting\s+period))\b",
+    re.IGNORECASE,
+)
+
+
+_QUESTION_FACT_REQUEST = re.compile(
+    r"^\s*(?:what|which|when|where|who|did|does|do|has|have|had|is|are|was|"
+    r"were|how\s+(?:many|much)|summari[sz]e|identify|list|report|provide)\b",
+    re.IGNORECASE,
+)
+
+
+_HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
+    r"^\s*(?:how|what)\s+(?:could|might|would)\b|"
+    r"^\s*(?:could|might|would)\b",
+    re.IGNORECASE,
+)
+
+
+_FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
+    r"\b(?:timing|date|schedule|timeline|milestone|expected|planned|upcoming|"
+    r"future|release|report|guidance|outlook|forecast|target|goal|opening|"
+    r"construction\s+plan)\b",
+    re.IGNORECASE,
+)
+
+
+_FUTURE_REALIZED_RESULT = re.compile(
+    r"\b(?:results?|actuals?|realized|realised)\b|"
+    r"\b(?:period|quarter|year)\s+(?:ending|ended)\b|"
+    r"\bhow\s+(?:many|much)\b",
+    re.IGNORECASE,
+)
+
+
+def _calendar_match_date(match: re.Match[str], *, month_end: bool) -> date | None:
+    """Parse one explicit calendar match without inventing a missing day."""
+
+    iso = match.group("iso")
+    if iso is not None:
+        try:
+            return date.fromisoformat(iso)
+        except ValueError:
+            return None
+    month = str(match.group("month")).casefold().rstrip(".")[:3]
+    month_number = {
+        "jan": 1,
+        "feb": 2,
+        "mar": 3,
+        "apr": 4,
+        "may": 5,
+        "jun": 6,
+        "jul": 7,
+        "aug": 8,
+        "sep": 9,
+        "oct": 10,
+        "nov": 11,
+        "dec": 12,
+    }[month]
+    year = int(str(match.group("year")))
+    raw_day = match.group("day")
+    if raw_day is None:
+        if not month_end:
+            return date(year, month_number, 1)
+        next_month = date(
+            year + (month_number == 12),
+            1 if month_number == 12 else month_number + 1,
+            1,
+        )
+        return date.fromordinal(next_month.toordinal() - 1)
+    try:
+        return date(year, month_number, int(raw_day))
+    except ValueError:
+        return None
+
+
+def _has_prediction_bounded_as_of_clause(
+    text: str,
+    prediction_date: date,
+) -> bool:
+    """Return whether an explicit as-of clause caps facts at the blind cutoff."""
+
+    if _SYMBOLIC_AS_OF_BOUND.search(text):
+        return True
+    for match in _EXPLICIT_AS_OF_BOUND.finditer(text):
+        referenced = _calendar_match_date(match, month_end=True)
+        if referenced is not None and referenced <= prediction_date:
+            return True
+    return False
+
+
+def _quarter_match_end(match: re.Match[str]) -> date:
+    """Return the inclusive calendar-quarter end represented by one match."""
+
+    raw_quarter = str(match.group("quarter") or match.group("quarter_after"))
+    quarter = {
+        "q1": 1,
+        "first": 1,
+        "q2": 2,
+        "second": 2,
+        "q3": 3,
+        "third": 3,
+        "q4": 4,
+        "fourth": 4,
+    }[raw_quarter.casefold()]
+    year = int(str(match.group("year") or match.group("year_first")))
+    month = quarter * 3
+    if month == 12:
+        return date(year, 12, 31)
+    next_month = date(year, month + 1, 1)
+    return date.fromordinal(next_month.toordinal() - 1)
+
+
+def _future_source_date_refs(
+    text: str,
+    prediction_date: date,
+    *,
+    field_name: str,
+) -> list[str]:
+    """Return future or cutoff-open date scopes for requested realized facts."""
+
+    fact_request = bool(
+        _FUTURE_SOURCE_CONTENT_INTENT.search(text)
+        or _QUESTION_FACT_REQUEST.search(text)
+    )
+    if not fact_request:
+        return []
     if (
-        not _FUTURE_SOURCE_CONTENT_INTENT.search(text)
-        or _AS_OF_FUTURE_SCHEDULE_REQUEST.search(text)
+        field_name == "open_questions"
+        and _HYPOTHETICAL_FUTURE_ANALYSIS.search(text)
+        and not _FUTURE_SOURCE_CONTENT_INTENT.search(text)
     ):
         return []
     future: list[str] = []
-    for match in _FUTURE_SOURCE_DATE.finditer(text):
-        iso = match.group("iso")
-        if iso is not None:
-            try:
-                referenced = date.fromisoformat(iso)
-            except ValueError:
-                continue
-            is_future = referenced > prediction_date
-        else:
-            month = str(match.group("month")).casefold().rstrip(".")[:3]
-            month_number = {
-                "jan": 1,
-                "feb": 2,
-                "mar": 3,
-                "apr": 4,
-                "may": 5,
-                "jun": 6,
-                "jul": 7,
-                "aug": 8,
-                "sep": 9,
-                "oct": 10,
-                "nov": 11,
-                "dec": 12,
-            }[month]
-            year = int(str(match.group("year")))
-            raw_day = match.group("day")
-            if raw_day is None:
-                is_future = (year, month_number) > (
-                    prediction_date.year,
-                    prediction_date.month,
-                )
-            else:
-                try:
-                    referenced = date(year, month_number, int(raw_day))
-                except ValueError:
-                    continue
-                is_future = referenced > prediction_date
-        if is_future and match.group("date") not in future:
+    covered_year_offsets: set[int] = set()
+    for match in _EXPLICIT_CALENDAR_DATE.finditer(text):
+        referenced = _calendar_match_date(match, month_end=False)
+        year_start = match.start("year") if match.group("year") else match.start("iso")
+        covered_year_offsets.add(year_start)
+        if referenced is not None and referenced > prediction_date and match.group(
+            "date"
+        ) not in future:
             future.append(match.group("date"))
+    for match in _EXPLICIT_QUARTER.finditer(text):
+        year_group = "year" if match.group("year") else "year_first"
+        covered_year_offsets.add(match.start(year_group))
+        if _quarter_match_end(match) > prediction_date:
+            quarter_ref = match.group(0)
+            if quarter_ref not in future:
+                future.append(quarter_ref)
+    for match in re.finditer(r"\b20\d{2}\b", text):
+        if match.start() in covered_year_offsets:
+            continue
+        if int(match.group(0)) > prediction_date.year and match.group(0) not in future:
+            future.append(match.group(0))
+    for match in _OPEN_ENDED_DATE_WINDOW.finditer(text):
+        referenced = _calendar_match_date(match, month_end=True)
+        if referenced is None or referenced < prediction_date:
+            continue
+        open_scope = f"{match.group('operator')} {match.group('date')}"
+        if open_scope not in future:
+            future.append(open_scope)
+    relative = _RELATIVE_FUTURE_SCOPE.search(text)
+    if relative is not None and relative.group(0) not in future:
+        future.append(relative.group(0))
+    if not future:
+        return []
+    if (
+        _has_prediction_bounded_as_of_clause(text, prediction_date)
+        and _FUTURE_EXPECTATION_OR_SCHEDULE.search(text)
+        and not _FUTURE_REALIZED_RESULT.search(text)
+    ):
+        return []
     return future
 
 
-def _raw_initialize_evaluation_boundary_issues(
+def _raw_future_information_issues(
+    value: Mapping[str, Any],
+    evaluation_context: Mapping[str, Any] | None,
+) -> list[ValidationIssue]:
+    """Return typed issues for questions that require post-cutoff facts."""
+
+    if not isinstance(evaluation_context, Mapping):
+        return []
+    try:
+        prediction_date = datetime.fromisoformat(
+            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
+        ).date()
+    except ValueError:
+        return []
+    issues: list[ValidationIssue] = []
+    for field_name in ("open_questions", "next_information_needs"):
+        raw_items = value.get(field_name)
+        if not isinstance(raw_items, list):
+            continue
+        for index, item in enumerate(raw_items):
+            if not isinstance(item, str):
+                continue
+            future_refs = _future_source_date_refs(
+                item,
+                prediction_date,
+                field_name=field_name,
+            )
+            if not future_refs:
+                continue
+            path = f"{field_name}[{index}]"
+            issues.append(
+                ValidationIssue(
+                    code="future_information_unavailable",
+                    message=(
+                        "research_controller requested source contents or realized "
+                        "facts beyond prediction_time, "
+                        f"invalid_field={path!r}, {path}={item!r}, "
+                        "future_source_date_refs="
+                        f"{json.dumps(future_refs, separators=(',', ':'))}, "
+                        f"prediction_time={prediction_date.isoformat()!r}. Remove "
+                        "this item or restate it to request only evidence already "
+                        "available by prediction_time. A cutoff-bounded as-of "
+                        "question about a disclosed future schedule, expectation, "
+                        "or milestone is allowed, but later contents, results, "
+                        "announcements, or updates are not"
+                    ),
+                    paths=(path,),
+                    allowed_repairs=("replace", "remove"),
+                    repair_context={
+                        "prediction_time": prediction_date.isoformat(),
+                        "future_source_date_refs": future_refs,
+                        "required_temporal_boundary": "available_by_prediction_time",
+                    },
+                )
+            )
+    return issues
+
+
+def _raw_research_evaluation_boundary_issues(
     value: Mapping[str, Any],
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[str]:
-    """Reject H_init questions about fixed runtime-owned evaluation inputs."""
+    """Reject research state that requests runtime-owned or future facts."""
 
     issues: list[str] = []
     prediction_date: date | None = None
@@ -630,27 +843,6 @@ def _raw_initialize_evaluation_boundary_issues(
             )
     if not isinstance(evaluation_context, Mapping):
         return issues
-    raw_needs = value.get("next_information_needs")
-    if prediction_date is not None and isinstance(raw_needs, list):
-        for index, item in enumerate(raw_needs):
-            if not isinstance(item, str):
-                continue
-            future_refs = _future_source_date_refs(item, prediction_date)
-            if not future_refs:
-                continue
-            path = f"next_information_needs[{index}]"
-            issues.append(
-                "research_controller_initialize requested contents of a source "
-                "explicitly published after prediction_time, "
-                f"invalid_field={path!r}, {path}={item!r}, "
-                "future_source_date_refs="
-                f"{json.dumps(future_refs, separators=(',', ':'))}, "
-                f"prediction_time={prediction_date.isoformat()!r}. Remove this need "
-                "or restate it to request only evidence already available by "
-                "prediction_time. An as-of question about a disclosed future "
-                "schedule, expectation, or milestone is allowed, but the future "
-                "source's contents or results are not"
-            )
     raw_horizon_end = evaluation_context.get("horizon_end")
     try:
         horizon_end = date.fromisoformat(str(raw_horizon_end))
@@ -702,8 +894,9 @@ def _raw_research_state_compaction_issues(
     issues: list[str] = []
     if initialize:
         issues.extend(_raw_initialize_need_issues(value, basic_info or {}))
+    if initialize or evaluation_context is not None:
         issues.extend(
-            _raw_initialize_evaluation_boundary_issues(
+            _raw_research_evaluation_boundary_issues(
                 value,
                 evaluation_context,
             )
@@ -796,6 +989,12 @@ def _normalize_research_state_output(
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
     normalized = dict(value)
+    future_information_issues = _raw_future_information_issues(
+        normalized,
+        evaluation_context,
+    )
+    if future_information_issues:
+        raise StructuredValidationError(future_information_issues)
     evidence = normalized.get("supporting_evidence")
     issues = _raw_research_state_compaction_issues(
         normalized,

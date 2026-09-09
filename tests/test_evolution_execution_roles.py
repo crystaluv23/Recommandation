@@ -2045,7 +2045,11 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             ),
         )
 
-        reflected = LLMResearchController(caller).reflect(
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+        reflected = controller.reflect(
             default_information_plan(),
             previous,
             SignalBatchResult(results=(result,), signal_calls=1),
@@ -2071,6 +2075,14 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
         self.assertIn(
             "Use research_state_capacity as an exact admission budget",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertEqual(
+            caller.calls[0]["payload"]["evaluation_context"]["prediction_time"],
+            "2025-07-31T00:00:00+00:00",
+        )
+        self.assertIn(
+            "every new or retained question must request only facts available",
             caller.calls[0]["system_prompt"],
         )
         self.assertEqual(reflected.value.current_beliefs[1], corrected_claim)
@@ -2600,7 +2612,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
 
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("published after prediction_time", feedback["validation_error"])
+        self.assertIn("beyond prediction_time", feedback["validation_error"])
         self.assertIn("November 2025", feedback["validation_error"])
         self.assertEqual(
             feedback["required_change_paths"],
@@ -2613,6 +2625,169 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(
             initialized.value.next_information_needs,
             (corrected_need,),
+        )
+
+    def test_v111_initialize_rejects_all_live_future_need_forms(self) -> None:
+        invalid_needs = [
+            (
+                "What specific milestones or updates regarding construction were "
+                "disclosed between July 2025 and January 2026?"
+            ),
+            (
+                "What were the quarterly earnings results and forward guidance for "
+                "periods ending September 2025 and December 2025?"
+            ),
+            (
+                "Did the issuer announce new partnerships, customer agreements, or "
+                "regulatory approvals after July 2025?"
+            ),
+        ]
+        corrected_needs = [
+            "What construction milestones had the issuer disclosed by 2025-07-31?",
+            "What earnings and guidance had the issuer reported by 2025-07-31?",
+            "What partnerships or approvals had the issuer announced by 2025-07-31?",
+        ]
+
+        def state(needs: list[str]) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Current disclosures may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": needs,
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_needs), state(corrected_needs)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            [item["issue_code"] for item in feedback["obligations"]],
+            ["future_information_unavailable"] * 3,
+        )
+        self.assertEqual(
+            feedback["required_change_paths"],
+            [
+                "next_information_needs[0]",
+                "next_information_needs[1]",
+                "next_information_needs[2]",
+            ],
+        )
+        error = feedback["validation_error"]
+        self.assertIn("January 2026", error)
+        self.assertIn("September 2025", error)
+        self.assertIn("December 2025", error)
+        self.assertIn("after July 2025", error)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            tuple(corrected_needs),
+        )
+
+    def test_v111_future_need_issue_generalizes_across_temporal_forms(self) -> None:
+        invalid_needs = (
+            "Which customer metrics were in Q4 2025 results?",
+            "List production actuals for the next reporting period.",
+            "What approvals were announced subsequent to July 2025?",
+            "What 2026 revenue results did the issuer report?",
+        )
+        corrected_need = (
+            "What operating evidence had the issuer disclosed by 2025-07-31?"
+        )
+
+        for invalid_need in invalid_needs:
+            with self.subTest(invalid_need=invalid_need):
+                invalid = {
+                    "hypotheses": ["Current evidence may change expectations."],
+                    "current_beliefs": [],
+                    "supporting_evidence": [],
+                    "contradictions": [],
+                    "resolved_questions": [],
+                    "open_questions": [],
+                    "next_information_needs": [invalid_need],
+                    "decision": "continue",
+                }
+                corrected = json.loads(json.dumps(invalid))
+                corrected["next_information_needs"] = [corrected_need]
+                caller = ScriptedRoleCaller([invalid, corrected])
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 7, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                obligation = caller.calls[1]["payload"]["validation_feedback"][
+                    "obligations"
+                ][0]
+                self.assertEqual(
+                    obligation["issue_code"],
+                    "future_information_unavailable",
+                )
+                self.assertEqual(
+                    obligation["prediction_time"],
+                    "2025-07-31",
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+    def test_v111_future_boundary_preserves_as_of_expectations_and_hypothetical(
+        self,
+    ) -> None:
+        state = {
+            "hypotheses": ["Current evidence may change expectations."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [
+                "How could a 2027 opening affect current market expectations?"
+            ],
+            "next_information_needs": [
+                "What guidance had the issuer disclosed by 2025-07-31 for 2026?",
+                (
+                    "What had the issuer disclosed by July 31, 2025 about the "
+                    "timing of its Q4 2025 earnings report?"
+                ),
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            tuple(state["next_information_needs"]),
+        )
+        self.assertEqual(
+            initialized.value.open_questions,
+            tuple(state["open_questions"]),
         )
 
     def test_v109_initialize_rejects_prediction_date_adjusted_close_lookup(

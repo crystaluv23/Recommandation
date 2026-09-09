@@ -191,16 +191,17 @@ Before cache lookup can fall through to attempt reservation or network I/O,
 runtime computes canonical UTF-8 bytes for the exact provider request and adds
 the frozen output-token ceiling as a conservative case-token reservation. A
 request whose reservation exceeds the remaining case budget is never sent.
-The default frozen case ceiling is 160,000 tokens while the finalization reserve is
+The default frozen case ceiling is 256,000 tokens while the finalization reserve is
 64,000. The reserve is derived from the bounded terminal H_reflect initial/correction
 envelope plus the compact Predictor envelope under the same byte-for-token admission
 metric; post-hoc remains optional and may use its deterministic `budget_skipped`
 record. The ceiling is deliberately above ordinary reported-token use because
 request admission conservatively counts one UTF-8 byte as one token. It must leave room
 for the single correction of an admitted full 32,000-character soft-Signal batch after
-H_init and routing; otherwise the initial paid call can be accepted for transmission
-but its promised correction can never be sent. Raising this engineering ceiling does
-not raise source-context, role-output, call-count, or cost ceilings.
+H_init and routing, and for a ResearchState compaction correction after a two-round live
+case; otherwise the initial paid calls can be accepted for transmission but their
+promised bounded correction can never be sent. Raising this engineering ceiling does
+not raise source-context, role-output, call-count, Signal-coverage, or cost ceilings.
 Historical v7 contracts that froze the former 36,000 value remain readable immutable
 evidence but cannot execute across the code revision; new freezes always write 64,000.
 Adaptive research must preserve 64,000 tokens for any reflectable terminal batch
@@ -1036,16 +1037,19 @@ confirmation questions remain allowed. Raw H_init validation enforces this narro
 boundary on `open_questions` and `next_information_needs`, names the exact offending
 path, and aggregates it with compaction/citation defects before the sole correction;
 it does not attempt to answer or rewrite the question.
-Every H_init `next_information_needs` item must also request evidence that could
-already be available by `evaluation_context.prediction_time`. It may ask what the
-issuer had disclosed by then about a scheduled future catalyst, milestone, or expected
-timeline, but it cannot ask for the contents, results, or metrics of a report/release
-explicitly dated after prediction time. Runtime rejects explicit future publication
-dates only when the need also expresses content-seeking intent; explicit as-of
-disclosure/schedule questions remain valid even when they name the later publication.
-Runtime names the exact need path and asks the provider to remove the need or restate
-it as an as-of evidence question; it never supplies the future fact. This prevents a
-point-in-time-impossible retrieval and its otherwise inevitable no-result routing call.
+Every H_init/H_reflect `open_questions` and `next_information_needs` item must also
+request evidence that could already be available by
+`evaluation_context.prediction_time`. It may ask what the issuer had disclosed by then
+about a scheduled future catalyst, milestone, or expected timeline, but it cannot ask
+for later actuals, contents, results, announcements, approvals, partnerships,
+milestones, or updates. Runtime rejects content-seeking dates after the cutoff,
+reporting periods ending after it, ranges whose endpoint is after it, and unbounded
+`after`/`since` windows without a cutoff-bounded as-of clause. Explicit as-of
+disclosure/schedule questions remain valid even when they name the later event or
+publication. Runtime supplies the same evaluation context to initialize and reflect,
+names every exact invalid path in one correction, and never supplies the future fact.
+This prevents a point-in-time-impossible retrieval and its otherwise inevitable
+no-result routing call.
 The same-state resolved/need consistency check treats a shared phrase as a topic only
 when it contains semantic content. A phrase made entirely of period markers such as
 `Q2 2025` is not enough to claim that a gold-price question was answered by a

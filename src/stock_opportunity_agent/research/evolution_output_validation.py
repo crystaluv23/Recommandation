@@ -717,7 +717,9 @@ _INFORMATION_PLAN_OUTPUT = (
     "and whose max_documents is 1. Every B request is resolved under the "
     "target company_id. Do not request general competitor, peer, or rival actions "
     "as though B searches other issuers; competitive requests must explicitly use "
-    "the target issuer's own disclosures or target-company-scoped news."
+    "the target issuer's own disclosures or target-company-scoped news. "
+    "company_news/news may contain third-party reporting, so never describe those "
+    "source types as the issuer's own disclosure."
 )
 
 
@@ -754,6 +756,17 @@ _TARGET_ISSUER_REQUEST_SCOPE = re.compile(
 )
 
 
+_FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE = re.compile(
+    r"\b(?:target[- ](?:company|issuer)(?:'s)?|"
+    r"(?:company|issuer)(?:'s)?)\s+own\s+"
+    r"(?:disclosures?|filings?|announcements?|news)\b",
+    re.IGNORECASE,
+)
+
+
+_THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES = frozenset({"company_news", "news"})
+
+
 def _validate_proposed_request_scope(plan: InformationPlan) -> None:
     """Reject cross-issuer requests the company-scoped resolver cannot perform."""
 
@@ -762,6 +775,22 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
             "description": request.description,
             "query": request.query or "",
         }
+        ownership_fields = [
+            field_name
+            for field_name, text_value in fields.items()
+            if _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE.search(text_value)
+        ]
+        if ownership_fields and (
+            set(request.source_types) & _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES
+        ):
+            paths = [f"B.requests[{index}].{field}" for field in ownership_fields]
+            raise ValidationError(
+                "information_plan_propose described company_news/news as the target "
+                "issuer's own disclosure even though those source types may contain "
+                f"third-party reporting, invalid_fields={paths}. Rewrite every named "
+                "field as target-company-scoped news, or remove the news source type "
+                "when first-party authorship is required"
+            )
         cross_issuer_fields = [
             field_name
             for field_name, text_value in fields.items()

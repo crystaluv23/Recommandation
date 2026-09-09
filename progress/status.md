@@ -18,18 +18,26 @@ sibling evidence rows. [`self-evolution-t7-live-audit-2026-09-08.md`](self-evolu
 contains the wire-level evidence, current agent-runtime comparison, and the revised
 2,500-attempt successor proposal. T7 remains open: no Fast round, Slow promotion,
 next-Fast Signal use, reliability pilot, or benefit confirmation has completed.
-The 2026-09-09 MVP implementation checkpoint migrates the high-frequency
+The 2026-09-09 MVP implementation checkpoint migrated the high-frequency
 ResearchState evidence failures to typed issue codes, makes deterministic
 fallback independent of diagnostic wording, and reduces fixed H_init/routing
 prompt bytes while preserving their contracts. Existing persistence/recovery
-tests show no need for a new attempt schema. The next live workspace is prepared
-for one candidate and one Fast round per Slow cycle, but freeze/execution and the
-proposed 2,500-attempt/`$20` external boundary still require an exact post-commit
-contract hash and approval. See
+tests show no need for a new attempt schema. Its first approved successor,
+`information-evolution-mvp-20260909-v1`, executed but committed neither Fast nor
+Slow: candidate 1 reached two of 24 cases with only one finalized result and was
+rejected as diagnostic-only. Exact wire inspection found that future realized
+information expressed as a date range, a future period ending, or an open-ended
+`after` clause bypassed an example-shaped PIT detector; it also found a false
+issuer-ownership description for third-party-capable news. Temporal validation
+is now cutoff-derived, typed, path-scoped, and tested across equivalent and legal
+neighboring phrasings in both H_init and H_reflect. News ownership is validated
+against source capability. The per-case token ceiling is 256,000 after the real
+trace showed 68,594 tokens before a required correction, while terminal and
+run-level ceilings remain independent. See
 [`information-evolution-mvp-implementation-2026-09-09.md`](information-evolution-mvp-implementation-2026-09-09.md).
 Fast/Slow completion, Signal promotion/use, reliability measurement, and benefit
-confirmation remain open. Focused tests pass; full-suite/lint results are updated
-at checkpoint completion. All 617 tests and repository lint pass.
+confirmation remain open. A fresh post-repair contract must be frozen and
+approved before another external call. All 621 tests and repository lint pass.
 
 Completed the offline portion of T6's generalized reliability matrix
 (2026-09-08): [`self-evolution-reliability-matrix-2026-09-08.md`](self-evolution-reliability-matrix-2026-09-08.md)

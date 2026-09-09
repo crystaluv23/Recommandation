@@ -1036,7 +1036,7 @@ class SignalRoleAdapterTests(TestCase):
         corrected = json.loads(json.dumps(invalid))
         corrected_request = corrected["B"]["requests"][2]
         corrected_request["description"] = (
-            "Read the target issuer's own disclosures about competitive position."
+            "Read target-company-scoped news about competitive position."
         )
         corrected_request["query"] = "competitive position"
         caller = ScriptedRoleCaller([invalid, corrected])

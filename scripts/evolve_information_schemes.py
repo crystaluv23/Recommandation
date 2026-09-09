@@ -97,6 +97,7 @@ DEFAULT_EXPANSION_PREDICTION_DATES = (
 )
 DEFAULT_ANCHOR_CASES = PROJECT_ROOT / "configs" / "information_plan_anchor_cases_v1.json"
 DEFAULT_FINALIZATION_TOKEN_RESERVE = RuntimeLimits().finalization_token_reserve
+DEFAULT_CASE_TOKEN_BUDGET = RuntimeLimits().max_tokens
 DEFAULT_MAX_CONSECUTIVE_NO_CANDIDATE_CYCLES = 3
 
 
@@ -772,7 +773,7 @@ def freeze_run(
                 "max_signals_per_round": 4,
                 "max_llm_signals_per_round": 2,
                 "max_llm_calls": 40,
-                "max_tokens": 160_000,
+                "max_tokens": DEFAULT_CASE_TOKEN_BUDGET,
                 "finalization_token_reserve": DEFAULT_FINALIZATION_TOKEN_RESERVE,
                 "basic_info_context_chars": 32_000,
                 "signal_batch_context_chars": 32_000,

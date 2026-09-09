@@ -7,7 +7,7 @@ class InformationPlanRuntimeTests(TestCase):
     def test_default_case_budget_keeps_soft_signal_correction_envelope(self) -> None:
         limits = RuntimeLimits()
 
-        self.assertEqual(limits.max_tokens, 160_000)
+        self.assertEqual(limits.max_tokens, 256_000)
         self.assertEqual(limits.finalization_token_reserve, 64_000)
 
     def test_slow_role_identity_guards_exclude_derived_protocol_words(self) -> None:
@@ -1056,7 +1056,7 @@ class InformationPlanRuntimeTests(TestCase):
                         hypotheses=("growth remains unresolved",),
                         next_information_needs=("measure revenue growth",),
                     ),
-                    AgentUsage(llm_calls=1, tokens=90_000),
+                    AgentUsage(llm_calls=1, tokens=186_000),
                 )
 
             def set_reflection_runtime_context(

@@ -213,6 +213,11 @@ class LLMResearchController:
         self.reflection_selections = ()
         self.reflection_must_finalize = False
         self.reflection_termination_trigger = None
+        evaluation_context = (
+            dict(self.evaluation_context)
+            if self.evaluation_context is not None
+            else None
+        )
         reflected, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_reflect",
@@ -263,7 +268,12 @@ class LLMResearchController:
                 "Signal is unavailable, preserve every prior ResearchState field and "
                 "item byte-for-byte and change only decision to finalize. An "
                 "unavailable Signal is only a coverage diagnostic: it is "
-                "not evidence of absence and cannot create a belief or resolve a question."
+                "not evidence of absence and cannot create a belief or resolve a "
+                "question. evaluation_context is control data, not evidence: every "
+                "new or retained question must request only facts available by "
+                "prediction_time. A cutoff-bounded question may ask what was already "
+                "disclosed about a future schedule, but must not request later "
+                "actuals, results, announcements, or updates."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _REFLECT_RESEARCH_STATE_OUTPUT
             ),
@@ -287,12 +297,14 @@ class LLMResearchController:
                         termination_trigger.value if termination_trigger else None
                     ),
                 },
+                "evaluation_context": evaluation_context,
             },
             parser=lambda value: _validate_research_state_refs(
                 ResearchState.from_dict(
                     _normalize_research_state_output(
                         value,
                         previous_state=state,
+                        evaluation_context=evaluation_context,
                     )
                 ),
                 phase="reflect",
@@ -1627,7 +1639,8 @@ class LLMInformationPlanProposer:
             "for general competitor, peer, or rival actions as though B searches "
             "other issuers; competitive requests must explicitly ask for the target "
             "issuer's own disclosures or target-company-scoped news mentioning "
-            "competition."
+            "competition. company_news/news may contain third-party reporting, so "
+            "never describe those source types as the issuer's own disclosure."
             " Every B.source_types item must exactly equal a supplied "
             "available_source_types value. H_analyse may organize and weight evidence "
             "only; it must not compute a probability, classify the final Signal, "

@@ -2959,6 +2959,67 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertIn("exactly duplicates", correction["validation_error"])
         self.assertEqual(correction["invalid_output"], duplicate)
 
+    def test_v111_plan_proposer_does780_relabels_news_as_issuer_owned(self) -> None:
+        parent = default_information_plan()
+        invalid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "target_disclosures_news",
+                        "description": (
+                            "Target company's own disclosures about customers, "
+                            "financing, and product milestones."
+                        ),
+                        "source_types": ["company_news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Read recent point-in-time price and volume.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                    },
+                ]
+            },
+            "H_init": parent.initial_research_skill,
+            "H_reflect": parent.reflection_skill,
+            "H_analyse": parent.analysis_prompt,
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["B"]["requests"][0]["description"] = (
+            "Target-company-scoped news about customers, financing, and product "
+            "milestones."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("third-party reporting", feedback["validation_error"])
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["B.requests[0].description"],
+        )
+        self.assertEqual(
+            plan.basic_info_policy.requests[0].description,
+            corrected["B"]["requests"][0]["description"],
+        )
+        self.assertIn(
+            "company_news/news may contain third-party reporting",
+            caller.calls[0]["system_prompt"],
+        )
+
     def test_v10_proposer_allows_explicit_probability_prohibition(self) -> None:
         fixture = json.loads(
             (

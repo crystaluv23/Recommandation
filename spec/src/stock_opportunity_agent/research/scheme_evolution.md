@@ -73,9 +73,12 @@ S = (B, H_init, H_reflect, H_analyse)
   cross-issuer news or peer database query. An automatic Plan therefore cannot ask
   for general competitor/peer/rival actions as though the resolver will search those
   other issuers. It may ask for the target issuer's own disclosures or company-scoped
-  news that explicitly discuss competitive position. Proposal validation names the
-  exact offending request fields and uses the existing single correction before any
-  case data or H_init call is spent.
+  news that explicitly discuss competitive position. `company_news`/`news` can contain
+  third-party reporting and must not be described as the issuer's own disclosure; a
+  request that needs first-party evidence must use an appropriate filing/transcript
+  source, while a news request must say target-company-scoped news. Proposal validation
+  names the exact offending request fields and uses the existing single correction
+  before any case data or H_init call is spent.
 - The fixed `H_P` proposal boundary requires every automatically proposed Plan
   to retain one compact point-in-time market backbone request: canonical
   `market_data`, a positive lookback no longer than 60 days, and one source
@@ -356,12 +359,16 @@ normal parser reruns; runtime never deletes it locally.
 Provider instructions therefore reserve `open_questions` for non-retrieval
 uncertainty and require an empty array when every open item is already actionable in
 next needs.
-H_init next needs are point-in-time retrieval requests, not a wishlist for future
-observations. A need may ask for disclosures already available about a future catalyst
-or timeline, but not for the contents/results of a report or release explicitly dated
-after `prediction_time`. The provider prompt states this distinction, and local raw
-validation names the exact future-source need before routing; no future fact is inferred
-or injected.
+H_init and H_reflect actionable questions are point-in-time retrieval requests, not a
+wishlist for future observations. They may ask what had already been disclosed by
+`prediction_time` about a future catalyst or timeline, but not for later actuals,
+contents, results, announcements, approvals, partnerships, milestones, or updates.
+The boundary covers explicit future publication dates, reporting periods ending after
+the cutoff, ranges whose endpoint is after the cutoff, and unbounded `after`/`since`
+requests without an as-of upper bound. The provider prompt states this distinction,
+and local raw validation names every exact future-source path before routing; no future
+fact is inferred or injected. A valid as-of schedule question may still name a later
+event or release date when it asks only what was already disclosed by the cutoff.
 
 Soft-Signal citations retain exact normalized-to-raw lineage. Mapping slices that
 lineage to the returned quote rather than widening it to the surrounding projection,
@@ -383,14 +390,17 @@ and total-byte violation before the sole correction; it never locally drops a re
 item. An incomplete JSON object that reaches its frozen output-token ceiling receives
 explicit truncation feedback, so the correction spends its one attempt on a compact
 complete object rather than guessing which semantic field failed.
-The default per-case model ceiling is 160,000 tokens with a separate 64,000-token
+The default per-case model ceiling is 256,000 tokens with a separate 64,000-token
 finalization reserve. The reserve covers the bounded terminal H_reflect
 initial/correction envelope and compact Predictor request under the conservative
 byte-for-token admission metric. Admission still uses the conservative exact request-byte plus
 output reservation, and the higher ceiling changes no role context/output/call/cost
-cap; it prevents a paid 32,000-character soft-Signal attempt from making its own sole
-correction unreachable solely because prior H_init and routing consumed their normal
-reported tokens.
+cap. The 256,000 value is calibrated from a live two-round case in which valid H_init,
+routing, soft-Signal execution, and reflection consumed 68,594 reported tokens before
+a required ResearchState compaction correction; under the conservative byte admission
+metric the former 160,000 ceiling could not send that bounded correction while keeping
+the 64,000 terminal reserve. The larger engineering ceiling preserves room for that
+promised correction without reducing Signal coverage.
 Correction feedback retains the exact aggregated error text and also projects its
 semicolon-delimited error segments into numbered `obligations` with named field paths.
 It additionally supplies a deduplicated `required_change_paths` list, exact path count,

@@ -106,3 +106,58 @@ bound, 0.02 maximum coverage loss, 0.05 maximum technical-failure rate, 0.90
 Signal accuracy, and 25% cost-regression values remain proposed research
 parameters rather than active defaults. Until a real promotion exists, the
 confirmation result is `incomplete`, not `no_gain` or `gain_confirmed`.
+
+## First successor execution and generalized temporal repair
+
+The approved `information-evolution-mvp-20260909-v1` contract executed against
+the post-MVP checkpoint and ended normally without committing a Fast round or a
+Slow cycle. Authoritative pointers remain Fast `0`, Slow `0`, and Registry
+version `1`. Candidate `plan_r0001_c01` completed two of 24 fixed cases, but only
+one case finalized; the attempt is therefore `diagnostic_only`, and the round
+was rejected as `no_fitness_eligible_candidates`. No partial result entered
+fitness, Archive, learning, or Registry promotion.
+
+Exact persisted prompt/context/response inspection found two independent
+contract defects that the 617-test checkpoint had not covered:
+
+- The Wynn H_init response asked for realized information after its
+  `2025-07-31` prediction cutoff using three different semantic forms:
+  `between ... and January 2026`, periods ending September/December 2025, and
+  announcements `after July 2025`. The old validator recognized only a narrow
+  report-publication phrase family and broadly exempted future-looking wording;
+  it therefore encoded examples instead of the PIT invariant.
+- A proposed `company_news` request described the source as the issuer's own
+  disclosure, while the actual visible context was third-party Zacks, UBS, and
+  Navellier material. The source enum permits third-party news, so ownership
+  wording was logically false even though the request shape was valid.
+
+Temporal validation now derives typed `future_information_unavailable` issues
+from the evaluation cutoff and the requested fact semantics. It covers explicit
+future dates and ranges, quarter/period endings, open-ended `after`/`since`
+windows, and relative next/subsequent periods. It permits only cutoff-bounded
+future expectations/schedules and explicitly hypothetical analysis, and keeps
+realized future results unavailable. All violations in one visible
+`future_information_needs` list are reported together with exact paths and
+replace/remove actions; fallback behavior does not depend on diagnostic prose.
+The same evaluation context is now supplied to H_reflect, so initialization and
+reflection enforce one boundary. Metamorphic tests exercise multiple phrasings
+plus legal neighboring cases rather than one saved sentence.
+
+Request-scope validation also rejects issuer-ownership claims for third-party-
+capable `company_news`/`news` types and requests a path-scoped correction. The
+spec and role prompts now describe those sources as target-company-related news,
+not issuer-owned disclosures.
+
+The second case had already consumed 68,594 reported tokens before a required
+H_reflect correction. The previous 160,000 per-case admission ceiling plus a
+64,000 terminal reserve refused that correction even though the run-level model
+budget was largely unused. The default per-case ceiling is now 256,000 tokens;
+the terminal reserve and run-level attempt/USD limits remain independent and
+fail closed. This is a capacity correction derived from the real trace, not a
+relaxation of validation.
+
+Focused role/runtime tests pass (147 tests). The complete repository suite
+passes (621 tests), and `scripts/lint_repo.sh` passes. A fresh immutable
+workspace and contract are still required because these code/spec changes make
+the v1 contract historical evidence only. No post-repair external request has
+been sent.
