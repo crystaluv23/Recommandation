@@ -81,9 +81,13 @@ from stock_opportunity_agent.research.evolution_settings import (
     HISTORICAL_PLAN_SEED_QUALITY_RATIO,
     HISTORICAL_PLAN_SEED_SCHEMA_VERSION,
     HISTORICAL_PLAN_SEED_SIMILARITY_THRESHOLD,
+    REGISTERED_SOURCE_TYPE_CATALOG,
     REGISTERED_SOURCE_TYPE_CATALOG_HASH,
     ROLE_OUTPUT_TOKEN_LIMITS,
     _model_available_source_types,
+)
+from stock_opportunity_agent.research.evolution_output_validation import (
+    _validate_plan_for_proposer_context,
 )
 from stock_opportunity_agent.research.evolution_transport import (
     ExternalAttemptLedger,
@@ -1100,6 +1104,13 @@ def _committed_seed_candidates_from_workspace(
                 or fitness.true_positive_count < 1
             ):
                 continue
+            try:
+                _validate_plan_for_proposer_context(
+                    plan,
+                    available_source_types=REGISTERED_SOURCE_TYPE_CATALOG,
+                )
+            except ValidationError:
+                continue
             plan_content_hash = _canonical_hash(plan.canonical_dict())
             try:
                 relative_workspace = str(source_root.relative_to(search_root))
@@ -1185,6 +1196,17 @@ def load_or_create_historical_plan_seed_pool(
             or dict(pool.evaluation_contract) != dict(evaluation_contract)
         ):
             raise ValidationError("historical Plan seed pool conflicts with freeze scope")
+        for entry in pool.entries:
+            try:
+                _validate_plan_for_proposer_context(
+                    entry.plan,
+                    available_source_types=REGISTERED_SOURCE_TYPE_CATALOG,
+                )
+            except ValidationError as exc:
+                raise ValidationError(
+                    "historical Plan seed pool contains content incompatible with "
+                    f"the current proposer contract, seed_id={entry.seed_id!r}: {exc}"
+                ) from exc
         return pool
     pool = build_historical_plan_seed_pool(
         search_root=workspace_root.parent,

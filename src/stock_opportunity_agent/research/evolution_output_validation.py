@@ -767,6 +767,24 @@ _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE = re.compile(
 _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES = frozenset({"company_news", "news"})
 
 
+_FIRST_PARTY_CAPABLE_SOURCE_TYPES = frozenset(
+    {
+        "10-k",
+        "10-q",
+        "company_facts",
+        "earnings_call",
+        "earnings_transcript",
+        "filing",
+        "filing_body",
+        "financial_statements",
+        "financials",
+        "sec_company_facts",
+        "sec_filing",
+        "transcript",
+    }
+)
+
+
 def _validate_proposed_request_scope(plan: InformationPlan) -> None:
     """Reject cross-issuer requests the company-scoped resolver cannot perform."""
 
@@ -784,12 +802,22 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
             set(request.source_types) & _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES
         ):
             paths = [f"B.requests[{index}].{field}" for field in ownership_fields]
-            raise ValidationError(
-                "information_plan_propose described company_news/news as the target "
-                "issuer's own disclosure even though those source types may contain "
-                f"third-party reporting, invalid_fields={paths}. Rewrite every named "
-                "field as target-company-scoped news, or remove the news source type "
-                "when first-party authorship is required"
+            raise StructuredValidationError(
+                [
+                    ValidationIssue(
+                        code="source_ownership_not_guaranteed",
+                        message=(
+                            "information_plan_propose described company_news/news as "
+                            "the target issuer's own disclosure even though those "
+                            "source types may contain third-party reporting. Rewrite "
+                            "every named field as target-company-scoped news, or "
+                            "remove the news source type when first-party authorship "
+                            "is required"
+                        ),
+                        paths=tuple(paths),
+                        allowed_repairs=("replace", "remove"),
+                    )
+                ]
             )
         cross_issuer_fields = [
             field_name
@@ -807,6 +835,43 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
             f"invalid_fields={paths}. Rewrite or remove every named field; a "
             "competitive request must explicitly ask for the target issuer's own "
             "disclosures or target-company-scoped news mentioning competition"
+        )
+
+    all_source_types = {
+        source_type
+        for request in plan.basic_info_policy.requests
+        for source_type in request.source_types
+    }
+    skill_fields = {
+        "H_init": plan.initial_research_skill,
+        "H_reflect": plan.reflection_skill,
+        "H_analyse": plan.analysis_prompt,
+    }
+    unsupported_ownership_fields = [
+        field_name
+        for field_name, text_value in skill_fields.items()
+        if _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE.search(text_value)
+    ]
+    if (
+        unsupported_ownership_fields
+        and all_source_types & _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES
+        and not all_source_types & _FIRST_PARTY_CAPABLE_SOURCE_TYPES
+    ):
+        raise StructuredValidationError(
+            [
+                ValidationIssue(
+                    code="source_ownership_not_guaranteed",
+                    message=(
+                        "information_plan_propose instructed a role to treat news as "
+                        "the target issuer's own disclosure even though B contains "
+                        "no first-party-capable source. Rewrite every named field to "
+                        "use target-company-scoped evidence, or add an explicit "
+                        "first-party source request"
+                    ),
+                    paths=tuple(unsupported_ownership_fields),
+                    allowed_repairs=("replace",),
+                )
+            ]
         )
 
 
@@ -1015,6 +1080,32 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
                 "evidence collection should continue or finalize; it cannot decide "
                 "which price direction, market trend, or outcome is likely"
             )
+
+
+def _validate_plan_for_proposer_context(
+    plan: InformationPlan,
+    *,
+    available_source_types: Iterable[str],
+) -> None:
+    """Apply the complete current semantic contract to a proposed or parent Plan."""
+
+    _validate_proposed_market_backbone(plan)
+    _validate_proposed_request_scope(plan)
+    unsupported = sorted(
+        {
+            source_type
+            for request in plan.basic_info_policy.requests
+            for source_type in request.source_types
+            if source_type not in set(available_source_types)
+        }
+    )
+    if unsupported:
+        raise ValidationError(
+            "information_plan_propose used unsupported source types: "
+            + ", ".join(unsupported)
+        )
+    _validate_fixed_plan_semantics(plan)
+    _validate_proposed_plan_skills(plan)
 
 
 def _reject_fixed_semantics_redefinition(value: Any) -> Any:

@@ -3020,6 +3020,57 @@ class RoutingAndPlanRoleTests(TestCase):
             caller.calls[0]["system_prompt"],
         )
 
+    def test_plan_proposer_repairs_unsupported_ownership_in_role_skill(self) -> None:
+        parent = default_information_plan()
+        invalid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "target_news",
+                        "description": "Target-company-scoped milestone news.",
+                        "source_types": ["company_news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Read recent point-in-time price and volume.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                    },
+                ]
+            },
+            "H_init": (
+                "Form a hypothesis from the target company's own disclosures and "
+                "identify unresolved information needs."
+            ),
+            "H_reflect": parent.reflection_skill,
+            "H_analyse": parent.analysis_prompt,
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["H_init"] = (
+            "Form a hypothesis from target-company-scoped evidence and identify "
+            "unresolved information needs."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(),
+            prior="fixed H_P",
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("no first-party-capable source", feedback["validation_error"])
+        self.assertEqual(feedback["required_change_paths"], ["H_init"])
+        self.assertEqual(plan.initial_research_skill, corrected["H_init"])
+
     def test_v10_proposer_allows_explicit_probability_prohibition(self) -> None:
         fixture = json.loads(
             (

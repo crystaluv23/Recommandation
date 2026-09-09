@@ -37,7 +37,14 @@ run-level ceilings remain independent. See
 [`information-evolution-mvp-implementation-2026-09-09.md`](information-evolution-mvp-implementation-2026-09-09.md).
 Fast/Slow completion, Signal promotion/use, reliability measurement, and benefit
 confirmation remain open. A fresh post-repair contract must be frozen and
-approved before another external call. All 621 tests and repository lint pass.
+approved before another external call. Pre-execution inspection of the locally
+frozen v2 proposer context then found one historical parent that called
+third-party-capable `company_news` issuer-owned in both B and H_init. v2 sent
+zero external requests and will not execute. Historical seed discovery now
+applies the complete current Plan contract before ranking, and staged pools fail
+closed if a copied Plan becomes incompatible. The real history scan retains one
+of two seeds and excludes the false-ownership parent. All 623 tests and
+repository lint pass; a new code-bound contract is required.
 
 Completed the offline portion of T6's generalized reliability matrix
 (2026-09-08): [`self-evolution-reliability-matrix-2026-09-08.md`](self-evolution-reliability-matrix-2026-09-08.md)

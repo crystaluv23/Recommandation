@@ -127,6 +127,14 @@ Seed discovery is local, deterministic, and performs no model or provider
 calls. A first-ever evolution root produces a valid empty
 `seed_pool/manifest.json`. If a manifest was durably staged before the contract,
 freeze reuses and verifies it rather than rescanning newly completed history.
+Every copied historical Plan must also satisfy the current code revision's full
+provider-facing Plan contract before it can enter the seed pool, including
+market-backbone, source-scope/ownership, fixed-semantics, and role-substance
+validation. A legacy Plan that was valid under its source revision but is no
+longer semantically valid is excluded rather than supplied as proposer context.
+Loading a previously staged pool revalidates every copied Plan and fails closed
+if current validation rejects one; it never silently repairs or rewrites the
+immutable parent content.
 Once the contract exists, resume requires the exact manifest hash and never
 mutates the pool. Source artifacts may later disappear without changing the
 snapshot because each selected Plan definition and all source hashes needed for

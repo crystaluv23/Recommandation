@@ -1270,6 +1270,16 @@ Only committed Plans whose source contract has the exact v6 Predictor-semantics
 hash, dataset hash, and evaluation-contract identity are eligible. All v1-v5
 Plans and artifacts from the superseded token-probability threshold experiment
 remain read-only audit evidence and are never active parents.
+Eligibility also applies the complete current Plan-output contract to the copied
+four-field content. This includes the required market backbone, request/source
+scope and ownership truthfulness, fixed prediction semantics, and H_init,
+H_reflect, and H_analyse role substance. A historically successful Plan that no
+longer satisfies the current semantic contract is excluded before ranking and
+must not appear in proposer prompt/context. In particular, `company_news` or
+`news` cannot be represented as issuer-owned evidence when the Plan has no
+first-party-capable source. A staged seed pool is revalidated on load and fails
+closed if incompatible legacy content is present; immutable parent content is
+never normalized in place.
 Malformed or incompatible source workspaces are skipped and counted in the
 manifest rather than weakening the new run's preflight.
 

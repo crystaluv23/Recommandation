@@ -463,6 +463,63 @@ class RunControlTests(TestCase):
             with self.assertRaisesRegex(ValidationError, "hash mismatch"):
                 HistoricalPlanSeedPool.load_frozen(path)
 
+    def test_staged_historical_seed_pool_rejects_currently_invalid_plan(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "target"
+            valid_seed = self._seed_candidate(
+                run_id="legacy-run",
+                suffix="legacy-plan",
+                binary_f1=0.70,
+                embedding=(1.0, 0.0),
+            )
+            raw_plan = valid_seed.plan.to_dict()
+            raw_plan["basic_info_policy"] = {
+                "requests": [
+                    {
+                        "request_id": "target_news",
+                        "description": "Target-company-scoped milestone news.",
+                        "source_types": ["company_news"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": "Recent point-in-time price and volume.",
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                    },
+                ]
+            }
+            raw_plan["initial_research_skill"] = (
+                "Form a hypothesis from the target company's own disclosures and "
+                "identify unresolved information needs."
+            )
+            invalid_plan = InformationPlan.from_dict(raw_plan)
+            invalid_seed = replace(
+                valid_seed,
+                plan=invalid_plan,
+                plan_content_hash=evolution_runtime_module._canonical_hash(
+                    invalid_plan.canonical_dict()
+                ),
+            )
+            pool = HistoricalPlanSeedPool(
+                dataset_manifest_hash=SHA_A,
+                evaluation_contract=PlanEvaluationConfig().to_dict(),
+                entries=(invalid_seed,),
+            )
+            pool.freeze(workspace / "seed_pool" / "manifest.json")
+
+            with self.assertRaisesRegex(
+                ValidationError,
+                "content incompatible with the current proposer contract",
+            ):
+                load_or_create_historical_plan_seed_pool(
+                    workspace=workspace,
+                    dataset_manifest_hash=SHA_A,
+                    evaluation_contract=PlanEvaluationConfig().to_dict(),
+                )
+
     def test_contract_round_trips_seed_pool_manifest_hash(self) -> None:
         contract = EvolutionRunContract(
             **{**make_contract().__dict__, "seed_pool_manifest_hash": SHA_A}

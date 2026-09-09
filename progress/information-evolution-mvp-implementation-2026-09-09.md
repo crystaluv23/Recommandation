@@ -161,3 +161,29 @@ passes (621 tests), and `scripts/lint_repo.sh` passes. A fresh immutable
 workspace and contract are still required because these code/spec changes make
 the v1 contract historical evidence only. No post-repair external request has
 been sent.
+
+## Pre-execution v2 parent-context rejection
+
+The locally frozen v2 contract sent zero external requests. Before authorization,
+its exact `seed_pool/manifest.json` was inspected as proposer context. One of two
+historical parents used `company_news` while describing both its request and
+H_init inputs as the target company's own disclosures. That Plan had been valid
+under an older code revision, but contradicted the current source-capability
+contract and would have taught the proposer the same false ownership semantics
+that new output validation rejects. The v2 contract is therefore not executed.
+
+Historical seed discovery now applies the complete current proposer-content
+contract before ranking: market backbone, source scope and ownership, registered
+source types, fixed prediction semantics, and all three role-substance checks.
+Incompatible historical Plans remain immutable audit evidence but are excluded
+from proposer context. A previously staged seed manifest is revalidated on load
+and fails closed rather than silently rewriting a content-addressed parent.
+Ownership errors use typed `source_ownership_not_guaranteed` issues with exact
+paths whether the false claim appears in B or an H_* instruction.
+
+Repository-wide discovery against the actual history now finds one eligible
+seed instead of two: the target-company-scoped `news` Plan from
+`deepseek-v6-context-remediation-20260823-v7`. The incompatible
+`deepseek-v7-ordinary-validation-20260904-v112` parent is excluded. All 623 tests
+and repository lint pass. A new code-bound workspace must be frozen before the
+approved external execution can begin.

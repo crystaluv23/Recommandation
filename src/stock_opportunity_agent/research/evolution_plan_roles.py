@@ -69,11 +69,8 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _reject_fixed_semantics_redefinition,
     _research_state_evidence_grounding_fallback,
     _scoped_correction_drift_paths,
-    _validate_fixed_plan_semantics,
+    _validate_plan_for_proposer_context,
     _validate_proposal_change_focus,
-    _validate_proposed_market_backbone,
-    _validate_proposed_plan_skills,
-    _validate_proposed_request_scope,
     _validation_obligations,
 )
 from stock_opportunity_agent.research.evolution_research_validation import (
@@ -1731,23 +1728,10 @@ class LLMInformationPlanProposer:
                 plan = _parse_role_output(
                     stage, normalized, InformationPlan.from_dict
                 )
-                _validate_proposed_market_backbone(plan)
-                _validate_proposed_request_scope(plan)
-                unsupported = sorted(
-                    {
-                        source_type
-                        for request in plan.basic_info_policy.requests
-                        for source_type in request.source_types
-                        if source_type not in self.available_source_types
-                    }
+                _validate_plan_for_proposer_context(
+                    plan,
+                    available_source_types=self.available_source_types,
                 )
-                if unsupported:
-                    raise ValidationError(
-                        "information_plan_propose used unsupported source types: "
-                        + ", ".join(unsupported)
-                    )
-                _validate_fixed_plan_semantics(plan)
-                _validate_proposed_plan_skills(plan)
                 if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
                     raise ValidationError(
                         "candidate Plan exactly duplicates a selected parent; apply "

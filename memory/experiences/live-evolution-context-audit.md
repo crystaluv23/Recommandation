@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 25
+visit_times: 26
 
 ## Trigger
 
@@ -1701,3 +1701,12 @@ Signal, reflection, prediction, posthoc, and corrections are separate calls. The
 could not cover one Fast round even though the dollar ceiling had ample room. Estimate
 per-case attempts from persisted ledgers, multiply by the frozen candidate/cohort graph,
 add Slow and recovery envelopes, and keep attempt and dollar ceilings independent.
+
+## Parent-context compatibility addendum (2026-09-09)
+
+Auditing only the newly generated candidate is too late when historical Plans are
+included in the proposer context. A content-addressed seed can be immutable and have
+valid historical metrics while contradicting a newer source-capability invariant. Apply
+the complete current Plan contract before ranking copied parents, exclude incompatible
+legacy content rather than teaching it to the model, and revalidate staged seed pools on
+load. Never silently normalize an immutable parent: a changed Plan is a different seed.
