@@ -2148,6 +2148,15 @@ def execute_information_plan(
         state=state,
         rounds=rounds,
         prediction_time=prediction_time,
+        market_documents=tuple(
+            document
+            for resolution in basic_info_bundle.requests
+            if set(resolution.request.source_types)
+            & {"historical_price", "market_data", "price_daily", "prices"}
+            for document in signal_executor.resolver.load_documents(
+                resolution, as_of=prediction_time
+            )
+        ),
     )
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
@@ -2363,11 +2372,11 @@ def _is_strong_slow_identity_term(value: str) -> bool:
     )
 
 
-def _prediction_baseline_from_basic_info(
-    basic_info: Mapping[str, Any],
+def _prediction_baseline_from_market_documents(
+    documents: Iterable[RawInfoDocument],
     prediction_time: datetime,
 ) -> dict[str, Any]:
-    """Compute the fixed point-in-time Predictor baseline from visible market bars."""
+    """Compute the fixed baseline from complete PIT sources, never display slices."""
 
     market_source_types = {
         "historical_price",
@@ -2376,63 +2385,51 @@ def _prediction_baseline_from_basic_info(
         "prices",
     }
     bars: dict[str, float] = {}
-    for row in basic_info.get("requests", ()):
-        if not isinstance(row, Mapping):
+    for document in documents:
+        if document.source_type not in market_source_types:
             continue
-        request = row.get("request", {})
-        source_types = (
-            set(request.get("source_types", ()))
-            if isinstance(request, Mapping)
-            else set()
-        )
-        if not source_types.intersection(market_source_types):
-            continue
-        for projection in row.get("projections", ()):
-            if not isinstance(projection, Mapping):
+        if document.available_at > prediction_time:
+            raise ValidationError("Predictor baseline document is not point-in-time")
+        for match in re.finditer(r"\{[^{}]*\}", document.content):
+            try:
+                value = json.loads(match.group(0))
+            except json.JSONDecodeError:
                 continue
-            exact_text = projection.get("exact_text")
-            if not isinstance(exact_text, str):
+            if not isinstance(value, Mapping):
                 continue
-            for match in re.finditer(r"\{[^{}]*\}", exact_text):
-                try:
-                    value = json.loads(match.group(0))
-                except json.JSONDecodeError:
-                    continue
-                if not isinstance(value, Mapping):
-                    continue
-                raw_date = value.get("as_of_date")
-                raw_close = value.get("adjusted_close")
-                if (
-                    not isinstance(raw_date, str)
-                    or isinstance(raw_close, bool)
-                    or not isinstance(raw_close, (int, float))
-                    or not math.isfinite(float(raw_close))
-                    or float(raw_close) <= 0
-                ):
-                    continue
-                try:
-                    bar_date = datetime.fromisoformat(raw_date).date()
-                except ValueError:
-                    continue
-                if bar_date >= prediction_time.date():
-                    continue
-                existing = bars.get(raw_date)
-                close = float(raw_close)
-                if existing is not None and not math.isclose(
-                    existing, close, rel_tol=0.0, abs_tol=1e-12
-                ):
-                    raise ValidationError(
-                        "conflicting adjusted-close values in Predictor baseline "
-                        f"for {raw_date}"
-                    )
-                bars[raw_date] = close
+            raw_date = value.get("as_of_date")
+            raw_close = value.get("adjusted_close")
+            if (
+                not isinstance(raw_date, str)
+                or isinstance(raw_close, bool)
+                or not isinstance(raw_close, (int, float))
+                or not math.isfinite(float(raw_close))
+                or float(raw_close) <= 0
+            ):
+                continue
+            try:
+                bar_date = datetime.fromisoformat(raw_date).date()
+            except ValueError:
+                continue
+            if bar_date >= prediction_time.date():
+                continue
+            existing = bars.get(raw_date)
+            close = float(raw_close)
+            if existing is not None and not math.isclose(
+                existing, close, rel_tol=0.0, abs_tol=1e-12
+            ):
+                raise ValidationError(
+                    "conflicting adjusted-close values in Predictor baseline "
+                    f"for {raw_date}"
+                )
+            bars[raw_date] = close
     method = "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time"
     recent = sorted(bars.items())[-5:]
     if len(recent) < 5:
         return {
             "status": "unavailable",
             "method": method,
-            "reason": "fewer_than_5_visible_market_bars",
+            "reason": "fewer_than_5_source_market_bars",
         }
     return {
         "status": "available",
@@ -2451,6 +2448,7 @@ def _assemble_final_context(
     state: ResearchState,
     rounds: Iterable[SignalRound],
     prediction_time: datetime,
+    market_documents: Iterable[RawInfoDocument] = (),
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -2579,8 +2577,8 @@ def _assemble_final_context(
             "source_index": source_index,
             "data_gaps": data_gaps,
         },
-        "prediction_baseline": _prediction_baseline_from_basic_info(
-            basic_info, prediction_time
+        "prediction_baseline": _prediction_baseline_from_market_documents(
+            market_documents, prediction_time
         ),
         "signal_rounds": signal_rounds,
         "cited_signal_evidence": cited_signal_evidence,

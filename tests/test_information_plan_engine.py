@@ -1,9 +1,53 @@
 """Information Plan execution, metrics, and evaluation sampling tests."""
 
 from tests.scheme_evolution_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.evolution_core import (
+    _prediction_baseline_from_market_documents,
+)
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_baseline_source_integrity_and_insufficient_rows(self) -> None:
+        cutoff = datetime(2025, 7, 31, tzinfo=timezone.utc)
+
+        def document(closes, *, available_at=cutoff):
+            return RawInfoDocument.create(
+                document_id="market_fixture",
+                company_id="issuer-fixture",
+                source_type="market_data",
+                published_at=available_at,
+                available_at=available_at,
+                content=json.dumps([
+                    {"as_of_date": f"2025-07-{day:02d}", "adjusted_close": close}
+                    for day, close in zip(range(21, 31), closes)
+                ]),
+            )
+
+        for closes in ([], [100, 101, 102, 103], [100, 101, 102, True, -1]):
+            with self.subTest(closes=closes):
+                self.assertEqual(
+                    _prediction_baseline_from_market_documents(
+                        (document(closes),), cutoff
+                    )["status"],
+                    "unavailable",
+                )
+        complete = document(range(100, 110))
+        result = _prediction_baseline_from_market_documents((complete,), cutoff)
+        self.assertEqual(result["mean_adjusted_close"], 107)
+        self.assertEqual(
+            result,
+            _prediction_baseline_from_market_documents((complete, complete), cutoff),
+        )
+        with self.assertRaisesRegex(ValidationError, "conflicting adjusted-close"):
+            _prediction_baseline_from_market_documents(
+                (complete, document(range(101, 111))), cutoff
+            )
+        with self.assertRaisesRegex(ValidationError, "not point-in-time"):
+            _prediction_baseline_from_market_documents(
+                (document(range(100, 110), available_at=cutoff + timedelta(days=1)),),
+                cutoff,
+            )
+
     def test_default_case_budget_keeps_soft_signal_correction_envelope(self) -> None:
         limits = RuntimeLimits()
 
@@ -891,6 +935,18 @@ class InformationPlanRuntimeTests(TestCase):
                 (30, 105.0),
             )
         ]
+        prediction_time = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        market_document = RawInfoDocument.create(
+            document_id="complete_market",
+            company_id="issuer-fixture",
+            source_type="market_data",
+            published_at=prediction_time,
+            available_at=prediction_time,
+            content=json.dumps(rows + [
+                {"adjusted_close": 999, "as_of_date": "2025-07-31"},
+                {"adjusted_close": 999, "as_of_date": "2025-08-01"},
+            ]),
+        )
         context = _assemble_final_context(
             plan=default_information_plan(),
             company_id="issuer-fixture",
@@ -909,7 +965,7 @@ class InformationPlanRuntimeTests(TestCase):
                                 "projection_id": "projection_market",
                                 "exact_text": ",".join(
                                     json.dumps(row, separators=(",", ":"))
-                                    for row in rows
+                                    for row in rows[:5]
                                 ),
                             }
                         ],
@@ -918,7 +974,8 @@ class InformationPlanRuntimeTests(TestCase):
             },
             state=ResearchState(decision=ResearchDecision.FINALIZE),
             rounds=(),
-            prediction_time=datetime(2025, 7, 31, tzinfo=timezone.utc),
+            prediction_time=prediction_time,
+            market_documents=(market_document,),
         )
 
         self.assertEqual(

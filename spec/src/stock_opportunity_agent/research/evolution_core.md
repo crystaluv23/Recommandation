@@ -1,5 +1,9 @@
 # Evolution Core
 
+The fixed Predictor price baseline is computed from complete, hash-verified,
+point-in-time market documents selected by Basic Info resolution. Source excerpts
+and model projection budgets affect presentation only, never its five-row window.
+
 ## Purpose
 
 Own immutable evolution records, validation, scoring, evaluation-dataset

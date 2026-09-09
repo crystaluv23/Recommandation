@@ -1,5 +1,13 @@
 # Status
 
+The 2026-09-09 authorized MVP live audit resumed v3 under its exact contract,
+then safely interrupted at Fast/Slow 0/0 after finding a computation/display
+boundary defect: Predictor baselines used truncated Basic market projections.
+Complete selected PIT market documents now supply the last five pre-cutoff rows;
+three real-case replays correct the stale August/June baselines. All 624 tests
+and repository lint pass. A fresh code-bound successor will execute the approved
+one-Fast/one-Slow MVP scope; live completion remains pending.
+
 Executed and audited the approved first T7 Fast/Slow pilot (2026-09-08).
 `self-evolution-t7-20260908-v1` safely paused at its 250-attempt ceiling after
 248 completed model responses and `$0.37523724`; authoritative pointers remain

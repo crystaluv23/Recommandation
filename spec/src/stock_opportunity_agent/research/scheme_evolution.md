@@ -744,7 +744,11 @@ each executed Signal, and exact evidence material only for Signal tuples cited b
 the final state. Basic literals are already carried by their tagged final-state refs.
 It also carries a deterministic `prediction_baseline` computed only from the last
 five complete adjusted-close rows strictly before `prediction_time` in the already
-resolved point-in-time Basic market projection. This is a runtime-owned definition
+resolved point-in-time Basic market documents, before either source-excerpt or
+model-context truncation. Display budgets cannot select the computation window;
+the existing resolver verifies the exact document hashes and availability, and
+rows on or after the prediction date remain excluded. Fewer than five complete
+source rows stays unavailable. This is a runtime-owned definition
 input, not issuer evidence or a revealed outcome. Predictor instructions require this
 mean whenever prose names the current or baseline price; local validation rejects a
 different historical observation mislabeled as current and gives the model one
