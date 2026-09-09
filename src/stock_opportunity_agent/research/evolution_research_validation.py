@@ -8,7 +8,11 @@ import re
 from datetime import date, datetime
 from difflib import SequenceMatcher
 from typing import Any, Iterable, Mapping
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import (
+    StructuredValidationError,
+    ValidationError,
+    ValidationIssue,
+)
 from stock_opportunity_agent.research.scheme_evolution import (
     ResearchDecision,
     ResearchState,
@@ -767,21 +771,6 @@ def _raw_research_state_compaction_issues(
                 "this newly authored decision-frontier item"
             )
 
-    evidence = value.get("supporting_evidence")
-    if initialize and isinstance(evidence, list):
-        for index, item in enumerate(evidence):
-            exact_text = item.get("exact_text") if isinstance(item, Mapping) else None
-            if (
-                isinstance(exact_text, str)
-                and len(exact_text) > _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT
-            ):
-                issues.append(
-                    f"supporting_evidence[{index}].exact_text length={len(exact_text)} "
-                    f"exceeds {_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT} characters. "
-                    "Copy the shortest complete contiguous literal that supports the "
-                    "claim, or remove this evidence item"
-                )
-
     size_bytes = _research_state_json_size(value)
     previous_size = _research_state_json_size(previous) if previous else 0
     effective_byte_limit = max(_RESEARCH_STATE_JSON_BYTE_LIMIT, previous_size)
@@ -887,12 +876,63 @@ def _normalize_research_state_output(
             "expected 'basic_info' or 'signal'"
         )
     issues.extend(_raw_research_evidence_claim_length_issues(normalized))
-    issues.extend(_raw_basic_claim_quantity_issues(normalized))
-    issues.extend(_raw_quantitative_assertion_link_issues(normalized))
     if issues:
         raise ValidationError("; ".join(issues))
+    typed_issues = []
+    if initialize:
+        typed_issues.extend(_raw_basic_literal_issues(normalized))
+    typed_issues.extend(_raw_basic_claim_quantity_issues(normalized))
+    typed_issues.extend(_raw_quantitative_assertion_link_issues(normalized))
+    if typed_issues:
+        raise StructuredValidationError(typed_issues)
     normalized["supporting_evidence"] = normalized_evidence
     return normalized
+
+
+def _raw_basic_literal_issues(value: Mapping[str, Any]) -> list[ValidationIssue]:
+    """Return typed issues for overlong initialize-only Basic literals."""
+
+    evidence = value.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return []
+    issues: list[ValidationIssue] = []
+    for index, item in enumerate(evidence):
+        exact_text = item.get("exact_text") if isinstance(item, Mapping) else None
+        if (
+            not isinstance(exact_text, str)
+            or len(exact_text) <= _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT
+        ):
+            continue
+        claim = item.get("claim") if isinstance(item, Mapping) else None
+        dependent_paths = (
+            f"supporting_evidence[{index}].claim",
+            *(
+            f"{field_name}[{assertion_index}]"
+            for field_name in ("current_beliefs", "contradictions")
+            if isinstance(value.get(field_name), list)
+            for assertion_index, assertion in enumerate(value[field_name])
+            if assertion == claim
+            ),
+        )
+        issues.append(
+            ValidationIssue(
+                code="basic_literal_not_grounded",
+                message=(
+                    f"supporting_evidence[{index}].exact_text length={len(exact_text)} "
+                    f"exceeds {_RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT} characters. "
+                    "Copy the shortest complete contiguous literal that supports the "
+                    "claim, or remove this evidence item"
+                ),
+                paths=(f"supporting_evidence[{index}].exact_text",),
+                allowed_repairs=("replace", "remove"),
+                dependent_paths=dependent_paths,
+                repair_context={
+                    "literal_length": len(exact_text),
+                    "maximum_literal_length": _RESEARCH_STATE_BASIC_LITERAL_CHAR_LIMIT,
+                },
+            )
+        )
+    return issues
 
 
 def _raw_research_evidence_claim_length_issues(
@@ -933,7 +973,9 @@ def _raw_research_evidence_claim_length_issues(
     return issues
 
 
-def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
+def _raw_basic_claim_quantity_issues(
+    value: Mapping[str, Any],
+) -> list[ValidationIssue]:
     """Preflight decidable Basic quantity errors before tagged refs exist."""
 
     evidence = value.get("supporting_evidence")
@@ -949,7 +991,7 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
         if not all(isinstance(value, str) for value in (claim, exact_text, projection_id)):
             continue
         grouped.setdefault(str(claim), []).append((index, str(exact_text)))
-    issues: list[str] = []
+    issues: list[ValidationIssue] = []
     for claim, items in grouped.items():
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
@@ -981,33 +1023,46 @@ def _raw_basic_claim_quantity_issues(value: Mapping[str, Any]) -> list[str]:
                 for index, item in enumerate(value[field_name])
                 if item == claim and _normalized_claim_quantity_groups(str(item))
             ]
-            linked_instruction = (
-                f". linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
-                if linked
-                else ""
-            )
             issues.append(
-                f"supporting_evidence[{items[0][0]}] claim contains numeric "
-                "quantities absent from all Basic exact_text refs with the same "
-                "claim, missing_quantity_groups="
-                f"{json.dumps(missing, separators=(',', ':'))}, "
-                "missing_quantity_literals="
-                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
-                "same_claim_evidence_paths="
-                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
-                "remove every listed evidence claim together, and retained refs must "
-                "share one identical corrected claim. Add one exact literal ref "
-                "for every quantity, split the multi-span claim across refs with "
-                "the same claim, or narrow the claim"
-                + linked_instruction
+                ValidationIssue(
+                    code="claim_quantity_not_supported",
+                    message=(
+                        f"supporting_evidence[{items[0][0]}] claim contains numeric "
+                        "quantities absent from all Basic exact_text refs with the "
+                        "same claim, missing_quantity_groups="
+                        f"{json.dumps(missing, separators=(',', ':'))}, "
+                        "missing_quantity_literals="
+                        f"{json.dumps(missing_literals, separators=(',', ':'))}, "
+                        "same_claim_evidence_paths="
+                        f"{json.dumps(evidence_paths, separators=(',', ':'))}. "
+                        "Change or remove every listed evidence claim "
+                        "together, and retained refs must share one identical "
+                        "corrected claim. Add one exact literal ref for every "
+                        "quantity, split the multi-span claim across refs with the "
+                        "same claim, or narrow the claim"
+                        + (
+                            f". linked_assertions={linked} must copy the corrected "
+                            "claim byte-for-byte"
+                            if linked
+                            else ""
+                        )
+                    ),
+                    paths=tuple(dict.fromkeys(evidence_paths)),
+                    allowed_repairs=("replace", "remove", "add"),
+                    dependent_paths=tuple(linked),
+                    repair_context={
+                        "missing_quantity_groups": missing,
+                        "missing_quantity_literals": missing_literals,
+                        "same_claim_evidence_paths": evidence_paths,
+                    },
+                )
             )
     return issues
 
 
 def _raw_quantitative_assertion_link_issues(
     value: Mapping[str, Any],
-) -> list[str]:
+) -> list[ValidationIssue]:
     """Aggregate decidable assertion-link errors into the first correction."""
 
     evidence = value.get("supporting_evidence")
@@ -1036,12 +1091,20 @@ def _raw_quantitative_assertion_link_issues(
     if not invalid_paths:
         return []
     return [
-        "quantitative ResearchState assertions must each copy one "
-        "supporting_evidence claim byte-for-byte, invalid_fields="
-        f"{invalid_paths}. For every named path, replace it with one exact accepted "
-        "claim, attach literals to that same exact claim, split the assertion, or "
-        "remove unsupported numeric detail. Numbers from unrelated claims do not "
-        "count"
+        ValidationIssue(
+            code="assertion_without_support",
+            message=(
+                "quantitative ResearchState assertions must each copy one "
+                "supporting_evidence claim byte-for-byte, invalid_fields="
+                f"{invalid_paths}. For every named path, "
+                "replace it with one exact accepted claim, attach literals to that "
+                "same exact claim, split the assertion, or remove unsupported "
+                "numeric detail. Numbers from unrelated claims do not count"
+            ),
+            paths=tuple(invalid_paths),
+            allowed_repairs=("replace", "remove"),
+            repair_context={"invalid_fields": invalid_paths},
+        )
     ]
 
 
@@ -1350,13 +1413,14 @@ def _linked_quantitative_assertion_paths(
 def _validate_basic_claim_quantities(
     refs: tuple[ResearchEvidenceRef, ...],
     state: ResearchState,
-) -> None:
+) -> list[ValidationIssue]:
     """Require each Basic claim's quantities across its cited literal group."""
 
     grouped: dict[str, list[tuple[int, str]]] = {}
     for index, item in enumerate(refs):
         if item.kind == "basic_info":
             grouped.setdefault(item.claim, []).append((index, str(item.exact_text)))
+    issues: list[ValidationIssue] = []
     for claim, items in grouped.items():
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
@@ -1371,34 +1435,37 @@ def _validate_basic_claim_quantities(
                 for item_index, _text in items
             ]
             linked = _linked_quantitative_assertion_paths(state, claim)
-            linked_instruction = (
-                f". linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
-                if linked
-                else ""
+            issues.append(
+                ValidationIssue(
+                    code="claim_quantity_not_supported",
+                    message=(
+                        f"supporting_evidence[{index}] claim contains numeric "
+                        "quantities absent from all Basic exact_text refs with the "
+                        "same claim. Change or remove every listed evidence claim "
+                        "together. Add one exact literal ref for every quantity, "
+                        "split the multi-span claim across refs with the same claim, "
+                        "or narrow the claim"
+                    ),
+                    paths=tuple(evidence_paths),
+                    allowed_repairs=("replace", "remove", "add"),
+                    dependent_paths=tuple(linked),
+                    repair_context={
+                        "missing_quantity_groups": missing,
+                        "missing_quantity_literals": missing_literals,
+                        "same_claim_evidence_paths": evidence_paths,
+                    },
+                )
             )
-            raise ValidationError(
-                f"supporting_evidence[{index}] claim contains numeric quantities "
-                "absent from all Basic exact_text refs with the same claim, "
-                "missing_quantity_groups="
-                f"{json.dumps(missing, separators=(',', ':'))}, "
-                "missing_quantity_literals="
-                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
-                "same_claim_evidence_paths="
-                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
-                "remove every listed evidence claim together. Add one exact literal "
-                "ref for every quantity, split the multi-span claim across refs with "
-                "the same claim, or narrow the claim"
-                + linked_instruction
-            )
+    return issues
 
 
 def _validate_signal_claim_quantities(
     grouped: Mapping[str, list[tuple[int, str]]],
     state: ResearchState,
-) -> None:
+) -> list[ValidationIssue]:
     """Require each new Signal claim's quantities in its cited evidence items."""
 
+    issues: list[ValidationIssue] = []
     for claim, items in grouped.items():
         cited_quantities: set[str] = set()
         for _index, exact_text in items:
@@ -1413,52 +1480,79 @@ def _validate_signal_claim_quantities(
                 for item_index, _text in items
             ]
             linked = _linked_quantitative_assertion_paths(state, claim)
-            linked_instruction = (
-                f". linked_assertions={linked} must copy the corrected claim "
-                "byte-for-byte"
-                if linked
-                else ""
+            issues.append(
+                ValidationIssue(
+                    code="claim_quantity_not_supported",
+                    message=(
+                        f"supporting_evidence[{index}] claim contains numeric "
+                        "quantities absent from all referenced Signal evidence items "
+                        "with the same claim, missing_quantity_groups="
+                        f"{json.dumps(missing, separators=(',', ':'))}, "
+                        "missing_quantity_literals="
+                        f"{json.dumps(missing_literals, separators=(',', ':'))}, "
+                        "same_claim_evidence_paths="
+                        f"{json.dumps(list(dict.fromkeys(evidence_paths)), separators=(',', ':'))}. "
+                        "Change or remove every listed evidence "
+                        "claim together. Copy the exact canonical numeric form from "
+                        "a deterministic Signal interpretation, cite every required "
+                        "Signal evidence item with the same claim, or narrow the "
+                        "claim. Do not round or convert the supplied values"
+                    ),
+                    paths=tuple(dict.fromkeys(evidence_paths)),
+                    allowed_repairs=("replace", "remove", "add"),
+                    dependent_paths=tuple(linked),
+                    source_refs=tuple(
+                        dict.fromkeys(
+                            str(ref.signal_ref)
+                            for ref in state.supporting_evidence
+                            if isinstance(ref, ResearchEvidenceRef)
+                            and ref.kind == "signal"
+                            and ref.claim == claim
+                        )
+                    ),
+                    repair_context={
+                        "missing_quantity_groups": missing,
+                        "missing_quantity_literals": missing_literals,
+                        "same_claim_evidence_paths": evidence_paths,
+                    },
+                )
             )
-            raise ValidationError(
-                f"supporting_evidence[{index}] claim contains numeric quantities "
-                f"absent from all referenced Signal evidence items with the same "
-                "claim, missing_quantity_groups="
-                f"{json.dumps(missing, separators=(',', ':'))}, "
-                "missing_quantity_literals="
-                f"{json.dumps(missing_literals, separators=(',', ':'))}, "
-                "same_claim_evidence_paths="
-                f"{json.dumps(evidence_paths, separators=(',', ':'))}. Change or "
-                "remove every listed evidence claim together. Copy the exact "
-                "canonical numeric form from a deterministic Signal interpretation, "
-                "cite every required Signal evidence item with the same claim, or "
-                "narrow the claim. Do not round or convert the supplied values"
-                + linked_instruction
-            )
+    return issues
 
 
 def _validate_assertive_state_claim_links(
     state: ResearchState,
     refs: tuple[ResearchEvidenceRef, ...],
-) -> None:
+) -> list[ValidationIssue]:
     """Bind every quantitative state assertion to one exact evidence claim."""
 
     accepted_claims = {item.claim for item in refs}
-    errors: list[str] = []
+    invalid_paths: list[str] = []
     for field_name in ("current_beliefs", "contradictions"):
         for index, item in enumerate(getattr(state, field_name)):
             if not _normalized_claim_quantity_groups(item):
                 continue
             if item in accepted_claims:
                 continue
-            errors.append(f"{field_name}[{index}]={item!r}")
-    if errors:
-        raise ValidationError(
-            "quantitative ResearchState assertions must copy one accepted "
-            "supporting_evidence claim byte-for-byte: "
-            f"{errors}. Attach every literal needed by that exact claim, split a "
-            "composite assertion into separately supported claims, or remove the "
-            "unsupported numeric detail. Numbers from unrelated claims do not count"
+            invalid_paths.append(f"{field_name}[{index}]")
+    if not invalid_paths:
+        return []
+    return [
+        ValidationIssue(
+            code="assertion_without_support",
+            message=(
+                "quantitative ResearchState assertions must copy one accepted "
+                "supporting_evidence claim byte-for-byte, invalid_fields="
+                f"{invalid_paths}. Attach every literal "
+                "needed by that exact claim, split a composite assertion into "
+                "separately supported claims, or remove the unsupported numeric "
+                "detail. Numbers from unrelated claims do not count"
+            ),
+            paths=tuple(invalid_paths),
+            allowed_repairs=("replace", "remove"),
+            repair_context={"invalid_fields": invalid_paths},
         )
+    ]
 
 
 def _validate_research_state_refs(
@@ -1494,6 +1588,7 @@ def _validate_research_state_refs(
     projection_texts = _basic_projection_texts(basic_info or {})
     results = {item.ref: item for item in (batch.results if batch else ())}
     signal_claim_literals: dict[str, list[tuple[int, str]]] = {}
+    structured_issues: list[ValidationIssue] = []
     for index, item in enumerate(refs):
         key = _research_evidence_key(item)
         if phase == "finalize":
@@ -1525,13 +1620,36 @@ def _validate_research_state_refs(
                     exact_text=exact_text,
                 )
                 continue
-            if projection is None:
-                raise ValidationError(
-                    f"supporting_evidence[{index}] cited unknown Basic Info projection "
-                    f"{item.projection_id!r}; matching_projection_ids={matches}. Use the "
-                    "single projection containing the exact contiguous literal or remove "
-                    "this evidence item"
+            dependent_paths = tuple(
+                f"{field_name}[{assertion_index}]"
+                for field_name in ("current_beliefs", "contradictions")
+                for assertion_index, assertion in enumerate(
+                    getattr(state, field_name)
                 )
+                if assertion == item.claim
+            )
+            if projection is None:
+                structured_issues.append(
+                    ValidationIssue(
+                        code="basic_literal_not_grounded",
+                        message=(
+                            f"supporting_evidence[{index}] cited unknown Basic Info "
+                            f"projection {item.projection_id!r}. Use the single "
+                            "projection containing the exact contiguous literal or "
+                            "remove this evidence item"
+                        ),
+                        paths=(f"supporting_evidence[{index}]",),
+                        allowed_repairs=("replace", "remove"),
+                        dependent_paths=dependent_paths,
+                        source_refs=tuple(matches),
+                        repair_context={
+                            "returned_projection_id": item.projection_id,
+                            "matching_projection_ids": matches,
+                            "occurrence_count": occurrence_count,
+                        },
+                    )
+                )
+                continue
             closest_window = _closest_basic_literal_correction_window(
                 exact_text,
                 projection,
@@ -1546,14 +1664,32 @@ def _validate_research_state_refs(
                     f"occurrences_in_named_projection={projection.count(exact_text)}"
                 )
             )
-            raise ValidationError(
-                f"supporting_evidence[{index}] basic_info exact_text is not one "
-                f"contiguous literal substring unique to projection "
-                f"{item.projection_id!r}; matching_projection_ids={matches}"
-                f"{closest_instruction}. Copy one "
-                "byte-for-byte span without ellipses, JSON-field reordering, "
-                "non-contiguous joins, or paraphrase, or remove this evidence item"
+            structured_issues.append(
+                ValidationIssue(
+                    code="basic_literal_not_grounded",
+                    message=(
+                        f"supporting_evidence[{index}] basic_info exact_text is not "
+                        "one contiguous literal substring unique to projection "
+                        f"{item.projection_id!r}{closest_instruction}. Copy one "
+                        "byte-for-byte span without ellipses, JSON-field reordering, "
+                        "non-contiguous joins, or paraphrase, or remove this "
+                        "evidence item"
+                    ),
+                    paths=(f"supporting_evidence[{index}]",),
+                    allowed_repairs=("replace", "remove"),
+                    dependent_paths=dependent_paths,
+                    source_refs=tuple(matches),
+                    repair_context={
+                        "returned_projection_id": item.projection_id,
+                        "matching_projection_ids": matches,
+                        "occurrences_in_named_projection": projection.count(
+                            exact_text
+                        ),
+                        "closest_visible_projection_window": closest_window,
+                    },
+                )
             )
+            continue
         if key in previous:
             prior = previous_refs[key]
             if item.claim != prior.claim:
@@ -1615,19 +1751,16 @@ def _validate_research_state_refs(
             and result.interpretation.startswith(result.signal_id + "=")
         ):
             claim_literals.append((index, result.interpretation))
-    validation_errors: list[str] = []
-    validators = (
-        lambda: _validate_basic_claim_quantities(tuple(normalized_refs), state),
-        lambda: _validate_signal_claim_quantities(signal_claim_literals, state),
-        lambda: _validate_assertive_state_claim_links(
-            state, tuple(normalized_refs)
-        ),
+    structured_issues.extend(
+        _validate_basic_claim_quantities(tuple(normalized_refs), state)
     )
-    for validator in validators:
-        try:
-            validator()
-        except ValidationError as exc:
-            validation_errors.append(str(exc))
+    structured_issues.extend(
+        _validate_signal_claim_quantities(signal_claim_literals, state)
+    )
+    structured_issues.extend(
+        _validate_assertive_state_claim_links(state, tuple(normalized_refs))
+    )
+    validation_errors: list[str] = []
     legacy_cross_field_duplicates = (
         set(previous_state.open_questions)
         & set(previous_state.next_information_needs)
@@ -1793,6 +1926,10 @@ def _validate_research_state_refs(
                 "answered. Preserve every unanswered listed item byte-for-byte; "
                 "runtime will not choose the need or fabricate a resolution"
             )
+    if structured_issues and not validation_errors:
+        raise StructuredValidationError(structured_issues)
+    if structured_issues:
+        validation_errors.extend(issue.message for issue in structured_issues)
     if validation_errors:
         raise ValidationError("; ".join(validation_errors))
     if tuple(normalized_refs) == refs:

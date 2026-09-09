@@ -1,19 +1,35 @@
 # Status
 
-Prepared T7 for an exact, reviewable live freeze (2026-09-08): initialized
-`self-evolution-t7-20260908-v1` against the global Raw Info oracle and stable
-14-Signal Registry, then extended local preflight to accept the intended
-human-approved development manifest. Preflight validates its hash, sealed
-Locked Test metadata, disjoint development splits, and evaluation feasibility
-without loading Locked Test or making network calls. The verified dataset has
-8,755 Discovery, 16 Anchor, and 3,623 Evolution Validation cases; local status
-is `ready_for_freeze=true`, `ready_for_external_run=false`, with zero external
-calls. [`self-evolution-t7-execution-contract-2026-09-08.md`](self-evolution-t7-execution-contract-2026-09-08.md)
-now proposes the exact Fast/Slow, two-provider reliability, and T5 benefit
-thresholds and budgets. T7 remains open until those research decisions and
-external destinations are approved, a new contract is frozen and executed,
-and promotion, downstream use, and independent benefit are evidenced.
-All 614 tests and repository lint pass.
+Executed and audited the approved first T7 Fast/Slow pilot (2026-09-08).
+`self-evolution-t7-20260908-v1` safely paused at its 250-attempt ceiling after
+248 completed model responses and `$0.37523724`; authoritative pointers remain
+round 0/cycle 0, Registry version 1, and Locked Test sealed. The run completed
+17/24 cases for candidate 1, rejected candidate 2 on its first case, and staged
+11/24 case checkpoints for candidate 3. No partial cohort received metrics or
+entered Archive/learning. Exact prompt/context/response inspection found an
+overlong Basic literal, two sign-inconsistent quantitative claims, one ambiguous
+projection ref, high H_init/routing correction rates, and one schema-valid but
+logically weak positive prediction. A generic post-correction recovery now removes
+only mechanically invalid evidence rows and beliefs that lose their last identical
+support, then repeats the unchanged full validation to expose layered failures;
+it never rewrites raw JSON into a belief or guesses a projection. Both real final
+H_init responses now replay successfully while retaining their 2 and 5 valid
+sibling evidence rows. [`self-evolution-t7-live-audit-2026-09-08.md`](self-evolution-t7-live-audit-2026-09-08.md)
+contains the wire-level evidence, current agent-runtime comparison, and the revised
+2,500-attempt successor proposal. T7 remains open: no Fast round, Slow promotion,
+next-Fast Signal use, reliability pilot, or benefit confirmation has completed.
+The 2026-09-09 MVP implementation checkpoint migrates the high-frequency
+ResearchState evidence failures to typed issue codes, makes deterministic
+fallback independent of diagnostic wording, and reduces fixed H_init/routing
+prompt bytes while preserving their contracts. Existing persistence/recovery
+tests show no need for a new attempt schema. The next live workspace is prepared
+for one candidate and one Fast round per Slow cycle, but freeze/execution and the
+proposed 2,500-attempt/`$20` external boundary still require an exact post-commit
+contract hash and approval. See
+[`information-evolution-mvp-implementation-2026-09-09.md`](information-evolution-mvp-implementation-2026-09-09.md).
+Fast/Slow completion, Signal promotion/use, reliability measurement, and benefit
+confirmation remain open. Focused tests pass; full-suite/lint results are updated
+at checkpoint completion. All 617 tests and repository lint pass.
 
 Completed the offline portion of T6's generalized reliability matrix
 (2026-09-08): [`self-evolution-reliability-matrix-2026-09-08.md`](self-evolution-reliability-matrix-2026-09-08.md)

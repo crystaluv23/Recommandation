@@ -4,6 +4,65 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class ScopedCorrectionProjectionTests(TestCase):
+    def test_research_state_fallback_uses_issue_code_not_message_text(self) -> None:
+        invalid = {
+            "hypotheses": ["A catalyst may matter."],
+            "current_beliefs": ["Revenue was $42 million.", "Margins improved."],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": "Revenue was $42 million.",
+                    "projection_id": "bad",
+                    "exact_text": "Revenue was $4 million.",
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": "Margins improved.",
+                    "projection_id": "good",
+                    "exact_text": "Margins improved.",
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["What guidance is visible?"],
+            "decision": "continue",
+        }
+        issue_fields = {
+            "code": "claim_quantity_not_supported",
+            "paths": ("supporting_evidence[0].claim",),
+            "allowed_repairs": ("replace", "remove", "add"),
+            "dependent_paths": ("current_beliefs[0]",),
+            "repair_context": {
+                "missing_quantity_groups": ["42"],
+                "missing_quantity_literals": ["42"],
+                "same_claim_evidence_paths": [
+                    "supporting_evidence[0].claim"
+                ],
+            },
+        }
+
+        results = []
+        for message in (
+            "Unsupported quantity.",
+            "La cantidad no coincide; punctuation changed!",
+        ):
+            failure = StructuredValidationError(
+                [ValidationIssue(message=message, **issue_fields)]
+            )
+            results.append(
+                evolution_runtime_module._research_state_evidence_grounding_fallback(
+                    invalid, failure
+                )
+            )
+
+        self.assertEqual(results[0], results[1])
+        self.assertEqual(
+            results[0][0]["supporting_evidence"],
+            [invalid["supporting_evidence"][1]],
+        )
+        self.assertEqual(results[0][0]["current_beliefs"], ["Margins improved."])
+
     def test_nested_projection_preserves_null_siblings_and_source_objects(self) -> None:
         invalid = {"rows": [{"value": "invalid", "keep": [1, 2]}], "keep": "old"}
         corrected = {"rows": [{"value": None, "keep": []}], "keep": "drift"}

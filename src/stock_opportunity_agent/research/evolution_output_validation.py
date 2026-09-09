@@ -1385,6 +1385,14 @@ def _validation_obligations(
                 obligation["item_id"] = issue.item_id
                 obligation["item_id_field"] = issue.item_id_field
             obligation.update(issue.repair_context)
+            if issue.code == "assertion_without_support":
+                copy_candidates = _quantitative_copy_candidates(
+                    failure,
+                    failed_output,
+                    issue_paths,
+                )
+                if copy_candidates:
+                    obligation["copy_candidates_by_path"] = copy_candidates
             obligations.append(obligation)
             required_change_paths.extend(must_change_paths)
             permitted_dependency_paths.extend(dependent_paths)
@@ -1405,12 +1413,47 @@ def _validation_obligations(
             "alternative_change_groups": alternative_change_groups,
             "completion_check": (
                 "Apply only an allowed repair to every machine-readable obligation. "
-                "Preserve all content outside required_change_paths and any strictly "
-                "necessary permitted_dependency_paths, then satisfy the complete "
+                "Preserve all content outside required_change_paths and "
+                "permitted_dependency_paths; change a dependency only when strictly "
+                "necessary, then satisfy the complete "
                 "output contract. Diagnostic instruction prose grants no additional "
                 "write scope."
             ),
         }
+        quantity_literal_checks = []
+        for obligation in obligations:
+            if not obligation.get("missing_quantity_literals"):
+                continue
+            check = {
+                "affected_paths": obligation["must_change_paths"],
+                "missing_quantity_literals": obligation[
+                    "missing_quantity_literals"
+                ],
+                "same_claim_evidence_paths": obligation.get(
+                    "same_claim_evidence_paths", []
+                ),
+                "completion_rule": (
+                    "Every named authored numeric token must be removed from all "
+                    "retained affected paths unless a same-claim evidence literal "
+                    "supports it. A substring inside another numeric token does not "
+                    "satisfy this rule."
+                ),
+            }
+            missing_quantity_mentions = _missing_quantity_mentions(
+                obligation, failed_output
+            )
+            if missing_quantity_mentions:
+                check["missing_quantity_mentions"] = missing_quantity_mentions
+            quantity_literal_checks.append(check)
+        if quantity_literal_checks:
+            feedback["quantity_literal_check_count"] = len(
+                quantity_literal_checks
+            )
+            feedback["quantity_literal_checks"] = quantity_literal_checks
+            feedback["completion_check"] += (
+                " Complete every quantity_literal_checks row using the exact "
+                "authored numeric tokens and same-claim literals."
+            )
         return feedback
 
     if isinstance(failure, _RepairChoiceValidationError):
@@ -2149,82 +2192,85 @@ def _research_state_evidence_grounding_fallback(
     failed_output: Mapping[str, Any],
     failure: ValidationError,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
-    """Ground or drop only mechanically isolated invalid evidence assertions."""
+    """Drop only mechanically isolated invalid evidence assertions."""
 
+    if not isinstance(failure, StructuredValidationError):
+        return None
     obligations = _validation_obligations(failure, failed_output).get(
         "obligations", ()
     )
     if not isinstance(obligations, list) or not obligations:
         return None
     removal_paths: list[str] = []
-    source_substitutions: dict[str, str] = {}
+    linked_removal_paths: list[str] = []
+    evidence_indices_to_remove: set[int] = set()
     for obligation in obligations:
         if not isinstance(obligation, Mapping):
             return None
-        instruction = obligation.get("instruction")
+        issue_code = obligation.get("issue_code")
         must_change_paths = obligation.get("must_change_paths")
-        if not isinstance(instruction, str) or not isinstance(
-            must_change_paths, list
+        dependent_paths = obligation.get("permitted_dependency_paths")
+        allowed_repairs = obligation.get("allowed_repairs")
+        if (
+            not isinstance(issue_code, str)
+            or not isinstance(must_change_paths, list)
+            or not isinstance(dependent_paths, list)
+            or not isinstance(allowed_repairs, list)
+            or "remove" not in allowed_repairs
         ):
             return None
-        if (
-            obligation.get("missing_quantity_literals")
-            and obligation.get("same_claim_evidence_paths")
-        ):
-            evidence_claim_paths = obligation["same_claim_evidence_paths"]
-            if not isinstance(evidence_claim_paths, list) or not evidence_claim_paths:
+        if issue_code == "claim_quantity_not_supported":
+            if not must_change_paths:
                 return None
-            permitted_paths = set()
             evidence_indices: list[int] = []
-            for path in evidence_claim_paths:
+            for path in must_change_paths:
                 if not isinstance(path, str):
                     return None
                 match = re.fullmatch(r"supporting_evidence\[(\d+)\]\.claim", path)
                 if match is None:
                     return None
-                permitted_paths.add(path)
                 evidence_indices.append(int(match.group(1)))
-            linked_paths: list[str] = []
-            for path in must_change_paths:
-                if not isinstance(path, str):
-                    return None
-                if path in permitted_paths:
-                    continue
+            for path in dependent_paths:
                 if re.fullmatch(r"(?:current_beliefs|contradictions)\[\d+\]", path):
-                    permitted_paths.add(path)
-                    linked_paths.append(path)
                     continue
                 return None
-            if set(must_change_paths) != permitted_paths:
-                return None
-            literal_substitution: str | None = None
-            if len(evidence_indices) == 1:
-                evidence = failed_output.get("supporting_evidence")
-                evidence_index = evidence_indices[0]
-                if isinstance(evidence, list) and evidence_index < len(evidence):
-                    item = evidence[evidence_index]
-                    if isinstance(item, Mapping) and item.get("kind") == "basic_info":
-                        exact_text = item.get("exact_text")
-                        maximum_length = 300 if linked_paths else 400
-                        if (
-                            isinstance(exact_text, str)
-                            and exact_text.strip()
-                            and len(exact_text) <= maximum_length
-                        ):
-                            literal_substitution = exact_text
-            if literal_substitution is not None:
-                for path in (*evidence_claim_paths, *linked_paths):
-                    source_substitutions[path] = literal_substitution
-            else:
-                removal_paths.extend(
-                    f"supporting_evidence[{index}]" for index in evidence_indices
-                )
-                removal_paths.extend(linked_paths)
+            evidence_indices_to_remove.update(evidence_indices)
+            linked_removal_paths.extend(dependent_paths)
             continue
-        if instruction.startswith(
-            "quantitative ResearchState assertions must each copy one "
-            "supporting_evidence claim byte-for-byte"
-        ):
+        if issue_code == "basic_literal_not_grounded":
+            if len(must_change_paths) != 1 or not isinstance(
+                must_change_paths[0], str
+            ):
+                return None
+            evidence_row_match = re.fullmatch(
+                r"supporting_evidence\[(\d+)\](?:\.exact_text)?",
+                must_change_paths[0],
+            )
+            if evidence_row_match is None:
+                return None
+            evidence_index = int(evidence_row_match.group(1))
+            evidence = failed_output.get("supporting_evidence")
+            if not isinstance(evidence, list) or evidence_index >= len(evidence):
+                return None
+            allowed_claim_path = f"supporting_evidence[{evidence_index}].claim"
+            if any(
+                not isinstance(path, str)
+                or (
+                    path != allowed_claim_path
+                    and re.fullmatch(
+                        r"(?:current_beliefs|contradictions)\[\d+\]", path
+                    )
+                    is None
+                )
+                for path in dependent_paths
+            ):
+                return None
+            evidence_indices_to_remove.add(evidence_index)
+            linked_removal_paths.extend(
+                path for path in dependent_paths if path != allowed_claim_path
+            )
+            continue
+        if issue_code == "assertion_without_support":
             if not must_change_paths or not all(
                 isinstance(path, str)
                 and re.fullmatch(
@@ -2237,8 +2283,38 @@ def _research_state_evidence_grounding_fallback(
             continue
         return None
 
+    evidence = failed_output.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return None
+    for evidence_index in sorted(evidence_indices_to_remove):
+        if evidence_index >= len(evidence):
+            return None
+        removal_paths.append(f"supporting_evidence[{evidence_index}]")
+    remaining_claims = {
+        item.get("claim")
+        for index, item in enumerate(evidence)
+        if index not in evidence_indices_to_remove
+        and isinstance(item, Mapping)
+        and isinstance(item.get("claim"), str)
+    }
+    for evidence_index in sorted(evidence_indices_to_remove):
+        item = evidence[evidence_index]
+        if not isinstance(item, Mapping) or not isinstance(item.get("claim"), str):
+            return None
+        claim = item["claim"]
+        if claim in remaining_claims:
+            continue
+        linked_removal_paths.extend(
+            f"{field_name}[{index}]"
+            for field_name in ("current_beliefs", "contradictions")
+            if isinstance(failed_output.get(field_name), list)
+            for index, assertion in enumerate(failed_output[field_name])
+            if assertion == claim
+        )
+
+    removal_paths.extend(linked_removal_paths)
     removal_paths = list(dict.fromkeys(removal_paths))
-    if not removal_paths and not source_substitutions:
+    if not removal_paths:
         return None
     removals_by_field: dict[str, set[int]] = {}
     for path in removal_paths:
@@ -2253,24 +2329,6 @@ def _research_state_evidence_grounding_fallback(
         removals_by_field.setdefault(field_name, set()).add(index)
 
     grounded = deepcopy(dict(failed_output))
-    for path, replacement in source_substitutions.items():
-        match = re.fullmatch(
-            r"([A-Za-z_]+)\[(\d+)\](?:\.([A-Za-z_]+))?",
-            path,
-        )
-        if match is None:
-            return None
-        items = grounded.get(match.group(1))
-        index = int(match.group(2))
-        if not isinstance(items, list) or index >= len(items):
-            return None
-        child = match.group(3)
-        if child is None:
-            items[index] = replacement
-        elif isinstance(items[index], dict):
-            items[index][child] = replacement
-        else:
-            return None
     for field_name, indices in removals_by_field.items():
         items = grounded.get(field_name)
         if not isinstance(items, list):
@@ -2281,7 +2339,7 @@ def _research_state_evidence_grounding_fallback(
     if not isinstance(evidence, list) or not evidence:
         return None
     return grounded, {
-        "source_substitution_paths": tuple(source_substitutions),
+        "source_substitution_paths": (),
         "removed_paths": tuple(removal_paths),
     }
 
@@ -2607,9 +2665,54 @@ def _complete_parsed_role(
         and bool(failed_output)
         and failure is not None
     ):
-        fallback = final_validation_fallback(failed_output, failure)
-        if fallback is not None:
-            fallback_output, fallback_actions = fallback
+        fallback_output: Mapping[str, Any] = failed_output
+        fallback_failure = failure
+        fallback_steps: list[dict[str, list[str]]] = []
+        removed_paths: list[str] = []
+        source_substitution_paths: list[str] = []
+        seen_states = {
+            json.dumps(
+                dict(fallback_output),
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+        }
+        fallback_step_limit = max(
+            1,
+            sum(
+                len(value)
+                for value in fallback_output.values()
+                if isinstance(value, list)
+            ),
+        )
+        for _fallback_index in range(fallback_step_limit):
+            fallback = final_validation_fallback(
+                fallback_output,
+                fallback_failure,
+            )
+            if fallback is None:
+                break
+            next_output, fallback_actions = fallback
+            state_key = json.dumps(
+                dict(next_output),
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            if state_key in seen_states:
+                break
+            seen_states.add(state_key)
+            step = {
+                "source_substitution_paths": list(
+                    fallback_actions["source_substitution_paths"]
+                ),
+                "removed_paths": list(fallback_actions["removed_paths"]),
+            }
+            fallback_steps.append(step)
+            source_substitution_paths.extend(step["source_substitution_paths"])
+            removed_paths.extend(step["removed_paths"])
+            fallback_output = next_output
             try:
                 parsed_value = _parse_role_output(
                     f"{stage}_validation_fallback",
@@ -2617,22 +2720,26 @@ def _complete_parsed_role(
                     parser,
                 )
             except ValidationError as fallback_exc:
-                failure = ValidationError(
-                    f"{failure}; deterministic evidence grounding remained invalid: "
-                    f"{fallback_exc}"
-                )
+                fallback_failure = fallback_exc
+                continue
             else:
                 _emit_runtime_progress(
                     getattr(caller, "on_progress", None),
                     "structured_validation_fallback_applied",
                     stage=stage,
                     correction_count=completed_corrections,
+                    fallback_steps=fallback_steps,
                     source_substitution_paths=list(
-                        fallback_actions["source_substitution_paths"]
+                        dict.fromkeys(source_substitution_paths)
                     ),
-                    removed_paths=list(fallback_actions["removed_paths"]),
+                    removed_paths=list(dict.fromkeys(removed_paths)),
                 )
                 return parsed_value, usage
+        if fallback_steps:
+            failure = ValidationError(
+                f"{failure}; deterministic evidence grounding remained invalid: "
+                f"{fallback_failure}"
+            )
     if budget_failure is not None:
         raise RuntimeBudgetExceeded(
             f"{budget_failure_stage or stage} was not sent because its exact "

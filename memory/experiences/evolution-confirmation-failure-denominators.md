@@ -1,6 +1,6 @@
 # Evolution Confirmation Failure Denominators
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

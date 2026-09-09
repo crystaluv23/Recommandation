@@ -1,6 +1,6 @@
 # Live Evolution Context Audit
 
-visit_times: 22
+visit_times: 24
 
 ## Trigger
 
@@ -1681,3 +1681,23 @@ align the judgment/magnitude with the negative reasons or retain the positive pa
 supply an affirmative reason. Preserve everything outside the group and rerun the
 complete unchanged parser, so this pattern generalizes to other structured semantic
 conflicts without making local code the research judge.
+
+## Layered validation and live-budget addendum (2026-09-08)
+
+A full parser can expose model defects in layers. In the T7 pilot, two unsupported
+quantity claims were reported before a separate ambiguous Basic projection ref. A
+single quarantine-and-parse attempt removed the first defects but then rejected the
+whole case on the newly visible row. Treat deterministic recovery as one bounded
+call-free phase: remove only mechanically named complete items, rerun every unchanged
+validator, and repeat only while each step changes the object. Keep a seen-state set
+and bound steps by the rejected top-level item count. Never turn raw SEC or market JSON
+into a research belief merely because it is a byte-exact source literal, and never guess
+between ambiguous projections.
+
+Calibrate a live contract from the whole role graph rather than recent run totals. The
+T7 contract allowed 250 model attempts for 3 Plan candidates across 24 fixed cases, but
+real execution averaged about eight attempts per started case because H_init, routing,
+Signal, reflection, prediction, posthoc, and corrections are separate calls. The cap
+could not cover one Fast round even though the dollar ceiling had ample room. Estimate
+per-case attempts from persisted ledgers, multiply by the frozen candidate/cohort graph,
+add Slow and recovery envelopes, and keep attempt and dollar ceilings independent.

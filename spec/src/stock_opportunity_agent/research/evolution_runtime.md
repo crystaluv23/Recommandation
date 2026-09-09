@@ -896,24 +896,30 @@ count as that occurrence. This makes a one-digit date/day, quarter, or amount as
 executable as a long year or decimal without issuer-specific rules.
 
 If both model corrections are exhausted, ResearchState roles have one deterministic,
-call-free evidence-grounding fallback. It is eligible only when every remaining
-obligation is an unsupported-quantity evidence claim (including all same-claim refs and
-byte-identical linked assertions) or an unlinked quantitative assertion. When one
-invalid Basic ref already carries a non-empty `exact_text` of at most 400 characters,
-runtime first uses an exact-source substitution: it copies that entire literal into the
-claim and named linked assertions byte-for-byte. It does not summarize or choose another
-source. Otherwise runtime removes only the named complete top-level list items, in
-descending original index order per array, and refuses fallback if no evidence would
-remain. Every unlisted value and relative order is preserved byte-for-byte. The same
-parser and all local validators rerun over the grounded object, so a lost required need
-transition, invalid decision, malformed
-shape, identity leak, point-in-time defect, or any other residual error still rejects
-the candidate. Cached provider responses remain unchanged and a
+call-free evidence-grounding phase. It is eligible only when every remaining obligation
+names a complete Basic evidence row with an overlong, missing, non-contiguous, ambiguous,
+or quantitatively unsupported literal, or names an unlinked quantitative assertion.
+These migrated paths use stable `basic_literal_not_grounded`,
+`claim_quantity_not_supported`, and `assertion_without_support` issue codes. Exact
+invalid paths, permitted dependent assertion paths, candidate source refs, and numeric
+repair details live in the typed issue fields; explanatory `message` text grants no
+authority and changing its wording or punctuation cannot change recovery behavior.
+Runtime removes only the named complete evidence items and byte-identical linked
+beliefs/contradictions that no remaining identical evidence claim supports. It never
+turns a raw filing/market literal into a belief, edits a claim, or remaps an ambiguous
+literal to another projection. It refuses fallback if no evidence would remain.
+
+Because an earlier validator may hide a later row-local grounding failure, runtime then
+reruns the same parser and all local validators and may repeat the same mechanical
+removal inside this single fallback phase. Every step must change the object, repeated
+states stop the phase, and the step count is bounded by the rejected object's top-level
+item count. Any lost required need transition, invalid decision, malformed shape,
+identity leak, point-in-time defect, or other non-row-local residual error still rejects
+the candidate. Cached provider responses remain unchanged and one
 `structured_validation_fallback_applied` event records the role, exhausted correction
-count, and exact source-substitution and removal paths. Normal and
-successful-correction paths pay no additional
-tokens, while a provider-specific refusal to drop one invalid evidence leaf no longer
-discards all valid work in the case.
+count, each fallback step, and the exact removed paths. Normal and successful-correction
+paths pay no additional tokens, while one or two bad evidence rows no longer discard all
+valid siblings in the case.
 When partial Signal routing claims a facet retained by its residual, its correction
 obligation additionally carries `remove_terms_from_selection_reason`. Shared topic
 words are not themselves a contradiction. If the original target coordinates two
@@ -1069,6 +1075,15 @@ management guidance, or issuer catalyst—when it bears on the fixed outcome. Th
 not authorize an input summary or require one item per request; it prevents a market-
 only frontier from making downstream analysis falsely claim that visible material
 evidence was absent.
+
+Fixed H_init and routing prompts state each runtime invariant once. Runtime-owned
+eligible refs, executed-set filtering, selection caps, Signal versions, and enumerated
+card constraints are supplied as data and validated locally rather than being requested
+again from the model. Prompt compaction may merge repeated prose, but it must retain the
+PIT/outcome boundary, literal evidence contract, valid empty-result rule, applicability
+exclusions, direct-answer ownership, and exact output shape. Request preview, hash,
+reservation, persisted request, and transmitted body continue to use the same compacted
+bytes; lower prompt length alone is not evidence of higher research quality.
 
 One evidence-kind diagnostic is one correction obligation. Its expected-kind clause
 stays in the same segment as the exact `supporting_evidence[i].kind` path and must not

@@ -1169,7 +1169,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             corrected_literal,
         )
 
-    def test_v20_initialize_aggregates_shape_and_quantity_feedback(self) -> None:
+    def test_v107_initialize_stops_deep_checks_on_invalid_evidence_shape(self) -> None:
         fixture = json.loads(
             (
                 PROJECT_ROOT
@@ -1200,21 +1200,13 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(len(caller.calls), 2)
         error = validation_error(caller.calls[1])
         self.assertIn("unknown kind None", error)
-        self.assertIn("numeric quantities", error)
-        self.assertIn("42", error)
-        self.assertIn("2027", error)
+        self.assertNotIn("numeric quantities", error)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertGreaterEqual(feedback["obligation_count"], 2)
+        self.assertEqual(feedback["obligation_count"], 1)
         obligations = feedback["obligations"]
         self.assertEqual(
             obligations[0]["must_change_paths"],
             ["supporting_evidence[0].kind"],
-        )
-        self.assertTrue(
-            any(
-                "supporting_evidence[0].claim" in item["must_change_paths"]
-                for item in obligations
-            )
         )
         self.assertIn(
             "Satisfy every validation_feedback.obligations row",
@@ -1227,19 +1219,11 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
         self.assertEqual(len(required_paths), len(set(required_paths)))
         self.assertIn("supporting_evidence[0].kind", required_paths)
-        self.assertIn("supporting_evidence[0].claim", required_paths)
         self.assertIn(
             "compare every required_change_paths",
             feedback["completion_check"],
         )
-        self.assertIn(
-            "quantity_literal_checks",
-            feedback["completion_check"],
-        )
-        self.assertEqual(
-            feedback["quantity_literal_check_count"],
-            len(feedback["quantity_literal_checks"]),
-        )
+        self.assertNotIn("quantity_literal_checks", feedback)
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
             fixture["corrected_claim"],
@@ -1326,7 +1310,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             self.assertIn("complete numeric token", mention["token_boundary_rule"])
         self.assertIn("inside another numeric token", check["completion_rule"])
 
-    def test_v105_initialize_grounds_invalid_claim_from_exact_source_after_retries(
+    def test_v106_initialize_removes_invalid_claim_after_retries(
         self,
     ) -> None:
         invalid_claim = (
@@ -1394,12 +1378,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(initialized.usage.llm_calls, 3)
         self.assertEqual(
             initialized.value.current_beliefs,
-            (exact_text, valid_claim),
+            (valid_claim,),
         )
-        self.assertEqual(len(initialized.value.supporting_evidence), 2)
+        self.assertEqual(len(initialized.value.supporting_evidence), 1)
         self.assertEqual(
             initialized.value.supporting_evidence[0].claim,
-            exact_text,
+            valid_claim,
         )
         self.assertEqual(len(invalid["supporting_evidence"]), 2)
         fallback_events = [
@@ -1410,9 +1394,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(len(fallback_events), 1)
         self.assertEqual(
             fallback_events[0]["source_substitution_paths"],
-            ["supporting_evidence[0].claim", "current_beliefs[0]"],
+            [],
         )
-        self.assertEqual(fallback_events[0]["removed_paths"], [])
+        self.assertEqual(
+            fallback_events[0]["removed_paths"],
+            ["supporting_evidence[0]", "current_beliefs[0]"],
+        )
 
     def test_v105_evidence_grounding_refuses_mixed_validation_failures(
         self,
@@ -1521,6 +1508,207 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             fallback_event["removed_paths"],
             ["supporting_evidence[0]", "current_beliefs[0]"],
         )
+
+    def test_v106_initialize_removes_overlong_literal_and_keeps_valid_siblings(
+        self,
+    ) -> None:
+        invalid_claim = "The adjusted close declined from $9.15 to $7.11."
+        long_literal = "".join(
+            f'{{"as_of_date":"2025-02-{day:02d}","adjusted_close":7.11}}'
+            for day in range(1, 20)
+        )
+        self.assertGreater(len(long_literal), 800)
+        valid_claims = (
+            "Quarterly gold production was 89,073 ounces.",
+            "The issuer raised approximately $478 million.",
+        )
+        invalid = {
+            "hypotheses": ["Operations and financing may affect repricing."],
+            "current_beliefs": [*valid_claims, invalid_claim],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": valid_claims[0],
+                    "projection_id": "projection_production",
+                    "exact_text": valid_claims[0],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": valid_claims[1],
+                    "projection_id": "projection_financing",
+                    "exact_text": valid_claims[1],
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": invalid_claim,
+                    "projection_id": "projection_market",
+                    "exact_text": long_literal,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["What guidance could change expectations?"],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_production",
+                                "exact_text": valid_claims[0],
+                            },
+                            {
+                                "projection_id": "projection_financing",
+                                "exact_text": valid_claims[1],
+                            },
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": long_literal,
+                            },
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(initialized.value.current_beliefs, valid_claims)
+        self.assertEqual(
+            tuple(item.claim for item in initialized.value.supporting_evidence),
+            valid_claims,
+        )
+        fallback_event = next(
+            item
+            for item in events
+            if item["event_type"] == "structured_validation_fallback_applied"
+        )
+        self.assertEqual(
+            fallback_event["removed_paths"],
+            ["supporting_evidence[2]", "current_beliefs[2]"],
+        )
+        self.assertEqual(len(fallback_event["fallback_steps"]), 1)
+
+    def test_v106_initialize_revalidates_layered_live_failure_shape(self) -> None:
+        ambiguous_claim = "Operating cash flow was $2,446,400,000."
+        ambiguous_literal = (
+            '"end":"2024-12-31","filed":"2025-03-27",'
+            '"val":2446400000'
+        )
+        financing_claim = "Financing activities used $1,005,900,000."
+        financing_literal = '"end":"2024-12-31","val":-1005900000'
+        investing_claim = "Investing activities used $1,189,900,000."
+        investing_literal = '"end":"2024-12-31","val":-1189900000'
+        valid_claim = "Cost of sales guidance was $1,120 per ounce."
+        invalid = {
+            "hypotheses": ["Cash generation may support repricing."],
+            "current_beliefs": [
+                ambiguous_claim,
+                financing_claim,
+                investing_claim,
+                valid_claim,
+            ],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": ambiguous_claim,
+                    "projection_id": "projection_wrong",
+                    "exact_text": ambiguous_literal,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": financing_claim,
+                    "projection_id": "projection_financing",
+                    "exact_text": financing_literal,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": investing_claim,
+                    "projection_id": "projection_investing",
+                    "exact_text": investing_literal,
+                },
+                {
+                    "kind": "basic_info",
+                    "claim": valid_claim,
+                    "projection_id": "projection_guidance",
+                    "exact_text": valid_claim,
+                },
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["What operating result could change expectations?"],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller(
+            [json.loads(json.dumps(invalid)) for _index in range(3)]
+        )
+        caller.max_structured_corrections = 2
+        events: list[dict[str, object]] = []
+        caller.on_progress = events.append
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_wrong",
+                                "exact_text": "unrelated projection",
+                            },
+                            {
+                                "projection_id": "projection_ambiguous_a",
+                                "exact_text": ambiguous_literal,
+                            },
+                            {
+                                "projection_id": "projection_ambiguous_b",
+                                "exact_text": ambiguous_literal,
+                            },
+                            {
+                                "projection_id": "projection_financing",
+                                "exact_text": financing_literal,
+                            },
+                            {
+                                "projection_id": "projection_investing",
+                                "exact_text": investing_literal,
+                            },
+                            {
+                                "projection_id": "projection_guidance",
+                                "exact_text": valid_claim,
+                            },
+                        ]
+                    }
+                ]
+            },
+        )
+
+        self.assertEqual(initialized.value.current_beliefs, (valid_claim,))
+        self.assertEqual(
+            tuple(item.claim for item in initialized.value.supporting_evidence),
+            (valid_claim,),
+        )
+        fallback_event = next(
+            item
+            for item in events
+            if item["event_type"] == "structured_validation_fallback_applied"
+        )
+        self.assertEqual(len(fallback_event["fallback_steps"]), 2)
+        self.assertEqual(
+            fallback_event["fallback_steps"][1]["removed_paths"],
+            ["supporting_evidence[0]", "current_beliefs[0]"],
+        )
+        self.assertNotIn("projection_ambiguous_a", initialized.value.to_dict())
+        self.assertNotIn("projection_ambiguous_b", initialized.value.to_dict())
 
     def test_v102_literal_repair_permits_only_linked_claim_changes(self) -> None:
         rows = [
