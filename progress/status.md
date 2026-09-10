@@ -1,5 +1,16 @@
 # Status
 
+V14 was safely paused at Fast/Slow 0/0 after 13 complete cases and $0.575365
+recorded model cost. The requested false-unavailable audit found a real soft
+Signal projection loss: already-resolved financing disclosures were excluded by
+instruction-prose chunk ranking and shared-budget competition. Query/evidence-word
+ranking with per-Signal turns and document diversity restores the exact issuance
+source under the same 32K budget. All 643 tests pass. Across 216 deterministic
+case/Signal comparisons, none of the 28 unavailable results recovered with all
+local PIT documents; this does not establish that all parsers or soft projections
+are complete. V15 will freeze the repaired implementation for live acceptance.
+See [V14 projection audit](information-evolution-v14-projection-audit-2026-09-10.md).
+
 The Slow H1 unchanged-work fingerprint now includes its actual masked Fast
 meta-memory view. Previously, new reflections alone could leave H1 incorrectly
 suppressed after an older no-hypothesis result. Regression covers unchanged

@@ -1691,19 +1691,6 @@ def _shared_llm_signal_projection(
     """Build one deduplicated readable projection for up to two soft Signals."""
 
     documents_by_identity: dict[tuple[str, str], RawInfoDocument] = {}
-    query_text = "\n".join(
-        f"{item.spec.description}\n{item.skill}" for item in inputs
-    )
-    query_terms = tuple(
-        sorted(
-            {
-                token.casefold()
-                for token in re.findall(r"[A-Za-z0-9]+", query_text)
-                if len(token) >= 3
-                and token.casefold() not in _LLM_SIGNAL_QUERY_STOP_WORDS
-            }
-        )
-    )
     for item in inputs:
         for document in item.documents:
             documents_by_identity[(document.document_id, document.content_hash)] = document
@@ -1728,32 +1715,65 @@ def _shared_llm_signal_projection(
         start = 0
         while start < len(normalized):
             end = min(start + LLM_SIGNAL_CONTEXT_CHUNK_CHARS, len(normalized))
-            exact_text = normalized[start:end]
-            lowered = exact_text.casefold()
-            rank = (
-                -sum(term in lowered for term in query_terms),
-                -sum(min(lowered.count(term), 3) for term in query_terms),
-                -document.available_at.timestamp(),
-                document.document_id,
-                start,
-            )
+            rank = (-document.available_at.timestamp(), document.document_id, start)
             candidates.append((rank, document, normalized, runs, start, end))
             if end == len(normalized):
                 break
             start += step
-    candidates.sort(key=lambda item: item[0])
 
     payload: list[dict[str, Any]] = []
     lineage: dict[str, _SignalProjectionLineage] = {}
     used = 0
-    used_documents: set[str] = set()
-    ordered = sorted(
-        candidates,
-        key=lambda item: (
-            item[1].document_id in used_documents,
-            item[0],
-        ),
-    )
+    queues = []
+    for item in sorted(inputs, key=lambda item: item.spec.ref):
+        terms = {
+            token.casefold() for token in re.findall(
+                r"[A-Za-z0-9]+",
+                item.spec.retrieval_policy.query + " " + " ".join(
+                    item.spec.parameters.get("result_required_evidence_phrases", ())
+                ),
+            ) if len(token) >= 3 and token.casefold() not in _LLM_SIGNAL_QUERY_STOP_WORDS
+        }
+        eligible = {d.document_id for d in item.documents}
+
+        def rank_candidate(candidate):
+            """Rank an eligible chunk using only version-owned search intent."""
+
+            base_rank, _document, normalized, _runs, start, end = candidate
+            tokens = re.findall(r"[A-Za-z0-9]+", normalized[start:end].casefold())
+            return (
+                -len(terms.intersection(tokens)),
+                -sum(min(tokens.count(term), 3) for term in terms),
+                *base_rank,
+            )
+
+        queues.append(sorted(
+            (candidate for candidate in candidates if candidate[1].document_id in eligible),
+            key=rank_candidate,
+        ))
+    ordered = []
+    selected = set()
+    visited_documents = set()
+    ordered_chars = 0
+    while any(queues) and ordered_chars < MAX_LLM_SIGNAL_CONTEXT_CHARS:
+        for queue in queues:
+            queue[:] = [
+                c for c in queue
+                if (c[1].document_id, c[4]) not in selected
+                and c[5] - c[4] <= MAX_LLM_SIGNAL_CONTEXT_CHARS - ordered_chars
+            ]
+            if not queue:
+                continue
+            index = next(
+                (i for i, candidate in enumerate(queue)
+                 if candidate[1].document_id not in visited_documents),
+                0,
+            )
+            candidate = queue.pop(index)
+            ordered.append(candidate)
+            ordered_chars += candidate[5] - candidate[4]
+            selected.add((candidate[1].document_id, candidate[4]))
+            visited_documents.add(candidate[1].document_id)
     for _rank, document, normalized, runs, start, end in ordered:
         text_value = normalized[start:end]
         if not text_value or used + len(text_value) > MAX_LLM_SIGNAL_CONTEXT_CHARS:
@@ -1791,7 +1811,6 @@ def _shared_llm_signal_projection(
             normalized_source_length=len(normalized),
         )
         used += len(text_value)
-        used_documents.add(document.document_id)
     return payload, lineage
 
 

@@ -1563,6 +1563,13 @@ and correction feedback points back to that stable list. This prevents one Signa
 from citing a document contributed only by its batch peer and avoids a predictable
 paid correction without duplicating source text.
 
+Chunk relevance uses each Signal's version-owned retrieval query and evidence
+phrases. Extraction instructions are not search terms. Under the same shared
+budget, selection alternates between Signals and prefers unseen eligible documents
+before repeated chunks, so a long filing or a peer Signal cannot monopolize the
+view while a short relevant source is already present. Normalization, source
+timestamps, exact-span mapping and citation eligibility remain mandatory.
+
 ## Supervision, Interrupt, and Resume
 
 The runtime emits structured, secret-free progress events before and after

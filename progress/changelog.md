@@ -312,3 +312,5 @@
 - 2026-09-10: Fixed second-pass brand expansion across all Slow contexts and added bounded matcher reuse; full Discovery alias replay preserves Future/Business/Gen Z/Q2/AI while complete identities remain guarded. Preserved V10 on user-requested interruption and prepared a new DeepSeek Fast/Slow test.
 
 - 2026-09-10: Audit terminal V11 and complete Fast reflection/meta lineage; preserve whole Predictor/post-hoc evidence and meta items under actual budgets, restore unambiguous inherited need cutoffs, and prepare the DeepSeek V12 acceptance run.
+
+- 2026-09-10: Pause V14 after 13 cases to repair proven false-unavailable source projection loss; rank by versioned retrieval/evidence terms, alternate Signals and cover distinct documents under the same budget. Exact paid-input replay restores an omitted issuance disclosure, 216 deterministic comparisons show no broad-local retrieval recovery, and all 643 tests pass.

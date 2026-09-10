@@ -4,6 +4,59 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class SignalExecutionAndInitializeRoleTests(TestCase):
+    def test_shared_projection_preserves_short_sources_and_independent_signals(self) -> None:
+        from stock_opportunity_agent.research.evolution_signal_roles import (
+            _shared_llm_signal_projection,
+        )
+        from stock_opportunity_agent.signal_library import SignalRetrievalPolicy
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+
+        def document(identifier, content):
+            return RawInfoDocument.create(
+                document_id=identifier, company_id="issuer", source_type="filing",
+                published_at=as_of, available_at=as_of, content=content,
+            )
+
+        boilerplate = document(
+            "long-filing",
+            "Financing offering debt credit facility risk factors and governance. " * 2000,
+        )
+        action = "The company completed an offering of $400 million notes due in 2028."
+        short = document("short-event", action)
+        deployment = "The customer entered volume deployment under a binding contract."
+        customer = document("customer-event", deployment)
+        finance = SignalSpec(
+            signal_id="financing", version=1, category="catalysts",
+            description="Measure financing actions.", execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="skill.md",
+            retrieval_policy=SignalRetrievalPolicy(query_terms=("financing offering debt",)),
+        )
+        commercial = SignalSpec(
+            signal_id="deployment", version=1, category="customers",
+            description="Measure deployment.", execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="skill.md",
+            retrieval_policy=SignalRetrievalPolicy(query_terms=("customer volume deployment",)),
+        )
+        inputs = (
+            LLMSignalBatchInput(finance, (boilerplate, short), "Risk factors governance. " * 100),
+            LLMSignalBatchInput(commercial, (customer,), "Find literal deployment evidence."),
+        )
+        projected, lineage = _shared_llm_signal_projection(inputs)
+        texts = [item["exact_text"] for item in projected]
+        self.assertIn(action, texts)
+        self.assertIn(deployment, texts)
+        self.assertLessEqual(sum(map(len, texts)), 32_000)
+        self.assertEqual(len(projected), len(lineage))
+        self.assertEqual(projected, _shared_llm_signal_projection(tuple(reversed(inputs)))[0])
+        changed_instructions = (
+            LLMSignalBatchInput(finance, (short, boilerplate), "Different extraction instructions."),
+            inputs[1],
+        )
+        self.assertEqual(projected, _shared_llm_signal_projection(changed_instructions)[0])
+        for item in projected:
+            self.assertIn(item["exact_text"], lineage[item["projection_id"]].document.content)
+
     def test_period_end_label_does_not_turn_as_of_guidance_into_realized_results(self) -> None:
         from stock_opportunity_agent.research.evolution_research_validation import (
             _raw_future_information_issues,

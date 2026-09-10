@@ -10,6 +10,13 @@ mining, and Signal update proposals.
 - Candidate execution is evidence-backed and cannot promote a Signal.
 - Mining and update output remains bounded by the frozen contract.
 - Promotion authority stays in the Slow engine after machine validation.
+- Shared soft-Signal source projections rank chunks by each Signal's versioned
+  retrieval query and declared evidence phrases, not extraction-instruction prose.
+  Selection alternates between Signals and prefers an unseen eligible document
+  before another chunk from the same document. The shared character budget,
+  deterministic ordering, exact raw-span lineage and per-Signal citation scope
+  remain unchanged. A bounded view cannot prove absent data; unavailable results
+  must remain distinct from technical failures and negative domain observations.
 - Production H1 uses `signal-mining-hypothesis-v2`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
