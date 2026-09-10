@@ -322,3 +322,5 @@
 - 2026-09-11: V17 commits both 24-case Plans and all three reflection layers, then exposes same-input cross-Plan disagreement crashing learning profiles. Preserve raw events, quarantine disputed effectiveness observations, and rebuild derivatives on idempotent replay; all 647 tests pass. Source remains immutable at Fast/Slow 1/0 pending pre-Slow recovery boundary clarification.
 
 - 2026-09-11: V18 completes ordinary Fast/Slow 1/1, verifies exact 24-reflection H1 handoff and 232 learning events, and exercises E1 quarantine plus Update correction. Repair candidate ticker-case false positives, conditional as-of temporal intent and stale queryless JSON prefixes; 649 tests pass, targeted live validation pending.
+
+- 2026-09-11: Complete bounded live acceptance under fed00ec: original V18 candidate executes all four fixtures and is correctly rejected on one state mismatch; repaired E1 windows yield 22 validated observations across eight unchanged cases. Verify next-Fast input visibility, exact wire records, and V17 529-event idempotent recovery. No promotion or new full diagnostic cycle is claimed.

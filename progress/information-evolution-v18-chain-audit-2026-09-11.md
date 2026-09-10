@@ -71,5 +71,51 @@ and latency overhead, and is not claimed to be negligible.
    records previously hidden behind 2009–2011 prefixes. A bounded preview remains
    partial evidence and does not establish exhaustive field coverage.
 
-All 649 unit tests pass. Targeted real candidate validation and final follow-up
-checks remain pending; pointer completion alone is not the acceptance claim.
+All 649 unit tests and repository lint pass. The targeted verification below
+completes the MVP execution and information-flow audit; it does not claim that
+this particular search produced a promotable Signal.
+
+
+## Targeted acceptance after the repairs
+
+Frozen code `fed00ec`; isolated workspace
+`runs/cold_start/evolution/information-evolution-mvp-20260911-v19-validation-b`;
+contract `048e91262418fe33fcff026236e51c951d3dfaa1b22da04ab3e3253119462268`.
+This is a bounded diagnostic validation, not another completed evolution cycle.
+Its six real calls all succeeded, costing $0.006265; request bytes and hashes
+match, and repeat fixture reporting used cache without new paid calls.
+
+- The unchanged V18 customer-concentration candidate now passes the identity gate
+  and executes all four fixtures through the real Signal executor and DeepSeek.
+  Three meet their expected states; fixture 3 returns neutral instead of the
+  candidate's expected negative. It is therefore rejected on actual behavior.
+  The validator's `executed_tests=3` counts successful fixtures, while the request
+  ledger confirms all four were executed. No thresholds or expected states were
+  changed to make it pass; no paired holdout or promotion was warranted.
+- The same eight E1 cases and document hashes were re-extracted with repaired
+  previews. Both real microbatches succeeded, yielding 22 validated observations
+  with empty quarantine metadata. This establishes that the corrected source
+  windows actually reach the model, beyond local text-selection tests.
+- A next-Fast proposer request preview contains the exact masked committed meta
+  view. Registry freeze at learning cutoff 1 includes all 232 events and changes
+  the learning hash versus cutoff 0 while preserving the definition hash. The
+  preview was not transmitted and is not represented as a second Fast round.
+- V17's interrupted learning publication was replayed in an isolated Registry
+  copy: 200 missing events were appended, all 529 originals match, seven disputed
+  observations are excluded from effectiveness counts, and a second reconciliation
+  appends zero events. V17 itself remains immutable at round 1 / cycle 0.
+- The final V18 invariant audit covers all 36 trajectories and 1,926 resolved
+  document references with no detected future-document leakage, repeated Signal
+  execution within a case, or forbidden outcome/reflection fields in Predictor
+  input. Both V18 and diagnostic wire audits pass.
+
+Artifacts in the diagnostic workspace: `targeted_validation.json`,
+`targeted_e1_replay.json`, `next_fast_input_audit.json`, `attempts.json`, and
+`requests/`. V18's canonical meta, Plan records, learning ledger and staged Slow
+validation remain the authoritative original-cycle evidence.
+
+No Signal was promoted in this run. The promotion/next-version state machine is
+covered by the repository tests; a changed production Registry was not observed
+live here. The actual candidate failed a legitimate fixture after its false
+identity rejection was repaired. This is a valid rejection outcome, not evidence
+of a predictive improvement or a successfully promoted new Signal.
