@@ -3352,6 +3352,49 @@ class SignalEvolutionTests(TestCase):
                 0,
             )
 
+    def test_learning_disagreement_is_quarantined_and_replay_repairs_profile(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            first = SignalLearningEvent(
+                event_id="first", observation_key="same-input",
+                signal_ref="revenue_growth_yoy:v1", round_id=1,
+                plan_id="plan-1", case_id="case-1", company_id="issuer-1",
+                prediction_time=NOW.isoformat(),
+                selection={
+                    "signal_ref": "revenue_growth_yoy:v1",
+                    "reason_code": "answer_need", "selection_reason": "Test growth.",
+                    "applicability_hypothesis": "Comparable periods exist.",
+                    "expected_role": "primary", "context_tags": ["comparable_financials"],
+                },
+                result_value=SignalValue.POSITIVE, coverage=SignalCoverage.SUFFICIENT,
+                document_fingerprint=("doc-hash",), is_surge=True,
+                realized_max_multiple=3.0, prediction_correct=True,
+            )
+            disagreement = replace(
+                first, event_id="second", plan_id="plan-2",
+                result_value=SignalValue.UNAVAILABLE, coverage=SignalCoverage.UNAVAILABLE,
+            )
+            sibling = replace(
+                first, event_id="third", observation_key="other-input",
+                case_id="case-2", company_id="issuer-2",
+            )
+            self.assertEqual(registry.record_learning_events((first, disagreement, sibling)), 3)
+            profile = registry.load_learning_profile(first.signal_ref)
+            self.assertEqual(profile["selection_events"], 3)
+            self.assertEqual(profile["unique_observations"], 1)
+            self.assertEqual(profile["disputed_observations"], 1)
+            self.assertEqual(profile["state_outcome_matrix"]["positive"]["surge"], 1)
+            self.assertEqual(profile["directional"]["unavailable"], 0)
+            profile_path = registry._learning_dir(first.signal_ref) / "profile.json"
+            profile_path.unlink()
+            self.assertEqual(registry.record_learning_events((first, disagreement, sibling)), 0)
+            self.assertEqual(registry.load_learning_profile(first.signal_ref), profile)
+            self.assertEqual(len(registry.load_learning_events(first.signal_ref)), 3)
+            with self.assertRaisesRegex(ValidationError, "conflicting duplicate"):
+                registry.record_learning_event(replace(first, event_id="bad", is_surge=False))
+            self.assertEqual(len(registry.load_learning_events(first.signal_ref)), 3)
+
     def test_slow_loop_context_cannot_access_locked_test(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

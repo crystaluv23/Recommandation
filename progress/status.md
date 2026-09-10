@@ -1,5 +1,14 @@
 # Status
 
+V17 completed and committed both 24-case Fast candidates, including exact original,
+vertical and horizontal reflection persistence. It then stopped before Slow because
+seven repeated same-input Signal observations disagreed across Plans and crashed
+profile aggregation. The repair preserves all 529 raw learning events, quarantines
+disputed effectiveness observations and rebuilds profiles on idempotent replay.
+All 647 tests pass. The original V17 remains at Fast/Slow 1/0; immutable pre-Slow
+recovery awaits the architecture clarification required by AGENTS.md. See
+[V17 chain audit](information-evolution-v17-chain-audit-2026-09-11.md).
+
 V16 completed real Fast/Slow 1/1 with one eligible 24-case Plan, exact original
 reflection-to-meta-to-H1 handoff, and 256 exactly reconciled learning events.
 Candidate 2 was rejected after 12 cases; horizontal reflection was not exercised.

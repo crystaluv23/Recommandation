@@ -318,3 +318,5 @@
 - 2026-09-11: V15 live execution confirms restored financing evidence reaches Predictor; repair the repeated adaptive-reflection reservation gap with one fully validated terminal-budget fallback, retaining paid usage and failure eligibility. Preserve V15 0/0 evidence and prepare a two-candidate V16 MVP run.
 
 - 2026-09-11: Complete V16 real Fast/Slow 1/1 and audit exact reflection/meta/H1 and 256 learning-event handoffs; expose no-candidate Slow technical failures, unify Update correction/staging validation, preserve grounded E1 siblings after bounded failure, and normalize temporal tokens. All 646 tests and lint pass; fresh Slow acceptance awaits the required bootstrap architecture clarification.
+
+- 2026-09-11: V17 commits both 24-case Plans and all three reflection layers, then exposes same-input cross-Plan disagreement crashing learning profiles. Preserve raw events, quarantine disputed effectiveness observations, and rebuild derivatives on idempotent replay; all 647 tests pass. Source remains immutable at Fast/Slow 1/0 pending pre-Slow recovery boundary clarification.

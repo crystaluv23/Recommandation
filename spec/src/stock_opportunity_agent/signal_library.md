@@ -396,6 +396,16 @@ state/outcome effectiveness matrix across Plans, while each Plan's selection
 reason remains in the raw event stream. No event from an uncommitted round may
 enter this ledger.
 
+Repeated executions may disagree on result or coverage even with identical
+case/input fingerprints. Preserve every event, but exclude the entire disputed
+observation from state/outcome, directional and recurring-context effectiveness
+counts; report its bounded `disputed_observations` count instead. Do not choose
+the first result or reinterpret disagreement as unavailable/missing data.
+Selection reasons and reflection attribution remain observational audit counts.
+Identity, outcome and input-fingerprint conflicts remain hard integrity errors.
+Replay rebuilds the profile even when all event IDs already exist, recovering
+an interruption between durable event append and derived-profile publication.
+
 `profile.json` is a deterministic derivative of those events for one exact
 version. It contains only bounded counts, confidence, the complete
 positive/neutral/negative/unavailable by surge/non-surge matrix, explicit

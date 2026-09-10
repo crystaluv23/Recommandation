@@ -1633,8 +1633,7 @@ class SignalRegistry:
                     continue
                 known_ids.add(event.event_id)
                 missing.append(event)
-            if not missing:
-                continue
+            profile = _build_signal_learning_profile(signal_ref, (*existing, *missing))
             path = learning_dir / "events.jsonl"
             with path.open("a", encoding="utf-8") as handle:
                 for event in missing:
@@ -1648,10 +1647,9 @@ class SignalRegistry:
                     )
                 handle.flush()
                 os.fsync(handle.fileno())
-            existing.extend(missing)
             _atomic_write_json(
                 learning_dir / "profile.json",
-                _build_signal_learning_profile(signal_ref, existing),
+                profile,
             )
             recorded += len(missing)
         return recorded
@@ -3559,19 +3557,28 @@ def _build_signal_learning_profile(
 
     materialized = tuple(events)
     observations: dict[str, SignalLearningEvent] = {}
+    disputed: set[str] = set()
     for event in materialized:
         if event.signal_ref != signal_ref:
             raise ValidationError("cannot mix Signal refs in one learning profile")
         prior = observations.get(event.observation_key)
         if prior is not None and (
-            prior.result_value is not event.result_value
-            or prior.coverage is not event.coverage
-            or prior.is_surge != event.is_surge
+            prior.is_surge != event.is_surge
             or prior.company_id != event.company_id
+            or prior.case_id != event.case_id
+            or prior.prediction_time != event.prediction_time
             or prior.document_fingerprint != event.document_fingerprint
         ):
             raise ValidationError("conflicting duplicate Signal learning observation")
+        if prior is not None and (
+            prior.result_value is not event.result_value
+            or prior.coverage is not event.coverage
+        ):
+            disputed.add(event.observation_key)
         observations.setdefault(event.observation_key, event)
+    observations = {
+        key: event for key, event in observations.items() if key not in disputed
+    }
 
     matrix = {
         value.value: {"surge": 0, "non_surge": 0}
@@ -3603,6 +3610,8 @@ def _build_signal_learning_profile(
     for event in materialized:
         reason_code = str(event.selection.get("reason_code", "unspecified"))[:40]
         reason_counts[reason_code] = reason_counts.get(reason_code, 0) + 1
+        if event.observation_key in disputed:
+            continue
         for raw_tag in event.selection.get("context_tags", ()):
             tag = _learning_token(str(raw_tag))
             if not tag:
@@ -3672,6 +3681,7 @@ def _build_signal_learning_profile(
         "confidence": confidence,
         "selection_events": len(materialized),
         "unique_observations": unique_count,
+        "disputed_observations": len(disputed),
         "unique_issuers": len({event.company_id for event in observations.values()}),
         "state_outcome_matrix": matrix,
         "directional": {
