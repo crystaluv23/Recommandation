@@ -4,6 +4,53 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class SignalEvolutionTests(TestCase):
+    def test_queryless_json_excerpt_reaches_recent_dated_records(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import _agent_raw_document_view
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        rows = [{"end": "2009-01-01", "value": index} for index in range(80)]
+        rows += [{"end": "2025-06-30", "filed": "2025-08-01", "value": 12345}]
+        content = json.dumps({"observations": rows}, separators=(",", ":"))
+        document = RawInfoDocument.create(
+            document_id="dated", company_id="issuer", source_type="financials",
+            published_at=as_of, available_at=as_of, content=content,
+        )
+        view = _agent_raw_document_view(document, max_content_chars=300)
+        self.assertIn('"value":12345', view["content_excerpt"])
+        self.assertIn(view["content_excerpt"], content)
+        self.assertLessEqual(len(view["content_excerpt"]), 300)
+        self.assertEqual(document.content, content)
+        prose = RawInfoDocument.create(
+            document_id="prose", company_id="issuer", source_type="financials",
+            published_at=as_of, available_at=as_of,
+            content="Introduction " + "ordinary prose " * 100,
+        )
+        preview = _agent_raw_document_view(prose, max_content_chars=300)
+        self.assertTrue(preview["content_excerpt"].startswith("Introduction"))
+
+    def test_candidate_identity_guard_preserves_ticker_case(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            candidate = SignalSpec(
+                signal_id="case_sensitive_probe", version=1, category="financial",
+                description="Check five customers and cash for the next period.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy", source_types=("financials",),
+            )
+            validator = SignalCandidateValidator(
+                registry, llm_runner=None, forbidden_identity_terms=("FIVE", "CASH", "NEXT"),
+            )
+            self.assertTrue(validator.validate(candidate, skill=None, tests=(candidate_growth_fixture(),)).accepted)
+            for ticker in ("FIVE", "CASH", "NEXT"):
+                with self.subTest(ticker=ticker):
+                    result = validator.validate(
+                        replace(candidate, description=f"Measure {ticker} customer activity."),
+                        skill=None, tests=(candidate_growth_fixture(),),
+                    )
+                    self.assertFalse(result.accepted)
+                    self.assertTrue(any("identity leaked" in reason for reason in result.reasons))
+
     def test_mining_context_masks_persisted_reflections_without_mutating_memory(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

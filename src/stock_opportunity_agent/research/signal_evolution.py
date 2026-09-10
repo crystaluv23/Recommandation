@@ -43,7 +43,7 @@ from stock_opportunity_agent.research.evolution_core import (
     PlanMetaMemory,
     ProgressCallback,
     SlowLoopDataUnavailable,
-    _AMBIGUOUS_SHORT_IDENTITY_TERMS,
+    _compiled_identity_aliases,
     _MASKED_IDENTITY_VALUE,
     _assert_identity_values_masked,
     _discovery_identity_terms,
@@ -159,9 +159,9 @@ class SignalCandidateValidator:
             )
         ):
             reasons.append("candidate weakens required evidence traceability")
-        serialized = json.dumps(spec.to_dict(), sort_keys=True).casefold()
-        serialized += " " + (skill or "").casefold()
-        serialized += " " + json.dumps(materialized_tests, sort_keys=True).casefold()
+        serialized = json.dumps(spec.to_dict(), sort_keys=True)
+        serialized += " " + (skill or "")
+        serialized += " " + json.dumps(materialized_tests, sort_keys=True)
         for phrase in (
             "ground truth",
             "outcome label",
@@ -169,20 +169,12 @@ class SignalCandidateValidator:
             "future price",
             "post-outcome",
         ):
-            if phrase in serialized:
+            if phrase in serialized.casefold():
                 reasons.append(f"obvious leakage phrase: {phrase}")
-        for identity in self.forbidden_identity_terms:
-            normalized_identity = identity.casefold()
-            if (
-                len(normalized_identity) == 3
-                and normalized_identity.isalpha()
-                and normalized_identity in _AMBIGUOUS_SHORT_IDENTITY_TERMS
-            ):
-                continue
-            if re.search(
-                rf"(?<![a-z0-9]){re.escape(normalized_identity)}(?![a-z0-9])",
-                serialized,
-            ):
+        for identity, prose_matcher, _url_matcher in _compiled_identity_aliases(
+            self.forbidden_identity_terms, expand_aliases=False
+        ):
+            if prose_matcher.search(serialized):
                 reasons.append(f"discovery identity leaked into candidate: {identity}")
         normalized = _normalize_semantics(spec.description)
         for card in self.registry.list_signal_cards():

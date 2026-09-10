@@ -2766,6 +2766,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "List production actuals for the next reporting period.",
             "What approvals were announced subsequent to July 2025?",
             "What 2026 revenue results did the issuer report?",
+            "What actual results for Q1 2026 could we obtain as of 2025-07-31?",
         )
         corrected_need = (
             "What operating evidence had the issuer disclosed by 2025-07-31?"
@@ -2828,6 +2829,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 "What guidance had the issuer disclosed by 2025-07-31 for 2026?",
                 "What did the issuer disclose by prediction_time about Q1 2026 guidance?",
                 "What forecast was disclosed as_of the cutoff_time for 2026?",
+                "What did the issuer disclose by 2025-07-31 about commitments that could convert to revenue by 2026-01-31?",
+                "What did the issuer disclose by prediction_time that might affect demand in 2026?",
                 (
                     "What had the issuer disclosed by July 31, 2025 about the "
                     "timing of its Q4 2025 earnings report?"

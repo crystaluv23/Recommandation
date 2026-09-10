@@ -9,7 +9,7 @@ import math
 import random
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from enum import Enum
 from functools import lru_cache
 from html.parser import HTMLParser
@@ -5829,6 +5829,31 @@ def _query_relevant_excerpt(
     if len(text_value) <= max_chars:
         return text_value, False
     query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    if not query_terms and document.content.lstrip().startswith(("{", "[")):
+        # Keep original text/lineage; rank dated leaf records, not JSON headers.
+        dated_records: list[tuple[str, int]] = []
+        cutoff = document.available_at.date().isoformat()
+        for record in re.finditer(r"\{[^{}]*\}", text_value):
+            try:
+                fields = json.loads(record.group(0))
+            except json.JSONDecodeError:
+                continue
+            dates = []
+            for value in fields.values():
+                if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+                    continue
+                try:
+                    date.fromisoformat(value)
+                except ValueError:
+                    continue
+                if value <= cutoff:
+                    dates.append(value)
+            if dates:
+                dated_records.append((max(dates), record.start()))
+        if dated_records:
+            _latest, anchor = max(dated_records, key=lambda row: (row[0], -row[1]))
+            start = min(anchor, len(text_value) - max_chars)
+            return text_value[start : start + max_chars], True
     anchors = (
         [
             match.start()

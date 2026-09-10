@@ -357,6 +357,9 @@ requests without an as-of upper bound. The provider prompt states this distincti
 and local raw validation names every exact future-source path before routing; no future
 fact is inferred or injected. A valid as-of schedule question may still name a later
 event or release date when it asks only what was already disclosed by the cutoff.
+The same bounded rule covers conditional future implications expressed with
+could/might/would; it does not depend on a business-domain keyword whitelist.
+Explicit requests for future realized results remain rejected.
 
 Soft-Signal citations retain exact normalized-to-raw lineage. Mapping slices that
 lineage to the returned quote rather than widening it to the surrounding projection,
@@ -1562,6 +1565,11 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    matched or unmatched by this hypothesis-relevance check. The model
    excerpt is a deterministic normalized window centered on the strongest query
    match, with the complete immutable document hash retained as lineage. Window
+   selection without query terms prefers recent dated leaf records in long JSON
+   sources, bounded by the document's point-in-time availability. It retains an
+   exact normalized source window rather than synthesizing a financial summary;
+   undated or non-JSON sources keep the existing prefix fallback.
+   Window
    anchors and scores use the same complete normalized terms and ordered pairs
    as the visible-evidence gate, not substring counts that reward navigation
    boilerplate or discard ordinary plural forms; it must

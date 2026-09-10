@@ -1,5 +1,13 @@
 # Status
 
+V18 completed the ordinary real Fast/Slow path at 1/1: one eligible 24-case Plan,
+exact reflection/meta/H1 transfer, and 232 reconciled learning events. E1 retained
+valid observations after quarantine and E2 ran. One Update candidate staged but
+was falsely blocked by lowercasing `five` into ticker `FIVE`; no promotion occurred.
+Post-run repairs reuse strict identity matchers, recognize conditional as-of intent,
+and show recent dated records in queryless JSON previews. All 649 tests pass.
+Targeted real candidate validation is next; see [V18 audit](information-evolution-v18-chain-audit-2026-09-11.md).
+
 V17 completed and committed both 24-case Fast candidates, including exact original,
 vertical and horizontal reflection persistence. It then stopped before Slow because
 seven repeated same-input Signal observations disagreed across Plans and crashed

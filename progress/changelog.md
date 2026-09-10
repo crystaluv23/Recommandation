@@ -320,3 +320,5 @@
 - 2026-09-11: Complete V16 real Fast/Slow 1/1 and audit exact reflection/meta/H1 and 256 learning-event handoffs; expose no-candidate Slow technical failures, unify Update correction/staging validation, preserve grounded E1 siblings after bounded failure, and normalize temporal tokens. All 646 tests and lint pass; fresh Slow acceptance awaits the required bootstrap architecture clarification.
 
 - 2026-09-11: V17 commits both 24-case Plans and all three reflection layers, then exposes same-input cross-Plan disagreement crashing learning profiles. Preserve raw events, quarantine disputed effectiveness observations, and rebuild derivatives on idempotent replay; all 647 tests pass. Source remains immutable at Fast/Slow 1/0 pending pre-Slow recovery boundary clarification.
+
+- 2026-09-11: V18 completes ordinary Fast/Slow 1/1, verifies exact 24-reflection H1 handoff and 232 learning events, and exercises E1 quarantine plus Update correction. Repair candidate ticker-case false positives, conditional as-of temporal intent and stale queryless JSON prefixes; 649 tests pass, targeted live validation pending.

@@ -46,6 +46,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   One- and two-character ticker aliases require an explicit dollar, ticker,
   symbol, or exchange marker in prose; standalone letters and quarter notation
   are not issuer identities. Full company names remain masked.
+  Candidate validation uses the same case-preserving strict matchers as outgoing
+  contexts: an ordinary lowercase word must not become an uppercase ticker merely
+  because the complete candidate was case-folded. Full names retain case-insensitive
+  matching; explicit ticker and symbol markers retain their existing treatment.
   All Slow contexts (meta, profiles, H3/Exploration source projections, and
   Update packets) consume this strict aggregate inventory without deriving new
   first-word brands. Local case masking keeps its own alias expansion. Repeated
