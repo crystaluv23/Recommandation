@@ -236,15 +236,14 @@ deterministic controls. The canonical model payload names and emits those frozen
 available cards first, before case-dynamic needs/results, to increase provider
 prefix-cache reuse while retaining them as untrusted user data.
 
-The v7 contract additionally freezes `predictor_context_bytes=24000`. Predictor
-assembly removes repeated full Basic projections and full per-round Signal evidence:
-it sends a Basic source/DataGap index, the complete final ResearchState, compact
-Signal state/interpretation/coverage rows, and exact material only for final-state
-Signal citation tuples. Complete source bundles and rounds remain in the local
-trajectory. The compact payload is measured after anonymity masking with canonical
-UTF-8 JSON and must fit its byte ceiling before provider request construction. This
-keeps the byte-for-token preflight conservative and makes the 64,000 terminal reserve
-internally consistent; no tokenizer approximation or post-call overflow is allowed.
+The v7 contract retains `predictor_context_bytes=24000` as a presentation target
+in newly frozen code. Historical runs retain their frozen hard-cap behavior.
+Predictor assembly removes repeated full Basic projections and full per-round
+Signal evidence, but preserves the complete final ResearchState and every cited
+Signal evidence tuple. Target overflow is visible in context metadata and is not
+an independent candidate rejection. The exact wire-byte reservation plus output
+must still fit the remaining case budget before transmission. Complete source
+bundles and rounds remain in the local trajectory.
 Post-hoc compaction consumes that already-compact Predictor view directly: it preserves
 the Basic `source_index` and `data_gaps`, final state, and compact Signal results while
 omitting complete Basic projections and the full original Predictor context. It must
@@ -1760,3 +1759,13 @@ Full-market expansion tests additionally cover fixed-date labels, incomplete
 case exclusion with eligible-issuer retention, CIK deduplication, deterministic weighted/diversity sampling,
 issuer-disjoint stratified splits, hashed official-source identity decisions,
 date-bound CIK replacement/exclusion, immutable replay, and zero external calls.
+
+### Lossless reflection boundaries
+
+Post-hoc context preserves the complete final state, baseline and cited Signal
+material; its display target is advisory and exact wire budgets remain hard.
+A Controller residual that loses a prior need's explicit cutoff may be restored
+to that original need only when its topic is a literal contiguous phrase of one
+unambiguous prior cutoff-valid need (ignoring punctuation and `any`). This is
+restoration of a runtime-owned input, not creation of a new date-qualified fact.
+Realized-result requests and unmatched or ambiguous rewrites remain rejected.

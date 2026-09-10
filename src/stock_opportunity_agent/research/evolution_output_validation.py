@@ -534,33 +534,6 @@ _UNTRUSTED_DATA_INSTRUCTION = (
 )
 
 
-def _bounded_json_view(value: Any, max_chars: int) -> Any:
-    """Deterministically bound a JSON value without slicing invalid JSON text."""
-
-    if len(json.dumps(value, ensure_ascii=False, sort_keys=True)) <= max_chars:
-        return value
-    if isinstance(value, Mapping):
-        result: dict[str, Any] = {}
-        for key in sorted(value):
-            candidate = dict(result)
-            candidate[str(key)] = _bounded_json_view(value[key], max(256, max_chars // 2))
-            if len(json.dumps(candidate, ensure_ascii=False, sort_keys=True)) > max_chars:
-                break
-            result = candidate
-        return result
-    if isinstance(value, (list, tuple)):
-        result_list: list[Any] = []
-        for item in value:
-            candidate = [*result_list, _bounded_json_view(item, max(128, max_chars // 2))]
-            if len(json.dumps(candidate, ensure_ascii=False, sort_keys=True)) > max_chars:
-                break
-            result_list = candidate
-        return result_list
-    if isinstance(value, str):
-        return value[: max(0, max_chars - 16)]
-    return value
-
-
 def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, Any]:
     """Return the fixed post-hoc semantic view without the full Predictor packet."""
 
@@ -618,7 +591,16 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
         "data_gaps": data_gaps,
         "prediction_baseline": original_context.get("prediction_baseline", {}),
     }
-    return dict(_bounded_json_view(compact, MAX_POSTHOC_MODEL_CHARS))
+    compact["cited_signal_evidence"] = original_context.get("cited_signal_evidence", [])
+    compact["context_contract"] = {
+        "target_chars": MAX_POSTHOC_MODEL_CHARS,
+        "budget_enforcement": "exact_wire_remaining_case_tokens",
+        "presentation_target_exceeded": (
+            len(json.dumps(compact, ensure_ascii=False, sort_keys=True))
+            > MAX_POSTHOC_MODEL_CHARS
+        ),
+    }
+    return compact
 
 
 _PLAN_REFLECTION_OUTPUT = _output_contract(

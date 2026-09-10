@@ -4,6 +4,36 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class SignalExecutionAndInitializeRoleTests(TestCase):
+    def test_literal_residual_restores_prior_cutoff_without_waiving_future_checks(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _restore_inherited_need_cutoffs, _raw_future_information_issues,
+        )
+        prior = "What outlook was disclosed by 2025-05-30 about any fiscal 2026 revenue-growth outlook?"
+        previous = ResearchState(next_information_needs=(prior,))
+        context = {"prediction_time": "2025-05-30T00:00:00+00:00"}
+        value = {"next_information_needs": [
+            "Fiscal 2026 revenue-growth outlook remains unresolved.",
+            "What actual revenue was reported in 2026?",
+            "What fiscal 2027 outlook was published?",
+        ]}
+        _restore_inherited_need_cutoffs(value, previous, context)
+        self.assertEqual(value["next_information_needs"][0], prior)
+        self.assertEqual(len(_raw_future_information_issues(value, context)), 2)
+        self.assertEqual(previous.next_information_needs, (prior,))
+
+    def test_posthoc_retains_complete_state_and_cited_signal_material(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _compact_posthoc_context,
+        )
+        state = {"current_beliefs": ["A complete qualified belief. " * 1500]}
+        citations = [{"evidence": {"exact_span": "Complete Signal literal."}}]
+        result = _compact_posthoc_context({
+            "final_research_state": state, "cited_signal_evidence": citations,
+        })
+        self.assertEqual(result["final_research_state"], state)
+        self.assertEqual(result["cited_signal_evidence"], citations)
+        self.assertTrue(result["context_contract"]["presentation_target_exceeded"])
+
     def test_plan_proposer_reports_invalid_shape_as_validation_error(self) -> None:
         proposer = LLMInformationPlanProposer(
             ScriptedRoleCaller([{"unexpected": True}, {"unexpected": True}])

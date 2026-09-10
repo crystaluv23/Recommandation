@@ -1,5 +1,11 @@
 # Status
 
+V11 terminated at Fast/Slow 0/0 (6/8/3 completed cases): two Predictor display
+ceiling failures and one inherited-need cutoff loss. Predictor/post-hoc now
+retain complete state and citations under exact transport budgets; meta views
+retain whole items with omission counts. Paid V11 cutoff and V8 reflection
+replays pass; all 639 tests and repository lint pass. A frozen V12 DeepSeek successor is prepared after verification.
+
 The global Slow alias expansion defect is repaired: all Slow views now consume
 the strict inventory without deriving first-word brands. Real 18,929-alias replay
 preserves ordinary research prose; bounded compiled-pattern reuse removes repeated

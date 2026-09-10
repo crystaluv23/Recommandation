@@ -2571,7 +2571,8 @@ def _assemble_final_context(
     context = {
         "context_contract": {
             "kind": "bounded_prediction_projection",
-            "max_utf8_bytes": MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
+            "target_utf8_bytes": MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
+            "budget_enforcement": "exact_wire_remaining_case_tokens",
             "complete_trajectory_retained_locally": True,
         },
         "basic_info": {
@@ -2596,11 +2597,9 @@ def _assemble_final_context(
             separators=(",", ":"),
         ).encode("utf-8")
     )
-    if context_bytes > MAX_PREDICTOR_CONTEXT_UTF8_BYTES:
-        raise RuntimeBudgetExceeded(
-            "compact Predictor context exceeds frozen UTF-8 byte ceiling: "
-            f"required={context_bytes}, limit={MAX_PREDICTOR_CONTEXT_UTF8_BYTES}"
-        )
+    masked_context["context_contract"]["presentation_target_exceeded"] = (
+        context_bytes > MAX_PREDICTOR_CONTEXT_UTF8_BYTES
+    )
     return masked_context
 
 
@@ -4664,14 +4663,12 @@ class PlanMetaMemory:
     def model_view(self, *, max_chars: int = 48_000) -> tuple[Mapping[str, Any], ...]:
         """Derive a bounded FIFO view while retaining one aggregate per round."""
 
-        def compact_strings(
-            values: Iterable[Any], *, count: int = 3, chars: int = 160
-        ) -> list[str]:
-            return [str(item)[:chars] for item in tuple(values)[:count]]
+        def compact_strings(values: Iterable[Any]) -> list[str]:
+            return [str(item) for item in values]
 
         def compact_reflection(value: Mapping[str, Any]) -> dict[str, Any]:
             return {
-                str(key): compact_strings(items, chars=240)
+                str(key): compact_strings(items)
                 if isinstance(items, (list, tuple))
                 else items
                 for key, items in value.items()
@@ -4700,7 +4697,7 @@ class PlanMetaMemory:
                     "round_id": entry.round_id,
                     "aggregate": {
                         "plan_count": len(entry.plan_reflections),
-                        "evidence_refs": compact_strings(entry.evidence_refs, chars=80),
+                        "evidence_refs": compact_strings(entry.evidence_refs),
                         "assessment_counts": dict(sorted(assessment_counts.items())),
                         "successful_patterns": compact_strings(entry.successful_patterns),
                         "failed_patterns": compact_strings(entry.failed_patterns),
@@ -4714,8 +4711,35 @@ class PlanMetaMemory:
                     "representative_details": [],
                 }
             )
-        if len(json.dumps(bases, ensure_ascii=False, sort_keys=True)) > max_chars:
+        def fits() -> bool:
+            return len(json.dumps(bases, ensure_ascii=False, sort_keys=True)) <= max_chars
+
+        pending: list[tuple[dict[str, Any], dict[str, list[str]]]] = []
+        for base in bases:
+            aggregate = base["aggregate"]
+            items = {
+                key: aggregate[key] for key in aggregate
+                if isinstance(aggregate[key], list)
+            }
+            base["omitted_items"] = {key: len(values) for key, values in items.items()}
+            entry = self._entries[len(pending)]
+            base["omitted_plan_details"] = len(entry.plan_reflections)
+            base["omitted_case_details"] = sum(
+                len(plan.original_case_reflections) for plan in entry.plan_reflections
+            )
+            for key in items:
+                aggregate[key] = []
+            pending.append((base, items))
+        if not fits():
             raise ValidationError("round aggregate meta view exceeds fixed context limit")
+        for base, items in reversed(pending):
+            for key, values in items.items():
+                for item in values:
+                    base["aggregate"][key].append(item)
+                    base["omitted_items"][key] -= 1
+                    if not fits():
+                        base["aggregate"][key].pop()
+                        base["omitted_items"][key] += 1
 
         by_round = {int(item["round_id"]): item for item in bases}
         for entry in reversed(self._entries):
@@ -4759,12 +4783,21 @@ class PlanMetaMemory:
                     "vertical": compact_reflection(
                         plan.vertical_plan_reflection.to_dict()
                     ),
-                    "representative_cases": representatives,
+                    "representative_cases": [],
                 }
+                base = by_round[entry.round_id]
                 details.append(candidate)
-                if len(json.dumps(bases, ensure_ascii=False, sort_keys=True)) > max_chars:
+                base["omitted_plan_details"] -= 1
+                if not fits():
                     details.pop()
-                    break
+                    base["omitted_plan_details"] += 1
+                    continue
+                for representative in representatives:
+                    candidate["representative_cases"].append(representative)
+                    base["omitted_case_details"] -= 1
+                    if not fits():
+                        candidate["representative_cases"].pop()
+                        base["omitted_case_details"] += 1
         return tuple(bases)
 
 

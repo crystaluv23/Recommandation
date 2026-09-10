@@ -353,3 +353,59 @@ cached; these are matcher compilation measurements, not end-to-end Slow speedups
 The regression suite verifies strict versus case-local behavior and reuse. V10
 was safely interrupted on the user's request; its paid artifacts are preserved.
 A fresh DeepSeek Fast/Slow contract validates this final change.
+
+## V11 completion audit and successor repair (2026-09-10)
+
+V11 terminated `round_rejected` / `no_fitness_eligible_candidates` at 06:39:27 UTC.
+Candidate case counts were 6, 8, 3; committed round/cycle remain 0/0. Slow did not
+start. This is a terminal rejection, distinct from earlier quota/transport pauses.
+Two candidates exceeded the 24KB presentation ceiling (24,558 and 27,297 bytes).
+The other lost the explicit cutoff while paraphrasing a prior need about the
+fiscal 2026 outlook. Its original question explicitly requested disclosures by
+2025-05-30; this was not evidence of an originally future-looking data request.
+
+The repaired Predictor and post-hoc projections preserve complete validated
+state/citations, with presentation target overflow visible and the exact outgoing
+wire/case reservation still enforced. Arbitrary display thresholds no longer
+independently reject the candidate or recursively slice reflection evidence.
+Meta views select whole items under their shared 48K budget, disclose omissions,
+and admit vertical detail before representative cases. An inherited literal
+residual can restore its unique cutoff-valid prior question; unmatched/ambiguous
+or realized-result questions keep existing rejection behavior.
+
+Exact paid-response replay `5ea5b6ccd5a3864809a2aa0c7fb3cd2a7498a897dd9f2f4935f62809cb3b7b48`
+restores only the lost inherited need; all other response fields are unchanged.
+V8 meta replay preserves the complete Plan Critic output exactly, with a 10,828
+character view and four representative cases (20 omitted originals retained in
+storage). V11 remains immutable; V12 is the new-code live acceptance run.
+### Information-flow acceptance matrix
+
+Scope includes plan evolution, not only Signal evolution. For each link distinguish
+persisted content, outgoing content, semantic preservation, and downstream uptake.
+
+| Link | Evidence / current finding | Status |
+|---|---|---|
+| Raw Info to Basic/Signal projections | Earlier PIT baseline, IFRS/currency/history repairs verified; source projection budgets remain intentional, and source completeness is not model visibility | repaired and live reviewed |
+| H_init / H_reflect to final ResearchState | Persisted states/evidence are available; model corrections and conservative typed fallback remain visible, never evidence synthesis | live exercised |
+| final ResearchState / H_analyse to Predictor | All 24 complete V8 candidate contexts exactly equal outgoing Predictor final_context; H_analyse is an instruction within that request, not a separate model stage | exact match |
+| Prediction to posthoc reflection | Actual requests separate original_prediction, compact_context, revealed_ground_truth and computed correctness; labels revealed only after prediction | live reviewed |
+| Case reflections to Plan Critic | Actual Critic request contains 24 case trajectories; output recognizes conservatism and missed catalysts | live reviewed |
+| Case + Plan reflection to meta-memory | 24/24 original self_reflections exact; corrected Critic JSON equals vertical_plan_reflection exactly | exact match |
+| Cross-Plan round reflection | V8 has only one complete record; len(records)<2 returns minimal aggregate without an LLM call, then appends exact case/vertical layers | intentional conditional no-op |
+| Stored meta to model_view | Up to six representative assessment cases and three strings per field; each detail string is mechanically cut at 240 chars; V8 contains mid-word cuts | repaired, complete-item replay verified |
+| Meta + selected parents to next proposer | Code sends bounded meta_info plus parent Plans; V8 ends after one round, no live next-round request exists | downstream live check pending |
+| Meta to Slow Mining | V8 strict outgoing scan blocked Gen Z before H1; strict inventory/short ticker/source-ref repairs and exact replay pass | repaired, successor live pending |
+| Signal execution to learning | Recomputed all 27 events from V8 committed Plan: exact equality; rejected partial candidates absent | exact match |
+| Learning to Update targets | Customer concentration and guidance selected from logged recurring patterns; directional mismatch is a search trigger, not proof source Signal is wrong | live reviewed |
+| Update source facts to decision | Valid literal quotes formerly failed hidden 240 cap; exact guidance defer now passes; divergent runtime relations remain rejected | repaired and replayed |
+| Candidate tests/holdout to Registry | V8 produced no candidates, no effectiveness run or promotion; local existing promotion tests do not substitute for live acceptance | live pending |
+| Registry promotion to next Fast routing | Existing test covers new snapshot visibility; V8 has no promotion and no next cycle | live pending |
+| Retry/checkpoint to resumed work | V8 SSL and manual pauses reused exact responses and case checkpoints, completed Fast/Slow 1/1 | live exercised |
+
+The fixed one-round/one-cycle pilot cannot itself prove next-generation uptake or
+predictive benefit. Distinguish those limits rather than claiming success from
+completion. V11 terminated before Slow; successor live uptake remains unverified.
+
+Verification: 639 repository tests pass; repository lint passes. V11 wire audit
+checks 336 attempts (327 completed, 9 failed), 17 completed trajectories, and
+$0.80942288 model cost; all persisted wire hashes and byte counts match.

@@ -902,6 +902,54 @@ def _raw_research_state_compaction_issues(
     return issues
 
 
+def _restore_inherited_need_cutoffs(
+    value: dict[str, Any], previous_state: ResearchState | None,
+    evaluation_context: Mapping[str, Any] | None,
+) -> None:
+    """Restore one exact prior need when a literal residual dropped its cutoff."""
+
+    if previous_state is None or not isinstance(evaluation_context, Mapping):
+        return
+    try:
+        cutoff = datetime.fromisoformat(
+            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
+        ).date()
+    except ValueError:
+        return
+
+    def words(text: str) -> str:
+        return " " + " ".join(
+            token for token in re.findall(r"[a-z0-9]+", text.casefold())
+            if token != "any"
+        ) + " "
+
+    for field in ("open_questions", "next_information_needs"):
+        items = value.get(field)
+        if not isinstance(items, list):
+            continue
+        restored = list(items)
+        for index, item in enumerate(items):
+            if not isinstance(item, str) or not _future_source_date_refs(
+                item, cutoff, field_name=field
+            ):
+                continue
+            if _FUTURE_REALIZED_RESULT.search(item):
+                continue
+            topic = re.sub(
+                r"\s+(?:remain(?:s)?|is|are)\s+unresolved[.?!]?\s*$", "", item,
+                flags=re.IGNORECASE,
+            )
+            matches = [
+                need for need in getattr(previous_state, field)
+                if _has_prediction_bounded_as_of_clause(need, cutoff)
+                and not _future_source_date_refs(need, cutoff, field_name=field)
+                and words(topic).strip() and words(topic) in words(need)
+            ]
+            if len(matches) == 1:
+                restored[index] = matches[0]
+        value[field] = restored
+
+
 def _normalize_research_state_output(
     value: Mapping[str, Any],
     *,
@@ -913,6 +961,7 @@ def _normalize_research_state_output(
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
     normalized = dict(value)
+    _restore_inherited_need_cutoffs(normalized, previous_state, evaluation_context)
     future_information_issues = _raw_future_information_issues(
         normalized,
         evaluation_context,

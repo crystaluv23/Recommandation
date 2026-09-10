@@ -25,6 +25,17 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             len(json.dumps(view, ensure_ascii=False, sort_keys=True)), 48_000
         )
 
+    def test_meta_view_keeps_whole_items_and_reports_budget_omissions(self) -> None:
+        first = "A long complete reflection. " * 100
+        second = "Another complete reflection. " * 100
+        memory = PlanMetaMemory(entries=(RoundMetaEntry(
+            round_id=1, successful_patterns=(first, second), evidence_refs=("plan_1",),
+        ),))
+        view = memory.model_view(max_chars=4000)[0]
+        self.assertEqual(view["aggregate"]["successful_patterns"], [first])
+        self.assertEqual(view["omitted_items"]["successful_patterns"], 1)
+        self.assertEqual(memory._entries[0].successful_patterns, (first, second))
+
     def test_meta_model_view_selects_richest_reflection_per_assessment(self) -> None:
         def prediction(judgment: CandidateJudgment) -> BlindPrediction:
             positive = judgment in {

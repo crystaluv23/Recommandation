@@ -41,3 +41,9 @@ Fast/Slow engine dependency.
 ResearchEvidenceRef claims require nonempty text and have no hard character ceiling.
 Length is presentation guidance; evidence validation and transport budgets remain
 independent. Existing serialized record shapes are unchanged.
+
+Predictor's 24KB display target is advisory; complete validated state and citation
+material cross this boundary unchanged, with target overflow explicitly recorded.
+Hard request/case/cost limits remain enforced by transport. Meta model views select
+whole reflection items and disclose omissions within their global budget; they
+never cut claims mid-sentence or overwrite complete durable reflections.

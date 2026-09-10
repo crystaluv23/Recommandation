@@ -306,3 +306,5 @@
 - 2026-09-10: Preserved short-ticker masking in source URLs while allowing ordinary prose; V9 preparation stopped before model transmission, and the final DeepSeek successor will freeze this tested boundary.
 
 - 2026-09-10: Fixed second-pass brand expansion across all Slow contexts and added bounded matcher reuse; full Discovery alias replay preserves Future/Business/Gen Z/Q2/AI while complete identities remain guarded. Preserved V10 on user-requested interruption and prepared a new DeepSeek Fast/Slow test.
+
+- 2026-09-10: Audit terminal V11 and complete Fast reflection/meta lineage; preserve whole Predictor/post-hoc evidence and meta items under actual budgets, restore unambiguous inherited need cutoffs, and prepare the DeepSeek V12 acceptance run.

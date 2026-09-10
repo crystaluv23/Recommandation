@@ -7,6 +7,22 @@ from stock_opportunity_agent.research.evolution_core import (
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_predictor_preserves_complete_evidence_above_display_target(self) -> None:
+        literal = "Complete source sentence with a qualifier. " * 700
+        state = ResearchState(
+            supporting_evidence=(ResearchEvidenceRef(
+                kind="basic_info", claim="The full literal retains its qualifier.",
+                projection_id="projection_fixture", exact_text=literal,
+            ),), decision=ResearchDecision.FINALIZE,
+        )
+        context = _assemble_final_context(
+            plan=default_information_plan(), company_id="issuer-fixture",
+            additional_identity_aliases=(), basic_info={"requests": []},
+            state=state, rounds=(), prediction_time=NOW,
+        )
+        self.assertTrue(context["context_contract"]["presentation_target_exceeded"])
+        self.assertEqual(context["final_research_state"], state.to_dict())
+
     def test_baseline_source_integrity_and_insufficient_rows(self) -> None:
         cutoff = datetime(2025, 7, 31, tzinfo=timezone.utc)
 

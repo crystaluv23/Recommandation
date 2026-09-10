@@ -721,11 +721,13 @@ item is likewise required across `why_prediction_failed`, `misleading_signals`,
 `ignored_evidence`, `missing_information`, or `plan_issues`. Merely copying
 `prediction_outcome.correct=false` with every diagnostic array empty is invalid and
 receives the same one bounded correction.
-The Predictor packet is a separate deterministic projection capped at 24,000
-canonical UTF-8 payload bytes so its exact wire request plus the 2,000-token output
-ceiling fits inside the frozen 64,000-token terminal reserve after the bounded
-terminal H_reflect envelope even under the
-byte-for-token conservative preflight. It does not repeat complete Basic projections
+The Predictor packet is a separate deterministic projection with a 24,000-byte
+presentation target, not an additional rejection threshold. Complete validated
+state and cited evidence are retained even when this target is exceeded. The
+exact outgoing wire bytes plus reserved output must still fit the remaining
+case token budget before transmission; the 64,000-token terminal reserve is a
+reservation, not a guarantee that arbitrary model prose fits. No quote or claim
+is shortened to pass a presentation target. It does not repeat complete Basic projections
 or full Signal evidence arrays. Instead it contains the Basic request/source/DataGap
 index, the complete final ResearchState, compact state/interpretation/coverage for
 each executed Signal, and exact evidence material only for Signal tuples cited by
@@ -1322,13 +1324,17 @@ Durable entries continue to retain the complete original, vertical, and
 horizontal layers. Model-facing meta is a deterministic derived view capped at
 48,000 characters across the FIFO: every round retains aggregate information;
 the original layer becomes assessment counts plus bounded representative
-samples; vertical/horizontal lists are bounded; and newer entries receive
+samples; vertical/horizontal lists retain whole items, never character slices; and newer entries receive
 representative detail first. For each assessment class, representative selection
 chooses the most information-rich post-hoc reflection rather than the first case
 encountered, retains its opaque case index, and admits up to six distinct classes
 per Plan before the global 48,000-character bound is enforced. This prevents an
 early blank or validation-fallback reflection from hiding a later analyst-authored
-concrete root cause. Compact views never replace the durable entries.
+concrete root cause. Whole aggregate items are admitted newest-first under the
+shared budget, with one envelope per round and omitted item counts. Vertical
+reflections are admitted before representative cases, so a large case cannot
+silently erase an otherwise fitting Plan critique. Each omitted whole detail is
+counted. Compact views never replace the durable entries.
 
 Each entry contains:
 
