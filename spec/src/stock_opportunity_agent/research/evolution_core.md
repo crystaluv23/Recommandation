@@ -30,6 +30,9 @@ Fast/Slow engine dependency.
   ticker aliases retain their existing identity handling.
   URL path/query identity matching remains case-insensitive for short tickers;
   the prose exception does not expose identities in source links.
+  Shared masking/projection helpers accept an explicit strict-inventory mode
+  for aggregate Slow roles, avoiding repeated brand derivation. A bounded cache
+  reuses compiled patterns for identical inventory/mode pairs.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or

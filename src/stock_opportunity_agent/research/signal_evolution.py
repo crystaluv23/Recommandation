@@ -3774,14 +3774,15 @@ class SignalEvolutionEngine:
         return {
             "cycle_id": cycle_id,
             "meta_info": _mask_identity_values(
-                list(self.meta_memory.model_view()), self.slow_role_identity_guards
+                list(self.meta_memory.model_view()), self.slow_role_identity_guards,
+                expand_aliases=False,
             ),
             "capability_backlog": _mask_identity_values(
-                capability_backlog, self.slow_role_identity_guards
+                capability_backlog, self.slow_role_identity_guards, expand_aliases=False
             ),
             "stable_signal_cards": cards,
             "prior_slow_work": _mask_identity_values(
-                prior_work, self.slow_role_identity_guards
+                prior_work, self.slow_role_identity_guards, expand_aliases=False
             ),
             "available_raw_source_types": list(
                 self.evidence_resolver.available_source_types
@@ -4091,8 +4092,8 @@ class SignalEvolutionEngine:
             for key, value in safe_info.items()
             if key == "business_description" or value != "unavailable"
         }
-        masked_info = dict(_mask_identity_values(safe_info, aliases))
-        _assert_identity_values_masked(masked_info, aliases)
+        masked_info = dict(_mask_identity_values(safe_info, aliases, expand_aliases=False))
+        _assert_identity_values_masked(masked_info, aliases, expand_aliases=False)
         return {
             "case_ref": case_ref,
             "prediction_year": case.prediction_time.year,
@@ -4179,6 +4180,7 @@ class SignalEvolutionEngine:
                 index=index,
                 aliases=aliases,
                 query=spec.retrieval_policy.query,
+                expand_aliases=False,
             )
             for index, document in enumerate(documents, start=1)
         ]
@@ -4188,22 +4190,24 @@ class SignalEvolutionEngine:
                 item["document_id"] = document_ref_by_id.get(
                     item["document_id"], "missing-document"
                 )
-        masked_result = _mask_identity_values(result_view, aliases)
+        masked_result = _mask_identity_values(result_view, aliases, expand_aliases=False)
         executed_evidence = [
             {
                 "role": group,
                 "document_ref": document_ref_by_id.get(
                     item.document_id, "missing-document"
                 ),
-                "exact_span": _mask_identity_values(item.exact_span, aliases),
+                "exact_span": _mask_identity_values(
+                    item.exact_span, aliases, expand_aliases=False
+                ),
                 "timestamp": item.timestamp.isoformat(),
             }
             for group, items in cited_evidence
             for item in items
         ]
-        _assert_identity_values_masked(evidence, aliases)
-        _assert_identity_values_masked(masked_result, aliases)
-        _assert_identity_values_masked(executed_evidence, aliases)
+        _assert_identity_values_masked(evidence, aliases, expand_aliases=False)
+        _assert_identity_values_masked(masked_result, aliases, expand_aliases=False)
+        _assert_identity_values_masked(executed_evidence, aliases, expand_aliases=False)
         packet = {
             "case_ref": case_ref,
             "evidence_observation": {
@@ -4273,6 +4277,7 @@ class SignalEvolutionEngine:
                 query=query,
                 limit=request.max_documents,
                 aliases=self.slow_role_identity_guards,
+                expand_aliases=False,
             )
             selection.clear()
             selection.update(audit)

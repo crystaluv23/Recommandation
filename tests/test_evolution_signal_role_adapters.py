@@ -8,6 +8,25 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_strict_aggregate_aliases_preserve_words_and_reuse_matchers(self) -> None:
+        aliases = ("Future Holdings", "Business Systems", "Z", "Q2")
+        text = "Future business plans target Gen Z in Q2. Future Holdings disclosed them."
+        masked = core_module._mask_identity_values(text, aliases, expand_aliases=False)
+        self.assertEqual(
+            masked,
+            "Future business plans target Gen Z in Q2. [MASKED_COMPANY] disclosed them.",
+        )
+        core_module._assert_identity_values_masked(masked, aliases, expand_aliases=False)
+        evolution_runtime_module._scan_payload(
+            masked, allow_outcomes=True, anonymous_aliases=aliases,
+        )
+        first = core_module._compiled_identity_aliases(aliases, expand_aliases=False)
+        self.assertIs(
+            first, core_module._compiled_identity_aliases(aliases, expand_aliases=False),
+        )
+        local = core_module._mask_identity_values("Future announced results.", aliases)
+        self.assertIn("[MASKED_COMPANY]", local)
+
     def test_signal_h1_v2_accepts_structured_no_hypothesis_with_open_demand(
         self,
     ) -> None:

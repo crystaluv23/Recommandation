@@ -1,5 +1,11 @@
 # Status
 
+The global Slow alias expansion defect is repaired: all Slow views now consume
+the strict inventory without deriving first-word brands. Real 18,929-alias replay
+preserves ordinary research prose; bounded compiled-pattern reuse removes repeated
+compilation. V10 was interrupted by user request with its artifacts preserved;
+a fresh DeepSeek Fast/Slow test follows the verified checkpoint.
+
 V8 completed Fast round 1 / Slow cycle 1 on 2026-09-10, with one complete
 24-case candidate (F1 .25), two rejected candidates, and no Signal promotion.
 The Slow outcome exposed a Gen Z / ticker Z identity false positive, unmasked

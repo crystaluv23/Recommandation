@@ -90,7 +90,7 @@ class InformationPlanRuntimeTests(TestCase):
         self.assertTrue({"MTCH", "NWSA", "AMR", "LPRO"} <= set(guards))
         self.assertTrue({"Match", "News", "Alpha", "Open"}.isdisjoint(guards))
 
-    def test_identity_mask_compiles_aliases_once_per_payload_traversal(self) -> None:
+    def test_identity_mask_reuses_compiled_aliases_across_payloads(self) -> None:
         fixture = json.loads(
             (
                 PROJECT_ROOT
@@ -117,7 +117,8 @@ class InformationPlanRuntimeTests(TestCase):
             {f"value_{index}": "ordinary reflection" for index in range(leaf_count)}
         )
 
-        self.assertEqual(many_leaves, one_leaf)
+        self.assertGreater(one_leaf, 0)
+        self.assertEqual(many_leaves, 0)
 
     def test_composite_formal_name_masks_natural_name_but_keeps_third_party(self) -> None:
         masked = _mask_identity_values(

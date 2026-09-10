@@ -35,6 +35,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   One- and two-character ticker aliases require an explicit dollar, ticker,
   symbol, or exchange marker in prose; standalone letters and quarter notation
   are not issuer identities. Full company names remain masked.
+  All Slow contexts (meta, profiles, H3/Exploration source projections, and
+  Update packets) consume this strict aggregate inventory without deriving new
+  first-word brands. Local case masking keeps its own alias expansion. Repeated
+  identical inventories reuse a bounded compiled-matcher cache; literal source
+  checks and final identity scans remain in place.
 - Update assigns opaque document refs before masking source text, so the current
   result and its executed evidence resolve to the same supplied document. Literal
   facts have no field-length ceiling; exact source membership and the existing

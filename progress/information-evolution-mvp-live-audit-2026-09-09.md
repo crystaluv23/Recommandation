@@ -333,3 +333,23 @@ prose exception does not expose `/quote/Z` or similar source paths. The V9
 DeepSeek preparation was interrupted before its first model request to freeze this
 final boundary; no paid model progress was discarded. Final DeepSeek successor
 validation uses a new immutable contract.
+
+
+## Strict Slow alias inventory follow-up
+
+The global inventory was already intentionally strict: opaque ids, ticker-like
+aliases, and multi-token company names. The shared masking helper mistakenly
+expanded it again into first-word brands, reintroducing ordinary words such as
+Future and Business. All Slow views now explicitly disable that second expansion:
+meta/backlog/prior work, H2 profiles, H3/Exploration documents, and both Update
+evidence views. Case-local identity expansion remains unchanged. No word-by-word
+exception list or weakening of final source/identity validation is introduced.
+
+The actual Discovery inventory has 18,929 strict aliases. Its full replay keeps
+`Future business plans address Gen Z in Q2, using AI for net revenue growth.`
+unchanged and passes the outgoing scan. Compiled inventories use a bounded
+eight-entry cache. One local measurement took 6.23 seconds cold and 0.00014 seconds
+cached; these are matcher compilation measurements, not end-to-end Slow speedups.
+The regression suite verifies strict versus case-local behavior and reuse. V10
+was safely interrupted on the user's request; its paid artifacts are preserved.
+A fresh DeepSeek Fast/Slow contract validates this final change.

@@ -11,6 +11,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
+from functools import lru_cache
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, Generic, Iterable, Mapping, Protocol, TypeVar
@@ -5516,6 +5517,7 @@ def _model_evidence_view(
     index: int,
     aliases: tuple[str, ...],
     query: str | None,
+    expand_aliases: bool = True,
 ) -> dict[str, Any]:
     """Return one bounded, masked model view with immutable source lineage."""
 
@@ -5528,7 +5530,9 @@ def _model_evidence_view(
         "published_at": view["published_at"],
         "available_at": view["available_at"],
         "content_hash": view["content_hash"],
-        "content_excerpt": _mask_identity_values(view["content_excerpt"], aliases),
+        "content_excerpt": _mask_identity_values(
+            view["content_excerpt"], aliases, expand_aliases=expand_aliases
+        ),
         "content_truncated": view["content_truncated"],
         "content_projection": view["content_projection"],
     }
@@ -5541,6 +5545,7 @@ def _select_h3_model_evidence(
     query: str | None,
     limit: int,
     aliases: tuple[str, ...] | None = None,
+    expand_aliases: bool = True,
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, Any]], dict[str, Any]]:
     """Select a bounded complementary H3 packet from an eligible ranked pool."""
 
@@ -5566,7 +5571,8 @@ def _select_h3_model_evidence(
             index,
             document,
             _model_evidence_view(
-                document, index=1, aliases=resolved_aliases, query=query
+                document, index=1, aliases=resolved_aliases, query=query,
+                expand_aliases=expand_aliases,
             ),
         )
         for index, document in enumerate(eligible)
@@ -5861,11 +5867,22 @@ def _default_case_id(company_id: str, prediction_time: datetime) -> str:
 
 def _compiled_identity_aliases(
     aliases: Iterable[str],
+    *, expand_aliases: bool = True,
 ) -> tuple[tuple[str, re.Pattern[str], re.Pattern[str]], ...]:
-    """Compile exact prose and URL identity matchers once per payload traversal."""
+    """Reuse bounded immutable matchers without expanding strict inventories."""
+
+    return _cached_identity_matchers(tuple(aliases), expand_aliases)
+
+
+@lru_cache(maxsize=8)
+def _cached_identity_matchers(
+    aliases: tuple[str, ...], expand_aliases: bool,
+) -> tuple[tuple[str, re.Pattern[str], re.Pattern[str]], ...]:
+    """Compile one exact inventory/mode pair without unbounded retention."""
 
     compiled: list[tuple[str, re.Pattern[str], re.Pattern[str]]] = []
-    for alias in _identity_alias_variants(aliases):
+    resolved = _identity_alias_variants(aliases) if expand_aliases else aliases
+    for alias in resolved:
         escaped = _identity_alias_pattern(alias)
         pattern = (
             rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
@@ -5916,8 +5933,10 @@ def _identity_alias_pattern(alias: str) -> str:
     return re.escape(alias)
 
 
-def _mask_identity_values(value: Any, aliases: Iterable[str]) -> Any:
-    matchers = _compiled_identity_aliases(aliases)
+def _mask_identity_values(
+    value: Any, aliases: Iterable[str], *, expand_aliases: bool = True,
+) -> Any:
+    matchers = _compiled_identity_aliases(aliases, expand_aliases=expand_aliases)
 
     def mask_url(match: re.Match[str]) -> str:
         result = match.group(0)
@@ -5982,10 +6001,12 @@ def _is_meaningful_derived_identity_alias(value: str) -> bool:
     return len(compact) >= 2 and any(character.isdigit() for character in compact)
 
 
-def _assert_identity_values_masked(value: Any, aliases: Iterable[str]) -> None:
+def _assert_identity_values_masked(
+    value: Any, aliases: Iterable[str], *, expand_aliases: bool = True,
+) -> None:
     """Fail closed if the assembled Predictor context still names its target."""
 
-    matchers = _compiled_identity_aliases(aliases)
+    matchers = _compiled_identity_aliases(aliases, expand_aliases=expand_aliases)
 
     def visit(item: Any, path: str) -> None:
         if isinstance(item, Mapping):

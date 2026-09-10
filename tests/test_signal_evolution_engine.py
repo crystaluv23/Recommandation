@@ -13,7 +13,9 @@ class SignalEvolutionTests(TestCase):
             memory = PlanMetaMemory(entries=(RoundMetaEntry(
                 round_id=1,
                 evidence_refs=("plan-1",),
-                search_implications=("fixture_issuer has a clinical milestone.",),
+                search_implications=(
+                    "fixture_issuer has a clinical milestone and future business plans.",
+                ),
             ),))
             original = memory.model_view()
             engine = SignalEvolutionEngine(
@@ -26,11 +28,13 @@ class SignalEvolutionTests(TestCase):
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
             )
+            engine.slow_role_identity_guards += ("Future Holdings", "Business Systems")
 
             context = engine._mining_context(cycle_id=1)
 
             self.assertNotIn("fixture_issuer", json.dumps(context["meta_info"]))
             self.assertIn("clinical milestone", json.dumps(context["meta_info"]))
+            self.assertIn("future business plans", json.dumps(context["meta_info"]))
             self.assertEqual(memory.model_view(), original)
 
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:

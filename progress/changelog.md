@@ -304,3 +304,5 @@
 - 2026-09-10: Completed and audited V8 Fast/Slow 1/1 without promotion; fixed short-ticker identity collisions, anonymized Mining meta inputs, aligned Update document refs, and removed hidden fact-length rejection. Exact paid guidance/meta replay and 634 regression tests pass; productive live Slow acceptance remains pending.
 
 - 2026-09-10: Preserved short-ticker masking in source URLs while allowing ordinary prose; V9 preparation stopped before model transmission, and the final DeepSeek successor will freeze this tested boundary.
+
+- 2026-09-10: Fixed second-pass brand expansion across all Slow contexts and added bounded matcher reuse; full Discovery alias replay preserves Future/Business/Gen Z/Q2/AI while complete identities remain guarded. Preserved V10 on user-requested interruption and prepared a new DeepSeek Fast/Slow test.
