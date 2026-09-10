@@ -11,3 +11,9 @@ and apply only explicitly allowed deterministic recovery transforms.
 - Scoped correction preserves unrelated valid siblings byte-for-byte.
 - A recovery transform must be generic to the declared schema; it must not
   encode provider-, company-, or case-specific exceptions.
+
+Ordinary structured correction obligations use their explicit change paths and
+permitted dependency paths even when a Controller enables exact compaction scope.
+The compaction-specific scope resolver runs only for actual compaction obligations;
+absence of compaction must never disable ordinary sibling preservation. Any
+projected correction is fully revalidated before acceptance.

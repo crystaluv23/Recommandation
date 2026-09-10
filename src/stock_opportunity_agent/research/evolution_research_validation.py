@@ -584,7 +584,6 @@ _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
 
 _FUTURE_REALIZED_RESULT = re.compile(
     r"\b(?:results?|actuals?|realized|realised)\b|"
-    r"\b(?:period|quarter|year)\s+(?:ending|ended)\b|"
     r"\bhow\s+(?:many|much)\b",
     re.IGNORECASE,
 )
@@ -1989,14 +1988,29 @@ def _validate_research_state_refs(
             "resolution"
         )
     if phase == "reflect" and adopted_new_signal_evidence:
-        if targeted_answer_need_errors:
-            validation_errors.append(
-                "research_controller_reflect violated the supplied need transition "
-                "contract after adopting current Signal evidence: "
-                f"{targeted_answer_need_errors}. Apply each row's required_action "
-                "and exact required_need when present. Preserve every untargeted "
-                "prior next_information_needs item byte-for-byte"
-            )
+        for error in targeted_answer_need_errors:
+            structured_issues.append(ValidationIssue(
+                code="research_need_transition_invalid",
+                message=(
+                    "research_controller_reflect violated the supplied need transition "
+                    f"contract: {error}. Preserve every untargeted prior need exactly"
+                ),
+                paths=(
+                    f"next_information_needs[{state.next_information_needs.index(error['value'])}]"
+                    if error["value"] in state.next_information_needs else str(error["path"]),
+                ),
+                allowed_repairs=("replace", "remove", "add"),
+                repair_context={
+                    "write_scope_complete": (
+                        error["required_action"] == "replace_with_exact_residual"
+                        and error["value"] in state.next_information_needs
+                    ),
+                    "prior_need": error["value"],
+                    "required_action": error["required_action"],
+                    "required_need": error.get("required_need"),
+                    "returned_need": error.get("returned_need", error["value"]),
+                },
+            ))
     if (
         phase == "reflect"
         and previous_state is not None

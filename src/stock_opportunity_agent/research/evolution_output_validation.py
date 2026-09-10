@@ -2261,6 +2261,48 @@ def _project_scoped_correction(
     return projected, paths
 
 
+def _research_need_transition_fallback(
+    failed_output: Mapping[str, Any], failure: StructuredValidationError,
+) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+    """Apply only runtime-issued exact need transitions, never model repair prose."""
+
+    if not failure.issues or any(
+        issue.code != "research_need_transition_invalid" for issue in failure.issues
+    ):
+        return None
+    original = failed_output.get("next_information_needs")
+    if not isinstance(original, list) or any(not isinstance(x, str) for x in original):
+        return None
+    needs = list(original)
+    for issue in failure.issues:
+        context = issue.repair_context
+        prior = context.get("prior_need")
+        required = context.get("required_need")
+        action = context.get("required_action")
+        if not isinstance(prior, str) or not prior:
+            return None
+        if action in {"restore_exactly", "replace_with_exact_residual"}:
+            if not isinstance(required, str) or not required:
+                return None
+            if action == "replace_with_exact_residual" and prior in needs:
+                needs[needs.index(prior)] = required
+            elif required not in needs:
+                needs.append(required)
+        elif action in {"remove_exact_target", "remove_or_genuinely_narrow"}:
+            returned = context.get("returned_need", prior)
+            needs = [item for item in needs if item not in (prior, returned)]
+        else:
+            return None
+    if needs == original:
+        return None
+    value = deepcopy(dict(failed_output))
+    value["next_information_needs"] = needs
+    return value, {
+        "source_substitution_paths": ("next_information_needs",),
+        "removed_paths": (),
+    }
+
+
 def _research_state_evidence_grounding_fallback(
     failed_output: Mapping[str, Any],
     failure: ValidationError,
@@ -2269,6 +2311,9 @@ def _research_state_evidence_grounding_fallback(
 
     if not isinstance(failure, StructuredValidationError):
         return None
+    need_recovery = _research_need_transition_fallback(failed_output, failure)
+    if need_recovery is not None:
+        return need_recovery
     obligations = _validation_obligations(failure, failed_output).get(
         "obligations", ()
     )
@@ -2696,7 +2741,18 @@ def _complete_parsed_role(
                 and failure is not None
             ):
                 obligations = _validation_obligations(failure, failed_output)
-                if exact_compaction_scope:
+                has_compaction_obligations = any(
+                    type(obligation.get("minimum_removed_items")) is int
+                    for obligation in obligations["obligations"]
+                )
+                if exact_compaction_scope and (
+                    has_compaction_obligations
+                    or not (
+                        isinstance(failure, StructuredValidationError)
+                        and all(issue.repair_context.get("write_scope_complete") is True
+                                for issue in failure.issues)
+                    )
+                ):
                     must_change_paths = _authorized_correction_paths(
                         obligations,
                         failed_output,
@@ -2708,6 +2764,7 @@ def _complete_parsed_role(
                         for path in (
                             *obligation["must_change_paths"],
                             *obligation.get("must_change_any_of_paths", ()),
+                            *obligation.get("permitted_dependency_paths", ()),
                         )
                     ]
                 stable_item_paths: dict[str, dict[str, Any]] = {}

@@ -4,6 +4,65 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class ScopedCorrectionProjectionTests(TestCase):
+    def test_runtime_need_fallback_preserves_evidence_and_uses_exact_instructions(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_need_transition_fallback,
+        )
+        original = {"next_information_needs": ["Cash and funding?"],
+                    "supporting_evidence": [{"claim": "cash_reserves=42"}]}
+        issues = [ValidationIssue(
+            code="research_need_transition_invalid", message="opaque wording",
+            paths=("next_information_needs[0]",),
+            repair_context={"prior_need": "Cash and funding?",
+                            "required_action": "replace_with_exact_residual",
+                            "required_need": "Funding remains unresolved."},
+        ), ValidationIssue(
+            code="research_need_transition_invalid", message="another wording",
+            paths=("next_information_needs[1]",),
+            repair_context={"prior_need": "Guidance?", "required_action": "restore_exactly",
+                            "required_need": "Guidance?"},
+        )]
+        value, _ = _research_need_transition_fallback(original, StructuredValidationError(issues))
+        self.assertEqual(value["next_information_needs"], ["Funding remains unresolved.", "Guidance?"])
+        self.assertEqual(value["supporting_evidence"], original["supporting_evidence"])
+        self.assertEqual(original["next_information_needs"], ["Cash and funding?"])
+        self.assertIsNone(_research_need_transition_fallback(original, StructuredValidationError([
+            ValidationIssue(code="unknown_issue", message="restore everything",
+                            paths=("next_information_needs",)),
+        ])))
+
+    def test_controller_compaction_mode_preserves_ordinary_correction_siblings(self) -> None:
+        invalid = {"next_information_needs": ["Preserve guidance question.", "Original liquidity question."]}
+        corrected = {"next_information_needs": ["Unrelated rewrite.", "Financing remains unresolved."]}
+        for structured in (True,):
+            with self.subTest(structured=structured):
+                caller = ScriptedRoleCaller([invalid, corrected])
+
+                def parse(value):
+                    if value["next_information_needs"][1] != "Financing remains unresolved.":
+                        message = "next_information_needs[1] must retain the exact residual"
+                        if structured:
+                            raise StructuredValidationError([ValidationIssue(
+                                code="need_transition_invalid", message=message,
+                                paths=("next_information_needs[1]",),
+                                repair_context={"write_scope_complete": True},
+                            )])
+                        raise ValidationError(message)
+                    if value["next_information_needs"][0] != invalid["next_information_needs"][0]:
+                        raise ValidationError("next_information_needs[0] was changed")
+                    return value
+
+                value, _ = evolution_runtime_module._complete_parsed_role(
+                    caller, stage="research_controller_reflect",
+                    system_prompt="Return the fixed contract.", payload={}, parser=parse,
+                    allow_outcomes=False, enforce_scoped_correction=True,
+                    exact_compaction_scope=True, stable_correction_prefix=True,
+                )
+                self.assertEqual(value["next_information_needs"], [
+                    "Preserve guidance question.", "Financing remains unresolved.",
+                ])
+                self.assertEqual(len(caller.calls), 2)
+
     def test_research_state_fallback_uses_issue_code_not_message_text(self) -> None:
         invalid = {
             "hypotheses": ["A catalyst may matter."],

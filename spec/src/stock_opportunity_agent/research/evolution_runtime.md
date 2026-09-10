@@ -1769,3 +1769,22 @@ to that original need only when its topic is a literal contiguous phrase of one
 unambiguous prior cutoff-valid need (ignoring punctuation and `any`). This is
 restoration of a runtime-owned input, not creation of a new date-qualified fact.
 Realized-result requests and unmatched or ambiguous rewrites remain rejected.
+
+### V12 correction and temporal classification repair
+
+After model correction is exhausted, typed `research_need_transition_invalid`
+issues may use the existing bounded local recovery phase. Only runtime-issued
+exact prior needs, residuals, and removal targets authorize changes; explanatory
+prose grants no authority. Recovery changes only `next_information_needs`, records
+the substituted path, and reruns the complete parser and semantic validation.
+Unknown or mixed unsupported issues remain rejected; recovery cannot create
+evidence, predictions, fitness, or a completed round.
+
+All Controller corrections preserve unrelated siblings under the ordinary write
+scope, including need-transition errors. Exact compaction scope is an additional
+rule for actual compaction obligations, not a bypass for other errors.
+A future fiscal period label (for example, a quarter ending date) does not itself
+request future realized facts. An explicitly cutoff-bounded question about
+already-disclosed guidance for that period is allowed. Requests for later actuals,
+results, updates, or a future disclosure date remain rejected under the existing
+as-of boundary. No current or realized quantity is inferred from guidance.

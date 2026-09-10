@@ -4,6 +4,26 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class SignalExecutionAndInitializeRoleTests(TestCase):
+    def test_period_end_label_does_not_turn_as_of_guidance_into_realized_results(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_future_information_issues,
+        )
+        context = {"prediction_time": "2025-09-30T00:00:00+00:00"}
+        for period in ("fiscal quarter ending on or about 2025-11-01", "year ending 2026-06-30"):
+            with self.subTest(period=period):
+                valid = f"What revenue and margin guidance had management disclosed by 2025-09-30 for the {period}, as stated in the Q3 2025 earnings release or call?"
+                self.assertEqual(_raw_future_information_issues(
+                    {"next_information_needs": [valid]}, context,
+                ), [])
+                for invalid in (
+                    f"What actual revenue and margin results and guidance were reported for the {period}, as of 2025-09-30?",
+                    f"What revenue guidance was disclosed on 2025-11-01 for the {period}?",
+                    f"What were the results for the {period}?",
+                ):
+                    self.assertTrue(_raw_future_information_issues(
+                        {"next_information_needs": [invalid]}, context,
+                    ))
+
     def test_literal_residual_restores_prior_cutoff_without_waiving_future_checks(self) -> None:
         from stock_opportunity_agent.research.evolution_research_validation import (
             _restore_inherited_need_cutoffs, _raw_future_information_issues,

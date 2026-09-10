@@ -1,5 +1,12 @@
 # Status
 
+V12 terminated at Fast/Slow 0/0 after 19 completed case trajectories, 321
+external attempts, and $0.76797112. Its remaining blockers were Controller
+correction scope, exact need transitions, and misclassification of cutoff-bounded
+future-period guidance. Generic typed recovery and scope repairs replay the paid
+failures successfully without rewriting evidence. A fresh V13 will verify Fast
+and Slow completion plus the actual reflection-to-mining handoff.
+
 V11 terminated at Fast/Slow 0/0 (6/8/3 completed cases): two Predictor display
 ceiling failures and one inherited-need cutoff loss. Predictor/post-hoc now
 retain complete state and citations under exact transport budgets; meta views
