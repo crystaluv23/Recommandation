@@ -675,6 +675,7 @@ def _future_source_date_refs(
 ) -> list[str]:
     """Return future or cutoff-open date scopes for requested realized facts."""
 
+    text = text.replace("_", " ")
     fact_request = bool(
         _FUTURE_SOURCE_CONTENT_INTENT.search(text)
         or _QUESTION_FACT_REQUEST.search(text)

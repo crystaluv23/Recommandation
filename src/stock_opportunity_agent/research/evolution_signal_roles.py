@@ -21,10 +21,12 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalMiningDecision,
     SignalMiningHypothesis,
     SignalMiningModel,
+    SignalMiningObservation,
     SignalMiningSignature,
     SignalUpdateDecision,
     SignalUpdateModel,
     _normalized_projection_text,
+    validate_signal_update_candidate,
     validate_signal_mining_signatures,
 )
 from stock_opportunity_agent.signal_library import (
@@ -352,7 +354,8 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
 
 _SIGNAL_UPDATE_V2_OUTPUT = (
     " Return one JSON object with exactly signal_ref, disposition, problem_type, "
-    "rationale, case_diagnostics, and candidate. case_diagnostics must contain "
+    "rationale, case_diagnostics, and candidate. rationale is an array of strings. "
+    "case_diagnostics must contain "
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
     "outcome_explanation. evidence_verdict is supported, contradicted, or "
@@ -632,6 +635,23 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         source_refs=(case_ref,),
                     )
                 )
+            if decision.candidate is not None:
+                stable_spec = target.get("stable_spec")
+                if isinstance(stable_spec, Mapping):
+                    try:
+                        validate_signal_update_candidate(
+                            target_ref, decision.candidate,
+                            SignalSpec.from_dict(stable_spec),
+                        )
+                    except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                        issues.append(
+                            ValidationIssue(
+                                code="signal_update_candidate_invalid",
+                                message=str(exc),
+                                paths=("candidate",),
+                                allowed_repairs=("replace",),
+                            )
+                        )
             if issues:
                 raise StructuredValidationError(issues)
             return decision
@@ -1468,6 +1488,57 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise StructuredValidationError(issues)
             return tuple(parsed_by_ref[case_ref] for case_ref in allowed_order)
 
+        quarantined: dict[str, list[str]] = {}
+
+        def quarantine_invalid_observations(
+            failed: Mapping[str, Any], _error: ValidationError,
+        ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+            """Keep only independently grounded observations after bounded repair."""
+
+            rows = failed.get("signatures")
+            if not isinstance(rows, list):
+                return None
+            repaired = []
+            removed = []
+            for index, row in enumerate(rows):
+                if (
+                    not isinstance(row, Mapping)
+                    or not isinstance(row.get("case_ref"), str)
+                    or row["case_ref"] not in packet_by_ref
+                ):
+                    return None
+                case_ref = str(row["case_ref"])
+                observations = row.get("observations")
+                gaps = row.get("evidence_gaps")
+                if not isinstance(observations, list) or not isinstance(gaps, list):
+                    return None
+                kept = []
+                reasons = []
+                for offset, raw_observation in enumerate(observations):
+                    try:
+                        if not isinstance(raw_observation, Mapping):
+                            raise ValidationError("Mining observation must be an object")
+                        observation = SignalMiningObservation.from_dict(raw_observation)
+                        validate_signal_mining_signatures(
+                            (SignalMiningSignature(case_ref, (observation,)),),
+                            (packet_by_ref[case_ref],),
+                        )
+                    except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                        reasons.append(str(exc))
+                        removed.append(f"signatures[{index}].observations[{offset}]")
+                    else:
+                        kept.append(raw_observation)
+                if reasons:
+                    quarantined.setdefault(case_ref, []).extend(reasons)
+                    gaps = [*gaps, "Some extracted observations failed validation; "
+                            "this does not establish absent source data or conditions."]
+                repaired.append({**row, "observations": kept, "evidence_gaps": gaps})
+            if not removed:
+                return None
+            return {**failed, "signatures": repaired}, {
+                "removed_paths": tuple(removed), "source_substitution_paths": (),
+            }
+
         value, usage = _complete_parsed_role(
             self.caller,
             stage="signal_mining_exploration_extract",
@@ -1485,8 +1556,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             reject_output_aliases=self.identity_guard_aliases,
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
+            final_validation_fallback=quarantine_invalid_observations,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata={"quarantined_observations": quarantined})
 
     def discover_exploration(
         self, payload: Mapping[str, Any]

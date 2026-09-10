@@ -2826,6 +2826,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             ],
             "next_information_needs": [
                 "What guidance had the issuer disclosed by 2025-07-31 for 2026?",
+                "What did the issuer disclose by prediction_time about Q1 2026 guidance?",
+                "What forecast was disclosed as_of the cutoff_time for 2026?",
                 (
                     "What had the issuer disclosed by July 31, 2025 about the "
                     "timing of its Q4 2025 earnings report?"

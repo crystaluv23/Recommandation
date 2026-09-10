@@ -8,6 +8,69 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_update_candidate_uses_staging_checks_inside_correction(self) -> None:
+        stable = SignalSpec(
+            signal_id="revenue_growth_yoy", version=1, category="financial",
+            description="Measure year-over-year revenue growth.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials",), function="financial.revenue_growth_yoy",
+        )
+        candidate = {
+            "signal_ref": stable.ref,
+            "spec": {**stable.to_dict(), "version": 2},
+            "tests": [],
+        }
+        invalid = json.loads(json.dumps(candidate))
+        invalid["signal_ref"] = "revenue_growth_yoy:v2"
+        response = {
+            "signal_ref": stable.ref, "disposition": "update",
+            "problem_type": "threshold_calibration", "rationale": ["Test calibration."],
+            "case_diagnostics": [], "candidate": invalid,
+        }
+        caller = ScriptedRoleCaller([response, {**response, "candidate": candidate}])
+        step = LLMSignalUpdateModel(caller).update({
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()},
+            "induction_cases": [],
+        })
+        self.assertEqual(step.value.candidate, candidate)
+        self.assertEqual(step.usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["required_change_paths"], ["candidate"])
+        self.assertIn("target signal_ref", feedback["validation_error"])
+        parsed, skill, _tests = signal_roles_module.validate_signal_update_candidate(
+            stable.ref, candidate, stable,
+        )
+        self.assertEqual(parsed.version, 2)
+        self.assertIsNone(skill)
+        changed = json.loads(json.dumps(candidate))
+        changed["spec"]["definition"]["description"] = "A different measurement."
+        with self.assertRaisesRegex(ValidationError, "preserve description"):
+            signal_roles_module.validate_signal_update_candidate(stable.ref, changed, stable)
+
+    def test_e1_quarantines_invalid_observations_without_losing_valid_siblings(self) -> None:
+        literal = "Management reaffirmed revenue guidance."
+        valid = {"summary": "Guidance reaffirmed.", "document_ref": "document-01",
+                 "exact_span": literal}
+        response = {"signatures": [
+            {"case_ref": "case-001", "observations": [valid, {**valid, "exact_span": "invented fact"}],
+             "evidence_gaps": []},
+            {"case_ref": "case-002", "observations": [valid], "evidence_gaps": []},
+            {"case_ref": "case-003", "observations": [{**valid, "exact_span": "x"}],
+             "evidence_gaps": []},
+        ]}
+        caller = ScriptedRoleCaller([response, response, response])
+        step = LLMSignalMiningModel(caller).extract_exploration({"cases": [
+            {"case_ref": f"case-{index:03d}", "evidence": [
+                {"document_ref": "document-01", "content_excerpt": literal}
+            ]} for index in (1, 2, 3)
+        ]})
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual([len(row.observations) for row in step.value], [1, 1, 0])
+        self.assertEqual(step.value[1].to_dict(), response["signatures"][1])
+        self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001", "case-003"})
+        self.assertIn("does not establish absent", step.value[2].evidence_gaps[0])
+
     def test_strict_aggregate_aliases_preserve_words_and_reuse_matchers(self) -> None:
         aliases = ("Future Holdings", "Business Systems", "Z", "Q2")
         text = "Future business plans target Gen Z in Q2. Future Holdings disclosed them."

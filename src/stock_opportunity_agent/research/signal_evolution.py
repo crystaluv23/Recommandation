@@ -1602,6 +1602,82 @@ class SlowLoopResult:
         )
 
 
+def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
+    """Parse a candidate with the same strict evidence contract at every boundary."""
+
+    evidence_policy = spec.get("evidence_policy")
+    if not isinstance(evidence_policy, Mapping):
+        raise ValidationError(
+            "candidate SignalSpec evidence_policy must be an object"
+        )
+    required_policy = {
+        "require_source",
+        "require_timestamp",
+        "require_exact_span",
+    }
+    if set(evidence_policy) != required_policy:
+        raise ValidationError(
+            "candidate SignalSpec evidence_policy requires source, timestamp, "
+            "and exact-span fields"
+        )
+    try:
+        return SignalSpec.from_dict(dict(spec))
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValidationError(
+            f"candidate SignalSpec JSON is invalid: {type(exc).__name__}: {exc}"
+        ) from exc
+
+
+def validate_signal_update_candidate(
+    signal_ref: str, candidate: Mapping[str, Any], stable: SignalSpec,
+) -> tuple[SignalSpec, str | None, list[Any]]:
+    """Validate an update draft without staging or mutating the Registry."""
+
+    if set(candidate) not in (
+        {"signal_ref", "spec", "tests"},
+        {"signal_ref", "spec", "skill", "tests"},
+    ):
+        raise ValidationError(
+            "Signal Update candidate requires signal_ref, spec, tests and optional skill"
+        )
+    if str(candidate["signal_ref"]) != signal_ref:
+        raise ValidationError("Signal Update candidate changed target signal_ref")
+    raw_spec = candidate["spec"]
+    raw_tests = candidate["tests"]
+    if not isinstance(raw_spec, Mapping) or not isinstance(raw_tests, list):
+        raise ValidationError("Signal Update candidate spec/tests shape is invalid")
+    updated = candidate_signal_spec_from_dict(raw_spec)
+    if updated.signal_id != stable.signal_id or updated.version != stable.version + 1:
+        raise ValidationError("Signal Update candidate must preserve id and use vNext")
+    if updated.category != stable.category:
+        raise ValidationError("Signal Update candidate must preserve category")
+    if updated.description != stable.description:
+        raise ValidationError("Signal Update candidate must preserve description")
+    if updated.execution_type is not stable.execution_type:
+        raise ValidationError("Signal Update candidate must preserve execution type")
+    if updated.evidence_policy != stable.evidence_policy:
+        raise ValidationError("Signal Update candidate must preserve evidence policy")
+    if (
+        stable.execution_type is SignalExecutionType.DETERMINISTIC
+        and updated.function != stable.function
+    ):
+        raise ValidationError(
+            "Signal Update deterministic candidate must preserve function"
+        )
+    skill_value = candidate.get("skill")
+    if skill_value is not None and not isinstance(skill_value, str):
+        raise ValidationError("Signal Update skill must be string or null")
+    if updated.execution_type is SignalExecutionType.DETERMINISTIC and (
+        skill_value is not None
+    ):
+        raise ValidationError("deterministic Signal Update skill must be null")
+    if updated.execution_type is SignalExecutionType.LLM and not (
+        isinstance(skill_value, str) and skill_value.strip()
+    ):
+        raise ValidationError("LLM Signal Update requires a complete skill")
+    return updated, skill_value, raw_tests
+
+
 class SignalEvolutionEngine:
     """Locally orchestrated Signal Mining and one-call Signal Update."""
 
@@ -2547,46 +2623,9 @@ class SignalEvolutionEngine:
         signal_ref: str,
         candidate: Mapping[str, Any],
     ) -> str:
-        if set(candidate) != {"signal_ref", "spec", "skill", "tests"}:
-            raise ValidationError(
-                "Signal Update candidate requires exactly signal_ref, spec, skill, tests"
-            )
-        if str(candidate["signal_ref"]) != signal_ref:
-            raise ValidationError("Signal Update candidate changed target signal_ref")
-        raw_spec = candidate["spec"]
-        raw_tests = candidate["tests"]
-        if not isinstance(raw_spec, Mapping) or not isinstance(raw_tests, list):
-            raise ValidationError("Signal Update candidate spec/tests shape is invalid")
-        stable = self.registry.load_spec(signal_ref)
-        updated = self._candidate_spec_from_tool(raw_spec)
-        if updated.signal_id != stable.signal_id or updated.version != stable.version + 1:
-            raise ValidationError("Signal Update candidate must preserve id and use vNext")
-        if updated.category != stable.category:
-            raise ValidationError("Signal Update candidate must preserve category")
-        if updated.description != stable.description:
-            raise ValidationError("Signal Update candidate must preserve description")
-        if updated.execution_type is not stable.execution_type:
-            raise ValidationError("Signal Update candidate must preserve execution type")
-        if updated.evidence_policy != stable.evidence_policy:
-            raise ValidationError("Signal Update candidate must preserve evidence policy")
-        if (
-            stable.execution_type is SignalExecutionType.DETERMINISTIC
-            and updated.function != stable.function
-        ):
-            raise ValidationError(
-                "Signal Update deterministic candidate must preserve function"
-            )
-        skill_value = candidate["skill"]
-        if skill_value is not None and not isinstance(skill_value, str):
-            raise ValidationError("Signal Update skill must be string or null")
-        if updated.execution_type is SignalExecutionType.DETERMINISTIC and (
-            skill_value is not None
-        ):
-            raise ValidationError("deterministic Signal Update skill must be null")
-        if updated.execution_type is SignalExecutionType.LLM and not (
-            isinstance(skill_value, str) and skill_value.strip()
-        ):
-            raise ValidationError("LLM Signal Update requires a complete skill")
+        updated, skill_value, raw_tests = validate_signal_update_candidate(
+            signal_ref, candidate, self.registry.load_spec(signal_ref)
+        )
         return self.registry.stage_candidate(
             updated,
             skill=skill_value,
@@ -3413,8 +3452,18 @@ class SignalEvolutionEngine:
                 )
                 continue
             signatures_list.extend(batch_signatures)
+            quarantined = extraction_step.metadata.get("quarantined_observations", {})
+            for case_ref, reasons in quarantined.items():
+                extraction_failures[case_ref] = tuple(
+                    "Exploration E1 observation quarantined: " + str(reason)
+                    for reason in reasons
+                )
             microbatches.append(
-                {"case_refs": list(batch_refs), "status": "completed"}
+                {
+                    "case_refs": list(batch_refs),
+                    "status": "partial_technical_failure" if quarantined else "completed",
+                    "quarantined_observations": quarantined,
+                }
             )
         signatures = tuple(signatures_list)
         signature_by_ref = {item.case_ref: item for item in signatures}
@@ -4621,7 +4670,7 @@ class SignalEvolutionEngine:
             }
             schema["constraints"] = [
                 *schema["constraints"],
-                "spec must preserve signal_id, category, execution type, and deterministic function",
+                "spec must preserve signal_id, category, description, evidence policy, execution type, and deterministic function",
                 "spec.version must equal stable version plus one",
             ]
         return schema
@@ -4657,27 +4706,7 @@ class SignalEvolutionEngine:
 
     @staticmethod
     def _candidate_spec_from_tool(spec: Mapping[str, Any]) -> SignalSpec:
-        evidence_policy = spec.get("evidence_policy")
-        if not isinstance(evidence_policy, Mapping):
-            raise ValidationError(
-                "candidate SignalSpec evidence_policy must be an object"
-            )
-        required_policy = {
-            "require_source",
-            "require_timestamp",
-            "require_exact_span",
-        }
-        if set(evidence_policy) != required_policy:
-            raise ValidationError(
-                "candidate SignalSpec evidence_policy requires source, timestamp, "
-                "and exact-span fields"
-            )
-        try:
-            return SignalSpec.from_dict(dict(spec))
-        except (KeyError, TypeError, ValueError) as exc:
-            raise ValidationError(
-                f"candidate SignalSpec JSON is invalid: {type(exc).__name__}: {exc}"
-            ) from exc
+        return candidate_signal_spec_from_dict(spec)
 
     def _run_signal_tests_tool(self, signal_ref: str) -> dict[str, Any]:
         spec, skill = self.registry.load_candidate(str(signal_ref))

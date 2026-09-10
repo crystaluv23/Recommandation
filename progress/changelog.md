@@ -316,3 +316,5 @@
 - 2026-09-10: Pause V14 after 13 cases to repair proven false-unavailable source projection loss; rank by versioned retrieval/evidence terms, alternate Signals and cover distinct documents under the same budget. Exact paid-input replay restores an omitted issuance disclosure, 216 deterministic comparisons show no broad-local retrieval recovery, and all 643 tests pass.
 
 - 2026-09-11: V15 live execution confirms restored financing evidence reaches Predictor; repair the repeated adaptive-reflection reservation gap with one fully validated terminal-budget fallback, retaining paid usage and failure eligibility. Preserve V15 0/0 evidence and prepare a two-candidate V16 MVP run.
+
+- 2026-09-11: Complete V16 real Fast/Slow 1/1 and audit exact reflection/meta/H1 and 256 learning-event handoffs; expose no-candidate Slow technical failures, unify Update correction/staging validation, preserve grounded E1 siblings after bounded failure, and normalize temporal tokens. All 646 tests and lint pass; fresh Slow acceptance awaits the required bootstrap architecture clarification.

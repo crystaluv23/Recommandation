@@ -10,6 +10,10 @@ mining, and Signal update proposals.
 - Candidate execution is evidence-backed and cannot promote a Signal.
 - Mining and update output remains bounded by the frozen contract.
 - Promotion authority stays in the Slow engine after machine validation.
+- Update candidate shape and immutable-field checks run inside the existing
+  bounded correction loop, using the same validator as staging. E1's terminal
+  fallback removes only observations that fail independent source validation;
+  remaining signatures pass the full parser again and carry quarantine metadata.
 - Shared soft-Signal source projections rank chunks by each Signal's versioned
   retrieval query and declared evidence phrases, not extraction-instruction prose.
   Selection alternates between Signals and prefers an unseen eligible document

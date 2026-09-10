@@ -9,6 +9,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 ## Invariants
 
 - Signal candidates validate before promotion.
+- Update uses the same side-effect-free candidate checks during model correction
+  and staging. Deterministic candidates may omit the optional null skill; LLM
+  candidates still require a complete skill. Target identity, vNext and immutable
+  definition constraints remain mandatory and visible in the request contract.
 - Registry transitions remain version-bound and auditable.
 - Slow-loop results and cycle completion preserve existing recovery semantics.
 - The module never imports the `scheme_evolution.py` compatibility facade.
@@ -25,6 +29,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   domain observation. The full frozen E1 cohort, failed refs, and usage remain
   visible; E2 runs only if both fixed groups still meet the configured grounded
   evidence floor, without replacing validation cases.
+  After bounded model correction, E1 may quarantine invalid observations while
+  preserving independently validated observations and sibling signatures. It
+  never clips or invents source text. Quarantine reasons remain technical audit
+  metadata, including when a case has no surviving observations; they are not
+  evidence that the source or measured condition is absent.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
   document ref and literal span for every fact before an update draft can be

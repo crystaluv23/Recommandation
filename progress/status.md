@@ -1,5 +1,15 @@
 # Status
 
+V16 completed real Fast/Slow 1/1 with one eligible 24-case Plan, exact original
+reflection-to-meta-to-H1 handoff, and 256 exactly reconciled learning events.
+Candidate 2 was rejected after 12 cases; horizontal reflection was not exercised.
+Slow produced no validated candidates: E1 citation failures and Update's optional
+skill/staging mismatch blocked it. Post-run repairs preserve valid E1 observations,
+share Update validation across correction/staging, and normalize temporal tokens.
+All 646 tests and lint pass. Fresh Slow acceptance is pending confirmation of the
+architecture's bootstrap boundary; completed pointers are not proof of a working
+candidate promotion path. See [V16 chain audit](information-evolution-v16-chain-audit-2026-09-11.md).
+
 V15 verified the repaired financing source in an actual DeepSeek request,
 accepted SignalResult, final ResearchState and Predictor citation. It was paused
 at 0/0 after candidate 1 and 2 stopped at cases 12 and 10: ordinary reflection
