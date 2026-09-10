@@ -1148,7 +1148,7 @@ def _scan_payload(
     alias_matchers: list[tuple[bool, re.Pattern[str]]] = []
     for alias in aliases:
         ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
-        if ticker_like and len(alias) == 2:
+        if ticker_like and len(alias) <= 2:
             pattern = (
                 rf"(?:\${re.escape(alias)}(?![A-Za-z0-9])|"
                 rf"(?i:\b(?:ticker|symbol|nasdaq|nyse|amex)\b)"

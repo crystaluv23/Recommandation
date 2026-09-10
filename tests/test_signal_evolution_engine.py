@@ -4,6 +4,35 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class SignalEvolutionTests(TestCase):
+    def test_mining_context_masks_persisted_reflections_without_mutating_memory(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            case = make_case("fixture_issuer", 4.0)
+            memory = PlanMetaMemory(entries=(RoundMetaEntry(
+                round_id=1,
+                evidence_refs=("plan-1",),
+                search_implications=("fixture_issuer has a clinical milestone.",),
+            ),))
+            original = memory.model_view()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(case,),
+                meta_memory=memory,
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            context = engine._mining_context(cycle_id=1)
+
+            self.assertNotIn("fixture_issuer", json.dumps(context["meta_info"]))
+            self.assertIn("clinical milestone", json.dumps(context["meta_info"]))
+            self.assertEqual(memory.model_view(), original)
+
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
         payload = {
             "hypothesis_id": "h1-c0001-s01",
@@ -2187,7 +2216,7 @@ class SignalEvolutionTests(TestCase):
             store = RawInfoStore(
                 documents=tuple(
                     RawInfoDocument.create(
-                        document_id=f"update_financial_{index}",
+                        document_id=f"{case.company_id}:financial:{index}",
                         company_id=case.company_id,
                         source_type="financials",
                         published_at=NOW,
@@ -2298,6 +2327,14 @@ class SignalEvolutionTests(TestCase):
                 result_evidence = observation["current_signal_result"]["evidence"]
                 self.assertTrue(
                     result_evidence["supporting"] or result_evidence["counter"]
+                )
+                self.assertEqual(
+                    {
+                        item["document_id"]
+                        for group in ("supporting", "counter")
+                        for item in result_evidence[group]
+                    },
+                    cited_refs,
                 )
             for resolution in target_audit["resolutions"]:
                 self.assertTrue(resolution["reused_signal_execution_input"])

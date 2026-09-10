@@ -3773,10 +3773,16 @@ class SignalEvolutionEngine:
         ]
         return {
             "cycle_id": cycle_id,
-            "meta_info": list(self.meta_memory.model_view()),
-            "capability_backlog": capability_backlog,
+            "meta_info": _mask_identity_values(
+                list(self.meta_memory.model_view()), self.slow_role_identity_guards
+            ),
+            "capability_backlog": _mask_identity_values(
+                capability_backlog, self.slow_role_identity_guards
+            ),
             "stable_signal_cards": cards,
-            "prior_slow_work": prior_work,
+            "prior_slow_work": _mask_identity_values(
+                prior_work, self.slow_role_identity_guards
+            ),
             "available_raw_source_types": list(
                 self.evidence_resolver.available_source_types
             ),
@@ -4176,12 +4182,13 @@ class SignalEvolutionEngine:
             )
             for index, document in enumerate(documents, start=1)
         ]
-        masked_result = _mask_identity_values(signal_result_model_view(result), aliases)
+        result_view = signal_result_model_view(result)
         for group in ("supporting", "counter"):
-            for item in masked_result["evidence"][group]:
+            for item in result_view["evidence"][group]:
                 item["document_id"] = document_ref_by_id.get(
                     item["document_id"], "missing-document"
                 )
+        masked_result = _mask_identity_values(result_view, aliases)
         executed_evidence = [
             {
                 "role": group,

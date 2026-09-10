@@ -213,3 +213,117 @@ probe (which itself still used the old order-dependent chooser). Complete result
 are in [the availability audit](information-evolution-mvp-signal-availability-2026-09-09.json).
 This is deterministic input recovery evidence, not Fast/Slow completion or proof
 of predictive improvement.
+
+
+## V8 completed cycle and MVP audit (2026-09-10)
+
+V8 (`information-evolution-mvp-20260909-v8`, code `2526a59`, contract
+`3debd4870da8b9e31ff7f0c0cf0d40f679fddbb2aaf1ccd29cb99f3cef416b83`)
+committed Fast round 1 and Slow cycle 1. Both pointers are authoritative; active
+cycle is null and the process exited normally. Locked Test remained sealed.
+There were 471 paid-call attempts, 461 completed responses, 10 transport failures,
+and $8.59047368 recorded model cost (not a measure of data-provider charges).
+Every persisted wire body's byte count and SHA-256 matched its stored record.
+
+The SSL EOF pause was retryable transport exhaustion, not a Plan defect. Resume
+reused saved case checkpoints and exact request caches. A later brief user-directed
+pause also recovered without losing results. Candidates 1/2/3 completed 2/24/18
+cases respectively. Candidate 1 failed on non-string current_beliefs; candidate 3
+failed on an invalid literal source quotation at case 19. Only complete candidate
+2 entered the round checkpoint, Archive, and round meta. Its 24 finalized cases
+had TP=2, FP=0, FN=12, TN=10: F1=.25, precision=1, recall=.142857.
+
+### Content quality and historical comparison
+
+The September 4 V112 candidate used exactly the same 24 case ids, data-manifest
+hash, and realized labels/multiples. It scored F1=.636364 with TP=7, FP=1, FN=7,
+TN=9. Six previous true positives became negatives, one previous false negative
+became positive, and one false positive disappeared. Thus the decline is mainly
+lost recall, not broad elimination of false positives. Models also changed from
+DeepSeek to GPT-4.1 for research/prediction, and Plan/source packets changed; this
+is not a controlled prompt-cleanup experiment and cannot establish causality.
+
+Candidate 2 focuses Basic retrieval and research on commercialization/adoption.
+Its actual negative answers often require realized customer adoption/revenue or
+strong near-term confirmation, discounting clinical, strategic, expansion, and
+momentum evidence. The fixed Predictor prompt explicitly permits uncertain but
+source-backed opportunities and does not require a guaranteed or quantified 2x
+path. The FTAI true positive itself relies largely on post-earnings momentum with
+unresolved adoption evidence: a correct label does not prove strong reasoning.
+The Plan reflection skill also says to use only Basic/market evidence after first
+asking to reflect over the full batch; this contradictory generated instruction
+is a Plan-quality concern rather than a reason to rewrite the frozen run.
+
+The actual Plan Critic recognized lagging-indicator overweighting and missing
+forward catalysts. Its first response attributed success to baseline thresholds;
+the correction removed that attribution. Round meta preserved case reflections
+and the candidate critique, rather than including rejected partial candidates.
+Critic agreement is useful feedback, not proof that proposed causal explanations
+or Signals will generalize.
+
+### Slow result: completed control flow, unsuccessful evolution
+
+Slow ran from 02:08:00 to 02:27:59 UTC. Registry stayed version 1 with 14 stable
+Signals; there were no mined/updated/validated/promoted candidates and no candidate
+effectiveness evaluations. This is NOT an MVP acceptance pass for productive
+self-evolution. The detailed result is under
+`experiments/cycles/cycle-0001/slow_loop_result.json` in V8.
+
+Mining failed before an H1 model call: the outgoing identity scan matched ticker
+`Z` in ordinary demographic text `Gen Z` in a representative case reflection.
+Cross-case meta had also been passed to Mining without boundary anonymization.
+The shared short-alias masker could additionally remove the ordinary quarter `Q2`.
+This is a generic identity collision/input-boundary defect, not an issuer leak in
+that particular sentence. Mining did receive the Fast reflection chain, but no
+hypothesis or source comparison was produced, so downstream uptake was unproven.
+
+Update selected customer_concentration and guidance_acceleration and made six
+DeepSeek decision/correction calls. Every emitted diagnostic fact was actually a
+literal substring of the supplied evidence. The hidden 240-character upper bound
+misreported long, valid quotes as missing grounding; guidance's 314/267-character
+quotes alone caused rejection of a legitimate `defer`. Customer diagnostics also
+changed the runtime outcome relation; those semantic errors remain rejected.
+The current-result evidence ids had been anonymized before document-id mapping,
+producing `missing-document`, although the separate executed_evidence correctly
+pointed to document-01. This contradictory packet encouraged spurious source-gap
+reasoning. The Update facts/labels separation and issuer-disjoint holdout are
+necessary; manually repairing a candidate or weakening its validation is not.
+
+### Minimal generic repairs and verification
+
+- Mask persisted meta/backlog/prior-work prose at the Mining boundary, leaving
+  originals intact and preserving the outgoing guard.
+- Align short ticker handling in masking and transport: one/two-character aliases
+  need an explicit dollar/ticker/symbol/exchange marker. Gen Z, Q2, and AI prose
+  remain intact; explicit stock identities and full company names remain guarded.
+- Map document ids to opaque refs before masking result text; both evidence views
+  now refer to the same source.
+- Remove Update fact character ceilings; require nonempty byte-exact source text
+  and retain transport budgets, source membership, schemas, and outcome relations.
+
+634 regression tests pass. Tests cover short-alias false positives and actual
+identity rejection, immutable meta masking, customer-id-bearing document references,
+and long source quotes without correction. Exact paid guidance response
+`7afc5ecd4c9323a95fefcf79fd7e255d20ba450b616a611febd17a2ea5fc0666`
+replays unchanged as `defer`. Exact V8 meta preserves Gen Z/Q2 and passes the complete
+Discovery identity guard. This is repair verification, not a new live Slow success.
+
+### Timing and generalized handling assessment
+
+The first Slow external call began at 02:16:31, 8m31s after Slow started. The live
+process was observed at 99% CPU during local preparation. A later native sample
+caught SSL reads after work advanced; it does not localize the earlier CPU hotspot.
+The code scans bounded profile cohorts and builds source/identity projections;
+there is insufficient evidence to blame a single function or safely skip those
+boundaries. Add stage timing before targeted optimization; do not weaken Signals
+or discard evidence to make this pilot faster.
+
+The practical error policy remains: retry transport with exact cache/checkpoint
+reuse; validate structure and evidence with bounded typed correction; use conservative
+runtime-owned fallback only when its semantics are provable; classify data gaps
+separately; retain complete sibling candidates; and record exhausted semantic
+failures without turning them into knowledge. Narrative capacity belongs primarily
+to transport/context budgets, not hidden field validators. Outcome associations,
+source facts, and predictive quality must not be inferred from a successful exit.
+A future DeepSeek run must use a new frozen contract. V8 remains immutable; its
+Fast/Slow completion and audit evidence must not be replaced or relabeled.

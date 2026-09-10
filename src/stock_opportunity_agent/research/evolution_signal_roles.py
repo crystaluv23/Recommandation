@@ -579,7 +579,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                     document_ref = str(fact.get("document_ref", ""))
                     exact_span = str(fact.get("exact_span", ""))
                     if (
-                        not 8 <= len(exact_span) <= 240
+                        not exact_span.strip()
                         or not any(
                             exact_span in literal
                             for literal in visible.get(document_ref, ())

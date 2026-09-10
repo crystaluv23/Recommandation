@@ -390,6 +390,12 @@ at once without receiving the identity-bearing content.
 Signal Mining uses four narrow structured model stages plus one deterministic local
 H2 shortlist rather than a one-tool-per-turn Agent transcript:
 
+Persisted cross-case reflections and prior-work prose are anonymized at the
+Mining context boundary before the outgoing identity scan. Update evidence facts
+remain exact source substrings without a per-fact character ceiling; transport
+limits bound output size. Document identities are mapped to opaque refs before
+text anonymization, consistently across current results and executed evidence.
+
 - `signal_mining_hypotheses` proposes a portfolio of no more than three
   falsifiable hypotheses from bounded meta/backlog/Registry context;
 - local `H2 canonical shortlist` applies each H1 rule to the same label-hidden,

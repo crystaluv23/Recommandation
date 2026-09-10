@@ -24,6 +24,10 @@ Fast/Slow engine dependency.
   them while filling the omission.
 
 - Point-in-time and identity masking rules remain fail closed.
+  One- and two-character ticker aliases in prose require an explicit dollar,
+  ticker, symbol, or exchange marker. This matches the outgoing transport guard
+  and preserves ordinary text such as Gen Z, Q2, and AI. Full names and longer
+  ticker aliases retain their existing identity handling.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or

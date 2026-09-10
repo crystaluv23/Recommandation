@@ -29,6 +29,17 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   considered; source facts are stored as literals without a model-authored
   claim. Mining decisions persist the runtime-derived positive/control sample
   basis used for their statistical association.
+- Mining anonymizes persisted meta reflections, backlog prose, and prior Slow
+  work before assembling the guarded model context. Persisted originals remain
+  unchanged; the outgoing identity guard remains mandatory.
+  One- and two-character ticker aliases require an explicit dollar, ticker,
+  symbol, or exchange marker in prose; standalone letters and quarter notation
+  are not issuer identities. Full company names remain masked.
+- Update assigns opaque document refs before masking source text, so the current
+  result and its executed evidence resolve to the same supplied document. Literal
+  facts have no field-length ceiling; exact source membership and the existing
+  response transport budgets remain required. A long valid quote is not a missing
+  evidence error. Runtime outcome relations remain authoritative.
 - Every staged Slow validation records a `search_input_fingerprint` over the
   input Registry, relevant point-in-time Raw Info identities, Discovery case
   identities, capability backlog, meta context, Mining limits, and Mining/Update

@@ -5892,6 +5892,12 @@ def _identity_alias_pattern(alias: str) -> str:
 
     ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
     if ticker_like:
+        if len(alias) <= 2:
+            return (
+                rf"(?:\${re.escape(alias)}(?![A-Za-z0-9])|"
+                rf"(?i:\b(?:ticker|symbol|nasdaq|nyse|amex)\b)"
+                rf"\s*(?::|=)?\s*{re.escape(alias)}(?![A-Za-z0-9]))"
+            )
         return re.escape(alias)
     tokens = re.findall(r"[A-Za-z0-9]+", alias.replace("&", " and "))
     if len(tokens) >= 2:

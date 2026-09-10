@@ -1,5 +1,14 @@
 # Status
 
+V8 completed Fast round 1 / Slow cycle 1 on 2026-09-10, with one complete
+24-case candidate (F1 .25), two rejected candidates, and no Signal promotion.
+The Slow outcome exposed a Gen Z / ticker Z identity false positive, unmasked
+cross-case meta, inconsistent Update document refs, and a hidden 240-character
+fact cap. Generic boundary repairs pass 634 tests and exact paid-response replay;
+productive live Slow validation is still pending. V8 is immutable. Subsequent
+external research/prediction should return to DeepSeek as requested. See the
+[V8 audit](information-evolution-mvp-live-audit-2026-09-09.md).
+
 The V7 live run rejected all three candidates on the remaining evidence-claim
 length cap. That cap is now removed; claims remain nonempty and evidence-checked.
 New contracts allow 8,000 Controller output tokens, while historical contracts

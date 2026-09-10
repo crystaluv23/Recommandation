@@ -2,6 +2,7 @@
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
 from stock_opportunity_agent.research import (
+    evolution_core as core_module,
     evolution_signal_roles as signal_roles_module,
 )
 
@@ -537,6 +538,26 @@ class SignalRoleAdapterTests(TestCase):
                     {"summary": value},
                     allow_outcomes=True,
                     anonymous_aliases=("AI",),
+                )
+
+    def test_short_ticker_masking_and_guard_preserve_ordinary_research_text(self) -> None:
+        aliases = ("Z", "Q2", "AI", "Q2 Holdings")
+        ordinary = {"summary": "Gen Z engagement and Q2 revenue from AI services."}
+        masked = core_module._mask_identity_values(ordinary, aliases)
+        self.assertEqual(masked, ordinary)
+        evolution_runtime_module._scan_payload(
+            masked, allow_outcomes=True, anonymous_aliases=aliases,
+        )
+        for text in ("$Z", "ticker Z", "NYSE: Z", "$Q2", "symbol AI", "Q2 Holdings"):
+            with self.subTest(text=text):
+                with self.assertRaises(ValidationError):
+                    evolution_runtime_module._scan_payload(
+                        text, allow_outcomes=True, anonymous_aliases=aliases,
+                    )
+                masked = core_module._mask_identity_values(text, aliases)
+                self.assertIn("[MASKED_COMPANY]", masked)
+                evolution_runtime_module._scan_payload(
+                    masked, allow_outcomes=True, anonymous_aliases=aliases,
                 )
 
     def test_signal_h2_malformed_text_feedback_does_not_echo_raw_output(self) -> None:
@@ -1176,6 +1197,40 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(result.usage.llm_calls, 2)
         self.assertIn("source-cited literal facts", validation_error(caller.calls[1]))
         self.assertIn("label cannot establish", caller.calls[0]["system_prompt"])
+
+    def test_signal_update_preserves_long_source_literals_without_correction(self) -> None:
+        literal = "Management reaffirmed the disclosed annual outlook. " * 20
+        output = {
+            "signal_ref": "guidance_acceleration:v1",
+            "disposition": "defer",
+            "problem_type": "insufficient_evidence",
+            "rationale": ["A reaffirmation alone does not show acceleration."],
+            "candidate": None,
+            "case_diagnostics": [{
+                "case_ref": "update-case-001",
+                "evidence_verdict": "insufficient",
+                "facts": [{"document_ref": "document-01", "exact_span": literal}],
+                "evidence_gaps": ["No comparable prior outlook is supplied."],
+                "outcome_relation": "not_assessable",
+                "outcome_explanation": "No directional result is available.",
+            }],
+        }
+        caller = ScriptedRoleCaller([output])
+        payload = {
+            "target": {"signal_ref": output["signal_ref"]},
+            "induction_cases": [{
+                "case_ref": "update-case-001",
+                "evidence_observation": {"executed_evidence": [{
+                    "document_ref": "document-01", "exact_span": literal,
+                }]},
+                "outcome_relation": {"current_signal_relation": "not_assessable"},
+            }],
+        }
+
+        result = LLMSignalUpdateModel(caller).update(payload)
+
+        self.assertEqual(result.value.case_diagnostics, tuple(output["case_diagnostics"]))
+        self.assertEqual(result.usage.llm_calls, 1)
 
     def test_signal_update_v2_adds_missing_case_without_rewriting_valid_sibling(
         self,
