@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-10: Include the visible Fast meta-memory in Slow H1 work identity so new reflections invalidate prior empty-work suppression; retain unchanged-input reuse and test the actual renewed model handoff. V13 remains pre-transmission preparation; V14 is the successor acceptance run.
+
 - 2026-09-10: Continue V12 MVP repair: preserve ordinary Controller correction siblings, recover only runtime-issued typed need transitions with full revalidation, and distinguish future-period guidance from future realized facts. Paid failure replays pass; V13 live acceptance follows the frozen code checkpoint.
 
 - 2026-09-05: Reclassified V114's 36/36 H3 relevance failures as one systemic evidence-selection and hypothesis-alignment failure; moved pure Mining selection before document truncation/acquisition fallback, retained unmatched exact-source comparator context without treating nonmatch as absence, required query-matched evidence in both fixed groups for substantive H3 decisions, reused exact Signal execution inputs for Update, and added a same-cycle exploration fallback that preserves every validation and promotion gate.

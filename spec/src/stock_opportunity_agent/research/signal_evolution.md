@@ -17,7 +17,9 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   can distinguish changed evidence or search strategy from identical work.
   An identical prior `no_testable_hypothesis` or exhausted structured recovery
   suppresses the same H1 work; changed demand, visible capability, Registry,
-  applicability inventory, limits, contract, or model identity creates new work.
+  applicability inventory, visible Fast meta-memory, limits, contract, or model
+  identity creates new work. H1 fingerprints the exact masked `meta_info` view
+  it receives so new reflection cannot be suppressed by an older empty result.
 - Exploration extraction runs in bounded microbatches keyed by stable case refs.
   A failed microbatch cannot discard valid sibling signatures or become a
   domain observation. The full frozen E1 cohort, failed refs, and usage remain

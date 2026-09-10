@@ -1541,6 +1541,22 @@ class SignalEvolutionTests(TestCase):
                 second["audit"]["stages"]["H1"]["reused_from_prior_cycle"]
             )
 
+            engine.meta_memory.append(RoundMetaEntry(
+                round_id=1,
+                missing_capabilities=("Separate committed orders from pipeline claims.",),
+                evidence_refs=("plan_r0001_c01",),
+            ))
+            changed = engine._run_signal_mining(cycle_id=2)
+            self.assertEqual(len(model.requests), 2)
+            self.assertNotEqual(
+                changed["audit"]["stages"]["H1"]["input_fingerprint"],
+                first["audit"]["stages"]["H1"]["input_fingerprint"],
+            )
+            self.assertEqual(
+                model.requests[-1]["meta_info"][0]["aggregate"]["missing_capabilities"],
+                ["Separate committed orders from pipeline claims."],
+            )
+
     def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
         self,
     ) -> None:

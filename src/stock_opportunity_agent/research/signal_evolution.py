@@ -2781,6 +2781,7 @@ class SignalEvolutionEngine:
                 "limits": h1_payload["limits"],
                 "h2_applicability_contract": applicability_contract,
                 "capability_backlog": context["capability_backlog"],
+                "meta_info": context["meta_info"],
                 "stable_signal_cards": context["stable_signal_cards"],
                 "available_raw_source_types": context[
                     "available_raw_source_types"

@@ -1,5 +1,11 @@
 # Status
 
+The Slow H1 unchanged-work fingerprint now includes its actual masked Fast
+meta-memory view. Previously, new reflections alone could leave H1 incorrectly
+suppressed after an older no-hypothesis result. Regression covers unchanged
+reuse and renewed mining after a new reflection. V13 stopped before any model
+transmission; V14 freezes this chain fix for live acceptance.
+
 V12 terminated at Fast/Slow 0/0 after 19 completed case trajectories, 321
 external attempts, and $0.76797112. Its remaining blockers were Controller
 correction scope, exact need transitions, and misclassification of cutoff-bounded
