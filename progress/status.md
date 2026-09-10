@@ -5,7 +5,8 @@ V8 completed Fast round 1 / Slow cycle 1 on 2026-09-10, with one complete
 The Slow outcome exposed a Gen Z / ticker Z identity false positive, unmasked
 cross-case meta, inconsistent Update document refs, and a hidden 240-character
 fact cap. Generic boundary repairs pass 634 tests and exact paid-response replay;
-productive live Slow validation is still pending. V8 is immutable. Subsequent
+productive live Slow validation is still pending. Short ticker URL masking also
+remains intact; V9 preparation stopped before model transmission. V8 is immutable. Subsequent
 external research/prediction should return to DeepSeek as requested. See the
 [V8 audit](information-evolution-mvp-live-audit-2026-09-09.md).
 

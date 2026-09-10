@@ -5877,11 +5877,16 @@ def _compiled_identity_aliases(
             if alias.isalnum() and alias.isupper() and len(alias) <= 5
             else re.IGNORECASE
         )
+        url_pattern = (
+            rf"(?<![A-Za-z0-9]){re.escape(alias)}(?![A-Za-z0-9])"
+            if alias.isalnum() and alias.isupper() and len(alias) <= 2
+            else pattern
+        )
         compiled.append(
             (
                 alias,
                 re.compile(pattern, flags=prose_flags),
-                re.compile(pattern, flags=re.IGNORECASE),
+                re.compile(url_pattern, flags=re.IGNORECASE),
             )
         )
     return tuple(compiled)

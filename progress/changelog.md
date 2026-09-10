@@ -302,3 +302,5 @@
 - 2026-09-09: Removed the remaining ResearchEvidenceRef character ceiling, retained semantic validation, and aligned Controller output capacity with frozen contracts. Expanded false-unavailable audit repaired IFRS namespace/aliases, currency-safe ratios, and compatible longest same-endpoint market history selection; 631 tests and lint pass before live continuation.
 
 - 2026-09-10: Completed and audited V8 Fast/Slow 1/1 without promotion; fixed short-ticker identity collisions, anonymized Mining meta inputs, aligned Update document refs, and removed hidden fact-length rejection. Exact paid guidance/meta replay and 634 regression tests pass; productive live Slow acceptance remains pending.
+
+- 2026-09-10: Preserved short-ticker masking in source URLs while allowing ordinary prose; V9 preparation stopped before model transmission, and the final DeepSeek successor will freeze this tested boundary.

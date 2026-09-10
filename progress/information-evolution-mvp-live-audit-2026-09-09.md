@@ -327,3 +327,9 @@ to transport/context budgets, not hidden field validators. Outcome associations,
 source facts, and predictive quality must not be inferred from a successful exit.
 A future DeepSeek run must use a new frozen contract. V8 remains immutable; its
 Fast/Slow completion and audit evidence must not be replaced or relabeled.
+
+Short-alias follow-up also preserves case-insensitive URL identity masking: the
+prose exception does not expose `/quote/Z` or similar source paths. The V9
+DeepSeek preparation was interrupted before its first model request to freeze this
+final boundary; no paid model progress was discarded. Final DeepSeek successor
+validation uses a new immutable contract.

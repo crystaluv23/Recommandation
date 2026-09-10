@@ -28,6 +28,8 @@ Fast/Slow engine dependency.
   ticker, symbol, or exchange marker. This matches the outgoing transport guard
   and preserves ordinary text such as Gen Z, Q2, and AI. Full names and longer
   ticker aliases retain their existing identity handling.
+  URL path/query identity matching remains case-insensitive for short tickers;
+  the prose exception does not expose identities in source links.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or

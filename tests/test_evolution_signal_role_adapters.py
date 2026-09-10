@@ -548,6 +548,12 @@ class SignalRoleAdapterTests(TestCase):
         evolution_runtime_module._scan_payload(
             masked, allow_outcomes=True, anonymous_aliases=aliases,
         )
+        url = "https://example.com/quote/Z"
+        with self.assertRaises(ValidationError):
+            core_module._assert_identity_values_masked(url, aliases)
+        masked_url = core_module._mask_identity_values(url, aliases)
+        self.assertIn("[MASKED_COMPANY]", masked_url)
+        core_module._assert_identity_values_masked(masked_url, aliases)
         for text in ("$Z", "ticker Z", "NYSE: Z", "$Q2", "symbol AI", "Q2 Holdings"):
             with self.subTest(text=text):
                 with self.assertRaises(ValidationError):
