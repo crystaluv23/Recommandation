@@ -217,7 +217,14 @@ evidence but cannot execute across the code revision; new freezes always write 6
 Adaptive research must preserve 64,000 tokens for any reflectable terminal batch
 plus the Predictor. Once a completed batch reaches that reserve boundary, H_reflect
 receives `must_finalize=true` and may consume the reserved terminal envelope; its
-model-authored valid `finalize` remains mandatory. Insufficient routing budget, or
+model-authored valid `finalize` remains mandatory. When an ordinary reflection
+reservation cannot fit and a reflectable executed batch exists, retry once with
+`must_finalize=true` and the remaining total budget, including the reserved
+terminal envelope. Account for paid correction usage before that retry; preserve
+the same prior state, batch and selection intents and run the unchanged complete
+validation. If that terminal call cannot fit or validate, retain the failure and
+ineligibility; never recursively retry or force a successful decision.
+Insufficient routing budget, or
 insufficient Signal budget
 before any result exists, ends adaptive research with the current `continue` state
 ineligible for fitness; runtime must not disguise missing research as finalization.

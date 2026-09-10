@@ -2117,11 +2117,27 @@ def execute_information_plan(
         except RuntimeBudgetExceeded as exc:
             model_usage = _consume_usage(model_usage, exc.usage, limits)
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
-            break
+            if reflection_termination_trigger is not None:
+                break
+            reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            _set_reflection_runtime_context(
+                controller,
+                selections=rounds[-1].selections,
+                must_finalize=True,
+                termination_trigger=reflection_termination_trigger,
+            )
+            _set_request_token_budget(controller, limits.max_tokens - model_usage.tokens)
+            try:
+                reflection_step = controller.reflect(plan, state, batch)
+            except RuntimeBudgetExceeded as terminal_error:
+                model_usage = _consume_usage(model_usage, terminal_error.usage, limits)
+                break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
         state = reflection_step.value
         if reflection_termination_trigger is not None:
             termination_trigger = reflection_termination_trigger
+            if state.decision is ResearchDecision.CONTINUE:
+                break
         if soft_budget_exhausted:
             stop_reason = (
                 RuntimeStopReason.FINALIZED

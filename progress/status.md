@@ -1,5 +1,15 @@
 # Status
 
+V15 verified the repaired financing source in an actual DeepSeek request,
+accepted SignalResult, final ResearchState and Predictor citation. It was paused
+at 0/0 after candidate 1 and 2 stopped at cases 12 and 10: ordinary reflection
+reservation failed before the terminal-reserve threshold and exited without
+using the reserved terminal envelope. The runtime now retries that reflectable
+batch once with mandatory-finalize context, preserving paid usage, state and
+evidence. Exhausted or non-finalizing recovery remains ineligible. V16 will use
+two candidates on the existing 24-case evaluation contract for bounded MVP
+acceptance and cross-Plan reflection coverage.
+
 V14 was safely paused at Fast/Slow 0/0 after 13 complete cases and $0.575365
 recorded model cost. The requested false-unavailable audit found a real soft
 Signal projection loss: already-resolved financing disclosures were excluded by

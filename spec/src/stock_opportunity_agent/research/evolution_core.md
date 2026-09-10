@@ -35,6 +35,12 @@ Fast/Slow engine dependency.
   reuses compiled patterns for identical inventory/mode pairs.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.
+- When an already executed, reflectable batch cannot fit an ordinary reflection
+  into the adaptive budget, consume any paid usage and attempt that same batch
+  once in terminal mode with the remaining total budget. Reapply the existing
+  mandatory-finalize validation; never fabricate a finalized state. A failed
+  terminal reservation remains budget-exhausted, without another retry. This
+  fallback does not apply when no batch exists or when already in terminal mode.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or
   Signal engine implementations.
 

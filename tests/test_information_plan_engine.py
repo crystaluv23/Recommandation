@@ -7,6 +7,69 @@ from stock_opportunity_agent.research.evolution_core import (
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_reflection_budget_fallback_uses_reserve_once_without_forcing_success(self) -> None:
+        for paid_tokens, outcome in ((0, "finalize"), (7000, "finalize"),
+                                     (7000, "exhausted"), (0, "continue")):
+            with self.subTest(paid_tokens=paid_tokens, outcome=outcome):
+                class BudgetController(OneBatchController):
+                    def __init__(self):
+                        super().__init__()
+                        self.contexts = []
+                        self.reflections = []
+
+                    def initialize(self, plan, basic_info):
+                        step = super().initialize(plan, basic_info)
+                        return AgentStep(step.value, AgentUsage(llm_calls=1, tokens=150_000))
+
+                    def set_request_token_budget(self, value):
+                        self.budget = value
+
+                    def set_reflection_runtime_context(self, **context):
+                        self.contexts.append(context)
+
+                    def reflect(self, plan, state, batch):
+                        self.reflections.append((state, batch, self.budget))
+                        if len(self.reflections) == 1:
+                            raise RuntimeBudgetExceeded(
+                                "request does not fit adaptive envelope",
+                                usage=AgentUsage(llm_calls=int(paid_tokens > 0),
+                                                 tokens=paid_tokens, cost=0.003),
+                            )
+                        if outcome == "exhausted":
+                            raise RuntimeBudgetExceeded("terminal envelope also cannot fit")
+                        if outcome == "continue":
+                            return AgentStep(state, AgentUsage(llm_calls=1, tokens=20))
+                        return super().reflect(plan, state, batch)
+
+                with tempfile.TemporaryDirectory() as directory:
+                    registry, store = self._registry_and_store(directory)
+                    controller = BudgetController()
+                    trajectory = execute_information_plan(
+                        plan=default_information_plan(), company_id="winner_1",
+                        company_basic_source={}, prediction_time=NOW,
+                        signal_registry=registry.freeze(),
+                        signal_executor=SignalExecutor(registry.freeze(), store),
+                        controller=controller, signal_agent=OneSignalSelector(),
+                        predictor=FixedPredictor(), prediction_sink=lambda *args: "pred",
+                        ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                        limits=RuntimeLimits(),
+                    )
+                self.assertEqual(len(controller.reflections), 2)
+                first, terminal = controller.reflections
+                self.assertIs(first[0], terminal[0])
+                self.assertIs(first[1], terminal[1])
+                self.assertEqual(terminal[2] - first[2], 64_000 - paid_tokens)
+                self.assertEqual([c["must_finalize"] for c in controller.contexts], [False, True])
+                self.assertEqual(trajectory.termination_trigger, RuntimeStopReason.BUDGET_EXHAUSTED)
+                self.assertEqual(
+                    trajectory.stop_reason,
+                    RuntimeStopReason.FINALIZED if outcome == "finalize"
+                    else RuntimeStopReason.BUDGET_EXHAUSTED,
+                )
+                self.assertEqual(trajectory.final_state.decision is ResearchDecision.FINALIZE,
+                                 outcome == "finalize")
+                self.assertGreaterEqual(trajectory.usage.model.tokens, 150_000 + paid_tokens)
+
     def test_predictor_preserves_complete_evidence_above_display_target(self) -> None:
         literal = "Complete source sentence with a qualifier. " * 700
         state = ResearchState(
