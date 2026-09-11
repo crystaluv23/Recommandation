@@ -142,15 +142,22 @@ _H1_GENERIC_TOPIC_TERMS = frozenset(
 )
 
 
-_H1_ALTERNATE_TEST_OUTCOME = re.compile(
-    r"\b(?:event\s+stud(?:y|ies)|short[- ]term|"
-    r"within\s+\d+\s+(?:trading\s+)?days?|"
+_H1_OUTCOME_TERM = (
+    r"(?:earnings\s+surprise|revenue\s+growth|returns?|price|growth|"
+    r"performance|outcomes?|market\s+reaction|stock\s+movement)"
+)
+_H1_FUTURE_HORIZON = (
+    r"(?:short[- ]term|within\s+\d+\s+(?:calendar\s+|trading\s+)?days?|"
     r"(?:over|during|in)\s+the\s+next\s+"
     r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
     r"(?:quarters?|months?|years?|trading\s+days?)|"
-    r"(?:next|subsequent|following)\b.{0,60}\b"
-    r"(?:quarter(?:ly)?|quarters?|months?|years?|trading\s+days?|"
-    r"earnings\s+surprise|revenue\s+growth|returns?|price|growth)|"
+    r"(?:next|subsequent|following)\b.{0,30}\b"
+    r"(?:quarter(?:ly)?|quarters?|months?|years?|trading\s+days?))"
+)
+_H1_ALTERNATE_TEST_OUTCOME = re.compile(
+    rf"\b(?:event\s+stud(?:y|ies)|"
+    rf"{_H1_FUTURE_HORIZON}.{{0,80}}\b{_H1_OUTCOME_TERM}|"
+    rf"{_H1_OUTCOME_TERM}.{{0,80}}\b{_H1_FUTURE_HORIZON}|"
     r"(?:price|market|stock)\s+"
     r"(?:reaction|movement|change|increase|decrease|returns?|trend|momentum|"
     r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",

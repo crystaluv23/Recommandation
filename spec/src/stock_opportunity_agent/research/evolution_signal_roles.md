@@ -68,6 +68,12 @@ mining, and Signal update proposals.
   between new-measurement dispositions and hypothesis need refs. One bounded
   correction therefore sees the complete obligation set instead of consuming its
   attempts one typo at a time.
+- H1's alternative-outcome guard is semantic rather than a bare horizon-word
+  blacklist. Source-owned point-in-time measurements may preserve terms such as
+  `short-term investments` and a contemporaneously disclosed statement that
+  cash is sufficient for the next six months. A proposed measurement of future
+  short-term returns, price performance, revenue growth, or another replacement
+  outcome remains invalid.
 - A no-hypothesis or `not_testable` rationale may not use H1's intentionally
   withheld case labels, group membership, case evidence, or full source excerpts
   as its reason. This locally recognizable contract violation participates in

@@ -1,5 +1,23 @@
 # Status
 
+V30 now provides the first productive real Slow acceptance from the replayed
+committed-Fast boundary. The frozen DeepSeek contract completed at authoritative
+`round=0/cycle=1`, kept Locked Test sealed, and atomically advanced the stable
+Signal Registry from v1 to v2 by promoting `max_drawdown_1y:v2`. Update staged
+both `max_drawdown_1y:v2` and `cash_reserves:v2`; paired issuer-disjoint holdout
+validation promoted the former and correctly rejected the latter for no strict
+effectiveness gain. Independent Exploration also completed eight label-hidden E1
+extractions and the label-revealed E2 comparison, which returned an evidence-
+grounded `no_measurable_pattern` rather than fabricating a candidate.
+
+The same run exposed one remaining H1 false rejection: its cash-runway hypothesis
+used the source-owned balance-sheet term `short-term investments`, which the
+alternative-outcome guard confused with short-term stock performance. The guard
+now requires horizon vocabulary to co-occur with an actual outcome concept.
+Exact saved V30 H1 output replays to three valid hypotheses after one correction,
+while short-term stock returns remain rejected. All 692 repository tests and lint
+pass. A fresh code-bound Slow successor will verify H1 -> H2/H3 live.
+
 Semantic follow-up audit found remaining behavior gaps despite V18 completion:
 ordinary Fast unmet needs never enter the Signal backlog; meta inputs sample
 4 of 24 cases; Alpha Vantage quota payloads were cached as successful data;

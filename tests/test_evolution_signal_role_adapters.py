@@ -671,6 +671,85 @@ class SignalRoleAdapterTests(TestCase):
             ["original-cash-runway-need-ref"],
         )
 
+    def test_signal_h1_distinguishes_short_term_assets_from_future_outcomes(
+        self,
+    ) -> None:
+        hypothesis = {
+            "conclusion": "hypotheses",
+            "hypotheses": [
+                {
+                    "proposal_ref": "h1-c0001-s01",
+                    "measurement": {
+                        "observable": (
+                            "Presence in point-in-time filings of a disclosed "
+                            "statement that cash, cash equivalents, and short-term "
+                            "investments are sufficient to fund operations for at "
+                            "least the next six months."
+                        ),
+                        "value_kind": "boolean",
+                        "normalization": "none",
+                    },
+                    "applicability": {"rule": "all_ready_issuers", "values": []},
+                    "expected_direction": "more_frequent_in_positive",
+                    "retrieval_intent": {
+                        "source_types": ["filing"],
+                        "query": "cash equivalents short-term investments runway",
+                    },
+                    "falsifiers": [
+                        {
+                            "condition": (
+                                "Point-in-time filings contain no disclosed "
+                                "short-term investments or cash-runway statement."
+                            ),
+                            "expected_observation": (
+                                "The boolean is not more frequent in the fixed "
+                                "positive group than in the fixed control group."
+                            ),
+                        }
+                    ],
+                    "need_refs": ["need-001"],
+                }
+            ],
+            "no_hypothesis": None,
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "new_measurement",
+                    "signal_refs": [],
+                    "rationale": ["Cash runway is a point-in-time source measure."],
+                }
+            ],
+        }
+        payload = {
+            "h1_contract_version": "signal-mining-hypothesis-v3",
+            "hypothesis_slots": ["h1-c0001-s01"],
+            "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+            "available_raw_source_types": ["filing"],
+            "capability_backlog": {
+                "signal_need_items": [
+                    {"need_ref": "cash-runway-need", "need": "Measure runway."}
+                ]
+            },
+        }
+        caller = ScriptedRoleCaller([hypothesis])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(payload)
+
+        self.assertEqual(len(step.value), 1)
+        self.assertEqual(len(caller.calls), 1)
+
+        future_outcome = json.loads(json.dumps(hypothesis))
+        future_outcome["hypotheses"][0]["measurement"]["observable"] = (
+            "Short-term stock returns over the next six months."
+        )
+        with self.assertRaisesRegex(
+            ValidationError,
+            "cannot redefine fixed outcome semantics",
+        ):
+            LLMSignalMiningModel(
+                ScriptedRoleCaller([future_outcome, future_outcome, future_outcome])
+            ).propose_hypotheses(payload)
+
     def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
         class OversizedCaller(ScriptedRoleCaller):
             def estimate_json_request_tokens(self, **_kwargs):

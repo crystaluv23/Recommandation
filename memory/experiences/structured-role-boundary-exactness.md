@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 17
+visit_times: 18
 
 ## Trigger
 
@@ -91,6 +91,10 @@ spaced JSON, so the artifact and provider message were not byte-identical.
 17. Give evidence-backed observations an explicit empty-plus-gap branch and exact
     ref/span grounding; gate downstream comparison on complete fixed groups and use
     only bounded, label-hidden replacement for missing evidence.
+18. Outcome-leakage guards must match an outcome concept together with its horizon.
+    Bare horizon vocabulary is unsafe: `short-term investments` and a source-stated
+    six-month cash runway are point-in-time facts, while short-term returns or price
+    performance are replacement outcomes and remain invalid.
 
 A semantic extraction schema must never force positive-looking content when the
 source packet can legitimately be empty. Make empty observations an explicit
