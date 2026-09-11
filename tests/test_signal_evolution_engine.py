@@ -1,6 +1,9 @@
 """Slow Signal and dual-loop evolution tests."""
 
 from tests.scheme_evolution_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.signal_evolution import (
+    SIGNAL_UPDATE_MUTABLE_PATHS,
+)
 
 
 class SignalEvolutionTests(TestCase):
@@ -3132,6 +3135,18 @@ class SignalEvolutionTests(TestCase):
             template = update_model.requests[0]["candidate_contract"][
                 "vnext_template"
             ]
+            self.assertEqual(
+                update_model.requests[0]["candidate_contract"][
+                    "changed_paths_allowed"
+                ],
+                list(SIGNAL_UPDATE_MUTABLE_PATHS),
+            )
+            self.assertIn(
+                "spec.version",
+                update_model.requests[0]["candidate_contract"][
+                    "changed_paths_excluded"
+                ],
+            )
             self.assertEqual(
                 template["spec"], {**stable.to_dict(), "version": 2}
             )

@@ -70,7 +70,11 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(step.value.candidate, candidate)
         self.assertEqual(step.usage.llm_calls, 2)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(feedback["required_change_paths"], ["candidate"])
+        self.assertEqual(feedback["required_change_paths"], [])
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_any_of_paths"],
+            ["candidate", "changed_paths"],
+        )
         self.assertIn("target signal_ref", feedback["validation_error"])
         parsed, skill, _tests = signal_roles_module.validate_signal_update_candidate(
             stable.ref, candidate, stable,
@@ -81,6 +85,54 @@ class SignalRoleAdapterTests(TestCase):
         changed["spec"]["definition"]["description"] = "A different measurement."
         with self.assertRaisesRegex(ValidationError, "preserve description"):
             signal_roles_module.validate_signal_update_candidate(stable.ref, changed, stable)
+
+    def test_update_candidate_correction_can_repair_changed_paths(self) -> None:
+        stable = SignalSpec(
+            signal_id="revenue_growth_yoy", version=1, category="financial",
+            description="Measure year-over-year revenue growth.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials",), function="financial.revenue_growth_yoy",
+        )
+        candidate = {
+            "signal_ref": stable.ref,
+            "spec": {
+                **stable.to_dict(),
+                "version": 2,
+                "parameters": {"positive_min": 0.2},
+            },
+            "tests": [],
+        }
+        response = {
+            "signal_ref": stable.ref,
+            "disposition": "update",
+            "problem_type": "threshold_calibration",
+            "rationale": ["Test calibration."],
+            "case_diagnostics": [],
+            "changed_paths": ["spec.version", "spec.parameters.positive_min"],
+            "candidate": candidate,
+        }
+        corrected = {**response, "changed_paths": ["spec.parameters"]}
+        caller = ScriptedRoleCaller([response, corrected])
+
+        step = LLMSignalUpdateModel(caller).update({
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()},
+            "induction_cases": [],
+            "candidate_contract": {
+                "changed_paths_allowed": list(
+                    signal_roles_module.SIGNAL_UPDATE_MUTABLE_PATHS
+                )
+            },
+        })
+
+        self.assertEqual(step.value.changed_paths, ("spec.parameters",))
+        self.assertEqual(step.value.candidate, candidate)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["must_change_any_of_paths"],
+            ["candidate", "changed_paths"],
+        )
+        self.assertIn("changed_paths_allowed", caller.calls[0]["system_prompt"])
 
     def test_e1_quarantines_invalid_observations_without_losing_valid_siblings(self) -> None:
         literal = "Management reaffirmed revenue guidance."
@@ -169,6 +221,58 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(result.metadata["conclusion"], "no_testable_hypothesis")
         self.assertEqual(result.metadata["reason_code"], "insufficient_retrieval_basis")
         self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
+
+    def test_signal_h1_v3_covers_ordinary_and_fast_need_refs(self) -> None:
+        need_refs = ["target_filing_events", "signal:price_momentum_126d:v1"]
+        response = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "insufficient_retrieval_basis",
+                "rationale": ["The remaining rows are dependency or coverage gaps."],
+                "need_refs": need_refs,
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["target_filing_events"],
+                    "disposition": "repair_dependency",
+                    "signal_refs": [],
+                    "rationale": ["The filing provider returned no usable data."],
+                },
+                {
+                    "need_refs": ["signal:price_momentum_126d:v1"],
+                    "disposition": "already_covered",
+                    "signal_refs": ["price_momentum_126d:v1"],
+                    "rationale": ["The stable Signal already defines the measure."],
+                },
+            ],
+        }
+        caller = ScriptedRoleCaller([response])
+
+        result = LLMSignalMiningModel(caller).propose_hypotheses({
+            "h1_contract_version": "signal-mining-hypothesis-v3",
+            "hypothesis_slots": ["h1-c0001-s01"],
+            "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+            "available_raw_source_types": ["8-k", "market_data"],
+            "stable_signal_cards": [{"signal_ref": "price_momentum_126d:v1"}],
+            "capability_backlog": {
+                "items": [{"request_id": "target_filing_events"}],
+                "signal_need_items": [
+                    {"need_ref": "signal:price_momentum_126d:v1"}
+                ],
+            },
+        })
+
+        self.assertEqual(result.value, ())
+        self.assertEqual(
+            [
+                ref
+                for item in result.metadata["need_dispositions"]
+                for ref in item["need_refs"]
+            ],
+            need_refs,
+        )
+        self.assertIn("items request_id", caller.calls[0]["system_prompt"])
 
     def test_signal_h1_v3_uses_runtime_identity_and_structured_measurement(
         self,

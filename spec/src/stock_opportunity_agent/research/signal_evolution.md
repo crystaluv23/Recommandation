@@ -15,10 +15,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   definition constraints remain mandatory and visible in the request contract.
   The candidate schema exposes the complete version-owned retrieval policy rather
   than the legacy singular query alias. Update requests include a runtime-built
-  complete vNext template copied from the stable spec and skill. Candidate
-  retrieval fields overlay that baseline before parsing; omitted optional fields
-  are therefore preserved. `changed_paths` must exactly match the effective
-  mutable spec/skill differences. Version and fixture changes are not substantive
+  complete vNext template copied from the stable spec and skill plus the exact
+  allowed `changed_paths` vocabulary. Candidate retrieval fields overlay that
+  baseline before parsing; omitted optional fields are therefore preserved.
+  `changed_paths` must exactly match the effective mutable spec/skill differences.
+  Candidate/diff correction may edit both coupled fields while preserving every
+  unrelated decision field. Version and fixture changes are not substantive
   Signal changes and cannot create a staged candidate.
 - Registry transitions remain version-bound and auditable.
 - Slow-loop results and cycle completion preserve existing recovery semantics.
@@ -35,7 +37,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   identities, masked backlog, stable Registry, role protocol, and model work
   identity, while excluding cycle and proposal ids. A technical H1 failure is
   never semantic exhaustion and remains eligible after recovery under the
-  existing attempt and cost ceilings.
+  existing attempt and cost ceilings. H1's complete runtime need set is the union
+  of Fast `signal_need_items[*].need_ref` values and ordinary capability-backlog
+  `items[*].request_id` values; the latter must not be dropped merely because
+  they are provider, retrieval, or existing-Signal coverage gaps.
 - Exploration extraction runs in bounded microbatches keyed by stable case refs.
   A failed microbatch cannot discard valid sibling signatures or become a
   domain observation. The full frozen E1 cohort, failed refs, and usage remain

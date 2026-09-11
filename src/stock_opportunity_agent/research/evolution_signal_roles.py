@@ -25,6 +25,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalMiningSignature,
     SignalUpdateDecision,
     SignalUpdateModel,
+    SIGNAL_UPDATE_MUTABLE_PATHS,
     _normalized_projection_text,
     validate_signal_update_candidate,
     validate_signal_mining_signatures,
@@ -80,8 +81,10 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "prior_attempts_exhausted. Each need_dispositions item has exactly need_refs, "
     "disposition, signal_refs, and rationale. disposition is new_measurement, "
     "update_existing, repair_dependency, already_covered, or not_testable. Every "
-    "supplied backlog need_ref must appear exactly once; only supplied stable "
-    "signal_refs may be cited. Never add Markdown or company identities."
+    "rationale field is a non-empty array of short strings. Every supplied "
+    "signal_need_items need_ref and every ordinary backlog items request_id is a "
+    "runtime need_ref and must appear exactly once; only supplied stable signal_refs "
+    "may be cited. Never add Markdown or company identities."
 )
 
 
@@ -378,7 +381,9 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "rationale, case_diagnostics, changed_paths, and candidate. rationale and "
     "changed_paths are arrays of strings. changed_paths must exactly declare the "
     "effective mutable spec or skill fields changed from the supplied vNext template; "
-    "it is empty unless disposition is update. "
+    "it is empty unless disposition is update. Copy changed_paths only from "
+    "candidate_contract.changed_paths_allowed. Never include spec.version, "
+    "spec.definition, tests, or whole-section aliases. "
     "case_diagnostics must contain "
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
@@ -704,8 +709,20 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             ValidationIssue(
                                 code="signal_update_candidate_invalid",
                                 message=str(exc),
-                                paths=("candidate",),
+                                paths=("candidate", "changed_paths"),
+                                path_policy="any",
                                 allowed_repairs=("replace",),
+                                repair_context={
+                                    "changed_paths_allowed": list(
+                                        SIGNAL_UPDATE_MUTABLE_PATHS
+                                    ),
+                                    "changed_paths_excluded": [
+                                        "spec.version",
+                                        "spec.definition",
+                                        "tests",
+                                        "whole-section aliases",
+                                    ],
+                                },
                             )
                         )
             if issues:
@@ -798,15 +815,18 @@ class LLMSignalMiningModel(SignalMiningModel):
             str(item) for item in payload.get("available_raw_source_types", ())
         }
         backlog = payload.get("capability_backlog", {})
-        allowed_need_refs = {
-            str(item["need_ref"])
-            for item in (
-                backlog.get("signal_need_items", ())
-                if isinstance(backlog, Mapping)
-                else ()
+        allowed_need_refs: set[str] = set()
+        if isinstance(backlog, Mapping):
+            allowed_need_refs.update(
+                str(item["need_ref"])
+                for item in backlog.get("signal_need_items", ())
+                if isinstance(item, Mapping) and item.get("need_ref")
             )
-            if isinstance(item, Mapping) and item.get("need_ref")
-        }
+            allowed_need_refs.update(
+                str(item["request_id"])
+                for item in backlog.get("items", ())
+                if isinstance(item, Mapping) and item.get("request_id")
+            )
         allowed_signal_refs = {
             str(item["signal_ref"])
             for item in payload.get("stable_signal_cards", ())

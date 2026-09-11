@@ -37,11 +37,15 @@ mining, and Signal update proposals.
   not depend on lexical overlap between an identifier, prose, and a query.
 - Every supplied backlog need ref appears exactly once in a bounded H1
   disposition: new measurement, update existing, repair dependency, already
-  covered, or not testable. Referenced existing Signals must be in the stable
-  catalog. H1 may still return a structured `no_testable_hypothesis`, including
-  for pure dependency failures, but must explain every need and remains distinct
-  from malformed output or execution failure. A defined measurement is retained
-  for H2/H3 even when its data dependency is presently unavailable.
+  covered, or not testable. Fast-derived Signal needs use
+  `signal_need_items[*].need_ref`; provider, retrieval, and required-coverage
+  backlog rows use their supplied `items[*].request_id` as the H1 need ref.
+  Referenced existing Signals must be in the stable catalog. H1 may still return
+  a structured `no_testable_hypothesis`, including for pure dependency failures,
+  but must explain every need and remains distinct from malformed output or
+  execution failure. All H1 rationale fields are non-empty arrays of short
+  strings. A defined measurement is retained for H2/H3 even when its data
+  dependency is presently unavailable.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
@@ -51,12 +55,17 @@ mining, and Signal update proposals.
   runtime does not treat a model-authored paraphrase as source fact. A label is
   never accepted as evidence that an event or source fact exists. New Update
   output also declares `changed_paths`: the exact mutable execution fields that
-  differ from the supplied stable baseline. The runtime supplies a complete
-  vNext template, overlays partial `raw_retrieval` edits on the stable policy,
-  and uses one shared validator during bounded correction and staging. Unknown,
-  missing, or surplus path declarations and candidates whose only changes are
-  version or tests are invalid update decisions; historical records remain
-  readable without preserving a second active output contract.
+  differ from the supplied stable baseline. The runtime supplies both a complete
+  vNext template and the exhaustive allowed path vocabulary. `spec.version`,
+  `spec.definition`, whole-section aliases, and `tests` are never declared as
+  changes. A candidate/diff validation failure grants the bounded correction
+  authority over both `candidate` and `changed_paths`, because either side of
+  the assertion may be wrong; all unrelated output remains frozen. The runtime
+  overlays partial `raw_retrieval` edits on the stable policy and uses one shared
+  validator during bounded correction and staging. Unknown, missing, or surplus
+  path declarations and candidates whose only changes are version or tests are
+  invalid update decisions; historical records remain readable without
+  preserving a second active output contract.
 - Every label-revealed Mining decision receives a runtime-derived sample basis
   in its persisted form. The basis names the exact positive and control packet
   or case refs used by that comparison, so a schema-valid association cannot be

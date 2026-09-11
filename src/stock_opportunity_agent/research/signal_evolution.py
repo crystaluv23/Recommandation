@@ -80,6 +80,21 @@ from stock_opportunity_agent.research.plan_evolution import (
 )
 
 
+SIGNAL_UPDATE_MUTABLE_PATHS = (
+    "spec.raw_retrieval.source_types",
+    "spec.raw_retrieval.query_terms",
+    "spec.raw_retrieval.lookback_days",
+    "spec.raw_retrieval.comparison_requirement",
+    "spec.raw_retrieval.required_source_groups",
+    "spec.raw_retrieval.minimum_distinct_periods",
+    "spec.raw_retrieval.minimum_period_span_days",
+    "spec.raw_retrieval.minimum_observations",
+    "spec.parameters",
+    "spec.execution.skill_file",
+    "skill",
+)
+
+
 @dataclass(frozen=True)
 class SignalCandidateValidation:
     """Fail-closed validation result before stable Signal promotion."""
@@ -1724,15 +1739,10 @@ def validate_signal_update_candidate(
 
     stable_dict = stable.to_dict()
     updated_dict = updated.to_dict()
-    retrieval_fields = (
-        "source_types",
-        "query_terms",
-        "lookback_days",
-        "comparison_requirement",
-        "required_source_groups",
-        "minimum_distinct_periods",
-        "minimum_period_span_days",
-        "minimum_observations",
+    retrieval_fields = tuple(
+        path.removeprefix("spec.raw_retrieval.")
+        for path in SIGNAL_UPDATE_MUTABLE_PATHS
+        if path.startswith("spec.raw_retrieval.")
     )
     actual_paths = {
         f"spec.raw_retrieval.{name}"
@@ -1754,12 +1764,7 @@ def validate_signal_update_candidate(
         )
     if changed_paths is not None:
         declared = tuple(str(item) for item in changed_paths)
-        allowed_paths = {
-            *(f"spec.raw_retrieval.{name}" for name in retrieval_fields),
-            "spec.parameters",
-            "spec.execution.skill_file",
-            "skill",
-        }
+        allowed_paths = set(SIGNAL_UPDATE_MUTABLE_PATHS)
         unknown = sorted(set(declared) - allowed_paths)
         if unknown:
             raise ValidationError(
@@ -2617,6 +2622,13 @@ class SignalEvolutionEngine:
             "induction_cases": induction_packets,
             "candidate_contract": {
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
+                "changed_paths_allowed": list(SIGNAL_UPDATE_MUTABLE_PATHS),
+                "changed_paths_excluded": [
+                    "spec.version",
+                    "spec.definition",
+                    "tests",
+                    "whole-section aliases",
+                ],
                 "vnext_template": {
                     "signal_ref": signal_ref,
                     "spec": {**spec.to_dict(), "version": spec.version + 1},
