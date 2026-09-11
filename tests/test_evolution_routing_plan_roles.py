@@ -2949,6 +2949,11 @@ class RoutingAndPlanRoleTests(TestCase):
             "four top-level keys: B, H_init, H_reflect, and H_analyse",
             str(caller.calls[0]["system_prompt"]),
         )
+        self.assertIn("foreign issuers may use 20-F, 40-F, or 6-K", caller.calls[0]["system_prompt"])
+        self.assertEqual(
+            parent.basic_info_policy.requests[0].source_types,
+            ("filing",),
+        )
         self.assertEqual(
             caller.calls[0]["payload"]["proposal_context"]["proposal_slot"],
             {

@@ -5059,10 +5059,11 @@ def default_information_plan() -> InformationPlan:
                 RawInfoRequest(
                     request_id="recent_annual_filing",
                     description=(
-                        "Read the latest annual filing available before the prediction "
-                        "time for the business model, risks, and segment economics."
+                        "Read the latest applicable annual or interim operating report "
+                        "available before the prediction time for the business model, "
+                        "risks, and segment economics."
                     ),
-                    source_types=("10-k",),
+                    source_types=("filing",),
                     lookback_days=730,
                     max_documents=1,
                 ),

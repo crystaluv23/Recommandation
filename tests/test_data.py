@@ -197,6 +197,35 @@ class SecEdgarClientTests(TestCase):
             client.historical_submissions("../secret.json")
         self.assertEqual(len(transport.calls), 1)
 
+    def test_history_arrays_share_recent_normalization_and_reject_future_rows(self) -> None:
+        client = SecEdgarClient("test@example.com", transport=FakeJsonTransport({}))
+        filings = client.filings_from_arrays_as_of(
+            "320193",
+            {
+                "accessionNumber": [
+                    "0000320193-25-000001",
+                    "0000320193-25-000002",
+                ],
+                "filingDate": ["2025-01-10", "2025-01-20"],
+                "reportDate": ["2024-12-31", "2025-01-15"],
+                "acceptanceDateTime": [
+                    "2025-01-10T18:30:00-05:00",
+                    "2025-01-20T18:30:00-05:00",
+                ],
+                "form": ["40-F", "6-K"],
+                "primaryDocument": ["annual.htm", "future.htm"],
+            },
+            date(2025, 1, 15),
+        )
+
+        self.assertEqual(len(filings), 1)
+        self.assertEqual(filings[0].form, "40-F")
+        self.assertEqual(
+            filings[0].accepted_at,
+            datetime(2025, 1, 10, 23, 30, tzinfo=timezone.utc),
+        )
+        self.assertIn("000032019325000001", filings[0].source_url)
+
     def test_filing_metadata_becomes_source_linked_evidence(self) -> None:
         url = "https://data.sec.gov/submissions/CIK0000320193.json"
         transport = FakeJsonTransport(

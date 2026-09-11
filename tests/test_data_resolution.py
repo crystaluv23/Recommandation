@@ -858,6 +858,246 @@ class EvidenceResolverTests(TestCase):
             ["10-Q", "10-K"],
         )
 
+    def test_sec_history_manifest_recovers_foreign_issuer_generic_filing(self) -> None:
+        calls: list[str] = []
+
+        class Client:
+            transport = None
+
+            def submissions(self, cik):
+                return {
+                    "filings": {
+                        "recent": {"normalized": []},
+                        "files": [
+                            {
+                                "name": "unrelated.json",
+                                "filingFrom": "2010-01-01",
+                                "filingTo": "2011-01-01",
+                            },
+                            {
+                                "name": "target.json",
+                                "filingFrom": "2024-01-01",
+                                "filingTo": "2025-01-10",
+                            },
+                        ],
+                    }
+                }
+
+            def filings_from_arrays_as_of(self, cik, arrays, as_of_date):
+                return list(arrays["normalized"])
+
+            def historical_submissions(self, filename):
+                calls.append(filename)
+                return {
+                    "normalized": [
+                        SimpleNamespace(
+                            form="40-F",
+                            accession_number="foreign-annual",
+                            filing_date=date(2025, 1, 10),
+                            accepted_at=datetime(
+                                2025, 1, 10, 18, tzinfo=timezone.utc
+                            ),
+                            source_url="https://example.test/foreign-annual",
+                        )
+                    ]
+                }
+
+            def filing_document_text(self, filing):
+                calls.append(filing.accession_number)
+                return "Foreign issuer annual operating report."
+
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(SecFilingAdapter(Client()),),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=("sec_edgar",),
+                allowed_capabilities=("filing_documents",),
+                allowed_source_types=("filing",),
+                max_requests_per_cycle=1,
+                max_requests_per_run=1,
+            ),
+        )
+        result = resolver.resolve(
+            RawInfoRequest("risk", "Read issuer risk disclosures.", ("filing",)),
+            company_id="cik_0000001234",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(result.status, "resolved")
+        self.assertEqual(calls, ["target.json", "foreign-annual"])
+        loaded = resolver.load_documents(result, as_of=AS_OF)
+        self.assertEqual(loaded[0].metadata["form"], "40-F")
+
+    def test_sec_history_scan_deduplicates_accessions_before_body_fetch(self) -> None:
+        body_calls: list[str] = []
+        duplicate = SimpleNamespace(
+            form="10-K",
+            accession_number="same-accession",
+            filing_date=date(2025, 1, 10),
+            accepted_at=None,
+            source_url="https://example.test/same-accession",
+        )
+
+        class Client:
+            transport = None
+
+            def submissions(self, cik):
+                return {
+                    "filings": {
+                        "recent": {"normalized": [duplicate]},
+                        "files": [
+                            {
+                                "name": "history.json",
+                                "filingFrom": "2024-01-01",
+                                "filingTo": "2025-01-10",
+                            }
+                        ],
+                    }
+                }
+
+            def filings_from_arrays_as_of(self, cik, arrays, as_of_date):
+                return list(arrays["normalized"])
+
+            def historical_submissions(self, filename):
+                return {"normalized": [duplicate]}
+
+            def filing_document_text(self, filing):
+                body_calls.append(filing.accession_number)
+                return "Annual report body."
+
+        result = SecFilingAdapter(Client()).acquire(
+            RawInfoRequest("filing", "Read annual report.", ("filing",)),
+            company_id="issuer_1",
+            identity={"cik": "1234"},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(len(result.documents), 1)
+        self.assertEqual(body_calls, ["same-accession"])
+
+    def test_sec_history_page_failure_and_cap_remain_auditable(self) -> None:
+        requested: list[str] = []
+        recovered = SimpleNamespace(
+            form="6-K",
+            accession_number="recovered-current-report",
+            filing_date=date(2025, 1, 9),
+            accepted_at=None,
+            source_url="https://example.test/recovered-current-report",
+        )
+
+        class Client:
+            transport = None
+
+            def submissions(self, cik):
+                return {
+                    "filings": {
+                        "recent": {"normalized": []},
+                        "files": [
+                            {
+                                "name": f"page-{index}.json",
+                                "filingFrom": "2024-01-01",
+                                "filingTo": f"2025-01-{10 - index:02d}",
+                            }
+                            for index in range(4)
+                        ],
+                    }
+                }
+
+            def filings_from_arrays_as_of(self, cik, arrays, as_of_date):
+                return list(arrays["normalized"])
+
+            def historical_submissions(self, filename):
+                requested.append(filename)
+                if filename == "page-0.json":
+                    raise RuntimeError("bounded page failure")
+                return {
+                    "normalized": (
+                        [recovered] if filename == "page-1.json" else []
+                    )
+                }
+
+            def filing_document_text(self, filing):
+                return "Foreign issuer current operating report."
+
+        result = SecFilingAdapter(Client()).acquire(
+            RawInfoRequest("filing", "Read operating reports.", ("filing",)),
+            company_id="issuer_1",
+            identity={"cik": "1234"},
+            as_of=AS_OF,
+        )
+        scan = next(event for event in result.events if event.kind == "sec_history_scan")
+
+        self.assertEqual(requested, ["page-0.json", "page-1.json", "page-2.json"])
+        self.assertTrue(scan.details["history_truncated"])
+        self.assertEqual(scan.details["failed_file_count"], 1)
+        self.assertEqual(result.documents[0].metadata["form"], "6-K")
+
+    def test_truncated_history_without_body_is_coverage_incomplete(self) -> None:
+        class Client:
+            transport = None
+
+            def submissions(self, cik):
+                return {
+                    "filings": {
+                        "recent": {"normalized": []},
+                        "files": [
+                            {
+                                "name": f"page-{index}.json",
+                                "filingFrom": "2024-01-01",
+                                "filingTo": f"2025-01-{10 - index:02d}",
+                            }
+                            for index in range(4)
+                        ],
+                    }
+                }
+
+            def filings_from_arrays_as_of(self, cik, arrays, as_of_date):
+                return list(arrays["normalized"])
+
+            def historical_submissions(self, filename):
+                return {"normalized": []}
+
+        with self.assertRaises(AcquisitionFailure) as ctx:
+            SecFilingAdapter(Client()).acquire(
+                RawInfoRequest("filing", "Read operating reports.", ("filing",)),
+                company_id="issuer_1",
+                identity={"cik": "1234"},
+                as_of=AS_OF,
+            )
+        self.assertEqual(
+            ctx.exception.reason,
+            DataGapReason.REQUIRED_COVERAGE_INCOMPLETE,
+        )
+
+    def test_foreign_sec_forms_match_generic_but_not_other_exact_forms(self) -> None:
+        foreign = RawInfoDocument.create(
+            document_id="foreign_annual",
+            company_id="issuer_1",
+            source_type="40-f",
+            published_at=AS_OF - timedelta(days=1),
+            available_at=AS_OF - timedelta(days=1),
+            content="Foreign annual report.",
+            metadata={"form": "40-F"},
+        )
+        generic = EvidenceResolver(RawInfoStore(documents=(foreign,))).resolve(
+            RawInfoRequest("generic", "Read an annual report.", ("filing",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        exact_wrong = EvidenceResolver(RawInfoStore(documents=(foreign,))).resolve(
+            RawInfoRequest("domestic", "Read the exact 10-K.", ("10-k",)),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+
+        self.assertEqual(generic.status, "resolved")
+        self.assertEqual(exact_wrong.status, "unresolved")
+        self.assertEqual(exact_wrong.documents, ())
+
     def test_stable_signal_source_aliases_route_and_materialize_price_metadata(self) -> None:
         self.assertIn("financials", SecCompanyFactsAdapter.source_types)
 

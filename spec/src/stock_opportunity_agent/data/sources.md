@@ -31,6 +31,13 @@ Use the source catalog as the canonical free/free-key capability manifest:
 - SEC filing metadata preserves `acceptanceDateTime` when the upstream value has
   a timezone, and the adapter can fetch only a validated submissions-history
   basename supplied by an outer exact plan.
+- SEC filing acquisition reads the current submissions manifest once, parses
+  `recent` and at most three manifest-declared history files whose official
+  filing ranges overlap the request window, and deduplicates by accession before
+  fetching bodies. Relevant history pages are visited newest first; one failed
+  page does not discard filings from other pages. A capped or failed overlapping
+  scan remains explicit as `history_truncated`/incomplete coverage rather than
+  being reported as proof that no historical filing exists.
 - `massive`: U.S. equity daily OHLCV aggregate bars from the keyed Massive REST API.
 - `stooq`: daily historical OHLCV CSV fallback, with `STOOQ_API_KEY` support because the CSV download can require a captcha-issued apikey.
 - `alpha_vantage`: listing status, daily prices, overview, statements, earnings, estimates, symbol and topic news sentiment, transcripts, ETF profile, and selected macro endpoints.
@@ -74,6 +81,9 @@ The data layer decides whether a request is currently allowed and whether cached
 - Allow historical backfill orchestration to reuse exact SEC primary-document
   URLs through the managed cache/quota transport; selection and Raw Info
   persistence remain outside the provider adapter.
+- Treat `10-K`, `10-Q`, `8-K`, `20-F`, `40-F`, and `6-K` as known SEC operating
+  report forms. Generic filing requests may use the form applicable to the
+  issuer; an exact-form request never substitutes another member of the family.
 - Allow label-free expanded-case acquisition to fetch exact per-CIK SEC
   submissions JSON through the same managed transport. Secondary submissions
   files and primary documents must be derived into new exact plans rather than

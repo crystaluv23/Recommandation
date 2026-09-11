@@ -20,3 +20,8 @@ Signal retrieval, blind prediction, and Plan reflection.
 - A terminal batch containing only unavailable Signals has no new evidence to
   reflect on. Return the previous state with only decision changed to finalize,
   without a model call or fabricated findings.
+- Information Plan proposals express cross-issuer business/risk research through
+  the generic `filing` capability unless an exact SEC form is itself material to
+  the research question. They must not assume every U.S.-listed issuer files
+  domestic `10-K`/`10-Q` forms; the resolver selects applicable domestic or
+  foreign operating reports while preserving exact-form restrictions.

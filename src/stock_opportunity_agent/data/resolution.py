@@ -25,8 +25,20 @@ DATA_ACQUISITION_WILDCARD = "*"
 _TOKEN = re.compile(r"[A-Za-z0-9]+")
 _HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
 _MARKUP_SOURCE_TYPES = frozenset(
-    {"10-k", "10-q", "filing", "filing_body", "sec_filing"}
+    {
+        "10-k",
+        "10-q",
+        "8-k",
+        "20-f",
+        "40-f",
+        "6-k",
+        "filing",
+        "filing_body",
+        "sec_filing",
+    }
 )
+_EXACT_SEC_FORMS = frozenset({"10-k", "10-q", "8-k", "20-f", "40-f", "6-k"})
+_GENERIC_FILING_TYPES = frozenset({"filing", "sec_filing", "filing_body"})
 _CANONICAL_CIK_COMPANY_ID = re.compile(r"^cik_(\d{10})$")
 _IDENTITY_NAME_SEPARATOR = re.compile(r"\s*(?:/|\||;|\n)\s*")
 _IDENTITY_LEGAL_SUFFIX = re.compile(
@@ -1968,20 +1980,18 @@ def _matches_source_type(
     actual = document.source_type.casefold()
     if actual in requested:
         return True
-    requested_forms = requested.intersection({"10-k", "10-q", "8-k"})
-    filing_types = {"filing", "sec_filing", "filing_body", "10-k", "10-q", "8-k"}
+    requested_forms = requested.intersection(_EXACT_SEC_FORMS)
+    filing_types = _GENERIC_FILING_TYPES | _EXACT_SEC_FORMS
     if requested_forms and actual in filing_types:
-        if actual not in {"filing", "sec_filing", "filing_body"}:
+        if actual not in _GENERIC_FILING_TYPES:
             return False
         searchable = " ".join(
             str(document.metadata.get(key, "")) for key in ("form", "title")
         ).casefold()
         return any(form in searchable for form in requested_forms)
-    if actual in {"10-k", "10-q", "8-k"} and requested.intersection({
-        "filing",
-        "sec_filing",
-        "filing_body",
-    }):
+    if actual in _EXACT_SEC_FORMS and requested.intersection(
+        _GENERIC_FILING_TYPES
+    ):
         return True
     return source_types_compatible((actual,), requested - requested_forms)
 
@@ -1998,7 +2008,7 @@ _SOURCE_TYPE_FAMILIES = (
             "financials",
         }
     ),
-    frozenset({"filing", "sec_filing", "filing_body", "10-k", "10-q", "8-k"}),
+    _GENERIC_FILING_TYPES | _EXACT_SEC_FORMS,
 )
 
 

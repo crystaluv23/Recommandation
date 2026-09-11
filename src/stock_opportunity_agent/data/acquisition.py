@@ -117,7 +117,17 @@ class SecFilingAdapter:
     """Retrieve eligible SEC filing metadata and complete primary-document bodies."""
 
     provider = "sec_edgar"
-    source_types = ("sec_filing", "filing", "filing_body", "10-k", "10-q")
+    source_types = (
+        "sec_filing",
+        "filing",
+        "filing_body",
+        "10-k",
+        "10-q",
+        "8-k",
+        "20-f",
+        "40-f",
+        "6-k",
+    )
     capabilities = ("filings", "filing_documents")
 
     def __init__(self, client: Any) -> None:
@@ -133,12 +143,50 @@ class SecFilingAdapter:
     ) -> AcquisitionResult:
         cursor = _event_cursor(self.client)
         cik = _identity_value(identity, "cik", "CIK")
-        filings = self.client.recent_filings_as_of(cik, as_of.date())
         lower = as_of.date() - timedelta(days=request.lookback_days or 3650)
+        history_failures: list[str] = []
+        history_truncated = False
+        history_pages_requested: list[str] = []
+        if hasattr(self.client, "filings_from_arrays_as_of") and hasattr(
+            self.client, "submissions"
+        ):
+            submissions = self.client.submissions(cik)
+            recent = submissions.get("filings", {}).get("recent", {})
+            filings = self.client.filings_from_arrays_as_of(
+                cik, recent, as_of.date()
+            )
+            history_pages = _overlapping_sec_history_files(
+                submissions, lower=lower, upper=as_of.date()
+            )
+            history_truncated = len(history_pages) > 3
+            for page in history_pages[:3]:
+                filename = page["name"]
+                history_pages_requested.append(filename)
+                try:
+                    history = self.client.historical_submissions(filename)
+                    filings.extend(
+                        self.client.filings_from_arrays_as_of(
+                            cik, history, as_of.date()
+                        )
+                    )
+                except DataQuotaDeferred:
+                    raise
+                except Exception as exc:
+                    history_failures.append(type(exc).__name__)
+        else:  # narrow compatibility boundary for existing scripted test clients
+            filings = self.client.recent_filings_as_of(cik, as_of.date())
+        filings = _deduplicate_filings_by_accession(filings)
+        filings.sort(
+            key=lambda item: (
+                item.accepted_at or _midnight(item.filing_date),
+                item.accession_number,
+            ),
+            reverse=True,
+        )
         requested_forms = {
             item.upper()
             for item in request.source_types
-            if item.casefold() in {"10-k", "10-q", "8-k"}
+            if item.casefold() in _SEC_OPERATING_FORMS
         }
         eligible = [
             item
@@ -150,7 +198,7 @@ class SecFilingAdapter:
             core_filings = [
                 item
                 for item in eligible
-                if item.form.upper() in {"10-K", "10-Q", "8-K"}
+                if item.form.casefold() in _SEC_OPERATING_FORMS
             ]
             if core_filings:
                 eligible = core_filings
@@ -163,6 +211,8 @@ class SecFilingAdapter:
                 break
             try:
                 body = self.client.filing_document_text(filing)
+            except DataQuotaDeferred:
+                raise
             except Exception as exc:  # one bad archive object must not mask later filings
                 failures.append(type(exc).__name__)
                 continue
@@ -186,15 +236,29 @@ class SecFilingAdapter:
                     },
                 )
             )
+        if not documents and (history_truncated or history_failures):
+            raise AcquisitionFailure(
+                DataGapReason.REQUIRED_COVERAGE_INCOMPLETE,
+                "SEC submissions history scan was incomplete before a required "
+                "filing body was obtained.",
+            )
         if not documents and failures:
             raise AcquisitionFailure(
                 DataGapReason.PROVIDER_ERROR,
                 "SEC filing bodies were unavailable after trying eligible core filings: "
                 + ", ".join(failures),
             )
+        history_event = ResolutionEvent(
+            "sec_history_scan",
+            {
+                "requested_files": history_pages_requested,
+                "failed_file_count": len(history_failures),
+                "history_truncated": history_truncated,
+            },
+        )
         return AcquisitionResult(
             documents=tuple(documents),
-            events=_provider_events(self.client, cursor),
+            events=(*_provider_events(self.client, cursor), history_event),
         )
 
 
@@ -475,6 +539,56 @@ class UnavailableProviderAdapter:
 def _first_supported(requested: Iterable[str], supported: Iterable[str]) -> str:
     allowed = set(supported)
     return next(item for item in requested if item in allowed)
+
+
+_SEC_OPERATING_FORMS = frozenset(
+    {"10-k", "10-q", "8-k", "20-f", "40-f", "6-k"}
+)
+
+
+def _overlapping_sec_history_files(
+    submissions: Mapping[str, Any],
+    *,
+    lower: date,
+    upper: date,
+) -> list[dict[str, str]]:
+    files = submissions.get("filings", {}).get("files", ())
+    if not isinstance(files, list):
+        return []
+    overlapping: list[dict[str, str]] = []
+    for item in files:
+        if not isinstance(item, Mapping):
+            continue
+        filing_from = _iso_date(item.get("filingFrom"))
+        filing_to = _iso_date(item.get("filingTo"))
+        name = str(item.get("name", ""))
+        if (
+            filing_from is None
+            or filing_to is None
+            or not name
+            or filing_from > upper
+            or filing_to < lower
+        ):
+            continue
+        overlapping.append(
+            {
+                "name": name,
+                "filingFrom": filing_from.isoformat(),
+                "filingTo": filing_to.isoformat(),
+            }
+        )
+    overlapping.sort(
+        key=lambda item: (item["filingTo"], item["filingFrom"], item["name"]),
+        reverse=True,
+    )
+    return overlapping
+
+
+def _deduplicate_filings_by_accession(filings: Iterable[Any]) -> list[Any]:
+    unique: dict[str, Any] = {}
+    for filing in filings:
+        unique.setdefault(str(filing.accession_number), filing)
+    return list(unique.values())
 
 
 def _alpha_datetime(value: Any) -> datetime | None:

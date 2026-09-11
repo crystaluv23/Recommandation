@@ -120,11 +120,12 @@ provider and capability are also explicitly authorized. Readiness never widens
 an allowlist or converts a disabled policy into authorization.
 
 Specific SEC form names are not interchangeable aliases. A request that names
-`10-Q`, `10-K`, or `8-K` may match that exact materialized form, or a generic
+`10-Q`, `10-K`, `8-K`, `20-F`, `40-F`, or `6-K` may match that exact materialized form, or a generic
 `filing`/`sec_filing`/`filing_body` document whose form metadata proves the same
 form; it must not be satisfied by a different SEC form merely because both are
 members of the filing acquisition family. Generic `filing` requests may still
-use the ordinary filing-family route.
+use the ordinary filing-family route and prefer periodic/current operating
+reports across domestic and foreign issuers.
 
 The operator boundary exposes one versioned broad-research authorization
 profile for new evolution workspaces. Its wildcard policy authorizes every
@@ -186,13 +187,18 @@ provider request; different cases, cutoffs, routes, or request bounds remain
 independent. Quota classification uses the typed `DataQuotaDeferred` boundary,
 not an exception class-name string.
 
-A generic SEC `filing` request prefers decision-relevant `10-K`, `10-Q`, and
-`8-K` bodies over ownership, conflict-minerals, and other administrative forms.
+A generic SEC `filing` request prefers decision-relevant `10-K`, `10-Q`, `8-K`,
+`20-F`, `40-F`, and `6-K` bodies over ownership, conflict-minerals, and other administrative forms.
 The filing adapter keeps trying later eligible core filings until it has
 materialized the requested count, under a fixed three-object fallback margin;
 one inaccessible archive object cannot mask the rest of the bounded filing
 set. If every attempted eligible body fails, the request remains a provider
 error rather than being represented as an empty filing document.
+The adapter also follows at most three overlapping, manifest-declared SEC
+submissions history files. If relevant pages remain unscanned or fail and no
+required body is obtained, the request is `required_coverage_incomplete`, not a
+claim that historical data does not exist; successful bodies retain the same
+scan-incomplete audit diagnostic.
 
 An Alpha Vantage transcript request pairs the historical transcript endpoint
 with the provider's earnings-history metadata. The adapter derives the exact

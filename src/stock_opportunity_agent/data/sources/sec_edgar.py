@@ -116,40 +116,17 @@ class SecEdgarClient:
 
         data = self.submissions(cik)
         recent = data.get("filings", {}).get("recent", {})
-        required = ("accessionNumber", "filingDate", "form", "primaryDocument")
-        if not all(isinstance(recent.get(key), list) for key in required):
-            raise DataSourceError("SEC submissions response missing recent filing arrays")
-        count = len(recent["accessionNumber"])
-        filings: list[FilingMetadata] = []
-        for index in range(count):
-            filing_date = date.fromisoformat(recent["filingDate"][index])
-            if filing_date > as_of_date:
-                continue
-            accession = recent["accessionNumber"][index]
-            primary_document = recent["primaryDocument"][index]
-            cik_padded = format_cik(cik)
-            cik_no_zeros = str(int(cik_padded))
-            accession_path = accession.replace("-", "")
-            accepted_at = _optional_aware_datetime(
-                array_get(recent, "acceptanceDateTime", index)
-            )
-            filings.append(
-                FilingMetadata(
-                    cik=cik_padded,
-                    accession_number=accession,
-                    filing_date=filing_date,
-                    report_date=optional_date(array_get(recent, "reportDate", index)),
-                    form=recent["form"][index],
-                    primary_document=primary_document,
-                    source_url=(
-                        "https://www.sec.gov/Archives/edgar/data/"
-                        f"{cik_no_zeros}/{accession_path}/{primary_document}"
-                    ),
-                    retrieved_at=utc_now(),
-                    accepted_at=accepted_at,
-                )
-            )
-        return filings
+        return _filings_from_arrays(cik, recent, as_of_date)
+
+    def filings_from_arrays_as_of(
+        self,
+        cik: str,
+        arrays: Any,
+        as_of_date: date,
+    ) -> list[FilingMetadata]:
+        """Normalize one already-fetched recent or historical filing array set."""
+
+        return _filings_from_arrays(cik, arrays, as_of_date)
 
     def filing_document_text(self, filing: FilingMetadata) -> str:
         """Fetch a filing primary-document body as text through the SEC archive URL."""
@@ -180,3 +157,53 @@ def _optional_aware_datetime(value: Any) -> datetime | None:
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         return None
     return parsed.astimezone(timezone.utc)
+
+
+def _filings_from_arrays(
+    cik: str,
+    arrays: Any,
+    as_of_date: date,
+) -> list[FilingMetadata]:
+    """Normalize SEC parallel filing arrays without performing I/O."""
+
+    required = ("accessionNumber", "filingDate", "form", "primaryDocument")
+    if not isinstance(arrays, dict) or not all(
+        isinstance(arrays.get(key), list) for key in required
+    ):
+        raise DataSourceError("SEC submissions response missing filing arrays")
+    count = len(arrays["accessionNumber"])
+    if any(len(arrays[key]) != count for key in required):
+        raise DataSourceError("SEC submissions filing arrays have inconsistent lengths")
+    cik_padded = format_cik(cik)
+    cik_no_zeros = str(int(cik_padded))
+    retrieved_at = utc_now()
+    filings: list[FilingMetadata] = []
+    for index in range(count):
+        try:
+            filing_date = date.fromisoformat(str(arrays["filingDate"][index]))
+        except ValueError as exc:
+            raise DataSourceError("SEC submissions filing date is invalid") from exc
+        if filing_date > as_of_date:
+            continue
+        accession = str(arrays["accessionNumber"][index])
+        primary_document = str(arrays["primaryDocument"][index])
+        accession_path = accession.replace("-", "")
+        filings.append(
+            FilingMetadata(
+                cik=cik_padded,
+                accession_number=accession,
+                filing_date=filing_date,
+                report_date=optional_date(array_get(arrays, "reportDate", index)),
+                form=str(arrays["form"][index]),
+                primary_document=primary_document,
+                source_url=(
+                    "https://www.sec.gov/Archives/edgar/data/"
+                    f"{cik_no_zeros}/{accession_path}/{primary_document}"
+                ),
+                retrieved_at=retrieved_at,
+                accepted_at=_optional_aware_datetime(
+                    array_get(arrays, "acceptanceDateTime", index)
+                ),
+            )
+        )
+    return filings
