@@ -93,11 +93,13 @@ available Basic-Info source-type catalog hash, a four-Signal/two-LLM-Signal
 per-round ceiling, a 64,000-token terminal-plus-Predictor reserve for newly frozen
 contracts, all
 model-facing character ceilings, and role output-token ceilings. The frozen
-role ceilings are 2,000 tokens for routing, Predictor, post-hoc, H1, and H2;
+role ceilings are 2,000 tokens for routing, Predictor, post-hoc, and H2;
 4,000 for proposer, critic, and one LLM-Signal batch; and 8,000 for controller,
-H3, and Update. Historical contracts with the former 2,000-token controller
-ceiling remain readable; exact code/contract checks still prevent silently
-resuming them with different runtime limits.
+H1, H3, and Update. Historical contracts with the former 2,000-token controller
+or H1 ceiling remain readable and execute those exact frozen values; newly
+frozen CLI contracts derive H1 from the canonical role-limit table rather than
+duplicating a stale literal. Exact code/contract checks still prevent silently
+resuming an existing workspace with different runtime limits.
 V7 additionally freezes `cycle_mode`. `fast_then_slow` requires a positive
 `plan_rounds_per_signal_cycle` and no bootstrap manifest. `slow_bootstrap` is
 single-cycle and requires exactly zero Fast rounds plus the hash of

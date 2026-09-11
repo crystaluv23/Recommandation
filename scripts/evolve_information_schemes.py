@@ -33,6 +33,9 @@ from stock_opportunity_agent.research.scheme_evolution import DEFAULT_EVOLUTION_
 from stock_opportunity_agent.research.evolution_dashboard import (
     write_evolution_dashboard_bundle,
 )
+from stock_opportunity_agent.research.evolution_settings import (
+    ROLE_OUTPUT_TOKEN_LIMITS,
+)
 from stock_opportunity_agent.research.evolution_runtime import (
     EvolutionRunContract,
     ExternalExecutionPaused,
@@ -781,17 +784,8 @@ def freeze_run(
                 "posthoc_context_chars": 24_000,
                 "meta_context_chars": 48_000,
                 "role_output_tokens": {
+                    **ROLE_OUTPUT_TOKEN_LIMITS,
                     "controller": 2_000,
-                    "routing": 2_000,
-                    "predictor": 2_000,
-                    "posthoc": 2_000,
-                    "h1": 2_000,
-                    "h2": 2_000,
-                    "proposer": 4_000,
-                    "critic": 4_000,
-                    "signal_batch": 4_000,
-                    "h3": 8_000,
-                    "update": 8_000,
                 },
                 "max_case_cost": 5.0,
                 "max_agent_steps": 20,
