@@ -57,6 +57,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   fields. They require an actionable H1 disposition (`new_measurement`,
   `update_existing`, or `repair_dependency`), so merely carrying reflection in a
   prompt without changing downstream work is not accepted as self-evolution.
+  The bounded projection records available/projected/omitted counts and orders
+  explicit next explorations before diagnostic fields so a field-order cap cannot
+  silently discard every proposed action. When reflection actions are present,
+  H1 must route at least one to a real H2/H3 measurement unless every projected
+  reflection action is explicitly blocked on dependency repair; an
+  `update_existing` ledger entry alone is not downstream execution.
   Ordinary backlog rows must not be dropped merely because they are provider,
   retrieval, or existing-Signal coverage gaps.
   The role adapter may use deterministic compact need aliases on the wire, but

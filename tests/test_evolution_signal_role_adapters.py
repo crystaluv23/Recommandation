@@ -2502,10 +2502,16 @@ class SignalRoleAdapterTests(TestCase):
 
         self.assertEqual(step.value, ())
         self.assertEqual(
-            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
-                "issue_code"
-            ],
-            "h1_reflection_action_ignored",
+            {
+                item["issue_code"]
+                for item in caller.calls[1]["payload"]["validation_feedback"][
+                    "obligations"
+                ]
+            },
+            {
+                "h1_reflection_action_ignored",
+                "h1_reflection_has_no_downstream_measurement",
+            },
         )
 
     def test_exploration_e2_corrects_per_case_rejections_to_no_candidate(self) -> None:

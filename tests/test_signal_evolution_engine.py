@@ -4807,6 +4807,22 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(len(actions), 1)
             self.assertTrue(actions[0]["need_ref"].startswith("reflection-"))
             self.assertIn("cash runway", actions[0]["need"])
+            self.assertEqual(
+                context["reflection_action_audit"],
+                {
+                    "schema_version": "reflection-action-projection-v1",
+                    "available_count": 1,
+                    "projected_count": 1,
+                    "omitted_count": 0,
+                    "limit": 48,
+                    "field_counts": {
+                        "next_explorations": 1,
+                        "missing_information_needs": 0,
+                        "repeated_failure_modes": 0,
+                        "misleading_signals": 0,
+                    },
+                },
+            )
 
 
 class DualLoopTests(TestCase):

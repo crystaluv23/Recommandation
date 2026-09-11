@@ -1710,3 +1710,13 @@ valid historical metrics while contradicting a newer source-capability invariant
 the complete current Plan contract before ranking copied parents, exclude incompatible
 legacy content rather than teaching it to the model, and revalidate staged seed pools on
 load. Never silently normalize an immutable parent: a changed Plan is a different seed.
+
+## Reflection-action coverage addendum (2026-09-11)
+
+Prompt presence is not downstream action. A bounded projection that iterates diagnostic
+fields before explicit next actions can silently spend its cap and drop the very items
+intended to guide later work. Persist available, projected, omitted, limit, and per-field
+counts; order explicit actions before diagnostics or allocate fair field quotas. Then
+validate that at least one projected reflection ref reaches an actually invoked stage.
+An H1 `update_existing` disposition is only metadata unless the controller schedules
+Update from it, so it cannot by itself prove reflection-driven self-evolution.

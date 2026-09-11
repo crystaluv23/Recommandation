@@ -3088,6 +3088,7 @@ class SignalEvolutionEngine:
                 "h2_applicability_contract": applicability_contract,
                 "capability_backlog": context["capability_backlog"],
                 "meta_info": context["meta_info"],
+                "reflection_action_audit": context["reflection_action_audit"],
                 "stable_signal_cards": context["stable_signal_cards"],
                 "available_raw_source_types": context[
                     "available_raw_source_types"
@@ -4110,7 +4111,9 @@ class SignalEvolutionEngine:
             for item in capability_backlog.get("signal_need_items", ())
             if isinstance(item, Mapping)
         ]
-        reflection_actions = self._reflection_action_items()
+        reflection_actions, reflection_action_audit = (
+            self._reflection_action_inventory()
+        )
         capability_backlog["signal_need_items"].extend(reflection_actions)
         capability_backlog = self._mining_capability_backlog_view(
             capability_backlog
@@ -4132,6 +4135,7 @@ class SignalEvolutionEngine:
                     for plan in entry.plan_reflections
                 ),
             },
+            "reflection_action_audit": reflection_action_audit,
             "capability_backlog": _mask_identity_values(
                 capability_backlog, self.slow_role_identity_guards, expand_aliases=False
             ),
@@ -4148,16 +4152,18 @@ class SignalEvolutionEngine:
             "locked_test_available": False,
         }
 
-    def _reflection_action_items(self, *, limit: int = 24) -> list[dict[str, Any]]:
-        """Project explicit vertical reflection fields into accountable H1 work."""
+    def _reflection_action_inventory(
+        self, *, limit: int = 48
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+        """Project vertical reflection fairly and report any bounded omission."""
 
         rows: list[dict[str, Any]] = []
         seen: set[str] = set()
         field_names = (
-            "misleading_signals",
-            "repeated_failure_modes",
-            "missing_information_needs",
             "next_explorations",
+            "missing_information_needs",
+            "repeated_failure_modes",
+            "misleading_signals",
         )
         for entry in reversed(self.meta_memory.entries):
             for plan in entry.plan_reflections:
@@ -4185,9 +4191,20 @@ class SignalEvolutionEngine:
                                 "sources": [],
                             }
                         )
-                        if len(rows) == limit:
-                            return rows
-        return rows
+        projected = rows[:limit]
+        return projected, {
+            "schema_version": "reflection-action-projection-v1",
+            "available_count": len(rows),
+            "projected_count": len(projected),
+            "omitted_count": len(rows) - len(projected),
+            "limit": limit,
+            "field_counts": {
+                field_name: sum(
+                    item["reflection_field"] == field_name for item in projected
+                )
+                for field_name in field_names
+            },
+        }
 
     @staticmethod
     def _mining_capability_backlog_view(

@@ -1011,6 +1011,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             ledger_issues: list[ValidationIssue] = []
             raw_disposition_refs: list[str] = []
             new_measurement_refs_from_ledger: set[str] = set()
+            reflection_dispositions: list[str] = []
             for index, raw_disposition in enumerate(raw_dispositions):
                 if not isinstance(raw_disposition, Mapping):
                     continue
@@ -1046,11 +1047,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                     new_measurement_refs_from_ledger.update(
                         ref for ref in string_refs if ref in allowed_need_refs
                     )
-                if (
-                    set(string_refs).intersection(reflection_action_aliases)
-                    and raw_disposition.get("disposition")
-                    in {"already_covered", "not_testable"}
-                ):
+                reflection_refs = set(string_refs).intersection(
+                    reflection_action_aliases
+                )
+                if reflection_refs:
+                    reflection_dispositions.extend(
+                        str(raw_disposition.get("disposition", ""))
+                        for _ref in reflection_refs
+                    )
+                if reflection_refs and raw_disposition.get("disposition") in {
+                    "already_covered",
+                    "not_testable",
+                }:
                     ledger_issues.append(
                         ValidationIssue(
                             code="h1_reflection_action_ignored",
@@ -1062,6 +1070,29 @@ class LLMSignalMiningModel(SignalMiningModel):
                             allowed_repairs=("replace",),
                         )
                     )
+            if (
+                reflection_action_aliases
+                and not new_measurement_refs_from_ledger.intersection(
+                    reflection_action_aliases
+                )
+                and any(
+                    disposition != "repair_dependency"
+                    for disposition in reflection_dispositions
+                )
+            ):
+                ledger_issues.append(
+                    ValidationIssue(
+                        code="h1_reflection_has_no_downstream_measurement",
+                        message=(
+                            "At least one meta-reflection action must route to a "
+                            "new_measurement hypothesis unless every reflection "
+                            "action is repair_dependency; update_existing metadata "
+                            "alone does not execute downstream work"
+                        ),
+                        paths=("hypotheses", "need_dispositions"),
+                        path_policy="any",
+                    )
+                )
             duplicated_refs = sorted(
                 {
                     ref
@@ -1507,7 +1538,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             "a hypothesis. Items with kind=meta_reflection_action are explicit "
             "outcome-aware lessons from earlier Fast evaluation and must route to "
             "new_measurement, update_existing, or repair_dependency; they cannot be "
-            "dismissed as already_covered or not_testable. Use the supplied canonical "
+            "dismissed as already_covered or not_testable. At least one such item "
+            "must route to a real new_measurement hypothesis unless all of them are "
+            "repair_dependency; update_existing alone does not invoke downstream "
+            "work. Use the supplied canonical "
             "applicability contract and "
             "source types. A non-empty demand backlog is diagnostic demand, not proof "
             "that a new testable measurement exists. Return no_testable_hypothesis "

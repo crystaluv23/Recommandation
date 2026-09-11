@@ -64,6 +64,10 @@ mining, and Signal update proposals.
   `not_testable` are invalid because they would allow reflection to be present but
   operationally ignored. This routes action without granting permission to infer
   Discovery labels or source facts from retrospective reflection.
+  At least one projected reflection ref must occur in a `new_measurement`
+  hypothesis unless all projected reflection refs are `repair_dependency`.
+  `update_existing` may describe a relationship but cannot by itself satisfy this
+  gate because H1 disposition metadata does not invoke Update.
 - H1 projects every runtime need ref to a deterministic compact alias before it
   crosses the model boundary. The outgoing backlog and every correction use only
   those aliases; after validation, the adapter maps the disposition ledger,
