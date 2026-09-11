@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any, Iterable, Mapping
@@ -347,7 +348,9 @@ _SIGNAL_MINING_DECISIONS_OUTPUT = (
 
 _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
     " Return one JSON object with exactly decisions and no_candidate. decisions is "
-    "the same bounded decision array. When decisions is non-empty, no_candidate must "
+    "the same bounded decision array and each row describes one recurring cross-case "
+    "pattern, never one supplied case; case_ref is not a decision field. When "
+    "decisions is non-empty, no_candidate must "
     "be null. When decisions is empty, no_candidate has exactly reason_code, "
     "rationale, and considered_case_refs. reason_code is no_measurable_pattern, "
     "insufficient_evidence, or already_covered. rationale is a non-empty array of "
@@ -814,6 +817,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
+            "need_ref_projection": "compact-v1",
             "model_alias": getattr(registration, "alias", None),
             "provider": getattr(registration, "provider", None),
             "model": getattr(registration, "model", None),
@@ -832,19 +836,62 @@ class LLMSignalMiningModel(SignalMiningModel):
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
         """Parse the production H1 contract without prose/identifier matching."""
 
-        limits = dict(payload.get("limits", {}))
+        projected_payload = deepcopy(dict(payload))
+        projected_backlog = projected_payload.get("capability_backlog", {})
+        ordered_need_refs: list[str] = []
+        if isinstance(projected_backlog, Mapping):
+            for collection, field_name in (
+                (projected_backlog.get("signal_need_items", ()), "need_ref"),
+                (projected_backlog.get("items", ()), "request_id"),
+            ):
+                for item in collection:
+                    if not isinstance(item, Mapping) or not item.get(field_name):
+                        continue
+                    ref = str(item[field_name])
+                    if ref not in ordered_need_refs:
+                        ordered_need_refs.append(ref)
+        alias_width = max(3, len(str(len(ordered_need_refs))))
+        original_to_alias = {
+            ref: f"need-{index:0{alias_width}d}"
+            for index, ref in enumerate(ordered_need_refs, start=1)
+        }
+        alias_to_original = {
+            alias: original for original, alias in original_to_alias.items()
+        }
+        if isinstance(projected_backlog, Mapping):
+            projected_backlog = dict(projected_backlog)
+            for collection_name, field_name in (
+                ("signal_need_items", "need_ref"),
+                ("items", "request_id"),
+            ):
+                projected_rows: list[Any] = []
+                for item in projected_backlog.get(collection_name, ()):
+                    if isinstance(item, Mapping) and item.get(field_name):
+                        projected_rows.append(
+                            {
+                                **dict(item),
+                                field_name: original_to_alias[str(item[field_name])],
+                            }
+                        )
+                    else:
+                        projected_rows.append(item)
+                if collection_name in projected_backlog:
+                    projected_backlog[collection_name] = projected_rows
+            projected_payload["capability_backlog"] = projected_backlog
+
+        limits = dict(projected_payload.get("limits", {}))
         limit = int(limits.get("hypothesis_limit", 3))
         lookback_days = int(limits.get("evidence_lookback_days", 365))
-        slots = tuple(str(item) for item in payload.get("hypothesis_slots", ()))
+        slots = tuple(str(item) for item in projected_payload.get("hypothesis_slots", ()))
         if len(slots) != limit or len(set(slots)) != len(slots):
             raise ValidationError(
                 "Signal Mining H1 v3 requires one unique runtime slot per hypothesis"
             )
         allowed_slots = set(slots)
         allowed_source_types = {
-            str(item) for item in payload.get("available_raw_source_types", ())
+            str(item) for item in projected_payload.get("available_raw_source_types", ())
         }
-        backlog = payload.get("capability_backlog", {})
+        backlog = projected_payload.get("capability_backlog", {})
         allowed_need_refs: set[str] = set()
         if isinstance(backlog, Mapping):
             allowed_need_refs.update(
@@ -859,10 +906,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             )
         allowed_signal_refs = {
             str(item["signal_ref"])
-            for item in payload.get("stable_signal_cards", ())
+            for item in projected_payload.get("stable_signal_cards", ())
             if isinstance(item, Mapping) and item.get("signal_ref")
         }
-        applicability_contract = payload.get("h2_applicability_contract", {})
+        applicability_contract = projected_payload.get("h2_applicability_contract", {})
         expected_directions = {
             "higher_in_positive",
             "lower_in_positive",
@@ -927,6 +974,112 @@ class LLMSignalMiningModel(SignalMiningModel):
             raw_dispositions = value.get("need_dispositions")
             if not isinstance(raw_dispositions, list):
                 raise ValidationError("need_dispositions must be an array")
+            ledger_issues: list[ValidationIssue] = []
+            raw_disposition_refs: list[str] = []
+            new_measurement_refs_from_ledger: set[str] = set()
+            for index, raw_disposition in enumerate(raw_dispositions):
+                if not isinstance(raw_disposition, Mapping):
+                    continue
+                raw_refs = raw_disposition.get("need_refs")
+                if not isinstance(raw_refs, list):
+                    continue
+                string_refs = [item for item in raw_refs if isinstance(item, str)]
+                raw_disposition_refs.extend(string_refs)
+                unknown = sorted(set(string_refs) - allowed_need_refs)
+                if unknown:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_unknown_need_refs",
+                            message=(
+                                f"need_dispositions[{index}].need_refs contains unknown "
+                                "runtime aliases: " + ", ".join(unknown)
+                            ),
+                            paths=(f"need_dispositions[{index}].need_refs",),
+                            source_refs=tuple(unknown),
+                        )
+                    )
+                if len(set(string_refs)) != len(string_refs):
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_duplicate_need_refs_in_row",
+                            message=(
+                                f"need_dispositions[{index}].need_refs must be unique"
+                            ),
+                            paths=(f"need_dispositions[{index}].need_refs",),
+                        )
+                    )
+                if raw_disposition.get("disposition") == "new_measurement":
+                    new_measurement_refs_from_ledger.update(
+                        ref for ref in string_refs if ref in allowed_need_refs
+                    )
+            duplicated_refs = sorted(
+                {
+                    ref
+                    for ref in raw_disposition_refs
+                    if raw_disposition_refs.count(ref) > 1
+                }
+            )
+            missing_refs = sorted(allowed_need_refs - set(raw_disposition_refs))
+            if duplicated_refs or missing_refs:
+                details = []
+                if missing_refs:
+                    details.append("missing " + ", ".join(missing_refs))
+                if duplicated_refs:
+                    details.append("duplicated " + ", ".join(duplicated_refs))
+                ledger_issues.append(
+                    ValidationIssue(
+                        code="h1_need_ledger_coverage_invalid",
+                        message=(
+                            "need_dispositions must cover every runtime need alias "
+                            "exactly once; " + "; ".join(details)
+                        ),
+                        paths=("need_dispositions",),
+                    )
+                )
+            if (
+                conclusion == "no_testable_hypothesis"
+                and new_measurement_refs_from_ledger
+            ):
+                ledger_issues.append(
+                    ValidationIssue(
+                        code="h1_new_measurement_conclusion_conflict",
+                        message=(
+                            "A no_testable_hypothesis conclusion cannot retain any "
+                            "new_measurement disposition; either produce hypotheses "
+                            "for those aliases or revise the dispositions and reason"
+                        ),
+                        paths=(
+                            "conclusion",
+                            "hypotheses",
+                            "no_hypothesis",
+                            "need_dispositions",
+                        ),
+                        path_policy="any",
+                    )
+                )
+            if conclusion == "hypotheses" and isinstance(raw_items, list):
+                hypothesis_need_refs = {
+                    ref
+                    for raw_item in raw_items
+                    if isinstance(raw_item, Mapping)
+                    and isinstance(raw_item.get("need_refs"), list)
+                    for ref in raw_item["need_refs"]
+                    if isinstance(ref, str) and ref in allowed_need_refs
+                }
+                if hypothesis_need_refs != new_measurement_refs_from_ledger:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_hypothesis_need_refs_mismatch",
+                            message=(
+                                "new_measurement disposition aliases must exactly match "
+                                "the union of hypothesis need_refs"
+                            ),
+                            paths=("hypotheses", "need_dispositions"),
+                            path_policy="any",
+                        )
+                    )
+            if ledger_issues:
+                raise StructuredValidationError(ledger_issues)
             disposition_rows: list[dict[str, Any]] = []
             disposition_need_refs: list[str] = []
             for index, raw_disposition in enumerate(raw_dispositions):
@@ -1232,7 +1385,7 @@ class LLMSignalMiningModel(SignalMiningModel):
 
         if self.identity_guard_aliases:
             _scan_payload(
-                payload,
+                projected_payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
                 identity_boundary="Signal Mining H1 v3 aggregate request",
@@ -1263,7 +1416,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         if self.request_token_budget is not None and callable(estimator):
             required = estimator(
                 system_prompt=system_prompt,
-                payload=payload,
+                payload=projected_payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
                 max_output_tokens=self.h1_max_output_tokens,
@@ -1279,7 +1432,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             self.caller,
             stage="signal_mining_hypotheses",
             system_prompt=system_prompt,
-            payload=payload,
+            payload=projected_payload,
             parser=parse,
             allow_outcomes=True,
             anonymous_aliases=self.identity_guard_aliases,
@@ -1289,7 +1442,27 @@ class LLMSignalMiningModel(SignalMiningModel):
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
         )
-        return AgentStep(value, usage, metadata=dict(conclusion_metadata))
+        restored_metadata = deepcopy(conclusion_metadata)
+        if "need_refs" in restored_metadata:
+            restored_metadata["need_refs"] = [
+                alias_to_original.get(ref, ref)
+                for ref in restored_metadata.get("need_refs", ())
+            ]
+        for disposition in restored_metadata.get("need_dispositions", ()):
+            disposition["need_refs"] = [
+                alias_to_original.get(ref, ref)
+                for ref in disposition.get("need_refs", ())
+            ]
+        if isinstance(restored_metadata.get("hypothesis_need_refs"), Mapping):
+            restored_metadata["hypothesis_need_refs"] = {
+                key: [alias_to_original.get(ref, ref) for ref in refs]
+                for key, refs in restored_metadata["hypothesis_need_refs"].items()
+            }
+        restored_metadata["need_ref_aliases"] = [
+            {"alias": alias, "need_ref": original}
+            for alias, original in alias_to_original.items()
+        ]
+        return AgentStep(value, usage, metadata=restored_metadata)
 
     def rank_cases(
         self, payload: Mapping[str, Any]
@@ -1812,8 +1985,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Compare labels only against the frozen outcome-hidden signatures. "
                 "Treat each exact_span as authoritative; ignore any stronger or "
                 "different claim in its model-authored summary. "
-                "Propose a reusable new Signal only for a repeated observable difference; "
-                "otherwise preserve a refined pattern or reject it."
+                "Each decision is a portfolio-level recurring pattern, not one decision "
+                "per case. Propose a reusable new Signal only for a repeated observable "
+                "difference. If the cases only support individual rejections or no "
+                "recurring pattern, return decisions=[] and the structured no_candidate "
+                "reason covering every supplied case_ref."
             ),
             temperature=self.creative_temperature,
         )
@@ -1891,6 +2067,30 @@ class LLMSignalMiningModel(SignalMiningModel):
                 value.get("decisions"), list
             ):
                 raise ValidationError(f"{stage} requires a decisions array")
+            raw_decisions = value["decisions"]
+            if exploration and raw_decisions and all(
+                isinstance(item, Mapping)
+                and item.get("case_ref") in exploration_labels
+                and item.get("candidate") is None
+                and item.get("hypothesis_id") in {None, ""}
+                and item.get("disposition", item.get("decision"))
+                in {"rejected", "inconclusive"}
+                for item in raw_decisions
+            ):
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="e2_per_case_rows_not_portfolio_decisions",
+                            message=(
+                                "These are per-case rejection rows, not recurring "
+                                "cross-case decisions. Replace decisions with [] and "
+                                "replace no_candidate with reason_code, non-empty "
+                                "rationale, and every supplied case_ref in order."
+                            ),
+                            paths=("decisions", "no_candidate"),
+                        )
+                    ]
+                )
             items = tuple(
                 SignalMiningDecision.from_dict(item)
                 if isinstance(item, Mapping)
@@ -2002,6 +2202,14 @@ class LLMSignalMiningModel(SignalMiningModel):
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=(8_000 if stage == "signal_mining_contrast" else 4_000),
             temperature=temperature,
+            stable_correction_prefix=exploration,
+            enforce_scoped_correction=exploration,
+            correction_guidance=(
+                "For E2, decisions are cross-case portfolio patterns. Per-case "
+                "rejections must become decisions=[] with structured no_candidate."
+                if exploration
+                else ""
+            ),
         )
         return AgentStep(value, usage, metadata=decision_metadata)
 

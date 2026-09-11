@@ -54,9 +54,27 @@ mining, and Signal update proposals.
   absence is therefore not, by itself, a valid reason to reject a measurement
   that can be defined from the demand backlog and available source catalog;
   local H2/H3 owns feasibility and evidence testing.
+- H1 projects every runtime need ref to a deterministic compact alias before it
+  crosses the model boundary. The outgoing backlog and every correction use only
+  those aliases; after validation, the adapter maps the disposition ledger,
+  no-hypothesis subset, and per-hypothesis need refs back to their original refs
+  and persists the local alias map for audit. The search fingerprint remains over
+  the original masked backlog, and the projection version is part of the model
+  work identity. This projection is an identity transport aid, not aggregation:
+  every original need remains independently accountable.
+- Before detailed H1 candidate parsing, locally decidable need-ledger failures
+  are reported together: unknown refs, duplicate refs, missing coverage, a
+  no-hypothesis conclusion that still declares a new measurement, and disagreement
+  between new-measurement dispositions and hypothesis need refs. One bounded
+  correction therefore sees the complete obligation set instead of consuming its
+  attempts one typo at a time.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
+  E2 decisions are cross-case portfolio hypotheses, never one decision per input
+  case. When the model reports only case-level rejection/inconclusive rows, the
+  correction obligation explicitly requires `decisions=[]` plus the structured
+  `no_candidate` object rather than repeatedly reshaping those rows as candidates.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the

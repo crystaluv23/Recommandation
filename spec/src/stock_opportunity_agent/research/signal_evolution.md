@@ -46,6 +46,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   of Fast `signal_need_items[*].need_ref` values and ordinary capability-backlog
   `items[*].request_id` values; the latter must not be dropped merely because
   they are provider, retrieval, or existing-Signal coverage gaps.
+  The role adapter may use deterministic compact need aliases on the wire, but
+  committed H1 audit always restores the original need refs and includes the
+  local alias map. Thus downstream H2/H3 audit and Fast-to-Slow provenance never
+  depend on model-facing transport identifiers.
 - Exploration extraction runs in bounded microbatches keyed by stable case refs.
   A failed microbatch cannot discard valid sibling signatures or become a
   domain observation. The full frozen E1 cohort, failed refs, and usage remain
@@ -54,6 +58,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   E2 receives only the runtime-selected grounded induction signatures. A
   semantic zero-candidate result records its limited reason and exactly those
   considered refs; unrelated E1 pool members and holdout cases remain absent.
+  E2 decisions describe repeated cross-case patterns rather than case-by-case
+  acceptance. A model response containing only per-case rejection rows is a
+  correctable output-shape failure, not a technical claim that mining found a
+  candidate and not a locally invented semantic result.
   After bounded model correction, E1 may quarantine invalid observations while
   preserving independently validated observations and sibling signatures. It
   never clips or invents source text. Quarantine reasons remain technical audit

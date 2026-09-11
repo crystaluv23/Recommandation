@@ -230,17 +230,17 @@ class SignalRoleAdapterTests(TestCase):
             "no_hypothesis": {
                 "reason_code": "insufficient_retrieval_basis",
                 "rationale": ["The remaining rows are dependency or coverage gaps."],
-                "need_refs": need_refs,
+                "need_refs": ["need-002", "need-001"],
             },
             "need_dispositions": [
                 {
-                    "need_refs": ["target_filing_events"],
+                    "need_refs": ["need-002"],
                     "disposition": "repair_dependency",
                     "signal_refs": [],
                     "rationale": ["The filing provider returned no usable data."],
                 },
                 {
-                    "need_refs": ["signal:price_momentum_126d:v1"],
+                    "need_refs": ["need-001"],
                     "disposition": "already_covered",
                     "signal_refs": ["price_momentum_126d:v1"],
                     "rationale": ["The stable Signal already defines the measure."],
@@ -273,6 +273,11 @@ class SignalRoleAdapterTests(TestCase):
             need_refs,
         )
         self.assertIn("items request_id", caller.calls[0]["system_prompt"])
+        projected_backlog = caller.calls[0]["payload"]["capability_backlog"]
+        self.assertEqual(
+            projected_backlog["signal_need_items"][0]["need_ref"], "need-001"
+        )
+        self.assertEqual(projected_backlog["items"][0]["request_id"], "need-002")
 
     def test_signal_h1_v3_uses_runtime_identity_and_structured_measurement(
         self,
@@ -436,14 +441,14 @@ class SignalRoleAdapterTests(TestCase):
             "no_hypothesis": {
                 "reason_code": "no_new_measurable_gap",
                 "rationale": ["The visible needs do not define another measurement."],
-                "need_refs": ["need-a", "need-b"],
+                "need_refs": ["need-001", "need-002"],
             },
         }
         incomplete = {
             **base,
             "need_dispositions": [
                 {
-                    "need_refs": ["need-a"],
+                    "need_refs": ["need-001"],
                     "disposition": "already_covered",
                     "signal_refs": ["existing:v1"],
                     "rationale": ["The stable Signal already covers this need."],
@@ -455,7 +460,7 @@ class SignalRoleAdapterTests(TestCase):
             "need_dispositions": [
                 *incomplete["need_dispositions"],
                 {
-                    "need_refs": ["need-b"],
+                    "need_refs": ["need-002"],
                     "disposition": "not_testable",
                     "signal_refs": [],
                     "rationale": ["The need does not define an observable measure."],
@@ -484,8 +489,98 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(caller.calls[0]["max_output_tokens"], 8_000)
         self.assertEqual(len(step.metadata["need_dispositions"]), 2)
         self.assertIn(
-            "cover every runtime need_ref exactly once",
+            "cover every runtime need alias exactly once",
             caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
+        )
+        self.assertEqual(
+            [
+                ref
+                for item in step.metadata["need_dispositions"]
+                for ref in item["need_refs"]
+            ],
+            ["need-a", "need-b"],
+        )
+
+    def test_signal_h1_compacts_large_need_ledger_and_aggregates_repairs(self) -> None:
+        original_refs = [f"original-long-need-ref-{index:03d}-{'x' * 40}" for index in range(145)]
+        aliases = [f"need-{index:03d}" for index in range(1, 146)]
+        malformed = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["No candidate was selected."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001", "need-001", "need-999"],
+                    "disposition": "new_measurement",
+                    "signal_refs": [],
+                    "rationale": ["A measurement direction appears possible."],
+                }
+            ],
+        }
+        corrected = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The supplied needs do not define another measure."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": aliases,
+                    "disposition": "not_testable",
+                    "signal_refs": [],
+                    "rationale": ["No distinct point-in-time measurement is defined."],
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([malformed, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v3",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["news"],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": ref, "need": f"Need {index}"}
+                        for index, ref in enumerate(original_refs)
+                    ]
+                },
+            }
+        )
+
+        sent_refs = [
+            item["need_ref"]
+            for item in caller.calls[0]["payload"]["capability_backlog"][
+                "signal_need_items"
+            ]
+        ]
+        self.assertEqual(sent_refs, aliases)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            {item["issue_code"] for item in feedback["obligations"]},
+            {
+                "h1_duplicate_need_refs_in_row",
+                "h1_need_ledger_coverage_invalid",
+                "h1_new_measurement_conclusion_conflict",
+                "h1_unknown_need_refs",
+            },
+        )
+        restored_refs = [
+            ref
+            for item in step.metadata["need_dispositions"]
+            for ref in item["need_refs"]
+        ]
+        self.assertEqual(restored_refs, original_refs)
+        self.assertEqual(
+            step.metadata["need_ref_aliases"][-1],
+            {"alias": "need-145", "need_ref": original_refs[-1]},
         )
 
     def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
@@ -2158,6 +2253,64 @@ class SignalRoleAdapterTests(TestCase):
             "ignore any stronger or different claim",
             caller.calls[0]["system_prompt"],
         )
+
+    def test_exploration_e2_corrects_per_case_rejections_to_no_candidate(self) -> None:
+        malformed = {
+            "decisions": [
+                {
+                    "case_ref": "case-001",
+                    "disposition": "rejected",
+                    "hypothesis_id": None,
+                    "rationale": ["No recurring difference is visible."],
+                    "candidate": None,
+                },
+                {
+                    "case_ref": "case-002",
+                    "disposition": "rejected",
+                    "hypothesis_id": None,
+                    "rationale": ["No recurring difference is visible."],
+                    "candidate": None,
+                },
+            ],
+            "no_candidate": None,
+        }
+        corrected = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": ["No recurring cross-case difference is visible."],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        caller = ScriptedRoleCaller([malformed, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ],
+                "rules": {
+                    "decisions": [
+                        "supported",
+                        "refine",
+                        "rejected",
+                        "inconclusive",
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_per_case_rows_not_portfolio_decisions",
+        )
+        self.assertEqual(
+            feedback["required_change_paths"], ["decisions", "no_candidate"]
+        )
+        self.assertIn("portfolio-level recurring pattern", caller.calls[0]["system_prompt"])
 
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (
