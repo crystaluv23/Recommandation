@@ -16,6 +16,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   and reveals the frozen positive/control labels only in E2. Fast demand augments
   this search but never gates it. A grounded `no_measurable_pattern` result is a
   semantic mining outcome, distinct from skipped work or technical failure.
+  Slow sampling remains owned by the Discovery split. A separate identity-only
+  inventory covers all approved non-Locked-Test development splits so a Fast
+  backlog row originating from an Anchor case can still resolve its source owner
+  and receive scoped brand masking. This inventory exposes neither outcomes nor
+  evidence, and Locked Test is never loaded for identity masking.
 - Update uses the same side-effect-free candidate checks during model correction
   and staging. Deterministic candidates may omit the optional null skill; LLM
   candidates still require a complete skill. Target identity, vNext and immutable

@@ -1,5 +1,16 @@
 # Status
 
+V41 reached a genuine zero-call H1 approval boundary, but exact wire inspection
+still found `Kinross` and `Wynn` in Fast needs. The row-scoped resolver was
+correct; its identity index was incomplete because the Signal engine sampled
+Discovery cases while those needs originated from the fixed Anchor cohort.
+Signal sampling remains Discovery-only, but the engine now receives a separate
+identity-only union of the approved Discovery, Anchor, and Evolution Validation
+splits. It contains no outcomes or evidence and still never loads Locked Test.
+The regression deliberately puts the source owner outside the sampling cohort
+and proves its brand is masked. All 705 tests and repository lint pass; V41
+remains immutable at zero calls and requires a freshly frozen successor.
+
 V40 remains a zero-call preflight at `round=0/cycle=0`. Its mining-only probe
 showed why a global single-brand inventory cannot be generalized across the full
 8,755-case Discovery pool: a target brand `Capital` collided with the stable

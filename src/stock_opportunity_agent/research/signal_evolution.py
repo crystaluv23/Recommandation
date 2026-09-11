@@ -1965,6 +1965,7 @@ class SignalEvolutionEngine:
         mining_model: SignalMiningModel,
         update_model: SignalUpdateModel,
         llm_signal_runner: LLMSignalRunner | None,
+        identity_cases: tuple[EvolutionCase, ...] | None = None,
         evidence_resolver: EvidenceResolver | None = None,
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
@@ -1981,10 +1982,11 @@ class SignalEvolutionEngine:
         self.workspace = workspace
         self.mining_model = mining_model
         self.update_model = update_model
-        discovery_aliases = _slow_role_identity_guard_inventory(discovery_cases)
+        identity_population = identity_cases or discovery_cases
+        discovery_aliases = _slow_role_identity_guard_inventory(identity_population)
         self.slow_role_identity_guards = discovery_aliases
         self._discovery_cases_by_id = {
-            case.case_id: case for case in discovery_cases
+            case.case_id: case for case in identity_population
         }
         for role in (self.mining_model, self.update_model):
             setter = getattr(role, "set_identity_guard_aliases", None)
@@ -1998,7 +2000,7 @@ class SignalEvolutionEngine:
             registry,
             llm_runner=llm_signal_runner,
             deterministic_functions=deterministic_functions,
-            forbidden_identity_terms=_discovery_identity_terms(discovery_cases),
+            forbidden_identity_terms=_discovery_identity_terms(identity_population),
         )
         self.effectiveness_evaluator = SignalCandidateEffectivenessEvaluator(
             registry,

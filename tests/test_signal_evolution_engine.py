@@ -736,12 +736,13 @@ class SignalEvolutionTests(TestCase):
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(documents=(document,)),
-                discovery_cases=(case,),
+                discovery_cases=(make_case("other_discovery_issuer", 1.1),),
                 meta_memory=PlanMetaMemory(),
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=EmptyMiningModel(),
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                identity_cases=(case,),
             )
 
             packet, _audit = engine._mining_evidence_packet(
@@ -830,12 +831,13 @@ class SignalEvolutionTests(TestCase):
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
-                discovery_cases=(case,),
+                discovery_cases=(make_case("other_discovery_issuer", 1.1),),
                 meta_memory=memory,
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=EmptyMiningModel(),
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
+                identity_cases=(case,),
             )
             engine.slow_role_identity_guards += ("Future Holdings", "Business Systems")
             (engine.workspace.root / "capability_backlog.json").write_text(

@@ -2119,6 +2119,11 @@ def _run_bounded_evolution_cycle_unlocked(
         mining_model=mining_model,
         update_model=LLMSignalUpdateModel(evolution_caller),
         llm_signal_runner=signal_runner,
+        identity_cases=(
+            *dataset.discovery,
+            *dataset.anchor,
+            *dataset.evolution_validation,
+        ),
         evidence_resolver=evidence_resolver,
     )
     result = DualLoopEvolutionEngine(
