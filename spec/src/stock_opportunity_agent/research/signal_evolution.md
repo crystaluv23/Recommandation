@@ -90,7 +90,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   evidence that the source or measured condition is absent.
   E2 never receives E1's model-authored summaries as evidence. The controller
   replaces them with a deterministic literal-only view before labels are
-  revealed; the original summaries remain in E1 audit only. Generic filing
+  revealed; the original summaries remain in E1 audit only. For an observation
+  that maps unambiguously to a supplied SEC Company Facts record, this view keeps
+  the source-owned taxonomy, concept, label, and unit beside the literal span.
+  Queryless extraction prefers a same-concept two-period pair before unrelated
+  one-period structured facts. Generic filing
   cover/legal boilerplate is not a comparison-ready observation and is
   quarantined like any other locally invalid E1 observation.
   Source-owned SEC Company Facts context retains each concept's original

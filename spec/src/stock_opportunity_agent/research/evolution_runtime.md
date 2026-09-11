@@ -923,6 +923,12 @@ unrelated drift cannot be laundered through a later attempt. If projection is no
 mechanically possible, the original strict scope failure remains in force and any
 remaining correction repeats the original failed object and authorized paths. The
 projection never invents content, relaxes validation, or adds a model call.
+An issue that permits switching between mutually exclusive top-level outcomes must
+name every contract-coupled discriminator and payload as an authorized dependency.
+For H1, changing from `no_testable_hypothesis` to `hypotheses` necessarily permits
+the linked `conclusion` and `no_hypothesis` changes; otherwise a valid correction
+would be rejected as unrelated drift and an identical cached request could consume
+the remaining recovery attempt.
 For quantity failures, correction feedback additionally flattens every affected claim
 and linked assertion into a counted literal checklist. Before return, each listed
 missing literal must either be absent from every retained path or occur in a retained

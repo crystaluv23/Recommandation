@@ -2514,6 +2514,54 @@ class SignalRoleAdapterTests(TestCase):
             },
         )
 
+    def test_h1_existing_disposition_requires_exactly_one_signal(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["One existing measure covers the need."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "already_covered",
+                    "signal_refs": ["cash_runway:v1", "cash_reserves:v1"],
+                    "rationale": ["Existing measures are available."],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["need_dispositions"][0]["signal_refs"] = ["cash_runway:v1"]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v4",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "stable_signal_cards": [
+                    {"signal_ref": "cash_runway:v1"},
+                    {"signal_ref": "cash_reserves:v1"},
+                ],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "cash-need", "need": "Measure cash runway."}
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        obligation = caller.calls[1]["payload"]["validation_feedback"]["obligations"][0]
+        self.assertEqual(obligation["issue_code"], "h1_disposition_signal_refs_invalid")
+        self.assertEqual(
+            step.metadata["need_dispositions"][0]["signal_refs"],
+            ["cash_runway:v1"],
+        )
+
     def test_exploration_e2_corrects_per_case_rejections_to_no_candidate(self) -> None:
         malformed = {
             "decisions": [
@@ -2625,3 +2673,11 @@ class SignalRoleAdapterTests(TestCase):
                 self.assertNotIn("case-001", contract)
                 self.assertNotIn("Induction evidence does not isolate", contract)
                 self.assertNotIn("An expectation-changing event", contract)
+        self.assertIn(
+            "boolean, ordinal, numeric, or categorical",
+            signal_roles_module._SIGNAL_MINING_HYPOTHESES_V3_OUTPUT,
+        )
+        self.assertIn(
+            "both supplied record exact_spans",
+            signal_roles_module._SIGNAL_MINING_SIGNATURES_OUTPUT,
+        )

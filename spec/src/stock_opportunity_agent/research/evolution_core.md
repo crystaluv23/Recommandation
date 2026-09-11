@@ -64,3 +64,7 @@ but are not independently citable facts. Ambiguous raw matches, future-filed
 records, unknown shapes, and budget omissions remain explicitly partial. The
 combined structured view, including parent fields and record literals, stays
 inside the existing document character bound and does not alter Raw Info.
+After ordinary target aliases are masked, a proper-name phrase explicitly described
+as a division, subsidiary, brand, business, unit, or segment of the masked target is
+also masked in model-facing evidence. This relation-based rule covers target
+affiliates absent from Basic Info without suppressing unrelated third-party names.

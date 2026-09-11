@@ -65,6 +65,14 @@ _IDENTITY_MASK_SENTINEL = "\ue000\ue001"
 _MASKED_IDENTITY_VALUE = "[MASKED_COMPANY]"
 
 
+_TARGET_AFFILIATE_RELATION = re.compile(
+    r"(?P<name>\b[A-Z][A-Za-z0-9&.'’+-]*"
+    r"(?:\s+(?:[A-Z][A-Za-z0-9&.'’+-]*|of|the|and|&)){0,5})"
+    r"(?P<relation>\s*,?\s+(?:an?\s+)?(?:division|subsidiary|brand|business|"
+    r"unit|segment)\s+of\s+\[MASKED_COMPANY\])"
+)
+
+
 _IDENTITY_NAME_SEPARATOR = re.compile(r"\s*(?:/|\||;|\n)\s*")
 
 
@@ -5649,15 +5657,17 @@ def _model_evidence_view(
     view = _agent_raw_document_view(
         document, max_content_chars=max_content_chars, query=query
     )
+    masked_excerpt = _mask_identity_values(
+        view["content_excerpt"], aliases, expand_aliases=expand_aliases
+    )
+    masked_excerpt = _mask_target_affiliate_relations(masked_excerpt)
     model_view = {
         "document_ref": f"document-{index:02d}",
         "source_type": view["source_type"],
         "published_at": view["published_at"],
         "available_at": view["available_at"],
         "content_hash": view["content_hash"],
-        "content_excerpt": _mask_identity_values(
-            view["content_excerpt"], aliases, expand_aliases=expand_aliases
-        ),
+        "content_excerpt": masked_excerpt,
         "content_truncated": view["content_truncated"],
         "content_projection": view["content_projection"],
     }
@@ -5668,6 +5678,7 @@ def _model_evidence_view(
             aliases,
             expand_aliases=expand_aliases,
         )
+        masked_context = _mask_target_affiliate_relations(masked_context)
         redacted_records = 0
         for original_concept, masked_concept in zip(
             original_context.get("concepts", ()),
@@ -5695,6 +5706,36 @@ def _model_evidence_view(
             ]
         model_view["structured_context"] = masked_context
     return model_view
+
+
+def _mask_target_affiliate_relations(value: Any) -> Any:
+    """Mask a named affiliate explicitly related to the already masked target."""
+
+    if isinstance(value, str):
+        affiliate_names = {
+            match.group("name")
+            for match in _TARGET_AFFILIATE_RELATION.finditer(value)
+        }
+        result = _TARGET_AFFILIATE_RELATION.sub(
+            rf"{_MASKED_IDENTITY_VALUE}\g<relation>", value
+        )
+        for affiliate_name in sorted(affiliate_names, key=len, reverse=True):
+            result = re.sub(
+                rf"(?<![A-Za-z0-9]){re.escape(affiliate_name)}(?![A-Za-z0-9])",
+                _MASKED_IDENTITY_VALUE,
+                result,
+            )
+        return result
+    if isinstance(value, list):
+        return [_mask_target_affiliate_relations(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_mask_target_affiliate_relations(item) for item in value)
+    if isinstance(value, Mapping):
+        return {
+            key: _mask_target_affiliate_relations(item)
+            for key, item in value.items()
+        }
+    return value
 
 
 def _select_h3_model_evidence(

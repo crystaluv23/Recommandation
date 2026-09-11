@@ -1,5 +1,25 @@
 # Status
 
+V34 is authoritatively complete at `round=0/cycle=1` but is not semantic Slow
+acceptance. Its exact H1 payload carried all 30 projected reflection actions;
+the initial answer falsely mapped 142 unrelated Fast needs to every stable
+Signal, and its correction then formed three reflection-driven measurements but
+used an undocumented `count` value kind, cited existing Signals from
+`new_measurement` rows, and pooled semantically unrelated need refs. Because the
+validation issue did not authorize the contract-coupled `no_hypothesis` change,
+scoped correction rejected that otherwise substantive response and replayed an
+identical cached request, so H2/H3 never ran. Independent E1 did surface materially
+better filing and Company Facts literals, but E2's deterministic handoff removed
+the source-owned concept/label/unit and reduced structured records to anonymous
+numbers; its `insufficient_evidence` result is locally correct for that damaged
+view, not evidence that no factor exists. Update separately staged
+`cash_reserves:v2` and correctly rejected its incompatible fixture while two other
+drafts failed executable-fixture preservation. The current repair explicitly
+states H1 enums/ref rules and semantic grouping, grants outcome-coupled correction
+paths, preserves only unambiguous source-owned Company Facts semantics in E2,
+prefers same-concept period pairs, and relation-masks named target affiliates.
+Fresh live V35 acceptance is pending.
+
 V31 is authoritatively complete at `round=0/cycle=1`, but a content-level audit
 withdraws its earlier semantic acceptance. Its E2 wire body matched the persisted
 request and was not transport-truncated; however, queryless filing projections

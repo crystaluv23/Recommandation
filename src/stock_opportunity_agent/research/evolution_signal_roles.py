@@ -71,7 +71,8 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
     "no_hypothesis is null and each "
     "hypothesis has exactly proposal_ref (copied from hypothesis_slots), measurement "
-    "(exactly observable, value_kind, normalization), applicability (exactly rule "
+    "(exactly observable, value_kind, normalization), where value_kind is exactly "
+    "boolean, ordinal, numeric, or categorical; applicability (exactly rule "
     "and values), "
     "expected_direction, retrieval_intent (exactly source_types and query), "
     "falsifiers, and need_refs. Each falsifier has exactly condition and "
@@ -86,8 +87,12 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "rationale field is a non-empty array of short strings. Every supplied "
     "signal_need_items need_ref and every ordinary backlog items request_id is a "
     "runtime need_ref and must appear exactly once; only supplied stable signal_refs "
-    "may be cited. Group need_refs with the same disposition, signal_refs, and "
-    "rationale into as few rows as possible. no_hypothesis.need_refs is only a "
+    "may be cited. update_existing and already_covered require exactly one stable "
+    "signal_ref per row. new_measurement, repair_dependency, and not_testable require "
+    "signal_refs=[]. Group need_refs only when the same measurement or dependency "
+    "reason genuinely addresses every ref; never pool semantically unrelated refs "
+    "to shorten the ledger. Each hypothesis may cite only need_refs directly "
+    "addressed by its one measurement. no_hypothesis.need_refs is only a "
     "small explanatory subset and need not repeat the complete disposition ledger. "
     "Never add Markdown or company identities."
 )
@@ -393,7 +398,10 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     "and exact_span (an exact contiguous 8-240 character substring copied from that "
     "document's content_excerpt or one structured_context concept record's "
     "exact_span). A citation must stay inside one record; wrapper concept/label/unit "
-    "fields and text joined across records are not facts. Return at most six "
+    "fields and text joined across records are not facts. For structured_context "
+    "with two records for one concept, prefer observations for both supplied record "
+    "exact_spans before unrelated one-period concepts, so later comparison can "
+    "observe within-case direction. Return at most six "
     "observations per case. When no "
     "visible excerpt supports an observation, return observations=[] and at least one "
     "specific evidence gap; never invent an observation to make the array non-empty. "
@@ -1055,16 +1063,40 @@ class LLMSignalMiningModel(SignalMiningModel):
                         str(raw_disposition.get("disposition", ""))
                         for _ref in reflection_refs
                     )
-                if reflection_refs and raw_disposition.get("disposition") in {
-                    "already_covered",
-                    "not_testable",
-                }:
+                disposition = raw_disposition.get("disposition")
+                raw_signal_refs = raw_disposition.get("signal_refs")
+                signal_refs = (
+                    [item for item in raw_signal_refs if isinstance(item, str)]
+                    if isinstance(raw_signal_refs, list)
+                    else []
+                )
+                signal_ref_shape_valid = (
+                    len(signal_refs) == 1
+                    if disposition in {"update_existing", "already_covered"}
+                    else not signal_refs
+                )
+                if disposition in allowed_need_dispositions and not signal_ref_shape_valid:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_disposition_signal_refs_invalid",
+                            message=(
+                                f"need_dispositions[{index}] disposition={disposition} "
+                                "must cite exactly one stable Signal only for "
+                                "update_existing/already_covered and otherwise must "
+                                "use signal_refs=[]"
+                            ),
+                            paths=(f"need_dispositions[{index}].signal_refs",),
+                        )
+                    )
+                if reflection_refs and disposition == "already_covered":
                     ledger_issues.append(
                         ValidationIssue(
                             code="h1_reflection_action_ignored",
                             message=(
-                                "meta-reflection action refs require new_measurement, "
-                                "update_existing, or repair_dependency"
+                                "meta-reflection action refs cannot be already_covered; "
+                                "use new_measurement, update_existing, "
+                                "repair_dependency, or an intrinsically justified "
+                                "not_testable disposition"
                             ),
                             paths=(f"need_dispositions[{index}]",),
                             allowed_repairs=("replace",),
@@ -1091,6 +1123,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                         ),
                         paths=("hypotheses", "need_dispositions"),
                         path_policy="any",
+                        dependent_paths=("conclusion", "no_hypothesis"),
                     )
                 )
             duplicated_refs = sorted(
@@ -1136,6 +1169,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                             "need_dispositions",
                         ),
                         path_policy="any",
+                        dependent_paths=("no_hypothesis",),
                     )
                 )
             raw_no_hypothesis = value.get("no_hypothesis")
@@ -1165,6 +1199,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                             "need_dispositions",
                         ),
                         path_policy="any",
+                        dependent_paths=("no_hypothesis",),
                     )
                 )
             for index, raw_disposition in enumerate(raw_dispositions):
@@ -1248,13 +1283,17 @@ class LLMSignalMiningModel(SignalMiningModel):
                         f"{path}.signal_refs contains unknown stable refs: "
                         + ", ".join(unknown_signals)
                     )
-                if disposition in {"update_existing", "already_covered"} and not signal_refs:
+                if disposition in {"update_existing", "already_covered"} and len(signal_refs) != 1:
                     raise ValidationError(
-                        f"{path}.{disposition} requires a stable signal_ref"
+                        f"{path}.{disposition} requires exactly one stable signal_ref"
                     )
-                if disposition == "new_measurement" and signal_refs:
+                if disposition in {
+                    "new_measurement",
+                    "repair_dependency",
+                    "not_testable",
+                } and signal_refs:
                     raise ValidationError(
-                        f"{path}.new_measurement cannot cite an existing Signal"
+                        f"{path}.{disposition} cannot cite an existing Signal"
                     )
                 rationale = string_array(
                     raw_disposition.get("rationale"), path=f"{path}.rationale"

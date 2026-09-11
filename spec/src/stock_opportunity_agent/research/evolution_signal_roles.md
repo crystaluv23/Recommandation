@@ -48,7 +48,13 @@ mining, and Signal update proposals.
   dependency is presently unavailable. The frozen H1 output ceiling must be
   large enough to serialize the complete runtime need set; new contracts use
   8,000 output tokens and direct the model to group refs that share one
-  disposition/rationale. A `no_hypothesis.need_refs` list is only a bounded
+  disposition/rationale only when one measurement or one dependency reason
+  genuinely addresses every grouped ref; semantically unrelated needs may not be
+  pooled merely to shorten the ledger. `measurement.value_kind` is one of
+  `boolean`, `ordinal`, `numeric`, or `categorical`. `update_existing` and
+  `already_covered` each cite exactly one stable Signal per disposition row;
+  `new_measurement`, `repair_dependency`, and `not_testable` cite none. A
+  `no_hypothesis.need_refs` list is only a bounded
   explanatory subset and must not duplicate the complete disposition ledger.
   H1 receives the bounded, identity-masked, outcome-aware Fast meta-memory so it
   can form hypotheses from recurring prediction errors even when Fast supplied no
@@ -60,8 +66,9 @@ mining, and Signal update proposals.
   and evidence testing.
 - The controller also projects explicit vertical-reflection fields into stable
   runtime action refs. Each such ref must be dispositioned as a new measurement,
-  an existing-Signal update, or a dependency repair; `already_covered` and
-  `not_testable` are invalid because they would allow reflection to be present but
+  an existing-Signal update, a dependency repair, or an intrinsically
+  `not_testable` measurement with a specific measurement-level reason;
+  `already_covered` is invalid because it would allow reflection to be present but
   operationally ignored. This routes action without granting permission to infer
   Discovery labels or source facts from retrospective reflection.
   At least one projected reflection ref must occur in a `new_measurement`
@@ -106,7 +113,13 @@ mining, and Signal update proposals.
   selected signature has an explicit positive/control label.
 - E1 summaries are untrusted interpretations and remain audit-only. Before E2,
   the controller emits only each validated document ref and exact source span
-  with a deterministic literal description. A locally recognizable SEC cover or
+  with a deterministic literal description. When the span belongs unambiguously
+  to one supplied SEC Company Facts record, that description also preserves only
+  its source-owned taxonomy, concept, label, and unit so E2 knows what the literal
+  number measures; it never restores an E1-authored claim. Queryless E1 is directed
+  to prefer two available periods of the same structured concept before unrelated
+  one-period facts, making direction observable within the existing evidence and
+  output bounds. A locally recognizable SEC cover or
   registration boilerplate span is not a comparison-ready observation. Empty E2
   outcomes distinguish a genuinely compared `no_measurable_pattern` from
   `insufficient_evidence`; projection loss, missing comparison-ready observations,

@@ -611,13 +611,81 @@ class SignalEvolutionTests(TestCase):
         filtered, reasons = _comparison_ready_exploration_signature(signature)
         view = _literal_only_signature_view(
             filtered,
-            {"evidence": [{"document_ref": "document-01", "source_type": "10-q"}]},
+            {
+                "evidence": [
+                    {
+                        "document_ref": "document-01",
+                        "source_type": "sec_company_facts",
+                        "structured_context": {
+                            "concepts": [
+                                {
+                                    "taxonomy": "us-gaap",
+                                    "concept": "Revenue",
+                                    "label": "Revenue from customers",
+                                    "unit": "USD",
+                                    "records": [
+                                        {
+                                            "exact_span": (
+                                                '{"end":"2025-06-30",'
+                                                '"val":"Revenue was 20 in the quarter."}'
+                                            )
+                                        }
+                                    ],
+                                }
+                            ]
+                        },
+                    }
+                ]
+            },
         )
 
         self.assertEqual(len(filtered.observations), 1)
         self.assertTrue(reasons)
         self.assertNotIn("Invented growth", json.dumps(view))
         self.assertIn("compare exact_span only", view["observations"][0]["summary"])
+        self.assertIn("concept=Revenue", view["observations"][0]["summary"])
+        self.assertIn("label=Revenue from customers", view["observations"][0]["summary"])
+
+    def test_exploration_literal_view_omits_ambiguous_structured_semantics(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            _literal_only_signature_view,
+        )
+
+        signature = SignalMiningSignature(
+            case_ref="case-001",
+            observations=(
+                SignalMiningObservation(
+                    summary="Untrusted.",
+                    document_ref="document-01",
+                    exact_span='"val":100',
+                ),
+            ),
+        )
+        concepts = [
+            {
+                "taxonomy": "us-gaap",
+                "concept": concept,
+                "label": concept,
+                "unit": "USD",
+                "records": [{"exact_span": '{"end":"2025-06-30","val":100}'}],
+            }
+            for concept in ("Revenue", "OperatingIncomeLoss")
+        ]
+
+        view = _literal_only_signature_view(
+            signature,
+            {
+                "evidence": [
+                    {
+                        "document_ref": "document-01",
+                        "source_type": "sec_company_facts",
+                        "structured_context": {"concepts": concepts},
+                    }
+                ]
+            },
+        )
+
+        self.assertNotIn("source-owned structured context", view["observations"][0]["summary"])
 
     def test_exploration_packet_masks_case_local_natural_brand(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -661,6 +729,35 @@ class SignalEvolutionTests(TestCase):
 
             self.assertNotIn("Aflac", serialized)
             self.assertIn("[MASKED_COMPANY]", serialized)
+
+    def test_model_evidence_masks_named_target_affiliate_relation(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _model_evidence_view,
+        )
+
+        document = RawInfoDocument.create(
+            document_id="affiliate-filing",
+            company_id="issuer",
+            source_type="10-q",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "Clean Earth, a division of Harsco Corporation, reported revenue "
+                "growth and operating cash flow improvement. " * 20
+            ),
+        )
+
+        view = _model_evidence_view(
+            document,
+            index=1,
+            aliases=("Harsco Corporation",),
+            query=None,
+        )
+        serialized = json.dumps(view)
+
+        self.assertNotIn("Harsco", serialized)
+        self.assertNotIn("Clean Earth", serialized)
+        self.assertIn("[MASKED_COMPANY]", serialized)
 
     def test_candidate_identity_guard_preserves_ticker_case(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

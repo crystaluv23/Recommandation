@@ -1720,3 +1720,22 @@ counts; order explicit actions before diagnostics or allocate fair field quotas.
 validate that at least one projected reflection ref reaches an actually invoked stage.
 An H1 `update_existing` disposition is only metadata unless the controller schedules
 Update from it, so it cannot by itself prove reflection-driven self-evolution.
+
+## Literal semantics and correction dependency addendum (2026-09-11)
+
+Removing model-authored summaries is not enough if it also removes source-owned
+field semantics. A Company Facts record containing only dates and `val` is a real
+literal but not an interpretable measurement after its taxonomy, concept, label,
+and unit are dropped. At a retrospective label-reveal boundary, restore only the
+unambiguous provider-owned wrapper metadata that identifies the literal; never
+restore the upstream model paraphrase. Prefer paired periods of the same concept so
+the bounded comparison can observe direction rather than isolated magnitudes.
+
+A scoped correction that changes a mutually exclusive result branch necessarily
+changes its discriminator and clears the old branch payload. Those linked paths
+must be explicit dependencies of the original validation issue. Otherwise the
+provider can return the intended valid branch, local projection rejects it as drift,
+and exact caching turns the final correction into a zero-progress replay. Provider
+enums and cross-field ownership constraints must also appear literally in the
+first prompt; a validator-only contract converts preventable controller ambiguity
+into paid model failure.

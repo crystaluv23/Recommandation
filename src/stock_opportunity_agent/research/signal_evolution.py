@@ -133,20 +133,50 @@ def _literal_only_signature_view(
 ) -> dict[str, Any]:
     """Build the label-reveal view without forwarding model-authored claims."""
 
-    sources = {
-        str(item.get("document_ref")): str(item.get("source_type", "source"))
+    evidence_by_ref = {
+        str(item.get("document_ref")): item
         for item in packet.get("evidence", ())
         if isinstance(item, Mapping) and item.get("document_ref")
     }
+
+    def literal_summary(observation: "SignalMiningObservation") -> str:
+        evidence = evidence_by_ref.get(observation.document_ref, {})
+        source_type = str(evidence.get("source_type", "source"))
+        matches: set[tuple[str, str, str, str]] = set()
+        structured = evidence.get("structured_context")
+        if isinstance(structured, Mapping):
+            for concept in structured.get("concepts", ()):
+                if not isinstance(concept, Mapping):
+                    continue
+                metadata = tuple(
+                    str(concept.get(key, ""))
+                    for key in ("taxonomy", "concept", "label", "unit")
+                )
+                for record in concept.get("records", ()):
+                    record_span = (
+                        record.get("exact_span")
+                        if isinstance(record, Mapping)
+                        else None
+                    )
+                    if (
+                        isinstance(record_span, str)
+                        and observation.exact_span in record_span
+                    ):
+                        matches.add(metadata)
+        prefix = f"Literal point-in-time excerpt from source_type={source_type}; "
+        if len(matches) == 1:
+            taxonomy, concept, label, unit = next(iter(matches))
+            prefix += (
+                "source-owned structured context: "
+                f"taxonomy={taxonomy}; concept={concept}; label={label}; unit={unit}; "
+            )
+        return prefix + "compare exact_span only."
+
     return {
         "case_ref": signature.case_ref,
         "observations": [
             {
-                "summary": (
-                    "Literal point-in-time excerpt from source_type="
-                    + sources.get(observation.document_ref, "source")
-                    + "; compare exact_span only."
-                ),
+                "summary": literal_summary(observation),
                 "document_ref": observation.document_ref,
                 "exact_span": observation.exact_span,
             }
