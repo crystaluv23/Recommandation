@@ -72,6 +72,21 @@ class SignalEvolutionTests(TestCase):
                     stable,
                     changed_paths=("spec.raw_retrieval.query",),
                 )
+            with self.assertRaisesRegex(ValidationError, "non-empty executable"):
+                validate_signal_update_candidate(
+                    stable.ref,
+                    {**candidate, "tests": []},
+                    stable,
+                    changed_paths=("spec.raw_retrieval.minimum_observations",),
+                )
+            with self.assertRaisesRegex(ValidationError, "preserve stable executable"):
+                validate_signal_update_candidate(
+                    stable.ref,
+                    candidate,
+                    stable,
+                    stable_tests=({"name": "different"},),
+                    changed_paths=("spec.raw_retrieval.minimum_observations",),
+                )
 
             engine = SignalEvolutionEngine(
                 registry=registry,
@@ -329,6 +344,65 @@ class SignalEvolutionTests(TestCase):
             len(json.dumps(context, ensure_ascii=False, separators=(",", ":"))),
             350,
         )
+
+    def test_queryless_company_facts_prefers_comparable_operating_concepts(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _agent_raw_document_view,
+        )
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        concepts = {
+            "ArbitraryLatestMetric": {
+                "label": "Arbitrary latest metric",
+                "units": {
+                    "USD": [
+                        {"end": "2025-09-30", "val": 999, "filed": "2025-09-30"}
+                    ]
+                },
+            },
+            "OperatingIncomeLoss": {
+                "label": "Operating income",
+                "units": {
+                    "USD": [
+                        {"end": "2025-06-30", "val": 20, "filed": "2025-08-01"},
+                        {"end": "2024-06-30", "val": 10, "filed": "2024-08-01"},
+                    ]
+                },
+            },
+            "NetCashProvidedByUsedInOperatingActivities": {
+                "label": "Operating cash flow",
+                "units": {
+                    "USD": [
+                        {"end": "2025-06-30", "val": 30, "filed": "2025-08-01"},
+                        {"end": "2024-06-30", "val": 15, "filed": "2024-08-01"},
+                    ]
+                },
+            },
+        }
+        document = RawInfoDocument.create(
+            document_id="queryless-company-facts",
+            company_id="issuer",
+            source_type="sec_company_facts",
+            published_at=as_of,
+            available_at=as_of,
+            content=json.dumps({"facts": {"us-gaap": concepts}}, separators=(",", ":")),
+        )
+
+        view = _agent_raw_document_view(
+            document, max_content_chars=900, query=None
+        )
+        selected = [
+            item["concept"] for item in view["structured_context"]["concepts"]
+        ]
+
+        self.assertEqual(
+            selected[:2],
+            [
+                "OperatingIncomeLoss",
+                "NetCashProvidedByUsedInOperatingActivities",
+            ],
+        )
+        self.assertNotIn("ArbitraryLatestMetric", selected)
 
     def test_company_facts_identity_masking_drops_nonliteral_records(self) -> None:
         from stock_opportunity_agent.research.evolution_core import (
@@ -3092,11 +3166,7 @@ class SignalEvolutionTests(TestCase):
                 version=2,
                 parameters={"positive_min": 0.28, "negative_max": 0.0},
             )
-            fixture = candidate_growth_fixture()
-            fixture["documents"][0]["content"] = sec_company_facts_content(
-                ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
-                ("2024-01-01", "2024-12-31", 130.0, "2025-01-10"),
-            )
+            fixture = json.loads(json.dumps(registry.load_tests(stable.ref)[0]))
             update_model = ScriptedUpdateModel(
                 SignalUpdateDecision(
                     signal_ref=stable.ref,
@@ -3196,7 +3266,7 @@ class SignalEvolutionTests(TestCase):
                 template["spec"], {**stable.to_dict(), "version": 2}
             )
             self.assertIsNone(template["skill"])
-            self.assertEqual(template["tests"], [])
+            self.assertEqual(template["tests"], list(registry.load_tests(stable.ref)))
             self.assertNotIn("example", engine._mining_candidate_contract())
             request_json = json.dumps(update_model.requests[0])
             for case in cases:

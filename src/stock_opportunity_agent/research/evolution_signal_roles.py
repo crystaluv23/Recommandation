@@ -43,6 +43,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     LLM_SIGNAL_CONTEXT_CHUNK_CHARS,
     LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP,
     MAX_LLM_SIGNAL_CONTEXT_CHARS,
+    ROLE_OUTPUT_TOKEN_LIMITS,
     _LLM_SIGNAL_QUERY_STOP_WORDS,
 )
 from stock_opportunity_agent.research.evolution_transport import (
@@ -84,7 +85,10 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "rationale field is a non-empty array of short strings. Every supplied "
     "signal_need_items need_ref and every ordinary backlog items request_id is a "
     "runtime need_ref and must appear exactly once; only supplied stable signal_refs "
-    "may be cited. Never add Markdown or company identities."
+    "may be cited. Group need_refs with the same disposition, signal_refs, and "
+    "rationale into as few rows as possible. no_hypothesis.need_refs is only a "
+    "small explanatory subset and need not repeat the complete disposition ledger. "
+    "Never add Markdown or company identities."
 )
 
 
@@ -693,6 +697,17 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             if decision.candidate is not None:
                 stable_spec = target.get("stable_spec")
                 if isinstance(stable_spec, Mapping):
+                    candidate_contract = payload.get("candidate_contract", {})
+                    vnext_template = (
+                        candidate_contract.get("vnext_template", {})
+                        if isinstance(candidate_contract, Mapping)
+                        else {}
+                    )
+                    stable_tests = (
+                        vnext_template.get("tests")
+                        if isinstance(vnext_template, Mapping)
+                        else None
+                    )
                     try:
                         validate_signal_update_candidate(
                             target_ref, decision.candidate,
@@ -700,6 +715,11 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             stable_skill=(
                                 str(target["stable_skill"])
                                 if target.get("stable_skill") is not None
+                                else None
+                            ),
+                            stable_tests=(
+                                stable_tests
+                                if isinstance(stable_tests, list)
                                 else None
                             ),
                             changed_paths=decision.changed_paths,
@@ -762,11 +782,20 @@ class LLMSignalMiningModel(SignalMiningModel):
 
     supports_exploration_fallback = True
 
-    def __init__(self, caller: JSONRoleCaller, *, creative_temperature: float = 1.0):
+    def __init__(
+        self,
+        caller: JSONRoleCaller,
+        *,
+        creative_temperature: float = 1.0,
+        h1_max_output_tokens: int = ROLE_OUTPUT_TOKEN_LIMITS["h1"],
+    ):
         if not 0 <= creative_temperature <= 1:
             raise ValidationError("Signal Mining creative temperature must be in [0, 1]")
+        if h1_max_output_tokens < 1:
+            raise ValidationError("Signal Mining H1 output limit must be positive")
         self.caller = caller
         self.creative_temperature = creative_temperature
+        self.h1_max_output_tokens = int(h1_max_output_tokens)
         self.identity_guard_aliases: tuple[str, ...] = ()
         self.request_token_budget: int | None = None
 
@@ -784,6 +813,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         return {
             "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
             "creative_temperature": self.creative_temperature,
+            "h1_max_output_tokens": self.h1_max_output_tokens,
             "model_alias": getattr(registration, "alias", None),
             "provider": getattr(registration, "provider", None),
             "model": getattr(registration, "model", None),
@@ -1221,6 +1251,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             "groups, or encode a future outcome in the measurement. Existing Signal "
             "cards are an exclusion catalog. On correction, change or remove only "
             "the invalid proposal_ref; retain valid siblings byte-for-byte."
+            " Case labels, fixed group membership, and full source excerpts are "
+            "intentionally absent at H1; do not use their absence alone to reject a "
+            "measurement definable from the backlog and source catalog. H2/H3 owns "
+            "case feasibility and evidence testing. Group equivalent need "
+            "dispositions compactly."
             + _UNTRUSTED_DATA_INSTRUCTION
             + _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT
         )
@@ -1231,7 +1266,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 payload=payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
-                max_output_tokens=2_000,
+                max_output_tokens=self.h1_max_output_tokens,
                 temperature=self.creative_temperature,
             )
             if required > self.request_token_budget:
@@ -1249,7 +1284,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             allow_outcomes=True,
             anonymous_aliases=self.identity_guard_aliases,
             reject_output_aliases=self.identity_guard_aliases,
-            max_output_tokens=2_000,
+            max_output_tokens=self.h1_max_output_tokens,
             temperature=self.creative_temperature,
             stable_correction_prefix=True,
             enforce_scoped_correction=True,

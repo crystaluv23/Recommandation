@@ -455,6 +455,10 @@ already stable rather than revalidated or promoted twice.
 An update creates `vNext`; it never overwrites a stable version or edits the
 old version's learning history. Machine
 validation writes the exact candidate hash over spec, skill, and tests. The
+Registry exposes the immutable fixture set for an exact stable ref so an Update
+vNext can inherit it without reaching into Registry paths. Stable and candidate
+fixture readers both reject malformed non-object rows; the Update layer adds the
+non-empty requirement before model correction and staging. The
 Slow-Loop orchestrator durably stages the complete validated batch before any
 stable file changes, then automatically promotes every passing exact hash.
 There is no separate per-candidate human approval step inside this loop.

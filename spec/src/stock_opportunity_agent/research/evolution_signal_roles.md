@@ -45,7 +45,15 @@ mining, and Signal update proposals.
   but must explain every need and remains distinct from malformed output or
   execution failure. All H1 rationale fields are non-empty arrays of short
   strings. A defined measurement is retained for H2/H3 even when its data
-  dependency is presently unavailable.
+  dependency is presently unavailable. The frozen H1 output ceiling must be
+  large enough to serialize the complete runtime need set; new contracts use
+  8,000 output tokens and direct the model to group refs that share one
+  disposition/rationale. A `no_hypothesis.need_refs` list is only a bounded
+  explanatory subset and must not duplicate the complete disposition ledger.
+  H1 intentionally does not receive case labels or full source excerpts. Their
+  absence is therefore not, by itself, a valid reason to reject a measurement
+  that can be defined from the demand backlog and available source catalog;
+  local H2/H3 owns feasibility and evidence testing.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
@@ -64,7 +72,10 @@ mining, and Signal update proposals.
   overlays partial `raw_retrieval` edits on the stable policy and uses one shared
   validator during bounded correction and staging. Unknown, missing, or surplus
   path declarations and candidates whose only changes are version or tests are
-  invalid update decisions; historical records remain readable without
+  invalid update decisions. The complete vNext template also carries the stable
+  version's non-empty executable fixtures. Update output must preserve those
+  fixtures byte-for-byte; tests are not a model-editable path and may never be
+  replaced by an empty array. Historical records remain readable without
   preserving a second active output contract.
 - Every label-revealed Mining decision receives a runtime-derived sample basis
   in its persisted form. The basis names the exact positive and control packet

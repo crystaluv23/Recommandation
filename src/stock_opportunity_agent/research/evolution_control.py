@@ -376,10 +376,21 @@ class EvolutionRunContract:
                     "role_output_tokens": ROLE_OUTPUT_TOKEN_LIMITS,
                 }
                 for name, expected in required_v6_limits.items():
-                    if name == "role_output_tokens" and self.limits.get(name) == {
-                        **ROLE_OUTPUT_TOKEN_LIMITS, "controller": 2_000
-                    }:
-                        continue
+                    if name == "role_output_tokens":
+                        actual_role_limits = self.limits.get(name)
+                        if isinstance(actual_role_limits, Mapping) and set(
+                            actual_role_limits
+                        ) == set(ROLE_OUTPUT_TOKEN_LIMITS):
+                            compatible = all(
+                                actual_role_limits[role] == value
+                                or (
+                                    role in {"controller", "h1"}
+                                    and actual_role_limits[role] == 2_000
+                                )
+                                for role, value in ROLE_OUTPUT_TOKEN_LIMITS.items()
+                            )
+                            if compatible:
+                                continue
                     if self.limits.get(name) != expected:
                         raise ValidationError(
                             f"{schema_label} contract limit {name} must equal the frozen value"
@@ -2096,6 +2107,7 @@ def _run_bounded_evolution_cycle_unlocked(
     mining_model = LLMSignalMiningModel(
         evolution_caller,
         creative_temperature=float(limits["plan_proposal_temperature"]),
+        h1_max_output_tokens=int(limits["role_output_tokens"]["h1"]),
     )
     mining_model.set_request_token_budget(int(limits["max_tokens"]))
     signal_engine = SignalEvolutionEngine(

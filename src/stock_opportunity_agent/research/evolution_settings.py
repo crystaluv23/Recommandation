@@ -151,7 +151,7 @@ ROLE_OUTPUT_TOKEN_LIMITS = {
     "routing": 2_000,
     "predictor": 2_000,
     "posthoc": 2_000,
-    "h1": 2_000,
+    "h1": 8_000,
     "h2": 2_000,
     "proposer": 4_000,
     "critic": 4_000,

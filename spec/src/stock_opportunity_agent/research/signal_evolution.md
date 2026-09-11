@@ -15,8 +15,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   definition constraints remain mandatory and visible in the request contract.
   The candidate schema exposes the complete version-owned retrieval policy rather
   than the legacy singular query alias. Update requests include a runtime-built
-  complete vNext template copied from the stable spec and skill plus the exact
-  allowed `changed_paths` vocabulary. Candidate retrieval fields overlay that
+  complete vNext template copied from the stable spec, skill, and immutable
+  non-empty executable fixtures plus the exact allowed `changed_paths`
+  vocabulary. Candidate output preserves those fixtures byte-for-byte because
+  tests are not a model-editable path. Candidate fixture execution uses the
+  Registry audit's point-in-time defaults: when `published_at` is omitted,
+  `available_at` is authoritative before falling back to the fixture `as_of`.
+  Candidate retrieval fields overlay that
   baseline before parsing; omitted optional fields are therefore preserved.
   `changed_paths` must exactly match the effective mutable spec/skill differences.
   Candidate/diff correction may edit both coupled fields while preserving every
@@ -65,8 +70,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   document from a previously unseen semantic source family before selecting a
   second document from the same family. This keeps filing, transcript, news,
   Company-Facts/financial, and market evidence complementary without increasing
-  the document ceiling. Query-directed H2/H3 ranking retains its query-coverage
-  semantics.
+  the document ceiling. Within a queryless Company Facts document, the bounded
+  projection ranks a frozen catalog of broadly comparable operating,
+  balance-sheet, investment, and capital-structure concepts ahead of arbitrary
+  latest-period concepts, then uses the existing deterministic tie-breakers.
+  This changes evidence projection only: it does not define a Signal or use
+  labels. Query-directed H2/H3 ranking retains its query-coverage semantics.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
   document ref and literal span for every fact before an update draft can be

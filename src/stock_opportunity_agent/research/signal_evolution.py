@@ -242,7 +242,12 @@ class SignalCandidateValidator:
             if not isinstance(raw_document, Mapping):
                 raise ValidationError("fixture document must be an object")
             published_at = datetime.fromisoformat(
-                str(raw_document.get("published_at", as_of.isoformat()))
+                str(
+                    raw_document.get(
+                        "published_at",
+                        raw_document.get("available_at", as_of.isoformat()),
+                    )
+                )
             )
             available_at = datetime.fromisoformat(
                 str(raw_document.get("available_at", published_at.isoformat()))
@@ -1683,6 +1688,7 @@ def validate_signal_update_candidate(
     stable: SignalSpec,
     *,
     stable_skill: str | None = None,
+    stable_tests: Iterable[Mapping[str, Any]] | None = None,
     changed_paths: Iterable[str] | None = None,
 ) -> tuple[SignalSpec, str | None, list[Any]]:
     """Validate and baseline-overlay an update without mutating the Registry."""
@@ -1700,6 +1706,20 @@ def validate_signal_update_candidate(
     raw_tests = candidate["tests"]
     if not isinstance(raw_spec, Mapping) or not isinstance(raw_tests, list):
         raise ValidationError("Signal Update candidate spec/tests shape is invalid")
+    if not raw_tests or any(not isinstance(item, Mapping) for item in raw_tests):
+        raise ValidationError(
+            "Signal Update candidate requires non-empty executable fixtures"
+        )
+    if stable_tests is not None:
+        inherited_tests = [dict(item) for item in stable_tests]
+        if not inherited_tests:
+            raise ValidationError(
+                "stable Signal requires non-empty executable fixtures before Update"
+            )
+        if raw_tests != inherited_tests:
+            raise ValidationError(
+                "Signal Update candidate must preserve stable executable fixtures"
+            )
     candidate_spec = dict(raw_spec)
     candidate_retrieval = candidate_spec.get("raw_retrieval")
     if not isinstance(candidate_retrieval, Mapping):
@@ -2435,6 +2455,7 @@ class SignalEvolutionEngine:
         )
         spec = self.registry.load_spec(signal_ref)
         skill = self.registry.load_skill(signal_ref)
+        stable_tests = list(self.registry.load_tests(signal_ref))
         classified: dict[
             str, list[tuple[EvolutionCase, SignalResult, RawInfoResolution]]
         ] = {
@@ -2633,7 +2654,7 @@ class SignalEvolutionEngine:
                     "signal_ref": signal_ref,
                     "spec": {**spec.to_dict(), "version": spec.version + 1},
                     "skill": skill,
-                    "tests": [],
+                    "tests": stable_tests,
                 },
             },
             "rules": {
@@ -2808,6 +2829,7 @@ class SignalEvolutionEngine:
             candidate,
             stable,
             stable_skill=self.registry.load_skill(signal_ref),
+            stable_tests=self.registry.load_tests(signal_ref),
             changed_paths=changed_paths,
         )
         return self.registry.stage_candidate(

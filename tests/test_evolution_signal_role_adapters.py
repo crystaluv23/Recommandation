@@ -51,7 +51,7 @@ class SignalRoleAdapterTests(TestCase):
                 "version": 2,
                 "parameters": {"positive_min": 0.2},
             },
-            "tests": [],
+            "tests": [{"name": "retained fixture"}],
         }
         invalid = json.loads(json.dumps(candidate))
         invalid["signal_ref"] = "revenue_growth_yoy:v2"
@@ -100,7 +100,7 @@ class SignalRoleAdapterTests(TestCase):
                 "version": 2,
                 "parameters": {"positive_min": 0.2},
             },
-            "tests": [],
+            "tests": [{"name": "retained fixture"}],
         }
         response = {
             "signal_ref": stable.ref,
@@ -481,6 +481,7 @@ class SignalRoleAdapterTests(TestCase):
         )
 
         self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(caller.calls[0]["max_output_tokens"], 8_000)
         self.assertEqual(len(step.metadata["need_dispositions"]), 2)
         self.assertIn(
             "cover every runtime need_ref exactly once",

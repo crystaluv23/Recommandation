@@ -1520,6 +1520,22 @@ class SignalRegistry:
             raise ValidationError(f"LLM signal skill is missing: {signal_ref}")
         return path.read_text(encoding="utf-8")
 
+    def load_tests(self, signal_ref: str) -> tuple[Mapping[str, Any], ...]:
+        """Load immutable executable fixtures for one exact stable Signal ref."""
+
+        spec = self.load_spec(signal_ref)
+        manifest_path = self._manifest_for(spec.signal_id)
+        tests = _read_json(
+            manifest_path.parent / "versions" / f"v{spec.version}" / "tests.json"
+        ).get("tests", ())
+        if not isinstance(tests, list) or any(
+            not isinstance(item, Mapping) for item in tests
+        ):
+            raise ValidationError(
+                f"stable signal tests must be a list of objects: {signal_ref}"
+            )
+        return tuple(dict(item) for item in tests)
+
     def load_stats(self, signal_id: str) -> SignalStats:
         manifest_path = self._manifest_for(signal_id)
         return SignalStats.from_dict(_read_json(manifest_path.parent / "stats.json"))

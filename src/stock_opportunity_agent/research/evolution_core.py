@@ -5136,8 +5136,14 @@ def _company_facts_context(
                     "records": distinct_periods,
                 }
                 latest_period = matched_records[0][0]
+                queryless_priority = (
+                    _QUERYLESS_COMPANY_FACT_PRIORITY.get(str(concept).casefold(), 0)
+                    if not query_terms
+                    else 0
+                )
                 score = (
                     len(query_terms.intersection(concept_terms)),
+                    queryless_priority,
                     latest_period,
                     str(taxonomy),
                     str(concept),
@@ -5178,6 +5184,33 @@ def _company_facts_context(
         context["omitted_concept_count"] or selected_partial
     )
     return context
+
+
+_QUERYLESS_COMPANY_FACT_CONCEPTS = (
+    "OperatingIncomeLoss",
+    "NetCashProvidedByUsedInOperatingActivities",
+    "ResearchAndDevelopmentExpense",
+    "PaymentsToAcquirePropertyPlantAndEquipment",
+    "InventoryNet",
+    "LongTermDebtCurrent",
+    "LongTermDebtNoncurrent",
+    "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "Revenues",
+    "SalesRevenueNet",
+    "GrossProfit",
+    "NetIncomeLoss",
+    "CashAndCashEquivalentsAtCarryingValue",
+    "ShortTermInvestments",
+    "AssetsCurrent",
+    "LiabilitiesCurrent",
+    "StockholdersEquity",
+    "CommonStockSharesOutstanding",
+    "EntityCommonStockSharesOutstanding",
+)
+_QUERYLESS_COMPANY_FACT_PRIORITY = {
+    concept.casefold(): len(_QUERYLESS_COMPANY_FACT_CONCEPTS) - index
+    for index, concept in enumerate(_QUERYLESS_COMPANY_FACT_CONCEPTS)
+}
 
 
 def _optional_iso_date(value: Any) -> date | None:
