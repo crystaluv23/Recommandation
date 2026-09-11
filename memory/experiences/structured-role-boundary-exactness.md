@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 19
+visit_times: 20
 
 ## Trigger
 
@@ -95,6 +95,10 @@ spaced JSON, so the artifact and provider message were not byte-identical.
     Bare horizon vocabulary is unsafe: `short-term investments` and a source-stated
     six-month cash runway are point-in-time facts, while short-term returns or price
     performance are replacement outcomes and remain invalid.
+19. When independent structured pipelines intentionally continue after one sibling's
+    locally handled failure, emit a typed stage/error/usage event before starting the
+    sibling and also retain the failure in the durable result. Otherwise the next
+    provider request can make the failed stage invisible during live diagnosis.
 
 A semantic extraction schema must never force positive-looking content when the
 source packet can legitimately be empty. Make empty observations an explicit

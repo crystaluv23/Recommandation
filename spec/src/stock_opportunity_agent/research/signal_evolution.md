@@ -41,6 +41,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   Signal changes and cannot create a staged candidate.
 - Registry transitions remain version-bound and auditable.
 - Slow-loop results and cycle completion preserve existing recovery semantics.
+  If Mining or Update raises a locally handled validation failure, the engine
+  emits a typed `slow_pipeline_failed` progress event with pipeline, error type,
+  message, and usage before continuing the independent sibling pipeline. The
+  failure remains in the durable validation audit; continuing Update must never
+  make an earlier Mining failure invisible or look like the first Slow action.
 - The module never imports the `scheme_evolution.py` compatibility facade.
 - H1 runtime fields are deterministic and cycle-bound. The committed audit
   stores the structured conclusion and an input fingerprint so a later cycle

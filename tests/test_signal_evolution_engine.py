@@ -7,6 +7,86 @@ from stock_opportunity_agent.research.signal_evolution import (
 
 
 class SignalEvolutionTests(TestCase):
+    def test_handled_pipeline_failures_emit_typed_progress_before_continuing(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            events = []
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("progress_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                on_progress=events.append,
+            )
+            empty_output = {
+                "candidate_refs": (),
+                "induction_case_ids": {},
+                "validation_case_ids": {},
+                "failures": {},
+                "audit": {"status": "completed"},
+            }
+
+            with mock.patch.object(
+                engine,
+                "_run_signal_mining",
+                side_effect=ValidationError("identity boundary failed"),
+            ), mock.patch.object(
+                engine, "_run_signal_update", return_value=empty_output
+            ):
+                validation = engine._validate_cycle(registry.freeze(), cycle_id=1)
+
+            self.assertIn("slow_loop:mining_pipeline", validation.rejected)
+            self.assertEqual(
+                events,
+                [
+                    {
+                        "event_type": "slow_pipeline_failed",
+                        "cycle_id": 1,
+                        "pipeline": "mining",
+                        "error_type": "ValidationError",
+                        "error": "identity boundary failed",
+                        "usage": {"llm_calls": 0, "tokens": 0, "cost": 0.0},
+                    }
+                ],
+            )
+
+            events.clear()
+            with mock.patch.object(
+                engine, "_run_signal_mining", return_value={
+                    **empty_output,
+                    "refined_hypotheses": {},
+                }
+            ), mock.patch.object(
+                engine,
+                "_run_signal_update",
+                side_effect=ValidationError("response could not be normalized"),
+            ):
+                validation = engine._validate_cycle(registry.freeze(), cycle_id=2)
+
+            self.assertIn("slow_loop:update_pipeline", validation.rejected)
+            self.assertEqual(
+                events,
+                [
+                    {
+                        "event_type": "slow_pipeline_failed",
+                        "cycle_id": 2,
+                        "pipeline": "update",
+                        "error_type": "ValidationError",
+                        "error": "response could not be normalized",
+                        "usage": {"llm_calls": 0, "tokens": 0, "cost": 0.0},
+                    }
+                ],
+            )
+
     def test_update_contract_preserves_complete_retrieval_and_rejects_empty_diff(
         self,
     ) -> None:

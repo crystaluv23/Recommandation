@@ -1967,6 +1967,7 @@ class SignalEvolutionEngine:
         llm_signal_runner: LLMSignalRunner | None,
         identity_cases: tuple[EvolutionCase, ...] | None = None,
         evidence_resolver: EvidenceResolver | None = None,
+        on_progress: ProgressCallback | None = None,
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
         effectiveness_case_limit: int = 8,
@@ -1980,6 +1981,7 @@ class SignalEvolutionEngine:
         self.discovery_cases = discovery_cases
         self.meta_memory = meta_memory
         self.workspace = workspace
+        self.on_progress = on_progress
         self.mining_model = mining_model
         self.update_model = update_model
         identity_population = identity_cases or discovery_cases
@@ -2265,6 +2267,15 @@ class SignalEvolutionEngine:
             agent_failures.update(dict(mining_output["failures"]))
             agent_audits["mining_pipeline"] = dict(mining_output["audit"])
         except ValidationError as exc:
+            _emit_progress(
+                self.on_progress,
+                "slow_pipeline_failed",
+                cycle_id=cycle_id,
+                pipeline="mining",
+                error_type=type(exc).__name__,
+                error=str(exc),
+                usage=_usage_to_dict(getattr(exc, "usage", AgentUsage())),
+            )
             agent_failures["slow_loop:mining_pipeline"] = (
                 "structured_output_failed: " + str(exc),
             )
@@ -2281,6 +2292,15 @@ class SignalEvolutionEngine:
             agent_failures.update(update_output["failures"])
             agent_audits["update_pipeline"] = dict(update_output["audit"])
         except ValidationError as exc:
+            _emit_progress(
+                self.on_progress,
+                "slow_pipeline_failed",
+                cycle_id=cycle_id,
+                pipeline="update",
+                error_type=type(exc).__name__,
+                error=str(exc),
+                usage=_usage_to_dict(getattr(exc, "usage", AgentUsage())),
+            )
             agent_failures["slow_loop:update_pipeline"] = (
                 "structured_output_failed: " + str(exc),
             )

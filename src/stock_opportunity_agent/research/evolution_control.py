@@ -2125,6 +2125,7 @@ def _run_bounded_evolution_cycle_unlocked(
             *dataset.evolution_validation,
         ),
         evidence_resolver=evidence_resolver,
+        on_progress=emit,
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,
