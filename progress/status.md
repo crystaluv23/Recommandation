@@ -1,5 +1,16 @@
 # Status
 
+V42 reached the audited H1 approval boundary at `round=0/cycle=0`. The exact
+225,829-character H1 context contains 172 unique needs, all 30 reflection actions,
+24-case meta-memory, and 14 stable Signal cards; it contains no Kinross/Wynn
+brand, ticker, CIK, or local path, and Locked Test remains sealed. The first
+sandboxed transmission failed before reaching DeepSeek with `[Errno 1] Operation
+not permitted` and was durably classified as retryable rather than semantic
+no-candidate. Elevated network execution was then denied because the request
+contains meta-memory and development context and later E2 will contain labeled
+positive/control samples; specific user authorization for sending that content
+to DeepSeek is required before the same frozen request can resume.
+
 V41 reached a genuine zero-call H1 approval boundary, but exact wire inspection
 still found `Kinross` and `Wynn` in Fast needs. The row-scoped resolver was
 correct; its identity index was incomplete because the Signal engine sampled
