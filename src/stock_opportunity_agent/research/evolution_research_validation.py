@@ -577,7 +577,7 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
     r"\b(?:timing|date|schedule|timeline|milestone|expected|planned|upcoming|"
     r"future|release|report|guidance|outlook|forecast|target|goal|opening|could|might|would|"
-    r"construction\s+plan)\b",
+    r"commentary|construction\s+plan)\b",
     re.IGNORECASE,
 )
 

@@ -1068,6 +1068,11 @@ publication. Runtime supplies the same evaluation context to initialize and refl
 names every exact invalid path in one correction, and never supplies the future fact.
 This prevents a point-in-time-impossible retrieval and its otherwise inevitable
 no-result routing call.
+Cutoff-bounded questions about management commentary on demand, pricing, or operating
+discipline use the same expectation boundary as guidance and outlook: they are valid
+only when the wording asks what had already been disclosed by the cutoff and does not
+request later results, actuals, or realized outcomes. A fiscal-period label inside such
+commentary is not by itself evidence that the requested source contents are post-cutoff.
 The same-state resolved/need consistency check treats a shared phrase as a topic only
 when it contains semantic content. A phrase made entirely of period markers such as
 `Q2 2025` is not enough to claim that a gold-price question was answered by a

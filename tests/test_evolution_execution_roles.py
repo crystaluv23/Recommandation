@@ -77,6 +77,34 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                         {"next_information_needs": [invalid]}, context,
                     ))
 
+    def test_cutoff_bounded_commentary_is_not_future_realized_content(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_future_information_issues,
+        )
+
+        context = {"prediction_time": "2025-09-30T00:00:00+00:00"}
+        valid = (
+            "What demand, pricing, and supply-discipline commentary had Sandisk "
+            "management already disclosed by 2025-09-30 for periods after the "
+            "reported Q4 2025 period?"
+        )
+        invalid = (
+            "What demand, pricing, and supply-discipline results had Sandisk "
+            "management reported for periods after Q4 2025?"
+        )
+
+        self.assertEqual(
+            _raw_future_information_issues(
+                {"next_information_needs": [valid]}, context
+            ),
+            [],
+        )
+        self.assertTrue(
+            _raw_future_information_issues(
+                {"next_information_needs": [invalid]}, context
+            )
+        )
+
     def test_literal_residual_restores_prior_cutoff_without_waiving_future_checks(self) -> None:
         from stock_opportunity_agent.research.evolution_research_validation import (
             _restore_inherited_need_cutoffs, _raw_future_information_issues,
