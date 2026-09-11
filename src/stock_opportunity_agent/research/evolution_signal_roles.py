@@ -93,6 +93,17 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
 )
 
 
+_H1_WITHHELD_CONTEXT_RATIONALE = re.compile(
+    r"(?:\b(?:no|without|absent|missing|hidden|withheld|not\s+visible)\b"
+    r".{0,160}\b(?:case(?:[- ]level)?.{0,60}(?:text|evidence)|case\s+labels?|"
+    r"full\s+source\s+excerpts?|group\s+membership)\b|"
+    r"\b(?:case(?:[- ]level)?.{0,60}(?:text|evidence)|case\s+labels?|"
+    r"full\s+source\s+excerpts?|group\s+membership)\b"
+    r".{0,160}\b(?:absent|missing|hidden|withheld|not\s+visible)\b)",
+    re.IGNORECASE,
+)
+
+
 _H1_GENERIC_TOPIC_TERMS = frozenset(
     {
         "about",
@@ -1057,6 +1068,64 @@ class LLMSignalMiningModel(SignalMiningModel):
                         path_policy="any",
                     )
                 )
+            raw_no_hypothesis = value.get("no_hypothesis")
+            if (
+                conclusion == "no_testable_hypothesis"
+                and isinstance(raw_no_hypothesis, Mapping)
+                and isinstance(raw_no_hypothesis.get("rationale"), list)
+                and any(
+                    isinstance(reason, str)
+                    and _H1_WITHHELD_CONTEXT_RATIONALE.search(reason)
+                    for reason in raw_no_hypothesis["rationale"]
+                )
+            ):
+                ledger_issues.append(
+                    ValidationIssue(
+                        code="h1_withheld_context_is_not_empty_reason",
+                        message=(
+                            "H1 intentionally withholds case labels and full case "
+                            "evidence. Their absence cannot justify a no-hypothesis "
+                            "result; give a measurement-level reason or propose a "
+                            "hypothesis for H2/H3 testing."
+                        ),
+                        paths=(
+                            "no_hypothesis.rationale",
+                            "conclusion",
+                            "hypotheses",
+                            "need_dispositions",
+                        ),
+                        path_policy="any",
+                    )
+                )
+            for index, raw_disposition in enumerate(raw_dispositions):
+                if (
+                    isinstance(raw_disposition, Mapping)
+                    and raw_disposition.get("disposition") == "not_testable"
+                    and isinstance(raw_disposition.get("rationale"), list)
+                    and any(
+                        isinstance(reason, str)
+                        and _H1_WITHHELD_CONTEXT_RATIONALE.search(reason)
+                        for reason in raw_disposition["rationale"]
+                    )
+                ):
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_not_testable_uses_withheld_context",
+                            message=(
+                                "not_testable cannot be justified by absent H1 case "
+                                "labels, case evidence, group membership, or full "
+                                "source excerpts. State an intrinsic measurement-level "
+                                "reason or classify the need as new_measurement."
+                            ),
+                            paths=(
+                                f"need_dispositions[{index}]",
+                                "conclusion",
+                                "hypotheses",
+                                "no_hypothesis",
+                            ),
+                            path_policy="any",
+                        )
+                    )
             if conclusion == "hypotheses" and isinstance(raw_items, list):
                 hypothesis_need_refs = {
                     ref
@@ -2129,6 +2198,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                     ):
                         raise ValidationError(
                             "Exploration E2 no_candidate rationale is invalid"
+                        )
+                    if (
+                        all(label in {"positive", "control"} for label in exploration_labels.values())
+                        and any(
+                            re.search(r"\bunlabel(?:ed|led)\b", item, re.IGNORECASE)
+                            for item in rationale
+                        )
+                    ):
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_no_candidate_label_inventory_mismatch",
+                                    message=(
+                                        "Every selected E2 signature has a positive or "
+                                        "control label; no_candidate rationale must not "
+                                        "claim that unlabeled cases were considered."
+                                    ),
+                                    paths=("no_candidate.rationale",),
+                                )
+                            ]
                         )
                     expected_refs = tuple(exploration_labels)
                     if not isinstance(considered, list) or tuple(considered) != expected_refs:

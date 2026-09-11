@@ -583,6 +583,94 @@ class SignalRoleAdapterTests(TestCase):
             {"alias": "need-145", "need_ref": original_refs[-1]},
         )
 
+    def test_signal_h1_rejects_withheld_case_context_as_empty_reason(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "insufficient_retrieval_basis",
+                "rationale": [
+                    "No case-level filing text is visible at H1, so no measure can be defined."
+                ],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "not_testable",
+                    "signal_refs": [],
+                    "rationale": ["The need cannot be operationalized without case text."],
+                }
+            ],
+        }
+        corrected = {
+            "conclusion": "hypotheses",
+            "hypotheses": [
+                {
+                    "proposal_ref": "h1-c0001-s01",
+                    "measurement": {
+                        "observable": "Cash runway in months",
+                        "value_kind": "numeric",
+                        "normalization": "cash balance divided by quarterly cash burn",
+                    },
+                    "applicability": {"rule": "all_ready_issuers", "values": []},
+                    "expected_direction": "higher_in_positive",
+                    "retrieval_intent": {
+                        "source_types": ["company_facts"],
+                        "query": "cash balance operating cash burn",
+                    },
+                    "falsifiers": [
+                        {
+                            "condition": "Cash runway is measured for fixed groups.",
+                            "expected_observation": "The groups overlap or reverse direction.",
+                        }
+                    ],
+                    "need_refs": ["need-001"],
+                }
+            ],
+            "no_hypothesis": None,
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "new_measurement",
+                    "signal_refs": [],
+                    "rationale": ["Cash runway is a reusable point-in-time measurement."],
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v3",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["company_facts"],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {
+                            "need_ref": "original-cash-runway-need-ref",
+                            "need": "Measure cash runway.",
+                        }
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(len(step.value), 1)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            {item["issue_code"] for item in feedback["obligations"]},
+            {
+                "h1_not_testable_uses_withheld_context",
+                "h1_withheld_context_is_not_empty_reason",
+            },
+        )
+        self.assertEqual(
+            step.metadata["hypothesis_need_refs"]["h1-c0001-s01"],
+            ["original-cash-runway-need-ref"],
+        )
+
     def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
         class OversizedCaller(ScriptedRoleCaller):
             def estimate_json_request_tokens(self, **_kwargs):
@@ -2311,6 +2399,45 @@ class SignalRoleAdapterTests(TestCase):
             feedback["required_change_paths"], ["decisions", "no_candidate"]
         )
         self.assertIn("portfolio-level recurring pattern", caller.calls[0]["system_prompt"])
+
+    def test_exploration_e2_rejects_false_unlabeled_case_rationale(self) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": [
+                    "The positive, control, and unlabeled cases show no recurring pattern."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        corrected = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": [
+                    "The positive and control cases show no recurring measurable pattern."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_no_candidate_label_inventory_mismatch",
+        )
 
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (

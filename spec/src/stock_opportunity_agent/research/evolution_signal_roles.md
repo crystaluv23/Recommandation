@@ -68,6 +68,11 @@ mining, and Signal update proposals.
   between new-measurement dispositions and hypothesis need refs. One bounded
   correction therefore sees the complete obligation set instead of consuming its
   attempts one typo at a time.
+- A no-hypothesis or `not_testable` rationale may not use H1's intentionally
+  withheld case labels, group membership, case evidence, or full source excerpts
+  as its reason. This locally recognizable contract violation participates in
+  the same aggregate correction, so the model must either state a valid
+  measurement-level reason or return a structured hypothesis for H2/H3 testing.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
@@ -75,6 +80,9 @@ mining, and Signal update proposals.
   case. When the model reports only case-level rejection/inconclusive rows, the
   correction obligation explicitly requires `decisions=[]` plus the structured
   `no_candidate` object rather than repeatedly reshaping those rows as candidates.
+  An E2 no-candidate rationale must also agree with the supplied label inventory;
+  for example, it cannot claim that unlabeled cases were considered when every
+  selected signature has an explicit positive/control label.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the

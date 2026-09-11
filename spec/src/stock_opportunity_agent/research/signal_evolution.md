@@ -61,7 +61,9 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   E2 decisions describe repeated cross-case patterns rather than case-by-case
   acceptance. A model response containing only per-case rejection rows is a
   correctable output-shape failure, not a technical claim that mining found a
-  candidate and not a locally invented semantic result.
+  candidate and not a locally invented semantic result. Locally checkable claims
+  about the supplied cohort, including whether any selected case is unlabeled,
+  must match the actual E2 payload before an empty result is persisted.
   After bounded model correction, E1 may quarantine invalid observations while
   preserving independently validated observations and sibling signatures. It
   never clips or invents source text. Quarantine reasons remain technical audit
