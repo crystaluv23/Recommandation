@@ -199,6 +199,11 @@ class SignalRoleAdapterTests(TestCase):
                 company_id="issuer-three",
                 basic_info={"company_name": "Future Holdings", "ticker": "FUTR"},
             ),
+            SimpleNamespace(
+                case_id="suffix-only",
+                company_id="issuer-four",
+                basic_info={"company_name": "Holdings", "ticker": "HLDG"},
+            ),
         )
 
         guards = core_module._slow_role_identity_guard_inventory(cases)

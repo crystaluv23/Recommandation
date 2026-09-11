@@ -2398,7 +2398,8 @@ def _slow_role_identity_guard_inventory(
                 natural_name = _IDENTITY_LEGAL_SUFFIX.sub("", component).strip(" ,")
                 if len(re.findall(r"[A-Za-z0-9]+", natural_name)) >= 2:
                     guards.append(natural_name)
-                brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
+                natural_parts = natural_name.split(maxsplit=1)
+                brand = natural_parts[0].strip(".,'\"") if natural_parts else ""
                 brand_length = sum(character.isalnum() for character in brand)
                 if (
                     brand_length >= 4

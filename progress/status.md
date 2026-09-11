@@ -1,5 +1,12 @@
 # Status
 
+V38 stopped locally before constructing or transmitting any model request. One
+valid Discovery identity consisted only of a legal-suffix token, so stripping the
+suffix produced an empty natural name and the new aggregate brand derivation
+raised `IndexError`. Brand extraction now handles an empty derived name without
+weakening the identity scan. The exact suffix-only case is regression-tested;
+all 705 tests and repository lint pass. V38 remains zero-call failure evidence.
+
 V37 stopped at the first exact H1 approval boundary with zero external calls and
 authoritative pointers `round=0/cycle=0`. Its 224,234-character user context was
 complete and carried all 172 Signal needs, including all 30 reflection actions,
