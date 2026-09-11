@@ -64,6 +64,10 @@ mining, and Signal update proposals.
   to reject a measurement that can be defined from meta-memory, the demand
   backlog, and the available source catalog; local H2/H3 owns case feasibility
   and evidence testing.
+  Aggregate masking includes a distinctive single-token brand derived from each
+  formal target name, while preserving a small explicit set of ordinary protocol
+  words (for example `Future`, `Business`, `News`, and `Open`). The final assembled
+  H1 payload is checked against the same guard inventory before transmission.
   The union of hypothesis `need_refs` exactly equals the refs dispositioned as
   `new_measurement`; needs outside the bounded portfolio use another honest
   disposition. Mismatch feedback reports ledger-only and hypothesis-only refs.

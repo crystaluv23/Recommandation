@@ -1,5 +1,17 @@
 # Status
 
+V37 stopped at the first exact H1 approval boundary with zero external calls and
+authoritative pointers `round=0/cycle=0`. Its 224,234-character user context was
+complete and carried all 172 Signal needs, including all 30 reflection actions,
+but manual wire inspection found single-token target brands such as `Kinross` and
+`Wynn` inside persisted Fast unmet needs. Existing aggregate masking covered
+formal names, tickers, ids, and relation aliases but omitted distinctive leading
+brands. Aggregate identity inventory now includes such brands while explicitly
+preserving ordinary protocol words such as `Future`, `Business`, `Match`, `News`,
+`Alpha`, and `Open`; the existing final assembled-payload scan enforces that same
+inventory. All 705 tests and repository lint pass; V37 remains immutable zero-call
+preflight evidence and a new successor is required.
+
 V36 completed a real DeepSeek Slow cycle at authoritative `round=0/cycle=1`,
 but it is rejected as semantic acceptance. Exact H1 input contained all 30
 reflection actions and the response did use several of them, yet all three

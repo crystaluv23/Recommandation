@@ -106,6 +106,19 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
 )
 
 
+_GENERIC_AGGREGATE_IDENTITY_WORDS = (
+    _GENERIC_IDENTITY_LEADING_WORDS
+    | {
+        "alpha",
+        "business",
+        "future",
+        "match",
+        "news",
+        "open",
+    }
+)
+
+
 _GENERIC_QUERY_WORDS = frozenset(
     {
         "actual",
@@ -2352,9 +2365,10 @@ def _slow_role_identity_guard_inventory(
     """Build exact, non-ambiguous identity guards for aggregate Slow roles.
 
     Complete local case masking deliberately expands formal names to brands. An
-    aggregate role cannot use that expansion because ordinary brands such as
-    ``News`` or ``Open`` are also protocol vocabulary. Keep only opaque ids,
-    exact ticker-like aliases, and multi-token formal-name components here.
+    aggregate role cannot use unrestricted expansion because ordinary brands
+    such as ``News`` or ``Open`` are also protocol vocabulary. Keep opaque ids,
+    exact ticker-like aliases, multi-token formal names, and distinctive leading
+    brands outside the explicit aggregate-language denylist.
     """
 
     guards: list[str] = []
@@ -2384,6 +2398,13 @@ def _slow_role_identity_guard_inventory(
                 natural_name = _IDENTITY_LEGAL_SUFFIX.sub("", component).strip(" ,")
                 if len(re.findall(r"[A-Za-z0-9]+", natural_name)) >= 2:
                     guards.append(natural_name)
+                brand = natural_name.split(maxsplit=1)[0].strip(".,'\"")
+                brand_length = sum(character.isalnum() for character in brand)
+                if (
+                    brand_length >= 4
+                    and brand.casefold() not in _GENERIC_AGGREGATE_IDENTITY_WORDS
+                ):
+                    guards.append(brand)
     return tuple(dict.fromkeys(guards))
 
 

@@ -176,6 +176,42 @@ class SignalRoleAdapterTests(TestCase):
         local = core_module._mask_identity_values("Future announced results.", aliases)
         self.assertIn("[MASKED_COMPANY]", local)
 
+    def test_slow_identity_inventory_masks_distinctive_brands_only(self) -> None:
+        cases = (
+            SimpleNamespace(
+                case_id="brand-one",
+                company_id="issuer-one",
+                basic_info={
+                    "company_name": "Kinross Gold Corporation",
+                    "ticker": "KGC",
+                },
+            ),
+            SimpleNamespace(
+                case_id="brand-two",
+                company_id="issuer-two",
+                basic_info={
+                    "company_name": "Wynn Resorts Limited",
+                    "ticker": "WYNN",
+                },
+            ),
+            SimpleNamespace(
+                case_id="ordinary-word",
+                company_id="issuer-three",
+                basic_info={"company_name": "Future Holdings", "ticker": "FUTR"},
+            ),
+        )
+
+        guards = core_module._slow_role_identity_guard_inventory(cases)
+        masked = core_module._mask_identity_values(
+            "Kinross and Wynn disclosed results. Future business remains open news.",
+            guards,
+            expand_aliases=False,
+        )
+
+        self.assertNotIn("Kinross", masked)
+        self.assertNotIn("Wynn", masked)
+        self.assertIn("Future business remains open news", masked)
+
     def test_signal_h1_v3_accepts_structured_no_hypothesis_with_open_demand(
         self,
     ) -> None:
