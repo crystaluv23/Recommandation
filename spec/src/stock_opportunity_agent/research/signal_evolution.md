@@ -9,6 +9,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 ## Invariants
 
 - Signal candidates validate before promotion.
+- Every Slow cycle runs bounded Signal Mining independently of whether the
+  committed Fast boundary contains a new Signal need. H1 may use identity-masked,
+  outcome-aware Fast meta-memory to propose error-driven measurements; the
+  Exploration path independently extracts label-hidden point-in-time signatures
+  and reveals the frozen positive/control labels only in E2. Fast demand augments
+  this search but never gates it. A grounded `no_measurable_pattern` result is a
+  semantic mining outcome, distinct from skipped work or technical failure.
 - Update uses the same side-effect-free candidate checks during model correction
   and staging. Deterministic candidates may omit the optional null skill; LLM
   candidates still require a complete skill. Target identity, vNext and immutable

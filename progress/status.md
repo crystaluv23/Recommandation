@@ -1,6 +1,18 @@
 # Status
 
-V30 now provides the first productive real Slow acceptance from the replayed
+V31 completes the fresh code-bound successor at authoritative `round=0/cycle=1`
+with all 27 external attempts terminal and Locked Test sealed. H1 consumed the
+identity-masked, outcome-aware Fast meta-memory, accounted for all 145 retained
+Fast/capability needs, and returned a valid `no_testable_hypothesis`; it no longer
+misclassifies point-in-time `short-term investments` as a future outcome. Slow did
+not stop there: independent Exploration completed eight label-hidden grounded E1
+signatures, revealed two positive and two control labels in E2, and returned an
+auditable `no_measurable_pattern`. Update also ran three targets and failed closed:
+the staged `cash_reserves:v2` failed its immutable fixture, while the other two
+outputs failed source/fixture contracts. Registry therefore correctly remained v1.
+See the [V30/V31 Slow acceptance audit](information-evolution-v30-v31-slow-acceptance-2026-09-11.md).
+
+V30 provides the first productive real Slow acceptance from the replayed
 committed-Fast boundary. The frozen DeepSeek contract completed at authoritative
 `round=0/cycle=1`, kept Locked Test sealed, and atomically advanced the stable
 Signal Registry from v1 to v2 by promoting `max_drawdown_1y:v2`. Update staged
@@ -16,7 +28,9 @@ alternative-outcome guard confused with short-term stock performance. The guard
 now requires horizon vocabulary to co-occur with an actual outcome concept.
 Exact saved V30 H1 output replays to three valid hypotheses after one correction,
 while short-term stock returns remain rejected. All 692 repository tests and lint
-pass. A fresh code-bound Slow successor will verify H1 -> H2/H3 live.
+pass. V31 verifies the corrected H1 boundary live; its semantic no-hypothesis
+result correctly proceeds to independent Exploration rather than fabricating H2/H3
+work.
 
 Semantic follow-up audit found remaining behavior gaps despite V18 completion:
 ordinary Fast unmet needs never enter the Signal backlog; meta inputs sample

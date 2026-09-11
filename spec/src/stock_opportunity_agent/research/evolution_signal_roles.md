@@ -50,10 +50,14 @@ mining, and Signal update proposals.
   8,000 output tokens and direct the model to group refs that share one
   disposition/rationale. A `no_hypothesis.need_refs` list is only a bounded
   explanatory subset and must not duplicate the complete disposition ledger.
-  H1 intentionally does not receive case labels or full source excerpts. Their
-  absence is therefore not, by itself, a valid reason to reject a measurement
-  that can be defined from the demand backlog and available source catalog;
-  local H2/H3 owns feasibility and evidence testing.
+  H1 receives the bounded, identity-masked, outcome-aware Fast meta-memory so it
+  can form hypotheses from recurring prediction errors even when Fast supplied no
+  new Signal need. It does not receive the Discovery candidate-case roster,
+  positive/control membership for that roster, or full source excerpts. The
+  absence of those direct H2/H3 inputs is therefore not, by itself, a valid reason
+  to reject a measurement that can be defined from meta-memory, the demand
+  backlog, and the available source catalog; local H2/H3 owns case feasibility
+  and evidence testing.
 - H1 projects every runtime need ref to a deterministic compact alias before it
   crosses the model boundary. The outgoing backlog and every correction use only
   those aliases; after validation, the adapter maps the disposition ledger,
@@ -75,10 +79,11 @@ mining, and Signal update proposals.
   short-term returns, price performance, revenue growth, or another replacement
   outcome remains invalid.
 - A no-hypothesis or `not_testable` rationale may not use H1's intentionally
-  withheld case labels, group membership, case evidence, or full source excerpts
-  as its reason. This locally recognizable contract violation participates in
-  the same aggregate correction, so the model must either state a valid
-  measurement-level reason or return a structured hypothesis for H2/H3 testing.
+  withheld Discovery case roster, that roster's positive/control membership,
+  case evidence, or full source excerpts as its reason. This locally recognizable
+  contract violation participates in the same aggregate correction, so the model
+  must either state a valid measurement-level reason or return a structured
+  hypothesis for H2/H3 testing.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
