@@ -18,7 +18,13 @@ drafts failed executable-fixture preservation. The current repair explicitly
 states H1 enums/ref rules and semantic grouping, grants outcome-coupled correction
 paths, preserves only unambiguous source-owned Company Facts semantics in E2,
 prefers same-concept period pairs, and relation-masks named target affiliates.
-Fresh live V35 acceptance is pending.
+V35 then stopped at the zero-call H1 approval boundary when exact-payload audit
+found one remaining self-contradiction: the leading system instruction still
+forbade `not_testable` for reflection while the output contract and validator
+allowed it for an intrinsic measurement-level reason. The correction instruction
+also overgeneralized hypothesis-sibling preservation to non-hypothesis ledger
+repairs. Both prompt clauses are now aligned; V35 remains immutable at 0 calls and
+a freshly frozen successor is pending.
 
 V31 is authoritatively complete at `round=0/cycle=1`, but a content-level audit
 withdraws its earlier semantic acceptance. Its E2 wire body matched the persisted

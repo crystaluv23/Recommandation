@@ -2513,6 +2513,14 @@ class SignalRoleAdapterTests(TestCase):
                 "h1_reflection_has_no_downstream_measurement",
             },
         )
+        self.assertIn(
+            "not_testable only with an intrinsic measurement-level reason",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertNotIn(
+            "cannot be dismissed as already_covered or not_testable",
+            caller.calls[0]["system_prompt"],
+        )
 
     def test_h1_existing_disposition_requires_exactly_one_signal(self) -> None:
         invalid = {
