@@ -113,6 +113,12 @@ mutually exclusive source kinds:
   stable-projection Signal learning events, capability backlog, and every
   contributing checkpoint/Plan/meta hash.
 
+For `committed_fast`, the active phase may be `fast_loop` immediately after the
+last Fast commit or `slow_loop` after normal resume has recognized the complete
+Fast range. These are equivalent bootstrap boundaries only while both staged
+Slow validation and staged Slow result are absent; any persisted Slow output
+still makes the source ineligible.
+
 Both kinds bind the exact input Signal Registry. Runtime verifies the manifest
 before creating a cycle. For `committed_fast`, it idempotently reconstructs only
 the frozen post-pointer learning derivatives and in-memory meta view; it never

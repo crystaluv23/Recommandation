@@ -1557,7 +1557,7 @@ def _build_committed_fast_bootstrap_manifest(
         cycle_id < 1
         or active.get("cycle_mode") != "fast_then_slow"
         or cycle_state.get("run_contract_hash") != contract.contract_hash
-        or active.get("phase") != "fast_loop"
+        or active.get("phase") not in {"fast_loop", "slow_loop"}
         or int(active.get("input_signal_registry_version", 0))
         != signal_snapshot.version
         or active.get("input_signal_registry_hash")

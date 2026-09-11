@@ -255,6 +255,16 @@ class RunControlTests(TestCase):
                 signal_registry_hash=snapshot.registry_hash,
                 run_contract_hash=source_contract.contract_hash,
             )
+            resumed = workspace.start_or_resume_cycle(
+                run_contract_hash=source_contract.contract_hash,
+                target_plan_rounds=1,
+                cycle_mode="fast_then_slow",
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            self.assertEqual(resumed["phase"], "slow_loop")
             dataset = evolution_runtime_module.ApprovedDevelopmentDataset(
                 discovery=(),
                 anchor=(),
