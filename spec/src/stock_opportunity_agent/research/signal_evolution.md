@@ -50,9 +50,15 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   identity, while excluding cycle and proposal ids. A technical H1 failure is
   never semantic exhaustion and remains eligible after recovery under the
   existing attempt and cost ceilings. H1's complete runtime need set is the union
-  of Fast `signal_need_items[*].need_ref` values and ordinary capability-backlog
-  `items[*].request_id` values; the latter must not be dropped merely because
-  they are provider, retrieval, or existing-Signal coverage gaps.
+  of Fast `signal_need_items[*].need_ref` values, ordinary capability-backlog
+  `items[*].request_id` values, and stable controller-derived action refs from
+  retained vertical reflection. Reflection actions come only from explicit
+  misleading-signal, repeated-failure, missing-information, and next-exploration
+  fields. They require an actionable H1 disposition (`new_measurement`,
+  `update_existing`, or `repair_dependency`), so merely carrying reflection in a
+  prompt without changing downstream work is not accepted as self-evolution.
+  Ordinary backlog rows must not be dropped merely because they are provider,
+  retrieval, or existing-Signal coverage gaps.
   The role adapter may use deterministic compact need aliases on the wire, but
   committed H1 audit always restores the original need refs and includes the
   local alias map. Thus downstream H2/H3 audit and Fast-to-Slow provenance never
@@ -76,6 +82,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   never clips or invents source text. Quarantine reasons remain technical audit
   metadata, including when a case has no surviving observations; they are not
   evidence that the source or measured condition is absent.
+  E2 never receives E1's model-authored summaries as evidence. The controller
+  replaces them with a deterministic literal-only view before labels are
+  revealed; the original summaries remain in E1 audit only. Generic filing
+  cover/legal boilerplate is not a comparison-ready observation and is
+  quarantined like any other locally invalid E1 observation.
   Source-owned SEC Company Facts context retains each concept's original
   `label` as metric semantics; the transport guard distinguishes this exact path
   from retrospective outcome labels. A runtime budget exception during E1 is
@@ -88,9 +99,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   second document from the same family. This keeps filing, transcript, news,
   Company-Facts/financial, and market evidence complementary without increasing
   the document ceiling. Within a queryless Company Facts document, the bounded
-  projection ranks a frozen catalog of broadly comparable operating,
-  balance-sheet, investment, and capital-structure concepts ahead of arbitrary
-  latest-period concepts, then uses the existing deterministic tie-breakers.
+  projection ranks recent members of a frozen catalog of broadly comparable
+  operating, balance-sheet, investment, and capital-structure concepts ahead of
+  stale or arbitrary concepts, then uses deterministic tie-breakers. Exploration
+  receives a larger bounded projection than query-directed H3. Queryless filing
+  windows deterministically prefer substantive business, results, liquidity,
+  risk, and outlook language over cover-page boilerplate; queryless JSON windows
+  start at a complete record boundary.
   This changes evidence projection only: it does not define a Signal or use
   labels. Query-directed H2/H3 ranking retains its query-coverage semantics.
 - Update evidence packets separate label-free source observations from the
@@ -109,9 +124,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   contexts: an ordinary lowercase word must not become an uppercase ticker merely
   because the complete candidate was case-folded. Full names retain case-insensitive
   matching; explicit ticker and symbol markers retain their existing treatment.
-  All Slow contexts (meta, profiles, H3/Exploration source projections, and
-  Update packets) consume this strict aggregate inventory without deriving new
-  first-word brands. Local case masking keeps its own alias expansion. Repeated
+  Exploration first applies expanded identity masking for its one local case and
+  then the strict aggregate guard. This masks a natural one-token brand derived
+  from a formal legal name without teaching an aggregate role to treat ordinary
+  one-token vocabulary as identities. All Slow contexts (meta, profiles,
+  H3/Exploration source projections, and Update packets) consume the strict
+  aggregate inventory without deriving new first-word brands. Local case masking
+  keeps its own alias expansion. Repeated
   identical inventories reuse a bounded compiled-matcher cache; literal source
   checks and final identity scans remain in place.
 - Ordinary Fast-to-Slow demand comes from the final unresolved needs of every

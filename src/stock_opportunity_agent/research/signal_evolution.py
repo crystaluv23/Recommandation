@@ -95,6 +95,67 @@ SIGNAL_UPDATE_MUTABLE_PATHS = (
 )
 
 
+_EXPLORATION_BOILERPLATE = re.compile(
+    r"\b(?:commission\s+file|exact\s+name\s+of\s+registrant|state\s+of\s+"
+    r"incorporation|securities\s+registered|trading\s+symbol|annual\s+report\s+"
+    r"pursuant|quarterly\s+report\s+pursuant|large\s+accelerated\s+filer)\b",
+    re.IGNORECASE,
+)
+
+
+def _comparison_ready_exploration_signature(
+    signature: "SignalMiningSignature",
+) -> tuple["SignalMiningSignature", tuple[str, ...]]:
+    """Quarantine generic filing boilerplate before label reveal."""
+
+    kept = tuple(
+        observation
+        for observation in signature.observations
+        if _EXPLORATION_BOILERPLATE.search(observation.exact_span) is None
+    )
+    removed = len(signature.observations) - len(kept)
+    if not removed:
+        return signature, ()
+    reason = (
+        f"{removed} observation(s) were generic filing cover or registration "
+        "boilerplate and are not comparison-ready",
+    )
+    return replace(
+        signature,
+        observations=kept,
+        evidence_gaps=(*signature.evidence_gaps, *reason),
+    ), reason
+
+
+def _literal_only_signature_view(
+    signature: "SignalMiningSignature",
+    packet: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Build the label-reveal view without forwarding model-authored claims."""
+
+    sources = {
+        str(item.get("document_ref")): str(item.get("source_type", "source"))
+        for item in packet.get("evidence", ())
+        if isinstance(item, Mapping) and item.get("document_ref")
+    }
+    return {
+        "case_ref": signature.case_ref,
+        "observations": [
+            {
+                "summary": (
+                    "Literal point-in-time excerpt from source_type="
+                    + sources.get(observation.document_ref, "source")
+                    + "; compare exact_span only."
+                ),
+                "document_ref": observation.document_ref,
+                "exact_span": observation.exact_span,
+            }
+            for observation in signature.observations
+        ],
+        "evidence_gaps": list(signature.evidence_gaps),
+    }
+
+
 @dataclass(frozen=True)
 class SignalCandidateValidation:
     """Fail-closed validation result before stable Signal promotion."""
@@ -3009,7 +3070,7 @@ class SignalEvolutionEngine:
         )
         h1_payload = {
             "track": "hypothesis",
-            "h1_contract_version": "signal-mining-hypothesis-v3",
+            "h1_contract_version": "signal-mining-hypothesis-v4",
             "hypothesis_slots": [
                 f"h1-c{cycle_id:04d}-s{index:02d}"
                 for index in range(1, config.hypothesis_limit + 1)
@@ -3021,7 +3082,7 @@ class SignalEvolutionEngine:
         }
         h1_input_fingerprint = _canonical_hash(
             {
-                "schema_version": "signal-mining-h1-input-v3",
+                "schema_version": "signal-mining-h1-input-v4",
                 "contract": h1_payload["h1_contract_version"],
                 "limits": h1_payload["limits"],
                 "h2_applicability_contract": applicability_contract,
@@ -3052,7 +3113,7 @@ class SignalEvolutionEngine:
             prior_conclusion = dict(prior_h1["h1_conclusion"])
             audit["status"] = "unchanged_h1_work_suppressed"
             audit["stages"]["H1"] = {
-                "contract_version": "signal-mining-hypothesis-v3",
+                "contract_version": "signal-mining-hypothesis-v4",
                 "input_fingerprint": h1_input_fingerprint,
                 "conclusion": prior_conclusion,
                 "hypotheses": [],
@@ -3072,7 +3133,7 @@ class SignalEvolutionEngine:
                 exc.usage,
                 details={
                     **dict(exc.details),
-                    "contract_version": "signal-mining-hypothesis-v3",
+                    "contract_version": "signal-mining-hypothesis-v4",
                     "input_fingerprint": h1_input_fingerprint,
                     "conclusion": {
                         "conclusion": "technical_failure",
@@ -3099,7 +3160,7 @@ class SignalEvolutionEngine:
                 continue
             hypotheses.append(hypothesis)
         audit["stages"]["H1"] = {
-            "contract_version": "signal-mining-hypothesis-v3",
+            "contract_version": "signal-mining-hypothesis-v4",
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
@@ -3622,6 +3683,18 @@ class SignalEvolutionEngine:
                     extraction_step.value,
                     batch_packets,
                 )
+                comparison_ready: list[SignalMiningSignature] = []
+                for signature in batch_signatures:
+                    filtered_signature, reasons = (
+                        _comparison_ready_exploration_signature(signature)
+                    )
+                    comparison_ready.append(filtered_signature)
+                    if reasons:
+                        extraction_failures[signature.case_ref] = tuple(
+                            "Exploration E1 observation quarantined: " + reason
+                            for reason in reasons
+                        )
+                batch_signatures = tuple(comparison_ready)
             except CandidateExecutionRejected as exc:
                 extraction_usage = extraction_usage + exc.usage
                 reason = (
@@ -3750,9 +3823,14 @@ class SignalEvolutionEngine:
                     for case_ref, reasons in extraction_failures.items()
                 },
             )
+        packet_by_ref = {
+            str(packet["case_ref"]): packet for packet in evidence_packets
+        }
         revealed = [
             {
-                **signature.to_dict(),
+                **_literal_only_signature_view(
+                    signature, packet_by_ref[signature.case_ref]
+                ),
                 "label": (
                     "positive"
                     if case_by_ref[signature.case_ref].ground_truth.is_surge
@@ -3761,6 +3839,10 @@ class SignalEvolutionEngine:
             }
             for signature in selected_grounded_signatures
         ]
+        evidence_limited = any(
+            signature.evidence_gaps or len(signature.observations) < 2
+            for signature in selected_grounded_signatures
+        )
         discovery_step = self.mining_model.discover_exploration(
             {
                 "track": "exploration",
@@ -3769,6 +3851,7 @@ class SignalEvolutionEngine:
                 "rules": {
                     "candidate_only_for_repeated_observable_pattern": True,
                     "exact_spans_authoritative_over_summaries": True,
+                    "evidence_limited": evidence_limited,
                     "decisions": [
                         "supported",
                         "refine",
@@ -4027,6 +4110,8 @@ class SignalEvolutionEngine:
             for item in capability_backlog.get("signal_need_items", ())
             if isinstance(item, Mapping)
         ]
+        reflection_actions = self._reflection_action_items()
+        capability_backlog["signal_need_items"].extend(reflection_actions)
         capability_backlog = self._mining_capability_backlog_view(
             capability_backlog
         )
@@ -4062,6 +4147,47 @@ class SignalEvolutionEngine:
             ),
             "locked_test_available": False,
         }
+
+    def _reflection_action_items(self, *, limit: int = 24) -> list[dict[str, Any]]:
+        """Project explicit vertical reflection fields into accountable H1 work."""
+
+        rows: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        field_names = (
+            "misleading_signals",
+            "repeated_failure_modes",
+            "missing_information_needs",
+            "next_explorations",
+        )
+        for entry in reversed(self.meta_memory.entries):
+            for plan in entry.plan_reflections:
+                reflection = plan.vertical_plan_reflection
+                for field_name in field_names:
+                    for raw_text in getattr(reflection, field_name):
+                        text = " ".join(str(raw_text).split())
+                        semantic_key = _normalize_semantics(text)
+                        if not semantic_key or semantic_key in seen:
+                            continue
+                        seen.add(semantic_key)
+                        provenance = {
+                            "source_round": entry.round_id,
+                            "source_plan_ref": "plan-" + _canonical_hash(plan.plan_id)[:16],
+                            "reflection_field": field_name,
+                            "text": text,
+                        }
+                        rows.append(
+                            {
+                                "need_ref": "reflection-" + _canonical_hash(provenance)[:16],
+                                "kind": "meta_reflection_action",
+                                "need": text,
+                                "reflection_field": field_name,
+                                "source_round": entry.round_id,
+                                "sources": [],
+                            }
+                        )
+                        if len(rows) == limit:
+                            return rows
+        return rows
 
     @staticmethod
     def _mining_capability_backlog_view(
@@ -4605,9 +4731,15 @@ class SignalEvolutionEngine:
                 case=case,
                 query=query,
                 limit=request.max_documents,
-                aliases=self.slow_role_identity_guards,
-                expand_aliases=False,
+                aliases=_discovery_identity_terms((case,)),
+                expand_aliases=True,
                 prefer_source_diversity=True,
+                max_content_chars=2_400,
+            )
+            evidence = _mask_identity_values(
+                evidence,
+                self.slow_role_identity_guards,
+                expand_aliases=False,
             )
             selection.clear()
             selection.update(audit)

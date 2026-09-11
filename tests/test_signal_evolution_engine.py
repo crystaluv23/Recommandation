@@ -536,6 +536,132 @@ class SignalEvolutionTests(TestCase):
         preview = _agent_raw_document_view(prose, max_content_chars=300)
         self.assertTrue(preview["content_excerpt"].startswith("Introduction"))
 
+    def test_queryless_json_excerpt_starts_at_complete_record_boundary(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import _agent_raw_document_view
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        content = json.dumps(
+            {
+                "observations": [
+                    {"end": "2009-01-01", "value": "x" * 400},
+                    {"end": "2025-06-30", "value": 12345},
+                ]
+            },
+            separators=(",", ":"),
+        )
+        document = RawInfoDocument.create(
+            document_id="dated-boundary", company_id="issuer",
+            source_type="market_data", published_at=as_of,
+            available_at=as_of, content=content,
+        )
+
+        excerpt = _agent_raw_document_view(
+            document, max_content_chars=200
+        )["content_excerpt"]
+
+        self.assertTrue(excerpt.startswith("{"), excerpt)
+        self.assertIn('"value":12345', excerpt)
+
+    def test_queryless_filing_excerpt_skips_cover_boilerplate(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import _agent_raw_document_view
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        cover = (
+            "Commission file number 001. Exact name of registrant. "
+            "State of incorporation. Securities registered and trading symbol. "
+        ) * 20
+        substance = (
+            "Business operations revenue increased 18 percent. Gross profit and "
+            "operating income improved while cash flow funded capital resources. "
+        ) * 8
+        document = RawInfoDocument.create(
+            document_id="substantive-filing", company_id="issuer", source_type="10-k",
+            published_at=as_of, available_at=as_of, content=cover + substance,
+        )
+
+        excerpt = _agent_raw_document_view(
+            document, max_content_chars=400
+        )["content_excerpt"]
+
+        self.assertIn("Business operations revenue", excerpt)
+        self.assertNotIn("Commission file number", excerpt)
+
+    def test_exploration_literal_view_drops_model_authored_summary(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            _comparison_ready_exploration_signature,
+            _literal_only_signature_view,
+        )
+
+        signature = SignalMiningSignature(
+            case_ref="case-001",
+            observations=(
+                SignalMiningObservation(
+                    summary="Invented growth from 10 to 20.",
+                    document_ref="document-01",
+                    exact_span="Revenue was 20 in the quarter.",
+                ),
+                SignalMiningObservation(
+                    summary="Cover page.",
+                    document_ref="document-02",
+                    exact_span="Exact name of registrant as specified in its charter.",
+                ),
+            ),
+        )
+
+        filtered, reasons = _comparison_ready_exploration_signature(signature)
+        view = _literal_only_signature_view(
+            filtered,
+            {"evidence": [{"document_ref": "document-01", "source_type": "10-q"}]},
+        )
+
+        self.assertEqual(len(filtered.observations), 1)
+        self.assertTrue(reasons)
+        self.assertNotIn("Invented growth", json.dumps(view))
+        self.assertIn("compare exact_span only", view["observations"][0]["summary"])
+
+    def test_exploration_packet_masks_case_local_natural_brand(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            case = replace(
+                make_case("aflac_probe", 4.0),
+                basic_info={
+                    "company_name": "Aflac Inc / AFLAC INC",
+                    "ticker": "AFL",
+                },
+            )
+            document = RawInfoDocument.create(
+                document_id="aflac-filing",
+                company_id=case.company_id,
+                source_type="10-k",
+                published_at=NOW,
+                available_at=NOW,
+                content=(
+                    "Aflac Incorporated reported revenue growth and operating income "
+                    "improvement with stronger cash flow and liquidity. " * 20
+                ),
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=(document,)),
+                discovery_cases=(case,),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            packet, _audit = engine._mining_evidence_packet(
+                "case-001", case, source_types=("10-k",), query=None,
+                lookback_days=365, reveal_label=False,
+            )
+            serialized = json.dumps(packet)
+
+            self.assertNotIn("Aflac", serialized)
+            self.assertIn("[MASKED_COMPANY]", serialized)
+
     def test_candidate_identity_guard_preserves_ticker_case(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -4636,6 +4762,51 @@ class SignalEvolutionTests(TestCase):
 
         self.assertEqual(view, card)
         self.assertIn("learned_profile", view)
+
+    def test_h1_context_projects_vertical_reflection_into_action_need(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            record = replace(
+                make_record("reflection_action_plan", 0.8, (1.0, 0.0)),
+                reflection=PlanReflection(
+                    next_explorations=(
+                        "Compare disclosed cash runway against operating cash burn.",
+                    )
+                ),
+            )
+            plan_reflection = PlanMetaReflection.from_record(record)
+            memory = PlanMetaMemory(
+                entries=(
+                    RoundMetaEntry(
+                        round_id=1,
+                        plan_reflections=(plan_reflection,),
+                        evidence_refs=(record.plan_id,),
+                    ),
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("reflection_case", 4.0),),
+                meta_memory=memory,
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            context = engine._mining_context(cycle_id=1)
+            actions = [
+                item
+                for item in context["capability_backlog"]["signal_need_items"]
+                if item.get("kind") == "meta_reflection_action"
+            ]
+
+            self.assertEqual(len(actions), 1)
+            self.assertTrue(actions[0]["need_ref"].startswith("reflection-"))
+            self.assertIn("cash runway", actions[0]["need"])
 
 
 class DualLoopTests(TestCase):

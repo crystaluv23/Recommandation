@@ -66,7 +66,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 
 
 _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
-    ' Output contract signal-mining-hypothesis-v3: return exactly {"conclusion":'
+    ' Output contract signal-mining-hypothesis-v4: return exactly {"conclusion":'
     '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
     'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
     "no_hypothesis is null and each "
@@ -835,7 +835,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
-            "need_ref_projection": "compact-v1",
+            "need_ref_projection": "compact-reflection-action-v2",
             "model_alias": getattr(registration, "alias", None),
             "provider": getattr(registration, "provider", None),
             "model": getattr(registration, "model", None),
@@ -845,7 +845,7 @@ class LLMSignalMiningModel(SignalMiningModel):
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
-        """Run the sole production H1 v3 contract."""
+        """Run the sole production H1 v4 contract."""
 
         return self._propose_hypotheses_v3(payload)
 
@@ -876,6 +876,22 @@ class LLMSignalMiningModel(SignalMiningModel):
         alias_to_original = {
             alias: original for original, alias in original_to_alias.items()
         }
+        reflection_action_refs = {
+            str(item["need_ref"])
+            for item in (
+                projected_backlog.get("signal_need_items", ())
+                if isinstance(projected_backlog, Mapping)
+                else ()
+            )
+            if isinstance(item, Mapping)
+            and item.get("kind") == "meta_reflection_action"
+            and item.get("need_ref")
+        }
+        reflection_action_aliases = {
+            original_to_alias[ref]
+            for ref in reflection_action_refs
+            if ref in original_to_alias
+        }
         if isinstance(projected_backlog, Mapping):
             projected_backlog = dict(projected_backlog)
             for collection_name, field_name in (
@@ -903,7 +919,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         slots = tuple(str(item) for item in projected_payload.get("hypothesis_slots", ()))
         if len(slots) != limit or len(set(slots)) != len(slots):
             raise ValidationError(
-                "Signal Mining H1 v3 requires one unique runtime slot per hypothesis"
+                "Signal Mining H1 v4 requires one unique runtime slot per hypothesis"
             )
         allowed_slots = set(slots)
         allowed_source_types = {
@@ -980,7 +996,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "need_dispositions",
             }:
                 raise ValidationError(
-                    "Signal Mining H1 v3 requires conclusion, hypotheses, "
+                    "Signal Mining H1 v4 requires conclusion, hypotheses, "
                     "no_hypothesis, and need_dispositions"
                 )
             conclusion = value.get("conclusion")
@@ -988,7 +1004,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             if conclusion not in {"hypotheses", "no_testable_hypothesis"} or not isinstance(
                 raw_items, list
             ):
-                raise ValidationError("Signal Mining H1 v3 conclusion is invalid")
+                raise ValidationError("Signal Mining H1 v4 conclusion is invalid")
             raw_dispositions = value.get("need_dispositions")
             if not isinstance(raw_dispositions, list):
                 raise ValidationError("need_dispositions must be an array")
@@ -1029,6 +1045,22 @@ class LLMSignalMiningModel(SignalMiningModel):
                 if raw_disposition.get("disposition") == "new_measurement":
                     new_measurement_refs_from_ledger.update(
                         ref for ref in string_refs if ref in allowed_need_refs
+                    )
+                if (
+                    set(string_refs).intersection(reflection_action_aliases)
+                    and raw_disposition.get("disposition")
+                    in {"already_covered", "not_testable"}
+                ):
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_reflection_action_ignored",
+                            message=(
+                                "meta-reflection action refs require new_measurement, "
+                                "update_existing, or repair_dependency"
+                            ),
+                            paths=(f"need_dispositions[{index}]",),
+                            allowed_repairs=("replace",),
+                        )
                     )
             duplicated_refs = sorted(
                 {
@@ -1464,7 +1496,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 projected_payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
-                identity_boundary="Signal Mining H1 v3 aggregate request",
+                identity_boundary="Signal Mining H1 v4 aggregate request",
             )
         system_prompt = (
             "Propose only reusable, point-in-time observable measurements. The "
@@ -1472,7 +1504,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             "case selection, and limits; copy proposal_ref and need_refs exactly. "
             "Give every supplied backlog need_ref exactly one disposition; a pure "
             "provider or dependency failure may be repair_dependency without forcing "
-            "a hypothesis. Use the supplied canonical applicability contract and "
+            "a hypothesis. Items with kind=meta_reflection_action are explicit "
+            "outcome-aware lessons from earlier Fast evaluation and must route to "
+            "new_measurement, update_existing, or repair_dependency; they cannot be "
+            "dismissed as already_covered or not_testable. Use the supplied canonical "
+            "applicability contract and "
             "source types. A non-empty demand backlog is diagnostic demand, not proof "
             "that a new testable measurement exists. Return no_testable_hypothesis "
             "when the visible gaps, sources, or prior attempts do not support a new "
@@ -1480,8 +1516,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             "groups, or encode a future outcome in the measurement. Existing Signal "
             "cards are an exclusion catalog. On correction, change or remove only "
             "the invalid proposal_ref; retain valid siblings byte-for-byte."
-            " Case labels, fixed group membership, and full source excerpts are "
-            "intentionally absent at H1; do not use their absence alone to reject a "
+            " The candidate-case roster, its labels and fixed group membership, and "
+            "full candidate source excerpts are intentionally absent at H1, while "
+            "retrospective meta-memory is outcome-aware; do not use absent candidate "
+            "inputs alone to reject a "
             "measurement definable from the backlog and source catalog. H2/H3 owns "
             "case feasibility and evidence testing. Group equivalent need "
             "dispositions compactly."
@@ -2112,6 +2150,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in payload.get("signatures", ())
             if isinstance(item, Mapping) and item.get("case_ref")
         }
+        exploration_evidence_limited = bool(
+            rules.get("evidence_limited", False)
+            if isinstance(rules, Mapping)
+            else False
+        )
         decision_metadata: dict[str, Any] = {}
 
         def sample_basis(
@@ -2196,6 +2239,24 @@ class LLMSignalMiningModel(SignalMiningModel):
                     }:
                         raise ValidationError(
                             "Exploration E2 no_candidate reason_code is invalid"
+                        )
+                    if (
+                        exploration_evidence_limited
+                        and reason_code == "no_measurable_pattern"
+                    ):
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_limited_evidence_overclaims_no_pattern",
+                                    message=(
+                                        "The controller marked this comparison evidence "
+                                        "as limited. An empty portfolio must use "
+                                        "insufficient_evidence, not no_measurable_pattern."
+                                    ),
+                                    paths=("no_candidate.reason_code",),
+                                    allowed_repairs=("replace",),
+                                )
+                            ]
                         )
                     rationale = no_candidate.get("rationale")
                     considered = no_candidate.get("considered_case_refs")
@@ -2302,7 +2363,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             enforce_scoped_correction=exploration,
             correction_guidance=(
                 "For E2, decisions are cross-case portfolio patterns. Per-case "
-                "rejections must become decisions=[] with structured no_candidate."
+                "rejections must become decisions=[] with structured no_candidate. "
+                "When rules.evidence_limited is true, an empty result must use "
+                "reason_code=insufficient_evidence."
                 if exploration
                 else ""
             ),

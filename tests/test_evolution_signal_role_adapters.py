@@ -2421,6 +2421,93 @@ class SignalRoleAdapterTests(TestCase):
             caller.calls[0]["system_prompt"],
         )
 
+    def test_exploration_e2_limited_evidence_cannot_claim_no_pattern(self) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": ["No recurring difference is visible."],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_candidate"]["reason_code"] = "insufficient_evidence"
+        corrected["no_candidate"]["rationale"] = [
+            "The bounded evidence is insufficient for a pattern conclusion."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ],
+                "rules": {"evidence_limited": True},
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "issue_code"
+            ],
+            "e2_limited_evidence_overclaims_no_pattern",
+        )
+
+    def test_h1_reflection_action_requires_actionable_disposition(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The need is already covered."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "already_covered",
+                    "signal_refs": ["cash_runway:v1"],
+                    "rationale": ["A stable card exists."],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["need_dispositions"][0]["disposition"] = "repair_dependency"
+        corrected["need_dispositions"][0]["signal_refs"] = []
+        corrected["need_dispositions"][0]["rationale"] = [
+            "The required point-in-time source is unavailable."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v4",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "stable_signal_cards": [{"signal_ref": "cash_runway:v1"}],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {
+                            "need_ref": "reflection-source-ref",
+                            "kind": "meta_reflection_action",
+                            "need": "Test point-in-time cash runway.",
+                        }
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "issue_code"
+            ],
+            "h1_reflection_action_ignored",
+        )
+
     def test_exploration_e2_corrects_per_case_rejections_to_no_candidate(self) -> None:
         malformed = {
             "decisions": [

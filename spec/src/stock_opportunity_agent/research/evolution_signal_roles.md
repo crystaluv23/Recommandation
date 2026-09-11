@@ -30,7 +30,7 @@ mining, and Signal update proposals.
   local re-projection meaningful. Exact request estimation and the original hard
   token ceiling apply before the correction; unchanged insufficient input remains
   unavailable rather than entering another retry loop.
-- Production H1 uses `signal-mining-hypothesis-v3`. The runtime supplies stable
+- Production H1 uses `signal-mining-hypothesis-v4`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
@@ -58,6 +58,12 @@ mining, and Signal update proposals.
   to reject a measurement that can be defined from meta-memory, the demand
   backlog, and the available source catalog; local H2/H3 owns case feasibility
   and evidence testing.
+- The controller also projects explicit vertical-reflection fields into stable
+  runtime action refs. Each such ref must be dispositioned as a new measurement,
+  an existing-Signal update, or a dependency repair; `already_covered` and
+  `not_testable` are invalid because they would allow reflection to be present but
+  operationally ignored. This routes action without granting permission to infer
+  Discovery labels or source facts from retrospective reflection.
 - H1 projects every runtime need ref to a deterministic compact alias before it
   crosses the model boundary. The outgoing backlog and every correction use only
   those aliases; after validation, the adapter maps the disposition ledger,
@@ -94,6 +100,13 @@ mining, and Signal update proposals.
   An E2 no-candidate rationale must also agree with the supplied label inventory;
   for example, it cannot claim that unlabeled cases were considered when every
   selected signature has an explicit positive/control label.
+- E1 summaries are untrusted interpretations and remain audit-only. Before E2,
+  the controller emits only each validated document ref and exact source span
+  with a deterministic literal description. A locally recognizable SEC cover or
+  registration boilerplate span is not a comparison-ready observation. Empty E2
+  outcomes distinguish a genuinely compared `no_measurable_pattern` from
+  `insufficient_evidence`; projection loss, missing comparison-ready observations,
+  and quarantined extraction failures cannot become a broad no-pattern conclusion.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the
@@ -119,5 +132,5 @@ mining, and Signal update proposals.
   or case refs used by that comparison, so a schema-valid association cannot be
   audited without its sample. This field is runtime-owned rather than copied by
   the model.
-- Legacy v1/v2 H1 and v1 Update records remain parseable only at explicit
-  compatibility boundaries. New Slow execution requests H1 v3 and Update v2.
+- Legacy v1/v2/v3 H1 and v1 Update records remain parseable only at explicit
+  compatibility boundaries. New Slow execution requests H1 v4 and Update v2.

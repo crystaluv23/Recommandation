@@ -5136,15 +5136,22 @@ def _company_facts_context(
                     "records": distinct_periods,
                 }
                 latest_period = matched_records[0][0]
-                queryless_priority = (
-                    _QUERYLESS_COMPANY_FACT_PRIORITY.get(str(concept).casefold(), 0)
-                    if not query_terms
-                    else 0
+                queryless_priority = _QUERYLESS_COMPANY_FACT_PRIORITY.get(
+                    str(concept).casefold(), 0
                 )
                 score = (
-                    len(query_terms.intersection(concept_terms)),
-                    queryless_priority,
-                    latest_period,
+                    (
+                        len(query_terms.intersection(concept_terms)),
+                        0,
+                        latest_period,
+                    )
+                    if query_terms
+                    else (
+                        int(queryless_priority > 0),
+                        latest_period,
+                        queryless_priority,
+                    )
+                ) + (
                     str(taxonomy),
                     str(concept),
                     str(unit),
@@ -5635,11 +5642,12 @@ def _model_evidence_view(
     aliases: tuple[str, ...],
     query: str | None,
     expand_aliases: bool = True,
+    max_content_chars: int = 1_200,
 ) -> dict[str, Any]:
     """Return one bounded, masked model view with immutable source lineage."""
 
     view = _agent_raw_document_view(
-        document, max_content_chars=1_200, query=query
+        document, max_content_chars=max_content_chars, query=query
     )
     model_view = {
         "document_ref": f"document-{index:02d}",
@@ -5698,6 +5706,7 @@ def _select_h3_model_evidence(
     aliases: tuple[str, ...] | None = None,
     expand_aliases: bool = True,
     prefer_source_diversity: bool = False,
+    max_content_chars: int = 1_200,
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, Any]], dict[str, Any]]:
     """Select a bounded complementary H3 packet from an eligible ranked pool."""
 
@@ -5725,6 +5734,7 @@ def _select_h3_model_evidence(
             _model_evidence_view(
                 document, index=1, aliases=resolved_aliases, query=query,
                 expand_aliases=expand_aliases,
+                max_content_chars=max_content_chars,
             ),
         )
         for index, document in enumerate(eligible)
@@ -5985,6 +5995,20 @@ def _model_evidence_visible_text(view: Mapping[str, Any]) -> str:
     return " ".join(parts)
 
 
+_QUERYLESS_FILING_SUBSTANTIVE = re.compile(
+    r"\b(?:business|operations?|results?|revenue|gross\s+profit|operating\s+income|"
+    r"cash\s+flows?|liquidity|capital\s+resources?|debt|backlog|guidance|outlook|"
+    r"risk\s+factors?|research\s+and\s+development|inventory)\b",
+    re.IGNORECASE,
+)
+_QUERYLESS_FILING_BOILERPLATE = re.compile(
+    r"\b(?:commission\s+file|exact\s+name\s+of\s+registrant|state\s+of\s+"
+    r"incorporation|securities\s+registered|trading\s+symbol|annual\s+report\s+"
+    r"pursuant|quarterly\s+report\s+pursuant|large\s+accelerated\s+filer)\b",
+    re.IGNORECASE,
+)
+
+
 def _query_relevant_excerpt(
     document: RawInfoDocument,
     *,
@@ -6020,8 +6044,7 @@ def _query_relevant_excerpt(
                 dated_records.append((max(dates), record.start()))
         if dated_records:
             _latest, anchor = max(dated_records, key=lambda row: (row[0], -row[1]))
-            start = min(anchor, len(text_value) - max_chars)
-            return text_value[start : start + max_chars], True
+            return text_value[anchor : anchor + max_chars], True
     anchors = (
         [
             match.start()
@@ -6032,6 +6055,17 @@ def _query_relevant_excerpt(
         ]
         if query_terms else []
     )
+    if not query_terms and document.source_type.casefold() in {
+        "10-k",
+        "10-q",
+        "filing",
+        "filing_body",
+        "sec_filing",
+    }:
+        anchors = [
+            match.start()
+            for match in _QUERYLESS_FILING_SUBSTANTIVE.finditer(text_value)
+        ]
     starts = {0}
     starts.update(
         max(0, min(len(text_value) - max_chars, anchor - max_chars // 3))
@@ -6045,8 +6079,22 @@ def _query_relevant_excerpt(
         adjusted_starts.add(boundary + 1 if boundary >= 0 else start)
 
     def score(start: int) -> tuple[int, int, int, int]:
+        window = text_value[start : start + max_chars]
+        if not query_terms and document.source_type.casefold() in {
+            "10-k",
+            "10-q",
+            "filing",
+            "filing_body",
+            "sec_filing",
+        }:
+            return (
+                len(_QUERYLESS_FILING_SUBSTANTIVE.findall(window)),
+                -len(_QUERYLESS_FILING_BOILERPLATE.findall(window)),
+                len(re.findall(r"(?:\$|\b\d+(?:\.\d+)?%?\b)", window)),
+                -start,
+            )
         coverage = _h3_text_query_coverage(
-            (text_value[start : start + max_chars],), query=query
+            (window,), query=query
         )
         return (
             int(coverage["sufficient"]),

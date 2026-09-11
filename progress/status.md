@@ -1,16 +1,20 @@
 # Status
 
-V31 completes the fresh code-bound successor at authoritative `round=0/cycle=1`
-with all 27 external attempts terminal and Locked Test sealed. H1 consumed the
-identity-masked, outcome-aware Fast meta-memory, accounted for all 145 retained
-Fast/capability needs, and returned a valid `no_testable_hypothesis`; it no longer
-misclassifies point-in-time `short-term investments` as a future outcome. Slow did
-not stop there: independent Exploration completed eight label-hidden grounded E1
-signatures, revealed two positive and two control labels in E2, and returned an
-auditable `no_measurable_pattern`. Update also ran three targets and failed closed:
-the staged `cash_reserves:v2` failed its immutable fixture, while the other two
-outputs failed source/fixture contracts. Registry therefore correctly remained v1.
-See the [V30/V31 Slow acceptance audit](information-evolution-v30-v31-slow-acceptance-2026-09-11.md).
+V31 is authoritatively complete at `round=0/cycle=1`, but a content-level audit
+withdraws its earlier semantic acceptance. Its E2 wire body matched the persisted
+request and was not transport-truncated; however, queryless filing projections
+were dominated by SEC cover text, Company Facts projections were too small and
+could prefer stale concepts, one JSON window began inside a record, local natural
+brands were incompletely masked, and E2 received overclaiming E1 summaries.
+Separately, H1 carried outcome-aware reflection but had no contract requiring that
+reflection to change downstream action, and it made semantically false
+already-covered mappings. Therefore V31's `no_measurable_pattern` is only locally
+defensible for a damaged packet, not evidence that the cohort contains no reusable
+factor. A v4 repair now makes reflection action refs accountable, improves bounded
+queryless projections, applies local-plus-aggregate identity masking, quarantines
+filing boilerplate, removes model summaries before E2, and prevents limited
+evidence from claiming `no_measurable_pattern`. Fresh live acceptance is pending.
+See the [V30/V31 Slow audit](information-evolution-v30-v31-slow-acceptance-2026-09-11.md).
 
 V30 provides the first productive real Slow acceptance from the replayed
 committed-Fast boundary. The frozen DeepSeek contract completed at authoritative
@@ -27,10 +31,9 @@ used the source-owned balance-sheet term `short-term investments`, which the
 alternative-outcome guard confused with short-term stock performance. The guard
 now requires horizon vocabulary to co-occur with an actual outcome concept.
 Exact saved V30 H1 output replays to three valid hypotheses after one correction,
-while short-term stock returns remain rejected. All 692 repository tests and lint
-pass. V31 verifies the corrected H1 boundary live; its semantic no-hypothesis
-result correctly proceeds to independent Exploration rather than fabricating H2/H3
-work.
+while short-term stock returns remain rejected. V31 verified control-flow
+continuation into independent Exploration, but not the newly required semantic
+information-flow acceptance described above.
 
 Semantic follow-up audit found remaining behavior gaps despite V18 completion:
 ordinary Fast unmet needs never enter the Signal backlog; meta inputs sample
