@@ -66,7 +66,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 
 
 _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
-    ' Output contract signal-mining-hypothesis-v4: return exactly {"conclusion":'
+    ' Output contract signal-mining-hypothesis-v5: return exactly {"conclusion":'
     '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
     'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
     "no_hypothesis is null and each "
@@ -83,13 +83,17 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "reason_code is no_new_measurable_gap, insufficient_retrieval_basis, or "
     "prior_attempts_exhausted. Each need_dispositions item has exactly need_refs, "
     "disposition, signal_refs, and rationale. disposition is new_measurement, "
-    "update_existing, repair_dependency, already_covered, or not_testable. Every "
+    "update_existing, repair_dependency, already_covered, not_testable, or "
+    "fast_plan_action. Every "
     "rationale field is a non-empty array of short strings. Every supplied "
     "signal_need_items need_ref and every ordinary backlog items request_id is a "
     "runtime need_ref and must appear exactly once; only supplied stable signal_refs "
     "may be cited. update_existing and already_covered require exactly one stable "
-    "signal_ref per row. new_measurement, repair_dependency, and not_testable require "
-    "signal_refs=[]. Group need_refs only when the same measurement or dependency "
+    "signal_ref per row. new_measurement, repair_dependency, not_testable, and "
+    "fast_plan_action require signal_refs=[]. fast_plan_action is valid only for "
+    "meta_reflection_action refs whose retrieval, analysis, or prediction-policy "
+    "change already flows through meta-memory to the next Fast proposer. Group "
+    "need_refs only when the same measurement or dependency "
     "reason genuinely addresses every ref; never pool semantically unrelated refs "
     "to shorten the ledger. Each hypothesis may cite only need_refs directly "
     "addressed by its one measurement. The union of all hypothesis need_refs must "
@@ -991,6 +995,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "repair_dependency",
             "already_covered",
             "not_testable",
+            "fast_plan_action",
         }
         conclusion_metadata: dict[str, Any] = {}
 
@@ -1039,7 +1044,6 @@ class LLMSignalMiningModel(SignalMiningModel):
             ledger_issues: list[ValidationIssue] = []
             raw_disposition_refs: list[str] = []
             new_measurement_refs_from_ledger: set[str] = set()
-            reflection_dispositions: list[str] = []
             for index, raw_disposition in enumerate(raw_dispositions):
                 if not isinstance(raw_disposition, Mapping):
                     continue
@@ -1078,11 +1082,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                 reflection_refs = set(string_refs).intersection(
                     reflection_action_aliases
                 )
-                if reflection_refs:
-                    reflection_dispositions.extend(
-                        str(raw_disposition.get("disposition", ""))
-                        for _ref in reflection_refs
-                    )
                 disposition = raw_disposition.get("disposition")
                 raw_signal_refs = raw_disposition.get("signal_refs")
                 signal_refs = (
@@ -1115,37 +1114,29 @@ class LLMSignalMiningModel(SignalMiningModel):
                             message=(
                                 "meta-reflection action refs cannot be already_covered; "
                                 "use new_measurement, update_existing, "
-                                "repair_dependency, or an intrinsically justified "
-                                "not_testable disposition"
+                                "repair_dependency, fast_plan_action, or an "
+                                "intrinsically justified not_testable disposition"
+                            ),
+                            paths=(f"need_dispositions[{index}]",),
+                            allowed_repairs=("replace",),
+                        )
+                        )
+                if (
+                    disposition == "fast_plan_action"
+                    and set(string_refs) - reflection_action_aliases
+                ):
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_fast_plan_action_scope_invalid",
+                            message=(
+                                "fast_plan_action may disposition only supplied "
+                                "meta_reflection_action refs; ordinary Signal and "
+                                "capability needs remain Slow obligations"
                             ),
                             paths=(f"need_dispositions[{index}]",),
                             allowed_repairs=("replace",),
                         )
                     )
-            if (
-                reflection_action_aliases
-                and not new_measurement_refs_from_ledger.intersection(
-                    reflection_action_aliases
-                )
-                and any(
-                    disposition != "repair_dependency"
-                    for disposition in reflection_dispositions
-                )
-            ):
-                ledger_issues.append(
-                    ValidationIssue(
-                        code="h1_reflection_has_no_downstream_measurement",
-                        message=(
-                            "At least one meta-reflection action must route to a "
-                            "new_measurement hypothesis unless every reflection "
-                            "action is repair_dependency; update_existing metadata "
-                            "alone does not execute downstream work"
-                        ),
-                        paths=("hypotheses", "need_dispositions"),
-                        path_policy="any",
-                        dependent_paths=("conclusion", "no_hypothesis"),
-                    )
-                )
             duplicated_refs = sorted(
                 {
                     ref
@@ -1376,6 +1367,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "new_measurement",
                     "repair_dependency",
                     "not_testable",
+                    "fast_plan_action",
                 } and signal_refs:
                     raise ValidationError(
                         f"{path}.{disposition} cannot cite an existing Signal"
@@ -1660,13 +1652,16 @@ class LLMSignalMiningModel(SignalMiningModel):
             "Give every supplied backlog need_ref exactly one disposition; a pure "
             "provider or dependency failure may be repair_dependency without forcing "
             "a hypothesis. Items with kind=meta_reflection_action are explicit "
-            "outcome-aware lessons from earlier Fast evaluation and must route to "
-            "new_measurement, update_existing, repair_dependency, or not_testable "
-            "only with an intrinsic measurement-level reason; they cannot be "
-            "dismissed as already_covered. At least one such item "
-            "must route to a real new_measurement hypothesis unless all of them are "
-            "repair_dependency; update_existing alone does not invoke downstream "
-            "work. Use the supplied canonical "
+            "outcome-aware lessons from earlier Fast evaluation. Route a reusable "
+            "observable factor to new_measurement or update_existing, a missing "
+            "source capability to repair_dependency, and an intrinsically "
+            "untestable factor to not_testable. Use fast_plan_action only when the "
+            "item changes retrieval, analysis, threshold calibration, magnitude, "
+            "or another prediction policy rather than defining a reusable factor; "
+            "the original reflection already flows through meta-memory to the next "
+            "Fast proposer. fast_plan_action is invalid for ordinary backlog needs. "
+            "Reflection does not force a fabricated measurement and cannot be "
+            "dismissed as already_covered. Use the supplied canonical "
             "applicability contract and "
             "source types. A non-empty demand backlog is diagnostic demand, not proof "
             "that a new testable measurement exists. Return no_testable_hypothesis "

@@ -2603,7 +2603,7 @@ class SignalRoleAdapterTests(TestCase):
             "e2_limited_evidence_overclaims_no_pattern",
         )
 
-    def test_h1_reflection_action_requires_actionable_disposition(self) -> None:
+    def test_h1_reflection_action_routes_non_signal_work_to_fast(self) -> None:
         invalid = {
             "conclusion": "no_testable_hypothesis",
             "hypotheses": [],
@@ -2622,16 +2622,16 @@ class SignalRoleAdapterTests(TestCase):
             ],
         }
         corrected = json.loads(json.dumps(invalid))
-        corrected["need_dispositions"][0]["disposition"] = "repair_dependency"
+        corrected["need_dispositions"][0]["disposition"] = "fast_plan_action"
         corrected["need_dispositions"][0]["signal_refs"] = []
         corrected["need_dispositions"][0]["rationale"] = [
-            "The required point-in-time source is unavailable."
+            "This changes Fast retrieval policy rather than defining a factor."
         ]
         caller = ScriptedRoleCaller([invalid, corrected])
 
         step = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v4",
+                "h1_contract_version": "signal-mining-hypothesis-v5",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["financials"],
@@ -2656,18 +2656,66 @@ class SignalRoleAdapterTests(TestCase):
                     "obligations"
                 ]
             },
-            {
-                "h1_reflection_action_ignored",
-                "h1_reflection_has_no_downstream_measurement",
-            },
+            {"h1_reflection_action_ignored"},
         )
         self.assertIn(
-            "not_testable only with an intrinsic measurement-level reason",
+            "Use fast_plan_action only when the item changes retrieval",
             caller.calls[0]["system_prompt"],
         )
-        self.assertNotIn(
-            "cannot be dismissed as already_covered or not_testable",
-            caller.calls[0]["system_prompt"],
+        self.assertEqual(
+            step.metadata["need_dispositions"][0]["disposition"],
+            "fast_plan_action",
+        )
+
+    def test_h1_fast_plan_action_cannot_divert_ordinary_need(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["No reusable measurement can be defined."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "fast_plan_action",
+                    "signal_refs": [],
+                    "rationale": ["Change the next Fast plan."],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["need_dispositions"][0]["disposition"] = "not_testable"
+        corrected["need_dispositions"][0]["rationale"] = [
+            "The requested fact is issuer-specific and not reusable."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v5",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "stable_signal_cards": [],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "ordinary-need", "need": "One issuer fact."}
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        obligation = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]
+        self.assertEqual(
+            obligation["issue_code"], "h1_fast_plan_action_scope_invalid"
+        )
+        self.assertEqual(
+            step.metadata["need_dispositions"][0]["disposition"], "not_testable"
         )
 
     def test_h1_existing_disposition_requires_exactly_one_signal(self) -> None:
@@ -2694,7 +2742,7 @@ class SignalRoleAdapterTests(TestCase):
 
         step = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v4",
+                "h1_contract_version": "signal-mining-hypothesis-v5",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["financials"],

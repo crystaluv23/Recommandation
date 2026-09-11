@@ -64,15 +64,18 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   `items[*].request_id` values, and stable controller-derived action refs from
   retained vertical reflection. Reflection actions come only from explicit
   misleading-signal, repeated-failure, missing-information, and next-exploration
-  fields. They require an actionable H1 disposition (`new_measurement`,
-  `update_existing`, or `repair_dependency`), so merely carrying reflection in a
-  prompt without changing downstream work is not accepted as self-evolution.
+  fields. H1 classifies each action honestly: Signal-scoped work uses
+  `new_measurement`, `update_existing`, `repair_dependency`, or an intrinsically
+  justified `not_testable`; a retrieval, analysis, or prediction-policy action
+  uses `fast_plan_action`. That last disposition is valid only for a projected
+  reflection action because the same original reflection already flows directly
+  through meta-memory to the next Fast proposer. Ordinary Signal/capability needs
+  cannot be diverted out of Slow with it.
   The bounded projection records available/projected/omitted counts and orders
   explicit next explorations before diagnostic fields so a field-order cap cannot
-  silently discard every proposed action. When reflection actions are present,
-  H1 must route at least one to a real H2/H3 measurement unless every projected
-  reflection action is explicitly blocked on dependency repair; an
-  `update_existing` ledger entry alone is not downstream execution.
+  silently discard every proposed action. Reflection presence never forces a
+  fabricated factor: when H1 has no honest new measurement, the independent
+  E1/E2 positive/control comparison remains the Slow discovery path.
   Ordinary backlog rows must not be dropped merely because they are provider,
   retrieval, or existing-Signal coverage gaps.
   The role adapter may use deterministic compact need aliases on the wire, but

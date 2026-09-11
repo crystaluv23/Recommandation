@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 20
+visit_times: 21
 
 ## Trigger
 
@@ -99,6 +99,11 @@ spaced JSON, so the artifact and provider message were not byte-identical.
     locally handled failure, emit a typed stage/error/usage event before starting the
     sibling and also retain the failure in the durable result. Otherwise the next
     provider request can make the failed stage invisible during live diagnosis.
+20. Reflection transport is not action routing. A downstream role must distinguish
+    lessons inside its own domain from retrieval, analysis, and prediction-policy
+    actions owned by another role. Give out-of-domain actions an explicit bounded
+    route that the owning pipeline already consumes; never force them into a
+    superficially actionable but semantically false artifact.
 
 A semantic extraction schema must never force positive-looking content when the
 source packet can legitimately be empty. Make empty observations an explicit

@@ -30,14 +30,15 @@ mining, and Signal update proposals.
   local re-projection meaningful. Exact request estimation and the original hard
   token ceiling apply before the correction; unchanged insufficient input remains
   unavailable rather than entering another retry loop.
-- Production H1 uses `signal-mining-hypothesis-v4`. The runtime supplies stable
+- Production H1 uses `signal-mining-hypothesis-v5`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
   not depend on lexical overlap between an identifier, prose, and a query.
 - Every supplied backlog need ref appears exactly once in a bounded H1
   disposition: new measurement, update existing, repair dependency, already
-  covered, or not testable. Fast-derived Signal needs use
+  covered, not testable, or (for projected reflection actions only) Fast Plan
+  action. Fast-derived Signal needs use
   `signal_need_items[*].need_ref`; provider, retrieval, and required-coverage
   backlog rows use their supplied `items[*].request_id` as the H1 need ref.
   Referenced existing Signals must be in the stable catalog. H1 may still return
@@ -53,7 +54,8 @@ mining, and Signal update proposals.
   pooled merely to shorten the ledger. `measurement.value_kind` is one of
   `boolean`, `ordinal`, `numeric`, or `categorical`. `update_existing` and
   `already_covered` each cite exactly one stable Signal per disposition row;
-  `new_measurement`, `repair_dependency`, and `not_testable` cite none. A
+  `new_measurement`, `repair_dependency`, `not_testable`, and
+  `fast_plan_action` cite none. A
   `no_hypothesis.need_refs` list is only a bounded
   explanatory subset and must not duplicate the complete disposition ledger.
   H1 receives the bounded, identity-masked, outcome-aware Fast meta-memory so it
@@ -78,15 +80,16 @@ mining, and Signal update proposals.
   acquisition is invalid even though the resolver would later fail closed.
 - The controller also projects explicit vertical-reflection fields into stable
   runtime action refs. Each such ref must be dispositioned as a new measurement,
-  an existing-Signal update, a dependency repair, or an intrinsically
-  `not_testable` measurement with a specific measurement-level reason;
-  `already_covered` is invalid because it would allow reflection to be present but
-  operationally ignored. This routes action without granting permission to infer
-  Discovery labels or source facts from retrospective reflection.
-  At least one projected reflection ref must occur in a `new_measurement`
-  hypothesis unless all projected reflection refs are `repair_dependency`.
-  `update_existing` may describe a relationship but cannot by itself satisfy this
-  gate because H1 disposition metadata does not invoke Update.
+  an existing-Signal update, a dependency repair, an intrinsically
+  `not_testable` measurement with a specific measurement-level reason, or
+  `fast_plan_action` when it changes retrieval, analysis, threshold calibration,
+  magnitude, or another prediction policy rather than defining a reusable
+  observable factor. `fast_plan_action` is rejected for ordinary backlog rows;
+  the original reflection remains in meta-memory and is already a direct input to
+  the next Fast proposer. `already_covered` remains invalid because it would allow
+  reflection to be present but operationally ignored. Reflection alone never
+  forces a `new_measurement`; when H1 has no honest factor hypothesis, the
+  independent E1/E2 comparison remains responsible for discovery.
 - H1 projects every runtime need ref to a deterministic compact alias before it
   crosses the model boundary. The outgoing backlog and every correction use only
   those aliases; after validation, the adapter maps the disposition ledger,
