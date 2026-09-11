@@ -1763,30 +1763,7 @@ class SignalEvolutionEngine:
     ) -> str:
         """Hash the committed inputs that can change Slow candidate search."""
 
-        cutoff_by_company: dict[str, datetime] = {}
-        for case in self.discovery_cases:
-            prior = cutoff_by_company.get(case.company_id)
-            if prior is None or case.prediction_time > prior:
-                cutoff_by_company[case.company_id] = case.prediction_time
-        relevant_documents = sorted(
-            (
-                {
-                    "document_id": document.document_id,
-                    "content_hash": document.content_hash,
-                    "company_id": document.company_id,
-                    "source_type": document.source_type,
-                    "available_at": document.available_at.isoformat(),
-                }
-                for document in self.raw_info_store.documents
-                if document.company_id in cutoff_by_company
-                and document.available_at <= cutoff_by_company[document.company_id]
-            ),
-            key=lambda item: (
-                item["company_id"],
-                item["available_at"],
-                item["document_id"],
-            ),
-        )
+        relevant_documents = self._relevant_search_documents()
         backlog_path = self.workspace.root / "capability_backlog.json"
         backlog = _read_json(backlog_path) if backlog_path.exists() else {}
 
@@ -1809,6 +1786,34 @@ class SignalEvolutionEngine:
                 "mining_model": self._role_work_identity(self.mining_model),
                 "update_model": self._role_work_identity(self.update_model),
             }
+        )
+
+    def _relevant_search_documents(self) -> list[dict[str, Any]]:
+        """Return exact PIT Raw Info identities relevant to Discovery cases."""
+
+        cutoff_by_company: dict[str, datetime] = {}
+        for case in self.discovery_cases:
+            prior = cutoff_by_company.get(case.company_id)
+            if prior is None or case.prediction_time > prior:
+                cutoff_by_company[case.company_id] = case.prediction_time
+        return sorted(
+            (
+                {
+                    "document_id": document.document_id,
+                    "content_hash": document.content_hash,
+                    "company_id": document.company_id,
+                    "source_type": document.source_type,
+                    "available_at": document.available_at.isoformat(),
+                }
+                for document in self.raw_info_store.documents
+                if document.company_id in cutoff_by_company
+                and document.available_at <= cutoff_by_company[document.company_id]
+            ),
+            key=lambda item: (
+                item["company_id"],
+                item["available_at"],
+                item["document_id"],
+            ),
         )
 
     def _hypothesis_work_fingerprint(
@@ -2823,7 +2828,7 @@ class SignalEvolutionEngine:
         )
         h1_payload = {
             "track": "hypothesis",
-            "h1_contract_version": "signal-mining-hypothesis-v2",
+            "h1_contract_version": "signal-mining-hypothesis-v3",
             "hypothesis_slots": [
                 f"h1-c{cycle_id:04d}-s{index:02d}"
                 for index in range(1, config.hypothesis_limit + 1)
@@ -2835,7 +2840,7 @@ class SignalEvolutionEngine:
         }
         h1_input_fingerprint = _canonical_hash(
             {
-                "schema_version": "signal-mining-h1-input-v2",
+                "schema_version": "signal-mining-h1-input-v3",
                 "contract": h1_payload["h1_contract_version"],
                 "limits": h1_payload["limits"],
                 "h2_applicability_contract": applicability_contract,
@@ -2848,6 +2853,7 @@ class SignalEvolutionEngine:
                 "registered_deterministic_functions": context[
                     "registered_deterministic_functions"
                 ],
+                "relevant_raw_info": self._relevant_search_documents(),
                 "mining_model": self._role_work_identity(self.mining_model),
             }
         )
@@ -2857,7 +2863,7 @@ class SignalEvolutionEngine:
                 for item in reversed(context["prior_slow_work"])
                 if item.get("h1_input_fingerprint") == h1_input_fingerprint
                 and dict(item.get("h1_conclusion", {})).get("conclusion")
-                in {"no_testable_hypothesis", "technical_failure"}
+                == "no_testable_hypothesis"
             ),
             None,
         )
@@ -2865,7 +2871,7 @@ class SignalEvolutionEngine:
             prior_conclusion = dict(prior_h1["h1_conclusion"])
             audit["status"] = "unchanged_h1_work_suppressed"
             audit["stages"]["H1"] = {
-                "contract_version": "signal-mining-hypothesis-v2",
+                "contract_version": "signal-mining-hypothesis-v3",
                 "input_fingerprint": h1_input_fingerprint,
                 "conclusion": prior_conclusion,
                 "hypotheses": [],
@@ -2885,7 +2891,7 @@ class SignalEvolutionEngine:
                 exc.usage,
                 details={
                     **dict(exc.details),
-                    "contract_version": "signal-mining-hypothesis-v2",
+                    "contract_version": "signal-mining-hypothesis-v3",
                     "input_fingerprint": h1_input_fingerprint,
                     "conclusion": {
                         "conclusion": "technical_failure",
@@ -2912,7 +2918,7 @@ class SignalEvolutionEngine:
                 continue
             hypotheses.append(hypothesis)
         audit["stages"]["H1"] = {
-            "contract_version": "signal-mining-hypothesis-v2",
+            "contract_version": "signal-mining-hypothesis-v3",
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
@@ -3655,6 +3661,8 @@ class SignalEvolutionEngine:
                 },
                 "E2": {
                     "decisions": [item.to_dict() for item in decisions],
+                    "no_candidate": discovery_step.metadata.get("no_candidate"),
+                    "considered_case_count": len(selected_grounded_signatures),
                     "usage": _usage_to_dict(discovery_step.usage),
                 },
             },

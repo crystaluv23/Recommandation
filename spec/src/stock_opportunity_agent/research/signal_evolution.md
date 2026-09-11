@@ -24,11 +24,19 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   applicability inventory, visible Fast meta-memory, limits, contract, or model
   identity creates new work. H1 fingerprints the exact masked `meta_info` view
   it receives so new reflection cannot be suppressed by an older empty result.
+  The fingerprint also includes the exact relevant point-in-time Raw Info
+  identities, masked backlog, stable Registry, role protocol, and model work
+  identity, while excluding cycle and proposal ids. A technical H1 failure is
+  never semantic exhaustion and remains eligible after recovery under the
+  existing attempt and cost ceilings.
 - Exploration extraction runs in bounded microbatches keyed by stable case refs.
   A failed microbatch cannot discard valid sibling signatures or become a
   domain observation. The full frozen E1 cohort, failed refs, and usage remain
   visible; E2 runs only if both fixed groups still meet the configured grounded
   evidence floor, without replacing validation cases.
+  E2 receives only the runtime-selected grounded induction signatures. A
+  semantic zero-candidate result records its limited reason and exactly those
+  considered refs; unrelated E1 pool members and holdout cases remain absent.
   After bounded model correction, E1 may quarantine invalid observations while
   preserving independently validated observations and sibling signatures. It
   never clips or invents source text. Quarantine reasons remain technical audit

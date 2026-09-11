@@ -90,7 +90,7 @@ class SignalRoleAdapterTests(TestCase):
         local = core_module._mask_identity_values("Future announced results.", aliases)
         self.assertIn("[MASKED_COMPANY]", local)
 
-    def test_signal_h1_v2_accepts_structured_no_hypothesis_with_open_demand(
+    def test_signal_h1_v3_accepts_structured_no_hypothesis_with_open_demand(
         self,
     ) -> None:
         response = {
@@ -103,12 +103,20 @@ class SignalRoleAdapterTests(TestCase):
                 ],
                 "need_refs": ["need-001"],
             },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "repair_dependency",
+                    "signal_refs": [],
+                    "rationale": ["The requested source capability is unavailable."],
+                }
+            ],
         }
         caller = ScriptedRoleCaller([response])
 
         result = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "h1_contract_version": "signal-mining-hypothesis-v3",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {
                     "hypothesis_limit": 1,
@@ -128,7 +136,7 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(result.metadata["reason_code"], "insufficient_retrieval_basis")
         self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
 
-    def test_signal_h1_v2_uses_runtime_identity_and_structured_measurement(
+    def test_signal_h1_v3_uses_runtime_identity_and_structured_measurement(
         self,
     ) -> None:
         caller = ScriptedRoleCaller(
@@ -164,13 +172,14 @@ class SignalRoleAdapterTests(TestCase):
                         }
                     ],
                     "no_hypothesis": None,
+                    "need_dispositions": [],
                 }
             ]
         )
 
         result = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "h1_contract_version": "signal-mining-hypothesis-v3",
                 "hypothesis_slots": ["h1-c0007-s01"],
                 "limits": {
                     "hypothesis_limit": 1,
@@ -187,7 +196,7 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(hypothesis.measurement["value_kind"], "numeric")
         self.assertNotIn("h1-c0007-s01", hypothesis.query)
 
-    def test_signal_h1_v2_correction_preserves_valid_sibling_by_runtime_id(
+    def test_signal_h1_v3_correction_preserves_valid_sibling_by_runtime_id(
         self,
     ) -> None:
         invalid_item = {
@@ -249,18 +258,20 @@ class SignalRoleAdapterTests(TestCase):
                     "conclusion": "hypotheses",
                     "hypotheses": [invalid_item, valid_item],
                     "no_hypothesis": None,
+                    "need_dispositions": [],
                 },
                 {
                     "conclusion": "hypotheses",
                     "hypotheses": [drifted_valid_item, corrected_item],
                     "no_hypothesis": None,
+                    "need_dispositions": [],
                 },
             ]
         )
 
         result = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v2",
+                "h1_contract_version": "signal-mining-hypothesis-v3",
                 "hypothesis_slots": ["h1-c0008-s01", "h1-c0008-s02"],
                 "limits": {"hypothesis_limit": 2, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["10-q"],
@@ -279,6 +290,91 @@ class SignalRoleAdapterTests(TestCase):
         )
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertEqual(feedback["obligations"][0]["item_id"], "h1-c0008-s01")
+
+    def test_signal_h1_v3_corrects_missing_need_disposition(self) -> None:
+        base = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The visible needs do not define another measurement."],
+                "need_refs": ["need-a", "need-b"],
+            },
+        }
+        incomplete = {
+            **base,
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-a"],
+                    "disposition": "already_covered",
+                    "signal_refs": ["existing:v1"],
+                    "rationale": ["The stable Signal already covers this need."],
+                }
+            ],
+        }
+        complete = {
+            **base,
+            "need_dispositions": [
+                *incomplete["need_dispositions"],
+                {
+                    "need_refs": ["need-b"],
+                    "disposition": "not_testable",
+                    "signal_refs": [],
+                    "rationale": ["The need does not define an observable measure."],
+                },
+            ],
+        }
+        caller = ScriptedRoleCaller([incomplete, complete])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v3",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["news"],
+                "stable_signal_cards": [{"signal_ref": "existing:v1"}],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "need-a", "need": "Covered need"},
+                        {"need_ref": "need-b", "need": "Unmeasurable need"},
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(len(step.metadata["need_dispositions"]), 2)
+        self.assertIn(
+            "cover every runtime need_ref exactly once",
+            caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
+        )
+
+    def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
+        class OversizedCaller(ScriptedRoleCaller):
+            def estimate_json_request_tokens(self, **_kwargs):
+                return 20_001
+
+        caller = OversizedCaller([])
+        model = LLMSignalMiningModel(caller)
+        model.set_request_token_budget(20_000)
+
+        with self.assertRaisesRegex(
+            ExternalBudgetExhausted, "complete H1 search context"
+        ):
+            model.propose_hypotheses(
+                {
+                    "h1_contract_version": "signal-mining-hypothesis-v3",
+                    "hypothesis_slots": ["h1-c0001-s01"],
+                    "limits": {
+                        "hypothesis_limit": 1,
+                        "evidence_lookback_days": 365,
+                    },
+                    "available_raw_source_types": ["news"],
+                    "capability_backlog": {"signal_need_items": []},
+                }
+            )
+
+        self.assertEqual(caller.calls, [])
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
@@ -1834,7 +1930,8 @@ class SignalRoleAdapterTests(TestCase):
                             "rationale": ["The literal pattern needs more cases."],
                             "candidate": None,
                         }
-                    ]
+                    ],
+                    "no_candidate": None,
                 }
             ]
         )
@@ -1874,6 +1971,46 @@ class SignalRoleAdapterTests(TestCase):
             "Treat each exact_span as authoritative",
             caller.calls[0]["system_prompt"],
         )
+
+    def test_exploration_e2_empty_requires_exact_considered_refs(self) -> None:
+        malformed = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "insufficient_evidence",
+                "rationale": ["The visible signatures are not sufficient."],
+                "considered_case_refs": ["case-001"],
+            },
+        }
+        corrected = json.loads(json.dumps(malformed))
+        corrected["no_candidate"]["considered_case_refs"] = [
+            "case-001",
+            "case-002",
+        ]
+        caller = ScriptedRoleCaller([malformed, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ],
+                "rules": {
+                    "decisions": [
+                        "supported",
+                        "refine",
+                        "rejected",
+                        "inconclusive",
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(
+            step.metadata["no_candidate"]["considered_case_refs"],
+            ["case-001", "case-002"],
+        )
         self.assertIn(
             "ignore any stronger or different claim",
             caller.calls[0]["system_prompt"],
@@ -1881,7 +2018,7 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (
-            signal_roles_module._SIGNAL_MINING_HYPOTHESES_V2_OUTPUT,
+            signal_roles_module._SIGNAL_MINING_HYPOTHESES_V3_OUTPUT,
             signal_roles_module._SIGNAL_MINING_DECISIONS_OUTPUT,
             signal_roles_module._SIGNAL_MINING_SIGNATURES_OUTPUT,
             signal_roles_module._SIGNAL_UPDATE_V2_OUTPUT,

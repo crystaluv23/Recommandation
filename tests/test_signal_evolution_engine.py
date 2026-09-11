@@ -1794,16 +1794,26 @@ class SignalEvolutionTests(TestCase):
                 for index in range(4)
             )
             store = RawInfoStore(
-                documents=tuple(
+                documents=(
+                    *tuple(
+                        RawInfoDocument.create(
+                            document_id=f"no-hypothesis-news-{index}",
+                            company_id=case.company_id,
+                            source_type="news",
+                            published_at=NOW,
+                            available_at=NOW,
+                            content=f"{case.company_id} published a routine update.",
+                        )
+                        for index, case in enumerate(cases)
+                    ),
                     RawInfoDocument.create(
-                        document_id=f"no-hypothesis-news-{index}",
-                        company_id=case.company_id,
-                        source_type="news",
+                        document_id="baseline-unrelated-transcript",
+                        company_id="outside-discovery",
+                        source_type="transcript",
                         published_at=NOW,
                         available_at=NOW,
-                        content=f"{case.company_id} published a routine update.",
-                    )
-                    for index, case in enumerate(cases)
+                        content="An outside issuer held a prior call.",
+                    ),
                 )
             )
             workspace = EvolutionWorkspace(root / "workspace")
@@ -1853,13 +1863,47 @@ class SignalEvolutionTests(TestCase):
                 second["audit"]["stages"]["H1"]["reused_from_prior_cycle"]
             )
 
+            store.append(
+                RawInfoDocument.create(
+                    document_id="unrelated-transcript",
+                    company_id="outside-discovery",
+                    source_type="transcript",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="An unrelated issuer held a call.",
+                )
+            )
+            still_suppressed = engine._run_signal_mining(cycle_id=2)
+            self.assertEqual(len(model.requests), 1)
+            self.assertEqual(
+                still_suppressed["audit"]["status"],
+                "unchanged_h1_work_suppressed",
+            )
+
+            store.append(
+                RawInfoDocument.create(
+                    document_id="relevant-transcript",
+                    company_id=cases[0].company_id,
+                    source_type="transcript",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content="Management added a point-in-time comparison on the call.",
+                )
+            )
+            changed_by_data = engine._run_signal_mining(cycle_id=2)
+            self.assertEqual(len(model.requests), 2)
+            self.assertNotEqual(
+                changed_by_data["audit"]["stages"]["H1"]["input_fingerprint"],
+                first["audit"]["stages"]["H1"]["input_fingerprint"],
+            )
+
             engine.meta_memory.append(RoundMetaEntry(
                 round_id=1,
                 missing_capabilities=("Separate committed orders from pipeline claims.",),
                 evidence_refs=("plan_r0001_c01",),
             ))
             changed = engine._run_signal_mining(cycle_id=2)
-            self.assertEqual(len(model.requests), 2)
+            self.assertEqual(len(model.requests), 3)
             self.assertNotEqual(
                 changed["audit"]["stages"]["H1"]["input_fingerprint"],
                 first["audit"]["stages"]["H1"]["input_fingerprint"],
@@ -1868,6 +1912,105 @@ class SignalEvolutionTests(TestCase):
                 model.requests[-1]["meta_info"][0]["signal_observations"]["missing_capabilities"],
                 ["Separate committed orders from pipeline claims."],
             )
+
+    def test_technical_h1_failure_does_not_suppress_recovered_work(self) -> None:
+        class RecoveringModel(EmptyMiningModel):
+            def propose_hypotheses(self, payload):
+                self.requests.append(dict(payload))
+                if len(self.requests) == 1:
+                    raise CandidateExecutionRejected(
+                        "signal_mining_hypotheses",
+                        "temporary structured failure",
+                        AgentUsage(llm_calls=1),
+                    )
+                return AgentStep(
+                    (),
+                    AgentUsage(llm_calls=1),
+                    metadata={
+                        "conclusion": "no_testable_hypothesis",
+                        "reason_code": "insufficient_retrieval_basis",
+                        "rationale": ["No measurement is supported after recovery."],
+                        "need_refs": [],
+                        "need_dispositions": [],
+                    },
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"technical_h1_{index}", 4.0 if index < 2 else 1.1)
+                for index in range(4)
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"technical-h1-news-{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=f"{case.company_id} published a routine update.",
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            workspace = EvolutionWorkspace(root / "workspace")
+            model = RecoveringModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=4,
+                    ranking_case_limit=4,
+                    h2_profile_scan_limit=4,
+                    h2_min_ready_issuers=4,
+                    h2_min_ready_per_class=2,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+
+            with self.assertRaises(CandidateExecutionRejected) as raised:
+                engine._run_hypothesis_mining(cycle_id=1)
+            details = raised.exception.details
+            cycle_dir = workspace.experiments_root / "cycles" / "cycle-0001"
+            cycle_dir.mkdir(parents=True)
+            (cycle_dir / "slow_loop_validation.json").write_text(
+                json.dumps(
+                    {
+                        "validation": {
+                            "refined_hypotheses": {},
+                            "agent_audits": {
+                                "mining_pipeline": {
+                                    "track": "hypothesis",
+                                    "stages": {
+                                        "H1": {
+                                            "input_fingerprint": details[
+                                                "input_fingerprint"
+                                            ],
+                                            "conclusion": details["conclusion"],
+                                        }
+                                    },
+                                }
+                            },
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            recovered = engine._run_hypothesis_mining(cycle_id=2)
+
+            self.assertEqual(len(model.requests), 2)
+            self.assertEqual(recovered["audit"]["status"], "no_testable_hypothesis")
 
     def test_mining_falls_through_to_next_ranked_case_with_usable_evidence(
         self,

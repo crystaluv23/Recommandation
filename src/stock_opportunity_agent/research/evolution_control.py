@@ -2079,16 +2079,18 @@ def _run_bounded_evolution_cycle_unlocked(
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
+    mining_model = LLMSignalMiningModel(
+        evolution_caller,
+        creative_temperature=float(limits["plan_proposal_temperature"]),
+    )
+    mining_model.set_request_token_budget(int(limits["max_tokens"]))
     signal_engine = SignalEvolutionEngine(
         registry=registry,
         raw_info_store=raw_info_store,
         discovery_cases=dataset.discovery,
         meta_memory=meta_memory,
         workspace=evolution_workspace,
-        mining_model=LLMSignalMiningModel(
-            evolution_caller,
-            creative_temperature=float(limits["plan_proposal_temperature"]),
-        ),
+        mining_model=mining_model,
         update_model=LLMSignalUpdateModel(evolution_caller),
         llm_signal_runner=signal_runner,
         evidence_resolver=evidence_resolver,

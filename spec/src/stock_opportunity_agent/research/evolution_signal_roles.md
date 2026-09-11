@@ -30,14 +30,21 @@ mining, and Signal update proposals.
   local re-projection meaningful. Exact request estimation and the original hard
   token ceiling apply before the correction; unchanged insufficient input remains
   unavailable rather than entering another retry loop.
-- Production H1 uses `signal-mining-hypothesis-v2`. The runtime supplies stable
+- Production H1 uses `signal-mining-hypothesis-v3`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
   not depend on lexical overlap between an identifier, prose, and a query.
-- H1 may return a structured `no_testable_hypothesis` conclusion even when the
-  demand backlog is non-empty. It must include a bounded reason code and
-  rationale, and remains distinct from malformed output or execution failure.
+- Every supplied backlog need ref appears exactly once in a bounded H1
+  disposition: new measurement, update existing, repair dependency, already
+  covered, or not testable. Referenced existing Signals must be in the stable
+  catalog. H1 may still return a structured `no_testable_hypothesis`, including
+  for pure dependency failures, but must explain every need and remains distinct
+  from malformed output or execution failure. A defined measurement is retained
+  for H2/H3 even when its data dependency is presently unavailable.
+- Exploration E2 accepts empty decisions only with a bounded `no_candidate`
+  reason and the exact runtime-selected grounded induction refs. Non-empty E2
+  portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the
@@ -48,6 +55,5 @@ mining, and Signal update proposals.
   or case refs used by that comparison, so a schema-valid association cannot be
   audited without its sample. This field is runtime-owned rather than copied by
   the model.
-- Legacy v1 H1 and Update records remain parseable only at explicit
-  compatibility boundaries. New Slow execution always requests the v2
-  contracts.
+- Legacy v1/v2 H1 and v1 Update records remain parseable only at explicit
+  compatibility boundaries. New Slow execution requests H1 v3 and Update v2.

@@ -45,6 +45,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     _LLM_SIGNAL_QUERY_STOP_WORDS,
 )
 from stock_opportunity_agent.research.evolution_transport import (
+    ExternalBudgetExhausted,
     JSONRoleCaller,
     _complete_json_with_invalid_value,
     _scan_payload,
@@ -61,10 +62,11 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 )
 
 
-_SIGNAL_MINING_HYPOTHESES_V2_OUTPUT = (
-    ' Output contract signal-mining-hypothesis-v2: return exactly {"conclusion":'
+_SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
+    ' Output contract signal-mining-hypothesis-v3: return exactly {"conclusion":'
     '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
-    'object|null}. For conclusion="hypotheses", no_hypothesis is null and each '
+    'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
+    "no_hypothesis is null and each "
     "hypothesis has exactly proposal_ref (copied from hypothesis_slots), measurement "
     "(exactly observable, value_kind, normalization), applicability (exactly rule "
     "and values), "
@@ -75,7 +77,11 @@ _SIGNAL_MINING_HYPOTHESES_V2_OUTPUT = (
     "different_between_groups. For conclusion=no_testable_hypothesis, hypotheses is "
     "empty and no_hypothesis has exactly reason_code, rationale, and need_refs. "
     "reason_code is no_new_measurable_gap, insufficient_retrieval_basis, or "
-    "prior_attempts_exhausted. Never add Markdown or company identities."
+    "prior_attempts_exhausted. Each need_dispositions item has exactly need_refs, "
+    "disposition, signal_refs, and rationale. disposition is new_measurement, "
+    "update_existing, repair_dependency, already_covered, or not_testable. Every "
+    "supplied backlog need_ref must appear exactly once; only supplied stable "
+    "signal_refs may be cited. Never add Markdown or company identities."
 )
 
 
@@ -329,6 +335,17 @@ _SIGNAL_MINING_DECISIONS_OUTPUT = (
     "Use inconclusive only for semantically insufficient visible evidence. Only supported "
     "may carry a candidate object, which must contain exactly spec, skill, and tests "
     "under the supplied candidate_contract; otherwise candidate must be null."
+)
+
+
+_SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
+    " Return one JSON object with exactly decisions and no_candidate. decisions is "
+    "the same bounded decision array. When decisions is non-empty, no_candidate must "
+    "be null. When decisions is empty, no_candidate has exactly reason_code, "
+    "rationale, and considered_case_refs. reason_code is no_measurable_pattern, "
+    "insufficient_evidence, or already_covered. rationale is a non-empty array of "
+    "short strings and considered_case_refs must copy every supplied signature "
+    "case_ref exactly once in supplied order."
 )
 
 
@@ -710,6 +727,10 @@ class LLMSignalMiningModel(SignalMiningModel):
         self.caller = caller
         self.creative_temperature = creative_temperature
         self.identity_guard_aliases: tuple[str, ...] = ()
+        self.request_token_budget: int | None = None
+
+    def set_request_token_budget(self, value: int) -> None:
+        self.request_token_budget = int(value)
 
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
@@ -731,11 +752,11 @@ class LLMSignalMiningModel(SignalMiningModel):
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
-        """Run the sole production H1 v2 contract."""
+        """Run the sole production H1 v3 contract."""
 
-        return self._propose_hypotheses_v2(payload)
+        return self._propose_hypotheses_v3(payload)
 
-    def _propose_hypotheses_v2(
+    def _propose_hypotheses_v3(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
         """Parse the production H1 contract without prose/identifier matching."""
@@ -746,7 +767,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         slots = tuple(str(item) for item in payload.get("hypothesis_slots", ()))
         if len(slots) != limit or len(set(slots)) != len(slots):
             raise ValidationError(
-                "Signal Mining H1 v2 requires one unique runtime slot per hypothesis"
+                "Signal Mining H1 v3 requires one unique runtime slot per hypothesis"
             )
         allowed_slots = set(slots)
         allowed_source_types = {
@@ -762,6 +783,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             )
             if isinstance(item, Mapping) and item.get("need_ref")
         }
+        allowed_signal_refs = {
+            str(item["signal_ref"])
+            for item in payload.get("stable_signal_cards", ())
+            if isinstance(item, Mapping) and item.get("signal_ref")
+        }
         applicability_contract = payload.get("h2_applicability_contract", {})
         expected_directions = {
             "higher_in_positive",
@@ -775,6 +801,13 @@ class LLMSignalMiningModel(SignalMiningModel):
             "no_new_measurable_gap",
             "insufficient_retrieval_basis",
             "prior_attempts_exhausted",
+        }
+        allowed_need_dispositions = {
+            "new_measurement",
+            "update_existing",
+            "repair_dependency",
+            "already_covered",
+            "not_testable",
         }
         conclusion_metadata: dict[str, Any] = {}
 
@@ -801,17 +834,80 @@ class LLMSignalMiningModel(SignalMiningModel):
             return refs
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningHypothesis, ...]:
-            if set(value) != {"conclusion", "hypotheses", "no_hypothesis"}:
+            if set(value) != {
+                "conclusion",
+                "hypotheses",
+                "no_hypothesis",
+                "need_dispositions",
+            }:
                 raise ValidationError(
-                    "Signal Mining H1 v2 requires conclusion, hypotheses, and "
-                    "no_hypothesis"
+                    "Signal Mining H1 v3 requires conclusion, hypotheses, "
+                    "no_hypothesis, and need_dispositions"
                 )
             conclusion = value.get("conclusion")
             raw_items = value.get("hypotheses")
             if conclusion not in {"hypotheses", "no_testable_hypothesis"} or not isinstance(
                 raw_items, list
             ):
-                raise ValidationError("Signal Mining H1 v2 conclusion is invalid")
+                raise ValidationError("Signal Mining H1 v3 conclusion is invalid")
+            raw_dispositions = value.get("need_dispositions")
+            if not isinstance(raw_dispositions, list):
+                raise ValidationError("need_dispositions must be an array")
+            disposition_rows: list[dict[str, Any]] = []
+            disposition_need_refs: list[str] = []
+            for index, raw_disposition in enumerate(raw_dispositions):
+                path = f"need_dispositions[{index}]"
+                if not isinstance(raw_disposition, Mapping) or set(
+                    raw_disposition
+                ) != {"need_refs", "disposition", "signal_refs", "rationale"}:
+                    raise ValidationError(f"{path} has unexpected fields")
+                refs = validate_need_refs(
+                    raw_disposition.get("need_refs"), path=f"{path}.need_refs"
+                )
+                if not refs:
+                    raise ValidationError(f"{path}.need_refs must not be empty")
+                disposition = str(raw_disposition.get("disposition", ""))
+                if disposition not in allowed_need_dispositions:
+                    raise ValidationError(f"{path}.disposition is invalid")
+                signal_refs = string_array(
+                    raw_disposition.get("signal_refs"),
+                    path=f"{path}.signal_refs",
+                    allow_empty=True,
+                )
+                if len(set(signal_refs)) != len(signal_refs):
+                    raise ValidationError(f"{path}.signal_refs must be unique")
+                unknown_signals = sorted(set(signal_refs) - allowed_signal_refs)
+                if unknown_signals:
+                    raise ValidationError(
+                        f"{path}.signal_refs contains unknown stable refs: "
+                        + ", ".join(unknown_signals)
+                    )
+                if disposition in {"update_existing", "already_covered"} and not signal_refs:
+                    raise ValidationError(
+                        f"{path}.{disposition} requires a stable signal_ref"
+                    )
+                if disposition == "new_measurement" and signal_refs:
+                    raise ValidationError(
+                        f"{path}.new_measurement cannot cite an existing Signal"
+                    )
+                rationale = string_array(
+                    raw_disposition.get("rationale"), path=f"{path}.rationale"
+                )
+                disposition_need_refs.extend(refs)
+                disposition_rows.append(
+                    {
+                        "need_refs": list(refs),
+                        "disposition": disposition,
+                        "signal_refs": list(signal_refs),
+                        "rationale": list(rationale),
+                    }
+                )
+            if len(set(disposition_need_refs)) != len(disposition_need_refs) or set(
+                disposition_need_refs
+            ) != allowed_need_refs:
+                raise ValidationError(
+                    "need_dispositions must cover every runtime need_ref exactly once"
+                )
             if conclusion == "no_testable_hypothesis":
                 no_hypothesis = value.get("no_hypothesis")
                 if raw_items or not isinstance(no_hypothesis, Mapping) or set(
@@ -830,6 +926,14 @@ class LLMSignalMiningModel(SignalMiningModel):
                 need_refs = validate_need_refs(
                     no_hypothesis.get("need_refs"), path="no_hypothesis.need_refs"
                 )
+                if any(
+                    item["disposition"] == "new_measurement"
+                    for item in disposition_rows
+                ):
+                    raise ValidationError(
+                        "no_testable_hypothesis cannot disposition a need as "
+                        "new_measurement"
+                    )
                 conclusion_metadata.clear()
                 conclusion_metadata.update(
                     {
@@ -837,6 +941,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "reason_code": reason_code,
                         "rationale": list(rationale),
                         "need_refs": list(need_refs),
+                        "need_dispositions": disposition_rows,
                     }
                 )
                 return ()
@@ -1001,7 +1106,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 except (TypeError, ValueError, ValidationError) as exc:
                     issues.append(
                         ValidationIssue(
-                            code="h1_hypothesis_v2_invalid",
+                            code="h1_hypothesis_v3_invalid",
                             message=f"{item_path}: {exc}",
                             paths=(item_path,),
                             item_id=(proposal_ref if proposal_ref in allowed_slots else None),
@@ -1011,6 +1116,22 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
             if issues:
                 raise StructuredValidationError(issues)
+            hypothesis_need_refs = {
+                ref
+                for raw in raw_items
+                if isinstance(raw, Mapping)
+                for ref in raw.get("need_refs", ())
+            }
+            new_measurement_refs = {
+                ref
+                for item in disposition_rows
+                if item["disposition"] == "new_measurement"
+                for ref in item["need_refs"]
+            }
+            if hypothesis_need_refs != new_measurement_refs:
+                raise ValidationError(
+                    "new_measurement dispositions must match hypothesis need_refs"
+                )
             conclusion_metadata.clear()
             conclusion_metadata.update(
                 {
@@ -1025,6 +1146,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                             for ref in raw.get("need_refs", ())
                         }
                     ),
+                    "need_dispositions": disposition_rows,
+                    "hypothesis_need_refs": {
+                        str(raw["proposal_ref"]): list(raw.get("need_refs", ()))
+                        for raw in raw_items
+                        if isinstance(raw, Mapping)
+                    },
                 }
             )
             return tuple(parsed)
@@ -1034,26 +1161,45 @@ class LLMSignalMiningModel(SignalMiningModel):
                 payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
-                identity_boundary="Signal Mining H1 v2 aggregate request",
+                identity_boundary="Signal Mining H1 v3 aggregate request",
             )
+        system_prompt = (
+            "Propose only reusable, point-in-time observable measurements. The "
+            "runtime owns hypothesis identity, comparison groups, evidence window, "
+            "case selection, and limits; copy proposal_ref and need_refs exactly. "
+            "Give every supplied backlog need_ref exactly one disposition; a pure "
+            "provider or dependency failure may be repair_dependency without forcing "
+            "a hypothesis. Use the supplied canonical applicability contract and "
+            "source types. A non-empty demand backlog is diagnostic demand, not proof "
+            "that a new testable measurement exists. Return no_testable_hypothesis "
+            "when the visible gaps, sources, or prior attempts do not support a new "
+            "test. Do not infer an event from an outcome label, redefine the fixed "
+            "groups, or encode a future outcome in the measurement. Existing Signal "
+            "cards are an exclusion catalog. On correction, change or remove only "
+            "the invalid proposal_ref; retain valid siblings byte-for-byte."
+            + _UNTRUSTED_DATA_INSTRUCTION
+            + _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT
+        )
+        estimator = getattr(self.caller, "estimate_json_request_tokens", None)
+        if self.request_token_budget is not None and callable(estimator):
+            required = estimator(
+                system_prompt=system_prompt,
+                payload=payload,
+                allow_outcomes=True,
+                anonymous_aliases=self.identity_guard_aliases,
+                max_output_tokens=2_000,
+                temperature=self.creative_temperature,
+            )
+            if required > self.request_token_budget:
+                raise ExternalBudgetExhausted(
+                    "external_request_token_budget_exhausted",
+                    "complete H1 search context exceeds the frozen request-token "
+                    f"budget: required={required}, limit={self.request_token_budget}",
+                )
         value, usage = _complete_parsed_role(
             self.caller,
             stage="signal_mining_hypotheses",
-            system_prompt=(
-                "Propose only reusable, point-in-time observable measurements. The "
-                "runtime owns hypothesis identity, comparison groups, evidence window, "
-                "case selection, and limits; copy proposal_ref and need_refs exactly. "
-                "Use the supplied canonical applicability contract and source types. "
-                "A non-empty demand backlog is diagnostic demand, not proof that a new "
-                "testable measurement exists. Return no_testable_hypothesis when the "
-                "visible gaps, sources, or prior attempts do not support a new test. "
-                "Do not infer an event from an outcome label, redefine the fixed groups, "
-                "or encode a future outcome in the measurement. Existing Signal cards "
-                "are an exclusion catalog. On correction, change or remove only the "
-                "invalid proposal_ref; retain valid siblings byte-for-byte."
-                + _UNTRUSTED_DATA_INSTRUCTION
-                + _SIGNAL_MINING_HYPOTHESES_V2_OUTPUT
-            ),
+            system_prompt=system_prompt,
             payload=payload,
             parser=parse,
             allow_outcomes=True,
@@ -1603,6 +1749,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         prompt: str,
         temperature: float,
     ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
+        exploration = stage == "signal_mining_exploration_discover"
         rules = payload.get("rules", {})
         allowed_dispositions = {
             str(item)
@@ -1634,6 +1781,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in payload.get("signatures", ())
             if isinstance(item, Mapping) and item.get("case_ref")
         }
+        decision_metadata: dict[str, Any] = {}
 
         def sample_basis(
             item: SignalMiningDecision,
@@ -1657,7 +1805,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             return basis
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningDecision, ...]:
-            if set(value) != {"decisions"} or not isinstance(
+            expected_fields = (
+                {"decisions", "no_candidate"} if exploration else {"decisions"}
+            )
+            if set(value) != expected_fields or not isinstance(
                 value.get("decisions"), list
             ):
                 raise ValidationError(f"{stage} requires a decisions array")
@@ -1667,6 +1818,54 @@ class LLMSignalMiningModel(SignalMiningModel):
                 else (_raise_mining_shape("Mining decision must be an object"))
                 for item in value["decisions"]
             )
+            if exploration:
+                no_candidate = value.get("no_candidate")
+                if items and no_candidate is not None:
+                    raise ValidationError(
+                        "Exploration E2 non-empty decisions require no_candidate=null"
+                    )
+                if not items:
+                    if not isinstance(no_candidate, Mapping) or set(no_candidate) != {
+                        "reason_code",
+                        "rationale",
+                        "considered_case_refs",
+                    }:
+                        raise ValidationError(
+                            "Exploration E2 empty decisions require structured no_candidate"
+                        )
+                    reason_code = str(no_candidate.get("reason_code", ""))
+                    if reason_code not in {
+                        "no_measurable_pattern",
+                        "insufficient_evidence",
+                        "already_covered",
+                    }:
+                        raise ValidationError(
+                            "Exploration E2 no_candidate reason_code is invalid"
+                        )
+                    rationale = no_candidate.get("rationale")
+                    considered = no_candidate.get("considered_case_refs")
+                    if not isinstance(rationale, list) or not rationale or any(
+                        not isinstance(item, str) or not item.strip()
+                        for item in rationale
+                    ):
+                        raise ValidationError(
+                            "Exploration E2 no_candidate rationale is invalid"
+                        )
+                    expected_refs = tuple(exploration_labels)
+                    if not isinstance(considered, list) or tuple(considered) != expected_refs:
+                        raise ValidationError(
+                            "Exploration E2 considered_case_refs must match the actual "
+                            "selected grounded signatures"
+                        )
+                    decision_metadata.clear()
+                    decision_metadata["no_candidate"] = {
+                        "reason_code": reason_code,
+                        "rationale": list(rationale),
+                        "considered_case_refs": list(considered),
+                    }
+                else:
+                    decision_metadata.clear()
+                    decision_metadata["no_candidate"] = None
             invalid_unmatched = sorted(
                 item.hypothesis_id
                 for item in items
@@ -1712,7 +1911,11 @@ class LLMSignalMiningModel(SignalMiningModel):
         value, usage = _complete_parsed_role(
             self.caller,
             stage=stage,
-            system_prompt=prompt + _SIGNAL_MINING_DECISIONS_OUTPUT,
+            system_prompt=prompt + (
+                _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT
+                if exploration
+                else _SIGNAL_MINING_DECISIONS_OUTPUT
+            ),
             payload=payload,
             parser=parse,
             allow_outcomes=True,
@@ -1721,7 +1924,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             max_output_tokens=(8_000 if stage == "signal_mining_contrast" else 4_000),
             temperature=temperature,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata=decision_metadata)
 
 
 def _raise_mining_shape(message: str) -> Any:
