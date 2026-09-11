@@ -64,11 +64,12 @@ mining, and Signal update proposals.
   to reject a measurement that can be defined from meta-memory, the demand
   backlog, and the available source catalog; local H2/H3 owns case feasibility
   and evidence testing.
-  Aggregate masking includes a distinctive single-token brand derived from each
-  formal target name, while preserving a small explicit set of ordinary protocol
-  words and canonical contract tokens (for example `Future`, `Business`, `News`,
-  `Open`, and `Ready`). The final assembled H1 payload is checked against the same
-  guard inventory before transmission.
+  Aggregate masking globally protects ids, tickers, and unambiguous multi-token
+  formal names. A Fast backlog row with an explicit source case receives an
+  additional case-scoped distinctive-brand mask before its source ref is made
+  opaque; ordinary research and canonical contract words are excluded. The row
+  and final assembled H1 payload are each checked against their own guard scope
+  before transmission.
   The union of hypothesis `need_refs` exactly equals the refs dispositioned as
   `new_measurement`; needs outside the bounded portfolio use another honest
   disposition. Mismatch feedback reports ledger-only and hypothesis-only refs.

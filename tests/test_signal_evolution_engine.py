@@ -811,6 +811,14 @@ class SignalEvolutionTests(TestCase):
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
             case = make_case("fixture_issuer", 4.0)
+            case = replace(
+                case,
+                basic_info={
+                    **case.basic_info,
+                    "company_name": "Kinross Gold Corporation",
+                    "ticker": "KGC",
+                },
+            )
             memory = PlanMetaMemory(entries=(RoundMetaEntry(
                 round_id=1,
                 evidence_refs=("plan-1",),
@@ -839,13 +847,13 @@ class SignalEvolutionTests(TestCase):
                             {
                                 "kind": "unmatched_signal_need",
                                 "need_ref": "need-opaque",
-                                "need": "What did fixture_issuer disclose?",
+                                "need": "What did Kinross disclose?",
                                 "sources": [
                                     {
-                                        "source_ref": "plan:/private/path:fixture_issuer",
+                                        "source_ref": f"plan-1:{case.case_id}",
                                         "source_round": 1,
                                         "source_fingerprint": "fingerprint",
-                                        "original_need": "What did fixture_issuer disclose?",
+                                        "original_need": "What did Kinross disclose?",
                                         "stop_reason": "no_signal_match",
                                     }
                                 ],
@@ -875,6 +883,7 @@ class SignalEvolutionTests(TestCase):
             self.assertIn("future business plans", json.dumps(context["meta_info"]))
             rendered_backlog = json.dumps(context["capability_backlog"])
             self.assertNotIn("fixture_issuer", rendered_backlog)
+            self.assertNotIn("Kinross", rendered_backlog)
             self.assertNotIn("/private/path", rendered_backlog)
             self.assertIn("source-", rendered_backlog)
             self.assertEqual(memory.model_view(), original)

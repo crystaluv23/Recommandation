@@ -211,7 +211,8 @@ class SignalRoleAdapterTests(TestCase):
             ),
         )
 
-        guards = core_module._slow_role_identity_guard_inventory(cases)
+        aggregate_guards = core_module._slow_role_identity_guard_inventory(cases)
+        guards = core_module._scoped_slow_identity_guard_inventory(cases)
         masked = core_module._mask_identity_values(
             "Kinross and Wynn disclosed results. Future business remains open news.",
             guards,
@@ -221,6 +222,8 @@ class SignalRoleAdapterTests(TestCase):
         self.assertNotIn("Kinross", masked)
         self.assertNotIn("Wynn", masked)
         self.assertIn("Future business remains open news", masked)
+        self.assertNotIn("Kinross", aggregate_guards)
+        self.assertNotIn("Wynn", aggregate_guards)
         self.assertNotIn("Ready", guards)
         core_module._assert_identity_values_masked(
             {"canonical_rule_names": ["all_ready_issuers"]},

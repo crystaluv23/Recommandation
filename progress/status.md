@@ -1,5 +1,17 @@
 # Status
 
+V40 remains a zero-call preflight at `round=0/cycle=0`. Its mining-only probe
+showed why a global single-brand inventory cannot be generalized across the full
+8,755-case Discovery pool: a target brand `Capital` collided with the stable
+Signal context tag `capital_intensive`, and many other ordinary research words
+have listed-company namesakes. Aggregate guards therefore return to ids, tickers,
+and multi-token names. Before each Fast-derived backlog source ref becomes opaque,
+the controller now resolves its exact source case and applies a case-scoped safe
+brand inventory to that row, with an immediate row-level assertion. This masks
+`Kinross` and `Wynn` in their owning needs without treating `Capital`, `Ready`, or
+other protocol vocabulary as identity everywhere. All 705 tests and repository
+lint pass; a fresh successor must verify the exact H1 wire body.
+
 V39 also remains at zero external calls and `round=0/cycle=0`. A mining-only
 diagnostic exposed the swallowed local H1 failure before the normal pipeline
 continued to its first Update approval boundary: the derived target brand

@@ -2388,9 +2388,9 @@ def _slow_role_identity_guard_inventory(
 
     Complete local case masking deliberately expands formal names to brands. An
     aggregate role cannot use unrestricted expansion because ordinary brands
-    such as ``News`` or ``Open`` are also protocol vocabulary. Keep opaque ids,
-    exact ticker-like aliases, multi-token formal names, and distinctive leading
-    brands outside the explicit aggregate-language denylist.
+    such as ``News`` or ``Open`` are also protocol vocabulary. Keep only opaque
+    ids, exact ticker-like aliases, and multi-token formal names here. Source rows
+    use the narrower scoped inventory below when a case owner is known.
     """
 
     guards: list[str] = []
@@ -2420,14 +2420,24 @@ def _slow_role_identity_guard_inventory(
                 natural_name = _IDENTITY_LEGAL_SUFFIX.sub("", component).strip(" ,")
                 if len(re.findall(r"[A-Za-z0-9]+", natural_name)) >= 2:
                     guards.append(natural_name)
-                natural_parts = natural_name.split(maxsplit=1)
-                brand = natural_parts[0].strip(".,'\"") if natural_parts else ""
-                brand_length = sum(character.isalnum() for character in brand)
-                if (
-                    brand_length >= 4
-                    and brand.casefold() not in _GENERIC_AGGREGATE_IDENTITY_WORDS
-                ):
-                    guards.append(brand)
+    return tuple(dict.fromkeys(guards))
+
+
+def _scoped_slow_identity_guard_inventory(
+    cases: Iterable[EvolutionCase],
+) -> tuple[str, ...]:
+    """Add safe brand aliases only for source rows owned by known cases."""
+
+    materialized = tuple(cases)
+    guards = list(_slow_role_identity_guard_inventory(materialized))
+    for alias in _identity_alias_variants(_case_identity_alias_inventory(materialized)):
+        tokens = re.findall(r"[A-Za-z0-9]+", alias)
+        if (
+            len(tokens) == 1
+            and sum(character.isalnum() for character in alias) >= 4
+            and alias.casefold() not in _GENERIC_AGGREGATE_IDENTITY_WORDS
+        ):
+            guards.append(alias)
     return tuple(dict.fromkeys(guards))
 
 

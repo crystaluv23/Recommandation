@@ -66,6 +66,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _require_aware_datetime,
     _sample_binary_discovery_cases,
     _sample_signal_discovery_cases,
+    _scoped_slow_identity_guard_inventory,
     _select_h3_model_evidence,
     _slow_role_identity_guard_inventory,
     _usable_business_description,
@@ -1982,6 +1983,9 @@ class SignalEvolutionEngine:
         self.update_model = update_model
         discovery_aliases = _slow_role_identity_guard_inventory(discovery_cases)
         self.slow_role_identity_guards = discovery_aliases
+        self._discovery_cases_by_id = {
+            case.case_id: case for case in discovery_cases
+        }
         for role in (self.mining_model, self.update_model):
             setter = getattr(role, "set_identity_guard_aliases", None)
             if callable(setter):
@@ -4184,6 +4188,9 @@ class SignalEvolutionEngine:
             }
         )
         capability_backlog = dict(capability_backlog)
+        capability_backlog = self._mask_owned_backlog_identities(
+            capability_backlog
+        )
         capability_backlog["signal_need_items"] = [
             {
                 **dict(item),
@@ -4232,6 +4239,40 @@ class SignalEvolutionEngine:
             ),
             "locked_test_available": False,
         }
+
+    def _mask_owned_backlog_identities(
+        self, backlog: Mapping[str, Any]
+    ) -> dict[str, Any]:
+        """Mask safe local brands only inside rows with explicit case ownership."""
+
+        result = dict(backlog)
+        masked_needs: list[Any] = []
+        for raw_item in backlog.get("signal_need_items", ()):
+            if not isinstance(raw_item, Mapping):
+                masked_needs.append(raw_item)
+                continue
+            case_ids: list[str] = []
+            for source in raw_item.get("sources", ()):
+                if not isinstance(source, Mapping):
+                    continue
+                source_ref = str(source.get("source_ref", ""))
+                candidate = source_ref.split(":", 1)[1] if ":" in source_ref else ""
+                if candidate in self._discovery_cases_by_id:
+                    case_ids.append(candidate)
+            cases = tuple(
+                self._discovery_cases_by_id[case_id]
+                for case_id in dict.fromkeys(case_ids)
+            )
+            aliases = _scoped_slow_identity_guard_inventory(cases)
+            masked = _mask_identity_values(
+                dict(raw_item), aliases, expand_aliases=False
+            )
+            _assert_identity_values_masked(
+                masked, aliases, expand_aliases=False
+            )
+            masked_needs.append(masked)
+        result["signal_need_items"] = masked_needs
+        return result
 
     def _reflection_action_inventory(
         self, *, limit: int = 48
