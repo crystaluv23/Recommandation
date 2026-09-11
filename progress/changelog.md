@@ -324,3 +324,5 @@
 - 2026-09-11: V18 completes ordinary Fast/Slow 1/1, verifies exact 24-reflection H1 handoff and 232 learning events, and exercises E1 quarantine plus Update correction. Repair candidate ticker-case false positives, conditional as-of temporal intent and stale queryless JSON prefixes; 649 tests pass, targeted live validation pending.
 
 - 2026-09-11: Complete bounded live acceptance under fed00ec: original V18 candidate executes all four fixtures and is correctly rejected on one state mismatch; repaired E1 windows yield 22 validated observations across eight unchanged cases. Verify next-Fast input visibility, exact wire records, and V17 529-event idempotent recovery. No promotion or new full diagnostic cycle is claimed.
+
+- 2026-09-11: Audit semantic gaps behind successful V18 completion and document an executable MVP repair plan: lost ordinary unmet needs, sampled meta inputs, cached quota responses, SEC history/form routing, incomplete financial context, ineffective Update changes and technical-work recovery. Documentation only; runtime fixes and live acceptance remain pending.

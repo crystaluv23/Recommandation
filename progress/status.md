@@ -1,7 +1,20 @@
 # Status
 
+Semantic follow-up audit found remaining behavior gaps despite V18 completion:
+ordinary Fast unmet needs never enter the Signal backlog; meta inputs sample
+4 of 24 cases; Alpha Vantage quota payloads were cached as successful data;
+SEC historical/form coverage and structured financial context remain incomplete.
+Update also omitted retrieval settings while claiming a skill change that did
+not occur. See the [proposed repair execution plan](information-evolution-semantic-repair-plan-2026-09-11.md)
+for evidence and semantic acceptance gates, plus the
+[function-level MVP actions](information-evolution-mvp-code-actions-2026-09-11.md)
+for exact edit sites and regression tests. Full meta is sent directly within
+existing budgets; automatic pagination and new platforms are deferred. This follow-up
+changed documentation only; no runtime repair or additional live run is claimed.
+
 V18 completed the ordinary real Fast/Slow path at 1/1: one eligible 24-case Plan,
-exact reflection/meta/H1 transfer, and 232 reconciled learning events. E1 retained
+complete reflection persistence, an audited compact H1 view, and 232 reconciled
+learning events. E1 retained
 valid observations after quarantine and E2 ran. One Update candidate staged but
 was falsely blocked by lowercasing `five` into ticker `FIVE`; no promotion occurred.
 Post-run repairs reuse strict identity matchers, recognize conditional as-of intent,
