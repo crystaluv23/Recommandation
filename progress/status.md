@@ -1,5 +1,14 @@
 # Status
 
+V39 also remains at zero external calls and `round=0/cycle=0`. A mining-only
+diagnostic exposed the swallowed local H1 failure before the normal pipeline
+continued to its first Update approval boundary: the derived target brand
+`Ready` collided with the controller-owned canonical applicability token
+`all_ready_issuers`. Single-token brand guards now exclude the complete ordinary
+query vocabulary and explicit Slow protocol tokens while full names, ids, and
+tickers remain guarded. The exact protocol-collision case is regression-tested;
+all 705 tests and repository lint pass. A new frozen contract is required.
+
 V38 stopped locally before constructing or transmitting any model request. One
 valid Discovery identity consisted only of a legal-suffix token, so stripping the
 suffix produced an empty natural name and the new aggregate brand derivation

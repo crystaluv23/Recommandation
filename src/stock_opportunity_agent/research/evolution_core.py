@@ -106,19 +106,6 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
 )
 
 
-_GENERIC_AGGREGATE_IDENTITY_WORDS = (
-    _GENERIC_IDENTITY_LEADING_WORDS
-    | {
-        "alpha",
-        "business",
-        "future",
-        "match",
-        "news",
-        "open",
-    }
-)
-
-
 _GENERIC_QUERY_WORDS = frozenset(
     {
         "actual",
@@ -138,6 +125,41 @@ _GENERIC_QUERY_WORDS = frozenset(
         "this",
         "versus",
         "with",
+    }
+)
+
+
+_GENERIC_AGGREGATE_IDENTITY_WORDS = (
+    _GENERIC_IDENTITY_LEADING_WORDS
+    | _GENERIC_QUERY_WORDS
+    | {
+        "age",
+        "all",
+        "alpha",
+        "bucket",
+        "data",
+        "description",
+        "exchange",
+        "facts",
+        "filing",
+        "financials",
+        "future",
+        "historical",
+        "info",
+        "issuers",
+        "listing",
+        "market",
+        "match",
+        "news",
+        "open",
+        "price",
+        "raw",
+        "ready",
+        "signal",
+        "source",
+        "topics",
+        "type",
+        "values",
     }
 )
 

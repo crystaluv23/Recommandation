@@ -204,6 +204,11 @@ class SignalRoleAdapterTests(TestCase):
                 company_id="issuer-four",
                 basic_info={"company_name": "Holdings", "ticker": "HLDG"},
             ),
+            SimpleNamespace(
+                case_id="protocol-collision",
+                company_id="issuer-five",
+                basic_info={"company_name": "Ready Capital", "ticker": "RC"},
+            ),
         )
 
         guards = core_module._slow_role_identity_guard_inventory(cases)
@@ -216,6 +221,12 @@ class SignalRoleAdapterTests(TestCase):
         self.assertNotIn("Kinross", masked)
         self.assertNotIn("Wynn", masked)
         self.assertIn("Future business remains open news", masked)
+        self.assertNotIn("Ready", guards)
+        core_module._assert_identity_values_masked(
+            {"canonical_rule_names": ["all_ready_issuers"]},
+            guards,
+            expand_aliases=False,
+        )
 
     def test_signal_h1_v3_accepts_structured_no_hypothesis_with_open_demand(
         self,
