@@ -556,6 +556,116 @@ class SignalEvolutionTests(TestCase):
             self.assertIn("source-", rendered_backlog)
             self.assertEqual(memory.model_view(), original)
 
+    def test_slow_start_recovers_backlog_after_post_commit_interruption(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            workspace = EvolutionWorkspace(root / "workspace")
+            snapshot = registry.freeze()
+            workspace.start_or_resume_cycle(
+                run_contract_hash="contract-hash",
+                target_plan_rounds=1,
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+            base_record = make_record(
+                "interrupted_backlog_plan", 1.0, (1.0, 0.0)
+            )
+            trajectory = replace(
+                base_record.trajectories[0],
+                final_state=ResearchState(
+                    decision=ResearchDecision.FINALIZE,
+                    next_information_needs=(
+                        "Measure committed order conversion before the catalyst.",
+                    ),
+                ),
+                stop_reason=RuntimeStopReason.NO_SIGNAL_MATCH,
+            )
+            record = replace(
+                base_record,
+                trajectories=(trajectory,),
+                evaluation=None,
+                fitness=None,
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1, evidence_refs=(record.plan_id,)
+                ),
+                signal_registry_version=snapshot.version,
+                signal_registry_hash=snapshot.registry_hash,
+                run_contract_hash="contract-hash",
+            )
+            stale = {
+                "schema_version": "capability-gap-report-v3",
+                "items": [],
+                "signal_need_items": [],
+                "technical_failures": [],
+                "diagnostic_attempts": [],
+                "open_count": 0,
+                "resolved_count": 0,
+            }
+            (workspace.root / "capability_backlog.json").write_text(
+                json.dumps(stale), encoding="utf-8"
+            )
+            discovery_cases = tuple(
+                [make_case(f"recovery_positive_{index}", 4.0) for index in range(2)]
+                + [make_case(f"recovery_control_{index}", 1.1) for index in range(2)]
+            )
+            raw_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"recovery-financial-{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 120.0, "2025-01-10"),
+                        ),
+                    )
+                    for index, case in enumerate(discovery_cases)
+                )
+            )
+            mining_model = EmptyMiningModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=raw_store,
+                discovery_cases=discovery_cases,
+                meta_memory=workspace.restore_meta(),
+                workspace=workspace,
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(discovery_cases)),
+            )
+
+            engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
+
+            refreshed = json.loads(
+                (workspace.root / "capability_backlog.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(len(refreshed["signal_need_items"]), 1)
+            self.assertEqual(
+                refreshed["signal_need_items"][0]["sources"][0]["source_round"],
+                1,
+            )
+            sent_needs = mining_model.requests[0]["capability_backlog"][
+                "signal_need_items"
+            ]
+            self.assertEqual(len(sent_needs), 1)
+            self.assertEqual(
+                sent_needs[0]["need"],
+                "Measure committed order conversion before the catalyst.",
+            )
+
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
         payload = {
             "hypothesis_id": "h1-c0001-s01",
@@ -3489,6 +3599,73 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(len(mining_model.requests), mining_request_count)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
+
+            class PromotedSignalSelector:
+                def __init__(self) -> None:
+                    self.selected_refs = []
+
+                def select(
+                    self,
+                    information_needs,
+                    signal_registry,
+                    prior_signal_fingerprints=None,
+                    prior_signal_results=None,
+                    eligible_signal_refs=None,
+                    research_state=None,
+                    prior_context_tags=(),
+                ):
+                    self.selected_refs.append(new_spec.ref)
+                    self.asserted_registry_refs = tuple(
+                        item.ref for item in signal_registry.specs
+                    )
+                    return AgentStep(
+                        (
+                            SignalSelectionDecision(
+                                signal_ref=new_spec.ref,
+                                reason_code="answer_need",
+                                selection_reason=(
+                                    "Use the newly promoted growth measurement."
+                                ),
+                                applicability_hypothesis=(
+                                    "Comparable annual financial periods exist."
+                                ),
+                                expected_role="primary",
+                                context_tags=("comparable_financials",),
+                            ),
+                        ),
+                        AgentUsage(llm_calls=1),
+                    )
+
+            selector = PromotedSignalSelector()
+            next_fast_case = discovery_cases[0]
+            trajectory = execute_information_plan(
+                plan=default_information_plan(),
+                company_id=next_fast_case.company_id,
+                case_id=next_fast_case.case_id,
+                company_basic_source=next_fast_case.basic_info,
+                prediction_time=next_fast_case.prediction_time,
+                signal_registry=registry.freeze(),
+                signal_executor=SignalExecutor(registry.freeze(), raw_store),
+                controller=OneBatchController(),
+                signal_agent=selector,
+                predictor=FixedPredictor(),
+                prediction_sink=lambda *_args: "next-fast-prediction.json",
+                ground_truth_provider=lambda _company_id: next_fast_case.ground_truth,
+            )
+            self.assertIn(new_spec.ref, selector.asserted_registry_refs)
+            self.assertEqual(selector.selected_refs, [new_spec.ref])
+            self.assertEqual(
+                trajectory.signal_rounds[0].selections[0].signal_ref,
+                new_spec.ref,
+            )
+            self.assertEqual(
+                trajectory.signal_rounds[0].batch.results[0].ref,
+                new_spec.ref,
+            )
+            self.assertEqual(
+                trajectory.signal_rounds[0].batch.results[0].execution_status,
+                SignalExecutionStatus.SUCCESS,
+            )
 
     def test_mining_controller_rejects_malformed_candidate_spec_locally(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
