@@ -16,6 +16,7 @@ from stock_opportunity_agent.data.resolution import (
     RawInfoRequest,
     ResolutionEvent,
 )
+from stock_opportunity_agent.data.sources.state import DataQuotaDeferred
 
 
 def _identity_value(identity: Mapping[str, Any], *keys: str) -> str:
@@ -305,6 +306,8 @@ class AlphaVantageTranscriptAdapter:
                 break
             try:
                 raw = self.client.earnings_call_transcript(symbol, quarter)
+            except DataQuotaDeferred:
+                raise
             except Exception as exc:
                 failures.append(type(exc).__name__)
                 continue

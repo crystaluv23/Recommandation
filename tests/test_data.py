@@ -45,6 +45,9 @@ from stock_opportunity_agent.data import (
     source_plan_by_capability,
 )
 from stock_opportunity_agent.data.sources.core import decode_response_text
+from stock_opportunity_agent.data.sources.alpha_vantage import (
+    alpha_vantage_json_error,
+)
 from stock_opportunity_agent.models import (
     Catalyst,
     CatalystStatus,
@@ -355,8 +358,19 @@ class AlphaVantageClientTests(TestCase):
 
         with self.assertRaises(DataSourceError) as ctx:
             client.company_overview("IBM")
-        self.assertIn("<redacted>", str(ctx.exception))
+        self.assertEqual(ctx.exception.reason, "quota_deferred:alpha_vantage_request_limit")
         self.assertNotIn("test-key", str(ctx.exception))
+
+    def test_alpha_vantage_error_detector_preserves_valid_empty_payloads(self) -> None:
+        self.assertIsNone(alpha_vantage_json_error({"feed": []}))
+        self.assertEqual(
+            alpha_vantage_json_error({"Error Message": "secret bad request"}),
+            "alpha_vantage_invalid_request",
+        )
+        self.assertEqual(
+            alpha_vantage_json_error({"Information": "endpoint is unavailable"}),
+            "alpha_vantage_information_error",
+        )
 
     def test_raw_endpoint_helpers_use_expected_alpha_vantage_functions(self) -> None:
         base = "https://www.alphavantage.co/query"
@@ -613,6 +627,135 @@ class SourceStateTests(TestCase):
 
             self.assertEqual(len(inner.calls), 2)
             self.assertEqual([entry.status for entry in ledger.entries()], [RequestStatus.ERROR, RequestStatus.ERROR])
+
+    def test_contaminated_cache_is_invalidated_before_valid_network_result(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            url = "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&symbol=IBM&apikey=secret"
+            key = RawCacheKey.from_request(
+                "alpha_vantage", DataCapability.NEWS, "GET", url
+            )
+            cache = RawDataCache(root / "cache")
+            cache.set_json(key, {"Note": "secret quota response"}, clock())
+            ledger = RequestLedger(root / "ledger.jsonl")
+            inner = FakeJsonTransport({url: {"feed": []}})
+            transport = ManagedHttpTransport(
+                "alpha_vantage",
+                DataCapability.NEWS,
+                inner,
+                cache,
+                ledger,
+                SourceBudget(
+                    ledger,
+                    quotas={
+                        "alpha_vantage": SourceQuota(
+                            "alpha_vantage", daily_limit=1
+                        )
+                    },
+                ),
+                clock=clock,
+                json_error_detector=alpha_vantage_json_error,
+            )
+
+            self.assertEqual(transport.get_json(url, {}), {"feed": []})
+            self.assertEqual(transport.get_json(url, {}), {"feed": []})
+            self.assertEqual(len(inner.calls), 1)
+            self.assertEqual(
+                [entry.status for entry in ledger.entries()],
+                [
+                    RequestStatus.CACHE_INVALIDATED,
+                    RequestStatus.FETCHED,
+                    RequestStatus.CACHE_HIT,
+                ],
+            )
+            self.assertTrue(cache.invalidate(key))
+            self.assertFalse(cache.invalidate(key))
+
+    def test_detected_quota_response_is_typed_secret_free_and_not_cached(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            clock = FakeClock(datetime(2026, 5, 2, 12, 0, tzinfo=timezone.utc))
+            url = "https://www.alphavantage.co/query?function=EARNINGS&symbol=IBM&apikey=fake-secret"
+            inner = FakeJsonTransport(
+                {url: {"Information": "fake-secret rate limit reached"}}
+            )
+            ledger = RequestLedger(root / "ledger.jsonl")
+            cache = RawDataCache(root / "cache")
+            transport = ManagedHttpTransport(
+                "alpha_vantage",
+                DataCapability.TRANSCRIPTS,
+                inner,
+                cache,
+                ledger,
+                SourceBudget(ledger, quotas={}),
+                clock=clock,
+                json_error_detector=alpha_vantage_json_error,
+            )
+
+            with self.assertRaises(DataQuotaDeferred) as ctx:
+                transport.get_json(url, {})
+
+            self.assertIsNone(ctx.exception.next_retry_at)
+            self.assertIsNone(
+                cache.get_json(
+                    RawCacheKey.from_request(
+                        "alpha_vantage", DataCapability.TRANSCRIPTS, "GET", url
+                    )
+                )
+            )
+            serialized = " ".join(
+                str(entry.to_dict()) for entry in ledger.entries()
+            )
+            self.assertNotIn("fake-secret", serialized)
+            self.assertEqual(ledger.entries()[0].status, RequestStatus.ERROR)
+
+    def test_transport_error_ledger_redacts_request_credentials(self) -> None:
+        class EchoingFailure:
+            def get_json(self, url, headers):
+                raise DataSourceError(f"failed {url} {headers['Authorization']}")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            ledger = RequestLedger(root / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "vendor",
+                DataCapability.NEWS,
+                EchoingFailure(),
+                RawDataCache(root / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={}),
+            )
+            with self.assertRaises(DataSourceError):
+                transport.get_json(
+                    "https://example.test/news?token=query-secret",
+                    {"Authorization": "Bearer header-secret"},
+                )
+
+            message = ledger.entries()[0].message
+            self.assertNotIn("query-secret", message)
+            self.assertNotIn("Bearer header-secret", message)
+            self.assertIn("<redacted>", message)
+
+    def test_detector_message_is_redacted_before_ledger_persistence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            url = "https://example.test/news?apikey=fake-secret"
+            ledger = RequestLedger(root / "ledger.jsonl")
+            transport = ManagedHttpTransport(
+                "vendor",
+                DataCapability.NEWS,
+                FakeJsonTransport({url: {"error": "fake-secret rejected"}}),
+                RawDataCache(root / "cache"),
+                ledger,
+                SourceBudget(ledger, quotas={}),
+                json_error_detector=lambda body: body.get("error"),
+            )
+
+            with self.assertRaises(DataSourceError):
+                transport.get_json(url, {})
+
+            self.assertEqual(ledger.entries()[0].message, "<redacted> rejected")
 
 
 def version() -> VersionStamp:

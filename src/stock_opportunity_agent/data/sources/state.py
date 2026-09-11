@@ -19,7 +19,11 @@ from stock_opportunity_agent.models import ValidationError
 
 
 SENSITIVE_QUERY_KEYS = frozenset({"apikey", "api_key", "token", "access_key"})
+SENSITIVE_HEADER_KEYS = frozenset(
+    {"authorization", "api-key", "apikey", "x-api-key", "token", "access-key"}
+)
 NETWORK_STATUSES = frozenset({"fetched", "error"})
+QUOTA_DEFERRED_ERROR_PREFIX = "quota_deferred:"
 
 
 class RequestStatus(str, Enum):
@@ -29,6 +33,7 @@ class RequestStatus(str, Enum):
     CACHE_HIT = "cache_hit"
     ERROR = "error"
     QUOTA_DEFERRED = "quota_deferred"
+    CACHE_INVALIDATED = "cache_invalidated"
 
 
 @dataclass(frozen=True)
@@ -163,6 +168,16 @@ class RawDataCache:
         }
         atomic_write_json(path, record, indent=None)
 
+    def invalidate(self, key: RawCacheKey) -> bool:
+        """Remove exactly one cached response and report whether it existed."""
+
+        path = self._path(key)
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            return False
+        return True
+
     def _path(self, key: RawCacheKey) -> Path:
         return self.root_dir / key.source_key / key.capability.value / f"{key.digest}.json"
 
@@ -273,8 +288,14 @@ class BudgetDecision:
 class DataQuotaDeferred(DataSourceError):
     """Raised when a source request should be retried after quota reset."""
 
-    def __init__(self, source_key: str, next_retry_at: datetime, reason: str) -> None:
-        super().__init__(f"{source_key} quota deferred until {next_retry_at.isoformat()}: {reason}")
+    def __init__(
+        self,
+        source_key: str,
+        next_retry_at: datetime | None,
+        reason: str,
+    ) -> None:
+        retry = next_retry_at.isoformat() if next_retry_at is not None else "explicit recovery"
+        super().__init__(f"{source_key} quota deferred until {retry}: {reason}")
         self.source_key = source_key
         self.next_retry_at = next_retry_at
         self.reason = reason
@@ -372,19 +393,34 @@ class ManagedHttpTransport:
         key = RawCacheKey.from_request(self.source_key, self.capability, "GET", url)
         cached = self.cache.get_json(key)
         if cached is not None:
-            self._record(key, RequestStatus.CACHE_HIT)
-            return cached
+            message = self._json_problem(cached)
+            if message is not None:
+                message = _redact_request_secrets(message, url, headers)
+            if message is None:
+                self._record(key, RequestStatus.CACHE_HIT)
+                return cached
+            self.cache.invalidate(key)
+            self._record(
+                key,
+                RequestStatus.CACHE_INVALIDATED,
+                message=message,
+            )
         self._require_budget_or_record(key)
         try:
             body = self.inner.get_json(url, headers)
         except Exception as exc:
-            self._record(key, RequestStatus.ERROR, message=str(exc))
+            self._record(
+                key,
+                RequestStatus.ERROR,
+                message=_redact_request_secrets(str(exc), url, headers),
+            )
             raise
         now = self.clock()
-        message = self.json_error_detector(body) if self.json_error_detector else None
+        message = self._json_problem(body)
         if message:
+            message = _redact_request_secrets(message, url, headers)
             self._record(key, RequestStatus.ERROR, requested_at=now, message=message)
-            raise DataSourceError(message)
+            self._raise_provider_problem(message)
         self.cache.set_json(key, body, now)
         self._record(key, RequestStatus.FETCHED, requested_at=now)
         return body
@@ -395,8 +431,18 @@ class ManagedHttpTransport:
         key = RawCacheKey.from_request(self.source_key, self.capability, "GET", url)
         cached = self.cache.get_text(key)
         if cached is not None:
-            self._record(key, RequestStatus.CACHE_HIT)
-            return cached
+            message = self._text_problem(cached)
+            if message is not None:
+                message = _redact_request_secrets(message, url, headers)
+            if message is None:
+                self._record(key, RequestStatus.CACHE_HIT)
+                return cached
+            self.cache.invalidate(key)
+            self._record(
+                key,
+                RequestStatus.CACHE_INVALIDATED,
+                message=message,
+            )
         self._require_budget_or_record(key)
         get_text = getattr(self.inner, "get_text", None)
         if get_text is None:
@@ -405,13 +451,18 @@ class ManagedHttpTransport:
         try:
             body = get_text(url, headers)
         except Exception as exc:
-            self._record(key, RequestStatus.ERROR, message=str(exc))
+            self._record(
+                key,
+                RequestStatus.ERROR,
+                message=_redact_request_secrets(str(exc), url, headers),
+            )
             raise
         now = self.clock()
-        message = self.text_error_detector(body) if self.text_error_detector else None
+        message = self._text_problem(body)
         if message:
+            message = _redact_request_secrets(message, url, headers)
             self._record(key, RequestStatus.ERROR, requested_at=now, message=message)
-            raise DataSourceError(message)
+            self._raise_provider_problem(message)
         self.cache.set_text(key, body, now)
         self._record(key, RequestStatus.FETCHED, requested_at=now)
         return body
@@ -422,8 +473,20 @@ class ManagedHttpTransport:
         key = RawCacheKey.from_request(self.source_key, self.capability, "POST", url, payload=payload)
         cached = self.cache.get_json(key)
         if cached is not None:
-            self._record(key, RequestStatus.CACHE_HIT)
-            return cached
+            message = self._json_problem(cached)
+            if message is not None:
+                message = _redact_request_secrets(
+                    message, url, headers, payload
+                )
+            if message is None:
+                self._record(key, RequestStatus.CACHE_HIT)
+                return cached
+            self.cache.invalidate(key)
+            self._record(
+                key,
+                RequestStatus.CACHE_INVALIDATED,
+                message=message,
+            )
         self._require_budget_or_record(key)
         post_json = getattr(self.inner, "post_json", None)
         if post_json is None:
@@ -432,16 +495,36 @@ class ManagedHttpTransport:
         try:
             body = post_json(url, headers, payload)
         except Exception as exc:
-            self._record(key, RequestStatus.ERROR, message=str(exc))
+            self._record(
+                key,
+                RequestStatus.ERROR,
+                message=_redact_request_secrets(str(exc), url, headers, payload),
+            )
             raise
         now = self.clock()
-        message = self.json_error_detector(body) if self.json_error_detector else None
+        message = self._json_problem(body)
         if message:
+            message = _redact_request_secrets(message, url, headers, payload)
             self._record(key, RequestStatus.ERROR, requested_at=now, message=message)
-            raise DataSourceError(message)
+            self._raise_provider_problem(message)
         self.cache.set_json(key, body, now)
         self._record(key, RequestStatus.FETCHED, requested_at=now)
         return body
+
+    def _json_problem(self, body: Any) -> str | None:
+        if self.json_error_detector is None:
+            return None
+        return self.json_error_detector(body)
+
+    def _text_problem(self, body: str) -> str | None:
+        if self.text_error_detector is None:
+            return None
+        return self.text_error_detector(body)
+
+    def _raise_provider_problem(self, message: str) -> None:
+        if message.startswith(QUOTA_DEFERRED_ERROR_PREFIX):
+            raise DataQuotaDeferred(self.source_key, None, message)
+        raise DataSourceError(message)
 
     def _require_budget_or_record(self, key: RawCacheKey) -> None:
         now = self.clock()
@@ -485,6 +568,45 @@ class ManagedHttpTransport:
 def _stable_hash(value: Any) -> str:
     text = json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:24]
+
+
+def _redact_request_secrets(
+    message: str,
+    url: str,
+    headers: Mapping[str, str],
+    payload: Any = None,
+) -> str:
+    """Redact request-derived credential values before ledger persistence."""
+
+    secrets = [
+        value
+        for key, value in parse.parse_qsl(parse.urlsplit(url).query)
+        if key.casefold() in SENSITIVE_QUERY_KEYS and value
+    ]
+    secrets.extend(
+        str(value)
+        for key, value in headers.items()
+        if key.casefold() in SENSITIVE_HEADER_KEYS and str(value)
+    )
+    secrets.extend(_payload_secrets(payload))
+    redacted = message
+    for secret in sorted(set(secrets), key=len, reverse=True):
+        redacted = redacted.replace(secret, "<redacted>")
+    return redacted
+
+
+def _payload_secrets(value: Any) -> list[str]:
+    if isinstance(value, Mapping):
+        secrets: list[str] = []
+        for key, item in value.items():
+            if str(key).casefold() in SENSITIVE_QUERY_KEYS and str(item):
+                secrets.append(str(item))
+            else:
+                secrets.extend(_payload_secrets(item))
+        return secrets
+    if isinstance(value, (list, tuple)):
+        return [secret for item in value for secret in _payload_secrets(item)]
+    return []
 
 
 def _day_start(value: datetime) -> datetime:

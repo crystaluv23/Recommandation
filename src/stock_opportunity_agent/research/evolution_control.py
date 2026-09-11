@@ -29,7 +29,10 @@ from stock_opportunity_agent.data.resolution import (
     DataAcquisitionPolicy,
     EvidenceResolver,
 )
-from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
+from stock_opportunity_agent.data.sources.alpha_vantage import (
+    AlphaVantageClient,
+    alpha_vantage_json_error,
+)
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
 from stock_opportunity_agent.data.sources.massive import MassiveClient
@@ -2241,6 +2244,11 @@ def _build_evidence_resolver(
                 cache,
                 ledger,
                 source_budget,
+                json_error_detector=(
+                    alpha_vantage_json_error
+                    if source == "alpha_vantage"
+                    else None
+                ),
             )
 
         sec_user_agent = str(env.get("SOA_SEC_USER_AGENT", "")).strip()

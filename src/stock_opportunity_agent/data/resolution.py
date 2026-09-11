@@ -6,12 +6,13 @@ import json
 import os
 import re
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.sources.state import DataQuotaDeferred
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -698,6 +699,20 @@ class AcquisitionFailure(Exception):
         self.reason = reason
 
 
+@dataclass(frozen=True)
+class _AcquisitionFailureMemo:
+    reason: DataGapReason
+    retryable: bool
+    next_retry_at: datetime | None = None
+
+    def should_reuse(self, now: datetime) -> bool:
+        if not self.retryable:
+            return True
+        if self.next_retry_at is None:
+            return True
+        return now < self.next_retry_at
+
+
 class AcquisitionAdapter(Protocol):
     """Provider adapter capable of materializing complete Raw Info documents."""
 
@@ -890,7 +905,9 @@ class EvidenceResolver:
         self.adapters = tuple(adapters)
         self.policy = policy
         self.budget = budget or DataAcquisitionBudget()
-        self._acquisition_failures: dict[tuple[Any, ...], DataGapReason] = {}
+        self._acquisition_failures: dict[
+            tuple[Any, ...], _AcquisitionFailureMemo
+        ] = {}
 
     def resolve(
         self,
@@ -966,18 +983,28 @@ class EvidenceResolver:
                             as_of=as_of,
                         )
                         reused_failure = self._acquisition_failures.get(failure_key)
-                        if reused_failure is not None:
-                            failures.append((adapter.provider, reused_failure))
+                        if reused_failure is not None and reused_failure.should_reuse(
+                            datetime.now(timezone.utc)
+                        ):
+                            failures.append((adapter.provider, reused_failure.reason))
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failure_reused",
                                     {
                                         "provider": adapter.provider,
-                                        "reason": reused_failure.value,
+                                        "reason": reused_failure.reason.value,
+                                        "retryable": reused_failure.retryable,
+                                        "next_retry_at": (
+                                            reused_failure.next_retry_at.isoformat()
+                                            if reused_failure.next_retry_at
+                                            else None
+                                        ),
                                     },
                                 )
                             )
                             continue
+                        if reused_failure is not None:
+                            self._acquisition_failures.pop(failure_key, None)
                         if self._budget_exhausted():
                             failures.append(
                                 (adapter.provider, DataGapReason.QUOTA_DEFERRED)
@@ -1067,7 +1094,7 @@ class EvidenceResolver:
                                 )
                             )
                             failures.append((adapter.provider, reason))
-                            self._acquisition_failures[failure_key] = reason
+                            self._remember_acquisition_failure(failure_key, reason)
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -1081,7 +1108,9 @@ class EvidenceResolver:
                             raise
                         except AcquisitionFailure as exc:
                             failures.append((adapter.provider, exc.reason))
-                            self._acquisition_failures[failure_key] = exc.reason
+                            self._remember_acquisition_failure(
+                                failure_key, exc.reason
+                            )
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -1094,7 +1123,7 @@ class EvidenceResolver:
                         except Exception as exc:  # provider boundary: retain type, not secrets
                             reason = (
                                 DataGapReason.QUOTA_DEFERRED
-                                if type(exc).__name__ == "DataQuotaDeferred"
+                                if isinstance(exc, DataQuotaDeferred)
                                 else (
                                     DataGapReason.PROVIDER_NO_DATA
                                     if "returned no daily prices" in str(exc).casefold()
@@ -1102,7 +1131,15 @@ class EvidenceResolver:
                                 )
                             )
                             failures.append((adapter.provider, reason))
-                            self._acquisition_failures[failure_key] = reason
+                            self._remember_acquisition_failure(
+                                failure_key,
+                                reason,
+                                next_retry_at=(
+                                    exc.next_retry_at
+                                    if isinstance(exc, DataQuotaDeferred)
+                                    else None
+                                ),
+                            )
                             events.append(
                                 ResolutionEvent(
                                     "acquisition_failed",
@@ -1204,6 +1241,21 @@ class EvidenceResolver:
                 )
             ),
             coverage=coverage,
+        )
+
+    def _remember_acquisition_failure(
+        self,
+        key: tuple[Any, ...],
+        reason: DataGapReason,
+        *,
+        next_retry_at: datetime | None = None,
+    ) -> None:
+        if reason is DataGapReason.PROVIDER_ERROR:
+            return
+        self._acquisition_failures[key] = _AcquisitionFailureMemo(
+            reason=reason,
+            retryable=reason is DataGapReason.QUOTA_DEFERRED,
+            next_retry_at=next_retry_at,
         )
 
     def can_acquire(self, request: RawInfoRequest) -> bool:

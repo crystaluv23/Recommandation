@@ -18,6 +18,10 @@ from stock_opportunity_agent.data.sources.core import (
     parse_csv_rows,
     utc_now,
 )
+from stock_opportunity_agent.data.sources.state import (
+    DataQuotaDeferred,
+    QUOTA_DEFERRED_ERROR_PREFIX,
+)
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -238,12 +242,11 @@ class AlphaVantageClient:
     def _query(self, params: Mapping[str, str]) -> dict[str, Any]:
         query = parse.urlencode({**params, "apikey": self.api_key})
         data = self.transport.get_json(f"{self.base_url}?{query}", {})
-        if "Error Message" in data:
-            raise DataSourceError(self._redact_secret(data["Error Message"]))
-        if "Note" in data:
-            raise DataSourceError(self._redact_secret(data["Note"]))
-        if "Information" in data:
-            raise DataSourceError(self._redact_secret(data["Information"]))
+        problem = alpha_vantage_json_error(data)
+        if problem is not None:
+            if problem.startswith(QUOTA_DEFERRED_ERROR_PREFIX):
+                raise DataQuotaDeferred("alpha_vantage", None, problem)
+            raise DataSourceError(problem)
         return data
 
     def _news_sentiment_query(
@@ -289,6 +292,29 @@ class AlphaVantageClient:
 
     def _redact_secret(self, value: object) -> str:
         return str(value).replace(self.api_key, "<redacted>")
+
+
+def alpha_vantage_json_error(body: Any) -> str | None:
+    """Return a stable secret-free reason for an Alpha Vantage error envelope."""
+
+    if not isinstance(body, Mapping):
+        return None
+    if "Error Message" in body:
+        return "alpha_vantage_invalid_request"
+    if "Note" in body:
+        return f"{QUOTA_DEFERRED_ERROR_PREFIX}alpha_vantage_request_limit"
+    if "Information" not in body:
+        return None
+    information = str(body["Information"]).casefold()
+    quota_markers = (
+        "rate limit",
+        "call frequency",
+        "requests per day",
+        "api frequency",
+    )
+    if any(marker in information for marker in quota_markers):
+        return f"{QUOTA_DEFERRED_ERROR_PREFIX}alpha_vantage_request_limit"
+    return "alpha_vantage_information_error"
 
 
 @register("alpha_vantage")

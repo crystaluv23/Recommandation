@@ -51,10 +51,10 @@ Use the source catalog as the canonical free/free-key capability manifest:
 
 The source layer owns these runtime state primitives:
 
-- `RawDataCache`: file-backed raw JSON/text cache keyed by source, capability, endpoint, and sanitized request parameters. Credential query parameters such as `apiKey`/`apikey`, `api_key`, `token`, and `access_key` must not be included in cache keys or records.
-- `RequestLedger`: append-only JSONL ledger recording `fetched`, `cache_hit`, `error`, and `quota_deferred` outcomes with timestamps, cache keys, source keys, capabilities, and retry times when known.
+- `RawDataCache`: file-backed raw JSON/text cache keyed by source, capability, endpoint, and sanitized request parameters. Credential query parameters such as `apiKey`/`apikey`, `api_key`, `token`, and `access_key` must not be included in cache keys or records. A provider response detector may invalidate exactly one contaminated key; it never clears unrelated valid cache entries or append-only Raw Info.
+- `RequestLedger`: append-only JSONL ledger recording `fetched`, `cache_hit`, `cache_invalidated`, `error`, and `quota_deferred` outcomes with timestamps, cache keys, source keys, capabilities, and retry times when known. Cache invalidation is local maintenance and does not count as a network request.
 - `SourceQuota` and `SourceBudget`: source-level quota rules and checks. Network fetches and upstream errors count against quota; cache hits and quota deferrals do not.
-- `ManagedHttpTransport`: optional transport wrapper that applies cache lookup before quota checks, lets callers reject provider-level error payloads before caching, records every outcome, and raises `DataQuotaDeferred` instead of sleeping across reset windows.
+- `ManagedHttpTransport`: optional transport wrapper that applies the same configured provider-response detector to cache hits and fresh network bodies before either is accepted as successful. A rejected cached body is invalidated by exact key before normal budget/acquisition flow resumes; a rejected network body is never cached. Only validated bodies record `cache_hit` or `fetched`. Request-derived secrets are redacted before transport errors enter the ledger, and a recognized provider quota envelope raises `DataQuotaDeferred` instead of becoming a generic successful response. A provider that does not supply a reliable reset time may set `next_retry_at` to null rather than inventing one.
 
 Raw cache records must be replaced atomically after a complete fsynced write,
 and request-ledger rows must be flushed before a caller treats a request outcome

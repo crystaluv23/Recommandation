@@ -16,6 +16,7 @@ from stock_opportunity_agent.data.acquisition import (
     UnavailableProviderAdapter,
 )
 from stock_opportunity_agent.data.sources.core import PriceBar
+from stock_opportunity_agent.data.sources.state import DataQuotaDeferred
 from stock_opportunity_agent.data.raw_info import (
     RawInfoDocument,
     RawInfoOracle,
@@ -494,7 +495,7 @@ class EvidenceResolverTests(TestCase):
         )
         self.assertIn("earnings_call", resolver.available_source_types)
 
-    def test_compatible_signal_requests_reuse_one_acquisition_failure(self) -> None:
+    def test_unknown_provider_errors_remain_retryable(self) -> None:
         adapter = FailingAdapter(DataGapReason.PROVIDER_ERROR)
         resolver = EvidenceResolver(
             RawInfoStore(),
@@ -504,8 +505,8 @@ class EvidenceResolverTests(TestCase):
                 allowed_providers=("fake_news",),
                 allowed_capabilities=("news",),
                 allowed_source_types=("news",),
-                max_requests_per_cycle=2,
-                max_requests_per_run=2,
+                max_requests_per_cycle=3,
+                max_requests_per_run=3,
             ),
         )
 
@@ -522,10 +523,10 @@ class EvidenceResolverTests(TestCase):
             as_of=AS_OF,
         )
 
-        self.assertEqual(adapter.calls, 1)
+        self.assertEqual(adapter.calls, 2)
         self.assertEqual(first.gap.reason, DataGapReason.PROVIDER_ERROR)
         self.assertEqual(second.gap.reason, DataGapReason.PROVIDER_ERROR)
-        self.assertIn(
+        self.assertNotIn(
             "acquisition_failure_reused",
             [event.kind for event in second.events],
         )
@@ -538,8 +539,85 @@ class EvidenceResolverTests(TestCase):
             identity={},
             as_of=AS_OF,
         )
-        self.assertEqual(adapter.calls, 2)
+        self.assertEqual(adapter.calls, 3)
         self.assertEqual(distinct_topic.gap.reason, DataGapReason.PROVIDER_ERROR)
+
+    def test_quota_failure_reuse_preserves_unknown_retry_time(self) -> None:
+        class QuotaAdapter(FakeAdapter):
+            def acquire(self, request, **kwargs):
+                self.calls += 1
+                raise DataQuotaDeferred(
+                    self.provider, None, "provider quota unavailable"
+                )
+
+        adapter = QuotaAdapter()
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=(adapter.provider,),
+                allowed_capabilities=("news",),
+                allowed_source_types=("news",),
+                max_requests_per_cycle=2,
+                max_requests_per_run=2,
+            ),
+        )
+        request = RawInfoRequest("news", "Read news.", ("news",))
+
+        first = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+        second = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+
+        self.assertEqual(adapter.calls, 1)
+        self.assertEqual(first.gap.reason, DataGapReason.QUOTA_DEFERRED)
+        reused = next(
+            event
+            for event in second.events
+            if event.kind == "acquisition_failure_reused"
+        )
+        self.assertTrue(reused.details["retryable"])
+        self.assertIsNone(reused.details["next_retry_at"])
+
+    def test_quota_failure_retries_after_known_reset(self) -> None:
+        class ExpiredQuotaAdapter(FakeAdapter):
+            def acquire(self, request, **kwargs):
+                self.calls += 1
+                if self.calls == 1:
+                    raise DataQuotaDeferred(
+                        self.provider,
+                        datetime(2020, 1, 1, tzinfo=timezone.utc),
+                        "old quota window",
+                    )
+                return AcquisitionResult((document("recovered", "fresh news"),))
+
+        adapter = ExpiredQuotaAdapter()
+        resolver = EvidenceResolver(
+            RawInfoStore(),
+            adapters=(adapter,),
+            policy=DataAcquisitionPolicy(
+                enabled=True,
+                allowed_providers=(adapter.provider,),
+                allowed_capabilities=("news",),
+                allowed_source_types=("news",),
+                max_requests_per_cycle=2,
+                max_requests_per_run=2,
+            ),
+        )
+        request = RawInfoRequest("news", "Read news.", ("news",))
+        first = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+        second = resolver.resolve(
+            request, company_id="issuer_1", identity={}, as_of=AS_OF
+        )
+
+        self.assertEqual(first.gap.reason, DataGapReason.QUOTA_DEFERRED)
+        self.assertEqual(second.status, "resolved")
+        self.assertEqual(adapter.calls, 2)
 
     def test_enabled_policy_requires_explicit_allowlists_and_real_boolean(self) -> None:
         with self.assertRaisesRegex(ValidationError, "explicit provider"):

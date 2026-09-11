@@ -175,10 +175,16 @@ failed provider attempts; one provider's miss must not suppress a later
 authorized fallback.
 
 Within one resolver lifetime, compatible requests for the same provider,
-semantic route, company, cutoff, lookback, and document limit reuse the first
-bounded acquisition failure. The later Signal records an
-`acquisition_failure_reused` event and does not spend another provider request;
-different cases, cutoffs, routes, or request bounds remain independent.
+semantic route, company, cutoff, lookback, and document limit may reuse a
+bounded acquisition failure together with its retryability and optional reset
+time. A quota failure is reused before its known reset; an unknown reset remains
+pending until explicit resolver recovery. Once a known reset has passed, the
+same request may try again inside the unchanged frozen acquisition budget.
+Unknown provider errors are not memoized as permanent semantic failures. The
+later Signal records an `acquisition_failure_reused` event without spending a
+provider request; different cases, cutoffs, routes, or request bounds remain
+independent. Quota classification uses the typed `DataQuotaDeferred` boundary,
+not an exception class-name string.
 
 A generic SEC `filing` request prefers decision-relevant `10-K`, `10-Q`, and
 `8-K` bodies over ownership, conflict-minerals, and other administrative forms.

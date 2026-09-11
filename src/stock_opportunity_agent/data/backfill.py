@@ -647,7 +647,9 @@ def run_sec_submissions_backfill(
             last_stop = "source_quota_deferred"
             progress["last_deferred"] = {
                 "item_id": item_id,
-                "next_retry_at": exc.next_retry_at.isoformat(),
+                "next_retry_at": (
+                    exc.next_retry_at.isoformat() if exc.next_retry_at else None
+                ),
                 "reason": exc.reason,
             }
             _store_progress(
@@ -996,7 +998,9 @@ def run_sec_company_facts_backfill(
             last_stop = "source_quota_deferred"
             progress["last_deferred"] = {
                 "item_id": item_id,
-                "next_retry_at": exc.next_retry_at.isoformat(),
+                "next_retry_at": (
+                    exc.next_retry_at.isoformat() if exc.next_retry_at else None
+                ),
                 "reason": exc.reason,
             }
             _store_progress(
@@ -1338,7 +1342,9 @@ def run_sec_historical_submissions_backfill(
             last_stop = "source_quota_deferred"
             progress["last_deferred"] = {
                 "item_id": item_id,
-                "next_retry_at": exc.next_retry_at.isoformat(),
+                "next_retry_at": (
+                    exc.next_retry_at.isoformat() if exc.next_retry_at else None
+                ),
                 "reason": exc.reason,
             }
             _store_progress(
@@ -1762,7 +1768,9 @@ def run_sec_filing_backfill(
             last_stop = "source_quota_deferred"
             progress["last_deferred"] = {
                 "item_id": item_id,
-                "next_retry_at": exc.next_retry_at.isoformat(),
+                "next_retry_at": (
+                    exc.next_retry_at.isoformat() if exc.next_retry_at else None
+                ),
                 "reason": exc.reason,
             }
             _store_progress(state_path, progress, completed, failures, last_stop, now())

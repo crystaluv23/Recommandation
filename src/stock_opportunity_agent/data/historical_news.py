@@ -344,7 +344,9 @@ def run_alpha_vantage_news_backfill(
             last_stop = "source_quota_deferred"
             progress["last_deferred"] = {
                 "item_id": item_id,
-                "next_retry_at": exc.next_retry_at.isoformat(),
+                "next_retry_at": (
+                    exc.next_retry_at.isoformat() if exc.next_retry_at else None
+                ),
                 "reason": exc.reason,
             }
             _store_progress(state_path, progress, completed, failures, last_stop, now())
@@ -445,12 +447,11 @@ def run_alpha_vantage_news_backfill(
 def alpha_vantage_error_message(payload: Any) -> str | None:
     """Return a provider error message before a response can enter raw cache."""
 
-    if not isinstance(payload, Mapping):
-        return None
-    for key in ("Error Message", "Note", "Information"):
-        if key in payload:
-            return str(payload[key])
-    return None
+    from stock_opportunity_agent.data.sources.alpha_vantage import (
+        alpha_vantage_json_error,
+    )
+
+    return alpha_vantage_json_error(payload)
 
 
 def _validated_feed(response: Any) -> list[Any]:

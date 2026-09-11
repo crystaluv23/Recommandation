@@ -1,6 +1,14 @@
 """Frozen-contract, transport, and cycle-control tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.data.acquisition import (
+    AlphaVantageNewsAdapter,
+    AlphaVantageTranscriptAdapter,
+    HistoricalPriceAdapter,
+)
+from stock_opportunity_agent.data.sources.alpha_vantage import (
+    alpha_vantage_json_error,
+)
 
 
 class RunControlTests(TestCase):
@@ -790,6 +798,32 @@ class RunControlTests(TestCase):
                 if "earnings_call" in adapter.source_types
             ],
         )
+
+        alpha_adapters = [
+            adapter
+            for adapter in resolver.adapters
+            if adapter.provider == "alpha_vantage"
+        ]
+        news = next(
+            adapter
+            for adapter in alpha_adapters
+            if isinstance(adapter, AlphaVantageNewsAdapter)
+        )
+        transcripts = next(
+            adapter
+            for adapter in alpha_adapters
+            if isinstance(adapter, AlphaVantageTranscriptAdapter)
+        )
+        prices = next(
+            adapter
+            for adapter in alpha_adapters
+            if isinstance(adapter, HistoricalPriceAdapter)
+        )
+        for client in (news.client, transcripts.client, prices.event_source):
+            self.assertIs(
+                client.transport.json_error_detector,
+                alpha_vantage_json_error,
+            )
 
     def test_frozen_data_policy_stays_disabled_without_invocation_authorization(self) -> None:
         contract = EvolutionRunContract(
