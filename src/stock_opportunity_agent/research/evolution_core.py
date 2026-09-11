@@ -5129,17 +5129,28 @@ def _agent_raw_document_view(
 
     if max_content_chars < 200:
         raise ValidationError("Agent Raw Info preview bound is too small")
-    excerpt, truncated = _query_relevant_excerpt(
+    structured_context = _company_facts_context(
         document,
+        max_content_chars=max_content_chars,
         query=query,
-        max_chars=max_content_chars,
     )
+    if structured_context is None:
+        excerpt, truncated = _query_relevant_excerpt(
+            document,
+            query=query,
+            max_chars=max_content_chars,
+        )
+        projection = "normalized_query_window_v1"
+    else:
+        excerpt = ""
+        truncated = bool(structured_context["partial"])
+        projection = "sec_company_facts_context_v1"
     compact_metadata = {
         str(key): (value[:500] if isinstance(value, str) else value)
         for key, value in document.metadata.items()
         if isinstance(value, (str, int, float, bool)) or value is None
     }
-    return {
+    view = {
         "document_id": document.document_id,
         "company_id": document.company_id,
         "source_type": document.source_type,
@@ -5149,10 +5160,167 @@ def _agent_raw_document_view(
         "content_length": len(document.content),
         "content_excerpt": excerpt,
         "content_truncated": truncated,
-        "content_projection": "normalized_query_window_v1",
+        "content_projection": projection,
         "metadata": compact_metadata,
         "metadata_keys": sorted(document.metadata),
     }
+    if structured_context is not None:
+        view["structured_context"] = structured_context
+    return view
+
+
+def _company_facts_context(
+    document: RawInfoDocument,
+    *,
+    max_content_chars: int,
+    query: str | None,
+) -> dict[str, Any] | None:
+    """Project supported SEC Company Facts with exact raw record spans."""
+
+    try:
+        payload = json.loads(document.content)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    facts = payload.get("facts") if isinstance(payload, Mapping) else None
+    if not isinstance(facts, Mapping):
+        return None
+
+    leaf_spans: dict[str, list[tuple[int, int, str]]] = {}
+    for match in re.finditer(r"\{[^{}]*\}", document.content):
+        try:
+            leaf = json.loads(match.group(0))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(leaf, Mapping):
+            leaf_spans.setdefault(_canonical_hash(dict(leaf)), []).append(
+                (match.start(), match.end(), match.group(0))
+            )
+    leaf_span_cursors: dict[str, int] = {}
+
+    query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    cutoff = document.available_at.date()
+    candidates: list[tuple[tuple[Any, ...], dict[str, Any], bool]] = []
+    for taxonomy, concepts in facts.items():
+        if not isinstance(concepts, Mapping):
+            continue
+        for concept, definition in concepts.items():
+            if not isinstance(definition, Mapping):
+                continue
+            label = str(definition.get("label", ""))
+            units = definition.get("units")
+            if not isinstance(units, Mapping):
+                continue
+            concept_terms = _h3_content_terms(
+                f"{taxonomy} {concept} {label}", exclude_generic=True
+            )
+            for unit, raw_records in units.items():
+                if not isinstance(raw_records, list):
+                    continue
+                matched_records: list[tuple[str, str, dict[str, Any]]] = []
+                ambiguous = False
+                for record in raw_records:
+                    if not isinstance(record, Mapping):
+                        continue
+                    record_hash = _canonical_hash(dict(record))
+                    occurrences = leaf_spans.get(record_hash, ())
+                    occurrence_index = leaf_span_cursors.get(record_hash, 0)
+                    if occurrence_index >= len(occurrences):
+                        ambiguous = True
+                        continue
+                    start, end, exact_span = occurrences[occurrence_index]
+                    leaf_span_cursors[record_hash] = occurrence_index + 1
+                    filed = _optional_iso_date(record.get("filed"))
+                    if filed is not None and filed > cutoff:
+                        ambiguous = True
+                        continue
+                    period = str(record.get("end") or record.get("start") or "")
+                    filed_key = str(record.get("filed") or "")
+                    matched_records.append(
+                        (
+                            period,
+                            filed_key,
+                            {
+                                "exact_span": exact_span,
+                                "start": start,
+                                "end": end,
+                            },
+                        )
+                    )
+                matched_records.sort(
+                    key=lambda item: (item[0], item[1], item[2]["start"]),
+                    reverse=True,
+                )
+                distinct_periods: list[dict[str, Any]] = []
+                seen_periods: set[str] = set()
+                for period, _filed, record_view in matched_records:
+                    period_key = period or f"offset:{record_view['start']}"
+                    if period_key in seen_periods:
+                        continue
+                    seen_periods.add(period_key)
+                    distinct_periods.append(record_view)
+                    if len(distinct_periods) == 2:
+                        break
+                if not distinct_periods:
+                    continue
+                entry = {
+                    "taxonomy": str(taxonomy),
+                    "concept": str(concept),
+                    "label": label,
+                    "unit": str(unit),
+                    "records": distinct_periods,
+                }
+                latest_period = matched_records[0][0]
+                score = (
+                    len(query_terms.intersection(concept_terms)),
+                    latest_period,
+                    str(taxonomy),
+                    str(concept),
+                    str(unit),
+                )
+                candidates.append(
+                    (score, entry, ambiguous or len(matched_records) > 2)
+                )
+    if not candidates:
+        return {
+            "schema_version": "sec-company-facts-context-v1",
+            "concepts": [],
+            "omitted_concept_count": 0,
+            "partial": True,
+        }
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    context: dict[str, Any] = {
+        "schema_version": "sec-company-facts-context-v1",
+        "concepts": [],
+        "omitted_concept_count": len(candidates),
+        "partial": True,
+    }
+    selected_partial = False
+    for _score, entry, entry_partial in candidates:
+        candidate = json.loads(json.dumps(context))
+        candidate["concepts"].append(entry)
+        candidate["omitted_concept_count"] -= 1
+        candidate["partial"] = bool(
+            candidate["omitted_concept_count"] or selected_partial or entry_partial
+        )
+        if len(
+            json.dumps(candidate, ensure_ascii=False, separators=(",", ":"))
+        ) > max_content_chars:
+            continue
+        context = candidate
+        selected_partial = selected_partial or entry_partial
+    context["partial"] = bool(
+        context["omitted_concept_count"] or selected_partial
+    )
+    return context
+
+
+def _optional_iso_date(value: Any) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
 
 
 def _ordered_unique(values: Iterable[str]) -> list[str]:
@@ -5574,7 +5742,7 @@ def _model_evidence_view(
     view = _agent_raw_document_view(
         document, max_content_chars=1_200, query=query
     )
-    return {
+    model_view = {
         "document_ref": f"document-{index:02d}",
         "source_type": view["source_type"],
         "published_at": view["published_at"],
@@ -5586,6 +5754,40 @@ def _model_evidence_view(
         "content_truncated": view["content_truncated"],
         "content_projection": view["content_projection"],
     }
+    if "structured_context" in view:
+        original_context = view["structured_context"]
+        masked_context = _mask_identity_values(
+            view["structured_context"],
+            aliases,
+            expand_aliases=expand_aliases,
+        )
+        redacted_records = 0
+        for original_concept, masked_concept in zip(
+            original_context.get("concepts", ()),
+            masked_context.get("concepts", ()),
+        ):
+            original_records = original_concept.get("records", ())
+            masked_records = masked_concept.get("records", ())
+            retained = [
+                masked_record
+                for original_record, masked_record in zip(
+                    original_records, masked_records
+                )
+                if masked_record.get("exact_span")
+                == original_record.get("exact_span")
+            ]
+            redacted_records += len(masked_records) - len(retained)
+            masked_concept["records"] = retained
+        if redacted_records:
+            masked_context["partial"] = True
+            masked_context["redacted_record_count"] = redacted_records
+            masked_context["concepts"] = [
+                concept
+                for concept in masked_context.get("concepts", ())
+                if concept.get("records")
+            ]
+        model_view["structured_context"] = masked_context
+    return model_view
 
 
 def _select_h3_model_evidence(
@@ -5643,7 +5845,7 @@ def _select_h3_model_evidence(
             {**best[2], "document_ref": f"document-{len(evidence) + 1:02d}"}
         )
     query_coverage = _h3_text_query_coverage(
-        (str(item["content_excerpt"]) for item in evidence), query=query
+        (_model_evidence_visible_text(item) for item in evidence), query=query
     )
     query_coverage["scope"] = "model_visible_excerpts"
     query_coverage["full_document_coverage"] = full_coverage
@@ -5680,7 +5882,7 @@ def _h3_selection_score(
     """Prefer sufficient, term-diverse, ordered evidence with stable rank ties."""
 
     coverage = _h3_text_query_coverage(
-        (str(item["content_excerpt"]) for item in evidence), query=query
+        (_model_evidence_visible_text(item) for item in evidence), query=query
     )
     return (
         int(coverage["sufficient"]),
@@ -5816,6 +6018,25 @@ def _h3_document_visible_text(document: RawInfoDocument) -> str:
             return " ".join("\n".join((title, *fields)).split())
     projected, _runs = _normalized_projection_text(document.content)
     return " ".join(f"{title}\n{projected}".split())
+
+
+def _model_evidence_visible_text(view: Mapping[str, Any]) -> str:
+    """Return all model-visible evidence text used only for relevance scoring."""
+
+    parts = [str(view.get("content_excerpt", ""))]
+    structured = view.get("structured_context")
+    if isinstance(structured, Mapping):
+        for concept in structured.get("concepts", ()):
+            if not isinstance(concept, Mapping):
+                continue
+            parts.extend(
+                str(concept.get(key, ""))
+                for key in ("taxonomy", "concept", "label", "unit")
+            )
+            for record in concept.get("records", ()):
+                if isinstance(record, Mapping):
+                    parts.append(str(record.get("exact_span", "")))
+    return " ".join(parts)
 
 
 def _query_relevant_excerpt(

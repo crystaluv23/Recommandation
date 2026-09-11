@@ -936,6 +936,225 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertIn("duplicated requested signal_ref", feedback[0]["validation_error"])
 
+    def test_llm_signal_correction_rebuilds_only_failed_signal_payload(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        first = SignalSpec(
+            signal_id="guidance_change", version=1, category="catalysts",
+            description="Measure guidance changes.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="guidance.md",
+        )
+        second = SignalSpec(
+            signal_id="customer_order", version=1, category="customers",
+            description="Measure customer orders.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="orders.md",
+        )
+
+        def unavailable(spec):
+            return {
+                "signal_id": spec.signal_id,
+                "version": spec.version,
+                "state": {"value": "unavailable", "confidence": 0.0},
+                "interpretation": {"summary": "Visible evidence was insufficient."},
+                "evidence": {"supporting": [], "counter": []},
+                "status": {"coverage": "unavailable"},
+            }
+
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "results": [
+                        {"signal_ref": first.ref, "result": unavailable(first)},
+                    ]
+                },
+                {
+                    "results": [
+                        {"signal_ref": second.ref, "result": unavailable(second)},
+                    ]
+                },
+            ]
+        )
+
+        results, usage = StructuredLLMSignalRunner(caller).execute_many(
+            (
+                LLMSignalBatchInput(first, (), "Use visible evidence."),
+                LLMSignalBatchInput(second, (), "Use visible evidence."),
+            ),
+            as_of,
+        )
+
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertEqual(
+            [item["signal_ref"] for item in caller.calls[1]["payload"]["signals"]],
+            [second.ref],
+        )
+        self.assertEqual(caller.calls[1]["payload"]["batch_signal_refs"], [second.ref])
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"][0]["signal_ref"],
+            second.ref,
+        )
+        self.assertEqual(
+            results[first.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+        self.assertEqual(
+            results[second.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+
+    def test_llm_signal_unavailable_uses_one_changed_comparison_supplement(self) -> None:
+        from stock_opportunity_agent.signal_library import SignalRetrievalPolicy
+
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        comparison = SignalSpec(
+            signal_id="guidance_comparison", version=1, category="catalysts",
+            description="Compare current and prior guidance.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="guidance.md",
+            retrieval_policy=SignalRetrievalPolicy(
+                query_terms=("guidance comparison",),
+                comparison_requirement="Compare current and prior guidance periods.",
+            ),
+        )
+        sibling = SignalSpec(
+            signal_id="customer_event", version=1, category="customers",
+            description="Measure customer events.",
+            execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="customer.md",
+        )
+        documents = (
+            RawInfoDocument.create(
+                document_id="comparison-long", company_id="issuer",
+                source_type="filing", published_at=as_of, available_at=as_of,
+                content="Current and prior guidance comparison. " * 2_000,
+            ),
+        )
+        sibling_documents = (
+            RawInfoDocument.create(
+                document_id="sibling-long", company_id="issuer",
+                source_type="filing", published_at=as_of, available_at=as_of,
+                content="Customer production event disclosure. " * 2_000,
+            ),
+        )
+
+        class SupplementCaller:
+            def __init__(self):
+                self.calls = []
+
+            def complete_json(self, **kwargs):
+                self.calls.append(kwargs)
+                rows = []
+                for item in kwargs["payload"]["signals"]:
+                    spec = item["signal_spec"]
+                    rows.append(
+                        {
+                            "signal_ref": item["signal_ref"],
+                            "result": {
+                                "signal_id": spec["signal_id"],
+                                "version": spec["version"],
+                                "state": {"value": "unavailable", "confidence": 0.0},
+                                "interpretation": {"summary": "Comparison unavailable."},
+                                "evidence": {"supporting": [], "counter": []},
+                                "status": {"coverage": "unavailable"},
+                            },
+                        }
+                    )
+                return {"results": rows}, AgentUsage(llm_calls=1, tokens=10)
+
+        caller = SupplementCaller()
+        results, usage = StructuredLLMSignalRunner(caller).execute_many(
+            (
+                LLMSignalBatchInput(comparison, documents, "Compare periods."),
+                LLMSignalBatchInput(sibling, sibling_documents, "Find customer events."),
+            ),
+            as_of,
+        )
+
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(
+            caller.calls[1]["payload"]["batch_signal_refs"], [comparison.ref]
+        )
+        first_ids = {
+            item["projection_id"]
+            for item in caller.calls[0]["payload"]["source_projection"]
+            if item["document_id"] == "comparison-long"
+        }
+        second_ids = {
+            item["projection_id"]
+            for item in caller.calls[1]["payload"]["source_projection"]
+        }
+        self.assertTrue(second_ids - first_ids)
+        self.assertEqual(
+            results[sibling.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+        self.assertEqual(
+            results[comparison.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+
+    def test_llm_signal_correction_budget_keeps_successful_sibling(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        first = SignalSpec(
+            signal_id="successful", version=1, category="catalysts",
+            description="Successful signal.", execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="successful.md",
+        )
+        second = SignalSpec(
+            signal_id="failed", version=1, category="catalysts",
+            description="Failed signal.", execution_type=SignalExecutionType.LLM,
+            source_types=("filing",), skill_file="failed.md",
+        )
+
+        class BudgetCaller:
+            def __init__(self):
+                self.calls = []
+
+            def estimate_json_request_tokens(self, **_kwargs):
+                return 8_000
+
+            def complete_json(self, **kwargs):
+                if kwargs.get("max_request_tokens", 8_000) < 8_000:
+                    raise RuntimeBudgetExceeded(
+                        "exact reservation exceeds remaining request budget"
+                    )
+                self.calls.append(kwargs)
+                valid = {
+                    "signal_id": first.signal_id,
+                    "version": first.version,
+                    "state": {"value": "unavailable", "confidence": 0.0},
+                    "interpretation": {"summary": "No visible evidence."},
+                    "evidence": {"supporting": [], "counter": []},
+                    "status": {"coverage": "unavailable"},
+                }
+                return {
+                    "results": [{"signal_ref": first.ref, "result": valid}]
+                }, AgentUsage(llm_calls=1, tokens=600)
+
+        caller = BudgetCaller()
+        runner = StructuredLLMSignalRunner(caller)
+        runner.set_request_token_budget(8_500)
+        results, usage = runner.execute_many(
+            (
+                LLMSignalBatchInput(first, (), "Use evidence."),
+                LLMSignalBatchInput(second, (), "Use evidence."),
+            ),
+            as_of,
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(usage.llm_calls, 1)
+        self.assertEqual(
+            results[first.ref].execution_status,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        )
+        self.assertEqual(
+            results[second.ref].execution_status,
+            SignalExecutionStatus.BUDGET_BLOCKED,
+        )
+
     def test_v6_routing_normalizes_format_and_caps_four_with_two_llm(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")

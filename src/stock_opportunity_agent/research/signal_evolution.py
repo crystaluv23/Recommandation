@@ -719,7 +719,7 @@ def validate_signal_mining_signatures(
                 "exploration evidence must be an array at "
                 f"cases[{signature_index}].evidence"
             )
-        documents: dict[str, str] = {}
+        documents: dict[str, tuple[str, ...]] = {}
         for evidence_index, item in enumerate(evidence):
             item_path = f"cases[{signature_index}].evidence[{evidence_index}]"
             if not isinstance(item, Mapping):
@@ -741,7 +741,27 @@ def validate_signal_mining_signatures(
                 raise ValidationError(
                     f"exploration evidence document_ref must be unique at {item_path}"
                 )
-            documents[document_ref] = content_excerpt
+            allowed_spans = [content_excerpt] if content_excerpt else []
+            structured = item.get("structured_context")
+            if isinstance(structured, Mapping):
+                for concept in structured.get("concepts", ()):
+                    if not isinstance(concept, Mapping):
+                        continue
+                    for record in concept.get("records", ()):
+                        if not isinstance(record, Mapping):
+                            continue
+                        exact_span = record.get("exact_span")
+                        start = record.get("start")
+                        end = record.get("end")
+                        if (
+                            isinstance(exact_span, str)
+                            and exact_span
+                            and type(start) is int
+                            and type(end) is int
+                            and 0 <= start < end
+                        ):
+                            allowed_spans.append(exact_span)
+            documents[document_ref] = tuple(allowed_spans)
         if signature.observations and not documents:
             raise ValidationError(
                 "Mining signature cannot observe an evidence-empty packet at "
@@ -751,14 +771,19 @@ def validate_signal_mining_signatures(
             path = (
                 f"signatures[{signature_index}].observations[{observation_index}]"
             )
-            excerpt = documents.get(observation.document_ref)
-            if excerpt is None:
+            allowed_spans = documents.get(observation.document_ref)
+            if allowed_spans is None:
                 raise ValidationError(
                     f"Mining observation uses an unknown document_ref at {path}.document_ref"
                 )
-            if observation.exact_span not in excerpt:
+            if not any(
+                observation.exact_span in exact_span
+                for exact_span in allowed_spans
+            ):
                 raise ValidationError(
-                    f"Mining observation exact_span is not a supplied literal at {path}.exact_span"
+                    "Mining observation exact_span is not a supplied literal "
+                    "contained within one "
+                    f"supplied record literal at {path}.exact_span"
                 )
     return values
 

@@ -273,6 +273,13 @@ Every span stores document id/hash/availability, start/end offsets, and exact
 text. `exact_text` must equal `RawInfoDocument.content[start:end]`. No Basic
 Info summary, rewrite, or inferred structured conclusion is generated.
 
+Research-role views may additionally recognize the existing SEC Company Facts
+JSON structure and expose concept/label/unit plus complete selected fact-record
+spans. This is a presentation projection over already resolved immutable Raw
+Info, not a new acquisition schema. Each citable record remains one contiguous
+raw span with verified offsets; distinct filings for the same period do not
+count as two comparison periods, and future-filed records are omitted.
+
 ## Point-in-time Safety
 
 `as_of` comes only from the case and cannot be supplied by a Plan. Local and

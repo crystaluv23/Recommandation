@@ -21,6 +21,15 @@ mining, and Signal update proposals.
   deterministic ordering, exact raw-span lineage and per-Signal citation scope
   remain unchanged. A bounded view cannot prove absent data; unavailable results
   must remain distinct from technical failures and negative domain observations.
+- Every shared payload declares each Signal's own eligible projection refs.
+  Initial validation isolates omitted, cross-Signal, edge, and shape failures;
+  its sole correction contains only failed Signals, their eligible evidence,
+  and their feedback, while accepted siblings are retained without re-execution.
+  A semantically unavailable result may consume that same single correction only
+  when a declared comparison need or a truncated projection makes one bounded
+  local re-projection meaningful. Exact request estimation and the original hard
+  token ceiling apply before the correction; unchanged insufficient input remains
+  unavailable rather than entering another retry loop.
 - Production H1 uses `signal-mining-hypothesis-v2`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,

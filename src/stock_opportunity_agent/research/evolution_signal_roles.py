@@ -34,6 +34,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionStatus,
     SignalResult,
     SignalSpec,
+    SignalValue,
     signal_execution_failure_result,
     validate_signal_result,
 )
@@ -345,7 +346,10 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     "and evidence_gaps (an array of strings). Each observation has exactly summary "
     "(a grounded interpretation), document_ref (copied from that case's evidence), "
     "and exact_span (an exact contiguous 8-240 character substring copied from that "
-    "document's content_excerpt). Return at most six observations per case. When no "
+    "document's content_excerpt or one structured_context concept record's "
+    "exact_span). A citation must stay inside one record; wrapper concept/label/unit "
+    "fields and text joined across records are not facts. Return at most six "
+    "observations per case. When no "
     "visible excerpt supports an observation, return observations=[] and at least one "
     "specific evidence gap; never invent an observation to make the array non-empty. "
     "Return one signature for every supplied case_ref and do not infer outcomes."
@@ -424,9 +428,20 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             literals: dict[str, list[str]] = {}
             for item in rows:
                 if isinstance(item, Mapping) and item.get("document_ref"):
-                    literals.setdefault(str(item["document_ref"]), []).append(
+                    document_ref = str(item["document_ref"])
+                    literals.setdefault(document_ref, []).append(
                         str(item.get("content_excerpt", ""))
                     )
+                    structured = item.get("structured_context")
+                    if isinstance(structured, Mapping):
+                        for concept in structured.get("concepts", ()):
+                            if not isinstance(concept, Mapping):
+                                continue
+                            for record in concept.get("records", ()):
+                                if isinstance(record, Mapping):
+                                    literals[document_ref].append(
+                                        str(record.get("exact_span", ""))
+                                    )
             executed = (
                 observation.get("executed_evidence", ())
                 if isinstance(observation, Mapping)
@@ -2227,9 +2242,16 @@ class StructuredLLMSignalRunner:
         documents: list[dict[str, Any]],
         lineage: Mapping[str, _SignalProjectionLineage],
         as_of: datetime,
+        *,
+        request_token_budget: int | None = None,
     ) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage], bool]:
         estimator = getattr(self.caller, "estimate_json_request_tokens", None)
-        if self.request_token_budget is None or not callable(estimator):
+        budget = (
+            self.request_token_budget
+            if request_token_budget is None
+            else request_token_budget
+        )
+        if budget is None or not callable(estimator):
             return documents, dict(lineage), False
 
         def payload_for(
@@ -2261,7 +2283,7 @@ class StructuredLLMSignalRunner:
             allow_outcomes=False,
             max_output_tokens=4_000,
         )
-        if full_reservation <= self.request_token_budget:
+        if full_reservation <= budget:
             return documents, full_lineage, False
 
         essential_ids: set[str] = set()
@@ -2289,7 +2311,7 @@ class StructuredLLMSignalRunner:
             allow_outcomes=False,
             max_output_tokens=4_000,
         )
-        if minimum_reservation > self.request_token_budget:
+        if minimum_reservation > budget:
             return selected, minimum_lineage, True
 
         selected_ids = {
@@ -2314,7 +2336,7 @@ class StructuredLLMSignalRunner:
                 allow_outcomes=False,
                 max_output_tokens=4_000,
             )
-            if reservation <= self.request_token_budget:
+            if reservation <= budget:
                 selected = trial
                 selected_ids.add(projection_id)
         _payload, selected_lineage = payload_for(selected, trimmed=True)
@@ -2341,21 +2363,6 @@ class StructuredLLMSignalRunner:
             raise ValidationError("LLM Signal batch requires one or two inputs")
         if len({item.spec.ref for item in inputs}) != len(inputs):
             raise ValidationError("LLM Signal batch refs must be unique")
-        documents, lineage = _shared_llm_signal_projection(inputs)
-        documents, lineage, budget_trimmed = self._fit_projection_to_budget(
-            inputs, documents, lineage, as_of
-        )
-        base_payload = self._batch_payload(
-            inputs,
-            documents,
-            lineage,
-            as_of,
-            budget_trimmed=budget_trimmed,
-        )
-        projection_ids_by_ref = {
-            str(item["signal_ref"]): tuple(item["eligible_projection_ids"])
-            for item in base_payload["signals"]
-        }
         usage = AgentUsage()
         pending = {item.spec.ref: item for item in inputs}
         accepted: dict[str, SignalResult] = {}
@@ -2364,9 +2371,38 @@ class StructuredLLMSignalRunner:
         failure_statuses: dict[str, SignalExecutionStatus] = {}
 
         for attempt in range(2):
-            payload = dict(base_payload)
+            attempt_inputs = tuple(pending.values())
+            documents, lineage = _shared_llm_signal_projection(attempt_inputs)
+            remaining_budget = (
+                self.request_token_budget - usage.tokens
+                if self.request_token_budget is not None
+                else None
+            )
+            documents, lineage, budget_trimmed = self._fit_projection_to_budget(
+                attempt_inputs,
+                documents,
+                lineage,
+                as_of,
+                request_token_budget=remaining_budget,
+            )
+            payload = self._batch_payload(
+                attempt_inputs,
+                documents,
+                lineage,
+                as_of,
+                budget_trimmed=budget_trimmed,
+            )
+            projection_ids_by_ref = {
+                str(item["signal_ref"]): tuple(item["eligible_projection_ids"])
+                for item in payload["signals"]
+            }
             if validation_feedback:
-                payload["validation_feedback"] = validation_feedback
+                pending_refs = set(pending)
+                payload["validation_feedback"] = [
+                    item
+                    for item in validation_feedback
+                    if item.get("signal_ref") in pending_refs
+                ]
             try:
                 value, step_usage = _complete_json_with_invalid_value(
                     self.caller,
@@ -2481,7 +2517,7 @@ class StructuredLLMSignalRunner:
                                 f"a version suffix and result.version exactly {item.spec.version}. "
                                 "Ground the corrected result in the smallest set of unique "
                                 "quotes required by that Signal's skill, using only its "
-                                "unchanged eligible_projection_ids list. Comparisons may use "
+                                "current eligible_projection_ids list. Comparisons may use "
                                 "multiple current/prior or supporting/counter quotes. Return "
                                 "unavailable with empty evidence when visible literals are "
                                 "insufficient."
@@ -2489,6 +2525,39 @@ class StructuredLLMSignalRunner:
                         }
                     )
                     continue
+                if (
+                    attempt == 0
+                    and result.value is SignalValue.UNAVAILABLE
+                    and item.spec.retrieval_policy.comparison_requirement is not None
+                ):
+                    supplement, _supplement_lineage = _shared_llm_signal_projection(
+                        (item,)
+                    )
+                    current_ids = set(projection_ids_by_ref[signal_ref])
+                    added_ids = {
+                        str(projection["projection_id"])
+                        for projection in supplement
+                    } - current_ids
+                    if added_ids:
+                        failure_statuses[signal_ref] = (
+                            SignalExecutionStatus.VALIDATION_FAILED
+                        )
+                        last_errors[signal_ref] = (
+                            "visible shared projection omitted additional comparison "
+                            "windows available to this Signal"
+                        )
+                        validation_feedback.append(
+                            {
+                                "signal_ref": signal_ref,
+                                "validation_error": last_errors[signal_ref],
+                                "required_action": (
+                                    "Re-evaluate only this Signal against the expanded "
+                                    "bounded projection. Return unavailable with empty "
+                                    "evidence if the required comparison is still absent."
+                                ),
+                            }
+                        )
+                        continue
                 accepted[signal_ref] = result
                 del pending[signal_ref]
             if not pending:

@@ -4,6 +4,230 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class SignalEvolutionTests(TestCase):
+    def test_company_facts_context_preserves_semantics_offsets_and_periods(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _agent_raw_document_view,
+        )
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        payload = {
+            "facts": {
+                "us-gaap": {
+                    "RevenueFromContractWithCustomerExcludingAssessedTax": {
+                        "label": "Revenue from customers",
+                        "units": {
+                            "USD": [
+                                {"end": "2025-03-31", "val": 100, "filed": "2025-05-01"},
+                                {"end": "2025-06-30", "val": 100, "filed": "2025-08-01"},
+                                {"end": "2025-06-30", "val": 101, "filed": "2025-08-05"},
+                                {"end": "2025-09-30", "val": 999, "filed": "2025-10-15"},
+                            ]
+                        },
+                    },
+                    "OperatingIncomeLoss": {
+                        "label": "Operating income",
+                        "units": {
+                            "USD": [
+                                {"end": "2025-03-31", "val": 100, "filed": "2025-05-01"}
+                            ]
+                        },
+                    },
+                }
+            }
+        }
+        content = json.dumps(payload, separators=(",", ":"))
+        document = RawInfoDocument.create(
+            document_id="company-facts",
+            company_id="issuer",
+            source_type="sec_company_facts",
+            published_at=as_of,
+            available_at=as_of,
+            content=content,
+        )
+
+        view = _agent_raw_document_view(
+            document,
+            max_content_chars=1_200,
+            query="revenue operating income",
+        )
+
+        self.assertEqual(view["content_excerpt"], "")
+        self.assertEqual(
+            view["content_projection"], "sec_company_facts_context_v1"
+        )
+        concepts = {
+            item["concept"]: item for item in view["structured_context"]["concepts"]
+        }
+        revenue = concepts[
+            "RevenueFromContractWithCustomerExcludingAssessedTax"
+        ]
+        self.assertEqual(revenue["taxonomy"], "us-gaap")
+        self.assertEqual(revenue["label"], "Revenue from customers")
+        self.assertEqual(revenue["unit"], "USD")
+        self.assertEqual(len(revenue["records"]), 2)
+        self.assertIn('"val":101', revenue["records"][0]["exact_span"])
+        self.assertNotIn('"filed":"2025-10-15"', json.dumps(view))
+        for concept in concepts.values():
+            for record in concept["records"]:
+                self.assertEqual(
+                    content[record["start"] : record["end"]],
+                    record["exact_span"],
+                )
+
+    def test_company_facts_context_marks_bounded_omissions_partial(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _agent_raw_document_view,
+        )
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        payload = {
+            "facts": {
+                "us-gaap": {
+                    f"VerboseConcept{index}": {
+                        "label": "Very verbose financial concept label " + str(index),
+                        "units": {
+                            "USD": [
+                                {
+                                    "end": "2025-06-30",
+                                    "val": index,
+                                    "filed": "2025-08-01",
+                                }
+                            ]
+                        },
+                    }
+                    for index in range(12)
+                }
+            }
+        }
+        document = RawInfoDocument.create(
+            document_id="bounded-company-facts",
+            company_id="issuer",
+            source_type="sec_company_facts",
+            published_at=as_of,
+            available_at=as_of,
+            content=json.dumps(payload, separators=(",", ":")),
+        )
+
+        view = _agent_raw_document_view(
+            document, max_content_chars=350, query="financial concept"
+        )
+
+        context = view["structured_context"]
+        self.assertTrue(context["partial"])
+        self.assertGreater(context["omitted_concept_count"], 0)
+        self.assertLessEqual(
+            len(json.dumps(context, ensure_ascii=False, separators=(",", ":"))),
+            350,
+        )
+
+    def test_company_facts_identity_masking_drops_nonliteral_records(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _model_evidence_view,
+        )
+
+        as_of = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        content = json.dumps(
+            {
+                "facts": {
+                    "custom": {
+                        "CustomerConcentration": {
+                            "label": "Customer concentration",
+                            "units": {
+                                "count": [
+                                    {
+                                        "end": "2025-06-30",
+                                        "val": 3,
+                                        "filed": "2025-08-01",
+                                        "customer": "Acme Corp",
+                                    }
+                                ]
+                            },
+                        }
+                    }
+                }
+            },
+            separators=(",", ":"),
+        )
+        document = RawInfoDocument.create(
+            document_id="masked-company-facts",
+            company_id="issuer",
+            source_type="sec_company_facts",
+            published_at=as_of,
+            available_at=as_of,
+            content=content,
+        )
+
+        view = _model_evidence_view(
+            document,
+            index=1,
+            aliases=("Acme Corp",),
+            query="customer concentration",
+        )
+
+        context = view["structured_context"]
+        self.assertEqual(context["concepts"], [])
+        self.assertEqual(context["redacted_record_count"], 1)
+        self.assertTrue(context["partial"])
+        self.assertNotIn("Acme Corp", json.dumps(view))
+
+    def test_exploration_company_facts_citations_stay_inside_one_record(self) -> None:
+        record_one = '{"end":"2025-06-30","val":101,"filed":"2025-08-05"}'
+        record_two = '{"end":"2025-03-31","val":100,"filed":"2025-05-01"}'
+        packet = {
+            "case_ref": "case-001",
+            "evidence": [
+                {
+                    "document_ref": "document-01",
+                    "content_excerpt": "",
+                    "structured_context": {
+                        "concepts": [
+                            {
+                                "taxonomy": "us-gaap",
+                                "concept": "Revenue",
+                                "label": "Revenue from customers",
+                                "unit": "USD",
+                                "records": [
+                                    {"exact_span": record_one, "start": 10, "end": 67},
+                                    {"exact_span": record_two, "start": 68, "end": 125},
+                                ],
+                            }
+                        ]
+                    },
+                }
+            ],
+        }
+        valid = SignalMiningSignature(
+            case_ref="case-001",
+            observations=(
+                SignalMiningObservation(
+                    summary="The visible record reported 101.",
+                    document_ref="document-01",
+                    exact_span='"val":101',
+                ),
+            ),
+        )
+        self.assertEqual(
+            validate_signal_mining_signatures((valid,), (packet,)), (valid,)
+        )
+        for invalid_span in (
+            '"val":101 "val":100',
+            "Revenue from customers",
+        ):
+            with self.subTest(invalid_span=invalid_span), self.assertRaisesRegex(
+                ValidationError, "one supplied record literal"
+            ):
+                validate_signal_mining_signatures(
+                    (
+                        replace(
+                            valid,
+                            observations=(
+                                replace(valid.observations[0], exact_span=invalid_span),
+                            ),
+                        ),
+                    ),
+                    (packet,),
+                )
+
     def test_queryless_json_excerpt_reaches_recent_dated_records(self) -> None:
         from stock_opportunity_agent.research.evolution_core import _agent_raw_document_view
 

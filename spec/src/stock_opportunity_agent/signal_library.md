@@ -307,6 +307,13 @@ therefore includes `eligible_projection_ids`; evidence mapping rejects any citat
 outside the matching list even when that projection is visible because the peer
 Signal contributed it. Shared context is a transport optimization, not an expansion
 of either Signal's Raw Info boundary.
+If only one shared row fails or is omitted, its single correction request is
+rebuilt from that Signal's eligible projections only. Valid sibling results and
+their usage are retained. A comparison-oriented semantic unavailable or a
+truncated highest-ranked window may use the same one correction slot to expose a
+bounded re-projection; the executor never adds a second retry mechanism, treats
+arbitrary retrieved documents as sufficient measurement evidence, or changes a
+successful sibling's result.
 
 `unavailable` is a coverage state, never evidence that the measured condition
 is absent. The complete model-returned interpretation remains durable in the

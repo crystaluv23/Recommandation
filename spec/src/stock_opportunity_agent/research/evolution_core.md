@@ -53,3 +53,12 @@ material cross this boundary unchanged, with target overflow explicitly recorded
 Hard request/case/cost limits remain enforced by transport. Meta model views select
 whole reflection items and disclose omissions within their global budget; they
 never cut claims mid-sentence or overwrite complete durable reflections.
+
+For the supported SEC Company Facts response shape, model-facing document views
+preserve taxonomy concept, provider label, unit, and up to the latest necessary
+distinct reporting periods together. Every visible record carries its complete
+literal raw JSON span and raw start/end offsets; wrapper fields explain meaning
+but are not independently citable facts. Ambiguous raw matches, future-filed
+records, unknown shapes, and budget omissions remain explicitly partial. The
+combined structured view, including parent fields and record literals, stays
+inside the existing document character bound and does not alter Raw Info.
