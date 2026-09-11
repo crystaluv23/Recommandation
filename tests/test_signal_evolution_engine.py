@@ -3893,6 +3893,52 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertIn("exploration_evidence", result["refined_hypotheses"])
 
+    def test_exploration_budget_failure_propagates_to_cycle_control(self) -> None:
+        class BudgetLimitedMiningModel(EmptyMiningModel):
+            def extract_exploration(self, payload):
+                raise RuntimeBudgetExceeded("E1 request exceeds frozen budget")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"budget_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"budget_control_{index}", 1.1) for index in range(4)]
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"budget_news_{index}",
+                        company_id=case.company_id,
+                        source_type="news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=(
+                            f"{case.basic_info['company_name']} reported one "
+                            "bounded observable operating event."
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=BudgetLimitedMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(len(cases)),
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeBudgetExceeded, "E1 request exceeds frozen budget"
+            ):
+                engine._run_exploration_mining(cycle_id=3)
+
     def test_exploration_microbatch_failure_preserves_valid_siblings(self) -> None:
         class OneFailedMicrobatchModel(ScriptedMiningModel):
             def __init__(self, *, failed_ref, **kwargs):

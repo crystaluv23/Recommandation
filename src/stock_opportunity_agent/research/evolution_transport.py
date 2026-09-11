@@ -1166,7 +1166,11 @@ def _scan_payload(
         if isinstance(item, Mapping):
             for key, nested in item.items():
                 normalized = _normalize_field(str(key))
-                if not allow_outcomes and _is_outcome_field(normalized):
+                if (
+                    not allow_outcomes
+                    and _is_outcome_field(normalized)
+                    and not _is_source_concept_label(path, normalized)
+                ):
                     raise ValidationError(f"outcome field leaked into request: {path}.{key}")
                 visit(nested, f"{path}.{key}")
             return
@@ -1277,6 +1281,14 @@ def _is_outcome_field(normalized: str) -> bool:
         normalized.startswith(f"{field}_") or normalized.endswith(f"_{field}")
         for field in _FORBIDDEN_OUTCOME_KEYS
     )
+
+
+def _is_source_concept_label(path: str, normalized: str) -> bool:
+    """Return whether one label is source-owned SEC Company Facts semantics."""
+
+    return normalized == "label" and re.search(
+        r"\.structured_context\.concepts\[\d+\]$", path
+    ) is not None
 
 
 def _emit_runtime_progress(

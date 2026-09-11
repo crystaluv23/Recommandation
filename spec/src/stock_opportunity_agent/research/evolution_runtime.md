@@ -159,6 +159,12 @@ network I/O. Role-specific validation enforces:
 - judge registrations are no-web and retries stay at one; and
 - the request cites the frozen run-contract hash.
 
+The outcome-field scan is path-aware for one source-owned semantic field:
+`evidence[*].structured_context.concepts[*].label` is the original SEC Company
+Facts concept label already bound to a raw document span, not an evaluation label.
+This narrow exception does not admit `label` at any other request path, and does
+not relax identity or future-outcome scanning.
+
 The post-hoc reflection boundary rescans the original anonymous context for
 identity aliases, then treats the already validated immutable prediction and
 numeric revealed truth as typed records. It does not rescan prediction enum

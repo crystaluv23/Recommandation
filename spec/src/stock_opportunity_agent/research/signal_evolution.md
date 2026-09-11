@@ -49,6 +49,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   never clips or invents source text. Quarantine reasons remain technical audit
   metadata, including when a case has no surviving observations; they are not
   evidence that the source or measured condition is absent.
+  Source-owned SEC Company Facts context retains each concept's original
+  `label` as metric semantics; the transport guard distinguishes this exact path
+  from retrospective outcome labels. A runtime budget exception during E1 is
+  propagated unchanged to the cycle controller and is never converted into an
+  E1 validation failure or masked by a missing exception binding.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
   document ref and literal span for every fact before an update draft can be

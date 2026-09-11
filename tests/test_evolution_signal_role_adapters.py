@@ -8,6 +8,35 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_source_concept_label_is_not_an_outcome_label(self) -> None:
+        payload = {
+            "cases": [
+                {
+                    "evidence": [
+                        {
+                            "structured_context": {
+                                "concepts": [
+                                    {"label": "Revenue", "unit": "USD"}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+
+        evolution_runtime_module._scan_payload(
+            payload,
+            allow_outcomes=False,
+            anonymous_aliases=(),
+        )
+        with self.assertRaisesRegex(ValidationError, "outcome field leaked"):
+            evolution_runtime_module._scan_payload(
+                {"cases": [{"label": "surge"}]},
+                allow_outcomes=False,
+                anonymous_aliases=(),
+            )
+
     def test_update_candidate_uses_staging_checks_inside_correction(self) -> None:
         stable = SignalSpec(
             signal_id="revenue_growth_yoy", version=1, category="financial",

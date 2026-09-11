@@ -42,6 +42,7 @@ from stock_opportunity_agent.research.evolution_core import (
     EvolutionPriors,
     PlanMetaMemory,
     ProgressCallback,
+    RuntimeBudgetExceeded,
     SlowLoopDataUnavailable,
     _compiled_identity_aliases,
     _MASKED_IDENTITY_VALUE,
