@@ -221,7 +221,7 @@ class HistoricalNewsBackfillTests(unittest.TestCase):
             api_key = "private-test-key"
             url = _request_url("ABC", limit=3, api_key=api_key)
             inner = FakeJsonTransport(
-                {url: {"Note": f"quota reached for {api_key}"}}
+                {url: {"Error Message": f"invalid request for {api_key}"}}
             )
             cache = RawDataCache(root / "cache")
             client = _managed_client(root, cache, inner, api_key=api_key)
@@ -239,7 +239,7 @@ class HistoricalNewsBackfillTests(unittest.TestCase):
             self.assertEqual(result["failures_this_run"], 1)
             progress_text = (root / "progress.json").read_text(encoding="utf-8")
             self.assertNotIn(api_key, progress_text)
-            self.assertIn("<redacted>", progress_text)
+            self.assertIn("alpha_vantage_invalid_request", progress_text)
             item = plan["items"][0]
             self.assertIsNone(cache.get_json(_cache_key(item)))
 

@@ -13,6 +13,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   and staging. Deterministic candidates may omit the optional null skill; LLM
   candidates still require a complete skill. Target identity, vNext and immutable
   definition constraints remain mandatory and visible in the request contract.
+  The candidate schema exposes the complete version-owned retrieval policy rather
+  than the legacy singular query alias. Update requests include a runtime-built
+  complete vNext template copied from the stable spec and skill. Candidate
+  retrieval fields overlay that baseline before parsing; omitted optional fields
+  are therefore preserved. `changed_paths` must exactly match the effective
+  mutable spec/skill differences. Version and fixture changes are not substantive
+  Signal changes and cannot create a staged candidate.
 - Registry transitions remain version-bound and auditable.
 - Slow-loop results and cycle completion preserve existing recovery semantics.
 - The module never imports the `scheme_evolution.py` compatibility facade.
@@ -69,6 +76,17 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   execution failures are separate diagnostics and never domain learning.
   Mining receives the complete retained, masked meta FIFO; blind extraction,
   Signal execution, and prediction do not receive retrospective meta.
+- Update induction buckets accept only successful execution and explicit domain
+  unavailability. Provider, parser, budget, and other technical failures retain
+  their usage and audit records but never become unavailable learning. Explicit
+  misleading targets prefer wrong Discovery cases and may use sourced domain-
+  unavailable Discovery cases for applicability or retrieval diagnosis when the
+  wrong pool is insufficient; Validation cases never refill that pool and the
+  issuer-disjoint holdout minimum remains unchanged. Machine counts derive from
+  structured evidence verdicts and outcome relations, not rationale prose.
+  Update work keys use the full role/model identity. A substantive committed
+  `no_change` may suppress identical work, while defer and technical obstruction
+  remain eligible for a later bounded retry.
 - Update assigns opaque document refs before masking source text, so the current
   result and its executed evidence resolve to the same supplied document. Literal
   facts have no field-length ceiling; exact source membership and the existing

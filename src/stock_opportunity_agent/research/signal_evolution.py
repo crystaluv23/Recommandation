@@ -822,6 +822,7 @@ class SignalUpdateDecision:
     rationale: tuple[str, ...]
     candidate: Mapping[str, Any] | None = None
     case_diagnostics: tuple[Mapping[str, Any], ...] = ()
+    changed_paths: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if re.fullmatch(
@@ -842,6 +843,15 @@ class SignalUpdateDecision:
             raise ValidationError(
                 "only Signal Update disposition update may carry candidate"
             )
+        changed_paths = tuple(str(item) for item in self.changed_paths)
+        if any(not item.strip() for item in changed_paths) or len(
+            set(changed_paths)
+        ) != len(changed_paths):
+            raise ValidationError(
+                "Signal Update changed_paths must be unique non-empty strings"
+            )
+        if self.disposition != "update" and changed_paths:
+            raise ValidationError("only Signal Update disposition update may change paths")
         if self.candidate is not None:
             object.__setattr__(self, "candidate", dict(self.candidate))
         object.__setattr__(
@@ -849,6 +859,7 @@ class SignalUpdateDecision:
             "case_diagnostics",
             tuple(dict(item) for item in self.case_diagnostics),
         )
+        object.__setattr__(self, "changed_paths", changed_paths)
 
     def to_dict(self) -> dict[str, Any]:
         result = {
@@ -856,6 +867,7 @@ class SignalUpdateDecision:
             "disposition": self.disposition,
             "problem_type": self.problem_type,
             "rationale": list(self.rationale),
+            "changed_paths": list(self.changed_paths),
             "candidate": dict(self.candidate) if self.candidate is not None else None,
         }
         if self.case_diagnostics:
@@ -873,7 +885,8 @@ class SignalUpdateDecision:
             "rationale",
             "candidate",
         }
-        if set(data) not in (required, required | {"case_diagnostics"}):
+        optional = {"case_diagnostics", "changed_paths"}
+        if not required.issubset(data) or set(data) - required - optional:
             raise ValidationError(
                 "Signal Update decision requires exactly: "
                 + ", ".join(sorted(required))
@@ -886,6 +899,9 @@ class SignalUpdateDecision:
             disposition=str(data["disposition"]),
             problem_type=str(data["problem_type"]),
             rationale=_json_string_array(data, "rationale"),
+            changed_paths=tuple(
+                str(item) for item in data.get("changed_paths", ())
+            ),
             candidate=dict(candidate) if candidate is not None else None,
             case_diagnostics=tuple(
                 dict(item)
@@ -1646,9 +1662,14 @@ def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
 
 
 def validate_signal_update_candidate(
-    signal_ref: str, candidate: Mapping[str, Any], stable: SignalSpec,
+    signal_ref: str,
+    candidate: Mapping[str, Any],
+    stable: SignalSpec,
+    *,
+    stable_skill: str | None = None,
+    changed_paths: Iterable[str] | None = None,
 ) -> tuple[SignalSpec, str | None, list[Any]]:
-    """Validate an update draft without staging or mutating the Registry."""
+    """Validate and baseline-overlay an update without mutating the Registry."""
 
     if set(candidate) not in (
         {"signal_ref", "spec", "tests"},
@@ -1663,7 +1684,14 @@ def validate_signal_update_candidate(
     raw_tests = candidate["tests"]
     if not isinstance(raw_spec, Mapping) or not isinstance(raw_tests, list):
         raise ValidationError("Signal Update candidate spec/tests shape is invalid")
-    updated = candidate_signal_spec_from_dict(raw_spec)
+    candidate_spec = dict(raw_spec)
+    candidate_retrieval = candidate_spec.get("raw_retrieval")
+    if not isinstance(candidate_retrieval, Mapping):
+        raise ValidationError("Signal Update candidate raw_retrieval must be an object")
+    retrieval = dict(stable.to_dict()["raw_retrieval"])
+    retrieval.update(dict(candidate_retrieval))
+    candidate_spec["raw_retrieval"] = retrieval
+    updated = candidate_signal_spec_from_dict(candidate_spec)
     if updated.signal_id != stable.signal_id or updated.version != stable.version + 1:
         raise ValidationError("Signal Update candidate must preserve id and use vNext")
     if updated.category != stable.category:
@@ -1681,7 +1709,7 @@ def validate_signal_update_candidate(
         raise ValidationError(
             "Signal Update deterministic candidate must preserve function"
         )
-    skill_value = candidate.get("skill")
+    skill_value = candidate.get("skill", stable_skill)
     if skill_value is not None and not isinstance(skill_value, str):
         raise ValidationError("Signal Update skill must be string or null")
     if updated.execution_type is SignalExecutionType.DETERMINISTIC and (
@@ -1692,6 +1720,65 @@ def validate_signal_update_candidate(
         isinstance(skill_value, str) and skill_value.strip()
     ):
         raise ValidationError("LLM Signal Update requires a complete skill")
+
+    stable_dict = stable.to_dict()
+    updated_dict = updated.to_dict()
+    retrieval_fields = (
+        "source_types",
+        "query_terms",
+        "lookback_days",
+        "comparison_requirement",
+        "required_source_groups",
+        "minimum_distinct_periods",
+        "minimum_period_span_days",
+        "minimum_observations",
+    )
+    actual_paths = {
+        f"spec.raw_retrieval.{name}"
+        for name in retrieval_fields
+        if stable_dict["raw_retrieval"].get(name)
+        != updated_dict["raw_retrieval"].get(name)
+    }
+    if stable_dict["parameters"] != updated_dict["parameters"]:
+        actual_paths.add("spec.parameters")
+    if stable_dict["execution"].get("skill_file") != updated_dict[
+        "execution"
+    ].get("skill_file"):
+        actual_paths.add("spec.execution.skill_file")
+    if stable_skill != skill_value:
+        actual_paths.add("skill")
+    if not actual_paths:
+        raise ValidationError(
+            "Signal Update candidate has no effective change; use no_change"
+        )
+    if changed_paths is not None:
+        declared = tuple(str(item) for item in changed_paths)
+        allowed_paths = {
+            *(f"spec.raw_retrieval.{name}" for name in retrieval_fields),
+            "spec.parameters",
+            "spec.execution.skill_file",
+            "skill",
+        }
+        unknown = sorted(set(declared) - allowed_paths)
+        if unknown:
+            raise ValidationError(
+                "Signal Update changed_paths contains unknown path: "
+                + ", ".join(unknown)
+            )
+        if len(set(declared)) != len(declared):
+            raise ValidationError("Signal Update changed_paths must be unique")
+        missing = sorted(actual_paths - set(declared))
+        surplus = sorted(set(declared) - actual_paths)
+        if missing or surplus:
+            details = []
+            if missing:
+                details.append("missing " + ", ".join(missing))
+            if surplus:
+                details.append("surplus " + ", ".join(surplus))
+            raise ValidationError(
+                "Signal Update changed_paths does not match effective diff: "
+                + "; ".join(details)
+            )
     return updated, skill_value, raw_tests
 
 
@@ -2350,6 +2437,7 @@ class SignalEvolutionEngine:
             "unavailable": [],
             "neutral": [],
         }
+        technical_failures: list[dict[str, Any]] = []
         execution_usage = AgentUsage()
         for case in cases:
             batch = executor.execute_batch(
@@ -2361,6 +2449,21 @@ class SignalEvolutionEngine:
             execution_usage = execution_usage + batch.usage
             result = batch.results[0]
             resolution = batch.resolutions[0]
+            if result.execution_status not in {
+                SignalExecutionStatus.SUCCESS,
+                SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+            }:
+                technical_failures.append(
+                    {
+                        "case_id": case.case_id,
+                        "company_id": case.company_id,
+                        "execution_status": result.execution_status.value,
+                        "error_code": result.execution_error_code,
+                        "error_message": result.execution_error_message,
+                        "resolution": resolution.to_dict(),
+                    }
+                )
+                continue
             if result.value is SignalValue.UNAVAILABLE:
                 bucket = "unavailable"
             elif result.value is SignalValue.NEUTRAL:
@@ -2371,12 +2474,19 @@ class SignalEvolutionEngine:
                 bucket = "wrong"
             classified[bucket].append((case, result, resolution))
 
+        problem_type = str(target["problem_type"])
         primary_name = (
-            "unavailable"
-            if target["problem_type"] == "repeated_unavailable"
-            else "wrong"
+            "unavailable" if problem_type == "repeated_unavailable" else "wrong"
         )
-        primary = classified[primary_name][:2]
+        primary = list(classified[primary_name][:2])
+        primary_sources = [primary_name] * len(primary)
+        if problem_type == "repeated_explicit_misleading" and len(primary) < 2:
+            sourced_unavailable = [
+                item for item in classified["unavailable"] if item[2].documents
+            ]
+            supplement = sourced_unavailable[: 2 - len(primary)]
+            primary.extend(supplement)
+            primary_sources.extend(["domain_unavailable"] * len(supplement))
         boundary_pool = [
             *classified["correct"],
             *classified["neutral"],
@@ -2393,9 +2503,11 @@ class SignalEvolutionEngine:
         )[: self.effectiveness_evaluator.case_limit]
         local_selection = {
             "problem_bucket": primary_name,
+            "primary_sources": primary_sources,
             "available_bucket_counts": {
                 name: len(values) for name, values in classified.items()
             },
+            "technical_failure_count": len(technical_failures),
             "induction_case_ids": [
                 case.case_id for case, _result, _resolution in induction
             ],
@@ -2423,10 +2535,7 @@ class SignalEvolutionEngine:
                 "issue_fingerprint": issue_fingerprint,
                 "local_selection": local_selection,
                 "execution_inputs": execution_inputs,
-                "update_model": (
-                    f"{type(self.update_model).__module__}."
-                    f"{type(self.update_model).__qualname__}"
-                ),
+                "update_model": self._role_work_identity(self.update_model),
                 "projection_protocol": "signal-update-evidence-packet-v2",
             }
         )
@@ -2476,6 +2585,7 @@ class SignalEvolutionEngine:
                     "defer_reason": "insufficient_local_induction_or_holdout",
                     "local_selection": local_selection,
                     "execution_usage": _usage_to_dict(execution_usage),
+                    "technical_failures": technical_failures,
                 }
             )
 
@@ -2506,6 +2616,12 @@ class SignalEvolutionEngine:
             "induction_cases": induction_packets,
             "candidate_contract": {
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
+                "vnext_template": {
+                    "signal_ref": signal_ref,
+                    "spec": {**spec.to_dict(), "version": spec.version + 1},
+                    "skill": skill,
+                    "tests": [],
+                },
             },
             "rules": {
                 "dispositions": ["no_change", "defer", "update"],
@@ -2529,8 +2645,25 @@ class SignalEvolutionEngine:
             "execution_usage": _usage_to_dict(execution_usage),
             "local_selection": local_selection,
             "resolutions": resolutions,
+            "technical_failures": technical_failures,
             "decision": decision.to_dict(),
             "disposition": decision.disposition,
+        }
+        audit["diagnostic_counts"] = {
+            "evidence_verdict": {
+                name: sum(
+                    str(item.get("evidence_verdict", "")) == name
+                    for item in decision.case_diagnostics
+                )
+                for name in ("supported", "contradicted", "insufficient")
+            },
+            "outcome_relation": {
+                name: sum(
+                    str(item.get("outcome_relation", "")) == name
+                    for item in decision.case_diagnostics
+                )
+                for name in ("aligned", "misaligned", "not_assessable")
+            },
         }
         if decision.disposition != "update":
             return self._signal_update_output(audit=audit)
@@ -2539,6 +2672,7 @@ class SignalEvolutionEngine:
             staged_ref = self._stage_update_candidate(
                 signal_ref=signal_ref,
                 candidate=decision.candidate,
+                changed_paths=decision.changed_paths,
             )
         except ValidationError as exc:
             raise CandidateExecutionRejected(
@@ -2638,7 +2772,13 @@ class SignalEvolutionEngine:
                     item for item in target_audits if isinstance(item, Mapping)
                 )
             for candidate in candidates:
-                if candidate.get("work_fingerprint") == work_fingerprint:
+                if (
+                    candidate.get("work_fingerprint") == work_fingerprint
+                    and (
+                        candidate.get("disposition") == "no_change"
+                        or bool(candidate.get("staged_ref"))
+                    )
+                ):
                     return candidate
         return None
 
@@ -2647,9 +2787,15 @@ class SignalEvolutionEngine:
         *,
         signal_ref: str,
         candidate: Mapping[str, Any],
+        changed_paths: Iterable[str],
     ) -> str:
+        stable = self.registry.load_spec(signal_ref)
         updated, skill_value, raw_tests = validate_signal_update_candidate(
-            signal_ref, candidate, self.registry.load_spec(signal_ref)
+            signal_ref,
+            candidate,
+            stable,
+            stable_skill=self.registry.load_skill(signal_ref),
+            changed_paths=changed_paths,
         )
         return self.registry.stage_candidate(
             updated,
@@ -4697,13 +4843,59 @@ class SignalEvolutionEngine:
                         },
                         "raw_retrieval": {
                             "type": "object",
-                            "required": ["source_types"],
+                            "required": ["source_types", "query_terms"],
                             "properties": {
                                 "source_types": {
                                     "type": "array",
                                     "minItems": 1,
+                                    "uniqueItems": True,
                                     "items": {"type": "string"},
-                                }
+                                },
+                                "query_terms": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "maxItems": 12,
+                                    "uniqueItems": True,
+                                    "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 80,
+                                    },
+                                },
+                                "lookback_days": {
+                                    "type": ["integer", "null"],
+                                    "minimum": 1,
+                                },
+                                "comparison_requirement": {
+                                    "type": ["string", "null"],
+                                    "minLength": 1,
+                                    "maxLength": 240,
+                                },
+                                "required_source_groups": {
+                                    "type": "array",
+                                    "uniqueItems": True,
+                                    "items": {
+                                        "type": "array",
+                                        "minItems": 1,
+                                        "uniqueItems": True,
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 1,
+                                        },
+                                    },
+                                },
+                                "minimum_distinct_periods": {
+                                    "type": ["integer", "null"],
+                                    "minimum": 1,
+                                },
+                                "minimum_period_span_days": {
+                                    "type": ["integer", "null"],
+                                    "minimum": 1,
+                                },
+                                "minimum_observations": {
+                                    "type": ["integer", "null"],
+                                    "minimum": 1,
+                                },
                             },
                             "additionalProperties": False,
                         },
@@ -4769,6 +4961,9 @@ class SignalEvolutionEngine:
                 "signal_ref": {"type": "string", "description": "exact stable ref"},
                 **schema["properties"],
             }
+            schema["properties"]["spec"]["properties"]["raw_retrieval"].pop(
+                "required"
+            )
             schema["constraints"] = [
                 *schema["constraints"],
                 "spec must preserve signal_id, category, description, evidence policy, execution type, and deterministic function",

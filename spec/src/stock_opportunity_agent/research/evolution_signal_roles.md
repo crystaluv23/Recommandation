@@ -49,7 +49,14 @@ mining, and Signal update proposals.
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the
   runtime does not treat a model-authored paraphrase as source fact. A label is
-  never accepted as evidence that an event or source fact exists.
+  never accepted as evidence that an event or source fact exists. New Update
+  output also declares `changed_paths`: the exact mutable execution fields that
+  differ from the supplied stable baseline. The runtime supplies a complete
+  vNext template, overlays partial `raw_retrieval` edits on the stable policy,
+  and uses one shared validator during bounded correction and staging. Unknown,
+  missing, or surplus path declarations and candidates whose only changes are
+  version or tests are invalid update decisions; historical records remain
+  readable without preserving a second active output contract.
 - Every label-revealed Mining decision receives a runtime-derived sample basis
   in its persisted form. The basis names the exact positive and control packet
   or case refs used by that comparison, so a schema-valid association cannot be

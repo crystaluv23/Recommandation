@@ -17,7 +17,11 @@ class SignalRoleAdapterTests(TestCase):
         )
         candidate = {
             "signal_ref": stable.ref,
-            "spec": {**stable.to_dict(), "version": 2},
+            "spec": {
+                **stable.to_dict(),
+                "version": 2,
+                "parameters": {"positive_min": 0.2},
+            },
             "tests": [],
         }
         invalid = json.loads(json.dumps(candidate))
@@ -25,7 +29,8 @@ class SignalRoleAdapterTests(TestCase):
         response = {
             "signal_ref": stable.ref, "disposition": "update",
             "problem_type": "threshold_calibration", "rationale": ["Test calibration."],
-            "case_diagnostics": [], "candidate": invalid,
+            "case_diagnostics": [], "changed_paths": ["spec.parameters"],
+            "candidate": invalid,
         }
         caller = ScriptedRoleCaller([response, {**response, "candidate": candidate}])
         step = LLMSignalUpdateModel(caller).update({
@@ -1314,6 +1319,7 @@ class SignalRoleAdapterTests(TestCase):
             "disposition": "defer",
             "problem_type": "routing_applicability_unclear",
             "rationale": ["The source verdict is insufficient for update-case-001."],
+            "changed_paths": [],
             "candidate": None,
         }
         invalid = {
@@ -1389,6 +1395,7 @@ class SignalRoleAdapterTests(TestCase):
             "disposition": "defer",
             "problem_type": "insufficient_evidence",
             "rationale": ["A reaffirmation alone does not show acceleration."],
+            "changed_paths": [],
             "candidate": None,
             "case_diagnostics": [{
                 "case_ref": "update-case-001",
@@ -1424,6 +1431,7 @@ class SignalRoleAdapterTests(TestCase):
             "disposition": "defer",
             "problem_type": "insufficient_case_evidence",
             "rationale": ["Both cases require source-grounded observations."],
+            "changed_paths": [],
             "candidate": None,
         }
         valid_first = {
@@ -1566,6 +1574,7 @@ class SignalRoleAdapterTests(TestCase):
             "disposition": "defer",
             "problem_type": "semantic_review",
             "rationale": ["Review source facts before outcome association."],
+            "changed_paths": [],
             "candidate": None,
         }
 

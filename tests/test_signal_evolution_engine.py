@@ -4,6 +4,213 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class SignalEvolutionTests(TestCase):
+    def test_update_contract_preserves_complete_retrieval_and_rejects_empty_diff(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            validate_signal_update_candidate,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            stable = replace(
+                registry.load_spec("revenue_growth_yoy:v1"),
+                retrieval_policy=SignalRetrievalPolicy(
+                    query_terms=("revenue sales", "annual comparison"),
+                    lookback_days=730,
+                    comparison_requirement="two comparable annual periods",
+                    required_source_groups=(("financials",),),
+                    minimum_distinct_periods=2,
+                    minimum_period_span_days=300,
+                    minimum_observations=3,
+                ),
+            )
+            candidate_spec = {**stable.to_dict(), "version": 2}
+            candidate_spec["raw_retrieval"] = {"minimum_observations": 4}
+            candidate = {
+                "signal_ref": stable.ref,
+                "spec": candidate_spec,
+                "tests": [candidate_growth_fixture()],
+            }
+
+            updated, skill, tests = validate_signal_update_candidate(
+                stable.ref,
+                candidate,
+                stable,
+                changed_paths=("spec.raw_retrieval.minimum_observations",),
+            )
+
+            self.assertEqual(updated.version, 2)
+            self.assertEqual(skill, None)
+            self.assertEqual(tests, [candidate_growth_fixture()])
+            retrieval = updated.to_dict()["raw_retrieval"]
+            self.assertEqual(retrieval["source_types"], ["financials"])
+            self.assertEqual(
+                retrieval["query_terms"], ["revenue sales", "annual comparison"]
+            )
+            self.assertEqual(retrieval["lookback_days"], 730)
+            self.assertEqual(retrieval["minimum_observations"], 4)
+
+            unchanged = {
+                "signal_ref": stable.ref,
+                "spec": {**stable.to_dict(), "version": 2},
+                "tests": [candidate_growth_fixture()],
+            }
+            with self.assertRaisesRegex(ValidationError, "no effective change"):
+                validate_signal_update_candidate(
+                    stable.ref, unchanged, stable, changed_paths=()
+                )
+            with self.assertRaisesRegex(ValidationError, "unknown path"):
+                validate_signal_update_candidate(
+                    stable.ref,
+                    candidate,
+                    stable,
+                    changed_paths=("spec.raw_retrieval.query",),
+                )
+
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("schema_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            properties = engine._candidate_arguments_schema(clone=True)[
+                "properties"
+            ]["spec"]["properties"]["raw_retrieval"]["properties"]
+            self.assertEqual(
+                set(properties),
+                {
+                    "source_types",
+                    "query_terms",
+                    "lookback_days",
+                    "comparison_requirement",
+                    "required_source_groups",
+                    "minimum_distinct_periods",
+                    "minimum_period_span_days",
+                    "minimum_observations",
+                },
+            )
+            self.assertNotIn("query", properties)
+
+    def test_update_sampling_separates_technical_and_domain_unavailable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(make_case(f"unavailable_{index}", 4.0) for index in range(11))
+            documents = tuple(
+                RawInfoDocument.create(
+                    document_id=f"one-period-{index}",
+                    company_id=case.company_id,
+                    source_type="financials",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=sec_company_facts_content(
+                        ("2024-01-01", "2024-12-31", 100.0, "2025-01-10")
+                    ),
+                )
+                for index, case in enumerate(cases)
+            )
+            store = RawInfoStore(documents=documents)
+            target = {
+                "signal_ref": "revenue_growth_yoy:v1",
+                "problem_type": "repeated_explicit_misleading",
+                "support": {"misleading_attributions": 11},
+                "recurring_contexts": [],
+            }
+
+            domain_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "domain-workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            domain = domain_engine._run_one_signal_update(
+                cycle_id=1,
+                target=target,
+                cases=cases,
+                executor=SignalExecutor(
+                    registry.freeze(),
+                    store,
+                    deterministic_functions=domain_engine.validator.deterministic_functions,
+                ),
+            )
+            domain_selection = domain["audit"]["local_selection"]
+            self.assertEqual(domain["audit"]["disposition"], "defer")
+            self.assertEqual(
+                domain["audit"]["defer_reason"],
+                "insufficient_local_induction_or_holdout",
+            )
+            self.assertEqual(
+                domain_selection["available_bucket_counts"]["unavailable"], 11
+            )
+            self.assertEqual(
+                domain_selection["primary_sources"],
+                ["domain_unavailable", "domain_unavailable"],
+            )
+            self.assertEqual(domain_selection["technical_failure_count"], 0)
+
+            def fail_execution(*_args):
+                raise ValidationError("fixture execution failed")
+
+            technical_store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"two-period-{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 120.0, "2025-01-10"),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            technical_engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=technical_store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "technical-workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                deterministic_functions={
+                    "financial.revenue_growth_yoy": fail_execution
+                },
+            )
+            technical = technical_engine._run_one_signal_update(
+                cycle_id=1,
+                target=target,
+                cases=cases,
+                executor=SignalExecutor(
+                    registry.freeze(),
+                    technical_store,
+                    deterministic_functions=(
+                        technical_engine.validator.deterministic_functions
+                    ),
+                ),
+            )
+            technical_selection = technical["audit"]["local_selection"]
+            self.assertEqual(
+                technical_selection["available_bucket_counts"]["unavailable"], 0
+            )
+            self.assertEqual(technical_selection["technical_failure_count"], 11)
+            self.assertEqual(len(technical["audit"]["technical_failures"]), 11)
+
     def test_company_facts_context_preserves_semantics_offsets_and_periods(self) -> None:
         from stock_opportunity_agent.research.evolution_core import (
             _agent_raw_document_view,
@@ -2429,14 +2636,8 @@ class SignalEvolutionTests(TestCase):
                 encoding="utf-8",
             )
 
-            self.assertEqual(
-                engine._prior_signal_update("legacy-work")["disposition"],
-                "defer",
-            )
-            self.assertEqual(
-                engine._prior_signal_update("portfolio-work")["disposition"],
-                "defer",
-            )
+            self.assertIsNone(engine._prior_signal_update("legacy-work"))
+            self.assertIsNone(engine._prior_signal_update("portfolio-work"))
             self.assertIsNone(engine._prior_signal_update("same-problem"))
 
     def test_signal_update_suppresses_exact_work_but_retries_relevant_new_input(
@@ -2472,7 +2673,17 @@ class SignalEvolutionTests(TestCase):
                 )
             )
             workspace = EvolutionWorkspace(root / "workspace")
-            update_model = NoChangeUpdateModel()
+
+            class IdentifiedUpdateModel(NoChangeUpdateModel):
+                def __init__(self) -> None:
+                    super().__init__()
+                    self.model_name = "update-model-a"
+
+                @property
+                def work_identity(self):
+                    return {"model": self.model_name, "protocol": "update-v2"}
+
+            update_model = IdentifiedUpdateModel()
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=store,
@@ -2545,6 +2756,15 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(len(update_model.requests), 1)
 
+            update_model.model_name = "update-model-b"
+            changed_model = execute_update()
+            self.assertEqual(changed_model["audit"]["disposition"], "no_change")
+            self.assertNotEqual(
+                changed_model["audit"]["work_fingerprint"],
+                first["audit"]["work_fingerprint"],
+            )
+            self.assertEqual(len(update_model.requests), 2)
+
             store.append(
                 RawInfoDocument.create(
                     document_id="relevant_work_document",
@@ -2564,7 +2784,7 @@ class SignalEvolutionTests(TestCase):
                 changed["audit"]["work_fingerprint"],
                 first["audit"]["work_fingerprint"],
             )
-            self.assertEqual(len(update_model.requests), 2)
+            self.assertEqual(len(update_model.requests), 3)
 
     def test_mining_context_preserves_refinement_reasons_and_data_gaps(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -2725,6 +2945,29 @@ class SignalEvolutionTests(TestCase):
                     disposition="update",
                     problem_type="threshold_false_positives",
                     rationale=("The current threshold is repeatedly too permissive.",),
+                    changed_paths=("spec.parameters",),
+                    case_diagnostics=(
+                        {
+                            "case_ref": "update-case-001",
+                            "evidence_verdict": "supported",
+                            "outcome_relation": "misaligned",
+                        },
+                        {
+                            "case_ref": "update-case-002",
+                            "evidence_verdict": "supported",
+                            "outcome_relation": "misaligned",
+                        },
+                        {
+                            "case_ref": "update-case-003",
+                            "evidence_verdict": "contradicted",
+                            "outcome_relation": "aligned",
+                        },
+                        {
+                            "case_ref": "update-case-004",
+                            "evidence_verdict": "insufficient",
+                            "outcome_relation": "not_assessable",
+                        },
+                    ),
                     candidate={
                         "signal_ref": stable.ref,
                         "spec": updated.to_dict(),
@@ -2776,6 +3019,14 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(result.promoted, (updated.ref,))
             self.assertEqual(len(update_model.requests), 1)
             self.assertNotIn("example", update_model.requests[0]["candidate_contract"])
+            template = update_model.requests[0]["candidate_contract"][
+                "vnext_template"
+            ]
+            self.assertEqual(
+                template["spec"], {**stable.to_dict(), "version": 2}
+            )
+            self.assertIsNone(template["skill"])
+            self.assertEqual(template["tests"], [])
             self.assertNotIn("example", engine._mining_candidate_contract())
             request_json = json.dumps(update_model.requests[0])
             for case in cases:
@@ -2783,6 +3034,21 @@ class SignalEvolutionTests(TestCase):
             update_audit = result.agent_audits["update_pipeline"]
             self.assertEqual(update_audit["target_count"], 1)
             target_audit = update_audit["targets"][0]
+            self.assertEqual(
+                target_audit["diagnostic_counts"],
+                {
+                    "evidence_verdict": {
+                        "supported": 2,
+                        "contradicted": 1,
+                        "insufficient": 1,
+                    },
+                    "outcome_relation": {
+                        "aligned": 1,
+                        "misaligned": 2,
+                        "not_assessable": 1,
+                    },
+                },
+            )
             for packet in update_model.requests[0]["induction_cases"]:
                 observation = packet["evidence_observation"]
                 self.assertIn(

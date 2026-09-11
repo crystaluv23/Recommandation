@@ -375,7 +375,10 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
 
 _SIGNAL_UPDATE_V2_OUTPUT = (
     " Return one JSON object with exactly signal_ref, disposition, problem_type, "
-    "rationale, case_diagnostics, and candidate. rationale is an array of strings. "
+    "rationale, case_diagnostics, changed_paths, and candidate. rationale and "
+    "changed_paths are arrays of strings. changed_paths must exactly declare the "
+    "effective mutable spec or skill fields changed from the supplied vNext template; "
+    "it is empty unless disposition is update. "
     "case_diagnostics must contain "
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
@@ -473,6 +476,20 @@ class LLMSignalUpdateModel(SignalUpdateModel):
 
         def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
             try:
+                if set(value) != {
+                    "signal_ref",
+                    "disposition",
+                    "problem_type",
+                    "rationale",
+                    "case_diagnostics",
+                    "changed_paths",
+                    "candidate",
+                }:
+                    raise ValidationError(
+                        "new Signal Update output requires exactly signal_ref, "
+                        "disposition, problem_type, rationale, case_diagnostics, "
+                        "changed_paths, and candidate"
+                    )
                 decision = SignalUpdateDecision.from_dict(value)
             except (KeyError, TypeError, ValueError, ValidationError) as exc:
                 raise StructuredValidationError(
@@ -486,6 +503,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                                 "problem_type",
                                 "rationale",
                                 "case_diagnostics",
+                                "changed_paths",
                                 "candidate",
                             ),
                             path_policy="any",
@@ -674,6 +692,12 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         validate_signal_update_candidate(
                             target_ref, decision.candidate,
                             SignalSpec.from_dict(stable_spec),
+                            stable_skill=(
+                                str(target["stable_skill"])
+                                if target.get("stable_skill") is not None
+                                else None
+                            ),
+                            changed_paths=decision.changed_paths,
                         )
                     except (KeyError, TypeError, ValueError, ValidationError) as exc:
                         issues.append(
@@ -2720,7 +2744,7 @@ class StructuredLLMSignalRunner:
                                 f"a version suffix and result.version exactly {item.spec.version}. "
                                 "Ground the corrected result in the smallest set of unique "
                                 "quotes required by that Signal's skill, using only its "
-                                "current eligible_projection_ids list. Comparisons may use "
+                                "unchanged eligible_projection_ids list. Comparisons may use "
                                 "multiple current/prior or supporting/counter quotes. Return "
                                 "unavailable with empty evidence when visible literals are "
                                 "insufficient."
