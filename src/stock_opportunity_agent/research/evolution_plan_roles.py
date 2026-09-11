@@ -50,6 +50,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     ROLE_OUTPUT_TOKEN_LIMITS,
 )
 from stock_opportunity_agent.research.evolution_transport import (
+    ExternalBudgetExhausted,
     JSONRoleCaller,
     _complete_json_with_invalid_value,
     _normalize_field,
@@ -1578,6 +1579,12 @@ class LLMInformationPlanProposer:
         if not self.available_source_types:
             raise ValidationError("Plan proposer requires available source types")
         self.anonymous_aliases: tuple[str, ...] = ()
+        self.request_token_budget: int | None = None
+
+    def set_request_token_budget(self, value: int) -> None:
+        """Set the exact hard ceiling for one complete proposal request."""
+
+        self.request_token_budget = int(value)
 
     def set_anonymous_aliases(self, value: Iterable[str]) -> None:
         self.anonymous_aliases = tuple(value)
@@ -1694,6 +1701,22 @@ class LLMInformationPlanProposer:
                     else None
                 ),
             }
+            estimator = getattr(self.caller, "estimate_json_request_tokens", None)
+            if self.request_token_budget is not None and callable(estimator):
+                required = estimator(
+                    system_prompt=system_prompt,
+                    payload=request_payload,
+                    allow_outcomes=True,
+                    max_output_tokens=4_000,
+                    temperature=self.temperature,
+                )
+                if required > self.request_token_budget:
+                    raise ExternalBudgetExhausted(
+                        "external_request_token_budget_exhausted",
+                        "complete Information Plan proposal context exceeds the "
+                        "frozen request-token budget: "
+                        f"required={required}, limit={self.request_token_budget}",
+                    )
             value, _usage = _complete_json_with_invalid_value(
                 self.caller,
                 stage=stage,

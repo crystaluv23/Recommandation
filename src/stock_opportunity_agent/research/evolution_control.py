@@ -1700,7 +1700,8 @@ def validate_slow_bootstrap_manifest(
         or manifest.get("input_signal_registry_hash")
         != signal_snapshot.registry_hash
         or not isinstance(backlog, Mapping)
-        or backlog.get("schema_version") != "capability-gap-report-v2"
+        or backlog.get("schema_version")
+        not in {"capability-gap-report-v2", "capability-gap-report-v3"}
     ):
         raise ValidationError("slow-bootstrap manifest differs from frozen contract")
     schema_version = str(manifest["schema_version"])
@@ -2049,16 +2050,18 @@ def _run_bounded_evolution_cycle_unlocked(
         signal_readiness_snapshot=snapshot,
         on_progress=emit,
     )
+    plan_proposer = LLMInformationPlanProposer(
+        evolution_caller,
+        temperature=float(limits["plan_proposal_temperature"]),
+        available_source_types=available_source_types,
+    )
+    plan_proposer.set_request_token_budget(int(limits["max_tokens"]))
     plan_engine = PlanEvolutionEngine(
         archive=archive,
         meta_memory=meta_memory,
         signal_registry=registry,
         evaluator=evaluator,
-        proposer=LLMInformationPlanProposer(
-            evolution_caller,
-            temperature=float(limits["plan_proposal_temperature"]),
-            available_source_types=available_source_types,
-        ),
+        proposer=plan_proposer,
         critic=LLMPlanCritic(judge_caller),
         round_reflector=LLMRoundReflector(judge_caller),
         workspace=evolution_workspace,

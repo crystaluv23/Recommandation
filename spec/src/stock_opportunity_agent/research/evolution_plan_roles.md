@@ -25,3 +25,7 @@ Signal retrieval, blind prediction, and Plan reflection.
   the research question. They must not assume every U.S.-listed issuer files
   domestic `10-K`/`10-Q` forms; the resolver selects applicable domestic or
   foreign operating reports while preserving exact-form restrictions.
+- Plan proposal receives the complete retained additive meta FIFO, validates all
+  original, vertical, and horizontal layers, and submits it under one exact
+  request-token preflight. It does not sample representative cases; transport
+  budget refusal remains a control-plane pause rather than a proposal failure.

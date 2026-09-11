@@ -19,6 +19,7 @@ from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.data.resolution import (
     aggregate_capability_gaps,
     EvidenceResolver,
+    extract_unresolved_signal_needs,
     RawInfoRequest,
     RawInfoResolution,
 )
@@ -1071,20 +1072,26 @@ class EvolutionWorkspace:
     def refresh_capability_backlog(
         self, *, available_source_types: Iterable[str] = ()
     ) -> Path:
-        """Rebuild the derived capability backlog from durable attempts."""
+        """Rebuild the derived backlog from committed checkpoint records."""
 
+        archive = self.restore_archive()
         trajectories: list[Mapping[str, Any]] = []
-        for path in sorted(
-            self.experiments_root.glob("round-*/attempts/*.json")
-        ):
-            attempt = _read_json(path)
-            trajectories.extend(
-                item
-                for item in attempt.get("trajectories", ())
-                if isinstance(item, Mapping)
-            )
+        need_sources: list[Mapping[str, Any]] = []
+        for record in archive.records:
+            for trajectory in record.trajectories:
+                serialized = trajectory.to_dict()
+                trajectories.append(serialized)
+                need_sources.append(
+                    {
+                        "source_ref": f"{record.plan_id}:{trajectory.case_id}",
+                        "source_round": record.round_id,
+                        "source_fingerprint": _canonical_hash(serialized),
+                        "trajectory": serialized,
+                    }
+                )
+        committed_signal_needs = extract_unresolved_signal_needs(need_sources)
         bootstrap_manifest_path = self.root / "slow_bootstrap" / "manifest.json"
-        signal_need_items: Iterable[Mapping[str, Any]] = ()
+        signal_need_items: Iterable[Mapping[str, Any]] = committed_signal_needs
         committed_fast_backlog: Mapping[str, Any] | None = None
         if bootstrap_manifest_path.exists():
             envelope = _read_json(bootstrap_manifest_path)
@@ -1094,7 +1101,7 @@ class EvolutionWorkspace:
                 if isinstance(backlog_seed, Mapping):
                     if manifest.get("source_kind") == "committed_fast":
                         committed_fast_backlog = dict(backlog_seed)
-                    else:
+                    elif not committed_signal_needs:
                         raw_items = backlog_seed.get("signal_need_items", ())
                         if isinstance(raw_items, list):
                             signal_need_items = tuple(
@@ -1104,13 +1111,28 @@ class EvolutionWorkspace:
                             )
         report = (
             dict(committed_fast_backlog)
-            if committed_fast_backlog is not None and not trajectories
+            if committed_fast_backlog is not None and not archive.records
             else aggregate_capability_gaps(
                 trajectories,
                 available_source_types=available_source_types,
                 signal_need_items=signal_need_items,
             )
         )
+        diagnostic_attempts = []
+        for path in sorted(self.experiments_root.glob("round-*/attempts/*.json")):
+            attempt = _read_json(path)
+            failures = attempt.get("failures", ())
+            if isinstance(failures, list) and failures:
+                diagnostic_attempts.append(
+                    {
+                        "attempt_ref": str(path.relative_to(self.root)),
+                        "failure_count": len(failures),
+                        "failures": [
+                            dict(item) for item in failures if isinstance(item, Mapping)
+                        ],
+                    }
+                )
+        report["diagnostic_attempts"] = diagnostic_attempts
         _atomic_write_json(
             self.experiments_root / "capability_gap_report.json",
             report,
@@ -1592,6 +1614,7 @@ class PlanEvolutionEngine:
                 for proposal_attempt in range(
                     1, self.evaluation_config.max_proposal_attempts_per_slot + 1
                 ):
+                    meta_view = self.meta_memory.model_view()
                     _emit_progress(
                         self.on_progress,
                         "candidate_proposal_started",
@@ -1599,6 +1622,15 @@ class PlanEvolutionEngine:
                         candidate_index=candidate_index,
                         candidate_count=self.candidates_per_round,
                         proposal_attempt=proposal_attempt,
+                        meta_context_hash=_canonical_hash(meta_view),
+                        meta_round_ids=[
+                            int(item["round_id"]) for item in meta_view
+                        ],
+                        meta_case_count=sum(
+                            len(plan.original_case_reflections)
+                            for entry in self.meta_memory.entries
+                            for plan in entry.plan_reflections
+                        ),
                     )
                     try:
                         candidate = self.proposer.propose(
@@ -1918,6 +1950,9 @@ class PlanEvolutionEngine:
             self.archive.add(record)
             self._record_signal_statistics(record)
         self.meta_memory.append(meta_entry)
+        self.workspace.refresh_capability_backlog(
+            available_source_types=self.capability_source_types
+        )
         current_top = self.archive.select_parents(
             top_k=self.top_k,
             random_k=0,

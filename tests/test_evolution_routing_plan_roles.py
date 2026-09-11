@@ -3410,25 +3410,57 @@ class RoutingAndPlanRoleTests(TestCase):
         meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"][
             0
         ]
-        original = meta_payload["representative_details"][0][
-            "representative_cases"
-        ][0]
-        self.assertEqual(original["assessment"], "correct_positive_conservative")
+        plan_meta = meta_payload["plan_reflections"][0]
+        original = plan_meta["original_case_reflections"][0]
+        self.assertEqual(
+            original["candidate_judgment_feedback"]["assessment"],
+            "correct_positive_conservative",
+        )
         self.assertEqual(
             original["self_reflection"]["ignored_evidence"],
             ["annual filing evidence was underweighted"],
         )
         self.assertEqual(
-            meta_payload["representative_details"][0]["vertical"][
+            plan_meta["vertical_plan_reflection"][
                 "next_explorations"
             ],
             ["restore annual filing evidence"],
         )
         self.assertEqual(
-            meta_payload["aggregate"]["search_implications"],
+            meta_payload["search_implications"],
             ["compare restored filing evidence"],
         )
         rendered = json.dumps(meta_payload)
         self.assertNotIn('"case_id"', rendered)
         self.assertNotIn('"company_id"', rendered)
         self.assertIn("as a replacement", caller.calls[0]["system_prompt"])
+
+    def test_plan_proposer_budget_preflight_pauses_before_model_call(self) -> None:
+        class OversizedCaller(ScriptedRoleCaller):
+            def estimate_json_request_tokens(self, **_kwargs):
+                return 50_001
+
+        caller = OversizedCaller([])
+        proposer = LLMInformationPlanProposer(caller)
+        proposer.set_request_token_budget(50_000)
+        meta = RoundMetaEntry(
+            round_id=1,
+            successful_patterns=("Complete retained lesson.",),
+            evidence_refs=("plan-1",),
+        )
+
+        with self.assertRaisesRegex(
+            ExternalBudgetExhausted, "complete Information Plan proposal context"
+        ):
+            proposer.propose(
+                round_id=2,
+                candidate_index=1,
+                candidate_count=1,
+                proposal_attempt=1,
+                forbidden_plan_ids=(),
+                parents=(default_information_plan(),),
+                meta_info=(meta,),
+                prior="fixed H_P",
+            )
+
+        self.assertEqual(caller.calls, [])

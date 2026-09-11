@@ -4,7 +4,7 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class PlanArchiveAndWorkspaceTests(TestCase):
-    def test_meta_model_view_keeps_every_round_aggregate_under_48k(self) -> None:
+    def test_meta_model_view_keeps_every_complete_round_even_over_48k(self) -> None:
         memory = PlanMetaMemory(
             entries=tuple(
                 RoundMetaEntry(
@@ -21,22 +21,24 @@ class PlanArchiveAndWorkspaceTests(TestCase):
         view = memory.model_view()
 
         self.assertEqual([item["round_id"] for item in view], list(range(1, 11)))
-        self.assertLessEqual(
+        self.assertEqual(view, tuple(entry.to_dict() for entry in memory.entries))
+        self.assertGreater(
             len(json.dumps(view, ensure_ascii=False, sort_keys=True)), 48_000
         )
 
-    def test_meta_view_keeps_whole_items_and_reports_budget_omissions(self) -> None:
+    def test_meta_view_keeps_all_whole_items_without_sampling(self) -> None:
         first = "A long complete reflection. " * 100
         second = "Another complete reflection. " * 100
         memory = PlanMetaMemory(entries=(RoundMetaEntry(
             round_id=1, successful_patterns=(first, second), evidence_refs=("plan_1",),
         ),))
         view = memory.model_view(max_chars=4000)[0]
-        self.assertEqual(view["aggregate"]["successful_patterns"], [first])
-        self.assertEqual(view["omitted_items"]["successful_patterns"], 1)
+        self.assertEqual(
+            view["plan_level"]["successful_patterns"], [first, second]
+        )
         self.assertEqual(memory._entries[0].successful_patterns, (first, second))
 
-    def test_meta_model_view_selects_richest_reflection_per_assessment(self) -> None:
+    def test_meta_model_view_keeps_every_original_case_reflection(self) -> None:
         def prediction(judgment: CandidateJudgment) -> BlindPrediction:
             positive = judgment in {
                 CandidateJudgment.LIKELY,
@@ -137,18 +139,17 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             )
         )
 
-        cases = memory.model_view()[0]["representative_details"][0][
-            "representative_cases"
+        cases = memory.model_view()[0]["plan_reflections"][0][
+            "original_case_reflections"
         ]
-        by_assessment = {item["assessment"]: item for item in cases}
-        severe = by_assessment["severe_false_negative"]
-        self.assertEqual(severe["case_index"], 2)
+        self.assertEqual([item["case_index"] for item in cases], [1, 2, 3, 4])
+        severe = cases[1]
         self.assertEqual(
             severe["self_reflection"]["why_prediction_failed"],
             ["Concrete catalyst evidence was underweighted."],
         )
 
-    def test_durable_attempt_trajectories_feed_capability_backlog(self) -> None:
+    def test_durable_attempt_trajectories_do_not_become_formal_backlog(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             workspace = EvolutionWorkspace(directory)
             trajectory = replace(
@@ -186,8 +187,55 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                     encoding="utf-8"
                 )
             )
-            self.assertEqual(backlog["items"][0]["request_id"], "recent_news")
-            self.assertEqual(backlog["items"][0]["status"], "resolved")
+            self.assertEqual(backlog["items"], [])
+            self.assertEqual(backlog["signal_need_items"], [])
+
+    def test_committed_backlog_retains_all_118_needs_and_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = EvolutionWorkspace(directory)
+            needs = tuple(f"Investigate unresolved item {index}" for index in range(118))
+            trajectory = replace(
+                make_trajectory(
+                    "issuer_needs", 2.5, True, MagnitudeClass.TWO_TO_THREE
+                ),
+                final_state=ResearchState(
+                    decision=ResearchDecision.FINALIZE,
+                    next_information_needs=needs,
+                ),
+                stop_reason=RuntimeStopReason.NO_SIGNAL_MATCH,
+            )
+            record = replace(
+                make_record("plan_needs", 1.0, (1.0, 0.0)),
+                trajectories=(trajectory,),
+                evaluation=None,
+                fitness=None,
+            )
+            workspace.commit_round(
+                round_id=1,
+                records=(record,),
+                meta_entry=RoundMetaEntry(
+                    round_id=1, evidence_refs=(record.plan_id,)
+                ),
+                signal_registry_version=1,
+                signal_registry_hash="registry-hash",
+            )
+
+            workspace.refresh_capability_backlog()
+            backlog = json.loads(
+                (workspace.root / "capability_backlog.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+            self.assertEqual(backlog["schema_version"], "capability-gap-report-v3")
+            self.assertEqual(len(backlog["signal_need_items"]), 118)
+            self.assertEqual(
+                {item["sources"][0]["stop_reason"] for item in backlog["signal_need_items"]},
+                {"no_signal_match"},
+            )
+            self.assertTrue(
+                all(item["source_rounds"] == [1] for item in backlog["signal_need_items"])
+            )
 
     def test_quality_diverse_topk_then_random_exploration(self) -> None:
         archive = PlanArchive(

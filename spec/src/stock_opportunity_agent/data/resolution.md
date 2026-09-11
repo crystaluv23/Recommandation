@@ -280,6 +280,21 @@ Info, not a new acquisition schema. Each citable record remains one contiguous
 raw span with verified offsets; distinct filings for the same period do not
 count as two comparison periods, and future-filed records are omitted.
 
+## Capability Backlog
+
+The ordinary backlog uses `capability-gap-report-v3`. A pure resolution-layer
+extractor reads admitted source trajectories' `final_state.next_information_needs`,
+normalizes only for stable hashing and exact deduplication, and retains every
+original need, source ref, committed source round, source fingerprint, and actual
+terminal reason. `no_signal_match`, budget exhaustion, and round/call limits stay
+distinct. Formal entries come from completed-checkpoint Plan records; staged
+attempts may only add separately identified technical diagnostics.
+
+Data gaps become resolved only when a later admitted resolution for the same
+request actually succeeds. Merely registering or naming a compatible source is
+not evidence of resolution. Signal result execution failures are reported in a
+separate technical list and never counted as domain capability observations.
+
 ## Point-in-time Safety
 
 `as_of` comes only from the case and cannot be supplied by a Plan. Local and

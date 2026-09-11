@@ -11,3 +11,9 @@ on the Slow Signal engine.
 - Only committed pointers define completed rounds and cycles.
 - Staged artifacts remain recoverable but never count as progress.
 - Plan evaluation retains Anchor/Random lineage and fitness gating.
+- The ordinary capability backlog is derived only from Plan records reachable
+  through committed round checkpoints. Each committed round refreshes it after
+  archive, learning, and meta publication; staged attempts may contribute a
+  separate technical diagnostic but never formal Slow-learning needs.
+- A resumed Slow loop refreshes the backlog before creating a new frozen Slow
+  validation. An already staged validation retains its exact original backlog.

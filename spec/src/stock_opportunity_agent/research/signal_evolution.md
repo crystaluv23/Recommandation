@@ -55,6 +55,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   first-word brands. Local case masking keeps its own alias expansion. Repeated
   identical inventories reuse a bounded compiled-matcher cache; literal source
   checks and final identity scans remain in place.
+- Ordinary Fast-to-Slow demand comes from the final unresolved needs of every
+  trajectory in committed Plan records, with stable need refs, exact source
+  round/fingerprint provenance, and the real terminal reason. Technical Signal
+  execution failures are separate diagnostics and never domain learning.
+  Mining receives the complete retained, masked meta FIFO; blind extraction,
+  Signal execution, and prediction do not receive retrospective meta.
 - Update assigns opaque document refs before masking source text, so the current
   result and its executed evidence resolve to the same supplied document. Literal
   facts have no field-length ceiling; exact source membership and the existing

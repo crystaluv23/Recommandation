@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -308,6 +309,115 @@ class DataGap:
         )
 
 
+def extract_unresolved_signal_needs(
+    sources: Iterable[Mapping[str, Any]],
+) -> tuple[dict[str, Any], ...]:
+    """Extract stable, provenance-complete unresolved needs from admitted sources."""
+
+    grouped: dict[str, dict[str, Any]] = {}
+    for source in sources:
+        trajectory = source.get("trajectory")
+        if not isinstance(trajectory, Mapping):
+            raise ValidationError("signal-need source requires a trajectory object")
+        source_ref = str(source.get("source_ref", "")).strip()
+        source_round = source.get("source_round")
+        if (
+            not source_ref
+            or type(source_round) is not int
+            or source_round < 1
+        ):
+            raise ValidationError(
+                "signal-need source requires source_ref and positive source_round"
+            )
+        source_fingerprint = str(source.get("source_fingerprint", "")).strip()
+        if not source_fingerprint:
+            source_fingerprint = hashlib.sha256(
+                json.dumps(
+                    trajectory,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+        final_state = trajectory.get("final_state")
+        if not isinstance(final_state, Mapping):
+            raise ValidationError("signal-need trajectory requires final_state")
+        raw_needs = final_state.get("next_information_needs", ())
+        if not isinstance(raw_needs, (list, tuple)):
+            raise ValidationError(
+                "signal-need trajectory next_information_needs must be an array"
+            )
+        stop_reason = str(trajectory.get("stop_reason", "")).strip()
+        if not stop_reason:
+            raise ValidationError("signal-need trajectory requires stop_reason")
+        for raw_need in raw_needs:
+            original_need = " ".join(str(raw_need).split())
+            normalized = original_need.casefold()
+            if not original_need:
+                continue
+            need_ref = "need-" + hashlib.sha256(
+                normalized.encode("utf-8")
+            ).hexdigest()[:24]
+            item = grouped.setdefault(
+                need_ref,
+                {
+                    "kind": "unmatched_signal_need",
+                    "need_ref": need_ref,
+                    "need": original_need,
+                    "sources": [],
+                },
+            )
+            item["sources"].append(
+                {
+                    "source_ref": source_ref,
+                    "source_round": source_round,
+                    "source_fingerprint": source_fingerprint,
+                    "original_need": original_need,
+                    "stop_reason": stop_reason,
+                }
+            )
+    result: list[dict[str, Any]] = []
+    for need_ref in sorted(grouped):
+        item = grouped[need_ref]
+        sources_by_identity = {
+            (
+                str(source["source_ref"]),
+                int(source["source_round"]),
+                str(source["source_fingerprint"]),
+                str(source["original_need"]),
+                str(source["stop_reason"]),
+            ): source
+            for source in item["sources"]
+        }
+        retained_sources = [
+            sources_by_identity[key] for key in sorted(sources_by_identity)
+        ]
+        result.append(
+            {
+                **item,
+                "sources": retained_sources,
+                "source_rounds": sorted(
+                    {int(source["source_round"]) for source in retained_sources}
+                ),
+                "source_fingerprints": sorted(
+                    {
+                        str(source["source_fingerprint"])
+                        for source in retained_sources
+                    }
+                ),
+                "stop_reasons": sorted(
+                    {str(source["stop_reason"]) for source in retained_sources}
+                ),
+                "occurrences": len(retained_sources),
+                "source_count": len(
+                    {str(source["source_ref"]) for source in retained_sources}
+                ),
+                "status": "open",
+            }
+        )
+    return tuple(result)
+
+
 def aggregate_capability_gaps(
     trajectories: Iterable[Mapping[str, Any]],
     *,
@@ -316,8 +426,10 @@ def aggregate_capability_gaps(
 ) -> dict[str, Any]:
     """Build a deterministic data/Signal backlog from durable diagnostics."""
 
-    available = {item.casefold() for item in available_source_types}
+    del available_source_types
     grouped: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+    actual_resolutions: set[tuple[str, str]] = set()
+    technical_failures: list[dict[str, Any]] = []
     for trajectory in trajectories:
         case_id = str(trajectory.get("case_id", "unknown"))
         resolutions = list(
@@ -326,9 +438,38 @@ def aggregate_capability_gaps(
         for signal_round in trajectory.get("signal_rounds", ()):
             batch = dict(signal_round).get("batch", {})
             resolutions.extend(dict(batch).get("resolutions", ()))
+            for result in dict(batch).get("results", ()):
+                if not isinstance(result, Mapping):
+                    continue
+                execution = result.get("execution")
+                status = (
+                    str(execution.get("status", ""))
+                    if isinstance(execution, Mapping)
+                    else ""
+                )
+                if status and status not in {"success", "domain_unavailable"}:
+                    technical_failures.append(
+                        {
+                            "case_id": case_id,
+                            "signal_ref": (
+                                f"{result.get('signal_id')}:v{result.get('version')}"
+                            ),
+                            "status": status,
+                            "error_code": execution.get("error_code"),
+                            "error_message": execution.get("error_message"),
+                        }
+                    )
         for resolution in resolutions:
             if not isinstance(resolution, Mapping):
                 continue
+            request = resolution.get("request")
+            request_id = (
+                str(request.get("request_id", ""))
+                if isinstance(request, Mapping)
+                else ""
+            )
+            if resolution.get("status") == "resolved" and request_id:
+                actual_resolutions.add((case_id, request_id))
             gap = resolution.get("data_gap")
             if not isinstance(gap, Mapping):
                 continue
@@ -363,10 +504,10 @@ def aggregate_capability_gaps(
     items: list[dict[str, Any]] = []
     for key in sorted(grouped):
         item = grouped[key]
-        resolved = item["reason"] in {
-            DataGapReason.ADAPTER_MISSING.value,
-            DataGapReason.EXTERNAL_NOT_AUTHORIZED.value,
-        } and source_types_compatible(item["source_types"], available)
+        resolved = all(
+            (case_id, item["request_id"]) in actual_resolutions
+            for case_id in item["affected_case_ids"]
+        )
         items.append(
             {
                 **item,
@@ -381,7 +522,7 @@ def aggregate_capability_gaps(
         key=lambda item: str(item.get("need", "")).casefold(),
     ):
         need = " ".join(str(raw_item.get("need", "")).split())
-        normalized = need.casefold()
+        normalized = str(raw_item.get("need_ref") or need.casefold())
         if not need or normalized in seen_needs:
             continue
         seen_needs.add(normalized)
@@ -389,20 +530,36 @@ def aggregate_capability_gaps(
         source_count = int(raw_item.get("source_count", 0))
         if occurrences < 1 or source_count < 1:
             raise ValidationError("Signal-need backlog counts must be positive")
-        needs.append(
-            {
-                "kind": "unmatched_signal_need",
-                "need": need,
-                "stop_reason": "no_signal_match",
-                "occurrences": occurrences,
-                "source_count": source_count,
-                "status": "open",
-            }
-        )
+        if raw_item.get("need_ref"):
+            needs.append({**raw_item, "need": need, "status": "open"})
+        else:
+            need_ref = "need-" + hashlib.sha256(
+                need.casefold().encode("utf-8")
+            ).hexdigest()[:24]
+            needs.append(
+                {
+                    "kind": "unmatched_signal_need",
+                    "need_ref": need_ref,
+                    "need": need,
+                    "sources": [],
+                    "source_rounds": [],
+                    "source_fingerprints": [],
+                    "stop_reasons": ["no_signal_match"],
+                    "occurrences": occurrences,
+                    "source_count": source_count,
+                    "status": "open",
+                }
+            )
     return {
-        "schema_version": "capability-gap-report-v2",
+        "schema_version": "capability-gap-report-v3",
         "items": items,
         "signal_need_items": needs,
+        "technical_failures": sorted(
+            technical_failures,
+            key=lambda item: (
+                item["case_id"], item["signal_ref"], item["status"]
+            ),
+        ),
         "open_count": (
             sum(item["status"] == "open" for item in items) + len(needs)
         ),

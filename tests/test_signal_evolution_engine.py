@@ -300,12 +300,53 @@ class SignalEvolutionTests(TestCase):
                 llm_signal_runner=None,
             )
             engine.slow_role_identity_guards += ("Future Holdings", "Business Systems")
+            (engine.workspace.root / "capability_backlog.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "capability-gap-report-v3",
+                        "items": [],
+                        "signal_need_items": [
+                            {
+                                "kind": "unmatched_signal_need",
+                                "need_ref": "need-opaque",
+                                "need": "What did fixture_issuer disclose?",
+                                "sources": [
+                                    {
+                                        "source_ref": "plan:/private/path:fixture_issuer",
+                                        "source_round": 1,
+                                        "source_fingerprint": "fingerprint",
+                                        "original_need": "What did fixture_issuer disclose?",
+                                        "stop_reason": "no_signal_match",
+                                    }
+                                ],
+                                "source_rounds": [1],
+                                "source_fingerprints": ["fingerprint"],
+                                "stop_reasons": ["no_signal_match"],
+                                "occurrences": 1,
+                                "source_count": 1,
+                                "status": "open",
+                            }
+                        ],
+                        "technical_failures": [],
+                        "diagnostic_attempts": [
+                            {"attempt_ref": "/private/path/attempt.json"}
+                        ],
+                        "open_count": 1,
+                        "resolved_count": 0,
+                    }
+                ),
+                encoding="utf-8",
+            )
 
             context = engine._mining_context(cycle_id=1)
 
             self.assertNotIn("fixture_issuer", json.dumps(context["meta_info"]))
             self.assertIn("clinical milestone", json.dumps(context["meta_info"]))
             self.assertIn("future business plans", json.dumps(context["meta_info"]))
+            rendered_backlog = json.dumps(context["capability_backlog"])
+            self.assertNotIn("fixture_issuer", rendered_backlog)
+            self.assertNotIn("/private/path", rendered_backlog)
+            self.assertIn("source-", rendered_backlog)
             self.assertEqual(memory.model_view(), original)
 
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
@@ -1824,7 +1865,7 @@ class SignalEvolutionTests(TestCase):
                 first["audit"]["stages"]["H1"]["input_fingerprint"],
             )
             self.assertEqual(
-                model.requests[-1]["meta_info"][0]["aggregate"]["missing_capabilities"],
+                model.requests[-1]["meta_info"][0]["signal_observations"]["missing_capabilities"],
                 ["Separate committed orders from pipeline claims."],
             )
 

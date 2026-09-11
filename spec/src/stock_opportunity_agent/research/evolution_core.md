@@ -50,9 +50,11 @@ independent. Existing serialized record shapes are unchanged.
 
 Predictor's 24KB display target is advisory; complete validated state and citation
 material cross this boundary unchanged, with target overflow explicitly recorded.
-Hard request/case/cost limits remain enforced by transport. Meta model views select
-whole reflection items and disclose omissions within their global budget; they
-never cut claims mid-sentence or overwrite complete durable reflections.
+Hard request/case/cost limits remain enforced by transport. Meta model views
+serialize every retained FIFO entry and every original case reflection without
+sampling. Their consumers mask the complete view and use exact request
+estimation; an oversized request pauses through the existing budget control
+flow and never becomes a content correction or a semantic empty result.
 
 For the supported SEC Company Facts response shape, model-facing document views
 preserve taxonomy concept, provider label, unit, and up to the latest necessary

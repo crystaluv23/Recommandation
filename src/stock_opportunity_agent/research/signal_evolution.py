@@ -1928,6 +1928,9 @@ class SignalEvolutionEngine:
         if staged is None:
             if input_snapshot is None:
                 raise ValidationError("new Slow loop requires its input Signal snapshot")
+            self.workspace.refresh_capability_backlog(
+                available_source_types=self.evidence_resolver.available_source_types
+            )
             validation = self._validate_cycle(input_snapshot, cycle_id=cycle_id)
             self.workspace.stage_slow_validation(
                 cycle_id=cycle_id,
@@ -3822,7 +3825,7 @@ class SignalEvolutionEngine:
             _read_json(backlog_path)
             if backlog_path.exists()
             else {
-                "schema_version": "capability-gap-report-v2",
+                "schema_version": "capability-gap-report-v3",
                 "items": [],
                 "signal_need_items": [],
                 "open_count": 0,
@@ -3838,12 +3841,26 @@ class SignalEvolutionEngine:
             for item in capability_backlog.get("signal_need_items", ())
             if isinstance(item, Mapping)
         ]
+        capability_backlog = self._mining_capability_backlog_view(
+            capability_backlog
+        )
+        meta_view = _mask_identity_values(
+            list(self.meta_memory.model_view()),
+            self.slow_role_identity_guards,
+            expand_aliases=False,
+        )
         return {
             "cycle_id": cycle_id,
-            "meta_info": _mask_identity_values(
-                list(self.meta_memory.model_view()), self.slow_role_identity_guards,
-                expand_aliases=False,
-            ),
+            "meta_info": meta_view,
+            "meta_context_audit": {
+                "content_hash": _canonical_hash(meta_view),
+                "round_ids": [int(item["round_id"]) for item in meta_view],
+                "case_count": sum(
+                    len(plan.original_case_reflections)
+                    for entry in self.meta_memory.entries
+                    for plan in entry.plan_reflections
+                ),
+            },
             "capability_backlog": _mask_identity_values(
                 capability_backlog, self.slow_role_identity_guards, expand_aliases=False
             ),
@@ -3858,6 +3875,65 @@ class SignalEvolutionEngine:
                 self.validator.deterministic_functions
             ),
             "locked_test_available": False,
+        }
+
+    @staticmethod
+    def _mining_capability_backlog_view(
+        backlog: Mapping[str, Any],
+    ) -> dict[str, Any]:
+        """Remove local identities and paths from the H1-only backlog view."""
+
+        needs = []
+        for raw_item in backlog.get("signal_need_items", ()):
+            if not isinstance(raw_item, Mapping):
+                continue
+            item = dict(raw_item)
+            item["sources"] = [
+                {
+                    "source_ref": "source-" + _canonical_hash(
+                        str(source.get("source_ref", ""))
+                    )[:16],
+                    "source_round": source.get("source_round"),
+                    "source_fingerprint": source.get("source_fingerprint"),
+                    "original_need": source.get("original_need"),
+                    "stop_reason": source.get("stop_reason"),
+                }
+                for source in item.get("sources", ())
+                if isinstance(source, Mapping)
+            ]
+            needs.append(item)
+        items = []
+        for raw_item in backlog.get("items", ()):
+            if not isinstance(raw_item, Mapping):
+                continue
+            item = {
+                key: value
+                for key, value in raw_item.items()
+                if key != "affected_case_ids"
+            }
+            item["affected_source_count"] = len(
+                raw_item.get("affected_case_ids", ())
+            )
+            items.append(item)
+        technical = []
+        for raw_item in backlog.get("technical_failures", ()):
+            if not isinstance(raw_item, Mapping):
+                continue
+            technical.append(
+                {
+                    key: value
+                    for key, value in raw_item.items()
+                    if key != "case_id"
+                }
+            )
+        return {
+            "schema_version": backlog.get("schema_version"),
+            "items": items,
+            "signal_need_items": needs,
+            "technical_failures": technical,
+            "diagnostic_attempt_count": len(backlog.get("diagnostic_attempts", ())),
+            "open_count": backlog.get("open_count", 0),
+            "resolved_count": backlog.get("resolved_count", 0),
         }
 
     @staticmethod

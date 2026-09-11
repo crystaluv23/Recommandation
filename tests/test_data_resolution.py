@@ -1889,6 +1889,26 @@ class EvidenceResolverTests(TestCase):
         resolved = aggregate_capability_gaps(
             (trajectory,), available_source_types=("news",)
         )
+        self.assertEqual(resolved["items"][0]["status"], "open")
+        actual_resolution = {
+            "case_id": "case_1",
+            "basic_info_bundle": {
+                "requests": [
+                    {
+                        "request": {
+                            "request_id": "recent_news",
+                            "description": "Recent news",
+                            "source_types": ["news"],
+                            "max_documents": 1,
+                        },
+                        "status": "resolved",
+                        "data_gap": None,
+                    }
+                ]
+            },
+            "signal_rounds": [],
+        }
+        resolved = aggregate_capability_gaps((trajectory, actual_resolution))
         self.assertEqual(resolved["items"][0]["status"], "resolved")
 
         with_signal_need = aggregate_capability_gaps(
@@ -1902,15 +1922,19 @@ class EvidenceResolverTests(TestCase):
             ),
         )
         self.assertEqual(
-            with_signal_need["schema_version"], "capability-gap-report-v2"
+            with_signal_need["schema_version"], "capability-gap-report-v3"
         )
         self.assertEqual(
             with_signal_need["signal_need_items"],
             [
                 {
                     "kind": "unmatched_signal_need",
+                    "need_ref": with_signal_need["signal_need_items"][0]["need_ref"],
                     "need": "latest analyst estimate revisions",
-                    "stop_reason": "no_signal_match",
+                    "sources": [],
+                    "source_rounds": [],
+                    "source_fingerprints": [],
+                    "stop_reasons": ["no_signal_match"],
                     "occurrences": 2,
                     "source_count": 2,
                     "status": "open",
@@ -1929,4 +1953,49 @@ class EvidenceResolverTests(TestCase):
         reauthorized = aggregate_capability_gaps(
             (trajectory,), available_source_types=("sec_company_facts",)
         )
-        self.assertEqual(reauthorized["items"][0]["status"], "resolved")
+        self.assertEqual(reauthorized["items"][0]["status"], "open")
+
+    def test_capability_backlog_separates_signal_technical_failures(self) -> None:
+        trajectory = {
+            "case_id": "case_technical",
+            "basic_info_bundle": {"requests": []},
+            "signal_rounds": [
+                {
+                    "batch": {
+                        "resolutions": [],
+                        "results": [
+                            {
+                                "signal_id": "guidance_change",
+                                "version": 1,
+                                "execution": {
+                                    "status": "validation_failed",
+                                    "error_code": "invalid_literal",
+                                    "error_message": "citation was not literal",
+                                },
+                            },
+                            {
+                                "signal_id": "customer_order",
+                                "version": 1,
+                                "execution": {"status": "domain_unavailable"},
+                            },
+                        ],
+                    }
+                }
+            ],
+        }
+
+        report = aggregate_capability_gaps((trajectory,))
+
+        self.assertEqual(report["signal_need_items"], [])
+        self.assertEqual(
+            report["technical_failures"],
+            [
+                {
+                    "case_id": "case_technical",
+                    "signal_ref": "guidance_change:v1",
+                    "status": "validation_failed",
+                    "error_code": "invalid_literal",
+                    "error_message": "citation was not literal",
+                }
+            ],
+        )
