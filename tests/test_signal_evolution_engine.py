@@ -1377,6 +1377,51 @@ class SignalEvolutionTests(TestCase):
             audit["query_match_status"], "unmatched_comparator_context"
         )
 
+    def test_queryless_exploration_prefers_recent_distinct_source_families(
+        self,
+    ) -> None:
+        case = replace(
+            make_case("exploration_target", 4.0),
+            basic_info={
+                "company_name": "Exploration Target Corp",
+                "ticker": "EXPT",
+            },
+        )
+        rows = (
+            ("old-financial", "financials", 10),
+            ("news", "news", 4),
+            ("transcript", "earnings_transcript", 3),
+            ("filing", "8-k", 2),
+            ("recent-financial", "sec_company_facts", 1),
+        )
+        documents = tuple(
+            RawInfoDocument.create(
+                document_id=document_id,
+                company_id=case.company_id,
+                source_type=source_type,
+                published_at=NOW - timedelta(days=days_ago),
+                available_at=NOW - timedelta(days=days_ago),
+                content=(
+                    "Exploration Target Corp disclosed one bounded source fact."
+                ),
+            )
+            for document_id, source_type, days_ago in rows
+        )
+
+        selected, _evidence, _audit = _select_h3_model_evidence(
+            documents,
+            case=case,
+            query=None,
+            limit=4,
+            prefer_source_diversity=True,
+        )
+
+        self.assertEqual(
+            {item.document_id for item in selected},
+            {"recent-financial", "filing", "transcript", "news"},
+        )
+        self.assertNotIn("old-financial", {item.document_id for item in selected})
+
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
@@ -3832,6 +3877,97 @@ class SignalEvolutionTests(TestCase):
             ]
             self.assertEqual(len(sample_basis["positive_refs"]), 2)
             self.assertEqual(len(sample_basis["control_refs"]), 2)
+
+    def test_exploration_uses_exact_available_source_type_catalog(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                [make_case(f"catalog_positive_{index}", 4.0) for index in range(3)]
+                + [make_case(f"catalog_control_{index}", 1.1) for index in range(3)]
+            )
+            selection = exploration_selection(
+                cases, cycle_id=3, induction_per_class=1, validation_per_class=1
+            )
+            literal = "A bounded source fact was reported."
+            mining_model = ScriptedMiningModel(
+                signatures=tuple(
+                    SignalMiningSignature(
+                        case_ref=case_ref,
+                        observations=(
+                            SignalMiningObservation(
+                                summary="One source fact was visible.",
+                                document_ref="document-01",
+                                exact_span=literal,
+                            ),
+                        ),
+                    )
+                    for case_ref in selection["e1_refs"]
+                )
+            )
+            available_types = (
+                "8-k", "financials", "market_data", "news", "transcript",
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"catalog-{index}",
+                        company_id=cases[0].company_id,
+                        source_type=source_type,
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=literal,
+                    )
+                    for index, source_type in enumerate(available_types)
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=SignalMiningConfig(
+                    case_pool_limit=6,
+                    ranking_case_limit=6,
+                    h2_profile_scan_limit=6,
+                    h2_min_ready_issuers=6,
+                    h2_min_ready_per_class=3,
+                    induction_cases_per_class=1,
+                    validation_cases_per_class=1,
+                ),
+            )
+            captured_source_types = []
+
+            def packet(case_ref, _case, *, source_types, **_kwargs):
+                captured_source_types.append(tuple(source_types))
+                return (
+                    {
+                        "case_ref": case_ref,
+                        "evidence": [{
+                            "document_ref": "document-01",
+                            "content_excerpt": literal,
+                        }],
+                    },
+                    {"case_ref": case_ref, "status": "resolved", "usable": True},
+                )
+
+            with mock.patch.object(
+                engine, "_mining_evidence_packet", side_effect=packet
+            ):
+                engine._run_signal_mining(cycle_id=3)
+
+            self.assertTrue(captured_source_types)
+            self.assertTrue(
+                all(
+                    value == tuple(sorted(available_types))
+                    for value in captured_source_types
+                )
+            )
 
     def test_exploration_does_not_call_e2_when_one_group_lacks_grounding(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

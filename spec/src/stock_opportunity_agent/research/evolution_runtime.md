@@ -111,7 +111,13 @@ mutually exclusive source kinds:
   Fast range is authoritative in `state.json`, whose Slow validation/result and
   cycle pointer are still absent, and freezes the committed round meta,
   stable-projection Signal learning events, capability backlog, and every
-  contributing checkpoint/Plan/meta hash.
+  contributing checkpoint/Plan/meta hash. Its backlog is rebuilt through the
+  same committed-trajectory path as an ordinary cycle: every terminal
+  `next_information_needs` value receives a stable `need_ref` plus exact
+  Plan/case, source-round, trajectory-fingerprint, original-text, and stop-reason
+  provenance before capability-gap aggregation. Calling the gap aggregator
+  without those extracted Signal needs is an invalid bootstrap because it would
+  silently erase Fast demand.
 
 For `committed_fast`, the active phase may be `fast_loop` immediately after the
 last Fast commit or `slow_loop` after normal resume has recognized the complete

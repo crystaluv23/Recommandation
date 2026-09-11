@@ -28,6 +28,7 @@ from stock_opportunity_agent.data.resolution import (
     DataAcquisitionBudget,
     DataAcquisitionPolicy,
     EvidenceResolver,
+    extract_unresolved_signal_needs,
 )
 from stock_opportunity_agent.data.sources.alpha_vantage import (
     AlphaVantageClient,
@@ -1602,11 +1603,21 @@ def _build_committed_fast_bootstrap_manifest(
     )
     if len({event.event_id for event in learning_events}) != len(learning_events):
         raise ValidationError("committed Fast bootstrap learning events are duplicated")
-    trajectories = tuple(
-        trajectory.to_dict()
-        for record in records
-        for trajectory in record.trajectories
-    )
+    trajectories: list[dict[str, Any]] = []
+    need_sources: list[dict[str, Any]] = []
+    for record in records:
+        for trajectory in record.trajectories:
+            serialized = trajectory.to_dict()
+            trajectories.append(serialized)
+            need_sources.append(
+                {
+                    "source_ref": f"{record.plan_id}:{trajectory.case_id}",
+                    "source_round": record.round_id,
+                    "source_fingerprint": _canonical_hash(serialized),
+                    "trajectory": serialized,
+                }
+            )
+    signal_need_items = extract_unresolved_signal_needs(need_sources)
     artifacts: list[dict[str, Any]] = []
     for round_id in expected_round_ids:
         checkpoint_path = (
@@ -1660,7 +1671,10 @@ def _build_committed_fast_bootstrap_manifest(
         ],
         "meta_entries": [entry.to_dict() for entry in meta_entries],
         "signal_learning_events": [event.to_dict() for event in learning_events],
-        "capability_backlog_seed": aggregate_capability_gaps(trajectories),
+        "capability_backlog_seed": aggregate_capability_gaps(
+            trajectories,
+            signal_need_items=signal_need_items,
+        ),
     }
     manifest_hash = _canonical_hash(manifest)
     _write_or_verify_json(

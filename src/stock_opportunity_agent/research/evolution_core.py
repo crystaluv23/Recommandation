@@ -5664,6 +5664,7 @@ def _select_h3_model_evidence(
     limit: int,
     aliases: tuple[str, ...] | None = None,
     expand_aliases: bool = True,
+    prefer_source_diversity: bool = False,
 ) -> tuple[tuple[RawInfoDocument, ...], list[dict[str, Any]], dict[str, Any]]:
     """Select a bounded complementary H3 packet from an eligible ranked pool."""
 
@@ -5699,12 +5700,30 @@ def _select_h3_model_evidence(
     evidence: list[dict[str, Any]] = []
     remaining = list(indexed_views)
     while remaining and len(selected) < limit:
-        best = max(
-            remaining,
-            key=lambda item: _h3_selection_score(
-                (*evidence, item[2]), query=query, rank=item[0]
-            ),
-        )
+        if prefer_source_diversity and query is None:
+            selected_families = {
+                _evidence_source_family(document.source_type)
+                for document in selected
+            }
+            best = max(
+                remaining,
+                key=lambda item: (
+                    int(
+                        _evidence_source_family(item[1].source_type)
+                        not in selected_families
+                    ),
+                    item[1].available_at,
+                    item[1].published_at,
+                    -item[0],
+                ),
+            )
+        else:
+            best = max(
+                remaining,
+                key=lambda item: _h3_selection_score(
+                    (*evidence, item[2]), query=query, rank=item[0]
+                ),
+            )
         remaining.remove(best)
         selected.append(best[1])
         evidence.append(
@@ -5737,6 +5756,34 @@ def _select_h3_model_evidence(
             )
         ),
     }
+
+
+def _evidence_source_family(source_type: str) -> str:
+    """Group exact Raw Info types only for queryless evidence diversity."""
+
+    normalized = source_type.casefold()
+    families = {
+        "filing": {
+            "10-k", "10-q", "20-f", "40-f", "6-k", "8-k",
+            "filing", "filing_body", "sec_filing",
+        },
+        "transcript": {
+            "alpha_vantage_earnings_raw_response", "earnings_call",
+            "earnings_transcript", "transcript",
+        },
+        "news": {"company_news", "news"},
+        "financial": {
+            "company_facts", "financial_statements", "financials",
+            "sec_company_facts", "sec_company_facts_raw_response",
+        },
+        "market": {
+            "historical_price", "market_data", "price_daily", "prices",
+        },
+    }
+    for family, values in families.items():
+        if normalized in values:
+            return family
+    return normalized
 
 
 def _h3_selection_score(

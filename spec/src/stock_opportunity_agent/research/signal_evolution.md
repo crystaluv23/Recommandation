@@ -59,6 +59,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   from retrospective outcome labels. A runtime budget exception during E1 is
   propagated unchanged to the cycle controller and is never converted into an
   E1 validation failure or masked by a missing exception binding.
+  Queryless E1 considers the resolver's exact available source-type catalog; it
+  must not discard filings or transcripts through plural aliases that do not
+  exist in that catalog. Its bounded evidence selector prefers the most recent
+  document from a previously unseen semantic source family before selecting a
+  second document from the same family. This keeps filing, transcript, news,
+  Company-Facts/financial, and market evidence complementary without increasing
+  the document ceiling. Query-directed H2/H3 ranking retains its query-coverage
+  semantics.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
   document ref and literal span for every fact before an update draft can be

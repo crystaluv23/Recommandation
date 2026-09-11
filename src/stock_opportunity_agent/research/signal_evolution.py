@@ -3558,11 +3558,8 @@ class SignalEvolutionEngine:
                 if case_ref in validation_ref_set
             ),
         }
-        priority = ("news", "filings", "financials", "transcripts", "market_data")
         available = set(self.evidence_resolver.available_source_types)
-        source_types = tuple(item for item in priority if item in available)
-        if not source_types:
-            source_types = tuple(sorted(available))
+        source_types = tuple(sorted(available))
         evidence_packets: list[dict[str, Any]] = []
         resolution_audit: list[dict[str, Any]] = []
         for case_ref in selected["e1_refs"]:
@@ -4588,6 +4585,7 @@ class SignalEvolutionEngine:
                 limit=request.max_documents,
                 aliases=self.slow_role_identity_guards,
                 expand_aliases=False,
+                prefer_source_diversity=True,
             )
             selection.clear()
             selection.update(audit)

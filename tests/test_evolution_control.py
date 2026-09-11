@@ -178,7 +178,12 @@ class RunControlTests(TestCase):
                 interpretation="Revenue grew year over year.",
                 coverage=SignalCoverage.SUFFICIENT,
             )
-            final_state = ResearchState(decision=ResearchDecision.FINALIZE)
+            final_state = ResearchState(
+                decision=ResearchDecision.FINALIZE,
+                next_information_needs=(
+                    "Determine whether growth remains durable.",
+                ),
+            )
             trajectory = ExecutionTrajectory(
                 case_id="case-1",
                 company_id="issuer-1",
@@ -300,6 +305,23 @@ class RunControlTests(TestCase):
             self.assertEqual(manifest["schema_version"], "slow-bootstrap-manifest-v2")
             self.assertEqual(len(manifest["meta_entries"]), 1)
             self.assertEqual(len(manifest["signal_learning_events"]), 1)
+            signal_needs = manifest["capability_backlog_seed"][
+                "signal_need_items"
+            ]
+            self.assertEqual(len(signal_needs), 1)
+            self.assertEqual(
+                signal_needs[0]["need"],
+                "Determine whether growth remains durable.",
+            )
+            self.assertEqual(signal_needs[0]["source_rounds"], [1])
+            self.assertEqual(
+                signal_needs[0]["sources"][0]["source_ref"],
+                f"{plan.plan_id}:case-1",
+            )
+            self.assertRegex(
+                signal_needs[0]["sources"][0]["source_fingerprint"],
+                r"^[0-9a-f]{64}$",
+            )
             learning_selection = manifest["signal_learning_events"][0]["selection"]
             self.assertNotIn("answer_scope", learning_selection)
             self.assertNotIn("residual_need", learning_selection)
