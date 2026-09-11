@@ -92,7 +92,9 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "signal_refs=[]. Group need_refs only when the same measurement or dependency "
     "reason genuinely addresses every ref; never pool semantically unrelated refs "
     "to shorten the ledger. Each hypothesis may cite only need_refs directly "
-    "addressed by its one measurement. no_hypothesis.need_refs is only a "
+    "addressed by its one measurement. The union of all hypothesis need_refs must "
+    "exactly equal the refs dispositioned as new_measurement; every other need "
+    "must use another disposition. no_hypothesis.need_refs is only a "
     "small explanatory subset and need not repeat the complete disposition ledger. "
     "Never add Markdown or company identities."
 )
@@ -166,6 +168,15 @@ _H1_ALTERNATE_TEST_OUTCOME = re.compile(
     r"(?:price|market|stock)\s+"
     r"(?:reaction|movement|change|increase|decrease|returns?|trend|momentum|"
     r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",
+    re.IGNORECASE,
+)
+
+
+_H1_POST_CUTOFF_SOURCE = re.compile(
+    r"\b(?:post[- ](?:series|cutoff|prediction(?:[- ]time)?)|"
+    r"after\s+(?:the\s+)?(?:point-in-time\s+)?(?:market|price|source|evidence)\s+"
+    r"series\s+(?:end|ends|ended)|after\s+(?:the\s+)?prediction[- ](?:time|date)|"
+    r"subsequent\s+to\s+(?:the\s+)?cutoff)\b",
     re.IGNORECASE,
 )
 
@@ -390,6 +401,14 @@ _MINING_EVIDENCE_ABSENCE = re.compile(
 )
 
 
+_E2_VISIBLE_LABEL_DENIAL = re.compile(
+    r"(?:\b(?:outcome|label)s?[- ]hidden\b|"
+    r"\blabels?\b.{0,50}\b(?:hidden|unavailable|absent|not\s+visible|"
+    r"cannot\s+be\s+compared|uncomparable)\b)",
+    re.IGNORECASE,
+)
+
+
 _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     " Return one JSON object with exactly signatures (an array). Each signature "
     "has exactly case_ref (a supplied opaque string), observations (an array), "
@@ -415,7 +434,8 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "changed_paths are arrays of strings. changed_paths must exactly declare the "
     "effective mutable spec or skill fields changed from the supplied vNext template; "
     "it is empty unless disposition is update. Copy changed_paths only from "
-    "candidate_contract.changed_paths_allowed. Never include spec.version, "
+    "candidate_contract.changed_paths_allowed. Copy candidate.tests byte-for-byte "
+    "from candidate_contract.vnext_template.tests. Never include spec.version, "
     "spec.definition, tests, or whole-section aliases. "
     "case_diagnostics must contain "
     "exactly one object per supplied case_ref, with exactly case_ref, "
@@ -1232,6 +1252,59 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                     )
             if conclusion == "hypotheses" and isinstance(raw_items, list):
+                for index, raw_item in enumerate(raw_items):
+                    if not isinstance(raw_item, Mapping):
+                        continue
+                    measurement = raw_item.get("measurement")
+                    retrieval = raw_item.get("retrieval_intent")
+                    falsifiers = raw_item.get("falsifiers")
+                    semantic_values = [
+                        *(
+                            [str(item) for item in measurement.values()]
+                            if isinstance(measurement, Mapping)
+                            else []
+                        ),
+                        *(
+                            [str(retrieval.get("query", ""))]
+                            if isinstance(retrieval, Mapping)
+                            else []
+                        ),
+                        *(
+                            [
+                                str(item.get(key, ""))
+                                for item in falsifiers
+                                if isinstance(item, Mapping)
+                                for key in ("condition", "expected_observation")
+                            ]
+                            if isinstance(falsifiers, list)
+                            else []
+                        ),
+                    ]
+                    if any(
+                        _H1_POST_CUTOFF_SOURCE.search(item)
+                        for item in semantic_values
+                    ):
+                        proposal_ref = str(raw_item.get("proposal_ref", ""))
+                        ledger_issues.append(
+                            ValidationIssue(
+                                code="h1_post_cutoff_source_invalid",
+                                message=(
+                                    f"hypotheses[{index}] explicitly requests facts "
+                                    "after a point-in-time source series, cutoff, or "
+                                    "prediction time. Define the measurement only over "
+                                    "facts available at or before each prediction time"
+                                ),
+                                paths=(f"hypotheses[{index}]",),
+                                item_id=(
+                                    proposal_ref
+                                    if proposal_ref in allowed_slots
+                                    else None
+                                ),
+                                item_id_field="proposal_ref",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+            if conclusion == "hypotheses" and isinstance(raw_items, list):
                 hypothesis_need_refs = {
                     ref
                     for raw_item in raw_items
@@ -1241,15 +1314,27 @@ class LLMSignalMiningModel(SignalMiningModel):
                     if isinstance(ref, str) and ref in allowed_need_refs
                 }
                 if hypothesis_need_refs != new_measurement_refs_from_ledger:
+                    ledger_only = sorted(
+                        new_measurement_refs_from_ledger - hypothesis_need_refs
+                    )
+                    hypothesis_only = sorted(
+                        hypothesis_need_refs - new_measurement_refs_from_ledger
+                    )
                     ledger_issues.append(
                         ValidationIssue(
                             code="h1_hypothesis_need_refs_mismatch",
                             message=(
                                 "new_measurement disposition aliases must exactly match "
-                                "the union of hypothesis need_refs"
+                                "the union of hypothesis need_refs. Reclassify every "
+                                "ledger-only ref outside the bounded portfolio, or "
+                                "directly attach it to a hypothesis that measures it"
                             ),
                             paths=("hypotheses", "need_dispositions"),
                             path_policy="any",
+                            repair_context={
+                                "ledger_only_new_measurement_refs": ledger_only,
+                                "hypothesis_only_need_refs": hypothesis_only,
+                            },
                         )
                     )
             if ledger_issues:
@@ -1587,7 +1672,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             "that a new testable measurement exists. Return no_testable_hypothesis "
             "when the visible gaps, sources, or prior attempts do not support a new "
             "test. Do not infer an event from an outcome label, redefine the fixed "
-            "groups, or encode a future outcome in the measurement. Existing Signal "
+            "groups, encode a future outcome in the measurement, or request facts "
+            "after a source series, cutoff, or prediction time; every measurement "
+            "uses only facts available at or before each prediction time. Existing Signal "
             "cards are an exclusion catalog. On correction, follow the supplied "
             "field paths. When an issue identifies one invalid proposal_ref, change "
             "or remove only that hypothesis and retain valid siblings byte-for-byte."
@@ -2171,9 +2258,13 @@ class LLMSignalMiningModel(SignalMiningModel):
             allowed_hypothesis_ids=None,
             inconclusive_only_ids=set(),
             prompt=(
-                "Compare labels only against the frozen outcome-hidden signatures. "
+                "The signatures were frozen while outcomes were hidden; the supplied "
+                "positive/control labels are now visible and must be compared against "
+                "those unchanged signatures. Do not claim the labels remain hidden, "
+                "unavailable, or uncomparable. "
+                "Each deterministic summary contains only source-owned context. "
                 "Treat each exact_span as authoritative; ignore any stronger or "
-                "different claim in its model-authored summary. "
+                "different claim inferred from the summary. "
                 "Each decision is a portfolio-level recurring pattern, not one decision "
                 "per case. Propose a reusable new Signal only for a repeated observable "
                 "difference. If the cases only support individual rejections or no "
@@ -2346,6 +2437,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                         all(label in {"positive", "control"} for label in exploration_labels.values())
                         and any(
                             re.search(r"\bunlabel(?:ed|led)\b", item, re.IGNORECASE)
+                            or _E2_VISIBLE_LABEL_DENIAL.search(item)
                             for item in rationale
                         )
                     ):
@@ -2355,8 +2447,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                                     code="e2_no_candidate_label_inventory_mismatch",
                                     message=(
                                         "Every selected E2 signature has a positive or "
-                                        "control label; no_candidate rationale must not "
-                                        "claim that unlabeled cases were considered."
+                                        "control label visible in this request; the "
+                                        "no_candidate rationale must not claim labels "
+                                        "are absent, hidden, unavailable, or uncomparable."
                                     ),
                                     paths=("no_candidate.rationale",),
                                 )

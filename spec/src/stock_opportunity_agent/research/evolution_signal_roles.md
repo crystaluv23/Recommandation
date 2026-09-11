@@ -64,6 +64,12 @@ mining, and Signal update proposals.
   to reject a measurement that can be defined from meta-memory, the demand
   backlog, and the available source catalog; local H2/H3 owns case feasibility
   and evidence testing.
+  The union of hypothesis `need_refs` exactly equals the refs dispositioned as
+  `new_measurement`; needs outside the bounded portfolio use another honest
+  disposition. Mismatch feedback reports ledger-only and hypothesis-only refs.
+  Measurements, queries, and falsifiers use facts available at or before each
+  prediction time; explicit post-series, post-cutoff, or after-prediction
+  acquisition is invalid even though the resolver would later fail closed.
 - The controller also projects explicit vertical-reflection fields into stable
   runtime action refs. Each such ref must be dispositioned as a new measurement,
   an existing-Signal update, a dependency repair, or an intrinsically
@@ -111,6 +117,11 @@ mining, and Signal update proposals.
   An E2 no-candidate rationale must also agree with the supplied label inventory;
   for example, it cannot claim that unlabeled cases were considered when every
   selected signature has an explicit positive/control label.
+  The E2 prompt says that signatures were frozen while hidden but their supplied
+  positive/control labels are now visible. A rationale cannot claim those labels
+  remain hidden, unavailable, or uncomparable. It also identifies signature
+  summaries as deterministic source projections rather than model-authored
+  interpretations, so E2 receives one coherent provenance contract.
 - E1 summaries are untrusted interpretations and remain audit-only. Before E2,
   the controller emits only each validated document ref and exact source span
   with a deterministic literal description. When the span belongs unambiguously
@@ -142,7 +153,10 @@ mining, and Signal update proposals.
   invalid update decisions. The complete vNext template also carries the stable
   version's non-empty executable fixtures. Update output must preserve those
   fixtures byte-for-byte; tests are not a model-editable path and may never be
-  replaced by an empty array. Historical records remain readable without
+  replaced by an empty array. The clone-only argument schema accepts the same
+  optional document id, company id, and publication timestamp fields as the
+  fixture executor, so the supplied stable template is itself schema-valid and
+  never needs mutation merely to satisfy the prompt. Historical records remain readable without
   preserving a second active output contract.
 - Every label-revealed Mining decision receives a runtime-derived sample basis
   in its persisted form. The basis names the exact positive and control packet

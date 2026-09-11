@@ -750,6 +750,99 @@ class SignalRoleAdapterTests(TestCase):
                 ScriptedRoleCaller([future_outcome, future_outcome, future_outcome])
             ).propose_hypotheses(payload)
 
+    def test_signal_h1_corrects_post_cutoff_source_and_exact_need_union(self) -> None:
+        hypothesis = {
+            "proposal_ref": "h1-c0001-s01",
+            "measurement": {
+                "observable": "Financing action after the prediction date",
+                "value_kind": "boolean",
+                "normalization": "none",
+            },
+            "applicability": {"rule": "all_ready_issuers", "values": []},
+            "expected_direction": "more_frequent_in_positive",
+            "retrieval_intent": {
+                "source_types": ["filing"],
+                "query": "financing action after prediction date",
+            },
+            "falsifiers": [
+                {
+                    "condition": "The action is absent after prediction date.",
+                    "expected_observation": "The fixed groups overlap.",
+                }
+            ],
+            "need_refs": ["need-001"],
+        }
+        invalid = {
+            "conclusion": "hypotheses",
+            "hypotheses": [hypothesis],
+            "no_hypothesis": None,
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001", "need-002"],
+                    "disposition": "new_measurement",
+                    "signal_refs": [],
+                    "rationale": ["A financing measure may be testable."],
+                }
+            ],
+        }
+        corrected_hypothesis = json.loads(json.dumps(hypothesis))
+        corrected_hypothesis["measurement"]["observable"] = (
+            "Financing action disclosed by the prediction date"
+        )
+        corrected_hypothesis["retrieval_intent"]["query"] = (
+            "financing action disclosed by prediction date"
+        )
+        corrected_hypothesis["falsifiers"][0]["condition"] = (
+            "No financing action is disclosed by the prediction date."
+        )
+        corrected = {
+            **invalid,
+            "hypotheses": [corrected_hypothesis],
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "new_measurement",
+                    "signal_refs": [],
+                    "rationale": ["A financing measure is testable."],
+                },
+                {
+                    "need_refs": ["need-002"],
+                    "disposition": "not_testable",
+                    "signal_refs": [],
+                    "rationale": ["This need defines no reusable observation."],
+                },
+            ],
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v3",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["filing"],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "first-need", "need": "Measure financing."},
+                        {"need_ref": "second-need", "need": "Policy-only request."},
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(len(step.value), 1)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        by_code = {item["issue_code"]: item for item in feedback["obligations"]}
+        self.assertIn("h1_post_cutoff_source_invalid", by_code)
+        mismatch = by_code["h1_hypothesis_need_refs_mismatch"]
+        self.assertEqual(
+            mismatch["ledger_only_new_measurement_refs"],
+            ["need-002"],
+        )
+        self.assertEqual(
+            mismatch["hypothesis_only_need_refs"], []
+        )
+
     def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
         class OversizedCaller(ScriptedRoleCaller):
             def estimate_json_request_tokens(self, **_kwargs):
@@ -2666,6 +2759,47 @@ class SignalRoleAdapterTests(TestCase):
             feedback["obligations"][0]["issue_code"],
             "e2_no_candidate_label_inventory_mismatch",
         )
+
+    def test_exploration_e2_rejects_claim_that_visible_labels_are_hidden(self) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "insufficient_evidence",
+                "rationale": [
+                    "The outcome-hidden labels cannot be compared as text."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        corrected = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "insufficient_evidence",
+                "rationale": [
+                    "The visible positive and control facts are too heterogeneous."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_no_candidate_label_inventory_mismatch",
+        )
+        self.assertIn("labels are now visible", caller.calls[0]["system_prompt"])
+        self.assertNotIn("model-authored summary", caller.calls[0]["system_prompt"])
 
     def test_slow_output_contracts_do_not_supply_populated_answers(self) -> None:
         contracts = (

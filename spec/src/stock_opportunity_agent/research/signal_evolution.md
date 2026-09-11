@@ -92,7 +92,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   replaces them with a deterministic literal-only view before labels are
   revealed; the original summaries remain in E1 audit only. For an observation
   that maps unambiguously to a supplied SEC Company Facts record, this view keeps
-  the source-owned taxonomy, concept, label, and unit beside the literal span.
+  the source-owned taxonomy, concept, label, and unit beside the literal span and
+  deterministically adds the other supplied period for that concept when the
+  selected span identifies exactly one record. This bounded companion is source
+  projection, not a model-authored observation.
   Queryless extraction prefers a same-concept two-period pair before unrelated
   one-period structured facts. Generic filing
   cover/legal boilerplate is not a comparison-ready observation and is

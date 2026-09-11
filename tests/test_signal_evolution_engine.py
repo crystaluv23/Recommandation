@@ -115,6 +115,18 @@ class SignalEvolutionTests(TestCase):
                 },
             )
             self.assertNotIn("query", properties)
+            clone_schema = engine._candidate_arguments_schema(clone=True)
+            document_required = clone_schema["properties"]["tests"]["items"][
+                "properties"
+            ]["documents"]["items"]["required"]
+            self.assertEqual(
+                document_required,
+                ["source_type", "available_at", "content"],
+            )
+            self.assertIn(
+                "tests must copy vnext_template.tests byte-for-byte",
+                clone_schema["constraints"],
+            )
 
     def test_update_sampling_separates_technical_and_domain_unavailable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -626,6 +638,12 @@ class SignalEvolutionTests(TestCase):
                                     "records": [
                                         {
                                             "exact_span": (
+                                                '{"end":"2024-06-30",'
+                                                '"val":"Revenue was 10 in the prior quarter."}'
+                                            )
+                                        },
+                                        {
+                                            "exact_span": (
                                                 '{"end":"2025-06-30",'
                                                 '"val":"Revenue was 20 in the quarter."}'
                                             )
@@ -645,6 +663,11 @@ class SignalEvolutionTests(TestCase):
         self.assertIn("compare exact_span only", view["observations"][0]["summary"])
         self.assertIn("concept=Revenue", view["observations"][0]["summary"])
         self.assertIn("label=Revenue from customers", view["observations"][0]["summary"])
+        self.assertEqual(len(view["observations"]), 2)
+        self.assertIn(
+            "Revenue was 10 in the prior quarter",
+            view["observations"][1]["exact_span"],
+        )
 
     def test_exploration_literal_view_omits_ambiguous_structured_semantics(self) -> None:
         from stock_opportunity_agent.research.signal_evolution import (

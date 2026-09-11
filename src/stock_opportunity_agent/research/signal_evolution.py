@@ -139,10 +139,26 @@ def _literal_only_signature_view(
         if isinstance(item, Mapping) and item.get("document_ref")
     }
 
-    def literal_summary(observation: "SignalMiningObservation") -> str:
-        evidence = evidence_by_ref.get(observation.document_ref, {})
+    def source_summary(
+        document_ref: str,
+        metadata: tuple[str, str, str, str] | None = None,
+    ) -> str:
+        evidence = evidence_by_ref.get(document_ref, {})
         source_type = str(evidence.get("source_type", "source"))
-        matches: set[tuple[str, str, str, str]] = set()
+        prefix = f"Literal point-in-time excerpt from source_type={source_type}; "
+        if metadata is not None:
+            taxonomy, concept, label, unit = metadata
+            prefix += (
+                "source-owned structured context: "
+                f"taxonomy={taxonomy}; concept={concept}; label={label}; unit={unit}; "
+            )
+        return prefix + "compare exact_span only."
+
+    def structured_binding(
+        observation: "SignalMiningObservation",
+    ) -> tuple[tuple[str, str, str, str], tuple[str, ...]] | None:
+        evidence = evidence_by_ref.get(observation.document_ref, {})
+        matches: dict[tuple[str, str, str, str], tuple[set[str], list[str]]] = {}
         structured = evidence.get("structured_context")
         if isinstance(structured, Mapping):
             for concept in structured.get("concepts", ()):
@@ -152,36 +168,71 @@ def _literal_only_signature_view(
                     str(concept.get(key, ""))
                     for key in ("taxonomy", "concept", "label", "unit")
                 )
+                matched_spans: set[str] = set()
+                all_spans: list[str] = []
                 for record in concept.get("records", ()):
                     record_span = (
                         record.get("exact_span")
                         if isinstance(record, Mapping)
                         else None
                     )
-                    if (
-                        isinstance(record_span, str)
-                        and observation.exact_span in record_span
-                    ):
-                        matches.add(metadata)
-        prefix = f"Literal point-in-time excerpt from source_type={source_type}; "
-        if len(matches) == 1:
-            taxonomy, concept, label, unit = next(iter(matches))
-            prefix += (
-                "source-owned structured context: "
-                f"taxonomy={taxonomy}; concept={concept}; label={label}; unit={unit}; "
+                    if not isinstance(record_span, str) or not record_span:
+                        continue
+                    all_spans.append(record_span)
+                    if observation.exact_span in record_span:
+                        matched_spans.add(record_span)
+                if matched_spans:
+                    prior_matched, prior_all = matches.setdefault(
+                        metadata, (set(), [])
+                    )
+                    prior_matched.update(matched_spans)
+                    prior_all.extend(all_spans)
+        if len(matches) != 1:
+            return None
+        metadata, (matched_spans, all_spans) = next(iter(matches.items()))
+        companions = (
+            tuple(dict.fromkeys(all_spans))
+            if len(matched_spans) == 1
+            else ()
+        )
+        return metadata, companions
+
+    observations: list[dict[str, str]] = []
+    seen_literals: set[tuple[str, str]] = set()
+    for observation in signature.observations:
+        binding = structured_binding(observation)
+        metadata = binding[0] if binding is not None else None
+        key = (observation.document_ref, observation.exact_span)
+        if key not in seen_literals:
+            observations.append(
+                {
+                    "summary": source_summary(observation.document_ref, metadata),
+                    "document_ref": observation.document_ref,
+                    "exact_span": observation.exact_span,
+                }
             )
-        return prefix + "compare exact_span only."
+            seen_literals.add(key)
+        for companion in binding[1] if binding is not None else ():
+            companion_key = (observation.document_ref, companion)
+            if (
+                companion_key in seen_literals
+                or observation.exact_span in companion
+                or not 8 <= len(companion) <= 240
+                or len(observations) >= 12
+            ):
+                continue
+            observations.append(
+                {
+                    "summary": source_summary(observation.document_ref, metadata),
+                    "document_ref": observation.document_ref,
+                    "exact_span": companion,
+                }
+            )
+            seen_literals.add(companion_key)
 
     return {
         "case_ref": signature.case_ref,
-        "observations": [
-            {
-                "summary": literal_summary(observation),
-                "document_ref": observation.document_ref,
-                "exact_span": observation.exact_span,
-            }
-            for observation in signature.observations
-        ],
+        "observations": observations,
         "evidence_gaps": list(signature.evidence_gaps),
     }
 
@@ -5176,10 +5227,14 @@ class SignalEvolutionEngine:
             schema["properties"]["spec"]["properties"]["raw_retrieval"].pop(
                 "required"
             )
+            schema["properties"]["tests"]["items"]["properties"]["documents"][
+                "items"
+            ]["required"] = ["source_type", "available_at", "content"]
             schema["constraints"] = [
                 *schema["constraints"],
                 "spec must preserve signal_id, category, description, evidence policy, execution type, and deterministic function",
                 "spec.version must equal stable version plus one",
+                "tests must copy vnext_template.tests byte-for-byte",
             ]
         return schema
 

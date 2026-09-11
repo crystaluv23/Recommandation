@@ -438,6 +438,9 @@ text anonymization, consistently across current results and executed evidence.
   both groups retain the configured count of locally grounded signatures. The
   controller may try at most one same-group evidence fallback per required slot;
   exact spans, not model-authored summaries, remain authoritative in discovery.
+  The reveal prompt states that the supplied positive/control labels are now
+  visible; a no-candidate rationale claiming they remain hidden or unavailable is
+  a correctable semantic contradiction.
 
 All model stages use literal key/type contracts and one primary bounded correction.
 Current v7 contracts freeze `max_structured_corrections=2`: only when that first

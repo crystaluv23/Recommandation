@@ -1,5 +1,24 @@
 # Status
 
+V36 completed a real DeepSeek Slow cycle at authoritative `round=0/cycle=1`,
+but it is rejected as semantic acceptance. Exact H1 input contained all 30
+reflection actions and the response did use several of them, yet all three
+hypotheses explicitly depended on post-series or after-prediction facts. Its
+corrections repeatedly failed because the new-measurement ledger contained refs
+not attached to any hypothesis and feedback exposed only the aggregate mismatch,
+not the exact set difference. Independent E1/E2 transported exact source spans,
+explicit positive/control labels, and source-owned SEC concept metadata without
+truncation or model-summary contamination; nevertheless E2 incorrectly claimed
+that its visible labels remained outcome-hidden. Update exposed a controller
+contradiction: stable executable fixtures legally omit `document_id` and
+`published_at`, the clone schema required both, and the validator simultaneously
+required those fixtures to remain byte-for-byte unchanged. The repaired contract
+now rejects explicit post-cutoff measurements, reports exact H1 ref differences,
+adds a bounded source-owned same-concept companion period before E2, rejects
+visible-label denial, and makes the clone schema accept the immutable stable
+fixtures it supplies. All 704 tests and repository lint pass; a fresh V37 real
+Slow acceptance remains pending.
+
 V34 is authoritatively complete at `round=0/cycle=1` but is not semantic Slow
 acceptance. Its exact H1 payload carried all 30 projected reflection actions;
 the initial answer falsely mapped 142 unrelated Fast needs to every stable
