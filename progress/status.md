@@ -1,5 +1,23 @@
 # Status
 
+V57 executed and committed two real `slow_only` cycles under contract
+`3b7f85ca...587af` at authoritative `round=0/cycle=2`. All 18 model attempts
+settled successfully for `$0.14368368000000004`; Locked Test stayed sealed,
+Registry v1 remained unchanged, and both cycles reported zero
+candidate/validated/promoted/updated Signals with goal `unmet`. Cycle 1
+processed 28 feedback units and persisted 23 nested-ref canonicalizations;
+cycle 2 processed nine units and persisted nine mappings. H1 remained grounded,
+both E1 batches in each cycle retained explicit partial technical failures, and
+Update made no unsupported candidate. V57 is execution-complete but not
+content-accepted: cycle-2 E2 prose assigned `case-006` to both labels despite
+the runtime-owned disjoint label map, and cycle-2 reflection received five
+cycle-1 feedback units but processed only older imported backlog. E2 now forbids
+free-text case/label assignment and persists runtime-derived positive/control
+refs separately. Reflection now reserves the immediately prior locally committed
+cycle's complete units ahead of old backlog and prevents the optional source
+selector from evicting those that fit. All 742 tests and lint pass; V57 remains
+immutable and a fresh successor contract is required.
+
 V56 committed one real cycle under contract `2f6f1af7...44bbe` at
 authoritative `round=0/cycle=1`. It used 11 reserved attempts, including one
 retryable SSL failure and one truncated structured response, with settled cost

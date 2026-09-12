@@ -3496,6 +3496,57 @@ class SignalRoleAdapterTests(TestCase):
             "e2_no_candidate_label_inventory_mismatch",
         )
 
+    def test_exploration_e2_rejects_free_text_case_label_reassignment(self) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "insufficient_evidence",
+                "rationale": [
+                    (
+                        "The labeled positives (case-001, case-002, case-003) "
+                        "and controls (case-003, case-004) do not separate."
+                    )
+                ],
+                "considered_case_refs": [
+                    "case-001",
+                    "case-002",
+                    "case-003",
+                    "case-004",
+                ],
+            },
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_candidate"]["rationale"] = [
+            "The supplied literal signatures show no recurring measurable contrast."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "positive"},
+                    {"case_ref": "case-003", "label": "control"},
+                    {"case_ref": "case-004", "label": "control"},
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_free_text_label_assignment_forbidden",
+        )
+        self.assertEqual(
+            step.metadata["no_candidate"]["positive_case_refs"],
+            ["case-001", "case-002"],
+        )
+        self.assertEqual(
+            step.metadata["no_candidate"]["control_case_refs"],
+            ["case-003", "case-004"],
+        )
+
     def test_exploration_e2_corrects_unsupplied_profile_claim_in_no_candidate(
         self,
     ) -> None:

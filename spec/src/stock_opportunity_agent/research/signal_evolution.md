@@ -19,16 +19,25 @@ artifact hash and JSON locator. A file larger than the role budget is never
 string-truncated or treated as one permanently unreadable feedback unit.
 
 The entry reflection is one bounded logical job over complete selected feedback
-units plus historical pending units. No pending feedback means zero model calls
-and a `reused` memory delta. Successful coverage alone advances
+units plus historical pending units. To prevent an old backlog from starving
+cross-cycle learning, complete unprocessed units owned by the immediately prior
+locally committed cycle form a deterministic recent frontier ahead of older
+pending rows. The units from that frontier which fit the ordinary whole-entry
+budget are runtime-required for this reflection read; a model-requested
+replacement may add other supplied refs but cannot evict them. Oversized or
+remaining units stay pending, so recency reservation neither truncates entries
+nor discards history. No pending feedback means zero model calls and a `reused`
+memory delta. Successful coverage alone advances
 `processed_feedback_refs`; omitted or failed units remain pending. Raw episodes,
 specific reflections, and evidence-linked method lessons coexist append-only.
 Challenges qualify prior lessons through explicit refs and never overwrite them.
 When the default complete-entry view defers sources, the role may make one typed
-opaque-ref selection. Runtime validates scope and budget, replaces the default
-batch with the selected complete entries, and keeps every unselected ref pending;
-the final role call cannot request again. Selection and final request hashes are
-both retained in the cycle audit.
+opaque-ref selection. Runtime validates scope and budget, combines that selection
+with the runtime-required recent frontier, resolves the combined complete-entry
+view, and keeps every unselected ref pending; the final role call cannot request
+again. The selector receives the required refs as runtime-owned context but does
+not own or restate their inclusion. Selection and final request hashes are both
+retained in the cycle audit.
 Reflection output persists only each selected unit's top-level `feedback_ref`.
 An out-of-scope Slow locator nested under exactly one selected unit is
 deterministically rewritten to that owner ref, with the mapping retained in role
@@ -179,6 +188,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   candidate and not a locally invented semantic result. Locally checkable claims
   about the supplied cohort, including whether any selected case is unlabeled,
   must match the actual E2 payload before an empty result is persisted. The same
+  runtime-owned label map is persisted as separate positive/control ref arrays.
+  Free-text rationale cannot restate a case ref together with a group label;
+  this prevents an otherwise plausible sentence from assigning one case to the
+  wrong or both groups, without relying on natural-language parsing or
+  incident-specific case ids. Canonical case-scoped gap citations are exempt
+  because they make no label assignment.
+  The same
   guard rejects rationale or observable-difference claims about sector,
   industry, business model, market-cap class, geography, or listing venue when
   that attribute vocabulary is absent from the literal source-owned signatures;

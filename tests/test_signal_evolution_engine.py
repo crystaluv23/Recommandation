@@ -220,6 +220,53 @@ class SignalEvolutionTests(TestCase):
         )
         self.assertEqual(len(reader.payloads), 1)
 
+    def test_typed_slow_source_read_cannot_evict_required_recent_frontier(self) -> None:
+        class Reader:
+            def request_slow_sources(self, payload):
+                self.payload = payload
+                return AgentStep(("historical-2",))
+
+        catalog = {
+            "recent-1": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "recent" * 20},
+            },
+            "historical-1": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "old-a" * 100},
+            },
+            "historical-2": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "old-b" * 20},
+            },
+        }
+        selected, manifest = read_slow_sources(
+            catalog,
+            role_scope="reflection",
+            source_catalog=catalog,
+            budget_bytes=900,
+        )
+        engine = object.__new__(SignalEvolutionEngine)
+        reader = Reader()
+
+        replacement, final_manifest = engine._optional_slow_source_read(
+            model=reader,
+            role_scope="reflection",
+            source_catalog=catalog,
+            selected=selected,
+            manifest=manifest,
+            required_refs=("recent-1",),
+        )
+
+        self.assertEqual(
+            [item["ref"] for item in replacement],
+            ["recent-1", "historical-2"],
+        )
+        self.assertEqual(
+            reader.payload["current_view"]["required_refs"], ["recent-1"]
+        )
+        self.assertEqual(final_manifest["required_refs"], ["recent-1"])
+
     def test_slow_experiments_seal_role_granular_request_chains(self) -> None:
         engine = object.__new__(SignalEvolutionEngine)
         engine.workspace = mock.Mock()
@@ -427,6 +474,20 @@ class SignalEvolutionTests(TestCase):
                 {"committed_fast_round": 0, "committed_slow_cycle": 1},
             )
             second_memory = workspace.load_slow_memory(2)
+            prior_cycle_refs = {
+                row["feedback_ref"]
+                for row in second_input["feedback_rows"]
+                if row["subject_ref"] == "cycle-0001"
+            }
+            self.assertTrue(prior_cycle_refs)
+            self.assertTrue(
+                prior_cycle_refs
+                <= set(second_memory["processed_feedback_refs"])
+            )
+            self.assertEqual(
+                set(second_memory["model_view_manifest"]["required_refs"]),
+                prior_cycle_refs,
+            )
             self.assertEqual(
                 second_memory["model_view_manifest"][
                     "canonicalized_nested_refs"

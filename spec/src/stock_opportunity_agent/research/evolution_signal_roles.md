@@ -221,7 +221,11 @@ mining, and Signal update proposals.
   into an invented data gap while keeping E1's source limitations auditable.
   The E2 prompt says that signatures were frozen while hidden but their supplied
   positive/control labels are now visible. A rationale cannot claim those labels
-  remain hidden, unavailable, or uncomparable. It also identifies signature
+  remain hidden, unavailable, or uncomparable. The adapter persists the exact
+  runtime-owned positive/control ref arrays in no-candidate audit metadata and
+  rejects free-text rationale that combines any case ref with a group label;
+  mappings therefore come only from structured runtime state, not prose. Exact
+  canonical gap citations remain valid. It also identifies signature
   summaries as deterministic source projections rather than model-authored
   interpretations, so E2 receives one coherent provenance contract.
 - E1 summaries are untrusted interpretations and remain audit-only. Before E2,

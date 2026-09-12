@@ -3258,6 +3258,32 @@ class SignalEvolutionEngine:
             for row in feedback_rows
             if str(row["feedback_ref"]) not in processed_before
         ]
+        previous_memory_head = slow_input.get("previous_memory_head")
+        recent_subject = (
+            f"cycle-{int(previous_memory_head):04d}"
+            if isinstance(previous_memory_head, int)
+            and previous_memory_head == cycle_id - 1
+            else None
+        )
+        recent_rows = [
+            row
+            for row in pending_rows
+            if recent_subject is not None
+            and str(row.get("subject_ref", "")) == recent_subject
+        ]
+        recent_refs = {
+            str(row["feedback_ref"])
+            for row in recent_rows
+        }
+        if recent_rows:
+            pending_rows = [
+                *recent_rows,
+                *[
+                    row
+                    for row in pending_rows
+                    if str(row["feedback_ref"]) not in recent_refs
+                ],
+            ]
         prior_memory = prior[-1]["slow_memory"] if prior else None
         known_lessons = {
             str(lesson.get("lesson_id"))
@@ -3278,6 +3304,12 @@ class SignalEvolutionEngine:
             source_catalog=source_catalog,
             budget_bytes=64_000,
         )
+        required_refs = tuple(
+            str(item["ref"])
+            for item in selected
+            if str(item["ref"]) in recent_refs
+        )
+        view = {**view, "required_refs": list(required_refs)}
         source_read_failure: str | None = None
         try:
             selected, view = self._optional_slow_source_read(
@@ -3286,6 +3318,7 @@ class SignalEvolutionEngine:
                 source_catalog=source_catalog,
                 selected=selected,
                 manifest=view,
+                required_refs=required_refs,
             )
         except CandidateExecutionRejected as exc:
             source_read_failure = "source_read_failed: " + str(exc)
@@ -6041,9 +6074,14 @@ class SignalEvolutionEngine:
         source_catalog: Mapping[str, Mapping[str, Any]],
         selected: tuple[dict[str, Any], ...],
         manifest: Mapping[str, Any],
+        required_refs: Iterable[str] = (),
     ) -> tuple[tuple[dict[str, Any], ...], dict[str, Any]]:
-        """Allow one typed whole-entry source-view replacement for a role job."""
+        """Allow one typed source-view replacement without evicting required refs."""
 
+        required = tuple(dict.fromkeys(str(item) for item in required_refs))
+        available_refs = tuple(str(item) for item in manifest.get("requested_refs", ()))
+        if not set(required) <= set(available_refs):
+            raise ValidationError("required Slow source refs must be available")
         deferred = tuple(
             str(item.get("ref"))
             for item in manifest.get("deferred", ())
@@ -6051,7 +6089,7 @@ class SignalEvolutionEngine:
         )
         selector = getattr(model, "request_slow_sources", None)
         if not deferred or not callable(selector):
-            return selected, dict(manifest)
+            return selected, {**dict(manifest), "required_refs": list(required)}
         available = []
         for ref in manifest.get("requested_refs", ()):
             raw = source_catalog.get(str(ref))
@@ -6072,6 +6110,7 @@ class SignalEvolutionEngine:
                 "current_view": {
                     "included_refs": list(manifest.get("included_refs", ())),
                     "deferred_refs": list(deferred),
+                    "required_refs": list(required),
                     "budget_bytes": int(manifest.get("budget_bytes", 64_000)),
                 },
             }
@@ -6085,9 +6124,11 @@ class SignalEvolutionEngine:
                 ),
                 "source_read_usage": _usage_to_dict(step.usage),
                 "source_read_mode": "kept_default_view",
+                "required_refs": list(required),
             }
+        combined = tuple(dict.fromkeys((*required, *requested)))
         replacement, replacement_manifest = read_slow_sources(
-            requested,
+            combined,
             role_scope=role_scope,
             source_catalog=source_catalog,
             budget_bytes=int(manifest.get("budget_bytes", 64_000)),
@@ -6095,6 +6136,8 @@ class SignalEvolutionEngine:
         if not replacement:
             raise ValidationError("requested Slow source view exceeds whole-entry budget")
         included_refs = {str(item["ref"]) for item in replacement}
+        if not set(required) <= included_refs:
+            raise ValidationError("required Slow source view exceeds whole-entry budget")
         all_requested = [str(item) for item in manifest.get("requested_refs", ())]
         deferred_all = [
             {
@@ -6117,6 +6160,7 @@ class SignalEvolutionEngine:
             "source_read_request_refs": list(step.metadata.get("request_refs", ())),
             "source_read_usage": _usage_to_dict(step.usage),
             "source_read_mode": "replaced_default_view",
+            "required_refs": list(required),
             "default_included_refs": list(manifest.get("included_refs", ())),
             "default_deferred_refs": list(deferred),
         }

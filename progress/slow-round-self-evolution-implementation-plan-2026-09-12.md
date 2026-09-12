@@ -1,6 +1,6 @@
 # Slow Round 自进化：代码修改与验收方案
 
-状态：本地实现已完成，计划内 DeepSeek 与数据外部调用已获明确授权。V52–V55 各提交了一个真实 `slow_only` cycle，但均在内容审计后停止。最新 V55 的 H1、两批 E1 与 E2 均一次完成且研究结论可由输入核对，仍无候选；但 reflection 虽一次列出全部错误，模型仍重复引用旧层 locator，导致 memory 失败。对其 44 个越界 ref 的实际所有权检查显示 43 个只存在于一个已选 top-level wrapper、1 个未出现在当前 view。后继 adapter 仅把唯一所有者的 nested ref 确定性归一到 wrapper 并保留映射，未出现/歧义 ref 仍走 correction；同时补上 V55 未被旧 guard 识别的 “candidate roster and source excerpts are absent” 语义回归。此前 V52 的 fabricated gap、V53 的过宽 matcher、V54 的 H1 terminal-scope 缺口均保留为不可变失败证据。实现从代码基线 `0696429` 出发，已落地 v8 合同、追加式 Slow artifacts、冻结中立 dev/check、轮入口反思、每轮 H+E、`slow_only`、历史导入、语义/重复门槛及消融确认设施。方法能力仍未被独立确认提高。
+状态：计划内 DeepSeek 与数据外部调用已获明确授权。V57 已在合同 `3b7f85ca...587af` 下真实提交两个 `slow_only` cycle，权威指针为 Fast 0 / Slow 2，18 次模型调用总计 `$0.14368368000000004`，Locked Test 保持封闭且 Registry v1 未变。两轮均无候选、验证、晋级或更新，目标为 `unmet`。内容审计发现两个通用缺口：E2 自由文本可把同一 case 叙述成两种标签；周期 2 虽收到周期 1 的五个反馈单元，却因旧历史积压和可替换 source view 而未实际处理。运行时现单独持有并持久化正/负样本映射，禁止自由文本重写 case 标签；reflection 为最近已提交周期保留完整条目前沿，模型可补充但不能驱逐该前沿。所有 742 项测试与 lint 通过；V57 保持不可变，下一次执行必须冻结新合同。方法能力仍未被独立确认提高。
 
 目标：让 Slow 每轮主动挖掘信号，从自己过去的挖掘、验证、晋级和真实使用反馈中学习，并能在没有新 Fast round 的情况下连续运行。最终产物是质量可验证、可使用的信号库，以及有证据支持的挖掘方法经验。
 

@@ -534,7 +534,9 @@ _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
     "must be its own canonical gap citation: copy exactly one supplied "
     "evidence_gaps string and prefix it with [case_ref] and one space. Never "
     "paraphrase, combine, or extend source gaps. Generic evidence-insufficiency "
-    "conclusions that name no particular absent input need no gap citation."
+    "conclusions that name no particular absent input need no gap citation. "
+    "Do not restate any case_ref together with positive or control in rationale; "
+    "the runtime owns and records exact case-to-label mappings separately."
 )
 
 
@@ -552,6 +554,9 @@ _E2_VISIBLE_LABEL_DENIAL = re.compile(
     r"cannot\s+be\s+compared|uncomparable)\b)",
     re.IGNORECASE,
 )
+
+
+_E2_GROUP_LABEL = re.compile(r"\b(?:positive|control)(?:s|\s+cases?)?\b", re.IGNORECASE)
 
 
 _E2_SOURCE_GAP_MARKER = (
@@ -639,6 +644,42 @@ def _e2_uncited_source_gap_claim_indexes(
         for index, claim in enumerate(claims)
         if _E2_SPECIFIC_SOURCE_GAP.search(str(claim))
         and str(claim) not in canonical
+    )
+
+
+def _e2_free_text_label_assignment_indexes(
+    claims: Iterable[str],
+    signatures: Iterable[Mapping[str, Any]],
+) -> tuple[int, ...]:
+    """Reject prose label mappings in favor of the exact runtime-owned map."""
+
+    rows = tuple(item for item in signatures if isinstance(item, Mapping))
+    refs = tuple(
+        str(item["case_ref"])
+        for item in rows
+        if isinstance(item.get("case_ref"), str) and item["case_ref"]
+    )
+    canonical_gaps = {
+        f"[{item['case_ref']}] {gap}"
+        for item in rows
+        for gap in item.get("evidence_gaps", ())
+        if isinstance(gap, str) and gap.strip()
+    }
+
+    def mentions_ref(claim: str, ref: str) -> bool:
+        return bool(
+            re.search(
+                rf"(?<![A-Za-z0-9_-]){re.escape(ref)}(?![A-Za-z0-9_-])",
+                claim,
+            )
+        )
+
+    return tuple(
+        index
+        for index, raw_claim in enumerate(claims)
+        if (claim := str(raw_claim)) not in canonical_gaps
+        and _E2_GROUP_LABEL.search(claim)
+        and any(mentions_ref(claim, ref) for ref in refs)
     )
 
 
@@ -3170,6 +3211,27 @@ class LLMSignalMiningModel(SignalMiningModel):
                             )
                         )
                         continue
+                    label_assignment_indexes = (
+                        _e2_free_text_label_assignment_indexes(
+                            rationale, payload.get("signatures", ())
+                        )
+                    )
+                    if label_assignment_indexes:
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_free_text_label_assignment_forbidden",
+                                message=(
+                                    f"{path}.rationale must not restate case-to-label "
+                                    "mappings in free text. Keep the comparison claim "
+                                    "generic and rely on the validated contrast refs."
+                                ),
+                                paths=(f"{path}.rationale",),
+                                item_id=slot,
+                                item_id_field="hypothesis_id",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
                     unsupported_rationale_claims = (
                         _e2_profile_claims_without_literal_support(
                             rationale, payload.get("signatures", ())
@@ -3333,6 +3395,27 @@ class LLMSignalMiningModel(SignalMiningModel):
                                 )
                             ]
                         )
+                    label_assignment_indexes = (
+                        _e2_free_text_label_assignment_indexes(
+                            rationale, payload.get("signatures", ())
+                        )
+                    )
+                    if label_assignment_indexes:
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_free_text_label_assignment_forbidden",
+                                    message=(
+                                        "Exploration E2 no_candidate rationale must "
+                                        "not restate case-to-label mappings in free "
+                                        "text. Keep comparison claims generic; runtime "
+                                        "records the exact groups separately."
+                                    ),
+                                    paths=("no_candidate.rationale",),
+                                    allowed_repairs=("replace", "remove"),
+                                )
+                            ]
+                        )
                     unsupported_profile_claims = (
                         _e2_profile_claims_without_literal_support(
                             rationale, payload.get("signatures", ())
@@ -3388,6 +3471,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                         "reason_code": reason_code,
                         "rationale": list(rationale),
                         "considered_case_refs": list(considered),
+                        "positive_case_refs": [
+                            ref
+                            for ref, label in exploration_labels.items()
+                            if label == "positive"
+                        ],
+                        "control_case_refs": [
+                            ref
+                            for ref, label in exploration_labels.items()
+                            if label == "control"
+                        ],
                     }
                 else:
                     decision_metadata.clear()
