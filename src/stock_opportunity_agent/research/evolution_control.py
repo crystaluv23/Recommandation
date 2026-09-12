@@ -1409,13 +1409,28 @@ def build_slow_history_manifest(
     cycle_state = _read_json(source_root / "cycle_state.json")
     completed_fast = int(state.get("last_completed_round", 0))
     completed_slow = int(cycle_state.get("last_completed_cycle", 0))
-    if completed_slow < 1 or cycle_state.get("active_cycle") is not None:
+    active_cycle = cycle_state.get("active_cycle")
+    if completed_slow < 1:
         raise ValidationError("Slow history requires a fully committed source cycle")
+    if active_cycle is not None and (
+        not isinstance(active_cycle, Mapping)
+        or int(active_cycle.get("cycle_id", 0)) <= completed_slow
+    ):
+        raise ValidationError("Slow history active cycle does not follow its pointer")
     registry = SignalRegistry(
         source_root / "signals",
         candidate_root=source_root / "signals_candidates",
     )
     snapshot = registry.freeze()
+    if (
+        snapshot.version
+        != int(cycle_state.get("current_signal_registry_version", 0))
+        or snapshot.registry_hash
+        != str(cycle_state.get("current_signal_registry_hash", ""))
+    ):
+        raise ValidationError(
+            "Slow history Registry is ahead of its committed cycle pointer"
+        )
     definition_files: list[dict[str, str]] = []
     for path in sorted((source_root / "signals").rglob("*")):
         if not path.is_file():
@@ -1436,26 +1451,28 @@ def build_slow_history_manifest(
         if event.round_id <= completed_fast
     ]
     cycle_artifacts: list[dict[str, str]] = []
+    required_cycle_artifacts = (
+        "slow_input.json",
+        "slow_memory.json",
+        "slow_experiments.json",
+        "slow_loop_validation.json",
+        "slow_loop_result.json",
+    )
     for cycle_id in range(1, completed_slow + 1):
         cycle_root = (
             source_root / "experiments" / "cycles" / f"cycle-{cycle_id:04d}"
         )
-        for name in (
-            "slow_input.json",
-            "slow_memory.json",
-            "slow_experiments.json",
-            "slow_loop_validation.json",
-            "slow_loop_result.json",
-        ):
+        for name in required_cycle_artifacts:
             path = cycle_root / name
-            if path.is_file():
-                cycle_artifacts.append(
-                    {
-                        "cycle_id": str(cycle_id),
-                        "path": str(path.relative_to(source_root)),
-                        "sha256": _sha256_file(path),
-                    }
-                )
+            if not path.is_file():
+                raise ValidationError("Slow history committed artifact is missing")
+            cycle_artifacts.append(
+                {
+                    "cycle_id": str(cycle_id),
+                    "path": str(path.relative_to(source_root)),
+                    "sha256": _sha256_file(path),
+                }
+            )
     manifest = {
         "schema_version": "slow-history-manifest-v1",
         "source_namespace": "source-" + source_contract.contract_hash[:16],

@@ -42,7 +42,7 @@ semantic, Signal-output, or independent-benefit evidence.
 | P2 neutral sampling | Implemented and locally verified | V50 froze one issuer-disjoint 32-dev/8-check manifest with deterministic population/seed/order; scripted restart, issuer separation, strict missing-input and shared-corpus tests pass | Live candidate/check execution has not yet exercised this v8 manifest |
 | P3 entry reflection | Implemented and live exercised | V59 cycle 2 required and processed all five cycle-1 units; V59 also exposed the unbounded derived-memory request view, now replaced by a separately bounded complete-entry projection | Requires the repaired successor to commit cycle 2 |
 | P4 search/application closure | Implemented and live exercised; request isolation repaired locally | V59 cycle 1 retained H readiness, two E1 microbatches, E2 and Update audit with correct group ownership; residual oversized H requests now fail locally without canceling E | No candidate reached validation or promotion; repaired H isolation requires fresh live evidence |
-| P5 independent mode and migration | Implemented and live exercised | V59 kept Fast at 0, committed cycle 1, and performed real cycle-1 feedback reflection in cycle 2 | Two content-valid cycles have not yet committed under one repaired contract |
+| P5 independent mode and migration | Implemented and live exercised; staged-prefix migration repaired locally | V59 kept Fast at 0, committed cycle 1, and performed real cycle-1 feedback reflection in cycle 2; V60 proved history freeze had rejected that valid committed prefix solely because higher staged work existed | Fresh history now ignores only higher staged work and rejects Registry state ahead of the pointer; two content-valid cycles still need to commit under one repaired contract |
 | P6 semantic and independent acceptance | Semantic gates implemented; ablation scaffold only | Candidate semantic consistency, independent support/counter/unavailable fixtures, behavior-duplicate checks, manifest validation, and issuer-level group reservation have deterministic tests | No production path generates the three memory conditions or freezes their generation outcomes; no protocol-confirmed external comparison exists. Therefore method benefit, harm, or generalization cannot be claimed |
 | P7 runtime audit | In progress | V59 cycle 1 requests, memory coverage, H/E content, eight attempts, `$0.05596668` cost, zero Signal counts, unchanged Registry and sealed Locked Test were inspected; cycle-2 pause remained pointer-safe | Requires a repaired successor plus Signal transition/use evidence and final independent confirmation |
 
@@ -58,7 +58,7 @@ semantic, Signal-output, or independent-benefit evidence.
 
 ## Next valid sequence
 
-1. Commit bounded derived-memory projection and local H1 oversize isolation,
+1. Commit pointer-reachable history import for a source with higher staged work,
    then freeze a successor importing V59's committed history.
 2. Re-audit the successor's exact body and execute it under the recorded
    DeepSeek/data authorization while preserving the 200-attempt/$5 ceiling.

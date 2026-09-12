@@ -21,6 +21,17 @@ The exact V59 memories shrink from more than 218 KB of stored deltas to a
 28,467-byte complete-entry view with all 25 entries retained. All 743 tests and
 lint pass; V59 remains immutable and a fresh successor contract is required.
 
+The first successor freeze attempt, V60, made zero external calls and stopped
+before contract creation because V59 retains a staged active cycle after its
+committed cycle 1. History construction incorrectly required `active_cycle` to
+be null instead of following the committed pointer. It now ignores only a
+strictly higher active cycle, requires all five artifacts for every committed
+cycle, and verifies that the live Registry exactly matches the version/hash at
+the committed cycle pointer. This permits a pointer-reachable committed prefix
+without importing staged files, while still rejecting a post-promotion,
+pre-pointer Registry or inconsistent active id. All 743 tests and lint pass;
+V60's partial zero-call directory is diagnostic only.
+
 V57 executed and committed two real `slow_only` cycles under contract
 `3b7f85ca...587af` at authoritative `round=0/cycle=2`. All 18 model attempts
 settled successfully for `$0.14368368000000004`; Locked Test stayed sealed,

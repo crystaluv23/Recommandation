@@ -39,9 +39,31 @@ class RunControlTests(TestCase):
                     "current_signal_registry_version": 1,
                     "current_signal_registry_hash": source_registry.freeze().registry_hash,
                     "last_completed_cycle": 1,
-                    "active_cycle": None,
+                    "active_cycle": {
+                        "cycle_id": 2,
+                        "phase": "slow_loop",
+                    },
                 },
             )
+            committed_root = source / "experiments" / "cycles" / "cycle-0001"
+            committed_root.mkdir(parents=True)
+            for name in (
+                "slow_input.json",
+                "slow_memory.json",
+                "slow_experiments.json",
+                "slow_loop_validation.json",
+                "slow_loop_result.json",
+            ):
+                write_json(committed_root / name, {"artifact": name})
+            staged_path = (
+                source
+                / "experiments"
+                / "cycles"
+                / "cycle-0002"
+                / "slow_input.json"
+            )
+            staged_path.parent.mkdir(parents=True)
+            write_json(staged_path, {"artifact": "must-not-import"})
 
             manifest_hash = build_slow_history_manifest(
                 workspace=target,
@@ -59,6 +81,14 @@ class RunControlTests(TestCase):
             )
 
             self.assertEqual(manifest_hash, envelope["manifest_hash"])
+            self.assertEqual(
+                {row["cycle_id"] for row in envelope["manifest"]["cycle_artifacts"]},
+                {"1"},
+            )
+            self.assertNotIn(
+                str(staged_path.relative_to(source)),
+                {row["path"] for row in envelope["manifest"]["cycle_artifacts"]},
+            )
             self.assertEqual(
                 SignalRegistry(target / "signals").freeze().registry_hash,
                 source_registry.freeze().registry_hash,
