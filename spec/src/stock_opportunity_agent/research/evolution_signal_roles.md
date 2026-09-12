@@ -193,6 +193,16 @@ mining, and Signal update proposals.
   appears in the supplied source-owned signature projection; a violation is a
   structured correction obligation over only the offending rationale or
   observable-difference path.
+  E2 rationale may describe a specific missing, absent, truncated, partial, or
+  otherwise unavailable source input only by copying one supplied
+  `evidence_gaps` string verbatim as its own rationale item, prefixed exactly by
+  `[case_ref] `. Generic conclusions such as “the supplied evidence is
+  insufficient to establish a recurring contrast” remain valid without a gap
+  citation because they do not assert that a particular input is absent. The
+  adapter rejects a specific absence claim that is not one of these canonical
+  gap citations and scopes correction to the offending rationale path. This
+  prevents E2 from converting an observed value or unrelated catalog context
+  into an invented data gap while keeping E1's source limitations auditable.
   The E2 prompt says that signatures were frozen while hidden but their supplied
   positive/control labels are now visible. A rationale cannot claim those labels
   remain hidden, unavailable, or uncomparable. It also identifies signature

@@ -166,6 +166,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   that attribute vocabulary is absent from the literal source-owned signatures;
   bounded correction preserves the decision/no-candidate intent while removing
   or grounding only the unsupported claim.
+  A rationale that names a concrete missing, absent, truncated, partial, or
+  unavailable source input is grounded only when it is a canonical
+  `[case_ref] <verbatim evidence_gaps item>` citation from the selected E2
+  signatures. An uncited or paraphrased source-gap assertion is a correctable
+  semantic failure. A generic insufficiency conclusion that does not claim a
+  particular absent input does not require such a citation.
   After bounded model correction, E1 may quarantine invalid observations while
   preserving independently validated observations and sibling signatures. It
   never clips or invents source text. Quarantine reasons remain technical audit

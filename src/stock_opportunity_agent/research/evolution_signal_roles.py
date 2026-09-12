@@ -529,7 +529,12 @@ _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
     "rationale, and considered_case_refs. reason_code is no_measurable_pattern, "
     "insufficient_evidence, or already_covered. rationale is a non-empty array of "
     "short strings and considered_case_refs must copy every supplied signature "
-    "case_ref exactly once in supplied order."
+    "case_ref exactly once in supplied order. A rationale that identifies a "
+    "specific missing, absent, truncated, partial, or unavailable source input "
+    "must be its own canonical gap citation: copy exactly one supplied "
+    "evidence_gaps string and prefix it with [case_ref] and one space. Never "
+    "paraphrase, combine, or extend source gaps. Generic evidence-insufficiency "
+    "conclusions that name no particular absent input need no gap citation."
 )
 
 
@@ -545,6 +550,18 @@ _E2_VISIBLE_LABEL_DENIAL = re.compile(
     r"(?:\b(?:outcome|label)s?[- ]hidden\b|"
     r"\blabels?\b.{0,50}\b(?:hidden|unavailable|absent|not\s+visible|"
     r"cannot\s+be\s+compared|uncomparable)\b)",
+    re.IGNORECASE,
+)
+
+
+_E2_SPECIFIC_SOURCE_GAP = re.compile(
+    r"(?:\b(?:missing|absent|truncated|partial(?:ly)?|incomplete)\b|"
+    r"\bdo(?:es)?\s+not\s+(?:show|contain|include|provide)\b|"
+    r"\bnot\s+(?:shown|provided|included|present|available)\b|"
+    r"\b(?:source|input|data|evidence|document|record|excerpt|context|"
+    r"figure|statement|disclosure)s?\b.{0,50}\bunavailable\b|"
+    r"\bunavailable\b.{0,50}\b(?:source|input|data|evidence|document|"
+    r"record|excerpt|context|figure|statement|disclosure)s?\b)",
     re.IGNORECASE,
 )
 
@@ -596,6 +613,28 @@ def _e2_profile_claims_without_literal_support(
         name
         for name, pattern in _E2_PROFILE_ATTRIBUTE_PATTERNS
         if pattern.search(claim_text) and not pattern.search(source_text)
+    )
+
+
+def _e2_uncited_source_gap_claim_indexes(
+    claims: Iterable[str],
+    signatures: Iterable[Mapping[str, Any]],
+) -> tuple[int, ...]:
+    """Return E2 rationale indexes that invent or paraphrase a source gap."""
+
+    canonical = {
+        f"[{signature['case_ref']}] {gap}"
+        for signature in signatures
+        if isinstance(signature, Mapping)
+        and isinstance(signature.get("case_ref"), str)
+        for gap in signature.get("evidence_gaps", ())
+        if isinstance(gap, str) and gap.strip()
+    }
+    return tuple(
+        index
+        for index, claim in enumerate(claims)
+        if _E2_SPECIFIC_SOURCE_GAP.search(str(claim))
+        and str(claim) not in canonical
     )
 
 
@@ -3024,6 +3063,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                             )
                         )
                         continue
+                    uncited_gap_indexes = _e2_uncited_source_gap_claim_indexes(
+                        rationale, payload.get("signatures", ())
+                    )
+                    if uncited_gap_indexes:
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_source_gap_claim_ungrounded",
+                                message=(
+                                    f"{path}.rationale contains a specific source-gap "
+                                    "claim that is not a canonical [case_ref] plus "
+                                    "verbatim evidence_gaps citation. Remove the claim "
+                                    "or copy exactly one supplied gap per rationale item."
+                                ),
+                                paths=(f"{path}.rationale",),
+                                item_id=slot,
+                                item_id_field="hypothesis_id",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
                     parsed_items.append(
                         SignalMiningDecision(
                             hypothesis_id=slot,
@@ -3139,6 +3198,27 @@ class LLMSignalMiningModel(SignalMiningModel):
                                     ),
                                     paths=("no_candidate.rationale",),
                                     allowed_repairs=("replace",),
+                                )
+                            ]
+                        )
+                    uncited_gap_indexes = _e2_uncited_source_gap_claim_indexes(
+                        rationale, payload.get("signatures", ())
+                    )
+                    if uncited_gap_indexes:
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_source_gap_claim_ungrounded",
+                                    message=(
+                                        "Exploration E2 no_candidate rationale "
+                                        "contains a specific source-gap claim that "
+                                        "is not a canonical [case_ref] plus verbatim "
+                                        "evidence_gaps citation. Remove the claim or "
+                                        "copy exactly one supplied gap per rationale "
+                                        "item."
+                                    ),
+                                    paths=("no_candidate.rationale",),
+                                    allowed_repairs=("replace", "remove"),
                                 )
                             ]
                         )

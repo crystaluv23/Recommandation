@@ -3327,6 +3327,135 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertIn("Do not infer issuer-profile", caller.calls[0]["system_prompt"])
 
+    def test_exploration_e2_replays_v52_and_rejects_invented_source_gap(
+        self,
+    ) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "insufficient_evidence",
+                "rationale": [
+                    (
+                        "The supplied signatures show no repeated observable "
+                        "cross-case difference across the frozen exact spans."
+                    ),
+                    (
+                        "Evidence gaps explicitly note missing full-year "
+                        "cash-flow/revenue figures and partial structured contexts, "
+                        "preventing a stable cross-case comparison."
+                    ),
+                ],
+                "considered_case_refs": [
+                    "case-001",
+                    "case-002",
+                    "case-003",
+                    "case-004",
+                ],
+            },
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_candidate"]["rationale"] = [
+            invalid["no_candidate"]["rationale"][0],
+            (
+                "The supplied observations are insufficient to establish a "
+                "recurring portfolio contrast."
+            ),
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+        signatures = [
+            {
+                "case_ref": "case-001",
+                "label": "positive",
+                "observations": [{"exact_span": "Revenue from customers was 2,040."}],
+                "evidence_gaps": [
+                    "The excerpt is truncated and does not show the full balance "
+                    "sheet, cash flow statement, or liquidity disclosures for the "
+                    "period."
+                ],
+            },
+            {
+                "case_ref": "case-002",
+                "label": "control",
+                "observations": [{"exact_span": "Statements are subject to risks."}],
+                "evidence_gaps": [
+                    "The excerpt is truncated and does not show the complete list "
+                    "of risk factors or the specific forward-looking statements "
+                    "being qualified."
+                ],
+            },
+            {
+                "case_ref": "case-003",
+                "label": "positive",
+                "observations": [{"exact_span": "We may consider acquisitions."}],
+                "evidence_gaps": [
+                    "The excerpt is truncated and does not show the full risk factor "
+                    "discussion or any specific strategic transactions under "
+                    "consideration."
+                ],
+            },
+            {
+                "case_ref": "case-004",
+                "label": "control",
+                "observations": [{"exact_span": "International revenue was 15%."}],
+                "evidence_gaps": [
+                    "The excerpt is truncated and does not show the full list of "
+                    "international risks or the specific financial impact of "
+                    "international operations."
+                ],
+            },
+        ]
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {"signatures": signatures}
+        )
+
+        self.assertEqual(step.value, ())
+        obligation = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]
+        self.assertEqual(
+            obligation["issue_code"], "e2_source_gap_claim_ungrounded"
+        )
+        self.assertEqual(
+            obligation["must_change_paths"], ["no_candidate.rationale"]
+        )
+        self.assertIn("[case_ref]", caller.calls[0]["system_prompt"])
+
+    def test_exploration_e2_accepts_verbatim_case_scoped_gap_citation(self) -> None:
+        gap = "The excerpt is truncated and does not show the full cash flow statement."
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "decisions": [],
+                    "no_candidate": {
+                        "reason_code": "insufficient_evidence",
+                        "rationale": [f"[case-001] {gap}"],
+                        "considered_case_refs": ["case-001", "case-002"],
+                    },
+                }
+            ]
+        )
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {
+                        "case_ref": "case-001",
+                        "label": "positive",
+                        "evidence_gaps": [gap],
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "label": "control",
+                        "evidence_gaps": [],
+                    },
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(step.usage.llm_calls, 1)
+
     def test_exploration_e2_corrects_unsupplied_profile_claim_in_contrast(
         self,
     ) -> None:

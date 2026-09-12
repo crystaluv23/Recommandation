@@ -1,5 +1,27 @@
 # Status
 
+V52 is the first committed real v8 `slow_only` cycle. Under contract
+`4a144686...56b0`, an initial transient SEC SSL EOF was recovered by resuming
+the same frozen cohort; cycle 1 then committed at authoritative
+`round=0/cycle=1` with Locked Test sealed and Registry v1 unchanged. The live
+source-read/reflection path, granular request traces, 60 data-request ledger
+rows, H1, two E1 microbatches, E2, and zero-call Update were inspected. Its five
+sealed experiment attempts preserve every initial/correction request ref. The
+result reports zero new candidates, zero validated or promoted Signals, zero
+updates, and `signal_goal_status=unmet`.
+
+V52 is execution evidence but fails content acceptance. Its final E2 rationale
+claimed that supplied gaps explicitly named missing full-year cash-flow/revenue
+figures and partial contexts. The selected signatures actually named one
+cash-flow-statement gap and several unrelated truncation gaps; none named a
+revenue-figure gap. The run stopped before cycle 2. E2 now accepts a concrete
+source-absence statement only as `[case_ref] ` plus one verbatim supplied
+`evidence_gaps` item; generic insufficiency conclusions remain valid. The exact
+V52 response is covered by a correction replay, alongside a canonical-citation
+acceptance test. All 734 repository tests and lint pass. V51 remains an immutable
+incomplete predecessor: its reflection
+completed, then its data-disabled contract paused before the Slow profile.
+
 V50 froze the first post-unitization v8 `slow_only` request under code checkpoint
 `17c734a`. Its cycle-1 input contains all 11 imported V45 work units; the exact
 reflection view includes 9 complete units in 52,951 bytes and defers two complete
