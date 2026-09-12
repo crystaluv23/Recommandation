@@ -34,8 +34,12 @@ per need, row-shape failures are indexed, and the terminal fallback may remove
 only a redundant singular `signal_ref` identical to the sole plural value before
 rerunning the complete parser. Exact replay of all three V45 H1 responses remains
 rejected for the semantic coverage error after the mechanical duplicate is
-removed. All 716 tests pass; repository lint and a clean successor request audit
-remain before another external Slow acceptance run.
+removed. Exact pre-transmission inspection then rejected V46 at zero calls: its
+system instruction was v6 while the runtime payload, fingerprint namespace, and
+durable H1 audit still declared v5. Those runtime surfaces now advance together
+to v6 and the engine regression asserts the outgoing payload version. All 716
+tests pass; repository lint and a clean successor request audit remain before
+another external Slow acceptance run.
 
 V42 reached the audited H1 approval boundary at `round=0/cycle=0`. The exact
 225,829-character H1 context contains 172 unique needs, all 30 reflection actions,

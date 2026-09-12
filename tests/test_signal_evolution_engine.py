@@ -1079,6 +1079,10 @@ class SignalEvolutionTests(TestCase):
                 sent_needs[0]["need"],
                 "Measure committed order conversion before the catalyst.",
             )
+            self.assertEqual(
+                mining_model.requests[0]["h1_contract_version"],
+                "signal-mining-hypothesis-v6",
+            )
 
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
         payload = {

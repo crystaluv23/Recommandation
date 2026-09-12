@@ -3207,7 +3207,7 @@ class SignalEvolutionEngine:
         )
         h1_payload = {
             "track": "hypothesis",
-            "h1_contract_version": "signal-mining-hypothesis-v5",
+            "h1_contract_version": "signal-mining-hypothesis-v6",
             "hypothesis_slots": [
                 f"h1-c{cycle_id:04d}-s{index:02d}"
                 for index in range(1, config.hypothesis_limit + 1)
@@ -3219,7 +3219,7 @@ class SignalEvolutionEngine:
         }
         h1_input_fingerprint = _canonical_hash(
             {
-                "schema_version": "signal-mining-h1-input-v5",
+                "schema_version": "signal-mining-h1-input-v6",
                 "contract": h1_payload["h1_contract_version"],
                 "limits": h1_payload["limits"],
                 "h2_applicability_contract": applicability_contract,
@@ -3251,7 +3251,7 @@ class SignalEvolutionEngine:
             prior_conclusion = dict(prior_h1["h1_conclusion"])
             audit["status"] = "unchanged_h1_work_suppressed"
             audit["stages"]["H1"] = {
-                "contract_version": "signal-mining-hypothesis-v5",
+                "contract_version": "signal-mining-hypothesis-v6",
                 "input_fingerprint": h1_input_fingerprint,
                 "conclusion": prior_conclusion,
                 "hypotheses": [],
@@ -3271,7 +3271,7 @@ class SignalEvolutionEngine:
                 exc.usage,
                 details={
                     **dict(exc.details),
-                    "contract_version": "signal-mining-hypothesis-v5",
+                    "contract_version": "signal-mining-hypothesis-v6",
                     "input_fingerprint": h1_input_fingerprint,
                     "conclusion": {
                         "conclusion": "technical_failure",
@@ -3298,7 +3298,7 @@ class SignalEvolutionEngine:
                 continue
             hypotheses.append(hypothesis)
         audit["stages"]["H1"] = {
-            "contract_version": "signal-mining-hypothesis-v5",
+            "contract_version": "signal-mining-hypothesis-v6",
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],

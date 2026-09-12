@@ -1,6 +1,6 @@
 # H1 Unresolved Need Dispositions
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
@@ -33,6 +33,9 @@ semantic coverage passed because the validator checked only Signal-ref existence
 3. Never infer coverage from arbitrary id, description, or query token overlap.
 4. Use `deferred_measurement` for measurable portfolio overflow.
 5. Mechanical field cleanup may run only before a complete semantic reparse.
+6. Advance the role instruction, payload declaration, input-fingerprint schema,
+   and durable stage audit together; a mixed protocol version is an invalid
+   request even when its wire body is complete and internally hash-consistent.
 
 ## Limits
 
