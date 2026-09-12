@@ -1385,6 +1385,11 @@ class SignalMiningModel(Protocol):
     ) -> AgentStep[Mapping[str, Any]]:
         """Return one append-only method-memory delta over exact feedback refs."""
 
+    def request_slow_sources(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[str, ...]]:
+        """Select at most one bounded set of runtime-owned opaque source refs."""
+
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
@@ -1512,6 +1517,11 @@ class SignalUpdateModel(Protocol):
         self, payload: Mapping[str, Any]
     ) -> AgentStep[SignalUpdateDecision]:
         """Return no_change, defer, or a complete vNext candidate."""
+
+    def request_slow_sources(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[str, ...]]:
+        """Select at most one bounded set of runtime-owned opaque source refs."""
 
 
 _SIGNAL_UPDATE_TARGET_LIMIT = 3
@@ -3252,6 +3262,33 @@ class SignalEvolutionEngine:
             source_catalog=source_catalog,
             budget_bytes=64_000,
         )
+        source_read_failure: str | None = None
+        try:
+            selected, view = self._optional_slow_source_read(
+                model=self.mining_model,
+                role_scope="reflection",
+                source_catalog=source_catalog,
+                selected=selected,
+                manifest=view,
+            )
+        except CandidateExecutionRejected as exc:
+            source_read_failure = "source_read_failed: " + str(exc)
+            selected = ()
+            view = {
+                **view,
+                "included_refs": [],
+                "included_hashes": {},
+                "included_count": 0,
+                "deferred": [
+                    {"ref": ref, "reason": "source_read_failed"}
+                    for ref in source_catalog
+                ],
+                "deferred_count": len(source_catalog),
+                "source_read_request_refs": list(
+                    exc.details.get("request_refs", ())
+                ),
+                "source_read_mode": "failed",
+            }
         selected_refs = [item["ref"] for item in selected]
         deferred_refs = [item["ref"] for item in view["deferred"]]
         contract_hash = str(slow_input["contract_hash"])
@@ -3286,7 +3323,8 @@ class SignalEvolutionEngine:
                 "episode_reflections": [],
                 "lesson_additions": [],
                 "failure_ref": (
-                    "reflection_context_budget" if deferred_refs else None
+                    source_read_failure
+                    or ("reflection_context_budget" if deferred_refs else None)
                 ),
             }
         else:
@@ -3356,7 +3394,11 @@ class SignalEvolutionEngine:
                         "pending_feedback_refs": deferred_refs,
                         "episode_reflections": episodes,
                         "lesson_additions": lessons,
-                        "usage_ref": str(step.metadata.get("request_hash", "")) or None,
+                        "usage_ref": (
+                            list(step.metadata.get("request_refs", ()))[-1]
+                            if step.metadata.get("request_refs")
+                            else None
+                        ),
                     }
                 except (ValidationError, KeyError, TypeError, ValueError) as exc:
                     memory = {
@@ -4255,8 +4297,30 @@ class SignalEvolutionEngine:
         audit = {
             **base_audit,
             "model_called": True,
-            "model_usage": _usage_to_dict(step.usage),
-            "request_refs": list(step.metadata.get("request_refs", ())),
+            "model_usage": _usage_to_dict(
+                step.usage
+                + _usage_from_dict(
+                    dict(
+                        dict(
+                            payload["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_usage", {})
+                    )
+                )
+            ),
+            "request_refs": list(
+                _ordered_unique(
+                    [
+                        *dict(
+                            payload["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_request_refs", ()),
+                        *step.metadata.get("request_refs", ()),
+                    ]
+                )
+            ),
             "execution_usage": _usage_to_dict(execution_usage),
             "local_selection": local_selection,
             "resolutions": resolutions,
@@ -4751,9 +4815,29 @@ class SignalEvolutionEngine:
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
-            "usage": _usage_to_dict(hypotheses_step.usage),
+            "usage": _usage_to_dict(
+                hypotheses_step.usage
+                + _usage_from_dict(
+                    dict(
+                        dict(
+                            context["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_usage", {})
+                    )
+                )
+            ),
             "request_refs": list(
-                hypotheses_step.metadata.get("request_refs", ())
+                _ordered_unique(
+                    [
+                        *dict(
+                            context["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_request_refs", ()),
+                        *hypotheses_step.metadata.get("request_refs", ()),
+                    ]
+                )
             ),
         }
         if not hypotheses:
@@ -5072,8 +5156,7 @@ class SignalEvolutionEngine:
             }
             audit["hypothesis_work"] = hypothesis_work
             return self._mining_output(audit=audit, refined=refined)
-        decisions_step = self.mining_model.contrast(
-            {
+        h3_payload = {
                 "track": "hypothesis",
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
@@ -5088,7 +5171,7 @@ class SignalEvolutionEngine:
                     "candidate_only_when_supported": True,
                 },
             }
-        )
+        decisions_step = self.mining_model.contrast(h3_payload)
         allowed_hypotheses = {
             item["hypothesis"].hypothesis_id for item in evaluable_selections
         }
@@ -5122,8 +5205,30 @@ class SignalEvolutionEngine:
             ),
             "decisions": [item.to_dict() for item in decisions],
             "resolutions": resolution_audit,
-            "usage": _usage_to_dict(decisions_step.usage),
-            "request_refs": list(decisions_step.metadata.get("request_refs", ())),
+            "usage": _usage_to_dict(
+                decisions_step.usage
+                + _usage_from_dict(
+                    dict(
+                        dict(
+                            h3_payload["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_usage", {})
+                    )
+                )
+            ),
+            "request_refs": list(
+                _ordered_unique(
+                    [
+                        *dict(
+                            h3_payload["slow_method_memory"].get(
+                                "source_view_manifest", {}
+                            )
+                        ).get("source_read_request_refs", ()),
+                        *decisions_step.metadata.get("request_refs", ()),
+                    ]
+                )
+            ),
         }
         audit["evidence_unavailable"] = {
             key: list(value) for key, value in evidence_unavailable.items()
@@ -5483,8 +5588,7 @@ class SignalEvolutionEngine:
             f"e2-c{cycle_id:04d}-s{index:02d}"
             for index in range(1, config.hypothesis_limit + 1)
         ]
-        discovery_step = self.mining_model.discover_exploration(
-            {
+        e2_payload = {
                 "track": "exploration",
                 "signatures": revealed,
                 "decision_slots": decision_slots,
@@ -5500,7 +5604,7 @@ class SignalEvolutionEngine:
                     "decisions": ["supported"],
                 },
             }
-        )
+        discovery_step = self.mining_model.discover_exploration(e2_payload)
         decisions = self._validate_mining_decisions(
             discovery_step.value,
             allowed_hypothesis_ids=None,
@@ -5569,9 +5673,29 @@ class SignalEvolutionEngine:
                     "decisions": [item.to_dict() for item in decisions],
                     "no_candidate": discovery_step.metadata.get("no_candidate"),
                     "considered_case_count": len(selected_grounded_signatures),
-                    "usage": _usage_to_dict(discovery_step.usage),
+                    "usage": _usage_to_dict(
+                        discovery_step.usage
+                        + _usage_from_dict(
+                            dict(
+                                dict(
+                                    e2_payload["slow_method_memory"].get(
+                                        "source_view_manifest", {}
+                                    )
+                                ).get("source_read_usage", {})
+                            )
+                        )
+                    ),
                     "request_refs": list(
-                        discovery_step.metadata.get("request_refs", ())
+                        _ordered_unique(
+                            [
+                                *dict(
+                                    e2_payload["slow_method_memory"].get(
+                                        "source_view_manifest", {}
+                                    )
+                                ).get("source_read_request_refs", ()),
+                                *discovery_step.metadata.get("request_refs", ()),
+                            ]
+                        )
                     ),
                 },
             },
@@ -5842,6 +5966,14 @@ class SignalEvolutionEngine:
             source_catalog=source_catalog,
             budget_bytes=64_000,
         )
+        model = self.update_model if role_scope == "Update" else self.mining_model
+        sources, manifest = self._optional_slow_source_read(
+            model=model,
+            role_scope=role_scope,
+            source_catalog=source_catalog,
+            selected=sources,
+            manifest=manifest,
+        )
         prior_deltas = [
             dict(item["slow_memory"])
             for item in self.workspace.committed_slow_artifacts()[-3:]
@@ -5850,6 +5982,94 @@ class SignalEvolutionEngine:
             "memory_deltas": [*prior_deltas, dict(self._active_slow_memory)],
             "source_entries": [dict(item) for item in sources],
             "source_view_manifest": manifest,
+        }
+
+    def _optional_slow_source_read(
+        self,
+        *,
+        model: Any,
+        role_scope: str,
+        source_catalog: Mapping[str, Mapping[str, Any]],
+        selected: tuple[dict[str, Any], ...],
+        manifest: Mapping[str, Any],
+    ) -> tuple[tuple[dict[str, Any], ...], dict[str, Any]]:
+        """Allow one typed whole-entry source-view replacement for a role job."""
+
+        deferred = tuple(
+            str(item.get("ref"))
+            for item in manifest.get("deferred", ())
+            if isinstance(item, Mapping) and item.get("ref")
+        )
+        selector = getattr(model, "request_slow_sources", None)
+        if not deferred or not callable(selector):
+            return selected, dict(manifest)
+        available = []
+        for ref in manifest.get("requested_refs", ()):
+            raw = source_catalog.get(str(ref))
+            if raw is None:
+                continue
+            available.append(
+                {
+                    "ref": str(ref),
+                    "content_hash": _canonical_hash(dict(raw)),
+                    "currently_included": str(ref) in manifest.get("included_refs", ()),
+                }
+            )
+        step = selector(
+            {
+                "source_read_contract_version": "slow-source-read-v1",
+                "role_scope": role_scope,
+                "available_sources": available,
+                "current_view": {
+                    "included_refs": list(manifest.get("included_refs", ())),
+                    "deferred_refs": list(deferred),
+                    "budget_bytes": int(manifest.get("budget_bytes", 64_000)),
+                },
+            }
+        )
+        requested = tuple(str(item) for item in step.value)
+        if not requested:
+            return selected, {
+                **dict(manifest),
+                "source_read_request_refs": list(
+                    step.metadata.get("request_refs", ())
+                ),
+                "source_read_usage": _usage_to_dict(step.usage),
+                "source_read_mode": "kept_default_view",
+            }
+        replacement, replacement_manifest = read_slow_sources(
+            requested,
+            role_scope=role_scope,
+            source_catalog=source_catalog,
+            budget_bytes=int(manifest.get("budget_bytes", 64_000)),
+        )
+        if not replacement:
+            raise ValidationError("requested Slow source view exceeds whole-entry budget")
+        included_refs = {str(item["ref"]) for item in replacement}
+        all_requested = [str(item) for item in manifest.get("requested_refs", ())]
+        deferred_all = [
+            {
+                "ref": ref,
+                "reason": (
+                    "whole_entry_budget"
+                    if ref in requested
+                    else "source_read_not_selected"
+                ),
+            }
+            for ref in all_requested
+            if ref not in included_refs
+        ]
+        return replacement, {
+            **replacement_manifest,
+            "requested_refs": all_requested,
+            "deferred": deferred_all,
+            "available_count": len(all_requested),
+            "deferred_count": len(deferred_all),
+            "source_read_request_refs": list(step.metadata.get("request_refs", ())),
+            "source_read_usage": _usage_to_dict(step.usage),
+            "source_read_mode": "replaced_default_view",
+            "default_included_refs": list(manifest.get("included_refs", ())),
+            "default_deferred_refs": list(deferred),
         }
 
     def _mask_owned_backlog_identities(

@@ -148,6 +148,56 @@ def _complete_parsed_role_with_trace(
     return value, usage, _request_refs_since(caller, cursor)
 
 
+def _request_slow_source_refs(
+    caller: JSONRoleCaller,
+    payload: Mapping[str, Any],
+    *,
+    identity_guard_aliases: Iterable[str],
+) -> AgentStep[tuple[str, ...]]:
+    """Return one typed bounded source-read selection without source contents."""
+
+    available = tuple(
+        str(item.get("ref"))
+        for item in payload.get("available_sources", ())
+        if isinstance(item, Mapping) and item.get("ref")
+    )
+
+    def parse(value: Mapping[str, Any]) -> tuple[str, ...]:
+        if set(value) != {"read_source_refs"} or not isinstance(
+            value.get("read_source_refs"), list
+        ):
+            raise ValidationError(
+                "Slow source read requires exactly read_source_refs array"
+            )
+        refs = tuple(str(item) for item in value["read_source_refs"])
+        if len(refs) > 8 or len(set(refs)) != len(refs) or not set(refs) <= set(available):
+            raise ValidationError(
+                "Slow source read refs must be unique supplied opaque refs, at most 8"
+            )
+        return refs
+
+    value, usage, request_refs = _complete_parsed_role_with_trace(
+        caller,
+        stage="slow_source_read",
+        system_prompt=(
+            "Select only complete opaque Slow source refs needed for the named role. "
+            "Do not infer source contents from ref names. Return exactly "
+            '{"read_source_refs":[]} using only supplied refs; an empty list means '
+            "the current complete view is sufficient."
+            + _UNTRUSTED_DATA_INSTRUCTION
+        ),
+        payload=payload,
+        parser=parse,
+        allow_outcomes=False,
+        anonymous_aliases=(),
+        reject_output_aliases=identity_guard_aliases,
+        max_output_tokens=512,
+        temperature=0.0,
+        stable_correction_prefix=True,
+    )
+    return AgentStep(value, usage, metadata={"request_refs": request_refs})
+
+
 def _h1_redundant_signal_ref_fallback(
     failed_output: Mapping[str, Any], failure: ValidationError
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
@@ -604,6 +654,17 @@ class LLMSignalUpdateModel(SignalUpdateModel):
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
 
+    def request_slow_sources(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[str, ...]]:
+        """Request one bounded runtime-resolved source view for Update."""
+
+        return _request_slow_source_refs(
+            self.caller,
+            payload,
+            identity_guard_aliases=self.identity_guard_aliases,
+        )
+
     def set_candidate_validator(
         self,
         value: Callable[[str, Mapping[str, Any], tuple[str, ...]], None],
@@ -623,6 +684,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             "provider": getattr(registration, "provider", None),
             "model": getattr(registration, "model", None),
             "proposal_profile": getattr(registration, "proposal_profile", None),
+            "source_read_contract": "slow-source-read-v1",
         }
 
     def update(
@@ -1026,6 +1088,17 @@ class LLMSignalMiningModel(SignalMiningModel):
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
 
+    def request_slow_sources(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[tuple[str, ...]]:
+        """Request one bounded runtime-resolved source view for a Mining role."""
+
+        return _request_slow_source_refs(
+            self.caller,
+            payload,
+            identity_guard_aliases=self.identity_guard_aliases,
+        )
+
     @property
     def work_identity(self) -> Mapping[str, Any]:
         """Return the stable role/model identity used by Mining work keys."""
@@ -1037,6 +1110,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "h1_contract": "signal-mining-hypothesis-v7",
             "reflection_contract": "signal-mining-reflect-v1",
+            "source_read_contract": "slow-source-read-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
             "e2_decision_contract": "contrast-bound-slots-v1",

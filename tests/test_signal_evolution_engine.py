@@ -169,6 +169,56 @@ class SignalEvolutionTests(TestCase):
                 budget_bytes=2_000,
             )
 
+    def test_typed_slow_source_read_replaces_view_once_and_keeps_pending(self) -> None:
+        class Reader:
+            def __init__(self) -> None:
+                self.payloads = []
+
+            def request_slow_sources(self, payload):
+                self.payloads.append(payload)
+                return AgentStep(
+                    ("feedback-2",),
+                    metadata={"request_refs": ("read-request",)},
+                )
+
+        catalog = {
+            "feedback-1": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "a" * 350},
+            },
+            "feedback-2": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "b" * 550},
+            },
+        }
+        selected, manifest = read_slow_sources(
+            catalog,
+            role_scope="reflection",
+            source_catalog=catalog,
+            budget_bytes=700,
+        )
+        self.assertEqual([item["ref"] for item in selected], ["feedback-1"])
+        engine = object.__new__(SignalEvolutionEngine)
+        reader = Reader()
+
+        replacement, final_manifest = engine._optional_slow_source_read(
+            model=reader,
+            role_scope="reflection",
+            source_catalog=catalog,
+            selected=selected,
+            manifest=manifest,
+        )
+
+        self.assertEqual([item["ref"] for item in replacement], ["feedback-2"])
+        self.assertEqual(
+            final_manifest["source_read_request_refs"], ["read-request"]
+        )
+        self.assertEqual(
+            final_manifest["deferred"],
+            [{"ref": "feedback-1", "reason": "source_read_not_selected"}],
+        )
+        self.assertEqual(len(reader.payloads), 1)
+
     def test_slow_experiments_seal_role_granular_request_chains(self) -> None:
         engine = object.__new__(SignalEvolutionEngine)
         engine.workspace = mock.Mock()

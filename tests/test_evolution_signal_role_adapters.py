@@ -8,6 +8,25 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_mining_typed_source_read_accepts_only_supplied_opaque_refs(self) -> None:
+        caller = ScriptedRoleCaller(
+            [{"read_source_refs": ["feedback-2"]}]
+        )
+        step = LLMSignalMiningModel(caller).request_slow_sources(
+            {
+                "source_read_contract_version": "slow-source-read-v1",
+                "role_scope": "H1",
+                "available_sources": [
+                    {"ref": "feedback-1", "content_hash": "a"},
+                    {"ref": "feedback-2", "content_hash": "b"},
+                ],
+                "current_view": {"included_refs": ["feedback-1"]},
+            }
+        )
+
+        self.assertEqual(step.value, ("feedback-2",))
+        self.assertEqual(caller.stages, ["slow_source_read"])
+
     def test_update_role_retains_initial_and_correction_request_refs(self) -> None:
         class TracedCaller(ScriptedRoleCaller):
             def __init__(self, outputs):

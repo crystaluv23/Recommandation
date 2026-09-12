@@ -24,6 +24,11 @@ and a `reused` memory delta. Successful coverage alone advances
 `processed_feedback_refs`; omitted or failed units remain pending. Raw episodes,
 specific reflections, and evidence-linked method lessons coexist append-only.
 Challenges qualify prior lessons through explicit refs and never overwrite them.
+When the default complete-entry view defers sources, the role may make one typed
+opaque-ref selection. Runtime validates scope and budget, replaces the default
+batch with the selected complete entries, and keeps every unselected ref pending;
+the final role call cannot request again. Selection and final request hashes are
+both retained in the cycle audit.
 
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT

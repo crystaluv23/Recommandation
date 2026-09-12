@@ -11,12 +11,16 @@ as one failed attempt at zero settled cost; the elevated transmission was then
 rejected before sending because the internal historical research payload needs
 DeepSeek-specific informed consent. Pointers remain authoritatively
 `round=0/cycle=0`. The [completion audit](slow-round-self-evolution-completion-audit-2026-09-12.md)
-also identifies two local spec/code gaps before a successor run: the promised
-typed one-round `read_source_refs` protocol is not implemented. The experiment
-gap is repaired after V50: transport request traces now survive success and
-bounded structured failure, and the sealed index has distinct H1/H3 jobs, E1
-microbatches, E2 comparisons, Update targets and candidate validations. V50 is
-immutable diagnostic evidence, not a completed cycle.
+also identified two local spec/code gaps before a successor run. Both are now
+repaired after V50: typed one-round `read_source_refs` selection is limited to
+role-scoped opaque refs and whole-entry replacement, with unselected refs kept
+pending and no access for E1/executor/predictor; transport request traces now
+survive success and bounded structured failure, and the sealed index has distinct
+H1/H3 jobs, E1 microbatches, E2 comparisons, Update targets and candidate
+validations. V50 is
+immutable diagnostic evidence, not a completed cycle. The new source-read and
+granular-attempt implementation passes all 732 tests and repository lint before
+freezing a successor.
 
 V49 then verified the repaired history projection at zero calls: its first
 `slow_input.json` carried source Slow cutoff 1 and both V45 committed artifacts.

@@ -12,7 +12,12 @@ research-empty result.
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
 within the role scope and whole-entry budget, records included/deferred refs and
-hashes, and then asks for the final output. E1, SignalExecutor, and blind
+hashes, and then asks for the final output. The selection request sees only the
+role name plus opaque refs, hashes and current included/deferred membership; it
+does not receive hidden source contents. A non-empty valid selection replaces
+the default bounded view as one complete-entry batch, and every unselected
+default item remains explicitly pending. An empty selection retains the default
+view. There is no second selection round. E1, SignalExecutor, and blind
 Predictor have no such access. Prompt, parser, work identity, persisted request,
 provider body, and wire bytes advance together to their v8 protocol versions.
 The transport appends every canonical request hash to an invocation trace. Role
