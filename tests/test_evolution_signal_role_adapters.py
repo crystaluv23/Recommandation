@@ -149,6 +149,55 @@ class SignalRoleAdapterTests(TestCase):
             {"feedback-1", "feedback-2", "feedback-3"},
         )
 
+    def test_reflection_fallback_merges_valid_overflow_episode(self) -> None:
+        overflow = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0002-001",
+                    "source_refs": ["feedback-1"],
+                    "reflection": "The first selected work unit was retained.",
+                    "unresolved_questions": ["What follows from the first unit?"],
+                },
+                {
+                    "episode_ref": "episode-c0002-002",
+                    "source_refs": ["feedback-2"],
+                    "reflection": "The omitted selected work unit was also retained.",
+                    "unresolved_questions": ["What follows from the omitted unit?"],
+                },
+            ],
+            "lesson_additions": [],
+        }
+        caller = ScriptedRoleCaller([overflow, overflow, overflow])
+        caller.max_structured_corrections = 2
+
+        step = LLMSignalMiningModel(caller).reflect_feedback(
+            {
+                "episode_slots": ["episode-c0002-001"],
+                "lesson_slots": ["lesson-c0002-001"],
+                "feedback_units": [
+                    {"feedback_ref": "feedback-1", "artifact": {}},
+                    {"feedback_ref": "feedback-2", "artifact": {}},
+                ],
+            }
+        )
+
+        self.assertEqual(step.usage.llm_calls, 3)
+        self.assertEqual(len(step.value["episode_reflections"]), 1)
+        episode = step.value["episode_reflections"][0]
+        self.assertEqual(episode["episode_ref"], "episode-c0002-001")
+        self.assertEqual(
+            episode["source_refs"], ["feedback-1", "feedback-2"]
+        )
+        self.assertIn("first selected work unit", episode["reflection"])
+        self.assertIn("omitted selected work unit", episode["reflection"])
+        self.assertEqual(
+            episode["unresolved_questions"],
+            [
+                "What follows from the first unit?",
+                "What follows from the omitted unit?",
+            ],
+        )
+
     def test_reflection_canonicalizes_uniquely_owned_nested_slow_refs(self) -> None:
         nested_ref = "slow-history:source-old:1:slow_loop_result:summary"
         output = {
@@ -454,6 +503,49 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(step.value[1].to_dict(), response["signatures"][1])
         self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001", "case-003"})
         self.assertIn("does not establish absent", step.value[2].evidence_gaps[0])
+
+    def test_e1_accepts_a_long_complete_source_literal(self) -> None:
+        literal = (
+            "Management described a complete point in time operating record with "
+            "revenue, expenses, cash flow, customer demand, delivery timing, and "
+            "the reporting period needed to interpret each stated amount. "
+        ) * 2
+        response = {
+            "signatures": [
+                {
+                    "case_ref": "case-001",
+                    "observations": [
+                        {
+                            "summary": "The complete operating record was disclosed.",
+                            "document_ref": "document-01",
+                            "exact_span": literal,
+                        }
+                    ],
+                    "evidence_gaps": [],
+                }
+            ]
+        }
+        caller = ScriptedRoleCaller([response])
+
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            {
+                "cases": [
+                    {
+                        "case_ref": "case-001",
+                        "evidence": [
+                            {
+                                "document_ref": "document-01",
+                                "content_excerpt": literal,
+                            }
+                        ],
+                    }
+                ]
+            }
+        )
+
+        self.assertGreater(len(literal), 240)
+        self.assertEqual(step.value[0].observations[0].exact_span, literal)
+        self.assertEqual(step.metadata["quarantined_observations"], {})
 
     def test_strict_aggregate_aliases_preserve_words_and_reuse_matchers(self) -> None:
         aliases = ("Future Holdings", "Business Systems", "Z", "Q2")

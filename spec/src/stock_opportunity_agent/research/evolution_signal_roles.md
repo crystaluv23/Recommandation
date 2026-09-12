@@ -22,6 +22,13 @@ discover one bad ref per attempt. The same correction frontier includes the
 complete set of selected top-level feedback refs omitted by otherwise-valid
 episodes; coverage is validated inside the adapter before success, rather than
 being discovered only by the engine after the bounded correction opportunity.
+Coverage correction is slot-aware: when unused episode slots remain it may add
+an episode, while a full slot set may only merge omitted refs and their existing
+model-authored reflection into a supplied slot. After both bounded corrections,
+the final catch may deterministically merge an otherwise-valid overflow episode
+into an existing valid episode, preserving both reflection texts, questions and
+source refs. It never invents reflection text or marks an absent ref processed;
+anything less remains a failed memory delta and stays pending.
 
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only

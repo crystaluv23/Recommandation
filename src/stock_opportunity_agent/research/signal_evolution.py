@@ -1311,9 +1311,9 @@ class SignalMiningObservation:
                 "Mining observation summary must contain 1-500 characters"
             )
         _validate_id(self.document_ref, "mining observation document_ref")
-        if not 8 <= len(self.exact_span) <= 240:
+        if len(self.exact_span) < 8:
             raise ValidationError(
-                "Mining observation exact_span must contain 8-240 characters"
+                "Mining observation exact_span must contain at least 8 characters"
             )
         visible_tokens = re.findall(
             r"[A-Za-z0-9]+", self.exact_span.replace(_MASKED_IDENTITY_VALUE, "")

@@ -48,6 +48,11 @@ may point only to feedback refs processed by that memory delta. The adapter
 aggregates every remaining invalid episode and lesson
 row plus all omitted selected feedback refs into one correction frontier instead
 of consuming one retry per malformed, out-of-scope, or uncovered ref.
+The coverage obligation reports unused episode slots. When none remain, adding a
+new row is not authorized: the correction must merge the omitted ref into an
+existing supplied slot. A last deterministic catch may combine an otherwise-valid
+overflow row with one valid episode without changing its authored meaning or
+citations; it cannot synthesize missing reflection content.
 
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT

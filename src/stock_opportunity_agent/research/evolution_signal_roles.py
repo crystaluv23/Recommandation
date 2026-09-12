@@ -688,7 +688,8 @@ _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     "has exactly case_ref (a supplied opaque string), observations (an array), "
     "and evidence_gaps (an array of strings). Each observation has exactly summary "
     "(a grounded interpretation), document_ref (copied from that case's evidence), "
-    "and exact_span (an exact contiguous 8-240 character substring copied from that "
+    "and exact_span (the shortest sufficient exact contiguous substring of at least "
+    "8 characters copied from that "
     "document's content_excerpt or one structured_context concept record's "
     "exact_span). A citation must stay inside one record; wrapper concept/label/unit "
     "fields and text joined across records are not facts. For structured_context "
@@ -1355,18 +1356,35 @@ class LLMSignalMiningModel(SignalMiningModel):
                 feedback_refs - covered_feedback_refs
             )
             if missing_feedback_refs:
+                unused_episode_slots = sorted(episode_slots - seen_episodes)
+                if unused_episode_slots:
+                    coverage_message = (
+                        "episode_reflections source_refs must cover every selected "
+                        "top-level feedback_ref; use an unused supplied episode slot "
+                        "or merge refs into an existing valid episode"
+                    )
+                    coverage_repairs = ("add", "replace")
+                    coverage_action = "add_or_merge"
+                else:
+                    coverage_message = (
+                        "episode_reflections source_refs must cover every selected "
+                        "top-level feedback_ref; no unused episode slot remains, so "
+                        "merge the missing refs and their reflection into one or more "
+                        "existing valid episodes without adding a row"
+                    )
+                    coverage_repairs = ("replace",)
+                    coverage_action = "merge_existing"
                 issues.append(
                     ValidationIssue(
                         code="reflection_feedback_coverage_missing",
-                        message=(
-                            "episode_reflections source_refs must cover every "
-                            "selected top-level feedback_ref"
-                        ),
+                        message=coverage_message,
                         paths=("episode_reflections",),
-                        allowed_repairs=("add", "replace"),
+                        allowed_repairs=coverage_repairs,
                         source_refs=tuple(missing_feedback_refs),
                         repair_context={
                             "missing_feedback_refs": missing_feedback_refs,
+                            "unused_episode_slots": unused_episode_slots,
+                            "coverage_action": coverage_action,
                         },
                     )
                 )
@@ -1436,6 +1454,87 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "lesson_additions": [dict(item) for item in lessons],
             }
 
+        def merge_overflow_episodes(
+            failed: Mapping[str, Any], _error: ValidationError,
+        ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+            """Merge only otherwise-valid overflow episodes without inventing text."""
+
+            if set(failed) != {"episode_reflections", "lesson_additions"}:
+                return None
+            raw_episodes = failed.get("episode_reflections")
+            if not isinstance(raw_episodes, list):
+                return None
+            required = {
+                "episode_ref", "source_refs", "reflection", "unresolved_questions",
+            }
+            episodes = deepcopy(raw_episodes)
+            valid_indices: list[int] = []
+            overflow_indices: list[int] = []
+            seen_slots: set[str] = set()
+            for index, raw in enumerate(episodes):
+                if not isinstance(raw, Mapping) or set(raw) != required:
+                    return None
+                episode_ref = str(raw.get("episode_ref", ""))
+                source_refs = canonicalize_refs(
+                    raw.get("source_refs"), allowed=feedback_refs
+                )
+                reflection = raw.get("reflection")
+                questions = raw.get("unresolved_questions")
+                if (
+                    not isinstance(source_refs, list)
+                    or not source_refs
+                    or not set(str(item) for item in source_refs) <= feedback_refs
+                    or not isinstance(reflection, str)
+                    or not reflection.strip()
+                    or not isinstance(questions, list)
+                    or any(not isinstance(item, str) for item in questions)
+                ):
+                    return None
+                episodes[index] = {**raw, "source_refs": source_refs}
+                if episode_ref in episode_slots and episode_ref not in seen_slots:
+                    seen_slots.add(episode_ref)
+                    valid_indices.append(index)
+                else:
+                    overflow_indices.append(index)
+            if not overflow_indices or not valid_indices:
+                return None
+            target_index = valid_indices[0]
+            target = dict(episodes[target_index])
+            removed_paths: list[str] = []
+            for index in overflow_indices:
+                overflow = episodes[index]
+                target["source_refs"] = list(
+                    dict.fromkeys(
+                        [*target["source_refs"], *overflow["source_refs"]]
+                    )
+                )
+                overflow_reflection = str(overflow["reflection"]).strip()
+                target_reflection = str(target["reflection"]).strip()
+                if overflow_reflection not in target_reflection:
+                    target["reflection"] = (
+                        f"{target_reflection}\n\n{overflow_reflection}"
+                    )
+                target["unresolved_questions"] = list(
+                    dict.fromkeys(
+                        [
+                            *target["unresolved_questions"],
+                            *overflow["unresolved_questions"],
+                        ]
+                    )
+                )
+                removed_paths.append(f"episode_reflections[{index}]")
+            episodes[target_index] = target
+            for index in reversed(overflow_indices):
+                episodes.pop(index)
+            return {
+                **dict(failed),
+                "episode_reflections": episodes,
+            }, {
+                "source_substitution_paths": (),
+                "removed_paths": tuple(removed_paths),
+                "context_only_paths": (f"episode_reflections[{target_index}]",),
+            }
+
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_reflect",
@@ -1453,7 +1552,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 " In episode source_refs, copy only the top-level feedback_ref "
                 "field of a supplied feedback_units row. Ref-like strings nested "
                 "inside a feedback unit are audit content and are not valid output "
-                "citations."
+                "citations. One episode may cite multiple supplied feedback refs; "
+                "never emit more episodes than supplied episode slots."
                 + _UNTRUSTED_DATA_INSTRUCTION
             ),
             payload=payload,
@@ -1465,6 +1565,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             max_output_tokens=5_000,
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
+            final_validation_fallback=merge_overflow_episodes,
         )
         return AgentStep(
             value,

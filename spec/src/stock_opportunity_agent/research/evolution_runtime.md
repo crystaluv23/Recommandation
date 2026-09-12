@@ -446,7 +446,11 @@ text anonymization, consistently across current results and executed evidence.
   hypotheses from exact point-in-time positive/control evidence;
 - `signal_mining_exploration_extract` creates label-hidden observable signatures
   for a locally selected diverse case batch. Each observation carries a supplied
-  document ref and a byte-exact visible span; empty evidence permits only an empty
+  document ref and a byte-exact visible span. A span must contain at least two
+  visible tokens and be a contiguous substring of one supplied record literal;
+  there is no arbitrary per-span upper character limit because containment and
+  the frozen role output/request budgets already bound it. The prompt still asks
+  for the shortest sufficient literal. Empty evidence permits only an empty
   observation list with a non-empty gap; and
 - `signal_mining_exploration_discover` reveals labels only beside those frozen
   signatures and emits supported candidates or refined patterns, but only after

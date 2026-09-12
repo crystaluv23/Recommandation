@@ -1,5 +1,27 @@
 # Status
 
+V62 committed two real successor cycles under contract
+`76616835...5006` at authoritative `round=0/cycle=2`. It used 23 model
+attempts (22 completed, one failed), 99 data requests and `$0.19435864`, kept
+Locked Test sealed and Registry v1 unchanged, and again reported zero
+candidate/validated/promoted/updated Signals with goal `unmet`. Cycle 1 memory
+successfully processed 28 refs into six episodes and four lessons. Cycle 2
+selected all five required local cycle-1 refs, and the adapter correctly sent
+the complete coverage correction, but DeepSeek used a fourteenth episode id
+after all 13 runtime slots were occupied; bounded correction therefore ended in
+an otherwise-grounded overflow row and the memory delta failed without consuming
+any refs. Both E1 batches in both cycles also retained grounded sibling
+observations but quarantined several byte-exact source records solely because
+their complete literal exceeded the arbitrary 240-character ceiling, materially
+weakening E2 before its no-pattern result. Reflection correction now states the
+remaining-slot authority and deterministically merges only an otherwise-valid
+overflow episode after bounded retries, preserving authored text/questions/refs
+and rerunning the complete parser. E1 now accepts any complete contained literal
+with at least two visible tokens under the existing request/output budgets. The
+new exact regressions and both focused modules pass (168 tests); V62 remains
+immutable and a fresh successor with a learned-profile-bearing source Registry
+is required to exercise nonzero Update as well as repaired Mining.
+
 V61 committed two real cycles under contract `59bb2450...c908c0` at
 authoritative `round=0/cycle=2`, using 20 attempts (17 completed, three failed),
 93 SEC requests, and `$0.11558708000000001`. Both cycles ran H and independent
