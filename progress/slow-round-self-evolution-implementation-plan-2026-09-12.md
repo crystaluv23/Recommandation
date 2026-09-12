@@ -1,6 +1,6 @@
 # Slow Round 自进化：代码修改与验收方案
 
-状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V67 从 V66 已提交历史冻结 `slow_only`，只真实执行 Slow，并提交 Fast 0 / Slow 1；47 次尝试全部 completed、144 次 acquisition reservation、实际成本 `$0.19898368000000002`，Locked Test 保持封闭。三项 Update 均产出候选；成对效用门现已在两臂各 8/8 cases 上完成真实解析与执行且 execution failure 为 0，两项因实测无增益拒绝、一项因 unchanged fixture 失败，证明 V66 的 paired-input 修复有效。Mining 仍为 0 的新根因发生在 E1 发送前：中性概念清单字段 `source_label` 被严格 outcome-key 扫描器当作评价 label 拒绝；而双来源 packet 已正确得到每 case 2–4 份文档。现将该中性 typed field 改名为 `source_display_name`，不扩大 outcome 白名单、不增加路径特例，精确回归、全部 752 项测试及 lint 通过。V67 保持不可变，下一步冻结代码绑定的后继，真实验证 E1/E2、非零 Mining 与可判定 Update。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
+状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V68 从 V67 已提交历史冻结 `slow_only`，只真实执行 Slow，并提交 Fast 0 / Slow 2；112 次尝试（107 completed、5 failed）、268 次 acquisition reservation、实际成本 `$0.5913712`，Locked Test 保持封闭。两轮 E1 均完成 8/8 grounded cases 且无 quarantine，E2 均真实比较固定 2 positive + 2 control；cycle 2 反思消费 15 个 cycle-1/历史单元并据此继续 H1/E，Update 两轮分别产出 1/3 个候选，成对门按实测无增益拒绝而非输入缺失。Mining 仍为 0、Registry v1 不变、目标 `unmet`。精确 E2 payload 暴露出 Company Facts 把最新季度与上一财年作为“两期”duration fact 的通用语义缺陷，违反既有 prior-comparable-period 约束；现改为 instant facts 跨时点配对，duration facts 只在时长相近或 fiscal-period 一致时配对，无可比前期则只暴露一期。精确回归、全部 752 项测试及 lint 通过；V68 保持不可变，下一步冻结代码绑定的后继，真实验证可比期间、非零 Mining 及 validated/promoted transition。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
 
 目标：让 Slow 每轮主动挖掘信号，从自己过去的挖掘、验证、晋级和真实使用反馈中学习，并能在没有新 Fast round 的情况下连续运行。最终产物是质量可验证、可使用的信号库，以及有证据支持的挖掘方法经验。
 

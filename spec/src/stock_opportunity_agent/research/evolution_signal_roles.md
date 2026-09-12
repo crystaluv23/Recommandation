@@ -250,9 +250,13 @@ mining, and Signal update proposals.
   to one supplied SEC Company Facts record, that description also preserves only
   its source-owned taxonomy, concept, label, and unit so E2 knows what the literal
   number measures; it never restores an E1-authored claim. Queryless E1 is directed
-  to prefer two available periods of the same structured concept before unrelated
-  one-period facts, making direction observable within the existing evidence and
-  output bounds. A locally recognizable SEC cover or
+  to prefer two available comparable periods of the same structured concept before
+  unrelated one-period facts, making direction observable within the existing
+  evidence and output bounds. The deterministic Company Facts projection pairs
+  instant facts across distinct dates and duration facts only across like-duration
+  or like-fiscal-period records; it never presents a quarter and a full year as a
+  two-period trend. When no comparable predecessor exists, it exposes one period
+  rather than manufacturing a direction. A locally recognizable SEC cover or
   registration boilerplate span is not a comparison-ready observation. Empty E2
   outcomes distinguish a genuinely compared `no_measurable_pattern` within the
   explicitly supplied grounded cohort from `insufficient_evidence`. An unrelated

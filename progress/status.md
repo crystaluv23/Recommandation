@@ -1,5 +1,29 @@
 # Status
 
+V68 committed two real `slow_only` cycles at authoritative Fast 0 / Slow 2.
+It made 112 Slow-side attempts (107 completed, five failed) for `$0.5913712`,
+reserved 268 acquisition work units, kept Locked Test sealed, and left Registry
+v1 unchanged. Both cycles completed E1 over eight grounded cases with no
+quarantine and completed E2 over fixed two-positive/two-control induction sets.
+Cycle 2 reflection consumed 15 concrete prior units into 15 episodes/four lessons,
+including cycle-1 no-pattern and Update contract failures, and still scheduled
+fresh H1/E exploration. Update produced one and three candidates respectively;
+paired candidates were rejected on measured non-improvement rather than missing
+inputs. Mining remained zero because both E2 comparisons found no supported
+recurring difference, so the goal remained `unmet`.
+
+Exact E2 payload inspection exposed a semantic input defect beneath the valid
+no-pattern decisions. The Company Facts projection selected the two latest end
+dates, so duration concepts repeatedly paired a latest quarter with the preceding
+full year and presented them as a two-period trend. This violated the existing
+spec's prior-comparable-period rule and made normalized direction unavailable.
+The projection now pairs instant facts across dates, but duration facts only when
+their elapsed durations are within 35 days or, when dates cannot be parsed, their
+fiscal-period tags agree. With no comparable predecessor it exposes one record.
+The exact regression, all 752 tests, and lint pass. V68 remains immutable; a fresh
+successor must live-verify comparable E1 records and achieve nonzero Mining plus
+a validated/promoted transition.
+
 V67 cycle 1 committed at authoritative Fast 0 / Slow 1 under the new paired-input
 and source-diverse E1 implementation. It made 47 completed Slow-side attempts for
 `$0.19898368000000002`, reserved 144 acquisition work units, never entered Fast,

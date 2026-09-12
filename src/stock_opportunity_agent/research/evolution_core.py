@@ -5144,7 +5144,9 @@ def _company_facts_context(
             for unit, raw_records in units.items():
                 if not isinstance(raw_records, list):
                     continue
-                matched_records: list[tuple[str, str, dict[str, Any]]] = []
+                matched_records: list[
+                    tuple[str, str, Mapping[str, Any], dict[str, Any]]
+                ] = []
                 ambiguous = False
                 for record in raw_records:
                     if not isinstance(record, Mapping):
@@ -5167,6 +5169,7 @@ def _company_facts_context(
                         (
                             period,
                             filed_key,
+                            record,
                             {
                                 "exact_span": exact_span,
                                 "start": start,
@@ -5175,27 +5178,37 @@ def _company_facts_context(
                         )
                     )
                 matched_records.sort(
-                    key=lambda item: (item[0], item[1], item[2]["start"]),
+                    key=lambda item: (item[0], item[1], item[3]["start"]),
                     reverse=True,
                 )
-                distinct_periods: list[dict[str, Any]] = []
+                distinct_records: list[
+                    tuple[str, str, Mapping[str, Any], dict[str, Any]]
+                ] = []
                 seen_periods: set[str] = set()
-                for period, _filed, record_view in matched_records:
+                for matched in matched_records:
+                    period, _filed, _record, record_view = matched
                     period_key = period or f"offset:{record_view['start']}"
                     if period_key in seen_periods:
                         continue
                     seen_periods.add(period_key)
-                    distinct_periods.append(record_view)
-                    if len(distinct_periods) == 2:
-                        break
-                if not distinct_periods:
+                    distinct_records.append(matched)
+                if not distinct_records:
                     continue
+                latest = distinct_records[0]
+                selected_records = [latest]
+                for candidate_record in distinct_records[1:]:
+                    if _company_fact_periods_comparable(
+                        latest[2], candidate_record[2]
+                    ):
+                        selected_records.append(candidate_record)
+                        break
+                selected_periods = [item[3] for item in selected_records]
                 entry = {
                     "taxonomy": str(taxonomy),
                     "concept": str(concept),
                     "label": label,
                     "unit": str(unit),
-                    "records": distinct_periods,
+                    "records": selected_periods,
                 }
                 latest_period = matched_records[0][0]
                 queryless_priority = _QUERYLESS_COMPANY_FACT_PRIORITY.get(
@@ -5253,6 +5266,27 @@ def _company_facts_context(
         context["omitted_concept_count"] or selected_partial
     )
     return context
+
+
+def _company_fact_periods_comparable(
+    current: Mapping[str, Any], prior: Mapping[str, Any]
+) -> bool:
+    """Return whether two SEC fact records form a meaningful time comparison."""
+
+    current_start = _optional_iso_date(current.get("start"))
+    prior_start = _optional_iso_date(prior.get("start"))
+    if current_start is None or prior_start is None:
+        return current_start is None and prior_start is None
+    current_end = _optional_iso_date(current.get("end"))
+    prior_end = _optional_iso_date(prior.get("end"))
+    if current_end is not None and prior_end is not None:
+        current_days = (current_end - current_start).days
+        prior_days = (prior_end - prior_start).days
+        if current_days >= 0 and prior_days >= 0:
+            return abs(current_days - prior_days) <= 35
+    current_fp = str(current.get("fp", "")).strip().casefold()
+    prior_fp = str(prior.get("fp", "")).strip().casefold()
+    return bool(current_fp and current_fp == prior_fp)
 
 
 _QUERYLESS_COMPANY_FACT_CONCEPTS = (

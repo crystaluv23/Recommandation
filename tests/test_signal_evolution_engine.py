@@ -960,7 +960,27 @@ class SignalEvolutionTests(TestCase):
                         "label": "Operating income",
                         "units": {
                             "USD": [
-                                {"end": "2025-03-31", "val": 100, "filed": "2025-05-01"}
+                                {
+                                    "start": "2024-01-01",
+                                    "end": "2024-03-31",
+                                    "fp": "Q1",
+                                    "val": 80,
+                                    "filed": "2024-05-01",
+                                },
+                                {
+                                    "start": "2024-01-01",
+                                    "end": "2024-12-31",
+                                    "fp": "FY",
+                                    "val": 350,
+                                    "filed": "2025-02-15",
+                                },
+                                {
+                                    "start": "2025-01-01",
+                                    "end": "2025-03-31",
+                                    "fp": "Q1",
+                                    "val": 100,
+                                    "filed": "2025-05-01",
+                                },
                             ]
                         },
                     },
@@ -999,6 +1019,11 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(len(revenue["records"]), 2)
         self.assertIn('"val":101', revenue["records"][0]["exact_span"])
         self.assertNotIn('"filed":"2025-10-15"', json.dumps(view))
+        operating_income = concepts["OperatingIncomeLoss"]
+        self.assertEqual(len(operating_income["records"]), 2)
+        self.assertIn('"end":"2025-03-31"', operating_income["records"][0]["exact_span"])
+        self.assertIn('"end":"2024-03-31"', operating_income["records"][1]["exact_span"])
+        self.assertNotIn('"end":"2024-12-31"', json.dumps(operating_income))
         for concept in concepts.values():
             for record in concept["records"]:
                 self.assertEqual(
