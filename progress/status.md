@@ -1,5 +1,33 @@
 # Status
 
+V66 is the first two-cycle `slow_only` successor that preserves the replayed
+Fast learning profiles and commits both cycles at authoritative `round=0/cycle=2`.
+It made 101 Slow-side DeepSeek attempts (99 completed, two failed) for
+`$0.44161012000000005`, reserved 281 bounded acquisition requests, never entered
+a Fast stage, kept Locked Test sealed, and left Registry v1 unchanged. Cycle 2
+reflection consumed nine cycle-1 result units into nine episodes/four lessons,
+and its H1 request explicitly used the prior no-pattern/provisional/update-failure
+facts, proving the reflection-to-action handoff. Both cycles still produced zero
+Mining candidates. Update produced two candidates in cycle 1 and one in cycle 2,
+but paired validation reported both arms as unexplained execution failures; the
+second cycle also tried to create a conflicting `max_drawdown_1y:v2` instead of
+re-evaluating the existing provisional candidate. Exact E1 requests show why
+independent Mining was starved semantically: queryless resolution declared one
+arbitrary filing sufficient, so seven of eight cases lacked structured comparable
+facts and E2 received isolated issuer narratives.
+
+The three general defects are repaired locally and reflected in the owning specs.
+Paired effectiveness now materializes both current/candidate input contracts via
+the authorized resolver before freezing their common PIT corpus, binds the acquired
+documents into the evaluation identity, and persists per-case arm diagnostics.
+Queryless E1 requires financial and filing source families when both are available
+and receives a value/identity/outcome-free inventory of recurring source concepts.
+A later cycle reuses an immutable provisional vNext on a new check identity rather
+than asking for a conflicting same-version definition. Six targeted regressions,
+173 focused tests, all 752 tests, and repository lint pass. V66 remains immutable;
+a fresh code-bound `slow_only` successor is required for nonzero Mining and a
+conclusive Update evaluation/promotion.
+
 V65 replayed one immutable committed Fast range into a real zero-Fast
 `slow_bootstrap` cycle under contract `69aa0952...eb2a` and committed at
 authoritative `round=0/cycle=1`. Ten DeepSeek attempts completed for

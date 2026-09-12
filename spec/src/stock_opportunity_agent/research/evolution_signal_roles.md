@@ -262,6 +262,18 @@ mining, and Signal update proposals.
   `insufficient_evidence`. The prompt and correction contract spell out the exact
   E2 row shape so a schema error cannot erase a semantically useful candidate
   proposal and be misreported as a domain-empty result.
+- Queryless E1 must not stop after the first locally sufficient document. Before
+  labels are revealed, the runtime requests a bounded, source-diverse packet with
+  both a narrative filing family and a structured financial family whenever both
+  capabilities are available. It also derives a value-free comparison-concept
+  inventory from concepts present across multiple selected cases. Each microbatch
+  receives that same neutral inventory and is directed to prefer exact records for
+  recurring concepts (including two periods when visible) over issuer-specific risk
+  boilerplate. The inventory contains source-owned taxonomy/concept/label/unit and
+  case-frequency only; it contains no values, identities, labels, returns, or
+  candidate hypothesis, so it improves comparability without choosing cases for a
+  desired result. If either source family cannot be materialized, the ordinary
+  resolution gap remains visible and E1 still fails closed.
 - H3 nests the exact evidence packets inside each comparison. It never sends one
   global packet array plus indirect refs that permit a rationale for one hypothesis
   to count a sibling hypothesis's packets. The adapter derives labels and query

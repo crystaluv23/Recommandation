@@ -106,6 +106,25 @@ _EXPLORATION_BOILERPLATE = re.compile(
     re.IGNORECASE,
 )
 
+_EXPLORATION_FINANCIAL_SOURCE_TYPES = (
+    "company_facts",
+    "financial_statements",
+    "financials",
+    "sec_company_facts",
+    "sec_company_facts_raw_response",
+)
+_EXPLORATION_FILING_SOURCE_TYPES = (
+    "10-k",
+    "10-q",
+    "20-f",
+    "40-f",
+    "6-k",
+    "8-k",
+    "filing",
+    "filing_body",
+    "sec_filing",
+)
+
 
 _SLOW_FEEDBACK_KINDS = {
     "signal_usage",
@@ -627,6 +646,57 @@ def _comparison_ready_exploration_signature(
         observations=kept,
         evidence_gaps=(*signature.evidence_gaps, *reason),
     ), reason
+
+
+def _exploration_comparison_concepts(
+    packets: Iterable[Mapping[str, Any]], *, limit: int = 12
+) -> list[dict[str, Any]]:
+    """Return frequent source-owned concepts without values or outcome labels."""
+
+    inventory: dict[tuple[str, str, str, str], set[str]] = {}
+    record_counts: dict[tuple[str, str, str, str], int] = {}
+    for packet in packets:
+        case_ref = str(packet.get("case_ref", ""))
+        seen: set[tuple[str, str, str, str]] = set()
+        for evidence in packet.get("evidence", ()):
+            if not isinstance(evidence, Mapping):
+                continue
+            context = evidence.get("structured_context", {})
+            if not isinstance(context, Mapping):
+                continue
+            for concept in context.get("concepts", ()):
+                if not isinstance(concept, Mapping):
+                    continue
+                key = tuple(
+                    str(concept.get(field, ""))
+                    for field in ("taxonomy", "concept", "label", "unit")
+                )
+                if not key[1] or key in seen:
+                    continue
+                seen.add(key)
+                inventory.setdefault(key, set()).add(case_ref)
+                records = concept.get("records", ())
+                record_counts[key] = record_counts.get(key, 0) + (
+                    len(records) if isinstance(records, list) else 0
+                )
+    ranked = sorted(
+        (key for key, refs in inventory.items() if len(refs) >= 2),
+        key=lambda key: (
+            -len(inventory[key]),
+            -record_counts.get(key, 0),
+            key,
+        ),
+    )[:limit]
+    return [
+        {
+            "taxonomy": key[0],
+            "concept": key[1],
+            "source_label": key[2],
+            "unit": key[3],
+            "case_count": len(inventory[key]),
+        }
+        for key in ranked
+    ]
 
 
 def _literal_only_signature_view(
@@ -1682,6 +1752,7 @@ class SignalCandidateEffectiveness:
     current_correct: int = 0
     current_wrong: int = 0
     current_execution_failed: int = 0
+    case_diagnostics: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
         if self.disposition not in {"promoted", "provisional", "rejected"}:
@@ -1693,7 +1764,7 @@ class SignalCandidateEffectiveness:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "signal-candidate-effectiveness-v3",
+            "schema_version": "signal-candidate-effectiveness-v4",
             "signal_ref": self.signal_ref,
             "current_ref": self.current_ref,
             "accepted": self.accepted,
@@ -1714,6 +1785,7 @@ class SignalCandidateEffectiveness:
                 "directional_wrong": self.current_wrong,
                 "execution_failed": self.current_execution_failed,
             },
+            "case_diagnostics": [dict(item) for item in self.case_diagnostics],
         }
 
 
@@ -1727,6 +1799,7 @@ class SignalCandidateEffectivenessEvaluator:
         raw_info_store: RawInfoStore,
         discovery_cases: tuple[EvolutionCase, ...],
         llm_runner: LLMSignalRunner | None,
+        evidence_resolver: EvidenceResolver | None = None,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
         case_limit: int = 8,
         minimum_cases: int = 4,
@@ -1737,6 +1810,7 @@ class SignalCandidateEffectivenessEvaluator:
         self.raw_info_store = raw_info_store
         self.discovery_cases = tuple(discovery_cases)
         self.llm_runner = llm_runner
+        self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.deterministic_functions = dict(deterministic_functions or {})
         self.case_limit = case_limit
         self.minimum_cases = minimum_cases
@@ -1778,13 +1852,15 @@ class SignalCandidateEffectivenessEvaluator:
                 candidate_wrong=0,
             )
 
-        frozen_store = RawInfoStore(documents=self.raw_info_store.documents)
         candidate_hash = hashlib.sha256(
             json.dumps(
                 {"spec": spec.to_dict(), "skill": skill or ""},
                 sort_keys=True,
             ).encode("utf-8")
         ).hexdigest()
+        materialized = self._materialize_case_inputs(spec, cases)
+
+        frozen_store = RawInfoStore(documents=self.raw_info_store.documents)
         candidate_executor = SignalExecutor(
             FrozenSignalRegistry(
                 version=0,
@@ -1812,6 +1888,7 @@ class SignalCandidateEffectivenessEvaluator:
         current_values: list[
             tuple[SignalValue, bool, SignalExecutionStatus]
         ] = []
+        case_diagnostics: list[dict[str, Any]] = []
         try:
             for case in cases:
                 candidate_result = candidate_executor.execute_batch(
@@ -1827,6 +1904,12 @@ class SignalCandidateEffectivenessEvaluator:
                         candidate_result.execution_status,
                     )
                 )
+                diagnostic: dict[str, Any] = {
+                    "case_id": case.case_id,
+                    "candidate": _effectiveness_arm_diagnostic(
+                        materialized[case.case_id]["candidate"], candidate_result
+                    ),
+                }
                 if current is not None and current_executor is not None:
                     current_result = current_executor.execute_batch(
                         (current.ref,),
@@ -1841,6 +1924,10 @@ class SignalCandidateEffectivenessEvaluator:
                             current_result.execution_status,
                         )
                     )
+                    diagnostic["current"] = _effectiveness_arm_diagnostic(
+                        materialized[case.case_id]["current"], current_result
+                    )
+                case_diagnostics.append(diagnostic)
         except (ValidationError, KeyError, TypeError, ValueError) as exc:
             return SignalCandidateEffectiveness(
                 signal_ref=spec.ref,
@@ -1921,7 +2008,61 @@ class SignalCandidateEffectivenessEvaluator:
             current_correct=current_counts[2],
             current_wrong=current_counts[3],
             current_execution_failed=current_counts[4],
+            case_diagnostics=tuple(case_diagnostics),
         )
+
+    def _materialize_case_inputs(
+        self,
+        spec: SignalSpec,
+        cases: Iterable[EvolutionCase],
+    ) -> dict[str, dict[str, RawInfoResolution]]:
+        """Resolve both paired arms before one common local corpus is frozen."""
+
+        candidate_executor = SignalExecutor(
+            FrozenSignalRegistry(
+                version=0,
+                registry_hash=_canonical_hash(spec.to_dict()),
+                specs=(spec,),
+                skills={},
+            ),
+            self.raw_info_store,
+            resolver=self.evidence_resolver,
+            deterministic_functions=self.deterministic_functions,
+            llm_runner=self.llm_runner,
+        )
+        try:
+            current = self.registry.latest_spec(spec.signal_id)
+        except ValidationError:
+            current = None
+        current_executor = (
+            SignalExecutor(
+                self.registry.freeze(),
+                self.raw_info_store,
+                resolver=self.evidence_resolver,
+                deterministic_functions=self.deterministic_functions,
+                llm_runner=self.llm_runner,
+            )
+            if current is not None
+            else None
+        )
+        materialized: dict[str, dict[str, RawInfoResolution]] = {}
+        for case in cases:
+            arms: dict[str, RawInfoResolution] = {}
+            if current is not None and current_executor is not None:
+                arms["current"] = current_executor.prepare_inputs(
+                    (current.ref,),
+                    company_id=case.company_id,
+                    as_of=case.prediction_time,
+                    identity=case.basic_info,
+                )[0]
+            arms["candidate"] = candidate_executor.prepare_inputs(
+                (spec.ref,),
+                company_id=case.company_id,
+                as_of=case.prediction_time,
+                identity=case.basic_info,
+            )[0]
+            materialized[case.case_id] = arms
+        return materialized
 
     def evaluation_identity(
         self,
@@ -1942,6 +2083,7 @@ class SignalCandidateEffectivenessEvaluator:
             excluded_case_ids=excluded_ids,
             strict_preferred=strict_preferred,
         )
+        self._materialize_case_inputs(spec, cases)
         try:
             current = self.registry.latest_spec(spec.signal_id)
             baseline = {
@@ -2019,7 +2161,7 @@ class SignalCandidateEffectivenessEvaluator:
             "validator_hash": _canonical_hash(
                 {
                     "contract": "signal-candidate-validation-v2",
-                    "effectiveness": "signal-candidate-effectiveness-v3",
+                    "effectiveness": "signal-candidate-effectiveness-v4",
                     "minimum_cases": self.minimum_cases,
                     "case_limit": self.case_limit,
                     "functions": sorted(self.deterministic_functions),
@@ -2078,6 +2220,24 @@ class SignalCandidateEffectivenessEvaluator:
             preferred.append(case)
             seen_companies.add(case.company_id)
         return tuple(preferred)
+
+
+def _effectiveness_arm_diagnostic(
+    resolution: RawInfoResolution,
+    result: SignalResult,
+) -> dict[str, Any]:
+    """Return a compact, label-free account of one paired execution arm."""
+
+    return {
+        "resolution_status": resolution.status,
+        "resolution_gap_reason": (
+            resolution.gap.reason.value if resolution.gap is not None else None
+        ),
+        "document_count": len(resolution.documents),
+        "execution_status": result.execution_status.value,
+        "error_code": result.execution_error_code,
+        "error_message": result.execution_error_message,
+    }
 
 
 def _signal_effectiveness_counts(
@@ -2694,6 +2854,7 @@ class SignalEvolutionEngine:
             raw_info_store=raw_info_store,
             discovery_cases=discovery_cases,
             llm_runner=llm_signal_runner,
+            evidence_resolver=self.evidence_resolver,
             deterministic_functions=deterministic_functions,
             case_limit=effectiveness_case_limit,
             minimum_cases=effectiveness_minimum_cases,
@@ -4029,7 +4190,7 @@ class SignalEvolutionEngine:
                     accepted = paired.accepted
                 else:
                     effectiveness = {
-                        "schema_version": "signal-candidate-effectiveness-v3",
+                        "schema_version": "signal-candidate-effectiveness-v4",
                         "signal_ref": signal_ref,
                         "accepted": False,
                         "disposition": "rejected",
@@ -4452,6 +4613,40 @@ class SignalEvolutionEngine:
                     "execution_usage": _usage_to_dict(execution_usage),
                     "technical_failures": technical_failures,
                 }
+            )
+
+        next_ref = f"{spec.signal_id}:v{spec.version + 1}"
+        try:
+            prior_candidate_validation = self.registry.load_candidate_validation(
+                next_ref
+            )
+            prior_candidate, _prior_skill = self.registry.load_candidate(next_ref)
+        except ValidationError:
+            prior_candidate_validation = None
+            prior_candidate = None
+        if (
+            prior_candidate is not None
+            and prior_candidate.signal_id == spec.signal_id
+            and prior_candidate.version == spec.version + 1
+            and prior_candidate_validation is not None
+            and prior_candidate_validation.get("status") == "provisional"
+        ):
+            return self._signal_update_output(
+                candidate_refs=(next_ref,),
+                induction_case_ids={
+                    next_ref: tuple(local_selection["induction_case_ids"])
+                },
+                validation_case_ids={
+                    next_ref: tuple(local_selection["holdout_case_ids"])
+                },
+                audit={
+                    **base_audit,
+                    "disposition": "reused_provisional_new_evaluation",
+                    "staged_ref": next_ref,
+                    "local_selection": local_selection,
+                    "execution_usage": _usage_to_dict(execution_usage),
+                    "technical_failures": technical_failures,
+                },
             )
 
         induction_packets: list[dict[str, Any]] = []
@@ -5617,6 +5812,7 @@ class SignalEvolutionEngine:
             )
             evidence_packets.append(packet)
             resolution_audit.append(resolution)
+        comparison_concepts = _exploration_comparison_concepts(evidence_packets)
         signatures_list: list[SignalMiningSignature] = []
         extraction_usage = AgentUsage()
         extraction_failures: dict[str, tuple[str, ...]] = {}
@@ -5632,6 +5828,7 @@ class SignalEvolutionEngine:
                         "track": "exploration",
                         "microbatch_ref": f"e1-batch-{start // config.exploration_microbatch_size + 1:03d}",
                         "cases": batch_packets,
+                        "comparison_concepts": comparison_concepts,
                         "rules": {
                             "labels_hidden": True,
                             "identities_hidden": True,
@@ -6962,6 +7159,21 @@ class SignalEvolutionEngine:
         reveal_label: bool,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         selection: dict[str, Any] = {}
+        available_source_types = set(source_types)
+        required_source_groups: tuple[tuple[str, ...], ...] = ()
+        if query is None:
+            financial_group = tuple(
+                item
+                for item in _EXPLORATION_FINANCIAL_SOURCE_TYPES
+                if item in available_source_types
+            )
+            filing_group = tuple(
+                item
+                for item in _EXPLORATION_FILING_SOURCE_TYPES
+                if item in available_source_types
+            )
+            if financial_group and filing_group:
+                required_source_groups = (financial_group, filing_group)
 
         def select_documents(
             candidates: tuple[RawInfoDocument, ...],
@@ -6995,6 +7207,7 @@ class SignalEvolutionEngine:
                 lookback_days=lookback_days,
                 max_documents=self.mining_config.evidence_documents_per_case,
                 query=query,
+                required_source_groups=required_source_groups,
             ),
             company_id=case.company_id,
             identity=case.basic_info,
@@ -7044,6 +7257,9 @@ class SignalEvolutionEngine:
                 else "unresolved_after_relevance_filter"
             ),
             "requested_source_types": list(source_types),
+            "required_source_groups": [
+                list(group) for group in required_source_groups
+            ],
             "document_count": len(documents),
             "usable": bool(documents),
             "document_hashes": [item.content_hash for item in documents],

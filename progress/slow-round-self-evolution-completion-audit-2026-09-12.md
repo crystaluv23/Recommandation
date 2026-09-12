@@ -10,39 +10,34 @@ semantic, Signal-output, or independent-benefit evidence.
 ## Authoritative boundary
 
 - Latest executed workspace:
-  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v65`.
+  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v66`.
 - Frozen contract hash:
-  `69aa0952e44c9a83a3110f3e3048b5a47675dcd20597bff045426fa4eac7eb2a`.
-- Authoritative pointers are Fast round 0 / Slow cycle 1. The cycle committed;
+  `c255c26aebfb7145673e35885320822f0b1609ac6bd1fc1677c00ec22dc7a332`.
+- Authoritative pointers are Fast round 0 / Slow cycle 2. Both cycles committed;
   no staged file is used as completion evidence.
-- The run used ten completed attempts, kept Locked Test closed and Registry v1
-  unchanged, and reported zero new candidate/validated/promoted Signals, one
-  updated candidate (`max_drawdown_1y:v2`), and `signal_goal_status=unmet`.
-- H1 received all 142 unmatched needs, 30 Fast reflection actions, 259 learning
-  events and 14 learned Signal profiles, but grouped every unmatched need as one
-  deferred row. Independent E completed both extraction batches without the old
-  literal-length quarantine and returned a grounded no-pattern result.
-- Update ran three evidence-backed targets. One reached a staged candidate but
-  stayed provisional after seven of eight fixed check cases failed closed on
-  unavailable market data; two others failed bounded structured correction.
-- The live cycle exposed that a later `slow_only` export would drop the imported
-  learning events because V65's local Fast pointer is zero, and that a corrected
-  candidate could be lost only because its declared `changed_paths` contained an
-  unchanged path. Both general defects are repaired with contract-bound transitive
-  event propagation and final deterministic diff-metadata normalization; all 748
-  tests and lint pass.
-- Cycle 1 reflection processed all 28 selected refs into six episodes and four
-  lessons. Cycle 2 selected all five required `slow:1:*` refs and sent the
-  adapter-level aggregate coverage correction, but the model appended a
-  fourteenth episode after all 13 supplied slots were occupied. The engine
-  sealed memory as failed and consumed no refs, while H/E continued fail-closed.
-- Both cycles also quarantined grounded E1 observations whose complete source
-  literal exceeded the arbitrary 240-character ceiling, leaving E2 with a
-  materially weakened comparison before its no-pattern result.
-- The successor declares slot-aware correction authority, merges only
-  otherwise-valid overflow content after bounded retries, reruns the complete
-  parser, and removes the redundant literal upper bound while retaining exact
-  containment, visible-token and frozen budget gates.
+- The run used 101 Slow-side attempts (99 completed, two failed), reserved 281
+  acquisition requests, cost `$0.44161012000000005`, kept Locked Test closed and
+  Registry v1 unchanged, and reported zero Mining candidates. Update yielded two
+  candidates in cycle 1 and one in cycle 2, but all remained provisional and the
+  final `signal_goal_status` was `unmet`.
+- Cycle 2 reflection consumed all nine selected cycle-1 result units into nine
+  episodes and four lessons. Its exact H1 request incorporated the preceding
+  no-pattern, provisional-validation and failed-update facts, proving that the
+  reflection-to-action information path operates across committed Slow cycles.
+- Exact paired-effectiveness artifacts showed both current and candidate arms as
+  execution failures because required holdout inputs were never resolved before
+  the evaluator froze its local corpus. Exact queryless E1 requests showed seven
+  of eight cases with only one issuer-specific filing and no structured comparable
+  facts, so E2 correctly had no recurring measurable pattern to promote.
+- A later cycle also asked the model to create a second immutable candidate with
+  the existing `max_drawdown_1y:v2` ref instead of re-evaluating that provisional
+  candidate on the new check identity.
+- These three general defects are repaired in code and owning specs: paired arms
+  are materialized through the authorized resolver before the common corpus and
+  identity are frozen, with per-case diagnostics; queryless E1 requires available
+  financial and filing families and gets a value-free recurring-concept inventory;
+  and a provisional vNext is reused on a new evaluation identity. All 752 tests
+  and lint pass before a fresh successor.
 - The user explicitly authorized DeepSeek payloads of this size or larger plus
   SEC access, within 200 model attempts, 400 data requests, two cycles and $5.
 
@@ -51,29 +46,29 @@ semantic, Signal-output, or independent-benefit evidence.
 | Plan area | Result | Current authoritative evidence | Missing proof or work |
 | --- | --- | --- | --- |
 | P0 contract and design | Implemented locally | v8 ancestor/module specs define append-only memory, neutral sampling, `slow_only`, output accounting, semantic gates, and bounded history reads | Keep specs synchronized with live findings |
-| P1 facts and persistence | Implemented and live verified; continuation repair local | V65 has one committed hash-linked chain and inherited 259 committed Fast learning events | Transitive event export repair needs a fresh live `slow_only` successor |
+| P1 facts and persistence | Implemented and live verified | V66 has two committed hash-linked Slow cycles and inherited the committed Fast learning history transitively | Preserve the same invariants in the final successor |
 | P2 neutral sampling | Implemented and locally verified | V50 froze one issuer-disjoint 32-dev/8-check manifest with deterministic population/seed/order; scripted restart, issuer separation, strict missing-input and shared-corpus tests pass | Live candidate/check execution has not yet exercised this v8 manifest |
-| P3 entry reflection | Implemented and live exercised; slot-aware fallback repaired locally | V62 cycle 1 appended normally and cycle 2 sent aggregate coverage correction before rejecting its overflow row without consuming refs | Requires a fresh live cycle 2 whose complete selected frontier is processed successfully |
-| P4 search/application closure | Implemented and live exercised | V65 ran H and independent E, retained exact request chains, and Update produced one staged candidate | Mining remained zero and the Update candidate was provisional rather than promoted |
-| P5 independent mode and migration | Implemented; transitive profile repair local | V65 proves zero-Fast committed bootstrap; history export now preserves contract-bound imported learning events | Fresh `slow_only` successor must prove cross-cycle reflection and retained Update profiles |
+| P3 entry reflection | Implemented and live verified | V66 cycle 2 processed every selected cycle-1 unit into auditable episodes/lessons and supplied them to H1 | Preserve full-frontier behavior in the final successor |
+| P4 search/application closure | Implemented and live exercised; evidence-input repair local | V66 ran H/E/Update twice and retained exact chains; Update produced 2/1 candidates | Mining remained zero and Update effectiveness was not measurable; repaired acquisition must be live verified |
+| P5 independent mode and migration | Implemented and live verified | V66 proves two committed zero-Fast cycles with transitive Fast history and concrete reflection-to-H1 use | Preserve this behavior in the final successor |
 | P6 semantic and independent acceptance | Semantic gates implemented; ablation scaffold only | Candidate semantic consistency, independent support/counter/unavailable fixtures, behavior-duplicate checks, manifest validation, and issuer-level group reservation have deterministic tests | No production path generates the three memory conditions or freezes their generation outcomes; no protocol-confirmed external comparison exists. Therefore method benefit, harm, or generalization cannot be claimed |
-| P7 runtime audit | In progress | V65's exact H1/E1/E2/Update requests, one updated candidate, provisional check result, unchanged Registry and sealed Locked Test were inspected | Requires a repaired successor plus nonzero Mining promotion, validated Update/transition evidence and final independent confirmation |
+| P7 runtime audit | In progress | V66's exact reflection/H1/E1/E2/Update requests, paired failures, candidate state, unchanged Registry and sealed Locked Test were inspected | Requires a repaired successor plus nonzero Mining and conclusive Update/transition evidence and final independent confirmation |
 
 ## Acceptance dimensions
 
 | Dimension | Status | Reason |
 | --- | --- | --- |
-| Execution completion | Achieved for V65 cycle 1 | The zero-Fast cycle committed with consistent request, cost, data and Registry state |
-| Content correctness | Partial for V65 | E1 and Update boundaries are auditable, but H1 over-grouped unrelated deferred needs |
-| Signal output | Not achieved | Update is nonzero but provisional; no v8 cycle has committed a new validated and promoted Signal |
-| Cross-cycle learning | Not yet re-tested after V65 | The repaired successor has not yet imported and acted on V65 feedback |
+| Execution completion | Achieved for V66 cycles 1-2 | Both zero-Fast cycles committed with consistent request, cost, data and Registry state |
+| Content correctness | Partial for V66 | Reflection-to-H1 is correct, but E1 input coverage and paired evaluation were defective; repairs are not yet live verified |
+| Signal output | Not achieved | Update is nonzero but provisional; Mining is zero and Registry v1 is unchanged |
+| Cross-cycle learning | Achieved for V66 | Cycle 2 consumed and acted on all selected cycle-1 feedback |
 | Method-learning benefit | Not proven | No independent, equal-budget three-condition confirmation has run |
 
 ## Next valid sequence
 
-1. Commit the transitive learning-event and deterministic Update-diff repairs,
-   then freeze a `slow_only` successor from V65 with two bounded cycles.
-2. Re-audit the successor's exact reflection/H1 bodies and execute it under the
+1. Commit the paired-input, queryless-E1 and provisional-reuse repairs, then
+   freeze a `slow_only` successor from V66 with two bounded cycles.
+2. Re-audit the successor's exact reflection/H1/E1/E2 bodies and execute it under the
    recorded DeepSeek/data authorization while preserving the 200-attempt/$5 ceiling.
 3. Semantically inspect both committed `slow_only` cycles, including
    proof that cycle 2 processes cycle-1 feedback. Report new

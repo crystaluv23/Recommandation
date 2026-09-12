@@ -3150,7 +3150,13 @@ class LLMSignalMiningModel(SignalMiningModel):
             stage="signal_mining_exploration_extract",
             system_prompt=(
                 "Describe only recurring, executable observations in the anonymous "
-                "point-in-time evidence. Ground every observation in its own supplied "
+                "point-in-time evidence. comparison_concepts is a runtime-derived, "
+                "label-free inventory of source-owned concepts visible across multiple "
+                "selected cases; where its records are visible in a case, prioritize "
+                "them and prefer two periods of the same concept before unrelated "
+                "issuer-specific narrative or generic risk language. It is guidance for "
+                "comparability, not evidence, and must never be cited or invented when "
+                "the matching literal is absent. Ground every observation in its own supplied "
                 "literal; the literal is authoritative when a summary overstates it. "
                 "Labels are hidden; do not predict or infer them."
                 + _SIGNAL_MINING_SIGNATURES_OUTPUT

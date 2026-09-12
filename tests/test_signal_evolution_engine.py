@@ -4,11 +4,13 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 from stock_opportunity_agent.research.signal_evolution import (
     SIGNAL_UPDATE_MUTABLE_PATHS,
     SlowLoopValidation,
+    _exploration_comparison_concepts,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
     validate_slow_memory,
 )
+from stock_opportunity_agent.data.resolution import AcquisitionResult
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.llm.openai import OpenAIClientError
 
@@ -2453,6 +2455,105 @@ class SignalEvolutionTests(TestCase):
         )
         self.assertNotIn("old-financial", {item.document_id for item in selected})
 
+    def test_queryless_exploration_requires_financial_and_filing_families(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            case = make_case("exploration_two_family", 4.0)
+            store = RawInfoStore(
+                documents=(
+                    RawInfoDocument.create(
+                        document_id="exploration-financials",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
+                    ),
+                    RawInfoDocument.create(
+                        document_id="exploration-filing",
+                        company_id=case.company_id,
+                        source_type="10-k",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content="Revenue demand improved while inventory remained controlled.",
+                    ),
+                )
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=(case,),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            packet, audit = engine._mining_evidence_packet(
+                "case-001",
+                case,
+                source_types=("10-k", "financials"),
+                query=None,
+                lookback_days=365,
+                reveal_label=False,
+            )
+
+            self.assertEqual(len(packet["evidence"]), 2)
+            self.assertEqual(
+                audit["required_source_groups"],
+                [["financials"], ["10-k"]],
+            )
+
+    def test_exploration_comparison_inventory_contains_only_recurring_concepts(
+        self,
+    ) -> None:
+        packets = [
+            {
+                "case_ref": f"case-{index:03d}",
+                "evidence": [
+                    {
+                        "structured_context": {
+                            "concepts": [
+                                {
+                                    "taxonomy": "us-gaap",
+                                    "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                                    "label": "Revenue",
+                                    "unit": "USD",
+                                    "records": [{"exact_span": str(index)}],
+                                },
+                                {
+                                    "taxonomy": "us-gaap",
+                                    "concept": f"IssuerOnly{index}",
+                                    "label": "Issuer only",
+                                    "unit": "USD",
+                                    "records": [{"exact_span": str(index)}],
+                                },
+                            ]
+                        }
+                    }
+                ],
+            }
+            for index in range(3)
+        ]
+
+        inventory = _exploration_comparison_concepts(packets)
+
+        self.assertEqual(len(inventory), 1)
+        self.assertEqual(inventory[0]["case_count"], 3)
+        self.assertEqual(
+            inventory[0]["concept"],
+            "RevenueFromContractWithCustomerExcludingAssessedTax",
+        )
+        self.assertFalse(any("value" in row for row in inventory))
+
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
         case = replace(
             make_case("filing_target", 4.0),
@@ -4467,6 +4568,85 @@ class SignalEvolutionTests(TestCase):
                 " ".join(result.reasons),
             )
 
+    def test_paired_effectiveness_materializes_both_arms_before_freeze(self) -> None:
+        class FinancialAdapter:
+            provider = "fixture_financials"
+            source_types = ("financials",)
+            capabilities = ("financials",)
+
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def acquire(self, request, *, company_id, as_of, **_kwargs):
+                self.calls += 1
+                return AcquisitionResult(
+                    documents=(
+                        RawInfoDocument.create(
+                            document_id=f"acquired-{company_id}",
+                            company_id=company_id,
+                            source_type="financials",
+                            published_at=as_of,
+                            available_at=as_of,
+                            content=sec_company_facts_content(
+                                ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                                ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                            ),
+                        ),
+                    )
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"paired_acquired_{index}", 4.0)
+                for index in range(4)
+            )
+            store = RawInfoStore()
+            adapter = FinancialAdapter()
+            resolver = EvidenceResolver(
+                store,
+                adapters=(adapter,),
+                policy=DataAcquisitionPolicy(
+                    enabled=True,
+                    allowed_providers=(adapter.provider,),
+                    allowed_capabilities=adapter.capabilities,
+                    allowed_source_types=adapter.source_types,
+                    max_requests_per_cycle=8,
+                    max_requests_per_run=8,
+                ),
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "version": current.version + 1,
+                    "description": "Equivalent revenue-growth wording.",
+                }
+            )
+
+            result = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                llm_runner=None,
+                evidence_resolver=resolver,
+            ).evaluate(candidate, skill=None)
+
+            self.assertEqual(adapter.calls, 4)
+            self.assertEqual(result.candidate_available, 4)
+            self.assertEqual(result.current_available, 4)
+            self.assertEqual(result.candidate_execution_failed, 0)
+            self.assertEqual(result.current_execution_failed, 0)
+            self.assertTrue(
+                all(
+                    row["candidate"]["resolution_status"] == "resolved"
+                    and row["current"]["resolution_status"] == "resolved"
+                    for row in result.case_diagnostics
+                )
+            )
+
     def test_paired_effectiveness_rejects_still_wrong_update_that_abstains(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -4586,6 +4766,105 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(set(accepted.case_ids), {case.case_id for case in validation})
             self.assertEqual(provisional.disposition, "provisional")
             self.assertFalse(provisional.accepted)
+
+    def test_update_reuses_provisional_vnext_on_a_new_check_identity(self) -> None:
+        class FailIfCalledUpdateModel(NoChangeUpdateModel):
+            def update(self, payload):
+                raise AssertionError("provisional vNext should be reused")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            dev_cases = tuple(
+                [make_case(f"reuse_control_{index}", 1.1) for index in range(2)]
+                + [make_case(f"reuse_positive_{index}", 4.0) for index in range(2)]
+            )
+            check_cases = tuple(
+                make_case(f"reuse_check_{index}", 4.0) for index in range(4)
+            )
+            documents = tuple(
+                RawInfoDocument.create(
+                    document_id=f"reuse-financial-{index}",
+                    company_id=case.company_id,
+                    source_type="financials",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=sec_company_facts_content(
+                        ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                        ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                    ),
+                )
+                for index, case in enumerate((*dev_cases, *check_cases))
+            )
+            store = RawInfoStore(documents=documents)
+            workspace = EvolutionWorkspace(root / "workspace")
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=store,
+                discovery_cases=(*dev_cases, *check_cases),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=FailIfCalledUpdateModel(),
+                llm_signal_runner=None,
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "version": current.version + 1,
+                    "description": "Provisional revenue-growth wording.",
+                }
+            )
+            registry.stage_candidate(
+                candidate,
+                skill=None,
+                tests=registry.load_tests(current.ref),
+                origin=f"update:{current.ref}",
+            )
+            candidate_hash = registry.candidate_hash(candidate.ref)
+            evaluation_identity = engine.effectiveness_evaluator.evaluation_identity(
+                candidate,
+                candidate_hash=candidate_hash,
+                preferred_case_ids=tuple(case.case_id for case in check_cases),
+                excluded_case_ids=tuple(case.case_id for case in dev_cases),
+                induction_supported=True,
+                strict_preferred=True,
+            )
+            registry.record_candidate_validation(
+                candidate.ref,
+                candidate_hash=candidate_hash,
+                evaluation_identity=evaluation_identity,
+                accepted=False,
+                reasons=("paired sample is temporarily sparse",),
+                contract_validation={"accepted": True},
+                effectiveness={
+                    "schema_version": "signal-candidate-effectiveness-v4",
+                    "signal_ref": candidate.ref,
+                    "accepted": False,
+                    "disposition": "provisional",
+                    "reasons": ["paired sample is temporarily sparse"],
+                },
+            )
+            executor = SignalExecutor(registry.freeze(), store)
+
+            result = engine._run_one_signal_update(
+                cycle_id=2,
+                target={
+                    "signal_ref": current.ref,
+                    "problem_type": "repeated_explicit_misleading",
+                },
+                cases=dev_cases,
+                check_cases=check_cases,
+                executor=executor,
+            )
+
+            self.assertEqual(result["candidate_refs"], (candidate.ref,))
+            self.assertEqual(
+                result["audit"]["disposition"],
+                "reused_provisional_new_evaluation",
+            )
 
     def test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

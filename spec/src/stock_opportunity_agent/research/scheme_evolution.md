@@ -1776,6 +1776,13 @@ slots deterministically from the Discovery pool. `vCurrent` and `vNext` receive
 the same cases, prediction times, identity routing fields, model settings, and
 Raw Info corpus. The audit records availability, decisive-state count,
 directional correct count, directional wrong count, and execution-failure count.
+Before freezing that corpus, the runtime resolves both `vCurrent` and `vNext`
+input contracts for every already-frozen check case through the same authorized
+EvidenceResolver. It then freezes the union of the materialized point-in-time
+documents and executes both arms locally against that identical corpus. The
+resolver may not see labels and may not replace a case. Per-arm resolution and
+execution status/error details are retained in the effectiveness artifact, so a
+provider, budget, or validation failure cannot collapse into an unexplained zero.
 Execution failures stay in the frozen denominator and audit but never become
 domain `unavailable` observations or directional states. An update must retain
 availability, not reduce correct states, not increase wrong states, and strictly
@@ -1804,6 +1811,13 @@ cycle-identified, recoverable
 batch and advances the Registry version once. Empty passing batches do not
 advance it. The next Fast Loop sees the resulting snapshot; the just-completed
 Fast Loop remains bound to its input snapshot.
+
+Only one candidate may occupy an exact next-version ref. If a later Slow cycle
+selects the same stable Signal while that `vNext` is still provisional, it reuses
+the immutable candidate and evaluates it on the new frozen check identity instead
+of asking the model to create a conflicting definition at the same ref. Once the
+candidate becomes rejected it may follow the existing archived-rejection repair
+path; a promoted candidate advances the stable version normally.
 
 Each Mining stage has its own explicit JSON contract and at most one structured
 correction. H2 may reference only supplied hypothesis/case refs; H3/E2 may
