@@ -31,7 +31,7 @@ semantic, Signal-output, or independent-benefit evidence.
 | P1 facts and persistence | Implemented and locally verified | `slow_input.json`, `slow_memory.json`, `slow_experiments.json`, validation and result form a hash-linked cycle chain; V48 proved imported committed history had initially been omitted and the repair is covered by the full suite | Live committed cycle lineage is not yet available |
 | P2 neutral sampling | Implemented and locally verified | V50 froze one issuer-disjoint 32-dev/8-check manifest with deterministic population/seed/order; scripted restart, issuer separation, strict missing-input and shared-corpus tests pass | Live candidate/check execution has not yet exercised this v8 manifest |
 | P3 entry reflection | Partially implemented | V50 selected 9 of 11 complete V45 work units, retained original artifact hashes/JSON locators, deferred two whole units, and froze exact request `9ee2e5e0...49b3`; no string truncation occurred | The spec promises a model-returned, typed `read_source_refs` request and one runtime-resolved follow-up for reflection/H1/H3/E2/Update. Current code only preloads a bounded resolver view and exposes no two-request protocol. Implement and test it before claiming P3 complete |
-| P4 search/application closure | Partially implemented | H and independent E are scheduled every cycle; H1 v7 update directions join the Update queue; method memory enters H1/H3/E2/Update fingerprints/payloads | `slow_experiments.json` currently seals coarse pipeline and candidate summaries, not every H1/H3/E1/E2/Update terminal work attempt with exact proposal, evidence/failure and usage refs. Expand the immutable attempt index and recovery tests |
+| P4 search/application closure | Implemented locally | H and independent E are scheduled every cycle; H1 v7 update directions join the Update queue; method memory enters H1/H3/E2/Update fingerprints/payloads. The transport records the ordered initial/correction request hashes, including structured-recovery failures, and `slow_experiments.json` seals distinct H1/H3 jobs, E1 microbatches, E2 comparisons, Update targets and candidate validations | Live request/response association and idempotent cycle recovery remain to be verified in the successor run |
 | P5 independent mode and migration | Implemented locally | Scripted two-cycle `slow_only` test keeps Fast at 0, consumes cycle-1 committed feedback in cycle 2, respects cumulative limits, and validates imported history hashes/namespaces | Two real committed cycles remain unexecuted |
 | P6 semantic and independent acceptance | Infrastructure implemented; capability conclusion unproven | Candidate semantic consistency, independent support/counter/unavailable fixtures, behavior-duplicate checks, issuer-level confirmation isolation, and frozen three-condition ablation manifest have deterministic tests | No frozen, protocol-confirmed three-condition external ablation/confirmation result exists. Therefore method benefit, harm, or generalization cannot yet be claimed |
 | P7 runtime audit | In progress | V50 request/body byte count and SHA-256 agree; source units and model payload were inspected; Locked Test stayed sealed; one denied network attempt is durably recorded | Requires exact response/action audit for every v8 role, two committed cycles, Registry transition/use checks, costs, and the final completion report |
@@ -51,16 +51,13 @@ semantic, Signal-output, or independent-benefit evidence.
 1. Update the role and runtime specs, then implement the bounded typed source-read
    round for reflection/H1/H3/E2/Update without granting E1, executors, blind
    predictors, confirmation data, Locked Test, or arbitrary file access.
-2. Expand the experiment index to preserve every terminal H1/H3/E1/E2/Update
-   work item and exact request/response or failure reference; add interruption
-   and idempotent-resume coverage.
-3. Run focused tests, the full suite, and repository lint; commit the changes and
+2. Run focused tests, the full suite, and repository lint; commit the changes and
    freeze a successor workspace because V50 is bound to `17c734a`.
-4. Before transmission, re-audit the successor's exact body. Send it only after
+3. Before transmission, re-audit the successor's exact body. Send it only after
    explicit consent names DeepSeek and the internal historical-research payload.
-5. Execute and semantically inspect two committed `slow_only` cycles. Report new
+4. Execute and semantically inspect two committed `slow_only` cycles. Report new
    candidate, validated, promoted, and updated counts separately for each cycle.
-6. Freeze and approve the existing explicit confirmation protocol, then run the
+5. Freeze and approve the existing explicit confirmation protocol, then run the
    equal-budget no-memory / episodes-only / episodes-plus-lessons comparison.
    Report insufficient or harmful results honestly and do not reuse revealed
    confirmation cases.

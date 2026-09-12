@@ -169,6 +169,88 @@ class SignalEvolutionTests(TestCase):
                 budget_bytes=2_000,
             )
 
+    def test_slow_experiments_seal_role_granular_request_chains(self) -> None:
+        engine = object.__new__(SignalEvolutionEngine)
+        engine.workspace = mock.Mock()
+        engine.workspace.load_slow_experiments.return_value = None
+        engine.registry = mock.Mock()
+        validation = SlowLoopValidation(
+            mined_candidates=(),
+            updated_candidates=(),
+            validated_candidates={},
+            provisional_candidates={},
+            rejected={},
+            refined_hypotheses={},
+            input_registry_version=1,
+            input_registry_hash="registry",
+            input_signal_refs=(),
+            agent_audits={
+                "mining_pipeline": {
+                    "hypothesis": {
+                        "track": "hypothesis",
+                        "status": "completed",
+                        "stages": {
+                            "H1": {"status": "completed", "request_refs": ["h1-a", "h1-b"]},
+                            "H3": {"status": "completed", "request_refs": ["h3-a"]},
+                        },
+                    },
+                    "exploration": {
+                        "track": "exploration",
+                        "status": "completed",
+                        "stages": {
+                            "E1": {
+                                "microbatches": [
+                                    {"status": "completed", "request_refs": ["e1-a"]},
+                                    {"status": "technical_failure", "request_refs": ["e1-b", "e1-c"]},
+                                ]
+                            },
+                            "E2": {"status": "completed", "request_refs": ["e2-a"]},
+                        },
+                    },
+                },
+                "update_pipeline": {
+                    "status": "completed",
+                    "targets": [
+                        {
+                            "status": "completed",
+                            "disposition": "defer",
+                            "target": {"signal_ref": "cash_reserves:v1"},
+                            "request_refs": ["update-a", "update-b"],
+                        }
+                    ],
+                },
+            },
+        )
+
+        sealed = engine._seal_slow_experiments(
+            cycle_id=1,
+            slow_input={"contract_hash": "contract"},
+            slow_memory={"status": "reused"},
+            validation=validation,
+        )
+
+        by_id = {item["work_id"]: item for item in sealed["attempts"]}
+        self.assertEqual(
+            set(by_id),
+            {
+                "cycle-0001:H1",
+                "cycle-0001:H3",
+                "cycle-0001:E1:001",
+                "cycle-0001:E1:002",
+                "cycle-0001:E2",
+                "cycle-0001:Update:001",
+            },
+        )
+        self.assertEqual(by_id["cycle-0001:H1"]["usage_ref"], "h1-b")
+        self.assertEqual(
+            by_id["cycle-0001:E1:002"]["request_refs"], ["e1-b", "e1-c"]
+        )
+        self.assertEqual(by_id["cycle-0001:E1:002"]["failure_ref"], "E1:002")
+        self.assertEqual(
+            by_id["cycle-0001:Update:001"]["parent_signal_ref"],
+            "cash_reserves:v1",
+        )
+
     def test_failed_slow_memory_cannot_consume_feedback(self) -> None:
         value = {
             "schema_version": "slow-memory-v1",

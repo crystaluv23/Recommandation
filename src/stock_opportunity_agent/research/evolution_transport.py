@@ -504,6 +504,7 @@ class StructuredRoleClient:
         self.acknowledged_contract_hash = acknowledged_contract_hash
         self.environ = environ
         self.on_progress = on_progress
+        self.request_hash_trace: list[str] = []
         self.max_structured_corrections = int(
             contract.limits.get("max_structured_corrections", 1)
         )
@@ -786,6 +787,7 @@ class StructuredRoleClient:
                 "required": False,
             }
         request_hash = _canonical_hash(request)
+        self.request_hash_trace.append(request_hash)
         request_path = self.requests_root / f"{request_hash}.json"
         _write_or_verify_json(
             request_path,

@@ -3391,26 +3391,154 @@ class SignalEvolutionEngine:
         if existing is not None:
             return existing
         attempts: list[dict[str, Any]] = []
-        for pipeline in ("mining_pipeline", "update_pipeline"):
-            audit = dict(validation.agent_audits.get(pipeline, {}))
+
+        def append_attempt(
+            *,
+            work_id: str,
+            stage: str,
+            audit: Mapping[str, Any],
+            outcome: str,
+            parent_signal_ref: str | None = None,
+            candidate_ref: str | None = None,
+            failure_ref: str | None = None,
+            action_summary: str = "",
+        ) -> None:
+            request_refs = _ordered_unique(
+                str(item) for item in audit.get("request_refs", ()) if item
+            )
             attempts.append(
                 {
-                    "work_id": f"cycle-{cycle_id:04d}:{pipeline}",
-                    "stage": pipeline,
+                    "work_id": work_id,
+                    "stage": stage,
                     "proposal_hash": _canonical_hash(audit),
-                    "parent_signal_ref": None,
+                    "parent_signal_ref": parent_signal_ref,
                     "need_refs": [],
                     "lesson_refs": [],
-                    "action_summary": str(audit.get("track", pipeline)),
-                    "outcome": str(audit.get("status", "completed")),
-                    "candidate_ref": None,
-                    "candidate_hash": None,
-                    "evidence_or_evaluation_refs": [],
-                    "failure_ref": (
-                        None if audit.get("status") != "failed" else pipeline
+                    "action_summary": action_summary or stage,
+                    "outcome": outcome,
+                    "candidate_ref": candidate_ref,
+                    "candidate_hash": (
+                        self.registry.candidate_hash(candidate_ref)
+                        if candidate_ref
+                        else None
                     ),
-                    "usage_ref": None,
+                    "evidence_or_evaluation_refs": [],
+                    "failure_ref": failure_ref,
+                    "usage_ref": request_refs[-1] if request_refs else None,
+                    "request_refs": list(request_refs),
                 }
+            )
+
+        mining = dict(validation.agent_audits.get("mining_pipeline", {}))
+        hypothesis = (
+            dict(mining.get("hypothesis", {}))
+            if isinstance(mining.get("hypothesis"), Mapping)
+            else (mining if mining.get("track") == "hypothesis" else {})
+        )
+        exploration_raw = mining.get("exploration", mining.get("independent_exploration"))
+        exploration = (
+            dict(exploration_raw)
+            if isinstance(exploration_raw, Mapping)
+            else (mining if mining.get("track") == "exploration" else {})
+        )
+        if hypothesis:
+            h1 = dict(hypothesis.get("stages", {})).get("H1", {})
+            h1 = dict(h1) if isinstance(h1, Mapping) else {}
+            if not h1:
+                h1 = {
+                    "status": hypothesis.get("status", "failed"),
+                    "error": hypothesis.get("error"),
+                    "request_refs": dict(hypothesis.get("failure_details", {})).get(
+                        "request_refs", ()
+                    ),
+                }
+            append_attempt(
+                work_id=f"cycle-{cycle_id:04d}:H1",
+                stage="H1",
+                audit=h1,
+                outcome=str(h1.get("status", hypothesis.get("status", "completed"))),
+                failure_ref=("H1" if hypothesis.get("status") == "failed" else None),
+                action_summary="hypothesis portfolio",
+            )
+            h3 = dict(hypothesis.get("stages", {})).get("H3", {})
+            if isinstance(h3, Mapping) and h3:
+                append_attempt(
+                    work_id=f"cycle-{cycle_id:04d}:H3",
+                    stage="H3",
+                    audit=dict(h3),
+                    outcome=str(h3.get("status", "completed")),
+                    failure_ref=("H3" if h3.get("status") == "failed" else None),
+                    action_summary="hypothesis contrast",
+                )
+        if exploration:
+            stages = dict(exploration.get("stages", {}))
+            e1 = stages.get("E1", {})
+            microbatches = e1.get("microbatches", ()) if isinstance(e1, Mapping) else ()
+            if microbatches:
+                for index, raw in enumerate(microbatches, start=1):
+                    item = dict(raw)
+                    append_attempt(
+                        work_id=f"cycle-{cycle_id:04d}:E1:{index:03d}",
+                        stage="E1",
+                        audit=item,
+                        outcome=str(item.get("status", "completed")),
+                        failure_ref=(
+                            f"E1:{index:03d}"
+                            if item.get("status") in {"technical_failure", "validation_failure"}
+                            else None
+                        ),
+                        action_summary="exploration extraction microbatch",
+                    )
+            else:
+                e1_audit = dict(e1) if isinstance(e1, Mapping) else dict(exploration)
+                append_attempt(
+                    work_id=f"cycle-{cycle_id:04d}:E1",
+                    stage="E1",
+                    audit=e1_audit,
+                    outcome=str(e1_audit.get("status", exploration.get("status", "completed"))),
+                    failure_ref=("E1" if exploration.get("status") == "failed" else None),
+                    action_summary="exploration extraction",
+                )
+            e2 = stages.get("E2", {})
+            if isinstance(e2, Mapping) and e2:
+                append_attempt(
+                    work_id=f"cycle-{cycle_id:04d}:E2",
+                    stage="E2",
+                    audit=dict(e2),
+                    outcome=str(e2.get("status", "completed")),
+                    failure_ref=("E2" if e2.get("status") == "failed" else None),
+                    action_summary="exploration comparison",
+                )
+
+        update = dict(validation.agent_audits.get("update_pipeline", {}))
+        targets = update.get("targets", ())
+        if isinstance(targets, list) and targets:
+            for index, raw in enumerate(targets, start=1):
+                item = dict(raw)
+                target = item.get("target", {})
+                parent_ref = (
+                    str(target.get("signal_ref"))
+                    if isinstance(target, Mapping) and target.get("signal_ref")
+                    else None
+                )
+                append_attempt(
+                    work_id=f"cycle-{cycle_id:04d}:Update:{index:03d}",
+                    stage="Update",
+                    audit=item,
+                    outcome=str(item.get("disposition", item.get("status", "completed"))),
+                    parent_signal_ref=parent_ref,
+                    candidate_ref=str(item.get("staged_ref")) if item.get("staged_ref") else None,
+                    failure_ref=(f"Update:{index:03d}" if item.get("status") == "failed" else None),
+                    action_summary=str(item.get("disposition", "update target")),
+                )
+        else:
+            append_attempt(
+                work_id=f"cycle-{cycle_id:04d}:Update",
+                stage="Update",
+                audit=update,
+                outcome=str(update.get("disposition", update.get("status", "completed"))),
+                failure_ref=("Update" if update.get("status") == "failed" else None),
+                action_summary="update portfolio",
             )
         for signal_ref in _ordered_unique(
             [*validation.mined_candidates, *validation.updated_candidates]
@@ -3449,6 +3577,7 @@ class SignalEvolutionEngine:
                         signal_ref if outcome in {"provisional", "rejected"} else None
                     ),
                     "usage_ref": None,
+                    "request_refs": [],
                 }
             )
         value = validate_slow_experiments(
@@ -3833,6 +3962,9 @@ class SignalEvolutionEngine:
                         "target": dict(target),
                         "issue_fingerprint": _canonical_hash(target),
                         "error": str(exc),
+                        "request_refs": list(
+                            getattr(exc, "details", {}).get("request_refs", ())
+                        ),
                         "usage": _usage_to_dict(
                             getattr(exc, "usage", AgentUsage())
                         ),
@@ -4124,6 +4256,7 @@ class SignalEvolutionEngine:
             **base_audit,
             "model_called": True,
             "model_usage": _usage_to_dict(step.usage),
+            "request_refs": list(step.metadata.get("request_refs", ())),
             "execution_usage": _usage_to_dict(execution_usage),
             "local_selection": local_selection,
             "resolutions": resolutions,
@@ -4619,6 +4752,9 @@ class SignalEvolutionEngine:
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
             "usage": _usage_to_dict(hypotheses_step.usage),
+            "request_refs": list(
+                hypotheses_step.metadata.get("request_refs", ())
+            ),
         }
         if not hypotheses:
             if hypotheses_step.metadata.get("conclusion") == "no_testable_hypothesis":
@@ -4987,6 +5123,7 @@ class SignalEvolutionEngine:
             "decisions": [item.to_dict() for item in decisions],
             "resolutions": resolution_audit,
             "usage": _usage_to_dict(decisions_step.usage),
+            "request_refs": list(decisions_step.metadata.get("request_refs", ())),
         }
         audit["evidence_unavailable"] = {
             key: list(value) for key, value in evidence_unavailable.items()
@@ -5204,6 +5341,7 @@ class SignalEvolutionEngine:
                         "case_refs": list(batch_refs),
                         "status": "technical_failure",
                         "error": str(exc),
+                        "request_refs": list(exc.details.get("request_refs", ())),
                     }
                 )
                 continue
@@ -5236,6 +5374,9 @@ class SignalEvolutionEngine:
                     "case_refs": list(batch_refs),
                     "status": "partial_technical_failure" if quarantined else "completed",
                     "quarantined_observations": quarantined,
+                    "request_refs": list(
+                        extraction_step.metadata.get("request_refs", ())
+                    ),
                 }
             )
         signatures = tuple(signatures_list)
@@ -5429,6 +5570,9 @@ class SignalEvolutionEngine:
                     "no_candidate": discovery_step.metadata.get("no_candidate"),
                     "considered_case_count": len(selected_grounded_signatures),
                     "usage": _usage_to_dict(discovery_step.usage),
+                    "request_refs": list(
+                        discovery_step.metadata.get("request_refs", ())
+                    ),
                 },
             },
             "candidate_refs": list(staged["candidate_refs"]),

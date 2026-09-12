@@ -28,8 +28,13 @@ Challenges qualify prior lessons through explicit refs and never overwrite them.
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT
 development evidence; H1/H3/E2/Update receive role-scoped memory views through
-one bounded source resolver. Each search/update state is retained as an
-experiment attempt, including no candidate and technical failure.
+one bounded source resolver. Each H1/H3 logical job, E1 microbatch, E2
+comparison, Update target and candidate-validation state is retained as a
+distinct experiment attempt, including no candidate and technical failure. A
+model-backed attempt carries the ordered exact request hashes for its initial
+request and every bounded correction; `usage_ref` points at the terminal request
+while `request_refs` preserves the complete call chain. Pipeline summaries
+cannot substitute for these work-granular attempts.
 
 One frozen sampling manifest supplies issuer-disjoint dev/check identities to
 H, E, Update, and effectiveness evaluation. Missing evidence does not substitute

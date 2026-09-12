@@ -12,8 +12,10 @@ rejected before sending because the internal historical research payload needs
 DeepSeek-specific informed consent. Pointers remain authoritatively
 `round=0/cycle=0`. The [completion audit](slow-round-self-evolution-completion-audit-2026-09-12.md)
 also identifies two local spec/code gaps before a successor run: the promised
-typed one-round `read_source_refs` protocol is not implemented, and the sealed
-experiment index is still coarser than per-role H1/H3/E1/E2/Update work. V50 is
+typed one-round `read_source_refs` protocol is not implemented. The experiment
+gap is repaired after V50: transport request traces now survive success and
+bounded structured failure, and the sealed index has distinct H1/H3 jobs, E1
+microbatches, E2 comparisons, Update targets and candidate validations. V50 is
 immutable diagnostic evidence, not a completed cycle.
 
 V49 then verified the repaired history projection at zero calls: its first

@@ -8,6 +8,40 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_update_role_retains_initial_and_correction_request_refs(self) -> None:
+        class TracedCaller(ScriptedRoleCaller):
+            def __init__(self, outputs):
+                super().__init__(outputs)
+                self.request_hash_trace = []
+
+            def complete_json(self, **kwargs):
+                self.request_hash_trace.append(
+                    f"request-{len(self.request_hash_trace) + 1}"
+                )
+                return super().complete_json(**kwargs)
+
+        invalid = {
+            "signal_ref": "cash_reserves:v1",
+            "disposition": "defer",
+            "problem_type": "insufficient_sample",
+            "rationale": [],
+            "case_diagnostics": [],
+            "changed_paths": [],
+            "candidate": None,
+        }
+        corrected = {**invalid, "rationale": ["Need more distinct observations."]}
+        step = LLMSignalUpdateModel(TracedCaller([invalid, corrected])).update(
+            {
+                "update_contract_version": "signal-update-decision-v2",
+                "target": {"signal_ref": "cash_reserves:v1"},
+                "induction_cases": [],
+            }
+        )
+
+        self.assertEqual(
+            step.metadata["request_refs"], ("request-1", "request-2")
+        )
+
     def test_source_concept_label_is_not_an_outcome_label(self) -> None:
         payload = {
             "cases": [

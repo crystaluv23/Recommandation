@@ -1249,6 +1249,7 @@ class RunControlTests(TestCase):
                 self.fail("preview should persist an exact production wire request")
 
             request = envelope["request"]
+            self.assertEqual(client.request_hash_trace, [envelope["request_hash"]])
             wire = request["wire_request"]
             body = wire["body_utf8"].encode("utf-8")
             self.assertEqual(wire["body_bytes"], len(body))

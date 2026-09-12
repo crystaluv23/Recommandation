@@ -15,6 +15,11 @@ within the role scope and whole-entry budget, records included/deferred refs and
 hashes, and then asks for the final output. E1, SignalExecutor, and blind
 Predictor have no such access. Prompt, parser, work identity, persisted request,
 provider body, and wire bytes advance together to their v8 protocol versions.
+The transport appends every canonical request hash to an invocation trace. Role
+adapters attach the slice produced by that logical job to successful
+`AgentStep.metadata`; exhausted structured recovery attaches the same slice to
+`CandidateExecutionRejected.details`, so experiment sealing cannot lose failed
+or correction calls.
 
 H1 may propose autonomous hypotheses with no Fast need ref and may route an
 exact, per-need `update_existing` basis into the bounded Update queue. Unselected

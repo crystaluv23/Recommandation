@@ -18,6 +18,7 @@ from stock_opportunity_agent.models import (
 )
 from stock_opportunity_agent.research.scheme_evolution import (
     AgentStep,
+    CandidateExecutionRejected,
     RuntimeBudgetExceeded,
     SignalMiningDecision,
     SignalMiningHypothesis,
@@ -108,6 +109,43 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "small explanatory subset and need not repeat the complete disposition ledger. "
     "Never add Markdown or company identities."
 )
+
+
+def _request_trace_cursor(caller: JSONRoleCaller) -> int:
+    """Return a stable cursor into an optional exact-request trace."""
+
+    trace = getattr(caller, "request_hash_trace", ())
+    return len(trace) if isinstance(trace, (list, tuple)) else 0
+
+
+def _request_refs_since(caller: JSONRoleCaller, cursor: int) -> tuple[str, ...]:
+    """Return exact request hashes emitted since ``cursor`` when available."""
+
+    trace = getattr(caller, "request_hash_trace", ())
+    if not isinstance(trace, (list, tuple)):
+        return ()
+    return tuple(str(item) for item in trace[cursor:])
+
+
+def _complete_parsed_role_with_trace(
+    caller: JSONRoleCaller, **kwargs: Any
+) -> tuple[Any, AgentUsage, tuple[str, ...]]:
+    """Run one logical role and retain every initial/correction request ref."""
+
+    cursor = _request_trace_cursor(caller)
+    try:
+        value, usage = _complete_parsed_role(caller, **kwargs)
+    except CandidateExecutionRejected as exc:
+        raise CandidateExecutionRejected(
+            exc.stage,
+            str(exc),
+            exc.usage,
+            details={
+                **dict(exc.details),
+                "request_refs": list(_request_refs_since(caller, cursor)),
+            },
+        ) from exc
+    return value, usage, _request_refs_since(caller, cursor)
 
 
 def _h1_redundant_signal_ref_fallback(
@@ -932,7 +970,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 raise StructuredValidationError(issues)
             return decision
 
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_update_decision",
             system_prompt=(
@@ -957,7 +995,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata={"request_refs": request_refs})
 
 
 class LLMSignalMiningModel(SignalMiningModel):
@@ -1110,7 +1148,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "lesson_additions": [dict(item) for item in lessons],
             }
 
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_reflect",
             system_prompt=(
@@ -1136,7 +1174,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata={"request_refs": request_refs})
 
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
@@ -2081,7 +2119,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "complete H1 search context exceeds the frozen request-token "
                     f"budget: required={required}, limit={self.request_token_budget}",
                 )
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_hypotheses",
             system_prompt=system_prompt,
@@ -2116,6 +2154,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             {"alias": alias, "need_ref": original}
             for alias, original in alias_to_original.items()
         ]
+        restored_metadata["request_refs"] = list(request_refs)
         return AgentStep(value, usage, metadata=restored_metadata)
 
     def rank_cases(
@@ -2333,7 +2372,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 raise ValidationError("; ".join(issue_messages))
             return rankings
 
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_case_ranking",
             system_prompt=(
@@ -2371,7 +2410,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             stable_correction_prefix=True,
             echo_invalid_output_on_correction=False,
         )
-        return AgentStep(value, usage)
+        return AgentStep(value, usage, metadata={"request_refs": request_refs})
 
     def contrast(
         self, payload: Mapping[str, Any]
@@ -2606,7 +2645,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "removed_paths": tuple(removed), "source_substitution_paths": (),
             }
 
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_exploration_extract",
             system_prompt=(
@@ -2625,7 +2664,14 @@ class LLMSignalMiningModel(SignalMiningModel):
             enforce_scoped_correction=True,
             final_validation_fallback=quarantine_invalid_observations,
         )
-        return AgentStep(value, usage, metadata={"quarantined_observations": quarantined})
+        return AgentStep(
+            value,
+            usage,
+            metadata={
+                "quarantined_observations": quarantined,
+                "request_refs": request_refs,
+            },
+        )
 
     def discover_exploration(
         self, payload: Mapping[str, Any]
@@ -3080,7 +3126,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 for item in items
             )
 
-        value, usage = _complete_parsed_role(
+        value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage=stage,
             system_prompt=prompt + (
@@ -3108,7 +3154,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 else ""
             ),
         )
-        return AgentStep(value, usage, metadata=decision_metadata)
+        return AgentStep(
+            value,
+            usage,
+            metadata={**decision_metadata, "request_refs": request_refs},
+        )
 
 
 def _raise_mining_shape(message: str) -> Any:
