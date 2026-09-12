@@ -1208,6 +1208,74 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         return AgentStep(value, usage, metadata={"request_refs": request_refs})
 
 
+def _e1_required_comparison_pair(
+    packet: Mapping[str, Any],
+    comparison_concepts: Iterable[Mapping[str, Any]],
+) -> tuple[str, tuple[tuple[str, str], ...]] | None:
+    """Return the first label-free recurring concept with two visible records."""
+
+    evidence = packet.get("evidence", ())
+    if not isinstance(evidence, (list, tuple)):
+        return None
+    for wanted in comparison_concepts:
+        if not isinstance(wanted, Mapping):
+            continue
+        wanted_key = tuple(
+            str(wanted.get(field, "")) for field in ("taxonomy", "concept", "unit")
+        )
+        if not wanted_key[1]:
+            continue
+        for item in evidence:
+            if not isinstance(item, Mapping):
+                continue
+            document_ref = item.get("document_ref")
+            structured = item.get("structured_context")
+            if not isinstance(document_ref, str) or not isinstance(
+                structured, Mapping
+            ):
+                continue
+            for concept in structured.get("concepts", ()):
+                if not isinstance(concept, Mapping):
+                    continue
+                concept_key = tuple(
+                    str(concept.get(field, ""))
+                    for field in ("taxonomy", "concept", "unit")
+                )
+                if concept_key != wanted_key:
+                    continue
+                spans = tuple(
+                    (document_ref, str(record["exact_span"]))
+                    for record in concept.get("records", ())
+                    if isinstance(record, Mapping)
+                    and isinstance(record.get("exact_span"), str)
+                    and record["exact_span"]
+                )
+                spans = tuple(dict.fromkeys(spans))
+                if len(spans) >= 2:
+                    return wanted_key[1], spans[:2]
+    return None
+
+
+def _e1_covers_comparison_pair(
+    observations: Iterable[SignalMiningObservation],
+    required: tuple[str, tuple[tuple[str, str], ...]] | None,
+) -> bool:
+    """Return whether observations cite both records in a required pair."""
+
+    if required is None:
+        return True
+    _concept, spans = required
+    values = tuple(observations)
+    return all(
+        any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for observation in values
+        )
+        for document_ref, exact_span in spans
+    )
+
+
 class LLMSignalMiningModel(SignalMiningModel):
     """Concrete five-role adapter for locally orchestrated Signal Mining."""
 
@@ -2994,6 +3062,21 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in packets
             if isinstance(item, Mapping) and "case_ref" in item
         }
+        raw_comparison_concepts = payload.get("comparison_concepts", ())
+        comparison_concepts = (
+            tuple(
+                item
+                for item in raw_comparison_concepts
+                if isinstance(item, Mapping)
+            )
+            if isinstance(raw_comparison_concepts, (list, tuple))
+            else ()
+        )
+        required_pairs = {
+            case_ref: _e1_required_comparison_pair(packet, comparison_concepts)
+            for case_ref, packet in packet_by_ref.items()
+        }
+        pair_quarantine_refs: set[str] = set()
 
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningSignature, ...]:
             if set(value) != {"signatures"} or not isinstance(
@@ -3062,6 +3145,19 @@ class LLMSignalMiningModel(SignalMiningModel):
                     validate_signal_mining_signatures(
                         (item,), (packet_by_ref[case_ref],)
                     )
+                    required_pair = required_pairs[case_ref]
+                    if (
+                        case_ref not in pair_quarantine_refs
+                        and not _e1_covers_comparison_pair(
+                            item.observations, required_pair
+                        )
+                    ):
+                        concept = required_pair[0] if required_pair else ""
+                        raise ValidationError(
+                            "Signal Mining E1 must cite both visible records for "
+                            "the first available recurring comparison concept: "
+                            + concept
+                        )
                 except ValidationError as exc:
                     issues.append(
                         ValidationIssue(
@@ -3119,6 +3215,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 if not isinstance(observations, list) or not isinstance(gaps, list):
                     return None
                 kept = []
+                kept_observations: list[SignalMiningObservation] = []
                 reasons = []
                 for offset, raw_observation in enumerate(observations):
                     try:
@@ -3134,10 +3231,34 @@ class LLMSignalMiningModel(SignalMiningModel):
                         removed.append(f"signatures[{index}].observations[{offset}]")
                     else:
                         kept.append(raw_observation)
+                        kept_observations.append(observation)
+                required_pair = required_pairs[case_ref]
+                if not _e1_covers_comparison_pair(
+                    kept_observations, required_pair
+                ):
+                    pair_quarantine_refs.add(case_ref)
+                    concept = required_pair[0] if required_pair else ""
+                    reasons.append(
+                        "Signal Mining E1 omitted one or both visible records for "
+                        "the first available recurring comparison concept: "
+                        + concept
+                    )
+                    removed.extend(
+                        f"signatures[{index}].observations[{offset}]"
+                        for offset in range(len(kept))
+                    )
+                    if not kept:
+                        removed.append(f"signatures[{index}].observations")
+                    kept = []
                 if reasons:
                     quarantined.setdefault(case_ref, []).extend(reasons)
-                    gaps = [*gaps, "Some extracted observations failed validation; "
-                            "this does not establish absent source data or conditions."]
+                    gaps = [
+                        *gaps,
+                        "Some extracted observations failed validation or did not "
+                        "preserve the required recurring comparison pair; this is a "
+                        "technical extraction limitation and does not establish "
+                        "absent source data or conditions.",
+                    ]
                 repaired.append({**row, "observations": kept, "evidence_gaps": gaps})
             if not removed:
                 return None
@@ -3156,7 +3277,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "them and prefer two periods of the same concept before unrelated "
                 "issuer-specific narrative or generic risk language. It is guidance for "
                 "comparability, not evidence, and must never be cited or invented when "
-                "the matching literal is absent. Ground every observation in its own supplied "
+                "the matching literal is absent. When a case exposes two records for "
+                "an inventory concept, its signature must cite both exact records for "
+                "the first such concept. Ground every observation in its own supplied "
                 "literal; the literal is authoritative when a summary overstates it. "
                 "Labels are hidden; do not predict or infer them."
                 + _SIGNAL_MINING_SIGNATURES_OUTPUT

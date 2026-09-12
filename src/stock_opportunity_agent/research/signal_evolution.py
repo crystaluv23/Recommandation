@@ -102,7 +102,10 @@ SIGNAL_UPDATE_MUTABLE_PATHS = (
 _EXPLORATION_BOILERPLATE = re.compile(
     r"\b(?:commission\s+file|exact\s+name\s+of\s+registrant|state\s+of\s+"
     r"incorporation|securities\s+registered|trading\s+symbol|annual\s+report\s+"
-    r"pursuant|quarterly\s+report\s+pursuant|large\s+accelerated\s+filer)\b",
+    r"pursuant|quarterly\s+report\s+pursuant|large\s+accelerated\s+filer)\b|"
+    r"^\s*(?:for\s+the\s+month\s+of\s+[a-z]+\s+\d{4}|on\s+[a-z]+\s+\d{1,2},\s+"
+    r"\d{4},?\s+the\s+registrant\s+(?:issued|furnished)\s+a\s+press\s+release)"
+    r"\s*[.,]?\s*$",
     re.IGNORECASE,
 )
 

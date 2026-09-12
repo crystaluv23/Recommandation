@@ -1426,6 +1426,40 @@ class SignalEvolutionTests(TestCase):
             view["observations"][1]["exact_span"],
         )
 
+    def test_exploration_comparison_filter_drops_generic_6k_admin_phrases(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            _comparison_ready_exploration_signature,
+        )
+
+        signature = SignalMiningSignature(
+            case_ref="case-001",
+            observations=tuple(
+                SignalMiningObservation(
+                    summary="Visible filing text.",
+                    document_ref=f"document-{index:02d}",
+                    exact_span=literal,
+                )
+                for index, literal in enumerate(
+                    (
+                        "For the month of July 2025",
+                        "On July 7, 2025, the Registrant issued a press release.",
+                        (
+                            "On July 7, 2025, the Registrant issued a press release "
+                            "announcing a merger agreement."
+                        ),
+                    ),
+                    start=1,
+                )
+            ),
+        )
+
+        filtered, reasons = _comparison_ready_exploration_signature(signature)
+
+        self.assertEqual(len(filtered.observations), 1)
+        self.assertIn("merger agreement", filtered.observations[0].exact_span)
+        self.assertEqual(len(reasons), 1)
+        self.assertIn("2 observation(s)", reasons[0])
+
     def test_exploration_literal_view_omits_ambiguous_structured_semantics(self) -> None:
         from stock_opportunity_agent.research.signal_evolution import (
             _literal_only_signature_view,

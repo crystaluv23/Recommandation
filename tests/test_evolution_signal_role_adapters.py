@@ -565,6 +565,158 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001", "case-003"})
         self.assertIn("does not establish absent", step.value[2].evidence_gaps[0])
 
+    def test_e1_requires_first_available_recurring_structured_pair(self) -> None:
+        first = '{"end":"2025-06-30","val":120}'
+        second = '{"end":"2024-06-30","val":100}'
+        narrative = "Management discussed quarterly operations."
+        invalid = {
+            "signatures": [
+                {
+                    "case_ref": "case-001",
+                    "observations": [
+                        {
+                            "summary": "Management discussed operations.",
+                            "document_ref": "document-01",
+                            "exact_span": narrative,
+                        }
+                    ],
+                    "evidence_gaps": [],
+                }
+            ]
+        }
+        valid = json.loads(json.dumps(invalid))
+        valid["signatures"][0]["observations"] = [
+            {
+                "summary": "The current-period operating income record is visible.",
+                "document_ref": "document-02",
+                "exact_span": first,
+            },
+            {
+                "summary": "The prior-period operating income record is visible.",
+                "document_ref": "document-02",
+                "exact_span": second,
+            },
+        ]
+        caller = ScriptedRoleCaller([invalid, valid])
+
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            self._recurring_pair_payload(narrative, first, second)
+        )
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(
+            [item.exact_span for item in step.value[0].observations],
+            [first, second],
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("both visible records", feedback["validation_error"])
+
+    def test_e1_pair_exhaustion_quarantines_only_the_affected_case(self) -> None:
+        first = '{"end":"2025-06-30","val":120}'
+        second = '{"end":"2024-06-30","val":100}'
+        narrative = "Management discussed quarterly operations."
+        sibling_literal = "Management reaffirmed revenue guidance."
+        invalid = {
+            "signatures": [
+                {
+                    "case_ref": "case-001",
+                    "observations": [
+                        {
+                            "summary": "Management discussed operations.",
+                            "document_ref": "document-01",
+                            "exact_span": narrative,
+                        }
+                    ],
+                    "evidence_gaps": [],
+                },
+                {
+                    "case_ref": "case-002",
+                    "observations": [
+                        {
+                            "summary": "Guidance was reaffirmed.",
+                            "document_ref": "document-01",
+                            "exact_span": sibling_literal,
+                        }
+                    ],
+                    "evidence_gaps": [],
+                },
+            ]
+        }
+        payload = self._recurring_pair_payload(narrative, first, second)
+        payload["cases"].append(
+            {
+                "case_ref": "case-002",
+                "evidence": [
+                    {
+                        "document_ref": "document-01",
+                        "content_excerpt": sibling_literal,
+                    }
+                ],
+            }
+        )
+        caller = ScriptedRoleCaller([invalid, invalid, invalid])
+
+        step = LLMSignalMiningModel(caller).extract_exploration(payload)
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(step.value[0].observations, ())
+        self.assertIn("technical extraction limitation", step.value[0].evidence_gaps[0])
+        self.assertEqual(len(step.value[1].observations), 1)
+        self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001"})
+
+    @staticmethod
+    def _recurring_pair_payload(
+        narrative: str, first: str, second: str,
+    ) -> dict[str, object]:
+        return {
+            "comparison_concepts": [
+                {
+                    "taxonomy": "us-gaap",
+                    "concept": "OperatingIncomeLoss",
+                    "source_display_name": "Operating income",
+                    "unit": "USD",
+                    "case_count": 4,
+                }
+            ],
+            "cases": [
+                {
+                    "case_ref": "case-001",
+                    "evidence": [
+                        {
+                            "document_ref": "document-01",
+                            "content_excerpt": narrative,
+                        },
+                        {
+                            "document_ref": "document-02",
+                            "content_excerpt": "",
+                            "structured_context": {
+                                "concepts": [
+                                    {
+                                        "taxonomy": "us-gaap",
+                                        "concept": "OperatingIncomeLoss",
+                                        "label": "Operating income",
+                                        "unit": "USD",
+                                        "records": [
+                                            {
+                                                "start": 0,
+                                                "end": len(first),
+                                                "exact_span": first,
+                                            },
+                                            {
+                                                "start": len(first) + 1,
+                                                "end": len(first) + len(second) + 1,
+                                                "exact_span": second,
+                                            },
+                                        ],
+                                    }
+                                ]
+                            },
+                        },
+                    ],
+                }
+            ],
+        }
+
     def test_e1_accepts_a_long_complete_source_literal(self) -> None:
         literal = (
             "Management described a complete point in time operating record with "

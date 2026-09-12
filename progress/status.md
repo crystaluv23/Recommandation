@@ -1,5 +1,33 @@
 # Status
 
+V71 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
+contract `ca368445...e39aa`. It made 78 Slow attempts (77 completed, one failed)
+for `$0.29732332000000017`, reserved 141 acquisition work units, kept Locked Test
+sealed, and left Registry v1 unchanged. Its entry reflection successfully bounded
+459 available feedback units to twelve complete processed units, twelve episodes,
+and four lessons while preserving 447 pending. E1 ran four microbatches over all
+sixteen candidate cases, and E2 compared a fixed four-positive/four-control cohort.
+Update generated three candidates and evaluated every one on real paired inputs;
+all three were correctly rejected for no measured net gain. Thus Update is nonzero,
+but Mining, validation, and promotion remain zero and the goal is still `unmet`.
+
+Exact V71 E1/E2 inspection found one remaining semantic defect: case-013 was marked
+grounded only by generic 6-K month/press-release administration even though its same
+packet exposed two-period Company Facts for recurring inventory concepts. This let
+boilerplate occupy a fixed induction slot and weakened the cross-case comparison.
+The repaired E1 contract now deterministically identifies the first recurring
+inventory concept with two visible records and requires both exact records. The
+ordinary bounded correction receives the complete obligation. If it is still
+violated, a controller-only terminal catch empties only that case, records a
+technical extraction gap, preserves valid siblings, and permits only the previously
+frozen same-group fallback; model-authored gap text cannot bypass the requirement.
+Generic 6-K month and bare press-release templates are also filtered before label
+reveal while substantive continuations remain. Six focused regressions, all 757
+tests, and repository lint pass. V70 remains zero-call invalid preflight evidence;
+V71 remains immutable and will not run cycle 2. A fresh code-bound successor must
+live-verify this repair and produce nonzero Mining plus a validated/promoted Registry
+transition before acceptance.
+
 V69 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1. It
 made 57 Slow-side attempts (53 completed, four failed) for
 `$0.21920948000000007`, reserved 134 acquisition work units, kept Locked Test

@@ -1617,7 +1617,13 @@ Exploration-driven cycles execute:
    outcomes. Every observation contains exactly a short summary, one supplied
    `document_ref`, and one byte-exact non-trivial span from that document's visible
    excerpt. The controller validates the reference and literal locally. A packet
-   with no supportable observation returns an empty observation array plus at least
+   that exposes two records for a recurring label-free comparison concept must cite
+   both exact records for the first available such concept; generic filing narrative
+   cannot satisfy that structured comparison obligation. Exhausted correction
+   quarantines only that case's observations as a technical extraction failure, so
+   a frozen same-group fallback may be used without treating the omitted records as
+   absent evidence. A packet with no supportable observation returns an empty
+   observation array plus at least
    one evidence gap; the contract never forces a model to invent content; and
 3. `E2 label-revealed discovery` contrasts those frozen signatures with their
    labels and may return supported candidates, refined patterns, or rejection.

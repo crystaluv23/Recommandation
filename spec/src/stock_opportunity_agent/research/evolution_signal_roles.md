@@ -285,8 +285,16 @@ mining, and Signal update proposals.
   inventory from concepts present across multiple selected cases. Each microbatch
   receives that same neutral inventory and is directed to prefer exact records for
   recurring concepts (including two periods when visible) over issuer-specific risk
-  boilerplate. The inventory contains source-owned taxonomy/concept/
-  `source_display_name`/unit and case-frequency only; it contains no values,
+  boilerplate. When a case exposes two records for any inventory concept, a valid
+  E1 signature must include both exact records for the first such inventory concept;
+  unrelated narrative alone cannot make that case grounded. This obligation is
+  label-free and receives the ordinary bounded correction. If correction is
+  exhausted, the terminal catch removes that case's observations, records a
+  technical extraction gap, and leaves valid sibling signatures intact so the
+  controller may use the already-frozen same-group fallback. It never turns the
+  omission into evidence that the source fact is absent. The inventory contains
+  source-owned taxonomy/concept/`source_display_name`/unit and case-frequency
+  only; it contains no values,
   identities, evaluation labels, returns, or candidate hypothesis, so it improves
   comparability without choosing cases for a desired result. If either source
   family cannot be materialized, the ordinary
