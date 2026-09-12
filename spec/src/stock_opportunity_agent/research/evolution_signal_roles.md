@@ -8,6 +8,14 @@ preassigns episode/lesson refs and validates complete source coverage and the
 lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
+The default reflection view is also bounded by a frozen output-aware unit limit:
+it takes at most twelve complete feedback units, with units from the immediately
+preceding committed cycle first and older pending units afterward. A typed source
+replacement cannot exceed the same limit. Units outside the view remain explicitly
+pending for a later cycle; they are never truncated, summarized locally, or marked
+processed. This keeps the maximum episode-slot obligation compatible with the
+reflection output ceiling while preserving append-only learning and fail-closed
+recovery.
 Only top-level `feedback_units[*].feedback_ref` values are persisted as output
 citations. Source locators nested inside a feedback unit remain immutable audit
 data; the model cannot promote them into independent episode or lesson refs
@@ -200,6 +208,10 @@ mining, and Signal update proposals.
   contract violation participates in the same aggregate correction, so the model
   must either state a valid measurement-level reason or return a structured
   hypothesis for H2/H3 testing.
+- Exploration uses four grounded induction cases per fixed group by default and
+  keeps two independent validation cases per group issuer-disjoint. Four per group
+  is the minimum production comparison cohort for recurring support plus
+  counterexamples; fixture-sized tests may explicitly lower the bound.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.

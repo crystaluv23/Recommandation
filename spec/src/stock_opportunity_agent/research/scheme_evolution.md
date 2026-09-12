@@ -1607,9 +1607,10 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
 Exploration-driven cycles execute:
 
 1. the controller selects a diverse issuer-distinct, label-stratified sample,
-   reserves independent validation cases, and gives each required induction slot
-   at most one same-group evidence fallback before retrieving exact point-in-time
-   Raw Info. Fallback choice may depend only on whether label-hidden E1 produced a
+   takes four grounded induction cases from each fixed group by default, reserves
+   two independent validation cases from each group, and gives each required
+   induction slot at most one same-group evidence fallback before retrieving exact
+   point-in-time Raw Info. Fallback choice may depend only on whether label-hidden E1 produced a
    locally grounded observation, never on observation semantics, outcome content,
    or validation data;
 2. `E1 label-hidden extraction` describes observable case signatures without
@@ -1625,6 +1626,10 @@ Before E2, the controller drops observation-empty signatures, takes the first
 configured number of grounded signatures from each fixed group, and requires both
 groups to be complete. If either group remains short after the bounded evidence
 fallbacks, the exploration track ends as evidence-unavailable without an E2 call.
+The four-per-group production default is the minimum comparison cohort used to
+look for recurrence and counterexamples; fixture-sized tests may explicitly lower
+it, but production must not infer a recurring cross-case pattern from only two
+members of each group.
 The selected issuer-disjoint refs, rather than the original sample, bind any
 candidate's induction lineage; reserved validation issuers remain hidden and
 unchanged. In E2, exact spans remain authoritative over model-authored summaries.

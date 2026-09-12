@@ -461,10 +461,15 @@ def read_slow_sources(
     source_catalog: Mapping[str, Mapping[str, Any]],
     budget_bytes: int,
     forbidden_refs: Iterable[str] = (),
+    max_items: int | None = None,
 ) -> tuple[tuple[dict[str, Any], ...], dict[str, Any]]:
     """Resolve opaque Slow refs once, preserving whole entries and role scope."""
 
-    if role_scope not in _SLOW_SOURCE_ROLES or budget_bytes < 1:
+    if (
+        role_scope not in _SLOW_SOURCE_ROLES
+        or budget_bytes < 1
+        or (max_items is not None and max_items < 1)
+    ):
         raise ValidationError("Slow source read scope or budget is invalid")
     requested = tuple(dict.fromkeys(str(item) for item in refs))
     forbidden = set(str(item) for item in forbidden_refs)
@@ -480,6 +485,9 @@ def read_slow_sources(
         scopes = {str(item) for item in raw.get("visible_to", ())}
         if role_scope not in scopes:
             raise ValidationError("Slow source ref is outside the role scope")
+        if max_items is not None and len(included) >= max_items:
+            deferred.append({"ref": ref, "reason": "item_limit"})
+            continue
         entry = {"ref": ref, **dict(raw)}
         size = len(json.dumps(entry, sort_keys=True, ensure_ascii=False).encode("utf-8"))
         if used + size > budget_bytes:
@@ -501,6 +509,7 @@ def read_slow_sources(
         "deferred_count": len(deferred),
         "bytes": used,
         "budget_bytes": budget_bytes,
+        "max_items": max_items,
     }
     return tuple(included), manifest
 
@@ -1082,12 +1091,13 @@ class SignalMiningConfig:
     h2_profile_scan_limit: int = 96
     h2_min_ready_issuers: int = 16
     h2_min_ready_per_class: int = 4
-    induction_cases_per_class: int = 2
+    induction_cases_per_class: int = 4
     validation_cases_per_class: int = 2
     exploration_interval: int = 3
     evidence_documents_per_case: int = 4
     evidence_lookback_days: int = 365
     exploration_microbatch_size: int = 4
+    reflection_feedback_limit: int = 12
 
     def __post_init__(self) -> None:
         positive_fields = (
@@ -1104,6 +1114,7 @@ class SignalMiningConfig:
             "evidence_documents_per_case",
             "evidence_lookback_days",
             "exploration_microbatch_size",
+            "reflection_feedback_limit",
         )
         if any(getattr(self, name) < 1 for name in positive_fields):
             raise ValidationError("Signal Mining limits must be positive")
@@ -1135,6 +1146,7 @@ class SignalMiningConfig:
             "evidence_documents_per_case": self.evidence_documents_per_case,
             "evidence_lookback_days": self.evidence_lookback_days,
             "exploration_microbatch_size": self.exploration_microbatch_size,
+            "reflection_feedback_limit": self.reflection_feedback_limit,
         }
 
 
@@ -3605,6 +3617,7 @@ class SignalEvolutionEngine:
             role_scope="reflection",
             source_catalog=source_catalog,
             budget_bytes=64_000,
+            max_items=self.mining_config.reflection_feedback_limit,
         )
         required_refs = tuple(
             str(item["ref"])
@@ -6454,6 +6467,7 @@ class SignalEvolutionEngine:
                     "deferred_refs": list(deferred),
                     "required_refs": list(required),
                     "budget_bytes": int(manifest.get("budget_bytes", 64_000)),
+                    "max_items": manifest.get("max_items"),
                 },
             }
         )
@@ -6474,6 +6488,7 @@ class SignalEvolutionEngine:
             role_scope=role_scope,
             source_catalog=source_catalog,
             budget_bytes=int(manifest.get("budget_bytes", 64_000)),
+            max_items=manifest.get("max_items"),
         )
         if not replacement:
             raise ValidationError("requested Slow source view exceeds whole-entry budget")
@@ -6481,12 +6496,17 @@ class SignalEvolutionEngine:
         if not set(required) <= included_refs:
             raise ValidationError("required Slow source view exceeds whole-entry budget")
         all_requested = [str(item) for item in manifest.get("requested_refs", ())]
+        replacement_deferred = {
+            str(item.get("ref")): str(item.get("reason"))
+            for item in replacement_manifest.get("deferred", ())
+            if isinstance(item, Mapping) and item.get("ref")
+        }
         deferred_all = [
             {
                 "ref": ref,
                 "reason": (
-                    "whole_entry_budget"
-                    if ref in requested
+                    replacement_deferred.get(ref, "whole_entry_budget")
+                    if ref in requested or ref in required
                     else "source_read_not_selected"
                 ),
             }

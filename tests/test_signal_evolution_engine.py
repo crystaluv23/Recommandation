@@ -173,6 +173,40 @@ class SignalEvolutionTests(TestCase):
                 budget_bytes=2_000,
             )
 
+    def test_slow_source_read_preserves_whole_entries_beyond_item_limit(self) -> None:
+        catalog = {
+            f"feedback-{index}": {
+                "visible_to": ["reflection"],
+                "content": {"detail": f"complete-{index}"},
+            }
+            for index in range(1, 4)
+        }
+
+        included, manifest = read_slow_sources(
+            catalog,
+            role_scope="reflection",
+            source_catalog=catalog,
+            budget_bytes=2_000,
+            max_items=2,
+        )
+
+        self.assertEqual(
+            [item["ref"] for item in included],
+            ["feedback-1", "feedback-2"],
+        )
+        self.assertEqual(manifest["max_items"], 2)
+        self.assertEqual(
+            manifest["deferred"],
+            [{"ref": "feedback-3", "reason": "item_limit"}],
+        )
+
+    def test_signal_mining_production_defaults_bound_reflection_and_induction(self) -> None:
+        config = SignalMiningConfig()
+
+        self.assertEqual(config.reflection_feedback_limit, 12)
+        self.assertEqual(config.induction_cases_per_class, 4)
+        self.assertEqual(config.validation_cases_per_class, 2)
+
     def test_slow_method_memory_is_bounded_by_complete_recent_entries(self) -> None:
         deltas = [
             {
@@ -534,6 +568,9 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 set(second_memory["model_view_manifest"]["required_refs"]),
                 prior_cycle_refs,
+            )
+            self.assertEqual(
+                second_memory["model_view_manifest"]["max_items"], 12
             )
             self.assertEqual(
                 second_memory["model_view_manifest"][
