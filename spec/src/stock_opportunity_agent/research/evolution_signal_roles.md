@@ -145,7 +145,10 @@ mining, and Signal update proposals.
   no-hypothesis conclusion that still declares a new measurement, and disagreement
   between new-measurement dispositions and hypothesis need refs. One bounded
   correction therefore sees the complete obligation set instead of consuming its
-  attempts one typo at a time.
+  attempts one typo at a time. This aggregation includes unknown or duplicate
+  refs in `no_hypothesis.need_refs`; when the same out-of-scope history locators
+  contaminated disposition rows and the terminal reason, correction may remove
+  them from both places without violating scoped-repair preservation.
 - A row whose source kind is `unmatched_signal_need` cannot use
   `already_covered`: that would erase an explicitly unresolved Fast demand
   without creating either a Signal measurement or an action. Such a row may use

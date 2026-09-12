@@ -1,5 +1,21 @@
 # Status
 
+V54 committed one real cycle under contract `42a97f65...e97c` at authoritative
+`round=0/cycle=1`, with nine settled model attempts, 30 SEC acquisitions,
+Locked Test sealed, Registry v1 unchanged, and all Signal counts zero/goal
+`unmet`. Reflection v2 succeeded on its first final request: 18 selected feedback
+units became 18 episode reflections plus four lessons, while 28 deferred units
+remain pending. E2 also completed in one request; its exact no-pattern rationale
+matches the four supplied literal signatures and uses only canonical case-scoped
+gap citations. V54 is nevertheless stopped before cycle 2 because H1's initial
+response treated history locators as runtime need aliases. Aggregate validation
+correctly listed all eight contaminated disposition rows but omitted the same
+invalid refs in `no_hypothesis`; the model's otherwise-correct empty-ledger
+repair changed that linked terminal object and was rejected by scoped recovery.
+H1 now includes unknown/duplicate terminal refs in the same correction frontier
+and permits the complete linked `no_hypothesis` repair. The exact pattern is
+covered by regression; all 737 tests and lint pass before a fresh successor.
+
 V53 committed one real successor cycle under contract `3f485d0b...a6fa` at
 authoritative `round=0/cycle=1`, after same-contract recovery from a retryable
 SEC provider error at `case-031`. It used 13 model attempts, preserved five

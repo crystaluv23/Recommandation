@@ -2960,6 +2960,65 @@ class SignalRoleAdapterTests(TestCase):
             "fast_plan_action",
         )
 
+    def test_h1_aggregates_history_refs_in_ledger_and_terminal_reason(self) -> None:
+        history_ref = "slow-history:source-example:1:slow_input:feedback-001"
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "need_dispositions": [
+                {
+                    "need_refs": [history_ref],
+                    "disposition": "repair_dependency",
+                    "signal_refs": [],
+                    "rationale": ["The historical work reported a failure."],
+                }
+            ],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": [
+                    "The retrospective record is not a runtime measurement need."
+                ],
+                "need_refs": [history_ref],
+            },
+        }
+        corrected = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "need_dispositions": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": [
+                    "No runtime need_ref was supplied, so the demand ledger is empty."
+                ],
+                "need_refs": [],
+            },
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v7",
+                "hypothesis_slots": [
+                    "h1-c0001-s01",
+                    "h1-c0001-s02",
+                    "h1-c0001-s03",
+                ],
+                "limits": {"hypothesis_limit": 3, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "stable_signal_cards": [],
+                "capability_backlog": {"signal_need_items": [], "items": []},
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 2)
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["need_dispositions[0].need_refs", "no_hypothesis"],
+        )
+        self.assertEqual(step.metadata["need_dispositions"], [])
+
     def test_h1_fast_plan_action_cannot_divert_ordinary_need(self) -> None:
         invalid = {
             "conclusion": "no_testable_hypothesis",

@@ -1741,6 +1741,38 @@ class LLMSignalMiningModel(SignalMiningModel):
                         paths=("need_dispositions",),
                     )
                 )
+            raw_no_hypothesis = value.get("no_hypothesis")
+            if (
+                conclusion == "no_testable_hypothesis"
+                and isinstance(raw_no_hypothesis, Mapping)
+                and isinstance(raw_no_hypothesis.get("need_refs"), list)
+            ):
+                no_hypothesis_refs = [
+                    item
+                    for item in raw_no_hypothesis["need_refs"]
+                    if isinstance(item, str)
+                ]
+                unknown = sorted(set(no_hypothesis_refs) - allowed_need_refs)
+                if unknown:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_no_hypothesis_unknown_need_refs",
+                            message=(
+                                "no_hypothesis.need_refs contains unknown runtime "
+                                "aliases: " + ", ".join(unknown)
+                            ),
+                            paths=("no_hypothesis",),
+                            source_refs=tuple(unknown),
+                        )
+                    )
+                if len(set(no_hypothesis_refs)) != len(no_hypothesis_refs):
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_no_hypothesis_duplicate_need_refs",
+                            message="no_hypothesis.need_refs must be unique",
+                            paths=("no_hypothesis",),
+                        )
+                    )
             if (
                 conclusion == "no_testable_hypothesis"
                 and new_measurement_refs_from_ledger
@@ -1763,7 +1795,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                         dependent_paths=("no_hypothesis",),
                     )
                 )
-            raw_no_hypothesis = value.get("no_hypothesis")
             if (
                 conclusion == "no_testable_hypothesis"
                 and isinstance(raw_no_hypothesis, Mapping)
