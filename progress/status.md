@@ -1,5 +1,16 @@
 # Status
 
+V48 froze the first v8 `slow_only` contract from V45 and stopped locally with
+zero external calls at `round=0/cycle=0`. Its preflight exposed that the
+validated history manifest copied committed V45 validation/result artifacts,
+but the target cycle projected only its own zero pointer and therefore produced
+`feedback_count=0`. Runtime now verifies and projects every namespaced imported
+artifact from its local immutable copy, includes the source committed Slow
+cutoff, and rejects missing, path-escaping, hash-mismatched, duplicate, or
+incompletely manifested feedback. The exact regression plus 727 full tests and
+repository lint pass. V48 remains immutable diagnostic evidence; a fresh v8
+contract is required before authorized external execution.
+
 The [Slow self-evolution implementation plan](slow-round-self-evolution-implementation-plan-2026-09-12.md)
 is now local-ready. Runtime v8 freezes `slow_input.json`, append-only
 `slow_memory.json`, and `slow_experiments.json` in an exact lineage before

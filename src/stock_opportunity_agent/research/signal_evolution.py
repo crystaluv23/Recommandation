@@ -7,6 +7,7 @@ import json
 import re
 from dataclasses import dataclass, field, replace
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
@@ -248,6 +249,7 @@ def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
     if not isinstance(rows, list):
         raise ValidationError("Slow input feedback_rows must be an array")
     refs: set[str] = set()
+    content_hashes: dict[str, str] = {}
     for index, raw in enumerate(rows):
         if not isinstance(raw, Mapping):
             raise ValidationError(f"Slow feedback row {index} must be an object")
@@ -265,6 +267,30 @@ def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
         ):
             raise ValidationError(f"Slow feedback row {index} refs are invalid")
         refs.add(feedback_ref)
+        content = row.get("event", row.get("artifact"))
+        if content is None:
+            raise ValidationError(f"Slow feedback row {index} content is missing")
+        content_hashes[feedback_ref] = _canonical_hash(content)
+    source_rows = payload.get("source_manifest")
+    if not isinstance(source_rows, list):
+        raise ValidationError("Slow input source_manifest must be an array")
+    source_by_ref: dict[str, Mapping[str, Any]] = {}
+    for index, raw in enumerate(source_rows):
+        if not isinstance(raw, Mapping):
+            raise ValidationError(f"Slow source manifest row {index} is invalid")
+        ref = str(raw.get("ref", ""))
+        if not ref or ref in source_by_ref:
+            raise ValidationError("Slow source manifest refs must be unique")
+        visible_to = set(str(item) for item in raw.get("visible_to", ()))
+        if (
+            str(raw.get("content_hash", "")) != content_hashes.get(ref)
+            or not visible_to
+            or not visible_to <= _SLOW_SOURCE_ROLES
+        ):
+            raise ValidationError("Slow source manifest content or scope mismatch")
+        source_by_ref[ref] = raw
+    if set(source_by_ref) != refs:
+        raise ValidationError("Slow source manifest must cover every feedback row")
     if payload["feedback_hash"] != _canonical_hash({"feedback_rows": rows}):
         raise ValidationError("Slow input feedback hash mismatch")
     sampling = payload.get("sampling_manifest")
@@ -2828,6 +2854,7 @@ class SignalEvolutionEngine:
         cycle_state = _read_json(self.workspace.cycle_state_path)
         contract_hash = str(cycle_state.get("run_contract_hash", ""))
         feedback_rows, source_manifest = self._committed_slow_feedback()
+        imported_cutoff = self._imported_slow_history_cutoff()
         prior_memory = tuple(self.workspace.committed_slow_artifacts())
         previous = prior_memory[-1]["slow_memory"] if prior_memory else None
         sampling = build_slow_sampling_manifest(
@@ -2848,7 +2875,10 @@ class SignalEvolutionEngine:
                 "registry_hash": input_snapshot.registry_hash,
                 "source_cutoff": {
                     "committed_fast_round": self.workspace.last_completed_round,
-                    "committed_slow_cycle": self.workspace.last_completed_cycle,
+                    "committed_slow_cycle": max(
+                        self.workspace.last_completed_cycle,
+                        imported_cutoff,
+                    ),
                 },
                 "source_manifest": source_manifest,
                 "feedback_rows": feedback_rows,
@@ -2929,9 +2959,102 @@ class SignalEvolutionEngine:
                         "visible_to": sorted(_SLOW_SOURCE_ROLES),
                     }
                 )
+        imported_rows, imported_manifest = self._imported_slow_feedback()
+        rows.extend(imported_rows)
+        manifest.extend(imported_manifest)
+        refs = [str(item["feedback_ref"]) for item in rows]
+        if len(refs) != len(set(refs)):
+            raise ValidationError("Slow feedback refs must be globally unique")
         rows.sort(key=lambda item: item["feedback_ref"])
         manifest.sort(key=lambda item: item["ref"])
         return rows, manifest
+
+    def _imported_slow_history_manifest(self) -> dict[str, Any] | None:
+        """Load and verify the local immutable Slow-history envelope, if any."""
+
+        path = self.workspace.root / "slow_history" / "manifest.json"
+        if not path.is_file():
+            return None
+        envelope = _read_json(path)
+        manifest = dict(envelope.get("manifest", {}))
+        if (
+            manifest.get("schema_version") != "slow-history-manifest-v1"
+            or envelope.get("manifest_hash") != _canonical_hash(manifest)
+        ):
+            raise ValidationError("imported Slow history manifest hash mismatch")
+        return manifest
+
+    def _imported_slow_history_cutoff(self) -> int:
+        """Return the immutable source Slow pointer represented by history."""
+
+        manifest = self._imported_slow_history_manifest()
+        return 0 if manifest is None else int(manifest["committed_slow_cycle"])
+
+    def _imported_slow_feedback(
+        self,
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        """Project namespaced committed Slow artifacts from their local copies."""
+
+        history = self._imported_slow_history_manifest()
+        if history is None:
+            return [], []
+        namespace = str(history.get("source_namespace", ""))
+        if not namespace:
+            raise ValidationError("imported Slow history namespace is missing")
+        rows: list[dict[str, Any]] = []
+        source_manifest: list[dict[str, Any]] = []
+        for item in history.get("cycle_artifacts", ()):
+            if not isinstance(item, Mapping):
+                raise ValidationError("imported Slow artifact row must be an object")
+            relative = Path(str(item.get("path", "")))
+            if relative.is_absolute() or ".." in relative.parts:
+                raise ValidationError("imported Slow artifact path is invalid")
+            filename = relative.name
+            if filename not in {
+                "slow_input.json",
+                "slow_memory.json",
+                "slow_experiments.json",
+                "slow_loop_validation.json",
+                "slow_loop_result.json",
+            }:
+                raise ValidationError("imported Slow artifact type is invalid")
+            path = self.workspace.root / "slow_history" / namespace / relative
+            if (
+                not path.is_file()
+                or hashlib.sha256(path.read_bytes()).hexdigest()
+                != str(item.get("sha256", ""))
+            ):
+                raise ValidationError("imported Slow artifact copy hash mismatch")
+            raw = _read_json(path)
+            cycle_id = int(item.get("cycle_id", 0))
+            feedback_ref = (
+                f"slow-history:{namespace}:{cycle_id}:{filename[:-5]}"
+            )
+            kind = (
+                "candidate_result"
+                if filename
+                in {"slow_experiments.json", "slow_loop_validation.json"}
+                else "search_result"
+            )
+            row = {
+                "feedback_ref": feedback_ref,
+                "kind": kind,
+                "subject_ref": f"{namespace}:cycle-{cycle_id:04d}",
+                "source_refs": [feedback_ref],
+                "limitations": [
+                    "imported committed history; source protocol may be read-only"
+                ],
+                "artifact": raw,
+            }
+            rows.append(row)
+            source_manifest.append(
+                {
+                    "ref": feedback_ref,
+                    "content_hash": _canonical_hash(raw),
+                    "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                }
+            )
+        return rows, source_manifest
 
     def _prepare_slow_memory(
         self,

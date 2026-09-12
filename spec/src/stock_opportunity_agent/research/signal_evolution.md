@@ -8,6 +8,11 @@ All three artifacts are cycle-scoped, immutable, canonical-hash linked, and may
 read only source artifacts reachable from committed Fast/Slow pointers. Raw
 Signal usage events retain exact `signal_ref`; efficacy uses deduplicated
 observation identity and does not infer causal credit from reflections.
+For `slow_only`, the first target cycle also projects every namespaced artifact
+listed by the validated Slow-history manifest from its local imported copy. The
+source namespace is part of each feedback ref, and the source committed Slow
+cutoff is carried into `slow_input.json`; importing only the Registry while
+silently dropping committed search/validation outcomes is invalid.
 
 The entry reflection is one bounded logical job over complete selected feedback
 units plus historical pending units. No pending feedback means zero model calls

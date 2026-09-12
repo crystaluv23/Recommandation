@@ -8,9 +8,72 @@ from stock_opportunity_agent.research.signal_evolution import (
     read_slow_sources,
     validate_slow_memory,
 )
+from stock_opportunity_agent.artifacts import canonical_json_hash
 
 
 class SignalEvolutionTests(TestCase):
+    def test_imported_committed_slow_history_becomes_namespaced_feedback(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = EvolutionWorkspace(root / "workspace")
+            namespace = "source-0123456789abcdef"
+            relative = Path(
+                "experiments/cycles/cycle-0001/slow_loop_result.json"
+            )
+            artifact = {
+                "schema_version": "dual-loop-slow-result-v2",
+                "result": {"signal_goal_status": "unmet"},
+            }
+            artifact_path = workspace.root / "slow_history" / namespace / relative
+            artifact_path.parent.mkdir(parents=True)
+            artifact_path.write_text(
+                json.dumps(artifact, sort_keys=True), encoding="utf-8"
+            )
+            manifest = {
+                "schema_version": "slow-history-manifest-v1",
+                "source_namespace": namespace,
+                "committed_slow_cycle": 1,
+                "cycle_artifacts": [
+                    {
+                        "cycle_id": "1",
+                        "path": str(relative),
+                        "sha256": hashlib.sha256(
+                            artifact_path.read_bytes()
+                        ).hexdigest(),
+                    }
+                ],
+            }
+            manifest_path = workspace.root / "slow_history" / "manifest.json"
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "manifest_hash": canonical_json_hash(manifest),
+                        "manifest": manifest,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("history_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            rows, sources = engine._committed_slow_feedback()
+
+            self.assertEqual(engine._imported_slow_history_cutoff(), 1)
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["kind"], "search_result")
+            self.assertIn(namespace, rows[0]["feedback_ref"])
+            self.assertEqual(sources[0]["content_hash"], canonical_json_hash(artifact))
+
     def test_slow_sampling_is_order_invariant_and_issuer_disjoint(self) -> None:
         cases = tuple(
             make_case(f"slow_sample_{index}", 2.5 if index % 2 else 1.2)
