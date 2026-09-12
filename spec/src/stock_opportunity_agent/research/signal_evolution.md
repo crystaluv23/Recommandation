@@ -52,9 +52,21 @@ malformed or out-of-scope ref.
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT
 development evidence; H1/H3/E2/Update receive role-scoped memory views through
-one bounded source resolver. Each H1/H3 logical job, E1 microbatch, E2
-comparison, Update target and candidate-validation state is retained as a
-distinct experiment attempt, including no candidate and technical failure. A
+one bounded source resolver. In addition to the complete raw-source view, the
+derived method-memory projection has its own fixed byte ceiling. It selects
+complete episode and lesson entries in deterministic newest-cycle-first,
+episode/lesson-interleaved order, retains every full entry in immutable storage,
+and records included/deferred refs plus source memory hashes. It never embeds
+unbounded whole `slow_memory.json` deltas in a role request.
+
+A preflight finding that one H request still cannot fit its frozen per-request
+ceiling is an isolated, zero-call H technical failure, not proof that the run's
+global attempt/cost budget is exhausted. It is persisted in H audit and the
+independent E path continues. Actual transport/client failures and exhausted
+run-wide budgets remain control flow and propagate unchanged. Each H1/H3
+logical job, E1 microbatch, E2 comparison, Update target and
+candidate-validation state is retained as a distinct experiment attempt,
+including no candidate and technical failure. A
 model-backed attempt carries the ordered exact request hashes for its initial
 request and every bounded correction; `usage_ref` points at the terminal request
 while `request_refs` preserves the complete call chain. Pipeline summaries

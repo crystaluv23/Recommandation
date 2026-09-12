@@ -1,5 +1,26 @@
 # Status
 
+V59 froze under contract `e4f76cb2...9d5bd` and committed a content-audited
+cycle 1 at authoritative `round=0/cycle=1`. Cycle 1 used eight attempts
+(seven completed, one failed) for `$0.05596668`, processed all 28 selected
+feedback refs into six covering episodes and four lessons, persisted 23 nested
+canonicalizations, and produced zero candidate/validated/promoted/updated
+Signals with Registry v1 unchanged and goal `unmet`. H stopped honestly at
+14/16 ready profiles; both E1 microbatches retained quarantined technical
+failures; E2's runtime-owned two-positive/two-control map and no-pattern prose
+were consistent. Cycle 2 then proved the recent-frontier repair before pausing:
+all five `slow:1:*` required refs were among 11 actually processed refs. It did
+not commit because the complete H1 request reserved 285,081 bytes against the
+frozen 256,000-byte request ceiling; the engine misclassified that isolated
+role-size failure as run-wide budget exhaustion and canceled E. Derived method
+memory is now projected as complete newest-first, episode/lesson-interleaved
+entries under a separate 64 KB ceiling instead of embedding unbounded memory
+deltas. Any remaining H1 oversize is a zero-call local failure that preserves
+independent E, while true run budgets and transport failures still propagate.
+The exact V59 memories shrink from more than 218 KB of stored deltas to a
+28,467-byte complete-entry view with all 25 entries retained. All 743 tests and
+lint pass; V59 remains immutable and a fresh successor contract is required.
+
 V57 executed and committed two real `slow_only` cycles under contract
 `3b7f85ca...587af` at authoritative `round=0/cycle=2`. All 18 model attempts
 settled successfully for `$0.14368368000000004`; Locked Test stayed sealed,

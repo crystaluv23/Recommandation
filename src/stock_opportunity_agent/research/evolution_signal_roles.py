@@ -2423,10 +2423,16 @@ class LLMSignalMiningModel(SignalMiningModel):
                 temperature=self.creative_temperature,
             )
             if required > self.request_token_budget:
-                raise ExternalBudgetExhausted(
-                    "external_request_token_budget_exhausted",
+                raise CandidateExecutionRejected(
+                    "signal_mining_hypotheses",
                     "complete H1 search context exceeds the frozen request-token "
                     f"budget: required={required}, limit={self.request_token_budget}",
+                    AgentUsage(),
+                    details={
+                        "failure_kind": "role_request_too_large",
+                        "required_request_bytes": required,
+                        "request_budget_bytes": self.request_token_budget,
+                    },
                 )
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,

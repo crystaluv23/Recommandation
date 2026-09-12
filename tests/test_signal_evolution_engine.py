@@ -5,6 +5,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     SIGNAL_UPDATE_MUTABLE_PATHS,
     SlowLoopValidation,
     build_slow_sampling_manifest,
+    project_slow_method_memory,
     read_slow_sources,
     validate_slow_memory,
 )
@@ -169,6 +170,50 @@ class SignalEvolutionTests(TestCase):
                 source_catalog=catalog,
                 budget_bytes=2_000,
             )
+
+    def test_slow_method_memory_is_bounded_by_complete_recent_entries(self) -> None:
+        deltas = [
+            {
+                "cycle_id": 1,
+                "status": "appended",
+                "failure_ref": None,
+                "episode_reflections": [
+                    {"episode_ref": "old-episode", "reflection": "o" * 900}
+                ],
+                "lesson_additions": [
+                    {"lesson_id": "old-lesson", "guidance": "p" * 900}
+                ],
+            },
+            {
+                "cycle_id": 2,
+                "status": "appended",
+                "failure_ref": None,
+                "episode_reflections": [
+                    {"episode_ref": "new-episode", "reflection": "n" * 900}
+                ],
+                "lesson_additions": [
+                    {"lesson_id": "new-lesson", "guidance": "l" * 900}
+                ],
+            },
+        ]
+
+        view = project_slow_method_memory(deltas, budget_bytes=3_500)
+
+        manifest = view["memory_view_manifest"]
+        self.assertLessEqual(manifest["bytes"], 3_500)
+        self.assertEqual(
+            manifest["included_refs"][:2],
+            [
+                "slow-memory:2:episode:new-episode",
+                "slow-memory:2:lesson:new-lesson",
+            ],
+        )
+        self.assertTrue(manifest["deferred"])
+        current = view["memory_deltas"][1]
+        self.assertEqual(
+            current["episode_reflections"][0]["reflection"], "n" * 900
+        )
+        self.assertEqual(current["lesson_additions"][0]["guidance"], "l" * 900)
 
     def test_typed_slow_source_read_replaces_view_once_and_keeps_pending(self) -> None:
         class Reader:

@@ -486,6 +486,125 @@ def read_slow_sources(
     return tuple(included), manifest
 
 
+def project_slow_method_memory(
+    deltas: Iterable[Mapping[str, Any]],
+    *,
+    budget_bytes: int,
+) -> dict[str, Any]:
+    """Build one bounded whole-entry view without rewriting stored memory."""
+
+    if budget_bytes < 1:
+        raise ValidationError("Slow method-memory budget must be positive")
+    source_deltas = tuple(dict(item) for item in deltas)
+    entry_rows: list[tuple[str, int, str, dict[str, Any]]] = []
+    seen_refs: set[str] = set()
+    for delta_index in range(len(source_deltas) - 1, -1, -1):
+        delta = source_deltas[delta_index]
+        cycle_id = int(delta.get("cycle_id", 0))
+        episodes = tuple(
+            dict(item)
+            for item in delta.get("episode_reflections", ())
+            if isinstance(item, Mapping)
+        )
+        lessons = tuple(
+            dict(item)
+            for item in delta.get("lesson_additions", ())
+            if isinstance(item, Mapping)
+        )
+        for index in range(max(len(episodes), len(lessons))):
+            for kind, values, identity_field in (
+                ("episode", episodes, "episode_ref"),
+                ("lesson", lessons, "lesson_id"),
+            ):
+                if index >= len(values):
+                    continue
+                value = values[index]
+                identity = str(value.get(identity_field, index + 1))
+                ref = f"slow-memory:{cycle_id}:{kind}:{identity}"
+                if ref in seen_refs:
+                    raise ValidationError("Slow method-memory entry refs must be unique")
+                seen_refs.add(ref)
+                entry_rows.append((ref, delta_index, kind, value))
+
+    requested_refs = tuple(row[0] for row in entry_rows)
+    included_refs: list[str] = []
+
+    def render(refs: Iterable[str]) -> dict[str, Any]:
+        included = set(refs)
+        projected = []
+        for delta_index, delta in enumerate(source_deltas):
+            cycle_id = int(delta.get("cycle_id", 0))
+            projected.append(
+                {
+                    "schema_version": "slow-method-memory-delta-view-v1",
+                    "cycle_id": cycle_id,
+                    "status": str(delta.get("status", "")),
+                    "memory_hash": _canonical_hash(delta),
+                    "failure_ref": delta.get("failure_ref"),
+                    "episode_reflections": [
+                        dict(value)
+                        for ref, owner, kind, value in entry_rows
+                        if ref in included
+                        and owner == delta_index
+                        and kind == "episode"
+                    ],
+                    "lesson_additions": [
+                        dict(value)
+                        for ref, owner, kind, value in entry_rows
+                        if ref in included
+                        and owner == delta_index
+                        and kind == "lesson"
+                    ],
+                }
+            )
+        manifest = {
+            "schema_version": "slow-method-memory-view-v1",
+            "budget_bytes": budget_bytes,
+            "bytes": 0,
+            "requested_refs": list(requested_refs),
+            "included_refs": list(refs),
+            "included_hashes": {
+                ref: _canonical_hash(value)
+                for ref, _owner, _kind, value in entry_rows
+                if ref in included
+            },
+            "deferred": [
+                {"ref": ref, "reason": "whole_entry_budget"}
+                for ref in requested_refs
+                if ref not in included
+            ],
+            "source_memory_hashes": [
+                _canonical_hash(delta) for delta in source_deltas
+            ],
+        }
+        result = {
+            "memory_deltas": projected,
+            "memory_view_manifest": manifest,
+        }
+        for _index in range(4):
+            size = len(
+                json.dumps(
+                    result,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            )
+            if manifest["bytes"] == size:
+                break
+            manifest["bytes"] = size
+        return result
+
+    if render(included_refs)["memory_view_manifest"]["bytes"] > budget_bytes:
+        raise ValidationError("Slow method-memory manifest exceeds its budget")
+    for ref in requested_refs:
+        candidate_refs = [*included_refs, ref]
+        candidate = render(candidate_refs)
+        if candidate["memory_view_manifest"]["bytes"] <= budget_bytes:
+            included_refs.append(ref)
+    return render(included_refs)
+
+
 def _comparison_ready_exploration_signature(
     signature: "SignalMiningSignature",
 ) -> tuple["SignalMiningSignature", tuple[str, ...]]:
@@ -6060,8 +6179,12 @@ class SignalEvolutionEngine:
             dict(item["slow_memory"])
             for item in self.workspace.committed_slow_artifacts()[-3:]
         ]
+        memory_view = project_slow_method_memory(
+            [*prior_deltas, dict(self._active_slow_memory)],
+            budget_bytes=64_000,
+        )
         return {
-            "memory_deltas": [*prior_deltas, dict(self._active_slow_memory)],
+            **memory_view,
             "source_entries": [dict(item) for item in sources],
             "source_view_manifest": manifest,
         }

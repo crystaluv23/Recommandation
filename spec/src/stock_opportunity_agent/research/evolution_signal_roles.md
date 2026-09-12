@@ -42,6 +42,12 @@ exact, per-need `update_existing` basis into the bounded Update queue. Unselecte
 or measurable-overflow needs remain pending. E2 receives the same allowed method
 context and stable Signal catalog so it can avoid duplicates, but it must retain
 fixed missing cases and cite the literal E1 evidence used for comparison.
+H1 performs an exact wire-size reservation before transmission. If its complete
+bounded payload exceeds the frozen per-request ceiling, it raises a typed local
+candidate-execution rejection with zero usage and the required/limit sizes.
+This is not an external transport failure or run-wide budget exhaustion: the
+Slow controller records the H attempt as technical failure and continues the
+independent Exploration sibling.
 
 ## Purpose
 

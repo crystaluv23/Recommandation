@@ -1186,7 +1186,7 @@ class SignalRoleAdapterTests(TestCase):
             mismatch["hypothesis_only_need_refs"], []
         )
 
-    def test_signal_h1_v3_budget_preflight_is_not_a_semantic_empty(self) -> None:
+    def test_signal_h1_v3_oversized_request_is_local_zero_call_failure(self) -> None:
         class OversizedCaller(ScriptedRoleCaller):
             def estimate_json_request_tokens(self, **_kwargs):
                 return 20_001
@@ -1196,8 +1196,8 @@ class SignalRoleAdapterTests(TestCase):
         model.set_request_token_budget(20_000)
 
         with self.assertRaisesRegex(
-            ExternalBudgetExhausted, "complete H1 search context"
-        ):
+            CandidateExecutionRejected, "complete H1 search context"
+        ) as raised:
             model.propose_hypotheses(
                 {
                     "h1_contract_version": "signal-mining-hypothesis-v3",
@@ -1212,6 +1212,10 @@ class SignalRoleAdapterTests(TestCase):
             )
 
         self.assertEqual(caller.calls, [])
+        self.assertEqual(raised.exception.usage, AgentUsage())
+        self.assertEqual(
+            raised.exception.details["failure_kind"], "role_request_too_large"
+        )
 
     def test_signal_h2_enforces_bounded_unpadded_shortlist_and_allows_empty(
         self,
