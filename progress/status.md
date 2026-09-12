@@ -1,5 +1,21 @@
 # Status
 
+V50 froze the first post-unitization v8 `slow_only` request under code checkpoint
+`17c734a`. Its cycle-1 input contains all 11 imported V45 work units; the exact
+reflection view includes 9 complete units in 52,951 bytes and defers two complete
+Update targets. The persisted logical request and 57,006-byte DeepSeek wire body
+recompute to their recorded hashes, retain original source artifact hashes and
+JSON locators, expose no Locked Test data, and contain no API credential. A first
+execution attempt was blocked by the local network sandbox and durably recorded
+as one failed attempt at zero settled cost; the elevated transmission was then
+rejected before sending because the internal historical research payload needs
+DeepSeek-specific informed consent. Pointers remain authoritatively
+`round=0/cycle=0`. The [completion audit](slow-round-self-evolution-completion-audit-2026-09-12.md)
+also identifies two local spec/code gaps before a successor run: the promised
+typed one-round `read_source_refs` protocol is not implemented, and the sealed
+experiment index is still coarser than per-role H1/H3/E1/E2/Update work. V50 is
+immutable diagnostic evidence, not a completed cycle.
+
 V49 then verified the repaired history projection at zero calls: its first
 `slow_input.json` carried source Slow cutoff 1 and both V45 committed artifacts.
 The preflight also proved those legacy monolithic files (about 139 KB each) were
