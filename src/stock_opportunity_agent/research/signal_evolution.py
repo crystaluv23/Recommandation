@@ -2942,23 +2942,32 @@ class SignalEvolutionEngine:
                 if not path.is_file():
                     continue
                 raw = _read_json(path)
-                feedback_ref = f"slow:{prior_cycle}:{filename[:-5]}"
-                row = {
-                    "feedback_ref": feedback_ref,
-                    "kind": kind,
-                    "subject_ref": f"cycle-{prior_cycle:04d}",
-                    "source_refs": [feedback_ref],
-                    "limitations": [],
-                    "artifact": raw,
-                }
-                rows.append(row)
-                manifest.append(
-                    {
-                        "ref": feedback_ref,
-                        "content_hash": _canonical_hash(raw),
-                        "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                for suffix, unit_kind, locator, unit in self._imported_artifact_units(
+                    filename, raw
+                ):
+                    feedback_ref = (
+                        f"slow:{prior_cycle}:{filename[:-5]}:{suffix}"
+                    )
+                    row = {
+                        "feedback_ref": feedback_ref,
+                        "kind": unit_kind or kind,
+                        "subject_ref": f"cycle-{prior_cycle:04d}",
+                        "source_refs": [feedback_ref],
+                        "limitations": [],
+                        "source_artifact": {
+                            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                            "json_locator": locator,
+                        },
+                        "artifact": unit,
                     }
-                )
+                    rows.append(row)
+                    manifest.append(
+                        {
+                            "ref": feedback_ref,
+                            "content_hash": _canonical_hash(unit),
+                            "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                        }
+                    )
         imported_rows, imported_manifest = self._imported_slow_feedback()
         rows.extend(imported_rows)
         manifest.extend(imported_manifest)
@@ -3027,34 +3036,178 @@ class SignalEvolutionEngine:
                 raise ValidationError("imported Slow artifact copy hash mismatch")
             raw = _read_json(path)
             cycle_id = int(item.get("cycle_id", 0))
-            feedback_ref = (
-                f"slow-history:{namespace}:{cycle_id}:{filename[:-5]}"
-            )
-            kind = (
-                "candidate_result"
-                if filename
-                in {"slow_experiments.json", "slow_loop_validation.json"}
-                else "search_result"
-            )
-            row = {
-                "feedback_ref": feedback_ref,
-                "kind": kind,
-                "subject_ref": f"{namespace}:cycle-{cycle_id:04d}",
-                "source_refs": [feedback_ref],
-                "limitations": [
-                    "imported committed history; source protocol may be read-only"
-                ],
-                "artifact": raw,
-            }
-            rows.append(row)
-            source_manifest.append(
-                {
-                    "ref": feedback_ref,
-                    "content_hash": _canonical_hash(raw),
-                    "visible_to": sorted(_SLOW_SOURCE_ROLES),
+            for suffix, kind, locator, unit in self._imported_artifact_units(
+                filename, raw
+            ):
+                feedback_ref = (
+                    f"slow-history:{namespace}:{cycle_id}:{filename[:-5]}:{suffix}"
+                )
+                row = {
+                    "feedback_ref": feedback_ref,
+                    "kind": kind,
+                    "subject_ref": f"{namespace}:cycle-{cycle_id:04d}",
+                    "source_refs": [feedback_ref],
+                    "limitations": [
+                        "imported committed history; source protocol may be read-only"
+                    ],
+                    "source_artifact": {
+                        "sha256": str(item["sha256"]),
+                        "json_locator": locator,
+                    },
+                    "artifact": unit,
                 }
-            )
+                rows.append(row)
+                source_manifest.append(
+                    {
+                        "ref": feedback_ref,
+                        "content_hash": _canonical_hash(unit),
+                        "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                    }
+                )
         return rows, source_manifest
+
+    @staticmethod
+    def _imported_artifact_units(
+        filename: str, raw: Mapping[str, Any]
+    ) -> tuple[tuple[str, str, str, dict[str, Any]], ...]:
+        """Split a committed artifact only at explicit complete-work boundaries."""
+
+        units: list[tuple[str, str, str, dict[str, Any]]] = []
+        if filename == "slow_loop_validation.json":
+            validation = dict(raw.get("validation", {}))
+            audits = dict(validation.pop("agent_audits", {}))
+            evaluations = dict(validation.pop("candidate_evaluations", {}))
+            effectiveness = dict(validation.pop("candidate_effectiveness", {}))
+            units.append(("summary", "candidate_result", "/validation", validation))
+            mining = audits.get("mining_pipeline")
+            if isinstance(mining, Mapping):
+                mining = dict(mining)
+                if isinstance(mining.get("hypothesis"), Mapping):
+                    units.append(
+                        (
+                            "mining-hypothesis",
+                            "candidate_result",
+                            "/validation/agent_audits/mining_pipeline/hypothesis",
+                            dict(mining["hypothesis"]),
+                        )
+                    )
+                if isinstance(mining.get("exploration"), Mapping):
+                    units.append(
+                        (
+                            "mining-exploration",
+                            "candidate_result",
+                            "/validation/agent_audits/mining_pipeline/exploration",
+                            dict(mining["exploration"]),
+                        )
+                    )
+                if not any(
+                    isinstance(mining.get(key), Mapping)
+                    for key in ("hypothesis", "exploration")
+                ):
+                    units.append(
+                        (
+                            "mining",
+                            "candidate_result",
+                            "/validation/agent_audits/mining_pipeline",
+                            mining,
+                        )
+                    )
+            update = audits.get("update_pipeline")
+            if isinstance(update, Mapping):
+                update_summary = dict(update)
+                targets = update_summary.pop("targets", ())
+                units.append(
+                    (
+                        "update-summary",
+                        "candidate_result",
+                        "/validation/agent_audits/update_pipeline",
+                        update_summary,
+                    )
+                )
+                for index, target in enumerate(targets):
+                    if isinstance(target, Mapping):
+                        units.append(
+                            (
+                                f"update-target-{index + 1:03d}",
+                                "candidate_result",
+                                f"/validation/agent_audits/update_pipeline/targets/{index}",
+                                dict(target),
+                            )
+                        )
+            for signal_ref, evaluation in sorted(evaluations.items()):
+                if isinstance(evaluation, Mapping):
+                    units.append(
+                        (
+                            "fixture-" + _canonical_hash(signal_ref)[:12],
+                            "candidate_result",
+                            f"/validation/candidate_evaluations/{signal_ref}",
+                            dict(evaluation),
+                        )
+                    )
+            for signal_ref, evaluation in sorted(effectiveness.items()):
+                if isinstance(evaluation, Mapping):
+                    units.append(
+                        (
+                            "effect-" + _canonical_hash(signal_ref)[:12],
+                            "candidate_result",
+                            f"/validation/candidate_effectiveness/{signal_ref}",
+                            dict(evaluation),
+                        )
+                    )
+        elif filename == "slow_loop_result.json":
+            result = dict(raw.get("result", {}))
+            for key in (
+                "agent_audits",
+                "candidate_evaluations",
+                "candidate_effectiveness",
+            ):
+                result.pop(key, None)
+            units.append(("summary", "search_result", "/result", result))
+        elif filename == "slow_experiments.json":
+            for index, attempt in enumerate(raw.get("attempts", ())):
+                if isinstance(attempt, Mapping):
+                    units.append(
+                        (
+                            f"attempt-{index + 1:03d}",
+                            "candidate_result",
+                            f"/attempts/{index}",
+                            dict(attempt),
+                        )
+                    )
+        elif filename == "slow_memory.json":
+            summary = dict(raw)
+            episodes = summary.pop("episode_reflections", ())
+            lessons = summary.pop("lesson_additions", ())
+            units.append(("summary", "search_result", "/", summary))
+            for collection, values in (("episode", episodes), ("lesson", lessons)):
+                for index, value in enumerate(values):
+                    if isinstance(value, Mapping):
+                        units.append(
+                            (
+                                f"{collection}-{index + 1:03d}",
+                                "search_result",
+                                (
+                                    f"/episode_reflections/{index}"
+                                    if collection == "episode"
+                                    else f"/lesson_additions/{index}"
+                                ),
+                                dict(value),
+                            )
+                        )
+        elif filename == "slow_input.json":
+            for index, feedback in enumerate(raw.get("feedback_rows", ())):
+                if isinstance(feedback, Mapping):
+                    units.append(
+                        (
+                            f"feedback-{index + 1:03d}",
+                            str(feedback.get("kind", "search_result")),
+                            f"/feedback_rows/{index}",
+                            dict(feedback),
+                        )
+                    )
+        if not units:
+            units.append(("complete", "search_result", "/", dict(raw)))
+        return tuple(units)
 
     def _prepare_slow_memory(
         self,
@@ -3127,11 +3280,14 @@ class SignalEvolutionEngine:
         if not selected_refs:
             memory = {
                 **common,
-                "status": "reused",
+                "status": "failed" if deferred_refs else "reused",
                 "processed_feedback_refs": [],
                 "pending_feedback_refs": deferred_refs,
                 "episode_reflections": [],
                 "lesson_additions": [],
+                "failure_ref": (
+                    "reflection_context_budget" if deferred_refs else None
+                ),
             }
         else:
             reflector = getattr(self.mining_model, "reflect_feedback", None)

@@ -1,5 +1,18 @@
 # Status
 
+V49 then verified the repaired history projection at zero calls: its first
+`slow_input.json` carried source Slow cutoff 1 and both V45 committed artifacts.
+The preflight also proved those legacy monolithic files (about 139 KB each) were
+too large to enter the 64 KB whole-entry reflection window, so they remained
+pending and no reflection call occurred. Runtime now projects validation/result
+history at complete H, E, Update target, candidate-evaluation and transition
+boundaries, each with the original artifact SHA-256 and JSON locator; it applies
+the same unitization to newly committed target cycles. Against the exact V45
+files, 9 of 11 units fit the first view (52,951 bytes) and the two deferred Update
+targets fit the next view, leaving room for new-cycle summaries. All 728 tests
+and lint pass. V49 remains immutable zero-call evidence and must not resume under
+the changed code revision.
+
 V48 froze the first v8 `slow_only` contract from V45 and stopped locally with
 zero external calls at `round=0/cycle=0`. Its preflight exposed that the
 validated history manifest copied committed V45 validation/result artifacts,

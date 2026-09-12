@@ -72,7 +72,42 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0]["kind"], "search_result")
             self.assertIn(namespace, rows[0]["feedback_ref"])
-            self.assertEqual(sources[0]["content_hash"], canonical_json_hash(artifact))
+            self.assertEqual(
+                sources[0]["content_hash"],
+                canonical_json_hash(artifact["result"]),
+            )
+
+    def test_monolithic_slow_validation_splits_at_complete_work_boundaries(self) -> None:
+        units = SignalEvolutionEngine._imported_artifact_units(
+            "slow_loop_validation.json",
+            {
+                "validation": {
+                    "mined_candidates": [],
+                    "candidate_evaluations": {"candidate:v1": {"accepted": False}},
+                    "candidate_effectiveness": {
+                        "candidate:v1": {"disposition": "rejected"}
+                    },
+                    "agent_audits": {
+                        "mining_pipeline": {
+                            "track": "hypothesis_then_exploration_fallback",
+                            "hypothesis": {"status": "no_testable_hypothesis"},
+                            "exploration": {"status": "completed"},
+                        },
+                        "update_pipeline": {
+                            "status": "completed",
+                            "targets": [{"signal_ref": "stable:v1"}],
+                        },
+                    },
+                }
+            },
+        )
+
+        suffixes = {item[0] for item in units}
+        self.assertIn("summary", suffixes)
+        self.assertIn("mining-hypothesis", suffixes)
+        self.assertIn("mining-exploration", suffixes)
+        self.assertIn("update-target-001", suffixes)
+        self.assertTrue(all(item[2].startswith("/") for item in units))
 
     def test_slow_sampling_is_order_invariant_and_issuer_disjoint(self) -> None:
         cases = tuple(

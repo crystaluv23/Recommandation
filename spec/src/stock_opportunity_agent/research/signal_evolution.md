@@ -13,6 +13,10 @@ listed by the validated Slow-history manifest from its local imported copy. The
 source namespace is part of each feedback ref, and the source committed Slow
 cutoff is carried into `slow_input.json`; importing only the Registry while
 silently dropping committed search/validation outcomes is invalid.
+Legacy monolithic validation/result files are projected as complete H, E,
+Update, candidate and transition work units, each retaining the immutable source
+artifact hash and JSON locator. A file larger than the role budget is never
+string-truncated or treated as one permanently unreadable feedback unit.
 
 The entry reflection is one bounded logical job over complete selected feedback
 units plus historical pending units. No pending feedback means zero model calls
