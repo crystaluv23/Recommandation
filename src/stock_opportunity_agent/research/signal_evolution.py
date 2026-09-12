@@ -691,7 +691,7 @@ def _exploration_comparison_concepts(
         {
             "taxonomy": key[0],
             "concept": key[1],
-            "source_label": key[2],
+            "source_display_name": key[2],
             "unit": key[3],
             "case_count": len(inventory[key]),
         }

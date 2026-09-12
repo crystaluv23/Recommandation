@@ -2552,6 +2552,8 @@ class SignalEvolutionTests(TestCase):
             inventory[0]["concept"],
             "RevenueFromContractWithCustomerExcludingAssessedTax",
         )
+        self.assertEqual(inventory[0]["source_display_name"], "Revenue")
+        self.assertNotIn("source_label", inventory[0])
         self.assertFalse(any("value" in row for row in inventory))
 
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:

@@ -1,5 +1,25 @@
 # Status
 
+V67 cycle 1 committed at authoritative Fast 0 / Slow 1 under the new paired-input
+and source-diverse E1 implementation. It made 47 completed Slow-side attempts for
+`$0.19898368000000002`, reserved 144 acquisition work units, never entered Fast,
+kept Locked Test sealed, and produced three Update candidates. The paired gate
+now resolves and executes all eight check cases in both arms with zero execution
+failures; `max_drawdown_1y:v2` and `cash_reserves:v2` were rejected for measured
+non-improvement rather than infrastructure failure, while
+`financing_listing_action:v2` failed its unchanged fixture. This live evidence
+verifies the common-corpus materialization and per-case diagnostics.
+
+Mining was still zero because both E1 microbatches failed before transmission:
+the neutral comparison inventory field `source_label` was conservatively caught
+by the outcome-key scanner as an evaluation label. The source packets themselves
+were correctly materialized with both required families and two to four documents
+per case. The inventory now uses the typed neutral name `source_display_name`, so
+the strict outcome scanner remains unchanged and no path-specific exception is
+added. The exact scanner and inventory regressions, all 752 tests, and lint pass.
+V67 remains immutable; a code-bound successor must live-verify E1/E2 and produce
+nonzero Mining plus a conclusive Update before acceptance.
+
 V66 is the first two-cycle `slow_only` successor that preserves the replayed
 Fast learning profiles and commits both cycles at authoritative `round=0/cycle=2`.
 It made 101 Slow-side DeepSeek attempts (99 completed, two failed) for

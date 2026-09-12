@@ -307,6 +307,21 @@ class SignalRoleAdapterTests(TestCase):
             allow_outcomes=False,
             anonymous_aliases=(),
         )
+        evolution_runtime_module._scan_payload(
+            {
+                "comparison_concepts": [
+                    {
+                        "taxonomy": "us-gaap",
+                        "concept": "Revenue",
+                        "source_display_name": "Revenue",
+                        "unit": "USD",
+                        "case_count": 3,
+                    }
+                ]
+            },
+            allow_outcomes=False,
+            anonymous_aliases=(),
+        )
         with self.assertRaisesRegex(ValidationError, "outcome field leaked"):
             evolution_runtime_module._scan_payload(
                 {"cases": [{"label": "surge"}]},
