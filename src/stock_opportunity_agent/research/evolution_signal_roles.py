@@ -1304,6 +1304,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             ]
             issues: list[ValidationIssue] = []
             seen_episodes: set[str] = set()
+            covered_feedback_refs: set[str] = set()
             for index, raw in enumerate(episodes):
                 path = f"episode_reflections[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
@@ -1349,6 +1350,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                     continue
                 seen_episodes.add(episode_ref)
+                covered_feedback_refs.update(str(item) for item in source_refs)
+            missing_feedback_refs = sorted(
+                feedback_refs - covered_feedback_refs
+            )
+            if missing_feedback_refs:
+                issues.append(
+                    ValidationIssue(
+                        code="reflection_feedback_coverage_missing",
+                        message=(
+                            "episode_reflections source_refs must cover every "
+                            "selected top-level feedback_ref"
+                        ),
+                        paths=("episode_reflections",),
+                        allowed_repairs=("add", "replace"),
+                        source_refs=tuple(missing_feedback_refs),
+                        repair_context={
+                            "missing_feedback_refs": missing_feedback_refs,
+                        },
+                    )
+                )
             seen_lessons: set[str] = set()
             for index, raw in enumerate(lessons):
                 path = f"lesson_additions[{index}]"

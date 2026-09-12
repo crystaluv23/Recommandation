@@ -46,8 +46,8 @@ audit metadata and persisted under
 response unchanged; ambiguous or absent locators still fail. The persisted map
 may point only to feedback refs processed by that memory delta. The adapter
 aggregates every remaining invalid episode and lesson
-row into one indexed correction frontier instead of consuming one retry per
-malformed or out-of-scope ref.
+row plus all omitted selected feedback refs into one correction frontier instead
+of consuming one retry per malformed, out-of-scope, or uncovered ref.
 
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT

@@ -1,5 +1,23 @@
 # Status
 
+V61 committed two real cycles under contract `59bb2450...c908c0` at
+authoritative `round=0/cycle=2`, using 20 attempts (17 completed, three failed),
+93 SEC requests, and `$0.11558708000000001`. Both cycles ran H and independent
+E, kept Locked Test sealed and Registry v1 unchanged, and reported zero
+candidate/validated/promoted/updated Signals with goal `unmet`. The bounded
+method-memory repair succeeded live: both H1 requests fit and were transmitted;
+cycle 2 used two bounded H1 calls instead of pausing at preflight. However V61
+is not accepted as a complete cross-cycle learning proof. Cycle 2 correctly
+reserved 13 complete entries including all five local cycle-1 refs, but its
+reflection output covered only eight owners after deterministic nested-ref
+canonicalization and omitted five selected historical owners. Because complete
+coverage was checked only after the role adapter had declared success, no
+correction call was available; the final engine guard sealed memory as failed,
+consumed no refs, and H/E continued safely. Coverage validation now runs inside
+the adapter and emits one correction obligation containing every omitted ref;
+the engine equality check remains the final catch. All 744 tests and lint pass;
+V61 remains immutable and a fresh successor is required.
+
 V59 froze under contract `e4f76cb2...9d5bd` and committed a content-audited
 cycle 1 at authoritative `round=0/cycle=1`. Cycle 1 used eight attempts
 (seven completed, one failed) for `$0.05596668`, processed all 28 selected

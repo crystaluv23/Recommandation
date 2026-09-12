@@ -1,6 +1,6 @@
 # Slow Round 自进化：代码修改与验收方案
 
-状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V59 在合同 `e4f76cb2...9d5bd` 下提交了内容正确的 cycle 1，权威指针 Fast 0 / Slow 1；8 次尝试成本 `$0.05596668`，仍无候选/验证/晋级/更新。其未提交 cycle 2 已证明最近反馈前沿生效：5 个 `slow:1:*` 单元全部进入 11 个 processed refs；随后 H1 完整请求需 285,081 bytes、超过 256,000-byte 冻结上限，被错误作为全局预算暂停并取消 E。后继实现把派生 method memory 改为独立 64 KB 的完整条目视图；若 H1 仍过大则记录零调用本地技术失败并继续 E，真实全局预算/传输错误仍传播。V59 实际两轮 memory 的视图为 28,467 bytes、25 个完整条目且无省略。首次后继 V60 在零调用 freeze 阶段又暴露历史导入拒绝“已提交前缀 + 更高 staged cycle”；当前实现改为仅复制权威 pointer 可达工件，并以 committed Registry version/hash 一致性阻止未提交 promotion 泄漏。所有 743 项测试与 lint 通过；V59/V60 保持不可变，下一次执行必须冻结新合同。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
+状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V61 在合同 `59bb2450...c908c0` 下真实提交两轮，权威指针 Fast 0 / Slow 2；20 次尝试、93 次 SEC 请求、成本 `$0.11558708000000001`，两轮 H 与独立 E 都运行且 bounded method-memory 修复使 H1 请求正常发送。Locked Test 封闭、Registry v1 不变，两轮均无候选/验证/晋级/更新，目标 `unmet`。跨轮 reflection 仍未验收：cycle 2 选中含全部五个本地 cycle-1 refs 的 13 个单元，但响应归一后遗漏五个 owner；完整覆盖只在 adapter 成功后的 engine 层检查，故没有 correction，最终 memory fail-closed 且不消费 refs。后继把全部遗漏 refs 纳入 adapter 内一次结构化 correction，engine 等集检查继续兜底。所有 744 项测试与 lint 通过；V61 保持不可变，下一次执行必须冻结新合同。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
 
 目标：让 Slow 每轮主动挖掘信号，从自己过去的挖掘、验证、晋级和真实使用反馈中学习，并能在没有新 Fast round 的情况下连续运行。最终产物是质量可验证、可使用的信号库，以及有证据支持的挖掘方法经验。
 

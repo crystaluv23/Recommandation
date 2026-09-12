@@ -81,16 +81,73 @@ class SignalRoleAdapterTests(TestCase):
 
         self.assertEqual(len(step.value["episode_reflections"]), 2)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(feedback["obligation_count"], 3)
+        self.assertEqual(feedback["obligation_count"], 4)
         self.assertEqual(
             feedback["required_change_paths"],
             [
                 "episode_reflections[0]",
                 "episode_reflections[1]",
+                "episode_reflections",
                 "lesson_additions[0]",
             ],
         )
         self.assertIn("top-level feedback_ref", caller.calls[0]["system_prompt"])
+
+    def test_reflection_corrects_all_omitted_selected_feedback_refs(self) -> None:
+        initial = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0002-001",
+                    "source_refs": ["feedback-1"],
+                    "reflection": "The first completed work unit was retained.",
+                    "unresolved_questions": [],
+                }
+            ],
+            "lesson_additions": [],
+        }
+        corrected = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0002-001",
+                    "source_refs": ["feedback-1", "feedback-2", "feedback-3"],
+                    "reflection": "All selected complete work units were retained.",
+                    "unresolved_questions": [],
+                }
+            ],
+            "lesson_additions": [],
+        }
+        caller = ScriptedRoleCaller([initial, corrected])
+
+        step = LLMSignalMiningModel(caller).reflect_feedback(
+            {
+                "episode_slots": [
+                    "episode-c0002-001",
+                    "episode-c0002-002",
+                    "episode-c0002-003",
+                ],
+                "lesson_slots": ["lesson-c0002-001"],
+                "feedback_units": [
+                    {"feedback_ref": f"feedback-{index}", "artifact": {}}
+                    for index in range(1, 4)
+                ],
+            }
+        )
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        issue = next(
+            item
+            for item in feedback["obligations"]
+            if item["issue_code"] == "reflection_feedback_coverage_missing"
+        )
+        self.assertEqual(
+            issue["missing_feedback_refs"],
+            ["feedback-2", "feedback-3"],
+        )
+        self.assertEqual(
+            set(step.value["episode_reflections"][0]["source_refs"]),
+            {"feedback-1", "feedback-2", "feedback-3"},
+        )
 
     def test_reflection_canonicalizes_uniquely_owned_nested_slow_refs(self) -> None:
         nested_ref = "slow-history:source-old:1:slow_loop_result:summary"

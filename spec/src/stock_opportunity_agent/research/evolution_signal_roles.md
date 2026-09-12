@@ -18,7 +18,10 @@ resulting ref list, and records the old-to-owner mapping in role metadata. The
 raw provider response remains immutable. Ambiguous or absent nested refs are not
 repaired. All remaining invalid episode and lesson rows are reported together as
 indexed, path-scoped correction obligations, so bounded recovery does not
-discover one bad ref per attempt.
+discover one bad ref per attempt. The same correction frontier includes the
+complete set of selected top-level feedback refs omitted by otherwise-valid
+episodes; coverage is validated inside the adapter before success, rather than
+being discovered only by the engine after the bounded correction opportunity.
 
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
