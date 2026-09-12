@@ -38,8 +38,14 @@ removed. Exact pre-transmission inspection then rejected V46 at zero calls: its
 system instruction was v6 while the runtime payload, fingerprint namespace, and
 durable H1 audit still declared v5. Those runtime surfaces now advance together
 to v6 and the engine regression asserts the outgoing payload version. All 716
-tests pass; repository lint and a clean successor request audit remain before
-another external Slow acceptance run.
+tests and repository lint pass. V47 is now frozen from the same V21 boundary at
+contract `b70f2728...23c0b` and paused at zero calls on exact request
+`f4768214...210c`. Its system/payload contract is consistently v6; all 175 unique
+need refs, 30 reflection actions, 24 masked meta cases, and 14 stable Signal
+cards survive in the 246,190-byte wire body. Logical messages equal the actual
+wire input, stored and recomputed body hashes match, no truncation marker or
+checked company/ticker/CIK/local-path leak is present, and Locked Test remains
+sealed. External execution requires V47-specific authorization.
 
 V42 reached the audited H1 approval boundary at `round=0/cycle=0`. The exact
 225,829-character H1 context contains 172 unique needs, all 30 reflection actions,
