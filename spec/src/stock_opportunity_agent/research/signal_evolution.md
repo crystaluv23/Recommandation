@@ -32,8 +32,11 @@ both retained in the cycle audit.
 Reflection output persists only each selected unit's top-level `feedback_ref`.
 An out-of-scope Slow locator nested under exactly one selected unit is
 deterministically rewritten to that owner ref, with the mapping retained in role
-audit metadata and the provider response unchanged; ambiguous or absent locators
-still fail. The adapter aggregates every remaining invalid episode and lesson
+audit metadata and persisted under
+`slow_memory.model_view_manifest.canonicalized_nested_refs`, with the provider
+response unchanged; ambiguous or absent locators still fail. The persisted map
+may point only to feedback refs processed by that memory delta. The adapter
+aggregates every remaining invalid episode and lesson
 row into one indexed correction frontier instead of consuming one retry per
 malformed or out-of-scope ref.
 
@@ -117,6 +120,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   message, and usage before continuing the independent sibling pipeline. The
   failure remains in the durable validation audit; continuing Update must never
   make an earlier Mining failure invisible or look like the first Slow action.
+  The same isolation boundary catches unforeseen ordinary exceptions without
+  enumerating incident-specific corner cases: the affected memory or pipeline
+  becomes a typed fail-closed result, consumes no unprocessed feedback, produces
+  no candidate, and cannot promote a Signal, while an independent sibling may
+  continue. Control-flow pauses, explicit client transport failures, process
+  interrupts, and other `BaseException` states are never swallowed; they
+  propagate so the frozen workspace can be resumed under its original budget
+  and contract.
 - The module never imports the `scheme_evolution.py` compatibility facade.
 - H1 runtime fields are deterministic and cycle-bound. The committed audit
   stores the structured conclusion and an input fingerprint so a later cycle

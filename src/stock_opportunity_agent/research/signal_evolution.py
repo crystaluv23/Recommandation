@@ -19,6 +19,7 @@ from stock_opportunity_agent.data.resolution import (
     RawInfoResolution,
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
+from stock_opportunity_agent.llm.openai import OpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -40,6 +41,7 @@ from stock_opportunity_agent.research.evolution_core import (
     DEFAULT_EVOLUTION_PRIORS,
     EvolutionCase,
     EvolutionDataset,
+    EvolutionControlFlow,
     EvolutionPriors,
     PlanMetaMemory,
     ProgressCallback,
@@ -346,6 +348,18 @@ def validate_slow_memory(
         raise ValidationError("failed Slow memory cannot consume feedback")
     if status == "reused" and (processed or payload["episode_reflections"] or payload["lesson_additions"]):
         raise ValidationError("reused Slow memory cannot append content")
+    model_view = payload["model_view_manifest"]
+    if not isinstance(model_view, Mapping):
+        raise ValidationError("Slow memory model view manifest is invalid")
+    canonicalized = model_view.get("canonicalized_nested_refs", {})
+    if not isinstance(canonicalized, Mapping) or any(
+        not isinstance(source_ref, str)
+        or not source_ref
+        or not isinstance(owner_ref, str)
+        or owner_ref not in processed
+        for source_ref, owner_ref in canonicalized.items()
+    ):
+        raise ValidationError("Slow memory canonicalized refs are invalid")
     sources = set(available_source_refs)
     episode_refs: set[str] = set()
     for index, raw in enumerate(payload["episode_reflections"]):
@@ -728,7 +742,9 @@ class SignalCandidateValidator:
                 try:
                     self._execute_fixture(spec, skill, fixture, index=index)
                     executed_tests += 1
-                except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                except (EvolutionControlFlow, OpenAIClientError):
+                    raise
+                except Exception as exc:
                     reasons.append(f"fixture {index + 1} failed: {exc}")
         return SignalCandidateValidation(
             signal_ref=spec.ref,
@@ -3310,7 +3326,10 @@ class SignalEvolutionEngine:
                     "protocol": "signal-mining-reflect-v2",
                 }
             ),
-            "model_view_manifest": view,
+            "model_view_manifest": {
+                **view,
+                "canonicalized_nested_refs": {},
+            },
             "usage_ref": None,
             "failure_ref": None,
         }
@@ -3399,8 +3418,16 @@ class SignalEvolutionEngine:
                             if step.metadata.get("request_refs")
                             else None
                         ),
+                        "model_view_manifest": {
+                            **common["model_view_manifest"],
+                            "canonicalized_nested_refs": dict(
+                                step.metadata.get("canonicalized_nested_refs", {})
+                            ),
+                        },
                     }
-                except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                except (EvolutionControlFlow, OpenAIClientError):
+                    raise
+                except Exception as exc:
                     memory = {
                         **common,
                         "status": "failed",
@@ -3668,7 +3695,9 @@ class SignalEvolutionEngine:
             refined_hypotheses = dict(mining_output["refined_hypotheses"])
             agent_failures.update(dict(mining_output["failures"]))
             agent_audits["mining_pipeline"] = dict(mining_output["audit"])
-        except (ValidationError, AssertionError) as exc:
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
             _emit_progress(
                 self.on_progress,
                 "slow_pipeline_failed",
@@ -3678,11 +3707,17 @@ class SignalEvolutionEngine:
                 error=str(exc),
                 usage=_usage_to_dict(getattr(exc, "usage", AgentUsage())),
             )
+            failure_prefix = (
+                "structured_output_failed"
+                if isinstance(exc, (ValidationError, AssertionError))
+                else "unexpected_pipeline_failure"
+            )
             agent_failures["slow_loop:mining_pipeline"] = (
-                "structured_output_failed: " + str(exc),
+                failure_prefix + ": " + str(exc),
             )
             agent_audits["mining_pipeline"] = {
                 "status": "failed",
+                "error_type": type(exc).__name__,
                 "error": str(exc),
                 "usage": _usage_to_dict(getattr(exc, "usage", AgentUsage())),
             }
@@ -3698,7 +3733,9 @@ class SignalEvolutionEngine:
             validation_case_ids.update(update_output["validation_case_ids"])
             agent_failures.update(update_output["failures"])
             agent_audits["update_pipeline"] = dict(update_output["audit"])
-        except ValidationError as exc:
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
             _emit_progress(
                 self.on_progress,
                 "slow_pipeline_failed",
@@ -3708,13 +3745,19 @@ class SignalEvolutionEngine:
                 error=str(exc),
                 usage=_usage_to_dict(getattr(exc, "usage", AgentUsage())),
             )
+            failure_prefix = (
+                "structured_output_failed"
+                if isinstance(exc, (ValidationError, AssertionError))
+                else "unexpected_pipeline_failure"
+            )
             agent_failures["slow_loop:update_pipeline"] = (
-                "structured_output_failed: " + str(exc),
+                failure_prefix + ": " + str(exc),
             )
             agent_audits["update_pipeline"] = {
                 "schema_version": "signal-update-audit-v2",
                 "cycle_id": cycle_id,
                 "status": "failed",
+                "error_type": type(exc).__name__,
                 "error": str(exc),
                 "usage": _usage_to_dict(
                     getattr(exc, "usage", AgentUsage())
@@ -4531,10 +4574,12 @@ class SignalEvolutionEngine:
             raise ValidationError("Signal Mining cycle id must be positive")
         if self._active_sampling_manifest is None:
             return self._run_signal_mining_legacy(cycle_id=cycle_id)
-        hypothesis_failure: ValidationError | None = None
+        hypothesis_failure: Exception | None = None
         try:
             hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
-        except (ValidationError, AssertionError) as exc:
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
             hypothesis_failure = exc
             hypothesis_result = self._mining_output(
                 audit={
@@ -4545,6 +4590,7 @@ class SignalEvolutionEngine:
                     "limits": self.mining_config.to_dict(),
                     "stages": {},
                     "failure_stage": getattr(exc, "stage", "hypothesis"),
+                    "error_type": type(exc).__name__,
                     "error": str(exc),
                     "failure_details": dict(getattr(exc, "details", {})),
                     "usage": _usage_to_dict(
@@ -4557,7 +4603,9 @@ class SignalEvolutionEngine:
             )
         try:
             exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
-        except (ValidationError, AssertionError) as exc:
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
             exploration_result = self._mining_output(
                 audit={
                     "schema_version": "signal-mining-audit-v1",
@@ -4565,6 +4613,7 @@ class SignalEvolutionEngine:
                     "cycle_id": cycle_id,
                     "track": "exploration",
                     "stages": {},
+                    "error_type": type(exc).__name__,
                     "error": str(exc),
                     "usage": _usage_to_dict(getattr(exc, "usage", AgentUsage())),
                     "candidate_refs": [],

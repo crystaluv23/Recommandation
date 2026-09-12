@@ -9,6 +9,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     validate_slow_memory,
 )
 from stock_opportunity_agent.artifacts import canonical_json_hash
+from stock_opportunity_agent.llm.openai import OpenAIClientError
 
 
 class SignalEvolutionTests(TestCase):
@@ -346,7 +347,14 @@ class SignalEvolutionTests(TestCase):
                     {
                         "episode_reflections": episodes,
                         "lesson_additions": [],
-                    }
+                    },
+                    metadata={
+                        "canonicalized_nested_refs": {
+                            "slow-history:nested-locator": episodes[0][
+                                "source_refs"
+                            ][0]
+                        }
+                    },
                 )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -417,6 +425,46 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 second_input["source_cutoff"],
                 {"committed_fast_round": 0, "committed_slow_cycle": 1},
+            )
+            second_memory = workspace.load_slow_memory(2)
+            self.assertEqual(
+                second_memory["model_view_manifest"][
+                    "canonicalized_nested_refs"
+                ],
+                {
+                    "slow-history:nested-locator": second_memory[
+                        "processed_feedback_refs"
+                    ][0]
+                },
+            )
+
+    def test_slow_memory_rejects_canonicalized_ref_to_unprocessed_owner(self) -> None:
+        value = {
+            "schema_version": "slow-memory-v1",
+            "cycle_id": 1,
+            "contract_hash": "contract",
+            "input_hash": "input",
+            "parent_memory_hash": "",
+            "reflection_work_hash": "work",
+            "status": "failed",
+            "processed_feedback_refs": [],
+            "pending_feedback_refs": ["feedback-1"],
+            "episode_reflections": [],
+            "lesson_additions": [],
+            "model_view_manifest": {
+                "canonicalized_nested_refs": {
+                    "slow-history:nested-locator": "feedback-1"
+                }
+            },
+            "usage_ref": None,
+            "failure_ref": "failed",
+        }
+
+        with self.assertRaisesRegex(ValidationError, "canonicalized refs"):
+            validate_slow_memory(
+                value,
+                available_feedback_refs=("feedback-1",),
+                available_source_refs=("feedback-1",),
             )
 
     def test_validator_rejects_definition_implementation_mismatch(self) -> None:
@@ -490,6 +538,33 @@ class SignalEvolutionTests(TestCase):
                     }
                 ],
             )
+
+            events.clear()
+            with mock.patch.object(
+                engine,
+                "_run_signal_mining",
+                side_effect=RuntimeError("unanticipated local shape"),
+            ), mock.patch.object(
+                engine, "_run_signal_update", return_value=empty_output
+            ) as update:
+                validation = engine._validate_cycle(registry.freeze(), cycle_id=3)
+
+            update.assert_called_once()
+            self.assertIn("slow_loop:mining_pipeline", validation.rejected)
+            self.assertIn(
+                "unexpected_pipeline_failure",
+                validation.rejected["slow_loop:mining_pipeline"][0],
+            )
+            self.assertEqual(events[0]["error_type"], "RuntimeError")
+
+            with mock.patch.object(
+                engine,
+                "_run_signal_mining",
+                side_effect=OpenAIClientError("provider contract failed"),
+            ), mock.patch.object(engine, "_run_signal_update") as update:
+                with self.assertRaisesRegex(OpenAIClientError, "provider contract"):
+                    engine._validate_cycle(registry.freeze(), cycle_id=4)
+            update.assert_not_called()
 
             events.clear()
             with mock.patch.object(
