@@ -1,12 +1,26 @@
 # Status
 
-A proposed [Slow self-evolution implementation plan](slow-round-self-evolution-implementation-plan-2026-09-12.md)
-now specifies append-only raw feedback, concrete reflections and method lessons;
-neutral frozen sampling; mandatory independent mining; version-specific usage
-feedback; and bounded `slow_only` operation. It includes code batches and separate
-execution, semantic, Signal-output and independent capability acceptance. This is
-a design handoff only: runtime implementation and new live acceptance remain
-pending, and no existing frozen run or external authorization is changed.
+The [Slow self-evolution implementation plan](slow-round-self-evolution-implementation-plan-2026-09-12.md)
+is now local-ready. Runtime v8 freezes `slow_input.json`, append-only
+`slow_memory.json`, and `slow_experiments.json` in an exact lineage before
+validation/result and advances only the committed cycle pointer. Neutral,
+issuer-disjoint dev/check samples are frozen before research; H and independent E
+run every cycle; H1 v7 routes explicit updates; H1/H3/E2/Update receive bounded
+whole-entry method-memory evidence views; and `slow_only` imports only validated
+committed history while preserving a zero Fast pointer and cumulative cycle cap.
+Candidate validation now rejects known definition/implementation mismatches and
+rename-only execution duplicates. Results and CLI diagnostics separately expose
+new candidate, validated, promoted and updated counts plus the consecutive unmet
+Signal goal. A frozen three-condition memory ablation manifest and issuer-isolated,
+group-bound confirmation reservation are available for later independent review.
+
+Scripted two-cycle `slow_only` coverage confirms cycle 2 reads cycle 1 committed
+feedback without moving the Fast pointer. Focused and full local verification are
+recorded in the 2026-09-12 changelog entry. No new workspace was frozen and no
+external model/data request was transmitted: exact wire review, real consecutive
+Slow execution, per-cycle Signal-output acceptance, and independent method-benefit
+confirmation remain pending explicit external authorization and a confirmed
+research protocol. V47 and every older frozen workspace remain immutable.
 
 V45 completed one real DeepSeek Slow cycle at authoritative `round=0/cycle=1`
 after 42 completed external attempts and `$0.20322316`; Locked Test remained
@@ -32,7 +46,7 @@ request and correction payloads contained the full source observations and exact
 validation feedback; the model's ignored citation repairs remained technical
 failures rather than being laundered into semantic unavailable results.
 
-H1 now uses `signal-mining-hypothesis-v6`. It has an honest
+The V47 boundary used `signal-mining-hypothesis-v6`. It has an honest
 `deferred_measurement` state for measurable needs outside the bounded portfolio;
 explicitly unmatched Fast needs cannot be marked already covered, and an
 existing-Signal update must have a per-need exact basis from either the backlog's

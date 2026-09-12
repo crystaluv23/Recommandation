@@ -234,6 +234,47 @@ rejected Fast round remains outside history and parent selection. Bootstrap
 uses the unchanged H1/H2/H3, candidate executor, paired effectiveness gate,
 atomic transition, and Locked-Test boundary, then exposes any committed Registry
 output only to a fresh subsequent Fast run.
+
+`slow_only` is a separate v8 execution mode for a finite sequence of Signal
+development cycles with zero Fast rounds. It never resets or reuses the
+single-cycle bootstrap exception. A frozen, committed-only history manifest
+may initialize the new workspace from one source workspace while preserving
+source namespaces, exact Signal versions, source hashes, and source Fast/Slow
+cutoffs. The new workspace keeps its Fast pointer at zero. Its contract fixes a
+positive cumulative `max_slow_cycles`, a per-cycle minimum-new-Signal target,
+and bounded reflection, Mining, Update, semantic-review, attempt, token, and
+cost limits. Repeated CLI resumes cannot exceed those cumulative limits.
+
+Every Slow cycle freezes one neutral issuer-disjoint development/check sample
+before any outcome-aware author role runs. Selection is a stable hash ordering
+over an outcome-independent eligible population; evidence gaps stay attached
+to the original case and never cause favorable resampling. E1 remains
+outcome-hidden. H1, H3, E2, Update, and the entry reflection receive only their
+role-scoped projections. Current check and confirmation sources, plus historical
+episodes whose source closure would reveal them, are denied by the common Slow
+source resolver. Confirmation remains a separately reserved, issuer-disjoint
+offline evaluation boundary and never participates in candidate authoring or
+promotion.
+
+The authoritative Slow dependency chain is `slow_input -> slow_memory ->
+slow_experiments -> SlowLoopValidation -> Registry transition -> SlowLoopResult
+-> cycle pointer`. The first three artifacts are immutable and hash-linked.
+`slow_input` snapshots committed feedback facts and the sample manifest;
+`slow_memory` appends episode reflections and evidence-linked method lessons
+without rewriting raw facts or prior lessons; `slow_experiments` preserves all
+search, no-candidate, technical-failure, validation, and update attempts. A
+resume reuses the same frozen artifacts and candidate hashes. The cycle pointer
+advances last, and only pointer-reachable artifacts become history for a later
+cycle.
+
+Each committed result reports new candidates, fully validated new Signal ids,
+actually promoted new Signal ids, updated Signal versions, and
+`signal_goal_status`. The status is `met` only when the configured number of new
+Signal ids passed every contract, semantic, uniqueness, and effectiveness gate,
+were atomically promoted, and the cycle committed. An update, draft,
+provisional candidate, validation-only success, or renamed duplicate never
+satisfies that target. Bounded honest failure is committed as `unmet`; it does
+not lower a quality gate or authorize unbounded retry.
 Signal Update is locally triggered only when repeated ledger evidence identifies
 an actionable exact version. One Slow cycle selects at most three distinct
 targets by evidence priority. Local code independently selects issuer-disjoint

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import tempfile
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest import TestCase
@@ -16,6 +17,7 @@ from stock_opportunity_agent.research.evolution_benefit import (
     EvolutionBenefitProtocol,
     EvolutionLifecycleEvidence,
     SystemCaseResult,
+    SlowMemoryAblationManifest,
     write_evolution_benefit_report,
 )
 from stock_opportunity_agent.signal_library import (
@@ -30,6 +32,92 @@ def digest(value: str) -> str:
 
 
 class EvolutionBenefitTests(TestCase):
+    def test_ablation_manifest_requires_all_frozen_conditions(self) -> None:
+        manifest = SlowMemoryAblationManifest(
+            ablation_id="slow_memory_v1",
+            fast_start_hash=digest("fast"),
+            registry_start_hash=digest("registry"),
+            seed=7,
+            model_hash=digest("model"),
+            budget_hash=digest("budget"),
+            generated_registry_hashes={
+                "no_memory": digest("none"),
+                "episodes_only": digest("episodes"),
+                "episodes_and_lessons": digest("lessons"),
+            },
+            allowed_comparisons=(("episodes_only", "episodes_and_lessons"),),
+        )
+
+        self.assertEqual(len(manifest.manifest_hash), 64)
+
+    def test_confirmation_ledger_rejects_same_issuer_at_new_case(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = ConfirmationCohortLedger(Path(directory) / "ledger.json")
+            first = self.protocol(protocol_id="first")
+            ledger.reserve(first)
+            second = replace(
+                first,
+                protocol_id="second",
+                case_ids=("new_1", "new_2", "new_3", "new_4"),
+                issuer_by_case={
+                    "new_1": "issuer_1",
+                    "new_2": "issuer_5",
+                    "new_3": "issuer_6",
+                    "new_4": "issuer_7",
+                },
+                candidate_capability_case_ids=("new_measurement",),
+                candidate_capability_issuer_by_case={
+                    "new_measurement": "issuer_8"
+                },
+            )
+
+            with self.assertRaisesRegex(ValidationError, "issuers were already"):
+                ledger.reserve(second)
+
+    def test_confirmation_ledger_allows_only_frozen_ablation_group_reuse(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = ConfirmationCohortLedger(Path(directory) / "ledger.json")
+            manifest = SlowMemoryAblationManifest(
+                ablation_id="slow_memory_group",
+                fast_start_hash=digest("fast"),
+                registry_start_hash=digest("registry"),
+                seed=7,
+                model_hash=digest("model"),
+                budget_hash=digest("budget"),
+                generated_registry_hashes={
+                    "no_memory": digest("none"),
+                    "episodes_only": digest("episodes"),
+                    "episodes_and_lessons": digest("lessons"),
+                },
+                allowed_comparisons=(
+                    ("no_memory", "episodes_only"),
+                    ("episodes_only", "episodes_and_lessons"),
+                ),
+            )
+            first = self.protocol(protocol_id="group_first")
+            second = replace(first, protocol_id="group_second")
+
+            self.assertTrue(
+                ledger.reserve(
+                    first,
+                    ablation_manifest=manifest,
+                    comparison=("no_memory", "episodes_only"),
+                )
+            )
+            self.assertTrue(
+                ledger.reserve(
+                    second,
+                    ablation_manifest=manifest,
+                    comparison=("episodes_only", "episodes_and_lessons"),
+                )
+            )
+            with self.assertRaisesRegex(ValidationError, "not frozen"):
+                ledger.reserve(
+                    replace(first, protocol_id="group_forbidden"),
+                    ablation_manifest=manifest,
+                    comparison=("no_memory", "episodes_and_lessons"),
+                )
+
     def protocol(
         self, *, protocol_id: str = "confirmation_v1"
     ) -> EvolutionBenefitProtocol:

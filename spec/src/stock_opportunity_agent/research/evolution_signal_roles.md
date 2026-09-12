@@ -1,5 +1,27 @@
 # Evolution Signal Roles
 
+## V8 reflection and source-read roles
+
+`signal_mining_reflect` consumes complete, runtime-selected committed feedback
+units and returns only new episode reflections and lesson additions. Runtime
+preassigns episode/lesson refs and validates complete source coverage and the
+lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
+distinct terminal states; invalid structured output is never converted to a
+research-empty result.
+
+Reflection, H1, H3, E2, and Update may make at most one typed
+`read_source_refs` request per logical job. The runtime resolves opaque refs only
+within the role scope and whole-entry budget, records included/deferred refs and
+hashes, and then asks for the final output. E1, SignalExecutor, and blind
+Predictor have no such access. Prompt, parser, work identity, persisted request,
+provider body, and wire bytes advance together to their v8 protocol versions.
+
+H1 may propose autonomous hypotheses with no Fast need ref and may route an
+exact, per-need `update_existing` basis into the bounded Update queue. Unselected
+or measurable-overflow needs remain pending. E2 receives the same allowed method
+context and stable Signal catalog so it can avoid duplicates, but it must retain
+fixed missing cases and cite the literal E1 evidence used for comparison.
+
 ## Purpose
 
 Implement structured adapters for deterministic/LLM Signal execution, Signal
@@ -30,7 +52,7 @@ mining, and Signal update proposals.
   local re-projection meaningful. Exact request estimation and the original hard
   token ceiling apply before the correction; unchanged insufficient input remains
   unavailable rather than entering another retry loop.
-- Production H1 uses `signal-mining-hypothesis-v6`. The runtime supplies stable
+- Production H1 uses `signal-mining-hypothesis-v7`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
@@ -223,5 +245,6 @@ mining, and Signal update proposals.
   or case refs used by that comparison, so a schema-valid association cannot be
   audited without its sample. This field is runtime-owned rather than copied by
   the model.
-- Legacy v1/v2/v3 H1 and v1 Update records remain parseable only at explicit
-  compatibility boundaries. New Slow execution requests H1 v4 and Update v2.
+- Legacy H1 and v1 Update records remain parseable only at explicit
+  compatibility boundaries. New Slow execution requests H1 v7, reflection v1,
+  and Update v2.

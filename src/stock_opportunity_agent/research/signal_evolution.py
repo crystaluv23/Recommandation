@@ -104,6 +104,348 @@ _EXPLORATION_BOILERPLATE = re.compile(
 )
 
 
+_SLOW_FEEDBACK_KINDS = {
+    "signal_usage",
+    "candidate_result",
+    "search_result",
+    "technical_failure",
+}
+_SLOW_MEMORY_STATUSES = {
+    "appended",
+    "no_new_lesson",
+    "reused",
+    "failed",
+}
+_SLOW_SOURCE_ROLES = {"reflection", "H1", "H3", "E2", "Update"}
+
+
+def build_slow_sampling_manifest(
+    cases: Iterable[EvolutionCase],
+    *,
+    cycle_id: int,
+    base_seed: str,
+    dev_limit: int,
+    check_limit: int,
+) -> dict[str, Any]:
+    """Freeze an outcome-independent ordering and issuer-disjoint dev/check split.
+
+    Labels are used only for the explicitly disclosed binary stratification; they
+    never affect the stable ordering within a class or allow case replacement.
+    """
+
+    if cycle_id < 1 or not base_seed.strip() or dev_limit < 1 or check_limit < 1:
+        raise ValidationError("Slow sampling inputs are invalid")
+    population = tuple(cases)
+    if not population:
+        raise ValidationError("Slow sampling requires Discovery cases")
+    seed = _canonical_hash(
+        {
+            "schema_version": "slow-sampling-seed-v1",
+            "base_seed": base_seed,
+            "cycle_id": cycle_id,
+            "population": sorted(
+                {
+                    (case.case_id, case.company_id, case.prediction_time.isoformat())
+                    for case in population
+                }
+            ),
+        }
+    )
+    one_per_issuer: dict[str, EvolutionCase] = {}
+    for case in sorted(
+        population,
+        key=lambda item: _canonical_hash(
+            {
+                "seed": seed,
+                "company_id": item.company_id,
+                "case_id": item.case_id,
+                "prediction_time": item.prediction_time.isoformat(),
+            }
+        ),
+    ):
+        one_per_issuer.setdefault(case.company_id, case)
+    ordered = tuple(
+        sorted(
+            one_per_issuer.values(),
+            key=lambda item: _canonical_hash(
+                {"seed": seed, "issuer": item.company_id, "case": item.case_id}
+            ),
+        )
+    )
+    buckets = {
+        True: [case for case in ordered if case.ground_truth.is_surge],
+        False: [case for case in ordered if not case.ground_truth.is_surge],
+    }
+    interleaved: list[EvolutionCase] = []
+    for index in range(max(len(buckets[True]), len(buckets[False]))):
+        for label in (True, False):
+            if index < len(buckets[label]):
+                interleaved.append(buckets[label][index])
+    selected = interleaved[: dev_limit + check_limit]
+    check_target = min(check_limit, len(selected) // 2)
+    dev_target = min(dev_limit, len(selected) - check_target)
+    dev = selected[:dev_target]
+    check = selected[dev_target : dev_target + check_target]
+    issuer_ref = {
+        case.company_id: "issuer-"
+        + _canonical_hash({"seed": seed, "issuer": case.company_id})[:16]
+        for case in selected
+    }
+    return {
+        "schema_version": "slow-sampling-manifest-v1",
+        "seed": seed,
+        "population_hash": _canonical_hash(
+            {
+                "cases": sorted(
+                    {
+                        (case.case_id, case.company_id, case.prediction_time.isoformat())
+                        for case in population
+                    }
+                )
+            }
+        ),
+        "eligibility": {
+            "source_split": "discovery",
+            "one_case_per_issuer": True,
+            "ordering_uses_outcome": False,
+            "label_stratification": "binary_balanced",
+        },
+        "selection_order": [case.case_id for case in selected],
+        "dev_case_ids": [case.case_id for case in dev],
+        "check_case_ids": [case.case_id for case in check],
+        "issuer_groups": {
+            case.case_id: issuer_ref[case.company_id] for case in selected
+        },
+        "previously_exposed": [],
+        "exclusions": [],
+    }
+
+
+def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate one immutable Slow input without inventing missing v8 fields."""
+
+    payload = dict(value)
+    required = {
+        "schema_version",
+        "cycle_id",
+        "contract_hash",
+        "registry_hash",
+        "source_cutoff",
+        "source_manifest",
+        "feedback_rows",
+        "sampling_manifest",
+        "previous_memory_head",
+        "previous_memory_hash",
+        "feedback_hash",
+    }
+    if set(payload) != required or payload.get("schema_version") != "slow-input-v1":
+        raise ValidationError("Slow input shape is invalid")
+    if int(payload.get("cycle_id", 0)) < 1 or not str(
+        payload.get("contract_hash", "")
+    ):
+        raise ValidationError("Slow input identity is invalid")
+    rows = payload.get("feedback_rows")
+    if not isinstance(rows, list):
+        raise ValidationError("Slow input feedback_rows must be an array")
+    refs: set[str] = set()
+    for index, raw in enumerate(rows):
+        if not isinstance(raw, Mapping):
+            raise ValidationError(f"Slow feedback row {index} must be an object")
+        row = dict(raw)
+        if row.get("kind") not in _SLOW_FEEDBACK_KINDS:
+            raise ValidationError(f"Slow feedback row {index} kind is invalid")
+        feedback_ref = str(row.get("feedback_ref", ""))
+        source_refs = row.get("source_refs")
+        if (
+            not feedback_ref
+            or feedback_ref in refs
+            or not isinstance(source_refs, list)
+            or not source_refs
+            or any(not str(item) for item in source_refs)
+        ):
+            raise ValidationError(f"Slow feedback row {index} refs are invalid")
+        refs.add(feedback_ref)
+    if payload["feedback_hash"] != _canonical_hash({"feedback_rows": rows}):
+        raise ValidationError("Slow input feedback hash mismatch")
+    sampling = payload.get("sampling_manifest")
+    if not isinstance(sampling, Mapping) or sampling.get("schema_version") != (
+        "slow-sampling-manifest-v1"
+    ):
+        raise ValidationError("Slow input sampling manifest is invalid")
+    dev = set(str(item) for item in sampling.get("dev_case_ids", ()))
+    check = set(str(item) for item in sampling.get("check_case_ids", ()))
+    groups = dict(sampling.get("issuer_groups", {}))
+    if dev & check or ({groups.get(item) for item in dev} & {groups.get(item) for item in check}):
+        raise ValidationError("Slow dev/check samples must be issuer-disjoint")
+    return payload
+
+
+def validate_slow_memory(
+    value: Mapping[str, Any],
+    *,
+    available_feedback_refs: Iterable[str],
+    available_source_refs: Iterable[str],
+    available_lesson_refs: Iterable[str] = (),
+) -> dict[str, Any]:
+    """Validate one append-only memory delta and its complete reference graph."""
+
+    payload = dict(value)
+    required = {
+        "schema_version",
+        "cycle_id",
+        "contract_hash",
+        "input_hash",
+        "parent_memory_hash",
+        "reflection_work_hash",
+        "status",
+        "processed_feedback_refs",
+        "pending_feedback_refs",
+        "episode_reflections",
+        "lesson_additions",
+        "model_view_manifest",
+        "usage_ref",
+        "failure_ref",
+    }
+    if set(payload) != required or payload.get("schema_version") != "slow-memory-v1":
+        raise ValidationError("Slow memory shape is invalid")
+    status = payload.get("status")
+    if status not in _SLOW_MEMORY_STATUSES:
+        raise ValidationError("Slow memory status is invalid")
+    available_feedback = set(available_feedback_refs)
+    processed = tuple(str(item) for item in payload["processed_feedback_refs"])
+    pending = tuple(str(item) for item in payload["pending_feedback_refs"])
+    if set(processed) & set(pending) or not set(processed) <= available_feedback:
+        raise ValidationError("Slow memory feedback consumption is invalid")
+    if status == "failed" and processed:
+        raise ValidationError("failed Slow memory cannot consume feedback")
+    if status == "reused" and (processed or payload["episode_reflections"] or payload["lesson_additions"]):
+        raise ValidationError("reused Slow memory cannot append content")
+    sources = set(available_source_refs)
+    episode_refs: set[str] = set()
+    for index, raw in enumerate(payload["episode_reflections"]):
+        if not isinstance(raw, Mapping):
+            raise ValidationError(f"Slow episode {index} must be an object")
+        episode = dict(raw)
+        episode_ref = str(episode.get("episode_ref", ""))
+        source_refs = {str(item) for item in episode.get("source_refs", ())}
+        if (
+            not episode_ref
+            or episode_ref in episode_refs
+            or not source_refs
+            or not source_refs <= sources
+            or not str(episode.get("reflection", "")).strip()
+        ):
+            raise ValidationError(f"Slow episode {index} source closure is invalid")
+        episode_refs.add(episode_ref)
+    known_lessons = set(available_lesson_refs)
+    additions = payload["lesson_additions"]
+    addition_refs = {str(item.get("lesson_id", "")) for item in additions if isinstance(item, Mapping)}
+    if "" in addition_refs or known_lessons & addition_refs:
+        raise ValidationError("Slow lesson ids are invalid")
+    resolvable = sources | episode_refs | known_lessons | addition_refs
+    for index, raw in enumerate(additions):
+        if not isinstance(raw, Mapping):
+            raise ValidationError(f"Slow lesson {index} must be an object")
+        lesson = dict(raw)
+        cited = {
+            str(item)
+            for key in (
+                "support_refs",
+                "counterevidence_refs",
+                "qualifies_refs",
+                "challenges_refs",
+            )
+            for item in lesson.get(key, ())
+        }
+        if (
+            not str(lesson.get("guidance", "")).strip()
+            or not str(lesson.get("applicable_scope", "")).strip()
+            or not str(lesson.get("limitations", "")).strip()
+            or not set(str(item) for item in lesson.get("support_refs", ()))
+            or not cited <= resolvable
+        ):
+            raise ValidationError(f"Slow lesson {index} reference graph is invalid")
+    return payload
+
+
+def validate_slow_experiments(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate a sealed index that retains every terminal Slow work attempt."""
+
+    payload = dict(value)
+    required = {
+        "schema_version",
+        "cycle_id",
+        "contract_hash",
+        "input_hash",
+        "memory_hash",
+        "attempts",
+    }
+    if set(payload) != required or payload.get("schema_version") != "slow-experiments-v1":
+        raise ValidationError("Slow experiments shape is invalid")
+    work_ids: set[str] = set()
+    for index, raw in enumerate(payload["attempts"]):
+        if not isinstance(raw, Mapping):
+            raise ValidationError(f"Slow experiment {index} must be an object")
+        work_id = str(raw.get("work_id", ""))
+        if not work_id or work_id in work_ids or not str(raw.get("stage", "")):
+            raise ValidationError(f"Slow experiment {index} identity is invalid")
+        if not str(raw.get("outcome", "")):
+            raise ValidationError(f"Slow experiment {index} outcome is required")
+        work_ids.add(work_id)
+    return payload
+
+
+def read_slow_sources(
+    refs: Iterable[str],
+    *,
+    role_scope: str,
+    source_catalog: Mapping[str, Mapping[str, Any]],
+    budget_bytes: int,
+    forbidden_refs: Iterable[str] = (),
+) -> tuple[tuple[dict[str, Any], ...], dict[str, Any]]:
+    """Resolve opaque Slow refs once, preserving whole entries and role scope."""
+
+    if role_scope not in _SLOW_SOURCE_ROLES or budget_bytes < 1:
+        raise ValidationError("Slow source read scope or budget is invalid")
+    requested = tuple(dict.fromkeys(str(item) for item in refs))
+    forbidden = set(str(item) for item in forbidden_refs)
+    included: list[dict[str, Any]] = []
+    deferred: list[dict[str, str]] = []
+    used = 0
+    for ref in requested:
+        if ref in forbidden:
+            raise ValidationError("Slow source ref is hidden from this role")
+        raw = source_catalog.get(ref)
+        if raw is None:
+            raise ValidationError("unknown Slow source ref")
+        scopes = {str(item) for item in raw.get("visible_to", ())}
+        if role_scope not in scopes:
+            raise ValidationError("Slow source ref is outside the role scope")
+        entry = {"ref": ref, **dict(raw)}
+        size = len(json.dumps(entry, sort_keys=True, ensure_ascii=False).encode("utf-8"))
+        if used + size > budget_bytes:
+            deferred.append({"ref": ref, "reason": "whole_entry_budget"})
+            continue
+        included.append(entry)
+        used += size
+    manifest = {
+        "schema_version": "slow-source-view-v1",
+        "role_scope": role_scope,
+        "requested_refs": list(requested),
+        "included_refs": [item["ref"] for item in included],
+        "included_hashes": {
+            item["ref"]: _canonical_hash(item) for item in included
+        },
+        "deferred": deferred,
+        "available_count": len(requested),
+        "included_count": len(included),
+        "deferred_count": len(deferred),
+        "bytes": used,
+        "budget_bytes": budget_bytes,
+    }
+    return tuple(included), manifest
+
+
 def _comparison_ready_exploration_signature(
     signature: "SignalMiningSignature",
 ) -> tuple["SignalMiningSignature", tuple[str, ...]]:
@@ -308,6 +650,7 @@ class SignalCandidateValidator:
         if spec.execution_type is SignalExecutionType.DETERMINISTIC:
             if spec.function not in self.deterministic_functions:
                 reasons.append("deterministic function is not registered")
+            reasons.extend(self._measurement_semantic_reasons(spec))
         elif self.llm_runner is None or not (skill or "").strip():
             reasons.append("LLM executor or skill is unavailable")
         if not all(
@@ -336,11 +679,20 @@ class SignalCandidateValidator:
             if prose_matcher.search(serialized):
                 reasons.append(f"discovery identity leaked into candidate: {identity}")
         normalized = _normalize_semantics(spec.description)
+        behavior_identity = self._behavior_identity(spec, skill)
         for card in self.registry.list_signal_cards():
             if card.signal_id == spec.signal_id:
                 continue
             if _normalize_semantics(card.description) == normalized:
                 reasons.append(f"semantic duplicate of stable signal {card.signal_id}")
+                break
+            stable = self.registry.load_spec(card.ref)
+            if self._behavior_identity(
+                stable, self.registry.load_skill(card.ref)
+            ) == behavior_identity:
+                reasons.append(
+                    f"execution-semantic duplicate of stable signal {card.signal_id}"
+                )
                 break
         executed_tests = 0
         if not materialized_tests:
@@ -357,6 +709,53 @@ class SignalCandidateValidator:
             accepted=not reasons,
             reasons=tuple(reasons),
             executed_tests=executed_tests,
+        )
+
+    @staticmethod
+    def _measurement_semantic_reasons(spec: SignalSpec) -> tuple[str, ...]:
+        """Reject known deterministic functions mislabeled as another concept."""
+
+        concepts = {
+            "financial.revenue_growth_yoy": (("revenue", "growth"),),
+            "financial.revenue_acceleration": (("revenue", "accelerat"),),
+            "financial.gross_margin_change": (("gross", "margin"),),
+            "financial.operating_cash_flow_margin": (
+                ("operating", "cash", "flow", "margin"),
+            ),
+            "financial.net_share_retirement_yoy": (
+                ("share", "retirement"),
+                ("share", "dilution"),
+            ),
+            "market.max_drawdown_1y": (("drawdown",),),
+            "market.price_momentum_126d": (("momentum",), ("total", "return")),
+            "company.market_cap": (("market", "capital"), ("market", "cap")),
+            "financial.cash_reserves": (("cash",),),
+            "news.negative_word_count": (("negative", "word"),),
+        }
+        alternatives = concepts.get(str(spec.function))
+        if alternatives is None:
+            return ()
+        description = _normalize_semantics(spec.description)
+        if any(all(token in description for token in group) for group in alternatives):
+            return ()
+        return (
+            "definition-to-implementation mismatch: description does not name "
+            f"the concept measured by {spec.function}",
+        )
+
+    @staticmethod
+    def _behavior_identity(spec: SignalSpec, skill: str | None) -> str:
+        """Return a rename-resistant first-pass execution identity."""
+
+        return _canonical_hash(
+            {
+                "execution_type": spec.execution_type.value,
+                "function": spec.function,
+                "skill": _normalize_semantics(skill or ""),
+                "source_types": list(spec.source_types),
+                "retrieval": spec.retrieval_policy.to_dict(),
+                "parameters": dict(spec.parameters),
+            }
         )
 
     def _execute_fixture(
@@ -955,6 +1354,11 @@ def validate_signal_mining_signatures(
 class SignalMiningModel(Protocol):
     """Four narrow structured roles used by the local Mining controller."""
 
+    def reflect_feedback(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[Mapping[str, Any]]:
+        """Return one append-only method-memory delta over exact feedback refs."""
+
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
@@ -1174,10 +1578,12 @@ class SignalCandidateEffectivenessEvaluator:
         preferred_case_ids: Iterable[str] = (),
         excluded_case_ids: Iterable[str] = (),
         induction_supported: bool = False,
+        strict_preferred: bool = False,
     ) -> SignalCandidateEffectiveness:
         cases = self._select_cases(
             preferred_case_ids=preferred_case_ids,
             excluded_case_ids=excluded_case_ids,
+            strict_preferred=strict_preferred,
         )
         case_ids = tuple(case.case_id for case in cases)
         try:
@@ -1354,6 +1760,7 @@ class SignalCandidateEffectivenessEvaluator:
         preferred_case_ids: Iterable[str] = (),
         excluded_case_ids: Iterable[str] = (),
         induction_supported: bool = False,
+        strict_preferred: bool = False,
     ) -> Mapping[str, str]:
         """Return the complete stable identity used to cache one paired gate."""
 
@@ -1362,6 +1769,7 @@ class SignalCandidateEffectivenessEvaluator:
         cases = self._select_cases(
             preferred_case_ids=preferred_ids,
             excluded_case_ids=excluded_ids,
+            strict_preferred=strict_preferred,
         )
         try:
             current = self.registry.latest_spec(spec.signal_id)
@@ -1424,6 +1832,7 @@ class SignalCandidateEffectivenessEvaluator:
                     ],
                     "excluded_case_ids": list(excluded_ids),
                     "induction_supported": induction_supported,
+                    "strict_preferred": strict_preferred,
                 }
             ),
             "source_manifest_hash": _canonical_hash(
@@ -1451,6 +1860,7 @@ class SignalCandidateEffectivenessEvaluator:
                     "schema": "issuer-distinct-preferred-then-stratified-v1",
                     "preferred_case_ids": list(preferred_ids),
                     "selected_case_ids": [case.case_id for case in cases],
+                    "strict_preferred": strict_preferred,
                 }
             ),
         }
@@ -1460,6 +1870,7 @@ class SignalCandidateEffectivenessEvaluator:
         *,
         preferred_case_ids: Iterable[str],
         excluded_case_ids: Iterable[str],
+        strict_preferred: bool = False,
     ) -> tuple[EvolutionCase, ...]:
         case_by_id = {case.case_id: case for case in self.discovery_cases}
         excluded_companies = {
@@ -1486,6 +1897,8 @@ class SignalCandidateEffectivenessEvaluator:
             seen_companies.add(case.company_id)
             if len(preferred) >= self.case_limit:
                 break
+        if strict_preferred:
+            return tuple(preferred)
         for case in _sample_signal_discovery_cases(eligible, limit=self.case_limit):
             if len(preferred) >= self.case_limit:
                 break
@@ -1546,15 +1959,14 @@ def _merge_mining_fallback(
     def merged_mapping(key: str) -> dict[str, Any]:
         return {**dict(hypothesis.get(key, {})), **dict(exploration.get(key, {}))}
 
-    return {
-        "candidate_refs": tuple(
-            (*hypothesis.get("candidate_refs", ()), *exploration.get("candidate_refs", ()))
-        ),
-        "induction_case_ids": merged_mapping("induction_case_ids"),
-        "validation_case_ids": merged_mapping("validation_case_ids"),
-        "refined_hypotheses": merged_mapping("refined_hypotheses"),
-        "failures": merged_mapping("failures"),
-        "audit": {
+    hypothesis_has_candidate = bool(hypothesis.get("candidate_refs"))
+    combined_audit = (
+        {
+            **dict(hypothesis["audit"]),
+            "independent_exploration": dict(exploration["audit"]),
+        }
+        if hypothesis_has_candidate
+        else {
             "schema_version": "signal-mining-audit-v2",
             "status": (
                 "completed_with_hypothesis_failure"
@@ -1565,7 +1977,17 @@ def _merge_mining_fallback(
             "hypothesis": dict(hypothesis["audit"]),
             "exploration": dict(exploration["audit"]),
             "candidate_refs": list(exploration.get("candidate_refs", ())),
-        },
+        }
+    )
+    return {
+        "candidate_refs": tuple(
+            (*hypothesis.get("candidate_refs", ()), *exploration.get("candidate_refs", ()))
+        ),
+        "induction_case_ids": merged_mapping("induction_case_ids"),
+        "validation_case_ids": merged_mapping("validation_case_ids"),
+        "refined_hypotheses": merged_mapping("refined_hypotheses"),
+        "failures": merged_mapping("failures"),
+        "audit": combined_audit,
     }
 
 
@@ -1588,6 +2010,13 @@ class SlowLoopValidation:
     )
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     search_input_fingerprint: str = ""
+    slow_input_hash: str = ""
+    slow_memory_hash: str = ""
+    slow_experiments_hash: str = ""
+    sampling_manifest_hash: str = ""
+    new_candidate_count: int = 0
+    new_validated_signal_count: int = 0
+    updated_signal_count: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -1617,6 +2046,13 @@ class SlowLoopValidation:
                 name: dict(value) for name, value in self.agent_audits.items()
             },
             "search_input_fingerprint": self.search_input_fingerprint,
+            "slow_input_hash": self.slow_input_hash,
+            "slow_memory_hash": self.slow_memory_hash,
+            "slow_experiments_hash": self.slow_experiments_hash,
+            "sampling_manifest_hash": self.sampling_manifest_hash,
+            "new_candidate_count": self.new_candidate_count,
+            "new_validated_signal_count": self.new_validated_signal_count,
+            "updated_signal_count": self.updated_signal_count,
         }
 
     @classmethod
@@ -1672,6 +2108,15 @@ class SlowLoopValidation:
             search_input_fingerprint=str(
                 data.get("search_input_fingerprint", "")
             ),
+            slow_input_hash=str(data.get("slow_input_hash", "")),
+            slow_memory_hash=str(data.get("slow_memory_hash", "")),
+            slow_experiments_hash=str(data.get("slow_experiments_hash", "")),
+            sampling_manifest_hash=str(data.get("sampling_manifest_hash", "")),
+            new_candidate_count=int(data.get("new_candidate_count", 0)),
+            new_validated_signal_count=int(
+                data.get("new_validated_signal_count", 0)
+            ),
+            updated_signal_count=int(data.get("updated_signal_count", 0)),
         )
 
 
@@ -1696,6 +2141,16 @@ class SlowLoopResult:
     )
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     search_input_fingerprint: str = ""
+    slow_input_hash: str = ""
+    slow_memory_hash: str = ""
+    slow_experiments_hash: str = ""
+    sampling_manifest_hash: str = ""
+    new_candidate_count: int = 0
+    new_validated_signal_count: int = 0
+    new_promoted_signal_count: int = 0
+    updated_signal_count: int = 0
+    min_new_signals_per_cycle: int = 1
+    signal_goal_status: str = "unmet"
 
     @property
     def registry_version(self) -> int:
@@ -1733,6 +2188,16 @@ class SlowLoopResult:
                 name: dict(value) for name, value in self.agent_audits.items()
             },
             "search_input_fingerprint": self.search_input_fingerprint,
+            "slow_input_hash": self.slow_input_hash,
+            "slow_memory_hash": self.slow_memory_hash,
+            "slow_experiments_hash": self.slow_experiments_hash,
+            "sampling_manifest_hash": self.sampling_manifest_hash,
+            "new_candidate_count": self.new_candidate_count,
+            "new_validated_signal_count": self.new_validated_signal_count,
+            "new_promoted_signal_count": self.new_promoted_signal_count,
+            "updated_signal_count": self.updated_signal_count,
+            "min_new_signals_per_cycle": self.min_new_signals_per_cycle,
+            "signal_goal_status": self.signal_goal_status,
         }
 
     @classmethod
@@ -1795,6 +2260,22 @@ class SlowLoopResult:
             search_input_fingerprint=str(
                 data.get("search_input_fingerprint", "")
             ),
+            slow_input_hash=str(data.get("slow_input_hash", "")),
+            slow_memory_hash=str(data.get("slow_memory_hash", "")),
+            slow_experiments_hash=str(data.get("slow_experiments_hash", "")),
+            sampling_manifest_hash=str(data.get("sampling_manifest_hash", "")),
+            new_candidate_count=int(data.get("new_candidate_count", 0)),
+            new_validated_signal_count=int(
+                data.get("new_validated_signal_count", 0)
+            ),
+            new_promoted_signal_count=int(
+                data.get("new_promoted_signal_count", 0)
+            ),
+            updated_signal_count=int(data.get("updated_signal_count", 0)),
+            min_new_signals_per_cycle=int(
+                data.get("min_new_signals_per_cycle", 1)
+            ),
+            signal_goal_status=str(data.get("signal_goal_status", "unmet")),
         )
 
 
@@ -1972,9 +2453,12 @@ class SignalEvolutionEngine:
         effectiveness_case_limit: int = 8,
         effectiveness_minimum_cases: int = 4,
         mining_config: SignalMiningConfig = SignalMiningConfig(),
+        min_new_signals_per_cycle: int = 1,
     ) -> None:
         if not discovery_cases:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
+        if min_new_signals_per_cycle < 1:
+            raise ValidationError("minimum new Signals per cycle must be positive")
         self.registry = registry
         self.raw_info_store = raw_info_store
         self.discovery_cases = discovery_cases
@@ -1997,6 +2481,10 @@ class SignalEvolutionEngine:
         self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.priors = priors
         self.mining_config = mining_config
+        self.min_new_signals_per_cycle = min_new_signals_per_cycle
+        self._active_sampling_manifest: Mapping[str, Any] | None = None
+        self._active_slow_input: Mapping[str, Any] | None = None
+        self._active_slow_memory: Mapping[str, Any] | None = None
         self.validator = SignalCandidateValidator(
             registry,
             llm_runner=llm_signal_runner,
@@ -2078,6 +2566,10 @@ class SignalEvolutionEngine:
                 "mining_config": self.mining_config.to_dict(),
                 "mining_model": self._role_work_identity(self.mining_model),
                 "update_model": self._role_work_identity(self.update_model),
+                "slow_sampling_manifest": dict(
+                    self._active_sampling_manifest or {}
+                ),
+                "slow_memory": dict(self._active_slow_memory or {}),
             }
         )
 
@@ -2229,13 +2721,46 @@ class SignalEvolutionEngine:
             self.workspace.refresh_capability_backlog(
                 available_source_types=self.evidence_resolver.available_source_types
             )
+            slow_input = self._prepare_slow_input(
+                cycle_id=cycle_id,
+                input_snapshot=input_snapshot,
+            )
+            slow_memory = self._prepare_slow_memory(
+                cycle_id=cycle_id,
+                slow_input=slow_input,
+            )
+            self._active_sampling_manifest = dict(slow_input["sampling_manifest"])
+            self._active_slow_input = slow_input
+            self._active_slow_memory = slow_memory
             validation = self._validate_cycle(input_snapshot, cycle_id=cycle_id)
+            slow_experiments = self._seal_slow_experiments(
+                cycle_id=cycle_id,
+                slow_input=slow_input,
+                slow_memory=slow_memory,
+                validation=validation,
+            )
+            validation = replace(
+                validation,
+                slow_input_hash=_canonical_hash(slow_input),
+                slow_memory_hash=_canonical_hash(slow_memory),
+                slow_experiments_hash=_canonical_hash(slow_experiments),
+                sampling_manifest_hash=_canonical_hash(
+                    dict(slow_input["sampling_manifest"])
+                ),
+            )
             self.workspace.stage_slow_validation(
                 cycle_id=cycle_id,
                 validation=validation.to_dict(),
             )
         else:
             validation = SlowLoopValidation.from_dict(staged)
+            slow_input = self.workspace.load_slow_input(cycle_id)
+            slow_memory = self.workspace.load_slow_memory(cycle_id)
+            slow_experiments = self.workspace.load_slow_experiments(cycle_id)
+            if all(item is not None for item in (slow_input, slow_memory, slow_experiments)):
+                self._active_sampling_manifest = dict(slow_input["sampling_manifest"])
+                self._active_slow_input = slow_input
+                self._active_slow_memory = slow_memory
         transition = self.registry.promote_validated_batch(
             validation.validated_candidates,
             validated_evaluations=(
@@ -2247,6 +2772,19 @@ class SignalEvolutionEngine:
             input_version=validation.input_registry_version,
             input_hash=validation.input_registry_hash,
             input_refs=validation.input_signal_refs,
+        )
+        input_signal_ids = {
+            ref.rsplit(":v", 1)[0] for ref in validation.input_signal_refs
+        }
+        promoted_new = tuple(
+            ref
+            for ref in transition.promoted
+            if ref.rsplit(":v", 1)[0] not in input_signal_ids
+        )
+        goal_status = (
+            "met"
+            if len(promoted_new) >= self.min_new_signals_per_cycle
+            else "unmet"
         )
         return SlowLoopResult(
             mined_candidates=validation.mined_candidates,
@@ -2264,7 +2802,391 @@ class SignalEvolutionEngine:
             candidate_effectiveness=validation.candidate_effectiveness,
             agent_audits=validation.agent_audits,
             search_input_fingerprint=validation.search_input_fingerprint,
+            slow_input_hash=validation.slow_input_hash,
+            slow_memory_hash=validation.slow_memory_hash,
+            slow_experiments_hash=validation.slow_experiments_hash,
+            sampling_manifest_hash=validation.sampling_manifest_hash,
+            new_candidate_count=validation.new_candidate_count,
+            new_validated_signal_count=validation.new_validated_signal_count,
+            new_promoted_signal_count=len(promoted_new),
+            updated_signal_count=validation.updated_signal_count,
+            min_new_signals_per_cycle=self.min_new_signals_per_cycle,
+            signal_goal_status=goal_status,
         )
+
+    def _prepare_slow_input(
+        self,
+        *,
+        cycle_id: int,
+        input_snapshot: FrozenSignalRegistry,
+    ) -> dict[str, Any]:
+        """Freeze committed feedback and a neutral issuer-disjoint sample once."""
+
+        existing = self.workspace.load_slow_input(cycle_id)
+        if existing is not None:
+            return validate_slow_input(existing)
+        cycle_state = _read_json(self.workspace.cycle_state_path)
+        contract_hash = str(cycle_state.get("run_contract_hash", ""))
+        feedback_rows, source_manifest = self._committed_slow_feedback()
+        prior_memory = tuple(self.workspace.committed_slow_artifacts())
+        previous = prior_memory[-1]["slow_memory"] if prior_memory else None
+        sampling = build_slow_sampling_manifest(
+            self.discovery_cases,
+            cycle_id=cycle_id,
+            base_seed=contract_hash,
+            dev_limit=max(
+                self.mining_config.case_pool_limit,
+                2 * self.mining_config.induction_cases_per_class,
+            ),
+            check_limit=self.effectiveness_evaluator.case_limit,
+        )
+        value = validate_slow_input(
+            {
+                "schema_version": "slow-input-v1",
+                "cycle_id": cycle_id,
+                "contract_hash": contract_hash,
+                "registry_hash": input_snapshot.registry_hash,
+                "source_cutoff": {
+                    "committed_fast_round": self.workspace.last_completed_round,
+                    "committed_slow_cycle": self.workspace.last_completed_cycle,
+                },
+                "source_manifest": source_manifest,
+                "feedback_rows": feedback_rows,
+                "sampling_manifest": sampling,
+                "previous_memory_head": (
+                    None if previous is None else previous.get("cycle_id")
+                ),
+                "previous_memory_hash": (
+                    "" if previous is None else _canonical_hash(previous)
+                ),
+                "feedback_hash": _canonical_hash(
+                    {"feedback_rows": feedback_rows}
+                ),
+            }
+        )
+        self.workspace.stage_slow_input(cycle_id=cycle_id, slow_input=value)
+        return value
+
+    def _committed_slow_feedback(
+        self,
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        """Project exact-version usage and pointer-reachable Slow outcomes."""
+
+        rows: list[dict[str, Any]] = []
+        manifest: list[dict[str, Any]] = []
+        for card in self.registry.list_signal_cards():
+            for event in self.registry.load_learning_events(card.ref):
+                if event.round_id > self.workspace.last_completed_round:
+                    continue
+                raw = event.to_dict()
+                feedback_ref = f"usage:{event.event_id}"
+                row = {
+                    "feedback_ref": feedback_ref,
+                    "kind": "signal_usage",
+                    "subject_ref": event.signal_ref,
+                    "source_refs": [feedback_ref],
+                    "limitations": [
+                        "observational association; not causal Signal credit"
+                    ],
+                    "event": raw,
+                }
+                rows.append(row)
+                manifest.append(
+                    {
+                        "ref": feedback_ref,
+                        "content_hash": _canonical_hash(raw),
+                        "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                    }
+                )
+        for prior_cycle in range(1, self.workspace.last_completed_cycle + 1):
+            for filename, kind in (
+                ("slow_loop_validation.json", "candidate_result"),
+                ("slow_loop_result.json", "search_result"),
+            ):
+                path = (
+                    self.workspace.experiments_root
+                    / "cycles"
+                    / f"cycle-{prior_cycle:04d}"
+                    / filename
+                )
+                if not path.is_file():
+                    continue
+                raw = _read_json(path)
+                feedback_ref = f"slow:{prior_cycle}:{filename[:-5]}"
+                row = {
+                    "feedback_ref": feedback_ref,
+                    "kind": kind,
+                    "subject_ref": f"cycle-{prior_cycle:04d}",
+                    "source_refs": [feedback_ref],
+                    "limitations": [],
+                    "artifact": raw,
+                }
+                rows.append(row)
+                manifest.append(
+                    {
+                        "ref": feedback_ref,
+                        "content_hash": _canonical_hash(raw),
+                        "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                    }
+                )
+        rows.sort(key=lambda item: item["feedback_ref"])
+        manifest.sort(key=lambda item: item["ref"])
+        return rows, manifest
+
+    def _prepare_slow_memory(
+        self,
+        *,
+        cycle_id: int,
+        slow_input: Mapping[str, Any],
+    ) -> dict[str, Any]:
+        """Run one bounded entry reflection or persist an honest reused/failed delta."""
+
+        existing = self.workspace.load_slow_memory(cycle_id)
+        if existing is not None:
+            return existing
+        prior = tuple(self.workspace.committed_slow_artifacts())
+        processed_before = {
+            str(ref)
+            for item in prior
+            for ref in item["slow_memory"].get("processed_feedback_refs", ())
+        }
+        feedback_rows = list(slow_input["feedback_rows"])
+        pending_rows = [
+            row
+            for row in feedback_rows
+            if str(row["feedback_ref"]) not in processed_before
+        ]
+        prior_memory = prior[-1]["slow_memory"] if prior else None
+        known_lessons = {
+            str(lesson.get("lesson_id"))
+            for item in prior
+            for lesson in item["slow_memory"].get("lesson_additions", ())
+            if isinstance(lesson, Mapping)
+        }
+        source_catalog = {
+            str(row["feedback_ref"]): {
+                "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                "content": row,
+            }
+            for row in pending_rows
+        }
+        selected, view = read_slow_sources(
+            source_catalog,
+            role_scope="reflection",
+            source_catalog=source_catalog,
+            budget_bytes=64_000,
+        )
+        selected_refs = [item["ref"] for item in selected]
+        deferred_refs = [item["ref"] for item in view["deferred"]]
+        contract_hash = str(slow_input["contract_hash"])
+        common = {
+            "schema_version": "slow-memory-v1",
+            "cycle_id": cycle_id,
+            "contract_hash": contract_hash,
+            "input_hash": _canonical_hash(dict(slow_input)),
+            "parent_memory_hash": (
+                "" if prior_memory is None else _canonical_hash(prior_memory)
+            ),
+            "reflection_work_hash": _canonical_hash(
+                {
+                    "selected_refs": selected_refs,
+                    "parent_memory_hash": (
+                        "" if prior_memory is None else _canonical_hash(prior_memory)
+                    ),
+                    "model": self._role_work_identity(self.mining_model),
+                    "protocol": "signal-mining-reflect-v1",
+                }
+            ),
+            "model_view_manifest": view,
+            "usage_ref": None,
+            "failure_ref": None,
+        }
+        if not selected_refs:
+            memory = {
+                **common,
+                "status": "reused",
+                "processed_feedback_refs": [],
+                "pending_feedback_refs": deferred_refs,
+                "episode_reflections": [],
+                "lesson_additions": [],
+            }
+        else:
+            reflector = getattr(self.mining_model, "reflect_feedback", None)
+            if not callable(reflector):
+                memory = {
+                    **common,
+                    "status": "failed",
+                    "processed_feedback_refs": [],
+                    "pending_feedback_refs": [*selected_refs, *deferred_refs],
+                    "episode_reflections": [],
+                    "lesson_additions": [],
+                    "failure_ref": "reflection_role_unavailable",
+                }
+            else:
+                episode_slots = [
+                    f"episode-c{cycle_id:04d}-{index:03d}"
+                    for index in range(1, len(selected_refs) + 1)
+                ]
+                lesson_slots = [
+                    f"lesson-c{cycle_id:04d}-{index:03d}"
+                    for index in range(1, 5)
+                ]
+                try:
+                    step = reflector(
+                        {
+                            "reflection_contract_version": "signal-mining-reflect-v1",
+                            "episode_slots": episode_slots,
+                            "lesson_slots": lesson_slots,
+                            "feedback_units": [item["content"] for item in selected],
+                            "prior_memory": [
+                                item["slow_memory"] for item in prior[-3:]
+                            ],
+                            "rules": {
+                                "append_only": True,
+                                "complete_source_coverage": True,
+                            },
+                        }
+                    )
+                    result = dict(step.value)
+                    episodes = list(result.get("episode_reflections", ()))
+                    lessons = list(result.get("lesson_additions", ()))
+                    if any(
+                        str(item.get("episode_ref", "")) not in episode_slots
+                        for item in episodes
+                    ) or any(
+                        str(item.get("lesson_id", "")) not in lesson_slots
+                        for item in lessons
+                    ):
+                        raise ValidationError("reflection used an unassigned output ref")
+                    covered_refs = {
+                        str(ref)
+                        for item in episodes
+                        if isinstance(item, Mapping)
+                        for ref in item.get("source_refs", ())
+                    }
+                    if covered_refs != set(selected_refs):
+                        raise ValidationError(
+                            "reflection must cover every selected feedback ref"
+                        )
+                    memory = {
+                        **common,
+                        "status": (
+                            "appended" if episodes or lessons else "no_new_lesson"
+                        ),
+                        "processed_feedback_refs": selected_refs,
+                        "pending_feedback_refs": deferred_refs,
+                        "episode_reflections": episodes,
+                        "lesson_additions": lessons,
+                        "usage_ref": str(step.metadata.get("request_hash", "")) or None,
+                    }
+                except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                    memory = {
+                        **common,
+                        "status": "failed",
+                        "processed_feedback_refs": [],
+                        "pending_feedback_refs": [*selected_refs, *deferred_refs],
+                        "episode_reflections": [],
+                        "lesson_additions": [],
+                        "failure_ref": type(exc).__name__ + ": " + str(exc),
+                    }
+        memory = validate_slow_memory(
+            memory,
+            available_feedback_refs=[row["feedback_ref"] for row in feedback_rows],
+            available_source_refs=[row["ref"] for row in slow_input["source_manifest"]],
+            available_lesson_refs=known_lessons,
+        )
+        self.workspace.stage_slow_memory(cycle_id=cycle_id, slow_memory=memory)
+        return memory
+
+    def _seal_slow_experiments(
+        self,
+        *,
+        cycle_id: int,
+        slow_input: Mapping[str, Any],
+        slow_memory: Mapping[str, Any],
+        validation: SlowLoopValidation,
+    ) -> dict[str, Any]:
+        """Seal pipeline and candidate outcomes without claiming promotion."""
+
+        existing = self.workspace.load_slow_experiments(cycle_id)
+        if existing is not None:
+            return existing
+        attempts: list[dict[str, Any]] = []
+        for pipeline in ("mining_pipeline", "update_pipeline"):
+            audit = dict(validation.agent_audits.get(pipeline, {}))
+            attempts.append(
+                {
+                    "work_id": f"cycle-{cycle_id:04d}:{pipeline}",
+                    "stage": pipeline,
+                    "proposal_hash": _canonical_hash(audit),
+                    "parent_signal_ref": None,
+                    "need_refs": [],
+                    "lesson_refs": [],
+                    "action_summary": str(audit.get("track", pipeline)),
+                    "outcome": str(audit.get("status", "completed")),
+                    "candidate_ref": None,
+                    "candidate_hash": None,
+                    "evidence_or_evaluation_refs": [],
+                    "failure_ref": (
+                        None if audit.get("status") != "failed" else pipeline
+                    ),
+                    "usage_ref": None,
+                }
+            )
+        for signal_ref in _ordered_unique(
+            [*validation.mined_candidates, *validation.updated_candidates]
+        ):
+            candidate_hash = self.registry.candidate_hash(signal_ref)
+            if signal_ref in validation.validated_candidates:
+                outcome = "validated"
+            elif signal_ref in validation.provisional_candidates:
+                outcome = "provisional"
+            else:
+                outcome = "rejected"
+            attempts.append(
+                {
+                    "work_id": f"cycle-{cycle_id:04d}:candidate:{signal_ref}",
+                    "stage": (
+                        "Update"
+                        if signal_ref in validation.updated_candidates
+                        else "Mining"
+                    ),
+                    "proposal_hash": candidate_hash,
+                    "parent_signal_ref": (
+                        signal_ref.rsplit(":v", 1)[0]
+                        if signal_ref in validation.updated_candidates
+                        else None
+                    ),
+                    "need_refs": [],
+                    "lesson_refs": [],
+                    "action_summary": "candidate validation",
+                    "outcome": outcome,
+                    "candidate_ref": signal_ref,
+                    "candidate_hash": candidate_hash,
+                    "evidence_or_evaluation_refs": [
+                        validation.candidate_evaluations.get(signal_ref)
+                    ] if validation.candidate_evaluations.get(signal_ref) else [],
+                    "failure_ref": (
+                        signal_ref if outcome in {"provisional", "rejected"} else None
+                    ),
+                    "usage_ref": None,
+                }
+            )
+        value = validate_slow_experiments(
+            {
+                "schema_version": "slow-experiments-v1",
+                "cycle_id": cycle_id,
+                "contract_hash": str(slow_input["contract_hash"]),
+                "input_hash": _canonical_hash(dict(slow_input)),
+                "memory_hash": _canonical_hash(dict(slow_memory)),
+                "attempts": attempts,
+            }
+        )
+        self.workspace.stage_slow_experiments(
+            cycle_id=cycle_id,
+            slow_experiments=value,
+        )
+        return value
 
     def _validate_cycle(
         self,
@@ -2296,7 +3218,7 @@ class SignalEvolutionEngine:
             refined_hypotheses = dict(mining_output["refined_hypotheses"])
             agent_failures.update(dict(mining_output["failures"]))
             agent_audits["mining_pipeline"] = dict(mining_output["audit"])
-        except ValidationError as exc:
+        except (ValidationError, AssertionError) as exc:
             _emit_progress(
                 self.on_progress,
                 "slow_pipeline_failed",
@@ -2315,7 +3237,12 @@ class SignalEvolutionEngine:
                 "usage": _usage_to_dict(getattr(exc, "usage", AgentUsage())),
             }
         try:
-            update_output = self._run_signal_update(cycle_id=cycle_id)
+            update_output = self._run_signal_update(
+                cycle_id=cycle_id,
+                suggested_refs=self._h1_update_refs(
+                    agent_audits.get("mining_pipeline", {})
+                ),
+            )
             updated = list(update_output["candidate_refs"])
             induction_case_ids.update(update_output["induction_case_ids"])
             validation_case_ids.update(update_output["validation_case_ids"])
@@ -2364,6 +3291,7 @@ class SignalEvolutionEngine:
                 preferred_case_ids=validation_case_ids.get(signal_ref, ()),
                 excluded_case_ids=induction_case_ids.get(signal_ref, ()),
                 induction_supported=signal_ref in induction_case_ids,
+                strict_preferred=self._active_sampling_manifest is not None,
             )
             evaluation_key, _identity = self.registry.candidate_evaluation_key(
                 signal_ref,
@@ -2427,6 +3355,7 @@ class SignalEvolutionEngine:
                         preferred_case_ids=validation_case_ids.get(signal_ref, ()),
                         excluded_case_ids=induction_case_ids.get(signal_ref, ()),
                         induction_supported=signal_ref in induction_case_ids,
+                        strict_preferred=self._active_sampling_manifest is not None,
                     )
                     effectiveness = paired.to_dict()
                     reasons = paired.reasons
@@ -2526,12 +3455,43 @@ class SignalEvolutionEngine:
             search_input_fingerprint=self._search_input_fingerprint(
                 input_snapshot
             ),
+            new_candidate_count=sum(
+                ref.rsplit(":v", 1)[0]
+                not in {
+                    item.ref.rsplit(":v", 1)[0] for item in input_snapshot.specs
+                }
+                for ref in mined
+            ),
+            new_validated_signal_count=sum(
+                ref.rsplit(":v", 1)[0]
+                not in {
+                    item.ref.rsplit(":v", 1)[0] for item in input_snapshot.specs
+                }
+                for ref in accepted_hashes
+            ),
+            updated_signal_count=sum(
+                ref.rsplit(":v", 1)[0]
+                in {
+                    item.ref.rsplit(":v", 1)[0] for item in input_snapshot.specs
+                }
+                for ref in updated
+            ),
         )
 
-    def _run_signal_update(self, *, cycle_id: int) -> dict[str, Any]:
+    def _run_signal_update(
+        self,
+        *,
+        cycle_id: int,
+        suggested_refs: Iterable[str] = (),
+    ) -> dict[str, Any]:
         """Run a bounded portfolio of independent single-target Updates."""
 
-        targets = self._select_signal_update_targets()
+        suggested = tuple(suggested_refs)
+        targets = (
+            self._select_signal_update_targets(suggested_refs=suggested)
+            if suggested
+            else self._select_signal_update_targets()
+        )
         base_audit: dict[str, Any] = {
             "schema_version": "signal-update-audit-v2",
             "cycle_id": cycle_id,
@@ -2549,7 +3509,9 @@ class SignalEvolutionEngine:
                 audit={**base_audit, "disposition": "no_actionable_target"}
             )
 
-        cases = _sample_signal_discovery_cases(
+        dev_cases = self._manifest_cases("dev_case_ids")
+        check_cases = self._manifest_cases("check_case_ids")
+        cases = dev_cases or _sample_signal_discovery_cases(
             self.discovery_cases,
             limit=self.effectiveness_evaluator.case_limit + 4,
         )
@@ -2568,12 +3530,15 @@ class SignalEvolutionEngine:
         for target in targets:
             signal_ref = str(target["signal_ref"])
             try:
-                output = self._run_one_signal_update(
-                    cycle_id=cycle_id,
-                    target=target,
-                    cases=cases,
-                    executor=executor,
-                )
+                call_args = {
+                    "cycle_id": cycle_id,
+                    "target": target,
+                    "cases": cases,
+                    "executor": executor,
+                }
+                if check_cases:
+                    call_args["check_cases"] = check_cases
+                output = self._run_one_signal_update(**call_args)
             except ValidationError as exc:
                 failures[f"update:{signal_ref}"] = (
                     "structured_output_failed: " + str(exc),
@@ -2632,6 +3597,7 @@ class SignalEvolutionEngine:
         cycle_id: int,
         target: Mapping[str, Any],
         cases: tuple[EvolutionCase, ...],
+        check_cases: tuple[EvolutionCase, ...] = (),
         executor: SignalExecutor,
     ) -> dict[str, Any]:
         """Run one issuer-split Update without affecting sibling targets."""
@@ -2721,11 +3687,15 @@ class SignalEvolutionEngine:
         induction_companies = {
             case.company_id for case, _result, _resolution in induction
         }
-        holdout = tuple(
-            case
-            for case in cases
-            if case.company_id not in induction_companies
-        )[: self.effectiveness_evaluator.case_limit]
+        holdout = (
+            check_cases[: self.effectiveness_evaluator.case_limit]
+            if check_cases
+            else tuple(
+                case
+                for case in cases
+                if case.company_id not in induction_companies
+            )[: self.effectiveness_evaluator.case_limit]
+        )
         local_selection = {
             "problem_bucket": primary_name,
             "primary_sources": primary_sources,
@@ -2839,6 +3809,7 @@ class SignalEvolutionEngine:
                 "learned_profile": self.registry.load_learning_profile(signal_ref),
             },
             "induction_cases": induction_packets,
+            "slow_method_memory": self._slow_method_view("Update"),
             "candidate_contract": {
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
                 "changed_paths_allowed": list(SIGNAL_UPDATE_MUTABLE_PATHS),
@@ -2931,9 +3902,11 @@ class SignalEvolutionEngine:
         self,
         *,
         limit: int = _SIGNAL_UPDATE_TARGET_LIMIT,
+        suggested_refs: Iterable[str] = (),
     ) -> tuple[dict[str, Any], ...]:
         if limit < 1:
             raise ValidationError("Signal Update target limit must be positive")
+        suggested = set(str(item) for item in suggested_refs)
         targets: list[tuple[int, str, dict[str, Any]]] = []
         for card in self.registry.list_signal_cards():
             profile = dict(card.learned_profile)
@@ -2973,9 +3946,30 @@ class SignalEvolutionEngine:
                     profile.get("recurring_contexts", ())
                 )[:3],
             }
-            targets.append((score, card.ref, target))
+            targets.append((score + (1000 if card.ref in suggested else 0), card.ref, target))
         ranked = sorted(targets, key=lambda item: (-item[0], item[1]))
         return tuple(item[2] for item in ranked[:limit])
+
+    @staticmethod
+    def _h1_update_refs(audit: Mapping[str, Any]) -> tuple[str, ...]:
+        """Recover adapter-validated H1 update suggestions for target ordering."""
+
+        value: Mapping[str, Any] = audit
+        if (
+            audit.get("track") == "hypothesis_then_exploration_fallback"
+            and isinstance(audit.get("hypothesis"), Mapping)
+        ):
+            value = audit["hypothesis"]
+        h1 = dict(value.get("stages", {})).get("H1", {})
+        metadata = h1.get("conclusion", {}) if isinstance(h1, Mapping) else {}
+        if not isinstance(metadata, Mapping):
+            return ()
+        refs: list[str] = []
+        for row in metadata.get("need_dispositions", ()):
+            if not isinstance(row, Mapping) or row.get("disposition") != "update_existing":
+                continue
+            refs.extend(str(item) for item in row.get("signal_refs", ()))
+        return _ordered_unique(refs)
 
     def _prior_signal_update(
         self, work_fingerprint: str
@@ -3055,28 +4049,81 @@ class SignalEvolutionEngine:
         }
 
     def _run_signal_mining(self, *, cycle_id: int) -> dict[str, Any]:
-        """Run one bounded Mining track while local code owns every data boundary."""
+        """Run bounded H and independent E tracks every cycle."""
 
         if cycle_id < 1:
             raise ValidationError("Signal Mining cycle id must be positive")
-        mode = (
-            "exploration"
-            if cycle_id % self.mining_config.exploration_interval == 0
-            else "hypothesis"
-        )
-        if mode == "exploration":
+        if self._active_sampling_manifest is None:
+            return self._run_signal_mining_legacy(cycle_id=cycle_id)
+        hypothesis_failure: ValidationError | None = None
+        try:
+            hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
+        except (ValidationError, AssertionError) as exc:
+            hypothesis_failure = exc
+            hypothesis_result = self._mining_output(
+                audit={
+                    "schema_version": "signal-mining-audit-v1",
+                    "status": "failed",
+                    "cycle_id": cycle_id,
+                    "track": "hypothesis",
+                    "limits": self.mining_config.to_dict(),
+                    "stages": {},
+                    "failure_stage": getattr(exc, "stage", "hypothesis"),
+                    "error": str(exc),
+                    "failure_details": dict(getattr(exc, "details", {})),
+                    "usage": _usage_to_dict(
+                        getattr(exc, "usage", AgentUsage())
+                    ),
+                    "candidate_refs": [],
+                    "refined_hypotheses": {},
+                },
+                refined={},
+            )
+        try:
+            exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
+        except (ValidationError, AssertionError) as exc:
+            exploration_result = self._mining_output(
+                audit={
+                    "schema_version": "signal-mining-audit-v1",
+                    "status": "failed",
+                    "cycle_id": cycle_id,
+                    "track": "exploration",
+                    "stages": {},
+                    "error": str(exc),
+                    "usage": _usage_to_dict(getattr(exc, "usage", AgentUsage())),
+                    "candidate_refs": [],
+                },
+                refined={
+                    "exploration": (
+                        "independent Exploration failed: " + str(exc),
+                    )
+                },
+                failures={
+                    "slow_loop:exploration": (
+                        "structured_output_failed: " + str(exc),
+                    )
+                },
+            )
+            if hypothesis_failure is not None:
+                exploration_result["audit"]["hypothesis_failure"] = str(
+                    hypothesis_failure
+                )
+        return _merge_mining_fallback(hypothesis_result, exploration_result)
+
+    def _run_signal_mining_legacy(self, *, cycle_id: int) -> dict[str, Any]:
+        """Preserve read-only v7 cadence outside an active v8 frozen input."""
+
+        if cycle_id % self.mining_config.exploration_interval == 0:
             return self._run_exploration_mining(cycle_id=cycle_id)
         fallback_supported = bool(
             getattr(self.mining_model, "supports_exploration_fallback", False)
         )
-        hypothesis_failure: CandidateExecutionRejected | None = None
         try:
-            hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
+            hypothesis = self._run_hypothesis_mining(cycle_id=cycle_id)
         except CandidateExecutionRejected as exc:
             if not fallback_supported:
                 raise
-            hypothesis_failure = exc
-            hypothesis_result = self._mining_output(
+            hypothesis = self._mining_output(
                 audit={
                     "schema_version": "signal-mining-audit-v1",
                     "status": "failed",
@@ -3094,31 +4141,13 @@ class SignalEvolutionEngine:
                 refined={},
             )
         if (
-            hypothesis_result["candidate_refs"]
+            hypothesis["candidate_refs"]
             or not fallback_supported
-            or (
-                hypothesis_failure is None
-                and not _mining_needs_exploration_fallback(
-                    hypothesis_result["audit"]
-                )
-            )
+            or not _mining_needs_exploration_fallback(hypothesis["audit"])
         ):
-            return hypothesis_result
-        try:
-            exploration_result = self._run_exploration_mining(cycle_id=cycle_id)
-        except ValidationError as exc:
-            if hypothesis_failure is None:
-                raise
-            combined_usage = hypothesis_failure.usage + getattr(
-                exc, "usage", AgentUsage()
-            )
-            raise CandidateExecutionRejected(
-                "signal_mining_pipeline",
-                "hypothesis track failed before same-cycle Exploration fallback: "
-                f"{hypothesis_failure}; Exploration track also failed: {exc}",
-                combined_usage,
-            ) from exc
-        return _merge_mining_fallback(hypothesis_result, exploration_result)
+            return hypothesis
+        exploration = self._run_exploration_mining(cycle_id=cycle_id)
+        return _merge_mining_fallback(hypothesis, exploration)
 
     def _run_hypothesis_mining(self, *, cycle_id: int) -> dict[str, Any]:
         config = self.mining_config
@@ -3207,7 +4236,7 @@ class SignalEvolutionEngine:
         )
         h1_payload = {
             "track": "hypothesis",
-            "h1_contract_version": "signal-mining-hypothesis-v6",
+            "h1_contract_version": "signal-mining-hypothesis-v7",
             "hypothesis_slots": [
                 f"h1-c{cycle_id:04d}-s{index:02d}"
                 for index in range(1, config.hypothesis_limit + 1)
@@ -3219,7 +4248,7 @@ class SignalEvolutionEngine:
         }
         h1_input_fingerprint = _canonical_hash(
             {
-                "schema_version": "signal-mining-h1-input-v6",
+                "schema_version": "signal-mining-h1-input-v7",
                 "contract": h1_payload["h1_contract_version"],
                 "limits": h1_payload["limits"],
                 "h2_applicability_contract": applicability_contract,
@@ -3227,6 +4256,14 @@ class SignalEvolutionEngine:
                 "meta_info": context["meta_info"],
                 "reflection_action_audit": context["reflection_action_audit"],
                 "stable_signal_cards": context["stable_signal_cards"],
+                **(
+                    {
+                        "prior_slow_work": context["prior_slow_work"],
+                        "slow_method_memory": context["slow_method_memory"],
+                    }
+                    if self._active_sampling_manifest is not None
+                    else {}
+                ),
                 "available_raw_source_types": context[
                     "available_raw_source_types"
                 ],
@@ -3251,7 +4288,7 @@ class SignalEvolutionEngine:
             prior_conclusion = dict(prior_h1["h1_conclusion"])
             audit["status"] = "unchanged_h1_work_suppressed"
             audit["stages"]["H1"] = {
-                "contract_version": "signal-mining-hypothesis-v6",
+                "contract_version": "signal-mining-hypothesis-v7",
                 "input_fingerprint": h1_input_fingerprint,
                 "conclusion": prior_conclusion,
                 "hypotheses": [],
@@ -3271,7 +4308,7 @@ class SignalEvolutionEngine:
                 exc.usage,
                 details={
                     **dict(exc.details),
-                    "contract_version": "signal-mining-hypothesis-v6",
+                    "contract_version": "signal-mining-hypothesis-v7",
                     "input_fingerprint": h1_input_fingerprint,
                     "conclusion": {
                         "conclusion": "technical_failure",
@@ -3298,7 +4335,7 @@ class SignalEvolutionEngine:
                 continue
             hypotheses.append(hypothesis)
         audit["stages"]["H1"] = {
-            "contract_version": "signal-mining-hypothesis-v6",
+            "contract_version": "signal-mining-hypothesis-v7",
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
@@ -3314,6 +4351,14 @@ class SignalEvolutionEngine:
             audit["hypothesis_work"] = []
             return self._mining_output(audit=audit, refined=refined)
         case_by_ref = dict(case_pairs)
+        check_pairs = tuple(
+            (f"check-{index:03d}", case)
+            for index, case in enumerate(
+                self._manifest_cases("check_case_ids"), start=1
+            )
+        )
+        case_by_ref.update(check_pairs)
+        check_refs = tuple(ref for ref, _case in check_pairs)
         ranking_limit = min(config.ranking_case_limit, len(case_pairs))
         rankings = {
             hypothesis.hypothesis_id: tuple(
@@ -3346,6 +4391,7 @@ class SignalEvolutionEngine:
             selected = self._select_mining_cases(
                 rankings[hypothesis.hypothesis_id],
                 case_by_ref=case_by_ref,
+                validation_ranked_refs=check_refs,
             )
             if selected is None:
                 refined[hypothesis.hypothesis_id] = (
@@ -3380,11 +4426,16 @@ class SignalEvolutionEngine:
                 )
                 continue
             usable_by_class: dict[bool, list[str]] = {True: [], False: []}
-            comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
             attempted_case_refs: list[str] = []
             attempted_packet_refs: list[str] = []
             packet_ref_by_case: dict[str, str] = {}
-            for case_ref in rankings[hypothesis.hypothesis_id]:
+            evidence_case_refs = (
+                selection["induction_refs"]
+                if self._active_sampling_manifest is not None
+                else rankings[hypothesis.hypothesis_id]
+            )
+            comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
+            for case_ref in evidence_case_refs:
                 case = case_by_ref[case_ref]
                 case_class = bool(case.ground_truth.is_surge)
                 if (
@@ -3420,25 +4471,29 @@ class SignalEvolutionEngine:
                 attempted_packet_refs.append(stored_packet["packet_ref"])
                 if stored_packet["evidence"]:
                     packet_ref_by_case[case_ref] = stored_packet["packet_ref"]
-                    target = (
-                        usable_by_class
-                        if stored_packet.get("query_match_status") == "matched"
-                        else comparator_by_class
-                    )
-                    target[case_class].append(case_ref)
-                if all(
+                    if self._active_sampling_manifest is not None:
+                        usable_by_class[case_class].append(case_ref)
+                    else:
+                        target = (
+                            usable_by_class
+                            if stored_packet.get("query_match_status") == "matched"
+                            else comparator_by_class
+                        )
+                        target[case_class].append(case_ref)
+                if self._active_sampling_manifest is None and all(
                     len(refs) >= config.induction_cases_per_class
                     for refs in usable_by_class.values()
                 ):
                     break
-            for case_class in (True, False):
-                needed = (
-                    config.induction_cases_per_class
-                    - len(usable_by_class[case_class])
-                )
-                usable_by_class[case_class].extend(
-                    comparator_by_class[case_class][:needed]
-                )
+            if self._active_sampling_manifest is None:
+                for case_class in (True, False):
+                    needed = (
+                        config.induction_cases_per_class
+                        - len(usable_by_class[case_class])
+                    )
+                    usable_by_class[case_class].extend(
+                        comparator_by_class[case_class][:needed]
+                    )
             if not all(
                 len(refs) >= config.induction_cases_per_class
                 for refs in usable_by_class.values()
@@ -3482,27 +4537,34 @@ class SignalEvolutionEngine:
             induction_refs = tuple(
                 (*usable_by_class[True], *usable_by_class[False])
             )
-            validation_by_class: dict[bool, list[str]] = {True: [], False: []}
-            used_companies = {
-                case_by_ref[case_ref].company_id for case_ref in induction_refs
-            }
-            for case_ref in rankings[hypothesis.hypothesis_id]:
-                case = case_by_ref[case_ref]
-                case_class = bool(case.ground_truth.is_surge)
-                if (
-                    case.company_id in used_companies
-                    or len(validation_by_class[case_class])
-                    >= config.validation_cases_per_class
-                ):
-                    continue
-                used_companies.add(case.company_id)
-                validation_by_class[case_class].append(case_ref)
+            if self._active_sampling_manifest is None:
+                validation_by_class: dict[bool, list[str]] = {
+                    True: [],
+                    False: [],
+                }
+                used_companies = {
+                    case_by_ref[case_ref].company_id for case_ref in induction_refs
+                }
+                for case_ref in rankings[hypothesis.hypothesis_id]:
+                    case = case_by_ref[case_ref]
+                    case_class = bool(case.ground_truth.is_surge)
+                    if (
+                        case.company_id in used_companies
+                        or len(validation_by_class[case_class])
+                        >= config.validation_cases_per_class
+                    ):
+                        continue
+                    used_companies.add(case.company_id)
+                    validation_by_class[case_class].append(case_ref)
+                frozen_validation_refs = tuple(
+                    (*validation_by_class[True], *validation_by_class[False])
+                )
+            else:
+                frozen_validation_refs = tuple(selection["validation_refs"])
             actual_selection = {
                 **selection,
                 "induction_refs": induction_refs,
-                "validation_refs": tuple(
-                    (*validation_by_class[True], *validation_by_class[False])
-                ),
+                "validation_refs": frozen_validation_refs,
                 "sample_basis": {
                     "positive_refs": tuple(
                         packet_ref_by_case[case_ref]
@@ -3600,6 +4662,7 @@ class SignalEvolutionEngine:
                 "track": "hypothesis",
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
+                "slow_method_memory": self._slow_method_view("H3"),
                 "rules": {
                     "decisions": [
                         "supported",
@@ -3700,13 +4763,18 @@ class SignalEvolutionEngine:
 
     def _run_exploration_mining(self, *, cycle_id: int) -> dict[str, Any]:
         config = self.mining_config
-        required_per_class = (
-            (2 * config.induction_cases_per_class)
-            + config.validation_cases_per_class
-        )
-        cases = _sample_binary_discovery_cases(
-            self.discovery_cases,
-            per_class=required_per_class,
+        dev_cases = self._manifest_cases("dev_case_ids")
+        check_cases = self._manifest_cases("check_case_ids")
+        cases = (
+            (*dev_cases, *check_cases)
+            if dev_cases and check_cases
+            else _sample_binary_discovery_cases(
+                self.discovery_cases,
+                per_class=(
+                    (2 * config.induction_cases_per_class)
+                    + config.validation_cases_per_class
+                ),
+            )
         )
         case_pairs = _exploration_case_pairs(cases, cycle_id=cycle_id)
         case_by_ref = dict(case_pairs)
@@ -3749,18 +4817,32 @@ class SignalEvolutionEngine:
                     )
                 },
             )
+        dev_ids = {case.case_id for case in dev_cases}
+        check_ids = {case.case_id for case in check_cases}
         e1_by_class: dict[bool, tuple[str, ...]] = {}
-        validation_by_class: dict[bool, tuple[str, ...]] = {}
-        for case_class, refs in refs_by_class.items():
-            candidate_count = min(
-                2 * config.induction_cases_per_class,
-                len(refs) - config.validation_cases_per_class,
-            )
-            e1_by_class[case_class] = refs[:candidate_count]
-            validation_by_class[case_class] = refs[
-                candidate_count : candidate_count
-                + config.validation_cases_per_class
-            ]
+        for label, refs in refs_by_class.items():
+            if dev_ids:
+                e1_by_class[label] = tuple(
+                    ref for ref in refs if case_by_ref[ref].case_id in dev_ids
+                )[: 2 * config.induction_cases_per_class]
+            else:
+                candidate_count = min(
+                    2 * config.induction_cases_per_class,
+                    len(refs) - config.validation_cases_per_class,
+                )
+                e1_by_class[label] = refs[:candidate_count]
+        validation_by_class: dict[bool, tuple[str, ...]] = {
+            label: tuple(
+                ref
+                for ref in refs
+                if (
+                    case_by_ref[ref].case_id in check_ids
+                    if check_ids
+                    else ref not in e1_by_class[label]
+                )
+            )[: config.validation_cases_per_class]
+            for label, refs in refs_by_class.items()
+        }
         e1_ref_set = {*e1_by_class[True], *e1_by_class[False]}
         validation_ref_set = {
             *validation_by_class[True],
@@ -3987,6 +5069,10 @@ class SignalEvolutionEngine:
                 "signatures": revealed,
                 "decision_slots": decision_slots,
                 "candidate_contract": self._mining_candidate_contract(),
+                "slow_method_memory": self._slow_method_view("E2"),
+                "stable_signal_cards": [
+                    card.to_dict() for card in self.registry.list_signal_cards()
+                ],
                 "rules": {
                     "candidate_only_for_repeated_observable_pattern": True,
                     "exact_spans_authoritative_over_summaries": True,
@@ -4109,11 +5195,14 @@ class SignalEvolutionEngine:
 
     def _mining_context(self, *, cycle_id: int) -> dict[str, Any]:
         prior_work: list[dict[str, Any]] = []
-        for path in sorted(
-            (self.workspace.experiments_root / "cycles").glob(
-                "cycle-*/slow_loop_validation.json"
-            )
-        )[-3:]:
+        committed_paths = [
+            self.workspace.experiments_root
+            / "cycles"
+            / f"cycle-{prior_cycle:04d}"
+            / "slow_loop_validation.json"
+            for prior_cycle in range(1, self.workspace.last_completed_cycle + 1)
+        ]
+        for path in [item for item in committed_paths if item.is_file()][-3:]:
             payload = _read_json(path)
             validation = payload.get("validation", {})
             if not isinstance(validation, Mapping):
@@ -4291,6 +5380,11 @@ class SignalEvolutionEngine:
             "prior_slow_work": _mask_identity_values(
                 prior_work, self.slow_role_identity_guards, expand_aliases=False
             ),
+            "slow_method_memory": _mask_identity_values(
+                self._slow_method_view("H1"),
+                self.slow_role_identity_guards,
+                expand_aliases=False,
+            ),
             "available_raw_source_types": list(
                 self.evidence_resolver.available_source_types
             ),
@@ -4298,6 +5392,41 @@ class SignalEvolutionEngine:
                 self.validator.deterministic_functions
             ),
             "locked_test_available": False,
+        }
+
+    def _slow_method_view(self, role_scope: str) -> dict[str, Any]:
+        """Project a bounded whole-entry evidence closure for one Slow role."""
+
+        if self._active_slow_memory is None or self._active_slow_input is None:
+            return {}
+        processed = tuple(
+            str(item)
+            for item in self._active_slow_memory.get(
+                "processed_feedback_refs", ()
+            )
+        )
+        source_catalog = {
+            str(row["feedback_ref"]): {
+                "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                "content": dict(row),
+            }
+            for row in self._active_slow_input.get("feedback_rows", ())
+            if isinstance(row, Mapping) and row.get("feedback_ref")
+        }
+        sources, manifest = read_slow_sources(
+            processed,
+            role_scope=role_scope,
+            source_catalog=source_catalog,
+            budget_bytes=64_000,
+        )
+        prior_deltas = [
+            dict(item["slow_memory"])
+            for item in self.workspace.committed_slow_artifacts()[-3:]
+        ]
+        return {
+            "memory_deltas": [*prior_deltas, dict(self._active_slow_memory)],
+            "source_entries": [dict(item) for item in sources],
+            "source_view_manifest": manifest,
         }
 
     def _mask_owned_backlog_identities(
@@ -4465,12 +5594,28 @@ class SignalEvolutionEngine:
     def _mining_case_universe(
         self, *, limit: int
     ) -> tuple[tuple[str, EvolutionCase], ...]:
+        manifest_cases = self._manifest_cases("dev_case_ids")
+        selected = (
+            manifest_cases[:limit]
+            if manifest_cases
+            else _sample_signal_discovery_cases(self.discovery_cases, limit=limit)
+        )
         return tuple(
             (f"case-{index:03d}", case)
-            for index, case in enumerate(
-                _sample_signal_discovery_cases(self.discovery_cases, limit=limit),
-                start=1,
-            )
+            for index, case in enumerate(selected, start=1)
+        )
+
+    def _manifest_cases(self, key: str) -> tuple[EvolutionCase, ...]:
+        """Resolve one frozen sample partition without filling missing ids."""
+
+        manifest = self._active_sampling_manifest
+        if not isinstance(manifest, Mapping):
+            return ()
+        case_by_id = {case.case_id: case for case in self.discovery_cases}
+        return tuple(
+            case_by_id[case_id]
+            for case_id in (str(item) for item in manifest.get(key, ()))
+            if case_id in case_by_id
         )
 
     def _preflight_h2_profiles(
@@ -4765,6 +5910,7 @@ class SignalEvolutionEngine:
         ranked_refs: Iterable[str],
         *,
         case_by_ref: Mapping[str, EvolutionCase],
+        validation_ranked_refs: Iterable[str] = (),
     ) -> dict[str, tuple[str, ...]] | None:
         positives: list[str] = []
         controls: list[str] = []
@@ -4783,12 +5929,27 @@ class SignalEvolutionEngine:
         induction = tuple(
             [*positives[:induction_count], *controls[:induction_count]]
         )
-        validation = tuple(
-            [
-                *positives[induction_count : induction_count + validation_count],
-                *controls[induction_count : induction_count + validation_count],
+        validation_refs = tuple(validation_ranked_refs)
+        if validation_refs:
+            validation_positives = [
+                ref for ref in validation_refs if case_by_ref[ref].ground_truth.is_surge
             ]
-        )
+            validation_controls = [
+                ref for ref in validation_refs if not case_by_ref[ref].ground_truth.is_surge
+            ]
+            validation = tuple(
+                [
+                    *validation_positives[:validation_count],
+                    *validation_controls[:validation_count],
+                ]
+            )
+        else:
+            validation = tuple(
+                [
+                    *positives[induction_count : induction_count + validation_count],
+                    *controls[induction_count : induction_count + validation_count],
+                ]
+            )
         return {"induction_refs": induction, "validation_refs": validation}
 
     def _signal_update_evidence_packet(
@@ -5408,11 +6569,14 @@ class DualLoopEvolutionEngine:
         cycle_mode: str = "fast_then_slow",
         on_progress: ProgressCallback | None = None,
     ) -> None:
-        if cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
+        if cycle_mode not in {"fast_then_slow", "slow_bootstrap", "slow_only"}:
             raise ValidationError("dual-loop cycle mode is invalid")
         if (
             (cycle_mode == "fast_then_slow" and plan_rounds_per_signal_cycle < 1)
-            or (cycle_mode == "slow_bootstrap" and plan_rounds_per_signal_cycle != 0)
+            or (
+                cycle_mode in {"slow_bootstrap", "slow_only"}
+                and plan_rounds_per_signal_cycle != 0
+            )
         ):
             raise ValidationError("dual-loop mode and Fast-round target conflict")
         self.plan_engine = plan_engine
@@ -5508,6 +6672,11 @@ class DualLoopEvolutionEngine:
             input_registry_hash=signal_result.input_registry_hash,
             output_registry_version=signal_result.output_registry_version,
             output_registry_hash=signal_result.output_registry_hash,
+            new_candidate_count=signal_result.new_candidate_count,
+            new_validated_signal_count=signal_result.new_validated_signal_count,
+            new_promoted_signal_count=signal_result.new_promoted_signal_count,
+            updated_signal_count=signal_result.updated_signal_count,
+            signal_goal_status=signal_result.signal_goal_status,
         )
         return DualLoopResult(
             plan_rounds=tuple(rounds),

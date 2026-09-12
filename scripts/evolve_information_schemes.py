@@ -43,6 +43,8 @@ from stock_opportunity_agent.research.evolution_runtime import (
     approve_dataset_proposal,
     build_run_contract,
     build_slow_bootstrap_manifest,
+    build_slow_history_manifest,
+    apply_slow_history_manifest,
     filter_case_price_history,
     inventory_local_evolution_inputs,
     HistoricalPlanSeedPool,
@@ -246,6 +248,18 @@ def build_parser() -> argparse.ArgumentParser:
             "workspace whose Slow loop has not started"
         ),
     )
+    freeze.add_argument(
+        "--cycle-mode",
+        choices=("fast_then_slow", "slow_bootstrap", "slow_only"),
+        help="explicit v8 cycle mode; inferred from the selected history option",
+    )
+    freeze.add_argument(
+        "--slow-history-from",
+        type=Path,
+        help="one committed source workspace for finite slow_only execution",
+    )
+    freeze.add_argument("--max-slow-cycles", type=int, default=1)
+    freeze.add_argument("--min-new-signals-per-cycle", type=int, default=1)
     freeze.add_argument("--candidates-per-round", type=int, default=3)
     freeze.add_argument("--parent-selection-seed", type=int, default=42)
     freeze.add_argument("--max-external-attempts", type=int, default=2500)
@@ -666,6 +680,10 @@ def freeze_run(
     max_external_attempts: int,
     max_total_cost: float,
     slow_bootstrap_sources: tuple[Path, ...] = (),
+    cycle_mode: str | None = None,
+    slow_history_from: Path | None = None,
+    max_slow_cycles: int = 1,
+    min_new_signals_per_cycle: int = 1,
     data_external: bool = False,
     data_providers: tuple[str, ...] = (),
     data_capabilities: tuple[str, ...] = (),
@@ -685,8 +703,21 @@ def freeze_run(
         max_data_requests_per_cycle=max_data_requests_per_cycle,
         max_data_requests_per_run=max_data_requests_per_run,
     )
-    cycle_mode = "slow_bootstrap" if slow_bootstrap_sources else "fast_then_slow"
-    effective_plan_rounds = 0 if slow_bootstrap_sources else plan_rounds
+    if slow_bootstrap_sources and slow_history_from is not None:
+        raise ValueError("Slow bootstrap and slow-only history are mutually exclusive")
+    inferred_mode = (
+        "slow_bootstrap"
+        if slow_bootstrap_sources
+        else "slow_only"
+        if slow_history_from is not None
+        else "fast_then_slow"
+    )
+    resolved_cycle_mode = cycle_mode or inferred_mode
+    if resolved_cycle_mode != inferred_mode:
+        raise ValueError("cycle mode conflicts with the selected Slow history option")
+    effective_plan_rounds = (
+        plan_rounds if resolved_cycle_mode == "fast_then_slow" else 0
+    )
     EvaluationDatasetManager(
         workspace_path / "evaluation",
         approved_dataset.evolution_validation,
@@ -699,6 +730,18 @@ def freeze_run(
         expected_dataset_hash = hashlib.sha256(
             approved_dataset_path.read_bytes()
         ).hexdigest()
+        requested_history_hash = None
+        if slow_history_from is not None:
+            history_path = workspace_path / "slow_history" / "manifest.json"
+            if not history_path.is_file():
+                raise ValueError(
+                    "existing Slow-only workspace is missing history manifest"
+                )
+            requested_history_hash = str(
+                json.loads(history_path.read_text(encoding="utf-8")).get(
+                    "manifest_hash", ""
+                )
+            )
         if (
             contract.run_id != run_id
             or contract.dataset_manifest_hash != expected_dataset_hash
@@ -706,7 +749,7 @@ def freeze_run(
             or contract.models["proposer"]["alias"] != evolution_model
             or int(contract.limits["plan_rounds_per_signal_cycle"])
             != effective_plan_rounds
-            or contract.cycle_mode != cycle_mode
+            or contract.cycle_mode != resolved_cycle_mode
             or int(contract.limits["candidates_per_round"])
             != candidates_per_round
             or int(contract.limits["parent_selection_seed"])
@@ -715,6 +758,10 @@ def freeze_run(
             or contract.max_total_cost != max_total_cost
             or contract.raw_info_oracle_id != oracle.oracle_id
             or contract.data_acquisition != requested_data_policy
+            or contract.max_slow_cycles != max_slow_cycles
+            or contract.min_new_signals_per_cycle
+            != min_new_signals_per_cycle
+            or contract.slow_history_manifest_hash != requested_history_hash
         ):
             raise ValueError("existing run contract conflicts with requested freeze scope")
     else:
@@ -723,15 +770,31 @@ def freeze_run(
             documents_path=documents_path,
             adjusted_prices_path=adjusted_prices_path,
         )
+        dataset_manifest_hash = hashlib.sha256(
+            approved_dataset_path.read_bytes()
+        ).hexdigest()
+        slow_history_manifest_hash = None
+        if slow_history_from is not None:
+            slow_history_manifest_hash = build_slow_history_manifest(
+                workspace=workspace_path,
+                source_workspace=slow_history_from,
+                dataset_manifest_hash=dataset_manifest_hash,
+            )
+            history_envelope = json.loads(
+                (workspace_path / "slow_history" / "manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            apply_slow_history_manifest(
+                workspace=workspace_path,
+                manifest=dict(history_envelope["manifest"]),
+            )
         registry = SignalRegistry(
             workspace_path / "signals",
             candidate_root=workspace_path / "signals_candidates",
         )
         snapshot = registry.freeze()
         evaluation_contract = PlanEvaluationConfig().to_dict()
-        dataset_manifest_hash = hashlib.sha256(
-            approved_dataset_path.read_bytes()
-        ).hexdigest()
         seed_pool = load_or_create_historical_plan_seed_pool(
             workspace=workspace_path,
             dataset_manifest_hash=dataset_manifest_hash,
@@ -795,8 +858,11 @@ def freeze_run(
             max_external_attempts=max_external_attempts,
             max_total_cost=max_total_cost,
             seed_pool_manifest_hash=seed_pool.manifest_hash,
-            cycle_mode=cycle_mode,
+            cycle_mode=resolved_cycle_mode,
             slow_bootstrap_manifest_hash=slow_bootstrap_manifest_hash,
+            slow_history_manifest_hash=slow_history_manifest_hash,
+            max_slow_cycles=max_slow_cycles,
+            min_new_signals_per_cycle=min_new_signals_per_cycle,
             data_acquisition=requested_data_policy,
         )
         contract.freeze(contract_path)
@@ -820,6 +886,9 @@ def freeze_run(
         "max_total_cost": contract.max_total_cost,
         "cycle_mode": contract.cycle_mode,
         "slow_bootstrap_manifest_hash": contract.slow_bootstrap_manifest_hash,
+        "slow_history_manifest_hash": contract.slow_history_manifest_hash,
+        "max_slow_cycles": contract.max_slow_cycles,
+        "min_new_signals_per_cycle": contract.min_new_signals_per_cycle,
         "historical_seed_pool": {
             "manifest_hash": contract.seed_pool_manifest_hash,
             "seed_count": len(seed_pool.entries) if seed_pool else 0,
@@ -943,6 +1012,15 @@ def run_cycle_command(
             result.signal_evolution.updated_candidates
         ),
         "promoted_signals": list(result.signal_evolution.promoted),
+        "new_candidate_count": result.signal_evolution.new_candidate_count,
+        "new_validated_signal_count": (
+            result.signal_evolution.new_validated_signal_count
+        ),
+        "new_promoted_signal_count": (
+            result.signal_evolution.new_promoted_signal_count
+        ),
+        "updated_signal_count": result.signal_evolution.updated_signal_count,
+        "signal_goal_status": result.signal_evolution.signal_goal_status,
         "search_input_fingerprint": (
             result.signal_evolution.search_input_fingerprint
         ),
@@ -1013,6 +1091,7 @@ def _committed_no_candidate_diagnosis(
 
     workspace = EvolutionWorkspace(workspace_path)
     rows: list[dict[str, object]] = []
+    unmet_rows: list[int] = []
     for cycle_id in range(workspace.last_completed_cycle, 0, -1):
         path = (
             workspace.experiments_root
@@ -1037,15 +1116,27 @@ def _committed_no_candidate_diagnosis(
             raise ValidationError(
                 f"committed Slow validation must be an object: {path}"
             )
-        candidate_refs: list[object] = []
-        for key in ("mined_candidates", "updated_candidates"):
-            refs = validation.get(key, [])
-            if not isinstance(refs, list):
-                raise ValidationError(
-                    f"committed Slow validation {key} must be an array: {path}"
-                )
-            candidate_refs.extend(refs)
-        if candidate_refs:
+        mined_refs = validation.get("mined_candidates", [])
+        input_refs = validation.get("input_signal_refs", [])
+        if not isinstance(mined_refs, list):
+            raise ValidationError(
+                f"mined_candidates must be an array: {path}"
+            )
+        if not isinstance(input_refs, list):
+            raise ValidationError(
+                f"input_signal_refs must be an array: {path}"
+            )
+        input_ids = {str(ref).rsplit(":v", 1)[0] for ref in input_refs}
+        new_candidate_count = int(
+            validation.get(
+                "new_candidate_count",
+                sum(
+                    str(ref).rsplit(":v", 1)[0] not in input_ids
+                    for ref in mined_refs
+                ),
+            )
+        )
+        if new_candidate_count > 0:
             break
         rows.append(
             {
@@ -1057,6 +1148,27 @@ def _committed_no_candidate_diagnosis(
             }
         )
     rows.reverse()
+    for cycle_id in range(workspace.last_completed_cycle, 0, -1):
+        result_path = (
+            workspace.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_result.json"
+        )
+        result_payload = (
+            json.loads(result_path.read_text(encoding="utf-8"))
+            if result_path.is_file()
+            else {}
+        )
+        result = result_payload.get("result", {})
+        goal_status = (
+            str(result.get("signal_goal_status", "unmet"))
+            if isinstance(result, dict)
+            else "unmet"
+        )
+        if goal_status != "unmet":
+            break
+        unmet_rows.append(cycle_id)
     fingerprints = [
         str(row["search_input_fingerprint"])
         for row in rows
@@ -1064,6 +1176,8 @@ def _committed_no_candidate_diagnosis(
     ]
     return {
         "consecutive_no_candidate_cycles": len(rows),
+        "consecutive_signal_goal_unmet_cycles": len(unmet_rows),
+        "signal_goal_unmet_cycle_ids": list(reversed(unmet_rows)),
         "cycle_ids": [int(row["cycle_id"]) for row in rows],
         "search_input_fingerprints": fingerprints,
         "search_input_changed_within_streak": len(set(fingerprints)) > 1,
@@ -1088,11 +1202,17 @@ def _no_candidate_limit_result(
     """Persist and return one supervisor stop without moving cycle pointers."""
 
     workspace = EvolutionWorkspace(workspace_path)
+    limit_basis = (
+        "signal_goal_unmet"
+        if int(diagnosis.get("consecutive_signal_goal_unmet_cycles", 0)) >= limit
+        else "no_new_candidate"
+    )
     event = workspace.append_event(
         "no_candidate_search_limit_reached",
         {
             **diagnosis,
             "limit": limit,
+            "limit_basis": limit_basis,
             "last_completed_round": workspace.last_completed_round,
             "last_completed_cycle": workspace.last_completed_cycle,
         },
@@ -1103,6 +1223,7 @@ def _no_candidate_limit_result(
         "status": "no_candidate_search_limit_reached",
         "supervisor_status": "stopped_for_diagnosis",
         "completed_cycles_this_invocation": completed_cycles,
+        "limit_basis": limit_basis,
         "no_candidate_diagnosis": diagnosis,
         **workspace_status(workspace_path),
     }
@@ -1132,10 +1253,10 @@ def run_loop_command(
         )
     completed: list[int] = []
     diagnosis = _committed_no_candidate_diagnosis(workspace_path)
-    if (
-        int(diagnosis["consecutive_no_candidate_cycles"])
-        >= max_consecutive_no_candidate_cycles
-    ):
+    if max(
+        int(diagnosis["consecutive_no_candidate_cycles"]),
+        int(diagnosis.get("consecutive_signal_goal_unmet_cycles", 0)),
+    ) >= max_consecutive_no_candidate_cycles:
         return _no_candidate_limit_result(
             workspace_path=workspace_path,
             diagnosis=diagnosis,
@@ -1161,10 +1282,10 @@ def run_loop_command(
             }
         completed.append(int(result["last_completed_cycle"]))
         diagnosis = _committed_no_candidate_diagnosis(workspace_path)
-        if (
-            int(diagnosis["consecutive_no_candidate_cycles"])
-            >= max_consecutive_no_candidate_cycles
-        ):
+        if max(
+            int(diagnosis["consecutive_no_candidate_cycles"]),
+            int(diagnosis.get("consecutive_signal_goal_unmet_cycles", 0)),
+        ) >= max_consecutive_no_candidate_cycles:
             return _no_candidate_limit_result(
                 workspace_path=workspace_path,
                 diagnosis=diagnosis,
@@ -1548,6 +1669,10 @@ def main() -> int:
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
                 slow_bootstrap_sources=tuple(args.slow_bootstrap_from),
+                cycle_mode=args.cycle_mode,
+                slow_history_from=args.slow_history_from,
+                max_slow_cycles=args.max_slow_cycles,
+                min_new_signals_per_cycle=args.min_new_signals_per_cycle,
                 data_external=args.data_external,
                 data_providers=tuple(args.data_provider),
                 data_capabilities=tuple(args.data_capability),

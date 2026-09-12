@@ -6,6 +6,7 @@ import math
 import os
 import platform
 import re
+import shutil
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -141,9 +142,12 @@ class EvolutionRunContract:
     seed_pool_manifest_hash: str | None = None
     cycle_mode: str = "fast_then_slow"
     slow_bootstrap_manifest_hash: str | None = None
+    slow_history_manifest_hash: str | None = None
+    max_slow_cycles: int = 1
+    min_new_signals_per_cycle: int = 1
     locked_test_accessed: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
-    schema_version: str = "evolution-run-contract-v7"
+    schema_version: str = "evolution-run-contract-v8"
 
     def __post_init__(self) -> None:
         if not self.run_id.strip():
@@ -169,6 +173,14 @@ class EvolutionRunContract:
             raise ValidationError(
                 "slow_bootstrap_manifest_hash must be a SHA-256 hex digest"
             )
+        if self.slow_history_manifest_hash is not None and not re.fullmatch(
+            r"[0-9a-f]{64}", self.slow_history_manifest_hash
+        ):
+            raise ValidationError(
+                "slow_history_manifest_hash must be a SHA-256 hex digest"
+            )
+        if self.max_slow_cycles < 1 or self.min_new_signals_per_cycle < 1:
+            raise ValidationError("Slow cycle and new-Signal limits must be positive")
         if self.initial_signal_registry_version < 1:
             raise ValidationError("initial signal registry version must be positive")
         if not self.raw_info_oracle_id.strip():
@@ -198,12 +210,14 @@ class EvolutionRunContract:
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
             "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
         }:
             raise ValidationError("unsupported evolution run contract schema")
         if self.schema_version in {
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
             "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
         }:
             schema_label = self.schema_version.rsplit("v", 1)[-1]
             required_roles = {"judge", "proposer"}
@@ -286,17 +300,41 @@ class EvolutionRunContract:
             plan_rounds = require_integer(
                 "plan_rounds_per_signal_cycle", minimum=0
             )
-            if self.schema_version == "evolution-run-contract-v7":
-                if self.cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
-                    raise ValidationError("v7 contract cycle_mode is invalid")
-                if self.cycle_mode == "fast_then_slow":
-                    if plan_rounds < 1 or self.slow_bootstrap_manifest_hash is not None:
-                        raise ValidationError(
-                            "v7 fast_then_slow requires positive Fast rounds and no bootstrap manifest"
-                        )
-                elif plan_rounds != 0 or self.slow_bootstrap_manifest_hash is None:
+            if self.schema_version in {
+                "evolution-run-contract-v7",
+                "evolution-run-contract-v8",
+            }:
+                allowed_modes = {"fast_then_slow", "slow_bootstrap"}
+                if self.schema_version == "evolution-run-contract-v8":
+                    allowed_modes.add("slow_only")
+                if self.cycle_mode not in allowed_modes:
                     raise ValidationError(
-                        "v7 slow_bootstrap requires zero Fast rounds and a bootstrap manifest"
+                        f"{schema_label} contract cycle_mode is invalid"
+                    )
+                if self.cycle_mode == "fast_then_slow":
+                    if (
+                        plan_rounds < 1
+                        or self.slow_bootstrap_manifest_hash is not None
+                        or self.slow_history_manifest_hash is not None
+                    ):
+                        raise ValidationError(
+                            f"{schema_label} fast_then_slow requires positive Fast rounds and no Slow manifest"
+                        )
+                elif self.cycle_mode == "slow_bootstrap" and (
+                    plan_rounds != 0
+                    or self.slow_bootstrap_manifest_hash is None
+                    or self.slow_history_manifest_hash is not None
+                ):
+                    raise ValidationError(
+                        f"{schema_label} slow_bootstrap requires zero Fast rounds and a bootstrap manifest"
+                    )
+                elif self.cycle_mode == "slow_only" and (
+                    plan_rounds != 0
+                    or self.slow_history_manifest_hash is None
+                    or self.slow_bootstrap_manifest_hash is not None
+                ):
+                    raise ValidationError(
+                        "v8 slow_only requires zero Fast rounds and one history manifest"
                     )
             elif plan_rounds < 1:
                 raise ValidationError(
@@ -358,6 +396,7 @@ class EvolutionRunContract:
             if self.schema_version in {
                 "evolution-run-contract-v6",
                 "evolution-run-contract-v7",
+                "evolution-run-contract-v8",
             }:
                 for name, expected in (
                     ("predictor_semantics_hash", FIXED_PREDICTOR_SEMANTICS_HASH),
@@ -431,6 +470,7 @@ class EvolutionRunContract:
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
             "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
         }:
             value["initial_signal_registry_version"] = (
                 self.initial_signal_registry_version
@@ -447,20 +487,29 @@ class EvolutionRunContract:
             "evolution-run-contract-v5",
             "evolution-run-contract-v6",
             "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
         }:
             value["raw_info_oracle_id"] = self.raw_info_oracle_id
         if self.schema_version in {
             "evolution-run-contract-v6",
             "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
         }:
             value["predictor_semantics_hash"] = self.predictor_semantics_hash
             value["source_type_catalog_hash"] = self.source_type_catalog_hash
-        if self.schema_version == "evolution-run-contract-v7":
+        if self.schema_version in {
+            "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
+        }:
             value["cycle_mode"] = self.cycle_mode
             if self.slow_bootstrap_manifest_hash is not None:
                 value["slow_bootstrap_manifest_hash"] = (
                     self.slow_bootstrap_manifest_hash
                 )
+        if self.schema_version == "evolution-run-contract-v8":
+            value["max_slow_cycles"] = self.max_slow_cycles
+            value["min_new_signals_per_cycle"] = self.min_new_signals_per_cycle
+            value["slow_history_manifest_hash"] = self.slow_history_manifest_hash
         if self.seed_pool_manifest_hash is not None:
             value["seed_pool_manifest_hash"] = self.seed_pool_manifest_hash
         return value
@@ -471,9 +520,9 @@ class EvolutionRunContract:
 
     @property
     def executable(self) -> bool:
-        """Only v7 contracts may advance the current dual-loop state."""
+        """Only v8 contracts may advance the current dual-loop state."""
 
-        return self.schema_version == "evolution-run-contract-v7"
+        return self.schema_version == "evolution-run-contract-v8"
 
     def freeze(self, path: str | Path) -> None:
         _write_or_verify_json(
@@ -483,6 +532,19 @@ class EvolutionRunContract:
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "EvolutionRunContract":
+        if value.get("schema_version") == "evolution-run-contract-v8":
+            required_v8 = {
+                "cycle_mode",
+                "slow_history_manifest_hash",
+                "max_slow_cycles",
+                "min_new_signals_per_cycle",
+            }
+            missing_v8 = sorted(required_v8 - set(value))
+            if missing_v8:
+                raise ValidationError(
+                    "v8 contract is missing frozen Slow fields: "
+                    + ", ".join(missing_v8)
+                )
         return cls(
             run_id=str(value["run_id"]),
             created_at=str(value["created_at"]),
@@ -529,6 +591,15 @@ class EvolutionRunContract:
                 str(value["slow_bootstrap_manifest_hash"])
                 if value.get("slow_bootstrap_manifest_hash") is not None
                 else None
+            ),
+            slow_history_manifest_hash=(
+                str(value["slow_history_manifest_hash"])
+                if value.get("slow_history_manifest_hash") is not None
+                else None
+            ),
+            max_slow_cycles=int(value.get("max_slow_cycles", 1)),
+            min_new_signals_per_cycle=int(
+                value.get("min_new_signals_per_cycle", 1)
             ),
             locked_test_accessed=bool(value.get("locked_test_accessed", False)),
             data_acquisition=DataAcquisitionPolicy.from_dict(
@@ -1007,7 +1078,11 @@ def _committed_seed_candidates_from_workspace(
     contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
     if (
         contract.schema_version
-        not in {"evolution-run-contract-v6", "evolution-run-contract-v7"}
+        not in {
+            "evolution-run-contract-v6",
+            "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
+        }
         or contract.locked_test_accessed
         or contract.predictor_semantics_hash != FIXED_PREDICTOR_SEMANTICS_HASH
         or contract.dataset_manifest_hash != dataset_manifest_hash
@@ -1312,6 +1387,174 @@ def load_approved_development_dataset(
     )
 
 
+def build_slow_history_manifest(
+    *,
+    workspace: str | Path,
+    source_workspace: str | Path,
+    dataset_manifest_hash: str,
+) -> str:
+    """Freeze one committed source workspace for a new slow-only workspace."""
+
+    target_root = Path(workspace)
+    source_root = Path(source_workspace).resolve()
+    source_contract = EvolutionRunContract.load_frozen(
+        source_root / "run_contract.json"
+    )
+    if (
+        source_contract.locked_test_accessed
+        or source_contract.dataset_manifest_hash != dataset_manifest_hash
+    ):
+        raise ValidationError("Slow history source workspace is incompatible")
+    state = _read_json(source_root / "state.json")
+    cycle_state = _read_json(source_root / "cycle_state.json")
+    completed_fast = int(state.get("last_completed_round", 0))
+    completed_slow = int(cycle_state.get("last_completed_cycle", 0))
+    if completed_slow < 1 or cycle_state.get("active_cycle") is not None:
+        raise ValidationError("Slow history requires a fully committed source cycle")
+    registry = SignalRegistry(
+        source_root / "signals",
+        candidate_root=source_root / "signals_candidates",
+    )
+    snapshot = registry.freeze()
+    definition_files: list[dict[str, str]] = []
+    for path in sorted((source_root / "signals").rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(source_root / "signals")
+        if (
+            relative.name in {"events.jsonl", "profile.json", "stats.json"}
+            or "learning" in relative.parts
+        ):
+            continue
+        definition_files.append(
+            {"path": str(relative), "sha256": _sha256_file(path)}
+        )
+    learning_events = [
+        event.to_dict()
+        for spec in snapshot.specs
+        for event in registry.load_learning_events(spec.ref)
+        if event.round_id <= completed_fast
+    ]
+    cycle_artifacts: list[dict[str, str]] = []
+    for cycle_id in range(1, completed_slow + 1):
+        cycle_root = (
+            source_root / "experiments" / "cycles" / f"cycle-{cycle_id:04d}"
+        )
+        for name in (
+            "slow_input.json",
+            "slow_memory.json",
+            "slow_experiments.json",
+            "slow_loop_validation.json",
+            "slow_loop_result.json",
+        ):
+            path = cycle_root / name
+            if path.is_file():
+                cycle_artifacts.append(
+                    {
+                        "cycle_id": str(cycle_id),
+                        "path": str(path.relative_to(source_root)),
+                        "sha256": _sha256_file(path),
+                    }
+                )
+    manifest = {
+        "schema_version": "slow-history-manifest-v1",
+        "source_namespace": "source-" + source_contract.contract_hash[:16],
+        "source_workspace": str(source_root),
+        "source_contract_hash": source_contract.contract_hash,
+        "dataset_manifest_hash": dataset_manifest_hash,
+        "committed_fast_round": completed_fast,
+        "committed_slow_cycle": completed_slow,
+        "registry_version": snapshot.version,
+        "registry_hash": snapshot.registry_hash,
+        "registry_definition_files": definition_files,
+        "learning_events": learning_events,
+        "cycle_artifacts": cycle_artifacts,
+    }
+    envelope = {"manifest_hash": _canonical_hash(manifest), "manifest": manifest}
+    _write_or_verify_json(
+        target_root / "slow_history" / "manifest.json", envelope
+    )
+    return str(envelope["manifest_hash"])
+
+
+def validate_slow_history_manifest(
+    *,
+    workspace: str | Path,
+    contract: EvolutionRunContract,
+) -> Mapping[str, Any]:
+    """Validate the frozen source pointer, hashes, and imported Registry identity."""
+
+    envelope = _read_json(Path(workspace) / "slow_history" / "manifest.json")
+    manifest = dict(envelope.get("manifest", {}))
+    if (
+        manifest.get("schema_version") != "slow-history-manifest-v1"
+        or envelope.get("manifest_hash") != _canonical_hash(manifest)
+        or envelope.get("manifest_hash") != contract.slow_history_manifest_hash
+        or manifest.get("dataset_manifest_hash") != contract.dataset_manifest_hash
+    ):
+        raise ValidationError("Slow history manifest identity mismatch")
+    source_root = Path(str(manifest.get("source_workspace", "")))
+    for row in manifest.get("registry_definition_files", ()):
+        source_path = source_root / "signals" / str(row["path"])
+        if not source_path.is_file() or _sha256_file(source_path) != row.get("sha256"):
+            raise ValidationError("Slow history source Registry file changed")
+    for row in manifest.get("cycle_artifacts", ()):
+        source_path = source_root / str(row["path"])
+        if not source_path.is_file() or _sha256_file(source_path) != row.get("sha256"):
+            raise ValidationError("Slow history committed artifact changed")
+    return manifest
+
+
+def apply_slow_history_manifest(
+    *,
+    workspace: str | Path,
+    manifest: Mapping[str, Any],
+) -> None:
+    """Materialize the exact committed Registry and namespaced history once."""
+
+    target_root = Path(workspace)
+    source_root = Path(str(manifest["source_workspace"]))
+    signals_root = target_root / "signals"
+    existing_manifests = tuple(signals_root.glob("*/*/manifest.json"))
+    if existing_manifests:
+        snapshot = SignalRegistry(
+            signals_root,
+            candidate_root=target_root / "signals_candidates",
+        ).freeze()
+        if snapshot.registry_hash != manifest.get("registry_hash"):
+            raise ValidationError("target Registry conflicts with Slow history")
+    else:
+        for row in manifest.get("registry_definition_files", ()):
+            source_path = source_root / "signals" / str(row["path"])
+            target_path = signals_root / str(row["path"])
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_path, target_path)
+    registry = SignalRegistry(
+        signals_root,
+        candidate_root=target_root / "signals_candidates",
+    )
+    events = tuple(
+        SignalLearningEvent.from_dict(dict(item))
+        for item in manifest.get("learning_events", ())
+    )
+    registry.record_learning_events(events)
+    snapshot = registry.freeze()
+    if (
+        snapshot.version != int(manifest["registry_version"])
+        or snapshot.registry_hash != manifest["registry_hash"]
+    ):
+        raise ValidationError("imported Slow history Registry identity mismatch")
+    namespace = str(manifest["source_namespace"])
+    for row in manifest.get("cycle_artifacts", ()):
+        source_path = source_root / str(row["path"])
+        target_path = target_root / "slow_history" / namespace / str(row["path"])
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        if target_path.exists() and _sha256_file(target_path) != row["sha256"]:
+            raise ValidationError("imported Slow history artifact conflicts")
+        if not target_path.exists():
+            shutil.copy2(source_path, target_path)
+
+
 def build_slow_bootstrap_manifest(
     *,
     workspace: str | Path,
@@ -1356,6 +1599,7 @@ def build_slow_bootstrap_manifest(
             contract.schema_version not in {
                 "evolution-run-contract-v6",
                 "evolution-run-contract-v7",
+                "evolution-run-contract-v8",
             }
             or contract.cycle_mode != "fast_then_slow"
             or contract.locked_test_accessed
@@ -1533,7 +1777,10 @@ def _build_committed_fast_bootstrap_manifest(
     source_root = source_workspaces[0]
     contract = EvolutionRunContract.load_frozen(source_root / "run_contract.json")
     if (
-        contract.schema_version != "evolution-run-contract-v7"
+        contract.schema_version not in {
+            "evolution-run-contract-v7",
+            "evolution-run-contract-v8",
+        }
         or contract.cycle_mode != "fast_then_slow"
         or contract.locked_test_accessed
         or contract.dataset_manifest_hash != dataset.approved_manifest_hash
@@ -1921,6 +2168,18 @@ def _run_bounded_evolution_cycle_unlocked(
             bootstrap_manifest,
             registry=registry,
         )
+    elif contract.cycle_mode == "slow_only":
+        history_manifest = validate_slow_history_manifest(
+            workspace=workspace_root,
+            contract=contract,
+        )
+        if (
+            snapshot.version != int(history_manifest["registry_version"])
+            or snapshot.registry_hash != history_manifest["registry_hash"]
+        ):
+            raise ValidationError(
+                "slow_only Registry differs from frozen committed history"
+            )
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
 
@@ -1935,6 +2194,7 @@ def _run_bounded_evolution_cycle_unlocked(
         initial_signal_registry_hash=contract.initial_signal_registry_hash,
         observed_signal_registry_version=snapshot.version,
         observed_signal_registry_hash=snapshot.registry_hash,
+        max_slow_cycles=contract.max_slow_cycles,
     )
     cycle_id = int(cycle["cycle_id"])
 
@@ -2126,6 +2386,7 @@ def _run_bounded_evolution_cycle_unlocked(
         ),
         evidence_resolver=evidence_resolver,
         on_progress=emit,
+        min_new_signals_per_cycle=contract.min_new_signals_per_cycle,
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,
@@ -2215,6 +2476,9 @@ def build_run_contract(
     seed_pool_manifest_hash: str | None = None,
     cycle_mode: str = "fast_then_slow",
     slow_bootstrap_manifest_hash: str | None = None,
+    slow_history_manifest_hash: str | None = None,
+    max_slow_cycles: int = 1,
+    min_new_signals_per_cycle: int = 1,
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy(),
     environ: Mapping[str, str] | None = None,
 ) -> EvolutionRunContract:
@@ -2244,6 +2508,9 @@ def build_run_contract(
         seed_pool_manifest_hash=seed_pool_manifest_hash,
         cycle_mode=cycle_mode,
         slow_bootstrap_manifest_hash=slow_bootstrap_manifest_hash,
+        slow_history_manifest_hash=slow_history_manifest_hash,
+        max_slow_cycles=max_slow_cycles,
+        min_new_signals_per_cycle=min_new_signals_per_cycle,
         data_acquisition=data_acquisition,
     )
 

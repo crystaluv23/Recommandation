@@ -3,10 +3,212 @@
 from tests.scheme_evolution_test_support import *  # noqa: F403
 from stock_opportunity_agent.research.signal_evolution import (
     SIGNAL_UPDATE_MUTABLE_PATHS,
+    SlowLoopValidation,
+    build_slow_sampling_manifest,
+    read_slow_sources,
+    validate_slow_memory,
 )
 
 
 class SignalEvolutionTests(TestCase):
+    def test_slow_sampling_is_order_invariant_and_issuer_disjoint(self) -> None:
+        cases = tuple(
+            make_case(f"slow_sample_{index}", 2.5 if index % 2 else 1.2)
+            for index in range(1, 13)
+        )
+
+        first = build_slow_sampling_manifest(
+            cases,
+            cycle_id=2,
+            base_seed="fixture-contract",
+            dev_limit=6,
+            check_limit=4,
+        )
+        replay = build_slow_sampling_manifest(
+            reversed(cases),
+            cycle_id=2,
+            base_seed="fixture-contract",
+            dev_limit=6,
+            check_limit=4,
+        )
+
+        self.assertEqual(first, replay)
+        groups = first["issuer_groups"]
+        self.assertFalse(
+            {groups[item] for item in first["dev_case_ids"]}
+            & {groups[item] for item in first["check_case_ids"]}
+        )
+
+    def test_slow_source_read_keeps_whole_entries_and_enforces_scope(self) -> None:
+        catalog = {
+            "feedback-1": {
+                "visible_to": ["reflection", "H1"],
+                "content": {"detail": "specific evidence" * 20},
+            },
+            "feedback-2": {
+                "visible_to": ["reflection"],
+                "content": {"detail": "counterexample" * 20},
+            },
+        }
+
+        included, manifest = read_slow_sources(
+            ("feedback-1", "feedback-2"),
+            role_scope="reflection",
+            source_catalog=catalog,
+            budget_bytes=500,
+        )
+
+        self.assertEqual(manifest["available_count"], 2)
+        self.assertEqual(
+            manifest["included_count"] + manifest["deferred_count"], 2
+        )
+        self.assertTrue(all(item["content"] for item in included))
+        with self.assertRaisesRegex(ValidationError, "outside the role scope"):
+            read_slow_sources(
+                ("feedback-2",),
+                role_scope="H1",
+                source_catalog=catalog,
+                budget_bytes=2_000,
+            )
+
+    def test_failed_slow_memory_cannot_consume_feedback(self) -> None:
+        value = {
+            "schema_version": "slow-memory-v1",
+            "cycle_id": 1,
+            "contract_hash": "contract",
+            "input_hash": "input",
+            "parent_memory_hash": "",
+            "reflection_work_hash": "work",
+            "status": "failed",
+            "processed_feedback_refs": ["feedback-1"],
+            "pending_feedback_refs": [],
+            "episode_reflections": [],
+            "lesson_additions": [],
+            "model_view_manifest": {},
+            "usage_ref": None,
+            "failure_ref": "failed",
+        }
+
+        with self.assertRaisesRegex(ValidationError, "cannot consume"):
+            validate_slow_memory(
+                value,
+                available_feedback_refs=("feedback-1",),
+                available_source_refs=("feedback-1",),
+            )
+
+    def test_two_slow_only_cycles_feed_committed_first_cycle_to_reflection(self) -> None:
+        class ReflectingMiningModel(EmptyMiningModel):
+            def __init__(self) -> None:
+                self.reflection_payloads = []
+
+            def reflect_feedback(self, payload):
+                self.reflection_payloads.append(payload)
+                episodes = [
+                    {
+                        "episode_ref": payload["episode_slots"][index],
+                        "source_refs": [unit["feedback_ref"]],
+                        "reflection": "Preserve this exact completed-cycle outcome.",
+                        "unresolved_questions": [],
+                    }
+                    for index, unit in enumerate(payload["feedback_units"])
+                ]
+                return AgentStep(
+                    {
+                        "episode_reflections": episodes,
+                        "lesson_additions": [],
+                    }
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            snapshot = registry.freeze()
+            workspace = EvolutionWorkspace(root / "workspace")
+            model = ReflectingMiningModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=tuple(
+                    make_case(f"slow_only_{index}", 2.5 if index % 2 else 1.2)
+                    for index in range(1, 13)
+                ),
+                meta_memory=PlanMetaMemory(),
+                workspace=workspace,
+                mining_model=model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            empty_validation = SlowLoopValidation(
+                mined_candidates=(),
+                updated_candidates=(),
+                validated_candidates={},
+                provisional_candidates={},
+                rejected={},
+                refined_hypotheses={},
+                input_registry_version=snapshot.version,
+                input_registry_hash=snapshot.registry_hash,
+                input_signal_refs=tuple(spec.ref for spec in snapshot.specs),
+            )
+
+            for cycle_id in (1, 2):
+                workspace.start_or_resume_cycle(
+                    run_contract_hash="slow-only-contract",
+                    target_plan_rounds=0,
+                    cycle_mode="slow_only",
+                    initial_signal_registry_version=snapshot.version,
+                    initial_signal_registry_hash=snapshot.registry_hash,
+                    observed_signal_registry_version=registry.version,
+                    observed_signal_registry_hash=registry.freeze().registry_hash,
+                    max_slow_cycles=2,
+                )
+                with mock.patch.object(
+                    engine, "_validate_cycle", return_value=empty_validation
+                ):
+                    result = engine.run_cycle(
+                        cycle_id=cycle_id,
+                        input_snapshot=registry.freeze(),
+                    )
+                workspace.stage_slow_result(
+                    cycle_id=cycle_id,
+                    result=result.to_dict(),
+                )
+                workspace.complete_cycle(
+                    cycle_id=cycle_id,
+                    observed_signal_registry_version=registry.version,
+                    observed_signal_registry_hash=registry.freeze().registry_hash,
+                )
+
+            self.assertEqual(workspace.last_completed_round, 0)
+            self.assertEqual(workspace.last_completed_cycle, 2)
+            self.assertEqual(len(model.reflection_payloads), 1)
+            self.assertTrue(model.reflection_payloads[0]["feedback_units"])
+            second_input = workspace.load_slow_input(2)
+            self.assertEqual(
+                second_input["source_cutoff"],
+                {"committed_fast_round": 0, "committed_slow_cycle": 1},
+            )
+
+    def test_validator_rejects_definition_implementation_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            stable = registry.load_spec("revenue_growth_yoy:v1")
+            candidate = replace(
+                stable,
+                signal_id="segment_breadth",
+                description="Measure breadth across reported business segments.",
+            )
+            validator = SignalCandidateValidator(registry, llm_runner=None)
+
+            result = validator.validate(candidate, skill=None, tests=())
+
+            self.assertFalse(result.accepted)
+            self.assertTrue(
+                any("definition-to-implementation mismatch" in item for item in result.reasons)
+            )
+
     def test_handled_pipeline_failures_emit_typed_progress_before_continuing(
         self,
     ) -> None:
@@ -869,7 +1071,10 @@ class SignalEvolutionTests(TestCase):
             registry.install_catalog(SEED_CATALOG)
             candidate = SignalSpec(
                 signal_id="case_sensitive_probe", version=1, category="financial",
-                description="Check five customers and cash for the next period.",
+                description=(
+                    "Measure year-over-year revenue growth while checking five "
+                    "customers and cash for the next period."
+                ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
                 function="financial.revenue_growth_yoy", source_types=("financials",),
             )
@@ -1027,8 +1232,8 @@ class SignalEvolutionTests(TestCase):
                 json.dumps(stale), encoding="utf-8"
             )
             discovery_cases = tuple(
-                [make_case(f"recovery_positive_{index}", 4.0) for index in range(2)]
-                + [make_case(f"recovery_control_{index}", 1.1) for index in range(2)]
+                [make_case(f"recovery_positive_{index}", 4.0) for index in range(4)]
+                + [make_case(f"recovery_control_{index}", 1.1) for index in range(4)]
             )
             raw_store = RawInfoStore(
                 documents=tuple(
@@ -1056,7 +1261,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                mining_config=fixture_mining_config(len(discovery_cases)),
+                mining_config=fixture_mining_config(len(discovery_cases) // 2),
             )
 
             engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
@@ -1081,7 +1286,7 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(
                 mining_model.requests[0]["h1_contract_version"],
-                "signal-mining-hypothesis-v6",
+                "signal-mining-hypothesis-v7",
             )
 
     def test_mining_sample_basis_rejects_malformed_persisted_values(self) -> None:
@@ -2636,6 +2841,17 @@ class SignalEvolutionTests(TestCase):
                 ),
                 encoding="utf-8",
             )
+            workspace.cycle_state_path.write_text(
+                json.dumps(
+                    {
+                        "last_completed_cycle": 1,
+                        "last_completed_round": 0,
+                        "run_contract_hash": "contract-hash",
+                        "active_cycle": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
 
             second = engine._run_signal_mining(cycle_id=2)
 
@@ -3424,6 +3640,17 @@ class SignalEvolutionTests(TestCase):
                 ),
                 encoding="utf-8",
             )
+            workspace.cycle_state_path.write_text(
+                json.dumps(
+                    {
+                        "last_completed_cycle": 1,
+                        "last_completed_round": 0,
+                        "run_contract_hash": "contract-hash",
+                        "active_cycle": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
 
             prior = engine._mining_context(cycle_id=2)["prior_slow_work"][0]
 
@@ -3766,7 +3993,10 @@ class SignalEvolutionTests(TestCase):
                 signal_id="catalyst_handling_quality",
                 version=1,
                 category="catalysts",
-                description="Check handling for positive catalyst evidence.",
+                description=(
+                    "Measure year-over-year revenue growth while checking handling "
+                    "for positive catalyst evidence."
+                ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
@@ -3956,7 +4186,10 @@ class SignalEvolutionTests(TestCase):
                 signal_id="discovery_growth_quality",
                 version=1,
                 category="financial",
-                description="Measure whether growth is broad-based across disclosed segments.",
+                description=(
+                    "Measure the latest point-in-time year-over-year revenue growth "
+                    "with a stricter positive threshold."
+                ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
@@ -3994,11 +4227,11 @@ class SignalEvolutionTests(TestCase):
             discovery_cases = tuple(
                 [
                     make_case(f"discovery_positive_{index}", 4.0)
-                    for index in range(4)
+                    for index in range(8)
                 ]
                 + [
                     make_case(f"discovery_control_{index}", 1.1)
-                    for index in range(4)
+                    for index in range(8)
                 ]
             )
             raw_store = RawInfoStore(
@@ -4031,7 +4264,7 @@ class SignalEvolutionTests(TestCase):
                 mining_model=mining_model,
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                mining_config=fixture_mining_config(len(discovery_cases)),
+                mining_config=fixture_mining_config(len(discovery_cases) // 2),
             )
             snapshot = registry.freeze()
             workspace.start_or_resume_cycle(
@@ -5249,7 +5482,7 @@ class DualLoopTests(TestCase):
                 signal_id="cross_cycle_growth_quality",
                 version=1,
                 category="financial",
-                description="Measure whether revenue growth spans disclosed segments.",
+                description="Measure point-in-time year-over-year revenue growth.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
@@ -5257,11 +5490,11 @@ class DualLoopTests(TestCase):
             discovery_cases = tuple(
                 [
                     make_case(f"discovery_positive_{index}", 4.0)
-                    for index in range(4)
+                    for index in range(8)
                 ]
                 + [
                     make_case(f"discovery_control_{index}", 1.1)
-                    for index in range(4)
+                    for index in range(8)
                 ]
             )
             signal_store = RawInfoStore(
@@ -5322,7 +5555,7 @@ class DualLoopTests(TestCase):
                 ),
                 update_model=NoChangeUpdateModel(),
                 llm_signal_runner=None,
-                mining_config=fixture_mining_config(len(discovery_cases)),
+                mining_config=fixture_mining_config(len(discovery_cases) // 2),
             )
             dataset = EvolutionDataset(
                 discovery=discovery_cases,

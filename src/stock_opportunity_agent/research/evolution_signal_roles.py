@@ -66,7 +66,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 
 
 _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
-    ' Output contract signal-mining-hypothesis-v6: return exactly {"conclusion":'
+    ' Output contract signal-mining-hypothesis-v7: return exactly {"conclusion":'
     '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
     'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
     "no_hypothesis is null and each "
@@ -997,7 +997,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
-            "h1_contract": "signal-mining-hypothesis-v6",
+            "h1_contract": "signal-mining-hypothesis-v7",
+            "reflection_contract": "signal-mining-reflect-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
             "e2_decision_contract": "contrast-bound-slots-v1",
@@ -1007,10 +1008,140 @@ class LLMSignalMiningModel(SignalMiningModel):
             "proposal_profile": getattr(registration, "proposal_profile", None),
         }
 
+    def reflect_feedback(
+        self, payload: Mapping[str, Any]
+    ) -> AgentStep[Mapping[str, Any]]:
+        """Append evidence-linked episode reflections and method lessons."""
+
+        episode_slots = {
+            str(item) for item in payload.get("episode_slots", ())
+        }
+        lesson_slots = {str(item) for item in payload.get("lesson_slots", ())}
+        feedback_refs = {
+            str(item.get("feedback_ref"))
+            for item in payload.get("feedback_units", ())
+            if isinstance(item, Mapping) and item.get("feedback_ref")
+        }
+        prior_lesson_refs = {
+            str(lesson.get("lesson_id"))
+            for memory in payload.get("prior_memory", ())
+            if isinstance(memory, Mapping)
+            for lesson in memory.get("lesson_additions", ())
+            if isinstance(lesson, Mapping) and lesson.get("lesson_id")
+        }
+
+        def parse(value: Mapping[str, Any]) -> Mapping[str, Any]:
+            if set(value) != {"episode_reflections", "lesson_additions"}:
+                raise ValidationError(
+                    "Signal reflection requires episode_reflections and lesson_additions"
+                )
+            episodes = value.get("episode_reflections")
+            lessons = value.get("lesson_additions")
+            if not isinstance(episodes, list) or not isinstance(lessons, list):
+                raise ValidationError("Signal reflection outputs must be arrays")
+            seen_episodes: set[str] = set()
+            for index, raw in enumerate(episodes):
+                if not isinstance(raw, Mapping) or set(raw) != {
+                    "episode_ref",
+                    "source_refs",
+                    "reflection",
+                    "unresolved_questions",
+                }:
+                    raise ValidationError(
+                        f"episode_reflections[{index}] shape is invalid"
+                    )
+                episode_ref = str(raw.get("episode_ref", ""))
+                source_refs = raw.get("source_refs")
+                if (
+                    episode_ref not in episode_slots
+                    or episode_ref in seen_episodes
+                    or not isinstance(source_refs, list)
+                    or not source_refs
+                    or not set(str(item) for item in source_refs) <= feedback_refs
+                    or not str(raw.get("reflection", "")).strip()
+                    or not isinstance(raw.get("unresolved_questions"), list)
+                ):
+                    raise ValidationError(
+                        f"episode_reflections[{index}] refs or content are invalid"
+                    )
+                seen_episodes.add(episode_ref)
+            seen_lessons: set[str] = set()
+            resolvable = (
+                feedback_refs | episode_slots | lesson_slots | prior_lesson_refs
+            )
+            for index, raw in enumerate(lessons):
+                if not isinstance(raw, Mapping) or set(raw) != {
+                    "lesson_id",
+                    "guidance",
+                    "applicable_scope",
+                    "support_refs",
+                    "counterevidence_refs",
+                    "limitations",
+                    "qualifies_refs",
+                    "challenges_refs",
+                }:
+                    raise ValidationError(f"lesson_additions[{index}] shape is invalid")
+                lesson_id = str(raw.get("lesson_id", ""))
+                refs = {
+                    str(item)
+                    for key in (
+                        "support_refs",
+                        "counterevidence_refs",
+                        "qualifies_refs",
+                        "challenges_refs",
+                    )
+                    for item in raw.get(key, ())
+                }
+                if (
+                    lesson_id not in lesson_slots
+                    or lesson_id in seen_lessons
+                    or not str(raw.get("guidance", "")).strip()
+                    or not str(raw.get("applicable_scope", "")).strip()
+                    or not str(raw.get("limitations", "")).strip()
+                    or not raw.get("support_refs")
+                    or not refs <= resolvable
+                ):
+                    raise ValidationError(
+                        f"lesson_additions[{index}] refs or content are invalid"
+                    )
+                seen_lessons.add(lesson_id)
+            return {
+                "episode_reflections": [dict(item) for item in episodes],
+                "lesson_additions": [dict(item) for item in lessons],
+            }
+
+        value, usage = _complete_parsed_role(
+            self.caller,
+            stage="signal_mining_reflect",
+            system_prompt=(
+                "Reflect on complete committed Slow feedback units. Preserve their "
+                "specific measurement conditions, failure layers, counterevidence, "
+                "and unresolved questions. Append only; never rewrite prior memory, "
+                "invent refs, infer causal Signal credit, or turn technical failure "
+                "into a research conclusion. Return JSON with exactly "
+                "episode_reflections and lesson_additions. Each episode has exactly "
+                "episode_ref, source_refs, reflection, unresolved_questions. Each "
+                "lesson has exactly lesson_id, guidance, applicable_scope, "
+                "support_refs, counterevidence_refs, limitations, qualifies_refs, "
+                "challenges_refs. Use only runtime-provided slots and refs."
+                + _UNTRUSTED_DATA_INSTRUCTION
+            ),
+            payload=payload,
+            parser=parse,
+            allow_outcomes=True,
+            anonymous_aliases=(),
+            temperature=0.0,
+            reject_output_aliases=self.identity_guard_aliases,
+            max_output_tokens=5_000,
+            enforce_scoped_correction=True,
+            stable_correction_prefix=True,
+        )
+        return AgentStep(value, usage)
+
     def propose_hypotheses(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningHypothesis, ...]]:
-        """Run the sole production H1 v4 contract."""
+        """Run the sole production H1 v7 contract."""
 
         return self._propose_hypotheses_v3(payload)
 
@@ -1121,7 +1252,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         slots = tuple(str(item) for item in projected_payload.get("hypothesis_slots", ()))
         if len(slots) != limit or len(set(slots)) != len(slots):
             raise ValidationError(
-                "Signal Mining H1 v4 requires one unique runtime slot per hypothesis"
+                "Signal Mining H1 v7 requires one unique runtime slot per hypothesis"
             )
         allowed_slots = set(slots)
         allowed_source_types = {
@@ -1200,7 +1331,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "need_dispositions",
             }:
                 raise ValidationError(
-                    "Signal Mining H1 v4 requires conclusion, hypotheses, "
+                    "Signal Mining H1 v7 requires conclusion, hypotheses, "
                     "no_hypothesis, and need_dispositions"
                 )
             conclusion = value.get("conclusion")
@@ -1208,7 +1339,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             if conclusion not in {"hypotheses", "no_testable_hypothesis"} or not isinstance(
                 raw_items, list
             ):
-                raise ValidationError("Signal Mining H1 v4 conclusion is invalid")
+                raise ValidationError("Signal Mining H1 v7 conclusion is invalid")
             raw_dispositions = value.get("need_dispositions")
             if not isinstance(raw_dispositions, list):
                 raise ValidationError("need_dispositions must be an array")
@@ -1889,7 +2020,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 projected_payload,
                 allow_outcomes=True,
                 anonymous_aliases=self.identity_guard_aliases,
-                identity_boundary="Signal Mining H1 v4 aggregate request",
+                identity_boundary="Signal Mining H1 v7 aggregate request",
             )
         system_prompt = (
             "Propose only reusable, point-in-time observable measurements. The "

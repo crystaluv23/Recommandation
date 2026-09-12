@@ -2970,7 +2970,7 @@ class SignalRoleAdapterTests(TestCase):
 
         step = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "h1_contract_version": "signal-mining-hypothesis-v7",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["news"],
@@ -3041,7 +3041,7 @@ class SignalRoleAdapterTests(TestCase):
 
         step = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "h1_contract_version": "signal-mining-hypothesis-v7",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["news"],
@@ -3102,7 +3102,7 @@ class SignalRoleAdapterTests(TestCase):
 
         step = LLMSignalMiningModel(caller).propose_hypotheses(
             {
-                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "h1_contract_version": "signal-mining-hypothesis-v7",
                 "hypothesis_slots": ["h1-c0001-s01"],
                 "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
                 "available_raw_source_types": ["financials"],

@@ -1,5 +1,16 @@
 # Evolution Benefit Confirmation
 
+## Slow method-memory ablation
+
+An offline ablation manifest may compare `no_memory`, `episodes_only`, and
+`episodes_and_lessons` from the same frozen Fast/Registry start, seed, model,
+data boundary, and budget. It records all generated Registry hashes and the
+allowed paired comparisons before any confirmation result is revealed. One
+confirmation reservation is bound to the complete comparison group and excludes
+issuers, not only case ids, from reuse. Missing rows and technical failures stay
+in the frozen denominator; insufficient or historically unverifiable issuer
+isolation is reported as incomplete.
+
 ## Purpose
 
 Provide a pure, offline confirmation boundary for the question “did the system

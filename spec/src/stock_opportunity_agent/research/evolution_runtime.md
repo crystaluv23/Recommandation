@@ -1,5 +1,20 @@
 # Evolution Runtime Control Plane
 
+## V8 Slow execution additions
+
+Only `evolution-run-contract-v8` may create new Slow self-evolution workspaces.
+It adds finite `slow_only`, a committed history manifest hash,
+`max_slow_cycles`, `min_new_signals_per_cycle`, reflection/source-read limits,
+and semantic-review identities. V7 and earlier workspaces remain immutable
+audit inputs and cannot be resumed under v8 semantics.
+
+The contract freezes one outcome-independent issuer-level sampling protocol and
+the role scopes for Slow source resolution. Request/cache identities bind the
+actual memory projection, source manifest, exact Signal catalog, sample/corpus
+manifest, protocol version, model, and relevant configuration. A newly committed
+fact or lesson changes downstream identities; an exact replay does not create a
+duplicate reflection or lesson.
+
 ## Status
 
 Ready - v6 bounded-context, evidence-reference, and cumulative Signal-transition contract specified
@@ -74,8 +89,8 @@ An existing contract path may be reused only if canonical content is exact.
 API-key availability is a boolean preflight fact and the key value is never
 stored.
 
-Only `evolution-run-contract-v7` may execute. Older frozen contracts, including
-v6, remain
+Only `evolution-run-contract-v8` may execute. Older frozen contracts, including
+v7, remain
 readable for status/audit commands but run commands return
 `legacy_contract_read_only`; no missing evaluation field receives an implicit
 default. Before the first cycle creates requests or execution artifacts,
@@ -85,7 +100,7 @@ stable snapshot against the last committed cycle output, not against the
 initial contract snapshot. Evaluation snapshots are immutable recovery inputs
 under the run workspace. Their existence does not prove round completion or
 advance `state.json:last_completed_round`.
-For v7, both model roles, code/runtime identities, and every consumed limit are
+For v8, both model roles, code/runtime identities, and every consumed limit are
 mandatory and type/range validated when the contract is loaded. Execution uses
 those exact fields and never substitutes Python-side defaults.
 The contract additionally freezes the fixed Predictor-semantics hash, the

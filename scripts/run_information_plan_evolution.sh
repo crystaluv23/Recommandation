@@ -287,7 +287,7 @@ CONTRACT_INFO="$(
 )"
 CONTRACT_SCHEMA="${CONTRACT_INFO%% *}"
 CONTRACT_HASH="${CONTRACT_INFO#* }"
-[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v7" ] || fail "legacy contracts are read-only"
+[ "$CONTRACT_SCHEMA" = "evolution-run-contract-v8" ] || fail "legacy contracts are read-only"
 
 RUN_ARGS=(
   run-loop

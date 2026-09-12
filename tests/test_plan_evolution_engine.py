@@ -4,6 +4,48 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class PlanArchiveAndWorkspaceTests(TestCase):
+    def test_slow_only_cumulative_limit_survives_resume(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            snapshot = registry.freeze()
+            workspace = EvolutionWorkspace(root / "workspace")
+            cycle = workspace.start_or_resume_cycle(
+                run_contract_hash="contract",
+                target_plan_rounds=0,
+                cycle_mode="slow_only",
+                initial_signal_registry_version=snapshot.version,
+                initial_signal_registry_hash=snapshot.registry_hash,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+                max_slow_cycles=1,
+            )
+            result = {
+                "input_registry_version": snapshot.version,
+                "input_registry_hash": snapshot.registry_hash,
+                "output_registry_version": snapshot.version,
+                "output_registry_hash": snapshot.registry_hash,
+            }
+            workspace.stage_slow_result(cycle_id=1, result=result)
+            workspace.complete_cycle(
+                cycle_id=1,
+                observed_signal_registry_version=snapshot.version,
+                observed_signal_registry_hash=snapshot.registry_hash,
+            )
+
+            with self.assertRaisesRegex(ValidationError, "cumulative cycle limit"):
+                workspace.start_or_resume_cycle(
+                    run_contract_hash="contract",
+                    target_plan_rounds=0,
+                    cycle_mode="slow_only",
+                    initial_signal_registry_version=snapshot.version,
+                    initial_signal_registry_hash=snapshot.registry_hash,
+                    observed_signal_registry_version=snapshot.version,
+                    observed_signal_registry_hash=snapshot.registry_hash,
+                    max_slow_cycles=1,
+                )
+
     def test_meta_model_view_keeps_every_complete_round_even_over_48k(self) -> None:
         memory = PlanMetaMemory(
             entries=tuple(

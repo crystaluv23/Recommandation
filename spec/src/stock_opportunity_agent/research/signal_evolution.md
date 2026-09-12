@@ -1,5 +1,39 @@
 # Signal and Dual-Loop Evolution
 
+## V8 Slow Round self-evolution contract
+
+The engine freezes `slow_input.json`, then appends or reuses one
+`slow_memory.json`, then seals `slow_experiments.json` before staging validation.
+All three artifacts are cycle-scoped, immutable, canonical-hash linked, and may
+read only source artifacts reachable from committed Fast/Slow pointers. Raw
+Signal usage events retain exact `signal_ref`; efficacy uses deduplicated
+observation identity and does not infer causal credit from reflections.
+
+The entry reflection is one bounded logical job over complete selected feedback
+units plus historical pending units. No pending feedback means zero model calls
+and a `reused` memory delta. Successful coverage alone advances
+`processed_feedback_refs`; omitted or failed units remain pending. Raw episodes,
+specific reflections, and evidence-linked method lessons coexist append-only.
+Challenges qualify prior lessons through explicit refs and never overwrite them.
+
+Every cycle reserves one H batch when actionable and one independent E1/E2
+batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT
+development evidence; H1/H3/E2/Update receive role-scoped memory views through
+one bounded source resolver. Each search/update state is retained as an
+experiment attempt, including no candidate and technical failure.
+
+One frozen sampling manifest supplies issuer-disjoint dev/check identities to
+H, E, Update, and effectiveness evaluation. Missing evidence does not substitute
+another case. Candidate authoring and semantic review finish before candidate
+hash and shared check corpus freeze. Validation adds definition-to-
+implementation consistency, independent supporting/counter/unavailable
+fixtures, and semantic duplicate checks without weakening existing gates.
+
+`SlowLoopValidation` and `SlowLoopResult` bind the input, memory, experiment,
+and sampling hashes. A result separately reports new candidate, validated new,
+promoted new, and updated counts. Only committed promotions of new Signal ids
+count toward `min_new_signals_per_cycle`.
+
 ## Purpose
 
 Own Signal-learning aggregation, candidate validation/effectiveness, Slow

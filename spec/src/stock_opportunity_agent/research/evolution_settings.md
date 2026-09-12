@@ -1,5 +1,13 @@
 # Evolution Settings
 
+## V8 Slow settings
+
+Canonical settings expose explicit positive defaults for
+`min_new_signals_per_cycle`, bounded reflection additions/source reads, and one
+independent exploration batch per Slow cycle. Contract creation copies these
+values; runtime code does not silently substitute missing v8 fields and does not
+introduce a general configuration framework.
+
 ## Purpose
 
 Own frozen runtime constants and deterministic source/model catalogs used when

@@ -35,6 +35,68 @@ class BenefitArm(str, Enum):
 
 
 @dataclass(frozen=True)
+class SlowMemoryAblationManifest:
+    """Freeze three Slow-generation memory conditions before confirmation."""
+
+    ablation_id: str
+    fast_start_hash: str
+    registry_start_hash: str
+    seed: int
+    model_hash: str
+    budget_hash: str
+    generated_registry_hashes: Mapping[str, str]
+    allowed_comparisons: tuple[tuple[str, str], ...]
+
+    def __post_init__(self) -> None:
+        _require_id(self.ablation_id, "ablation_id")
+        for name in (
+            "fast_start_hash",
+            "registry_start_hash",
+            "model_hash",
+            "budget_hash",
+        ):
+            _require_hash(str(getattr(self, name)), name)
+        if type(self.seed) is not int:
+            raise ValidationError("Slow memory ablation seed must be an integer")
+        expected = {"no_memory", "episodes_only", "episodes_and_lessons"}
+        hashes = {
+            str(key): str(value)
+            for key, value in self.generated_registry_hashes.items()
+        }
+        if set(hashes) != expected:
+            raise ValidationError("Slow memory ablation requires all three conditions")
+        for value in hashes.values():
+            _require_hash(value, "generated_registry_hash")
+        comparisons = tuple(
+            (str(left), str(right)) for left, right in self.allowed_comparisons
+        )
+        if not comparisons or any(
+            left not in expected or right not in expected or left == right
+            for left, right in comparisons
+        ):
+            raise ValidationError("Slow memory ablation comparisons are invalid")
+        object.__setattr__(self, "generated_registry_hashes", hashes)
+        object.__setattr__(self, "allowed_comparisons", comparisons)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "slow-memory-ablation-manifest-v1",
+            "ablation_id": self.ablation_id,
+            "fast_start_hash": self.fast_start_hash,
+            "registry_start_hash": self.registry_start_hash,
+            "seed": self.seed,
+            "model_hash": self.model_hash,
+            "budget_hash": self.budget_hash,
+            "generated_registry_hashes": dict(self.generated_registry_hashes),
+            "allowed_comparisons": [list(item) for item in self.allowed_comparisons],
+        }
+
+    @property
+    def manifest_hash(self) -> str:
+        return canonical_json_hash(self.to_dict())
+
+
+@dataclass(frozen=True)
 class EvolutionBenefitProtocol:
     """Fully explicit confirmation cohort, identities, thresholds, and looks."""
 
@@ -769,8 +831,29 @@ class ConfirmationCohortLedger:
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
 
-    def reserve(self, protocol: EvolutionBenefitProtocol) -> bool:
-        """Append one reservation; exact replay is an idempotent no-op."""
+    def reserve(
+        self,
+        protocol: EvolutionBenefitProtocol,
+        *,
+        ablation_manifest: SlowMemoryAblationManifest | None = None,
+        comparison: tuple[str, str] | None = None,
+    ) -> bool:
+        """Append one reservation; group members may share only predeclared cases."""
+
+        if (ablation_manifest is None) != (comparison is None):
+            raise ValidationError(
+                "ablation reservation requires both manifest and comparison"
+            )
+        normalized_comparison = (
+            None
+            if comparison is None
+            else (str(comparison[0]), str(comparison[1]))
+        )
+        if (
+            ablation_manifest is not None
+            and normalized_comparison not in ablation_manifest.allowed_comparisons
+        ):
+            raise ValidationError("ablation comparison was not frozen in the group")
 
         payload = self._load()
         reservations = list(payload["reservations"])
@@ -779,10 +862,29 @@ class ConfirmationCohortLedger:
             "protocol_hash": protocol.protocol_hash,
             "case_ids": list(protocol.case_ids),
             "capability_case_ids": list(protocol.candidate_capability_case_ids),
+            "issuer_ids": sorted(set(protocol.issuer_by_case.values())),
+            "capability_issuer_ids": sorted(
+                set(protocol.candidate_capability_issuer_by_case.values())
+            ),
+            "comparison_group_hash": (
+                ablation_manifest.manifest_hash
+                if ablation_manifest is not None
+                else None
+            ),
+            "comparison": (
+                list(normalized_comparison)
+                if normalized_comparison is not None
+                else None
+            ),
         }
         for reservation in reservations:
             if reservation["protocol_id"] == protocol.protocol_id:
-                if reservation == exact:
+                if reservation == exact or (
+                    reservation.get("protocol_hash") == protocol.protocol_hash
+                    and reservation.get("case_ids") == list(protocol.case_ids)
+                    and reservation.get("capability_case_ids", ())
+                    == list(protocol.candidate_capability_case_ids)
+                ):
                     return False
                 raise ValidationError("confirmation protocol reservation conflicts")
             reserved_case_ids = set(reservation["case_ids"]).union(
@@ -792,16 +894,37 @@ class ConfirmationCohortLedger:
                 protocol.candidate_capability_case_ids
             )
             overlap = reserved_case_ids.intersection(requested_case_ids)
-            if overlap:
+            same_frozen_group = (
+                exact["comparison_group_hash"] is not None
+                and reservation.get("comparison_group_hash")
+                == exact["comparison_group_hash"]
+            )
+            if overlap and not same_frozen_group:
                 raise ValidationError(
                     "confirmation cases were already reserved: "
                     + ", ".join(sorted(overlap))
+                )
+            if "issuer_ids" not in reservation:
+                raise ValidationError(
+                    "historical confirmation issuer isolation is unknown"
+                )
+            reserved_issuers = set(reservation["issuer_ids"]).union(
+                reservation.get("capability_issuer_ids", ())
+            )
+            requested_issuers = set(exact["issuer_ids"]).union(
+                exact["capability_issuer_ids"]
+            )
+            issuer_overlap = reserved_issuers.intersection(requested_issuers)
+            if issuer_overlap and not same_frozen_group:
+                raise ValidationError(
+                    "confirmation issuers were already reserved: "
+                    + ", ".join(sorted(issuer_overlap))
                 )
         reservations.append(exact)
         atomic_write_json(
             self.path,
             {
-                "schema_version": "confirmation-cohort-ledger-v1",
+                "schema_version": "confirmation-cohort-ledger-v2",
                 "reservations": reservations,
             },
         )
@@ -810,12 +933,16 @@ class ConfirmationCohortLedger:
     def _load(self) -> dict[str, Any]:
         if not self.path.exists():
             return {
-                "schema_version": "confirmation-cohort-ledger-v1",
+                "schema_version": "confirmation-cohort-ledger-v2",
                 "reservations": [],
             }
         data = json.loads(self.path.read_text(encoding="utf-8"))
         if (
-            data.get("schema_version") != "confirmation-cohort-ledger-v1"
+            data.get("schema_version")
+            not in {
+                "confirmation-cohort-ledger-v1",
+                "confirmation-cohort-ledger-v2",
+            }
             or not isinstance(data.get("reservations"), list)
         ):
             raise ValidationError("confirmation cohort ledger is invalid")

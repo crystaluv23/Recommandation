@@ -696,10 +696,11 @@ class EvolutionWorkspace:
         initial_signal_registry_hash: str,
         observed_signal_registry_version: int,
         observed_signal_registry_hash: str,
+        max_slow_cycles: int | None = None,
     ) -> dict[str, Any]:
         """Freeze or recover one Fast/Slow cycle and its Registry boundary."""
 
-        if cycle_mode not in {"fast_then_slow", "slow_bootstrap"}:
+        if cycle_mode not in {"fast_then_slow", "slow_bootstrap", "slow_only"}:
             raise ValidationError("cycle mode is invalid")
         if (
             not run_contract_hash
@@ -710,9 +711,16 @@ class EvolutionWorkspace:
             raise ValidationError("cycle contract hash and round target are required")
         if (
             (cycle_mode == "fast_then_slow" and target_plan_rounds < 1)
-            or (cycle_mode == "slow_bootstrap" and target_plan_rounds != 0)
+            or (
+                cycle_mode in {"slow_bootstrap", "slow_only"}
+                and target_plan_rounds != 0
+            )
         ):
             raise ValidationError("cycle mode and Fast-round target conflict")
+        if cycle_mode == "slow_only" and (
+            max_slow_cycles is None or max_slow_cycles < 1
+        ):
+            raise ValidationError("slow_only requires a positive cumulative limit")
         if self.cycle_state_path.exists():
             state = _read_json(self.cycle_state_path)
             if state.get("schema_version") != "dual-loop-cycle-state-v2":
@@ -745,6 +753,12 @@ class EvolutionWorkspace:
                 and int(state.get("last_completed_cycle", 0)) != 0
             ):
                 raise ValidationError("slow_bootstrap contract is single-cycle")
+            if (
+                cycle_mode == "slow_only"
+                and int(state.get("last_completed_cycle", 0))
+                >= int(max_slow_cycles or 0)
+            ):
+                raise ValidationError("slow_only cumulative cycle limit exhausted")
             if (
                 int(state.get("current_signal_registry_version", 0))
                 != observed_signal_registry_version
@@ -804,6 +818,187 @@ class EvolutionWorkspace:
         state["active_cycle"] = active
         _atomic_write_json(self.cycle_state_path, state)
 
+    def stage_slow_input(
+        self,
+        *,
+        cycle_id: int,
+        slow_input: Mapping[str, Any],
+    ) -> Path:
+        """Freeze one cycle's committed feedback and neutral sample identity."""
+
+        payload = self._validated_slow_artifact_identity(
+            cycle_id=cycle_id,
+            value=slow_input,
+            schema_version="slow-input-v1",
+        )
+        path = self._slow_artifact_path(cycle_id, "slow_input.json")
+        _write_or_verify_json(path, payload)
+        return path
+
+    def load_slow_input(self, cycle_id: int) -> dict[str, Any] | None:
+        """Load and validate a frozen Slow input for an active/committed cycle."""
+
+        return self._load_slow_artifact(
+            cycle_id=cycle_id,
+            filename="slow_input.json",
+            schema_version="slow-input-v1",
+        )
+
+    def stage_slow_memory(
+        self,
+        *,
+        cycle_id: int,
+        slow_memory: Mapping[str, Any],
+    ) -> Path:
+        """Append one immutable memory delta linked to the frozen Slow input."""
+
+        slow_input = self.load_slow_input(cycle_id)
+        if slow_input is None:
+            raise ValidationError("cannot stage Slow memory before Slow input")
+        payload = self._validated_slow_artifact_identity(
+            cycle_id=cycle_id,
+            value=slow_memory,
+            schema_version="slow-memory-v1",
+        )
+        if payload.get("input_hash") != _canonical_hash(slow_input):
+            raise ValidationError("Slow memory input hash mismatch")
+        path = self._slow_artifact_path(cycle_id, "slow_memory.json")
+        _write_or_verify_json(path, payload)
+        return path
+
+    def load_slow_memory(self, cycle_id: int) -> dict[str, Any] | None:
+        """Load and validate one immutable Slow memory delta."""
+
+        value = self._load_slow_artifact(
+            cycle_id=cycle_id,
+            filename="slow_memory.json",
+            schema_version="slow-memory-v1",
+        )
+        if value is None:
+            return None
+        slow_input = self.load_slow_input(cycle_id)
+        if slow_input is None or value.get("input_hash") != _canonical_hash(slow_input):
+            raise ValidationError("Slow memory input lineage mismatch")
+        return value
+
+    def stage_slow_experiments(
+        self,
+        *,
+        cycle_id: int,
+        slow_experiments: Mapping[str, Any],
+    ) -> Path:
+        """Seal the complete Slow attempt index before candidate validation."""
+
+        slow_input = self.load_slow_input(cycle_id)
+        slow_memory = self.load_slow_memory(cycle_id)
+        if slow_input is None or slow_memory is None:
+            raise ValidationError(
+                "cannot stage Slow experiments before input and memory"
+            )
+        payload = self._validated_slow_artifact_identity(
+            cycle_id=cycle_id,
+            value=slow_experiments,
+            schema_version="slow-experiments-v1",
+        )
+        if (
+            payload.get("input_hash") != _canonical_hash(slow_input)
+            or payload.get("memory_hash") != _canonical_hash(slow_memory)
+        ):
+            raise ValidationError("Slow experiments lineage mismatch")
+        path = self._slow_artifact_path(cycle_id, "slow_experiments.json")
+        _write_or_verify_json(path, payload)
+        return path
+
+    def load_slow_experiments(self, cycle_id: int) -> dict[str, Any] | None:
+        """Load and validate the sealed Slow experiment index."""
+
+        value = self._load_slow_artifact(
+            cycle_id=cycle_id,
+            filename="slow_experiments.json",
+            schema_version="slow-experiments-v1",
+        )
+        if value is None:
+            return None
+        slow_input = self.load_slow_input(cycle_id)
+        slow_memory = self.load_slow_memory(cycle_id)
+        if (
+            slow_input is None
+            or slow_memory is None
+            or value.get("input_hash") != _canonical_hash(slow_input)
+            or value.get("memory_hash") != _canonical_hash(slow_memory)
+        ):
+            raise ValidationError("Slow experiments lineage mismatch")
+        return value
+
+    def committed_slow_artifacts(self) -> tuple[dict[str, Any], ...]:
+        """Return only pointer-reachable Slow input/memory/experiment chains."""
+
+        rows: list[dict[str, Any]] = []
+        for cycle_id in range(1, self.last_completed_cycle + 1):
+            slow_input = self.load_slow_input(cycle_id)
+            slow_memory = self.load_slow_memory(cycle_id)
+            slow_experiments = self.load_slow_experiments(cycle_id)
+            if slow_input is None or slow_memory is None or slow_experiments is None:
+                continue
+            rows.append(
+                {
+                    "cycle_id": cycle_id,
+                    "slow_input": slow_input,
+                    "slow_memory": slow_memory,
+                    "slow_experiments": slow_experiments,
+                }
+            )
+        return tuple(rows)
+
+    def _validated_slow_artifact_identity(
+        self,
+        *,
+        cycle_id: int,
+        value: Mapping[str, Any],
+        schema_version: str,
+    ) -> dict[str, Any]:
+        if cycle_id < 1:
+            raise ValidationError("cycle id must be positive")
+        state = _read_json(self.cycle_state_path)
+        active = state.get("active_cycle")
+        if not isinstance(active, Mapping) or int(active.get("cycle_id", 0)) != cycle_id:
+            raise ValidationError("Slow artifact requires the active cycle")
+        payload = dict(value)
+        if (
+            payload.get("schema_version") != schema_version
+            or int(payload.get("cycle_id", 0)) != cycle_id
+            or payload.get("contract_hash") != state.get("run_contract_hash")
+        ):
+            raise ValidationError("Slow artifact identity mismatch")
+        return payload
+
+    def _load_slow_artifact(
+        self,
+        *,
+        cycle_id: int,
+        filename: str,
+        schema_version: str,
+    ) -> dict[str, Any] | None:
+        path = self._slow_artifact_path(cycle_id, filename)
+        if not path.exists():
+            return None
+        payload = _read_json(path)
+        state = _read_json(self.cycle_state_path)
+        active = state.get("active_cycle")
+        is_active = (
+            isinstance(active, Mapping)
+            and int(active.get("cycle_id", 0)) == cycle_id
+        )
+        if cycle_id > int(state.get("last_completed_cycle", 0)) and not is_active:
+            raise ValidationError("uncommitted Slow artifact is not active")
+        if (
+            payload.get("schema_version") != schema_version
+            or int(payload.get("cycle_id", 0)) != cycle_id
+            or payload.get("contract_hash") != state.get("run_contract_hash")
+        ):
+            raise ValidationError("Slow artifact identity mismatch")
+        return payload
+
     def staged_slow_validation(self, cycle_id: int) -> dict[str, Any] | None:
         path = self._slow_validation_path(cycle_id)
         if not path.exists():
@@ -826,6 +1021,7 @@ class EvolutionWorkspace:
             != active.get("input_signal_registry_hash")
         ):
             raise ValidationError("staged Slow validation Registry input mismatch")
+        self._verify_slow_validation_chain(cycle_id, validation)
         return validation
 
     def stage_slow_validation(
@@ -851,6 +1047,19 @@ class EvolutionWorkspace:
             != active.get("input_signal_registry_hash")
         ):
             raise ValidationError("Slow validation differs from cycle Registry input")
+        slow_input = self.load_slow_input(cycle_id)
+        slow_memory = self.load_slow_memory(cycle_id)
+        slow_experiments = self.load_slow_experiments(cycle_id)
+        if any(item is not None for item in (slow_input, slow_memory, slow_experiments)):
+            if slow_input is None or slow_memory is None or slow_experiments is None:
+                raise ValidationError("Slow validation requires the complete v8 chain")
+            expected = {
+                "slow_input_hash": _canonical_hash(slow_input),
+                "slow_memory_hash": _canonical_hash(slow_memory),
+                "slow_experiments_hash": _canonical_hash(slow_experiments),
+            }
+            if any(validation.get(key) != value for key, value in expected.items()):
+                raise ValidationError("Slow validation artifact lineage mismatch")
         _write_or_verify_json(
             path,
             {
@@ -896,6 +1105,26 @@ class EvolutionWorkspace:
             != active.get("input_signal_registry_hash")
         ):
             raise ValidationError("Slow result differs from cycle Registry input")
+        validation = self.staged_slow_validation(cycle_id)
+        has_v8_chain = any(
+            self._slow_artifact_path(cycle_id, filename).exists()
+            for filename in (
+                "slow_input.json",
+                "slow_memory.json",
+                "slow_experiments.json",
+            )
+        )
+        if validation is None and has_v8_chain:
+            raise ValidationError("cannot stage Slow result without validation")
+        if validation is not None:
+            for key in (
+                "slow_input_hash",
+                "slow_memory_hash",
+                "slow_experiments_hash",
+                "sampling_manifest_hash",
+            ):
+                if validation.get(key) and result.get(key) != validation.get(key):
+                    raise ValidationError("Slow result artifact lineage mismatch")
         _write_or_verify_json(
             path,
             {
@@ -985,6 +1214,43 @@ class EvolutionWorkspace:
             / f"cycle-{cycle_id:04d}"
             / "slow_loop_result.json"
         )
+
+    def _slow_artifact_path(self, cycle_id: int, filename: str) -> Path:
+        if cycle_id < 1 or filename not in {
+            "slow_input.json",
+            "slow_memory.json",
+            "slow_experiments.json",
+        }:
+            raise ValidationError("Slow artifact path is invalid")
+        return (
+            self.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / filename
+        )
+
+    def _verify_slow_validation_chain(
+        self, cycle_id: int, validation: Mapping[str, Any]
+    ) -> None:
+        """Verify the optional v8 artifact chain on every resume shortcut."""
+
+        if not validation.get("slow_input_hash"):
+            return
+        slow_input = self.load_slow_input(cycle_id)
+        slow_memory = self.load_slow_memory(cycle_id)
+        slow_experiments = self.load_slow_experiments(cycle_id)
+        if slow_input is None or slow_memory is None or slow_experiments is None:
+            raise ValidationError("staged Slow validation lost its v8 artifact chain")
+        expected = {
+            "slow_input_hash": _canonical_hash(slow_input),
+            "slow_memory_hash": _canonical_hash(slow_memory),
+            "slow_experiments_hash": _canonical_hash(slow_experiments),
+            "sampling_manifest_hash": _canonical_hash(
+                dict(slow_input.get("sampling_manifest", {}))
+            ),
+        }
+        if any(validation.get(key) != value for key, value in expected.items()):
+            raise ValidationError("staged Slow validation artifact lineage mismatch")
 
     def commit_round(
         self,

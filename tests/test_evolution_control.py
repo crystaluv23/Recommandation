@@ -9,9 +9,61 @@ from stock_opportunity_agent.data.acquisition import (
 from stock_opportunity_agent.data.sources.alpha_vantage import (
     alpha_vantage_json_error,
 )
+from stock_opportunity_agent.research.evolution_control import (
+    apply_slow_history_manifest,
+    build_slow_history_manifest,
+)
 
 
 class RunControlTests(TestCase):
+    def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            target = root / "target"
+            source_registry = SignalRegistry(source / "signals")
+            source_registry.install_catalog(
+                PROJECT_ROOT / "configs" / "signals_v1.json"
+            )
+            source.mkdir(parents=True, exist_ok=True)
+            source_contract = make_contract()
+            source_contract.freeze(source / "run_contract.json")
+            write_json(source / "state.json", {"last_completed_round": 0})
+            write_json(
+                source / "cycle_state.json",
+                {
+                    "schema_version": "dual-loop-cycle-state-v2",
+                    "run_contract_hash": source_contract.contract_hash,
+                    "initial_signal_registry_version": 1,
+                    "initial_signal_registry_hash": source_registry.freeze().registry_hash,
+                    "current_signal_registry_version": 1,
+                    "current_signal_registry_hash": source_registry.freeze().registry_hash,
+                    "last_completed_cycle": 1,
+                    "active_cycle": None,
+                },
+            )
+
+            manifest_hash = build_slow_history_manifest(
+                workspace=target,
+                source_workspace=source,
+                dataset_manifest_hash=source_contract.dataset_manifest_hash,
+            )
+            envelope = json.loads(
+                (target / "slow_history" / "manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            apply_slow_history_manifest(
+                workspace=target,
+                manifest=envelope["manifest"],
+            )
+
+            self.assertEqual(manifest_hash, envelope["manifest_hash"])
+            self.assertEqual(
+                SignalRegistry(target / "signals").freeze().registry_hash,
+                source_registry.freeze().registry_hash,
+            )
+
     def test_historical_controller_output_ceiling_remains_readable(self) -> None:
         raw = make_contract().to_dict()
         raw["limits"]["role_output_tokens"]["controller"] = 2_000

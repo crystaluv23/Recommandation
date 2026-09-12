@@ -1,5 +1,15 @@
 # Signal Library
 
+## V8 Slow feedback use
+
+Slow method learning reads the append-only `SignalLearningEvent` ledger by exact
+Signal version and committed cutoff. `event_id` preserves distinct Plan routing
+reasons while `(case_id, signal_ref, input_fingerprint)` defines independent
+observation identity for efficacy. Pending outcomes, no later use, domain
+unavailability, technical execution failure, directional error, and explicit
+reflection attribution remain separate facts. Candidate work ids remain outside
+the usage ledger until an exact version is promoted and actually selected.
+
 ## Status
 
 Started
