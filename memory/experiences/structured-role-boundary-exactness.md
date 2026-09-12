@@ -1,6 +1,6 @@
 # Structured Role Boundary Exactness
 
-visit_times: 21
+visit_times: 22
 
 ## Trigger
 
@@ -104,6 +104,16 @@ spaced JSON, so the artifact and provider message were not byte-identical.
     actions owned by another role. Give out-of-domain actions an explicit bounded
     route that the owning pipeline already consumes; never force them into a
     superficially actionable but semantically false artifact.
+21. A portfolio role must receive evidence in the same structural scope in which it
+    reasons. A global packet pool plus per-item refs lets the model count sibling
+    evidence even when local code can resolve the refs correctly; nest the exact
+    packets under each owning comparison and derive readiness from that same scope.
+22. Correction must preserve semantic intent across a shape failure. Define the
+    complete row contract, runtime-owned ids, and evidence bindings in the initial
+    prompt; report an indexed row obligation that permits replacing the row. An
+    undocumented candidate shape followed by a generic field-list error can turn a
+    real candidate proposal into a schema-valid empty result, which is not domain
+    evidence of no candidate.
 
 A semantic extraction schema must never force positive-looking content when the
 source packet can legitimately be empty. Make empty observations an explicit

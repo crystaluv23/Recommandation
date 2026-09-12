@@ -2075,16 +2075,18 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("CTRL", ranking_json)
             self.assertNotIn("ground_truth", ranking_json)
             self.assertNotIn('"label"', ranking_json)
-            contrast_cases = mining_model.requests[1]["evidence_packets"]
+            comparisons = mining_model.requests[1]["comparisons"]
+            contrast_cases = [
+                packet
+                for comparison in comparisons
+                for packet in comparison["evidence_packets"]
+            ]
             self.assertEqual(
                 {item["label"] for item in contrast_cases},
                 {"positive", "control"},
             )
-            self.assertTrue(
-                mining_model.requests[1]["comparisons"][0][
-                    "evidence_packet_refs"
-                ]
-            )
+            self.assertTrue(comparisons[0]["evidence_packets"])
+            self.assertNotIn("evidence_packets", mining_model.requests[1])
             self.assertNotIn("Winner Corp", json.dumps(contrast_cases))
             self.assertNotIn("Control Corp", json.dumps(contrast_cases))
             self.assertEqual(result["candidate_refs"], ())
@@ -2167,7 +2169,9 @@ class SignalEvolutionTests(TestCase):
                 result["audit"]["stages"]["H3"]["status"],
                 "completed_with_inconclusive",
             )
-            packets = mining_model.requests[1]["evidence_packets"]
+            packets = mining_model.requests[1]["comparisons"][0][
+                "evidence_packets"
+            ]
             self.assertEqual(
                 {item["query_match_status"] for item in packets},
                 {"unmatched_comparator_context"},

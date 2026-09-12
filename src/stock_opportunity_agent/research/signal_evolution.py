@@ -2004,6 +2004,11 @@ class SignalEvolutionEngine:
             deterministic_functions=deterministic_functions,
             forbidden_identity_terms=_discovery_identity_terms(identity_population),
         )
+        candidate_validator_setter = getattr(
+            self.update_model, "set_candidate_validator", None
+        )
+        if callable(candidate_validator_setter):
+            candidate_validator_setter(self._validate_update_candidate_for_role)
         self.effectiveness_evaluator = SignalCandidateEffectivenessEvaluator(
             registry,
             raw_info_store=raw_info_store,
@@ -2013,6 +2018,32 @@ class SignalEvolutionEngine:
             case_limit=effectiveness_case_limit,
             minimum_cases=effectiveness_minimum_cases,
         )
+
+    def _validate_update_candidate_for_role(
+        self,
+        signal_ref: str,
+        candidate: Mapping[str, Any],
+        changed_paths: tuple[str, ...],
+    ) -> None:
+        """Run deterministic immutable fixtures during bounded role correction."""
+
+        stable = self.registry.load_spec(signal_ref)
+        updated, skill, tests = validate_signal_update_candidate(
+            signal_ref,
+            candidate,
+            stable,
+            stable_skill=self.registry.load_skill(signal_ref),
+            stable_tests=self.registry.load_tests(signal_ref),
+            changed_paths=changed_paths,
+        )
+        if updated.execution_type is not SignalExecutionType.DETERMINISTIC:
+            return
+        result = self.validator.validate(updated, skill=skill, tests=tests)
+        if not result.accepted:
+            raise ValidationError(
+                "updated deterministic Signal must preserve executable fixture "
+                "behavior: " + "; ".join(result.reasons)
+            )
 
     @staticmethod
     def _role_work_identity(role: Any) -> Any:
@@ -3519,8 +3550,15 @@ class SignalEvolutionEngine:
             contrast_packets.append(
                 {
                     "hypothesis": hypothesis.to_dict(),
-                    "evidence_packet_refs": [
-                        packet_ref_by_case[case_ref]
+                    "evidence_packets": [
+                        evidence_packets_by_key[
+                            (
+                                case_ref,
+                                tuple(hypothesis.source_types),
+                                hypothesis.query,
+                                hypothesis.lookback_days,
+                            )
+                        ]
                         for case_ref in induction_refs
                     ],
                 }
@@ -3558,19 +3596,9 @@ class SignalEvolutionEngine:
             }
             audit["hypothesis_work"] = hypothesis_work
             return self._mining_output(audit=audit, refined=refined)
-        active_packet_refs = {
-            packet_ref
-            for comparison in contrast_packets
-            for packet_ref in comparison["evidence_packet_refs"]
-        }
         decisions_step = self.mining_model.contrast(
             {
                 "track": "hypothesis",
-                "evidence_packets": [
-                    packet
-                    for packet in evidence_packets_by_key.values()
-                    if packet["packet_ref"] in active_packet_refs
-                ],
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
@@ -3948,24 +3976,23 @@ class SignalEvolutionEngine:
             for signature in selected_grounded_signatures
         ]
         evidence_limited = any(
-            signature.evidence_gaps or len(signature.observations) < 2
-            for signature in selected_grounded_signatures
+            not signature.observations for signature in selected_grounded_signatures
         )
+        decision_slots = [
+            f"e2-c{cycle_id:04d}-s{index:02d}"
+            for index in range(1, config.hypothesis_limit + 1)
+        ]
         discovery_step = self.mining_model.discover_exploration(
             {
                 "track": "exploration",
                 "signatures": revealed,
+                "decision_slots": decision_slots,
                 "candidate_contract": self._mining_candidate_contract(),
                 "rules": {
                     "candidate_only_for_repeated_observable_pattern": True,
                     "exact_spans_authoritative_over_summaries": True,
                     "evidence_limited": evidence_limited,
-                    "decisions": [
-                        "supported",
-                        "refine",
-                        "rejected",
-                        "inconclusive",
-                    ],
+                    "decisions": ["supported"],
                 },
             }
         )
@@ -3973,18 +4000,23 @@ class SignalEvolutionEngine:
             discovery_step.value,
             allowed_hypothesis_ids=None,
         )
-        decisions = self._with_runtime_sample_basis(
-            decisions,
-            positive_refs=(
-                signature.case_ref
-                for signature in selected_grounded_signatures
-                if case_by_ref[signature.case_ref].ground_truth.is_surge
-            ),
-            control_refs=(
-                signature.case_ref
-                for signature in selected_grounded_signatures
-                if not case_by_ref[signature.case_ref].ground_truth.is_surge
-            ),
+        decisions = tuple(
+            decision
+            if decision.sample_basis is not None
+            else self._with_runtime_sample_basis(
+                (decision,),
+                positive_refs=(
+                    signature.case_ref
+                    for signature in selected_grounded_signatures
+                    if case_by_ref[signature.case_ref].ground_truth.is_surge
+                ),
+                control_refs=(
+                    signature.case_ref
+                    for signature in selected_grounded_signatures
+                    if not case_by_ref[signature.case_ref].ground_truth.is_surge
+                ),
+            )[0]
+            for decision in decisions
         )
         refined: dict[str, tuple[str, ...]] = {}
         selection_by_id = {

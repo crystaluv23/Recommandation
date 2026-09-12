@@ -1,5 +1,30 @@
 # Status
 
+V43 completed a real DeepSeek Slow cycle at authoritative `round=0/cycle=1`,
+but exact request/response inspection rejects it as semantic acceptance. H1
+correctly accounted for all 175 runtime obligations and routed 19 non-Signal
+reflection actions back to Fast; H3 then described all eight globally supplied
+packets inside each four-packet hypothesis, proving that indirect global packet
+scope contaminated comparison reasoning. Independent E1 preserved grounded
+literal signatures after quarantining three invalid observations. E2's initial
+response contained two candidate intentions, but its prompt never defined the
+decision-row fields; generic correction erased both and returned a false-empty
+`insufficient_evidence` result. Update produced three v2 drafts, but two
+deterministic candidates raised their retrieval minimums beyond their immutable
+fixtures and therefore became `unavailable`; the third soft candidate failed
+normal fixture validation. Registry v1 and all 14 stable Signals were preserved.
+
+The successor contract now nests H3 packets under each owning comparison, gives
+E2 bounded runtime decision slots plus an exact contrast/candidate schema, checks
+positive/control refs against actual labels, and persists that explicit binding
+as sample basis. Grounded cohorts are no longer globally marked limited merely
+because E1 recorded unrelated gaps. Structured correction preserves candidate
+intent and reports row-scoped failures. Deterministic Update drafts execute the
+unchanged stable fixtures inside bounded response correction, preventing a known
+`unavailable` candidate from reaching staging. All 710 tests and repository lint
+pass. A fresh frozen successor and exact-request audit remain before the next
+authorized real DeepSeek Slow execution.
+
 V42 reached the audited H1 approval boundary at `round=0/cycle=0`. The exact
 225,829-character H1 context contains 172 unique needs, all 30 reflection actions,
 24-case meta-memory, and 14 stable Signal cards; it contains no Kinross/Wynn

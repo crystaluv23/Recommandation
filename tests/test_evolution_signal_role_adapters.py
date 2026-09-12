@@ -134,6 +134,76 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertIn("changed_paths_allowed", caller.calls[0]["system_prompt"])
 
+    def test_update_candidate_fixture_failure_is_corrected_before_staging(self) -> None:
+        stable = SignalSpec(
+            signal_id="cash_reserves",
+            version=1,
+            category="financial",
+            description="Read the latest point-in-time cash balance.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials",),
+            function="financial.cash_reserves",
+        )
+        fixture = {"name": "cash fixture"}
+        bad_candidate = {
+            "signal_ref": stable.ref,
+            "spec": {
+                **stable.to_dict(),
+                "version": 2,
+                "raw_retrieval": {
+                    **stable.to_dict()["raw_retrieval"],
+                    "minimum_observations": 2,
+                },
+            },
+            "tests": [fixture],
+        }
+        good_candidate = json.loads(json.dumps(bad_candidate))
+        good_candidate["spec"]["raw_retrieval"]["minimum_observations"] = 1
+        response = {
+            "signal_ref": stable.ref,
+            "disposition": "update",
+            "problem_type": "retrieval",
+            "rationale": ["Keep the fixture executable."],
+            "case_diagnostics": [],
+            "changed_paths": ["spec.raw_retrieval.minimum_observations"],
+            "candidate": bad_candidate,
+        }
+        corrected = {**response, "candidate": good_candidate}
+        caller = ScriptedRoleCaller([response, corrected])
+        model = LLMSignalUpdateModel(caller)
+
+        def validate_fixture(
+            _signal_ref: str,
+            candidate: Mapping[str, Any],
+            _changed_paths: tuple[str, ...],
+        ) -> None:
+            minimum = candidate["spec"]["raw_retrieval"]["minimum_observations"]
+            if minimum > 1:
+                raise ValidationError("fixture 1 would become unavailable")
+
+        model.set_candidate_validator(validate_fixture)
+        step = model.update(
+            {
+                "target": {
+                    "signal_ref": stable.ref,
+                    "stable_spec": stable.to_dict(),
+                },
+                "induction_cases": [],
+            }
+        )
+
+        self.assertEqual(
+            step.value.candidate["spec"]["raw_retrieval"]["minimum_observations"],
+            1,
+        )
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "issue_code"
+            ],
+            "signal_update_candidate_fixture_invalid",
+        )
+        self.assertIn("unchanged fixtures", caller.calls[0]["system_prompt"])
+
     def test_e1_quarantines_invalid_observations_without_losing_valid_siblings(self) -> None:
         literal = "Management reaffirmed revenue guidance."
         valid = {"summary": "Guidance reaffirmed.", "document_ref": "document-01",
@@ -1372,24 +1442,20 @@ class SignalRoleAdapterTests(TestCase):
 
         result = LLMSignalMiningModel(caller).contrast(
             {
-                "evidence_packets": [
-                    {
-                        "packet_ref": "packet-positive",
-                        "label": "positive",
-                        "query_match_status": "matched",
-                    },
-                    {
-                        "packet_ref": "packet-control",
-                        "label": "control",
-                        "query_match_status": "matched",
-                    },
-                ],
                 "comparisons": [
                     {
                         "hypothesis": {"hypothesis_id": "estimate_gap"},
-                        "evidence_packet_refs": [
-                            "packet-positive",
-                            "packet-control",
+                        "evidence_packets": [
+                            {
+                                "packet_ref": "packet-positive",
+                                "label": "positive",
+                                "query_match_status": "matched",
+                            },
+                            {
+                                "packet_ref": "packet-control",
+                                "label": "control",
+                                "query_match_status": "matched",
+                            },
                         ],
                     }
                 ],
@@ -2241,20 +2307,19 @@ class SignalRoleAdapterTests(TestCase):
 
         step = model.contrast(
             {
-                "evidence_packets": [
-                    {
-                        "packet_ref": ref,
-                        "label": (
-                            "positive" if ref == "packet-a" else "control"
-                        ),
-                        "query_match_status": "unmatched_comparator_context",
-                    }
-                    for ref in ("packet-a", "packet-b")
-                ],
                 "comparisons": [
                     {
                         "hypothesis": {"hypothesis_id": "guidance_change"},
-                        "evidence_packet_refs": ["packet-a", "packet-b"],
+                        "evidence_packets": [
+                            {
+                                "packet_ref": ref,
+                                "label": (
+                                    "positive" if ref == "packet-a" else "control"
+                                ),
+                                "query_match_status": "unmatched_comparator_context",
+                            }
+                            for ref in ("packet-a", "packet-b")
+                        ],
                     }
                 ],
             }
@@ -2292,24 +2357,20 @@ class SignalRoleAdapterTests(TestCase):
 
         step = LLMSignalMiningModel(caller).contrast(
             {
-                "evidence_packets": [
-                    {
-                        "packet_ref": "packet-positive",
-                        "label": "positive",
-                        "query_match_status": "matched",
-                    },
-                    {
-                        "packet_ref": "packet-control",
-                        "label": "control",
-                        "query_match_status": "unmatched_comparator_context",
-                    },
-                ],
                 "comparisons": [
                     {
                         "hypothesis": {"hypothesis_id": "guidance_change"},
-                        "evidence_packet_refs": [
-                            "packet-positive",
-                            "packet-control",
+                        "evidence_packets": [
+                            {
+                                "packet_ref": "packet-positive",
+                                "label": "positive",
+                                "query_match_status": "matched",
+                            },
+                            {
+                                "packet_ref": "packet-control",
+                                "label": "control",
+                                "query_match_status": "unmatched_comparator_context",
+                            },
                         ],
                     }
                 ],
@@ -2476,15 +2537,12 @@ class SignalRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
-                    "decisions": [
-                        {
-                            "hypothesis_id": "exploration-pattern",
-                            "disposition": "refine",
-                            "rationale": ["The literal pattern needs more cases."],
-                            "candidate": None,
-                        }
-                    ],
-                    "no_candidate": None,
+                    "decisions": [],
+                    "no_candidate": {
+                        "reason_code": "no_measurable_pattern",
+                        "rationale": ["The literal cohort shows no repeated difference."],
+                        "considered_case_refs": ["case-001", "case-002"],
+                    },
                 }
             ]
         )
@@ -2516,7 +2574,8 @@ class SignalRoleAdapterTests(TestCase):
                         "evidence_gaps": [],
                         "label": "control",
                     }
-                ]
+                ],
+                "decision_slots": ["e2-c0001-s01"],
             }
         )
 
@@ -2524,6 +2583,122 @@ class SignalRoleAdapterTests(TestCase):
             "Treat each exact_span as authoritative",
             caller.calls[0]["system_prompt"],
         )
+
+    def test_exploration_e2_repairs_legacy_candidate_shape_without_losing_intent(
+        self,
+    ) -> None:
+        candidate = {"spec": {}, "skill": None, "tests": []}
+        invalid = {
+            "decisions": [
+                {
+                    "pattern": "Positive cases improve while controls decline.",
+                    "signal": {},
+                    "summary": "A repeated contrast exists.",
+                    "supported_case_refs": ["case-001", "case-002"],
+                }
+            ],
+            "no_candidate": None,
+        }
+        corrected = {
+            "decisions": [
+                {
+                    "hypothesis_id": "e2-c0001-s01",
+                    "disposition": "supported",
+                    "rationale": ["The supplied exact spans show a repeated contrast."],
+                    "contrast": {
+                        "positive_case_refs": ["case-001"],
+                        "control_case_refs": ["case-002"],
+                        "observable_difference": (
+                            "The positive value rises while the control value declines."
+                        ),
+                    },
+                    "candidate": candidate,
+                }
+            ],
+            "no_candidate": None,
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ],
+                "decision_slots": ["e2-c0001-s01"],
+                "rules": {"decisions": ["supported"]},
+            }
+        )
+
+        self.assertEqual(step.value[0].candidate, candidate)
+        self.assertEqual(
+            step.value[0].sample_basis,
+            {
+                "positive_refs": ("case-001",),
+                "control_refs": ("case-002",),
+            },
+        )
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_decision_shape_invalid",
+        )
+        self.assertIn("positive_case_refs", caller.calls[0]["system_prompt"])
+
+    def test_h3_comparison_packets_are_scoped_per_hypothesis(self) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "decisions": [
+                        {
+                            "hypothesis_id": "matched",
+                            "disposition": "supported",
+                            "rationale": ["Both matched groups show the difference."],
+                            "candidate": {},
+                        },
+                        {
+                            "hypothesis_id": "unmatched",
+                            "disposition": "inconclusive",
+                            "rationale": ["Its own packets do not match the query."],
+                            "candidate": None,
+                        },
+                    ]
+                }
+            ]
+        )
+        step = LLMSignalMiningModel(caller).contrast(
+            {
+                "comparisons": [
+                    {
+                        "hypothesis": {"hypothesis_id": hypothesis_id},
+                        "evidence_packets": [
+                            {
+                                "packet_ref": f"{hypothesis_id}-positive",
+                                "label": "positive",
+                                "query_match_status": status,
+                            },
+                            {
+                                "packet_ref": f"{hypothesis_id}-control",
+                                "label": "control",
+                                "query_match_status": status,
+                            },
+                        ],
+                    }
+                    for hypothesis_id, status in (
+                        ("matched", "matched"),
+                        ("unmatched", "unmatched_comparator_context"),
+                    )
+                ]
+            }
+        )
+
+        self.assertEqual(step.value[0].disposition, "supported")
+        self.assertEqual(step.value[1].disposition, "inconclusive")
+        self.assertEqual(
+            step.value[0].sample_basis["positive_refs"],
+            ("matched-positive",),
+        )
+        self.assertIn("sibling hypothesis", caller.calls[0]["system_prompt"])
 
     def test_exploration_e2_empty_requires_exact_considered_refs(self) -> None:
         malformed = {

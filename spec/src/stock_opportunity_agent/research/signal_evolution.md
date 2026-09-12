@@ -39,6 +39,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   Candidate/diff correction may edit both coupled fields while preserving every
   unrelated decision field. Version and fixture changes are not substantive
   Signal changes and cannot create a staged candidate.
+  The bounded correction path executes deterministic candidates against the
+  immutable stable fixtures and reports all fixture failures as one candidate
+  obligation. Soft-signal fixtures are not executed inside parsing because their
+  provider usage must remain explicitly metered; they retain the normal staged
+  validation boundary.
 - Registry transitions remain version-bound and auditable.
 - Slow-loop results and cycle completion preserve existing recovery semantics.
   If Mining or Update raises a locally handled validation failure, the engine
@@ -195,3 +200,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   candidate result suppresses only the identical comparison in later cycles.
   Changed evidence, cohort, Registry, model, protocol, or structured hypothesis
   creates new work; unaffected sibling hypotheses continue in the same batch.
+  The model-facing H3 payload nests those exact packets under their owning
+  comparison; no global packet pool is exposed. E2 likewise receives bounded
+  runtime-owned decision slots and must bind each supported candidate to explicit
+  positive and control refs from the supplied grounded cohort. The persisted
+  sample basis is that validated binding, while holdout selection remains local
+  and hidden. E1 audit gaps do not globally force `insufficient_evidence` after
+  both fixed groups have enough surviving comparison-ready signatures.

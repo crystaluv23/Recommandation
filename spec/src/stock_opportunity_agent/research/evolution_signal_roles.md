@@ -119,8 +119,17 @@ mining, and Signal update proposals.
 - Exploration E2 accepts empty decisions only with a bounded `no_candidate`
   reason and the exact runtime-selected grounded induction refs. Non-empty E2
   portfolios require `no_candidate=null`; H3 keeps its existing decision shape.
-  E2 decisions are cross-case portfolio hypotheses, never one decision per input
-  case. When the model reports only case-level rejection/inconclusive rows, the
+  The runtime supplies a bounded ordered `decision_slots` inventory. Every
+  non-empty E2 row has exactly `hypothesis_id`, `disposition`, `rationale`,
+  `contrast`, and `candidate`: it copies one unused slot, uses
+  `disposition=supported`, carries a complete candidate with exactly `spec`,
+  `skill`, and `tests`, and provides `contrast` with non-empty, label-correct
+  `positive_case_refs`, `control_case_refs`, and one observable-difference
+  statement. The adapter validates those refs against the actual labeled cohort
+  and persists them as the decision's sample basis instead of silently assigning
+  every supplied case to every candidate. E2 decisions are cross-case portfolio
+  hypotheses, never one decision per input case. When the model reports only
+  case-level rejection/inconclusive rows, the
   correction obligation explicitly requires `decisions=[]` plus the structured
   `no_candidate` object rather than repeatedly reshaping those rows as candidates.
   An E2 no-candidate rationale must also agree with the supplied label inventory;
@@ -141,9 +150,19 @@ mining, and Signal update proposals.
   one-period facts, making direction observable within the existing evidence and
   output bounds. A locally recognizable SEC cover or
   registration boilerplate span is not a comparison-ready observation. Empty E2
-  outcomes distinguish a genuinely compared `no_measurable_pattern` from
-  `insufficient_evidence`; projection loss, missing comparison-ready observations,
-  and quarantined extraction failures cannot become a broad no-pattern conclusion.
+  outcomes distinguish a genuinely compared `no_measurable_pattern` within the
+  explicitly supplied grounded cohort from `insufficient_evidence`. An unrelated
+  source gap or a quarantined sibling observation does not make the whole cohort
+  evidence-limited once both fixed groups meet the grounded floor; only a technical
+  loss that leaves the selected comparison itself below that floor may force
+  `insufficient_evidence`. The prompt and correction contract spell out the exact
+  E2 row shape so a schema error cannot erase a semantically useful candidate
+  proposal and be misreported as a domain-empty result.
+- H3 nests the exact evidence packets inside each comparison. It never sends one
+  global packet array plus indirect refs that permit a rationale for one hypothesis
+  to count a sibling hypothesis's packets. The adapter derives labels and query
+  readiness only from that comparison-local packet list, and the prompt requires
+  every rationale and candidate to use only its own nested evidence.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the
@@ -165,7 +184,13 @@ mining, and Signal update proposals.
   replaced by an empty array. The clone-only argument schema accepts the same
   optional document id, company id, and publication timestamp fields as the
   fixture executor, so the supplied stable template is itself schema-valid and
-  never needs mutation merely to satisfy the prompt. Historical records remain readable without
+  never needs mutation merely to satisfy the prompt. For deterministic updates,
+  the engine binds the same side-effect-free fixture validator into the response
+  parser: a retrieval or parameter change that turns an immutable expected result
+  into `unavailable` is a correctable candidate error, not a staged candidate that
+  is rejected only after the role has ended. LLM fixture execution remains in the
+  later audited validation phase so hidden external usage is never introduced
+  inside parsing. Historical records remain readable without
   preserving a second active output contract.
 - Every label-revealed Mining decision receives a runtime-derived sample basis
   in its persisted form. The basis names the exact positive and control packet

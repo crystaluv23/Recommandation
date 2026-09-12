@@ -8,7 +8,7 @@ import re
 from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from datetime import datetime
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import (
@@ -386,8 +386,16 @@ _SIGNAL_MINING_DECISIONS_OUTPUT = (
 
 _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
     " Return one JSON object with exactly decisions and no_candidate. decisions is "
-    "the same bounded decision array and each row describes one recurring cross-case "
-    "pattern, never one supplied case; case_ref is not a decision field. When "
+    "a bounded array and each row describes one recurring cross-case pattern, never "
+    "one supplied case. Each row has exactly hypothesis_id, disposition, rationale, "
+    "contrast, and candidate. hypothesis_id must copy one unused supplied "
+    "decision_slots value. disposition must be supported. rationale is a non-empty "
+    "array of evidence-grounded strings. contrast has exactly positive_case_refs, "
+    "control_case_refs, and observable_difference; both ref arrays are non-empty, "
+    "unique subsets of the corresponding supplied labels, and observable_difference "
+    "is a non-empty statement of how those groups differ. candidate must contain "
+    "exactly spec, skill, and tests under candidate_contract. case_ref is not a "
+    "decision field. When "
     "decisions is non-empty, no_candidate must "
     "be null. When decisions is empty, no_candidate has exactly reason_code, "
     "rationale, and considered_case_refs. reason_code is no_measurable_pattern, "
@@ -441,6 +449,9 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "candidate_contract.changed_paths_allowed. Copy candidate.tests byte-for-byte "
     "from candidate_contract.vnext_template.tests. Never include spec.version, "
     "spec.definition, tests, or whole-section aliases. "
+    "The unchanged fixtures must still execute to their expected values under the "
+    "updated retrieval and parameters; do not add minimum observations, periods, "
+    "span, or source-group requirements that those fixtures do not contain. "
     "case_diagnostics must contain "
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
@@ -458,9 +469,20 @@ class LLMSignalUpdateModel(SignalUpdateModel):
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.identity_guard_aliases: tuple[str, ...] = ()
+        self.candidate_validator: Callable[
+            [str, Mapping[str, Any], tuple[str, ...]], None
+        ] | None = None
 
     def set_identity_guard_aliases(self, value: Iterable[str]) -> None:
         self.identity_guard_aliases = tuple(value)
+
+    def set_candidate_validator(
+        self,
+        value: Callable[[str, Mapping[str, Any], tuple[str, ...]], None],
+    ) -> None:
+        """Bind a side-effect-free runtime candidate validator."""
+
+        self.candidate_validator = value
 
     @property
     def work_identity(self) -> Mapping[str, Any]:
@@ -798,6 +820,24 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                                 },
                             )
                         )
+                    else:
+                        if self.candidate_validator is not None:
+                            try:
+                                self.candidate_validator(
+                                    target_ref,
+                                    decision.candidate,
+                                    decision.changed_paths,
+                                )
+                            except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                                issues.append(
+                                    ValidationIssue(
+                                        code="signal_update_candidate_fixture_invalid",
+                                        message=str(exc),
+                                        paths=("candidate", "changed_paths"),
+                                        path_policy="any",
+                                        allowed_repairs=("replace",),
+                                    )
+                                )
             if issues:
                 raise StructuredValidationError(issues)
             return decision
@@ -868,6 +908,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "need_ref_projection": "compact-reflection-action-v2",
+            "h3_evidence_scope": "comparison-nested-v1",
+            "e2_decision_contract": "contrast-bound-slots-v1",
             "model_alias": getattr(registration, "alias", None),
             "provider": getattr(registration, "provider", None),
             "model": getattr(registration, "model", None),
@@ -1993,36 +2035,34 @@ class LLMSignalMiningModel(SignalMiningModel):
     def contrast(
         self, payload: Mapping[str, Any]
     ) -> AgentStep[tuple[SignalMiningDecision, ...]]:
-        packet_metadata = {
-            str(item["packet_ref"]): {
-                "label": str(item.get("label", "")),
-                "query_match_status": str(item.get("query_match_status", "")),
-            }
-            for item in payload.get("evidence_packets", ())
-            if isinstance(item, Mapping) and item.get("packet_ref")
-        }
+        comparisons = tuple(
+            item for item in payload.get("comparisons", ()) if isinstance(item, Mapping)
+        )
         allowed = {
             str(item["hypothesis"]["hypothesis_id"])
-            for item in payload.get("comparisons", ())
+            for item in comparisons
             if isinstance(item, Mapping)
             and isinstance(item.get("hypothesis"), Mapping)
             and "hypothesis_id" in item["hypothesis"]
         }
         inconclusive_only: set[str] = set()
-        for item in payload.get("comparisons", ()):
+        for item in comparisons:
             if not isinstance(item, Mapping) or not isinstance(
                 item.get("hypothesis"), Mapping
             ):
                 continue
             hypothesis_id = str(item["hypothesis"].get("hypothesis_id", ""))
-            packet_refs = item.get("evidence_packet_refs", ())
-            if not hypothesis_id or not packet_refs:
+            packets = tuple(
+                packet
+                for packet in item.get("evidence_packets", ())
+                if isinstance(packet, Mapping)
+            )
+            if not hypothesis_id or not packets:
                 continue
             matched_labels = {
-                packet_metadata.get(str(ref), {}).get("label")
-                for ref in packet_refs
-                if packet_metadata.get(str(ref), {}).get("query_match_status")
-                == "matched"
+                str(packet.get("label", ""))
+                for packet in packets
+                if packet.get("query_match_status") == "matched"
             }
             if not {"positive", "control"}.issubset(matched_labels):
                 inconclusive_only.add(hypothesis_id)
@@ -2044,7 +2084,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "unmatched_comparator_context is real point-in-time source context, but "
                 "query non-match is not proof that the feature or event is absent; "
                 "without direct positive or counter evidence it supports only an "
-                "inconclusive decision."
+                "inconclusive decision. For each decision, use only the evidence_packets "
+                "nested under that decision's own comparison; never count or describe "
+                "packets belonging to a sibling hypothesis."
             ),
             temperature=0.0,
         )
@@ -2294,7 +2336,9 @@ class LLMSignalMiningModel(SignalMiningModel):
         }
         comparison_refs: dict[str, tuple[str, ...]] = {
             str(item["hypothesis"]["hypothesis_id"]): tuple(
-                str(ref) for ref in item.get("evidence_packet_refs", ())
+                str(packet["packet_ref"])
+                for packet in item.get("evidence_packets", ())
+                if isinstance(packet, Mapping) and packet.get("packet_ref")
             )
             for item in payload.get("comparisons", ())
             if isinstance(item, Mapping)
@@ -2302,9 +2346,11 @@ class LLMSignalMiningModel(SignalMiningModel):
             and item["hypothesis"].get("hypothesis_id")
         }
         packet_labels = {
-            str(item["packet_ref"]): str(item.get("label", ""))
-            for item in payload.get("evidence_packets", ())
-            if isinstance(item, Mapping) and item.get("packet_ref")
+            str(packet["packet_ref"]): str(packet.get("label", ""))
+            for comparison in payload.get("comparisons", ())
+            if isinstance(comparison, Mapping)
+            for packet in comparison.get("evidence_packets", ())
+            if isinstance(packet, Mapping) and packet.get("packet_ref")
         }
         exploration_labels = {
             str(item["case_ref"]): str(item.get("label", ""))
@@ -2317,6 +2363,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             else False
         )
         decision_metadata: dict[str, Any] = {}
+        decision_slots = tuple(
+            str(item) for item in payload.get("decision_slots", ()) if str(item)
+        )
 
         def sample_basis(
             item: SignalMiningDecision,
@@ -2371,12 +2420,120 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                     ]
                 )
-            items = tuple(
-                SignalMiningDecision.from_dict(item)
-                if isinstance(item, Mapping)
-                else (_raise_mining_shape("Mining decision must be an object"))
-                for item in value["decisions"]
-            )
+            if exploration:
+                parsed_items: list[SignalMiningDecision] = []
+                shape_issues: list[ValidationIssue] = []
+                for index, raw_item in enumerate(raw_decisions):
+                    path = f"decisions[{index}]"
+                    if not isinstance(raw_item, Mapping) or set(raw_item) != {
+                        "hypothesis_id", "disposition", "rationale", "contrast", "candidate"
+                    }:
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_decision_shape_invalid",
+                                message=(
+                                    f"{path} requires exactly hypothesis_id, disposition, "
+                                    "rationale, contrast, and candidate"
+                                ),
+                                paths=(path,),
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
+                    slot = str(raw_item.get("hypothesis_id", ""))
+                    contrast = raw_item.get("contrast")
+                    if (
+                        slot not in decision_slots
+                        or raw_item.get("disposition") != "supported"
+                        or not isinstance(contrast, Mapping)
+                        or set(contrast) != {
+                            "positive_case_refs",
+                            "control_case_refs",
+                            "observable_difference",
+                        }
+                    ):
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_decision_contract_invalid",
+                                message=(
+                                    f"{path} must use one supplied decision slot, "
+                                    "disposition=supported, and the exact contrast fields"
+                                ),
+                                paths=(path,),
+                                item_id=(slot or None),
+                                item_id_field="hypothesis_id",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
+                    positive_refs = contrast.get("positive_case_refs")
+                    control_refs = contrast.get("control_case_refs")
+                    difference = contrast.get("observable_difference")
+                    valid_positive = {
+                        ref for ref, label in exploration_labels.items() if label == "positive"
+                    }
+                    valid_control = {
+                        ref for ref, label in exploration_labels.items() if label == "control"
+                    }
+                    refs_valid = all(
+                        isinstance(refs, list)
+                        and bool(refs)
+                        and len(refs) == len(set(refs))
+                        and all(isinstance(ref, str) and ref in allowed for ref in refs)
+                        for refs, allowed in (
+                            (positive_refs, valid_positive),
+                            (control_refs, valid_control),
+                        )
+                    )
+                    candidate = raw_item.get("candidate")
+                    rationale = raw_item.get("rationale")
+                    if (
+                        not refs_valid
+                        or not isinstance(difference, str)
+                        or not difference.strip()
+                        or not isinstance(rationale, list)
+                        or not rationale
+                        or any(not isinstance(reason, str) or not reason.strip() for reason in rationale)
+                        or not isinstance(candidate, Mapping)
+                        or set(candidate) != {"spec", "skill", "tests"}
+                    ):
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_contrast_or_candidate_invalid",
+                                message=(
+                                    f"{path} requires non-empty label-correct contrast refs, "
+                                    "one observable difference, rationale, and a complete "
+                                    "spec/skill/tests candidate"
+                                ),
+                                paths=(path,),
+                                item_id=slot,
+                                item_id_field="hypothesis_id",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
+                    parsed_items.append(
+                        SignalMiningDecision(
+                            hypothesis_id=slot,
+                            disposition="supported",
+                            rationale=tuple(str(reason) for reason in rationale),
+                            candidate=dict(candidate),
+                            sample_basis={
+                                "positive_refs": tuple(positive_refs),
+                                "control_refs": tuple(control_refs),
+                            },
+                        )
+                    )
+                if shape_issues:
+                    raise StructuredValidationError(shape_issues)
+                items = tuple(parsed_items)
+            else:
+                items = tuple(
+                    SignalMiningDecision.from_dict(item)
+                    if isinstance(item, Mapping)
+                    else (_raise_mining_shape("Mining decision must be an object"))
+                    for item in value["decisions"]
+                )
             if exploration:
                 no_candidate = value.get("no_candidate")
                 if items and no_candidate is not None:
@@ -2504,7 +2661,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                         + item.hypothesis_id
                     )
             return tuple(
-                replace(item, sample_basis=sample_basis(item)) for item in items
+                item if exploration else replace(item, sample_basis=sample_basis(item))
+                for item in items
             )
 
         value, usage = _complete_parsed_role(
@@ -2527,6 +2685,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             correction_guidance=(
                 "For E2, decisions are cross-case portfolio patterns. Per-case "
                 "rejections must become decisions=[] with structured no_candidate. "
+                "A supported pattern must preserve its candidate intent while fixing "
+                "the exact decision row, contrast refs, and spec/skill/tests contract. "
                 "When rules.evidence_limited is true, an empty result must use "
                 "reason_code=insufficient_evidence."
                 if exploration
