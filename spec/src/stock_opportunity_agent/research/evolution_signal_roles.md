@@ -8,6 +8,12 @@ preassigns episode/lesson refs and validates complete source coverage and the
 lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
+Only top-level `feedback_units[*].feedback_ref` values are valid output
+citations. Source locators nested inside a feedback unit remain immutable audit
+data; the model cannot promote them into episode or lesson refs merely because
+their strings are visible. All invalid episode and lesson rows are reported
+together as indexed, path-scoped correction obligations, so bounded recovery
+does not discover one bad ref per attempt.
 
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
@@ -266,5 +272,5 @@ mining, and Signal update proposals.
   audited without its sample. This field is runtime-owned rather than copied by
   the model.
 - Legacy H1 and v1 Update records remain parseable only at explicit
-  compatibility boundaries. New Slow execution requests H1 v7, reflection v1,
+  compatibility boundaries. New Slow execution requests H1 v7, reflection v2,
   and Update v2.

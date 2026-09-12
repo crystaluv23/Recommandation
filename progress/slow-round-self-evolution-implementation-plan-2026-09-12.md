@@ -1,6 +1,6 @@
 # Slow Round 自进化：代码修改与验收方案
 
-状态：本地实现已完成，计划内 DeepSeek 与数据外部调用已获明确授权。V52 已提交第 1 个真实 `slow_only` cycle，但内容审计拒绝其 E2 结论，因为 rationale 把输入中不存在的 revenue 缺口说成显式 `evidence_gaps`；该轮不计为内容验收通过，且未继续第 2 轮。实现从代码基线 `0696429` 出发，已落地 v8 合同、追加式 Slow artifacts、冻结中立 dev/check、轮入口反思、每轮 H+E、`slow_only`、历史导入、语义/重复门槛及消融确认设施；后继冻结运行须使用已加入 gap-citation 约束的代码。方法能力仍未被独立确认提高。
+状态：本地实现已完成，计划内 DeepSeek 与数据外部调用已获明确授权。V52 与 V53 各提交了一个真实 `slow_only` cycle，但均在内容审计后停止：V52 的 E2 把输入中不存在的 revenue 缺口说成显式 `evidence_gaps`；V53 虽验证了新 gap-citation correction，却暴露其 matcher 把组间“未观察到主题”误判为源缺口，且入口 reflection 因逐条发现嵌套旧 ref 耗尽 correction。两轮都不计为内容验收通过，均未继续第 2 轮。实现从代码基线 `0696429` 出发，已落地 v8 合同、追加式 Slow artifacts、冻结中立 dev/check、轮入口反思、每轮 H+E、`slow_only`、历史导入、语义/重复门槛及消融确认设施；后继冻结运行须使用 source-input-only gap matcher 与 reflection v2 聚合校验。方法能力仍未被独立确认提高。
 
 目标：让 Slow 每轮主动挖掘信号，从自己过去的挖掘、验证、晋级和真实使用反馈中学习，并能在没有新 Fast round 的情况下连续运行。最终产物是质量可验证、可使用的信号库，以及有证据支持的挖掘方法经验。
 

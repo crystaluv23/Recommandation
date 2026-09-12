@@ -3307,7 +3307,7 @@ class SignalEvolutionEngine:
                         "" if prior_memory is None else _canonical_hash(prior_memory)
                     ),
                     "model": self._role_work_identity(self.mining_model),
-                    "protocol": "signal-mining-reflect-v1",
+                    "protocol": "signal-mining-reflect-v2",
                 }
             ),
             "model_view_manifest": view,
@@ -3351,7 +3351,7 @@ class SignalEvolutionEngine:
                 try:
                     step = reflector(
                         {
-                            "reflection_contract_version": "signal-mining-reflect-v1",
+                            "reflection_contract_version": "signal-mining-reflect-v2",
                             "episode_slots": episode_slots,
                             "lesson_slots": lesson_slots,
                             "feedback_units": [item["content"] for item in selected],

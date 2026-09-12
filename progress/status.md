@@ -1,5 +1,22 @@
 # Status
 
+V53 committed one real successor cycle under contract `3f485d0b...a6fa` at
+authoritative `round=0/cycle=1`, after same-contract recovery from a retryable
+SEC provider error at `case-031`. It used 13 model attempts, preserved five
+granular H1/E1/E2/Update experiments, kept Locked Test sealed and Registry v1
+unchanged, and again reported all four Signal counts as zero with goal `unmet`.
+It is not content-accepted and did not proceed to cycle 2. Exact response audit
+found two new general defects: the first gap matcher treated an observed theme
+being absent from one label group as missing source input and forced two needless
+E2 corrections; entry reflection exposed nested historical locators in unit
+content, then reported only the first invalid episode per correction and failed
+after exhausting the bounded retries. The matcher now requires a source-input
+noun near the absence marker, while observed cross-group absence is explicitly
+allowed. Reflection v2 permits only top-level `feedback_ref` citations and emits
+all invalid episode/lesson rows as one indexed correction frontier. Focused
+replays, all 736 tests, and repository lint pass; a fresh successor contract is
+required.
+
 V52 is the first committed real v8 `slow_only` cycle. Under contract
 `4a144686...56b0`, an initial transient SEC SSL EOF was recovered by resuming
 the same frozen cohort; cycle 1 then committed at authoritative

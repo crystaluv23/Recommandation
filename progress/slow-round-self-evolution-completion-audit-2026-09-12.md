@@ -10,9 +10,9 @@ semantic, Signal-output, or independent-benefit evidence.
 ## Authoritative boundary
 
 - Latest executed workspace:
-  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v52`.
+  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v53`.
 - Frozen contract hash:
-  `4a14468652f94bf4cc0bbbda24c4f7e37e3a5d9d2e7ebc993c97310685ad56b0`.
+  `3f485d0b40d45e7f5027a331053110aa3c3c0fa7296f2a572bf9c0f66b0ea6fa`.
 - Authoritative pointers are Fast round 0 / Slow cycle 1. Cycle 1 committed
   after resuming the same contract and cohort from one transient SEC SSL EOF;
   no staged file is used as completion evidence.
@@ -20,10 +20,11 @@ semantic, Signal-output, or independent-benefit evidence.
   granular experiments, kept Locked Test closed, and left Registry v1 unchanged.
 - Cycle 1 reports zero new candidates, zero validated Signals, zero promoted
   Signals, zero updated Signals, and `signal_goal_status=unmet`.
-- Content acceptance is rejected: E2 asserted that `evidence_gaps` explicitly
-  named missing revenue figures, but no selected gap did. Cycle 2 was therefore
-  not run under the defective contract. A code successor now requires canonical
-  `[case_ref] <verbatim gap>` citations for concrete source-gap claims.
+- Content acceptance is rejected: V53's first matcher overclassified observed
+  group-theme absence as a source gap and forced needless E2 corrections, while
+  reflection sealed failed after sequentially discovering nested out-of-scope
+  locators. Cycle 2 was not run. The code successor narrows matching to source
+  inputs and aggregates all invalid reflection rows under protocol v2.
 - The user explicitly authorized the described DeepSeek transmission, up to 200
   attempts and $5 total cost, and the plan's data external calls.
 
@@ -45,16 +46,15 @@ semantic, Signal-output, or independent-benefit evidence.
 | Dimension | Status | Reason |
 | --- | --- | --- |
 | Execution completion | Partially achieved | V52 cycle 1 committed at `last_completed_cycle=1`; the required second content-valid cycle has not run |
-| Content correctness | Failed for V52 cycle 1 | E2 invented a revenue gap absent from all supplied gap strings; the run was stopped before cycle 2 |
+| Content correctness | Failed for V53 cycle 1 | E2 correction was triggered by an overbroad local guard and entry reflection exhausted sequential ref validation; the run stopped before cycle 2 |
 | Signal output | Not achieved | No v8 cycle has committed a new validated and promoted Signal |
 | Cross-cycle learning | Scripted only | Deterministic tests prove wiring, but no real cycle-2 action has consumed a real cycle-1 v8 result |
 | Method-learning benefit | Not proven | No independent, equal-budget three-condition confirmation has run |
 
 ## Next valid sequence
 
-1. Run focused tests, the full suite, and repository lint; commit the E2
-   gap-grounding repair and freeze a successor workspace importing V52 committed
-   history.
+1. Commit the source-input gap matcher and reflection-v2 aggregate validation,
+   then freeze a successor workspace importing V53 committed history.
 2. Re-audit the successor's exact body and execute it under the recorded
    DeepSeek/data authorization while preserving the 200-attempt/$5 ceiling.
 3. Execute and semantically inspect two committed `slow_only` cycles. Report new

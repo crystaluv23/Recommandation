@@ -27,6 +27,71 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(step.value, ("feedback-2",))
         self.assertEqual(caller.stages, ["slow_source_read"])
 
+    def test_reflection_aggregates_nested_source_ref_failures(self) -> None:
+        invalid = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0001-001",
+                    "source_refs": ["nested-source-a"],
+                    "reflection": "The first work completed without a candidate.",
+                    "unresolved_questions": [],
+                },
+                {
+                    "episode_ref": "episode-c0001-002",
+                    "source_refs": ["nested-source-b"],
+                    "reflection": "The second work had a technical failure.",
+                    "unresolved_questions": ["Which layer failed?"],
+                },
+            ],
+            "lesson_additions": [
+                {
+                    "lesson_id": "lesson-c0001-001",
+                    "guidance": "Keep technical and research failures separate.",
+                    "applicable_scope": "Slow validation",
+                    "support_refs": ["nested-source-b"],
+                    "counterevidence_refs": [],
+                    "limitations": ["Two imported work units only."],
+                    "qualifies_refs": [],
+                    "challenges_refs": [],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["episode_reflections"][0]["source_refs"] = ["feedback-1"]
+        corrected["episode_reflections"][1]["source_refs"] = ["feedback-2"]
+        corrected["lesson_additions"][0]["support_refs"] = ["feedback-2"]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).reflect_feedback(
+            {
+                "episode_slots": ["episode-c0001-001", "episode-c0001-002"],
+                "lesson_slots": ["lesson-c0001-001"],
+                "feedback_units": [
+                    {
+                        "feedback_ref": "feedback-1",
+                        "payload": {"source_refs": ["nested-source-a"]},
+                    },
+                    {
+                        "feedback_ref": "feedback-2",
+                        "payload": {"source_refs": ["nested-source-b"]},
+                    },
+                ],
+            }
+        )
+
+        self.assertEqual(len(step.value["episode_reflections"]), 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligation_count"], 3)
+        self.assertEqual(
+            feedback["required_change_paths"],
+            [
+                "episode_reflections[0]",
+                "episode_reflections[1]",
+                "lesson_additions[0]",
+            ],
+        )
+        self.assertIn("top-level feedback_ref", caller.calls[0]["system_prompt"])
+
     def test_update_role_retains_initial_and_correction_request_refs(self) -> None:
         class TracedCaller(ScriptedRoleCaller):
             def __init__(self, outputs):
@@ -3447,6 +3512,55 @@ class SignalRoleAdapterTests(TestCase):
                     {
                         "case_ref": "case-002",
                         "label": "control",
+                        "evidence_gaps": [],
+                    },
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(step.usage.llm_calls, 1)
+
+    def test_exploration_e2_allows_observed_theme_absence_between_groups(
+        self,
+    ) -> None:
+        caller = ScriptedRoleCaller(
+            [
+                {
+                    "decisions": [],
+                    "no_candidate": {
+                        "reason_code": "no_measurable_pattern",
+                        "rationale": [
+                            (
+                                "Natural-disaster spans in one control case have "
+                                "no counterpart in either positive case."
+                            ),
+                            (
+                                "That topic is absent from the positive cases and "
+                                "does not form a recurring cross-group contrast."
+                            ),
+                        ],
+                        "considered_case_refs": ["case-001", "case-002"],
+                    },
+                }
+            ]
+        )
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {
+                        "case_ref": "case-001",
+                        "label": "positive",
+                        "observations": [{"exact_span": "Debt covenants apply."}],
+                        "evidence_gaps": [],
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "label": "control",
+                        "observations": [
+                            {"exact_span": "Natural disasters may disrupt operations."}
+                        ],
                         "evidence_gaps": [],
                     },
                 ]

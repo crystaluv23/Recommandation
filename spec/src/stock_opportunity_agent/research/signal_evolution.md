@@ -29,6 +29,11 @@ opaque-ref selection. Runtime validates scope and budget, replaces the default
 batch with the selected complete entries, and keeps every unselected ref pending;
 the final role call cannot request again. Selection and final request hashes are
 both retained in the cycle audit.
+Reflection output may cite only each selected unit's top-level `feedback_ref`.
+Any source locator nested in that unit is payload data rather than a newly
+authorized citation target. The adapter aggregates every invalid episode and
+lesson row into one indexed correction frontier instead of consuming one retry
+per malformed or out-of-scope ref.
 
 Every cycle reserves one H batch when actionable and one independent E1/E2
 batch. H failure, no hypothesis, or rejection cannot cancel E. E1 sees only PIT

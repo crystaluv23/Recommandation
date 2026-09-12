@@ -554,14 +554,18 @@ _E2_VISIBLE_LABEL_DENIAL = re.compile(
 )
 
 
+_E2_SOURCE_GAP_MARKER = (
+    r"(?:missing|absent|truncated|partial(?:ly)?|incomplete|unavailable|"
+    r"do(?:es)?\s+not\s+(?:show|contain|include|provide)|"
+    r"not\s+(?:shown|provided|included|present|available))"
+)
+_E2_SOURCE_INPUT_NOUN = (
+    r"(?:source|input|data|evidence|document|record|excerpt|context|figure|"
+    r"statement|disclosure|filing|financial)s?"
+)
 _E2_SPECIFIC_SOURCE_GAP = re.compile(
-    r"(?:\b(?:missing|absent|truncated|partial(?:ly)?|incomplete)\b|"
-    r"\bdo(?:es)?\s+not\s+(?:show|contain|include|provide)\b|"
-    r"\bnot\s+(?:shown|provided|included|present|available)\b|"
-    r"\b(?:source|input|data|evidence|document|record|excerpt|context|"
-    r"figure|statement|disclosure)s?\b.{0,50}\bunavailable\b|"
-    r"\bunavailable\b.{0,50}\b(?:source|input|data|evidence|document|"
-    r"record|excerpt|context|figure|statement|disclosure)s?\b)",
+    rf"(?:\b{_E2_SOURCE_GAP_MARKER}\b.{{0,80}}\b{_E2_SOURCE_INPUT_NOUN}\b|"
+    rf"\b{_E2_SOURCE_INPUT_NOUN}\b.{{0,80}}\b{_E2_SOURCE_GAP_MARKER}\b)",
     re.IGNORECASE,
 )
 
@@ -1148,7 +1152,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "h1_contract": "signal-mining-hypothesis-v7",
-            "reflection_contract": "signal-mining-reflect-v1",
+            "reflection_contract": "signal-mining-reflect-v2",
             "source_read_contract": "slow-source-read-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
@@ -1190,17 +1194,25 @@ class LLMSignalMiningModel(SignalMiningModel):
             lessons = value.get("lesson_additions")
             if not isinstance(episodes, list) or not isinstance(lessons, list):
                 raise ValidationError("Signal reflection outputs must be arrays")
+            issues: list[ValidationIssue] = []
             seen_episodes: set[str] = set()
             for index, raw in enumerate(episodes):
+                path = f"episode_reflections[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
                     "episode_ref",
                     "source_refs",
                     "reflection",
                     "unresolved_questions",
                 }:
-                    raise ValidationError(
-                        f"episode_reflections[{index}] shape is invalid"
+                    issues.append(
+                        ValidationIssue(
+                            code="reflection_episode_shape_invalid",
+                            message=f"{path} shape is invalid",
+                            paths=(path,),
+                            allowed_repairs=("replace", "remove"),
+                        )
                     )
+                    continue
                 episode_ref = str(raw.get("episode_ref", ""))
                 source_refs = raw.get("source_refs")
                 if (
@@ -1212,15 +1224,29 @@ class LLMSignalMiningModel(SignalMiningModel):
                     or not str(raw.get("reflection", "")).strip()
                     or not isinstance(raw.get("unresolved_questions"), list)
                 ):
-                    raise ValidationError(
-                        f"episode_reflections[{index}] refs or content are invalid"
+                    issues.append(
+                        ValidationIssue(
+                            code="reflection_episode_invalid",
+                            message=(
+                                f"{path} must use one unique episode slot, cite "
+                                "only top-level feedback_units feedback_ref values, "
+                                "and contain reflection text plus an unresolved "
+                                "questions array"
+                            ),
+                            paths=(path,),
+                            item_id=(episode_ref or None),
+                            item_id_field="episode_ref",
+                            allowed_repairs=("replace", "remove"),
+                        )
                     )
+                    continue
                 seen_episodes.add(episode_ref)
             seen_lessons: set[str] = set()
             resolvable = (
                 feedback_refs | episode_slots | lesson_slots | prior_lesson_refs
             )
             for index, raw in enumerate(lessons):
+                path = f"lesson_additions[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
                     "lesson_id",
                     "guidance",
@@ -1231,7 +1257,15 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "qualifies_refs",
                     "challenges_refs",
                 }:
-                    raise ValidationError(f"lesson_additions[{index}] shape is invalid")
+                    issues.append(
+                        ValidationIssue(
+                            code="reflection_lesson_shape_invalid",
+                            message=f"{path} shape is invalid",
+                            paths=(path,),
+                            allowed_repairs=("replace", "remove"),
+                        )
+                    )
+                    continue
                 lesson_id = str(raw.get("lesson_id", ""))
                 refs = {
                     str(item)
@@ -1252,10 +1286,25 @@ class LLMSignalMiningModel(SignalMiningModel):
                     or not raw.get("support_refs")
                     or not refs <= resolvable
                 ):
-                    raise ValidationError(
-                        f"lesson_additions[{index}] refs or content are invalid"
+                    issues.append(
+                        ValidationIssue(
+                            code="reflection_lesson_invalid",
+                            message=(
+                                f"{path} must use one unique lesson slot, contain "
+                                "guidance/scope/limitations, and cite only top-level "
+                                "feedback refs, valid episode/lesson slots, or prior "
+                                "lesson ids"
+                            ),
+                            paths=(path,),
+                            item_id=(lesson_id or None),
+                            item_id_field="lesson_id",
+                            allowed_repairs=("replace", "remove"),
+                        )
                     )
+                    continue
                 seen_lessons.add(lesson_id)
+            if issues:
+                raise StructuredValidationError(issues)
             return {
                 "episode_reflections": [dict(item) for item in episodes],
                 "lesson_additions": [dict(item) for item in lessons],
@@ -1275,6 +1324,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "lesson has exactly lesson_id, guidance, applicable_scope, "
                 "support_refs, counterevidence_refs, limitations, qualifies_refs, "
                 "challenges_refs. Use only runtime-provided slots and refs."
+                " In episode source_refs, copy only the top-level feedback_ref "
+                "field of a supplied feedback_units row. Ref-like strings nested "
+                "inside a feedback unit are audit content and are not valid output "
+                "citations."
                 + _UNTRUSTED_DATA_INSTRUCTION
             ),
             payload=payload,
