@@ -1,6 +1,6 @@
 # Slow Round 自进化：代码修改与验收方案
 
-状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V62 在合同 `76616835...5006` 下真实提交两轮，权威指针 Fast 0 / Slow 2；23 次尝试、99 次数据请求、成本 `$0.19435864`，两轮 H 与独立 E 均运行，Locked Test 封闭、Registry v1 不变，所有 Signal 计数仍为 0、目标 `unmet`。V62 cycle 1 memory 成功追加；cycle 2 的 adapter 已发出完整覆盖 correction，但 13 个 slot 用满后模型新增第 14 个、内容本身有来源的 episode，故最终 memory fail-closed 且不消费 refs。两轮 E1 也把若干确属原文的完整结构化记录仅因超过任意 240 字符上限而隔离，削弱了 E2。后继现把 correction 权限与剩余 slot 显式绑定，并只在 bounded correction 后将内容完整但 slot 溢出的 episode 合并进合法行、保留原反思/问题/引用且全量重验；E1 取消多余上限，仍要求单记录原文包含、至少两个可见 token 及冻结的请求/输出预算。相关 168 项 focused tests 通过；V62 保持不可变，下一次必须冻结新合同并同时使用有真实学习 profile 的来源 Registry，才能验证非零 Mining 和 Update。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
+状态：计划内 DeepSeek/SEC 外部调用及两轮、200 次模型尝试、400 次数据请求、5 美元上限已获明确授权。V65 从 V21 的已提交 Fast 边界重放 259 条 learning events，在合同 `69aa0952...eb2a` 下只真实执行 Slow 并提交 Fast 0 / Slow 1。H1、独立 E、三个 Update 靶点均真实运行；Update 产出 `max_drawdown_1y:v2`，但因固定检查集八例中七例市场数据不可用而保持 provisional，Mining 仍为 0、Registry v1 不变、目标 `unmet`。实际内容审计还发现 H1 把 142 条不同需求过度合并为一个 deferred row。V65 暴露的两个通用延续缺陷已本地修复：`slow_only` 历史现在递归保留合约绑定且在来源 Registry 中逐字一致的导入学习事件，同时排除未提交 ledger；Update 在有界 correction 后只可把 `changed_paths` 归一化为 otherwise-valid candidate 的确定性真实 diff，并全量重验，不能修补 candidate/fixture/证据。204 项 focused、全部 748 项测试及 lint 通过；V65 保持不可变，下一步冻结两轮 `slow_only` 后继，验证跨轮反思、非零 Mining 和实际 promotion。P6 仍只有 manifest/ledger scaffold，尚无三条件生成和真实独立确认，方法能力未被证实提高。
 
 目标：让 Slow 每轮主动挖掘信号，从自己过去的挖掘、验证、晋级和真实使用反馈中学习，并能在没有新 Fast round 的情况下连续运行。最终产物是质量可验证、可使用的信号库，以及有证据支持的挖掘方法经验。
 

@@ -1387,6 +1387,59 @@ def load_approved_development_dataset(
     )
 
 
+def _contract_bound_import_learning_events(
+    *,
+    source_root: Path,
+    contract: EvolutionRunContract,
+) -> dict[str, SignalLearningEvent]:
+    """Load learning events explicitly inherited by the source contract."""
+
+    manifest_path: Path | None = None
+    expected_hash: str | None = None
+    event_field: str | None = None
+    allowed_schemas: set[str] = set()
+    if contract.cycle_mode == "slow_bootstrap":
+        manifest_path = source_root / "slow_bootstrap" / "manifest.json"
+        expected_hash = contract.slow_bootstrap_manifest_hash
+        event_field = "signal_learning_events"
+        allowed_schemas = {
+            "slow-bootstrap-manifest-v1",
+            "slow-bootstrap-manifest-v2",
+        }
+    elif contract.cycle_mode == "slow_only":
+        manifest_path = source_root / "slow_history" / "manifest.json"
+        expected_hash = contract.slow_history_manifest_hash
+        event_field = "learning_events"
+        allowed_schemas = {"slow-history-manifest-v1"}
+    if manifest_path is None or expected_hash is None or event_field is None:
+        return {}
+    envelope = _read_json(manifest_path)
+    manifest = envelope.get("manifest")
+    if (
+        not isinstance(manifest, Mapping)
+        or manifest.get("schema_version") not in allowed_schemas
+        or envelope.get("manifest_hash") != expected_hash
+        or envelope.get("manifest_hash") != _canonical_hash(manifest)
+    ):
+        raise ValidationError("source imported learning-event manifest is invalid")
+    raw_events = manifest.get(event_field, ())
+    if not isinstance(raw_events, list):
+        raise ValidationError("source imported learning events must be an array")
+    imported: dict[str, SignalLearningEvent] = {}
+    try:
+        for raw_event in raw_events:
+            if not isinstance(raw_event, Mapping):
+                raise TypeError("learning event must be an object")
+            event = SignalLearningEvent.from_dict(dict(raw_event))
+            prior = imported.get(event.event_id)
+            if prior is not None and prior.to_dict() != event.to_dict():
+                raise ValidationError("source imported learning event id conflicts")
+            imported[event.event_id] = event
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValidationError("source imported learning event is invalid") from exc
+    return imported
+
+
 def build_slow_history_manifest(
     *,
     workspace: str | Path,
@@ -1444,11 +1497,33 @@ def build_slow_history_manifest(
         definition_files.append(
             {"path": str(relative), "sha256": _sha256_file(path)}
         )
+    registry_events: dict[str, SignalLearningEvent] = {}
+    for spec in snapshot.specs:
+        for event in registry.load_learning_events(spec.ref):
+            prior = registry_events.get(event.event_id)
+            if prior is not None and prior.to_dict() != event.to_dict():
+                raise ValidationError("source Registry learning event id conflicts")
+            registry_events[event.event_id] = event
+    imported_events = _contract_bound_import_learning_events(
+        source_root=source_root,
+        contract=source_contract,
+    )
+    for event_id, event in imported_events.items():
+        observed = registry_events.get(event_id)
+        if observed is None or observed.to_dict() != event.to_dict():
+            raise ValidationError(
+                "source Registry differs from contract-bound imported learning events"
+            )
+    committed_event_ids = {
+        event.event_id
+        for event in registry_events.values()
+        if event.round_id <= completed_fast
+    } | set(imported_events)
     learning_events = [
         event.to_dict()
         for spec in snapshot.specs
         for event in registry.load_learning_events(spec.ref)
-        if event.round_id <= completed_fast
+        if event.event_id in committed_event_ids
     ]
     cycle_artifacts: list[dict[str, str]] = []
     required_cycle_artifacts = (

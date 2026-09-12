@@ -282,7 +282,12 @@ mining, and Signal update proposals.
   overlays partial `raw_retrieval` edits on the stable policy and uses one shared
   validator during bounded correction and staging. Unknown, missing, or surplus
   path declarations and candidates whose only changes are version or tests are
-  invalid update decisions. The complete vNext template also carries the stable
+  invalid update decisions. After the bounded model corrections are exhausted,
+  runtime may replace only `changed_paths` with the exact diff deterministically
+  recomputed from the otherwise valid stable/candidate pair. It then reruns the
+  complete parser and fixture validator. This final bookkeeping normalization
+  cannot alter the candidate, evidence diagnostics, fixtures, disposition, or
+  rationale; any other invalidity still fails closed. The complete vNext template also carries the stable
   version's non-empty executable fixtures. Update output must preserve those
   fixtures byte-for-byte; tests are not a model-editable path and may never be
   replaced by an empty array. The clone-only argument schema accepts the same

@@ -28,6 +28,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalUpdateDecision,
     SignalUpdateModel,
     SIGNAL_UPDATE_MUTABLE_PATHS,
+    signal_update_effective_changed_paths,
     _normalized_projection_text,
     validate_signal_update_candidate,
     validate_signal_mining_signatures,
@@ -1117,6 +1118,67 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 raise StructuredValidationError(issues)
             return decision
 
+        def normalize_changed_paths(
+            failed_output: Mapping[str, Any], failure: ValidationError
+        ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+            """Repair only deterministic diff metadata after model corrections."""
+
+            del failure
+            candidate = failed_output.get("candidate")
+            stable_spec = target.get("stable_spec")
+            if not isinstance(candidate, Mapping) or not isinstance(
+                stable_spec, Mapping
+            ):
+                return None
+            candidate_contract = payload.get("candidate_contract", {})
+            vnext_template = (
+                candidate_contract.get("vnext_template", {})
+                if isinstance(candidate_contract, Mapping)
+                else {}
+            )
+            stable_tests = (
+                vnext_template.get("tests")
+                if isinstance(vnext_template, Mapping)
+                else None
+            )
+            try:
+                updated, updated_skill, _tests = validate_signal_update_candidate(
+                    target_ref,
+                    candidate,
+                    SignalSpec.from_dict(stable_spec),
+                    stable_skill=(
+                        str(target["stable_skill"])
+                        if target.get("stable_skill") is not None
+                        else None
+                    ),
+                    stable_tests=(
+                        stable_tests if isinstance(stable_tests, list) else None
+                    ),
+                    changed_paths=None,
+                )
+            except (KeyError, TypeError, ValueError, ValidationError):
+                return None
+            effective = signal_update_effective_changed_paths(
+                SignalSpec.from_dict(stable_spec),
+                updated,
+                stable_skill=(
+                    str(target["stable_skill"])
+                    if target.get("stable_skill") is not None
+                    else None
+                ),
+                updated_skill=updated_skill,
+            )
+            declared = failed_output.get("changed_paths")
+            if isinstance(declared, list) and tuple(declared) == effective:
+                return None
+            normalized = deepcopy(dict(failed_output))
+            normalized["changed_paths"] = list(effective)
+            return normalized, {
+                "source_substitution_paths": (),
+                "removed_paths": (),
+                "normalized_paths": ("changed_paths",),
+            }
+
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_update_decision",
@@ -1141,6 +1203,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             max_output_tokens=8_000,
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
+            final_validation_fallback=normalize_changed_paths,
         )
         return AgentStep(value, usage, metadata={"request_refs": request_refs})
 

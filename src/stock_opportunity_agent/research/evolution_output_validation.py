@@ -2853,6 +2853,7 @@ def _complete_parsed_role(
         removed_paths: list[str] = []
         source_substitution_paths: list[str] = []
         context_only_paths: list[str] = []
+        normalized_paths: list[str] = []
         seen_states = {
             json.dumps(
                 dict(fallback_output),
@@ -2892,11 +2893,13 @@ def _complete_parsed_role(
                 ),
                 "removed_paths": list(fallback_actions["removed_paths"]),
                 "context_only_paths": list(fallback_actions.get("context_only_paths", ())),
+                "normalized_paths": list(fallback_actions.get("normalized_paths", ())),
             }
             fallback_steps.append(step)
             source_substitution_paths.extend(step["source_substitution_paths"])
             removed_paths.extend(step["removed_paths"])
             context_only_paths.extend(step["context_only_paths"])
+            normalized_paths.extend(step["normalized_paths"])
             fallback_output = next_output
             try:
                 parsed_value = _parse_role_output(
@@ -2919,6 +2922,7 @@ def _complete_parsed_role(
                     ),
                     removed_paths=list(dict.fromkeys(removed_paths)),
                     context_only_paths=list(dict.fromkeys(context_only_paths)),
+                    normalized_paths=list(dict.fromkeys(normalized_paths)),
                 )
                 return parsed_value, usage
         if fallback_steps:

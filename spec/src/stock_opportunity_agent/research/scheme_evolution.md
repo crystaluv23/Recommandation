@@ -1483,10 +1483,12 @@ Mining alternates between two tracks. Hypothesis-driven cycles execute:
    are present, every returned hypothesis must directly ground itself in one
    item by sharing at least two non-generic normalized topic terms across its
    statement, applicability, expected pattern, and query. An ungrounded
-   hypothesis receives the one bounded correction. When the supplied bootstrap
-   backlog contains one or more `signal_need_items`, H1 must return at least one
-   grounded hypothesis; a reasonless empty array is not evidence that demand is
-   exhausted. Empty remains valid only when that demand list is empty. Stable Signal ids and registered deterministic
+   hypothesis receives the one bounded correction. A non-empty demand list still
+   does not prove that a new reusable measurement exists: H1 may return the typed
+   `no_testable_hypothesis` result only when every runtime need is covered exactly
+   once by a non-`new_measurement` disposition and the structured reason identifies
+   why the bounded portfolio is empty. That outcome never suppresses the independent
+   exploration path. Stable Signal ids and registered deterministic
    function leaves are also a local exclusion boundary: a candidate whose own
    `hypothesis_id` or evidence `query` contains the complete non-generic semantic
    term set of an existing multi-term Signal is rejected into the bounded

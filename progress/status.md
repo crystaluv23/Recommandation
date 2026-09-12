@@ -1,5 +1,27 @@
 # Status
 
+V65 replayed one immutable committed Fast range into a real zero-Fast
+`slow_bootstrap` cycle under contract `69aa0952...eb2a` and committed at
+authoritative `round=0/cycle=1`. Ten DeepSeek attempts completed for
+`$0.046635680000000006`, with 183 acquisition records; Locked Test stayed
+sealed, H1 and independent E both ran, and Update produced the nonzero
+`max_drawdown_1y:v2` candidate. The candidate stayed provisional because only
+one of eight fixed check cases had available market data, so Registry v1 did
+not change; Mining still produced zero candidates and goal remained `unmet`.
+Exact response audit found H1 semantically over-grouped 142 different unmatched
+needs into one deferred row and E2 then honestly found no recurring literal
+pattern. It also exposed two general continuation defects now repaired locally:
+`slow_only` history filtered out bootstrap-imported learning events solely
+because the target Fast pointer is zero, and an otherwise-valid Update correction
+could be rejected for surplus declarative `changed_paths`. History export now
+propagates only contract-bound imported events plus pointer-committed local
+events, verifies them byte-for-byte against the source Registry, and excludes
+unbound ledger rows. After bounded model correction, Update may normalize only
+the exact deterministic diff metadata and must rerun the complete candidate and
+fixture parser. The two new regressions, 204 focused tests, all 748 tests and
+repository lint pass. V65 remains immutable; a fresh `slow_only` successor is
+required for live cross-cycle reflection and nonzero Mining/promotion evidence.
+
 V62 committed two real successor cycles under contract
 `76616835...5006` at authoritative `round=0/cycle=2`. It used 23 model
 attempts (22 completed, one failed), 99 data requests and `$0.19435864`, kept

@@ -411,6 +411,52 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertIn("changed_paths_allowed", caller.calls[0]["system_prompt"])
 
+    def test_update_final_fallback_normalizes_only_effective_changed_paths(self) -> None:
+        stable = SignalSpec(
+            signal_id="revenue_growth_yoy", version=1, category="financial",
+            description="Measure year-over-year revenue growth.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            source_types=("financials",), function="financial.revenue_growth_yoy",
+        )
+        candidate = {
+            "signal_ref": stable.ref,
+            "spec": {
+                **stable.to_dict(),
+                "version": 2,
+                "raw_retrieval": {
+                    **stable.to_dict()["raw_retrieval"],
+                    "minimum_observations": 2,
+                },
+            },
+            "tests": [{"name": "retained fixture"}],
+        }
+        response = {
+            "signal_ref": stable.ref,
+            "disposition": "update",
+            "problem_type": "retrieval",
+            "rationale": ["Require two source observations."],
+            "case_diagnostics": [],
+            "changed_paths": [
+                "spec.raw_retrieval.minimum_observations",
+                "spec.parameters",
+            ],
+            "candidate": candidate,
+        }
+        caller = ScriptedRoleCaller([response, response])
+
+        step = LLMSignalUpdateModel(caller).update({
+            "update_contract_version": "signal-update-decision-v2",
+            "target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()},
+            "induction_cases": [],
+        })
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(
+            step.value.changed_paths,
+            ("spec.raw_retrieval.minimum_observations",),
+        )
+        self.assertEqual(step.value.candidate, candidate)
+
     def test_update_candidate_fixture_failure_is_corrected_before_staging(self) -> None:
         stable = SignalSpec(
             signal_id="cash_reserves",

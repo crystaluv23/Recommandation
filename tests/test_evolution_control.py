@@ -13,9 +13,130 @@ from stock_opportunity_agent.research.evolution_control import (
     apply_slow_history_manifest,
     build_slow_history_manifest,
 )
+from stock_opportunity_agent.signal_library import SignalLearningEvent
 
 
 class RunControlTests(TestCase):
+    def test_slow_history_preserves_imported_learning_events(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            target = root / "target"
+            registry = SignalRegistry(source / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            signal_ref = registry.freeze().specs[0].ref
+
+            def event(event_id: str, *, round_id: int) -> SignalLearningEvent:
+                return SignalLearningEvent(
+                    event_id=event_id,
+                    observation_key=f"observation-{event_id}",
+                    signal_ref=signal_ref,
+                    round_id=round_id,
+                    plan_id=f"plan-{event_id}",
+                    case_id=f"case-{event_id}",
+                    company_id=f"company-{event_id}",
+                    prediction_time="2025-01-10T00:00:00+00:00",
+                    selection={
+                        "signal_ref": signal_ref,
+                        "reason_code": "assess_applicability",
+                        "selection_reason": "Exercise committed learning continuity.",
+                        "applicability_hypothesis": "The source is comparable.",
+                        "expected_role": "coverage",
+                        "context_tags": [],
+                    },
+                    result_value=SignalValue.POSITIVE,
+                    coverage=SignalCoverage.SUFFICIENT,
+                    document_fingerprint=(f"document-{event_id}",),
+                    is_surge=True,
+                    realized_max_multiple=2.5,
+                    prediction_correct=True,
+                )
+
+            imported = event("imported", round_id=1)
+            uncommitted = event("uncommitted", round_id=2)
+            registry.record_learning_events((imported, uncommitted))
+            bootstrap_manifest = {
+                "schema_version": "slow-bootstrap-manifest-v2",
+                "signal_learning_events": [imported.to_dict()],
+            }
+            bootstrap_hash = hashlib.sha256(
+                json.dumps(
+                    bootstrap_manifest,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+            (source / "slow_bootstrap").mkdir(parents=True)
+            write_json(
+                source / "slow_bootstrap" / "manifest.json",
+                {"manifest_hash": bootstrap_hash, "manifest": bootstrap_manifest},
+            )
+            base_contract = make_contract()
+            source_contract = replace(
+                base_contract,
+                cycle_mode="slow_bootstrap",
+                slow_bootstrap_manifest_hash=bootstrap_hash,
+                initial_signal_registry_hash=registry.freeze().registry_hash,
+                limits={
+                    **base_contract.limits,
+                    "plan_rounds_per_signal_cycle": 0,
+                },
+            )
+            source_contract.freeze(source / "run_contract.json")
+            write_json(source / "state.json", {"last_completed_round": 0})
+            write_json(
+                source / "cycle_state.json",
+                {
+                    "schema_version": "dual-loop-cycle-state-v2",
+                    "run_contract_hash": source_contract.contract_hash,
+                    "initial_signal_registry_version": 1,
+                    "initial_signal_registry_hash": registry.freeze().registry_hash,
+                    "current_signal_registry_version": 1,
+                    "current_signal_registry_hash": registry.freeze().registry_hash,
+                    "last_completed_cycle": 1,
+                    "active_cycle": None,
+                },
+            )
+            committed_root = source / "experiments" / "cycles" / "cycle-0001"
+            committed_root.mkdir(parents=True)
+            for name in (
+                "slow_input.json",
+                "slow_memory.json",
+                "slow_experiments.json",
+                "slow_loop_validation.json",
+                "slow_loop_result.json",
+            ):
+                write_json(committed_root / name, {"artifact": name})
+
+            build_slow_history_manifest(
+                workspace=target,
+                source_workspace=source,
+                dataset_manifest_hash=source_contract.dataset_manifest_hash,
+            )
+            envelope = json.loads(
+                (target / "slow_history" / "manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(
+                [row["event_id"] for row in envelope["manifest"]["learning_events"]],
+                ["imported"],
+            )
+            apply_slow_history_manifest(
+                workspace=target,
+                manifest=envelope["manifest"],
+            )
+            self.assertEqual(
+                [
+                    item.event_id
+                    for item in SignalRegistry(
+                        target / "signals"
+                    ).load_learning_events(signal_ref)
+                ],
+                ["imported"],
+            )
+
     def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

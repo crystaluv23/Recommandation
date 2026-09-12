@@ -2476,6 +2476,41 @@ def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
         ) from exc
 
 
+def signal_update_effective_changed_paths(
+    stable: SignalSpec,
+    updated: SignalSpec,
+    *,
+    stable_skill: str | None,
+    updated_skill: str | None,
+) -> tuple[str, ...]:
+    """Return the exact mutable-path diff for one validated Signal update."""
+
+    stable_dict = stable.to_dict()
+    updated_dict = updated.to_dict()
+    retrieval_fields = tuple(
+        path.removeprefix("spec.raw_retrieval.")
+        for path in SIGNAL_UPDATE_MUTABLE_PATHS
+        if path.startswith("spec.raw_retrieval.")
+    )
+    actual_paths = {
+        f"spec.raw_retrieval.{name}"
+        for name in retrieval_fields
+        if stable_dict["raw_retrieval"].get(name)
+        != updated_dict["raw_retrieval"].get(name)
+    }
+    if stable_dict["parameters"] != updated_dict["parameters"]:
+        actual_paths.add("spec.parameters")
+    if stable_dict["execution"].get("skill_file") != updated_dict[
+        "execution"
+    ].get("skill_file"):
+        actual_paths.add("spec.execution.skill_file")
+    if stable_skill != updated_skill:
+        actual_paths.add("skill")
+    return tuple(
+        path for path in SIGNAL_UPDATE_MUTABLE_PATHS if path in actual_paths
+    )
+
+
 def validate_signal_update_candidate(
     signal_ref: str,
     candidate: Mapping[str, Any],
@@ -2551,27 +2586,14 @@ def validate_signal_update_candidate(
     ):
         raise ValidationError("LLM Signal Update requires a complete skill")
 
-    stable_dict = stable.to_dict()
-    updated_dict = updated.to_dict()
-    retrieval_fields = tuple(
-        path.removeprefix("spec.raw_retrieval.")
-        for path in SIGNAL_UPDATE_MUTABLE_PATHS
-        if path.startswith("spec.raw_retrieval.")
+    actual_paths = set(
+        signal_update_effective_changed_paths(
+            stable,
+            updated,
+            stable_skill=stable_skill,
+            updated_skill=skill_value,
+        )
     )
-    actual_paths = {
-        f"spec.raw_retrieval.{name}"
-        for name in retrieval_fields
-        if stable_dict["raw_retrieval"].get(name)
-        != updated_dict["raw_retrieval"].get(name)
-    }
-    if stable_dict["parameters"] != updated_dict["parameters"]:
-        actual_paths.add("spec.parameters")
-    if stable_dict["execution"].get("skill_file") != updated_dict[
-        "execution"
-    ].get("skill_file"):
-        actual_paths.add("spec.execution.skill_file")
-    if stable_skill != skill_value:
-        actual_paths.add("skill")
     if not actual_paths:
         raise ValidationError(
             "Signal Update candidate has no effective change; use no_change"

@@ -1663,7 +1663,11 @@ unchanged throughout, and the same Slow-validation/result order governs cycle
 completion. A `committed_fast` bootstrap must reconstruct and verify its
 manifest-bound learning/meta derivatives before H1, so actual H1/H2/H3 and
 Update contexts consume the source Fast evidence even though the target has no
-Fast pointer.
+Fast pointer. A later `slow_only` history export must preserve those imported
+learning events transitively from the contract-bound bootstrap/history manifest;
+filtering solely by the zero local Fast pointer would silently erase Update
+profiles. The export still excludes any Registry event that is reachable from
+neither a committed local Fast pointer nor a verified import manifest.
 
 The stable operator launcher treats Python exit status `75` as the only
 automatically recoverable process outcome. For an invocation-specific window
