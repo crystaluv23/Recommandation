@@ -10,9 +10,9 @@ semantic, Signal-output, or independent-benefit evidence.
 ## Authoritative boundary
 
 - Latest executed workspace:
-  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v54`.
+  `runs/cold_start/evolution/information-evolution-slow-self-evolution-20260912-v55`.
 - Frozen contract hash:
-  `42a97f650d6893c5a8b1a5de42a714302828a0824dfffa66b4099771e8e9e97c`.
+  `55a4f0f6fee748a138c556774e5d0ad5cf3f8f5a6f79e02d3c1fe1f03942f90e`.
 - Authoritative pointers are Fast round 0 / Slow cycle 1. Cycle 1 committed
   after resuming the same contract and cohort from one transient SEC SSL EOF;
   no staged file is used as completion evidence.
@@ -20,13 +20,13 @@ semantic, Signal-output, or independent-benefit evidence.
   granular experiments, kept Locked Test closed, and left Registry v1 unchanged.
 - Cycle 1 reports zero new candidates, zero validated Signals, zero promoted
   Signals, zero updated Signals, and `signal_goal_status=unmet`.
-- Reflection v2 content is accepted: 18 selected units produced 18 grounded
-  episodes and four lessons; 28 deferred units remain pending. E2's one-request
-  no-pattern result is consistent with the supplied literal cohort.
-- Overall content acceptance is still rejected because H1 correction omitted
-  invalid terminal refs from its machine-readable frontier and then rejected the
-  correct linked empty-ledger repair. Cycle 2 was not run; the successor adds the
-  complete `no_hypothesis` object to that correction scope.
+- H1, both E1 microbatches, and E2 are content-accepted for this cycle; each
+  completed in one request, E1 quarantined nothing, and E2's no-pattern result
+  is consistent with the literal cohort.
+- Overall content acceptance is still rejected because reflection repeated
+  nested history locators after one aggregate correction and sealed failed.
+  Cycle 2 was not run. The successor canonicalizes only a uniquely owned nested
+  Slow ref to its selected wrapper and retains that mapping for audit.
 - The user explicitly authorized the described DeepSeek transmission, up to 200
   attempts and $5 total cost, and the plan's data external calls.
 
@@ -48,15 +48,15 @@ semantic, Signal-output, or independent-benefit evidence.
 | Dimension | Status | Reason |
 | --- | --- | --- |
 | Execution completion | Partially achieved | V52 cycle 1 committed at `last_completed_cycle=1`; the required second content-valid cycle has not run |
-| Content correctness | Failed for V54 cycle 1 | Reflection and E2 are accepted, but H1 failed on an incomplete local correction frontier; the run stopped before cycle 2 |
+| Content correctness | Failed for V55 cycle 1 | H1/E1/E2 are accepted, but entry reflection failed on nested history locators; the run stopped before cycle 2 |
 | Signal output | Not achieved | No v8 cycle has committed a new validated and promoted Signal |
 | Cross-cycle learning | Scripted only | Deterministic tests prove wiring, but no real cycle-2 action has consumed a real cycle-1 v8 result |
 | Method-learning benefit | Not proven | No independent, equal-budget three-condition confirmation has run |
 
 ## Next valid sequence
 
-1. Commit the complete H1 terminal-reason correction frontier, then freeze a
-   successor workspace importing V54 committed history.
+1. Commit uniquely owned reflection-ref canonicalization and the expanded H1
+   withheld-roster guard, then freeze a successor importing V55 history.
 2. Re-audit the successor's exact body and execute it under the recorded
    DeepSeek/data authorization while preserving the 200-attempt/$5 ceiling.
 3. Execute and semantically inspect two committed `slow_only` cycles. Report new

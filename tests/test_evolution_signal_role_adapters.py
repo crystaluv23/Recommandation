@@ -69,11 +69,11 @@ class SignalRoleAdapterTests(TestCase):
                 "feedback_units": [
                     {
                         "feedback_ref": "feedback-1",
-                        "payload": {"source_refs": ["nested-source-a"]},
+                        "payload": {"source_refs": ["different-nested-a"]},
                     },
                     {
                         "feedback_ref": "feedback-2",
-                        "payload": {"source_refs": ["nested-source-b"]},
+                        "payload": {"source_refs": ["different-nested-b"]},
                     },
                 ],
             }
@@ -91,6 +91,59 @@ class SignalRoleAdapterTests(TestCase):
             ],
         )
         self.assertIn("top-level feedback_ref", caller.calls[0]["system_prompt"])
+
+    def test_reflection_canonicalizes_uniquely_owned_nested_slow_refs(self) -> None:
+        nested_ref = "slow-history:source-old:1:slow_loop_result:summary"
+        output = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0001-001",
+                    "source_refs": [nested_ref],
+                    "reflection": "The wrapped prior cycle produced no candidate.",
+                    "unresolved_questions": [],
+                }
+            ],
+            "lesson_additions": [
+                {
+                    "lesson_id": "lesson-c0001-001",
+                    "guidance": "Keep a no-candidate outcome distinct from failure.",
+                    "applicable_scope": "Slow search summaries",
+                    "support_refs": [nested_ref],
+                    "counterevidence_refs": [],
+                    "limitations": ["One wrapped cycle only."],
+                    "qualifies_refs": [],
+                    "challenges_refs": [],
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([output])
+
+        step = LLMSignalMiningModel(caller).reflect_feedback(
+            {
+                "episode_slots": ["episode-c0001-001"],
+                "lesson_slots": ["lesson-c0001-001"],
+                "feedback_units": [
+                    {
+                        "feedback_ref": "feedback-wrapper",
+                        "artifact": {"source_refs": [nested_ref]},
+                    }
+                ],
+            }
+        )
+
+        self.assertEqual(
+            step.value["episode_reflections"][0]["source_refs"],
+            ["feedback-wrapper"],
+        )
+        self.assertEqual(
+            step.value["lesson_additions"][0]["support_refs"],
+            ["feedback-wrapper"],
+        )
+        self.assertEqual(
+            step.metadata["canonicalized_nested_refs"],
+            {nested_ref: "feedback-wrapper"},
+        )
+        self.assertEqual(step.usage.llm_calls, 1)
 
     def test_update_role_retains_initial_and_correction_request_refs(self) -> None:
         class TracedCaller(ScriptedRoleCaller):
@@ -912,6 +965,53 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(
             step.metadata["hypothesis_need_refs"]["h1-c0001-s01"],
             ["original-cash-runway-need-ref"],
+        )
+
+    def test_signal_h1_rejects_v55_absent_roster_phrase_with_empty_backlog(
+        self,
+    ) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": [
+                    "No runtime need_ref was supplied, so the demand ledger is empty.",
+                    (
+                        "H1 candidate roster and source excerpts are absent, but "
+                        "no backlog gap exists to motivate a new measurement."
+                    ),
+                ],
+                "need_refs": [],
+            },
+            "need_dispositions": [],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_hypothesis"]["rationale"] = [
+            invalid["no_hypothesis"]["rationale"][0]
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v7",
+                "hypothesis_slots": [
+                    "h1-c0001-s01",
+                    "h1-c0001-s02",
+                    "h1-c0001-s03",
+                ],
+                "limits": {"hypothesis_limit": 3, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "capability_backlog": {"signal_need_items": [], "items": []},
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "issue_code"
+            ],
+            "h1_withheld_context_is_not_empty_reason",
         )
 
     def test_signal_h1_distinguishes_short_term_assets_from_future_outcomes(

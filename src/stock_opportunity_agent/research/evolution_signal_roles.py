@@ -235,9 +235,9 @@ def _h1_redundant_signal_ref_fallback(
 _H1_WITHHELD_CONTEXT_RATIONALE = re.compile(
     r"(?:\b(?:no|without|absent|missing|hidden|withheld|not\s+visible)\b"
     r".{0,160}\b(?:case(?:[- ]level)?.{0,60}(?:text|evidence)|case\s+labels?|"
-    r"full\s+source\s+excerpts?|group\s+membership)\b|"
+    r"(?:full\s+)?source\s+excerpts?|candidate\s+roster|group\s+membership)\b|"
     r"\b(?:case(?:[- ]level)?.{0,60}(?:text|evidence)|case\s+labels?|"
-    r"full\s+source\s+excerpts?|group\s+membership)\b"
+    r"(?:full\s+)?source\s+excerpts?|candidate\s+roster|group\s+membership)\b"
     r".{0,160}\b(?:absent|missing|hidden|withheld|not\s+visible)\b)",
     re.IGNORECASE,
 )
@@ -1184,8 +1184,44 @@ class LLMSignalMiningModel(SignalMiningModel):
             for lesson in memory.get("lesson_additions", ())
             if isinstance(lesson, Mapping) and lesson.get("lesson_id")
         }
+        nested_ref_owners: dict[str, set[str]] = {}
+
+        def nested_slow_refs(value: Any) -> Iterable[str]:
+            if isinstance(value, Mapping):
+                for nested in value.values():
+                    yield from nested_slow_refs(nested)
+            elif isinstance(value, (list, tuple)):
+                for nested in value:
+                    yield from nested_slow_refs(nested)
+            elif isinstance(value, str) and value.startswith("slow-history:"):
+                yield value
+
+        for unit in payload.get("feedback_units", ()):
+            if not isinstance(unit, Mapping) or not unit.get("feedback_ref"):
+                continue
+            owner = str(unit["feedback_ref"])
+            for nested_ref in nested_slow_refs(unit):
+                if nested_ref != owner:
+                    nested_ref_owners.setdefault(nested_ref, set()).add(owner)
+        canonicalized_nested_refs: dict[str, str] = {}
+
+        def canonicalize_refs(value: Any, *, allowed: set[str]) -> Any:
+            if not isinstance(value, list):
+                return value
+            mapped: list[Any] = []
+            for item in value:
+                replacement = item
+                if isinstance(item, str) and item not in allowed:
+                    owners = nested_ref_owners.get(item, set())
+                    if len(owners) == 1:
+                        replacement = next(iter(owners))
+                        canonicalized_nested_refs[item] = replacement
+                if replacement not in mapped:
+                    mapped.append(replacement)
+            return mapped
 
         def parse(value: Mapping[str, Any]) -> Mapping[str, Any]:
+            canonicalized_nested_refs.clear()
             if set(value) != {"episode_reflections", "lesson_additions"}:
                 raise ValidationError(
                     "Signal reflection requires episode_reflections and lesson_additions"
@@ -1194,6 +1230,37 @@ class LLMSignalMiningModel(SignalMiningModel):
             lessons = value.get("lesson_additions")
             if not isinstance(episodes, list) or not isinstance(lessons, list):
                 raise ValidationError("Signal reflection outputs must be arrays")
+            episodes = [
+                {
+                    **raw,
+                    "source_refs": canonicalize_refs(
+                        raw.get("source_refs"), allowed=feedback_refs
+                    ),
+                }
+                if isinstance(raw, Mapping)
+                else raw
+                for raw in episodes
+            ]
+            resolvable = (
+                feedback_refs | episode_slots | lesson_slots | prior_lesson_refs
+            )
+            lessons = [
+                {
+                    **raw,
+                    **{
+                        key: canonicalize_refs(raw.get(key), allowed=resolvable)
+                        for key in (
+                            "support_refs",
+                            "counterevidence_refs",
+                            "qualifies_refs",
+                            "challenges_refs",
+                        )
+                    },
+                }
+                if isinstance(raw, Mapping)
+                else raw
+                for raw in lessons
+            ]
             issues: list[ValidationIssue] = []
             seen_episodes: set[str] = set()
             for index, raw in enumerate(episodes):
@@ -1242,9 +1309,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                     continue
                 seen_episodes.add(episode_ref)
             seen_lessons: set[str] = set()
-            resolvable = (
-                feedback_refs | episode_slots | lesson_slots | prior_lesson_refs
-            )
             for index, raw in enumerate(lessons):
                 path = f"lesson_additions[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
@@ -1340,7 +1404,14 @@ class LLMSignalMiningModel(SignalMiningModel):
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
         )
-        return AgentStep(value, usage, metadata={"request_refs": request_refs})
+        return AgentStep(
+            value,
+            usage,
+            metadata={
+                "request_refs": request_refs,
+                "canonicalized_nested_refs": dict(canonicalized_nested_refs),
+            },
+        )
 
     def propose_hypotheses(
         self, payload: Mapping[str, Any]

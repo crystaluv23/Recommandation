@@ -8,12 +8,17 @@ preassigns episode/lesson refs and validates complete source coverage and the
 lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
-Only top-level `feedback_units[*].feedback_ref` values are valid output
+Only top-level `feedback_units[*].feedback_ref` values are persisted as output
 citations. Source locators nested inside a feedback unit remain immutable audit
-data; the model cannot promote them into episode or lesson refs merely because
-their strings are visible. All invalid episode and lesson rows are reported
-together as indexed, path-scoped correction obligations, so bounded recovery
-does not discover one bad ref per attempt.
+data; the model cannot promote them into independent episode or lesson refs
+merely because their strings are visible. When an out-of-scope nested Slow ref
+occurs inside exactly one selected feedback unit, the adapter deterministically
+canonicalizes it to that owning top-level `feedback_ref`, deduplicates the
+resulting ref list, and records the old-to-owner mapping in role metadata. The
+raw provider response remains immutable. Ambiguous or absent nested refs are not
+repaired. All remaining invalid episode and lesson rows are reported together as
+indexed, path-scoped correction obligations, so bounded recovery does not
+discover one bad ref per attempt.
 
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
@@ -173,7 +178,9 @@ mining, and Signal update proposals.
   outcome remains invalid.
 - A no-hypothesis or `not_testable` rationale may not use H1's intentionally
   withheld Discovery case roster, that roster's positive/control membership,
-  case evidence, or full source excerpts as its reason. This locally recognizable
+  case evidence, or source excerpts as its reason. A phrase such as “the H1
+  candidate roster and source excerpts are absent” is the same violation even
+  when an independent valid empty-backlog reason appears elsewhere. This locally recognizable
   contract violation participates in the same aggregate correction, so the model
   must either state a valid measurement-level reason or return a structured
   hypothesis for H2/H3 testing.

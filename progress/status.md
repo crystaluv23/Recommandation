@@ -1,5 +1,22 @@
 # Status
 
+V55 committed one real cycle under contract `55a4f0f6...42f90e` at
+authoritative `round=0/cycle=1`. It used seven settled model attempts, 31 SEC
+acquisitions, kept Locked Test sealed and Registry v1 unchanged, and reported
+zero candidates/validated/promoted/updated Signals with goal `unmet`. H1, both
+E1 microbatches, and E2 each completed in one request; E1 had no quarantine and
+E2's two-positive/two-control no-pattern rationale is supported by the literal
+signatures. Content acceptance still stops before cycle 2 because reflection
+failed: aggregate validation exposed six invalid episodes and four invalid
+lessons at once, but the correction repeated nested historical locators. Exact
+ownership inspection found 44 out-of-scope refs, 43 occurring under exactly one
+selected top-level wrapper and one absent from the current view. Reflection now
+canonicalizes only those uniquely owned nested Slow refs to their wrapper,
+deduplicates them, records the mapping, and still rejects absent or ambiguous
+refs. The raw provider response remains unchanged. H1 also now rejects V55's
+new wording that the candidate roster/source excerpts are absent. All 739 tests
+and lint pass before another fresh contract.
+
 V54 committed one real cycle under contract `42a97f65...e97c` at authoritative
 `round=0/cycle=1`, with nine settled model attempts, 30 SEC acquisitions,
 Locked Test sealed, Registry v1 unchanged, and all Signal counts zero/goal
