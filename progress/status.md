@@ -1,5 +1,13 @@
 # Status
 
+A proposed [Slow self-evolution implementation plan](slow-round-self-evolution-implementation-plan-2026-09-12.md)
+now specifies append-only raw feedback, concrete reflections and method lessons;
+neutral frozen sampling; mandatory independent mining; version-specific usage
+feedback; and bounded `slow_only` operation. It includes code batches and separate
+execution, semantic, Signal-output and independent capability acceptance. This is
+a design handoff only: runtime implementation and new live acceptance remain
+pending, and no existing frozen run or external authorization is changed.
+
 V45 completed one real DeepSeek Slow cycle at authoritative `round=0/cycle=1`
 after 42 completed external attempts and `$0.20322316`; Locked Test remained
 sealed and Registry v1 stayed unchanged at 14 stable Signals. Exact E1/E2 content
