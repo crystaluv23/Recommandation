@@ -18,6 +18,17 @@ cycle's complete units ahead of old backlog and prevents the optional source
 selector from evicting those that fit. All 742 tests and lint pass; V57 remains
 immutable and a fresh successor contract is required.
 
+P6 follow-up audit narrows the earlier “confirmation infrastructure” claim.
+`SlowMemoryAblationManifest` and `ConfirmationCohortLedger` can validate a
+precomputed three-condition group and reserve issuer-isolated confirmation
+cases, but no production path currently generates the `no_memory`,
+`episodes_only`, and `episodes_and_lessons` conditions or freezes their
+candidate/validation/promotion/unavailability/cost outcomes. The existing unit
+tests instantiate placeholder hashes directly. Therefore P6 is a local schema
+and reservation scaffold, not an executable ablation or evidence of method
+benefit. Thresholds and confirmation cases remain deliberately unfrozen pending
+the explicit research-protocol decision required by the plan.
+
 V56 committed one real cycle under contract `2f6f1af7...44bbe` at
 authoritative `round=0/cycle=1`. It used 11 reserved attempts, including one
 retryable SSL failure and one truncated structured response, with settled cost

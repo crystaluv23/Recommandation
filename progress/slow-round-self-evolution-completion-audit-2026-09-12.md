@@ -45,7 +45,7 @@ semantic, Signal-output, or independent-benefit evidence.
 | P3 entry reflection | Implemented and live exercised; cross-cycle scheduling repaired locally | V57 persisted its canonicalization maps and retained all unprocessed refs, but cycle 2 processed old backlog instead of its five cycle-1 units; the recent-frontier regression now proves a model replacement cannot evict prior-cycle units | Requires a fresh live cycle 2 to prove actual prior-cycle consumption |
 | P4 search/application closure | Implemented and live exercised; E2 semantics repaired locally | V57 retained H1, two E1 microbatches, E2 and zero-action Update work with ordered request refs; runtime now owns exact E2 group mappings and rejects prose label reassignment | No candidate reached validation or promotion; repaired E2 requires fresh live evidence |
 | P5 independent mode and migration | Implemented and live exercised | V57 committed two `slow_only` cycles with Fast fixed at 0 and respected cumulative attempt/cost limits; scripted tests now assert cycle-2 processing, not just input presence | Fresh live proof of actual cycle-1 feedback consumption remains required |
-| P6 semantic and independent acceptance | Infrastructure implemented; capability conclusion unproven | Candidate semantic consistency, independent support/counter/unavailable fixtures, behavior-duplicate checks, issuer-level confirmation isolation, and frozen three-condition ablation manifest have deterministic tests | No frozen, protocol-confirmed three-condition external ablation/confirmation result exists. Therefore method benefit, harm, or generalization cannot yet be claimed |
+| P6 semantic and independent acceptance | Semantic gates implemented; ablation scaffold only | Candidate semantic consistency, independent support/counter/unavailable fixtures, behavior-duplicate checks, manifest validation, and issuer-level group reservation have deterministic tests | No production path generates the three memory conditions or freezes their generation outcomes; no protocol-confirmed external comparison exists. Therefore method benefit, harm, or generalization cannot be claimed |
 | P7 runtime audit | In progress | V57's two cycles, 18 settled attempts, `$0.14368368000000004` cost, exact source cutoffs, role outputs, zero Signal counts, unchanged Registry and sealed Locked Test were inspected | Requires a repaired successor plus Signal transition/use evidence and final independent confirmation |
 
 ## Acceptance dimensions
@@ -67,8 +67,10 @@ semantic, Signal-output, or independent-benefit evidence.
 3. Execute and semantically inspect two committed `slow_only` cycles, including
    proof that cycle 2 processes cycle-1 feedback. Report new
    candidate, validated, promoted, and updated counts separately for each cycle.
-4. Freeze and approve the existing explicit confirmation protocol, then run the
-   equal-budget no-memory / episodes-only / episodes-plus-lessons comparison.
+4. Implement and verify a frozen generation path for the equal-budget no-memory /
+   episodes-only / episodes-plus-lessons conditions, including candidate,
+   validation, promotion, unavailability and cost outcomes. Then freeze and
+   approve the explicit confirmation protocol and run the comparison.
    Report insufficient or harmful results honestly and do not reuse revealed
    confirmation cases.
 
