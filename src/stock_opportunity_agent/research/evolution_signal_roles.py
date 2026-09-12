@@ -421,6 +421,56 @@ _E2_VISIBLE_LABEL_DENIAL = re.compile(
 )
 
 
+_E2_PROFILE_ATTRIBUTE_PATTERNS = (
+    ("sector", re.compile(r"\bsectors?\b", re.IGNORECASE)),
+    ("industry", re.compile(r"\bindustr(?:y|ies)\b", re.IGNORECASE)),
+    ("business model", re.compile(r"\bbusiness\s+models?\b", re.IGNORECASE)),
+    (
+        "market-cap class",
+        re.compile(
+            r"\b(?:market\s+cap(?:italization)?|(?:micro|small|mid|large)[- ]cap)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "geography",
+        re.compile(
+            r"\b(?:geograph(?:y|ic|ical|ically)|countries|country|regions?)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "listing venue",
+        re.compile(
+            r"\b(?:listing\s+venue|stock\s+exchange|exchanges?)\b",
+            re.IGNORECASE,
+        ),
+    ),
+)
+
+
+def _e2_profile_claims_without_literal_support(
+    claims: Iterable[str],
+    signatures: Iterable[Mapping[str, Any]],
+) -> tuple[str, ...]:
+    """Return profile attributes claimed by E2 but absent from literal projections."""
+
+    claim_text = "\n".join(str(item) for item in claims)
+    source_text = "\n".join(
+        str(observation.get(field, ""))
+        for signature in signatures
+        if isinstance(signature, Mapping)
+        for observation in signature.get("observations", ())
+        if isinstance(observation, Mapping)
+        for field in ("exact_span", "summary")
+    )
+    return tuple(
+        name
+        for name, pattern in _E2_PROFILE_ATTRIBUTE_PATTERNS
+        if pattern.search(claim_text) and not pattern.search(source_text)
+    )
+
+
 _SIGNAL_MINING_SIGNATURES_OUTPUT = (
     " Return one JSON object with exactly signatures (an array). Each signature "
     "has exactly case_ref (a supplied opaque string), observations (an array), "
@@ -2302,6 +2352,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Each deterministic summary contains only source-owned context. "
                 "Treat each exact_span as authoritative; ignore any stronger or "
                 "different claim inferred from the summary. "
+                "Do not infer issuer-profile differences such as sector, industry, "
+                "business model, market-cap class, geography, or listing venue unless "
+                "that attribute is literally present in the supplied signatures. "
                 "Each decision is a portfolio-level recurring pattern, not one decision "
                 "per case. Propose a reusable new Signal only for a repeated observable "
                 "difference. If the cases only support individual rejections or no "
@@ -2512,6 +2565,54 @@ class LLMSignalMiningModel(SignalMiningModel):
                             )
                         )
                         continue
+                    unsupported_rationale_claims = (
+                        _e2_profile_claims_without_literal_support(
+                            rationale, payload.get("signatures", ())
+                        )
+                    )
+                    unsupported_difference_claims = (
+                        _e2_profile_claims_without_literal_support(
+                            (difference,), payload.get("signatures", ())
+                        )
+                    )
+                    unsupported_profile_claims = tuple(
+                        dict.fromkeys(
+                            (
+                                *unsupported_rationale_claims,
+                                *unsupported_difference_claims,
+                            )
+                        )
+                    )
+                    if unsupported_profile_claims:
+                        shape_issues.append(
+                            ValidationIssue(
+                                code="e2_unsupported_profile_claim",
+                                message=(
+                                    f"{path} claims unsupplied issuer-profile attributes: "
+                                    + ", ".join(unsupported_profile_claims)
+                                    + ". Remove the claim or ground it in a supplied "
+                                    "literal signature."
+                                ),
+                                paths=tuple(
+                                    candidate_path
+                                    for claims, candidate_path in (
+                                        (
+                                            unsupported_rationale_claims,
+                                            f"{path}.rationale",
+                                        ),
+                                        (
+                                            unsupported_difference_claims,
+                                            f"{path}.contrast.observable_difference",
+                                        ),
+                                    )
+                                    if claims
+                                ),
+                                item_id=slot,
+                                item_id_field="hypothesis_id",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                        continue
                     parsed_items.append(
                         SignalMiningDecision(
                             hypothesis_id=slot,
@@ -2604,6 +2705,29 @@ class LLMSignalMiningModel(SignalMiningModel):
                                         "are absent, hidden, unavailable, or uncomparable."
                                     ),
                                     paths=("no_candidate.rationale",),
+                                )
+                            ]
+                        )
+                    unsupported_profile_claims = (
+                        _e2_profile_claims_without_literal_support(
+                            rationale, payload.get("signatures", ())
+                        )
+                    )
+                    if unsupported_profile_claims:
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_unsupported_profile_claim",
+                                    message=(
+                                        "Exploration E2 no_candidate rationale claims "
+                                        "issuer-profile attributes absent from every "
+                                        "supplied literal signature: "
+                                        + ", ".join(unsupported_profile_claims)
+                                        + ". Remove the claim or ground it in supplied "
+                                        "literal evidence."
+                                    ),
+                                    paths=("no_candidate.rationale",),
+                                    allowed_repairs=("replace",),
                                 )
                             ]
                         )

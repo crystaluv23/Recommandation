@@ -8,7 +8,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 
 ## Invariants
 
-- Signal candidates validate before promotion.
+- Signal candidates validate before promotion. Paired effectiveness applies the
+  same absolute directional-quality floor to new Signals and updates. Once a
+  candidate has enough decisive observations, it cannot be promoted when its
+  directionally correct count is less than or equal to its wrong count. An update
+  must satisfy this floor before relative availability/correct/wrong improvements
+  are considered; reducing errors only by abstaining does not turn a still-wrong
+  candidate into an effective Registry version.
 - Every Slow cycle runs bounded Signal Mining independently of whether the
   committed Fast boundary contains a new Signal need. H1 may use identity-masked,
   outcome-aware Fast meta-memory to propose error-driven measurements; the
@@ -100,7 +106,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   correctable output-shape failure, not a technical claim that mining found a
   candidate and not a locally invented semantic result. Locally checkable claims
   about the supplied cohort, including whether any selected case is unlabeled,
-  must match the actual E2 payload before an empty result is persisted.
+  must match the actual E2 payload before an empty result is persisted. The same
+  guard rejects rationale or observable-difference claims about sector,
+  industry, business model, market-cap class, geography, or listing venue when
+  that attribute vocabulary is absent from the literal source-owned signatures;
+  bounded correction preserves the decision/no-candidate intent while removing
+  or grounding only the unsupported claim.
   After bounded model correction, E1 may quarantine invalid observations while
   preserving independently validated observations and sibling signatures. It
   never clips or invents source text. Quarantine reasons remain technical audit

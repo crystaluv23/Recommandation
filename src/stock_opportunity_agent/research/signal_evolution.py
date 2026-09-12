@@ -1293,15 +1293,14 @@ class SignalCandidateEffectivenessEvaluator:
                 f"{candidate_counts[1]}/{decisive_floor}"
             )
         rejection_reasons: list[str] = []
-        if current is None:
-            if (
-                candidate_counts[1] >= decisive_floor
-                and candidate_counts[2] <= candidate_counts[3]
-            ):
-                rejection_reasons.append(
-                    "new candidate lacks positive directional evidence over controls"
-                )
-        else:
+        if (
+            candidate_counts[1] >= decisive_floor
+            and candidate_counts[2] <= candidate_counts[3]
+        ):
+            rejection_reasons.append(
+                "candidate lacks positive directional evidence over controls"
+            )
+        if current is not None:
             labels = (
                 (0, "availability"),
                 (2, "directional correct count"),

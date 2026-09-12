@@ -1,6 +1,6 @@
 # Evolution Confirmation Failure Denominators
 
-visit_times: 1
+visit_times: 2
 
 ## Trigger
 
@@ -25,6 +25,12 @@ For a frozen labeled cohort:
   negative-case abstention; and
 - make missing frozen rows `incomplete` rather than silently shrinking the
   cohort or substituting new cases.
+
+The same denominator discipline applies to version promotion: a candidate that
+reduces wrong decisions only by abstaining more can be relatively better than
+the stable version while still having no correct decisive evidence. Apply the
+absolute directional-quality floor before relative update improvement so a
+uniformly wrong candidate cannot enter the stable Registry.
 
 The acceptable failure rate and quality degradation remain protocol decisions.
 Tests may use explicit fixture thresholds to exercise the mechanism, but those

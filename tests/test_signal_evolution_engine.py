@@ -3822,6 +3822,45 @@ class SignalEvolutionTests(TestCase):
                 " ".join(result.reasons),
             )
 
+    def test_paired_effectiveness_rejects_still_wrong_update_that_abstains(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"paired_case_{index}", 4.0) for index in range(4)
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "version": current.version + 1,
+                    "description": "A candidate that merely abstains once.",
+                }
+            )
+
+            with mock.patch(
+                "stock_opportunity_agent.research.signal_evolution."
+                "_signal_effectiveness_counts",
+                side_effect=[(4, 3, 0, 3, 0), (4, 4, 0, 4, 0)],
+            ):
+                result = SignalCandidateEffectivenessEvaluator(
+                    registry,
+                    raw_info_store=RawInfoStore(),
+                    discovery_cases=cases,
+                    llm_runner=None,
+                ).evaluate(candidate, skill=None)
+
+            self.assertFalse(result.accepted)
+            self.assertIn(
+                "candidate lacks positive directional evidence over controls",
+                result.reasons,
+            )
+            self.assertNotIn(
+                "candidate shows no strict paired effectiveness gain",
+                result.reasons,
+            )
+
     def test_effectiveness_excludes_induction_and_marks_sparse_support_provisional(
         self,
     ) -> None:

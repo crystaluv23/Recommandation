@@ -3038,6 +3038,118 @@ class SignalRoleAdapterTests(TestCase):
             "e2_no_candidate_label_inventory_mismatch",
         )
 
+    def test_exploration_e2_corrects_unsupplied_profile_claim_in_no_candidate(
+        self,
+    ) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": [
+                    "The positive cases are from different sectors and show no pattern."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_candidate"]["rationale"] = [
+            "The supplied revenue spans move in opposite directions across labels."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {
+                        "case_ref": "case-001",
+                        "label": "positive",
+                        "observations": [
+                            {
+                                "exact_span": "Revenue increased from 10 to 12.",
+                                "summary": "Literal filing excerpt.",
+                            }
+                        ],
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "label": "control",
+                        "observations": [
+                            {
+                                "exact_span": "Revenue increased from 8 to 9.",
+                                "summary": "Literal filing excerpt.",
+                            }
+                        ],
+                    },
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        obligation = feedback["obligations"][0]
+        self.assertEqual(obligation["issue_code"], "e2_unsupported_profile_claim")
+        self.assertEqual(
+            obligation["must_change_paths"], ["no_candidate.rationale"]
+        )
+        self.assertIn("Do not infer issuer-profile", caller.calls[0]["system_prompt"])
+
+    def test_exploration_e2_corrects_unsupplied_profile_claim_in_contrast(
+        self,
+    ) -> None:
+        candidate = {"spec": {}, "skill": None, "tests": []}
+        invalid = {
+            "decisions": [
+                {
+                    "hypothesis_id": "e2-c0001-s01",
+                    "disposition": "supported",
+                    "rationale": ["The supplied literal values differ by label."],
+                    "contrast": {
+                        "positive_case_refs": ["case-001"],
+                        "control_case_refs": ["case-002"],
+                        "observable_difference": (
+                            "Small-cap positives rise while large-cap controls fall."
+                        ),
+                    },
+                    "candidate": candidate,
+                }
+            ],
+            "no_candidate": None,
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["decisions"][0]["contrast"]["observable_difference"] = (
+            "The positive revenue value rises while the control value falls."
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "decision_slots": ["e2-c0001-s01"],
+                "signatures": [
+                    {
+                        "case_ref": "case-001",
+                        "label": "positive",
+                        "observations": [{"exact_span": "Revenue rose to 12."}],
+                    },
+                    {
+                        "case_ref": "case-002",
+                        "label": "control",
+                        "observations": [{"exact_span": "Revenue fell to 8."}],
+                    },
+                ],
+            }
+        )
+
+        self.assertEqual(len(step.value), 1)
+        obligation = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]
+        self.assertEqual(obligation["issue_code"], "e2_unsupported_profile_claim")
+        self.assertIn(
+            "decisions[0].contrast.observable_difference",
+            obligation["must_change_paths"],
+        )
+        self.assertNotIn("decisions[0].rationale", obligation["must_change_paths"])
+
     def test_exploration_e2_rejects_claim_that_visible_labels_are_hidden(self) -> None:
         invalid = {
             "decisions": [],

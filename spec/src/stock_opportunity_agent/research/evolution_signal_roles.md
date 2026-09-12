@@ -134,7 +134,13 @@ mining, and Signal update proposals.
   `no_candidate` object rather than repeatedly reshaping those rows as candidates.
   An E2 no-candidate rationale must also agree with the supplied label inventory;
   for example, it cannot claim that unlabeled cases were considered when every
-  selected signature has an explicit positive/control label.
+  selected signature has an explicit positive/control label. E2 rationale and
+  observable-difference text may not infer unsupplied issuer-profile attributes
+  such as sector, industry, business model, market-cap class, geography, or
+  listing venue. A profile attribute is usable only when its literal vocabulary
+  appears in the supplied source-owned signature projection; a violation is a
+  structured correction obligation over only the offending rationale or
+  observable-difference path.
   The E2 prompt says that signatures were frozen while hidden but their supplied
   positive/control labels are now visible. A rationale cannot claim those labels
   remain hidden, unavailable, or uncomparable. It also identifies signature
