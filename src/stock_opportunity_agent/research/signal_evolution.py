@@ -4223,11 +4223,18 @@ class SignalEvolutionEngine:
                     ),
                 }
             )
-        cards = [
-            self._mining_signal_card_view(card.to_dict())
-            for category in self.registry.list_categories()
-            for card in self.registry.list_signal_cards(category)
-        ]
+        cards: list[dict[str, Any]] = []
+        for category in self.registry.list_categories():
+            for card in self.registry.list_signal_cards(category):
+                projected_card = self._mining_signal_card_view(card.to_dict())
+                answer_phrases = self.registry.load_spec(card.ref).parameters.get(
+                    "routing_answer_need_phrases", ()
+                )
+                if answer_phrases:
+                    projected_card["routing_answer_need_phrases"] = list(
+                        answer_phrases
+                    )
+                cards.append(projected_card)
         backlog_path = self.workspace.root / "capability_backlog.json"
         capability_backlog = (
             _read_json(backlog_path)

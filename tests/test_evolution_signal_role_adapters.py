@@ -2941,6 +2941,187 @@ class SignalRoleAdapterTests(TestCase):
             ["cash_runway:v1"],
         )
 
+    def test_h1_unmatched_need_cannot_be_silently_marked_covered(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The stable catalog covers the need."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "already_covered",
+                    "signal_refs": ["guidance_acceleration:v1"],
+                    "rationale": ["A guidance Signal exists."],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["need_dispositions"][0] = {
+            "need_refs": ["need-001"],
+            "disposition": "deferred_measurement",
+            "signal_refs": [],
+            "rationale": ["The measurable client trend is outside this portfolio."],
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["news"],
+                "stable_signal_cards": [
+                    {
+                        "signal_ref": "guidance_acceleration:v1",
+                        "routing_answer_need_phrases": ["guidance"],
+                    }
+                ],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {
+                            "need_ref": "client-trend",
+                            "kind": "unmatched_signal_need",
+                            "need": "Measure active client retention trends.",
+                        }
+                    ]
+                },
+            }
+        )
+
+        obligation = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]
+        self.assertEqual(
+            obligation["issue_code"],
+            "h1_unmatched_need_cannot_be_already_covered",
+        )
+        self.assertEqual(
+            step.metadata["need_dispositions"][0]["disposition"],
+            "deferred_measurement",
+        )
+
+    def test_h1_update_existing_requires_basis_for_every_grouped_need(self) -> None:
+        invalid = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The needs can be handled outside this portfolio."],
+                "need_refs": ["need-001", "need-002"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001", "need-002"],
+                    "disposition": "update_existing",
+                    "signal_refs": ["guidance_acceleration:v1"],
+                    "rationale": ["Update the guidance Signal."],
+                }
+            ],
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["need_dispositions"] = [
+            {
+                "need_refs": ["need-001"],
+                "disposition": "update_existing",
+                "signal_refs": ["guidance_acceleration:v1"],
+                "rationale": ["The need explicitly requests guidance."],
+            },
+            {
+                "need_refs": ["need-002"],
+                "disposition": "deferred_measurement",
+                "signal_refs": [],
+                "rationale": ["Client retention needs a separate measurement."],
+            },
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["news"],
+                "stable_signal_cards": [
+                    {
+                        "signal_ref": "guidance_acceleration:v1",
+                        "routing_answer_need_phrases": ["guidance", "outlook"],
+                    }
+                ],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {
+                            "need_ref": "guidance-need",
+                            "kind": "unmatched_signal_need",
+                            "need": "Compare current guidance with prior guidance.",
+                        },
+                        {
+                            "need_ref": "retention-need",
+                            "kind": "unmatched_signal_need",
+                            "need": "Measure active client retention trends.",
+                        },
+                    ]
+                },
+            }
+        )
+
+        obligation = caller.calls[1]["payload"]["validation_feedback"][
+            "obligations"
+        ][0]
+        self.assertEqual(
+            obligation["issue_code"], "h1_update_existing_lacks_explicit_basis"
+        )
+        self.assertEqual(obligation["source_refs"], ["need-002"])
+        self.assertEqual(len(step.metadata["need_dispositions"]), 2)
+
+    def test_h1_final_fallback_removes_only_redundant_singular_signal_ref(
+        self,
+    ) -> None:
+        duplicated = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "no_new_measurable_gap",
+                "rationale": ["The exact stable Signal already covers the need."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "already_covered",
+                    "signal_ref": "cash_reserves:v1",
+                    "signal_refs": ["cash_reserves:v1"],
+                    "rationale": ["The need already names the stable Signal."],
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([duplicated, duplicated])
+
+        step = LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v6",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+                "available_raw_source_types": ["financials"],
+                "stable_signal_cards": [{"signal_ref": "cash_reserves:v1"}],
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "cash-need", "need": "Cash reserves."}
+                    ]
+                },
+            }
+        )
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertNotIn("signal_ref", step.metadata["need_dispositions"][0])
+        self.assertEqual(
+            step.metadata["need_dispositions"][0]["signal_refs"],
+            ["cash_reserves:v1"],
+        )
+
     def test_exploration_e2_corrects_per_case_rejections_to_no_candidate(self) -> None:
         malformed = {
             "decisions": [

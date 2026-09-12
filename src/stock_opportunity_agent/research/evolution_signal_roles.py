@@ -66,7 +66,7 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 
 
 _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
-    ' Output contract signal-mining-hypothesis-v5: return exactly {"conclusion":'
+    ' Output contract signal-mining-hypothesis-v6: return exactly {"conclusion":'
     '"hypotheses"|"no_testable_hypothesis","hypotheses":[],"no_hypothesis":'
     'object|null,"need_dispositions":[]}. For conclusion="hypotheses", '
     "no_hypothesis is null and each "
@@ -83,14 +83,20 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "reason_code is no_new_measurable_gap, insufficient_retrieval_basis, or "
     "prior_attempts_exhausted. Each need_dispositions item has exactly need_refs, "
     "disposition, signal_refs, and rationale. disposition is new_measurement, "
-    "update_existing, repair_dependency, already_covered, not_testable, or "
-    "fast_plan_action. Every "
+    "deferred_measurement, update_existing, repair_dependency, already_covered, "
+    "not_testable, or fast_plan_action. Every "
     "rationale field is a non-empty array of short strings. Every supplied "
     "signal_need_items need_ref and every ordinary backlog items request_id is a "
     "runtime need_ref and must appear exactly once; only supplied stable signal_refs "
     "may be cited. update_existing and already_covered require exactly one stable "
-    "signal_ref per row. new_measurement, repair_dependency, not_testable, and "
-    "fast_plan_action require signal_refs=[]. fast_plan_action is valid only for "
+    "signal_ref per row. new_measurement, deferred_measurement, repair_dependency, "
+    "not_testable, and fast_plan_action require signal_refs=[]. "
+    "deferred_measurement means the need defines a reusable measurement but is "
+    "outside this bounded portfolio; it remains unresolved. An item whose "
+    "kind=unmatched_signal_need cannot be already_covered. It may be "
+    "update_existing only when every grouped need contains one of the cited "
+    "card's exact routing_answer_need_phrases. A backlog row already carrying the "
+    "cited signal_ref is also an explicit update basis. fast_plan_action is valid only for "
     "meta_reflection_action refs whose retrieval, analysis, or prediction-policy "
     "change already flows through meta-memory to the next Fast proposer. Group "
     "need_refs only when the same measurement or dependency "
@@ -102,6 +108,40 @@ _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
     "small explanatory subset and need not repeat the complete disposition ledger. "
     "Never add Markdown or company identities."
 )
+
+
+def _h1_redundant_signal_ref_fallback(
+    failed_output: Mapping[str, Any], failure: ValidationError
+) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+    """Remove only a redundant legacy singular H1 Signal-ref field."""
+
+    del failure
+    raw_rows = failed_output.get("need_dispositions")
+    if not isinstance(raw_rows, list):
+        return None
+    result = deepcopy(dict(failed_output))
+    result_rows = result.get("need_dispositions")
+    if not isinstance(result_rows, list):
+        return None
+    removed_paths: list[str] = []
+    for index, row in enumerate(result_rows):
+        if not isinstance(row, dict) or "signal_ref" not in row:
+            continue
+        plural = row.get("signal_refs")
+        if (
+            not isinstance(plural, list)
+            or len(plural) != 1
+            or row.get("signal_ref") != plural[0]
+        ):
+            return None
+        row.pop("signal_ref")
+        removed_paths.append(f"need_dispositions[{index}].signal_ref")
+    if not removed_paths:
+        return None
+    return result, {
+        "source_substitution_paths": (),
+        "removed_paths": tuple(removed_paths),
+    }
 
 
 _H1_WITHHELD_CONTEXT_RATIONALE = re.compile(
@@ -957,6 +997,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "adapter": f"{type(self).__module__}.{type(self).__qualname__}",
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
+            "h1_contract": "signal-mining-hypothesis-v6",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
             "e2_decision_contract": "contrast-bound-slots-v1",
@@ -1037,6 +1078,43 @@ class LLMSignalMiningModel(SignalMiningModel):
                     projected_backlog[collection_name] = projected_rows
             projected_payload["capability_backlog"] = projected_backlog
 
+        need_rows_by_alias: dict[str, Mapping[str, Any]] = {}
+        if isinstance(projected_backlog, Mapping):
+            for collection_name, field_name in (
+                ("signal_need_items", "need_ref"),
+                ("items", "request_id"),
+            ):
+                for item in projected_backlog.get(collection_name, ()):
+                    if isinstance(item, Mapping) and item.get(field_name):
+                        need_rows_by_alias[str(item[field_name])] = item
+        stable_cards_by_ref = {
+            str(item["signal_ref"]): item
+            for item in projected_payload.get("stable_signal_cards", ())
+            if isinstance(item, Mapping) and item.get("signal_ref")
+        }
+
+        def has_explicit_update_basis(need_ref: str, signal_ref: str) -> bool:
+            row = need_rows_by_alias.get(need_ref, {})
+            if row.get("signal_ref") == signal_ref:
+                return True
+            need = str(row.get("need", ""))
+            normalized_need = (
+                " " + re.sub(r"[^a-z0-9]+", " ", need.casefold()).strip() + " "
+            )
+            card = stable_cards_by_ref.get(signal_ref, {})
+            phrases = card.get("routing_answer_need_phrases", ())
+            return isinstance(phrases, list) and any(
+                isinstance(phrase, str)
+                and phrase.strip()
+                and (
+                    " "
+                    + re.sub(r"[^a-z0-9]+", " ", phrase.casefold()).strip()
+                    + " "
+                )
+                in normalized_need
+                for phrase in phrases
+            )
+
         limits = dict(projected_payload.get("limits", {}))
         limit = int(limits.get("hypothesis_limit", 3))
         lookback_days = int(limits.get("evidence_lookback_days", 365))
@@ -1083,6 +1161,7 @@ class LLMSignalMiningModel(SignalMiningModel):
         }
         allowed_need_dispositions = {
             "new_measurement",
+            "deferred_measurement",
             "update_existing",
             "repair_dependency",
             "already_covered",
@@ -1139,6 +1218,25 @@ class LLMSignalMiningModel(SignalMiningModel):
             for index, raw_disposition in enumerate(raw_dispositions):
                 if not isinstance(raw_disposition, Mapping):
                     continue
+                disposition_path = f"need_dispositions[{index}]"
+                if set(raw_disposition) != {
+                    "need_refs",
+                    "disposition",
+                    "signal_refs",
+                    "rationale",
+                }:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_disposition_row_shape_invalid",
+                            message=(
+                                f"{disposition_path} must contain exactly need_refs, "
+                                "disposition, signal_refs, and rationale; replace the "
+                                "complete row and do not use singular signal_ref"
+                            ),
+                            paths=(disposition_path,),
+                            allowed_repairs=("replace",),
+                        )
+                    )
                 raw_refs = raw_disposition.get("need_refs")
                 if not isinstance(raw_refs, list):
                     continue
@@ -1199,6 +1297,61 @@ class LLMSignalMiningModel(SignalMiningModel):
                             paths=(f"need_dispositions[{index}].signal_refs",),
                         )
                     )
+                unmatched_refs = {
+                    ref
+                    for ref in string_refs
+                    if need_rows_by_alias.get(ref, {}).get("kind")
+                    == "unmatched_signal_need"
+                }
+                if disposition == "already_covered" and unmatched_refs:
+                    ledger_issues.append(
+                        ValidationIssue(
+                            code="h1_unmatched_need_cannot_be_already_covered",
+                            message=(
+                                f"{disposition_path} erases explicitly unmatched "
+                                "Signal needs without action. Replace the row with "
+                                "new_measurement, deferred_measurement, "
+                                "update_existing with an explicit version-owned "
+                                "answer-phrase basis, repair_dependency, or an "
+                                "intrinsically justified not_testable disposition"
+                            ),
+                            paths=("need_dispositions",),
+                            source_refs=tuple(sorted(unmatched_refs)),
+                            allowed_repairs=("replace",),
+                        )
+                    )
+                if (
+                    disposition == "update_existing"
+                    and len(signal_refs) == 1
+                    and signal_refs[0] in allowed_signal_refs
+                ):
+                    unsupported_refs = tuple(
+                        sorted(
+                            ref
+                            for ref in string_refs
+                            if ref in allowed_need_refs
+                            and not has_explicit_update_basis(ref, signal_refs[0])
+                        )
+                    )
+                    if unsupported_refs:
+                        ledger_issues.append(
+                            ValidationIssue(
+                                code="h1_update_existing_lacks_explicit_basis",
+                                message=(
+                                    f"{disposition_path} may update one stable Signal "
+                                    "only when every grouped need independently "
+                                    "carries that signal_ref or contains one of its "
+                                    "version-owned routing_answer_need_phrases"
+                                ),
+                                paths=("need_dispositions",),
+                                source_refs=unsupported_refs,
+                                allowed_repairs=("replace",),
+                                repair_context={
+                                    "unsupported_need_refs": list(unsupported_refs),
+                                    "cited_signal_ref": signal_refs[0],
+                                },
+                            )
+                        )
                 if reflection_refs and disposition == "already_covered":
                     ledger_issues.append(
                         ValidationIssue(
@@ -1457,6 +1610,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                 if disposition in {
                     "new_measurement",
+                    "deferred_measurement",
                     "repair_dependency",
                     "not_testable",
                     "fast_plan_action",
@@ -1747,7 +1901,12 @@ class LLMSignalMiningModel(SignalMiningModel):
             "outcome-aware lessons from earlier Fast evaluation. Route a reusable "
             "observable factor to new_measurement or update_existing, a missing "
             "source capability to repair_dependency, and an intrinsically "
-            "untestable factor to not_testable. Use fast_plan_action only when the "
+            "untestable factor to not_testable. A reusable measurable gap outside "
+            "the frozen hypothesis_limit must be deferred_measurement, not "
+            "already_covered or not_testable. An unmatched_signal_need is still "
+            "unresolved and cannot be already_covered. update_existing requires "
+            "each grouped need to carry the cited signal_ref or literally contain "
+            "one of that card's routing_answer_need_phrases. Use fast_plan_action only when the "
             "item changes retrieval, analysis, threshold calibration, magnitude, "
             "or another prediction policy rather than defining a reusable factor; "
             "the original reflection already flows through meta-memory to the next "
@@ -1804,6 +1963,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             temperature=self.creative_temperature,
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
+            final_validation_fallback=_h1_redundant_signal_ref_fallback,
         )
         restored_metadata = deepcopy(conclusion_metadata)
         if "need_refs" in restored_metadata:

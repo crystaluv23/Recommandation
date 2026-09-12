@@ -1,37 +1,41 @@
 # Status
 
-V44 completed a real DeepSeek Slow cycle at authoritative `round=0/cycle=1`
-after 31 attempts and `$0.14752108`, but exact request/response inspection still
-rejects it as semantic acceptance. H1 accounted for all 175 runtime obligations,
-routed all 30 projected non-Signal reflection actions back to Fast, and honestly
-produced no H3 hypothesis; independent E1/E2 therefore remained the discovery
-path. E2 received two positive and two control signatures and returned
-`no_measurable_pattern`, but its rationale asserted that the positive cases came
-from different sectors even no sector appeared in the supplied literal context.
-The empty result may be substantively correct, but that response is not grounded
-enough to prove it. Update's deterministic in-parser fixture correction worked:
-it repaired `cash_reserves:v2` before staging, after which paired validation
-correctly rejected no gain. `financing_listing_action:v2` remained unavailable.
-However, `max_drawdown_1y:v2` was incorrectly promoted because five wrong and
-zero correct decisive results looked relatively better than the stable version's
-six wrong results; abstention reduced the error count without creating an
-effective factor. V44 Registry v2 is immutable evidence, not an accepted seed.
+V45 completed one real DeepSeek Slow cycle at authoritative `round=0/cycle=1`
+after 42 completed external attempts and `$0.20322316`; Locked Test remained
+sealed and Registry v1 stayed unchanged at 14 stable Signals. Exact E1/E2 content
+inspection supports E2's `insufficient_evidence` result: its two positive and two
+control cases retained literal source spans and explicit labels, but only one
+positive had comparable revenue growth while the other exposed non-comparable
+periods, so no repeated positive/control factor was established. This supersedes
+the earlier uninspected V30/V31 no-candidate assertion: a domain-empty result is
+accepted only after inspecting its actual comparison content.
 
-E2 now rejects and narrowly corrects issuer-profile claims about sector,
-industry, business model, market-cap class, geography, or listing venue unless
-the attribute vocabulary occurs in the supplied source-owned signatures. Paired
-effectiveness now applies the existing absolute directional-quality floor to
-updates as well as new Signals before considering relative gains, so an
-all-wrong candidate cannot be promoted by abstaining. Both empty E2 and supported
-candidate branches have correction coverage. All 713 tests and repository lint
-pass. Clean V45 is frozen from the pre-V44 Registry at contract
-`8d44c95a...06f33` and paused at exact H1 request `fe5c230e...a56e`, with zero
-external calls and authoritative pointers `round=0/cycle=0`. Its 244,452-byte
-body and `3bde83aa...7c18` wire digest match the persisted envelope; logical and
-wire messages are identical. All 175 unique obligations, 30 reflection actions,
-24 meta cases, and 14 stable Signal cards are present; checked
-company/ticker/CIK/path identities are absent and Locked Test is sealed. V45 now
-requires its own payload-specific authorization before real DeepSeek execution.
+V45 still fails semantic Slow acceptance because H1 did not produce a trustworthy
+ledger. Its first response pooled 142 heterogeneous `unmatched_signal_need` refs
+under `guidance_acceleration:v1`; the first correction fixed the plural field but
+retained that false coverage claim, and the second correction reintroduced the
+singular field. The runtime correctly recorded structured-recovery exhaustion and
+continued independent E1/E2 and Update, but the old validator checked only that
+the cited Signal existed. Update itself was fail-closed: the new absolute quality
+floor rejected `max_drawdown_1y:v2` at 0 correct/5 wrong, `cash_reserves:v2` was
+rejected at 1 correct/4 wrong with no gain, and `financing_listing_action:v2`
+remained provisional at 0 decisive with three technical citation failures. Its
+request and correction payloads contained the full source observations and exact
+validation feedback; the model's ignored citation repairs remained technical
+failures rather than being laundered into semantic unavailable results.
+
+H1 now uses `signal-mining-hypothesis-v6`. It has an honest
+`deferred_measurement` state for measurable needs outside the bounded portfolio;
+explicitly unmatched Fast needs cannot be marked already covered, and an
+existing-Signal update must have a per-need exact basis from either the backlog's
+own `signal_ref` or that Signal version's `routing_answer_need_phrases`. The H1
+card projection now supplies only those bounded phrases. Grouped rows are checked
+per need, row-shape failures are indexed, and the terminal fallback may remove
+only a redundant singular `signal_ref` identical to the sole plural value before
+rerunning the complete parser. Exact replay of all three V45 H1 responses remains
+rejected for the semantic coverage error after the mechanical duplicate is
+removed. All 716 tests pass; repository lint and a clean successor request audit
+remain before another external Slow acceptance run.
 
 V42 reached the audited H1 approval boundary at `round=0/cycle=0`. The exact
 225,829-character H1 context contains 172 unique needs, all 30 reflection actions,

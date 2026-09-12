@@ -30,7 +30,7 @@ mining, and Signal update proposals.
   local re-projection meaningful. Exact request estimation and the original hard
   token ceiling apply before the correction; unchanged insufficient input remains
   unavailable rather than entering another retry loop.
-- Production H1 uses `signal-mining-hypothesis-v5`. The runtime supplies stable
+- Production H1 uses `signal-mining-hypothesis-v6`. The runtime supplies stable
   proposal refs, the fixed Discovery comparison, and the evidence lookback;
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
@@ -52,9 +52,13 @@ mining, and Signal update proposals.
   disposition/rationale only when one measurement or one dependency reason
   genuinely addresses every grouped ref; semantically unrelated needs may not be
   pooled merely to shorten the ledger. `measurement.value_kind` is one of
-  `boolean`, `ordinal`, `numeric`, or `categorical`. `update_existing` and
+  `boolean`, `ordinal`, `numeric`, or `categorical`. A measurable gap omitted
+  from the current bounded hypothesis portfolio uses `deferred_measurement`;
+  this is not a claim that the gap is untestable, already covered, or resolved,
+  and the unchanged backlog remains eligible in a later cycle.
+  `update_existing` and
   `already_covered` each cite exactly one stable Signal per disposition row;
-  `new_measurement`, `repair_dependency`, `not_testable`, and
+  `new_measurement`, `deferred_measurement`, `repair_dependency`, `not_testable`, and
   `fast_plan_action` cite none. A
   `no_hypothesis.need_refs` list is only a bounded
   explanatory subset and must not duplicate the complete disposition ledger.
@@ -104,6 +108,22 @@ mining, and Signal update proposals.
   between new-measurement dispositions and hypothesis need refs. One bounded
   correction therefore sees the complete obligation set instead of consuming its
   attempts one typo at a time.
+- A row whose source kind is `unmatched_signal_need` cannot use
+  `already_covered`: that would erase an explicitly unresolved Fast demand
+  without creating either a Signal measurement or an action. Such a row may use
+  `update_existing` only when every need in the row independently matches a
+  version-owned `routing_answer_need_phrases` entry on the one cited stable
+  Signal. A backlog row that already carries that exact `signal_ref` is also an
+  explicit update basis. Arbitrary token overlap with an id, description, or
+  query is never coverage evidence. The H1 card projection therefore includes
+  only these bounded version-owned answer phrases. Grouped rows are checked per
+  need so one relevant need cannot launder unrelated siblings.
+- H1 row-shape failures are indexed structured obligations. After all bounded
+  model corrections, a deterministic fallback may remove only a redundant
+  legacy singular `signal_ref` when its value exactly equals the sole accepted
+  `signal_refs` entry. The complete H1 parser and semantic validator must then
+  pass; no missing, conflicting, or semantically unsupported field is repaired
+  this way.
 - H1's alternative-outcome guard is semantic rather than a bare horizon-word
   blacklist. Source-owned point-in-time measurements may preserve terms such as
   `short-term investments` and a contemporaneously disclosed statement that

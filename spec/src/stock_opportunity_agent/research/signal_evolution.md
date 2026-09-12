@@ -76,7 +76,8 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   retained vertical reflection. Reflection actions come only from explicit
   misleading-signal, repeated-failure, missing-information, and next-exploration
   fields. H1 classifies each action honestly: Signal-scoped work uses
-  `new_measurement`, `update_existing`, `repair_dependency`, or an intrinsically
+  `new_measurement`, `deferred_measurement`, `update_existing`,
+  `repair_dependency`, or an intrinsically
   justified `not_testable`; a retrieval, analysis, or prediction-policy action
   uses `fast_plan_action`. That last disposition is valid only for a projected
   reflection action because the same original reflection already flows directly
