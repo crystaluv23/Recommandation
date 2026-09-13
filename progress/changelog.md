@@ -398,3 +398,5 @@
 - 2026-09-13: Before any V83 external call, broaden the H1 time-boundary audit to historical market-confirmation language. Detect explicit forward outcomes rather than rejecting price-change vocabulary alone, and aggregate temporal plus need-routing issues into the first correction frontier. All 83 adapter tests pass; V83 remains an unexecuted freeze.
 
 - 2026-09-13: Record V84 committed 0/1 with 0 valid Mining, 3 Update candidates and 0 promotions. Audit real target/prior/reflection flow, H1 falsifier false positives, cash-evidence component gaps, E2 polarity mismatch, and fixture coverage rejection before LLM execution. No gates weakened; three-layer acceptance remains pending.
+
+- 2026-09-13: Prepare V85 with explicit candidate value/retrieval semantics, diagnostic fixture coverage failures, technical-failure rejection even for unavailable expectations, field-scoped H1 source checks, and complete final tokens in evidence windows. Original V84 H1 replay accepts three hypotheses; 776 tests and lint pass; live acceptance pending.

@@ -2427,7 +2427,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     measurement = raw_item.get("measurement")
                     retrieval = raw_item.get("retrieval_intent")
                     falsifiers = raw_item.get("falsifiers")
-                    semantic_values = [
+                    acquisition_values = [
                         *(
                             [str(item) for item in measurement.values()]
                             if isinstance(measurement, Mapping)
@@ -2438,6 +2438,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                             if isinstance(retrieval, Mapping)
                             else []
                         ),
+                    ]
+                    semantic_values = [
+                        *acquisition_values,
                         *(
                             [
                                 str(item.get(key, ""))
@@ -2471,7 +2474,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                         )
                     if any(
                         _H1_POST_CUTOFF_SOURCE.search(item)
-                        for item in semantic_values
+                        for item in acquisition_values
                     ):
                         proposal_ref = str(raw_item.get("proposal_ref", ""))
                         ledger_issues.append(

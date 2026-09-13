@@ -112,6 +112,47 @@ def signal_research_objective() -> dict[str, Any]:
     }
 
 
+def signal_candidate_execution_contract() -> dict[str, Any]:
+    """Expose existing value and retrieval semantics before candidate generation."""
+
+    return {
+        "value_semantics": {
+            "positive": "Evidence in the direction of the fixed surge target.",
+            "negative": "Evidence in the control/opposing direction.",
+            "neutral": "Available measurement without decisive directional evidence.",
+            "unavailable": "Required point-in-time measurement inputs are insufficient.",
+            "orientation": (
+                "Do not equate numeric sign with Signal direction. Derive a new "
+                "candidate's orientation from the observed contrast and keep its "
+                "definition, implementation and fixtures consistent. Report the "
+                "underlying quantity in interpretation/evidence. Do not reverse "
+                "an existing stable definition or copy case labels into the skill."
+            ),
+        },
+        "retrieval": {
+            "execution_order": "Coverage must resolve before the function or LLM skill runs.",
+            "source_types": "Use source types/formats supported by the supplied evidence; do not invent a provider category.",
+            "minimum_observations": (
+                "Counts the largest explicit structured series in a document: lists "
+                "named prices, observations, rows or series, or lists of records "
+                "with date/timestamp fields. A standalone financial fact is not "
+                "such a series. Leave null unless this is a real input requirement."
+            ),
+            "period_requirements": (
+                "minimum_distinct_periods and minimum_period_span_days check period "
+                "coverage, not concept completeness or comparable duration. The "
+                "implementation must still check every required component and period."
+            ),
+            "fixtures": (
+                "Non-unavailable fixtures must satisfy the same retrieval coverage "
+                "as production, with literal source evidence and point-in-time dates. "
+                "Missing-input fixtures may expect unavailable; technical failures "
+                "are not successful unavailable measurements."
+            ),
+        },
+    }
+
+
 SIGNAL_UPDATE_MUTABLE_PATHS = (
     "spec.raw_retrieval.source_types",
     "spec.raw_retrieval.query_terms",
@@ -1163,12 +1204,23 @@ class SignalCandidateValidator:
             deterministic_functions=self.deterministic_functions,
             llm_runner=self.llm_runner,
         )
-        result = executor.execute_batch(
+        batch = executor.execute_batch(
             (spec.ref,), company_id=company_id, as_of=as_of
-        ).results[0]
-        if result.value is not expected:
+        )
+        result = batch.results[0]
+        if result.execution_status not in {
+            SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE
+        }:
             raise ValidationError(
-                f"expected {expected.value}, received {result.value.value}"
+                f"technical execution failure: {result.execution_status.value}: "
+                f"{result.execution_error_code}: {result.execution_error_message}"
+            )
+        if result.value is not expected:
+            resolution = batch.resolutions[0]
+            detail = resolution.gap.message if resolution.gap is not None else "no data gap"
+            raise ValidationError(
+                f"expected {expected.value}, received {result.value.value}; "
+                f"resolution={resolution.status}; {detail}"
             )
 
 
@@ -4800,6 +4852,7 @@ class SignalEvolutionEngine:
             "induction_cases": induction_packets,
             "slow_method_memory": self._slow_method_view("Update"),
             "candidate_contract": {
+                "execution_semantics": signal_candidate_execution_contract(),
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
                 "deterministic_function_contracts": deterministic_signal_function_contracts(
                     self.validator.deterministic_functions
@@ -7436,6 +7489,7 @@ class SignalEvolutionEngine:
 
     def _mining_candidate_contract(self) -> dict[str, Any]:
         return {
+            "execution_semantics": signal_candidate_execution_contract(),
             "arguments_schema": self._candidate_arguments_schema(clone=False),
             "deterministic_function_contracts": deterministic_signal_function_contracts(
                 self.validator.deterministic_functions

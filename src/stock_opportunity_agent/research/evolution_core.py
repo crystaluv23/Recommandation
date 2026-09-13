@@ -6142,6 +6142,17 @@ _QUERYLESS_FILING_BOILERPLATE = re.compile(
 )
 
 
+
+def _complete_evidence_window(text: str, start: int, max_chars: int) -> str:
+    """Keep a literal bounded window without a partial final word or amount."""
+
+    end = min(len(text), start + max_chars)
+    if end < len(text) and end > start and not text[end].isspace():
+        while end > start and not text[end - 1].isspace():
+            end -= 1
+    return text[start:end].rstrip()
+
+
 def _query_relevant_excerpt(
     document: RawInfoDocument,
     *,
@@ -6177,7 +6188,7 @@ def _query_relevant_excerpt(
                 dated_records.append((max(dates), record.start()))
         if dated_records:
             _latest, anchor = max(dated_records, key=lambda row: (row[0], -row[1]))
-            return text_value[anchor : anchor + max_chars], True
+            return _complete_evidence_window(text_value, anchor, max_chars), True
     anchors = (
         [
             match.start()
@@ -6209,7 +6220,7 @@ def _query_relevant_excerpt(
         adjusted_starts.add(boundary + 1 if boundary >= 0 else start)
 
     def score(start: int) -> tuple[int, int, int, int]:
-        window = text_value[start : start + max_chars]
+        window = _complete_evidence_window(text_value, start, max_chars)
         if queryless_filing:
             return (
                 len(set(term.casefold() for term in
@@ -6229,7 +6240,7 @@ def _query_relevant_excerpt(
         )
 
     start = max(adjusted_starts, key=score)
-    return text_value[start : start + max_chars], True
+    return _complete_evidence_window(text_value, start, max_chars), True
 
 
 def _nested_profile_mappings(value: Any, *, depth: int) -> list[Mapping[str, Any]]:

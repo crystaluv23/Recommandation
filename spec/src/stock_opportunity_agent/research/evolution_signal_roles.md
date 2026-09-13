@@ -188,7 +188,11 @@ mining, and Signal update proposals.
   disposition. Mismatch feedback reports ledger-only and hypothesis-only refs.
   Measurements, queries, and falsifiers use facts available at or before each
   prediction time; explicit post-series, post-cutoff, or after-prediction
-  acquisition is invalid even though the resolver would later fail closed.
+  acquisition in measurement or retrieval fields is invalid even though the
+  resolver would later fail closed. A falsifier may describe post-cutoff-only
+  availability as a reason the hypothesis cannot be tested; that condition is
+  not an acquisition request. Fixed-target redefinition and future-outcome
+  checks still apply to all three field groups.
 - The controller also projects explicit vertical-reflection fields into stable
   runtime action refs. Each such ref must be dispositioned as a new measurement,
   an existing-Signal update, a dependency repair, an intrinsically

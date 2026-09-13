@@ -82,3 +82,9 @@ measurements or decisions appropriate to their stage; Update returns one of
 no_change/defer/update for the supplied target. Models do not return invented
 staged refs. All Mining stage payloads carry the same fixed Mining prior. Changes
 to this code-owned prior require a freshly frozen priors hash and workspace.
+
+
+Bounded evidence windows end at a complete whitespace-delimited token when the
+character budget would otherwise split a word or numeric amount. The excerpt
+remains a contiguous source substring; no text is synthesized and the original
+truncation marker remains true. This avoids literal-but-incomplete token evidence.

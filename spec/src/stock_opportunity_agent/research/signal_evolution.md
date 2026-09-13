@@ -400,3 +400,22 @@ relevance means contributing evidence about expectation gaps, catalysts, changin
 fundamentals or early confirmation under that fixed target, rather than seeking
 generic quality metrics or treating source coverage as business differentiation.
 The goal is context, not a change to labels, sample selection or promotion gates.
+
+
+## Candidate execution semantics supplied to generation
+
+Mining and Update candidate contracts expose the existing effectiveness value
+semantics and retrieval/fixture requirements. POSITIVE/NEGATIVE are evaluated
+against positive/control cases, not the arithmetic sign of an extracted number.
+A new candidate must explain its direction consistently in definition, skill and
+fixtures, using observed contrast without copying case labels into executable
+artifacts. This does not change stable definitions, labels or effectiveness gates.
+
+Retrieval coverage is checked before execution. `minimum_observations` counts
+explicit structured series, not arbitrary scalar financial facts; period counts
+and period spans do not guarantee the concepts or comparable durations required
+by the measurement. Candidate fixtures must satisfy their own retrieval contract
+and use supported source types/formats. Failed fixture diagnostics preserve
+resolution status and missing coverage or execution error, so an unavailable
+result cannot conceal whether the skill actually ran. Technical execution
+failure never passes a fixture merely because expected is unavailable.

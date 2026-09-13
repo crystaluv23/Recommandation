@@ -1,5 +1,12 @@
 # Status
 
+V85 preparation: generation now receives explicit existing directional and
+retrieval/fixture semantics; unavailable cannot hide technical fixture failure.
+H1 source-request checks respect falsifier field ownership, and narrative windows
+do not cut a final word/amount. Unmodified V84 H1 output parses three hypotheses;
+776 tests and lint pass. Evidence component selection remains an open quality
+limitation. Freeze the successor from committed V84 to carry its actual failures.
+
 V84 (5264747) completed Fast/Slow 0/1 with 0 valid Mining, 3 Update
 candidates, and 0 validated/promoted Signals. Two Updates regressed; one is
 provisional for availability 2/4. The E2 candidate failed fixture retrieval

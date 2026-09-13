@@ -9,6 +9,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     _signal_effectiveness_counts,
     signal_effectiveness_measurement_contract,
     signal_research_objective,
+    signal_candidate_execution_contract,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
@@ -1396,6 +1397,21 @@ class SignalEvolutionTests(TestCase):
         self.assertTrue(excerpt.startswith("{"), excerpt)
         self.assertIn('"value":12345', excerpt)
 
+    def test_evidence_window_does_not_split_words_or_numeric_amounts(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import _complete_evidence_window
+
+        for text, limit, expected in (
+            ("We entered an ELOC agreement.", 17, "We entered an"),
+            ("Proceeds were $6,200,000 in total.", 20, "Proceeds were"),
+            ("Cash was 100 USD.", 12, "Cash was 100"),
+            ("Complete sentence.", 100, "Complete sentence."),
+        ):
+            with self.subTest(text=text):
+                excerpt = _complete_evidence_window(text, 0, limit)
+                self.assertEqual(excerpt, expected)
+                self.assertIn(excerpt, text)
+                self.assertLessEqual(len(excerpt), limit)
+
     def test_queryless_filing_excerpt_skips_cover_boilerplate(self) -> None:
         from stock_opportunity_agent.research.evolution_core import _agent_raw_document_view
 
@@ -1698,6 +1714,45 @@ class SignalEvolutionTests(TestCase):
         self.assertNotIn("Harsco", serialized)
         self.assertNotIn("Clean Earth", serialized)
         self.assertIn("[MASKED_COMPANY]", serialized)
+
+    def test_fixture_unavailable_does_not_hide_technical_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            spec = SignalSpec(
+                signal_id="fixture_failure_probe", version=1, category="financial",
+                description="Measure year-over-year revenue growth.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.revenue_growth_yoy", source_types=("financials",),
+            )
+            def broken_function(*_args):
+                raise ValueError("deliberate implementation failure")
+            validator = SignalCandidateValidator(
+                registry, llm_runner=None,
+                deterministic_functions={"financial.revenue_growth_yoy": broken_function},
+            )
+            fixture = {**candidate_growth_fixture(), "expected": "unavailable"}
+            result = validator.validate(spec, skill=None, tests=(fixture,))
+            self.assertFalse(result.accepted)
+            self.assertIn("technical execution failure", result.reasons[0])
+
+    def test_fixture_failure_reports_pre_execution_coverage_gap(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            spec = SignalSpec.from_dict({
+                "signal_id": "fixture_coverage_probe", "version": 1,
+                "category": "financial",
+                "definition": {"description": "Measure year-over-year revenue growth."},
+                "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
+                "raw_retrieval": {"source_types": ["financials"], "minimum_observations": 1},
+                "evidence_policy": {"require_source": True, "require_timestamp": True, "require_exact_span": True},
+            })
+            validator = SignalCandidateValidator(registry, llm_runner=None)
+            result = validator.validate(spec, skill=None, tests=(candidate_growth_fixture(),))
+            self.assertFalse(result.accepted)
+            self.assertIn("observations=0/1", result.reasons[0])
+            self.assertIn("resolution=unresolved", result.reasons[0])
 
     def test_candidate_identity_guard_preserves_ticker_case(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -4659,6 +4714,14 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 update_model.requests[0]["candidate_contract"]["deterministic_function_contracts"],
                 expected_functions,
+            )
+            self.assertEqual(
+                engine._mining_candidate_contract()["execution_semantics"],
+                signal_candidate_execution_contract(),
+            )
+            self.assertEqual(
+                update_model.requests[0]["candidate_contract"]["execution_semantics"],
+                signal_candidate_execution_contract(),
             )
             request_json = json.dumps(update_model.requests[0])
             for case in cases:

@@ -1639,6 +1639,19 @@ class SignalRoleAdapterTests(TestCase):
                 ).propose_hypotheses(payload)
                 self.assertEqual(len(parsed.value), 1)
 
+        for condition in (
+            "All supporting facts are only available after prediction time.",
+            "Only post-cutoff sources contain the required measurement.",
+            "The evidence was disclosed subsequent to the cutoff.",
+        ):
+            with self.subTest(condition=condition):
+                valid_falsifier = json.loads(json.dumps(hypothesis))
+                valid_falsifier["hypotheses"][0]["falsifiers"][0]["condition"] = condition
+                parsed = LLMSignalMiningModel(
+                    ScriptedRoleCaller([valid_falsifier])
+                ).propose_hypotheses(payload)
+                self.assertEqual(len(parsed.value), 1)
+
         for observable in (
             "Change the fixed prediction threshold to 0.8.",
             "Redefine surge labels using a shorter horizon.",
