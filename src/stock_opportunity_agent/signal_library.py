@@ -3440,6 +3440,46 @@ def _fact_evidence(
     return tuple(evidence)
 
 
+def _price_series_evidence(
+    document: RawInfoDocument,
+    values: list[Any],
+    indices: Iterable[int],
+    as_of: datetime,
+) -> tuple[SignalEvidence, ...] | None:
+    """Cite complete calculation anchors after verifying raw/metadata alignment."""
+
+    try:
+        rows = json.loads(document.content)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(rows, list) or not rows or not all(
+        isinstance(row, Mapping) and "close" in row for row in rows
+    ):
+        return None
+    raw_prices = [
+        row["adjusted_close"] if row.get("adjusted_close") is not None else row["close"]
+        for row in rows
+    ]
+    if raw_prices != values:
+        raise ValidationError("raw price bars do not match metadata.prices")
+    decoder = json.JSONDecoder()
+    offset = document.content.index("[") + 1
+    spans: list[str] = []
+    for _row in rows:
+        while document.content[offset].isspace() or document.content[offset] == ",":
+            offset += 1
+        _value, end = decoder.raw_decode(document.content, offset)
+        spans.append(document.content[offset:end])
+        offset = end
+    return tuple(
+        SignalEvidence(
+            document_id=document.document_id, exact_span=spans[index],
+            timestamp=min(document.available_at, as_of),
+        )
+        for index in sorted(set(indices))
+    )
+
+
 def _max_drawdown_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3462,13 +3502,26 @@ def _max_drawdown_signal(
         raise ValidationError("market price metadata must be a non-empty list")
     peak = -math.inf
     drawdown = 0.0
-    for raw in values:
+    peak_index = 0
+    drawdown_peak = 0
+    drawdown_trough = 0
+    for index, raw in enumerate(values):
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+            raise ValidationError("market price metadata must be numeric")
         price = float(raw)
-        if price <= 0:
-            raise ValidationError("market price metadata must be positive")
-        peak = max(peak, price)
-        drawdown = min(drawdown, (price / peak) - 1)
-    return _numeric_result(spec, drawdown, document, as_of, label="max_drawdown_1y")
+        if not math.isfinite(price) or price <= 0:
+            raise ValidationError("market price metadata must be finite and positive")
+        if price > peak:
+            peak, peak_index = price, index
+        current = (price / peak) - 1
+        if current < drawdown:
+            drawdown, drawdown_peak, drawdown_trough = current, peak_index, index
+    return _numeric_result(
+        spec, drawdown, document, as_of, label="max_drawdown_1y",
+        evidence=_price_series_evidence(
+            document, values, (0, drawdown_peak, drawdown_trough, len(values) - 1), as_of,
+        ),
+    )
 
 
 def _price_momentum_signal(
@@ -3516,6 +3569,9 @@ def _price_momentum_signal(
         document,
         as_of,
         label=f"price_momentum_{raw_lookback}d",
+        evidence=_price_series_evidence(
+            document, values, (len(values) - raw_lookback - 1, len(values) - 1), as_of,
+        ),
     )
 
 

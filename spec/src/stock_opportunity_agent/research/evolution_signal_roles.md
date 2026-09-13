@@ -128,6 +128,14 @@ mining, and Signal update proposals.
   deterministic ordering, exact raw-span lineage and per-Signal citation scope
   remain unchanged. A bounded view cannot prove absent data; unavailable results
   must remain distinct from technical failures and negative domain observations.
+- Supported SEC Company Facts use the shared structured fact selector rather
+  than character windows: each complete literal record retains its source
+  taxonomy, concept, label and unit, with latest / comparable-prior selection
+  explicitly identified. Selection uses only version-owned retrieval intent and
+  the document availability cutoff. Source-key metadata is not quoted evidence;
+  citations map the complete record back to original raw offsets. Structured
+  records are indivisible under both character and request-token budgets. Empty
+  eligible fact selections must not fall back to unfiltered future records.
 - Every shared payload declares each Signal's own eligible projection refs.
   Initial validation isolates omitted, cross-Signal, edge, and shape failures;
   its sole correction contains only failed Signals, their eligible evidence,

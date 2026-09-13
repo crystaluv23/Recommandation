@@ -49,7 +49,11 @@ from stock_opportunity_agent.research.evolution_settings import (
     ROLE_OUTPUT_TOKEN_LIMITS,
     _LLM_SIGNAL_QUERY_STOP_WORDS,
 )
-from stock_opportunity_agent.research.evolution_core import _mask_identity_values, _project_slow_case_refs
+from stock_opportunity_agent.research.evolution_core import (
+    _company_facts_context,
+    _mask_identity_values,
+    _project_slow_case_refs,
+)
 from stock_opportunity_agent.research.evolution_transport import (
     ExternalBudgetExhausted,
     JSONRoleCaller,
@@ -4224,8 +4228,42 @@ def _shared_llm_signal_projection(
             int,
         ]
     ] = []
+    fact_contexts: dict[tuple[str, int, int], dict[str, Any]] = {}
     step = LLM_SIGNAL_CONTEXT_CHUNK_CHARS - LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP
     for document in documents_by_identity.values():
+        queries = sorted({
+            item.spec.retrieval_policy.query + " " + " ".join(
+                item.spec.parameters.get("result_required_evidence_phrases", ())
+            )
+            for item in inputs if document in item.documents
+        })
+        structured = False
+        for query in queries:
+            facts = _company_facts_context(
+                document, max_content_chars=MAX_LLM_SIGNAL_CONTEXT_CHARS, query=query,
+            )
+            if facts is None:
+                break
+            structured = True
+            for concept in facts["concepts"]:
+                for record_index, record in enumerate(concept["records"]):
+                    start, end = record["start"], record["end"]
+                    key = (document.document_id, start, end)
+                    if key in fact_contexts:
+                        continue
+                    fact_contexts[key] = {
+                        name: concept[name] for name in ("taxonomy", "concept", "unit")
+                    } | {
+                        "concept_description": concept["label"],
+                        "record_selection": "latest" if record_index == 0 else "comparable_prior",
+                    }
+                    rank = (-document.available_at.timestamp(), document.document_id, record_index, start)
+                    candidates.append((
+                        rank, document, document.content,
+                        ((0, len(document.content), 0, len(document.content)),), start, end,
+                    ))
+        if structured:
+            continue
         normalized, runs = _normalized_projection_text(
             document.content,
             strip_market_metadata=document.source_type.casefold()
@@ -4259,7 +4297,12 @@ def _shared_llm_signal_projection(
             """Rank an eligible chunk using only version-owned search intent."""
 
             base_rank, _document, normalized, _runs, start, end = candidate
-            tokens = re.findall(r"[A-Za-z0-9]+", normalized[start:end].casefold())
+            fact_context = fact_contexts.get((_document.document_id, start, end))
+            searchable = (
+                " ".join(str(fact_context[name]) for name in ("taxonomy", "concept", "concept_description", "unit"))
+                if fact_context is not None else normalized[start:end]
+            )
+            tokens = re.findall(r"[A-Za-z0-9]+", searchable.casefold())
             return (
                 -len(terms.intersection(tokens)),
                 -sum(min(tokens.count(term), 3) for term in terms),
@@ -4310,6 +4353,7 @@ def _shared_llm_signal_projection(
             end,
             rebase=start,
         )
+        fact_context = fact_contexts.get((document.document_id, start, end))
         payload.append(
             {
                 "projection_id": projection_id,
@@ -4319,15 +4363,18 @@ def _shared_llm_signal_projection(
                 "published_at": document.published_at.isoformat(),
                 "available_at": document.available_at.isoformat(),
                 "exact_text": text_value,
+                **({"fact_context": fact_context} if fact_context is not None else {}),
             }
         )
         lineage[projection_id] = _SignalProjectionLineage(
             document=document,
             projection_text=text_value,
             raw_offset_runs=clipped_runs,
-            normalized_start=start,
-            normalized_end=end,
-            normalized_source_length=len(normalized),
+            # A whole fact record is a complete source unit, not an internal
+            # text-window edge. Its raw mapping still targets the original JSON.
+            normalized_start=0 if fact_context is not None else start,
+            normalized_end=len(text_value) if fact_context is not None else end,
+            normalized_source_length=len(text_value) if fact_context is not None else len(normalized),
         )
         used += len(text_value)
     return payload, lineage
@@ -4565,7 +4612,7 @@ def _map_projected_signal_evidence(
                 strip_market_metadata=projection.document.source_type.casefold()
                 in {"market_data", "historical_price", "price_daily", "prices"},
             )
-            if projected_raw_span != exact_text:
+            if raw_span != exact_text and projected_raw_span != exact_text:
                 raise ValidationError(
                     f"Signal {group} evidence[{index}] raw mapping did not round-trip "
                     "to exact_text; choose another complete literal or return unavailable"
@@ -4665,6 +4712,7 @@ class StructuredLLMSignalRunner:
                 "complete_documents_retained_locally": True,
                 "omitted_text_may_contain_additional_evidence": True,
                 "citation_fields": ["projection_id", "exact_text"],
+                "structured_facts": "fact_context binds each literal record to its source taxonomy, concept and unit; record_selection distinguishes latest from comparable_prior. Cite exact_text, not metadata. Selected records are not exhaustive.",
             },
         }
 

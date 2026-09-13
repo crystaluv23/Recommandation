@@ -23,6 +23,37 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_market_measurements_cite_actual_adjusted_price_anchors(self) -> None:
+        from stock_opportunity_agent.signal_library import (
+            _max_drawdown_signal, _price_momentum_signal,
+        )
+        from stock_opportunity_agent.models import ValidationError
+        prices = [10.0, 20.0, 15.0, 5.0, 12.0]
+        rows = [{"as_of_date": f"2025-01-0{i + 1}", "close": price * 2,
+                 "adjusted_close": price} for i, price in enumerate(prices)]
+        document = RawInfoDocument.create(
+            document_id="market", company_id="issuer_1", source_type="market_data",
+            published_at=AS_OF, available_at=AS_OF,
+            content=json.dumps(rows, indent=2), metadata={"prices": prices},
+        )
+        spec = _spec("drawdown", "market.max_drawdown_1y", 0.0, -0.1)
+        result = _max_drawdown_signal(spec, (document,), AS_OF)
+        self.assertEqual(result.interpretation, "max_drawdown_1y=-0.75")
+        self.assertEqual([json.loads(e.exact_span) for e in result.supporting_evidence],
+                         [rows[i] for i in (0, 1, 3, 4)])
+        from dataclasses import replace
+        momentum = replace(spec, parameters={"lookback_observations": 2})
+        result = _price_momentum_signal(momentum, (document,), AS_OF)
+        self.assertEqual(result.interpretation, "price_momentum_2d=-0.2")
+        self.assertEqual([json.loads(e.exact_span) for e in result.supporting_evidence], rows[2::2])
+        for evidence in result.supporting_evidence:
+            self.assertIn(evidence.exact_span, document.content)
+        with self.assertRaisesRegex(ValidationError, "do not match"):
+            _max_drawdown_signal(spec, (replace(document, metadata={"prices": list(reversed(prices))}),), AS_OF)
+        for invalid in (float("nan"), float("inf"), True):
+            with self.subTest(invalid=invalid), self.assertRaises(ValidationError):
+                _max_drawdown_signal(spec, (replace(document, metadata={"prices": [invalid]}),), AS_OF)
+
     def test_function_contracts_follow_actual_registry_overrides(self) -> None:
         functions = default_deterministic_signal_functions()
         contracts = deterministic_signal_function_contracts(functions)

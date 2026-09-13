@@ -57,6 +57,58 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         for item in projected:
             self.assertIn(item["exact_text"], lineage[item["projection_id"]].document.content)
 
+    def test_structured_facts_bind_complete_records_to_concept_and_period(self) -> None:
+        from stock_opportunity_agent.research.evolution_signal_roles import (
+            _shared_llm_signal_projection, _map_projected_signal_evidence,
+        )
+        from stock_opportunity_agent.signal_library import SignalRetrievalPolicy
+
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        latest = {"start": "2025-01-01", "end": "2025-03-31", "filed": "2025-05-13", "val": -12243000}
+        old = {"start": "2024-01-01", "end": "2024-03-31", "filed": "2024-05-13", "val": 9000000}
+        future = dict(latest, end="2025-06-30", filed="2025-08-13", val=999999)
+        content = json.dumps({"facts": {"us-gaap": {
+            "NetCashProvidedByUsedInInvestingActivities": {
+                "label": "Investing cash flow", "units": {"USD": [dict(latest, val=6064000)]},
+            },
+            "NetCashProvidedByUsedInOperatingActivities": {
+                "label": "Operating cash flow", "units": {"USD": [old, latest, future]},
+            },
+        }}}, indent=2)
+        document = RawInfoDocument.create(
+            document_id="facts", company_id="issuer", source_type="company_facts",
+            published_at=as_of, available_at=as_of, content=content,
+        )
+        spec = SignalSpec(
+            signal_id="cash_deficit", version=1, category="financial",
+            description="Measure operating cash flow.", execution_type=SignalExecutionType.LLM,
+            source_types=("company_facts",), skill_file="skill.md",
+            retrieval_policy=SignalRetrievalPolicy(query_terms=("operating cash flow",)),
+        )
+        inputs = (LLMSignalBatchInput(spec, (document,), "Measure the latest period."),)
+        projected, lineage = _shared_llm_signal_projection(inputs)
+        operating = [item for item in projected if item["fact_context"]["concept"] == "NetCashProvidedByUsedInOperatingActivities"]
+        from stock_opportunity_agent.research.evolution_transport import _scan_payload
+        _scan_payload({"source_projection": projected}, allow_outcomes=False, anonymous_aliases=())
+        self.assertEqual([json.loads(item["exact_text"]) for item in operating], [latest, old])
+        self.assertEqual(operating[0]["fact_context"]["record_selection"], "latest")
+        self.assertEqual(operating[0]["fact_context"]["unit"], "USD")
+        self.assertNotIn("999999", json.dumps(projected))
+        for item in projected:
+            self.assertIn(item["exact_text"], content)
+            mapped = _map_projected_signal_evidence({"evidence": {"supporting": [{
+                "projection_id": item["projection_id"], "exact_text": item["exact_text"],
+            }], "counter": []}}, lineage)
+            self.assertEqual(mapped["evidence"]["supporting"][0]["exact_span"], item["exact_text"])
+        future_only = RawInfoDocument.create(
+            document_id="future", company_id="issuer", source_type="company_facts",
+            published_at=as_of, available_at=as_of, content=json.dumps({"facts": {"us-gaap": {
+            "OperatingCashFlow": {"units": {"USD": [future]}},
+        }}}))
+        self.assertEqual(_shared_llm_signal_projection((
+            LLMSignalBatchInput(spec, (future_only,), "Measure latest."),
+        ))[0], [])
+
     def test_period_end_label_does_not_turn_as_of_guidance_into_realized_results(self) -> None:
         from stock_opportunity_agent.research.evolution_research_validation import (
             _raw_future_information_issues,

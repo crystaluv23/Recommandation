@@ -1,5 +1,11 @@
 # Status
 
+V88 preparation: shared soft-Signal SEC evidence now retains complete source-bound
+fact records; market numeric evidence cites actual calculation anchors after raw
+series alignment checks. All 781 tests pass. Local replay of V87 four holdout
+inputs selects the correct latest CFO records and accepts their exact raw spans.
+Real model replay and a fresh frozen successor remain pending; V87 is unchanged.
+
 V87 completed cycle 1 (Fast/Slow 0/1, exit 0): 1 executable Mining candidate,
 0 Updates and 0 promotions. Reflection/H1/E2 actual requests carry complete
 Mining history and directional/retrieval contracts. The candidate

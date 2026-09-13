@@ -161,6 +161,12 @@ original seed:
   between them. The executor prefers comparison facts from the same filing so
   stock-split restatements remain comparable, and otherwise fails closed when
   it cannot form a valid year-over-year pair.
+- Market-series numeric results cite complete original price-bar records for
+  their calculation anchors (drawdown peak/trough and series endpoints;
+  momentum window endpoints). Raw adjusted-close-or-close values must match
+  the supplied metadata series before anchors are cited. Legacy metadata-only
+  fixtures retain their literal source evidence; no price records are invented.
+  This changes evidence provenance, not window or classification semantics.
 - `price_momentum_126d` is the total return across the latest 126 intervals in
   the chronological adjusted-close series. It requires 127 daily observations;
   the name denotes trading observations, not an exact calendar-six-month

@@ -406,3 +406,5 @@
 - 2026-09-13: Stop V86 after confirming whole-track reflection budget exclusion. Expose complete Mining decision source units with exact artifact locators for local and imported history, prioritize them before oversized tracks without changing budgets, and replay V84 evidence to verify complete E2/H3/H1 visibility. Focused 109 tests pass; live semantic acceptance remains pending.
 
 - 2026-09-13: V87 commits cycle 1 with 1 executable Mining candidate, 0 Updates and 0 promotions. Actual reflection reaches H1/E2 and candidate direction/fixtures improve. Holdout audit exposes wrong-concept and stale-period soft execution plus a split-record citation failure; market Update also lacks calculation evidence because numeric fallback quotes only 240 characters. Preserve results and repair common evidence projection paths next.
+
+- 2026-09-13: Repair common soft-Signal SEC projection with source concept/unit and complete latest/comparable records, preserve raw citation and budget boundaries, and attach verified market calculation anchors. V87 four-input local replay selects correct latest CFO records; all 781 tests pass. Live replay and successor still pending.
