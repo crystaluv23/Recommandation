@@ -1,5 +1,13 @@
 # Status
 
+V86 was deliberately interrupted after reflection (exit 130, no cycle commit):
+actual history selection deferred entire 86 KB H and 70 KB E Mining tracks
+under the 64 KB reflection budget, hiding E2 candidate semantics. Local/imported
+history now exposes complete H1 hypotheses and H3/E2 decisions with exact
+locators; whole tracks remain available. V84 raw-history replay fits complete
+E2/H3/H1 decisions into unchanged 64 KB/12-item limits. 109 focused tests pass.
+Freeze V87 from committed V84 after full verification; preserve V86 evidence.
+
 V85 paused before cycle commit on Alpha Vantage news quota (exit 75); its
 completed H1 has analyst revisions, liquidity runway and scheduled catalysts.
 Finnhub and Massive same-window probes both returned successful empty lists,

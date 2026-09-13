@@ -616,6 +616,9 @@ def _prioritize_reflection_feedback(
             ":slow_loop_validation:summary",
             ":slow_loop_validation:effect-",
             ":slow_loop_validation:fixture-",
+            ":slow_loop_validation:mining-decision-E2-",
+            ":slow_loop_validation:mining-decision-H3-",
+            ":slow_loop_validation:mining-decision-H1-",
             ":slow_loop_validation:mining-exploration",
             ":slow_loop_validation:mining-hypothesis",
             ":slow_loop_validation:update-target-",
@@ -3581,6 +3584,42 @@ class SignalEvolutionEngine:
             mining = audits.get("mining_pipeline")
             if isinstance(mining, Mapping):
                 mining = dict(mining)
+                tracks = [
+                    (name, mining[name]) for name in ("hypothesis", "exploration")
+                    if isinstance(mining.get(name), Mapping)
+                ]
+                if not tracks:
+                    tracks = [("", mining)]
+                for track_name, track in tracks:
+                    stages = track.get("stages", {})
+                    if not isinstance(stages, Mapping):
+                        continue
+                    for stage, collection in (("H1", "hypotheses"), ("H3", "decisions"), ("E2", "decisions")):
+                        stage_data = stages.get(stage, {})
+                        if not isinstance(stage_data, Mapping):
+                            continue
+                        values = stage_data.get(collection, ())
+                        if not isinstance(values, (list, tuple)):
+                            continue
+                        track_path = f"/{track_name}" if track_name else ""
+                        if not values and stage_data:
+                            units.append((
+                                f"mining-decision-{stage}-empty",
+                                "candidate_result",
+                                "/validation/agent_audits/mining_pipeline"
+                                f"{track_path}/stages/{stage}",
+                                dict(stage_data),
+                            ))
+                        for index, decision in enumerate(values):
+                            if not isinstance(decision, Mapping):
+                                continue
+                            units.append((
+                                f"mining-decision-{stage}-{index + 1:03d}",
+                                "candidate_result",
+                                "/validation/agent_audits/mining_pipeline"
+                                f"{track_path}/stages/{stage}/{collection}/{index}",
+                                dict(decision),
+                            ))
                 if isinstance(mining.get("hypothesis"), Mapping):
                     units.append(
                         (

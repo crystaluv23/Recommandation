@@ -402,3 +402,5 @@
 - 2026-09-13: Prepare V85 with explicit candidate value/retrieval semantics, diagnostic fixture coverage failures, technical-failure rejection even for unavailable expectations, field-scoped H1 source checks, and complete final tokens in evidence windows. Original V84 H1 replay accepts three hypotheses; 776 tests and lint pass; live acceptance pending.
 
 - 2026-09-13: V85 pauses on Alpha Vantage news quota before commit. Connect the already-catalogued Finnhub news fallback to the production resolver with managed cache/ledger/budgets, exact historical and issuer filtering, and headline visibility. Same-window provider probes return no articles; no evidence or mining yield claimed. Focused 80 tests pass; successor required.
+
+- 2026-09-13: Stop V86 after confirming whole-track reflection budget exclusion. Expose complete Mining decision source units with exact artifact locators for local and imported history, prioritize them before oversized tracks without changing budgets, and replay V84 evidence to verify complete E2/H3/H1 visibility. Focused 109 tests pass; live semantic acceptance remains pending.

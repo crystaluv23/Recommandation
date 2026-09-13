@@ -130,6 +130,43 @@ class SignalEvolutionTests(TestCase):
         self.assertIn("update-target-001", suffixes)
         self.assertTrue(all(item[2].startswith("/") for item in units))
 
+    def test_large_mining_track_retains_complete_decision_in_reflection_budget(self) -> None:
+        decision = {"hypothesis_id": "e2-proposal", "rationale": "Observed contrast.",
+                    "candidate": {"spec": {"signal_id": "cash_state"},
+                                  "skill": "Source grounded measurement.", "tests": [{"expected": "positive"}]}}
+        raw = {"validation": {"agent_audits": {"mining_pipeline": {
+            "exploration": {"stages": {
+                "E1": {"signatures": ["x" * 70000]},
+                "E2": {"decisions": [decision]},
+            }},
+        }}}}
+        units = SignalEvolutionEngine._imported_artifact_units("slow_loop_validation.json", raw)
+        rows = [{"feedback_ref": "slow:1:slow_loop_validation:" + suffix,
+                 "subject_ref": "cycle-0001", "artifact": unit}
+                for suffix, _kind, _locator, unit in units]
+        ordered = _prioritize_reflection_feedback(rows)
+        catalog = {row["feedback_ref"]: {"visible_to": ["reflection"], "content": row} for row in ordered}
+        selected, manifest = read_slow_sources(
+            catalog, role_scope="reflection", source_catalog=catalog,
+            budget_bytes=64000, max_items=12,
+        )
+        ref = "slow:1:slow_loop_validation:mining-decision-E2-001"
+        self.assertIn(ref, [item["ref"] for item in selected])
+        self.assertEqual(catalog[ref]["content"]["artifact"], decision)
+        self.assertIn({"ref": "slow:1:slow_loop_validation:mining-exploration",
+                       "reason": "whole_entry_budget"}, manifest["deferred"])
+        unit = next(unit for unit in units if unit[0] == "mining-decision-E2-001")
+        located = raw
+        for part in unit[2].strip("/").split("/"):
+            located = located[int(part)] if isinstance(located, list) else located[part]
+        self.assertEqual(located, decision)
+        raw["validation"]["agent_audits"]["mining_pipeline"]["exploration"]["stages"]["E2"] = {
+            "decisions": [], "no_candidate": {"reason": "No supported business contrast."},
+        }
+        empty_units = SignalEvolutionEngine._imported_artifact_units("slow_loop_validation.json", raw)
+        empty = next(unit for unit in empty_units if unit[0] == "mining-decision-E2-empty")
+        self.assertEqual(empty[3]["no_candidate"]["reason"], "No supported business contrast.")
+
     def test_slow_sampling_is_order_invariant_and_issuer_disjoint(self) -> None:
         cases = tuple(
             make_case(f"slow_sample_{index}", 2.5 if index % 2 else 1.2)

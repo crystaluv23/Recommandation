@@ -125,3 +125,17 @@ V84 使用 5264747，合同
 
 因此本轮仍不满足三层验收。下一轮应共同处理字段语义、校验字段职责及
 证据组件选择，再冻结新工作区；不得覆盖 V84 或把非零暂存当作成功。
+
+
+## V86 反思输入预算审计
+
+V86 的真实 slow_memory model_view_manifest 将 mining-exploration 与
+mining-hypothesis 标记为 whole_entry_budget；对应 V84 轨迹约 70 KB/86 KB，
+大于 64 KB 总预算。E2 候选及理由实际位于约 6.5 KB 的 E2 子阶段，但整条
+探索轨迹是唯一可读取单位，故反思只看到失败汇总，未看到该候选实现。
+V86 已在反思完成后 SIGINT 停止，exit 130，完成指针仍 0。
+
+修复按完整 H1 hypothesis、H3/E2 decision 暴露独立 source unit，保留原始
+JSON locator 和源文件 hash；大轨迹仍可查询，不截断，不改变字节和条数预算。
+本地重放 V84 原始 validation：61244 bytes、12 项含完整 E2 候选、两条 H3、
+三条 H1 及效果记录。此为输入可达性证明，尚非真实模型吸收或晋升证明。

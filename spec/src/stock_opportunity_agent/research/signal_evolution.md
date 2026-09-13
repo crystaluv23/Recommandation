@@ -419,3 +419,18 @@ and use supported source types/formats. Failed fixture diagnostics preserve
 resolution status and missing coverage or execution error, so an unavailable
 result cannot conceal whether the skill actually ran. Technical execution
 failure never passes a fixture merely because expected is unavailable.
+
+
+## Readable Mining history work units
+
+Local and imported committed Mining audits expose individual complete H1
+hypotheses and H3/E2 decisions as source units with exact JSON locators and
+artifact hashes. Their candidate definitions, skills, fixtures, contrast and
+rationale remain together. Whole-track audits remain available for deeper
+inspection but cannot be the sole route to a decision: raw evidence inventories
+can make a track larger than the entire reflection budget. Reflection orders
+these bounded decision units ahead of whole tracks under the existing byte and
+item ceilings, independent of candidate outcome. Oversized units remain pending;
+never truncate a candidate or claim an unread track was processed. Empty-decision
+stages expose their complete terminal stage record as well, so honest no-candidate
+or technical-failure conclusions remain readable under the same policy.
