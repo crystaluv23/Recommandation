@@ -718,7 +718,7 @@ class SignalRoleAdapterTests(TestCase):
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertIn("at most the two required structured", feedback["validation_error"])
 
-    def test_e1_pair_exhaustion_quarantines_only_the_affected_case(self) -> None:
+    def test_e1_pair_exhaustion_uses_literal_source_mix_for_affected_case(self) -> None:
         first = '{"end":"2025-06-30","val":120}'
         second = '{"end":"2024-06-30","val":100}'
         narrative = "Management discussed quarterly operations."
@@ -766,7 +766,10 @@ class SignalRoleAdapterTests(TestCase):
         step = LLMSignalMiningModel(caller).extract_exploration(payload)
 
         self.assertEqual(step.usage.llm_calls, 2)
-        self.assertEqual(step.value[0].observations, ())
+        self.assertEqual(
+            [item.exact_span for item in step.value[0].observations],
+            [first, second, narrative],
+        )
         self.assertIn("technical extraction limitation", step.value[0].evidence_gaps[0])
         self.assertEqual(len(step.value[1].observations), 1)
         self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001"})

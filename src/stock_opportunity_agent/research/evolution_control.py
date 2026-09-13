@@ -1492,6 +1492,7 @@ def build_slow_history_manifest(
         if (
             relative.name in {"events.jsonl", "profile.json", "stats.json"}
             or "learning" in relative.parts
+            or relative.parts[0] == ".transitions"
         ):
             continue
         definition_files.append(

@@ -93,6 +93,12 @@ class RunControlTests(TestCase):
             )
             registry.bump_version()
             promoted_snapshot = registry.freeze()
+            transition_path = source / "signals" / ".transitions" / "cycle-0001.json"
+            transition_path.parent.mkdir(parents=True)
+            write_json(
+                transition_path,
+                {"transition_id": "cycle-0001", "status": "applied"},
+            )
             write_json(source / "state.json", {"last_completed_round": 0})
             write_json(
                 source / "cycle_state.json",
@@ -132,6 +138,12 @@ class RunControlTests(TestCase):
                 [row["event_id"] for row in envelope["manifest"]["learning_events"]],
                 ["imported"],
             )
+            self.assertFalse(
+                any(
+                    row["path"].startswith(".transitions/")
+                    for row in envelope["manifest"]["registry_definition_files"]
+                )
+            )
             apply_slow_history_manifest(
                 workspace=target,
                 manifest=envelope["manifest"],
@@ -149,6 +161,7 @@ class RunControlTests(TestCase):
                 SignalRegistry(target / "signals").freeze().registry_hash,
                 promoted_snapshot.registry_hash,
             )
+            self.assertFalse((target / "signals" / ".transitions").exists())
 
     def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

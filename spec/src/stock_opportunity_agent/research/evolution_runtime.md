@@ -1668,6 +1668,10 @@ historical `signal_ref`; an ordinary v1 event therefore remains verifiable and
 importable after v2 is promoted. The current Registry snapshot must still exactly
 match the committed cycle pointer, so this version-aware history rule cannot admit
 staged or uncommitted Registry state.
+Registry transition journals are workspace-local control-plane state and are
+never copied as stable Signal definitions by Slow-history export. The successor
+creates its own cycle-numbered journals; importing a source workspace's
+`.transitions` files would collide with unrelated successor cycle identities.
 For `slow_bootstrap`, the frozen Fast target is zero, the round pointer remains
 unchanged throughout, and the same Slow-validation/result order governs cycle
 completion. A `committed_fast` bootstrap must reconstruct and verify its

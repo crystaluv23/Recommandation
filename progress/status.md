@@ -1,5 +1,28 @@
 # Status
 
+V76 remained uncommitted at authoritative Fast 0 / Slow 0 after 21 completed
+model attempts, `$0.17405584000000002`, 119 acquisition reservations, and 200
+lower-level requests. Reflection and H1 completed, E1's new source-mix rule
+produced grounded structured+narrative signatures for eleven cases, and Update
+produced two candidates with real paired measurements. But five E1 cases lost
+their otherwise-visible comparison pair after correction exhaustion, leaving too
+few grounded members in one fixed group, so E2 was correctly not called. The
+cycle then reached a candidate transition and stopped fail-closed with `Signal
+transition replay identity mismatch`: V75's workspace-local `.transitions`
+journals had been copied into V76 as if they were stable Signal definitions.
+Locked Test stayed sealed and no cycle/result pointer advanced.
+
+Both defects are repaired generically. The E1 terminal catch now reconstructs
+only the exact runtime-selected two-record source pair plus an existing valid
+narrative observation, or one complete already-masked bounded source excerpt when
+the model supplied none. It emits an explicit projection summary and never clips,
+paraphrases, or invents a fact, so an isolated extraction failure cannot erase a
+fixed cohort member. Slow-history export excludes `.transitions`; immutable Signal
+versions and their learning streams remain imported, while each successor owns
+its cycle-numbered control journals. Three focused regressions and the 232-test
+Slow suite pass. V76 must not be resumed or imported; full tests/lint and a fresh
+successor remain pending.
+
 The first V76 freeze stopped locally with zero external calls because V75's first
 real promotion made its current Registry v2 while its contract-bound Fast learning
 events correctly remain attached to immutable v1 Signal refs. Slow-history export

@@ -243,7 +243,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   narrative observation. This deterministic source-mix rule prevents a bounded
   signature from being filled entirely by already-catalogued XBRL primitives;
   it does not require an observation when no narrative literal is available and
-  never invents one in final recovery. Generic filing
+  never invents one in final recovery. After bounded model correction is
+  exhausted, the terminal controller recovery may replace that case's failed
+  mix with the two exact source-owned records and one complete already-masked
+  bounded `content_excerpt` copied byte-for-byte from the supplied packet. The
+  recovery summary is explicitly a source projection, not a semantic claim;
+  E2 receives the literal-only view. This keeps the frozen cohort usable without
+  paraphrasing, clipping, or manufacturing a fact. Generic filing
   cover/legal boilerplate is not a comparison-ready observation and is
   quarantined like any other locally invalid E1 observation.
   Source-owned SEC Company Facts context retains each concept's original

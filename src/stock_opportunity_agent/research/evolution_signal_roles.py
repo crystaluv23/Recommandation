@@ -1362,6 +1362,64 @@ def _e1_observation_mix_issue(
     return None
 
 
+def _e1_recovery_source_mix(
+    packet: Mapping[str, Any],
+    required_pair: tuple[str, tuple[tuple[str, str], ...]] | None,
+    observations: Iterable[SignalMiningObservation],
+) -> tuple[SignalMiningObservation, ...]:
+    """Build a literal-only terminal mix after model correction is exhausted."""
+
+    if required_pair is None:
+        return tuple(observations)
+    concept, pair_literals = required_pair
+    narrative_refs, structured_literals = _e1_evidence_mix(packet)
+    recovered = [
+        SignalMiningObservation(
+            summary=f"Controller-retained source record for {concept} comparison.",
+            document_ref=document_ref,
+            exact_span=exact_span,
+        )
+        for document_ref, exact_span in pair_literals
+    ]
+    existing_narrative = [
+        observation
+        for observation in observations
+        if observation.document_ref in narrative_refs
+        and not any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for document_ref, exact_span in structured_literals
+        )
+    ]
+    recovered.extend(existing_narrative[:4])
+    if len(recovered) == len(pair_literals) and narrative_refs:
+        evidence = packet.get("evidence", ())
+        if isinstance(evidence, (list, tuple)):
+            for item in evidence:
+                if not isinstance(item, Mapping):
+                    continue
+                document_ref = item.get("document_ref")
+                excerpt = item.get("content_excerpt")
+                if (
+                    isinstance(document_ref, str)
+                    and document_ref in narrative_refs
+                    and isinstance(excerpt, str)
+                    and excerpt.strip()
+                ):
+                    recovered.append(
+                        SignalMiningObservation(
+                            summary=(
+                                "Controller-retained bounded narrative source "
+                                "projection after extraction recovery."
+                            ),
+                            document_ref=document_ref,
+                            exact_span=excerpt,
+                        )
+                    )
+                    break
+    return tuple(recovered[:6])
+
+
 class LLMSignalMiningModel(SignalMiningModel):
     """Concrete five-role adapter for locally orchestrated Signal Mining."""
 
@@ -3329,56 +3387,39 @@ class LLMSignalMiningModel(SignalMiningModel):
                         kept.append(raw_observation)
                         kept_observations.append(observation)
                 required_pair = required_pairs[case_ref]
-                if not _e1_covers_comparison_pair(
+                pair_missing = not _e1_covers_comparison_pair(
                     kept_observations, required_pair
-                ):
+                )
+                mix_issue = _e1_observation_mix_issue(
+                    kept_observations,
+                    packet_by_ref[case_ref],
+                    required_pair,
+                )
+                if pair_missing or mix_issue:
                     pair_quarantine_refs.add(case_ref)
                     concept = required_pair[0] if required_pair else ""
-                    reasons.append(
-                        "Signal Mining E1 omitted one or both visible records for "
-                        "the first available recurring comparison concept: "
-                        + concept
-                    )
+                    if pair_missing:
+                        reasons.append(
+                            "Signal Mining E1 omitted one or both visible records for "
+                            "the first available recurring comparison concept: "
+                            + concept
+                        )
+                    if mix_issue:
+                        reasons.append(mix_issue)
                     removed.extend(
                         f"signatures[{index}].observations[{offset}]"
                         for offset in range(len(kept))
                     )
                     if not kept:
                         removed.append(f"signatures[{index}].observations")
-                    kept = []
-                    kept_observations = []
-                mix_issue = _e1_observation_mix_issue(
-                    kept_observations,
-                    packet_by_ref[case_ref],
-                    required_pair,
-                )
-                if mix_issue:
-                    _narrative_refs, structured_literals = _e1_evidence_mix(
-                        packet_by_ref[case_ref]
+                    kept_observations = list(
+                        _e1_recovery_source_mix(
+                            packet_by_ref[case_ref],
+                            required_pair,
+                            kept_observations,
+                        )
                     )
-                    pair_literals = set(required_pair[1]) if required_pair else set()
-                    mixed_kept = []
-                    for offset, (raw_observation, observation) in enumerate(
-                        zip(kept, kept_observations)
-                    ):
-                        structured = any(
-                            observation.document_ref == document_ref
-                            and observation.exact_span in exact_span
-                            for document_ref, exact_span in structured_literals
-                        )
-                        required = any(
-                            observation.document_ref == document_ref
-                            and observation.exact_span in exact_span
-                            for document_ref, exact_span in pair_literals
-                        )
-                        if not structured or required:
-                            mixed_kept.append(raw_observation)
-                        else:
-                            removed.append(
-                                f"signatures[{index}].observations[{offset}]"
-                            )
-                    kept = mixed_kept
-                    reasons.append(mix_issue)
+                    kept = [item.to_dict() for item in kept_observations]
                 if reasons:
                     quarantined.setdefault(case_ref, []).extend(reasons)
                     gaps = [
